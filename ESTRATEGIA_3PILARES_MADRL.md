@@ -175,9 +175,18 @@ outputs/<experimento>/<madrl>/<escenario>_seed_<seed>/
   figures/
     figures_manifest.json
     reward_timeseries.png
+    convergence_returns.png
     episode_reward_summary.png
+    learning_efficiency.png
+    citylearn_v2_district_timeseries.png
+    exploration_action_l2.png
+    agent_reward_contribution.png
     axis_baseline_comparison.png
+    baseline_gain_by_kpi.png
     core_kpis.png
+    OE1_flexibility_kpis.png
+    OE2_co2_kpis.png
+    OE3_cost_kpis.png
     tables/
       episode_summary.csv
       episode_summary.md
@@ -187,6 +196,12 @@ outputs/<experimento>/<madrl>/<escenario>_seed_<seed>/
       axis_baseline_comparison.md
       core_kpis.csv
       core_kpis.md
+      training_efficiency.csv
+      training_efficiency.md
+      exploration_summary.csv
+      exploration_summary.md
+      agent_reward_summary.csv
+      agent_reward_summary.md
       checkpoint_inventory.csv
       checkpoint_inventory.md
 ```
@@ -210,6 +225,42 @@ Descripcion de artefactos:
 - `data/checkpoint_manifest.json`: listado de checkpoints y tamanos.
 - `checkpoints/`: checkpoints/modelos del backend oficial.
 - `figures/`: graficas PNG y cuadros CSV/Markdown generados desde entrenamiento.
+
+CityLearn v2 no define un paquete cerrado de graficas de entrenamiento MADRL. Su superficie oficial de evaluacion es `evaluate/evaluate_v2`, KPIs, series de simulacion y resumen de recompensas. Por eso CityLearn v3 MADRL debe transformar esas mismas salidas v2 en figuras comparables para cada algoritmo.
+
+Figuras obligatorias por MADRL:
+
+- `reward_timeseries.png`: recompensa por paso.
+- `convergence_returns.png`: convergencia, media movil de recompensa y retorno acumulado.
+- `episode_reward_summary.png`: returns/recompensas por episodio.
+- `learning_efficiency.png`: rendimiento de aprendizaje contra costo y emisiones por episodio.
+- `citylearn_v2_district_timeseries.png`: series tipo CityLearn v2 de carga neta, carga sin almacenamiento, costo, emisiones, precio e intensidad de carbono.
+- `exploration_action_l2.png`: evolucion de exploracion/aprendizaje mediante magnitud de acciones.
+- `agent_reward_contribution.png`: contribucion de recompensa por edificio/agente.
+- `axis_baseline_comparison.png`: KPIs mejorados/no mejorados contra linea base por OE1/OE2/OE3.
+- `baseline_gain_by_kpi.png`: ganancia o perdida por KPI contra baseline CityLearn v2.
+- `core_kpis.png`: KPIs centrales del proyecto.
+- `OE1_flexibility_kpis.png`: perfil de KPIs de flexibilidad energetica.
+- `OE2_co2_kpis.png`: perfil de KPIs de emisiones de CO2.
+- `OE3_cost_kpis.png`: perfil de KPIs de costos energeticos.
+
+Tablas obligatorias por MADRL:
+
+- `episode_summary.*`: resumen de episodios, recompensas y pasos.
+- `objective_kpis.*`: todos los KPIs por eje con fuente, valor, baseline y mejora.
+- `axis_baseline_comparison.*`: conteo por eje contra baseline.
+- `core_kpis.*`: KPIs centrales seleccionados.
+- `training_efficiency.*`: returns, importacion, costo, emisiones y ratios de eficiencia.
+- `exploration_summary.*`: estadisticos de accion/exploracion por episodio.
+- `agent_reward_summary.*`: recompensa y accion promedio por agente.
+- `checkpoint_inventory.*`: inventario de modelos/checkpoints.
+
+Para corridas existentes se puede regenerar el paquete grafico sin reentrenar:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\regenerate_citylearn_v3_figures.py `
+  outputs\citylearn_v3_madrl_official_full_cuda_v2\happo\E3_seed_0
+```
 
 ### `timeseries.csv`
 
@@ -395,6 +446,12 @@ Resultado:
 ```text
 1 passed
 ```
+
+La prueba de artefactos valida el contrato ampliado de figuras/tablas:
+
+- `13` figuras PNG esperadas cuando hay datos suficientes.
+- `16` tablas CSV/Markdown.
+- cobertura de recompensas, convergencia, eficiencia, exploracion, comparacion con baseline, CityLearn v2 district time-series y perfiles OE1/OE2/OE3.
 
 Readiness:
 

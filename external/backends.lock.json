@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "purpose": "Pinned source-backed MADRL backends for the CityLearn v3 MADRL layer.",
+  "backends": {
+    "HAPPO": {
+      "path": "external/HARL",
+      "repository": "https://github.com/PKU-MARL/HARL",
+      "commit": "b1af98b0dbab72a2eee9d160751cd09aedbb8ce2"
+    },
+    "MASAC": {
+      "path": "external/MARL",
+      "repository": "https://github.com/puyuan1996/MARL",
+      "commit": "3bda2edc73e6bc611010052c247888ad0cfc8066"
+    },
+    "MATD3": {
+      "path": "external/MATD3implementation",
+      "repository": "https://github.com/JohannesAck/MATD3implementation",
+      "commit": "fd6c7d0df4fc4effd4e0fa11abdbc7d12d8f01a1"
+    },
+    "MATD3_PYTORCH": {
+      "path": "external/off-policy",
+      "repository": "https://github.com/marlbenchmark/off-policy",
+      "branch": "release",
+      "commit": "41fd5eb46d12df2847e1c2e29842997ff2c24998",
+      "role": "Python 3.9-compatible PyTorch MATD3/RMATD3 reference backend"
+    },
+    "MAAC": {
+      "path": "external/MAAC",
+      "repository": "https://github.com/shariqiqbal2810/MAAC",
+      "commit": "6174a01251251e6778c4ada26bc8d9cd930e3856"
+    },
+    "MARLlib": {
+      "path": "external/MARLlib",
+      "repository": "https://github.com/Replicable-MARL/MARLlib",
+      "commit": "80e9973a430271a93c781d7422133acb1198f84b"
+    }
+  }
+}

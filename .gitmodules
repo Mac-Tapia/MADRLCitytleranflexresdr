@@ -2,3 +2,18 @@
 	path = CityLearn
 	url = https://github.com/Mac-Tapia/CityLearn.git
 	branch = citylearn-v3-madrl
+[submodule "external/HARL"]
+	path = external/HARL
+	url = https://github.com/PKU-MARL/HARL.git
+[submodule "external/MAAC"]
+	path = external/MAAC
+	url = https://github.com/shariqiqbal2810/MAAC.git
+[submodule "external/MARL"]
+	path = external/MARL
+	url = https://github.com/puyuan1996/MARL.git
+[submodule "external/MARLlib"]
+	path = external/MARLlib
+	url = https://github.com/Replicable-MARL/MARLlib.git
+[submodule "external/MATD3implementation"]
+	path = external/MATD3implementation
+	url = https://github.com/JohannesAck/MATD3implementation.git

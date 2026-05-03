@@ -1,0 +1,81 @@
+# .gitignore - Excluye archivos que NO deben versionarse
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+.venv*/
+.venv39-citylearn-v3/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Data y Resultados (generados, no versionados)
+outputs/
+data/raw/**/*.csv
+data/raw/**/*.json
+data/processed/**/*.pkl
+results/
+reports/
+logs/
+
+# Modelo checkpoints
+*.pt
+*.pth
+*.ckpt
+models/
+
+# Notebooks temporales
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# Weights & Biases
+wandb/
+lightning_logs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+Thumbs.db
+.DS_Store

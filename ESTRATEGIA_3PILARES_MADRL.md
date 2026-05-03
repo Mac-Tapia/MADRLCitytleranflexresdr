@@ -1,0 +1,530 @@
+# Estrategia MADRL: 3 Ejes CityLearn v3
+
+## Flexibilidad Energetica + Emisiones de CO2 + Costos Energeticos
+
+Ultima actualizacion: 2026-05-03
+
+---
+
+## 1. Estado Actual del Proyecto
+
+El proyecto queda organizado como una capa experimental **CityLearn v3 MADRL** sobre el simulador **CityLearn v2**. CityLearn v2 sigue siendo la fuente oficial para:
+
+- datasets y `schema.json`;
+- fisica de edificios;
+- baterias, PV y EVs;
+- espacios de observacion y accion;
+- evaluacion con `evaluate_v2`;
+- KPIs base de comparacion contra linea base.
+
+La capa v3 agrega:
+
+- entorno descentralizado tipo **Dec-POMDP**;
+- entrenamiento **CTDE**: centralized training, decentralized execution;
+- 17 edificios + EV para el caso de tesis;
+- soporte generico para otros datasets CityLearn v2;
+- 4 backends MADRL oficiales: HAPPO, MASAC, MATD3 y MAAC;
+- reporte multiobjetivo por tres ejes;
+- artefactos reproducibles por corrida: datos tecnicos, checkpoints, figuras, graficas y cuadros.
+
+---
+
+## 2. Ejes y Objetivos Vigentes
+
+### OE1: Flexibilidad Energetica
+
+**Objetivo:** aumentar la capacidad de desplazar cargas y aprovechar almacenamiento, EVs y autoconsumo en comunidades de edificios interactivos con la red electrica.
+
+KPIs CityLearn v2 usados en este eje:
+
+- forma de carga e importacion desde red:
+  - `grid_import`
+  - `grid_import_control`
+  - `grid_import_baseline`
+  - `grid_import_delta`
+  - `zero_net_energy`
+  - `net_exchange_control`
+  - `net_exchange_baseline`
+  - `net_exchange_delta`
+  - `grid_export_ratio`
+  - `grid_export_control`
+  - `grid_export_baseline`
+  - `grid_export_delta`
+- capacidad de desplazamiento:
+  - `peak_average`
+  - `ramping_average`
+  - `one_minus_load_factor_average`
+- PV y autoconsumo:
+  - `pv_generation_total`
+  - `pv_generation_daily_average`
+  - `pv_export_total`
+  - `pv_export_daily_average`
+  - `pv_self_consumption_ratio`
+- mercado/comunidad local cuando el dataset lo expone:
+  - `community_local_traded_total`
+  - `community_local_traded_daily_average`
+  - `community_import_share`
+- baterias:
+  - `battery_charge_total`
+  - `battery_discharge_total`
+  - `battery_throughput_total`
+  - `battery_equivalent_full_cycles`
+  - `battery_capacity_fade_ratio`
+- EVs:
+  - `ev_departure_count`
+  - `ev_departure_met_count`
+  - `ev_departure_within_tolerance_count`
+  - `ev_departure_success_rate`
+  - `ev_departure_within_tolerance_rate`
+  - `ev_departure_soc_deficit_mean`
+  - `ev_charge_total`
+  - `ev_v2g_export_total`
+
+### OE2: Emisiones de CO2
+
+**Objetivo:** reducir la huella ambiental del distrito, minimizando importaciones en horas de alta intensidad de carbono.
+
+KPIs CityLearn v2 usados en este eje:
+
+- `carbon_emissions`: ratio de emisiones contra linea base.
+- `carbon_emissions_control`: emisiones totales del control en kgCO2.
+- `carbon_emissions_baseline`: emisiones totales de la linea base en kgCO2.
+- `carbon_emissions_delta`: diferencia control menos linea base en kgCO2.
+- `carbon_emissions_daily_average_control`: promedio diario del control en kgCO2.
+- `carbon_emissions_daily_average_baseline`: promedio diario de linea base en kgCO2.
+- `carbon_emissions_daily_average_delta`: diferencia diaria promedio en kgCO2.
+
+CO2 ya no se trata como metrica secundaria. Es el eje completo OE2 del proyecto.
+
+### OE3: Costos Energeticos
+
+**Objetivo:** optimizar el gasto energetico, reduciendo picos de demanda y aprovechando tarifas dinamicas.
+
+KPIs CityLearn v2 usados en este eje:
+
+- `electricity_cost`: ratio de costo contra linea base.
+- `electricity_cost_control`: costo total del control en EUR.
+- `electricity_cost_baseline`: costo total de linea base en EUR.
+- `electricity_cost_delta`: diferencia control menos linea base en EUR.
+- `electricity_cost_daily_average_control`: promedio diario del control en EUR.
+- `electricity_cost_daily_average_baseline`: promedio diario de linea base en EUR.
+- `electricity_cost_daily_average_delta`: diferencia diaria promedio en EUR.
+- `cost_peak_average`: soporte de costo asociado a picos.
+- `cost_ramping_average`: soporte de costo asociado a rampas.
+- `cost_one_minus_load_factor_average`: soporte de costo asociado a factor de carga.
+- `price_signal_deviation`: KPI derivado desde importacion neta distrital y `electricity_pricing`.
+
+`price_signal_deviation` no es un KPI nativo de `evaluate_v2` en este codigo. Esta documentado como KPI derivado del proyecto.
+
+---
+
+## 3. Contrato MADRL
+
+### Dec-POMDP
+
+Cada edificio es un agente descentralizado:
+
+- agente `i`: edificio `i`;
+- observacion local: observaciones CityLearn v2 del edificio;
+- accion local: acciones CityLearn v2 disponibles para ese edificio;
+- estado global CTDE: concatenacion/padding de observaciones locales o estado compartido del backend;
+- recompensa colaborativa: `team_mean` por defecto;
+- evaluacion: KPIs CityLearn v2 por distrito y por eje.
+
+### CTDE
+
+| Algoritmo | Entrenamiento centralizado | Ejecucion descentralizada |
+|---|---|---|
+| HAPPO | Critico centralizado de HARL con `share_observation_space` | Actor por edificio con observacion local |
+| MASAC | Estado global estilo SMAC mediante `get_state()` | Accion discreta por edificio, mapeada a accion CityLearn |
+| MATD3 | Critico con observaciones/acciones conjuntas en backend PyTorch off-policy | Actor continuo por edificio |
+| MAAC | Critico de atencion multiagente del repositorio MAAC | Politica por edificio con observacion local |
+
+---
+
+## 4. Backends Oficiales
+
+No hay implementaciones MADRL locales dentro de `citylearn.agents`.
+
+| MADRL | Fuente | Script del proyecto |
+|---|---|---|
+| HAPPO | `external/HARL` | `CityLearn/scripts/train_citylearn_v3_happo.py` |
+| MASAC/mSAC | `external/MARL` | `CityLearn/scripts/train_citylearn_v3_masac.py` |
+| MATD3 | `external/MATD3implementation` + backend PyTorch `external/off-policy` | `CityLearn/scripts/train_citylearn_v3_matd3.py` |
+| MAAC | `external/MAAC` | `CityLearn/scripts/train_citylearn_v3_maac.py` |
+| MARLlib | `external/MARLlib` | adaptador `citylearn.v3.CityLearnV3MARLlibEnv` |
+
+Nota MATD3: la fuente original MATD3 permanece como referencia oficial del paper, pero su entrada de entrenamiento usa TensorFlow 1.x. Para Python 3.9 se usa el backend PyTorch `marlbenchmark/off-policy`.
+
+---
+
+## 5. Artefactos Obligatorios por Entrenamiento
+
+Cada MADRL debe escribir sus salidas en una carpeta propia:
+
+```text
+outputs/<experimento>/<madrl>/<escenario>_seed_<seed>/
+  data/
+    training_summary.json
+    results.json
+    timeseries.csv
+    trace.csv
+    checkpoint_manifest.json
+  checkpoints/
+    <modelos y checkpoints del backend oficial>
+  figures/
+    figures_manifest.json
+    reward_timeseries.png
+    episode_reward_summary.png
+    axis_baseline_comparison.png
+    core_kpis.png
+    tables/
+      episode_summary.csv
+      episode_summary.md
+      objective_kpis.csv
+      objective_kpis.md
+      axis_baseline_comparison.csv
+      axis_baseline_comparison.md
+      core_kpis.csv
+      core_kpis.md
+      checkpoint_inventory.csv
+      checkpoint_inventory.md
+```
+
+Para compatibilidad con analisis previos, tambien se mantienen copias raiz de:
+
+- `training_summary.json`
+- `results.json`
+- `timeseries.csv`
+- `trace.csv`
+- `checkpoint_manifest.json`
+
+La fuente canonica para nuevas corridas es `data/`. La fuente canonica para modelos es `checkpoints/`. Toda figura, grafica o cuadro generado durante entrenamiento debe quedar bajo `figures/`.
+
+Descripcion de artefactos:
+
+- `data/training_summary.json`: resumen de ejecucion, parametros, ejes y reporte v3.
+- `data/results.json`: resultado tecnico completo de la corrida.
+- `data/timeseries.csv`: serie temporal distrital por paso.
+- `data/trace.csv`: traza por agente y paso.
+- `data/checkpoint_manifest.json`: listado de checkpoints y tamanos.
+- `checkpoints/`: checkpoints/modelos del backend oficial.
+- `figures/`: graficas PNG y cuadros CSV/Markdown generados desde entrenamiento.
+
+### `timeseries.csv`
+
+Campos principales:
+
+- `global_step`
+- `episode`
+- `episode_step`
+- `time_step`
+- `scenario`
+- `reward_sum`
+- `reward_mean`
+- `district_net_electricity_consumption`
+- `district_net_electricity_consumption_without_storage`
+- `district_net_electricity_consumption_cost`
+- `district_net_electricity_consumption_emission`
+- `electricity_price_mean`
+- `carbon_intensity_mean`
+
+### `trace.csv`
+
+Campos principales:
+
+- `global_step`
+- `episode`
+- `episode_step`
+- `time_step`
+- `agent`
+- `agent_index`
+- `reward`
+- `individual_reward`
+- `done`
+- `action_dim`
+- `action_0`, `action_1`, `action_2`
+- `action_mean`, `action_min`, `action_max`, `action_l2`
+- `observation_dim`
+- `observation_mean`, `observation_min`, `observation_max`, `observation_l2`
+
+---
+
+## 6. Primer Entrenamiento Corto Ejecutado
+
+### HAPPO, 5 episodios
+
+Comando ejecutado:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\train_citylearn_v3_happo.py `
+  --scenario E3 `
+  --episode-time-steps 4 `
+  --episodes 5 `
+  --num-env-steps 20 `
+  --hidden-size 128 `
+  --torch-threads 1 `
+  --output-dir outputs\citylearn_v3_madrl_train_5ep\happo
+```
+
+Salida:
+
+- carpeta: `outputs/citylearn_v3_madrl_train_5ep/happo/E3_seed_0`
+- episodios registrados: `5`
+- pasos registrados en `timeseries.csv`: `20`
+- filas de agente en `trace.csv`: `340`
+- checkpoints detectados: `19`
+- figuras PNG generadas: `4`
+- cuadros CSV/Markdown generados: `10`
+- checkpoints HAPPO:
+  - 17 actores, uno por edificio;
+  - 1 critico centralizado;
+  - 1 normalizador de valor.
+
+Archivos clave:
+
+- `outputs/citylearn_v3_madrl_train_5ep/happo/E3_seed_0/data/results.json`
+- `outputs/citylearn_v3_madrl_train_5ep/happo/E3_seed_0/data/timeseries.csv`
+- `outputs/citylearn_v3_madrl_train_5ep/happo/E3_seed_0/data/trace.csv`
+- `outputs/citylearn_v3_madrl_train_5ep/happo/E3_seed_0/data/checkpoint_manifest.json`
+- `outputs/citylearn_v3_madrl_train_5ep/happo/E3_seed_0/data/training_summary.json`
+- `outputs/citylearn_v3_madrl_train_5ep/happo/E3_seed_0/checkpoints/`
+- `outputs/citylearn_v3_madrl_train_5ep/happo/E3_seed_0/figures/`
+
+Nota: esta estructura aplica a las nuevas corridas despues de la actualizacion del generador de artefactos. Las corridas historicas pueden conservar copias en la raiz de la carpeta.
+
+Hiperparametros registrados para esta corrida:
+
+```json
+{
+  "episodes": 5,
+  "num_env_steps": 20,
+  "episode_length": 4,
+  "hidden_sizes": [128, 128],
+  "torch_threads": 1,
+  "share_param": false,
+  "ctde_state_type": "EP",
+  "n_rollout_threads": 1,
+  "log_interval": 1,
+  "checkpoint_interval_episodes": 1,
+  "cuda": false
+}
+```
+
+---
+
+## 7. Comandos de Entrenamiento Corto por MADRL
+
+### HAPPO
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\train_citylearn_v3_happo.py `
+  --scenario E3 `
+  --episode-time-steps 4 `
+  --episodes 5 `
+  --num-env-steps 20 `
+  --hidden-size 128 `
+  --output-dir outputs\citylearn_v3_madrl_train_5ep\happo
+```
+
+### MASAC
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\train_citylearn_v3_masac.py `
+  --scenario E3 `
+  --episode-time-steps 4 `
+  --episodes 5 `
+  --action-bins 3 `
+  --output-dir outputs\citylearn_v3_madrl_train_5ep\masac
+```
+
+### MATD3
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\train_citylearn_v3_matd3.py `
+  --scenario E3 `
+  --episode-time-steps 4 `
+  --episodes 5 `
+  --num-env-steps 20 `
+  --batch-size 4 `
+  --buffer-size 128 `
+  --hidden-size 64 `
+  --output-dir outputs\citylearn_v3_madrl_train_5ep\matd3
+```
+
+### MAAC
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\train_citylearn_v3_maac.py `
+  --scenario E3 `
+  --episode-time-steps 4 `
+  --episodes 5 `
+  --batch-size 4 `
+  --hidden-size 128 `
+  --attend-heads 4 `
+  --output-dir outputs\citylearn_v3_madrl_train_5ep\maac
+```
+
+---
+
+## 8. Validacion Actual
+
+Comandos ejecutados correctamente:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B -m pytest `
+  CityLearn\tests\test_citylearn_v3.py `
+  CityLearn\tests\test_madrl_dec_pomdp.py -q
+```
+
+Resultado:
+
+```text
+12 passed
+```
+
+Validacion de estructura de artefactos:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B -m pytest `
+  CityLearn\tests\test_citylearn_v3_training_artifacts.py -q
+```
+
+Resultado:
+
+```text
+1 passed
+```
+
+Readiness:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\check_citylearn_v3_training_ready.py --strict
+```
+
+Estado:
+
+- Python 3.9 listo.
+- CityLearn v3 construye 17 edificios + EV.
+- HAPPO, MASAC, MATD3 PyTorch y MAAC importan correctamente.
+- MARLlib registra `citylearn_v3`.
+- `pip check`: sin dependencias rotas.
+- MATD3 original TensorFlow 1.x se mantiene como fuente legacy; el entrenamiento funcional Python 3.9 usa `external/off-policy`.
+
+Entorno CUDA validado el 2026-05-03:
+
+- PyTorch: `2.8.0+cu126`.
+- Runtime CUDA PyTorch: `12.6`.
+- `torch.cuda.is_available()`: `True`.
+- GPU detectada: `NVIDIA GeForce RTX 4060 Laptop GPU`.
+- `pip check`: sin dependencias rotas despues del cambio a build CUDA.
+
+Correcciones CUDA aplicadas antes del relanzamiento:
+
+- MATD3 PyTorch genera ruido exploratorio en el mismo `device` y `dtype` del actor.
+- MATD3 PyTorch registra las salidas Q del critico como `nn.ModuleList`, para que `model.to(cuda)` mueva todas las capas al GPU.
+- El lanzador oficial usa `Start-Process` con stdout/stderr separados, evitando que logs `INFO` en stderr se traten como fallo de PowerShell.
+
+Smoke de estructura de salida ejecutado para los 4 MADRL:
+
+| MADRL | Carpeta | Checkpoints | Figuras PNG | Cuadros CSV/MD | `timeseries.csv` | `trace.csv` |
+|---|---|---:|---:|---:|---:|---:|
+| HAPPO | `outputs/citylearn_v3_madrl_layout_smoke/happo/E3_seed_0` | 19 | 4 | 10 | 2 filas | 34 filas |
+| MASAC | `outputs/citylearn_v3_madrl_layout_smoke/masac/E3_seed_0` | 3 | 4 | 10 | 1 fila | 17 filas |
+| MATD3 | `outputs/citylearn_v3_madrl_layout_smoke/matd3/E3_seed_0` | 34 | 4 | 10 | 2 filas | 34 filas |
+| MAAC | `outputs/citylearn_v3_madrl_layout_smoke/maac/E3_seed_0` | 2 | 4 | 10 | 1 fila | 17 filas |
+
+Smoke CUDA del lanzador oficial completo:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass `
+  -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
+  -Scenario E3 `
+  -Seed 0 `
+  -EpisodeTimeSteps 4 `
+  -Episodes 1 `
+  -OutputRoot outputs\citylearn_v3_orchestrator_cuda_smoke3 `
+  -TorchThreads 4 `
+  -Cuda
+```
+
+Resultado: `completed`, `cuda=true`, `torch 2.8.0+cu126`, y `exit_code=0` para HAPPO, MASAC, MATD3 y MAAC.
+
+---
+
+## 9. Interpretacion de Resultados
+
+La comparacion final entre MADRL y linea base debe hacerse usando los KPIs de los tres ejes:
+
+| Eje | Comparacion |
+|---|---|
+| OE1 Flexibilidad | ratios contra baseline, picos, ramping, load factor, PV/autoconsumo, bateria y EV |
+| OE2 Emisiones CO2 | `carbon_emissions`, kgCO2 control, kgCO2 baseline y delta |
+| OE3 Costos | `electricity_cost`, EUR control, EUR baseline, delta y respuesta a tarifa dinamica |
+
+No se debe mezclar CO2 como metrica secundaria. CO2 es OE2.
+
+Para decision multicriterio se puede usar TOPSIS o ranking ponderado despues de normalizar todos los KPIs por eje. Los pesos recomendados para un analisis equilibrado inicial son:
+
+```text
+OE1 Flexibilidad: 0.34
+OE2 Emisiones CO2: 0.33
+OE3 Costos: 0.33
+```
+
+Para escenarios focalizados:
+
+```text
+E1: OE1=0.60, OE2=0.20, OE3=0.20
+E2: OE1=0.20, OE2=0.60, OE3=0.20
+E3: OE1=0.25, OE2=0.25, OE3=0.50
+```
+
+Estos pesos son solo para analisis y ranking. Los KPIs oficiales siguen viniendo de CityLearn v2 y del reporte v3.
+
+---
+
+## 10. Siguiente Paso Operativo
+
+El entrenamiento oficial completo CUDA fue relanzado el 2026-05-03 en ejecucion secuencial para los cuatro MADRL.
+
+Configuracion oficial activa:
+
+- dataset: `citylearn_challenge_2022_phase_all_plus_evs`;
+- escenario: `E3`;
+- edificios: `17` + EV;
+- horizonte por episodio: `8760` pasos;
+- episodios por MADRL: `5`;
+- pasos de entorno por MADRL: `43800`;
+- PyTorch: `2.8.0+cu126`;
+- CUDA: `true`;
+- salida: `outputs/citylearn_v3_madrl_official_full_cuda_v2`;
+- manifest global: `outputs/citylearn_v3_madrl_official_full_cuda_v2/official_full_manifest.json`;
+- estado global: `outputs/citylearn_v3_madrl_official_full_cuda_v2/official_full_status.json`.
+
+Comando de relanzamiento:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass `
+  -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
+  -Scenario E3 `
+  -Seed 0 `
+  -EpisodeTimeSteps 8760 `
+  -Episodes 5 `
+  -OutputRoot outputs\citylearn_v3_madrl_official_full_cuda_v2 `
+  -TorchThreads 8 `
+  -Cuda
+```
+
+Al completarse la corrida, cada MADRL debe quedar con su carpeta:
+
+```text
+outputs/citylearn_v3_madrl_official_full_cuda_v2/<madrl>/E3_seed_0/
+  data/
+  checkpoints/
+  figures/
+```
+
+La consolidacion final debe comparar HAPPO, MASAC, MATD3 y MAAC contra la linea base CityLearn v2 por OE1 flexibilidad, OE2 emisiones CO2 y OE3 costos usando los KPIs oficiales/derivados definidos en este documento.
+
+Logs antiguos como `happo_no_co2.log`, `happo_metrics_split.log` y `maac_co2.log` quedan como historial de desarrollo. El contrato vigente es el de este documento y el reporte `citylearn_v3_report`.

@@ -1,0 +1,421 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-mono,'Consolas',monospace);font-size:13px;color:var(--color-text-primary)}
+.tree-wrap{padding:16px 0}
+.legend{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 14px;border-bottom:1px solid var(--color-border-tertiary)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:12px;font-size:11px;font-family:var(--font-sans)}
+.b-py{background:#dbeafe;color:#1d4ed8}.b-yaml{background:#fef9c3;color:#92400e}.b-md{background:#f0fdf4;color:#166534}
+.b-cfg{background:#fce7f3;color:#9d174d}.b-sh{background:#f3e8ff;color:#6b21a8}.b-nb{background:#fff7ed;color:#9a3412}
+.b-json{background:#f1f5f9;color:#475569}.b-git{background:#fee2e2;color:#991b1b}.b-lock{background:#e0e7ff;color:#3730a3}
+@media(prefers-color-scheme:dark){
+.b-py{background:#1e3a5f;color:#93c5fd}.b-yaml{background:#422006;color:#fde68a}.b-md{background:#052e16;color:#86efac}
+.b-cfg{background:#4a044e;color:#f0abfc}.b-sh{background:#2e1065;color:#c4b5fd}.b-nb{background:#431407;color:#fdba74}
+.b-json{background:#1e293b;color:#94a3b8}.b-git{background:#450a0a;color:#fca5a5}.b-lock{background:#1e1b4b;color:#a5b4fc}
+}
+.node{display:flex;align-items:flex-start;gap:0;cursor:pointer;border-radius:4px;padding:1px 6px 1px 0;user-select:none;transition:background .12s}
+.node:hover{background:var(--color-background-secondary)}
+.indent{display:flex;align-items:stretch;flex-shrink:0}
+.vline{width:18px;display:flex;justify-content:center;padding-top:0}
+.vline-inner{width:1px;background:var(--color-border-tertiary);height:100%}
+.connector{width:18px;flex-shrink:0;display:flex;align-items:flex-start;padding-top:9px}
+.connector-inner{display:flex;align-items:center;gap:0}
+.h-line{height:1px;width:10px;background:var(--color-border-tertiary)}
+.icon{font-size:14px;line-height:1;flex-shrink:0;margin-right:5px;margin-top:1px}
+.arrow{font-size:10px;color:var(--color-text-tertiary);margin-right:4px;transition:transform .15s;display:inline-block;flex-shrink:0;margin-top:2px}
+.arrow.open{transform:rotate(90deg)}
+.name{font-family:var(--font-mono);font-size:13px;color:var(--color-text-primary);line-height:1.5}
+.name.folder{font-weight:500}
+.name.special{color:#7c3aed}
+.name.root-file{color:var(--color-text-secondary)}
+.chip{font-size:10px;padding:1px 6px;border-radius:8px;font-family:var(--font-sans);margin-left:6px;font-weight:400;vertical-align:middle}
+.chip-new{background:#dcfce7;color:#15803d}.chip-key{background:#dbeafe;color:#1d4ed8}.chip-algo{background:#fce7f3;color:#9d174d}
+@media(prefers-color-scheme:dark){
+.chip-new{background:#14532d;color:#86efac}.chip-key{background:#1e3a5f;color:#93c5fd}.chip-algo{background:#4a044e;color:#f0abfc}
+}
+.desc{font-size:11px;color:var(--color-text-tertiary);margin-left:8px;font-family:var(--font-sans);padding-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.children{overflow:hidden;transition:max-height .2s ease}
+.children.closed{max-height:0}
+.children.open{max-height:9999px}
+.section-label{font-family:var(--font-sans);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-tertiary);padding:10px 16px 4px;border-top:1px solid var(--color-border-tertiary);margin-top:6px}
+.count-badge{font-family:var(--font-sans);font-size:10px;background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:10px;padding:1px 6px;color:var(--color-text-secondary);margin-left:auto;flex-shrink:0}
+.row-wrap{display:flex;align-items:center;width:100%}
+.stats{display:flex;gap:16px;padding:14px 16px 0;border-top:1px solid var(--color-border-tertiary);margin-top:8px;font-family:var(--font-sans)}
+.stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.stat-n{font-size:18px;font-weight:500;color:var(--color-text-primary)}
+.stat-l{font-size:11px;color:var(--color-text-tertiary)}
+</style>
+
+<div class="tree-wrap">
+<div class="legend">
+  <span class="badge b-py">🐍 .py</span>
+  <span class="badge b-yaml">⚙ .yaml / .toml</span>
+  <span class="badge b-md">📄 .md</span>
+  <span class="badge b-cfg">🔧 config</span>
+  <span class="badge b-sh">🖥 shell</span>
+  <span class="badge b-nb">📓 notebook</span>
+  <span class="badge b-git">🔴 git</span>
+  <span class="badge b-lock">🔒 lock</span>
+</div>
+
+<div id="tree"></div>
+
+<div class="stats">
+  <div class="stat"><span class="stat-n" id="s-folders">0</span><span class="stat-l">carpetas</span></div>
+  <div class="stat"><span class="stat-n" id="s-files">0</span><span class="stat-l">archivos</span></div>
+  <div class="stat"><span class="stat-n" id="s-py">0</span><span class="stat-l">módulos .py</span></div>
+  <div class="stat"><span class="stat-n" id="s-lines">3 400+</span><span class="stat-l">líneas</span></div>
+</div>
+</div>
+
+<script>
+const T = {
+  f:(n,c,desc,chip,open=true)=>({type:'folder',name:n,children:c,desc,chip,open}),
+  p:(n,desc,chip)=>({type:'file',name:n,ext:'py',desc,chip}),
+  y:(n,desc)=>({type:'file',name:n,ext:'yaml',desc}),
+  m:(n,desc)=>({type:'file',name:n,ext:'md',desc}),
+  cfg:(n,desc,ext='toml')=>({type:'file',name:n,ext,desc}),
+  sh:(n,desc)=>({type:'file',name:n,ext:'sh',desc}),
+  nb:(n,desc)=>({type:'file',name:n,ext:'ipynb',desc}),
+  git:(n,desc)=>({type:'file',name:n,ext:'git',desc}),
+  lock:(n,desc)=>({type:'file',name:n,ext:'lock',desc}),
+  j:(n,desc)=>({type:'file',name:n,ext:'json',desc}),
+  raw:(n,desc,ext)=>({type:'file',name:n,ext,desc}),
+};
+
+const ICON={
+  folder:'📁', folder_open:'📂',
+  py:'🐍', yaml:'⚙', toml:'⚙', md:'📄', sh:'🖥', ipynb:'📓',
+  git:'🔴', lock:'🔒', json:'🔵', env:'🟡', txt:'📃', in:'📃',
+  cfg:'🔧', default:'📄'
+};
+
+const data = T.f('madrl-citylearn-v2', [
+
+  T.git('.gitignore','Excluye __pycache__, .env, results/, *.egg-info'),
+  T.git('.gitattributes','LF para scripts, CRLF desactivado en CI'),
+  T.m('README.md','Descripción, instalación, uso, citas APA','key'),
+  T.m('CHANGELOG.md','Historial de cambios (Keep a Changelog)'),
+  T.m('LICENSE','MIT License'),
+  T.m('CONTRIBUTING.md','Guía de contribución al proyecto'),
+  T.cfg('pyproject.toml','PEP 518: build, deps, black, isort, mypy, pytest'),
+  T.lock('poetry.lock','Lock de dependencias (reproducibilidad)'),
+  T.cfg('.env.example','Variables de entorno de ejemplo (sin valores reales)','env'),
+  T.cfg('Makefile','Comandos: make train, make test, make lint, make docs','sh'),
+
+  T.f('.github', [
+    T.f('workflows', [
+      T.cfg('ci.yml','GitHub Actions: test + lint en push/PR','yaml'),
+      T.cfg('cd.yml','Deploy de resultados a GitHub Pages','yaml'),
+    ],'CI/CD pipelines'),
+    T.m('ISSUE_TEMPLATE.md','Plantilla para reportar bugs'),
+    T.m('PULL_REQUEST_TEMPLATE.md','Plantilla para PRs'),
+  ],'Configuración GitHub Actions + plantillas'),
+
+  T.f('.vscode', [
+    T.j('settings.json','Python path, formatter, ruler 88 col, linting'),
+    T.j('extensions.json','Extensiones recomendadas del proyecto'),
+    T.j('launch.json','Configuraciones de debug (por algoritmo/escenario)'),
+    T.j('tasks.json','Tareas: run train, run tests, lint'),
+  ],'Configuración VS Code compartida'),
+
+  T.f('src', [
+    T.f('madrl_citylearn', [
+      T.p('__init__.py','Exports públicos del paquete, __version__'),
+
+      T.f('config', [
+        T.p('__init__.py'),
+        T.p('settings.py','Dataclasses de configuración validadas con pydantic','key'),
+        T.y('experiment.yaml','Semillas, algoritmos, escenarios, rutas'),
+        T.y('algorithms.yaml','Hiperparámetros HAPPO, MASAC, MATD3, MAAC','key'),
+        T.y('logging.yaml','Handlers, formatters, niveles por módulo'),
+      ],'Configuración centralizada con validación'),
+
+      T.f('envs', [
+        T.p('__init__.py'),
+        T.p('citylearn_wrapper.py','Wrapper MARL para CityLearn v2 (17 edificios)','key'),
+        T.p('reward_functions.py','MARLRewardFunction: flexibilidad+resiliencia+DR'),
+        T.p('outage_manager.py','PowerOutageManager: E2 programado, E3 aleatorio'),
+        T.p('scenario_builder.py','Factory: build_env(scenario, seed, n_buildings)'),
+        T.p('pricing_models.py','RTP, TOU, CPP — modelos de precio dinámico'),
+      ],'Entorno CityLearn v2 + 3 escenarios'),
+
+      T.f('agents', [
+        T.p('__init__.py','Re-exports: HAPPOController, MASACController, ...'),
+        T.p('base.py','BaseMADRLAgent, GaussianActor, DeterministicActor, QCritic','key'),
+
+        T.f('happo', [
+          T.p('__init__.py'),
+          T.p('controller.py','HAPPOController: update secuencial, semillas','algo'),
+          T.p('agent.py','HAPPOAgent: PPO por edificio, cálculo M_i','algo'),
+          T.p('networks.py','Actor gaussiano + ValueCritic (V)'),
+        ],'HAPPO — on-policy, actualización secuencial'),
+
+        T.f('masac', [
+          T.p('__init__.py'),
+          T.p('controller.py','MASACController: crítico centralizado + auto-α','algo'),
+          T.p('networks.py','Twin critics + actor estocástico SAC'),
+        ],'MASAC — off-policy, entropía máxima'),
+
+        T.f('matd3', [
+          T.p('__init__.py'),
+          T.p('controller.py','MATD3Controller: twin critics + delayed updates','algo'),
+          T.p('networks.py','DeterministicActor + target policy smoothing'),
+        ],'MATD3 — off-policy, estabilidad TD3'),
+
+        T.f('maac', [
+          T.p('__init__.py'),
+          T.p('controller.py','MAACController: atención multi-head entre agentes','algo'),
+          T.p('attention_critic.py','AttentionCritic: Q/K/V proyecciones, softmax','key'),
+          T.p('networks.py','Actor estocástico + encoder por agente'),
+        ],'MAAC — off-policy, atención entre agentes'),
+      ],'4 algoritmos MADRL implementados'),
+
+      T.f('training', [
+        T.p('__init__.py'),
+        T.p('trainer.py','Trainer: loop entrenamiento on-policy/off-policy','key'),
+        T.p('replay_buffer.py','MARLReplayBuffer (off) + OnPolicyBuffer + GAE'),
+        T.p('callbacks.py','EarlyStopping, ModelCheckpoint, WandbLogger'),
+        T.p('schedules.py','LR scheduler, epsilon decay, alpha warm-up'),
+      ],'Infraestructura de entrenamiento'),
+
+      T.f('evaluation', [
+        T.p('__init__.py'),
+        T.p('evaluator.py','Evaluator: n_runs × escenarios × semillas','key'),
+        T.p('kpi_calculator.py','KPIs: peak, ramping, unserved_energy, cost'),
+        T.p('metrics_store.py','ResultsStore: guardar/cargar CSV + JSON'),
+      ],'Evaluación y cálculo de KPIs'),
+
+      T.f('analysis', [
+        T.p('__init__.py'),
+        T.p('statistical.py','Shapiro-Wilk → ANOVA/Kruskal → Tukey/Dunn + η²','key'),
+        T.p('topsis.py','Ranking multicriterio TOPSIS con pesos por dimensión'),
+        T.p('descriptive.py','Estadísticas descriptivas: μ, σ, percentiles, CV'),
+      ],'Análisis estadístico comparativo'),
+
+      T.f('visualization', [
+        T.p('__init__.py'),
+        T.p('plots.py','Boxplots, radar chart, heatmap, learning curves','key'),
+        T.p('latex_tables.py','Exporta tablas LaTeX para la tesis'),
+        T.p('styles.py','Paleta, temas matplotlib, config seaborn'),
+      ],'Visualizaciones y exportación a LaTeX'),
+
+      T.f('utils', [
+        T.p('__init__.py'),
+        T.p('seed.py','set_global_seed: numpy, torch, random, env'),
+        T.p('logging_utils.py','get_logger, RichHandler, formato JSON'),
+        T.p('io_utils.py','load_config, save_json, ensure_dir'),
+        T.p('device.py','get_device: CUDA/MPS/CPU autodetect'),
+        T.p('timing.py','Timer context manager, profiling decorators'),
+      ],'Utilidades transversales del proyecto'),
+    ],'Paquete principal (PEP 517 / src layout)'),
+  ],'Código fuente — src layout (PEP 517)'),
+
+  T.f('tests', [
+    T.p('__init__.py'),
+    T.p('conftest.py','Fixtures pytest: env mock, config, semillas','key'),
+
+    T.f('unit', [
+      T.p('__init__.py'),
+      T.p('test_replay_buffer.py','Add, sample, GAE — tablas de verdad'),
+      T.p('test_networks.py','Forward pass, shapes, gradient flow'),
+      T.p('test_reward_functions.py','Recompensa por escenario y condición'),
+      T.p('test_outage_manager.py','Cortes E2 y E3, solapamientos'),
+      T.p('test_kpi_calculator.py','KPIs con datos sintéticos controlados'),
+      T.p('test_topsis.py','Ranking con matrices de decisión conocidas'),
+    ],'Pruebas unitarias por módulo'),
+
+    T.f('integration', [
+      T.p('__init__.py'),
+      T.p('test_env_wrapper.py','Reset, step, KPIs con entorno mock'),
+      T.p('test_happo_loop.py','Episodio completo HAPPO (CPU, n=2)'),
+      T.p('test_masac_update.py','Store + update MASAC tras warmup'),
+      T.p('test_matd3_update.py','Store + update MATD3 delayed policy'),
+      T.p('test_maac_attention.py','AttentionCritic: shapes y gradientes'),
+    ],'Pruebas de integración algoritmo-entorno'),
+
+    T.f('fixtures', [
+      T.j('mock_kpis.json','KPIs de referencia para tests de análisis'),
+      T.p('factories.py','Funciones para crear objetos de prueba'),
+    ],'Datos y fábricas para tests'),
+  ],'Tests — pytest (unit + integration)'),
+
+  T.f('notebooks', [
+    T.nb('01_eda_citylearn_dataset.ipynb','EDA: 17 edificios, perfiles, correlaciones'),
+    T.nb('02_scenario_visualization.ipynb','Visualizar los 3 escenarios y cortes'),
+    T.nb('03_training_debug.ipynb','Debug de curvas de aprendizaje en vivo'),
+    T.nb('04_results_analysis.ipynb','ANOVA, TOPSIS, figuras finales de la tesis'),
+    T.nb('05_ablation_study.ipynb','Análisis de ablación: hiperparámetros clave'),
+  ],'Jupyter Notebooks — exploración y análisis'),
+
+  T.f('scripts', [
+    T.sh('train_all.sh','Lanza los 120 experimentos en paralelo (GNU parallel)'),
+    T.sh('run_analysis.sh','Análisis estadístico + figuras tras entrenar'),
+    T.sh('export_results.sh','Empaqueta results/ para entrega / publicación'),
+    T.p('run_experiment.py','CLI: --algo --scenario --seed (wraps main)','key'),
+    T.p('generate_report.py','Genera tablas LaTeX y markdown del análisis'),
+    T.p('check_environment.py','Verifica CityLearn, CUDA, deps disponibles'),
+  ],'Scripts de automatización y CLI'),
+
+  T.f('docs', [
+    T.m('architecture.md','Diagrama de componentes y flujo de datos'),
+    T.m('algorithms.md','Descripción técnica de los 4 algoritmos'),
+    T.m('kpis.md','Definición matemática de todos los KPIs'),
+    T.m('experiments.md','Protocolo experimental completo'),
+    T.m('results.md','Resultados y análisis estadístico (tabla resumen)'),
+    T.raw('conf.py','Sphinx config para documentación HTML','py'),
+  ],'Documentación técnica del proyecto'),
+
+  T.f('data', [
+    T.f('raw', [
+      T.m('README.md','Instrucciones para descargar citylearn_challenge_2022'),
+    ],'Datos crudos — NO versionados en git (ver .gitignore)'),
+    T.f('processed', [
+      T.m('README.md','Datos procesados para tests (mocks sintéticos)'),
+    ],'Mocks y fixtures de datos'),
+  ],'Datos — solo referencias, no datos reales en git'),
+
+  T.f('results', [
+    T.m('README.md','Estructura: results/{algo}/{scenario}/seed_{n}/'),
+  ],'Resultados — generados en ejecución, excluidos del repo'),
+
+  T.f('reports', [
+    T.m('README.md','Figuras y tablas finales para la tesis (generadas)'),
+  ],'Reportes finales — generados, no versionados'),
+
+],'Raíz del proyecto', null, true, true);
+
+let folderCount=0, fileCount=0, pyCount=0;
+
+function extClass(ext){
+  const m={py:'b-py',yaml:'b-yaml',toml:'b-yaml',md:'b-md',sh:'b-sh',ipynb:'b-nb',
+    git:'b-git',lock:'b-lock',json:'b-json',env:'b-json'};
+  return m[ext]||'b-cfg';
+}
+function extIcon(ext){return ICON[ext]||ICON.default}
+function chipClass(c){return c==='key'?'chip-key':c==='algo'?'chip-algo':'chip-new'}
+function chipLabel(c){return c==='key'?'clave':c==='algo'?'algo':'nuevo'}
+
+function buildNode(node, depth, isLast, parentLines){
+  if(node.type==='folder') folderCount++;
+  else { fileCount++; if(node.ext==='py') pyCount++; }
+
+  const el = document.createElement('div');
+
+  if(node.type==='folder'){
+    const id = 'f_'+Math.random().toString(36).slice(2);
+
+    const row = document.createElement('div');
+    row.className='node';
+
+    // Indent lines
+    const indent = document.createElement('div');
+    indent.className='indent';
+    if(depth>0){
+      for(let i=0;i<depth-1;i++){
+        const vl=document.createElement('div');vl.className='vline';
+        const vli=document.createElement('div');vli.className='vline-inner';
+        vl.appendChild(vli);indent.appendChild(vl);
+      }
+      const conn=document.createElement('div');conn.className='connector';
+      const ci=document.createElement('div');ci.className='connector-inner';
+      const hl=document.createElement('div');hl.className='h-line';
+      ci.appendChild(hl);conn.appendChild(ci);indent.appendChild(conn);
+    }
+    row.appendChild(indent);
+
+    const wrap=document.createElement('div');wrap.className='row-wrap';
+    const arr=document.createElement('span');arr.className='arrow open';arr.textContent='▶';
+    const icon=document.createElement('span');icon.className='icon';icon.textContent=node.open!==false?'📂':'📁';
+    const nm=document.createElement('span');nm.className='name folder';nm.textContent=node.name;
+
+    wrap.appendChild(arr);wrap.appendChild(icon);wrap.appendChild(nm);
+
+    if(node.chip){
+      const ch=document.createElement('span');
+      ch.className='chip '+(node.chip==='key'?'chip-key':'chip-new');
+      ch.textContent=node.chip==='key'?'clave':'nuevo';
+      wrap.appendChild(ch);
+    }
+    if(node.children){
+      const cb=document.createElement('span');cb.className='count-badge';
+      cb.textContent=node.children.length+' items';
+      wrap.appendChild(cb);
+    }
+    if(node.desc){
+      const desc=document.createElement('span');desc.className='desc';desc.textContent='— '+node.desc;
+      wrap.appendChild(desc);
+    }
+    row.appendChild(wrap);
+
+    const children=document.createElement('div');
+    children.className='children open';children.id=id;
+
+    if(node.children){
+      node.children.forEach((child,i)=>{
+        children.appendChild(buildNode(child,depth+1,i===node.children.length-1));
+      });
+    }
+
+    row.onclick=(e)=>{
+      e.stopPropagation();
+      const open=children.classList.contains('open');
+      children.classList.toggle('open',!open);
+      children.classList.toggle('closed',open);
+      arr.classList.toggle('open',!open);
+      icon.textContent=!open?'📂':'📁';
+    };
+
+    el.appendChild(row);el.appendChild(children);
+
+  } else {
+    const row=document.createElement('div');row.className='node';
+
+    const indent=document.createElement('div');indent.className='indent';
+    for(let i=0;i<depth-1;i++){
+      const vl=document.createElement('div');vl.className='vline';
+      const vli=document.createElement('div');vli.className='vline-inner';
+      vl.appendChild(vli);indent.appendChild(vl);
+    }
+    if(depth>0){
+      const conn=document.createElement('div');conn.className='connector';
+      const ci=document.createElement('div');ci.className='connector-inner';
+      const hl=document.createElement('div');hl.className='h-line';
+      ci.appendChild(hl);conn.appendChild(ci);indent.appendChild(conn);
+    }
+    row.appendChild(indent);
+
+    const wrap=document.createElement('div');wrap.className='row-wrap';
+    const icon=document.createElement('span');icon.className='icon';icon.textContent=extIcon(node.ext);
+    const nm=document.createElement('span');nm.className='name';
+    nm.style.color=node.ext==='py'?'var(--color-text-info)':
+      node.ext==='git'?'var(--color-text-danger)':
+      node.ext==='md'?'var(--color-text-success)':
+      node.ext==='yaml'||node.ext==='toml'?'var(--color-text-warning)':'var(--color-text-secondary)';
+    nm.textContent=node.name+(node.ext&&!node.name.includes('.')&&node.ext!=='git'&&node.ext!=='sh'?'.'+node.ext:'');
+
+    wrap.appendChild(icon);wrap.appendChild(nm);
+
+    if(node.chip){
+      const ch=document.createElement('span');
+      ch.className='chip '+chipClass(node.chip);
+      ch.textContent=chipLabel(node.chip);
+      wrap.appendChild(ch);
+    }
+    if(node.desc){
+      const desc=document.createElement('span');desc.className='desc';desc.textContent='— '+node.desc;
+      wrap.appendChild(desc);
+    }
+    row.appendChild(wrap);
+    el.appendChild(row);
+  }
+  return el;
+}
+
+const container=document.getElementById('tree');
+container.appendChild(buildNode(data,0,true));
+
+document.getElementById('s-folders').textContent=folderCount;
+document.getElementById('s-files').textContent=fileCount;
+document.getElementById('s-py').textContent=pyCount;
+</script>

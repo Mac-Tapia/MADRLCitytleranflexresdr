@@ -141,6 +141,121 @@ def _add_numbered(doc: Document, items: Iterable[str]) -> None:
         doc.add_paragraph(item, style="List Number")
 
 
+def _add_modification_registry(doc: Document) -> None:
+    doc.add_heading(
+        "4.8.1 Registro de modificaciones, mejoras y adecuaciones CityLearn v2 -> CityLearn v3",
+        level=3,
+    )
+    _add_paragraphs(
+        doc,
+        [
+            (
+                "Este numeral documenta las intervenciones realizadas sobre el proyecto para dejar funcional "
+                "el entrenamiento MADRL en CityLearn v3, manteniendo CityLearn v2 como base oficial de datos, "
+                "simulación física, baseline y KPIs. La intención metodológica es que cada mejora sea "
+                "auditada como parte de la solución y no como una reimplementación informal de los algoritmos."
+            ),
+            (
+                "La adecuación respeta el principio central del proyecto: CityLearn v3 es una capa experimental "
+                "MADRL sobre CityLearn v2. Por tanto, los datasets, el `schema.json`, los espacios de acción y "
+                "observación, los edificios, PV, baterías, EVs, precios, intensidad de carbono y evaluación "
+                "`evaluate_v2` siguen siendo la fuente técnica de referencia."
+            ),
+        ],
+    )
+    _add_table(
+        doc,
+        ["Área intervenida", "Adecuación implementada", "Evidencia en el proyecto"],
+        [
+            (
+                "Arquitectura v3",
+                "Creación de la capa `citylearn.v3` para configuración, entorno, objetivos, backends y adaptadores.",
+                "`CityLearn/citylearn/v3/config.py`, `environment.py`, `objectives.py`, `backends.py`.",
+            ),
+            (
+                "Dec-POMDP",
+                "Cada edificio opera como agente descentralizado con observación local, acción local y recompensa colaborativa.",
+                "`build_citylearn_v3_env`, `build_default_17_building_ev_env`, `CityLearnV3MARLlibEnv`.",
+            ),
+            (
+                "CTDE",
+                "Exposición de estado global para entrenamiento centralizado y ejecución con políticas locales por edificio.",
+                "Uso de `state()`, `state_space`, `share_observation_space` y adaptadores por backend.",
+            ),
+            (
+                "Dataset de tesis",
+                "Definición del dataset por defecto con 17 edificios, EVs, 8760 pasos horarios y soporte para otros schemas CityLearn v2.",
+                "`citylearn_challenge_2022_phase_all_plus_evs/schema.json`.",
+            ),
+            (
+                "Backends oficiales",
+                "Registro de HAPPO, MASAC/mSAC, MATD3, MATD3 PyTorch, MAAC y MARLlib, evitando duplicar implementaciones MADRL dentro de `citylearn.agents`.",
+                "`CityLearn/citylearn/official_madrl.py` y `external/backends.lock.json`.",
+            ),
+            (
+                "Scripts de entrenamiento",
+                "Creación de scripts independientes para cada MADRL con parámetros, CUDA, semillas, escenario, episodios y salida reproducible.",
+                "`train_citylearn_v3_happo.py`, `train_citylearn_v3_masac.py`, `train_citylearn_v3_matd3.py`, `train_citylearn_v3_maac.py`.",
+            ),
+            (
+                "Lanzamiento oficial",
+                "Automatización secuencial de entrenamiento oficial para reducir conflictos de memoria GPU y registrar estado global.",
+                "`launch_citylearn_v3_official_training.ps1`, `official_full_status.json`, `official_full_manifest.json`.",
+            ),
+            (
+                "CUDA y Python 3.9",
+                "Preparación del entorno `.venv39-citylearn-v3` con PyTorch CUDA para entrenamiento acelerado.",
+                "Estado reportado: `torch 2.8.0+cu126`, `cuda=true`.",
+            ),
+            (
+                "MATD3 funcional",
+                "Ajustes para backend PyTorch compatible con Python 3.9, manejo correcto de dispositivo/dtype y módulos del crítico.",
+                "`external/off-policy` como backend PyTorch source-backed; MATD3 original queda como referencia del paper.",
+            ),
+            (
+                "Objetivos científicos",
+                "Reformulación del proyecto en tres ejes: OE1 flexibilidad, OE2 emisiones de CO2 y OE3 costos energéticos.",
+                "`CityLearn/citylearn/v3/objectives.py` y `ESTRATEGIA_3PILARES_MADRL.md`.",
+            ),
+            (
+                "KPIs por eje",
+                "Exposición de 36 KPIs para OE1, 7 para OE2 y 11 para OE3, con fuente, dirección de mejora y relación con baseline.",
+                "`objective_manifest()`, `objective_kpis.csv`, notebook MADRL CityLearn v3.",
+            ),
+            (
+                "KPI derivado",
+                "Inclusión de `price_signal_deviation` como KPI derivado desde importación neta distrital y tarifa dinámica.",
+                "`price_signal_deviation()` en `CityLearn/citylearn/v3/objectives.py`.",
+            ),
+            (
+                "Artefactos reproducibles",
+                "Estandarización de carpetas por algoritmo con resultados, series, trazas, checkpoints, figuras y tablas.",
+                "`data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/checkpoint_manifest.json`, `checkpoints/`, `figures/`.",
+            ),
+            (
+                "Figuras y cuadros",
+                "Generación de recompensas, convergencia, returns, eficiencia, comparación baseline, perfiles por eje y tablas CSV/Markdown.",
+                "`regenerate_citylearn_v3_figures.py` y `figures/figures_manifest.json`.",
+            ),
+            (
+                "Tutorial académico",
+                "Creación de notebook CityLearn v3 MADRL con diagnóstico, problemática, marco teórico, backends, papers, GitHub y KPIs.",
+                "`CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`.",
+            ),
+            (
+                "Validaciones",
+                "Pruebas de construcción del entorno, KPIs, imports de backends, smoke tests y entrenamiento de 5 episodios.",
+                "`validate_citylearn_v3_objectives.py`, logs smoke y salidas en `outputs/`.",
+            ),
+            (
+                "Repositorio público",
+                "Versionamiento del proyecto raíz y fork CityLearn con commits trazables para reproducibilidad.",
+                "`Mac-Tapia/MADRLCitytleranflexresdr` y `Mac-Tapia/CityLearn`.",
+            ),
+        ],
+    )
+
+
 def _add_paragraphs(doc: Document, paragraphs: Iterable[str]) -> None:
     for text in paragraphs:
         doc.add_paragraph(text)
@@ -657,6 +772,8 @@ def _add_chapter_4(
         ],
     )
 
+    _add_modification_registry(doc)
+
     doc.add_heading("Estado experimental actual", level=2)
     jobs = status.get("jobs", [])
     rows = [
@@ -800,6 +917,7 @@ def build_docx() -> Path:
 
     _add_cover(doc, schema, status)
     _add_preliminary(doc, schema, status)
+    doc.add_heading("II. CONTENIDOS", level=1)
     _add_chapter_1(doc)
     _add_chapter_2(doc, manifest)
     _add_chapter_3(doc, lock)

@@ -128,8 +128,19 @@ Cada edificio es un agente descentralizado:
 - observacion local: observaciones CityLearn v2 del edificio;
 - accion local: acciones CityLearn v2 disponibles para ese edificio;
 - estado global CTDE: concatenacion/padding de observaciones locales o estado compartido del backend;
-- recompensa colaborativa: `team_mean` por defecto;
+- recompensa colaborativa: `team_mean` por defecto sobre una recompensa v3 especifica por eje y por MADRL;
 - evaluacion: KPIs CityLearn v2 por distrito y por eje.
+
+### Recompensa CityLearn v3 MADRL
+
+La recompensa de entrenamiento no usa los pesos heredados de `MARL` como criterio principal. Los scripts v3 fuerzan `CityLearnV3MADRLRewardFunction`, que combina:
+
+- pesos por eje: `E1={flex:0.70, carbon:0.15, cost:0.15}`, `E2={flex:0.15, carbon:0.70, cost:0.15}`, `E3={flex:0.25, carbon:0.15, cost:0.60}`;
+- perfil por algoritmo: HAPPO cooperativo on-policy, MASAC con senal local densa, MATD3 orientado a picos/ramping y MAAC con coordinacion por atencion;
+- componente EV/V2G separado para restricciones de carga, SoC de salida, autoconsumo y uso de excedentes;
+- mezcla colaborativa local/equipo mediante `team_reward_ratio` especifico por MADRL.
+
+Esto separa tres niveles que no deben confundirse: la reward de entrenamiento, la agregacion colaborativa Dec-POMDP y los KPIs CityLearn v2 usados para evaluacion final.
 
 ### CTDE
 
@@ -539,7 +550,7 @@ Para escenarios focalizados:
 ```text
 E1: OE1=0.60, OE2=0.20, OE3=0.20
 E2: OE1=0.20, OE2=0.60, OE3=0.20
-E3: OE1=0.25, OE2=0.25, OE3=0.50
+E3: OE1=0.25, OE2=0.15, OE3=0.60
 ```
 
 Estos pesos son solo para analisis y ranking. Los KPIs oficiales siguen viniendo de CityLearn v2 y del reporte v3.

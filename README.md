@@ -63,6 +63,18 @@ Componentes principales:
 | MATD3 | `train_citylearn_v3_matd3.py` | `CityLearnOffPolicyVecEnv` | `external/off-policy` |
 | MAAC | `train_citylearn_v3_maac.py` | `CityLearnMAACVecEnv` | `external/MAAC` |
 
+## Recompensa v3
+
+Los cuatro MADRL usan `CityLearnV3MADRLRewardFunction`, no los pesos base de `MARL` como criterio principal. La recompensa combina pesos por eje y perfil por algoritmo:
+
+| Escenario | flex | carbon | cost |
+|---|---:|---:|---:|
+| E1 | 0.70 | 0.15 | 0.15 |
+| E2 | 0.15 | 0.70 | 0.15 |
+| E3 | 0.25 | 0.15 | 0.60 |
+
+HAPPO, MASAC, MATD3 y MAAC reciben multiplicadores propios de perfil para ajustar cooperacion, densidad de senal local, control de picos/ramping y atencion multiagente. Los KPIs finales siguen viniendo de CityLearn v2 y del reporte v3.
+
 ## Requisitos
 
 - Windows PowerShell para el launcher local oficial.
@@ -130,7 +142,8 @@ El monitor muestra:
 - Proceso activo.
 - Uso de GPU.
 - `global_step`, episodio y paso.
-- `reward_sum` y `reward_mean`.
+- `instant_reward_sum`, `instant_reward_mean`, retorno acumulado por episodio y retorno acumulado total.
+- Funcion de recompensa, perfil MADRL y pesos activos por eje.
 - Costo, CO2, carga neta, precio e intensidad de carbono.
 - Artefactos recientes y checkpoints.
 

@@ -15,6 +15,7 @@ flowchart LR
     DATA["Dataset oficial<br/>citylearn_challenge_2022_phase_all_plus_evs<br/>17 edificios + EV/V2G"]
     V2["CityLearn v2 base<br/>CityLearn/citylearn<br/>simulador + KPIs v2"]
     V3["CityLearn v3 implementado<br/>CityLearn/citylearn/v3<br/>environment + objectives + config"]
+    REW["Reward v3 MADRL<br/>CityLearnV3MADRLRewardFunction<br/>pesos por eje + perfil por algoritmo"]
     ADAPT["Adaptador MADRL comun<br/>citylearn_v3_training_common.py<br/>Dec-POMDP + CTDE + artefactos"]
     ALGS["4 MADRL conectados<br/>HAPPO, MASAC, MATD3, MAAC<br/>scripts train_citylearn_v3_*.py"]
     LAUNCH{"Launcher oficial<br/>-Scenario ALL<br/>12 corridas secuenciales"}
@@ -35,22 +36,23 @@ flowchart LR
     PLAN -->|2. selecciona datos| DATA
     DATA -->|3. alimenta simulador| V2
     V2 -->|4. se conserva y extiende| V3
-    V3 -->|5. expone entorno multiagente| ADAPT
-    ADAPT -->|6. conecta wrappers| ALGS
-    ALGS -->|7. invoca scripts| LAUNCH
-    LAUNCH -->|8a. ejecuta eje| E1
-    LAUNCH -->|8b. ejecuta eje| E2
-    LAUNCH -->|8c. ejecuta eje| E3
+    V3 -->|5. expone entorno multiagente| REW
+    REW -->|6. entrega recompensa especifica| ADAPT
+    ADAPT -->|7. conecta wrappers| ALGS
+    ALGS -->|8. invoca scripts| LAUNCH
+    LAUNCH -->|9a. ejecuta eje| E1
+    LAUNCH -->|9b. ejecuta eje| E2
+    LAUNCH -->|9c. ejecuta eje| E3
     E1 --> TRAIN
     E2 --> TRAIN
     E3 --> TRAIN
-    TRAIN -->|9. escribe progreso| MON
-    TRAIN -->|10. guarda salidas| ART
-    ART -->|11. calcula KPIs| EVAL
+    TRAIN -->|10. escribe progreso| MON
+    TRAIN -->|11. guarda salidas| ART
+    ART -->|12. calcula KPIs| EVAL
     V2 -->|baseline comparable| B2
     B2 --> CMP
     EVAL --> CMP
-    CMP -->|12. resultados finales| FIN
+    CMP -->|13. resultados finales| FIN
 
     classDef start fill:#ecfeff,stroke:#0891b2,color:#0f172a,stroke-width:2px;
     classDef data fill:#dbeafe,stroke:#2563eb,color:#0f172a,stroke-width:2px;
@@ -64,7 +66,7 @@ flowchart LR
     class START start;
     class FIN finish;
     class PLAN,DATA data;
-    class V2,V3,ADAPT core;
+    class V2,V3,REW,ADAPT core;
     class ALGS,LAUNCH madrl;
     class E1,E2,E3 axis;
     class TRAIN,MON,ART train;
@@ -79,14 +81,15 @@ flowchart LR
 | 2 | Dataset oficial | `CityLearn/data/datasets/citylearn_challenge_2022_phase_all_plus_evs/schema.json` | 17 edificios + EV/V2G disponibles. |
 | 3 | CityLearn v2 base | `CityLearn/citylearn` | Simulador y KPIs v2 conservados. |
 | 4 | CityLearn v3 | `CityLearn/citylearn/v3/objectives.py`, `CityLearn/citylearn/v3/environment.py` | Objetivos OE1/OE2/OE3 y entorno v3. |
-| 5 | Adaptador Dec-POMDP/CTDE | `CityLearn/scripts/citylearn_v3_training_common.py` | Wrappers, estado CTDE, trazas y artefactos. |
-| 6 | 4 MADRL | `CityLearn/scripts/train_citylearn_v3_*.py` | HAPPO, MASAC, MATD3 y MAAC conectados. |
-| 7 | Launcher ALL | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | 12 corridas secuenciales: E1/E2/E3 x 4 MADRL. |
-| 8 | Monitor vivo | `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1` | GPU, `global_step`, rewards, costo, CO2 y estado por job. |
-| 9 | Artefactos | `outputs/citylearn_v3_madrl_official_full_cuda_v2/{madrl}/{E*_seed_0}` | Checkpoints, JSON, CSV, figuras y tablas. |
-| 10 | Benchmark v2 | `CityLearn/scripts/benchmark_citylearn_v2_agents.py` | Linea base con agentes CityLearn v2. |
-| 11 | Comparador | `CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py` | Delta, mejora porcentual y ranking v2 vs v3. |
-| 12 | Fin | `docs/`, `outputs/citylearn_v2_vs_v3_comparison` | Evidencia final para tesis. |
+| 5 | Reward v3 | `CityLearn/citylearn/reward_function.py` | `CityLearnV3MADRLRewardFunction` con pesos por eje y perfil por MADRL. |
+| 6 | Adaptador Dec-POMDP/CTDE | `CityLearn/scripts/citylearn_v3_training_common.py` | Wrappers, estado CTDE, reward metadata, trazas y artefactos. |
+| 7 | 4 MADRL | `CityLearn/scripts/train_citylearn_v3_*.py` | HAPPO, MASAC, MATD3 y MAAC conectados. |
+| 8 | Launcher ALL | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | 12 corridas secuenciales: E1/E2/E3 x 4 MADRL. |
+| 9 | Monitor vivo | `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1` | GPU, `global_step`, rewards, pesos reward, costo, CO2 y estado por job. |
+| 10 | Artefactos | `outputs/citylearn_v3_madrl_official_full_cuda_v2/{madrl}/{E*_seed_0}` | Checkpoints, JSON, CSV, figuras y tablas. |
+| 11 | Benchmark v2 | `CityLearn/scripts/benchmark_citylearn_v2_agents.py` | Linea base con agentes CityLearn v2. |
+| 12 | Comparador | `CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py` | Delta, mejora porcentual y ranking v2 vs v3. |
+| 13 | Fin | `docs/`, `outputs/citylearn_v2_vs_v3_comparison` | Evidencia final para tesis. |
 
 ## 1. Lectura del proyecto de inicio a fin
 

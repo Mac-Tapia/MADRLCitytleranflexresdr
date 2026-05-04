@@ -268,7 +268,57 @@ powershell -NoProfile -ExecutionPolicy Bypass -File CityLearn\scripts\monitor_ci
   -LogTail 20
 ```
 
-## 8. Matriz oficial de ejecuciones
+## 8. Operacion visible en VS Code
+
+El proyecto incluye tareas de VS Code para ejecutar y monitorear el entrenamiento sin ocultar la salida en procesos silenciosos.
+
+Ruta:
+
+```text
+Terminal > Run Task...
+```
+
+Tareas disponibles:
+
+| Tarea VS Code | Funcion |
+|---|---|
+| `CityLearn v3 MADRL - entrenamiento oficial visible` | Lanza `launch_citylearn_v3_official_training.ps1` con `-Scenario ALL`, CUDA, 5 episodios y 8760 pasos. |
+| `CityLearn v3 MADRL - monitor visible` | Ejecuta `monitor_citylearn_v3_official_training.ps1` en la terminal integrada. |
+| `CityLearn v3 MADRL - validar contrato cooperativo CTDE` | Regenera `cooperative_ctde_validation.json` para 4 MADRL x 3 ejes. |
+
+Las tareas estan configuradas sin `problemMatcher` para que los mensajes `INFO`, progreso, rewards, costo, CO2 y logs de checkpoints no aparezcan como falsos errores en la pestana `Problems`.
+
+## 9. Validacion cooperativa CTDE
+
+La validacion activa del contrato cooperativo esta implementada en:
+
+```text
+CityLearn/scripts/validate_citylearn_v3_cooperative_ctde.py
+```
+
+Comando:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
+  --output outputs\citylearn_v3_madrl_official_full_cuda_v2\cooperative_ctde_validation.json
+```
+
+Condiciones verificadas:
+
+- 17 edificios/agentes por entorno.
+- `reward_aggregation = team_mean`.
+- Estado global CTDE con dimension igual a la suma de observaciones locales.
+- Recompensa compartida identica para todos los edificios en una transicion.
+- `team_reward` e `individual_reward` trazables en `infos`.
+- `not_using_marl_base_weights = true`.
+
+Salida:
+
+```text
+outputs/citylearn_v3_madrl_official_full_cuda_v2/cooperative_ctde_validation.json
+```
+
+## 10. Matriz oficial de ejecuciones
 
 El launcher ejecuta secuencialmente 12 trabajos:
 
@@ -278,7 +328,7 @@ El launcher ejecuta secuencialmente 12 trabajos:
 | E2 CO2 | `happo/E2_seed_0` | `masac/E2_seed_0` | `matd3/E2_seed_0` | `maac/E2_seed_0` |
 | E3 costos | `happo/E3_seed_0` | `masac/E3_seed_0` | `matd3/E3_seed_0` | `maac/E3_seed_0` |
 
-## 9. Estructura de salida esperada
+## 11. Estructura de salida esperada
 
 ```text
 outputs/citylearn_v3_madrl_official_full_cuda_v2/
@@ -308,7 +358,7 @@ outputs/citylearn_v3_madrl_official_full_cuda_v2/
   maac/
 ```
 
-## 10. Artefactos por corrida
+## 12. Artefactos por corrida
 
 | Archivo / carpeta | Funcion |
 |---|---|
@@ -321,7 +371,7 @@ outputs/citylearn_v3_madrl_official_full_cuda_v2/
 | `figures/` | Figuras de entrenamiento, convergencia, rewards, KPIs y comparativas. |
 | `figures/tables/` | Tablas CSV auxiliares para analisis y graficas. |
 
-## 11. Evaluacion y comparacion final
+## 13. Evaluacion y comparacion final
 
 El cierre del proyecto no termina al entrenar. El flujo final usa los resultados v3 y los compara con agentes CityLearn v2.
 
@@ -353,7 +403,7 @@ Comandos base:
   --output-dir outputs\citylearn_v2_vs_v3_comparison
 ```
 
-## 12. Trazabilidad cientifica
+## 14. Trazabilidad cientifica
 
 Cada resultado debe poder trazarse asi:
 
@@ -369,7 +419,7 @@ flowchart LR
     B --> R["Comparacion, graficas y tablas"]
 ```
 
-## 13. Componentes existentes pero no activos en el launcher oficial actual
+## 15. Componentes existentes pero no activos en el launcher oficial actual
 
 Estos componentes existen en el repositorio, pero no son el camino activo del launcher oficial de las 12 corridas actuales:
 
@@ -379,7 +429,7 @@ Estos componentes existen en el repositorio, pero no son el camino activo del la
 | Adaptador MARLlib | `CityLearn/citylearn/v3/marllib_env.py` | Disponible, no invocado por `launch_citylearn_v3_official_training.ps1`. |
 | MATD3implementation | `external/MATD3implementation` | Repositorio MATD3 clonado; la ruta activa de entrenamiento MATD3 Python 3.9 usa `external/off-policy`. |
 
-## 14. Archivos de arquitectura renderizables ya generados
+## 16. Archivos de arquitectura renderizables ya generados
 
 | Archivo | Uso |
 |---|---|
@@ -388,7 +438,7 @@ Estos componentes existen en el repositorio, pero no son el camino activo del la
 | `docs/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf` | Copia integrada del plano real implementado. |
 | `docs/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf` | Version previa en dos laminas. |
 
-## 15. Renderizado del Markdown
+## 17. Renderizado del Markdown
 
 Este archivo esta listo para renderizar porque usa Markdown estandar y bloques Mermaid.
 
@@ -404,7 +454,7 @@ Archivo fuente:
 docs/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md
 ```
 
-## 16. Criterio de finalizacion del proyecto
+## 18. Criterio de finalizacion del proyecto
 
 El proyecto queda completo cuando existan:
 

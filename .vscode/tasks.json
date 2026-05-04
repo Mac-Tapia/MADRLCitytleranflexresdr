@@ -1,0 +1,92 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "CityLearn v3 MADRL - entrenamiento oficial visible",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\CityLearn\\scripts\\launch_citylearn_v3_official_training.ps1",
+        "-Scenario",
+        "ALL",
+        "-Seed",
+        "0",
+        "-EpisodeTimeSteps",
+        "8760",
+        "-Episodes",
+        "5",
+        "-OutputRoot",
+        "outputs\\citylearn_v3_madrl_official_full_cuda_v2",
+        "-TorchThreads",
+        "12",
+        "-Cuda"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "CityLearn v3 MADRL - monitor visible",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\CityLearn\\scripts\\monitor_citylearn_v3_official_training.ps1",
+        "-OutputRoot",
+        "outputs\\citylearn_v3_madrl_official_full_cuda_v2",
+        "-IntervalSeconds",
+        "5",
+        "-LogTail",
+        "20"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "CityLearn v3 MADRL - validar contrato cooperativo CTDE",
+      "type": "shell",
+      "command": "${workspaceFolder}\\.venv39-citylearn-v3\\Scripts\\python.exe",
+      "args": [
+        "-B",
+        "CityLearn\\scripts\\validate_citylearn_v3_cooperative_ctde.py",
+        "--output",
+        "outputs\\citylearn_v3_madrl_official_full_cuda_v2\\cooperative_ctde_validation.json"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}

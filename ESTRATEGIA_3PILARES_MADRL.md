@@ -2,7 +2,7 @@
 
 ## Flexibilidad Energetica + Emisiones de CO2 + Costos Energeticos
 
-Ultima actualizacion: 2026-05-03
+Ultima actualizacion: 2026-05-04
 
 ---
 
@@ -150,6 +150,26 @@ Esto separa tres niveles que no deben confundirse: la reward de entrenamiento, l
 | MASAC | Estado global estilo SMAC mediante `get_state()` | Accion discreta por edificio, mapeada a accion CityLearn |
 | MATD3 | Critico con observaciones/acciones conjuntas en backend PyTorch off-policy | Actor continuo por edificio |
 | MAAC | Critico de atencion multiagente del repositorio MAAC | Politica por edificio con observacion local |
+
+### Validacion cooperativa vigente
+
+El contrato cooperativo y coordinado se valida con:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
+  --output outputs\citylearn_v3_madrl_official_full_cuda_v2\cooperative_ctde_validation.json
+```
+
+La validacion comprueba 12 casos: HAPPO, MASAC, MATD3 y MAAC en E1, E2 y E3. En cada caso se verifica:
+
+- 17 edificios/agentes.
+- `reward_aggregation = team_mean`.
+- estado global CTDE igual a la concatenacion de observaciones locales.
+- recompensa compartida identica para todos los edificios en el paso validado.
+- `team_reward` e `individual_reward` en `infos`.
+- `not_using_marl_base_weights = true`.
+
+La comunicacion entre edificios ocurre durante entrenamiento centralizado CTDE mediante estado global, `share_observation_space`, `get_state()`, criticos centralizados y critic de atencion. La ejecucion queda descentralizada: cada edificio usa su politica local.
 
 ---
 
@@ -663,12 +683,13 @@ La demostracion de mejora debe reportar:
 
 ## 10. Siguiente Paso Operativo
 
-El entrenamiento oficial completo CUDA fue relanzado el 2026-05-03 en ejecucion secuencial para los cuatro MADRL.
+El entrenamiento oficial completo CUDA fue relanzado el 2026-05-04 en ejecucion secuencial para los cuatro MADRL y los tres ejes.
 
 Configuracion oficial activa:
 
 - dataset: `citylearn_challenge_2022_phase_all_plus_evs`;
-- escenario: `E3`;
+- escenario: `ALL`;
+- escenarios internos: `E1`, `E2`, `E3`;
 - edificios: `17` + EV;
 - horizonte por episodio: `8760` pasos;
 - episodios por MADRL: `5`;
@@ -684,18 +705,20 @@ Comando de relanzamiento:
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
-  -Scenario E3 `
+  -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
   -OutputRoot outputs\citylearn_v3_madrl_official_full_cuda_v2 `
-  -TorchThreads 8 `
+  -TorchThreads 12 `
   -Cuda
 ```
 
-Al completarse la corrida, cada MADRL debe quedar con su carpeta:
+Al completarse la corrida, cada MADRL debe quedar con carpetas separadas por eje:
 
 ```text
+outputs/citylearn_v3_madrl_official_full_cuda_v2/<madrl>/E1_seed_0/
+outputs/citylearn_v3_madrl_official_full_cuda_v2/<madrl>/E2_seed_0/
 outputs/citylearn_v3_madrl_official_full_cuda_v2/<madrl>/E3_seed_0/
   data/
   checkpoints/
@@ -703,5 +726,15 @@ outputs/citylearn_v3_madrl_official_full_cuda_v2/<madrl>/E3_seed_0/
 ```
 
 La consolidacion final debe comparar HAPPO, MASAC, MATD3 y MAAC contra la linea base CityLearn v2 por OE1 flexibilidad, OE2 emisiones CO2 y OE3 costos usando los KPIs oficiales/derivados definidos en este documento.
+
+### Operacion visible en VS Code
+
+El workspace define tareas para ver el entrenamiento y el monitor en la terminal integrada:
+
+- `CityLearn v3 MADRL - entrenamiento oficial visible`
+- `CityLearn v3 MADRL - monitor visible`
+- `CityLearn v3 MADRL - validar contrato cooperativo CTDE`
+
+Las tareas no usan `problemMatcher` para evitar que logs informativos se conviertan en falsos errores de la pestana `Problems`.
 
 Logs antiguos como `happo_no_co2.log`, `happo_metrics_split.log` y `maac_co2.log` quedan como historial de desarrollo. El contrato vigente es el de este documento y el reporte `citylearn_v3_report`.

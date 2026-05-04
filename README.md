@@ -15,6 +15,20 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 - Guardar artefactos reproducibles: checkpoints, JSON, CSV, figuras, tablas y trazas.
 - Comparar CityLearn v3 MADRL contra agentes originales CityLearn v2.
 
+## Estado actual
+
+Actualizado: 2026-05-04.
+
+- Entrenamiento oficial CUDA relanzado desde cero con `-Scenario ALL`.
+- Dataset activo: `citylearn_challenge_2022_phase_all_plus_evs`.
+- Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida.
+- Ejecucion secuencial: `E1/E2/E3 x HAPPO/MASAC/MATD3/MAAC`.
+- Recompensa activa: `CityLearnV3MADRLRewardFunction`.
+- Agregacion cooperativa Dec-POMDP: `team_mean`.
+- Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes.
+- PyTorch CUDA activo: `torch 2.8.0+cu126`.
+- Monitor visual disponible desde PowerShell y tareas VS Code.
+
 ## Ejes del proyecto
 
 | Eje | Escenario | Objetivo | KPIs principales |
@@ -74,6 +88,23 @@ Los cuatro MADRL usan `CityLearnV3MADRLRewardFunction`, no los pesos base de `MA
 | E3 | 0.25 | 0.15 | 0.60 |
 
 HAPPO, MASAC, MATD3 y MAAC reciben multiplicadores propios de perfil para ajustar cooperacion, densidad de senal local, control de picos/ramping y atencion multiagente. Los KPIs finales siguen viniendo de CityLearn v2 y del reporte v3.
+
+## Contrato cooperativo Dec-POMDP/CTDE
+
+La implementacion vigente cumple el contrato cooperativo y coordinado requerido:
+
+- Cada edificio es un agente descentralizado.
+- El estado global CTDE concatena las observaciones locales de los 17 edificios.
+- La recompensa de entrenamiento se agrega como `team_mean`, por lo que todos los edificios reciben la misma senal de equipo por paso.
+- La informacion entre edificios se transfiere durante el entrenamiento centralizado mediante estado global, `share_observation_space`, `get_state()`, criticos centralizados y critic de atencion.
+- La ejecucion permanece descentralizada: cada actor/politica decide con su observacion local.
+
+Validar el contrato:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
+  --output outputs\citylearn_v3_madrl_official_full_cuda_v2\cooperative_ctde_validation.json
+```
 
 ## Requisitos
 
@@ -146,6 +177,22 @@ El monitor muestra:
 - Funcion de recompensa, perfil MADRL y pesos activos por eje.
 - Costo, CO2, carga neta, precio e intensidad de carbono.
 - Artefactos recientes y checkpoints.
+
+## Uso desde VS Code
+
+El workspace incluye tareas visibles para operar el proyecto desde la terminal integrada:
+
+1. `CityLearn v3 MADRL - entrenamiento oficial visible`
+2. `CityLearn v3 MADRL - monitor visible`
+3. `CityLearn v3 MADRL - validar contrato cooperativo CTDE`
+
+Ruta en VS Code:
+
+```text
+Terminal > Run Task...
+```
+
+Las tareas no usan `problemMatcher`, para evitar que logs informativos de entrenamiento se registren como falsos errores en la pestana `Problems`.
 
 ## Salidas esperadas
 

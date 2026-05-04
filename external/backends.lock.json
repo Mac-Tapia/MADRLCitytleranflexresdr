@@ -1,6 +1,24 @@
 {
   "schema_version": 1,
   "purpose": "Pinned source-backed MADRL backends for the CityLearn v3 MADRL layer.",
+  "citylearn_v3_training_config": {
+    "schema_version": 2,
+    "yaml": "CityLearn/configs/citylearn_v3_madrl_training.yaml",
+    "json": "CityLearn/configs/citylearn_v3_madrl_training.json",
+    "reward_function": "citylearn.reward_function.CityLearnV3MADRLRewardFunction",
+    "reward_aggregation": "team_mean",
+    "official_dataset": "citylearn_challenge_2022_phase_all_plus_evs",
+    "official_scenarios": [
+      "E1",
+      "E2",
+      "E3"
+    ],
+    "official_episode_time_steps": 8760,
+    "official_episodes": 5,
+    "official_num_env_steps": 43800,
+    "official_output_root": "outputs/citylearn_v3_madrl_official_full_cuda_v2",
+    "aligned_on": "2026-05-04"
+  },
   "backends": {
     "HAPPO": {
       "path": "external/HARL",

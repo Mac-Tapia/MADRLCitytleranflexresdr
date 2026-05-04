@@ -511,7 +511,12 @@ Resultado: `completed`, `cuda=true`, `torch 2.8.0+cu126`, y `exit_code=0` para H
 
 ## 9. Interpretacion de Resultados
 
-La comparacion final entre MADRL y linea base debe hacerse usando los KPIs de los tres ejes:
+La comparacion final tiene dos niveles obligatorios:
+
+1. **MADRL CityLearn v3 vs baseline CityLearn v2 interno**: ya se calcula al final de cada entrenamiento mediante `evaluate_v2` y queda en `objective_kpis.csv`, `axis_baseline_comparison.csv` y `baseline_gain_by_kpi.png`.
+2. **MADRL CityLearn v3 vs agentes originales CityLearn v2**: se calcula con el benchmark nuevo de agentes v2 y el comparador maestro v2-vs-v3.
+
+La comparacion debe hacerse usando los KPIs de los tres ejes:
 
 | Eje | Comparacion |
 |---|---|
@@ -538,6 +543,110 @@ E3: OE1=0.25, OE2=0.25, OE3=0.50
 ```
 
 Estos pesos son solo para analisis y ranking. Los KPIs oficiales siguen viniendo de CityLearn v2 y del reporte v3.
+
+### Benchmark de agentes originales CityLearn v2
+
+Script implementado:
+
+```text
+CityLearn/scripts/benchmark_citylearn_v2_agents.py
+```
+
+Agentes disponibles:
+
+- `baseline`: `citylearn.agents.base.BaselineAgent`
+- `hour_rbc`: `citylearn.agents.rbc.HourRBC` con mapa horario compatible con almacenamiento, EV y washing machine.
+- `basic_rbc`: `citylearn.agents.rbc.BasicRBC` cuando el conjunto de acciones sea compatible.
+- `optimized_rbc`: `citylearn.agents.rbc.OptimizedRBC` cuando el conjunto de acciones sea compatible.
+- `sac`: `citylearn.agents.sac.SAC`
+- `marlisa`: `citylearn.agents.marlisa.MARLISA`
+- `random`: `citylearn.agents.base.Agent`
+
+Comando recomendado para benchmark oficial v2 rapido, sin entrenamiento de SAC/MARLISA:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\benchmark_citylearn_v2_agents.py `
+  --episode-time-steps 8760 `
+  --agents baseline hour_rbc `
+  --output-dir outputs\citylearn_v2_original_benchmark `
+  --continue-on-error
+```
+
+Comando extendido con agentes entrenables originales:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\benchmark_citylearn_v2_agents.py `
+  --episode-time-steps 8760 `
+  --train-episodes 5 `
+  --agents baseline hour_rbc sac marlisa `
+  --output-dir outputs\citylearn_v2_original_benchmark_train5 `
+  --continue-on-error
+```
+
+Cada agente v2 queda con la misma estructura comparable:
+
+```text
+outputs/citylearn_v2_original_benchmark/<agent>/E3_seed_0/
+  data/
+    results.json
+    timeseries.csv
+    trace.csv
+    checkpoint_manifest.json
+    kpis.csv
+  figures/
+    figures_manifest.json
+    tables/
+      objective_kpis.csv
+      axis_baseline_comparison.csv
+      baseline_gain_by_kpi.csv
+```
+
+### Comparador maestro CityLearn v2 original vs CityLearn v3 MADRL
+
+Script implementado:
+
+```text
+CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py
+```
+
+Comando cuando los MADRL oficiales ya terminaron:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
+  --v2-root outputs\citylearn_v2_original_benchmark `
+  --v3-root outputs\citylearn_v3_madrl_official_full_cuda_v2 `
+  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
+  --scenario E3 `
+  --seed 0 `
+  --weights OE1=0.34,OE2=0.33,OE3=0.33
+```
+
+Salidas del comparador:
+
+```text
+outputs/comparison_citylearn_v2_vs_v3_madrl/
+  comparison_summary.json
+  master_kpi_comparison.csv
+  master_kpi_comparison.md
+  master_kpi_comparison_scored.csv
+  ranking_by_axis.csv
+  ranking_by_axis.md
+  ranking_global_weighted.csv
+  ranking_global_weighted.md
+  OE1_comparison.png
+  OE2_comparison.png
+  OE3_comparison.png
+  baseline_gain_heatmap.png
+```
+
+La demostracion de mejora debe reportar:
+
+- ganador por eje OE1/OE2/OE3;
+- ranking global ponderado;
+- numero de KPIs mejorados contra baseline;
+- comparacion contra mejor agente original CityLearn v2;
+- comparacion contra promedio de agentes originales CityLearn v2;
+- sensibilidad por pesos multicriterio.
 
 ---
 

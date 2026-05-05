@@ -2,7 +2,7 @@
 
 ## Flexibilidad Energetica + Emisiones de CO2 + Costos Energeticos
 
-Ultima actualizacion: 2026-05-04
+Ultima actualizacion: 2026-05-05
 
 ---
 
@@ -26,6 +26,26 @@ La capa v3 agrega:
 - 4 backends MADRL oficiales: HAPPO, MASAC, MATD3 y MAAC;
 - reporte multiobjetivo por tres ejes;
 - artefactos reproducibles por corrida: datos tecnicos, checkpoints, figuras, graficas y cuadros.
+
+### Sustento cientifico integrado
+
+El proyecto incluye el skill versionado `tools/skills/madrl-citylearn-literature-review/` como soporte directo para la revision bibliografica sistematica de la implementacion CityLearn v3 MADRL propuesta.
+
+Este recurso fija reglas terminologicas y metodologicas para:
+
+- mantener **MADRL** como enfoque principal de la tesis;
+- diferenciar **CityLearn v2** como entorno base existente y **CityLearn v3 propuesto** como extension experimental de la investigacion;
+- analizar HAPPO, MASAC, MATD3 y MAAC como backends MADRL;
+- incorporar MARLlib solo como nombre propio de framework de referencia;
+- construir una matriz Excel de 50 investigaciones con trazabilidad de DOI, PDF, dataset, GitHub, KPIs, metodologia y aplicabilidad al SEAI Iquitos;
+- preservar la hoja `Marco_metodologico_MADRL`, evitando la denominacion incorrecta `Marco_metodologico_MARL`.
+
+La plantilla de Excel se genera con:
+
+```powershell
+python tools\skills\madrl-citylearn-literature-review\scripts\create_workbook_template.py `
+  --output outputs\sustento_cientifico\revision_bibliografica_madrl_citylearn.xlsx
+```
 
 ---
 

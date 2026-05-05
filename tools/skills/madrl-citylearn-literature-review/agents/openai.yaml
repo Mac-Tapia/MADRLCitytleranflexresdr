@@ -1,0 +1,4 @@
+interface:
+  display_name: "MADRL CityLearn Review"
+  short_description: "Revision MADRL para CityLearn v3"
+  default_prompt: "Realiza una revision bibliografica sistematica para sustentar CityLearn v3 propuesto con MADRL, Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC y MARLlib."

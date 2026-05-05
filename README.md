@@ -15,6 +15,18 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 - Guardar artefactos reproducibles: checkpoints, JSON, CSV, figuras, tablas y trazas.
 - Comparar CityLearn v3 MADRL contra agentes originales CityLearn v2.
 
+## Sustento cientifico
+
+El repositorio incluye un skill versionado para desarrollar la revision bibliografica sistematica que sustenta la implementacion:
+
+| Recurso | Ruta | Proposito |
+|---|---|---|
+| Skill academico | `tools/skills/madrl-citylearn-literature-review/` | Guia reutilizable para buscar, verificar y organizar 50 investigaciones sobre CityLearn v2, MADRL, Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC, MARLlib, flexibilidad, CO2, costos y SEAI Iquitos. |
+| Plantilla Excel | `tools/skills/madrl-citylearn-literature-review/scripts/create_workbook_template.py` | Genera el libro de sustento con 14 hojas, incluida `Marco_metodologico_MADRL`, matriz de 50 investigaciones, KPIs, backends, MARLlib y arquitectura propuesta. |
+| Protocolos de busqueda | `tools/skills/madrl-citylearn-literature-review/references/` | Contiene cadenas booleanas, criterios de inclusion/exclusion, esquema Excel, criterios de backend y lineamientos metodologicos. |
+
+Este skill forma parte del soporte metodologico del proyecto. CityLearn v3 se mantiene definido como extension experimental propuesta sobre CityLearn v2, no como una version oficial externa.
+
 ## Estado actual
 
 Actualizado: 2026-05-05.

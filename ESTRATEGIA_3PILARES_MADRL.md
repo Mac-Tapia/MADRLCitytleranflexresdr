@@ -31,6 +31,8 @@ La capa v3 agrega:
 
 El proyecto incluye el skill versionado `tools/skills/madrl-citylearn-literature-review/` como soporte directo para la revision bibliografica sistematica de la implementacion CityLearn v3 MADRL propuesta.
 
+Tambien incluye el skill exclusivo del proyecto `tools/skills/madrl-citylearn-thesis-integrated/`, orientado a convertir la matriz bibliografica, los KPIs, la arquitectura y los resultados del proyecto en un informe de tesis de Maestria de Especializacion o Profesionalizante bajo la estructura 5.1 de la Guia N. 02, con citas y referencias APA vigentes.
+
 Este recurso fija reglas terminologicas y metodologicas para:
 
 - mantener **MADRL** como enfoque principal de la tesis;
@@ -45,6 +47,16 @@ La plantilla de Excel se genera con:
 ```powershell
 python tools\skills\madrl-citylearn-literature-review\scripts\create_workbook_template.py `
   --output outputs\sustento_cientifico\revision_bibliografica_madrl_citylearn.xlsx
+```
+
+La plantilla integrada para tesis se genera con:
+
+```powershell
+python tools\skills\madrl-citylearn-thesis-integrated\scripts\create_integrated_thesis_workbook.py `
+  --output outputs\sustento_cientifico\tesis_integrada_madrl_citylearn.xlsx
+
+python tools\skills\madrl-citylearn-thesis-integrated\scripts\create_thesis_docx_skeleton.py `
+  --output outputs\sustento_cientifico\informe_tesis_madrl_citylearn_esqueleto.docx
 ```
 
 ---

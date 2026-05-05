@@ -1,0 +1,4 @@
+display_name: MADRL CityLearn Plan
+short_description: Plan de tesis MADRL CityLearn
+default_prompt: Crea o valida el Plan de Tesis bajo Guia N. 01 usando la matriz bibliografica, APA vigente, CityLearn v2, CityLearn v3 propuesto, MADRL, Dec-POMDP, CTDE y SEAI Iquitos.
+

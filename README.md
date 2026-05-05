@@ -23,6 +23,7 @@ El repositorio incluye un skill versionado para desarrollar la revision bibliogr
 |---|---|---|
 | Skill academico | `tools/skills/madrl-citylearn-literature-review/` | Guia reutilizable para buscar, verificar y organizar 50 investigaciones sobre CityLearn v2, MADRL, Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC, MARLlib, flexibilidad, CO2, costos y SEAI Iquitos. |
 | Skill de tesis integrado | `tools/skills/madrl-citylearn-thesis-integrated/` | Skill exclusivo del proyecto para convertir la matriz bibliografica en informe de tesis profesionalizante con estructura Guia N. 02, APA vigente, anexos, matriz de consistencia y operacionalizacion de variables. |
+| Skill de plan de tesis | `tools/skills/madrl-citylearn-thesis-plan/` | Skill exclusivo del proyecto para elaborar el Plan de Tesis bajo Guia N. 01, estructura 5.1, usando la matriz bibliografica, APA, cronograma, presupuesto, metodologia y anexos. |
 | Plantilla Excel | `tools/skills/madrl-citylearn-literature-review/scripts/create_workbook_template.py` | Genera el libro de sustento con 14 hojas, incluida `Marco_metodologico_MADRL`, matriz de 50 investigaciones, KPIs, backends, MARLlib y arquitectura propuesta. |
 | Protocolos de busqueda | `tools/skills/madrl-citylearn-literature-review/references/` | Contiene cadenas booleanas, criterios de inclusion/exclusion, esquema Excel, criterios de backend y lineamientos metodologicos. |
 

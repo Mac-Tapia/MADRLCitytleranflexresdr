@@ -89,5 +89,40 @@
     "editor.wordWrap": "on",
     "editor.formatOnSave": false
   },
-  "notebook.output.wordWrap": true
+  "notebook.output.wordWrap": true,
+  "terminal.integrated.defaultProfile.windows": "PowerShell 7.6 - CityLearn v3",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell 7.6 - CityLearn v3": {
+      "path": "C:\\Users\\Lenovo Legion\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe",
+      "args": [
+        "-NoLogo",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-NoExit",
+        "-File",
+        "${workspaceFolder}\\scripts\\activate_citylearn_v3.ps1"
+      ],
+      "icon": "terminal-powershell"
+    },
+    "PowerShell 7.6": {
+      "path": "C:\\Users\\Lenovo Legion\\AppData\\Local\\Microsoft\\WindowsApps\\pwsh.exe",
+      "args": [
+        "-NoLogo"
+      ],
+      "icon": "terminal-powershell"
+    },
+    "PowerShell 7.5 MSI": {
+      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "args": [
+        "-NoLogo"
+      ],
+      "icon": "terminal-powershell"
+    },
+    "Windows PowerShell": {
+      "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "icon": "terminal-powershell"
+    }
+  },
+  "python.terminal.activateEnvironment": true,
+  "terminal.integrated.cwd": "${workspaceFolder}"
 }

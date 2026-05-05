@@ -17,12 +17,13 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-05-04.
+Actualizado: 2026-05-05.
 
 - Entrenamiento oficial CUDA relanzado desde cero con `-Scenario ALL`.
 - Dataset activo: `citylearn_challenge_2022_phase_all_plus_evs`.
 - Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida.
 - Ejecucion secuencial: `E1/E2/E3 x HAPPO/MASAC/MATD3/MAAC`.
+- Perfil local GPU-tuned conservador activo para RTX 4060 Laptop 8 GB.
 - Recompensa activa: `CityLearnV3MADRLRewardFunction`.
 - Agregacion cooperativa Dec-POMDP: `team_mean`.
 - Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes.
@@ -147,6 +148,7 @@ powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_o
   -Episodes 5 `
   -OutputRoot outputs\citylearn_v3_madrl_official_full_cuda_v2 `
   -TorchThreads 12 `
+  -LiveProgressInterval 250 `
   -Cuda
 ```
 
@@ -157,6 +159,19 @@ E1 x HAPPO, MASAC, MATD3, MAAC
 E2 x HAPPO, MASAC, MATD3, MAAC
 E3 x HAPPO, MASAC, MATD3, MAAC
 ```
+
+### Perfil GPU-tuned local
+
+El launcher oficial usa parametros ajustados para la GPU local sin romper la comparacion reproducible CityLearn v2 vs CityLearn v3:
+
+| MADRL | Ajustes activos |
+|---|---|
+| HAPPO | `hidden_size=384`, `torch_threads=12`, `n_rollout_threads=1`, `live_progress_interval=250` |
+| MASAC | `buffer_size=8`, `critic_batch_size=2`, `critic_train_steps=2`, `actor_sample_times=8`, `rnn_hidden_dim=128`, `qmix_hidden_dim=64`, `hyper_hidden_dim=128` |
+| MATD3 | `batch_size=512`, `buffer_size=50000`, `hidden_size=384`, `train_interval=100` |
+| MAAC | `batch_size=512`, `buffer_length=200000`, `steps_per_update=250`, `num_updates=8`, `hidden_size=384` |
+
+En MASAC puede verse memoria GPU alta con baja utilizacion instantanea. Esto es esperado: el backend alterna rollout secuencial de CityLearn para 17 edificios + EV con actualizaciones PyTorch. Durante el rollout el cuello de botella es CPU/Python/CityLearn; la GPU se activa mas durante las actualizaciones de red.
 
 ## Monitor de entrenamiento
 

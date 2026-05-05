@@ -167,11 +167,11 @@ El launcher oficial usa parametros ajustados para la GPU local sin romper la com
 | MADRL | Ajustes activos |
 |---|---|
 | HAPPO | `hidden_size=384`, `torch_threads=12`, `n_rollout_threads=1`, `live_progress_interval=250` |
-| MASAC | `buffer_size=8`, `critic_batch_size=2`, `critic_train_steps=2`, `actor_sample_times=8`, `rnn_hidden_dim=128`, `qmix_hidden_dim=64`, `hyper_hidden_dim=128` |
+| MASAC | `buffer_size=2`, `critic_batch_size=1`, `critic_train_steps=1`, `actor_sample_times=5`, `rnn_hidden_dim=64`, `qmix_hidden_dim=32`, `hyper_hidden_dim=64` |
 | MATD3 | `batch_size=512`, `buffer_size=50000`, `hidden_size=384`, `train_interval=100` |
 | MAAC | `batch_size=512`, `buffer_length=200000`, `steps_per_update=250`, `num_updates=8`, `hidden_size=384` |
 
-En MASAC puede verse memoria GPU alta con baja utilizacion instantanea. Esto es esperado: el backend alterna rollout secuencial de CityLearn para 17 edificios + EV con actualizaciones PyTorch. Durante el rollout el cuello de botella es CPU/Python/CityLearn; la GPU se activa mas durante las actualizaciones de red.
+En MASAC puede verse memoria GPU alta con baja utilizacion instantanea. Esto es esperado: el backend alterna rollout secuencial de CityLearn para 17 edificios + EV con actualizaciones PyTorch. Durante el rollout el cuello de botella es CPU/Python/CityLearn; la GPU se activa mas durante las actualizaciones de red. En la RTX 4060 Laptop de 8 GB se usa un perfil MASAC estable para evitar OOM sin modificar los pesos multiobjetivo ni los KPIs de los tres ejes.
 
 ## Monitor de entrenamiento
 

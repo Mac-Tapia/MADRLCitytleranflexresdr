@@ -250,21 +250,69 @@ Cada corrida contiene:
 - `figures/`
 - `figures/tables/`
 
-## Google Colab
+## Google Colab Pro
 
-El notebook incluye una celda preparada para entrenar en Google Colab con GPU A100/T4/V100:
+El notebook incluye una celda preparada para entrenar en Google Colab Pro con GPU A100/L4/T4/V100:
 
 ```text
 CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb
 ```
 
-La celda esta apagada por defecto:
+Perfil Colab Pro preparado:
+
+- salida separada: `outputs/citylearn_v3_madrl_colab_pro_50ep`
+- episodios por corrida: `50`
+- pasos por episodio: `8760`
+- pasos por algoritmo/eje: `438000`
+- plan completo: `E1/E2/E3 x HAPPO/MASAC/MATD3/MAAC`
+- dashboard completo: returns, convergencia, aprendizaje, eficiencia, exploracion, contribucion por agente, ganancias vs baseline, KPIs por eje y tablas tecnicas.
+
+La celda esta apagada por defecto para evitar ejecucion accidental:
 
 ```python
 RUN_COLAB_GPU_TRAINING = False
+COLAB_OUTPUT = PROJECT_ROOT / 'outputs' / 'citylearn_v3_madrl_colab_pro_50ep'
+COLAB_EPISODES = 50
+COLAB_EPISODE_TIME_STEPS = 8760
 ```
 
-Debe activarse solo cuando Colab tenga GPU habilitada y el repositorio este clonado con submodulos y dependencias.
+En Colab, active GPU en `Runtime > Change runtime type > GPU`, ejecute las celdas de preparacion, y cambie:
+
+```python
+RUN_COLAB_GPU_TRAINING = True
+```
+
+Debe activarse solo cuando Colab tenga GPU habilitada y el repositorio este clonado con submodulos y dependencias. No use el `OutputRoot` local `outputs/citylearn_v3_madrl_official_full_cuda_v2` para Colab.
+
+## Evidencia para plan e informe de tesis
+
+El proyecto genera un paquete separado para demostrar el cumplimiento de los tres objetivos especificos y alimentar los skills locales `madrl-citylearn-thesis-plan` y `madrl-citylearn-thesis-integrated`.
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\generate_thesis_objective_evidence.py
+```
+
+Salida principal:
+
+```text
+outputs/thesis_objective_evidence/
+  objetivos_especificos_cumplimiento.csv
+  Matriz_KPIs.csv
+  KPIs_y_metricas.csv
+  Marco_metodologico_MADRL.csv
+  CityLearn_v3_Propuesto.csv
+  Backends_MADRL.csv
+  MARLlib_Integracion.csv
+  Arquitectura_Propuesta.csv
+  Aplicabilidad_SEAI_Iquitos.csv
+  matriz_consistencia_objetivos.csv
+  matriz_operacionalizacion_variables.csv
+  matriz_resultados_madrl.csv
+  thesis_skill_feed.json
+  resumen_evidencia_tesis.md
+```
+
+El notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` incluye la seccion **Thesis Objective Compliance and Skill Feeds** para regenerar este paquete, mostrar OE1/OE2/OE3 con estado de datos y cumplimiento, y visualizar las matrices que se usan como insumo del plan e informe de tesis. Los resultados faltantes se marcan como pendientes; si existe `official_full_status.json`, solo se cuentan como evidencia cuantitativa los jobs del launcher con `exit_code=0`.
 
 ## Benchmark CityLearn v2
 

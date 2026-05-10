@@ -124,26 +124,107 @@ def seccion_31_presentacion() -> list[str]:
     out.append(xml_p(
         "La propuesta de solución de esta investigación es CityLearn v3 propuesto: una extensión "
         "experimental de CityLearn v2 que implementa una capa MADRL cooperativa formulada como "
-        "Dec-POMDP y entrenada bajo el esquema CTDE. Esta propuesta permite la evaluación "
-        "comparativa rigurosa de cuatro backends MADRL —HAPPO, MASAC, MATD3 y MAAC— sobre tres "
-        "ejes de KPIs alineados a los objetivos específicos: flexibilidad energética (OE.1), "
-        "emisiones de CO2 (OE.2) y costos energéticos (OE.3)."
+        "Dec-POMDP y entrenada bajo el esquema CTDE. La comunidad inteligente simulada está "
+        "compuesta por 17 edificios (Building_1 … Building_17), donde cada edificio constituye "
+        "un agente MADRL independiente supervisado por la capa cooperativa. Esta propuesta permite "
+        "la evaluación comparativa rigurosa de cuatro backends MADRL —HAPPO, MASAC, MATD3 y MAAC— "
+        "sobre tres ejes de KPIs alineados a los objetivos específicos: flexibilidad energética "
+        "(OE.1), emisiones de CO2 (OE.2) y costos energéticos (OE.3)."
+    ))
+    out.append(xml_p(
+        "La correspondencia edificio → agente es 1:1 y directa: cada uno de los 17 edificios "
+        "tiene su propio actor descentralizado (política local) y comparte el crítico centralizado "
+        "durante el entrenamiento bajo CTDE. El vector de estado global S del Dec-POMDP es la "
+        "concatenación de las 17 observaciones locales (ctde_state = "
+        "'concatenated_local_observations'), accesible solo durante el entrenamiento. En la fase "
+        "de ejecución, cada actor actúa únicamente desde su observación local oi, sin comunicación "
+        "entre edificios."
     ))
     out.append(xml_p(
         "CityLearn v3 propuesto no es una versión oficial de CityLearn. Es una extensión "
         "experimental desarrollada en el marco de esta tesis, que mantiene compatibilidad con "
         "CityLearn v2 como entorno base y añade los componentes necesarios para la evaluación "
-        "comparativa de los cuatro algoritmos MADRL. La arquitectura propuesta se ilustra en "
-        "docs/ARQUITECTURA_CITYLEARN_V3_MADRL.png (véase Anexo 5)."
+        "comparativa. La arquitectura se ilustra en docs/ARQUITECTURA_CITYLEARN_V3_MADRL.png "
+        "(véase Anexo 5)."
     ))
     out.append(xml_p(
         "La ejecución experimental se realizó en la corrida citylearn_v3_madrl_official_full_cuda_v2 "
-        "con soporte CUDA. Se evaluaron los cuatro backends en tres escenarios independientes: "
-        "Escenario E1 (OE.1 — flexibilidad energética), Escenario E2 (OE.2 — emisiones de CO2) "
-        "y Escenario E3 (OE.3 — costos energéticos). Cada corrida produjo checkpoints, datos "
-        "de series temporales (timeseries.csv), trazas de entrenamiento (trace.csv) y reportes "
-        "de KPIs (results.json) organizados por backend y escenario."
+        "con soporte CUDA (PyTorch 2.8.0+cu126, 12 hilos). Se evaluaron los cuatro backends en "
+        "tres escenarios independientes: E1 (OE.1 — flexibilidad), E2 (OE.2 — CO2) y E3 "
+        "(OE.3 — costos). Cada corrida produjo checkpoints, series temporales (timeseries.csv), "
+        "trazas de entrenamiento (trace.csv) y reportes de KPIs (results.json)."
     ))
+    return out
+
+
+def seccion_32_config_17_agentes() -> list[str]:
+    """Subsección con la configuración real de 17 agentes extraída del config JSON."""
+    out: list[str] = []
+    out.append(xml_h("3.2.0 Configuración del sistema multiagente — 17 edificios / 17 agentes", 3))
+
+    out.append(xml_p(
+        "La Tabla C-0 resume la configuración canónica del sistema MADRL extraída del archivo "
+        "CityLearn/configs/citylearn_v3_madrl_training.json (versión 2026-05-05):"
+    ))
+
+    # Parámetros del sistema
+    out.append(xml_p("Parámetros del entorno y del sistema multiagente:", bold=True))
+    params = [
+        ("Dataset", "citylearn_challenge_2022_phase_all_plus_evs"),
+        ("Número de edificios (agentes)", "17  (Building_1 … Building_17)"),
+        ("Correspondencia edificio → agente", "1:1 — un actor descentralizado por edificio"),
+        ("Recursos DER por edificio", "BESS, PV, cargador EV con V2G, carga flexible (lavadora)"),
+        ("Formulación del problema", "Dec-POMDP  (central_agent = false)"),
+        ("Esquema de entrenamiento", "CTDE: crítico centralizado, actor descentralizado"),
+        ("Estado global S (entrenamiento)", "Concatenación de 17 observaciones locales"),
+        ("Observación local oi (ejecución)", "Demanda edificio i, SoC BESS, PV, SoC EV, precio, carbono"),
+        ("Espacio de acción (cont.)", "[-1, 1] → tasa carga/descarga BESS + potencia EV (HAPPO, MATD3)"),
+        ("Espacio de acción (disc.)", "3 bins discretizados (MASAC, MAAC) mapeados a CityLearn"),
+        ("Pasos por episodio", "8 760 pasos (1 año horario)"),
+        ("Episodios de entrenamiento", "5 episodios = 43 800 pasos totales"),
+        ("Agregación de recompensa", "Team mean (promedio de los 17 agentes)"),
+        ("Semilla aleatoria", "seed = 0 en todos los experimentos"),
+        ("Plataforma", "CUDA GPU, PyTorch 2.8.0+cu126, 12 hilos"),
+    ]
+    out.append(_header(["Parámetro", "Valor"]))
+    for k, v in params:
+        out.append(_row([k, v]))
+
+    # Pesos de recompensa por escenario
+    out.append(xml_p("Pesos de la función de recompensa multiobjetivo r(t) = w1·r_flex + w2·r_co2 + w3·r_cost:", bold=True))
+    out.append(_header(["Escenario", "w1 (flex)", "w2 (carbono)", "w3 (costo)", "Objetivo prioritario"]))
+    escenarios = [
+        ("E1 — OE.1", "0.70", "0.15", "0.15", "Flexibilidad energética"),
+        ("E2 — OE.2", "0.15", "0.70", "0.15", "Emisiones de CO2"),
+        ("E3 — OE.3", "0.25", "0.15", "0.60", "Costos energéticos"),
+    ]
+    for row in escenarios:
+        out.append(_row(list(row)))
+
+    # Hiperparámetros por backend
+    out.append(xml_p("Hiperparámetros de entrenamiento por backend MADRL:", bold=True))
+    out.append(_header(["Backend", "lr actor", "lr crítico", "gamma", "hidden", "Notas"]))
+    backends_hp = [
+        ("HAPPO",  "0.0005", "0.0005", "0.99", "384×384", "clip=0.2, gae_λ=0.95, share_param=false"),
+        ("MASAC",  "—",      "—",      "—",    "64 RNN",  "action_bins=3, buffer=2, entropy regulari."),
+        ("MATD3",  "0.0005", "0.0005", "0.99", "384×384", "batch=512, buffer=50000, tau=0.005"),
+        ("MAAC",   "0.0003", "0.001",  "0.99", "384×384", "attend_heads=4, batch=512, buffer=200000"),
+    ]
+    out.append(_header(["Backend", "lr actor", "lr crítico", "gamma", "hidden", "Notas"]))
+    for row in backends_hp:
+        out.append(_row(list(row)))
+
+    out.append(xml_p(
+        "Los 17 agentes operan simultáneamente en cada paso temporal. En HAPPO, las políticas "
+        "se actualizan de manera secuencial (agente 1 → agente 17) preservando la garantía de "
+        "monotonicidad. En MASAC y MAAC, los actores discretizados mapean los 3 bins de acción "
+        "al espacio continuo [-1, 1] de CityLearn v2. En MATD3, cada uno de los 17 actores tiene "
+        "dos redes críticas compartidas (twin critics) que reciben el estado global concatenado "
+        "de los 17 agentes durante el entrenamiento. En MAAC, el crítico de atención pondera las "
+        "contribuciones de los 16 edificios compañeros para estimar el valor del edificio i, "
+        "permitiendo coordinar dinámicamente la respuesta de demanda colectiva."
+    ))
+
     return out
 
 
@@ -613,15 +694,17 @@ def seccion_matriz_consistencia_real() -> list[str]:
     ))
     out.append(xml_p(
         "Muestra: Corrida experimental citylearn_v3_madrl_official_full_cuda_v2, seed=0. "
+        "Sistema multiagente: 17 edificios (Building_1 … Building_17) del dataset "
+        "citylearn_challenge_2022_phase_all_plus_evs; cada edificio = 1 agente MADRL. "
         "Diseño factorial: 4 backends MADRL (HAPPO, MASAC, MATD3, MAAC) × 3 escenarios "
         "(E1–OE.1 Flexibilidad, E2–OE.2 CO₂, E3–OE.3 Costos) = 12 corridas de evaluación. "
+        "Entrenamiento: 5 episodios × 8 760 pasos/episodio = 43 800 pasos totales por corrida. "
         "Checkpoints por backend: HAPPO=19, MASAC=3 (sub-entrenado), MATD3=34, MAAC=6. "
-        "Artefactos de evaluación: results.json (50 KPIs por corrida), "
-        "axis_baseline_comparison.csv (comparación control vs. baseline por KPI), "
-        "timeseries.csv (series temporales horarias completas). "
-        "Criterio de representatividad: los 12 experimentos cubren exhaustivamente el espacio "
-        "de comparación entre los cuatro backends candidatos sobre los tres ejes de KPIs "
-        "definidos por los objetivos específicos de la investigación."
+        "Artefactos: results.json (50 KPIs por corrida), "
+        "axis_baseline_comparison.csv (comparación control vs. baseline), "
+        "timeseries.csv (series horarias completas de los 17 agentes). "
+        "Criterio de representatividad: 12 experimentos cubren exhaustivamente el espacio "
+        "de comparación entre los cuatro backends sobre los tres ejes KPI."
     ))
 
     # ── METODOLOGÍA — KPIs POR EJE CON VALORES MEDIBLES ─────────────────────

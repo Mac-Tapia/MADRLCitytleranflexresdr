@@ -495,6 +495,9 @@ def build() -> str:
     # 3.2 Desarrollo de la propuesta
     P.append(h("3.2 Desarrollo de la propuesta de solución", 2))
 
+    # 3.2.0 — configuración de 17 agentes (datos reales del config JSON)
+    P += C3.seccion_32_config_17_agentes()
+
     P.append(h("3.2.1 Arquitectura CityLearn v3 propuesta", 3))
     P.append(p(
         "La arquitectura CityLearn v3 propuesto se compone de cinco capas: "

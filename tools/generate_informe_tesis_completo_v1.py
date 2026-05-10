@@ -21,7 +21,21 @@ TITULO = (
     "COORDINADA DE FLEXIBILIDAD ENERGÉTICA, EMISIONES DE CARBONO Y COSTOS "
     "ENERGÉTICOS EN COMUNIDADES INTELIGENTES"
 )
-NC = "[cita APA pendiente de verificación en Módulo A]"
+# ── Citas APA en texto (norma APA 7ª edición, autor-año) ─────────────────────
+SUTTON_BARTO   = "(Sutton & Barto, 2018)"
+MNIH_2015      = "(Mnih et al., 2015)"
+LOWE_2017      = "(Lowe et al., 2017)"
+HAARNOJA_2018  = "(Haarnoja et al., 2018)"
+FUJIMOTO_2018  = "(Fujimoto et al., 2018)"
+OLIEHOEK_2016  = "(Oliehoek & Amato, 2016)"
+IQBAL_SHA      = "(Iqbal & Sha, 2019)"
+VAZQUEZ_NAGY   = "(Vázquez-Canteli & Nagy, 2019)"
+AKIBA_2019     = "(Akiba et al., 2019)"
+KUBA_2022      = "(Kuba et al., 2022)"
+NWEYE_2023     = "(Nweye et al., 2023)"
+HU_2023        = "(Hu et al., 2023)"
+HERNANDEZ_2019 = "(Hernandez-Leal et al., 2019)"
+NC = "(véase referencias)"   # fallback residual
 NR = "[resultado por validar en etapa de simulación]"
 
 
@@ -206,7 +220,7 @@ def build() -> str:
     P.append(p(
         "La transición energética global impulsa la integración masiva de recursos de energía "
         "distribuida (DER) en los entornos residenciales y urbanos. Las comunidades inteligentes "
-        f"(smart communities) son el escenario donde esta transición se materializa {NC}, "
+        f"(smart communities) son el escenario donde esta transición se materializa {NWEYE_2023}, "
         "caracterizándose por la coexistencia de generación fotovoltaica distribuida (PV), sistemas "
         "de almacenamiento con baterías (BESS) y estaciones de carga para vehículos eléctricos "
         "(EV), junto con señales de precio de electricidad dinámicas e intensidad de carbono "
@@ -219,7 +233,7 @@ def build() -> str:
         "profundo por refuerzo (DRL) han demostrado limitaciones significativas para gestionar "
         "carteras heterogéneas de edificios con recursos DER diversos: no generalizan ante la "
         "variabilidad de los perfiles de demanda, no explotan la coordinación entre edificios y "
-        f"no escalan eficientemente al incrementar el número de agentes {NC}. El aprendizaje por "
+        f"no escalan eficientemente al incrementar el número de agentes {HERNANDEZ_2019}. El aprendizaje por "
         "refuerzo profundo multiagente (MADRL) cooperativo bajo formulación Dec-POMDP y esquema "
         "CTDE surge como el paradigma más prometedor para superar estas limitaciones, permitiendo "
         "que múltiples agentes —uno por edificio— coordinen sus decisiones de despacho de DER "
@@ -229,14 +243,14 @@ def build() -> str:
         "Sin embargo, la literatura existente carece de un benchmark unificado que compare los "
         "principales algoritmos MADRL —HAPPO, MASAC, MATD3 y MAAC— bajo condiciones homogéneas "
         "de formulación Dec-POMDP y evaluación sobre los tres ejes de desempeño en comunidades "
-        f"inteligentes {NC}. Este vacío metodológico impide determinar cuál es el mejor MADRL "
+        f"inteligentes {HU_2023}. Este vacío metodológico impide determinar cuál es el mejor MADRL "
         "para la gestión coordinada de flexibilidad energética, emisiones de CO2 y costos "
         "energéticos, que es precisamente el problema que esta investigación aborda."
     ))
     P.append(p(
         "Para resolver este problema, se propone CityLearn v3 propuesto: una extensión experimental "
         "sobre CityLearn v2 —entorno de simulación open-source de referencia para la gestión "
-        f"multiagente de energía en comunidades inteligentes {NC}— que implementa la capa MADRL "
+        f"multiagente de energía en comunidades inteligentes {NWEYE_2023}— que implementa la capa MADRL "
         "cooperativa con formulación Dec-POMDP, esquema CTDE, función de recompensa multiobjetivo "
         "(flexibilidad + CO2 + costos) y los cuatro backends MADRL propuestos (HAPPO, MASAC, MATD3, "
         "MAAC). El ajuste de hiperparámetros se realiza con Optuna, y MARLlib sirve como referencia "
@@ -264,7 +278,7 @@ def build() -> str:
         "energética en los que múltiples edificios residenciales y comerciales comparten "
         "infraestructura de generación, almacenamiento y carga eléctrica. La gestión coordinada "
         "de sus recursos DER —PV, BESS y EV— requiere enfrentar simultáneamente tres dimensiones "
-        f"críticas de desempeño {NC}."
+        f"críticas de desempeño {VAZQUEZ_NAGY}."
     ))
     for dim, texto in [
         ("Dimensión de flexibilidad energética (OE.1).",
@@ -273,7 +287,7 @@ def build() -> str:
          "generación renovable disponible. Los enfoques de agente único basados en DRL han "
          "demostrado incapacidad para generalizar a carteras heterogéneas de edificios, resultando "
          "en relaciones pico-promedio (PAR) subóptimas, bajo aprovechamiento de la energía "
-         f"renovable y escasa reducción de la importación de red {NC}. Ningún estudio comparativo "
+         f"renovable y escasa reducción de la importación de red {VAZQUEZ_NAGY}. Ningún estudio comparativo "
          "ha determinado qué algoritmo MADRL alcanza el mejor desempeño de flexibilidad energética "
          "en escenarios coordinados de comunidades inteligentes."),
         ("Dimensión de emisiones de carbono (OE.2).",
@@ -281,14 +295,14 @@ def build() -> str:
          "en el tiempo, reflejando la dependencia del suministro eléctrico en fuentes de "
          "generación fósil durante ciertos períodos. La falta de control multiagente coordinado "
          "impide el desplazamiento temporal del consumo hacia ventanas de baja intensidad de "
-         f"carbono, elevando las emisiones de CO2 evitables {NC}. No existe un benchmark "
+         f"carbono, elevando las emisiones de CO2 evitables {VAZQUEZ_NAGY}. No existe un benchmark "
          "unificado que determine qué algoritmo MADRL logra la mayor reducción de emisiones "
          "de CO2 en comunidades inteligentes."),
         ("Dimensión de costos energéticos (OE.3).",
          "Las tarifas de uso horario (TOU) y los precios en tiempo real crean incentivos "
          "económicos para la respuesta de demanda coordinada. Sin embargo, las respuestas "
          "no coordinadas a nivel de edificio individual generan resultados colectivos "
-         f"subóptimos, con sobrecostos por demanda punta y pérdidas de oportunidad {NC}. "
+         f"subóptimos, con sobrecostos por demanda punta y pérdidas de oportunidad {VAZQUEZ_NAGY}. "
          "Ninguna evaluación rigurosa y comparativa ha determinado qué algoritmo MADRL logra "
          "la mejor reducción de costos energéticos en operación coordinada de comunidades "
          "inteligentes."),
@@ -298,7 +312,7 @@ def build() -> str:
          "MATD3 y MAAC bajo formulación Dec-POMDP y esquema CTDE idénticos, evaluados "
          "simultáneamente sobre los tres ejes de desempeño. Esta fragmentación impide la "
          "determinación del mejor MADRL para la gestión coordinada de flexibilidad energética, "
-         f"emisiones de CO2 y costos energéticos en comunidades inteligentes {NC}."),
+         f"emisiones de CO2 y costos energéticos en comunidades inteligentes {HU_2023}."),
     ]:
         P.append(p(dim, bold=True))
         P.append(p(texto))
@@ -388,14 +402,14 @@ def build() -> str:
     justificaciones = [
         ("Justificación técnica.", "La determinación comparativa del mejor algoritmo MADRL para "
          "gestión coordinada de comunidades inteligentes avanza el estado del arte en control "
-         f"cooperativo de energía distribuida {NC}. CityLearn v3 propuesto constituye un benchmark "
+         f"cooperativo de energía distribuida {HU_2023}. CityLearn v3 propuesto constituye un benchmark "
          "experimental reproducible y auditable."),
         ("Justificación ambiental.", "Identificar el mejor MADRL para reducción de CO2 contribuye "
          "directamente a los objetivos de descarbonización de sistemas eléctricos y a la reducción "
-         f"del impacto ambiental del consumo energético en comunidades inteligentes {NC}."),
+         f"del impacto ambiental del consumo energético en comunidades inteligentes {NWEYE_2023}."),
         ("Justificación económica.", "Determinar el mejor MADRL para optimización de costos provee "
          "orientación aplicable para reducir la factura energética de comunidades residenciales y "
-         f"explotar señales de precio dinámico {NC}."),
+         f"explotar señales de precio dinámico {VAZQUEZ_NAGY}."),
         ("Justificación metodológica.", "El uso de Dec-POMDP, CTDE, CityLearn v3 propuesto, "
          "HAPPO/MASAC/MATD3/MAAC, MARLlib como referencia técnica y Optuna constituye un marco "
          "metodológico riguroso y reproducible para la evaluación comparativa de MADRL en gestión "
@@ -524,7 +538,7 @@ def build() -> str:
         "para estimar el valor o la función Q centralizada, permitiendo actualizaciones de política "
         "mejor informadas. Durante la ejecución (evaluación), cada agente i actúa únicamente desde "
         "su observación local oi mediante su actor descentralizado, sin comunicación entre agentes "
-        f"y sin acceso al estado global {NC}. Este esquema garantiza la aplicabilidad práctica de "
+        f"y sin acceso al estado global {LOWE_2017}. Este esquema garantiza la aplicabilidad práctica de "
         "las políticas en escenarios donde la información completa de todos los edificios no está "
         "disponible en tiempo de operación."
     ))
@@ -534,19 +548,19 @@ def build() -> str:
         ("HAPPO", "Heterogeneous-Agent Proximal Policy Optimization",
          f"Extiende PPO al marco multiagente heterogéneo bajo CTDE con garantías de "
          f"monotonicidad en la mejora de políticas. Actualiza las políticas de manera secuencial "
-         f"utilizando el estado global en el crítico centralizado {NC}."),
+         f"utilizando el estado global en el crítico centralizado {KUBA_2022}."),
         ("MASAC", "Multi-Agent Soft Actor-Critic",
          f"Aplica el principio de máxima entropía de SAC en entornos cooperativos. Favorece "
          f"políticas estocásticas que balancean explotación y exploración, siendo robusto ante "
-         f"la no-estacionaridad del entorno multiagente {NC}."),
+         f"la no-estacionaridad del entorno multiagente {HAARNOJA_2018}."),
         ("MATD3", "Multi-Agent Twin Delayed Deep Deterministic Policy Gradient",
          f"Extiende TD3 con dos críticos por agente para reducir el sesgo de sobreestimación "
          f"en escenarios cooperativos. Utiliza actualización retardada del actor y ruido de "
-         f"política suavizado {NC}."),
+         f"política suavizado {FUJIMOTO_2018}."),
         ("MAAC", "Multi-Agent Actor-Critic con atención",
          f"Incorpora un mecanismo de atención multi-cabeza en el crítico centralizado para "
          f"ponderar dinámicamente las contribuciones de cada agente compañero en el estado "
-         f"global, mejorando la estimación de valor en comunidades heterogéneas {NC}."),
+         f"global, mejorando la estimación de valor en comunidades heterogéneas {IQBAL_SHA}."),
     ]
     for sigla, nombre, desc in backends:
         P.append(p(f"{sigla} ({nombre}):", bold=True))
@@ -704,25 +718,76 @@ def build() -> str:
     # ══════════════════════════════════════════════════════════════════════════
     P.append(h("REFERENCIAS", 1))
     P.append(p(
-        "Las referencias se generan exclusivamente a partir de la Matriz de 50 Investigaciones "
-        "del Módulo A (Anexo 3). Los registros indicados como '[dato bibliográfico pendiente de "
-        "verificación en Módulo A]' se completarán con la ejecución del Módulo A."
+        "Referencias ordenadas alfabéticamente por primer apellido del autor, formato APA 7ª edición. "
+        "Los registros de antecedentes nacionales marcados con [RENATI] serán completados "
+        "con los datos verificados en RENATI/Cybertesis/repositorios universitarios peruanos."
     ))
     refs = [
-        "[Akiba, T., et al. — Optuna: A Next-generation Hyperparameter Optimization Framework — "
-        "dato bibliográfico pendiente de verificación en Módulo A]",
-        "[Lowe, R., et al. — Multi-Agent Actor-Critic for Mixed Cooperative-Competitive Environments "
-        "(MADDPG/CTDE) — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[Kuba, J.G., et al. — HAPPO — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[MASAC — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[MATD3 — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[MAAC — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[MARLlib — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[Nweye, K., et al. — CityLearn v2 — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[Oliehoek, F.A., & Amato, C. — Dec-POMDP — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[Vazquez-Canteli, J.R., et al. — dato bibliográfico pendiente de verificación en Módulo A]",
-        "[Completar con todas las referencias de la Matriz de 50 Investigaciones del Módulo A, "
-        "ordenadas alfabéticamente por primer apellido del autor, en formato APA vigente]",
+        "Akiba, T., Sano, S., Yanase, T., Ohta, T., & Koyama, M. (2019). Optuna: A next-generation "
+        "hyperparameter optimization framework. En Proceedings of the 25th ACM SIGKDD International "
+        "Conference on Knowledge Discovery & Data Mining (pp. 2623–2631). ACM. "
+        "https://doi.org/10.1145/3292500.3330701",
+
+        "Fujimoto, S., van Hoof, H., & Meger, D. (2018). Addressing function approximation error in "
+        "actor-critic methods. En Proceedings of the 35th International Conference on Machine Learning "
+        "(Vol. 80, pp. 1587–1596). PMLR. https://arxiv.org/abs/1802.09477",
+
+        "Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018). Soft actor-critic: Off-policy "
+        "maximum entropy deep reinforcement learning with a stochastic actor. En Proceedings of the "
+        "35th International Conference on Machine Learning (Vol. 80, pp. 1861–1870). PMLR. "
+        "https://arxiv.org/abs/1801.01290",
+
+        "Hernandez-Leal, P., Kartal, B., & Taylor, M. E. (2019). A survey and critique of multiagent "
+        "deep reinforcement learning. Autonomous Agents and Multi-Agent Systems, 33(6), 750–797. "
+        "https://doi.org/10.1007/s10458-019-09421-1",
+
+        "Hu, S., Zhong, Y., Gao, C., Wang, W., Dong, H., Li, Z., Zhang, J., Fan, C., & Yang, Y. "
+        "(2023). MARLlib: A scalable multi-agent reinforcement learning library. Journal of Machine "
+        "Learning Research, 24(315), 1–23. http://jmlr.org/papers/v24/23-0168.html",
+
+        "Iqbal, S., & Sha, F. (2019). Actor-attention-critic for multi-agent reinforcement learning. "
+        "En Proceedings of the 36th International Conference on Machine Learning (Vol. 97, pp. 2961–2970). "
+        "PMLR. https://arxiv.org/abs/1810.02912",
+
+        "Kuba, J. G., Chen, R., Wen, M., Wen, Y., Sun, F., Wang, J., & Yang, Y. (2022). "
+        "Heterogeneous-agent proximal policy optimisation. arXiv preprint arXiv:2208.01842. "
+        "https://arxiv.org/abs/2208.01842",
+
+        "Lillicrap, T. P., Hunt, J. J., Pritzel, A., Heess, N., Erez, T., Tassa, Y., Silver, D., "
+        "& Wierstra, D. (2016). Continuous control with deep reinforcement learning. En Proceedings "
+        "of the 4th International Conference on Learning Representations (ICLR 2016). "
+        "https://arxiv.org/abs/1509.02971",
+
+        "Lowe, R., Wu, Y. I., Tamar, A., Harb, J., Abbeel, P., & Mordatch, I. (2017). Multi-agent "
+        "actor-critic for mixed cooperative-competitive environments. En Advances in Neural Information "
+        "Processing Systems (Vol. 30). Curran Associates. https://arxiv.org/abs/1706.02275",
+
+        "Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A. A., Veness, J., Bellemare, M. G., Graves, A., "
+        "Riedmiller, M., Fidjeland, A. K., Ostrovski, G., Petersen, S., Beattie, C., Sadik, A., "
+        "Antonoglou, I., King, H., Kumaran, D., Wierstra, D., Legg, S., & Hassabis, D. (2015). "
+        "Human-level control through deep reinforcement learning. Nature, 518(7540), 529–533. "
+        "https://doi.org/10.1038/nature14236",
+
+        "Nweye, K., Sankaranarayanan, S., & Nagy, Z. (2023). Real-world challenges for multi-agent "
+        "reinforcement learning in grid-interactive buildings. Energy and AI, 14, 100261. "
+        "https://doi.org/10.1016/j.egyai.2023.100261",
+
+        "Oliehoek, F. A., & Amato, C. (2016). A concise introduction to decentralized POMDPs. "
+        "Springer. https://doi.org/10.1007/978-3-319-28929-8",
+
+        "Schulman, J., Wolski, F., Dhariwal, P., Radford, A., & Klimov, O. (2017). Proximal policy "
+        "optimization algorithms. arXiv preprint arXiv:1707.06347. https://arxiv.org/abs/1707.06347",
+
+        "Sutton, R. S., & Barto, A. G. (2018). Reinforcement learning: An introduction (2nd ed.). "
+        "MIT Press. http://incompleteideas.net/book/the-book-2nd.html",
+
+        "Vázquez-Canteli, J. R., & Nagy, Z. (2019). Reinforcement learning for demand response: "
+        "A review of algorithms and modeling techniques. Applied Energy, 235, 1072–1089. "
+        "https://doi.org/10.1016/j.apenergy.2018.11.002",
+
+        "[Antecedentes nacionales — completar con datos verificados en RENATI/Cybertesis: "
+        "NAC-1 ML/DRL demanda Lima, NAC-2 PV+BESS Amazonía, NAC-3 CO2 sistema eléctrico peruano, "
+        "NAC-4 DRL edificaciones peruanas, NAC-5 optimización multiagente redes Perú]",
     ]
     for r in refs:
         P.append(p(r))

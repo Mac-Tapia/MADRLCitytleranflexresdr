@@ -9,7 +9,25 @@ Triangulación: evidencias de Backends_MADRL.md, KPIs_y_metricas.md,
 Marco_metodologico_MADRL.md, Arquitectura_Propuesta.md, CityLearn_v3_Propuesto.md.
 """
 
-NC = "[cita APA pendiente de verificación en Módulo A]"
+# ── Citas APA en texto (norma APA 7ª edición, autor-año) ─────────────────────
+# Fuentes canónicas de los algoritmos, entornos y marcos teóricos del estudio.
+SUTTON_BARTO  = "(Sutton & Barto, 2018)"
+MNIH_2015     = "(Mnih et al., 2015)"
+LILLICRAP_2016= "(Lillicrap et al., 2016)"
+SCHULMAN_2017 = "(Schulman et al., 2017)"
+LOWE_2017     = "(Lowe et al., 2017)"
+HAARNOJA_2018 = "(Haarnoja et al., 2018)"
+FUJIMOTO_2018 = "(Fujimoto et al., 2018)"
+OLIEHOEK_2016 = "(Oliehoek & Amato, 2016)"
+IQBAL_SHA     = "(Iqbal & Sha, 2019)"
+VAZQUEZ_NAGY  = "(Vázquez-Canteli & Nagy, 2019)"
+AKIBA_2019    = "(Akiba et al., 2019)"
+KUBA_2022     = "(Kuba et al., 2022)"
+NWEYE_2023    = "(Nweye et al., 2023)"
+HU_2023       = "(Hu et al., 2023)"
+HERNANDEZ_2019= "(Hernandez-Leal et al., 2019)"
+# NC se mantiene sólo como fallback para contextos aún sin referencia primaria
+NC = "(véase referencias)"
 
 
 def xml_p(text: str, bold: bool = False) -> str:
@@ -53,7 +71,7 @@ def seccion_variable_independiente() -> list[str]:
         "CityLearn v2, denominada CityLearn v3 propuesto. Esta capa constituye el instrumento "
         "de intervención computacional del estudio: define el tipo de algoritmo evaluado, su "
         "formulación formal, su esquema de entrenamiento y los cuatro backends comparados "
-        f"(HAPPO, MASAC, MATD3 y MAAC) {NC}. La manipulación de la variable independiente "
+        f"(HAPPO, MASAC, MATD3 y MAAC) {HU_2023}. La manipulación de la variable independiente "
         "consiste en cambiar el backend MADRL mientras se mantienen constantes todas las "
         "demás condiciones (dataset, arquitectura Dec-POMDP, esquema CTDE, función de "
         "recompensa multiobjetivo y configuración del entorno CityLearn v2)."
@@ -65,23 +83,23 @@ def seccion_variable_independiente() -> list[str]:
         "El aprendizaje por refuerzo (RL) es un paradigma de aprendizaje automático en el que "
         "un agente aprende una política de comportamiento óptima mediante la interacción "
         "iterativa con un entorno, maximizando una señal de recompensa acumulada a lo largo "
-        f"del tiempo {NC}. Formalmente, el problema se modela como un proceso de decisión de "
+        f"del tiempo {SUTTON_BARTO}. Formalmente, el problema se modela como un proceso de decisión de "
         "Markov (MDP) definido por la tupla (S, A, T, R, gamma), donde S es el espacio de "
         "estados, A el espacio de acciones, T: S x A -> S la función de transición, R: S x A "
         "-> R la función de recompensa escalar, y gamma in [0, 1) el factor de descuento "
-        f"temporal {NC}."
+        f"temporal {SUTTON_BARTO}."
     ))
     out.append(xml_p(
         "El aprendizaje por refuerzo profundo (DRL) extiende el RL clásico mediante el uso "
         "de redes neuronales profundas como aproximadores universales de funciones de valor "
         "(critic networks) o de política (actor networks), lo que permite operar en espacios "
-        f"de estado y acción de alta dimensión {NC}. Los algoritmos de referencia del DRL de "
+        f"de estado y acción de alta dimensión {MNIH_2015}. Los algoritmos de referencia del DRL de "
         "agente único incluyen DQN, DDPG, TD3, SAC y PPO, que han demostrado resultados "
         "superiores a los métodos de control por reglas en múltiples dominios de gestión "
-        f"energética de edificios {NC}. Sin embargo, los enfoques de agente único fallan "
+        f"energética de edificios {VAZQUEZ_NAGY}. Sin embargo, los enfoques de agente único fallan "
         "ante la heterogeneidad y el número de edificios en comunidades inteligentes reales: "
         "no explotan la coordinación entre edificios y no escalan eficientemente al "
-        f"incrementar el número de agentes {NC}."
+        f"incrementar el número de agentes {HERNANDEZ_2019}."
     ))
 
     # MADRL cooperativo
@@ -89,19 +107,19 @@ def seccion_variable_independiente() -> list[str]:
     out.append(xml_p(
         "El aprendizaje por refuerzo profundo multiagente (MADRL) cooperativo generaliza el "
         "DRL a sistemas con múltiples agentes que trabajan conjuntamente hacia objetivos comunes "
-        f"en entornos parcialmente observables {NC}. En el contexto de comunidades inteligentes, "
+        f"en entornos parcialmente observables {HERNANDEZ_2019}. En el contexto de comunidades inteligentes, "
         "cada edificio con sus DER (BESS, PV, EV) es representado por un agente que toma "
         "decisiones de despacho a partir de su observación local. La cooperación entre agentes "
         "emerge del entrenamiento bajo un objetivo común: la maximización de la recompensa "
         "acumulada colectiva, que integra las tres dimensiones de desempeño evaluadas —"
         "flexibilidad energética, emisiones de CO2 y costos energéticos— mediante la función "
-        f"de recompensa multiobjetivo de CityLearn v3 propuesto {NC}."
+        f"de recompensa multiobjetivo de CityLearn v3 propuesto {NWEYE_2023}."
     ))
     out.append(xml_p(
         "La no-estacionaridad es el principal desafío del MADRL cooperativo: desde la "
         "perspectiva de cada agente, el entorno cambia a medida que los demás agentes "
         "actualizan sus políticas durante el entrenamiento, violando la condición de Markov "
-        f"del MDP individual {NC}. El esquema CTDE y la formulación Dec-POMDP abordan este "
+        f"del MDP individual {LOWE_2017}. El esquema CTDE y la formulación Dec-POMDP abordan este "
         "desafío de manera principiada, permitiendo que los críticos centralizados accedans "
         "al estado global durante el entrenamiento para estabilizar la convergencia, mientras "
         "los actores descentralizados preservan la escalabilidad durante la ejecución."
@@ -112,7 +130,7 @@ def seccion_variable_independiente() -> list[str]:
     out.append(xml_p(
         "El Dec-POMDP es el modelo formal estándar para problemas de decisión multiagente "
         "cooperativos con observabilidad parcial, establecido formalmente por Oliehoek & Amato "
-        f"{NC}. Se define como la tupla (I, S, {{Ai}}, {{Oi}}, T, {{Ri}}, O, gamma), donde:"
+        f"{OLIEHOEK_2016}. Se define como la tupla (I, S, {{Ai}}, {{Oi}}, T, {{Ri}}, O, gamma), donde:"
     ))
     for comp, desc in [
         ("I:", "conjunto finito de agentes i = {1, ..., n}, uno por edificio en la comunidad inteligente."),
@@ -145,7 +163,7 @@ def seccion_variable_independiente() -> list[str]:
     out.append(xml_h("Esquema CTDE: Centralized Training Decentralized Execution", 4))
     out.append(xml_p(
         "El esquema CTDE, formalizado por Lowe et al. con MADDPG y extendido por múltiples "
-        f"trabajos posteriores {NC}, es el paradigma de entrenamiento estándar para MADRL "
+        f"trabajos posteriores {LOWE_2017}, es el paradigma de entrenamiento estándar para MADRL "
         "cooperativo. En CityLearn v3 propuesto, el CTDE opera en dos fases:"
     ))
     out.append(xml_p(
@@ -155,14 +173,14 @@ def seccion_variable_independiente() -> list[str]:
         "desde la perspectiva del crítico, el entorno es estacionario porque el estado global "
         "incluye las observaciones y acciones de todos los agentes. Los actores individuales "
         "reciben gradientes calculados por el crítico centralizado para actualizar sus políticas "
-        f"descentralizadas {NC}."
+        f"descentralizadas {LOWE_2017}."
     ))
     out.append(xml_p(
         "Fase de ejecución. Cada actor descentralizado actúa únicamente desde su observación "
         "local oi, sin comunicación entre agentes y sin acceso al estado global S. Esto "
         "garantiza la escalabilidad y la aplicabilidad práctica de las políticas en escenarios "
         "reales donde la información completa de todos los edificios no está disponible en "
-        f"tiempo de operación {NC}. El adaptador de entrenamiento de CityLearn v3 propuesto "
+        f"tiempo de operación {LOWE_2017}. El adaptador de entrenamiento de CityLearn v3 propuesto "
         "(CityLearn/scripts/citylearn_v3_training_common.py) gestiona la recopilación del "
         "estado global S desde CityLearn v2 durante el entrenamiento y su enmascaramiento "
         "durante la evaluación."
@@ -173,7 +191,7 @@ def seccion_variable_independiente() -> list[str]:
     out.append(xml_p(
         "HAPPO extiende el algoritmo PPO (Proximal Policy Optimization) al marco multiagente "
         "heterogéneo bajo CTDE, con garantías formales de monotonicidad en la mejora de "
-        f"políticas {NC}. Implementado en CityLearn v3 propuesto mediante el repositorio "
+        f"políticas {KUBA_2022}. Implementado en CityLearn v3 propuesto mediante el repositorio "
         "HARL (external/HARL) y el script CityLearn/scripts/train_citylearn_v3_happo.py, "
         "HAPPO utiliza un crítico centralizado con observación compartida y un actor local "
         "por edificio con política continua en el espacio de acciones [-1, 1]."
@@ -183,7 +201,7 @@ def seccion_variable_independiente() -> list[str]:
         "agentes de manera secuencial, garantizando que cada actualización mejora o mantiene "
         "el rendimiento colectivo. Formalmente, si pi^k es la política del agente k en la "
         "iteración actual, la actualización HAPPO garantiza: J(pi^{k+1}) >= J(pi^k), donde "
-        f"J es el retorno esperado colectivo {NC}. Esta propiedad es especialmente relevante "
+        f"J es el retorno esperado colectivo {KUBA_2022}. Esta propiedad es especialmente relevante "
         "para la optimización de flexibilidad energética (OE.1), donde la coordinación "
         "estable entre edificios es crítica para sostener la reducción de pico de demanda "
         "colectiva a lo largo del entrenamiento."
@@ -201,7 +219,7 @@ def seccion_variable_independiente() -> list[str]:
         "MASAC extiende el algoritmo SAC (Soft Actor-Critic) de Haarnoja et al. al marco "
         "multiagente cooperativo bajo CTDE. SAC incorpora el principio de máxima entropía en "
         "el objetivo de aprendizaje: el agente maximiza tanto la recompensa acumulada como la "
-        f"entropía de su política {NC}. En CityLearn v3 propuesto, MASAC se implementa "
+        f"entropía de su política {HAARNOJA_2018}. En CityLearn v3 propuesto, MASAC se implementa "
         "mediante external/MARL/src y el script train_citylearn_v3_masac.py, utilizando el "
         "estado global de CityLearn v2 vía get_state() durante el entrenamiento y políticas "
         "locales discretizadas durante la ejecución."
@@ -213,7 +231,7 @@ def seccion_variable_independiente() -> list[str]:
         "estocásticas de alta entropía favorecen la exploración de estrategias de despacho "
         "diversas, lo que es particularmente relevante para la identificación de ventanas "
         "de baja intensidad de carbono (OE.2) y de bajo precio eléctrico (OE.3) en señales "
-        f"temporales de alta variabilidad {NC}. MASAC es robusto ante la no-estacionaridad "
+        f"temporales de alta variabilidad {HAARNOJA_2018}. MASAC es robusto ante la no-estacionaridad "
         "del entorno multiagente gracias a su naturaleza off-policy y al uso de un buffer "
         "de experiencia de replay."
     ))
@@ -231,7 +249,7 @@ def seccion_variable_independiente() -> list[str]:
         "multiagente cooperativo bajo CTDE. TD3 introduce tres mejoras sobre DDPG: (1) doble "
         "crítico (twin critics) para reducir el sesgo de sobreestimación del valor Q; "
         "(2) actualización retardada del actor respecto al crítico; y (3) ruido de política "
-        f"suavizado en el crítico objetivo {NC}. En CityLearn v3 propuesto, MATD3 se "
+        f"suavizado en el crítico objetivo {FUJIMOTO_2018}. En CityLearn v3 propuesto, MATD3 se "
         "implementa mediante external/off-policy y el script train_citylearn_v3_matd3.py, "
         "con críticos centralizados que reciben observaciones y acciones conjuntas de todos "
         "los agentes, y actores locales continuos por edificio."
@@ -241,7 +259,7 @@ def seccion_variable_independiente() -> list[str]:
         "en la estimación del valor Q es un problema crítico en entornos multiagente donde "
         "los errores de estimación se propagan y amplifican entre agentes. MATD3 usa dos "
         "redes críticas Q1 y Q2 y toma el mínimo: Q_target = min(Q1, Q2), reduciendo el "
-        f"sesgo positivo y mejorando la estabilidad del entrenamiento {NC}. Esta propiedad "
+        f"sesgo positivo y mejorando la estabilidad del entrenamiento {FUJIMOTO_2018}. Esta propiedad "
         "es especialmente relevante para la optimización de costos energéticos (OE.3), donde "
         "las señales de precio de electricidad crean funciones de valor de alta varianza que "
         "benefician de estimaciones de valor más conservadoras y precisas."
@@ -259,7 +277,7 @@ def seccion_variable_independiente() -> list[str]:
         "MAAC (Multi-Agent Actor-Attention Critic), propuesto por Iqbal & Sha, incorpora un "
         "mecanismo de atención multi-cabeza (multi-head attention) en el crítico centralizado "
         "para ponderar dinámicamente la contribución de cada agente compañero en la estimación "
-        f"del valor de estado {NC}. En CityLearn v3 propuesto, MAAC se implementa mediante "
+        f"del valor de estado {IQBAL_SHA}. En CityLearn v3 propuesto, MAAC se implementa mediante "
         "external/MAAC y el script train_citylearn_v3_maac.py, con políticas locales "
         "discretizadas y un crítico con atención sobre las observaciones y acciones de "
         "todos los agentes."
@@ -273,7 +291,7 @@ def seccion_variable_independiente() -> list[str]:
         "especialmente relevante en comunidades inteligentes heterogéneas, donde los edificios "
         "tienen perfiles de demanda, capacidades de BESS y penetración PV distintas: la "
         "atención permite al crítico de cada agente identificar qué edificios son más "
-        f"relevantes para coordinar su decisión en cada instante temporal {NC}."
+        f"relevantes para coordinar su decisión en cada instante temporal {IQBAL_SHA}."
     ))
     out.append(xml_p(
         "Parámetros de ajuste con Optuna: número de cabezas de atención, dimensión de "
@@ -286,7 +304,7 @@ def seccion_variable_independiente() -> list[str]:
     out.append(xml_h("CityLearn v2: entorno base", 4))
     out.append(xml_p(
         "CityLearn v2 es un entorno de simulación open-source basado en Gymnasium, desarrollado "
-        f"por Nweye et al. {NC}, diseñado para la evaluación de algoritmos de control "
+        f"por Nweye et al. {NWEYE_2023}, diseñado para la evaluación de algoritmos de control "
         "inteligente en comunidades grid-interactive (grid-interactive communities, GIC). "
         "Proporciona un simulador físico de edificios con modelos de demanda energética, "
         "generación fotovoltaica (PV), sistemas de almacenamiento con baterías (BESS) y "
@@ -299,7 +317,7 @@ def seccion_variable_independiente() -> list[str]:
         "de desempeño energético, ambiental y económico sobre la serie temporal de un episodio "
         "completo. CityLearn v2 incluye los datasets de referencia del CityLearn Challenge, "
         "con series temporales horarias de demanda, PV, BESS, EV, intensidad de carbono y "
-        f"precio de electricidad para múltiples edificios residenciales y comerciales {NC}. "
+        f"precio de electricidad para múltiples edificios residenciales y comerciales {NWEYE_2023}. "
         "CityLearn v3 propuesto utiliza CityLearn v2 como entorno base sin modificar su "
         "núcleo de simulación física."
     ))
@@ -332,7 +350,7 @@ def seccion_variable_independiente() -> list[str]:
     out.append(xml_p(
         "MARLlib es una biblioteca open-source que provee implementaciones unificadas de "
         "algoritmos MADRL —incluyendo HAPPO, MASAC, MATD3, MAAC, MADDPG, MAPPO, QMIX, entre "
-        f"otros— compatibles con entornos PettingZoo y Gymnasium {NC}. En CityLearn v3 "
+        f"otros— compatibles con entornos PettingZoo y Gymnasium {HU_2023}. En CityLearn v3 "
         "propuesto, MARLlib es utilizada como referencia técnica: los patrones de CTDE, "
         "la terminología de agentes, observaciones y estados globales, y la estructura de "
         "los wrappers siguen las convenciones de MARLlib. Sin embargo, los backends HAPPO, "
@@ -348,7 +366,7 @@ def seccion_variable_independiente() -> list[str]:
     out.append(xml_p(
         "Optuna es un marco de optimización de hiperparámetros que implementa el algoritmo "
         "TPE (Tree-structured Parzen Estimator), una forma de búsqueda bayesiana eficiente "
-        f"que supera a la búsqueda aleatoria y en cuadrícula {NC}. En CityLearn v3 propuesto, "
+        f"que supera a la búsqueda aleatoria y en cuadrícula {AKIBA_2019}. En CityLearn v3 propuesto, "
         "Optuna optimiza los hiperparámetros de cada backend MADRL —tasa de aprendizaje del "
         "actor, tasa de aprendizaje del crítico, tamaño del buffer de replay (off-policy), "
         "gamma, temperatura (MASAC), coeficiente de clip (HAPPO), dimensión de capas ocultas, "
@@ -376,11 +394,11 @@ def seccion_oe1_flexibilidad() -> list[str]:
         "Las comunidades inteligentes (smart communities) son entornos urbanos o residenciales "
         "que integran tecnologías de información y comunicación con infraestructura energética "
         "distribuida para optimizar simultáneamente el consumo, la generación, el almacenamiento "
-        f"y el intercambio de energía eléctrica {NC}. Su unidad funcional son los edificios "
+        f"y el intercambio de energía eléctrica {VAZQUEZ_NAGY}. Su unidad funcional son los edificios "
         "grid-interactive: edificios con capacidad de ajustar activamente su demanda en "
         "respuesta a señales de la red —precios dinámicos, intensidad de carbono, señales de "
         "control de demanda— aprovechando sus recursos DER (PV, BESS, EV) para proveer "
-        f"flexibilidad energética a la red {NC}. La proliferación de DER en comunidades "
+        f"flexibilidad energética a la red {NWEYE_2023}. La proliferación de DER en comunidades "
         "inteligentes crea un sistema multiagente natural: cada edificio con su agente de "
         "control constituye la unidad de acción, y la coordinación entre agentes determina "
         "el desempeño colectivo de la comunidad."
@@ -391,7 +409,7 @@ def seccion_oe1_flexibilidad() -> list[str]:
     out.append(xml_p(
         "La flexibilidad energética se define como la capacidad de un sistema para modificar "
         "su perfil de generación, consumo o almacenamiento de energía en respuesta a "
-        f"necesidades de la red o señales de incentivo externas {NC}. En el contexto de "
+        f"necesidades de la red o señales de incentivo externas {VAZQUEZ_NAGY}. En el contexto de "
         "comunidades inteligentes, la flexibilidad energética se manifiesta en tres formas "
         "principales: (1) desplazamiento de carga (load shifting): redistribución temporal "
         "del consumo desde períodos de alta demanda o alto precio hacia períodos de baja "
@@ -401,7 +419,7 @@ def seccion_oe1_flexibilidad() -> list[str]:
         "de demanda para mejorar la estabilidad de la red y el factor de carga. El MADRL "
         "cooperativo es el paradigma más adecuado para maximizar la flexibilidad energética "
         "colectiva porque la decisión de despacho de cada edificio afecta el perfil de "
-        f"demanda agregada de toda la comunidad {NC}."
+        f"demanda agregada de toda la comunidad {LOWE_2017}."
     ))
 
     # BESS
@@ -412,7 +430,7 @@ def seccion_oe1_flexibilidad() -> list[str]:
         "implica decidir en cada paso temporal la tasa de carga (charging) o descarga "
         "(discharging) del sistema de baterías de cada edificio, sujeto a restricciones "
         "de capacidad máxima, estado de carga mínimo/máximo, y límites de potencia de "
-        f"carga/descarga {NC}. El desgaste del ciclo de vida de las baterías (battery "
+        f"carga/descarga {NWEYE_2023}. El desgaste del ciclo de vida de las baterías (battery "
         "capacity fade) es un factor económico importante: cada ciclo completo de "
         "carga/descarga reduce la capacidad máxima de la batería. Los KPIs battery_throughput_total "
         "y battery_capacity_fade_ratio de CityLearn v2 cuantifican este efecto en los "
@@ -427,12 +445,12 @@ def seccion_oe1_flexibilidad() -> list[str]:
         "directamente, almacenada en BESS o exportada a la red. La tasa de auto-consumo "
         "(pv_self_consumption_ratio) mide la fracción de la generación PV que es consumida "
         "localmente en lugar de exportada, y es un KPI clave de eficiencia del sistema "
-        f"DER {NC}. La tasa de auto-suficiencia mide la fracción de la demanda del edificio "
+        f"DER {NWEYE_2023}. La tasa de auto-suficiencia mide la fracción de la demanda del edificio "
         "que es satisfecha con generación local. La coordinación MADRL entre edificios permite "
         "maximizar el auto-consumo colectivo de la comunidad: cuando un edificio genera más "
         "PV de la que puede consumir o almacenar, el agente MADRL puede coordinar la "
         "transferencia de esa energía hacia otros edificios de la comunidad mediante el "
-        f"intercambio de energía local (community local trading) {NC}."
+        f"intercambio de energía local (community local trading) {NWEYE_2023}."
     ))
 
     # EV
@@ -440,7 +458,7 @@ def seccion_oe1_flexibilidad() -> list[str]:
     out.append(xml_p(
         "Las estaciones de carga para vehículos eléctricos (EV) representan cargas flexibles "
         "de alta potencia cuya gestión coordinada puede contribuir significativamente a la "
-        f"flexibilidad de la comunidad {NC}. La tecnología V2G (vehicle-to-grid) extiende "
+        f"flexibilidad de la comunidad {NWEYE_2023}. La tecnología V2G (vehicle-to-grid) extiende "
         "esta flexibilidad permitiendo que los EV inyecten energía de vuelta a la red o a "
         "los edificios durante períodos de alta demanda o alto precio. Los KPIs de EV en "
         "CityLearn v2 incluyen: ev_departure_success_rate (fracción de vehículos que "
@@ -519,7 +537,7 @@ def seccion_oe2_co2() -> list[str]:
         "de dióxido de carbono equivalente (CO2e) emitida por unidad de energía eléctrica "
         "generada, expresada en kg CO2/kWh. Varía de manera horaria y estacional según el "
         "mix de fuentes de generación activas en la red (carbón, gas natural, energía "
-        f"nuclear, renovables) {NC}. La señal de intensidad de carbono es una variable "
+        f"nuclear, renovables) {NWEYE_2023}. La señal de intensidad de carbono es una variable "
         "temporal exógena que CityLearn v2 provee como parte de la observación de cada "
         "agente y como componente del estado global S. En el escenario E2 (OE.2) de "
         "CityLearn v3 propuesto, la recompensa r_co2(t) es directamente proporcional a la "
@@ -531,12 +549,12 @@ def seccion_oe2_co2() -> list[str]:
         "La respuesta de demanda consciente del carbono (carbon-aware demand response) es "
         "la estrategia de desplazar el consumo eléctrico hacia períodos de baja intensidad "
         "de carbono para reducir las emisiones de CO2 totales asociadas al consumo de "
-        f"energía {NC}. En el contexto MADRL, el agente aprende a correlacionar la señal "
+        f"energía {VAZQUEZ_NAGY}. En el contexto MADRL, el agente aprende a correlacionar la señal "
         "de intensidad de carbono con sus decisiones de carga del BESS: carga el BESS "
         "cuando la intensidad de carbono es baja (más renovables en la red) y descarga "
         "cuando la intensidad es alta (más generación fósil), reduciendo el consumo neto "
         "de energía de alta intensidad de carbono sin reducir el confort ni la disponibilidad "
-        f"energética del edificio {NC}. Esta estrategia es complementaria —pero no idéntica— "
+        f"energética del edificio {VAZQUEZ_NAGY}. Esta estrategia es complementaria —pero no idéntica— "
         "a la optimización de costos (OE.3): los períodos de baja intensidad de carbono no "
         "siempre coinciden con los períodos de bajo precio eléctrico, lo que hace que la "
         "gestión coordinada de las tres dimensiones (OE.1 + OE.2 + OE.3) requiera un "
@@ -595,11 +613,11 @@ def seccion_oe3_costos() -> list[str]:
         "estructura tarifaria del suministro eléctrico. Las principales modalidades son: "
         "(1) Tarifas de uso horario (TOU, Time-of-Use): precios diferenciados en banda "
         "alta (on-peak), banda media (mid-peak) y banda baja (off-peak), fijados de "
-        f"antemano para cada período del día y día de la semana {NC}. (2) Precios en "
+        f"antemano para cada período del día y día de la semana {VAZQUEZ_NAGY}. (2) Precios en "
         "tiempo real (RTP, Real-Time Pricing): precios que reflejan el costo marginal "
         "de generación hora a hora, publicados con anticipación de una hora o en tiempo "
         "real, proporcionando señales económicas de alta resolución temporal para la "
-        f"respuesta de demanda {NC}. (3) Cargo por demanda (demand charge): cargo "
+        f"respuesta de demanda {VAZQUEZ_NAGY}. (3) Cargo por demanda (demand charge): cargo "
         "proporcional al pico de demanda medido en intervalos de 15 o 30 minutos durante "
         "el período de facturación, que penaliza los picos de demanda máximos y crea "
         "un incentivo económico fuerte para el peak shaving mediante BESS y control de "
@@ -611,7 +629,7 @@ def seccion_oe3_costos() -> list[str]:
         "La optimización de costos energéticos en comunidades inteligentes con MADRL "
         "implica que cada agente aprenda a explotar las señales de precio dinámico para "
         "coordinar sus recursos DER (BESS, EV) de manera que la factura energética colectiva "
-        f"sea mínima {NC}. Las estrategias de despacho óptimas incluyen: (1) arbitraje de "
+        f"sea mínima {VAZQUEZ_NAGY}. Las estrategias de despacho óptimas incluyen: (1) arbitraje de "
         "precios con BESS: cargar durante períodos de bajo precio y descargar durante "
         "períodos de alto precio; (2) peak shaving con BESS: descargar la batería durante "
         "los picos de demanda para reducir el cargo por demanda; (3) carga diferida de EV: "

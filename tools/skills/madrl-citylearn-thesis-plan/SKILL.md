@@ -9,7 +9,7 @@ Use this project-local skill only inside this repository to create or update the
 
 Thesis reference title:
 
-> "Diseño y validación de un sistema eléctrico inteligente con control multiagente basado en aprendizaje por refuerzo profundo para el despacho óptimo bajo restricciones eléctricas y operación segura en el sistema eléctrico aislado de Iquitos, Loreto, Perú - 2026".
+> "Multi-Agente de Aprendizaje por Refuerzo Profundo para la Gestión Coordinada de Flexibilidad Energética, Emisiones de Carbono y Costos Energéticos en Comunidades Inteligentes".
 
 Do not add acronyms to the title.
 

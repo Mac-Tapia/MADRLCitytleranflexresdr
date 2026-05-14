@@ -250,6 +250,43 @@ Cada corrida contiene:
 - `figures/`
 - `figures/tables/`
 
+### Detalle por edificio
+
+Para no quedarse solo con el resumen distrital, las nuevas corridas guardan tablas especificas para los 17 edificios:
+
+- `building_behavior_summary.csv`: una fila por edificio con recompensa, accion, observacion, importacion/exportacion, costo, CO2, PV, bateria y EV/V2G.
+- `building_kpis.csv`: KPIs CityLearn v2 completos por edificio.
+- `building_observation_action_schema.csv`: nombres de observaciones y acciones activas por edificio/agente.
+- `building_trace_sample.csv`: muestra de pasos con acciones nombradas, observaciones clave y estado CTDE resumido.
+
+Tambien aparecen como Markdown en:
+
+```text
+outputs/.../<algoritmo>/<escenario>_seed_<seed>/figures/tables/
+```
+
+Para generar el reporte en una corrida ya existente:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\generate_citylearn_v3_building_detail_report.py `
+  --run-dir outputs\citylearn_v3_madrl_official_full_cuda_v2\masac\E1_seed_0
+```
+
+Ese modo usa `trace.csv` y muestra acciones/recompensas/observaciones disponibles. Para reconstruir importacion/exportacion fisica por edificio desde las acciones guardadas:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\generate_citylearn_v3_building_detail_report.py `
+  --run-dir outputs\citylearn_v3_madrl_official_full_cuda_v2\masac\E1_seed_0 `
+  --replay-actions `
+  --replay-episode last
+```
+
+El reporte queda en:
+
+```text
+outputs/.../<algoritmo>/<escenario>_seed_<seed>/building_detail_report/
+```
+
 ## Google Colab Pro
 
 El notebook incluye una celda preparada para entrenar en Google Colab Pro con GPU A100/L4/T4/V100:

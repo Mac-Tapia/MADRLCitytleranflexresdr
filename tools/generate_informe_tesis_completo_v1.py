@@ -617,6 +617,9 @@ def build() -> str:
     # ── 3.3.6 KPIs por edificio — 17 agentes (datos reales agent_reward_summary.csv)
     P += C3.seccion_33_kpis_por_edificio()
 
+    # ── 3.3.7 Estadística no paramétrica por eje y O.G. integrado
+    P += C3.seccion_33_analisis_estadistico_madrl()
+
     # ── 3.4 Discusión — basada en resultados reales
     P += C3.seccion_34_discusion()
 

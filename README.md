@@ -308,11 +308,15 @@ outputs/thesis_objective_evidence/
   matriz_consistencia_objetivos.csv
   matriz_operacionalizacion_variables.csv
   matriz_resultados_madrl.csv
+  scores_kpi_algoritmo_madrl.csv
+  analisis_estadistico_madrl.csv
+  comparaciones_por_pares_madrl.csv
+  hipotesis_estadisticas_madrl.csv
   thesis_skill_feed.json
   resumen_evidencia_tesis.md
 ```
 
-El notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` incluye la seccion **Thesis Objective Compliance and Skill Feeds** para regenerar este paquete, mostrar OE1/OE2/OE3 con estado de datos y cumplimiento, y visualizar las matrices que se usan como insumo del plan e informe de tesis. Los resultados faltantes se marcan como pendientes; si existe `official_full_status.json`, solo se cuentan como evidencia cuantitativa los jobs del launcher con `exit_code=0`.
+El paquete incluye pruebas no parametricas y tamanos de efecto para comparar algoritmos MADRL por OE1/OE2/OE3 y por O.G. integrado: Kruskal-Wallis, Mann-Whitney U, Cliff's delta, Vargha-Delaney A12, Cohen d, Hedges g, Levene/Brown-Forsythe y bootstrap CI 95%. El notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` incluye la seccion **Thesis Objective Compliance and Skill Feeds** para regenerar este paquete, mostrar OE1/OE2/OE3 con estado de datos y cumplimiento, y visualizar las matrices que se usan como insumo del plan e informe de tesis. Los resultados faltantes se marcan como pendientes; si existe `official_full_status.json`, solo se cuentan como evidencia cuantitativa los jobs del launcher con `exit_code=0`.
 
 ## Benchmark CityLearn v2
 

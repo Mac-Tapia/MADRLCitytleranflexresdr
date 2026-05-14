@@ -100,6 +100,54 @@ RANKING = {
     "MATD3": (4, 3, 4, 4, "Cuarto OE1 y OE3; ningún KPI de costo mejorado"),
 }
 
+# Contrastes estadísticos por eje, generados por
+# CityLearn/scripts/generate_thesis_objective_evidence.py.
+STATISTICAL_OMNIBUS = {
+    "OE1": {
+        "scenario": "E1",
+        "dimension": "Flexibilidad energética",
+        "kruskal_h": 14.908276599532002,
+        "kruskal_p": 0.0018967344563606868,
+        "brown_forsythe_p": 0.10888131372598224,
+        "best_by_median_gain": "MAAC",
+        "pairwise_with_best": "2/3 comparaciones Mann-Whitney U significativas",
+        "interpretation": "diferencias globales significativas entre MADRL para OE.1",
+    },
+    "OE2": {
+        "scenario": "E2",
+        "dimension": "Emisiones de CO2",
+        "kruskal_h": 24.80511830893922,
+        "kruskal_p": 1.69590822483918e-05,
+        "brown_forsythe_p": 0.002508106559795103,
+        "best_by_median_gain": "MAAC",
+        "pairwise_with_best": "3/3 comparaciones Mann-Whitney U significativas",
+        "interpretation": (
+            "diferencias globales significativas en KPIs de CO2, sin demostrar "
+            "reducción de CO2 porque todos los algoritmos tienen 0/5 KPIs mejorados"
+        ),
+    },
+    "OE3": {
+        "scenario": "E3",
+        "dimension": "Costos energéticos",
+        "kruskal_h": 41.09874126161765,
+        "kruskal_p": 6.231347574645308e-09,
+        "brown_forsythe_p": 0.5416689155494778,
+        "best_by_median_gain": "MAAC",
+        "pairwise_with_best": "3/3 comparaciones Mann-Whitney U significativas",
+        "interpretation": "diferencias globales significativas entre MADRL para OE.3",
+    },
+    "OG": {
+        "scenario": "E1+E2+E3",
+        "dimension": "Gestión coordinada integral",
+        "kruskal_h": 58.53214542755995,
+        "kruskal_p": 1.2099898737351743e-12,
+        "brown_forsythe_p": 0.09393882302794743,
+        "best_by_median_gain": "MAAC",
+        "pairwise_with_best": "3/3 comparaciones Mann-Whitney U significativas",
+        "interpretation": "diferencias globales significativas para el objetivo general integrado",
+    },
+}
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # HELPERS XML
@@ -647,6 +695,70 @@ def seccion_33_kpis_por_edificio() -> list[str]:
     for patron, desc in patrones:
         out.append(_row([patron, desc]))
 
+    return out
+
+
+def seccion_33_analisis_estadistico_madrl() -> list[str]:
+    """Contrastes no paramétricos por eje y para el objetivo general."""
+    out: list[str] = []
+    out.append(xml_h("3.3.7 Análisis estadístico MADRL por eje y objetivo general — pruebas ómnibus", 3))
+    out.append(xml_p(
+        "La evaluación estadística se reporta en cuatro bloques: OE.1, OE.2 y OE.3 por "
+        "separado, y un bloque O.G. integrado para el objetivo general. El bloque O.G. "
+        "mezcla los KPIs comparables de los tres ejes solo para responder la pregunta "
+        "general de qué MADRL presenta mejor desempeño coordinado integral; no sustituye "
+        "la lectura específica de cada eje."
+    ))
+    out.append(xml_p(
+        "Para cada eje se calcula un score KPI-normalizado contra baseline "
+        "(signed_relative_gain_vs_baseline, donde valores positivos favorecen al algoritmo), "
+        "y se aplica Kruskal-Wallis como prueba ómnibus multialgoritmo. Para O.G. se usa "
+        "el mismo score sobre el conjunto integrado de KPIs comparables de OE.1+OE.2+OE.3. "
+        "La homogeneidad de varianzas se evalúa con Levene/Brown-Forsythe centrado en la mediana. Las "
+        "comparaciones por pares dentro de cada bloque (OE.1, OE.2, OE.3 y O.G.) se reportan en "
+        "comparaciones_por_pares_madrl.csv con Mann-Whitney U, Cliff's delta, "
+        "Vargha-Delaney A12, Cohen d, Hedges g y bootstrap CI 95%."
+    ))
+    out.append(xml_p(
+        "Tabla 6. Pruebas ómnibus no paramétricas por eje MADRL y objetivo general.",
+        bold=True
+    ))
+    out.append(_header([
+        "Eje/O.G.",
+        "Escenario",
+        "Kruskal H",
+        "p Kruskal",
+        "p Brown-Forsythe",
+        "Mejor mediana",
+        "Mann-Whitney con mejor",
+        "Interpretación",
+    ]))
+    for axis in ("OE1", "OE2", "OE3", "OG"):
+        row = STATISTICAL_OMNIBUS[axis]
+        out.append(_row([
+            f"{axis} — {row['dimension']}",
+            row["scenario"],
+            f"{row['kruskal_h']:.4f}",
+            f"{row['kruskal_p']:.6g}",
+            f"{row['brown_forsythe_p']:.6g}",
+            row["best_by_median_gain"],
+            row["pairwise_with_best"],
+            row["interpretation"],
+        ]))
+    out.append(xml_p(
+        "La lectura estadística complementa, pero no reemplaza, la demostración principal "
+        "por KPIs mejorados frente al baseline. En OE.2, aunque los scores normalizados "
+        "detectan diferencias entre algoritmos, la hipótesis de reducción de CO2 no queda "
+        "demostrada cuantitativamente porque ningún algoritmo alcanza KPIs de CO2 mejorados "
+        "respecto al baseline. El bloque O.G. se interpreta únicamente como síntesis "
+        "estadística integral del ranking coordinado."
+    ))
+    out.append(xml_p(
+        "Evidencia generada: outputs/thesis_objective_evidence/analisis_estadistico_madrl.csv, "
+        "outputs/thesis_objective_evidence/comparaciones_por_pares_madrl.csv, "
+        "outputs/thesis_objective_evidence/scores_kpi_algoritmo_madrl.csv y "
+        "outputs/thesis_objective_evidence/hipotesis_estadisticas_madrl.csv."
+    ))
     return out
 
 

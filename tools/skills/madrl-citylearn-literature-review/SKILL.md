@@ -80,8 +80,7 @@ Use Spanish academic prose in third person. Maintain technical precision and avo
 Use `scripts/create_workbook_template.py` to create an empty workbook with the required sheets and headers:
 
 ```powershell
-python "C:\Users\Lenovo Legion\.agents\skills\madrl-citylearn-literature-review\scripts\create_workbook_template.py" --output revision_bibliografica_madrl_citylearn.xlsx
+python "tools\skills\madrl-citylearn-literature-review\scripts\create_workbook_template.py" --output revision_bibliografica_madrl_citylearn.xlsx
 ```
 
 Fill the workbook after evidence collection. The script is a template helper, not a substitute for verification.
-

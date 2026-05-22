@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uc3m"
+version = "1.0.0"
+description = "UC3M — Universal CityLearn v3 Modified: Meta-Dec-POMDP MADRL framework for smart energy communities"
+readme = "README_UC3M.md"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "MADRL Iquitos Team", email = "mac.tapia@unmsm.edu.pe" },
+]
+requires-python = ">=3.9"
+keywords = ["MARL", "MADRL", "CityLearn", "smart-grid", "energy", "reinforcement-learning"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Core runtime dependencies
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    # CityLearn v2 must be installed separately (local editable install)
+    # pip install -e ./CityLearn
+]
+
+[project.optional-dependencies]
+# Full training stack — install with: pip install uc3m[train]
+train = [
+    "torch>=2.0",
+    "pvlib>=0.10",
+]
+# Dataset generation — pip install uc3m[dataset]
+dataset = [
+    "pvlib>=0.10",
+    "requests>=2.28",
+    "tqdm>=4.65",
+]
+# All extras
+all = [
+    "torch>=2.0",
+    "pvlib>=0.10",
+    "requests>=2.28",
+    "tqdm>=4.65",
+]
+# Development / testing
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/uc3m"
+Repository = "https://github.com/your-org/uc3m"
+
+[tool.setuptools]
+packages = { find = { where = ["."], include = ["uc3m*"] } }
+
+[tool.setuptools.package-data]
+"uc3m" = ["py.typed"]
+
+# ── Pytest ────────────────────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-q --tb=short"
+
+# ── Coverage ──────────────────────────────────────────────────────────────────
+[tool.coverage.run]
+source = ["uc3m"]
+omit = ["tests/*", "tools/*", "external/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]

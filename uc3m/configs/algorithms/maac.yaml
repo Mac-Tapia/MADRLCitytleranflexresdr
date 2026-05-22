@@ -1,0 +1,30 @@
+# ╔════════════════════════════════════════════════════════╗
+# ║  MAAC — Multi-Actor Attention Critic                 ║
+# ║  external/MAAC backend                              ║
+# ╚════════════════════════════════════════════════════════╝
+
+defaults:
+  - iquitos
+
+training:
+  algorithm:       "MAAC"
+  harl_mode:       false
+  total_timesteps: 5_000_000
+
+network:
+  hidden_sizes:  [128, 128]
+  activation:    "leaky_relu"
+  # Attention head para el critic centralizado
+  attention_heads:  4
+  attend_heads:     4
+
+optim:
+  lr_actor:    1.0e-3
+  lr_critic:   1.0e-3
+  gamma:       0.99
+  tau:         0.01
+  alpha:       0.01           # entropy coefficient
+  buffer_size: 1_000_000
+  batch_size:  1024
+  warmup_steps: 10_000
+  reward_scale: 100.0         # escalado de recompensa para MAAC

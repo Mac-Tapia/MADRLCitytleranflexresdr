@@ -1,0 +1,27 @@
+# ╔════════════════════════════════════════════════════════╗
+# ║  MASAC — Multi-Agent Soft Actor-Critic               ║
+# ║  off-policy backend (external/off-policy)            ║
+# ╚════════════════════════════════════════════════════════╝
+
+defaults:
+  - iquitos
+
+training:
+  algorithm:        "MASAC"
+  harl_mode:        false     # off-policy usa dict API
+  total_timesteps:  5_000_000
+
+network:
+  hidden_sizes:  [256, 256]
+  activation:    "relu"
+
+optim:
+  lr_actor:    3.0e-4
+  lr_critic:   3.0e-4
+  gamma:       0.99
+  tau:         0.005          # soft update Polyak
+  alpha:       0.2            # entropy temperature (auto-tune si tune_alpha=true)
+  tune_alpha:  true
+  buffer_size: 1_000_000
+  batch_size:  256
+  warmup_steps: 10_000

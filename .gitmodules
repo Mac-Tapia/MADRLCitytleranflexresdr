@@ -17,3 +17,12 @@
 [submodule "external/MATD3implementation"]
 	path = external/MATD3implementation
 	url = https://github.com/JohannesAck/MATD3implementation.git
+[submodule "external/MicroGrids"]
+	path = external/MicroGrids
+	url = https://github.com/squoilin/MicroGrids.git
+[submodule "external/evcc"]
+	path = external/evcc
+	url = https://github.com/evcc-io/evcc.git
+[submodule "external/prosumpy"]
+	path = external/prosumpy
+	url = https://github.com/energy-modelling-toolkit/prosumpy.git

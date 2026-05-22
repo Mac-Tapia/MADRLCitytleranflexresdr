@@ -1,0 +1,28 @@
+# ╔════════════════════════════════════════════════════════╗
+# ║  MATD3 — Multi-Agent Twin Delayed DDPG               ║
+# ║  off-policy backend (external/off-policy)            ║
+# ╚════════════════════════════════════════════════════════╝
+
+defaults:
+  - iquitos
+
+training:
+  algorithm:       "MATD3"
+  harl_mode:       false
+  total_timesteps: 5_000_000
+
+network:
+  hidden_sizes: [256, 256]
+  activation:   "relu"
+
+optim:
+  lr_actor:       1.0e-3
+  lr_critic:      1.0e-3
+  gamma:          0.99
+  tau:            0.005
+  policy_noise:   0.2
+  noise_clip:     0.5
+  policy_freq:    2           # actualizar actor cada 2 pasos de critic
+  buffer_size:    1_000_000
+  batch_size:     256
+  warmup_steps:   10_000

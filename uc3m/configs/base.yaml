@@ -1,0 +1,88 @@
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║  UC3M Base Configuration — Framework Universal MADRL                   ║
+# ║  Capítulo IV — Meta-Dec-POMDP 11-ario (Def. 4.1)                       ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+#
+# Configuración base heredada por todas las instancias.
+# Override en archivos específicos de ciudad / algoritmo.
+
+# ── Identificación del experimento ────────────────────────────────────────
+experiment:
+  name:    "uc3m_base"
+  version: "1.0.0"
+  seed:    42
+
+# ── Dataset CityLearn v2 ──────────────────────────────────────────────────
+dataset:
+  schema_path: null    # sobreescribir en config específica
+  name:        "unknown"
+  n_buildings: null    # inferido automáticamente del schema
+
+# ── Clima BACT (Teor. 4.10 — universalidad geográfica) ───────────────────
+climate:
+  lat:         0.0
+  lon:         0.0
+  alt_m:       0.0
+  t_avg_c:     20.0
+  hr_avg_pct:  60.0
+  ghi_avg_wm2: 500.0
+  koppen:      "Unknown"
+
+# ── Función de recompensa 7-dimensional (§4.3) ────────────────────────────
+reward:
+  # Pesos λ del simplex (Σ = 1). Default del documento §4.3.
+  lambdas: [0.25, 0.25, 0.20, 0.10, 0.05, 0.10, 0.05]
+  # Baselines de normalización RBC
+  baseline:
+    co2_kgperkwh:      0.550   # factor genérico (override en config ciudad)
+    cost_usd_per_kwh:  0.28
+    peak_kw:           500.0
+    discomfort_c:      2.0
+    soh_loss_per_h:    1.0e-5
+    outage_load_kw:    50.0
+    acs_cop_base:      0.85
+
+# ── Hiperparámetros de entrenamiento ──────────────────────────────────────
+training:
+  algorithm:        "HAPPO"       # overrideado en config algoritmo
+  total_timesteps:  5_000_000
+  n_episodes:       1000
+  episode_length:   8760          # 1 año = 8 760 horas
+  eval_interval:    50            # evaluar cada N episodios
+  save_interval:    100
+  harl_mode:        true          # HAPPO/HATRPO/HATD3/HASAC requieren true
+  n_rollout_threads: 1
+
+# ── Redes neuronales (valores por defecto) ────────────────────────────────
+network:
+  hidden_sizes:   [256, 256]
+  activation:     "relu"
+  use_orthogonal: true
+  gain:           0.01
+
+# ── Optimización ──────────────────────────────────────────────────────────
+optim:
+  lr_actor:    3.0e-4
+  lr_critic:   3.0e-4
+  gamma:       0.99
+  gae_lambda:  0.95
+  clip_param:  0.2
+  entropy_coef: 0.01
+  max_grad_norm: 10.0
+
+# ── HPHI y métricas Pareto (§4.7) ────────────────────────────────────────
+hphi:
+  n_obj:   7
+  epsilon: 0.1      # para ε-cobertura
+
+# ── Logging ───────────────────────────────────────────────────────────────
+logging:
+  backend:     "console"   # "wandb" | "mlflow" | "console"
+  log_dir:     "logs/uc3m"
+  run_name:    null        # auto-generado si null
+  project:     "UC3M-MADRL"
+
+# ── Checkpoints ───────────────────────────────────────────────────────────
+checkpoints:
+  dir:        "checkpoints"
+  keep_last:  5

@@ -11,19 +11,27 @@ Verificación completa del cálculo de solar_generation:
   7. Consistencia estacional (variación mensual GHI Iquitos ~10%)
 """
 
+import sys
 import math
 import pvlib
 import pandas as pd
 import numpy as np
 
+from buildingcsv_inputs import load_building_inventory
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except AttributeError:
+    pass
+
 # ── Constantes del proyecto ──────────────────────────────────────────────────
-AREA_TECHADA = {
+AREA_TECHADA_FALLBACK = {
     1: 14000, 2: 8000,  3: 6000,  4: 2500,  5: 9000,
     6: 20637, 7: 8300,  8: 21000, 9: 3500,  10: 5000,
     11: 12000,12: 6000, 13: 3000, 14: 5000, 15: 2500,
     16: 6500, 17: 5200,
 }
-NOMBRES = {
+NOMBRES_FALLBACK = {
     1: "Electro Oriente S.A.",     2: "Complejo Champios",
     3: "Aeropuerto IQT",           4: "Hiperbodega Precio UNO",
     5: "Hotel El Dorado Plaza",    6: "Mall Aventura Iquitos",
@@ -38,6 +46,20 @@ AREA_UTIL_FACTOR = 0.63  # 0.70 techo útil × 0.90 packing
 MPS = 15                  # módulos por string: 15×64.60V=969V ≤ 1000V (IEC 61730)
 LAT, LON = -3.7491, -73.2538
 TZ = "America/Lima"
+
+
+def load_solar_inventory() -> tuple[dict[int, float], dict[int, str]]:
+    try:
+        inventory = load_building_inventory()
+    except FileNotFoundError:
+        return AREA_TECHADA_FALLBACK, NOMBRES_FALLBACK
+    return (
+        {bid: meta.area_techada_m2 for bid, meta in inventory.items()},
+        {bid: meta.name for bid, meta in inventory.items()},
+    )
+
+
+AREA_TECHADA, NOMBRES = load_solar_inventory()
 
 # ── 1. Módulo Sandia seleccionado ────────────────────────────────────────────
 print("=" * 80)
@@ -133,7 +155,7 @@ header = (
 )
 print(header)
 print("-" * 75)
-for bid in range(1, 18):
+for bid in range(2, 18):
     at    = AREA_TECHADA[bid]
     au    = at * AREA_UTIL_FACTOR
     n_mod = max(1, int(au // MP.Area))
@@ -165,7 +187,7 @@ header2 = (
 print(header2)
 print("-" * 60)
 all_ok = True
-for bid in range(1, 18):
+for bid in range(2, 18):
     at    = AREA_TECHADA[bid]
     au    = at * AREA_UTIL_FACTOR
     n_mod = max(1, int(au // MP.Area))
@@ -173,7 +195,7 @@ for bid in range(1, 18):
 
     csv_path = f"CityLearn/data/datasets/citylearn_iquitos_2023_2025/Building_{bid}.csv"
     df = pd.read_csv(csv_path)
-    ann_kwh = df["solar_generation"].sum() / 3  # promedio anual (3 años)
+    ann_kwh = df["solar_generation"].sum() * pdc / 1000 / 3  # promedio anual (3 años)
     kwh_kwp_day = ann_kwh / pdc / 365
 
     ok = 2.5 <= kwh_kwp_day <= 6.5  # rango amplio (incluye días nublados)
@@ -192,11 +214,14 @@ else:
 # ── 6. Perfil horario de un día soleado representativo ──────────────────────
 print()
 print("=" * 80)
-print("6. PERFIL HORARIO solar_generation — Building_1 (día soleado típico)")
+print("6. PERFIL HORARIO solar_generation — Building_2 (día soleado típico)")
 print("=" * 80)
-df1 = pd.read_csv("CityLearn/data/datasets/citylearn_iquitos_2023_2025/Building_1.csv")
+df1 = pd.read_csv("CityLearn/data/datasets/citylearn_iquitos_2023_2025/Building_2.csv")
 # Buscar un día de alta generación en 2024 (filas 8760–17543)
-solar_b1  = df1["solar_generation"].values
+area_b1 = AREA_TECHADA[2] * AREA_UTIL_FACTOR
+n_mod_b1 = max(1, int(area_b1 // MP.Area))
+pdc_b1 = n_mod_b1 * pmp_w / 1000
+solar_b1 = df1["solar_generation"].values * pdc_b1 / 1000
 # Buscar el mejor DÍA CALENDARIO de 2024 (inicio siempre en medianoche)
 # 2024 comienza en row 8760; 366 días × 24 h = 8784 rows
 best_day_start = 8760

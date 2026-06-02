@@ -20,6 +20,7 @@ from distill_building_loads import (
     compute_cop_array,
     compute_managed_energy,
     build_month_year_index,
+    forecast_missing_measurements,
     ETA_BY_BLDG,
     T_TARGET,
     COP_CLIP_LOW,
@@ -28,6 +29,7 @@ from distill_building_loads import (
     MEDIDAS_REALES,
     BUILDINGS_WITH_DATA,
 )
+from buildingcsv_inputs import load_building_inventory, load_monthly_measurements
 
 
 class TestComputeCOPArray:
@@ -177,64 +179,58 @@ class TestBuildMonthYearIndex:
         assert len(df_out) == n
 
 
-class TestProportionalScaling:
-    """Tests de la lógica de escala proporcional — núcleo del algoritmo."""
+class TestBuildingCsvInputs:
+    """Tests para los insumos buildingcsv usados por la destilacion."""
 
-    def test_scale_factor_exact(self):
-        """scale = E_medido / (E_gest + E_ns_orig) es exacto."""
-        e_gest  = 300_000.0
-        e_ns    = 182_735.0
-        e_med   = 482_735.0   # medición real B1
-        total_syn = e_gest + e_ns
-        scale = e_med / total_syn
-        # Verificar que la escala sea la correcta
-        assert scale == pytest.approx(e_med / total_syn, rel=1e-9)
+    def test_inventory_source_of_truth(self):
+        inventory = load_building_inventory()
+        assert len(inventory) == 17
+        assert inventory[2].name == "MUNICIPALIDAD DISTRITAL DE SAN JUAN BAUTISTA"
+        assert inventory[5].area_techada_m2 == pytest.approx(1141.89)
+        assert inventory[17].sistemas_refrigeracion_grandes == "Scientific Ultra-Freezers (-80C)"
 
-    def test_scale_preserves_proportions(self):
-        """cd_nuevo/nsl_nuevo = cd_orig/nsl_orig (proporciones conservadas)."""
-        cd_orig  = np.array([100.0, 200.0, 150.0])
-        nsl_orig = np.array([50.0,  80.0,  60.0])
-        scale    = 0.75
-        cd_new   = cd_orig  * scale
-        nsl_new  = nsl_orig * scale
-        ratio_orig = cd_orig / nsl_orig
-        ratio_new  = cd_new  / nsl_new
-        assert np.allclose(ratio_orig, ratio_new)
+    def test_monthly_parser_ignores_b04_blank_rows(self):
+        measurements = load_monthly_measurements()
+        b04 = measurements[measurements["building_id"] == 4]
+        assert len(b04) == 36
+        assert b04["energia_total_kwh"].sum() == pytest.approx(4_047_486.86, abs=0.01)
 
-    def test_scale_zero_protected(self):
-        """Si E_total_syn = 0, scale = 1.0 (sin división por cero)."""
-        e_total_syn = 0.0
-        e_med       = 500.0
-        scale = e_med / e_total_syn if e_total_syn > 0 else 1.0
-        assert scale == 1.0
+    def test_monthly_parser_handles_b09_blank_column(self):
+        measurements = load_monthly_measurements()
+        jan = measurements[
+            (measurements["building_id"] == 9)
+            & (measurements["year"] == 2023)
+            & (measurements["month"] == 1)
+        ].iloc[0]
+        assert jan["energia_punta_kwh"] == pytest.approx(562.0909)
+        assert jan["energia_fuera_punta_kwh"] == pytest.approx(2352.4543)
+        assert jan["energia_total_kwh"] == pytest.approx(2914.5452)
 
-    def test_scale_underestimation(self):
-        """scale > 1 cuando sintético subestima (scale-up)."""
-        e_gest  = 200_000.0
-        e_ns    = 100_000.0
-        e_med   = 400_000.0   # medido es más alto → scale > 1
-        total_syn = e_gest + e_ns
-        scale = e_med / total_syn
-        assert scale > 1.0
+    def test_b06_has_only_measured_operating_months(self):
+        measurements = load_monthly_measurements()
+        b06 = measurements[measurements["building_id"] == 6]
+        assert len(b06) == 28
+        assert not ((b06["year"] == 2023) & (b06["month"] < 9)).any()
 
-    def test_scale_overestimation(self):
-        """scale < 1 cuando sintético sobreestima (scale-down)."""
-        # B7 UNAP: sintético 2.6x → scale ≈ 0.38
-        e_gest  = 25_000.0
-        e_ns    = 9_000.0
-        e_med   = 13_089.0   # medición real
-        total_syn = e_gest + e_ns
-        scale = e_med / total_syn
-        assert scale < 1.0
-        assert 0.0 < scale < 1.0   # nunca negativo
+    def test_forecast_completes_b06_missing_2023_months(self):
+        raw = load_monthly_measurements()
+        completed = forecast_missing_measurements(raw)
+        b06 = completed[completed["building_id"] == 6]
+        forecast = b06[b06["record_type"] == "forecast"]
+        assert len(b06) == 36
+        assert len(forecast) == 8
+        assert set(forecast["year"]) == {2023}
+        assert set(forecast["month"]) == set(range(1, 9))
+        assert (forecast["energia_total_kwh"] > 0).all()
+        assert (forecast["forecast_method"] == "calendar_month_mean_overlap_scaled").all()
 
 
 class TestMedidasReales:
     """Tests de configuración del dict MEDIDAS_REALES."""
 
     def test_all_buildings_present(self):
-        """MEDIDAS_REALES tiene los 9 edificios esperados."""
-        expected = {1, 7, 8, 10, 11, 12, 13, 14, 15}
+        """MEDIDAS_REALES tiene B02-B17 y excluye B01."""
+        expected = set(range(2, 18))
         assert set(MEDIDAS_REALES.keys()) == expected
 
     def test_buildings_with_data_list(self):
@@ -248,22 +244,23 @@ class TestMedidasReales:
                 for month, kwh in months.items():
                     assert kwh > 0, f"B{bldg_id} {year}-{month:02d}: kWh={kwh}"
 
-    def test_three_years_per_building(self):
-        """Cada edificio tiene datos para 2023, 2024, 2025."""
+    def test_three_years_per_building_when_available(self):
+        """Cada edificio tiene datos 2023-2025; B06 empieza en setiembre 2023."""
         for bldg_id, years in MEDIDAS_REALES.items():
             assert 2023 in years, f"B{bldg_id} sin datos 2023"
             assert 2024 in years, f"B{bldg_id} sin datos 2024"
             assert 2025 in years, f"B{bldg_id} sin datos 2025"
 
-    def test_12_months_per_year(self):
-        """Cada año tiene 12 meses."""
+    def test_completed_month_counts(self):
+        """La destilacion completa todos los edificios B02-B17 a 36 meses."""
         for bldg_id, years in MEDIDAS_REALES.items():
-            for year, months in years.items():
-                assert len(months) == 12, f"B{bldg_id} {year}: {len(months)} meses"
+            count = sum(len(months) for months in years.values())
+            assert count == 36, f"B{bldg_id}: {count} meses"
 
     def test_eta_by_bldg_keys_match(self):
-        """ETA_BY_BLDG tiene exactamente los mismos edificios que MEDIDAS_REALES."""
-        assert set(ETA_BY_BLDG.keys()) == set(MEDIDAS_REALES.keys())
+        """ETA_BY_BLDG cubre los edificios con medicion y tambien B01."""
+        assert set(MEDIDAS_REALES.keys()).issubset(set(ETA_BY_BLDG.keys()))
+        assert 1 in ETA_BY_BLDG
 
     def test_eta_values_plausible(self):
         """Los factores Carnot eta están en un rango razonable (0.1, 0.3)."""
@@ -280,7 +277,7 @@ class TestMedidasReales:
 class TestCalibrationIntegration:
     """Tests de calibración que requieren el dataset completo."""
 
-    @pytest.mark.parametrize("bldg_id", [1, 7, 8, 10, 11, 12, 13, 14, 15])
+    @pytest.mark.parametrize("bldg_id", list(range(2, 18)))
     def test_calibration_delta_near_zero(self, bldg_id, dataset_dir):
         """Después de calibrar, Δ% ≈ 0 para todos los edificios."""
         from distill_building_loads import calibrate_building, load_schema, load_weather
@@ -302,8 +299,8 @@ class TestCalibrationIntegration:
             f"B{bldg_id}: Δ% máximo = {max_delta:.4f}% — debería ser < 0.01%"
         )
 
-    def test_scale_factors_plausible(self, dataset_dir):
-        """Los factores de escala están dentro de rangos esperados por edificio."""
+    def test_building_1_is_not_distilled(self, dataset_dir):
+        """B01 se mantiene fuera de la destilacion porque no existe B_01.csv."""
         from distill_building_loads import calibrate_building, load_schema, load_weather
 
         if not (dataset_dir / "Building_1.csv").exists():
@@ -312,17 +309,8 @@ class TestCalibrationIntegration:
         schema = load_schema()
         t_out  = load_weather()
 
-        # B1 ELOR: sintético casi exacto → scale ≈ 1.0
         report = calibrate_building(1, schema, t_out, dry_run=True)
-        if not report.empty:
-            assert report["scale_factor"].mean() == pytest.approx(1.0, abs=0.20)
-
-        # B7 UNAP: escala plausible (dataset calibrado → ≈1.0; sin calibrar → ≈0.38)
-        if (dataset_dir / "Building_7.csv").exists():
-            report7 = calibrate_building(7, schema, t_out, dry_run=True)
-            if not report7.empty:
-                mean_scale = report7["scale_factor"].mean()
-                assert 0.0 < mean_scale <= 1.5
+        assert report.empty
 
     def test_report_has_required_columns(self, dataset_dir):
         """El reporte de calibración tiene todas las columnas esperadas."""
@@ -338,6 +326,8 @@ class TestCalibrationIntegration:
         required_cols = {
             "year", "mes", "E_medido_kWh", "E_total_syn",
             "E_gest_kWh", "E_ns_orig", "scale_factor",
-            "E_cal_tot", "delta_%",
+            "E_cal_tot", "delta_%", "E_punta_medido_kWh",
+            "E_fuera_punta_medido_kWh", "E_non_shiftable_cal_kWh",
+            "E_cooling_elec_cal_kWh", "E_dhw_elec_cal_kWh",
         }
         assert required_cols.issubset(set(report.columns))

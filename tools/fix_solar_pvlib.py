@@ -1,7 +1,7 @@
 """
 fix_solar_pvlib.py
 ==================
-Regenera la columna solar_generation de los 17 Building_X.csv usando pvlib ModelChain SAPM.
+Regenera la columna solar_generation de Building_2.csv..Building_17.csv usando pvlib ModelChain SAPM.
 
 Problema resuelto:
   - La caché de 2023.parquet estaba corrupta (GHI=0 en todos los registros)
@@ -12,7 +12,8 @@ Solución:
   - Re-descarga 2023 desde NASA POWER y valida los datos
   - Usa pvlib.modelchain.ModelChain con modelo SAPM (Sandia) para física completa:
     AOI losses + spectral correction + temperature derating
-  - Actualiza SOLO la columna solar_generation en cada Building_X.csv
+  - Actualiza SOLO la columna solar_generation en Building_2.csv..Building_17.csv
+  - Preserva Building_1.csv porque no existe B_01.csv mensual para esta integracion
   - Preserva todas las demás columnas intactas
 
 Dependencias:
@@ -30,6 +31,8 @@ import numpy as np
 import pandas as pd
 import pvlib
 
+from buildingcsv_inputs import load_building_inventory
+
 # ─── Paths ───────────────────────────────────────────────────────────────────
 BASE_DIR    = Path(__file__).parent.parent
 DATASET_DIR = BASE_DIR / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
@@ -44,17 +47,29 @@ LOCATION = pvlib.location.Location(latitude=LAT, longitude=LON, tz=TZ, altitude=
 TEMP_PARAMS = pvlib.temperature.TEMPERATURE_MODEL_PARAMETERS["sapm"]["open_rack_glass_glass"]
 
 # ─── Área techada por edificio (m²) ──────────────────────────────────────────
-AREA_TECHADA = {
+AREA_TECHADA_FALLBACK = {
     1:  14000, 2:  8000,  3:  6000,  4:  2500,  5:  9000,
     6:  20637, 7:  8300,  8:  21000, 9:  3500,  10: 5000,
     11: 12000, 12: 6000,  13: 3000,  14: 5000,  15: 2500,
     16: 6500,  17: 5200,
 }
 MODULES_PER_STRING = 15  # Voc_string < 1000 V (IEC 61730): 15×64.60V=969V ≤ 1000V
-AREA_UTIL_FACTOR   = 0.65  # 0.70 techo útil × 0.93 packing
+AREA_UTIL_FACTOR   = 0.63  # 0.70 techo útil × 0.90 packing
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("fix_solar")
+
+
+def load_area_techada() -> dict[int, float]:
+    """Read roof areas from building.csv, with the historical table as fallback."""
+    try:
+        inventory = load_building_inventory()
+    except FileNotFoundError:
+        return AREA_TECHADA_FALLBACK
+    return {bid: meta.area_techada_m2 for bid, meta in inventory.items()}
+
+
+AREA_TECHADA = load_area_techada()
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -271,6 +286,7 @@ def calc_solar_pvlib(
     inverter_params: dict,
     n_inverters: int,
     bldg_id: int,
+    pdc_kw: float,
 ) -> pd.Series:
     """
     Calcula generación AC horaria (kWh/h) con pvlib ModelChain SAPM.
@@ -305,25 +321,27 @@ def calc_solar_pvlib(
 
     mc.run_model(weather)
 
-    # Escalar por n_inverters (generación aditiva de inversores en paralelo)
+    # Escalar por n_inverters (generacion aditiva) y normalizar segun CityLearn:
+    # solar_generation debe estar en W/kW; schema.pv.nominal_power escala a kWh.
     ac_unit = (mc.results.ac / 1000.0).clip(lower=0.0).fillna(0.0)
-    ac = (ac_unit * n_inverters).rename("solar_generation")
+    ac_kw = ac_unit * n_inverters
+    solar_per_kw = (ac_kw / max(pdc_kw, 1e-9) * 1000.0).rename("solar_generation")
 
-    nonzero = int((ac > 0).sum())
-    pmax    = ac.max()
-    pmean   = ac[ac > 0].mean() if nonzero > 0 else 0.0
+    nonzero = int((solar_per_kw > 0).sum())
+    pmax = solar_per_kw.max()
+    pmean = solar_per_kw[solar_per_kw > 0].mean() if nonzero > 0 else 0.0
     log.info(
         f"  B{bldg_id}: {n_modules} módulos | {n_inverters} inv. | "
-        f"{nonzero} h no-cero | max={pmax:.1f} kWh | mean_solar={pmean:.2f} kWh"
+        f"{nonzero} h no-cero | max={pmax:.1f} W/kW | mean_solar={pmean:.2f} W/kW"
     )
-    return ac
+    return solar_per_kw
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # 4. ACTUALIZACIÓN DE BUILDING_X.CSV (SOLO solar_generation)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def update_building_solar(bldg_id: int, solar: pd.Series) -> dict:
+def update_building_solar(bldg_id: int, solar: pd.Series, pdc_kw: float) -> dict:
     """
     Actualiza SOLO la columna solar_generation en Building_{bldg_id}.csv.
     Preserva todas las demás columnas intactas.
@@ -343,28 +361,44 @@ def update_building_solar(bldg_id: int, solar: pd.Series) -> dict:
             f"B{bldg_id}: CSV tiene {n_rows} filas pero solar tiene {len(solar)} valores"
         )
 
-    old_max  = df["solar_generation"].max()
-    old_sum  = df["solar_generation"].sum()
-    old_nz   = int((df["solar_generation"] > 0).sum())
+    old_max = df["solar_generation"].max()
+    old_nz = int((df["solar_generation"] > 0).sum())
 
     df["solar_generation"] = solar.values
 
-    new_max  = df["solar_generation"].max()
-    new_sum  = df["solar_generation"].sum()
-    new_nz   = int((df["solar_generation"] > 0).sum())
+    new_max = df["solar_generation"].max()
+    new_nz = int((df["solar_generation"] > 0).sum())
+    annual_gen = df["solar_generation"].sum() * pdc_kw / 1000.0 / 3.0
 
     df.to_csv(csv_path, index=False)
-    log.info(f"  B{bldg_id} guardado: max {old_max:.1f}→{new_max:.1f} kWh | "
-             f"non-zero {old_nz}→{new_nz} h | annual_gen {new_sum:.0f} kWh")
+    log.info(f"  B{bldg_id} guardado: max {old_max:.1f}->{new_max:.1f} W/kW | "
+             f"non-zero {old_nz}->{new_nz} h | annual_gen {annual_gen:.0f} kWh/año")
 
     return {
-        "old_max_kwh":  round(old_max, 2),
-        "new_max_kwh":  round(new_max, 2),
+        "old_max_w_per_kw": round(old_max, 2),
+        "new_max_w_per_kw": round(new_max, 2),
         "old_nz_hours": old_nz,
         "new_nz_hours": new_nz,
-        "annual_gen_kwh": round(new_sum, 1),
+        "annual_gen_kwh": round(annual_gen, 1),
         "method": "pvlib_SAPM",
     }
+
+
+def update_schema_pv_nominal_power(results: dict) -> None:
+    schema_path = DATASET_DIR / "schema.json"
+    if not schema_path.exists():
+        log.warning(f"schema.json no encontrado: {schema_path}")
+        return
+
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    for building_key, values in results.items():
+        building = schema.get("buildings", {}).get(building_key)
+        if not building:
+            continue
+        building.setdefault("pv", {}).setdefault("attributes", {})["nominal_power"] = round(values["pdc_kw"], 1)
+
+    schema_path.write_text(json.dumps(schema, indent=2, ensure_ascii=False), encoding="utf-8")
+    log.info(f"  schema.json actualizado con nominal_power PV desde building.csv")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -381,7 +415,7 @@ def run(buildings=None):  # list[int] | None — compatible Python 3.9
     4. Guarda log JSON con detalles de cada edificio
     """
     if buildings is None:
-        buildings = list(range(1, 18))
+        buildings = list(range(2, 18))
 
     log.info("=" * 70)
     log.info("fix_solar_pvlib.py — Corrección solar con pvlib ModelChain SAPM")
@@ -424,9 +458,10 @@ def run(buildings=None):  # list[int] | None — compatible Python 3.9
             inverter_params=inv_params,
             n_inverters=n_inv,
             bldg_id=bldg_id,
+            pdc_kw=pdc_kw,
         )
 
-        stats = update_building_solar(bldg_id, solar)
+        stats = update_building_solar(bldg_id, solar, pdc_kw)
         results[f"Building_{bldg_id}"] = {
             "module":       mod_key,
             "n_modules":    n_mod,
@@ -438,6 +473,7 @@ def run(buildings=None):  # list[int] | None — compatible Python 3.9
 
     # ── Paso 4: log JSON ──────────────────────────────────────────────────────
     log.info("\n[4/4] Guardando log de corrección solar...")
+    update_schema_pv_nominal_power(results)
     log_data = {
         "fix_date":       pd.Timestamp.now().isoformat(),
         "pvlib_version":  pvlib.__version__,
@@ -452,6 +488,7 @@ def run(buildings=None):  # list[int] | None — compatible Python 3.9
 
     log.info("\n" + "=" * 70)
     log.info(f"Corrección completa: {len(buildings)} edificios actualizados con pvlib SAPM")
+    log.info("Building_1 preservado sin cambios")
     log.info("=" * 70)
 
     # Resumen final
@@ -464,7 +501,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Corrige solar_generation con pvlib SAPM")
     parser.add_argument(
         "--buildings", nargs="+", type=int, default=None,
-        help="IDs de edificios a procesar (default: 1-17)"
+        help="IDs de edificios a procesar (default: 2-17; Building_1 se preserva)"
     )
     parser.add_argument(
         "--skip-cache", action="store_true",

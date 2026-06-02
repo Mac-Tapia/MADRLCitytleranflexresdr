@@ -18,10 +18,12 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-05-21.
+Actualizado: 2026-06-01.
 
 - Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 75+ EVs).
-- Entrenamiento oficial CUDA ejecutado con `-Scenario ALL`.
+- Dataset horario actualizado desde insumos reales mensuales `CityLearn/data/buildingcsv/` y destilado hacia CityLearn v3.
+- Cadena de entrenamiento validada por smoke test: `E1 x HAPPO, MASAC, MATD3, MAAC`, 1 episodio de 4 pasos.
+- Entrenamiento oficial completo CUDA preparado, pero no debe lanzarse sin confirmacion explicita del usuario.
 - Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida.
 - Ejecucion secuencial: `E1/E2/E3 x HAPPO/MASAC/MATD3/MAAC` (12 corridas).
 - Perfil local GPU-tuned conservador activo para RTX 4060 Laptop 8 GB.
@@ -117,10 +119,23 @@ pytest tests/ -q --tb=short
 | Grilla | Sistema aislado diesel ELECTRO ORIENTE |
 | Archivo central | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json` |
 
-Regenerar el dataset desde cero (si se requiere):
+### Destilacion desde `buildingcsv`
+
+Los insumos reales estan en `CityLearn/data/buildingcsv/`:
+
+- `building.csv`: nombres actualizados, areas techadas, oficinas y equipos controlados por edificio.
+- `B_02.csv` a `B_17.csv`: mediciones mensuales por medidores y componentes electricos.
+- `Building_1.csv` se preserva porque no existe insumo equivalente en `buildingcsv`.
+
+La destilacion convierte cada mes medido a 8760/8784 horas mediante transformaciones matematicas de calendario y perfiles deterministas de componentes. No se generan cargas sinteticas arbitrarias. Para faltantes, el script documenta el pronostico aplicado en `tools/dataset_docs/distillation_report.csv`.
+
+Regenerar el dataset desde los insumos:
 
 ```bash
+python tools/distill_building_loads.py
 python tools/generate_iquitos_dataset.py
+python tools/fix_solar_pvlib.py
+python tools/verify_solar.py
 ```
 
 ## MADRL integrados
@@ -162,7 +177,7 @@ Validar el contrato:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
-  --output outputs\citylearn_v3_madrl_official_full_cuda_v2\cooperative_ctde_validation.json
+  --output outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1\cooperative_ctde_validation.json
 ```
 
 ## Pruebas estadisticas de demostracion de hipotesis
@@ -219,17 +234,47 @@ resumen_evidencia_tesis.md
 
 Ademas de los 4 tests no parametricos, `comparaciones_mwu_madrl.csv` incluye tamanos de efecto para cada par MADRL: Cliff's delta, Vargha-Delaney A12, Cohen d, Hedges g y bootstrap CI 95%.
 
-## Entrenamiento oficial local
+## Validacion previa al entrenamiento
+
+Antes de lanzar una corrida larga, ejecutar solo verificaciones:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_iquitos_training.ps1 `
+powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
+
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\check_citylearn_v3_training_ready.py `
+  --strict `
+  --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
+  --scenario E1
+
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\run_citylearn_v3_env_smoke.py `
+  --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
+  --scenario E1 `
+  --episode-time-steps 4 `
+  --steps 3
+```
+
+Validacion actual:
+
+- `python39_core_ready=true` con schema Iquitos.
+- `pytest tests/uc3m -q -ra`: OK, con 3 skips existentes.
+- `git diff --check`: OK.
+- No hay procesos de entrenamiento ni manifiestos `status: running` despues de la limpieza.
+
+## Entrenamiento oficial local
+
+Este comando lanza entrenamiento real. Debe ejecutarse solo despues de confirmacion explicita.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos `
+  -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
+  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
   -TorchThreads 12 `
   -LiveProgressInterval 250 `
+  -LiveOutput `
   -Cuda
 ```
 
@@ -247,14 +292,14 @@ E3 x HAPPO, MASAC, MATD3, MAAC
 |---|---|
 | HAPPO | `hidden_size=384`, `torch_threads=12`, `n_rollout_threads=1`, `live_progress_interval=250` |
 | MASAC | `buffer_size=2`, `critic_batch_size=1`, `critic_train_steps=1`, `actor_sample_times=5`, `rnn_hidden_dim=64` |
-| MATD3 | `batch_size=512`, `buffer_size=50000`, `hidden_size=384`, `train_interval=100` |
-| MAAC | `batch_size=512`, `buffer_length=200000`, `steps_per_update=250`, `num_updates=8`, `hidden_size=384` |
+| MATD3 | `batch_size=256`, `buffer_size=4096`, `hidden_size=256`, `train_interval=100` |
+| MAAC | `batch_size=64`, `buffer_length=256`, `steps_per_update=250`, `num_updates=8`, `hidden_size=128` |
 
 ## Monitor de entrenamiento
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File CityLearn\scripts\monitor_citylearn_v3_iquitos_training.ps1 `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos `
+  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
   -IntervalSeconds 5 `
   -LogTail 20
 ```
@@ -295,7 +340,7 @@ git submodule update --init --recursive
 ## Salidas esperadas por corrida
 
 ```text
-outputs/citylearn_v3_madrl_iquitos/
+outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1/
   happo/E1_seed_0/  masac/E1_seed_0/  matd3/E1_seed_0/  maac/E1_seed_0/
   happo/E2_seed_0/  ...
   happo/E3_seed_0/  ...
@@ -343,6 +388,7 @@ Comparar CityLearn v2 contra CityLearn v3 MADRL:
 | Documento | Ruta |
 |---|---|
 | Arquitectura y flujo renderizable | `docs/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
+| Destilacion dataset Iquitos | `docs/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md` |
 | Plano real implementado | `docs/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.pdf` |
 | Plano integrado | `docs/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf` |
 | Aportes cientificos | `docs/APORTES_CIENTIFICOS_CITYLEARN_V3_MADRL.docx` |

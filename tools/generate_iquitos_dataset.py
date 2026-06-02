@@ -27,6 +27,11 @@ import numpy as np
 import pandas as pd
 import requests
 
+try:
+    from buildingcsv_inputs import load_building_inventory
+except ImportError:  # pragma: no cover - fallback when script is copied alone
+    load_building_inventory = None
+
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
@@ -55,6 +60,33 @@ MADRL_BUILDING_CONSTANTS = {
     16: {'name': 'I.E. San Juan',                 'non_shiftable_base': 4.55,  'cooling_peak': 100.0,  'shiftable': 51.24, 'bldg_type': 'educacion_motolineal', 'area_techada_m2': 6500},
     17: {'name': 'IEST Pedro del Aguila Hidalgo', 'non_shiftable_base': 4.2,   'cooling_peak': 93.0,   'shiftable': 26.3,  'bldg_type': 'educacion_tec',        'area_techada_m2': 5200},
 }
+
+
+def apply_buildingcsv_inventory(constants: dict[int, dict]) -> dict[int, dict]:
+    """Synchronize building names and roof areas from CityLearn/data/buildingcsv."""
+    if load_building_inventory is None:
+        return constants
+
+    try:
+        inventory = load_building_inventory()
+    except FileNotFoundError:
+        return constants
+
+    for bldg_id, meta in inventory.items():
+        if bldg_id not in constants:
+            continue
+        constants[bldg_id]["name"] = meta.name
+        constants[bldg_id]["area_techada_m2"] = meta.area_techada_m2
+        constants[bldg_id]["source_tipo_uso_citylearn"] = meta.tipo_uso_citylearn
+        constants[bldg_id]["oficinas_locales"] = meta.oficinas_locales
+        constants[bldg_id]["sistemas_refrigeracion_grandes"] = meta.sistemas_refrigeracion_grandes
+        constants[bldg_id]["split_units"] = meta.split_units
+        constants[bldg_id]["area_estacionamiento_m2"] = meta.area_estacionamiento_m2
+        constants[bldg_id]["tipo_vehiculo_predominante"] = meta.tipo_vehiculo_predominante
+    return constants
+
+
+MADRL_BUILDING_CONSTANTS = apply_buildingcsv_inventory(MADRL_BUILDING_CONSTANTS)
 
 REFRIGERACION_COMERCIAL = {
     3:  (30.0,  0.70),
@@ -1259,7 +1291,7 @@ class IquitosDatasetPipeline:
         for bldg_id in tqdm(self.buildings, desc="BESS sizing"):
             gen   = BuildingDataGenerator(bldg_id, weather_full, solar_dict[bldg_id])
             load  = gen.non_shiftable_load() + gen.cooling_demand() / COP_BY_TYPE[gen.btype]
-            solar = solar_dict[bldg_id].values
+            solar = solar_dict[bldg_id].values * solar_kw_dc[bldg_id] / 1000.0
             bess_params[bldg_id] = designer.size(load, solar)
             logger.debug(
                 f"  B{bldg_id}: BESS {bess_params[bldg_id]['capacity']:.0f} kWh / "
@@ -1407,9 +1439,10 @@ class IquitosDatasetPipeline:
         })[['ghi', 'dhi', 'dni', 'temp_air', 'wind_speed']]
 
         mc.run_model(weather)
-        ac = (mc.results.ac / 1000.0).clip(lower=0.0).fillna(0.0)
-        ac.name = 'solar_generation'
-        return ac
+        ac_kw = (mc.results.ac / 1000.0).clip(lower=0.0).fillna(0.0)
+        per_kw = (ac_kw / max(pdc_kw, 1e-9) * 1000.0).clip(lower=0.0)
+        per_kw.name = 'solar_generation'
+        return per_kw
 
     def _calc_solar_simple(
         self,
@@ -1420,8 +1453,9 @@ class IquitosDatasetPipeline:
         eta_inv = 0.97
         eta_temp_loss = 0.96
         ac = ghi / 1000.0 * pdc_kw * eta_inv * eta_temp_loss
+        per_kw = ac / max(pdc_kw, 1e-9) * 1000.0
         return pd.Series(
-            np.clip(ac, 0, None),
+            np.clip(per_kw, 0, None),
             index=weather_full.index,
             name='solar_generation',
         )

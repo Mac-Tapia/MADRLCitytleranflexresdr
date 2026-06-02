@@ -12,7 +12,7 @@ Este plano es la lectura principal del proyecto. Se sigue de izquierda a derecha
 flowchart LR
     START([Inicio del proyecto<br/>problema de investigacion])
     PLAN["Plan de tesis y diagnostico<br/>Plan_Tesis_MADRL_Diagnostico_v17.pdf<br/>ESTRATEGIA_3PILARES_MADRL.md"]
-    DATA["Dataset oficial<br/>citylearn_challenge_2022_phase_all_plus_evs<br/>17 edificios + EV/V2G"]
+    DATA["Dataset oficial<br/>citylearn_iquitos_2023_2025<br/>17 edificios Iquitos + EV/V2G"]
     V2["CityLearn v2 base<br/>CityLearn/citylearn<br/>simulador + KPIs v2"]
     V3["CityLearn v3 implementado<br/>CityLearn/citylearn/v3<br/>environment + objectives + config"]
     REW["Reward v3 MADRL<br/>CityLearnV3MADRLRewardFunction<br/>pesos por eje + perfil por algoritmo"]
@@ -78,7 +78,7 @@ flowchart LR
 | Paso | Caja del flujo | Archivo o ruta que confirma la etapa | Resultado esperado |
 |---|---|---|---|
 | 1 | Plan y diagnostico | `Plan_Tesis_MADRL_Diagnostico_v17.pdf`, `ESTRATEGIA_3PILARES_MADRL.md` | Objetivos y tres ejes definidos. |
-| 2 | Dataset oficial | `CityLearn/data/datasets/citylearn_challenge_2022_phase_all_plus_evs/schema.json` | 17 edificios + EV/V2G disponibles. |
+| 2 | Dataset oficial | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json` | 17 edificios reales de Iquitos + EV/V2G disponibles. |
 | 3 | CityLearn v2 base | `CityLearn/citylearn` | Simulador y KPIs v2 conservados. |
 | 4 | CityLearn v3 | `CityLearn/citylearn/v3/objectives.py`, `CityLearn/citylearn/v3/environment.py` | Objetivos OE1/OE2/OE3 y entorno v3. |
 | 5 | Reward v3 | `CityLearn/citylearn/reward_function.py` | `CityLearnV3MADRLRewardFunction` con pesos por eje y perfil por MADRL. |
@@ -86,19 +86,19 @@ flowchart LR
 | 7 | 4 MADRL | `CityLearn/scripts/train_citylearn_v3_*.py` | HAPPO, MASAC, MATD3 y MAAC conectados. |
 | 8 | Launcher ALL | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | 12 corridas secuenciales: E1/E2/E3 x 4 MADRL. |
 | 9 | Monitor vivo | `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1` | GPU, `global_step`, rewards, pesos reward, costo, CO2 y estado por job. |
-| 10 | Artefactos | `outputs/citylearn_v3_madrl_official_full_cuda_v2/{madrl}/{E*_seed_0}` | Checkpoints, JSON, CSV, figuras y tablas. |
+| 10 | Artefactos | `outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1/{madrl}/{E*_seed_0}` | Checkpoints, JSON, CSV, figuras y tablas. |
 | 11 | Benchmark v2 | `CityLearn/scripts/benchmark_citylearn_v2_agents.py` | Linea base con agentes CityLearn v2. |
 | 12 | Comparador | `CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py` | Delta, mejora porcentual y ranking v2 vs v3. |
 | 13 | Fin | `docs/`, `outputs/citylearn_v2_vs_v3_comparison` | Evidencia final para tesis. |
 
 ## 1. Lectura del proyecto de inicio a fin
 
-El proyecto inicia en el dataset oficial de CityLearn v2 con 17 edificios y EV, conserva el simulador base CityLearn v2, agrega una capa CityLearn v3 para Dec-POMDP, CTDE, objetivos y artefactos, conecta cuatro backends MADRL oficiales mediante wrappers, ejecuta los tres ejes E1/E2/E3 con `-Scenario ALL`, guarda resultados por algoritmo/eje y finaliza con evaluacion, figuras, benchmark CityLearn v2 y comparador v2 vs v3.
+El proyecto inicia en el dataset real Iquitos 2023-2025 con 17 edificios y EV, conserva el simulador base CityLearn v2, agrega una capa CityLearn v3 para Dec-POMDP, CTDE, objetivos y artefactos, conecta cuatro backends MADRL oficiales mediante wrappers, ejecuta los tres ejes E1/E2/E3 con `-Scenario ALL`, guarda resultados por algoritmo/eje y finaliza con evaluacion, figuras, benchmark CityLearn v2 y comparador v2 vs v3.
 
 ```mermaid
 flowchart LR
     A["Inicio del estudio<br/>Problema: gestion coordinada<br/>de comunidad energetica inteligente"]
-    B["Dataset oficial<br/>CityLearn/data/datasets/<br/>citylearn_challenge_2022_phase_all_plus_evs/schema.json"]
+    B["Dataset oficial<br/>CityLearn/data/datasets/<br/>citylearn_iquitos_2023_2025/schema.json"]
     C["Nucleo CityLearn v2<br/>CityLearn/citylearn<br/>simulador, edificios, DERs, EVs, KPIs v2"]
     D["Capa CityLearn v3<br/>CityLearn/citylearn/v3<br/>environment.py, config.py, objectives.py, backends.py"]
     E["Adaptador comun MADRL<br/>CityLearn/scripts/citylearn_v3_training_common.py"]
@@ -119,7 +119,7 @@ flowchart LR
 ```mermaid
 flowchart TB
     subgraph DATA["Entrada y simulador base"]
-        DS["Dataset real<br/>citylearn_challenge_2022_phase_all_plus_evs<br/>17 edificios + EV/V2G + PV + baterias"]
+        DS["Dataset real<br/>citylearn_iquitos_2023_2025<br/>17 edificios Iquitos + EV/V2G + PV + baterias"]
         V2["CityLearn v2 base<br/>CityLearn/citylearn<br/>fisica, energia, precios, carbono, KPIs v2"]
     end
 
@@ -140,7 +140,7 @@ flowchart TB
     subgraph RUN["Ejecucion oficial"]
         LAUNCH["launch_citylearn_v3_official_training.ps1<br/>-Scenario ALL -Episodes 5 -Cuda"]
         MON["monitor_citylearn_v3_official_training.ps1<br/>GPU, job, global_step, reward, costo, CO2"]
-        OUT["outputs/citylearn_v3_madrl_official_full_cuda_v2<br/>{madrl}/{E*_seed_0}"]
+        OUT["outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1<br/>{madrl}/{E*_seed_0}"]
     end
 
     DS --> V2 --> ENV
@@ -163,7 +163,7 @@ flowchart TB
 
 | Capa | Ruta real | Funcion en el proyecto |
 |---|---|---|
-| Dataset | `CityLearn/data/datasets/citylearn_challenge_2022_phase_all_plus_evs/schema.json` | Entrada oficial con 17 edificios, EV/V2G, PV, baterias, precios, carbono y series necesarias. |
+| Dataset | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json` | Entrada oficial con 17 edificios reales de Iquitos, EV/V2G, PV, baterias, precios, carbono y series necesarias. |
 | Simulador base | `CityLearn/citylearn` | CityLearn v2 conservado como nucleo fisico y de evaluacion. |
 | Capa v3 | `CityLearn/citylearn/v3` | Capa agregada para objetivos, entorno v3, configuracion y compatibilidad de backends. |
 | Escenarios | `CityLearn/citylearn/scenario_manager.py` | Define E1, E2 y E3 usados por el launcher oficial. |
@@ -246,7 +246,7 @@ sequenceDiagram
 
 ## 7. Comando oficial de entrenamiento
 
-El entrenamiento oficial actual debe ejecutarse con `-Scenario ALL` para cubrir los tres ejes.
+El entrenamiento oficial actual debe ejecutarse con `-Scenario ALL` para cubrir los tres ejes, pero solo despues de confirmacion explicita del usuario. Para revision de archivos se usan readiness y smoke tests; no se lanza la cadena completa.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
@@ -254,16 +254,34 @@ powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_o
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
-  -OutputRoot outputs\citylearn_v3_madrl_official_full_cuda_v2 `
+  -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
+  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
   -TorchThreads 12 `
+  -LiveProgressInterval 250 `
+  -LiveOutput `
   -Cuda
+```
+
+Validacion previa sin entrenamiento:
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\check_citylearn_v3_training_ready.py `
+  --strict `
+  --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
+  --scenario E1
+
+.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\run_citylearn_v3_env_smoke.py `
+  --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
+  --scenario E1 `
+  --episode-time-steps 4 `
+  --steps 3
 ```
 
 Monitor visual:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 `
-  -OutputRoot outputs\citylearn_v3_madrl_official_full_cuda_v2 `
+  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
   -IntervalSeconds 5 `
   -LogTail 20
 ```
@@ -282,7 +300,7 @@ Tareas disponibles:
 
 | Tarea VS Code | Funcion |
 |---|---|
-| `CityLearn v3 MADRL - entrenamiento oficial visible` | Lanza `launch_citylearn_v3_official_training.ps1` con `-Scenario ALL`, CUDA, 5 episodios y 8760 pasos. |
+| `CityLearn v3 MADRL - entrenamiento oficial visible` | Lanza `launch_citylearn_v3_official_training.ps1` con `-Scenario ALL`, CUDA, 5 episodios, 8760 pasos y schema Iquitos. Usar solo con confirmacion. |
 | `CityLearn v3 MADRL - monitor visible` | Ejecuta `monitor_citylearn_v3_official_training.ps1` en la terminal integrada. |
 | `CityLearn v3 MADRL - validar contrato cooperativo CTDE` | Regenera `cooperative_ctde_validation.json` para 4 MADRL x 3 ejes. |
 
@@ -300,7 +318,7 @@ Comando:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
-  --output outputs\citylearn_v3_madrl_official_full_cuda_v2\cooperative_ctde_validation.json
+  --output outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1\cooperative_ctde_validation.json
 ```
 
 Condiciones verificadas:
@@ -315,7 +333,7 @@ Condiciones verificadas:
 Salida:
 
 ```text
-outputs/citylearn_v3_madrl_official_full_cuda_v2/cooperative_ctde_validation.json
+outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1/cooperative_ctde_validation.json
 ```
 
 ## 10. Matriz oficial de ejecuciones
@@ -331,7 +349,7 @@ El launcher ejecuta secuencialmente 12 trabajos:
 ## 11. Estructura de salida esperada
 
 ```text
-outputs/citylearn_v3_madrl_official_full_cuda_v2/
+outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1/
   official_full_status.json
   official_full_manifest.json
   logs/
@@ -377,7 +395,7 @@ El cierre del proyecto no termina al entrenar. El flujo final usa los resultados
 
 ```mermaid
 flowchart LR
-    V3["Resultados CityLearn v3 MADRL<br/>outputs/citylearn_v3_madrl_official_full_cuda_v2"]
+    V3["Resultados CityLearn v3 MADRL<br/>outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1"]
     V2["Benchmark CityLearn v2<br/>benchmark_citylearn_v2_agents.py"]
     CMP["Comparador maestro<br/>compare_citylearn_v2_vs_v3_madrl.py"]
     REP["Salidas finales<br/>comparison_summary.json<br/>figuras, tablas, ranking"]
@@ -399,7 +417,7 @@ Comandos base:
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
   --v2-root outputs\citylearn_v2_benchmark `
-  --v3-root outputs\citylearn_v3_madrl_official_full_cuda_v2 `
+  --v3-root outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
   --output-dir outputs\citylearn_v2_vs_v3_comparison
 ```
 

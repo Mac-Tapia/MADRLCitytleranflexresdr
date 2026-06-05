@@ -22,8 +22,11 @@ from buildingcsv_inputs import (
     BUILDINGCSV_DIR,
     DATASET_DIR,
     DEFAULT_BUILDINGS_WITH_MONTHLY_DATA,
+    PRICING_COLUMNS,
     YEARS,
     BuildingInventory,
+    build_hourly_pricing_from_monthly_measurements,
+    derive_tariff_period_prices,
     inventory_as_records,
     load_building_inventory,
     load_monthly_measurements,
@@ -35,6 +38,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_PATH = DATASET_DIR / "schema.json"
 WEATHER_CSV = DATASET_DIR / "weather.csv"
 DEFAULT_REPORT_PATH = ROOT / "tools" / "dataset_docs" / "distillation_report.csv"
+PRICING_CSV = DATASET_DIR / "pricing.csv"
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -189,11 +193,17 @@ def forecast_missing_measurements(
                     "energia_punta_kwh": punta,
                     "energia_fuera_punta_kwh": fuera,
                     "energia_total_kwh": total,
+                    "raw_energia_punta_kwh": punta,
+                    "raw_energia_fuera_punta_kwh": fuera,
+                    "raw_split_total_kwh": total,
                     "energia_reactiva_kvarh": total * reactiva_ratio,
                     "factor_carga": factor_carga,
                     "total_facturado": total * facturado_ratio,
                     "reported_total_energia_activa": total,
                     "reported_total_delta_kwh": 0.0,
+                    "reported_total_delta_pct": 0.0,
+                    "active_energy_source": "forecast_from_monthly_active_energy",
+                    "measurement_quality_flag": "forecast",
                     "tarifa": tariff,
                     "source_file": "forecast",
                     "line_number": 0,
@@ -471,37 +481,63 @@ def component_drivers(
     return drivers, metadata
 
 
-def _allocate_energy_block(
+def _allocate_residual_energy_block(
     energy_kwh: float,
     idx: np.ndarray,
     drivers: dict[str, np.ndarray],
     nsl_elec: np.ndarray,
     cooling_elec: np.ndarray,
     dhw_elec: np.ndarray,
-) -> None:
+) -> dict[str, float]:
+    """Set NSL as measured active energy minus controllable electric loads.
+
+    The controllable loads already represented in CityLearn's training CSV are
+    cooling_demand/COP and dhw_demand/COP. They are not copied into
+    non_shiftable_load; NSL receives only the residual measured energy.
+    """
+    empty = {
+        "measured_energy_kwh": 0.0,
+        "controlled_model_kwh": 0.0,
+        "controlled_used_kwh": 0.0,
+        "controlled_scale": 1.0,
+        "residual_nsl_kwh": 0.0,
+    }
+
     if len(idx) == 0:
-        return
+        return empty
 
     energy = max(float(energy_kwh), 0.0)
     if energy == 0.0:
         nsl_elec[idx] = 0.0
         cooling_elec[idx] = 0.0
         dhw_elec[idx] = 0.0
-        return
+        return empty
 
-    nsl = drivers["non_shiftable"][idx]
-    cool = drivers["cooling"][idx]
-    dhw = drivers["dhw"][idx]
-    denom = float(nsl.sum() + cool.sum() + dhw.sum())
-    if denom <= 0.0:
-        nsl_elec[idx] = energy / len(idx)
-        cooling_elec[idx] = 0.0
-        dhw_elec[idx] = 0.0
-        return
+    cooling_model = np.clip(cooling_elec[idx], 0.0, None)
+    dhw_model = np.clip(dhw_elec[idx], 0.0, None)
+    controlled_model = float(cooling_model.sum() + dhw_model.sum())
+    controlled_scale = min(1.0, energy / controlled_model) if controlled_model > 0.0 else 1.0
+    cooling_elec[idx] = cooling_model * controlled_scale
+    dhw_elec[idx] = dhw_model * controlled_scale
+    controlled_used = float(cooling_elec[idx].sum() + dhw_elec[idx].sum())
 
-    nsl_elec[idx] = energy * nsl / denom
-    cooling_elec[idx] = energy * cool / denom
-    dhw_elec[idx] = energy * dhw / denom
+    residual = max(energy - controlled_used, 0.0)
+    nsl = np.clip(drivers["non_shiftable"][idx], 0.0, None)
+    denom = float(nsl.sum())
+    if residual == 0.0:
+        nsl_elec[idx] = 0.0
+    elif denom <= 0.0:
+        nsl_elec[idx] = residual / len(idx)
+    else:
+        nsl_elec[idx] = residual * nsl / denom
+
+    return {
+        "measured_energy_kwh": energy,
+        "controlled_model_kwh": controlled_model,
+        "controlled_used_kwh": controlled_used,
+        "controlled_scale": controlled_scale,
+        "residual_nsl_kwh": float(nsl_elec[idx].sum()),
+    }
 
 
 def _monthly_original_energy(
@@ -576,8 +612,12 @@ def calibrate_building(
         peak_idx = month_idx[np.isin(hours[month_idx], list(PEAK_HOURS))]
         offpeak_idx = month_idx[~np.isin(hours[month_idx], list(PEAK_HOURS))]
 
-        _allocate_energy_block(m.energia_punta_kwh, peak_idx, drivers, nsl_elec, cooling_elec, dhw_elec)
-        _allocate_energy_block(m.energia_fuera_punta_kwh, offpeak_idx, drivers, nsl_elec, cooling_elec, dhw_elec)
+        peak_audit = _allocate_residual_energy_block(
+            m.energia_punta_kwh, peak_idx, drivers, nsl_elec, cooling_elec, dhw_elec
+        )
+        offpeak_audit = _allocate_residual_energy_block(
+            m.energia_fuera_punta_kwh, offpeak_idx, drivers, nsl_elec, cooling_elec, dhw_elec
+        )
 
         e_total_syn, e_gest_syn, e_ns_syn = _monthly_original_energy(
             df_indexed, month_idx, nsl_orig, managed_orig
@@ -590,6 +630,15 @@ def calibrate_building(
         e_cal = e_ns_cal + e_cooling_elec_cal + e_dhw_elec_cal
         e_med = float(m.energia_total_kwh)
         delta_pct = (e_cal - e_med) / max(e_med, 1.0) * 100.0
+        e_controlled_model = float(peak_audit["controlled_model_kwh"] + offpeak_audit["controlled_model_kwh"])
+        e_controlled_used = float(peak_audit["controlled_used_kwh"] + offpeak_audit["controlled_used_kwh"])
+        controlled_scale_min = min(float(peak_audit["controlled_scale"]), float(offpeak_audit["controlled_scale"]))
+        tariff_prices = derive_tariff_period_prices(
+            float(m.energia_punta_kwh),
+            float(m.energia_fuera_punta_kwh),
+            float(getattr(m, "total_facturado", 0.0)),
+            str(m.tarifa),
+        )
 
         rows.append({
             "building_id": bldg_id,
@@ -599,6 +648,10 @@ def calibrate_building(
             "E_medido_kWh": round(e_med, 6),
             "E_punta_medido_kWh": round(float(m.energia_punta_kwh), 6),
             "E_fuera_punta_medido_kWh": round(float(m.energia_fuera_punta_kwh), 6),
+            "E_punta_raw_kWh": round(float(getattr(m, "raw_energia_punta_kwh", m.energia_punta_kwh)), 6),
+            "E_fuera_punta_raw_kWh": round(float(getattr(m, "raw_energia_fuera_punta_kwh", m.energia_fuera_punta_kwh)), 6),
+            "E_split_raw_total_kWh": round(float(getattr(m, "raw_split_total_kwh", m.energia_total_kwh)), 6),
+            "E_total_activa_reportada_kWh": round(float(getattr(m, "reported_total_energia_activa", 0.0)), 6),
             "E_punta_cal_kWh": round(e_peak_cal, 6),
             "E_fuera_punta_cal_kWh": round(e_offpeak_cal, 6),
             "E_total_syn": round(e_total_syn, 6),
@@ -608,10 +661,29 @@ def calibrate_building(
             "E_non_shiftable_cal_kWh": round(e_ns_cal, 6),
             "E_cooling_elec_cal_kWh": round(e_cooling_elec_cal, 6),
             "E_dhw_elec_cal_kWh": round(e_dhw_elec_cal, 6),
+            "E_controlled_model_kWh": round(e_controlled_model, 6),
+            "E_controlled_used_kWh": round(e_controlled_used, 6),
+            "controlled_energy_scale_min": round(controlled_scale_min, 9),
+            "E_non_shiftable_residual_kWh": round(e_ns_cal, 6),
             "E_cal_tot": round(e_cal, 6),
             "delta_%": round(delta_pct, 9),
             "reported_total_delta_kWh": round(float(m.reported_total_delta_kwh), 6),
+            "reported_total_delta_%": round(float(getattr(m, "reported_total_delta_pct", 0.0)), 9),
             "factor_carga": round(float(m.factor_carga), 9),
+            "energia_reactiva_kvarh": round(float(getattr(m, "energia_reactiva_kvarh", 0.0)), 6),
+            "total_facturado": round(float(getattr(m, "total_facturado", 0.0)), 6),
+            "facturado_por_kWh_activo": round(
+                float(getattr(m, "total_facturado", 0.0)) / max(float(m.energia_total_kwh), 1.0),
+                9,
+            ),
+            "tariff_peak_to_offpeak_ratio": round(float(tariff_prices["tariff_peak_to_offpeak_ratio"]), 9),
+            "tariff_peak_price": round(float(tariff_prices["tariff_peak_price"]), 9),
+            "tariff_offpeak_price": round(float(tariff_prices["tariff_offpeak_price"]), 9),
+            "tariff_cost_reconstructed": round(float(tariff_prices["tariff_cost_reconstructed"]), 6),
+            "tariff_cost_delta": round(float(tariff_prices["tariff_cost_delta"]), 6),
+            "tariff_cost_delta_%": round(float(tariff_prices["tariff_cost_delta_pct"]), 9),
+            "active_energy_source": str(getattr(m, "active_energy_source", "energia_activa_punta_fuera")),
+            "measurement_quality_flag": str(getattr(m, "measurement_quality_flag", "")),
             "tarifa": str(m.tarifa).strip(),
             "source_file": str(m.source_file),
             "record_type": str(getattr(m, "record_type", "measured")),
@@ -664,24 +736,27 @@ def print_report(bldg_id: int, report: pd.DataFrame, dry_run: bool, report_only:
     print(f"{'=' * 110}")
     print(
         f"  {'Año':>4} {'Mes':>3} {'Medido':>12} {'Punta':>11} {'F.Punta':>11} "
-        f"{'NSL':>11} {'Cool.e':>11} {'DHW.e':>10} {'Delta%':>10}"
+        f"{'Ctrl.e':>11} {'NSL(res)':>11} {'Cool.e':>11} {'DHW.e':>10} {'Esc':>7} {'Delta%':>10}"
     )
-    print("  " + "-" * 100)
+    print("  " + "-" * 120)
     for _, row in report.iterrows():
         print(
             f"  {int(row['year']):>4} {int(row['mes']):>3} "
             f"{float(row['E_medido_kWh']):>12.2f} "
             f"{float(row['E_punta_medido_kWh']):>11.2f} "
             f"{float(row['E_fuera_punta_medido_kWh']):>11.2f} "
+            f"{float(row['E_controlled_used_kWh']):>11.2f} "
             f"{float(row['E_non_shiftable_cal_kWh']):>11.2f} "
             f"{float(row['E_cooling_elec_cal_kWh']):>11.2f} "
             f"{float(row['E_dhw_elec_cal_kWh']):>10.2f} "
+            f"{float(row['controlled_energy_scale_min']):>7.4f} "
             f"{float(row['delta_%']):>10.6f}"
         )
 
     max_delta = float(report["delta_%"].abs().max())
-    print("  " + "-" * 100)
+    print("  " + "-" * 120)
     print(f"  Max |delta| = {max_delta:.9f}%")
+    print("  Regla: NSL(res) = Medido - Ctrl.e; Ctrl.e = cooling_demand/COP + dhw_demand/COP.")
     if not dry_run and not report_only:
         print("  -> Building CSV actualizado: non_shiftable_load, cooling_demand, dhw_demand")
 
@@ -729,13 +804,44 @@ def write_outputs(
         report_path.parent.mkdir(parents=True, exist_ok=True)
         pd.concat(report_frames, ignore_index=True).to_csv(report_path, index=False, float_format="%.9f")
 
+    pricing_audit_records: list[dict[str, object]] = []
+    pricing_path = dataset_dir / "pricing.csv"
+    reference_csv = dataset_dir / "Building_1.csv"
+    if reference_csv.exists() and not measurements.empty:
+        reference = pd.read_csv(reference_csv, usecols=["month", "hour"])
+        indexed = build_month_year_index(reference)
+        pricing, pricing_audit = build_hourly_pricing_from_monthly_measurements(indexed, measurements, PEAK_HOURS)
+        if not pricing.empty:
+            if pricing.columns.tolist() != PRICING_COLUMNS:
+                raise ValueError(f"pricing columns mismatch: {pricing.columns.tolist()}")
+            pricing.to_csv(pricing_path, index=False, float_format="%.9f")
+        if not pricing_audit.empty:
+            pricing_audit_records = pricing_audit.round(9).to_dict(orient="records")
+
     metadata = {
         "source_inventory": str(BUILDINGCSV_DIR.relative_to(ROOT)),
         "source_monthly_measurements": "CityLearn/data/buildingcsv/B_02.csv..B_17.csv",
         "dataset": str(dataset_dir.relative_to(ROOT)),
-        "building_1_policy": "Building_1.csv was not modified because B_01.csv does not exist.",
+        "building_1_policy": "Building_1.csv is not monthly-distilled because B_01.csv does not exist; its training CSV keeps the same 12-column/26304-row CityLearn structure as B2-B17.",
         "peak_hours_local": sorted(PEAK_HOURS),
-        "energy_balance_rule": "For each measured month, EnergiaActivaHoraPunta and EnergiaActivaFueraPunta are allocated only to their corresponding hourly blocks; non_shiftable_load + cooling_demand/COP + dhw_demand/COP equals the measured active energy.",
+        "energy_balance_rule": "For each measured month, EnergiaActivaHoraPunta and EnergiaActivaFueraPunta are the physical active-energy source when available and are allocated only to their corresponding hourly blocks. totalEnergiaActiva is audited and used as fallback only when the TOU active split is missing. Distillation is residual: non_shiftable_load equals selected measured active energy minus controllable loads represented in the training CSV (cooling_demand/COP and dhw_demand/COP). EV, BESS and PV are scenario DER/control assets and are not subtracted from historical building meter energy.",
+        "pricing_rule": "TotalFacturado is a monthly monetary bill, not kWh. pricing.csv is rebuilt from monthly bills with C = p_peak*E_punta + p_offpeak*E_fuera_punta and p_peak = r_tariff*p_offpeak; the absolute level is calibrated to reproduce aggregate district monthly bills while keeping one CityLearn-compatible hourly electricity_pricing series.",
+        "pricing_file": str(pricing_path.relative_to(ROOT)) if pricing_path.exists() else None,
+        "pricing_columns": PRICING_COLUMNS,
+        "pricing_currency": "source billing currency per kWh",
+        "pricing_monthly_audit": pricing_audit_records,
+        "measurement_quality_by_building": {
+            str(bid): {
+                str(flag): int(count)
+                for flag, count in measurements[measurements["building_id"] == bid]["measurement_quality_flag"]
+                .fillna("")
+                .value_counts()
+                .sort_index()
+                .items()
+            }
+            for bid in sorted(measurements["building_id"].unique())
+            if "measurement_quality_flag" in measurements.columns
+        },
         "buildings": inventory_as_records(inventory),
         "measurement_months_by_building": {
             str(bid): int((measurements["building_id"] == bid).sum()) for bid in sorted(measurements["building_id"].unique())

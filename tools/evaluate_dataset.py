@@ -12,10 +12,21 @@ from pathlib import Path
 import json
 
 BASE  = Path("CityLearn/data/datasets/citylearn_iquitos_2023_2025")
+BUILDINGCSV = Path("CityLearn/data/buildingcsv/building.csv")
+DISTILLATION_REPORT = Path("tools/dataset_docs/distillation_report.csv")
+PRICING = BASE / "pricing.csv"
+EXPECTED_ROWS = 26304
+PEAK_HOURS = {18, 19, 20, 21, 22}
 COLS  = ['month','hour','day_type','daylight_savings_status',
          'indoor_dry_bulb_temperature','average_unmet_cooling_setpoint_difference',
          'indoor_relative_humidity','non_shiftable_load','dhw_demand',
          'cooling_demand','heating_demand','solar_generation']
+PRICING_COLS = [
+    "electricity_pricing",
+    "electricity_pricing_predicted_1",
+    "electricity_pricing_predicted_2",
+    "electricity_pricing_predicted_3",
+]
 
 # Metadatos por edificio
 META = {
@@ -55,13 +66,58 @@ META = {
          'real_kwh_d':None, 'benchmark_int':(35,65),  'uso':'lun-vie 07-17h talleres'},
 }
 
+
+def apply_buildingcsv_inventory(meta: dict[int, dict]) -> dict[int, dict]:
+    """Synchronize names and roof areas from the documented building.csv input."""
+    synced = {bid: values.copy() for bid, values in meta.items()}
+    if not BUILDINGCSV.exists():
+        return synced
+
+    inventory = pd.read_csv(BUILDINGCSV, encoding="utf-8-sig")
+    for _, row in inventory.iterrows():
+        source_id = str(row.get("ID_Edificio", "")).strip()
+        digits = "".join(ch for ch in source_id if ch.isdigit())
+        if not digits:
+            continue
+
+        bid = int(digits)
+        if bid not in synced:
+            continue
+
+        name = str(row.get("Nombre_Edificio", "")).strip()
+        if name and name.lower() != "nan":
+            synced[bid]['name'] = name
+
+        area = pd.to_numeric(pd.Series([row.get("Area_Techada_m2")]), errors="coerce").iloc[0]
+        if not pd.isna(area) and area > 0:
+            synced[bid]['area'] = float(area)
+        synced[bid]['source_id'] = source_id
+    return synced
+
+
+META = apply_buildingcsv_inventory(META)
+DISTILLATION = pd.read_csv(DISTILLATION_REPORT) if DISTILLATION_REPORT.exists() else pd.DataFrame()
+if not DISTILLATION.empty:
+    DISTILLATION['building_id'] = pd.to_numeric(DISTILLATION['building_id'], errors='coerce').fillna(0).astype(int)
+DISTILLED_BUILDINGS = set(DISTILLATION['building_id'].astype(int).unique()) if not DISTILLATION.empty else set()
+
+
+def add_fixed_year_index(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    years = np.empty(len(out), dtype=int)
+    years[:min(8760, len(out))] = 2023
+    years[min(8760, len(out)):min(17544, len(out))] = 2024
+    years[min(17544, len(out)):] = 2025
+    out["_year"] = years
+    return out
+
 print("=" * 90)
 print("EVALUACION EXHAUSTIVA — DATASET CALIBRADO — 17 EDIFICIOS IQUITOS 2023-2025")
 print("=" * 90)
 
 # ── 1. Tabla general de energia ───────────────────────────────────────────────
 print()
-print("1. ENERGIA ELECTRICA DIARIA ESTIMADA vs REAL (kWh/dia)")
+print("1. ENERGIA ELECTRICA DIARIA Y REFERENCIA DE INTENSIDAD (kWh/dia)")
 print("-" * 90)
 print("%-5s %-30s %10s %10s %10s %10s %7s %10s" % (
     "B", "Edificio", "NSL/dia", "CD_elec", "DHW_elec", "Total/dia", "Ratio", "Intens."))
@@ -81,7 +137,12 @@ for bid, m in META.items():
     real_s   = f"{real_d:.0f}" if real_d else "sin ref"
     bench    = m['benchmark_int']
     bench_ok = bench[0] <= intens <= bench[1]
-    bench_s  = f"OK [{bench[0]}-{bench[1]}]" if bench_ok else f"REVISAR [{bench[0]}-{bench[1]}]"
+    if bid in DISTILLED_BUILDINGS:
+        bench_s = f"MEDIDO {'OK' if bench_ok else 'ref'} [{bench[0]}-{bench[1]}]"
+    elif bid == 1:
+        bench_s = "PRESERVADO [sin B_01]"
+    else:
+        bench_s = f"BENCH {'OK' if bench_ok else 'ref'} [{bench[0]}-{bench[1]}]"
     print("%-5d %-30s %10.0f %10.0f %10.0f %10.0f %7s %6.0f %-20s" % (
         bid, m['name'][:30], nsl_d, cd_elec, dhw_elec, total_d, ratio_s, intens, bench_s))
 
@@ -146,21 +207,44 @@ for bid, m in META.items():
     print("%-5d %-30s %10.1f %10.1f %10.1f%%" % (
         bid, m['name'][:30], sol_max_h, sol_day, factor*100))
 
-# ── 6. Verificacion NSL minimo > floor critico ────────────────────────────────
+# ── 6. Verificacion NSL y balance mensual documentado ─────────────────────────
 print()
-print("6. VERIFICACION NSL_MIN >= CARGA_CRITICA (floor) POR EDIFICIO")
-print("-" * 65)
-all_floor_ok = True
+print("6. VERIFICACION NSL >= 0 Y BALANCE MENSUAL MEDIDO/DESTILADO")
+print("-" * 90)
+print("%-5s %-30s %10s %12s %10s %12s" % (
+    "B", "Edificio", "NSL_min", "meses_doc", "max_delta", "estado"))
+print("-" * 90)
+distillation = DISTILLATION.copy()
+all_nsl_balance_ok = True
 for bid, m in META.items():
     df = pd.read_csv(BASE / f"Building_{bid}.csv")
     nsl_min = df['non_shiftable_load'].min()
-    floor   = m['nsl_floor']
-    ok = nsl_min >= floor * 0.95
-    status = "OK" if ok else "REVISAR"
+    status = "OK"
+
+    if distillation.empty:
+        months_doc = 0
+        max_delta = 0.0
+        ok = nsl_min >= 0
+        status = "OK" if ok else "REVISAR"
+    else:
+        rows = distillation[distillation['building_id'] == bid].copy()
+        months_doc = len(rows)
+
+        if rows.empty:
+            max_delta = 0.0
+            ok = nsl_min >= 0 and bid == 1
+            status = "PRESERVADO" if ok else "REVISAR"
+        else:
+            rows['delta_%'] = pd.to_numeric(rows['delta_%'], errors='coerce').fillna(np.inf)
+            max_delta = rows['delta_%'].abs().max()
+            status_ok = rows['status'].astype(str).str.lower().eq('ok').all()
+            ok = nsl_min >= 0 and status_ok and max_delta <= 0.1
+            status = "OK" if ok else "REVISAR"
+
     if not ok:
-        all_floor_ok = False
-    print("%-5d %-30s NSL_min=%6.2f  floor=%6.2f  %s" % (
-        bid, m['name'][:30], nsl_min, floor, status))
+        all_nsl_balance_ok = False
+    print("%-5d %-30s %10.2f %12d %9.4f%% %12s" % (
+        bid, m['name'][:30], nsl_min, months_doc, max_delta, status))
 
 # ── 7. Columnas dhw_demand y heating_demand ───────────────────────────────────
 print()
@@ -183,19 +267,79 @@ for bid, m in META.items():
     print("%-5d %-30s  %-35s  heating=%s" % (
         bid, m['name'][:30], dhw_tag, heat_status))
 
-# ── 8. Resumen final ──────────────────────────────────────────────────────────
+# ── 8. Verificacion pricing.csv desde facturacion mensual ───────────────────
+print()
+print("8. PRICING.CSV — FACTURA MENSUAL DESTILADA A TARIFA HORARIA")
+print("-" * 90)
+pricing_ok = True
+if not PRICING.exists():
+    pricing_ok = False
+    print("pricing.csv no encontrado")
+else:
+    pricing = pd.read_csv(PRICING)
+    checks = [
+        pricing.columns.tolist() == PRICING_COLS,
+        len(pricing) == EXPECTED_ROWS,
+        pricing.isna().sum().sum() == 0,
+        float(pricing['electricity_pricing'].min()) >= 0.0,
+        float(pricing['electricity_pricing'].max()) > 0.0,
+    ]
+    pricing_ok = all(checks)
+    print(
+        "filas=%d rango=[%.6f, %.6f] media=%.6f estado=%s" % (
+            len(pricing),
+            float(pricing['electricity_pricing'].min()),
+            float(pricing['electricity_pricing'].max()),
+            float(pricing['electricity_pricing'].mean()),
+            "OK" if pricing_ok else "REVISAR",
+        )
+    )
+
+    if not DISTILLATION.empty:
+        ref = add_fixed_year_index(pd.read_csv(BASE / "Building_1.csv", usecols=["month", "hour"]))
+        ref["electricity_pricing"] = pricing["electricity_pricing"].to_numpy(dtype=float)
+        deltas = []
+        billed_total = 0.0
+        reconstructed_total = 0.0
+        for (year, month), rows in DISTILLATION.groupby(["year", "mes"], sort=True):
+            prices = ref[(ref["_year"] == int(year)) & (ref["month"] == int(month))]
+            if prices.empty:
+                continue
+            peak_price = float(prices[prices["hour"].isin(PEAK_HOURS)]["electricity_pricing"].mean())
+            offpeak_price = float(prices[~prices["hour"].isin(PEAK_HOURS)]["electricity_pricing"].mean())
+            e_peak = float(pd.to_numeric(rows["E_punta_medido_kWh"], errors="coerce").fillna(0.0).sum())
+            e_off = float(pd.to_numeric(rows["E_fuera_punta_medido_kWh"], errors="coerce").fillna(0.0).sum())
+            billed = float(pd.to_numeric(rows["total_facturado"], errors="coerce").fillna(0.0).sum())
+            reconstructed = peak_price * e_peak + offpeak_price * e_off
+            billed_total += billed
+            reconstructed_total += reconstructed
+            if billed > 0.0:
+                deltas.append((reconstructed - billed) / billed * 100.0)
+
+        max_delta = max(abs(x) for x in deltas) if deltas else np.inf
+        if max_delta > 0.01:
+            pricing_ok = False
+        print(
+            "factura_agregada=%.2f reconstruida=%.2f max_delta=%.9f%% estado=%s" % (
+                billed_total,
+                reconstructed_total,
+                max_delta,
+                "OK" if max_delta <= 0.01 else "REVISAR",
+            )
+        )
+
+# ── 9. Resumen final ──────────────────────────────────────────────────────────
 print()
 print("=" * 90)
 print("RESUMEN FINAL")
 print("=" * 90)
 
-# Contar edificios con datos reales calibrados
-with_real = sum(1 for m in META.values() if m['real_kwh_d'])
-print(f"  Edificios con datos reales GD-Iquitos V3:  {with_real}/17 calibrados")
-print(f"  Edificios sin datos reales (sin cambio):   {17 - with_real}/17")
-print(f"  Todos los floors NSL validados:            {'SI' if all_floor_ok else 'NO'}")
+print(f"  Edificios con medicion mensual buildingcsv: {len(DISTILLED_BUILDINGS)}/17 destilados")
+print(f"  B1 sin B_01.csv mensual:                    preservado por politica documentada")
+print(f"  NSL no negativo y balance mensual OK:      {'SI' if all_nsl_balance_ok else 'NO'}")
 print(f"  DHW demand correcto en hospitales/hotel:   {'SI' if dhw_ok_all else 'NO'}")
 print(f"  Heating demand = 0 en todos:               {'SI' if heat_ok_all else 'NO'}")
+print(f"  pricing.csv desde factura mensual OK:      {'SI' if pricing_ok else 'NO'}")
 
 print()
 print("CARACTERISTICAS PROPIAS POR EDIFICIO (confirmacion):")

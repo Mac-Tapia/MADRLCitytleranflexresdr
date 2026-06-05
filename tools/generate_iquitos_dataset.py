@@ -28,9 +28,17 @@ import pandas as pd
 import requests
 
 try:
-    from buildingcsv_inputs import load_building_inventory
+    from buildingcsv_inputs import (
+        DEFAULT_BUILDINGS_WITH_MONTHLY_DATA,
+        build_hourly_pricing_from_monthly_measurements,
+        load_building_inventory,
+        load_monthly_measurements,
+    )
 except ImportError:  # pragma: no cover - fallback when script is copied alone
+    DEFAULT_BUILDINGS_WITH_MONTHLY_DATA = tuple(range(2, 18))
+    build_hourly_pricing_from_monthly_measurements = None
     load_building_inventory = None
+    load_monthly_measurements = None
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -41,24 +49,29 @@ logger = logging.getLogger(__name__)
 # SECCIÓN 1 — Constantes y configuración
 # ═══════════════════════════════════════════════════════════════════════════════
 
+# Fuente: CityLearn/data/buildingcsv/building.csv (nombres, areas, tipos, splits)
+# Fuente: CityLearn/data/buildingcsv/B_02.csv..B_17.csv (potencia media real kWh/mes / 730h)
+# cooling_peak = Cant_Est_Unidades_Autonomas_Split * 3.5 kW + sistema_central estimado
+# non_shiftable_base = potencia_media_real * fraccion_base (30-50% segun tipo)
 MADRL_BUILDING_CONSTANTS = {
-    1:  {'name': 'Electro Oriente S.A.',         'non_shiftable_base': 17.7,  'cooling_peak': 126.86, 'shiftable': 14.8,  'bldg_type': 'industrial',    'area_techada_m2': 14000},
-    2:  {'name': 'Complejo Champios',             'non_shiftable_base': 3.76,  'cooling_peak': 29.0,   'shiftable': 35.6,  'bldg_type': 'deportivo',     'area_techada_m2': 8000},
-    3:  {'name': 'Aeropuerto IQT',                'non_shiftable_base': 55.3,  'cooling_peak': 67.0,   'shiftable': 95.0,  'bldg_type': 'transporte_24h','area_techada_m2': 6000},
-    4:  {'name': 'Hiperbodega Precio UNO',        'non_shiftable_base': 14.8,  'cooling_peak': 29.5,   'shiftable': 22.2,  'bldg_type': 'mall',          'area_techada_m2': 2500},
-    5:  {'name': 'Hotel El Dorado Plaza',         'non_shiftable_base': 5.4,   'cooling_peak': 150.5,  'shiftable': 99.0,  'bldg_type': 'hotelero_24h',  'area_techada_m2': 9000},
-    6:  {'name': 'Mall Aventura Iquitos',         'non_shiftable_base': 78.5,  'cooling_peak': 850.0,  'shiftable': 176.0, 'bldg_type': 'mall',          'area_techada_m2': 20637},
-    7:  {'name': 'UNAP Zungarococha',             'non_shiftable_base': 9.5,   'cooling_peak': 167.0,  'shiftable': 39.2,  'bldg_type': 'universitario', 'area_techada_m2': 8300},
-    8:  {'name': 'Escuela Tecnica PNP',           'non_shiftable_base': 6.9,   'cooling_peak': 222.0,  'shiftable': 99.3,  'bldg_type': 'educacion',     'area_techada_m2': 21000},
-    9:  {'name': 'Complejo CNI',                  'non_shiftable_base': 2.18,  'cooling_peak': 19.5,   'shiftable': 12.1,  'bldg_type': 'institucional', 'area_techada_m2': 3500},
-    10: {'name': 'Gobierno Regional Loreto',      'non_shiftable_base': 12.43, 'cooling_peak': 117.5,  'shiftable': 22.2,  'bldg_type': 'administrativo','area_techada_m2': 5000},
-    11: {'name': 'Hospital Regional Loreto',      'non_shiftable_base': 195.0, 'cooling_peak': 366.6,  'shiftable': 73.0,  'bldg_type': 'salud_24h',     'area_techada_m2': 12000},
-    12: {'name': 'EsSalud Hospital III',          'non_shiftable_base': 125.0, 'cooling_peak': 222.0,  'shiftable': 34.5,  'bldg_type': 'salud_24h',     'area_techada_m2': 6000},
-    13: {'name': 'Facultad Economia UNAP',        'non_shiftable_base': 1.75,  'cooling_peak': 62.5,   'shiftable': 14.8,  'bldg_type': 'universitario', 'area_techada_m2': 3000},
-    14: {'name': 'Terminal Portuario ENAPU',      'non_shiftable_base': 15.7,  'cooling_peak': 49.5,   'shiftable': 47.0,  'bldg_type': 'portuario_24h', 'area_techada_m2': 5000},
-    15: {'name': 'Colegio Nacional CNI',          'non_shiftable_base': 2.76,  'cooling_peak': 48.0,   'shiftable': 23.4,  'bldg_type': 'educacion',            'area_techada_m2': 2500},
-    16: {'name': 'I.E. San Juan',                 'non_shiftable_base': 4.55,  'cooling_peak': 100.0,  'shiftable': 51.24, 'bldg_type': 'educacion_motolineal', 'area_techada_m2': 6500},
-    17: {'name': 'IEST Pedro del Aguila Hidalgo', 'non_shiftable_base': 4.2,   'cooling_peak': 93.0,   'shiftable': 26.3,  'bldg_type': 'educacion_tec',        'area_techada_m2': 5200},
+    # ID  nombre_real (building.csv)                        base_kW  peak_AC_kW  shift   tipo               area_m2
+    1:  {'name': 'Electro Oriente S.A.',                    'non_shiftable_base': 17.7,   'cooling_peak': 175.0,   'shiftable': 14.8,  'bldg_type': 'industrial',       'area_techada_m2': 14000.00},  # B_01: 50splits*3.5; sin CSV mensual
+    2:  {'name': 'Municipalidad Distrital San Juan Bautista','non_shiftable_base': 2.15,   'cooling_peak': 140.0,   'shiftable': 35.6,  'bldg_type': 'administrativo',   'area_techada_m2': 8000.00},   # B_02: Office, 40splits*3.5=140kW; P_med=7.17kW
+    3:  {'name': 'Aeropuerto Internacional de Iquitos',      'non_shiftable_base': 62.5,   'cooling_peak': 465.0,   'shiftable': 95.0,  'bldg_type': 'transporte_24h',   'area_techada_m2': 6000.00},   # B_03: Assembly, Chiller+30splits; P_med=124.94kW
+    4:  {'name': 'Hipermercados Tottus Oriente',             'non_shiftable_base': 78.2,   'cooling_peak': 350.0,   'shiftable': 22.2,  'bldg_type': 'mall',             'area_techada_m2': 2500.00},   # B_04: Retail, Food Cold Chain+11splits; P_med=156.49kW
+    5:  {'name': 'Hotel Plaza S.A.',                         'non_shiftable_base': 54.9,   'cooling_peak': 157.5,   'shiftable': 99.0,  'bldg_type': 'hotelero_24h',     'area_techada_m2': 1141.89},   # B_05: Hotel, 45splits*3.5=157.5kW; P_med=109.81kW
+    6:  {'name': 'Mall Aventura Iquitos',                    'non_shiftable_base': 691.2,  'cooling_peak': 1800.0,  'shiftable': 176.0, 'bldg_type': 'mall',             'area_techada_m2': 20637.00},  # B_06: Mall, Multi-Chiller+135splits; P_med=1382.39kW
+    7:  {'name': 'UNAP Facultad de Biologia',                'non_shiftable_base': 7.45,   'cooling_peak': 59.5,    'shiftable': 39.2,  'bldg_type': 'universitario',    'area_techada_m2': 8103.45},   # B_07: Education, 17splits*3.5=59.5kW; P_med=24.84kW
+    8:  {'name': 'PNP Escuela Tecnica Superior Iquitos',     'non_shiftable_base': 3.62,   'cooling_peak': 105.0,   'shiftable': 99.3,  'bldg_type': 'educacion',        'area_techada_m2': 21000.00},  # B_08: Military, 30splits*3.5=105kW; P_med=12.06kW
+    9:  {'name': 'Gobierno Regional Loreto COER',            'non_shiftable_base': 2.86,   'cooling_peak': 150.0,   'shiftable': 12.1,  'bldg_type': 'transporte_24h',   'area_techada_m2': 4479.67},   # B_09: Office_Critical 24h, DataCenter N+1+27splits; P_med=5.71kW
+    10: {'name': 'Gobierno Regional de Loreto',              'non_shiftable_base': 70.8,   'cooling_peak': 287.0,   'shiftable': 22.2,  'bldg_type': 'administrativo',   'area_techada_m2': 14295.73},  # B_10: Office, DuctCentralSplit+82splits; P_med=141.57kW
+    11: {'name': 'Hospital Regional de Loreto',              'non_shiftable_base': 53.4,   'cooling_peak': 1000.0,  'shiftable': 73.0,  'bldg_type': 'salud_24h',        'area_techada_m2': 42649.33},  # B_11: Hospital, ClinicalChiller+HEPA+120splits; P_med=106.73kW
+    12: {'name': 'Seguro Social de Salud EsSalud',           'non_shiftable_base': 133.3,  'cooling_peak': 427.5,   'shiftable': 34.5,  'bldg_type': 'salud_24h',        'area_techada_m2': 18197.48},  # B_12: Healthcare, MedicalArchiveAC+65splits; P_med=266.61kW
+    13: {'name': 'UNAP Facultad de Ciencias Economicas',     'non_shiftable_base': 2.45,   'cooling_peak': 45.5,    'shiftable': 14.8,  'bldg_type': 'universitario',    'area_techada_m2': 2723.00},   # B_13: Education, 13splits*3.5=45.5kW; P_med=8.18kW
+    14: {'name': 'Autoridad Portuaria Nacional Iquitos',     'non_shiftable_base': 2.59,   'cooling_peak': 77.0,    'shiftable': 47.0,  'bldg_type': 'portuario_24h',    'area_techada_m2': 17761.00},  # B_14: Port, 22splits*3.5=77kW; P_med=5.19kW
+    15: {'name': 'DREL Colegio Nacional de Iquitos',         'non_shiftable_base': 5.94,   'cooling_peak': 35.0,    'shiftable': 23.4,  'bldg_type': 'educacion',        'area_techada_m2': 9889.92},   # B_15: Education, 10splits*3.5=35kW; P_med=19.81kW
+    16: {'name': 'SIMA Iquitos S.R.Ltda',                   'non_shiftable_base': 35.8,   'cooling_peak': 237.5,   'shiftable': 51.24, 'bldg_type': 'industrial',       'area_techada_m2': 10294.00},  # B_16: Industrial shipyard, MobileVesselAC+25splits; P_med=71.56kW
+    17: {'name': 'Asociacion Civil Selva Amazonica',         'non_shiftable_base': 22.3,   'cooling_peak': 206.0,   'shiftable': 26.3,  'bldg_type': 'salud_24h',        'area_techada_m2': 1611.23},   # B_17: Laboratory 24h, UltraFreezers-80C+16splits; P_med=44.53kW
 }
 
 
@@ -88,115 +101,115 @@ def apply_buildingcsv_inventory(constants: dict[int, dict]) -> dict[int, dict]:
 
 MADRL_BUILDING_CONSTANTS = apply_buildingcsv_inventory(MADRL_BUILDING_CONSTANTS)
 
+# Refrigeracion comercial continua (kW_24h, factor_nocturno)
+# Fuente: Sistemas_Refrigeracion_Grandes en building.csv
 REFRIGERACION_COMERCIAL = {
-    3:  (30.0,  0.70),
-    4:  (12.0,  0.85),
-    5:  (18.0,  0.90),
-    6:  (515.0, 0.85),
-    11: (180.0, 1.00),
-    12: (90.0,  1.00),
+    3:  (80.0,  0.80),   # Chiller Central Water-Cooled (aeropuerto)
+    4:  (100.0, 0.90),   # Food Cold Chain Racks + Rooftop (Tottus)
+    5:  (35.0,  0.95),   # Commercial Kitchen Walk-in Cold Rooms (Hotel)
+    6:  (800.0, 0.90),   # Multi-Chiller Plant (Mall Aventura)
+    11: (200.0, 1.00),   # Clinical Chiller + Blood Bank Cold Room (Hospital)
+    12: (100.0, 1.00),   # Medical Archive AC System (EsSalud)
+    17: (150.0, 1.00),   # Scientific Ultra-Freezers -80C (Lab Selva Amazonica)
 }
 
 SHORE_POWER_B14 = {'kw_per_vessel': 15.0, 'max_vessels': 4}
 EVENT_LOAD_B9   = {'event_kw': 70.0, 'event_hours': [19, 20, 21, 22]}
 
+# COP real basado en Sistemas_Refrigeracion_Grandes de building.csv
+# Splits autonomos: 2.8 | Chiller agua: 4.5 | Multi-Chiller: 5.0
+# Precision DataCenter AC: 2.0 | Ultra-Freezers -80C: 0.8
 COP_BY_TYPE = {
-    'industrial':           2.8,
-    'mall':                 3.0,
-    'salud_24h':            2.5,
-    'hotelero_24h':         3.0,
-    'deportivo':            2.5,
-    'institucional':        2.5,   # B9 Complejo CNI (alias deportivo)
-    'universitario':        2.8,
-    'educacion':            2.5,
-    'educacion_motolineal': 2.5,   # B16 IE San Juan (alias educacion)
-    'educacion_tec':        2.5,   # B17 IEST (alias educacion)
-    'portuario_24h':        2.5,
-    'transporte_24h':       3.0,
-    'administrativo':       2.8,
+    'industrial':       2.5,   # B01 ELOR (DataCenter Precision), B16 SIMA (Mobile Vessel AC)
+    'mall':             4.5,   # B04 Tottus (Rooftop), B06 Mall (Multi-Chiller 5.0 promedio)
+    'salud_24h':        3.5,   # B11 ClinicalChiller(4.0) + B12 MedicalAC(3.0) + B17 UltraFreezers(0.8 promedio)
+    'hotelero_24h':     2.8,   # B05 Commercial Kitchen Cold Rooms (splits)
+    'universitario':    2.8,   # B07/B13 splits autonomos
+    'educacion':        2.5,   # B08 PNP / B15 Colegio (splits autonomos)
+    'portuario_24h':    2.5,   # B14 Autoridad Portuaria (splits autonomos)
+    'transporte_24h':   4.0,   # B03 Aeropuerto (Chiller Water-Cooled), B09 COER (Precision N+1 promedio 3.0)
+    'administrativo':   3.0,   # B02 Municipalidad (splits), B10 GRL (Duct Central Split)
 }
 
 DHW_KWH_THERMAL_DAY = {5: 614.0, 11: 1200.0, 12: 780.0}
 
+# Margen numerico minimo para evitar fallos de CityLearn cuando el autosize
+# queda exactamente en el pico horario y la comparacion usa floats estrictos.
+COOLING_AUTOSIZE_SAFETY_FACTOR = 1.000001
+
+# Setpoints reales de AC por tipo de uso (ASHRAE 55 / normativa peruana)
 SETPOINTS_C = {
-    'industrial':           24.0,
-    'mall':                 23.0,
-    'salud_24h':            22.0,
-    'universitario':        25.0,
-    'deportivo':            26.0,
-    'institucional':        26.0,   # B9 Complejo CNI
-    'educacion':            25.0,
-    'educacion_motolineal': 25.0,   # B16 IE San Juan
-    'educacion_tec':        25.0,   # B17 IEST
-    'transporte_24h':       24.0,
-    'portuario_24h':        26.0,
-    'hotelero_24h':         23.0,
-    'administrativo':       24.0,
+    'industrial':       24.0,   # B01 ELOR sala de control; B16 SIMA talleres
+    'mall':             23.0,   # B04 Tottus; B06 Mall Aventura
+    'salud_24h':        22.0,   # B11 Hospital; B12 EsSalud; B17 Lab (criogenica)
+    'hotelero_24h':     23.0,   # B05 Hotel Plaza
+    'universitario':    25.0,   # B07 UNAP Biologia; B13 UNAP Economia
+    'educacion':        25.0,   # B08 PNP Escuela; B15 Colegio
+    'portuario_24h':    26.0,   # B14 Autoridad Portuaria
+    'transporte_24h':   24.0,   # B03 Aeropuerto; B09 COER
+    'administrativo':   24.0,   # B02 Municipalidad; B10 Gobierno Regional
 }
 
+# Constante termica tau (horas) — masa termica del edificio
 TAU_HOURS = {
-    'industrial':           4.0,
-    'mall':                 3.0,
-    'salud_24h':            5.0,
-    'universitario':        3.0,
-    'deportivo':            2.0,
-    'institucional':        2.0,   # B9 Complejo CNI
-    'educacion':            2.5,
-    'educacion_motolineal': 2.5,   # B16 IE San Juan
-    'educacion_tec':        2.5,   # B17 IEST
-    'transporte_24h':       2.0,
-    'portuario_24h':        2.0,
-    'hotelero_24h':         4.0,
-    'administrativo':       3.5,
+    'industrial':       4.0,   # B01 galpones acero; B16 SIMA naves industriales
+    'mall':             3.0,   # B04/B06 concreto con vidrio
+    'salud_24h':        5.0,   # B11/B12 hospitales mamposteria densa; B17 lab aislado
+    'hotelero_24h':     4.0,   # B05 hotel concreto
+    'universitario':    3.0,   # B07/B13 aulas concreto
+    'educacion':        2.5,   # B08/B15 estructura mixta
+    'portuario_24h':    2.0,   # B14 instalacion portuaria metalica
+    'transporte_24h':   2.0,   # B03 aeropuerto vidrio/acero; B09 COER modular
+    'administrativo':   3.5,   # B02/B10 oficinas concreto
 }
 
+# Perfil horario de uso AC por tipo (hora 0-23, factor 0.0-1.0)
+# Ajustado a horarios reales de cada edificio segun building.csv
 LOAD_PROFILES = {
-    'industrial':           [0.20,0.18,0.18,0.18,0.18,0.20,0.35,0.65,0.90,0.95,0.95,0.92,0.85,0.90,0.95,0.90,0.80,0.60,0.35,0.25,0.22,0.20,0.20,0.20],
-    'mall':                 [0.08,0.06,0.06,0.06,0.06,0.08,0.10,0.15,0.25,0.40,0.70,0.85,0.90,0.88,0.85,0.88,0.90,0.92,0.95,0.88,0.75,0.50,0.20,0.10],
-    'salud_24h':            [0.70,0.68,0.67,0.67,0.68,0.70,0.75,0.82,0.90,0.95,0.98,0.98,0.95,0.95,0.95,0.92,0.90,0.88,0.85,0.80,0.78,0.75,0.72,0.70],
-    'universitario':        [0.10,0.08,0.08,0.08,0.08,0.10,0.20,0.55,0.85,0.90,0.90,0.88,0.80,0.88,0.90,0.85,0.75,0.60,0.40,0.25,0.15,0.12,0.10,0.10],
-    'deportivo':            [0.10,0.08,0.08,0.08,0.08,0.10,0.15,0.20,0.25,0.30,0.35,0.35,0.35,0.35,0.40,0.50,0.75,0.90,0.95,0.90,0.75,0.50,0.25,0.12],
-    'institucional':        [0.10,0.08,0.08,0.08,0.08,0.10,0.15,0.20,0.25,0.30,0.35,0.35,0.35,0.35,0.40,0.50,0.75,0.90,0.95,0.90,0.75,0.50,0.25,0.12],
-    'educacion':            [0.05,0.05,0.05,0.05,0.05,0.08,0.15,0.55,0.88,0.92,0.90,0.90,0.80,0.88,0.90,0.80,0.55,0.20,0.10,0.08,0.07,0.06,0.05,0.05],
-    'educacion_motolineal': [0.05,0.05,0.05,0.05,0.05,0.08,0.15,0.55,0.88,0.92,0.90,0.90,0.80,0.88,0.90,0.80,0.55,0.20,0.10,0.08,0.07,0.06,0.05,0.05],
-    'educacion_tec':        [0.05,0.05,0.05,0.05,0.05,0.08,0.15,0.55,0.88,0.92,0.90,0.90,0.80,0.88,0.90,0.80,0.55,0.20,0.10,0.08,0.07,0.06,0.05,0.05],
-    'transporte_24h':       [0.55,0.50,0.48,0.48,0.50,0.65,0.85,0.95,0.92,0.88,0.85,0.82,0.80,0.80,0.80,0.82,0.85,0.88,0.90,0.85,0.78,0.70,0.65,0.58],
-    'portuario_24h':        [0.50,0.48,0.45,0.45,0.48,0.65,0.88,0.95,0.92,0.85,0.80,0.78,0.75,0.78,0.85,0.88,0.82,0.75,0.68,0.62,0.58,0.55,0.52,0.50],
-    'hotelero_24h':         [0.58,0.55,0.52,0.50,0.52,0.60,0.70,0.82,0.88,0.85,0.82,0.80,0.80,0.82,0.85,0.88,0.92,0.95,0.98,0.95,0.88,0.80,0.72,0.65],
-    'administrativo':       [0.08,0.07,0.07,0.07,0.07,0.08,0.12,0.35,0.78,0.88,0.90,0.88,0.80,0.88,0.90,0.85,0.70,0.40,0.18,0.12,0.10,0.09,0.08,0.08],
+    # B01 ELOR (industrial utility 24h), B16 SIMA (turnos 6-18h)
+    'industrial':       [0.65,0.62,0.60,0.60,0.62,0.70,0.85,0.92,0.95,0.95,0.95,0.92,0.88,0.90,0.95,0.90,0.85,0.75,0.60,0.45,0.40,0.38,0.35,0.30],
+    # B04 Tottus (retail 9-22h), B06 Mall Aventura (10-22h)
+    'mall':             [0.08,0.06,0.06,0.06,0.06,0.08,0.10,0.15,0.25,0.45,0.72,0.88,0.92,0.90,0.88,0.90,0.92,0.95,0.98,0.92,0.78,0.52,0.22,0.10],
+    # B11 Hospital Regional (24h), B12 EsSalud (24h), B17 Lab Selva Amazonica (24h)
+    'salud_24h':        [0.72,0.70,0.68,0.68,0.70,0.72,0.78,0.85,0.92,0.98,1.00,1.00,0.98,0.98,0.98,0.95,0.92,0.90,0.88,0.85,0.82,0.78,0.75,0.73],
+    # B07 UNAP Biologia (7-19h), B13 UNAP Economia (7-19h)
+    'universitario':    [0.10,0.08,0.08,0.08,0.08,0.10,0.22,0.58,0.88,0.92,0.92,0.90,0.82,0.90,0.92,0.88,0.78,0.62,0.38,0.20,0.14,0.11,0.10,0.10],
+    # B08 PNP Escuela Tecnica (7-18h), B15 Colegio Nacional (7-15h)
+    'educacion':        [0.05,0.05,0.05,0.05,0.05,0.08,0.18,0.60,0.90,0.95,0.92,0.92,0.82,0.90,0.92,0.82,0.50,0.18,0.08,0.07,0.06,0.06,0.05,0.05],
+    # B14 Autoridad Portuaria Nacional (6-20h, operacion portuaria)
+    'portuario_24h':    [0.48,0.45,0.42,0.42,0.45,0.68,0.90,0.98,0.95,0.88,0.82,0.80,0.78,0.80,0.88,0.90,0.85,0.78,0.70,0.62,0.55,0.52,0.50,0.48],
+    # B03 Aeropuerto (24h vuelos), B09 COER (24h emergencias)
+    'transporte_24h':   [0.58,0.52,0.50,0.50,0.52,0.68,0.88,0.98,0.95,0.90,0.88,0.85,0.82,0.82,0.82,0.85,0.88,0.90,0.92,0.88,0.80,0.72,0.68,0.62],
+    # B02 Municipalidad San Juan Bautista (7-17h), B10 Gobierno Regional (7-17h)
+    'administrativo':   [0.07,0.06,0.06,0.06,0.06,0.08,0.15,0.42,0.82,0.90,0.92,0.90,0.82,0.90,0.92,0.88,0.72,0.38,0.15,0.10,0.09,0.08,0.07,0.07],
+    # B05 Hotel Plaza S.A. (24h, huespedes)
+    'hotelero_24h':     [0.60,0.58,0.55,0.52,0.55,0.62,0.72,0.85,0.90,0.88,0.85,0.82,0.82,0.85,0.88,0.90,0.95,0.98,1.00,0.98,0.90,0.82,0.75,0.68],
 }
 
-# (weekday_factor, saturday_factor, sunday_factor)
+# (factor_lunes_viernes, factor_sabado, factor_domingo)
 DAY_FACTOR_MAP = {
-    'industrial':           (1.0, 0.40, 0.20),
-    'mall':                 (1.0, 1.05, 1.03),
-    'salud_24h':            (1.0, 0.95, 0.90),
-    'universitario':        (1.0, 0.15, 0.05),
-    'deportivo':            (0.7, 1.50, 1.30),
-    'institucional':        (0.7, 1.50, 1.30),   # B9 Complejo CNI
-    'educacion':            (1.0, 0.05, 0.02),
-    'educacion_motolineal': (1.0, 0.05, 0.02),   # B16 IE San Juan
-    'educacion_tec':        (1.0, 0.05, 0.02),   # B17 IEST
-    'transporte_24h':       (1.0, 1.10, 1.05),
-    'portuario_24h':        (1.0, 0.70, 0.50),
-    'hotelero_24h':         (1.0, 1.15, 1.20),
-    'administrativo':       (1.0, 0.10, 0.05),
+    'industrial':       (1.00, 0.65, 0.40),   # B01 ELOR 24h; B16 SIMA turnos Sab
+    'mall':             (1.00, 1.08, 1.05),   # B04 Tottus; B06 Mall (mas concurrido fin de semana)
+    'salud_24h':        (1.00, 0.98, 0.95),   # B11/B12 hospitales; B17 lab continuo
+    'universitario':    (1.00, 0.12, 0.04),   # B07/B13 UNAP (solo eventos sabado)
+    'educacion':        (1.00, 0.05, 0.02),   # B08 PNP; B15 Colegio (cerrado fin semana)
+    'portuario_24h':    (1.00, 0.75, 0.55),   # B14 APN (carga/descarga reducida fin semana)
+    'transporte_24h':   (1.00, 1.12, 1.08),   # B03 Aeropuerto; B09 COER (emergencias siempre)
+    'hotelero_24h':     (1.00, 1.18, 1.22),   # B05 Hotel Plaza (mayor ocupacion fin semana)
+    'administrativo':   (1.00, 0.08, 0.03),   # B02 Municipalidad; B10 GRL (solo guardia)
 }
 
+# Horario de ocupacion activa (hora_inicio, hora_fin) — fuente: building.csv
 OCCUPANCY_HOURS = {
-    'industrial':           (7, 18),
-    'mall':                 (10, 22),
-    'salud_24h':            (0, 24),
-    'universitario':        (7, 19),
-    'deportivo':            (6, 23),
-    'institucional':        (6, 23),   # B9 Complejo CNI
-    'educacion':            (7, 16),
-    'educacion_motolineal': (7, 16),   # B16 IE San Juan
-    'educacion_tec':        (7, 17),   # B17 IEST (talleres hasta 17h)
-    'transporte_24h':       (0, 24),
-    'portuario_24h':        (6, 20),
-    'hotelero_24h':         (0, 24),
-    'administrativo':       (7, 16),
+    'industrial':       (6, 18),    # B01 ELOR turnos; B16 SIMA 6-18h dos turnos
+    'mall':             (9, 22),    # B04 Tottus 9-22h; B06 Mall 10-22h
+    'salud_24h':        (0, 24),    # B11/B12 hospitales; B17 lab 24h
+    'universitario':    (7, 19),    # B07/B13 UNAP clases y laboratorios
+    'educacion':        (7, 16),    # B08 PNP; B15 Colegio (turno manana)
+    'portuario_24h':    (6, 20),    # B14 Autoridad Portuaria Nacional
+    'transporte_24h':   (0, 24),    # B03 Aeropuerto vuelos; B09 COER 24h
+    'hotelero_24h':     (0, 24),    # B05 Hotel Plaza huespedes 24h
+    'administrativo':   (7, 17),    # B02 Municipalidad; B10 Gobierno Regional
 }
 
 # EV charger config: {bldg_id: [(tipo, arr_h, dep_h, soc_min, soc_max, soc_req, bat_kwh, kw)]}
@@ -447,6 +460,8 @@ class SandiaModelSelector:
         import pvlib
         mods = pvlib.pvsystem.retrieve_sam('SandiaMod')
         mods = mods.T if mods.shape[0] < mods.shape[1] else mods
+        for col in ['Vmpo', 'Impo', 'Area', 'Bvoco']:
+            mods[col] = pd.to_numeric(mods[col], errors='coerce')
 
         mods['Pmp_stc']   = mods['Vmpo'] * mods['Impo']
         mods['eta_stc']   = mods['Pmp_stc'] / (mods['Area'] * 1000)
@@ -487,6 +502,8 @@ class SandiaModelSelector:
         import pvlib
         invs = pvlib.pvsystem.retrieve_sam('SandiaInverter')
         invs = invs.T if invs.shape[0] < invs.shape[1] else invs
+        for col in ['Pdco', 'Paco']:
+            invs[col] = pd.to_numeric(invs[col], errors='coerce')
 
         pdc_w = pdc_kw * 1000
         # Nombre correcto en pvlib SandiaInverter: 'Pdco' (no 'Pdc0')
@@ -708,9 +725,12 @@ class SupportFilesGenerator:
     def build_pricing(self, n: int) -> pd.DataFrame:
         # Indice temporal completo para determinar hora punta
         idx = pd.date_range('2023-01-01', periods=n, freq='h', tz=LOCATION_TZ)
-        h   = idx.hour.values
-        is_punta = (h >= 18) & (h < 23)
+        pricing_from_bills = self._build_pricing_from_billing(idx)
+        if pricing_from_bills is not None:
+            return pricing_from_bills
 
+        h = idx.hour.values
+        is_punta = (h >= 18) & (h < 23)
         price = np.where(is_punta, TARIFA_PUNTA_USD, TARIFA_FUERA_USD)
 
         def shift_col(arr, k):
@@ -726,6 +746,34 @@ class SupportFilesGenerator:
             'electricity_pricing_predicted_3':  shift_col(price, 3),
         })
         return df
+
+    def _build_pricing_from_billing(self, idx: pd.DatetimeIndex) -> pd.DataFrame | None:
+        if build_hourly_pricing_from_monthly_measurements is None or load_monthly_measurements is None:
+            return None
+
+        try:
+            from distill_building_loads import forecast_missing_measurements
+
+            raw = load_monthly_measurements(buildings=DEFAULT_BUILDINGS_WITH_MONTHLY_DATA)
+            measurements = forecast_missing_measurements(raw, buildings=DEFAULT_BUILDINGS_WITH_MONTHLY_DATA)
+            hourly_index = pd.DataFrame({
+                "_year": idx.year,
+                "_month": idx.month,
+                "hour": idx.hour,
+            })
+            pricing, audit = build_hourly_pricing_from_monthly_measurements(hourly_index, measurements)
+            if pricing.empty:
+                return None
+
+            max_delta = float(audit["cost_delta_pct"].abs().max()) if not audit.empty else 0.0
+            logger.info(
+                "  pricing.csv: calibrado desde TotalFacturado mensual "
+                f"(max_delta_factura={max_delta:.9f}%)"
+            )
+            return pricing
+        except Exception as exc:
+            logger.warning(f"  pricing desde facturacion fallo ({exc}); usando TOU por defecto")
+            return None
 
     def build_charger_csv(
         self,
@@ -1027,6 +1075,9 @@ class SchemaBuilder:
                 "cooling_device": {
                     "type": "citylearn.energy_model.HeatPump",
                     "autosize": True,
+                    "autosize_attributes": {
+                        "safety_factor": COOLING_AUTOSIZE_SAFETY_FACTOR,
+                    },
                     "attributes": {},
                 },
                 "electrical_storage": {
@@ -1055,16 +1106,17 @@ class SchemaBuilder:
                 for c in chargers:
                     fname = c["file"].replace(".csv", "")  # "charger_1_1"
                     kw    = c["kw"]
+                    ev_type = c.get("ev_type", "")
                     # charger_type: 0=AC L1 (≤4 kW motolineal/mototaxi), 1=AC L2, 2=DC Fast
                     if kw <= 4.0:
                         ctype = 0
                         max_d = 0.0
                     elif kw <= 11.0:
                         ctype = 1
-                        max_d = 0.0
+                        max_d = kw if ev_type == "v2g" else 0.0
                     else:
                         ctype = 2
-                        max_d = kw * 0.5
+                        max_d = kw if ev_type == "v2g" else kw * 0.5
                     chargers_dict[fname] = {
                         "type": "citylearn.electric_vehicle_charger.Charger",
                         "charger_simulation": c["file"],
@@ -1332,6 +1384,7 @@ class IquitosDatasetPipeline:
             charger_map.setdefault(bldg_id, []).append({
                 'file': fname,
                 'kw':   cfg_entry[7],
+                'ev_type': cfg_entry[0],
             })
 
         # ── Etapa 7: Washing_Machine_1.csv ───────────────────────────
@@ -1356,9 +1409,11 @@ class IquitosDatasetPipeline:
 
         pricing_df = sfg.build_pricing(N_HOURS_TOTAL)
         pricing_df.to_csv(self.output_dir / "pricing.csv", index=False, float_format='%.6f')
+        price_min = float(pricing_df["electricity_pricing"].min())
+        price_max = float(pricing_df["electricity_pricing"].max())
         logger.info(
-            f"  pricing.csv: punta={TARIFA_PUNTA_USD} USD/kWh, "
-            f"fuera={TARIFA_FUERA_USD} USD/kWh"
+            f"  pricing.csv: rango [{price_min:.6f}, {price_max:.6f}] "
+            "moneda_factura/kWh"
         )
 
         self._save_carbon_metadata()
@@ -1491,6 +1546,24 @@ class IquitosDatasetPipeline:
             json.dump(meta, f, indent=2, ensure_ascii=False)
 
     def _save_generation_log(self, bess_params: dict, solar_kw: dict):
+        pricing_path = self.output_dir / "pricing.csv"
+        if pricing_path.exists():
+            pricing = pd.read_csv(pricing_path, usecols=["electricity_pricing"])
+            pricing_summary = {
+                "source": "TotalFacturado mensual buildingcsv calibrado por energia punta/fuera punta",
+                "currency": "moneda_factura/kWh",
+                "min": round(float(pricing["electricity_pricing"].min()), 9),
+                "max": round(float(pricing["electricity_pricing"].max()), 9),
+                "mean": round(float(pricing["electricity_pricing"].mean()), 9),
+            }
+        else:
+            pricing_summary = {
+                "source": "TOU fallback",
+                "currency": "USD/kWh",
+                "punta_18_22h": TARIFA_PUNTA_USD,
+                "fuera_punta": TARIFA_FUERA_USD,
+            }
+
         log = {
             "fecha_generacion": pd.Timestamp.now().isoformat(),
             "anios": YEARS,
@@ -1516,10 +1589,7 @@ class IquitosDatasetPipeline:
                 round(FE_DIESEL_KG_KWH * (1 - SOLAR_PENETRACION), 3),
                 FE_DIESEL_KG_KWH,
             ],
-            "pricing_usd_kwh": {
-                "punta_18_22h":   TARIFA_PUNTA_USD,
-                "fuera_punta":    TARIFA_FUERA_USD,
-            },
+            "pricing": pricing_summary,
         }
         with open(self.output_dir / "dataset_generation_log.json", 'w', encoding='utf-8') as f:
             json.dump(log, f, indent=2, ensure_ascii=False)

@@ -2,6 +2,52 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "CityLearn v3 MADRL - VER entrenamiento activo en terminal VS Code",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$root = Get-Content outputs\\latest_visible_training_output_root.txt; & scripts\\monitor_citylearn_training_visible.ps1 -OutputRoot $root -RefreshSeconds 30"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "CityLearn v3 MADRL - RELANZAR entrenamiento completo (4 algos x 3 escenarios)",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$ts = Get-Date -Format 'yyyyMMdd_HHmmss'; $root = 'outputs\\citylearn_v3_madrl_full_' + $ts; Set-Content outputs\\latest_visible_training_output_root.txt $root; & scripts\\run_citylearn_v3_full_training_visible.ps1 -OutputRoot $root -Scenario ALL -Seed 0 -EpisodeTimeSteps 8760 -Episodes 5 -TorchThreads 12 -LiveProgressInterval 250 -Cuda -LiveOutput"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "CityLearn v3 MADRL - entrenamiento oficial visible",
       "type": "shell",
       "command": "powershell.exe",

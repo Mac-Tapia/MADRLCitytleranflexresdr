@@ -786,15 +786,20 @@ E3: HAPPO -> MASAC -> MATD3 -> MAAC
 Caracteristicas preservadas del proyecto:
 
 - Dataset: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`.
-- Escenarios: `E1`, `E2`, `E3`.
+- 17 edificios reales: Municipalidad San Juan Bautista, Aeropuerto, Tottus, Hotel Plaza, Mall Aventura, UNAP Biologia, PNP Escuela, GRL COER, Gobierno Regional, Hospital Regional, EsSalud, UNAP Economia, Autoridad Portuaria, DREL Colegio, SIMA Iquitos, Selva Amazonica Lab.
+- 50 cargadores EV (mototaxi 4kW, motolineal 3kW, V2G 7.4kW).
+- Factor CO2: 0.671-0.790 kgCO2/kWh (diesel Electro Oriente + solar).
+- Tarifas: punta $0.38/kWh (18-22h), fuera punta $0.26/kWh.
+- Escenarios: `E1` (OE1 flex), `E2` (OE2 CO2), `E3` (OE3 costos).
 - Algoritmos: `HAPPO`, `MASAC`, `MATD3`, `MAAC`.
-- Episodios oficiales: `5`.
+- Episodios oficiales locales: `5`.
+- Episodios objetivo AWS/Colab: `50`.
 - Pasos por episodio: `8760`.
-- Pasos por corrida: `43800`.
 - Seed: `0`, salvo que se cambie explicitamente.
 - Reward activa: `CityLearnV3MADRLRewardFunction`.
+- Pesos: E1={flex:0.70, co2:0.15, cost:0.15}, E2={flex:0.15, co2:0.70, cost:0.15}, E3={flex:0.25, co2:0.15, cost:0.60}.
 - Agregacion cooperativa: `team_mean`.
-- Salida AWS: `outputs/aws_citylearn_v3_madrl_iquitos_official_full_cuda_v1`.
+- Salida AWS: `outputs/aws_citylearn_v3_madrl_iquitos_50ep_cuda_v1`.
 
 ### Recomendacion AWS para 50 episodios
 
@@ -1385,53 +1390,92 @@ Despues de descargar, apagar o detener la instancia EC2 para evitar costo innece
 
 ## 12. Ejecutar entrenamiento oficial con launcher
 
-Comando recomendado visible:
+### Opcion rapida (recomendada)
+
+Doble clic en:
+
+```text
+relanzar_entrenamiento_madrl.bat
+```
+
+Genera timestamp automatico y lanza la cadena completa. No cerrar la ventana mientras el entrenamiento este activo.
+
+### Comando manual desde PowerShell
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\run_citylearn_v3_full_training_visible.ps1 `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
+$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+$root = "outputs\citylearn_v3_madrl_full_$ts"
+Set-Content outputs\latest_visible_training_output_root.txt $root
+& scripts\run_citylearn_v3_full_training_visible.ps1 `
+  -OutputRoot $root `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
   -TorchThreads 12 `
   -LiveProgressInterval 250 `
-  -Cuda
+  -Cuda `
+  -LiveOutput
 ```
 
 Este comando:
 
 - Verifica el contexto del proyecto.
-- Crea la carpeta de salida.
-- Lanza el monitor visible.
-- Ejecuta el launcher oficial.
-- Corre las 12 combinaciones `E1/E2/E3 x HAPPO/MASAC/MATD3/MAAC`.
+- Crea la carpeta de salida con timestamp.
+- Lanza el monitor en ventana separada.
+- Ejecuta el launcher oficial con fixes aplicados:
+  - `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1`: previene forrtl error (200) al cerrar ventana.
+  - `PYTHONUNBUFFERED=1`: flush inmediato de stdout a los logs.
+- Corre las 12 combinaciones en orden: `E1: HAPPO/MASAC/MATD3/MAAC → E2 → E3`.
 
-No cerrar la ventana de entrenamiento mientras haya un proceso activo.
+**IMPORTANTE:** No cerrar la ventana de entrenamiento mientras haya un proceso activo. El error `forrtl: error (200)` ocurre cuando se cierra la consola que contiene el proceso Python.
 
 ## 13. Monitor de entrenamiento
 
-Si se necesita abrir el monitor manualmente:
+Abrir el monitor manualmente en una segunda ventana PowerShell:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
-  -IntervalSeconds 10 `
-  -LogTail 20
+$root = Get-Content outputs\latest_visible_training_output_root.txt
+powershell -NoProfile -ExecutionPolicy Bypass `
+  -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 `
+  -OutputRoot $root `
+  -IntervalSeconds 5 `
+  -LogTail 12
 ```
 
-El monitor muestra:
+O con ruta directa:
 
-- Estado global del entrenamiento.
-- Job activo.
-- Escenario y algoritmo.
-- Episodio, paso local y paso global.
-- Reward acumulado y reward medio.
-- Pesos multiobjetivo OE1/OE2/OE3.
-- Precio, CO2 y carga neta.
-- Uso de GPU.
-- Logs recientes.
-- Checkpoints y artefactos.
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass `
+  -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 `
+  -OutputRoot outputs\citylearn_v3_madrl_full_YYYYMMDD_HHMMSS `
+  -IntervalSeconds 5 `
+  -LogTail 12
+```
+
+El monitor muestra cada 5 segundos:
+
+- Estado global y jobs completados/en cola.
+- Job activo: algoritmo, escenario, episodio, paso global.
+- Pesos multiobjetivo OE1 (flex) / OE2 (CO2) / OE3 (cost).
+- Retorno acumulado, reward medio, reward instantaneo.
+- CO2 intensidad, precio electricidad, carga neta del distrito.
+- GPU: utilizacion, memoria, temperatura.
+- Logs recientes filtrados (sin ruido de arrays Box de inicializacion).
+- Checkpoints y artefactos guardados.
+
+Herramientas adicionales de diagnostico:
+
+```powershell
+# Verificar integridad del dataset (17 edificios, filas, columnas, chargers)
+.\.venv39-citylearn-v3\Scripts\python.exe -B diagnostico_dataset.py
+
+# Ver metricas del ultimo entrenamiento completado
+.\.venv39-citylearn-v3\Scripts\python.exe -B ver_metricas_madrl.py
+
+# Ver todos los runs disponibles
+.\.venv39-citylearn-v3\Scripts\python.exe -B ver_metricas_madrl.py --todos
+```
 
 ## 14. Estructura de salida esperada
 

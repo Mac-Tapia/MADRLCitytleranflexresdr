@@ -18,20 +18,20 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-01.
+Actualizado: 2026-06-04.
 
-- Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 75+ EVs).
-- Dataset horario actualizado desde insumos reales mensuales `CityLearn/data/buildingcsv/` y destilado hacia CityLearn v3.
-- Cadena de entrenamiento validada por smoke test: `E1 x HAPPO, MASAC, MATD3, MAAC`, 1 episodio de 4 pasos.
-- Entrenamiento oficial completo CUDA preparado, pero no debe lanzarse sin confirmacion explicita del usuario.
-- Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida.
-- Ejecucion secuencial: `E1/E2/E3 x HAPPO/MASAC/MATD3/MAAC` (12 corridas).
-- Perfil local GPU-tuned conservador activo para RTX 4060 Laptop 8 GB.
-- Recompensa activa: `CityLearnV3MADRLRewardFunction`.
-- Agregacion cooperativa Dec-POMDP: `team_mean`.
+- Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 50 cargadores EV).
+- Dataset regenerado con parametros reales de `CityLearn/data/buildingcsv/building.csv`: nombres oficiales, areas techadas exactas, tipos de uso y sistemas de AC reales por edificio.
+- Non-shiftable load destilada desde mediciones mensuales reales `B_02.csv` a `B_17.csv` (balance mensual delta < 0.1%).
+- Entrenamiento oficial en curso: HAPPO E1 completado (5 ep/43800 pasos), MASAC E1 completado, cadena MASAC/MATD3/MAAC en ejecucion.
+- Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida. 12 corridas totales.
+- Ejecucion secuencial: `HAPPO/MASAC/MATD3/MAAC x E1/E2/E3` (4 algoritmos x 3 ejes).
+- Perfil local GPU-tuned activo para RTX 4060 Laptop 8 GB (torch 2.8.0+cu126).
+- Recompensa activa: `CityLearnV3MADRLRewardFunction` con pesos multiobjetivo por escenario.
+- Agregacion cooperativa Dec-POMDP: `team_mean` con team_ratio por algoritmo (HAPPO=0.75, MAAC=0.80).
 - Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes.
-- PyTorch CUDA activo: `torch 2.8.0+cu126`.
-- Framework UC3M v1.0.0 integrado con BACTTensor 29D, RewardAxes 7D y HPHI.
+- Fix forrtl error (200): `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` y `PYTHONUNBUFFERED=1` aplicados al launcher.
+- Monitor en tiempo real: refresca cada 5 s con pesos OE1/OE2/OE3, pasos, episodios y KPIs energeticos.
 - Suite de pruebas estadisticas completa: Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U y Wilcoxon signed-rank.
 
 ## Ejes del proyecto
@@ -110,32 +110,67 @@ pytest tests/ -q --tb=short
 | Caracteristica | Detalle |
 |---|---|
 | Edificios | 17 institucionales/comerciales reales de Iquitos, Peru |
+| Nombres reales | Municipalidad San Juan Bautista, Aeropuerto, Tottus, Hotel Plaza, Mall Aventura, UNAP, PNP, COER, GRL, Hospital Regional, EsSalud, UNAP Economia, Autoridad Portuaria, DREL Colegio, SIMA Iquitos, Selva Amazonica Lab |
 | Rango temporal | 2023-2025 (26,304 pasos horarios) |
-| EVs | 75+ vehiculos electricos (4-40 kWh, 3-7.4 kW) |
-| Cargadores | 38+ cargadores Tipo 1/Tipo 2 |
-| Almacenamiento | Baterias 5-10 kWh por edificio (selectivo) |
-| Generacion solar | Paneles PV por edificio (tamano variable) |
-| Mercado comunitario | Habilitado, precio local 0.8 del grid |
-| Grilla | Sistema aislado diesel ELECTRO ORIENTE |
+| Cargadores EV | 50 archivos `charger_X_Y.csv` (mototaxi 4kW/6kWh, motolineal 3kW/4kWh, V2G 7.4kW/40kWh) |
+| BESS | 704-15,075 kWh por edificio (sizing real desde areas techadas) |
+| Generacion solar PV | 196-5,190 kWp DC por edificio (pvlib SAPM, SunPower SPR-315E) |
+| Sistema de AC | Por tipo: Chiller agua (B03/B11), Multi-Chiller (B06), Precision AC (B01/B09), Ultra-Freezers -80C (B17) |
+| Factor CO2 | 0.671-0.790 kgCO2/kWh (MINAM RAGEI 2019, diesel ELECTRO ORIENTE) |
+| Tarifas | Punta 18-22h: $0.38/kWh; Fuera punta: $0.26/kWh (Electro Oriente 2024) |
+| Grilla | Sistema aislado diesel ELECTRO ORIENTE + penetracion solar 15% |
 | Archivo central | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json` |
+
+### Edificios del dataset
+
+| ID | Nombre real | Tipo | Area m2 | Sistema AC | kWp PV | BESS kWh |
+|---|---|---|---:|---|---:|---:|
+| B01 | Electro Oriente S.A. | industrial | 14,000 | DataCenter Precision AC | 1,703 | 4,020 |
+| B02 | Municipalidad San Juan Bautista | administrativo | 8,000 | Splits autonomos | 974 | 2,382 |
+| B03 | Aeropuerto Internacional Iquitos | transporte_24h | 6,000 | Chiller Central Water-Cooled | 730 | 2,906 |
+| B04 | Hipermercados Tottus Oriente | mall | 2,500 | Food Cold Chain + Rooftop | 304 | 2,495 |
+| B05 | Hotel Plaza S.A. | hotelero_24h | 1,142 | Commercial Kitchen Cold Rooms | 139 | 1,205 |
+| B06 | Mall Aventura Iquitos | mall | 20,637 | Multi-Chiller Plant | 2,511 | 15,075 |
+| B07 | UNAP Facultad de Biologia | universitario | 8,103 | Splits autonomos | 986 | 2,550 |
+| B08 | PNP Escuela Tecnica Superior | educacion | 21,000 | Splits autonomos | 2,556 | 6,836 |
+| B09 | Gobierno Regional Loreto COER | transporte_24h | 4,480 | DataCenter Precision AC (N+1) | 545 | 852 |
+| B10 | Gobierno Regional de Loreto | administrativo | 14,296 | Duct Central Split System | 1,740 | 3,964 |
+| B11 | Hospital Regional de Loreto | salud_24h | 42,649 | Clinical Chiller + HEPA + Blood Bank | 5,190 | 6,662 |
+| B12 | Seguro Social de Salud EsSalud | salud_24h | 18,197 | Medical Archive AC System | 2,215 | 3,159 |
+| B13 | UNAP Facultad Ciencias Economicas | universitario | 2,723 | Splits autonomos | 331 | 798 |
+| B14 | Autoridad Portuaria Nacional | portuario_24h | 17,761 | Splits autonomos | 2,161 | 5,767 |
+| B15 | DREL Colegio Nacional de Iquitos | educacion | 9,890 | Splits autonomos | 1,204 | 3,221 |
+| B16 | SIMA Iquitos S.R.Ltda | industrial | 10,294 | Industrial Mobile Vessel AC | 1,253 | 2,497 |
+| B17 | Asociacion Civil Selva Amazonica | salud_24h | 1,611 | Scientific Ultra-Freezers -80C | 196 | 1,641 |
 
 ### Destilacion desde `buildingcsv`
 
 Los insumos reales estan en `CityLearn/data/buildingcsv/`:
 
-- `building.csv`: nombres actualizados, areas techadas, oficinas y equipos controlados por edificio.
-- `B_02.csv` a `B_17.csv`: mediciones mensuales por medidores y componentes electricos.
-- `Building_1.csv` se preserva porque no existe insumo equivalente en `buildingcsv`.
+- `building.csv`: nombres oficiales, areas techadas exactas, tipos de uso CityLearn, sistemas de refrigeracion, unidades split estimadas y vehiculos predominantes por edificio.
+- `B_02.csv` a `B_17.csv`: mediciones mensuales reales de facturas electricas (kWh punta/fuera punta, total facturado, tarifa).
+- `Building_1.csv` sintetico porque no existe `B_01.csv` en buildingcsv.
 
-La destilacion convierte cada mes medido a 8760/8784 horas mediante transformaciones matematicas de calendario y perfiles deterministas de componentes. No se generan cargas sinteticas arbitrarias. Para faltantes, el script documenta el pronostico aplicado en `tools/dataset_docs/distillation_report.csv`.
+La destilacion aplica: `NSL_residual = E_medido_mes - cooling_demand/COP - dhw_demand/COP`. Balance mensual garantizado con delta < 0.1%. Meses faltantes pronosticados con `calendar_month_mean_overlap_scaled`.
+
+Documentacion completa del pipeline: `docs/dataset_construction_pipeline.md`.
 
 Regenerar el dataset desde los insumos:
 
-```bash
-python tools/distill_building_loads.py
-python tools/generate_iquitos_dataset.py
-python tools/fix_solar_pvlib.py
-python tools/verify_solar.py
+```powershell
+# 1. Generar CSV (usa cache meteorologico, no re-descarga)
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/generate_iquitos_dataset.py --verbose
+
+# 2. Destilar cargas reales B02-B17
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/distill_building_loads.py `
+    --buildingcsv-dir CityLearn/data/buildingcsv `
+    --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
+
+# 3. Fix safety factor cooling autosize
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/fix_schema_cooling.py
+
+# 4. Diagnostico de integridad
+.\.venv39-citylearn-v3\Scripts\python.exe -B diagnostico_dataset.py
 ```
 
 ## MADRL integrados
@@ -262,47 +297,82 @@ Validacion actual:
 
 ## Entrenamiento oficial local
 
-Este comando lanza entrenamiento real. Debe ejecutarse solo despues de confirmacion explicita.
+Opcion rapida — doble clic o desde PowerShell:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
+# Genera timestamp automatico y lanza cadena completa
+.\relanzar_entrenamiento_madrl.bat
+```
+
+Comando completo manual:
+
+```powershell
+$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+$root = "outputs\citylearn_v3_madrl_full_$ts"
+Set-Content outputs\latest_visible_training_output_root.txt $root
+& scripts\run_citylearn_v3_full_training_visible.ps1 `
+  -OutputRoot $root `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
-  -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
   -TorchThreads 12 `
   -LiveProgressInterval 250 `
-  -LiveOutput `
-  -Cuda
+  -Cuda `
+  -LiveOutput
 ```
 
-Esto genera 12 corridas secuenciales sobre el dataset Iquitos:
+Esto genera 12 corridas secuenciales (4 algoritmos x 3 ejes):
 
 ```text
-E1 x HAPPO, MASAC, MATD3, MAAC
-E2 x HAPPO, MASAC, MATD3, MAAC
-E3 x HAPPO, MASAC, MATD3, MAAC
+HAPPO x E1/E2/E3 -> MASAC x E1/E2/E3 -> MATD3 x E1/E2/E3 -> MAAC x E1/E2/E3
 ```
+
+Fixes aplicados al launcher:
+- `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1`: previene `forrtl: error (200)` al cerrar ventana.
+- `PYTHONUNBUFFERED=1`: flush inmediato de stdout a logs.
+- Display en tiempo real: episodio, paso, retorno, pesos OE1/OE2/OE3, CO2, precio, historial por episodio.
 
 ### Perfil GPU-tuned local (RTX 4060 Laptop 8 GB)
 
-| MADRL | Ajustes activos |
-|---|---|
-| HAPPO | `hidden_size=384`, `torch_threads=12`, `n_rollout_threads=1`, `live_progress_interval=250` |
-| MASAC | `buffer_size=2`, `critic_batch_size=1`, `critic_train_steps=1`, `actor_sample_times=5`, `rnn_hidden_dim=64` |
-| MATD3 | `batch_size=256`, `buffer_size=4096`, `hidden_size=256`, `train_interval=100` |
-| MAAC | `batch_size=64`, `buffer_length=256`, `steps_per_update=250`, `num_updates=8`, `hidden_size=128` |
+| MADRL | Backend | Ajustes activos |
+|---|---|---|
+| HAPPO | HARL (on-policy) | `hidden_size=384`, `torch_threads=12`, `team_ratio=0.75` |
+| MASAC | MARLlib (off-policy, RNN+QMIX) | `rnn_hidden_dim=64`, `qmix_hidden_dim=32`, `buffer_size=2` |
+| MATD3 | off-policy PyTorch | `batch_size=256`, `buffer_size=4096`, `hidden_size=256` |
+| MAAC | Attention SAC | `batch_size=64`, `buffer_length=256`, `hidden_size=128`, `attend_heads=4` |
+
+### Herramientas de diagnostico y monitoreo
+
+```powershell
+# Verificar integridad del dataset (17 edificios, filas, columnas, chargers)
+.\.venv39-citylearn-v3\Scripts\python.exe -B diagnostico_dataset.py
+
+# Ver metricas del ultimo entrenamiento completado
+.\.venv39-citylearn-v3\Scripts\python.exe -B ver_metricas_madrl.py
+
+# Ver todos los runs disponibles
+.\.venv39-citylearn-v3\Scripts\python.exe -B ver_metricas_madrl.py --todos
+
+# Ver run especifico
+.\.venv39-citylearn-v3\Scripts\python.exe -B ver_metricas_madrl.py --run <nombre_run>
+```
 
 ## Monitor de entrenamiento
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File CityLearn\scripts\monitor_citylearn_v3_iquitos_training.ps1 `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
+# Monitor en tiempo real (refresca cada 5 segundos)
+$root = Get-Content outputs\latest_visible_training_output_root.txt
+powershell -NoProfile -ExecutionPolicy Bypass `
+  -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 `
+  -OutputRoot $root `
   -IntervalSeconds 5 `
-  -LogTail 20
+  -LogTail 12
 ```
+
+El monitor muestra: estado global, jobs completados/en cola, pesos OE1/OE2/OE3,
+paso/episodio actual, retorno acumulado, CO2, precio electricidad, GPU y logs
+filtrados (sin ruido de arrays Box de inicializacion).
 
 ## Requisitos
 
@@ -387,15 +457,14 @@ Comparar CityLearn v2 contra CityLearn v3 MADRL:
 
 | Documento | Ruta |
 |---|---|
-| Arquitectura y flujo renderizable | `docs/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
+| **Pipeline dataset** (nuevo) | `docs/dataset_construction_pipeline.md` |
+| Arquitectura y flujo | `docs/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
 | Destilacion dataset Iquitos | `docs/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md` |
-| Plano real implementado | `docs/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.pdf` |
-| Plano integrado | `docs/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf` |
-| Aportes cientificos | `docs/APORTES_CIENTIFICOS_CITYLEARN_V3_MADRL.docx` |
-| Plan de tesis | `docs/PLAN_TESIS_MADRL_CITYLEARN_V3.docx` |
-| Informe de tesis completo | `docs/INFORME_TESIS_MADRL_V1_COMPLETO.docx` |
-| Resultados preliminares GD-Iquitos | `docs/Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx` |
+| Auditoria tecnica skill MADRL | `docs/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md` |
 | Tutorial notebook | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |
+| Quickstart notebook | `CityLearn/examples/madrl_citylearn_v3_quickstart.ipynb` |
+| Informe de tesis | `docs/INFORME_TESIS_MADRL_V1_COMPLETO.docx` |
+| Plan de tesis | `docs/PLAN_TESIS_MADRL_CITYLEARN_V3.docx` |
 
 ## Reproducibilidad
 

@@ -2,9 +2,10 @@
 Component-based load distillation for citylearn_iquitos_2023_2025.
 
 This script transforms monthly metered inputs from CityLearn/data/buildingcsv
-into the hourly CityLearn building files. The monthly files B_02.csv..B_17.csv
-are raw inputs; they are not loaded directly by CityLearn. Building_1 is kept
-unchanged because there is no B_01.csv monthly input.
+into the hourly CityLearn building files. The monthly files B_01.csv..B_17.csv
+are raw inputs; they are not loaded directly by CityLearn. B_01.csv (Electro
+Oriente S.A.) was generated on 2026-06-06 from Building_1.csv using COP=2.80
+and MT2 tariff prices calibrated from the district pricing_monthly_audit.
 """
 
 from __future__ import annotations
@@ -44,6 +45,19 @@ try:
     sys.stdout.reconfigure(encoding="utf-8")
 except AttributeError:
     pass
+
+
+def _project_path(path: Path | str) -> Path:
+    p = Path(path)
+    return (ROOT / p).resolve() if not p.is_absolute() else p.resolve()
+
+
+def _rel(path: Path | str) -> str:
+    p = _project_path(path)
+    try:
+        return str(p.relative_to(ROOT))
+    except Exception:
+        return str(p)
 
 
 # Physical parameters retained for compatibility with existing tests.
@@ -561,9 +575,7 @@ def calibrate_building(
     inventory: dict[int, BuildingInventory] | None = None,
     measurements: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
-    if bldg_id == 1:
-        return pd.DataFrame()
-
+    # B_01 now has B_01.csv billing data (generated 2026-06-06) — no longer skipped
     inventory = DEFAULT_INVENTORY if inventory is None else inventory
     if bldg_id not in inventory:
         return pd.DataFrame()
@@ -785,9 +797,8 @@ def print_summary(
             f"{total:>14.2f} {max_delta:>14.9f} {len(missing):>10}  {name}"
         )
 
-    action = "sin escritura" if dry_run or report_only else "archivos Building_2..Building_17 actualizados"
+    action = "sin escritura" if dry_run or report_only else "archivos Building_1..Building_17 actualizados"
     print("  " + "-" * 100)
-    print(f"  Building_1: sin cambios por ausencia de B_01.csv")
     print(f"  Accion: {action}")
     print("=" * 110)
 
@@ -799,6 +810,8 @@ def write_outputs(
     dataset_dir: Path,
     report_path: Path,
 ) -> None:
+    dataset_dir = _project_path(dataset_dir)
+    report_path = _project_path(report_path)
     report_frames = [report for report in reports.values() if not report.empty]
     if report_frames:
         report_path.parent.mkdir(parents=True, exist_ok=True)
@@ -819,14 +832,14 @@ def write_outputs(
             pricing_audit_records = pricing_audit.round(9).to_dict(orient="records")
 
     metadata = {
-        "source_inventory": str(BUILDINGCSV_DIR.relative_to(ROOT)),
+        "source_inventory": _rel(BUILDINGCSV_DIR),
         "source_monthly_measurements": "CityLearn/data/buildingcsv/B_02.csv..B_17.csv",
-        "dataset": str(dataset_dir.relative_to(ROOT)),
+        "dataset": _rel(dataset_dir),
         "building_1_policy": "Building_1.csv is not monthly-distilled because B_01.csv does not exist; its training CSV keeps the same 12-column/26304-row CityLearn structure as B2-B17.",
         "peak_hours_local": sorted(PEAK_HOURS),
         "energy_balance_rule": "For each measured month, EnergiaActivaHoraPunta and EnergiaActivaFueraPunta are the physical active-energy source when available and are allocated only to their corresponding hourly blocks. totalEnergiaActiva is audited and used as fallback only when the TOU active split is missing. Distillation is residual: non_shiftable_load equals selected measured active energy minus controllable loads represented in the training CSV (cooling_demand/COP and dhw_demand/COP). EV, BESS and PV are scenario DER/control assets and are not subtracted from historical building meter energy.",
         "pricing_rule": "TotalFacturado is a monthly monetary bill, not kWh. pricing.csv is rebuilt from monthly bills with C = p_peak*E_punta + p_offpeak*E_fuera_punta and p_peak = r_tariff*p_offpeak; the absolute level is calibrated to reproduce aggregate district monthly bills while keeping one CityLearn-compatible hourly electricity_pricing series.",
-        "pricing_file": str(pricing_path.relative_to(ROOT)) if pricing_path.exists() else None,
+        "pricing_file": _rel(pricing_path) if pricing_path.exists() else None,
         "pricing_columns": PRICING_COLUMNS,
         "pricing_currency": "source billing currency per kWh",
         "pricing_monthly_audit": pricing_audit_records,
@@ -890,19 +903,22 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument("--report-only", action="store_true", help="Only report; do not write any file.")
     parser.add_argument("--report-out", type=Path, default=DEFAULT_REPORT_PATH)
     args = parser.parse_args(list(argv) if argv is not None else None)
+    args.buildingcsv_dir = _project_path(args.buildingcsv_dir)
+    args.dataset_dir = _project_path(args.dataset_dir)
+    args.report_out = _project_path(args.report_out)
 
     inventory = load_building_inventory(args.buildingcsv_dir)
     raw_measurements = load_monthly_measurements(args.buildingcsv_dir, buildings=DEFAULT_BUILDINGS_WITH_MONTHLY_DATA)
     measurements = forecast_missing_measurements(raw_measurements, buildings=DEFAULT_BUILDINGS_WITH_MONTHLY_DATA)
     available = set(int(x) for x in measurements["building_id"].unique()) if not measurements.empty else set()
 
-    buildings = [bid for bid in args.buildings if bid != 1 and bid in available]
-    skipped = [bid for bid in args.buildings if bid == 1 or bid not in available]
+    buildings = [bid for bid in args.buildings if bid in available]
+    skipped = [bid for bid in args.buildings if bid not in available]
     if skipped:
         print(f"ADVERTENCIA: edificios omitidos sin medicion mensual aplicable: {skipped}")
 
     if not buildings:
-        print("No hay edificios B_02..B_17 con medicion mensual para procesar.")
+        print("No hay edificios con medicion mensual para procesar.")
         return 0
 
     schema = load_schema(args.dataset_dir)

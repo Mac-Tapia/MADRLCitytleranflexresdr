@@ -20,6 +20,8 @@ import argparse
 import json
 import logging
 import math
+import subprocess
+import sys
 import warnings
 from pathlib import Path
 
@@ -55,7 +57,7 @@ logger = logging.getLogger(__name__)
 # non_shiftable_base = potencia_media_real * fraccion_base (30-50% segun tipo)
 MADRL_BUILDING_CONSTANTS = {
     # ID  nombre_real (building.csv)                        base_kW  peak_AC_kW  shift   tipo               area_m2
-    1:  {'name': 'Electro Oriente S.A.',                    'non_shiftable_base': 17.7,   'cooling_peak': 175.0,   'shiftable': 14.8,  'bldg_type': 'industrial',       'area_techada_m2': 14000.00},  # B_01: 50splits*3.5; sin CSV mensual
+    1:  {'name': 'Electro Oriente S.A.',                    'non_shiftable_base': 17.7,   'cooling_peak': 175.0,   'shiftable': 14.8,  'bldg_type': 'industrial',       'area_techada_m2': 14000.00},  # B_01: B_01.csv generado 2026-06-06 (MT2, COP=2.80)
     2:  {'name': 'Municipalidad Distrital San Juan Bautista','non_shiftable_base': 2.15,   'cooling_peak': 140.0,   'shiftable': 35.6,  'bldg_type': 'administrativo',   'area_techada_m2': 8000.00},   # B_02: Office, 40splits*3.5=140kW; P_med=7.17kW
     3:  {'name': 'Aeropuerto Internacional de Iquitos',      'non_shiftable_base': 62.5,   'cooling_peak': 465.0,   'shiftable': 95.0,  'bldg_type': 'transporte_24h',   'area_techada_m2': 6000.00},   # B_03: Assembly, Chiller+30splits; P_med=124.94kW
     4:  {'name': 'Hipermercados Tottus Oriente',             'non_shiftable_base': 78.2,   'cooling_peak': 350.0,   'shiftable': 22.2,  'bldg_type': 'mall',             'area_techada_m2': 2500.00},   # B_04: Retail, Food Cold Chain+11splits; P_med=156.49kW
@@ -212,22 +214,41 @@ OCCUPANCY_HOURS = {
     'administrativo':   (7, 17),    # B02 Municipalidad; B10 Gobierno Regional
 }
 
+# Controlled shiftable load exposed through CityLearn's WashingMachine API.
+# The energy basis is the supplied per-building ``shiftable`` value in
+# MADRL_BUILDING_CONSTANTS; the schedule window follows the building use type.
+CONTROLLED_MACHINE_RULES = {
+    'industrial':       {"days": "laboral", "profile": [0.45, 0.35, 0.20]},
+    'mall':             {"days": "todos",   "profile": [0.25, 0.30, 0.25, 0.20]},
+    'salud_24h':        {"days": "todos",   "profile": [0.40, 0.35, 0.25]},
+    'hotelero_24h':     {"days": "todos",   "profile": [0.45, 0.35, 0.20]},
+    'universitario':    {"days": "laboral", "profile": [0.60, 0.40]},
+    'educacion':        {"days": "laboral", "profile": [0.55, 0.45]},
+    'portuario_24h':    {"days": "todos",   "profile": [0.40, 0.35, 0.25]},
+    'transporte_24h':   {"days": "todos",   "profile": [0.40, 0.35, 0.25]},
+    'administrativo':   {"days": "laboral", "profile": [0.60, 0.40]},
+}
+
 # EV charger config: {bldg_id: [(tipo, arr_h, dep_h, soc_min, soc_max, soc_req, bat_kwh, kw)]}
 # Mercado real Iquitos: mototaxi=4.0kW/6kWh; motolineal=3.0kW/4kWh; V2G=7.4kW/40kWh
 EV_CONFIG = {
-    1:  [('v2g',         7, 17, 0.20, 0.40, 0.85, 40, 7.4),   # B1 ELOR: 2×V2G camioneta
-         ('v2g',         7, 17, 0.20, 0.40, 0.85, 40, 7.4)],
-    2:  [('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),   # B2 Champios: 4×mototaxi
+    1:  [('v2g',         7, 17, 0.20, 0.40, 0.85, 40, 7.4),   # B1 ELOR: 2×V2G + 1×mototaxi + 1×motolineal
+         ('v2g',         7, 17, 0.20, 0.40, 0.85, 40, 7.4),
+         ('mototaxi',    7, 17, 0.25, 0.45, 0.82,  6, 4.0),   # 5 mototaxis/día personal ELOR
+         ('motolineal',  7, 17, 0.20, 0.40, 0.80,  4, 3.0)],  # 20 motos/día personal ELOR
+    2:  [('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),   # B2 Municipalidad San Juan Bautista: 4×mototaxi + 1×motolineal
          ('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),
          ('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),
-         ('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0)],
+         ('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),
+         ('motolineal', 15, 22, 0.20, 0.40, 0.80,  4, 3.0)],  # 80 motos/día usuarios deportivos tarde
     3:  [('v2g',         5, 21, 0.30, 0.50, 0.85, 40, 7.4),   # B3 Aeropuerto: 2×V2G + 2×motolineal
          ('v2g',         5, 21, 0.30, 0.50, 0.85, 40, 7.4),
          ('motolineal',  5, 21, 0.20, 0.40, 0.80,  4, 3.0),
          ('motolineal',  5, 21, 0.20, 0.40, 0.80,  4, 3.0)],
-    4:  [('mototaxi',   10, 20, 0.20, 0.40, 0.75,  6, 4.0),   # B4 Hiperbodega: 3×mototaxi
+    4:  [('mototaxi',   10, 20, 0.20, 0.40, 0.75,  6, 4.0),   # B4 Tottus Oriente: 3×mototaxi + 1×motolineal
          ('mototaxi',   10, 20, 0.20, 0.40, 0.75,  6, 4.0),
-         ('mototaxi',   10, 20, 0.20, 0.40, 0.75,  6, 4.0)],
+         ('mototaxi',   10, 20, 0.20, 0.40, 0.75,  6, 4.0),
+         ('motolineal', 10, 19, 0.20, 0.40, 0.80,  4, 3.0)],  # 150 motos/día clientes retail
     5:  [('v2g',         8, 12, 0.30, 0.50, 0.85, 40, 7.4),   # B5 Hotel: 1×V2G + 2×mototaxi
          ('mototaxi',    8, 12, 0.25, 0.45, 0.80,  6, 4.0),
          ('mototaxi',    8, 12, 0.25, 0.45, 0.80,  6, 4.0)],
@@ -242,13 +263,18 @@ EV_CONFIG = {
     7:  [('v2g',         8, 17, 0.25, 0.40, 0.80, 40, 7.4),   # B7 UNAP: 1×V2G + 2×motolineal
          ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0),
          ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0)],
-    8:  [('v2g',         7, 16, 0.20, 0.40, 0.90, 40, 7.4),   # B8 PNP: 2×V2G camioneta
-         ('v2g',         7, 16, 0.20, 0.40, 0.90, 40, 7.4)],
-    9:  [('mototaxi',    7, 16, 0.25, 0.45, 0.80,  6, 4.0),   # B9 CNI: 2×mototaxi
-         ('mototaxi',    7, 16, 0.25, 0.45, 0.80,  6, 4.0)],
-    10: [('v2g',         8, 17, 0.20, 0.40, 0.85, 40, 7.4),   # B10 GOREL: 3×V2G camioneta
+    8:  [('v2g',         7, 16, 0.20, 0.40, 0.90, 40, 7.4),   # B8 PNP: 2×V2G + 1×mototaxi + 1×motolineal
+         ('v2g',         7, 16, 0.20, 0.40, 0.90, 40, 7.4),
+         ('mototaxi',    7, 16, 0.25, 0.45, 0.82,  6, 4.0),   # 60 mototaxis/día campus militar
+         ('motolineal',  7, 16, 0.20, 0.40, 0.80,  4, 3.0)],  # 150 motos/día cadetes/staff
+    9:  [('mototaxi',    7, 16, 0.25, 0.45, 0.80,  6, 4.0),   # B9 GOREL COER: 2×mototaxi + 1×motolineal
+         ('mototaxi',    7, 16, 0.25, 0.45, 0.80,  6, 4.0),
+         ('motolineal',  7, 15, 0.20, 0.40, 0.80,  4, 3.0)],  # 120 motos/día personal COER
+    10: [('v2g',         8, 17, 0.20, 0.40, 0.85, 40, 7.4),   # B10 GOREL: 3×V2G + 1×mototaxi + 1×motolineal
          ('v2g',         8, 17, 0.20, 0.40, 0.85, 40, 7.4),
-         ('v2g',         8, 17, 0.20, 0.40, 0.85, 40, 7.4)],
+         ('v2g',         8, 17, 0.20, 0.40, 0.85, 40, 7.4),
+         ('mototaxi',    8, 17, 0.25, 0.45, 0.82,  6, 4.0),   # 8 mototaxis/día staff GOREL
+         ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0)],  # 25 motos/día personal GOREL
     11: [('v2g',         7, 19, 0.20, 0.40, 0.80, 40, 7.4),   # B11 HRL: 2×V2G + 2×motolineal
          ('v2g',         7, 19, 0.20, 0.40, 0.80, 40, 7.4),
          ('motolineal',  7, 19, 0.20, 0.40, 0.80,  4, 3.0),
@@ -256,15 +282,21 @@ EV_CONFIG = {
     12: [('v2g',         8, 17, 0.25, 0.45, 0.80, 40, 7.4),   # B12 EsSalud: 2×V2G + 1×motolineal
          ('v2g',         8, 17, 0.25, 0.45, 0.80, 40, 7.4),
          ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0)],
-    13: [('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0),   # B13 FACEN: 2×motolineal
-         ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0)],
-    14: [('v2g',         6, 18, 0.20, 0.35, 0.85, 40, 7.4),   # B14 ENAPU: 2×V2G van
-         ('v2g',         6, 18, 0.20, 0.35, 0.85, 40, 7.4)],
-    15: [('mototaxi',    7, 15, 0.20, 0.40, 0.80,  6, 4.0),   # B15 CNI colegio: 2×mototaxi
-         ('mototaxi',    7, 15, 0.20, 0.40, 0.80,  6, 4.0)],
-    16: [('motolineal',  7, 15, 0.20, 0.40, 0.80,  4, 3.0)],  # B16 IE San Juan: 1×motolineal
-    17: [('motolineal',  7, 16, 0.20, 0.40, 0.80,  4, 3.0),   # B17 IEST: 2×motolineal
-         ('motolineal',  7, 16, 0.20, 0.40, 0.80,  4, 3.0)],
+    13: [('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0),   # B13 UNAP Economicas: 2×motolineal + 1×mototaxi
+         ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0),
+         ('mototaxi',    8, 17, 0.25, 0.45, 0.82,  6, 4.0)],  # 80 mototaxis/día estudiantes FACEN
+    14: [('v2g',         6, 18, 0.20, 0.35, 0.85, 40, 7.4),   # B14 ENAPU: 2×V2G + 1×mototaxi + 1×motolineal
+         ('v2g',         6, 18, 0.20, 0.35, 0.85, 40, 7.4),
+         ('mototaxi',    6, 18, 0.25, 0.45, 0.82,  6, 4.0),   # 15 mototaxis/día trabajadores puerto
+         ('motolineal',  6, 18, 0.20, 0.40, 0.80,  4, 3.0)],  # 20 motos/día personal APN
+    15: [('mototaxi',    7, 15, 0.20, 0.40, 0.80,  6, 4.0),   # B15 Colegio Nacional Iquitos: 2×mototaxi + 1×motolineal
+         ('mototaxi',    7, 15, 0.20, 0.40, 0.80,  6, 4.0),
+         ('motolineal',  7, 14, 0.20, 0.40, 0.80,  4, 3.0)],  # 100 motos/día alumnos colegio
+    16: [('motolineal',  7, 15, 0.20, 0.40, 0.80,  4, 3.0),   # B16 SIMA Iquitos: 1×motolineal + 1×mototaxi
+         ('mototaxi',    7, 15, 0.25, 0.45, 0.82,  6, 4.0)],  # 70 mototaxis/día obreros SIMA
+    17: [('motolineal',  7, 16, 0.20, 0.40, 0.80,  4, 3.0),   # B17 Selva Amazonica: 2×motolineal + 1×mototaxi
+         ('motolineal',  7, 16, 0.20, 0.40, 0.80,  4, 3.0),
+         ('mototaxi',    7, 16, 0.25, 0.45, 0.82,  6, 4.0)],  # 90 mototaxis/día personal laboratorio
 }
 
 # Dias activos por tipo de cargador: 'laboral' (lun-vie) o 'todos'
@@ -310,6 +342,7 @@ DHW_PROFILE_HOTEL = [
 ]
 DHW_PROFILE_HOSPITAL = [1/24]*24
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR_DEFAULT = Path("CityLearn/data/datasets/citylearn_iquitos_2023_2025")
 CACHE_DIR          = Path(".cache/weather")
 
@@ -783,7 +816,7 @@ class SupportFilesGenerator:
     ) -> pd.DataFrame:
         """
         Genera charger CSV con formato CityLearn v2 correcto:
-          Estado 3: cargador vacío, todas las columnas NaN
+          Estado 3: cargador vacío, columnas auxiliares con centinelas CityLearn
           Estado 2: 1 fila pre-llegada, estimated_arrival_time=0.0, soc_arrival en %
           Estado 1: sesión completa, departure_time = cuenta regresiva (dur-1 → 0),
                     required_soc_departure en % (0-100)
@@ -799,13 +832,14 @@ class SupportFilesGenerator:
         # Mapa timestamp → posición para lookups O(1)
         ts_to_pos = {ts: i for i, ts in enumerate(idx)}
 
-        # Default: estado 3 (cargador vacío), todas las columnas NaN
+        # Default: estado 3 (cargador vacío), sin NaN en CSV. CityLearn usa
+        # -1 para tiempos ausentes y -0.1 para SOC ausente.
         state   = np.full(n_hours, 3.0)
-        ev_id   = np.full(n_hours, np.nan, dtype=object)
-        dep_t   = np.full(n_hours, np.nan)
-        req_soc = np.full(n_hours, np.nan)
-        arr_t   = np.full(n_hours, np.nan)
-        arr_soc = np.full(n_hours, np.nan)
+        ev_id   = np.full(n_hours, "NONE", dtype=object)
+        dep_t   = np.full(n_hours, -1.0)
+        req_soc = np.full(n_hours, -0.1)
+        arr_t   = np.full(n_hours, -1.0)
+        arr_soc = np.full(n_hours, -0.1)
 
         # Nombre fijo por cargador — CityLearn v2 usa objetos EV persistentes
         # que vuelven al mismo cargador múltiples veces durante el año
@@ -855,40 +889,58 @@ class SupportFilesGenerator:
         })
         return df
 
-    def build_washing_machine(self, n_hours: int) -> pd.DataFrame:
+    def build_washing_machine(self, n_hours: int, bldg_id: int = 1) -> pd.DataFrame:
         """
-        Washing_Machine_1.csv para B1 (Electro Oriente) — lavado de mamelucos/uniformes.
-        Formato exacto CityLearn:
-          - hour: int 1-24 (no 0-23)
+        Controlled shiftable load for one building through CityLearn's
+        WashingMachine interface.
+
+        Output format:
+          - hour: int 1-24
           - day_type: int 1-7
-          - wm_start_time_step: int índice absoluto 0-based del inicio de ventana, -1 si sin ventana
-          - wm_end_time_step: idem para fin de ventana
-          - load_profile: str '[kWh1, kWh2]' o '-1'
-        Ciclo: 2.5 kWh en 2 pasos, ventana 06:00–09:00 (horas 7–9 base-1), Lun–Vie.
+          - wm_start_time_step: absolute 0-based window start, -1 when inactive
+          - wm_end_time_step: absolute 0-based window end, -1 when inactive
+          - load_profile: string list of kWh values or '[]' when inactive
         """
         idx    = pd.date_range('2023-01-01', periods=n_hours, freq='h', tz=LOCATION_TZ)
         h1     = (idx.hour.values + 1).astype(int)   # 0→1 … 23→24
         dow    = idx.dayofweek.values.astype(int)     # 0=Lun … 6=Dom
         dtype  = (dow + 1).astype(int)                # 1=Lun … 7=Dom
 
-        WIN_H_START = 7    # hora 1-base inicio ventana (06:00–07:00)
-        WIN_H_END   = 9    # hora 1-base fin   ventana  (08:00–09:00)
-        CYCLE_LOAD  = '[1.5, 1.0]'  # 2 pasos = 2.5 kWh total
+        cfg = MADRL_BUILDING_CONSTANTS[bldg_id]
+        btype = cfg["bldg_type"]
+        rule = CONTROLLED_MACHINE_RULES.get(
+            btype,
+            {"days": "laboral", "profile": [0.60, 0.40]},
+        )
+        occ_start, occ_end = OCCUPANCY_HOURS.get(btype, (7, 17))
+        duration = len(rule["profile"])
+
+        # Convert 0-based operating hours to CityLearn file hour convention.
+        win_h_start = int(occ_start) + 1
+        win_h_end = max(win_h_start, int(occ_end) - duration + 1)
+        win_h_end = min(24, win_h_end)
+        if int(occ_end) >= 24:
+            win_h_end = 24 - duration + 1
+        win_h_end = max(win_h_start, win_h_end)
+
+        cycle_kwh = max(0.1, float(cfg.get("shiftable", 1.0)))
+        profile = [round(cycle_kwh * float(frac), 6) for frac in rule["profile"]]
+        cycle_load = "[" + ", ".join(f"{value:.6f}" for value in profile) + "]"
 
         start_ts  = np.full(n_hours, -1, dtype=int)
         end_ts    = np.full(n_hours, -1, dtype=int)
-        load_prof = ['-1'] * n_hours
+        load_prof = ['[]'] * n_hours
 
         for i in range(n_hours):
-            if dow[i] >= 5:                      # fin de semana → sin ciclo
+            if rule["days"] == "laboral" and dow[i] >= 5:
                 continue
-            if WIN_H_START <= h1[i] <= WIN_H_END:
+            if win_h_start <= h1[i] <= win_h_end:
                 day_start  = i - (h1[i] - 1)             # fila 0 del mismo día
-                win_s      = day_start + (WIN_H_START - 1)
-                win_e      = day_start + (WIN_H_END   - 1)
+                win_s      = day_start + (win_h_start - 1)
+                win_e      = day_start + (win_h_end - 1)
                 start_ts[i]  = win_s
                 end_ts[i]    = win_e
-                load_prof[i] = CYCLE_LOAD
+                load_prof[i] = cycle_load
 
         return pd.DataFrame({
             'day_type':           dtype,
@@ -1133,15 +1185,13 @@ class SchemaBuilder:
                     }
                 b["chargers"] = chargers_dict
 
-            # Lavadora (solo B1)
-            if bldg_id == 1:
-                b["washing_machines"] = {
-                    "washing_machine_1": {
-                        "type": "citylearn.energy_model.WashingMachine",
-                        "autosize": False,
-                        "washing_machine_energy_simulation": "Washing_Machine_1.csv",
-                    }
+            b["washing_machines"] = {
+                f"washing_machine_{bldg_id}": {
+                    "type": "citylearn.energy_model.WashingMachine",
+                    "autosize": False,
+                    "washing_machine_energy_simulation": f"Washing_Machine_{bldg_id}.csv",
                 }
+            }
 
             # DHW device (B5 Hotel, B11 Hospital Regional, B12 EsSalud)
             if bldg_id in DHW_BLDGS:
@@ -1272,11 +1322,13 @@ class IquitosDatasetPipeline:
         skip_cache: bool  = False,
         validate:   bool  = True,
         buildings:  list  = None,
+        sync_der:   bool  = True,
     ):
         self.output_dir = output_dir
         self.skip_cache = skip_cache
         self.validate   = validate
         self.buildings  = buildings or list(range(1, 18))
+        self.sync_der   = sync_der
 
     def run(self):
         try:
@@ -1335,20 +1387,23 @@ class IquitosDatasetPipeline:
             solar_kw_dc[bldg_id] = pdc_kw
             logger.debug(f"  B{bldg_id}: {n_mod} modulos, {pdc_kw:.1f} kWp DC")
 
-        # ── Etapa 4: Sizing BESS ──────────────────────────────────────
-        logger.info("[Etapa 4] Sizing BESS por edificio")
-        bess_params = {}
-        designer    = BESSDesigner()
-
-        for bldg_id in tqdm(self.buildings, desc="BESS sizing"):
-            gen   = BuildingDataGenerator(bldg_id, weather_full, solar_dict[bldg_id])
-            load  = gen.non_shiftable_load() + gen.cooling_demand() / COP_BY_TYPE[gen.btype]
-            solar = solar_dict[bldg_id].values * solar_kw_dc[bldg_id] / 1000.0
-            bess_params[bldg_id] = designer.size(load, solar)
-            logger.debug(
-                f"  B{bldg_id}: BESS {bess_params[bldg_id]['capacity']:.0f} kWh / "
-                f"{bess_params[bldg_id]['nominal_power']:.0f} kW"
-            )
+        # ── Etapa 4: BESS inicial mínimo ──────────────────────────────
+        # El dimensionamiento fisico del BESS depende de Building_X.csv ya
+        # calibrado, PV actualizado, cargadores EV y balance con red publica.
+        # Por eso aqui solo se deja un placeholder para construir schema.json;
+        # el valor final obligatorio se aplica en _run_der_synchronization().
+        logger.info("[Etapa 4] BESS inicial minimo; el BESS final se calcula despues de PV y EV")
+        bess_params = {
+            bldg_id: {
+                "capacity": 10.0,
+                "nominal_power": 5.0,
+                "depth_of_discharge": BESS_DOD,
+                "efficiency": round(BESS_ETA_RT, 4),
+                "loss_coefficient": BESS_LOSS,
+                "initial_soc": BESS_SOC_INI,
+            }
+            for bldg_id in self.buildings
+        }
 
         # ── Etapa 5: Generación Building_X.csv ───────────────────────
         logger.info("[Etapa 5] Generacion Building_X.csv")
@@ -1364,7 +1419,7 @@ class IquitosDatasetPipeline:
             logger.debug(f"  Guardado: {out.name}")
 
         # ── Etapa 6: Generación charger_X_Y.csv ──────────────────────
-        logger.info("[Etapa 6] Generacion charger_X_Y.csv (50 archivos)")
+        logger.info("[Etapa 6] Generacion charger_X_Y.csv (65 archivos)")
         sfg = SupportFilesGenerator()
 
         charger_map = {}
@@ -1387,10 +1442,11 @@ class IquitosDatasetPipeline:
                 'ev_type': cfg_entry[0],
             })
 
-        # ── Etapa 7: Washing_Machine_1.csv ───────────────────────────
-        logger.info("[Etapa 7] Generacion Washing_Machine_1.csv")
-        wm_df = sfg.build_washing_machine(N_HOURS_TOTAL)
-        wm_df.to_csv(self.output_dir / "Washing_Machine_1.csv", index=False)
+        # ── Etapa 7: Washing_Machine_X.csv ───────────────────────────
+        logger.info("[Etapa 7] Generacion de cargas controladas Washing_Machine_X.csv")
+        for bldg_id in tqdm(self.buildings, desc="Controlled machine CSV"):
+            wm_df = sfg.build_washing_machine(N_HOURS_TOTAL, bldg_id)
+            wm_df.to_csv(self.output_dir / f"Washing_Machine_{bldg_id}.csv", index=False)
 
         # ── Etapa 8: weather, carbon_intensity, pricing ───────────────
         logger.info("[Etapa 8] Generacion weather.csv, carbon_intensity.csv, pricing.csv")
@@ -1427,25 +1483,91 @@ class IquitosDatasetPipeline:
             json.dump(schema, f, indent=2, ensure_ascii=False)
         logger.info(f"  schema.json: {len(schema['buildings'])} edificios")
 
-        # ── Etapa 10: Validación final ────────────────────────────────
-        logger.info("[Etapa 10] Validacion final con CityLearnEnv")
+        # ── Etapa 10: Sincronización DER final ───────────────────────
+        if self.sync_der:
+            logger.info("[Etapa 10] Sincronizacion DER final para entrenamiento MADRL")
+            self._run_der_synchronization()
+            # PV, EV y BESS se actualizan en schema.json durante la sincronizacion.
+            schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        else:
+            logger.warning(
+                "[Etapa 10] Sincronizacion DER omitida por --no-sync-der; "
+                "el BESS queda preliminar y no debe usarse para entrenamiento final."
+            )
+
+        # ── Etapa 11: Validación final ────────────────────────────────
+        logger.info("[Etapa 11] Validacion final con CityLearnEnv")
         if self.validate:
             validator.validate_with_citylearn(schema_path)
 
         # ── Resumen ───────────────────────────────────────────────────
         files = list(self.output_dir.glob("*.csv")) + list(self.output_dir.glob("*.json"))
+        charger_count = self._final_charger_count(schema_path)
         logger.info(f"\n{'='*60}")
         logger.info(f"DATASET GENERADO EXITOSAMENTE")
         logger.info(f"  Directorio: {self.output_dir.resolve()}")
         logger.info(f"  Archivos:   {len(files)}")
         logger.info(f"  Edificios:  {len(self.buildings)}")
         logger.info(f"  Horas:      {N_HOURS_TOTAL}")
-        logger.info(f"  Cargadores: {sum(len(v) for v in charger_map.values())}")
+        logger.info(f"  Cargadores: {charger_count}")
         logger.info(f"{'='*60}")
 
         self._save_generation_log(bess_params, solar_kw_dc)
 
     # ── Métodos auxiliares ────────────────────────────────────────────
+
+    def _resolved_output_dir(self) -> Path:
+        return (
+            self.output_dir
+            if self.output_dir.is_absolute()
+            else PROJECT_ROOT / self.output_dir
+        ).resolve()
+
+    def _run_command(self, label: str, cmd: list[str]) -> None:
+        logger.info("  %s", label)
+        logger.debug("  comando: %s", " ".join(cmd))
+        subprocess.run(cmd, cwd=PROJECT_ROOT, check=True)
+
+    def _run_der_synchronization(self) -> None:
+        """Run the audited post-processing chain that CityLearn training uses.
+
+        The base generator builds the initial files. The final training dataset
+        must then be synchronized in this order because BESS depends on all
+        earlier layers: calibrated base/controlled loads, PV, EV, then public
+        grid balance.
+        """
+        expected = (PROJECT_ROOT / OUTPUT_DIR_DEFAULT).resolve()
+        actual = self._resolved_output_dir()
+        if actual != expected:
+            raise RuntimeError(
+                "La sincronizacion DER final solo esta habilitada para el dataset "
+                f"activo {OUTPUT_DIR_DEFAULT}. Recibido: {self.output_dir}. "
+                "Use el directorio activo o --no-sync-der para una corrida parcial."
+            )
+
+        py = sys.executable
+        self._run_command(
+            "Orquestar sincronizacion final y compuerta de entrenamiento",
+            [
+                py,
+                "-B",
+                "tools/orchestrate_citylearn_dataset.py",
+                "--skip-base-generation",
+                "--skip-project-context-check",
+                "--dataset-dir",
+                str(OUTPUT_DIR_DEFAULT),
+            ],
+        )
+
+    def _final_charger_count(self, schema_path: Path) -> int:
+        try:
+            schema = json.loads(schema_path.read_text(encoding="utf-8"))
+            return sum(
+                len((bdata.get("chargers") or {}))
+                for bdata in schema.get("buildings", {}).values()
+            )
+        except Exception:
+            return 0
 
     def _calc_solar_pvlib(
         self,
@@ -1546,6 +1668,40 @@ class IquitosDatasetPipeline:
             json.dump(meta, f, indent=2, ensure_ascii=False)
 
     def _save_generation_log(self, bess_params: dict, solar_kw: dict):
+        final_bess = {
+            str(bid): {
+                "capacidad_kwh": bess_params[bid]['capacity'],
+                "potencia_kw": bess_params[bid]['nominal_power'],
+            }
+            for bid in self.buildings if bid in bess_params
+        }
+        final_solar = {
+            str(bid): round(solar_kw.get(bid, 0), 1)
+            for bid in self.buildings
+        }
+        schema_path = self.output_dir / "schema.json"
+        if schema_path.exists():
+            try:
+                schema = json.loads(schema_path.read_text(encoding="utf-8"))
+                final_bess = {}
+                final_solar = {}
+                for bkey, bdata in sorted(
+                    schema.get("buildings", {}).items(),
+                    key=lambda item: int(item[0].split("_")[1]),
+                ):
+                    bid = int(bkey.split("_")[1])
+                    if bid not in self.buildings:
+                        continue
+                    storage = bdata.get("electrical_storage", {}).get("attributes", {}) or {}
+                    pv_attrs = bdata.get("pv", {}).get("attributes", {}) or {}
+                    final_bess[str(bid)] = {
+                        "capacidad_kwh": float(storage.get("capacity", 0.0)),
+                        "potencia_kw": float(storage.get("nominal_power", 0.0)),
+                    }
+                    final_solar[str(bid)] = round(float(pv_attrs.get("nominal_power", 0.0)), 1)
+            except Exception as exc:
+                logger.warning("  No se pudo leer BESS/PV final desde schema.json: %s", exc)
+
         pricing_path = self.output_dir / "pricing.csv"
         if pricing_path.exists():
             pricing = pd.read_csv(pricing_path, usecols=["electricity_pricing"])
@@ -1575,16 +1731,14 @@ class IquitosDatasetPipeline:
                 "2025": "NASA POWER",
             },
             "bess_por_edificio": {
-                str(bid): {
-                    "capacidad_kwh": bess_params[bid]['capacity'],
-                    "potencia_kw":   bess_params[bid]['nominal_power'],
-                }
-                for bid in self.buildings if bid in bess_params
+                bid: values for bid, values in final_bess.items()
             },
-            "solar_pv_kwp_dc": {
-                str(bid): round(solar_kw.get(bid, 0), 1)
-                for bid in self.buildings
-            },
+            "solar_pv_kwp_dc": final_solar,
+            "der_sync_rule": (
+                "Final schema is synchronized after generation: load distillation, "
+                "pvlib/TMY PV, EV v3 chargers, BESS PV/EV/grid/load balance, DER audit, "
+                "training validation."
+            ),
             "carbon_intensity_range_kg_kwh": [
                 round(FE_DIESEL_KG_KWH * (1 - SOLAR_PENETRACION), 3),
                 FE_DIESEL_KG_KWH,
@@ -1631,6 +1785,13 @@ Ejemplos:
         help="Omitir validacion con CityLearnEnv",
     )
     parser.add_argument(
+        "--no-sync-der", action="store_true",
+        help=(
+            "Omitir sincronizacion final de cargas reales, PV, EV, BESS y auditorias. "
+            "Solo para corridas parciales; no usar para entrenamiento final."
+        ),
+    )
+    parser.add_argument(
         "--verbose", "-v", action="store_true",
         help="Mostrar mensajes de debug",
     )
@@ -1654,6 +1815,7 @@ Ejemplos:
         skip_cache=args.skip_cache,
         validate=not args.no_validate,
         buildings=args.buildings,
+        sync_der=not args.no_sync_der,
     )
     pipeline.run()
 

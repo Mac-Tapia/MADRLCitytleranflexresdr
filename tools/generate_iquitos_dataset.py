@@ -859,8 +859,9 @@ class SupportFilesGenerator:
             actual_dep = int(np.clip(rng.normal(dep_h, 0.5), actual_arr + 1, 23))
             soc_arr_pct = float(np.clip(rng.uniform(soc_min, soc_max), 0, 1)) * 100.0
 
-            # ── Estado 2: 1 fila pre-llegada (hora anterior a actual_arr) ────
-            ts_pre = day + pd.Timedelta(hours=actual_arr - 1)
+            # ── Estado 2: 1 fila pre-llegada. Si la llegada cae a medianoche,
+            # la fila previa real es la última hora del día anterior.
+            ts_pre = day + pd.Timedelta(hours=actual_arr - 1) if actual_arr > 0 else day - pd.Timedelta(hours=1)
             pos_pre = ts_to_pos.get(ts_pre)
             if pos_pre is not None and state[pos_pre] == 3.0:
                 state[pos_pre]   = 2.0
@@ -1418,8 +1419,13 @@ class IquitosDatasetPipeline:
             df.to_csv(out, index=False, float_format='%.6f')
             logger.debug(f"  Guardado: {out.name}")
 
-        # ── Etapa 6: Generación charger_X_Y.csv ──────────────────────
-        logger.info("[Etapa 6] Generacion charger_X_Y.csv (65 archivos)")
+        # ── Etapa 6: Generación charger_X_Y.csv base ─────────────────
+        base_charger_count = sum(len(EV_CONFIG.get(bldg_id, [])) for bldg_id in self.buildings)
+        logger.info(
+            "[Etapa 6] Generacion charger_X_Y.csv base (%s archivos); "
+            "la sincronizacion EV v3 posterior define el conteo final vigente.",
+            base_charger_count,
+        )
         sfg = SupportFilesGenerator()
 
         charger_map = {}

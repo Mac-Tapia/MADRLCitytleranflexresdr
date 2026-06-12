@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "project": "MADRLCitytleranflexresdr",
+  "updated_at": "2026-06-12",
+  "purpose": "Manifest canonico del flujo dataset -> carga -> entrenamiento -> comparacion -> resultados finales.",
+  "dataset": {
+    "name": "citylearn_iquitos_2023_2025",
+    "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
+    "buildings": 17,
+    "hours": 26304,
+    "audit_root": "outputs/dataset_audit",
+    "required_audits": [
+      "training_dataset_ready_manifest.json",
+      "csv_integrity_manifest.json",
+      "training_dataset_validation.json",
+      "der_sizing_audit.json",
+      "ev_charger_sizing_audit.json"
+    ]
+  },
+  "workflow": [
+    {
+      "stage": "project_context",
+      "command": "powershell -ExecutionPolicy Bypass -File scripts/verify_project_context.ps1",
+      "required_before": ["file_edits", "git_operations", "training_launch"]
+    },
+    {
+      "stage": "dataset_build",
+      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/orchestrate_citylearn_dataset.py --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025",
+      "outputs": ["CityLearn/data/datasets/citylearn_iquitos_2023_2025", "outputs/dataset_audit"]
+    },
+    {
+      "stage": "dataset_gate",
+      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/check_training_dataset_ready.py --strict",
+      "acceptance": ["status=ready", "normalization_allowed_for_training=true"]
+    },
+    {
+      "stage": "training",
+      "launcher": "CityLearn/scripts/launch_citylearn_v3_official_training.ps1",
+      "wrapper": "scripts/run_citylearn_v3_full_training_visible.ps1",
+      "active_output_pointer": "outputs/latest_visible_training_output_root.txt",
+      "output_root_pattern": "outputs/citylearn_v3_madrl_full_<yyyyMMdd_HHmmss>",
+      "algorithms": ["happo", "masac", "matd3", "maac"],
+      "scenarios": ["E1", "E2", "E3"],
+      "episodes": 5,
+      "episode_time_steps": 8760,
+      "num_env_steps": 43800,
+      "artifact_profile": "efficient",
+      "trace_record_interval": 10,
+      "trace_detail": "compact",
+      "gpu_profile": "local4060_fast",
+      "cuda": true
+    },
+    {
+      "stage": "monitoring",
+      "primary_monitor": "CityLearn/scripts/monitor_citylearn_v3_official_training.ps1",
+      "legacy_monitor_wrapper": "scripts/monitor_citylearn_training_visible.ps1",
+      "status_files": ["official_full_status.json", "official_full_manifest.json", "live_progress.json"]
+    },
+    {
+      "stage": "comparison",
+      "v2_benchmark": "CityLearn/scripts/benchmark_citylearn_v2_agents.py",
+      "v2_output_root": "outputs/citylearn_v2_original_benchmark",
+      "v3_root_source": "outputs/latest_visible_training_output_root.txt",
+      "comparator": "CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py",
+      "comparison_output_root": "outputs/comparison_citylearn_v2_vs_v3_madrl"
+    },
+    {
+      "stage": "thesis_evidence",
+      "generator": "CityLearn/scripts/generate_thesis_objective_evidence.py",
+      "output_root": "outputs/thesis_objective_evidence"
+    }
+  ],
+  "required_job_artifacts": [
+    "data/results.json",
+    "data/training_summary.json",
+    "data/timeseries.csv",
+    "data/trace.csv",
+    "data/checkpoint_manifest.json",
+    "figures/figures_manifest.json"
+  ],
+  "required_figures": [
+    "reward_timeseries.png",
+    "convergence_returns.png",
+    "episode_reward_summary.png",
+    "learning_efficiency.png",
+    "citylearn_v2_district_timeseries.png",
+    "axis_baseline_comparison.png",
+    "baseline_gain_by_kpi.png",
+    "core_kpis.png",
+    "OE1_flexibility_kpis.png",
+    "OE2_co2_kpis.png",
+    "OE3_cost_kpis.png"
+  ],
+  "obsolete_reference_policy": {
+    "do_not_use_as_canonical": [
+      "outputs/citylearn_v3_madrl_oficial_v4",
+      "outputs/citylearn_v3_madrl_oficial_v5",
+      "outputs/citylearn_v3_madrl_official_full_cuda_v2",
+      "outputs/citylearn_v3_madrl_iquitos_official_full_cuda_visible_relaunch_20260602_222217"
+    ],
+    "canonical_current_run_rule": "Use outputs/latest_visible_training_output_root.txt when present; otherwise use the newest output directory with official_full_status.json.",
+    "final_results_rule": "Do not report final KPIs/rankings until all 12 jobs have exit_code=0 and all required_job_artifacts exist."
+  }
+}

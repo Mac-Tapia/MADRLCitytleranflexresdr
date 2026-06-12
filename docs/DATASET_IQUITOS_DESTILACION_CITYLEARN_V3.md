@@ -95,8 +95,9 @@ anteriores por accidente:
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
   -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
-  -TorchThreads 12 `
+  -OutputRoot <OutputRoot> `
+  -TorchThreads 8 `
+  -GpuProfile local4060_fast `
   -LiveProgressInterval 250 `
   -LiveOutput `
   -Cuda

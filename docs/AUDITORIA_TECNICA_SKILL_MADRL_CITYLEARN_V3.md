@@ -1,102 +1,78 @@
-# Auditoria tecnica con skill MADRL CityLearn
+# Auditoria Tecnica Vigente CityLearn v3 MADRL
 
-Fecha: 2026-05-05
+**Fecha:** 2026-06-09
+**Proyecto:** `MADRLCitytleranflexresdr`
+**Dataset activo:** `citylearn_iquitos_2023_2025`
+**Salida activa:** `outputs/latest_visible_training_output_root.txt` -> `<OutputRoot>`
 
-## Objetivo
+## Resultado Principal
 
-Ejecutar el skill `madrl-citylearn-literature-review` como guia de auditoria tecnica interna para identificar archivos que pueden mejorar, modernizar y sostener cientificamente el proyecto CityLearn v3 propuesto, sin detener el entrenamiento activo.
+El entrenamiento usa CUDA en la GPU local `NVIDIA GeForce RTX 4060 Laptop GPU`, pero el tiempo total no depende solo de la GPU. El cuello de botella dominante esta en la simulacion secuencial del entorno CityLearn, el armado de observaciones por edificio, la escritura de `live_progress.json`, `trace.csv`, `timeseries.csv` y la serializacion de artefactos.
 
-La auditoria mantiene las reglas terminologicas del proyecto:
+## Configuracion Vigente
 
-- CityLearn v2 es el entorno base existente.
-- CityLearn v3 propuesto es la extension experimental de tesis.
-- El enfoque de algoritmos es MADRL.
-- MARLlib se conserva solo como nombre propio de framework de referencia.
+| Parametro | Valor |
+|---|---:|
+| Dataset | `citylearn_iquitos_2023_2025` |
+| Escenarios | E1, E2, E3 |
+| Algoritmos | HAPPO, MASAC, MATD3, MAAC |
+| Episodios por corrida | 5 |
+| Pasos por episodio | 8,760 |
+| Seed | 0 |
+| CUDA | True |
+| Perfil GPU | `local4060_fast` |
+| Torch threads | 8 |
+| Output root | `<OutputRoot>` resuelto desde `outputs/latest_visible_training_output_root.txt` |
 
-## Resultado principal
+## Dataset Validado
 
-El cuello de botella dominante no esta en la capacidad CUDA sino en la ejecucion secuencial del entorno CityLearn v2 desde Python, el registro de trazas por edificio y la serializacion de progreso/artefactos. La GPU se usa en fases de actualizacion de redes, pero la simulacion del entorno, el armado de observaciones y el registro de metricas siguen siendo CPU-bound.
+| Componente | Valor |
+|---|---:|
+| CSV auditados | 222 |
+| NaN/Inf | 0 |
+| Edificios | 17 |
+| Cargadores EV | 185 |
+| Unidades fisicas Mode 3 | 96 |
+| Maquinas controladas | 17 |
+| PV total | 48,790.9 kWp |
+| BESS total | 26,266.0 kWh / 6,648.0 kW |
 
-## Mejora aplicada
+Manifiestos de control:
 
-Archivo modificado:
+- `outputs/dataset_audit/csv_integrity_manifest.json`
+- `outputs/dataset_audit/training_dataset_ready_manifest.json`
+- `outputs/dataset_audit/der_sizing_audit.csv`
+- `outputs/dataset_audit/ev_charger_sizing_audit.csv`
 
-- `CityLearn/scripts/citylearn_v3_training_common.py`
+## Ajustes Aplicados
 
-Cambio:
+- El dataset se construye por orquestacion con `tools/orchestrate_citylearn_dataset.py`.
+- La validacion acepta cargadores EV con estados activos del esquema vigente.
+- Las maquinas controladas se detectan como `Washing_Machine_*.csv` por edificio.
+- Los reportes de dataset usan conteos dinamicos de cargadores y maquinas; no quedan conteos fijos antiguos en esos scripts.
+- Los documentos vigentes ya no deben usar corridas largas externas ni artefactos historicos como evidencia del proyecto actual.
 
-- Se agregaron acumuladores incrementales para `episode_return_cumulative`, `episode_reward_mean_cumulative`, `total_return_cumulative` y `total_reward_mean_cumulative`.
-- Antes, cada escritura de `live_progress.json` recorria `timeseries_records` acumulado para recalcular retornos.
-- Ahora, el progreso vivo usa acumuladores actualizados en cada paso.
+## Reglas Operativas
 
-Alcance:
+1. Antes de editar o hacer operaciones Git, ejecutar `scripts\verify_project_context.ps1`.
+2. No usar rutas ni artefactos de `D:\madrl_lima`.
+3. No reportar KPIs finales si no existen `results.json`, `timeseries.csv` y `trace.csv` para el algoritmo y escenario.
+4. No normalizar ni entrenar antes de que el dataset completo real este auditado.
+5. No editar `CityLearn/` ni `external/` salvo solicitud explicita.
 
-- No cambia funcion reward.
-- No cambia pesos por eje.
-- No cambia acciones.
-- No cambia KPIs.
-- No cambia Dec-POMDP ni CTDE.
-- Afecta solo los jobs que carguen el codigo despues del cambio.
+## Verificacion Recomendada
 
-## Archivos prioritarios para mejorar
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
+python tools/audit_citylearn_csv_integrity.py
+python CityLearn\scripts\check_citylearn_v3_training_ready.py --strict --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json --scenario E1
+```
 
-| Prioridad | Archivo | Hallazgo | Mejora recomendada |
-|---|---|---|---|
-| Alta | `CityLearn/scripts/citylearn_v3_training_common.py` | Adaptador comun concentra entorno, trazas, progreso vivo, artefactos y wrappers. Es el punto de mayor impacto. | Seguir separando registro de entrenamiento, exportacion de artefactos y wrappers MADRL en modulos mas pequenos. |
-| Alta | `CityLearn/scripts/train_citylearn_v3_maac.py` | Convierte observaciones NumPy a tensores en cada paso y mueve listas a GPU paso a paso. | Preasignar buffers/tensores cuando sea posible y reducir conversiones CPU-GPU dentro del loop. |
-| Alta | `CityLearn/scripts/train_citylearn_v3_masac.py` | Backend MASAC es sensible a memoria GPU y genera alto costo con `qmix_msac.py`. | Mantener perfil estable 8 GB; documentar alternativa CPU o modo CUDA reducido; evaluar parche externo solo en rama controlada. |
-| Alta | `external/MARL/src/ac_discrete/qmix_msac.py` | El error OOM ocurrio en `inputs.cuda()` al construir batches. Es backend externo. | No modificar directamente en master sin rama; proponer patch aislado con `to(device, non_blocking=True)` y limpieza de tensores. |
-| Media | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | Ejecucion secuencial preserva reproducibilidad, pero no expone modo resume ni selector desde job especifico. | Agregar parametros `-StartAtJob`, `-OnlyAlgorithm`, `-OnlyScenario` y `-SkipCompleted` para relanzar sin limpiar todo. |
-| Media | `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1` | Monitor lee archivos completos `trace.csv`/`timeseries.csv` cuando existen. | Para corridas largas, leer solo tail textual o ultimas lineas CSV sin `Import-Csv` completo. |
-| Media | `CityLearn/configs/citylearn_v3_madrl_training.yaml` | Config canonica ya refleja perfiles, pero el launcher aun tiene parametros duplicados. | Hacer que el launcher lea JSON/YAML para evitar divergencia entre documento y ejecucion. |
-| Media | `CityLearn/configs/citylearn_v3_madrl_training.json` | Duplica YAML. | Generar JSON desde YAML o validar igualdad automaticamente antes de entrenar. |
-| Media | `CityLearn/citylearn/v3/marllib_env.py` | MARLlib existe como adaptador de referencia, no como ruta oficial del launcher. | Crear smoke test documentado que verifique registro, espacios y policy mapping sin entrenar. |
-| Media | `CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py` | Comparador depende de artefactos completos. | Agregar modo incremental que detecte corridas terminadas y cree ranking parcial por eje. |
-| Media | `CityLearn/scripts/benchmark_citylearn_v2_agents.py` | Necesario para demostrar mejora contra v2. | Alinear salida con el mismo esquema de `objective_kpis.csv` y `axis_baseline_comparison.csv`. |
-| Media | `tools/skills/madrl-citylearn-literature-review/` | Skill integrado como sustento cientifico. | Ejecutar busqueda bibliografica real y llenar Excel con DOI/PDF/dataset/GitHub verificados. |
-| Baja | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` | Tutorial esta actualizado, pero puede quedar grande para VS Code. | Mantener version generadora `.py` como fuente canonica y limpiar salidas pesadas del notebook. |
-| Baja | `docs/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` | Arquitectura documentada. | Agregar seccion de cuello de botella CPU-bound y perfil MASAC estable. |
+El entrenamiento vigente debe producir, por cada MADRL y escenario, estos artefactos:
 
-## Modernizacion recomendada
-
-1. Crear configuracion unica de entrenamiento:
-   - Fuente canonica: `citylearn_v3_madrl_training.yaml`.
-   - JSON generado automaticamente.
-   - Launcher PowerShell leyendo la config para no duplicar hiperparametros.
-
-2. Crear modo de relanzamiento selectivo:
-   - `-OnlyScenario E2`
-   - `-OnlyAlgorithm MASAC`
-   - `-StartAtJob masac:E1`
-   - `-SkipCompleted`
-
-3. Reducir I/O del monitor:
-   - Evitar `Import-Csv` sobre archivos grandes.
-   - Leer ultimas lineas con `Get-Content -Tail`.
-   - Mostrar `live_progress.json` como fuente principal durante entrenamiento.
-
-4. Separar responsabilidades del adaptador comun:
-   - `training_common_artifacts.py`
-   - `training_common_wrappers.py`
-   - `training_common_progress.py`
-   - `training_common_plots.py`
-
-5. Agregar perfil de diagnostico de rendimiento:
-   - pasos por segundo por job;
-   - tiempo medio de `env.step`;
-   - tiempo medio de update PyTorch;
-   - memoria GPU antes/despues de update;
-   - filas de trace y timeseries generadas.
-
-## Acciones no recomendadas durante entrenamiento activo
-
-- No modificar pesos reward de E1/E2/E3.
-- No cambiar los KPIs ya validados.
-- No limpiar `outputs/citylearn_v3_madrl_official_full_cuda_v2`.
-- No matar procesos Python del entrenamiento.
-- No editar backends externos directamente sin rama de prueba.
-
-## Estado del entrenamiento durante la auditoria
-
-El entrenamiento oficial siguio activo. La auditoria no detuvo launcher, monitor ni procesos Python de CityLearn v3.
+```text
+data/results.json
+data/timeseries.csv
+data/trace.csv
+```
 

@@ -7,15 +7,15 @@ reales confirmadas por fuentes web en el plan de diseño.
 
 Diferencias clave respecto al generador original:
   B1  ELOR: SCADA 24h + oficinas 08-17h (no perfil industrial genérico)
-  B4  Hiperbodega: abre 08:00, no 10:00 (es bodega, no mall)
+  B4  Tottus Oriente: abre 08:00, no 10:00 (es bodega, no mall)
   B7  UNAP Zungarococha: campus remoto 18km, fin de semana casi vacío
   B8  Escuela PNP: internado militar 24h (750 cadetes en dormitorios)
   B9  Complejo CNI: estadio 24 576 esp., eventos nocturnos vie-sab-dom
   B10 Gobierno Regional: cierra 15:00 exacto (confirmado regionloreto.gob.pe)
   B13 UNAP FACEN: clases nocturnas 18-21h (univ. peruana, común)
   B15 Colegio CNI: doble turno 07:15-12:45 y 13:00-18:30 (2 326 alumnos)
-  B16 IE San Juan: doble turno + piscina semi-olímpica + coliseo
-  B17 IEST Pedro Águila: talleres CNC Sab mañana + clases nocturnas adultos
+  B16 SIMA Iquitos: doble turno + piscina semi-olímpica + coliseo
+  B17 Selva Amazonica Pedro Águila: talleres CNC Sab mañana + clases nocturnas adultos
 
 Columnas que se recalculan (el resto se preserva del CSV existente):
   non_shiftable_load, cooling_demand,
@@ -111,7 +111,7 @@ BUILDING_PROFILES = {
     #   12    13    14    15    16    17    18    19    20    21    22    23
         0.87, 0.92, 0.97, 0.93, 0.85, 0.45, 0.30, 0.25, 0.23, 0.22, 0.22, 0.22],
 
-    # B2 — Complejo Champios (Deportivo multidisciplinar, 8,000 m²)
+    # B2 — Municipalidad San Juan Bautista (Deportivo multidisciplinar, 8,000 m²)
     # Fuente: estimación tipo complejo deportivo Iquitos
     # Gimnasio: 06-22h; canchas: tarde; eventos: 15-22h
     # Fines de semana: principal actividad (eventos deportivos)
@@ -129,7 +129,7 @@ BUILDING_PROFILES = {
     #   12    13    14    15    16    17    18    19    20    21    22    23
         0.78, 0.85, 0.93, 0.97, 0.93, 0.88, 0.85, 0.75, 0.65, 0.60, 0.58, 0.55],
 
-    # B4 — Hiperbodega Precio UNO (Retail/Bodega, 2,500 m²)
+    # B4 — Tottus Oriente Precio UNO (Retail/Bodega, 2,500 m²)
     # Fuente: tiendeo.pe — hiperbodega GRAN SUPERFICIE abre 08:00 (no mall 10:00)
     # Refrigeración perecederos: 24h crítica
     # Apertura 08:00-22:00 (formato bodega, no centro comercial)
@@ -241,7 +241,7 @@ BUILDING_PROFILES = {
     #   12    13    14    15    16    17    18    19    20    21    22    23
         0.93, 0.95, 0.97, 0.93, 0.87, 0.72, 0.22, 0.10, 0.07, 0.06, 0.05, 0.05],
 
-    # B16 — I.E. San Juan (Educación emblemática, 6,500 m²)
+    # B16 — SIMA Iquitos (Educación emblemática, 6,500 m²)
     # Fuente: iesanjuan.edu.pe + MINEDU Identicole — piscina semi-olímpica, coliseo, bib. tipo III
     # DOBLE TURNO como B15; más grande y con instalaciones especiales
     # Piscina: bomba recirculación 24h (baja potencia nocturna); Coliseo: eventos eventuales
@@ -251,8 +251,8 @@ BUILDING_PROFILES = {
     #   12    13    14    15    16    17    18    19    20    21    22    23
         0.93, 0.95, 0.97, 0.93, 0.83, 0.72, 0.25, 0.12, 0.08, 0.07, 0.06, 0.06],
 
-    # B17 — IEST Pedro del Águila Hidalgo (Educación técnica, 5,200 m², 7 carreras)
-    # Fuente: logrosperu.com + deperu.com — Mecánica Automotriz, CNC, Electrotecnia,
+    # B17 — Asociacion Civil Selva Amazonica (Laboratorio 24h, 1 611 m²)
+    # Fuente: logrosperu.com + deperu.com — Laboratorio biomedico, ultracongeladores -80C,
     #   Construcción Civil, Agropecuaria, Contabilidad, Secretariado
     # SÁBADOS CON CLASES: institutos técnicos en Perú frecuentemente tienen clases Sab
     # CLASES NOCTURNAS para adultos trabajadores: Contabilidad + Secretariado 18:00-22:00
@@ -269,11 +269,11 @@ BUILDING_PROFILES = {
 BUILDING_DAY_FACTORS = {
     # B1 ELOR: L-V oficinas plenas, Sab reducido (SCADA siempre activo), Dom mínimo
     1:  (1.0, 0.38, 0.22),
-    # B2 Champios: fines de semana son sus días de mayor actividad (deportes/eventos)
+    # B2 Municipalidad San Juan Bautista: fines de semana son sus días de mayor actividad (deportes/eventos)
     2:  (0.70, 1.55, 1.38),
     # B3 Aeropuerto: fines de semana ligeramente más turistas (Amazon)
     3:  (1.0, 1.10, 1.05),
-    # B4 Hiperbodega: fines de semana +afluencia familiar
+    # B4 Tottus Oriente: fines de semana +afluencia familiar
     4:  (1.0, 1.05, 1.02),
     # B5 Hotel: fines de semana +turismo (Amazon lodge, ecoturismo)
     5:  (1.0, 1.18, 1.22),
@@ -297,18 +297,18 @@ BUILDING_DAY_FACTORS = {
     14: (1.0, 0.72, 0.52),
     # B15 Colegio CNI: cerrado fines de semana (institución educativa pública)
     15: (1.0, 0.05, 0.02),
-    # B16 IE San Juan: cerrado fines de semana (bomba piscina ciclo nocturno bajo)
+    # B16 SIMA Iquitos: cerrado fines de semana (bomba piscina ciclo nocturno bajo)
     16: (1.0, 0.08, 0.03),
-    # B17 IEST: SÁBADOS con clases técnicas (38-50% del día laboral), Dom cerrado
+    # B17 Selva Amazonica: SÁBADOS con clases técnicas (38-50% del día laboral), Dom cerrado
     17: (1.0, 0.48, 0.05),
 }
 
 # ─── Horas de ocupación por edificio (para cálculo de unmet cooling) ─────────────
 BUILDING_OCCUPANCY = {
     1:  (7, 18),   # ELOR: oficinas 07-18h (con personal de guardia)
-    2:  (6, 23),   # Champios: deportes 06-23h
+    2:  (6, 23),   # Municipalidad San Juan Bautista: deportes 06-23h
     3:  (0, 24),   # Aeropuerto: 24h
-    4:  (8, 22),   # Hiperbodega: apertura 08-22h
+    4:  (8, 22),   # Tottus Oriente: apertura 08-22h
     5:  (0, 24),   # Hotel: 24h
     6:  (9, 22),   # Mall: 09-22h (Tottus pre-stock desde 07h)
     7:  (7, 19),   # UNAP Zungar: 07-19h
@@ -320,17 +320,17 @@ BUILDING_OCCUPANCY = {
     13: (7, 22),   # UNAP FACEN: 07-22h (clases nocturnas hasta 21h)
     14: (0, 24),   # ENAPU: 24h (terminal portuario)
     15: (7, 19),   # Colegio CNI: doble turno 07:15-18:30 → 07-19h
-    16: (7, 19),   # IE San Juan: doble turno 07-19h
-    17: (7, 22),   # IEST: talleres + clases nocturnas hasta 22h
+    16: (7, 19),   # SIMA Iquitos: doble turno 07-19h
+    17: (0, 24),   # Selva Amazonica: laboratorio 24h continuo
 }
 
 NAMES = {
-    1:'Electro Oriente S.A.', 2:'Complejo Champios', 3:'Aeropuerto IQT',
-    4:'Hiperbodega Precio UNO', 5:'Hotel El Dorado Plaza', 6:'Mall Aventura Iquitos',
+    1:'Electro Oriente S.A.', 2:'Municipalidad San Juan Bautista', 3:'Aeropuerto IQT',
+    4:'Tottus Oriente Precio UNO', 5:'Hotel El Dorado Plaza', 6:'Mall Aventura Iquitos',
     7:'UNAP Zungarococha', 8:'Escuela Tecnica PNP', 9:'Complejo CNI',
     10:'Gobierno Regional', 11:'Hospital Regional', 12:'EsSalud Hospital III',
     13:'Fac. Economia UNAP', 14:'Terminal ENAPU', 15:'Colegio CNI',
-    16:'I.E. San Juan', 17:'IEST Pedro del Aguila',
+    16:'SIMA Iquitos', 17:'Asociacion Civil Selva Amazonica',
 }
 
 def load_weather() -> pd.DataFrame:
@@ -429,9 +429,9 @@ print("  B9  Complejo CNI → estadio 24,576 esp., eventos nocturnos vie-sáb-do
 print("  B10 Gobierno Regional → cierre exacto a las 15:00 (L-V 07:00-15:00)")
 print("  B13 UNAP FACEN → clases nocturnas 18-21h (univ. peruana)")
 print("  B15 Colegio CNI → doble turno 07:15-12:45 y 13:00-18:30")
-print("  B16 IE San Juan → doble turno + piscina + coliseo deportivo")
-print("  B17 IEST → talleres CNC sábado + clases nocturnas adultos")
-print("  B4  Hiperbodega → abre 08:00 (bodega, no mall desde 10:00)")
+print("  B16 SIMA Iquitos → doble turno + piscina + coliseo deportivo")
+print("  B17 Selva Amazonica → talleres CNC sábado + clases nocturnas adultos")
+print("  B4  Tottus Oriente → abre 08:00 (bodega, no mall desde 10:00)")
 print("  B7  UNAP Zungarococha → campus remoto 18km, fin de semana casi vacío")
 print()
 
@@ -549,7 +549,7 @@ cambios = [
     ("B13", "universitario (solo mañana-tarde)", "FACEN: clases nocturnas 18-21h"),
     ("B15", "educacion (07-16h 1 turno)", "DOBLE TURNO: 07:15-12:45 y 13:00-18:30"),
     ("B16", "educacion (07-16h 1 turno)", "DOBLE TURNO + piscina + coliseo: 07-19h"),
-    ("B17", "educacion (cerr. Sab)", "IEST: clases Sab (Sab=0.48) + nocturnas adultos"),
+    ("B17", "salud_24h (lab continuo)", "Selva Amazonica: ultracongeladores -80C operacion 24h"),
 ]
 for edif, antes, despues in cambios:
     print(f"  {edif}: {antes}")

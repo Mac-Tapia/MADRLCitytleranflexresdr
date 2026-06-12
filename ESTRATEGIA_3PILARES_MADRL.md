@@ -2,7 +2,7 @@
 
 ## Flexibilidad Energetica + Emisiones de CO2 + Costos Energeticos
 
-Ultima actualizacion: 2026-05-05
+Ultima actualizacion: 2026-06-12
 
 ---
 
@@ -26,6 +26,8 @@ La capa v3 agrega:
 - 4 backends MADRL oficiales: HAPPO, MASAC, MATD3 y MAAC;
 - reporte multiobjetivo por tres ejes;
 - artefactos reproducibles por corrida: datos tecnicos, checkpoints, figuras, graficas y cuadros.
+
+La fuente operativa vigente del flujo completo esta en `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`. Para resultados de entrenamiento, no se fija una carpeta historica como canonica: se usa `outputs/latest_visible_training_output_root.txt` o, si no existe, el output mas reciente con `official_full_status.json`.
 
 ### Sustento cientifico integrado
 
@@ -201,7 +203,7 @@ El contrato cooperativo y coordinado se valida con:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
-  --output outputs\citylearn_v3_madrl_official_full_cuda_v2\cooperative_ctde_validation.json
+  --output outputs\validation\cooperative_ctde_validation.json
 ```
 
 La validacion comprueba 12 casos: HAPPO, MASAC, MATD3 y MAAC en E1, E2 y E3. En cada caso se verifica:
@@ -334,7 +336,7 @@ Para corridas existentes se puede regenerar el paquete grafico sin reentrenar:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\regenerate_citylearn_v3_figures.py `
-  outputs\citylearn_v3_madrl_official_full_cuda_v2\happo\E3_seed_0
+  <OutputRoot>\happo\E3_seed_0
 ```
 
 ### `timeseries.csv`
@@ -543,13 +545,14 @@ Estado:
 - `pip check`: sin dependencias rotas.
 - MATD3 original TensorFlow 1.x se mantiene como fuente legacy; el entrenamiento funcional Python 3.9 usa `external/off-policy`.
 
-Entorno CUDA validado el 2026-05-03:
+Entorno CUDA validado el 2026-06-08 para el relanzamiento local estable:
 
 - PyTorch: `2.8.0+cu126`.
 - Runtime CUDA PyTorch: `12.6`.
 - `torch.cuda.is_available()`: `True`.
 - GPU detectada: `NVIDIA GeForce RTX 4060 Laptop GPU`.
 - `pip check`: sin dependencias rotas despues del cambio a build CUDA.
+- Perfil operativo vigente: `local4060_fast`, `TorchThreads=8`; salida activa definida por `outputs/latest_visible_training_output_root.txt`.
 
 Correcciones CUDA aplicadas antes del relanzamiento:
 
@@ -689,7 +692,7 @@ Comando cuando los MADRL oficiales ya terminaron:
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
   --v2-root outputs\citylearn_v2_original_benchmark `
-  --v3-root outputs\citylearn_v3_madrl_official_full_cuda_v2 `
+  --v3-root <OutputRoot> `
   --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
   --scenario E3 `
   --seed 0 `
@@ -727,11 +730,11 @@ La demostracion de mejora debe reportar:
 
 ## 10. Siguiente Paso Operativo
 
-El entrenamiento oficial completo CUDA fue relanzado el 2026-05-04 en ejecucion secuencial para los cuatro MADRL y los tres ejes.
+El entrenamiento oficial completo CUDA debe ejecutarse contra un `OutputRoot` nuevo por timestamp o contra el root activo registrado en `outputs/latest_visible_training_output_root.txt`. Los roots `outputs/citylearn_v3_madrl_oficial_v4` y `outputs/citylearn_v3_madrl_oficial_v5` quedan como historicos y no deben citarse como fuente final si existe una corrida activa posterior.
 
 Configuracion oficial activa:
 
-- dataset: `citylearn_challenge_2022_phase_all_plus_evs`;
+- dataset: `citylearn_iquitos_2023_2025`;
 - escenario: `ALL`;
 - escenarios internos: `E1`, `E2`, `E3`;
 - edificios: `17` + EV;
@@ -740,30 +743,41 @@ Configuracion oficial activa:
 - pasos de entorno por MADRL: `43800`;
 - PyTorch: `2.8.0+cu126`;
 - CUDA: `true`;
-- salida: `outputs/citylearn_v3_madrl_official_full_cuda_v2`;
-- manifest global: `outputs/citylearn_v3_madrl_official_full_cuda_v2/official_full_manifest.json`;
-- estado global: `outputs/citylearn_v3_madrl_official_full_cuda_v2/official_full_status.json`.
+- perfil GPU: `local4060_fast`;
+- salida: `<OutputRoot>` leido desde `outputs/latest_visible_training_output_root.txt`;
+- manifiesto/preflight: `<OutputRoot>/official_full_manifest.json`;
+- estado global: `<OutputRoot>/official_full_status.json`.
 
 Comando de relanzamiento:
 
 ```powershell
+$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+$root = "outputs\citylearn_v3_madrl_full_$ts"
+Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
+
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
-  -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
+  -File scripts\run_citylearn_v3_full_training_visible.ps1 `
+  -OutputRoot $root `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
-  -OutputRoot outputs\citylearn_v3_madrl_official_full_cuda_v2 `
-  -TorchThreads 12 `
+  -TorchThreads 8 `
+  -LiveProgressInterval 1000 `
+  -ArtifactProfile efficient `
+  -TraceRecordInterval 10 `
+  -TraceDetail compact `
+  -GpuProfile local4060_fast `
+  -LiveOutput `
   -Cuda
 ```
 
 Al completarse la corrida, cada MADRL debe quedar con carpetas separadas por eje:
 
 ```text
-outputs/citylearn_v3_madrl_official_full_cuda_v2/<madrl>/E1_seed_0/
-outputs/citylearn_v3_madrl_official_full_cuda_v2/<madrl>/E2_seed_0/
-outputs/citylearn_v3_madrl_official_full_cuda_v2/<madrl>/E3_seed_0/
+<OutputRoot>/<madrl>/E1_seed_0/
+<OutputRoot>/<madrl>/E2_seed_0/
+<OutputRoot>/<madrl>/E3_seed_0/
   data/
   checkpoints/
   figures/
@@ -781,4 +795,4 @@ El workspace define tareas para ver el entrenamiento y el monitor en la terminal
 
 Las tareas no usan `problemMatcher` para evitar que logs informativos se conviertan en falsos errores de la pestana `Problems`.
 
-Logs antiguos como `happo_no_co2.log`, `happo_metrics_split.log` y `maac_co2.log` quedan como historial de desarrollo. El contrato vigente es el de este documento y el reporte `citylearn_v3_report`.
+El contrato vigente usa solo artefactos activos del proyecto actual: `<OutputRoot>` resuelto desde `outputs/latest_visible_training_output_root.txt`, `outputs/dataset_audit/` y `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`. No se deben conservar ni citar logs de entrenamiento no vigentes como fuente de resultados.

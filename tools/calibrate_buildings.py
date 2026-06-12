@@ -60,12 +60,12 @@ REAL_KWH_DAY = {1: 16091, 7: 436, 8: 297, 10: 3358, 11: 9971, 12: 6407, 13: 412,
 COP          = {1:2.8, 7:2.8, 8:2.5, 10:2.8, 11:2.5, 12:2.5, 13:2.8, 14:2.5, 15:2.5}
 
 NAMES = {
-    1:'Electro Oriente S.A.', 2:'Complejo Champios', 3:'Aeropuerto IQT',
-    4:'Hiperbodega Precio UNO', 5:'Hotel El Dorado', 6:'Mall Aventura',
+    1:'Electro Oriente S.A.', 2:'Municipalidad San Juan Bautista', 3:'Aeropuerto IQT',
+    4:'Tottus Oriente Precio UNO', 5:'Hotel El Dorado', 6:'Mall Aventura',
     7:'UNAP Zungarococha', 8:'Escuela PNP', 9:'Complejo CNI',
     10:'Gobierno Regional', 11:'Hospital Regional', 12:'EsSalud Hospital',
     13:'Fac. Economia UNAP', 14:'ENAPU', 15:'Colegio CNI',
-    16:'I.E. San Juan', 17:'IEST Pedro Aguila',
+    16:'SIMA Iquitos', 17:'Asociacion Civil Selva Amazonica',
 }
 
 # ── Backup del dataset original ──────────────────────────────────────────────

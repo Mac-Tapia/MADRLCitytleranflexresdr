@@ -82,3 +82,327 @@ Module B must not be drafted in isolation. It must use the bibliographic matrix,
 22. Table of APA citations used.
 23. Final quality-control checklist.
 
+---
+
+## MÓDULO C — DATASET `citylearn_iquitos_2023_2025`
+
+This module must be integrated into Chapter IV of the thesis plan as Section 4.9 and into dedicated annexes. It documents the complete dataset construction pipeline developed in the project.
+
+### C.1 — Los 17 Edificios del SEAI Iquitos
+
+The dataset covers **17 real institutional/commercial buildings** from the Sistema Eléctrico Aislado de Iquitos (SEAI), Loreto, Perú. Use the following exact names, areas, and parameters (sourced from `tools/skills/iquitos-citylearn-dataset/references/module-a-building-configs.md` and billing data from Electro Oriente S.A.):
+
+| ID | Edificio | Tipo auditado | Area (m2) | PV actual (kWp) | BESS (kWh) | BESS P (kW) | EV tomas | EV kW |
+|----|----------|---------------|----------:|----------------:|-----------:|------------:|---------:|------:|
+| B01 | ELECTRO ORIENTE S.A. | Office | 14,000 | 3,360.2 | 6,747 | 1,609 | 4 | 21.8 |
+| B02 | MUNICIPALIDAD DISTRITAL DE SAN JUAN BAUTISTA | Office | 8,000 | 1,920.0 | 244 | 50 | 6 | 24.4 |
+| B03 | AEROPUERTO INTERNACIONAL | Assembly | 6,000 | 1,440.2 | 2,363 | 511 | 8 | 37.8 |
+| B04 | HIPERMERCADOS TOTTUS ORIENTE SAC | Retail | 2,500 | 600.2 | 454 | 409 | 6 | 24.4 |
+| B05 | HOTEL PLAZA S.A. | MultiFamily_Hotel | 1,142 | 274.1 | 234 | 124 | 3 | 14.4 |
+| B06 | MALL AVENTURA S.A. | Commercial_Mall | 20,637 | 4,952.9 | 2,541 | 835 | 32 | 119.6 |
+| B07 | UNAP-FACULTAD DE BIOLOGIA-AULAS | Education | 8,103 | 1,944.9 | 984 | 240 | 42 | 153.2 |
+| B08 | PNP- ESCUELA TECNICA SUPERIOR-IQUITOS | Assembly_Military | 21,000 | 5,040.2 | 601 | 129 | 17 | 73.6 |
+| B09 | GOBIERNO REGIONAL DE LORETO - COER | Office_Critical | 4,480 | 1,075.3 | 138 | 30 | 10 | 37.4 |
+| B10 | GOBIERNO REGIONAL DE LORETO | Office | 14,296 | 3,431.1 | 2,353 | 591 | 6 | 36.6 |
+| B11 | HOSPITAL REGIONAL DE LORETO | Healthcare_Hospital | 42,649 | 10,236.1 | 1,901 | 424 | 3 | 14.4 |
+| B12 | SEGURO SOCIAL DE SALUD - ESSALUD | Healthcare | 18,197 | 4,367.5 | 4,346 | 960 | 3 | 14.4 |
+| B13 | UNAP-FACULTAD DE CIENCIAS AD..CONTABLES Y ECO | Education | 2,723 | 653.8 | 272 | 69 | 11 | 41.4 |
+| B14 | AUTORIDAD PORTUARIA NACIONAL | Industrial_Port | 17,761 | 4,262.9 | 229 | 48 | 4 | 21.8 |
+| B15 | DREL- COLEGIO NACIONAL DE IQUITOS | Education | 9,890 | 2,373.8 | 500 | 104 | 8 | 31.4 |
+| B16 | SIMA - IQUITOS S.R.LTDA | Industrial | 10,294 | 2,470.8 | 1,622 | 357 | 11 | 41.4 |
+| B17 | ASOCIACION CIVIL SELVA AMAZONICA | Laboratory | 1,611 | 386.9 | 737 | 158 | 11 | 41.4 |
+
+**Totales vigentes auditados:** PV = 48,790.9 kWp; BESS = 26,266 kWh; potencia BESS = 6,648 kW; EV = 185 tomas controlables CityLearn, agrupadas en 96 equipos fisicos IEC 61851 modo 3; potencia EV nominal = 749.4 kW. Fuente: `outputs/dataset_audit/der_sizing_audit.csv`, `outputs/dataset_audit/ev_charger_sizing_audit.csv` y `schema.json` activo.
+
+**Criterio de auditoria:** `AC modulo (kW)` es la potencia electrica pico instalada/estimada de climatizacion usada por el generador vigente `tools/generate_iquitos_dataset.py` en `MADRL_BUILDING_CONSTANTS[*].cooling_peak`. No debe confundirse con `cooling_demand` del CSV, que CityLearn almacena como demanda termica horaria. La conversion electrica validada usa el mismo COP del destilador de facturas: `non_shiftable_load + cooling_demand/COP + dhw_demand/COP`. `PV actual (kWp)`, `BESS (kWh)`, `BESS P (kW)` y conteos EV se toman de `outputs/dataset_audit/training_dataset_validation.csv`, `outputs/dataset_audit/der_sizing_audit.csv`, `outputs/dataset_audit/ev_charger_sizing_audit.csv` y del `schema.json` vigente. La PV se recalculo con `pvlib` usando PVGIS TMY local de Iquitos, `Area_Techada_m2` suministrada por edificio en `CityLearn/data/buildingcsv/building.csv` y densidad tecnica de 0.24 kWp/m2; no se usan areas inventadas. El excedente solar no infla el BESS: se exporta a la red. El BESS se recalculo para corte global de picos de 10% durante todo el horizonte horario; las ventanas por edificio se usan como referencia EV/recarga, no para limitar el corte de pico. EV representa tomas controlables, no solo equipos fisicos; cada equipo modo 3 agrupa dos tomas.
+
+**Validacion de trazabilidad vigente:** `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md` reporta estado global OK, delta maximo B02-B17 contra fuente mensual `0.000000145%`, cierre PV maximo `0.001 MWh`, B01 sin factura mensual `B_01.csv`, B06 con 8 meses pronosticados marcados, EV como carga controlada de escenario y solar PVGIS TMY/pvlib.
+
+**Correccion AC B01 y B03:** B01 se calcula como 50 splits equivalentes x 3.5 kW_e = 175.0 kW_e, coherente con el generador activo y con `max(cooling_demand)=439.05 kWh_th/h` cuando se aplica COP/fraccion horaria. B03 se calcula como sistema central/chiller aeroportuario + 30 splits equivalentes; el valor operativo del generador activo es 465.0 kW_e, no 67.0 kW_e. El valor 67.0 kW corresponde a una referencia secundaria desactualizada y no representa el dataset generado.
+
+**Consumos reales verificados (Electro Oriente S.A., 2023-2025):** B1: 16,091 kWh/día; B7: 436 kWh/día (peak 139 kW); B8: 297 kWh/día (peak 37 kW); B10: 3,358 kWh/día (peak 597 kW); B11: 9,971 kWh/día (peak 809 kW); B12: 6,407 kWh/día (peak 540 kW).
+
+### C.2 — Pipeline de Construcción del Dataset (10 Etapas)
+
+Integrate this pipeline as an ordered technical description in Section 4.9:
+
+**Etapa 1 — Descarga de Datos Meteorológicos (PVGIS-ERA5 y NASA POWER)**
+- Script: `tools/generate_iquitos_dataset.py`
+- Fuente primaria 2023: PVGIS-ERA5 vía pvlib (libre)
+- Fuente fallback 2024-2025: NASA POWER REST API
+- Ubicación SEAI: lat=-3.7491, lon=-73.2538, tz=America/Lima, alt=106 m s.n.m.
+- Caché: `.cache/weather/{year}.parquet` para evitar re-descargas
+- Parámetros: T2M, RH2M, ALLSKY_SFC_SW_DWN, ALLSKY_SFC_SW_DIFF, ALLSKY_SFC_SW_DNI, WS10M
+- Salida: 3 DataFrames con 16 columnas (6 observadas + 10 predicciones +1h/+2h/+3h), 26,304 filas
+
+**Etapa 2 — Selección de Módulo Fotovoltaico Sandia**
+- Clase: `SandiaModelSelector`
+- Criterios: eficiencia ≥18%, área 1.7-2.6 m², Pmp ≥300 W
+- Montaje fijo tropical: tilt=5°, azimuth=0° (norte, hemisferio sur ecuatorial)
+- Temperatura: modelo SAPM `open_rack_glass_glass` para zona tropical húmeda
+- Restricción eléctrica: strings ≤20 módulos para Voc≤1000 V (IEC 61730)
+- Factor área útil: 0.63 = 0.70 (área de techo) × 0.90 (factor de empaquetamiento)
+
+**Etapa 3 — Generación Solar PV por 17 Edificios (pvlib ModelChain SAPM)**
+- Método: pvlib ModelChain SAPM para cada uno de los 17 edificios
+- Generación típica Iquitos: 4.2–4.8 kWh/kWp/día
+- Pérdida térmica tropical: −3% a −5% vs. STC (T_celda ~32°C)
+- Inversores: selección Sandia con eficiencia máxima en rango 0.8–1.3 × Pdc_requerido
+
+**Etapa 4 — Dimensionamiento BESS por Edificio (Método Hesse et al., 2017)**
+- Referencia: Hesse et al. (2017). Lithium-ion battery storage for the grid. Energies, 10(12), 2107. https://doi.org/10.3390/en10122107
+- Método: E_bess = (E_raw/DoD) × TARGET_SS; E_raw = SOC_max − SOC_min del perfil acumulado
+- Parámetros LFP fijos para los 17 edificios: DoD=0.80, η_carga=0.95, η_descarga=0.95, η_RT=0.9025, self-discharge=1×10⁻⁵/h, SOC₀=0.50, TARGET_SS=0.70
+- Potencia: P_bess = max(deficit.quantile(0.99), surplus.quantile(0.99))
+
+**Etapa 5 — Generación Building_X.csv (12 columnas × 26,304 filas)**
+- Clases: `BuildingDataGenerator`, `DatasetValidator`
+- 12 columnas exactas (orden CityLearn v2): month, hour, day_type, daylight_savings_status, indoor_dry_bulb_temperature, average_unmet_cooling_setpoint_difference, indoor_relative_humidity, non_shiftable_load, dhw_demand, cooling_demand, heating_demand, solar_generation
+- daylight_savings_status = 0 siempre (Perú, zona tropical, sin cambio de hora)
+- heating_demand = 0.0 siempre (Iquitos, temperatura mínima ~23°C)
+
+**Etapa 6 — Generación de 185 Archivos charger_X_Y.csv (Cargadores EV modo 3)**
+- 185 archivos/tomas controlables distribuidos en los 17 edificios
+- 96 equipos fisicos IEC 61851 modo 3 AC; las tomas se agrupan por `physical_charger_id`
+- Sesiones estocásticas reproducibles: seed = building_id × 1000 + charger_idx
+- Dimensionamiento por Peak Demand Factor + Ley de Little, tipo de edificio, afluencia diaria, permanencia, utilizacion objetivo y area de estacionamiento EV-ready
+- 6 columnas por archivo: electric_vehicle_charger_state, electric_vehicle_id, electric_vehicle_departure_time, electric_vehicle_required_soc_departure, electric_vehicle_estimated_arrival_time, electric_vehicle_estimated_soc_arrival
+- Tipos EV modelados: moto lineal electrica (3.0 kW), mototaxi electrica (4.0 kW) y camioneta electrica (7.4 kW)
+- V2G deshabilitado para esta version del dataset (`max_discharging_power = 0.0`)
+
+**Etapa 7 — Washing_Machine_X.csv (carga controlada por edificio)**
+- 17 archivos de maquinas controladas, uno por edificio, parametrizados por tipo de edificio
+- 5 columnas: day_type, hour, wm_start_time_step, wm_end_time_step, load_profile
+
+**Etapa 8 — Archivos de Red: weather.csv, carbon_intensity.csv, pricing.csv**
+- `weather.csv` (16 columnas): 4 observadas + 12 predicciones (+1h/+2h/+3h) para T, RH, GHI difuso, DNI
+- `carbon_intensity.csv` (1 columna): CI[t] = 0.790 × (1 − 0.15 × GHI[t]/1000) kgCO₂/kWh
+  - Rango: 0.672–0.790 kgCO₂/kWh (MINAM RAGEI 2019 para sistema diésel SEAI Iquitos)
+- `pricing.csv` (4 columnas): electricity_pricing + 3 predicciones
+  - Punta 18:00-22:59 h: 0.38 USD/kWh; Fuera punta: 0.26 USD/kWh (diferencia: 46%, Electro Oriente S.A., 2024)
+
+**Etapa 9 — schema.json (SchemaBuilder)**
+- Clase: `SchemaBuilder`
+- Estructura: 17 edificios + BESS por edificio + PV por edificio + 185 tomas EV modo 3 + 17 maquinas controladas
+- inactive_observations: [] — MADRL usa todas las observaciones disponibles
+- inactive_actions: [] — todos los backends MADRL activan todas las acciones
+
+**Etapa 10 — Validación con CityLearnEnv**
+- Clase: `DatasetValidator`
+- Reglas de validación: month ∈ [1,12], hour ∈ [0,23], day_type ∈ [1,7], indoor_T ∈ [15,45]°C, RH ∈ [20,100]%, todas las cargas ≥ 0
+- Instanciación final: `CityLearnEnv(schema="…/schema.json")` sin errores
+
+**CLI del generador:**
+```
+python tools/orchestrate_citylearn_dataset.py                 # 17 edificios completo sincronizado y auditado
+python tools/generate_iquitos_dataset.py                      # generador base; requiere sincronizacion DER final
+python tools/generate_iquitos_dataset.py --buildings 1 6 11  # Edificios seleccionados
+python tools/generate_iquitos_dataset.py --skip-cache        # Fuerza re-descarga meteorológica
+python tools/generate_iquitos_dataset.py --no-validate       # Sin validación CityLearnEnv
+```
+
+### C.3 — Estructura del Dataset (222 CSV auditados)
+
+Total de archivos en `CityLearn/data/datasets/citylearn_iquitos_2023_2025/`:
+
+| Tipo | Cantidad | Filas | Columnas |
+|------|:--------:|:-----:|:--------:|
+| Building_X.csv | 17 | 26,304 | 12 |
+| charger_X_Y.csv | 185 | 26,304 | 6 |
+| weather.csv | 1 | 26,304 | 16 |
+| carbon_intensity.csv | 1 | 26,304 | 1 |
+| pricing.csv | 1 | 26,304 | 4 |
+| Washing_Machine_X.csv | 17 | 26,304 | 5 |
+| schema.json | 1 | — | — |
+| carbon_intensity_metadata.json | 1 | — | — |
+
+Nota: los archivos auxiliares de auditoria/log (`dataset_generation_log.json`, `solar_fix_log.json`, `ev_charger_sizing_log.json`, etc.) no se cuentan como CSV de entrenamiento, pero deben mantenerse sincronizados con `outputs/dataset_audit/`.
+
+---
+
+## MÓDULO D — CAPA CITYLEARN V3 PROPUESTO (NIVEL DOCTORAL)
+
+This module must be integrated into Chapter III (bases teóricas, doctoral-level formalization) and Chapter IV (Section 4.10 of the thesis plan). It documents the complete mathematical formulation and architecture of CityLearn v3 propuesto.
+
+### D.1 — Formulación Dec-POMDP (Formalización a Nivel Doctoral)
+
+CityLearn v3 propuesto formaliza el problema de gestión energética cooperativa como un **Dec-POMDP (Decentralized Partially Observable Markov Decision Process)** de la siguiente forma:
+
+**Definición formal:** ℳ = ⟨𝒮, 𝒜₁,…,𝒜_N, 𝒯, R, 𝒪₁,…,𝒪_N, Ω, γ, T⟩
+
+- **𝒮 ⊆ ℝ^(d_s)**: espacio de estado global. d_s = Σᵢ₌₁^N dim(oᵢ). Para el dataset vigente de 17 edificios del SEAI Iquitos, validado con `CityLearnEnv`, d_s = 1,635 dimensiones. El estado global concatena las observaciones locales de los N=17 agentes y es observable solo por el crítico centralizado durante el entrenamiento (paradigma CTDE).
+- **𝒜ᵢ ⊆ ℝ^(d_aᵢ)**: espacio de acción local del agente i. Para cada edificio: control BESS ∈ [−P_max, +P_max] kW y potencia de carga EV ∈ [0, P_nominal] kW por toma controlable; B1 incluye además carga flexible de lavadora. En el schema vigente, d_aᵢ varía de 4 a 44 dimensiones; el total distrital es 176 acciones. Ejemplo B1 (Electro Oriente S.A.): 6 dimensiones = 1 BESS + 4 tomas EV + 1 lavadora.
+- **𝒯: 𝒮 × 𝒜₁ × … × 𝒜_N → Δ(𝒮)**: función de transición. La dinámica del sistema incluye: balance energético por edificio, modelo RC de temperatura interior, carga/descarga del BESS con eficiencia η_RT=0.9025, y perfil de llegada EV estocástico.
+- **R: 𝒮 × 𝒜₁ × … × 𝒜_N → ℝ**: función de recompensa cooperativa compartida `CityLearnV3MADRLRewardFunction`. Escalar de recompensa global: `team_reward = mean(rewards_i)`.
+- **𝒪ᵢ ⊆ ℝ^(d_oᵢ)**: espacio de observación local del agente i. En el schema vigente d_oᵢ varía de 52 a 332 dimensiones, porque cada toma EV agrega señales locales de estado, salida, SOC requerido y llegada estimada. La observación incluye columnas Building_X, weather, pricing, intensidad de carbono, estado BESS y señales EV locales.
+- **Ω: 𝒮 → Δ(𝒪₁ × … × 𝒪_N)**: función de observación. El agente i solo observa oᵢ ∈ 𝒪ᵢ, no el estado global s ∈ 𝒮.
+- **γ ∈ [0,1)**: factor de descuento. Configurado en γ = 0.99 para horizonte largo (8,760 pasos = 1 año).
+- **T = 8,760**: horizonte de decisión (pasos horarios por año).
+
+**Propiedad de Observabilidad Parcial:** La condición de Dec-POMDP se satisface estrictamente cuando P(oᵢ | s, aᵢ) ≠ P(oᵢ | s, aⱼ) para i ≠ j, es decir, cada edificio solo observa su propio estado local: temperatura interior, demanda, estado del BESS, perfil EV y señales de precio/carbono propias. El edificio i no tiene acceso a las observaciones de los demás edificios durante la ejecución.
+
+**Esquema CTDE (Centralized Training, Decentralized Execution):**
+- **Entrenamiento centralizado**: el crítico Qᵢ(s, a₁,…,a_N) o V(s) de cada agente i accede al estado global s = [o₁,…,o_N] durante el entrenamiento. Esto permite al crítico evaluar la calidad de las acciones cooperativas en contexto global.
+- **Ejecución descentralizada**: la política πᵢ(aᵢ | oᵢ) de cada agente i solo usa su observación local oᵢ en tiempo de ejecución (test/despliegue). No requiere comunicación entre edificios.
+- **Fundamento teórico**: demostrado en Lowe et al. (2017) para MADDPG; extendido con garantías monótonas en Kuba et al. (2021) para HAPPO; con mecanismo de atención en Iqbal & Sha (2019) para MAAC.
+
+### D.2 — Clases Implementadas en CityLearn v3 Propuesto
+
+Las siguientes clases constituyen la capa MADRL experimental de la tesis (ubicadas en `CityLearn/citylearn/v3/`):
+
+| Clase | Backend | Herencia | Función |
+|-------|---------|---------|---------|
+| `CityLearnDecPOMDPEnv` | Base | `CityLearnEnv` (v2) | Entorno base Dec-POMDP con gestión de estado global y recompensa cooperativa |
+| `CityLearnHARLEnv` | HAPPO (HARL) | `CityLearnDecPOMDPEnv` | Wrapper para el backend HARL/HAPPO; exporta estado global como tensor |
+| `CityLearnSMACDiscreteEnv` | MASAC (MARL/src) | `CityLearnDecPOMDPEnv` | Wrapper para MASAC; formato SMAC con observaciones individuales + estado global |
+| `CityLearnOffPolicyVecEnv` | MATD3 (off-policy) | `CityLearnDecPOMDPEnv` | Wrapper vectorizado para backend off-policy de MATD3 |
+| `CityLearnMAACVecEnv` | MAAC | `CityLearnDecPOMDPEnv` | Wrapper para MAAC oficial; expone observaciones por agente para mecanismo de atención |
+| `CityLearnV3MADRLRewardFunction` | Todos | `Electric_Vehicles_Reward_Function` | Función de recompensa multiobjetivo cooperativa con 3 ejes + componente EV |
+
+**Adaptador común de entrenamiento:** `CityLearn/scripts/citylearn_v3_training_common.py`
+- Conecta cualquiera de los 4 backends MADRL con el entorno CityLearn v3 propuesto
+- Gestiona: inicialización de semilla, logging de artefactos, live_progress.json, results.json, timeseries.csv, trace.csv, episode_summary.csv
+- Launcher oficial: `CityLearn/scripts/launch_citylearn_v3_official_training.ps1`
+
+### D.3 — Función de Recompensa Multiobjetivo
+
+**Clase:** `CityLearnV3MADRLRewardFunction` hereda de `Electric_Vehicles_Reward_Function`.
+
+**Fórmula por edificio i en paso t:**
+```
+reward_i(t) = reward_scale × [
+    w_flex × flex_component_i(t)
+  + w_carbon × carbon_component_i(t)
+  + w_cost × cost_component_i(t)
+  + w_ev × ev_component_i(t)
+]
+```
+
+**Componente de flexibilidad (flex_component):**
+```
+peak_share    = district_import(t) / N_buildings
+ramp_share    = |district_import(t) - district_import(t-1)| / N_buildings
+headroom      = max(0, 1 - mean_SOC(t))
+flex_penalty  = w_peak × tanh(max(peak_share, 0) / 25)
+              + w_ramp × tanh(max(ramp_share, 0) / 15)
+              + 0.15 × tanh(max(export_i × (1 + headroom), 0) / 20)
+              + 0.10 × tanh(max(import_i × SOC_i, 0) / 20)
+flex_component = −flex_penalty
+```
+
+**Componente de carbono (carbon_component):**
+```
+carbon_norm      = CI(t) / (CI(t) + 0.35)       donde CI ∈ [0.672, 0.790] kgCO₂/kWh
+carbon_component = −tanh(max(import_i × (0.25 + carbon_norm), 0) / 20)
+                 + 0.05 × tanh(max(export_i × carbon_norm, 0) / 20)
+```
+
+**Componente de costo (cost_component):**
+```
+price_norm    = p(t) / (p(t) + 0.20)            donde p ∈ {0.26, 0.38} USD/kWh
+cost_component = −tanh(max(import_i × (0.25 + price_norm), 0) / 20)
+               + 0.08 × tanh(max(export_i × price_norm, 0) / 20)
+```
+
+**Agregación cooperativa CTDE:**
+```
+team_reward    = (1/N) Σᵢ reward_i
+mixed_reward_i = (1 − r_team) × reward_i + r_team × team_reward
+```
+donde r_team = team_reward_ratio varía por algoritmo: HAPPO=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80.
+
+---
+
+## MÓDULO E — ESCENARIOS DE ENTRENAMIENTO Y PESOS MULTIOBJETIVO
+
+This module must be integrated into Chapter IV (Section 4.10) and a dedicated annex of the thesis plan.
+
+### E.1 — Escenarios de Entrenamiento (E1, E2, E3 y Global)
+
+El experimento comparativo se estructura en **3 escenarios evaluativos** (E1, E2, E3) más **1 modo global** de entrenamiento:
+
+| Escenario | Objetivo Específico | Prioridad Principal | Pesos [flex, carbon, cost] |
+|-----------|--------------------|--------------------|:--------------------------:|
+| **E1** | OE.1 Flexibilidad | Reducir peak y ramping | [0.70, 0.15, 0.15] |
+| **E2** | OE.2 Emisiones CO2 | Reducir carbono | [0.15, 0.70, 0.15] |
+| **E3** | OE.3 Costos | Reducir costos eléctricos | [0.25, 0.15, 0.60] |
+| **Global** | O.G. Coordinado | Balanceado 3 ejes | [0.50, 0.25, 0.25] |
+
+### E.2 — Perfiles de Recompensa por Algoritmo MADRL
+
+Cada algoritmo tiene un perfil de recompensa diferenciado que ajusta multiplicadores sobre los pesos base del escenario:
+
+| Algoritmo | Tipo | team_reward_ratio | w_peak | w_ramp | reward_scale |
+|-----------|------|:-----------------:|:------:|:------:|:------------:|
+| HAPPO | On-policy cooperativo | 0.75 | 0.45 | 0.35 | 1.00 |
+| MASAC | Off-policy entropía | 0.55 | 0.40 | 0.30 | 0.80 |
+| MATD3 | Off-policy determinístico | 0.65 | 0.50 | 0.45 | 1.10 |
+| MAAC | Off-policy con atención | 0.80 | 0.42 | 0.38 | 1.00 |
+
+### E.3 — Matriz de 12 Corridas Oficiales
+
+El experimento oficial ejecuta **12 corridas secuenciales** (4 algoritmos × 3 escenarios):
+
+| | HAPPO | MASAC | MATD3 | MAAC |
+|-|:-----:|:-----:|:-----:|:----:|
+| **E1 Flexibilidad** | happo/E1_s0 | masac/E1_s0 | matd3/E1_s0 | maac/E1_s0 |
+| **E2 CO2** | happo/E2_s0 | masac/E2_s0 | matd3/E2_s0 | maac/E2_s0 |
+| **E3 Costos** | happo/E3_s0 | masac/E3_s0 | matd3/E3_s0 | maac/E3_s0 |
+
+Launcher: `CityLearn/scripts/launch_citylearn_v3_official_training.ps1 -Scenario ALL`
+Condiciones: 8,760 pasos/episodio, 5 episodios, seed=0, CUDA habilitado, RTX 4060 Laptop 8 GB.
+
+---
+
+## MÓDULO F — CONTROL A NIVEL DE EDIFICIO Y COORDINACIÓN A NIVEL DE DISTRITO
+
+This module must be integrated into Chapter IV (Section 4.11) of the thesis plan, documenting the two-level control architecture.
+
+### F.1 — Control a Nivel de Edificio (Ejecución Local Descentralizada)
+
+Cada edificio Bᵢ (i = 1,…,17) actúa como un **agente autónomo** con:
+
+- **Política local πᵢ(aᵢ | oᵢ)**: aprendida por el backend MADRL durante entrenamiento CTDE.
+- **Observación local oᵢ ∈ ℝ^(52-332)**: incluye estado del propio edificio — temperatura interior, demanda no desplazable, demanda de enfriamiento, generación solar, estado del BESS (SOC), estado de tomas EV modo 3, señales de precio y carbono. No incluye información de otros edificios.
+- **Acción local aᵢ**: potencia BESS (en [−P_max, +P_max] kW) y potencia de carga EV por toma controlable (en [0, P_nominal] kW). B1 agrega la lavadora controlable. Dimensionalidad vigente validada: 4-44 acciones por edificio, 176 acciones totales en el distrito.
+- **Ejecución en tiempo real**: sin comunicación con otros edificios. La política de cada edificio opera exclusivamente desde su observación local.
+
+### F.2 — Coordinación a Nivel de Distrito (Entrenamiento Centralizado CTDE)
+
+A nivel de distrito, la coordinación opera solo durante el **entrenamiento**:
+
+- **Estado global s = [o₁, o₂, …, o₁₇] ∈ ℝ^(d_s)**: concatenación de las 17 observaciones locales (1,635 dimensiones en el schema vigente). Accesible solo por el crítico centralizado de cada algoritmo.
+- **Crítico centralizado Qᵢ(s, a₁,…,a₁₇)** (para HAPPO, MATD3, MAAC) o **función de valor global V(s)** (para MASAC con QMIX): aprende a evaluar la calidad de los perfiles de acción cooperativos desde la perspectiva global del distrito.
+- **Métricas de coordinación distrital**: `district_import(t) = Σᵢ net_load_i(t)` usado en flex_component; `peak_share = district_import(t) / N`; `ramp_share = |district_import(t) − district_import(t−1)| / N`.
+- **Recompensa mixta**: `mixed_reward_i = (1 − r_team) × reward_i + r_team × team_reward` donde team_reward = mean(rewards_i) alinea los incentivos individuales con el objetivo colectivo del distrito.
+- **Post-entrenamiento**: el crítico centralizado se descarta. Solo las políticas πᵢ (sin acceso al estado global) se despliegan para ejecución.
+
+### F.3 — Hiperparámetros Comunes del Entrenamiento
+
+```
+hidden_sizes = [256, 256]
+actor_lr = 3×10⁻⁴
+critic_lr = 1×10⁻³
+gamma = 0.99
+batch_size = 256
+replay_buffer = 1,000,000
+tau = 0.005
+ppo_clip = 0.2          (solo HAPPO)
+policy_delay = 2         (solo MATD3)
+attention_heads = 4      (solo MAAC)
+alpha = "auto"           (solo MASAC)
+```
+
+---
+
+## Required Products (Expanded)
+
+Además de los productos originales (1-23), el skill debe incluir:
+
+24. Sección 4.9: Construcción del Dataset `citylearn_iquitos_2023_2025` (10 etapas, 17 edificios, fuentes).
+25. Sección 4.10: Escenarios de entrenamiento (E1/E2/E3/Global), función de recompensa multiobjetivo y pesos por algoritmo.
+26. Sección 4.11: Arquitectura de control a nivel de edificio y coordinación CTDE a nivel de distrito.
+27. Annexo 10: Tabla completa de los 17 edificios del SEAI Iquitos con parámetros técnicos.
+28. Annexo 11: Pipeline técnico del dataset (pasos 1-10 con parámetros exactos).
+29. Annexo 12: Escenarios E1/E2/E3/Global con pesos multiobjetivo y perfiles por algoritmo.
+30. Formulación doctoral Dec-POMDP integrada en el Marco Teórico (sección 3.1, eje transversal).

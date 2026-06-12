@@ -23,7 +23,7 @@ BUILDINGCSV_DIR = ROOT / "CityLearn" / "data" / "buildingcsv"
 DATASET_DIR = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
 
 YEARS = (2023, 2024, 2025)
-DEFAULT_BUILDINGS_WITH_MONTHLY_DATA = tuple(range(2, 18))
+DEFAULT_BUILDINGS_WITH_MONTHLY_DATA = tuple(range(1, 18))  # B_01 incluido desde 2026-06-06
 
 MONTHS = {
     "ene": 1,

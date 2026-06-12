@@ -10,7 +10,7 @@
         "-ExecutionPolicy",
         "Bypass",
         "-Command",
-        "$root = Get-Content outputs\\latest_visible_training_output_root.txt; & scripts\\monitor_citylearn_training_visible.ps1 -OutputRoot $root -RefreshSeconds 30"
+        "$root = $null; if (Test-Path outputs\\latest_visible_training_output_root.txt) { $root = (Get-Content outputs\\latest_visible_training_output_root.txt -Raw).Trim() }; if (-not $root) { $candidate = Get-ChildItem outputs -Directory -ErrorAction SilentlyContinue | Where-Object { Test-Path (Join-Path $_.FullName 'official_full_status.json') } | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($candidate) { $root = $candidate.FullName } }; if (-not $root) { throw 'No se encontro OutputRoot activo' }; & CityLearn\\scripts\\monitor_citylearn_v3_official_training.ps1 -OutputRoot $root -IntervalSeconds 5 -LogTail 12"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -33,7 +33,7 @@
         "-ExecutionPolicy",
         "Bypass",
         "-Command",
-        "$ts = Get-Date -Format 'yyyyMMdd_HHmmss'; $root = 'outputs\\citylearn_v3_madrl_full_' + $ts; Set-Content outputs\\latest_visible_training_output_root.txt $root; & scripts\\run_citylearn_v3_full_training_visible.ps1 -OutputRoot $root -Scenario ALL -Seed 0 -EpisodeTimeSteps 8760 -Episodes 5 -TorchThreads 12 -LiveProgressInterval 250 -Cuda -LiveOutput"
+        "$ts = Get-Date -Format 'yyyyMMdd_HHmmss'; $root = 'outputs\\citylearn_v3_madrl_full_' + $ts; Set-Content outputs\\latest_visible_training_output_root.txt $root -Encoding UTF8; & scripts\\run_citylearn_v3_full_training_visible.ps1 -OutputRoot $root -Scenario ALL -Seed 0 -EpisodeTimeSteps 8760 -Episodes 5 -TorchThreads 8 -LiveProgressInterval 1000 -ArtifactProfile efficient -TraceRecordInterval 10 -TraceDetail compact -GpuProfile local4060_fast -Cuda -LiveOutput"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -56,20 +56,7 @@
         "-ExecutionPolicy",
         "Bypass",
         "-File",
-        "${workspaceFolder}\\CityLearn\\scripts\\launch_citylearn_v3_official_training.ps1",
-        "-Scenario",
-        "ALL",
-        "-Seed",
-        "0",
-        "-EpisodeTimeSteps",
-        "8760",
-        "-Episodes",
-        "5",
-        "-OutputRoot",
-        "outputs\\citylearn_v3_madrl_official_full_cuda_v2",
-        "-TorchThreads",
-        "12",
-        "-Cuda"
+        "${workspaceFolder}\\scripts\\training_launcher_window.ps1"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -91,14 +78,8 @@
         "-NoProfile",
         "-ExecutionPolicy",
         "Bypass",
-        "-File",
-        "${workspaceFolder}\\CityLearn\\scripts\\monitor_citylearn_v3_official_training.ps1",
-        "-OutputRoot",
-        "outputs\\citylearn_v3_madrl_official_full_cuda_v2",
-        "-IntervalSeconds",
-        "5",
-        "-LogTail",
-        "20"
+        "-Command",
+        "$root = $null; if (Test-Path outputs\\latest_visible_training_output_root.txt) { $root = (Get-Content outputs\\latest_visible_training_output_root.txt -Raw).Trim() }; if (-not $root) { $candidate = Get-ChildItem outputs -Directory -ErrorAction SilentlyContinue | Where-Object { Test-Path (Join-Path $_.FullName 'official_full_status.json') } | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($candidate) { $root = $candidate.FullName } }; if (-not $root) { throw 'No se encontro OutputRoot activo' }; & CityLearn\\scripts\\monitor_citylearn_v3_official_training.ps1 -OutputRoot $root -IntervalSeconds 5 -LogTail 20"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -120,7 +101,7 @@
         "-B",
         "CityLearn\\scripts\\validate_citylearn_v3_cooperative_ctde.py",
         "--output",
-        "outputs\\citylearn_v3_madrl_official_full_cuda_v2\\cooperative_ctde_validation.json"
+        "outputs\\validation\\cooperative_ctde_validation.json"
       ],
       "options": {
         "cwd": "${workspaceFolder}"

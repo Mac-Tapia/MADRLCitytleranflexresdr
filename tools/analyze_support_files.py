@@ -2,10 +2,10 @@
 analyze_support_files.py
 ========================
 Analiza todos los archivos de soporte del dataset CityLearn Iquitos 2023-2025:
-  - charger_X_Y.csv (50 archivos)
+  - charger_X_Y.csv (conteo dinamico desde el dataset activo)
   - carbon_intensity.csv
   - pricing.csv
-  - Washing_Machine_1.csv
+  - Washing_Machine_X.csv por edificio
   - weather.csv
 """
 
@@ -19,7 +19,7 @@ EXPECTED_ROWS = 26304
 
 # ── 1. CHARGER FILES ─────────────────────────────────────────────────────────
 print("=" * 80)
-print("1. ANALISIS CHARGER_X_Y.CSV — 50 archivos")
+print("1. ANALISIS CHARGER_X_Y.CSV")
 print("=" * 80)
 
 charger_files = sorted(BASE.glob("charger_*.csv"))
@@ -40,7 +40,7 @@ for f in charger_files:
     if state_col in df.columns:
         n_sessions = int((df[state_col] == 1).sum())
         state_values = set(df[state_col].dropna().unique())
-        state_ok = state_values.issubset({0, 1, 0.0, 1.0})
+        state_ok = state_values.issubset({1, 2, 3, 1.0, 2.0, 3.0})
     else:
         n_sessions = -1
         state_ok = False
@@ -154,15 +154,19 @@ if pr_path.exists():
 else:
     print("  ERROR: archivo no encontrado")
 
-# ── 4. WASHING_MACHINE_1.CSV ─────────────────────────────────────────────────
+# ── 4. WASHING_MACHINE_X.CSV ─────────────────────────────────────────────────
 print()
 print("=" * 80)
-print("4. WASHING_MACHINE_1.CSV")
+print("4. WASHING_MACHINE_X.CSV")
 print("=" * 80)
 
-wm_path = BASE / "Washing_Machine_1.csv"
-if wm_path.exists():
+wm_files = sorted(BASE.glob("Washing_Machine_*.csv"))
+print(f"  Total washing machine files encontrados: {len(wm_files)}")
+
+if wm_files:
+    wm_path = wm_files[0]
     wm = pd.read_csv(wm_path)
+    print(f"  Muestra auditada: {wm_path.name}")
     print(f"  Filas: {len(wm)} (esperado: {EXPECTED_ROWS}) → {'OK' if len(wm) == EXPECTED_ROWS else 'ERROR'}")
     print(f"  Columnas ({len(wm.columns)}): {list(wm.columns)}")
     nan_total = wm.isna().sum().sum()
@@ -177,16 +181,15 @@ if wm_path.exists():
         else:
             print(f"  {col}: FALTA")
 
-    # Ciclos activos (load_profile > 0)
+    # Ciclos activos (load_profile distinto de lista vacia)
     if 'load_profile' in wm.columns:
-        active = (wm['load_profile'] > 0).sum()
-        print(f"\n  Horas con ciclo activo (load_profile>0): {active}")
-        print(f"  kWh total generados (3 años): {wm['load_profile'].sum():.1f}")
+        active = (~wm['load_profile'].astype(str).isin(["[]", "0", "0.0", "nan"])).sum()
+        print(f"\n  Horas con ciclo activo (load_profile no vacio): {active}")
 
     print(f"\n  Muestra fila 1-3:")
     print(wm.head(3).to_string())
 else:
-    print("  ERROR: archivo no encontrado")
+    print("  ERROR: archivos Washing_Machine_X.csv no encontrados")
 
 # ── 5. WEATHER.CSV ──────────────────────────────────────────────────────────
 print()

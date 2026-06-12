@@ -13,10 +13,9 @@ except ModuleNotFoundError:  # pragma: no cover - exercised when python-docx is 
 
 
 TITLE = (
-    "Diseño y validación de un sistema eléctrico inteligente con control "
-    "multiagente basado en aprendizaje por refuerzo profundo para el despacho "
-    "óptimo bajo restricciones eléctricas y operación segura en el sistema "
-    "eléctrico aislado de Iquitos, Loreto, Perú - 2026"
+    "MULTI-AGENTE DE APRENDIZAJE POR REFUERZO PROFUNDO PARA LA GESTIÓN "
+    "COORDINADA DE FLEXIBILIDAD ENERGÉTICA, EMISIONES DE CARBONO Y COSTOS "
+    "ENERGÉTICOS EN COMUNIDADES INTELIGENTES"
 )
 
 SECTIONS = [
@@ -64,7 +63,7 @@ SECTIONS = [
     ("Anexo 7. Datasets y fuentes", 1),
     ("Anexo 8. Configuración de hiperparámetros", 1),
     ("Anexo 9. Recompensa multiobjetivo", 1),
-    ("Anexo 10. Resultados de simulación o resultados esperados", 1),
+    ("Anexo 10. Resultados de simulación vigentes o pendientes", 1),
     ("Anexo 11. Evidencias de GitHub", 1),
     ("Anexo 12. Glosario MADRL", 1),
     ("Anexo 13. Cadenas de búsqueda", 1),
@@ -95,7 +94,7 @@ def _paragraph_xml(text: str, *, heading: bool = False) -> str:
 def _build_minimal_docx(output: Path) -> None:
     body = [_paragraph_xml(TITLE, heading=True)]
     body.append(_paragraph_xml("Documento base generado para tesis de Maestría de Especialización o Profesionalizante."))
-    body.append(_paragraph_xml("Nota: completar con fuentes verificadas, citas APA vigentes y resultados reales o esperados claramente diferenciados."))
+    body.append(_paragraph_xml("Nota: completar solo con fuentes verificadas, citas APA vigentes y resultados reales observados; los resultados incompletos deben marcarse como pendientes o no verificados."))
 
     for heading, _level in SECTIONS:
         body.append(_paragraph_xml(heading, heading=True))
@@ -150,7 +149,7 @@ def build(output: Path) -> None:
     doc = Document()
     doc.add_heading(TITLE, level=0)
     doc.add_paragraph("Documento base generado para tesis de Maestría de Especialización o Profesionalizante.")
-    doc.add_paragraph("Nota: completar con fuentes verificadas, citas APA vigentes y resultados reales o esperados claramente diferenciados.")
+    doc.add_paragraph("Nota: completar solo con fuentes verificadas, citas APA vigentes y resultados reales observados; los resultados incompletos deben marcarse como pendientes o no verificados.")
 
     for heading, level in SECTIONS:
         doc.add_heading(heading, level=level if level else 1)

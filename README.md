@@ -18,14 +18,14 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-04.
+Actualizado: 2026-06-12.
 
-- Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 50 cargadores EV).
+- Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 222 CSV auditados, 185 cargadores EV, 17 maquinas controladas).
 - Dataset regenerado con parametros reales de `CityLearn/data/buildingcsv/building.csv`: nombres oficiales, areas techadas exactas, tipos de uso y sistemas de AC reales por edificio.
 - Non-shiftable load destilada desde mediciones mensuales reales `B_02.csv` a `B_17.csv` (balance mensual delta < 0.1%).
-- Entrenamiento oficial en curso: HAPPO E1 completado (5 ep/43800 pasos), MASAC E1 completado, cadena MASAC/MATD3/MAAC en ejecucion.
+- Entrenamiento oficial vigente: la corrida activa se obtiene desde `outputs/latest_visible_training_output_root.txt`; si no existe, usar el `outputs/*/official_full_status.json` mas reciente. Los resultados finales se aceptan solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
 - Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida. 12 corridas totales.
-- Ejecucion secuencial: `HAPPO/MASAC/MATD3/MAAC x E1/E2/E3` (4 algoritmos x 3 ejes).
+- Ejecucion local visible: `HAPPO/MASAC/MATD3/MAAC x E1/E2/E3` (4 algoritmos x 3 ejes). En RTX 4060 Laptop 8 GB el modo seguro de VRAM deja concurrencia efectiva 1; con `LiveOutput` el launcher tambien ejecuta en secuencia.
 - Perfil local GPU-tuned activo para RTX 4060 Laptop 8 GB (torch 2.8.0+cu126).
 - Recompensa activa: `CityLearnV3MADRLRewardFunction` con pesos multiobjetivo por escenario.
 - Agregacion cooperativa Dec-POMDP: `team_mean` con team_ratio por algoritmo (HAPPO=0.75, MAAC=0.80).
@@ -60,6 +60,8 @@ Dataset citylearn_iquitos_2023_2025 (17 edificios Iquitos, 2023-2025)
   -> Comparador CityLearn v2 vs CityLearn v3
   -> Resultados para tesis
 ```
+
+Contrato operativo actualizado: `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`.
 
 Componentes principales:
 
@@ -112,9 +114,9 @@ pytest tests/ -q --tb=short
 | Edificios | 17 institucionales/comerciales reales de Iquitos, Peru |
 | Nombres reales | Municipalidad San Juan Bautista, Aeropuerto, Tottus, Hotel Plaza, Mall Aventura, UNAP, PNP, COER, GRL, Hospital Regional, EsSalud, UNAP Economia, Autoridad Portuaria, DREL Colegio, SIMA Iquitos, Selva Amazonica Lab |
 | Rango temporal | 2023-2025 (26,304 pasos horarios) |
-| Cargadores EV | 50 archivos `charger_X_Y.csv` (mototaxi 4kW/6kWh, motolineal 3kW/4kWh, V2G 7.4kW/40kWh) |
-| BESS | 704-15,075 kWh por edificio (sizing real desde areas techadas) |
-| Generacion solar PV | 196-5,190 kWp DC por edificio (pvlib SAPM, SunPower SPR-315E) |
+| Cargadores EV | 185 archivos `charger_X_Y.csv`, 96 equipos fisicos modo 3, 749.4 kW instalados |
+| BESS | 138-6,747 kWh por edificio; total 26,266 kWh / 6,648 kW |
+| Generacion solar PV | 274.1-10,236.1 kWp DC por edificio; total 48,790.9 kWp |
 | Sistema de AC | Por tipo: Chiller agua (B03/B11), Multi-Chiller (B06), Precision AC (B01/B09), Ultra-Freezers -80C (B17) |
 | Factor CO2 | 0.671-0.790 kgCO2/kWh (MINAM RAGEI 2019, diesel ELECTRO ORIENTE) |
 | Tarifas | Punta 18-22h: $0.38/kWh; Fuera punta: $0.26/kWh (Electro Oriente 2024) |
@@ -123,25 +125,25 @@ pytest tests/ -q --tb=short
 
 ### Edificios del dataset
 
-| ID | Nombre real | Tipo | Area m2 | Sistema AC | kWp PV | BESS kWh |
-|---|---|---|---:|---|---:|---:|
-| B01 | Electro Oriente S.A. | industrial | 14,000 | DataCenter Precision AC | 1,703 | 4,020 |
-| B02 | Municipalidad San Juan Bautista | administrativo | 8,000 | Splits autonomos | 974 | 2,382 |
-| B03 | Aeropuerto Internacional Iquitos | transporte_24h | 6,000 | Chiller Central Water-Cooled | 730 | 2,906 |
-| B04 | Hipermercados Tottus Oriente | mall | 2,500 | Food Cold Chain + Rooftop | 304 | 2,495 |
-| B05 | Hotel Plaza S.A. | hotelero_24h | 1,142 | Commercial Kitchen Cold Rooms | 139 | 1,205 |
-| B06 | Mall Aventura Iquitos | mall | 20,637 | Multi-Chiller Plant | 2,511 | 15,075 |
-| B07 | UNAP Facultad de Biologia | universitario | 8,103 | Splits autonomos | 986 | 2,550 |
-| B08 | PNP Escuela Tecnica Superior | educacion | 21,000 | Splits autonomos | 2,556 | 6,836 |
-| B09 | Gobierno Regional Loreto COER | transporte_24h | 4,480 | DataCenter Precision AC (N+1) | 545 | 852 |
-| B10 | Gobierno Regional de Loreto | administrativo | 14,296 | Duct Central Split System | 1,740 | 3,964 |
-| B11 | Hospital Regional de Loreto | salud_24h | 42,649 | Clinical Chiller + HEPA + Blood Bank | 5,190 | 6,662 |
-| B12 | Seguro Social de Salud EsSalud | salud_24h | 18,197 | Medical Archive AC System | 2,215 | 3,159 |
-| B13 | UNAP Facultad Ciencias Economicas | universitario | 2,723 | Splits autonomos | 331 | 798 |
-| B14 | Autoridad Portuaria Nacional | portuario_24h | 17,761 | Splits autonomos | 2,161 | 5,767 |
-| B15 | DREL Colegio Nacional de Iquitos | educacion | 9,890 | Splits autonomos | 1,204 | 3,221 |
-| B16 | SIMA Iquitos S.R.Ltda | industrial | 10,294 | Industrial Mobile Vessel AC | 1,253 | 2,497 |
-| B17 | Asociacion Civil Selva Amazonica | salud_24h | 1,611 | Scientific Ultra-Freezers -80C | 196 | 1,641 |
+| ID | Nombre real | Tipo auditado | Area m2 | kWp PV | BESS kWh | BESS kW | EV tomas | EV kW |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| B01 | ELECTRO ORIENTE S.A. | Office | 14,000 | 3,360.2 | 6,747 | 1,609 | 4 | 21.8 |
+| B02 | MUNICIPALIDAD DISTRITAL DE SAN JUAN BAUTISTA | Office | 8,000 | 1,920.0 | 244 | 50 | 6 | 24.4 |
+| B03 | AEROPUERTO INTERNACIONAL | Assembly | 6,000 | 1,440.2 | 2,363 | 511 | 8 | 37.8 |
+| B04 | HIPERMERCADOS TOTTUS ORIENTE SAC | Retail | 2,500 | 600.2 | 454 | 409 | 6 | 24.4 |
+| B05 | HOTEL PLAZA S.A. | MultiFamily_Hotel | 1,142 | 274.1 | 234 | 124 | 3 | 14.4 |
+| B06 | MALL AVENTURA S.A. | Commercial_Mall | 20,637 | 4,952.9 | 2,541 | 835 | 32 | 119.6 |
+| B07 | UNAP-FACULTAD DE BIOLOGIA-AULAS | Education | 8,103 | 1,944.9 | 984 | 240 | 42 | 153.2 |
+| B08 | PNP- ESCUELA TECNICA SUPERIOR-IQUITOS | Assembly_Military | 21,000 | 5,040.2 | 601 | 129 | 17 | 73.6 |
+| B09 | GOBIERNO REGIONAL DE LORETO - COER | Office_Critical | 4,480 | 1,075.3 | 138 | 30 | 10 | 37.4 |
+| B10 | GOBIERNO REGIONAL DE LORETO | Office | 14,296 | 3,431.1 | 2,353 | 591 | 6 | 36.6 |
+| B11 | HOSPITAL REGIONAL DE LORETO | Healthcare_Hospital | 42,649 | 10,236.1 | 1,901 | 424 | 3 | 14.4 |
+| B12 | SEGURO SOCIAL DE SALUD - ESSALUD | Healthcare | 18,197 | 4,367.5 | 4,346 | 960 | 3 | 14.4 |
+| B13 | UNAP-FACULTAD DE CIENCIAS AD..CONTABLES Y ECO | Education | 2,723 | 653.8 | 272 | 69 | 11 | 41.4 |
+| B14 | AUTORIDAD PORTUARIA NACIONAL | Industrial_Port | 17,761 | 4,262.9 | 229 | 48 | 4 | 21.8 |
+| B15 | DREL- COLEGIO NACIONAL DE IQUITOS | Education | 9,890 | 2,373.8 | 500 | 104 | 8 | 31.4 |
+| B16 | SIMA - IQUITOS S.R.LTDA | Industrial | 10,294 | 2,470.8 | 1,622 | 357 | 11 | 41.4 |
+| B17 | ASOCIACION CIVIL SELVA AMAZONICA | Laboratory | 1,611 | 386.9 | 737 | 158 | 11 | 41.4 |
 
 ### Destilacion desde `buildingcsv`
 
@@ -212,7 +214,7 @@ Validar el contrato:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
-  --output outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1\cooperative_ctde_validation.json
+  --output outputs\validation\cooperative_ctde_validation.json
 ```
 
 ## Pruebas estadisticas de demostracion de hipotesis
@@ -300,26 +302,37 @@ Validacion actual:
 Opcion rapida — doble clic o desde PowerShell:
 
 ```powershell
-# Genera timestamp automatico y lanza cadena completa
+# Genera timestamp automatico, registra outputs\latest_visible_training_output_root.txt
+# y lanza cadena completa
 .\relanzar_entrenamiento_madrl.bat
 ```
 
 Comando completo manual:
 
 ```powershell
-$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
-$root = "outputs\citylearn_v3_madrl_full_$ts"
-Set-Content outputs\latest_visible_training_output_root.txt $root
-& scripts\run_citylearn_v3_full_training_visible.ps1 `
+powershell.exe -NoProfile -ExecutionPolicy Bypass `
+  -File scripts\run_citylearn_v3_full_training_visible.ps1 `
   -OutputRoot $root `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
-  -TorchThreads 12 `
-  -LiveProgressInterval 250 `
+  -TorchThreads 8 `
+  -LiveProgressInterval 1000 `
+  -ArtifactProfile efficient `
+  -TraceRecordInterval 10 `
+  -TraceDetail compact `
+  -GpuProfile local4060_fast `
   -Cuda `
   -LiveOutput
+```
+
+Antes del comando manual:
+
+```powershell
+$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+$root = "outputs\citylearn_v3_madrl_full_$ts"
+Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
 ```
 
 Esto genera 12 corridas secuenciales (4 algoritmos x 3 ejes):
@@ -337,7 +350,7 @@ Fixes aplicados al launcher:
 
 | MADRL | Backend | Ajustes activos |
 |---|---|---|
-| HAPPO | HARL (on-policy) | `hidden_size=384`, `torch_threads=12`, `team_ratio=0.75` |
+| HAPPO | HARL (on-policy) | `hidden_size=256`, `torch_threads=8`, `team_ratio=0.75` |
 | MASAC | MARLlib (off-policy, RNN+QMIX) | `rnn_hidden_dim=64`, `qmix_hidden_dim=32`, `buffer_size=2` |
 | MATD3 | off-policy PyTorch | `batch_size=256`, `buffer_size=4096`, `hidden_size=256` |
 | MAAC | Attention SAC | `batch_size=64`, `buffer_length=256`, `hidden_size=128`, `attend_heads=4` |
@@ -410,7 +423,7 @@ git submodule update --init --recursive
 ## Salidas esperadas por corrida
 
 ```text
-outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1/
+outputs/<run_activo>/
   happo/E1_seed_0/  masac/E1_seed_0/  matd3/E1_seed_0/  maac/E1_seed_0/
   happo/E2_seed_0/  ...
   happo/E3_seed_0/  ...
@@ -432,16 +445,16 @@ Ejecutar agentes originales CityLearn v2 para linea base:
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\benchmark_citylearn_v2_agents.py `
   --scenario ALL `
-  --output-dir outputs\citylearn_v2_benchmark
+  --output-dir outputs\citylearn_v2_original_benchmark
 ```
 
 Comparar CityLearn v2 contra CityLearn v3 MADRL:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
-  --v2-root outputs\citylearn_v2_benchmark `
-  --v3-root outputs\citylearn_v3_madrl_iquitos `
-  --output-dir outputs\citylearn_v2_vs_v3_comparison
+  --v2-root outputs\citylearn_v2_original_benchmark `
+  --v3-root $root `
+  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl
 ```
 
 ## Sustento cientifico y skills
@@ -458,6 +471,8 @@ Comparar CityLearn v2 contra CityLearn v3 MADRL:
 | Documento | Ruta |
 |---|---|
 | **Pipeline dataset** (nuevo) | `docs/dataset_construction_pipeline.md` |
+| **Flujo operativo vigente** | `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` |
+| **Manifest machine-readable del flujo** | `docs/workflow_manifest.json` |
 | Arquitectura y flujo | `docs/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
 | Destilacion dataset Iquitos | `docs/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md` |
 | Auditoria tecnica skill MADRL | `docs/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md` |

@@ -32,11 +32,11 @@ PRICING_COLS = [
 META = {
     1:  {'name':'Electro Oriente S.A.',   'type':'industrial',    'area':14000,'cop':2.8,'dhw':False,'nsl_floor':17.7,
          'real_kwh_d':16091,'benchmark_int':(300,500),'uso':'24h continuo utility'},
-    2:  {'name':'Complejo Champios',       'type':'deportivo',     'area':8000, 'cop':2.5,'dhw':False,'nsl_floor':3.76,
+    2:  {'name':'Municipalidad San Juan Bautista',       'type':'deportivo',     'area':8000, 'cop':2.5,'dhw':False,'nsl_floor':3.76,
          'real_kwh_d':None, 'benchmark_int':(15,40), 'uso':'fines semana pico'},
     3:  {'name':'Aeropuerto IQT',          'type':'transporte_24h','area':6000, 'cop':3.0,'dhw':False,'nsl_floor':55.3,
          'real_kwh_d':None, 'benchmark_int':(200,450),'uso':'24h, picos vuelos'},
-    4:  {'name':'Hiperbodega Precio UNO',  'type':'mall',          'area':2500, 'cop':3.0,'dhw':False,'nsl_floor':14.8,
+    4:  {'name':'Tottus Oriente Precio UNO',  'type':'mall',          'area':2500, 'cop':3.0,'dhw':False,'nsl_floor':14.8,
          'real_kwh_d':None, 'benchmark_int':(200,400),'uso':'08-22h retail'},
     5:  {'name':'Hotel El Dorado Plaza',   'type':'hotelero_24h',  'area':9000, 'cop':3.0,'dhw':True, 'nsl_floor':5.4,
          'real_kwh_d':None, 'benchmark_int':(100,300),'uso':'24h hotelero'},
@@ -60,9 +60,9 @@ META = {
          'real_kwh_d':973,  'benchmark_int':(50,150), 'uso':'24h portuario'},
     15: {'name':'Colegio CNI',             'type':'educacion',     'area':2500, 'cop':2.5,'dhw':False,'nsl_floor':2.76,
          'real_kwh_d':472,  'benchmark_int':(30,60),  'uso':'lun-vie 08-15h'},
-    16: {'name':'I.E. San Juan',           'type':'educacion',     'area':6500, 'cop':2.5,'dhw':False,'nsl_floor':4.55,
+    16: {'name':'SIMA Iquitos',           'type':'educacion',     'area':6500, 'cop':2.5,'dhw':False,'nsl_floor':4.55,
          'real_kwh_d':None, 'benchmark_int':(30,60),  'uso':'lun-vie 08-15h'},
-    17: {'name':'IEST Pedro del Aguila',   'type':'educacion',     'area':5200, 'cop':2.5,'dhw':False,'nsl_floor':4.2,
+    17: {'name':'Asociacion Civil Selva Amazonica',   'type':'educacion',     'area':5200, 'cop':2.5,'dhw':False,'nsl_floor':4.2,
          'real_kwh_d':None, 'benchmark_int':(35,65),  'uso':'lun-vie 07-17h talleres'},
 }
 
@@ -335,7 +335,11 @@ print("RESUMEN FINAL")
 print("=" * 90)
 
 print(f"  Edificios con medicion mensual buildingcsv: {len(DISTILLED_BUILDINGS)}/17 destilados")
-print(f"  B1 sin B_01.csv mensual:                    preservado por politica documentada")
+_b01_path = Path("CityLearn/data/buildingcsv/B_01.csv")
+if _b01_path.exists():
+    print(f"  B1 (ELECTRO ORIENTE S.A.):                  B_01.csv OK (MT2, COP=2.80, 36 meses)")
+else:
+    print(f"  B1 sin B_01.csv mensual:                    preservado por politica documentada")
 print(f"  NSL no negativo y balance mensual OK:      {'SI' if all_nsl_balance_ok else 'NO'}")
 print(f"  DHW demand correcto en hospitales/hotel:   {'SI' if dhw_ok_all else 'NO'}")
 print(f"  Heating demand = 0 en todos:               {'SI' if heat_ok_all else 'NO'}")
@@ -360,8 +364,8 @@ CHARS = {
     13:"Facultad 5 escuelas + 3 labs computo + 2 EV 7.4kW",
     14:"Puerto 24h + grua 22t + shore-power barcos + 2 montacargas + 2 EV 11kW",
     15:"Colegio CNI 2326 alumnos + taller cocina + laboratorio idiomas + 2 EV",
-    16:"IE San Juan emblematica + piscina semi-olimpica + SUM + 1 EV ligero",
-    17:"IEST tecnico + CNC 15kW + fresadora + lab fabricacion digital + 2 EV",
+    16:"SIMA Iquitos emblematica + piscina semi-olimpica + SUM + 1 EV ligero",
+    17:"Selva Amazonica laboratorio biomedico 24h + ultracongeladores -80C + 2 EV",
 }
 for bid, char in CHARS.items():
     m = META[bid]

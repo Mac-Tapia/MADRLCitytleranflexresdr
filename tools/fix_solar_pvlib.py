@@ -12,8 +12,8 @@ Solución:
   - Re-descarga 2023 desde NASA POWER y valida los datos
   - Usa pvlib.modelchain.ModelChain con modelo SAPM (Sandia) para física completa:
     AOI losses + spectral correction + temperature derating
-  - Actualiza SOLO la columna solar_generation en Building_2.csv..Building_17.csv
-  - Preserva Building_1.csv porque no existe B_01.csv mensual para esta integracion
+  - Actualiza SOLO la columna solar_generation en Building_1.csv..Building_17.csv
+  - Permite auditar sin escribir con --dry-run
   - Preserva todas las demás columnas intactas
 
 Dependencias:
@@ -48,28 +48,65 @@ TEMP_PARAMS = pvlib.temperature.TEMPERATURE_MODEL_PARAMETERS["sapm"]["open_rack_
 
 # ─── Área techada por edificio (m²) ──────────────────────────────────────────
 AREA_TECHADA_FALLBACK = {
-    1:  14000, 2:  8000,  3:  6000,  4:  2500,  5:  9000,
-    6:  20637, 7:  8300,  8:  21000, 9:  3500,  10: 5000,
-    11: 12000, 12: 6000,  13: 3000,  14: 5000,  15: 2500,
-    16: 6500,  17: 5200,
+    1: 14000.00,
+    2: 8000.00,
+    3: 6000.00,
+    4: 2500.00,
+    5: 1141.89,
+    6: 20637.00,
+    7: 8103.45,
+    8: 21000.00,
+    9: 4479.67,
+    10: 14295.73,
+    11: 42649.33,
+    12: 18197.48,
+    13: 2723.00,
+    14: 17761.00,
+    15: 9889.92,
+    16: 10294.00,
+    17: 1611.23,
 }
 MODULES_PER_STRING = 15  # Voc_string < 1000 V (IEC 61730): 15×64.60V=969V ≤ 1000V
-AREA_UTIL_FACTOR   = 0.63  # 0.70 techo útil × 0.90 packing
+AREA_UTIL_FACTOR   = 0.63  # modo sandia-area: 0.70 techo util x 0.90 packing
+PV_POWER_DENSITY_KWP_M2 = 0.24  # modo power-density: potencial tecnico moderno por m2 techado
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("fix_solar")
 
 
-def load_area_techada() -> dict[int, float]:
-    """Read roof areas from building.csv, with the historical table as fallback."""
+AREA_ESTACIONAMIENTO_FALLBACK = {
+    1: 1350.00,
+    2: 900.00,
+    3: 5500.00,
+    4: 2500.00,
+    5: 200.00,
+    6: 9000.00,
+    7: 1250.00,
+    8: 3000.00,
+    9: 1500.00,
+    10: 2500.00,
+    11: 4500.00,
+    12: 2500.00,
+    13: 800.00,
+    14: 3000.00,
+    15: 1000.00,
+    16: 2000.00,
+    17: 300.00,
+}
+
+
+def load_site_areas() -> tuple[dict[int, float], dict[int, float]]:
+    """Read roof/parking areas from building.csv, with audited fallbacks."""
     try:
         inventory = load_building_inventory()
     except FileNotFoundError:
-        return AREA_TECHADA_FALLBACK
-    return {bid: meta.area_techada_m2 for bid, meta in inventory.items()}
+        return AREA_TECHADA_FALLBACK, AREA_ESTACIONAMIENTO_FALLBACK
+    roof = {bid: meta.area_techada_m2 for bid, meta in inventory.items()}
+    parking = {bid: meta.area_estacionamiento_m2 for bid, meta in inventory.items()}
+    return roof, parking
 
 
-AREA_TECHADA = load_area_techada()
+AREA_TECHADA, AREA_ESTACIONAMIENTO = load_site_areas()
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -184,6 +221,103 @@ def get_weather(year: int) -> pd.DataFrame:
     return df
 
 
+def _normalize_pvgis_weather_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Normalize PVGIS/PVGIS-TMY column names to the internal schema."""
+    rename = {
+        "G(h)": "GHI",
+        "G(i)": "GHI",
+        "GHI": "GHI",
+        "ghi": "GHI",
+        "Gd(h)": "DHI",
+        "Gd(i)": "DHI",
+        "DHI": "DHI",
+        "dhi": "DHI",
+        "Gb(n)": "DNI",
+        "DNI": "DNI",
+        "dni": "DNI",
+        "T2m": "T2M",
+        "T2M": "T2M",
+        "temp_air": "T2M",
+        "RH": "RH2M",
+        "RH2M": "RH2M",
+        "relative_humidity": "RH2M",
+        "WS10m": "WS",
+        "WS10M": "WS",
+        "WS": "WS",
+        "wind_speed": "WS",
+    }
+    out = df.rename(columns={c: rename.get(c, c) for c in df.columns}).copy()
+    for col, default in {"GHI": 0.0, "DHI": 0.0, "DNI": 0.0, "T2M": 26.0, "RH2M": 82.0, "WS": 1.5}.items():
+        if col not in out.columns:
+            out[col] = default
+    out = out[["GHI", "DHI", "DNI", "T2M", "RH2M", "WS"]]
+    out[["GHI", "DHI", "DNI"]] = out[["GHI", "DHI", "DNI"]].clip(lower=0.0)
+    out["T2M"] = out["T2M"].clip(lower=18.0, upper=42.0)
+    out["RH2M"] = out["RH2M"].clip(lower=40.0, upper=100.0)
+    out["WS"] = out["WS"].clip(lower=0.0)
+    return out
+
+
+def get_pvgis_tmy() -> pd.DataFrame:
+    """Load a PVGIS TMY for Iquitos through pvlib and cache it locally."""
+    cache_path = CACHE_DIR / "pvgis_tmy_iquitos.parquet"
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    if cache_path.exists():
+        df = pd.read_parquet(cache_path)
+        if len(df) == 8760:
+            log.info(f"  Usando cache TMY: {cache_path}")
+            return df
+        log.warning(f"  Cache TMY invalida ({len(df)} filas), regenerando")
+        cache_path.unlink()
+
+    log.info("  Descargando PVGIS TMY para Iquitos via pvlib...")
+    result = pvlib.iotools.get_pvgis_tmy(
+        latitude=LAT,
+        longitude=LON,
+        outputformat="json",
+        usehorizon=True,
+        timeout=180,
+    )
+    if len(result) == 4:
+        data, months_selected, inputs, metadata = result
+    elif len(result) == 2:
+        data, metadata = result
+    else:
+        raise RuntimeError(f"Respuesta inesperada de pvlib.get_pvgis_tmy: {len(result)} objetos")
+    df = _normalize_pvgis_weather_columns(data)
+    if len(df) != 8760:
+        raise RuntimeError(f"PVGIS TMY debe tener 8760 horas, recibido: {len(df)}")
+    df = df.reset_index(drop=True)
+    df.to_parquet(cache_path)
+    log.info(f"  TMY cacheado: {cache_path}")
+    return df
+
+
+def build_tmy_weather_full() -> pd.DataFrame:
+    """Repeat local Iquitos TMY over YEARS, preserving the project hour count."""
+    tmy = get_pvgis_tmy().reset_index(drop=True)
+    frames = []
+    for year in YEARS:
+        idx = pd.date_range(f"{year}-01-01", periods=8784 if year == 2024 else 8760, freq="h", tz=TZ)
+        if len(idx) == 8760:
+            values = tmy.copy()
+        else:
+            # Feb 29 uses Feb 28 TMY values to keep a physically local leap-year profile.
+            feb28_start = (31 + 27) * 24
+            feb28 = tmy.iloc[feb28_start:feb28_start + 24]
+            values = pd.concat([tmy.iloc[:feb28_start + 24], feb28, tmy.iloc[feb28_start + 24:]], ignore_index=True)
+        values.index = idx
+        frames.append(values)
+    full = pd.concat(frames)
+    if len(full) != 26304:
+        raise RuntimeError(f"TMY expandido invalido: {len(full)} != 26304")
+    log.info(
+        "  TMY expandido: %d filas | GHI max=%.1f W/m2 | GHI non-zero=%d h",
+        len(full), full["GHI"].max(), int((full["GHI"] > 0).sum()),
+    )
+    return full
+
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # 2. SELECCIÓN DE MÓDULO E INVERSOR SANDIA
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -233,6 +367,9 @@ def select_sandia_inverter(pdc_kw: float) -> tuple[str, dict, int]:
     invs = pvlib.pvsystem.retrieve_sam("SandiaInverter")
     if invs.shape[0] < invs.shape[1]:
         invs = invs.T
+    for col in ("Pdco", "Paco"):
+        invs[col] = pd.to_numeric(invs[col], errors="coerce")
+    invs = invs.dropna(subset=["Pdco", "Paco"])
 
     pdc_w = pdc_kw * 1000
 
@@ -272,6 +409,56 @@ def select_sandia_inverter(pdc_kw: float) -> tuple[str, dict, int]:
         f"Pdc0={params['Pdco']/1000:.1f} kW η={eff:.1%} × {n_inverters} unidades"
     )
     return best_key, params, n_inverters
+
+
+def calculate_pv_size(
+    bldg_id: int,
+    module_params: dict,
+    capacity_method: str,
+    area_util_factor: float,
+    power_density_kwp_m2: float,
+    parking_factor: float,
+) -> dict:
+    """Return PV sizing inputs for one building.
+
+    sandia-area:
+      pdc = floor(area_roof * area_util_factor / module_area) * module_pmp
+
+    power-density:
+      pdc = (area_roof + area_parking * parking_factor) * power_density_kwp_m2
+
+    The ModelChain still uses the selected Sandia module for the hourly shape.
+    In power-density mode, the Sandia module count is only an electrical
+    equivalent to reach the target kWp, not a physical roof-packing constraint.
+    """
+    roof_area = AREA_TECHADA[bldg_id]
+    parking_area = AREA_ESTACIONAMIENTO.get(bldg_id, 0.0)
+    module_area = float(module_params["Area"])
+    module_kwp = float(module_params["Vmpo"] * module_params["Impo"] / 1000.0)
+
+    if capacity_method == "sandia-area":
+        effective_area = roof_area * area_util_factor
+        n_modules = max(1, int(effective_area // module_area))
+        pdc_kw = n_modules * module_kwp
+        area_basis = "roof_area * area_util_factor"
+    elif capacity_method == "power-density":
+        effective_area = roof_area + parking_area * parking_factor
+        target_kwp = effective_area * power_density_kwp_m2
+        n_modules = max(1, int(math.ceil(target_kwp / module_kwp)))
+        pdc_kw = n_modules * module_kwp
+        area_basis = "roof_area + parking_area * parking_factor"
+    else:
+        raise ValueError(f"capacity_method no soportado: {capacity_method}")
+
+    return {
+        "roof_area_m2": roof_area,
+        "parking_area_m2": parking_area,
+        "effective_area_m2": effective_area,
+        "area_basis": area_basis,
+        "n_modules": n_modules,
+        "pdc_kw": pdc_kw,
+        "module_kwp": module_kwp,
+    }
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -341,7 +528,7 @@ def calc_solar_pvlib(
 # 4. ACTUALIZACIÓN DE BUILDING_X.CSV (SOLO solar_generation)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def update_building_solar(bldg_id: int, solar: pd.Series, pdc_kw: float) -> dict:
+def update_building_solar(bldg_id: int, solar: pd.Series, pdc_kw: float, dry_run: bool = False) -> dict:
     """
     Actualiza SOLO la columna solar_generation en Building_{bldg_id}.csv.
     Preserva todas las demás columnas intactas.
@@ -364,15 +551,18 @@ def update_building_solar(bldg_id: int, solar: pd.Series, pdc_kw: float) -> dict
     old_max = df["solar_generation"].max()
     old_nz = int((df["solar_generation"] > 0).sum())
 
-    df["solar_generation"] = solar.values
+    new_max = solar.max()
+    new_nz = int((solar > 0).sum())
+    annual_gen = solar.sum() * pdc_kw / 1000.0 / 3.0
 
-    new_max = df["solar_generation"].max()
-    new_nz = int((df["solar_generation"] > 0).sum())
-    annual_gen = df["solar_generation"].sum() * pdc_kw / 1000.0 / 3.0
-
-    df.to_csv(csv_path, index=False)
-    log.info(f"  B{bldg_id} guardado: max {old_max:.1f}->{new_max:.1f} W/kW | "
-             f"non-zero {old_nz}->{new_nz} h | annual_gen {annual_gen:.0f} kWh/año")
+    if dry_run:
+        log.info(f"  B{bldg_id} dry-run: max {old_max:.1f}->{new_max:.1f} W/kW | "
+                 f"non-zero {old_nz}->{new_nz} h | annual_gen {annual_gen:.0f} kWh/año")
+    else:
+        df["solar_generation"] = solar.values
+        df.to_csv(csv_path, index=False)
+        log.info(f"  B{bldg_id} guardado: max {old_max:.1f}->{new_max:.1f} W/kW | "
+                 f"non-zero {old_nz}->{new_nz} h | annual_gen {annual_gen:.0f} kWh/año")
 
     return {
         "old_max_w_per_kw": round(old_max, 2),
@@ -384,7 +574,7 @@ def update_building_solar(bldg_id: int, solar: pd.Series, pdc_kw: float) -> dict
     }
 
 
-def update_schema_pv_nominal_power(results: dict) -> None:
+def update_schema_pv_nominal_power(results: dict, dry_run: bool = False) -> None:
     schema_path = DATASET_DIR / "schema.json"
     if not schema_path.exists():
         log.warning(f"schema.json no encontrado: {schema_path}")
@@ -397,15 +587,26 @@ def update_schema_pv_nominal_power(results: dict) -> None:
             continue
         building.setdefault("pv", {}).setdefault("attributes", {})["nominal_power"] = round(values["pdc_kw"], 1)
 
-    schema_path.write_text(json.dumps(schema, indent=2, ensure_ascii=False), encoding="utf-8")
-    log.info(f"  schema.json actualizado con nominal_power PV desde building.csv")
+    if dry_run:
+        log.info(f"  dry-run: schema.json no fue modificado")
+    else:
+        schema_path.write_text(json.dumps(schema, indent=2, ensure_ascii=False), encoding="utf-8")
+        log.info(f"  schema.json actualizado con nominal_power PV desde building.csv")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # 5. PIPELINE PRINCIPAL
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def run(buildings=None):  # list[int] | None — compatible Python 3.9
+def run(
+    buildings=None,
+    area_util_factor: float = AREA_UTIL_FACTOR,
+    capacity_method: str = "sandia-area",
+    power_density_kwp_m2: float = PV_POWER_DENSITY_KWP_M2,
+    parking_factor: float = 0.0,
+    weather_source: str = "historical",
+    dry_run: bool = False,
+):
     """
     Pipeline completo de corrección solar.
 
@@ -415,21 +616,33 @@ def run(buildings=None):  # list[int] | None — compatible Python 3.9
     4. Guarda log JSON con detalles de cada edificio
     """
     if buildings is None:
-        buildings = list(range(2, 18))
+        buildings = list(range(1, 18))
 
     log.info("=" * 70)
     log.info("fix_solar_pvlib.py — Corrección solar con pvlib ModelChain SAPM")
     log.info(f"Edificios: {buildings}")
+    log.info(
+        "capacity_method=%s | area_util_factor=%.3f | power_density=%.3f kWp/m2 | "
+        "parking_factor=%.3f | weather_source=%s | dry_run=%s",
+        capacity_method, area_util_factor, power_density_kwp_m2, parking_factor, weather_source, dry_run,
+    )
     log.info("=" * 70)
 
     # ── Paso 1: datos meteorológicos ──────────────────────────────────────────
-    log.info("\n[1/4] Cargando datos meteorológicos (3 años)...")
-    weather_parts = []
-    for yr in YEARS:
-        log.info(f"  Año {yr}...")
-        df_yr = get_weather(yr)
-        weather_parts.append(df_yr)
-    weather_full = pd.concat(weather_parts)
+    log.info("\n[1/4] Cargando datos meteorológicos...")
+    if weather_source == "historical":
+        weather_parts = []
+        for yr in YEARS:
+            log.info(f"  Año {yr}...")
+            df_yr = get_weather(yr)
+            weather_parts.append(df_yr)
+        weather_full = pd.concat(weather_parts)
+        weather_source_label = "PVGIS-ERA5/NASA POWER horario 2023-2025"
+    elif weather_source == "tmy":
+        weather_full = build_tmy_weather_full()
+        weather_source_label = "PVGIS TMY Iquitos via pvlib, repetido 2023-2025"
+    else:
+        raise ValueError(f"weather_source no soportado: {weather_source}")
     log.info(f"  Total: {len(weather_full)} filas | "
              f"GHI max={weather_full['GHI'].max():.1f} W/m² | "
              f"GHI non-zero={(weather_full['GHI']>0).sum()} h")
@@ -444,9 +657,17 @@ def run(buildings=None):  # list[int] | None — compatible Python 3.9
 
     for bldg_id in buildings:
         log.info(f"\n  --- Building_{bldg_id} ---")
-        area_util = AREA_TECHADA[bldg_id] * AREA_UTIL_FACTOR
-        n_mod     = max(1, int(area_util // mod_params["Area"]))
-        pdc_kw    = n_mod * mod_params["Vmpo"] * mod_params["Impo"] / 1000
+        pv_size = calculate_pv_size(
+            bldg_id=bldg_id,
+            module_params=mod_params,
+            capacity_method=capacity_method,
+            area_util_factor=area_util_factor,
+            power_density_kwp_m2=power_density_kwp_m2,
+            parking_factor=parking_factor,
+        )
+        area_util = pv_size["effective_area_m2"]
+        n_mod = pv_size["n_modules"]
+        pdc_kw = pv_size["pdc_kw"]
 
         _, inv_params, n_inv = select_sandia_inverter(pdc_kw)
 
@@ -461,34 +682,46 @@ def run(buildings=None):  # list[int] | None — compatible Python 3.9
             pdc_kw=pdc_kw,
         )
 
-        stats = update_building_solar(bldg_id, solar, pdc_kw)
+        stats = update_building_solar(bldg_id, solar, pdc_kw, dry_run=dry_run)
         results[f"Building_{bldg_id}"] = {
             "module":       mod_key,
+            "capacity_method": capacity_method,
+            "area_basis":    pv_size["area_basis"],
+            "roof_area_m2":  round(pv_size["roof_area_m2"], 2),
+            "parking_area_m2": round(pv_size["parking_area_m2"], 2),
             "n_modules":    n_mod,
             "n_inverters":  n_inv,
             "pdc_kw":       round(pdc_kw, 1),
             "area_util_m2": round(area_util, 0),
+            "power_density_kwp_m2": round(power_density_kwp_m2, 4),
+            "parking_factor": round(parking_factor, 4),
             **stats,
         }
 
     # ── Paso 4: log JSON ──────────────────────────────────────────────────────
     log.info("\n[4/4] Guardando log de corrección solar...")
-    update_schema_pv_nominal_power(results)
+    update_schema_pv_nominal_power(results, dry_run=dry_run)
     log_data = {
         "fix_date":       pd.Timestamp.now().isoformat(),
         "pvlib_version":  pvlib.__version__,
         "method":         "pvlib_ModelChain_SAPM",
         "module_key":     mod_key,
-        "weather_source": "PVGIS-ERA5 (2023 si disponible) + NASA POWER",
+        "weather_source": weather_source_label,
+        "capacity_method": capacity_method,
+        "area_util_factor": area_util_factor,
+        "power_density_kwp_m2": power_density_kwp_m2,
+        "parking_factor": parking_factor,
         "total_hours":    len(weather_full),
         "buildings":      results,
     }
-    LOG_PATH.write_text(json.dumps(log_data, indent=2, ensure_ascii=False))
-    log.info(f"  Log guardado: {LOG_PATH}")
+    if dry_run:
+        log.info(f"  dry-run: log no fue escrito ({LOG_PATH})")
+    else:
+        LOG_PATH.write_text(json.dumps(log_data, indent=2, ensure_ascii=False))
+        log.info(f"  Log guardado: {LOG_PATH}")
 
     log.info("\n" + "=" * 70)
-    log.info(f"Corrección completa: {len(buildings)} edificios actualizados con pvlib SAPM")
-    log.info("Building_1 preservado sin cambios")
+    log.info(f"Corrección completa: {len(buildings)} edificios procesados con pvlib SAPM")
     log.info("=" * 70)
 
     # Resumen final
@@ -501,7 +734,31 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Corrige solar_generation con pvlib SAPM")
     parser.add_argument(
         "--buildings", nargs="+", type=int, default=None,
-        help="IDs de edificios a procesar (default: 2-17; Building_1 se preserva)"
+        help="IDs de edificios a procesar (default: 1-17)"
+    )
+    parser.add_argument(
+        "--area-util-factor", type=float, default=AREA_UTIL_FACTOR,
+        help="Fraccion de area techada usada en capacity-method=sandia-area. Default 0.63."
+    )
+    parser.add_argument(
+        "--capacity-method", choices=["sandia-area", "power-density"], default="sandia-area",
+        help="sandia-area cuenta modulos Sandia por area; power-density usa kWp/m2 tecnico."
+    )
+    parser.add_argument(
+        "--power-density-kwp-m2", type=float, default=PV_POWER_DENSITY_KWP_M2,
+        help="Densidad PV para capacity-method=power-density. Default 0.24 kWp/m2."
+    )
+    parser.add_argument(
+        "--parking-factor", type=float, default=0.0,
+        help="Fraccion del area de estacionamiento para marquesinas PV en power-density. Default 0.0."
+    )
+    parser.add_argument(
+        "--weather-source", choices=["historical", "tmy"], default="historical",
+        help="historical usa PVGIS/NASA 2023-2025; tmy usa PVGIS TMY local de Iquitos via pvlib."
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true",
+        help="Calcula y muestra resultados sin modificar Building_X.csv, schema.json ni solar_fix_log.json."
     )
     parser.add_argument(
         "--skip-cache", action="store_true",
@@ -516,4 +773,12 @@ if __name__ == "__main__":
                 p.unlink()
                 log.info(f"Caché eliminada: {p}")
 
-    run(buildings=args.buildings)
+    run(
+        buildings=args.buildings,
+        area_util_factor=args.area_util_factor,
+        capacity_method=args.capacity_method,
+        power_density_kwp_m2=args.power_density_kwp_m2,
+        parking_factor=args.parking_factor,
+        weather_source=args.weather_source,
+        dry_run=args.dry_run,
+    )

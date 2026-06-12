@@ -521,17 +521,30 @@ def _check_citylearn_load(schema_path: Path, issues: list[str]) -> dict[str, Any
         status["import_error"] = str(exc)
         return status
 
+    # Load the environment once — all 17 building CSVs, charger CSVs, and support
+    # files are shared across scenarios. apply_scenario_modifications() only modifies
+    # electricity_pricing in memory, so a single CityLearnEnv instance can be reused
+    # for all three scenario checks without re-reading any data from disk.
+    try:
+        env = CityLearnEnv(schema=str(schema_path))
+    except Exception as exc:
+        issues.append(f"CityLearnEnv no pudo instanciarse desde schema: {exc}")
+        status["load_error"] = str(exc)
+        return status
+
+    try:
+        from citylearn.scenario_manager import ScenarioManager  # type: ignore
+        manager = ScenarioManager()
+        scenario_manager_ok = True
+    except Exception:
+        manager = None
+        scenario_manager_ok = False
+
     for scenario in ["E1", "E2", "E3"]:
         try:
-            env = CityLearnEnv(schema=str(schema_path))
-            try:
-                from citylearn.scenario_manager import ScenarioManager  # type: ignore
-
-                manager = ScenarioManager()
+            if scenario_manager_ok and manager is not None:
                 manager.select_scenario(scenario)
                 manager.apply_scenario_modifications(env)
-            except Exception:
-                pass
 
             obs, _ = env.reset()
             obs_lens = [len(o) for o in obs]

@@ -11,7 +11,10 @@ DATASET_DIR = os.path.join(
     os.path.dirname(__file__),
     "CityLearn", "data", "datasets", "citylearn_iquitos_2023_2025"
 )
-LOG_PATH = os.path.join(os.path.dirname(__file__), "tools", "dataset_docs", "dataset_generation_log.json")
+ORCHESTRATION_MANIFEST_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "outputs", "dataset_audit", "dataset_orchestration_manifest.json"
+)
 EXPECTED_ROWS = 26305
 EXPECTED_BUILDINGS = 17
 
@@ -71,22 +74,23 @@ def main():
     sep("=")
     print(f"  Directorio: {DATASET_DIR}")
 
-    # 1. Log de generacion
+    # 1. Manifiesto de orquestacion vigente
     sep()
-    print("1. LOG DE GENERACION")
+    print("1. MANIFIESTO DE ORQUESTACION")
     sep()
-    if os.path.isfile(LOG_PATH):
-        with open(LOG_PATH, encoding="utf-8") as f:
-            log = json.load(f)
-        print(f"  Fecha generacion  : {log.get('fecha_generacion', '?')}")
-        print(f"  Anos cubiertos    : {log.get('anios', '?')}")
-        print(f"  Total horas       : {log.get('total_horas', '?')}")
-        print(f"  Edificios         : {log.get('edificios_generados', '?')}")
-        fuentes = log.get("fuentes_meteorologicas", {})
-        for anio, fuente in fuentes.items():
-            print(f"  Fuente meteo {anio}  : {fuente}")
+    if os.path.isfile(ORCHESTRATION_MANIFEST_PATH):
+        with open(ORCHESTRATION_MANIFEST_PATH, encoding="utf-8") as f:
+            manifest = json.load(f)
+        print(f"  Estado            : {manifest.get('status', '?')}")
+        print(f"  Inicio            : {manifest.get('started_at', '?')}")
+        print(f"  Fin               : {manifest.get('completed_at', '?')}")
+        print(f"  Dataset           : {manifest.get('dataset_dir', '?')}")
+        print(f"  Proposito         : {manifest.get('purpose', '?')}")
+        stages = manifest.get("stages", [])
+        ok_stages = sum(1 for stage in stages if stage.get("status") == "ok")
+        print(f"  Etapas OK         : {ok_stages}/{len(stages)}")
     else:
-        print(f"  [WARN] No se encontro {LOG_PATH}")
+        print(f"  [WARN] No se encontro {ORCHESTRATION_MANIFEST_PATH}")
 
     # 2. Schema.json
     sep()
@@ -139,7 +143,6 @@ def main():
         ("weather.csv", WEATHER_COLS),
         ("carbon_intensity.csv", CARBON_COLS),
         ("pricing.csv", PRICING_COLS),
-        ("Washing_Machine_1.csv", None),
     ]
     context_ok = True
     for fname, cols in context_files:
@@ -151,9 +154,27 @@ def main():
         if not ok:
             context_ok = False
 
-    # 5. Charger CSVs
+    # 5. Cargas controladas por edificio
     sep()
-    print("5. CHARGER CSVs (EV por edificio)")
+    print("5. WASHING_MACHINE CSVs (cargas controladas por edificio)")
+    sep()
+    machine_ok_count = 0
+    for bid in range(1, EXPECTED_BUILDINGS + 1):
+        fname = f"Washing_Machine_{bid}.csv"
+        path = os.path.join(DATASET_DIR, fname)
+        ok, errors = check_file(fname, path, EXPECTED_ROWS)
+        if ok:
+            machine_ok_count += 1
+        size_kb = os.path.getsize(path) // 1024 if os.path.isfile(path) else 0
+        detail = f"{size_kb} KB  {EXPECTED_ROWS} filas" if ok else " | ".join(errors)
+        print_row(fname, ok, detail)
+
+    sep()
+    print(f"  RESULTADO: {machine_ok_count}/{EXPECTED_BUILDINGS} Washing_Machine CSVs OK")
+
+    # 6. Charger CSVs
+    sep()
+    print("6. CHARGER CSVs (EV por edificio)")
     sep()
     charger_files = [f for f in os.listdir(DATASET_DIR) if f.startswith("charger_") and f.endswith(".csv")]
     charger_files.sort()
@@ -183,7 +204,7 @@ def main():
     sep()
     print(f"  RESULTADO: {charger_ok_count}/{charger_total} charger CSVs OK  |  {len(charger_files)} archivos totales")
 
-    # 6. Resumen final
+    # 7. Resumen final
     sep("=")
     print("RESUMEN FINAL")
     sep("=")
@@ -191,11 +212,13 @@ def main():
         n_ok == EXPECTED_BUILDINGS
         and context_ok
         and schema_ok
+        and machine_ok_count == EXPECTED_BUILDINGS
         and charger_ok_count == charger_total
     )
     estado = "DATASET INTEGRO - APTO PARA ENTRENAMIENTO MADRL" if all_ok else "DATASET CON PROBLEMAS - REVISAR ERRORES ARRIBA"
     print(f"  Building CSVs     : {n_ok}/{EXPECTED_BUILDINGS}")
     print(f"  Archivos contexto : {'OK' if context_ok else 'FALLO'}")
+    print(f"  Washing Machine   : {machine_ok_count}/{EXPECTED_BUILDINGS}")
     print(f"  Schema.json       : {'OK' if schema_ok else 'FALLO'}")
     print(f"  Charger CSVs      : {charger_ok_count}/{charger_total}")
     sep()

@@ -85,9 +85,9 @@ print("=" * 80)
 # Parametros esperados por edificio (del plan MADRL)
 BUILDING_CFG = {
     1:  {'name': 'Electro Oriente S.A.',        'type': 'industrial',    'nsl_base': 17.7,  'cool_peak': 126.86, 'cop': 2.8, 'dhw': False, 'area': 14000},
-    2:  {'name': 'Complejo Champios',           'type': 'deportivo',     'nsl_base': 3.76,  'cool_peak': 29.0,   'cop': 2.5, 'dhw': False, 'area': 8000},
+    2:  {'name': 'Municipalidad San Juan Bautista',           'type': 'deportivo',     'nsl_base': 3.76,  'cool_peak': 29.0,   'cop': 2.5, 'dhw': False, 'area': 8000},
     3:  {'name': 'Aeropuerto IQT',              'type': 'transporte_24h','nsl_base': 55.3,  'cool_peak': 67.0,   'cop': 3.0, 'dhw': False, 'area': 6000},
-    4:  {'name': 'Hiperbodega Precio UNO',      'type': 'mall',          'nsl_base': 14.8,  'cool_peak': 29.5,   'cop': 3.0, 'dhw': False, 'area': 2500},
+    4:  {'name': 'Tottus Oriente Precio UNO',      'type': 'mall',          'nsl_base': 14.8,  'cool_peak': 29.5,   'cop': 3.0, 'dhw': False, 'area': 2500},
     5:  {'name': 'Hotel El Dorado Plaza',       'type': 'hotelero_24h',  'nsl_base': 5.4,   'cool_peak': 150.5,  'cop': 3.0, 'dhw': True,  'area': 9000},
     6:  {'name': 'Mall Aventura Iquitos',       'type': 'mall',          'nsl_base': 78.5,  'cool_peak': 850.0,  'cop': 3.0, 'dhw': False, 'area': 20637},
     7:  {'name': 'UNAP Zungarococha',           'type': 'universitario', 'nsl_base': 9.5,   'cool_peak': 167.0,  'cop': 2.8, 'dhw': False, 'area': 8300},
@@ -99,8 +99,8 @@ BUILDING_CFG = {
     13: {'name': 'Facultad Economia UNAP',      'type': 'universitario', 'nsl_base': 1.75,  'cool_peak': 62.5,   'cop': 2.8, 'dhw': False, 'area': 3000},
     14: {'name': 'Terminal Portuario ENAPU',    'type': 'portuario_24h', 'nsl_base': 15.7,  'cool_peak': 49.5,   'cop': 2.5, 'dhw': False, 'area': 5000},
     15: {'name': 'Colegio Nacional CNI',        'type': 'educacion',     'nsl_base': 2.76,  'cool_peak': 48.0,   'cop': 2.5, 'dhw': False, 'area': 2500},
-    16: {'name': 'I.E. San Juan',               'type': 'educacion',     'nsl_base': 4.55,  'cool_peak': 100.0,  'cop': 2.5, 'dhw': False, 'area': 6500},
-    17: {'name': 'IEST Pedro del Aguila',       'type': 'educacion',     'nsl_base': 4.2,   'cool_peak': 93.0,   'cop': 2.5, 'dhw': False, 'area': 5200},
+    16: {'name': 'SIMA Iquitos',               'type': 'educacion',     'nsl_base': 4.55,  'cool_peak': 100.0,  'cop': 2.5, 'dhw': False, 'area': 6500},
+    17: {'name': 'Asociacion Civil Selva Amazonica',       'type': 'educacion',     'nsl_base': 4.2,   'cool_peak': 93.0,   'cop': 2.5, 'dhw': False, 'area': 5200},
 }
 
 # Consumo real medido (kWh/dia) donde disponible — GD-Iquitos V3

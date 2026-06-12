@@ -193,6 +193,33 @@ def _check_charger(path: Path, issues: list[str]) -> dict[str, Any]:
         ids = df["electric_vehicle_id"].astype(str).str.strip()
         if bool((ids == "").any()):
             issues.append(f"{_rel(path)} tiene electric_vehicle_id vacio")
+    if set(CHARGER_COLUMNS).issubset(df.columns):
+        states = pd.to_numeric(df["electric_vehicle_charger_state"], errors="coerce")
+        ids = df["electric_vehicle_id"].astype(str).str.strip()
+        arrival_soc = pd.to_numeric(df["electric_vehicle_estimated_soc_arrival"], errors="coerce")
+        for idx in range(1, len(df)):
+            prev_state = states.iloc[idx - 1]
+            curr_state = states.iloc[idx]
+            curr_id = ids.iloc[idx]
+            if (
+                pd.notna(prev_state)
+                and pd.notna(curr_state)
+                and int(prev_state) in {2, 3}
+                and int(curr_state) == 1
+                and curr_id not in {"", "nan", "NONE"}
+            ):
+                prev_id = ids.iloc[idx - 1]
+                prev_arrival_soc = arrival_soc.iloc[idx - 1]
+                if prev_id != curr_id:
+                    issues.append(
+                        f"{_rel(path)} transicion EV invalida en t={idx}: "
+                        f"prev_state={int(prev_state)} prev_id={prev_id!r} curr_id={curr_id!r}"
+                    )
+                if pd.isna(prev_arrival_soc) or not (0.0 <= float(prev_arrival_soc) <= 100.0):
+                    issues.append(
+                        f"{_rel(path)} transicion EV sin SOC llegada valido en t={idx}: "
+                        f"prev_state={int(prev_state)} curr_id={curr_id!r}"
+                    )
     entry["allowed_sentinels"] = {
         "time_absent": -1,
         "soc_absent": -0.1,

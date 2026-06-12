@@ -32,15 +32,15 @@ AREA_TECHADA_FALLBACK = {
     16: 6500, 17: 5200,
 }
 NOMBRES_FALLBACK = {
-    1: "Electro Oriente S.A.",     2: "Complejo Champios",
-    3: "Aeropuerto IQT",           4: "Hiperbodega Precio UNO",
+    1: "Electro Oriente S.A.",     2: "Municipalidad San Juan Bautista",
+    3: "Aeropuerto IQT",           4: "Tottus Oriente Precio UNO",
     5: "Hotel El Dorado Plaza",    6: "Mall Aventura Iquitos",
     7: "UNAP Zungarococha",        8: "Escuela Técnica PNP",
     9: "Complejo CNI",            10: "Gobierno Regional Loreto",
     11: "Hospital Regional",       12: "EsSalud Hospital III",
     13: "Facultad Economía UNAP", 14: "Terminal Portuario ENAPU",
-    15: "Colegio Nacional CNI",   16: "I.E. San Juan",
-    17: "IEST Pedro del Águila",
+    15: "Colegio Nacional CNI",   16: "SIMA Iquitos",
+    17: "Selva Amazonica Pedro del Águila",
 }
 AREA_UTIL_FACTOR = 0.63  # 0.70 techo útil × 0.90 packing
 MPS = 15                  # módulos por string: 15×64.60V=969V ≤ 1000V (IEC 61730)

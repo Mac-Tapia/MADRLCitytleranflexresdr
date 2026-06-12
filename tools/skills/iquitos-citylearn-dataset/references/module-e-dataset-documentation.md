@@ -17,7 +17,7 @@ Permite trazabilidad academica y reproducibilidad del dataset.
 | T_indoor con modelo RC | OE.1 pre-enfriamiento requiere senal termica real | Vacio (impide aprendizaje de estrategia termica) |
 | Carbon intensity variable | Senal de despacho horaria para OE.2 | Constante 0.79 (no incentiva despacho solar) |
 | Tarifa MT (no BT) | 17 edificios son grandes consumidores con acometida MT | BT (incorrecta para hospitales, mall, aeropuerto) |
-| 50 charger files | Refleja parque vehicular real por edificio | 1 charger por edificio (no representa diversidad) |
+| 185 charger files | Refleja parque vehicular vigente por edificio, 96 equipos fisicos modo 3 y 749.4 kW | 1 charger por edificio (no representa diversidad) |
 | cooling_demand no-cero | OE.1 y OE.3 dependen de senal de carga termica real | Cero (no se puede optimizar pre-enfriamiento) |
 | inactive_observations=[] | HAPPO/MASAC/MATD3/MAAC usan todas las observaciones | Desactivar cols. (reduce espacio de observacion) |
 
@@ -73,13 +73,13 @@ Permite trazabilidad academica y reproducibilidad del dataset.
 
 ## Correcciones Aplicadas Durante el Diseno
 
-### B5 Hotel El Dorado Plaza
+### B5 Hotel Plaza S.A.
 - **Problema**: estimado inicial 90-100 habitaciones sin fuente verificada
 - **Correccion**: 65 habitaciones confirmadas (Expedia 2026, Booking 2026)
 - **Impacto**: AC 199 -> 150.5 kW; ACS 780 -> 614 kWh_th/dia
 - **Fecha**: durante sesion de diseno del plan
 
-### B15 Colegio Nacional CNI
+### B15 DREL Colegio Nacional de Iquitos
 - **Problema**: AC estimado sin considerar talleres vocacionales
 - **Correccion**: AC 45 -> 48 kW tras confirmar taller arte + taller cocina (MINEDU Identicole)
 - **Impacto**: cooling_peak actualizado; non_shiftable_load SHIFTABLE incluye horno ceramica y cocina
@@ -98,22 +98,22 @@ Permite trazabilidad academica y reproducibilidad del dataset.
 | # | Edificio | Datos confirmados (fuente web) | Datos estimados (metodo) |
 |---|---------|-------------------------------|-------------------------|
 | 1 | Electro Oriente | AC real (inventario usuario), SCADA/WatchGuard (xentic.com.pe), consumo real GD-V3 | area_techada (plano ciudad) |
-| 2 | Champios | Tipo deportivo multidisciplinar Iquitos | TODO: inventario AC, area_techada |
-| 3 | Aeropuerto IQT | Terminal planta baja, ISO 9001, servicios (Wikipedia), 24h | area_techada (foto satelital) |
-| 4 | Precio UNO | Hiperbodega gran superficie, Av. Ejercito 1393 (Tiendeo) | AC total, area_techada |
-| 5 | Hotel El Dorado | 65 hab. (Expedia 2026), amenidades completas (amazingperu.com) | area_techada (foto satelital) |
+| 2 | Municipalidad San Juan Bautista | Tipo deportivo multidisciplinar Iquitos | TODO: inventario AC, area_techada |
+| 3 | Aeropuerto Internacional de Iquitos | Terminal planta baja, ISO 9001, servicios (Wikipedia), 24h | area_techada (foto satelital) |
+| 4 | Precio UNO | Tottus Oriente gran superficie, Av. Ejercito 1393 (Tiendeo) | AC total, area_techada |
+| 5 | Hotel Plaza S.A. | 65 hab. (Expedia 2026), amenidades completas (amazingperu.com) | area_techada segun building.csv |
 | 6 | Mall Aventura | 51 300 m2, 110 tiendas, 3 pisos, Aug 2023 (Wikipedia + mallaventura.pe) | AC total (densidad W/m2 Chow 2002) |
-| 7 | UNAP Zungarococha | 5 facultades, CIEFOR, fibra optica (unapiquitos.edu.pe), consumo real GD-V3 | area_techada estimada |
+| 7 | UNAP Facultad de Biologia | facultad universitaria, fibra optica (unapiquitos.edu.pe), consumo real GD-V3 | area_techada segun building.csv |
 | 8 | Escuela PNP | 750 alumnos, 97 180 m2 campus, 40M soles (MININTER) | AC total, area_techada techada |
-| 9 | Complejo CNI | 24 576 espectadores, cesped artificial (Wikipedia + fichajes.com) | AC total, area_techada |
+| 9 | Gobierno Regional Loreto COER | operacion critica 24h, centro de emergencia regional | AC total, area_techada |
 | 10 | Gobierno Regional | Horario L-V 07-15h, 5 gerencias (regionloreto.gob.pe), consumo real GD-V3 | area_techada |
 | 11 | Hospital Regional | 176 camas, 35 especialidades, 6 pisos (hrloreto.gob.pe + Doctoralia), consumo real GD-V3 | area techada estimada |
-| 12 | EsSalud Hospital III | 11 camas UCI, 12 ventiladores, 3 quirofanos, 600 consult/dia (essalud.gob.pe), consumo GD-V3 | area_techada |
+| 12 | Seguro Social de Salud EsSalud | 11 camas UCI, 12 ventiladores, 3 quirofanos, 600 consult/dia (essalud.gob.pe), consumo GD-V3 | area_techada |
 | 13 | Facultad Economia UNAP | FACEN 5 escuelas, lab. computo (enlinea.unapiquitos.edu.pe), consumo real GD-V3 | area_techada |
 | 14 | ENAPU | Muelles, almacenes, equipos portuarios (enapu.com.pe), consumo real GD-V3 | area_techada |
 | 15 | Colegio CNI | 2 326 alumnos, instalaciones (MINEDU Identicole), consumo real GD-V3 | area_techada |
-| 16 | I.E. San Juan | Piscina, coliseo, biblioteca tipo III (iesanjuan.edu.pe + MINEDU) | consumo real, area_techada |
-| 17 | IEST Publico | 7 carreras, lab. mecatronica (logrosperu.com + deperu.com) | consumo real, area_techada |
+| 16 | SIMA Iquitos S.R.Ltda | astillero/uso industrial, sistemas de refrigeracion movil | consumo real, area_techada |
+| 17 | Asociacion Civil Selva Amazonica | 7 carreras, lab. mecatronica (logrosperu.com + deperu.com) | consumo real, area_techada |
 
 ---
 
@@ -121,12 +121,12 @@ Permite trazabilidad academica y reproducibilidad del dataset.
 
 | Edificio | Dato pendiente | Por que se necesita |
 |---------|---------------|---------------------|
-| B2 Champios | area_techada real y AC exacto | Mejora precision generacion FV y cooling_demand |
+| B2 Municipalidad San Juan Bautista | area_techada real y AC exacto | Mejora precision generacion FV y cooling_demand |
 | B3 Aeropuerto | area_techada real techada | Mejora sizing FV (actualmente 6 000 m2 area total) |
 | B5 Hotel | area_techada real (techo usable) | Mejora sizing FV |
-| B9 Complejo CNI | area_techada real techada | Mejora sizing FV |
-| B16 I.E. San Juan | consumo real kWh/mes (no en GD-V3) | Calibracion non_shiftable_load |
-| B17 IEST Publico | consumo real kWh/mes | Calibracion non_shiftable_load |
+| B9 Gobierno Regional Loreto COER | area_techada real techada | Mejora sizing FV |
+| B16 SIMA Iquitos S.R.Ltda | consumo real kWh/mes (no en GD-V3) | Calibracion non_shiftable_load |
+| B17 Asociacion Civil Selva Amazonica | consumo real kWh/mes | Calibracion non_shiftable_load |
 
 ---
 
@@ -217,6 +217,6 @@ El script genera automaticamente `dataset_generation_log.json` con:
 | solar_generation | datos USA | ModelChain SAPM lat=-3.75 Iquitos |
 | carbon_intensity | cte EE.UU. | 0.672-0.790 Scope 2 diesel Peru |
 | pricing | tarifa USA | OSINERGMIN MT TOU Peru |
-| charger files | 8 (3 edificios) | 50 (17 edificios) |
+| charger files | 8 (3 edificios) | 65 (17 edificios) |
 | Area geografica | California, USA | Iquitos, Loreto, Peru |
 | Sistema electrico | Red nacional USA | Sistema aislado diesel Loreto |

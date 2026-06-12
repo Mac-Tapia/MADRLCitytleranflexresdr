@@ -88,7 +88,7 @@ Cada columna alimenta directamente ese vector. Para OE.1/OE.2/OE.3:
 
 ### Columna 9: dhw_demand [kWh_thermal/h]
 
-- **Solo B5 (Hotel El Dorado), B11 (Hospital Regional), B12 (EsSalud)**
+- **Solo B5 (Hotel Plaza S.A.), B11 (Hospital Regional de Loreto), B12 (Seguro Social de Salud EsSalud)**
 - **Resto de edificios**: dhw_demand = 0.0
 - **Valores diarios**:
   - B5: 614.0 kWh_th/dia (65 hab. x 50 L/dia x DeltaT=35°C / COP_ACS=0.85)
@@ -205,18 +205,18 @@ Script intenta descarga mensual; si falla usa fallback hardcoded.
 
 ---
 
-## charger_X_Y.csv — 6 columnas, 26 304 filas (50 archivos)
+## charger_X_Y.csv — 6 columnas, 26 304 filas (185 archivos)
 
 | # | Columna | Tipo | Descripcion |
 |---|---------|------|-------------|
-| 1 | electric_vehicle_charger_state | int 0/1 | 0=disponible, 1=EV conectado |
+| 1 | electric_vehicle_charger_state | int 1/2/3 | Estado CityLearn EV validado por auditoria CSV |
 | 2 | electric_vehicle_id | float (NaN cuando state=0) | ID unico del EV por sesion |
 | 3 | electric_vehicle_departure_time | float (hora) | Hora a la que el EV debe partir |
 | 4 | electric_vehicle_required_soc_departure | float 0-1 | SOC requerido al partir (restriccion dura) |
 | 5 | electric_vehicle_estimated_arrival_time | float (hora) | Hora estimada de llegada proximo EV |
 | 6 | electric_vehicle_estimated_soc_arrival | float 0-1 | SOC estimado al llegar |
 
-**El agente MADRL solo puede actuar cuando state=1** (EV conectado).
+**El agente MADRL usa las observaciones EV activas del schema vigente; los estados permitidos auditados son 1, 2 y 3.**
 La restriccion dura es: SOC(departure_time) >= required_soc_departure.
 El agente decide la tasa de carga para cumplir este requisito con minimo costo.
 

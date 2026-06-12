@@ -9,23 +9,23 @@ clasificacion MADRL por equipo, constantes Python, y datos reales del estudio GD
 
 ```python
 MADRL_BUILDING_CONSTANTS = {
-    1:  {'name': 'Electro Oriente S.A.',         'non_shiftable_base': 17.7,  'cooling_peak': 126.86, 'shiftable': 14.8,  'bldg_type': 'industrial',    'area_techada_m2': 14000},
-    2:  {'name': 'Complejo Champios',             'non_shiftable_base': 3.76,  'cooling_peak': 29.0,   'shiftable': 35.6,  'bldg_type': 'deportivo',     'area_techada_m2': 8000},
-    3:  {'name': 'Aeropuerto IQT',                'non_shiftable_base': 55.3,  'cooling_peak': 67.0,   'shiftable': 95.0,  'bldg_type': 'transporte_24h','area_techada_m2': 6000},
-    4:  {'name': 'Hiperbodega Precio UNO',        'non_shiftable_base': 14.8,  'cooling_peak': 29.5,   'shiftable': 22.2,  'bldg_type': 'mall',          'area_techada_m2': 2500},
-    5:  {'name': 'Hotel El Dorado Plaza',         'non_shiftable_base': 5.4,   'cooling_peak': 150.5,  'shiftable': 99.0,  'bldg_type': 'hotelero_24h',  'area_techada_m2': 9000},
-    6:  {'name': 'Mall Aventura Iquitos',         'non_shiftable_base': 78.5,  'cooling_peak': 850.0,  'shiftable': 176.0, 'bldg_type': 'mall',          'area_techada_m2': 20637},
-    7:  {'name': 'UNAP Zungarococha',             'non_shiftable_base': 9.5,   'cooling_peak': 167.0,  'shiftable': 39.2,  'bldg_type': 'universitario', 'area_techada_m2': 8300},
-    8:  {'name': 'Escuela Tecnica PNP',           'non_shiftable_base': 6.9,   'cooling_peak': 222.0,  'shiftable': 99.3,  'bldg_type': 'educacion',     'area_techada_m2': 21000},
-    9:  {'name': 'Complejo CNI',                  'non_shiftable_base': 2.18,  'cooling_peak': 19.5,   'shiftable': 10.7,  'bldg_type': 'deportivo',     'area_techada_m2': 3500},
-    10: {'name': 'Gobierno Regional Loreto',      'non_shiftable_base': 12.43, 'cooling_peak': 117.5,  'shiftable': 22.2,  'bldg_type': 'administrativo','area_techada_m2': 5000},
-    11: {'name': 'Hospital Regional Loreto',      'non_shiftable_base': 195.0, 'cooling_peak': 366.6,  'shiftable': 73.0,  'bldg_type': 'salud_24h',     'area_techada_m2': 12000},
-    12: {'name': 'EsSalud Hospital III',          'non_shiftable_base': 125.0, 'cooling_peak': 222.0,  'shiftable': 34.5,  'bldg_type': 'salud_24h',     'area_techada_m2': 6000},
-    13: {'name': 'Facultad Economia UNAP',        'non_shiftable_base': 1.75,  'cooling_peak': 62.5,   'shiftable': 14.8,  'bldg_type': 'universitario', 'area_techada_m2': 3000},
-    14: {'name': 'Terminal Portuario ENAPU',      'non_shiftable_base': 15.7,  'cooling_peak': 49.5,   'shiftable': 47.0,  'bldg_type': 'portuario_24h', 'area_techada_m2': 5000},
-    15: {'name': 'Colegio Nacional CNI',          'non_shiftable_base': 2.76,  'cooling_peak': 48.0,   'shiftable': 22.2,  'bldg_type': 'educacion',     'area_techada_m2': 2500},
-    16: {'name': 'I.E. San Juan',                 'non_shiftable_base': 4.55,  'cooling_peak': 100.0,  'shiftable': 51.54, 'bldg_type': 'educacion',     'area_techada_m2': 6500},
-    17: {'name': 'IEST Pedro del Aguila Hidalgo', 'non_shiftable_base': 4.2,   'cooling_peak': 93.0,   'shiftable': 26.3,  'bldg_type': 'educacion',     'area_techada_m2': 5200},
+    1:  {'name': 'Electro Oriente S.A.',                          'non_shiftable_base': 17.70,   'cooling_peak': 126.86,  'shiftable': 14.80,  'bldg_type': 'industrial',        'area_techada_m2': 14000.00},
+    2:  {'name': 'Municipalidad Distrital San Juan Bautista',     'non_shiftable_base': 3.76,   'cooling_peak': 29.00,  'shiftable': 35.60,  'bldg_type': 'administrativo',    'area_techada_m2': 8000.00},
+    3:  {'name': 'Aeropuerto Internacional de Iquitos',           'non_shiftable_base': 55.30,   'cooling_peak': 67.00,  'shiftable': 95.00,  'bldg_type': 'transporte_24h',    'area_techada_m2': 6000.00},
+    4:  {'name': 'Hipermercados Tottus Oriente',                  'non_shiftable_base': 14.80,   'cooling_peak': 29.50,  'shiftable': 22.20,  'bldg_type': 'mall',              'area_techada_m2': 2500.00},
+    5:  {'name': 'Hotel Plaza S.A.',                              'non_shiftable_base': 5.40,   'cooling_peak': 150.50,  'shiftable': 99.00,  'bldg_type': 'hotelero_24h',      'area_techada_m2': 1141.89},
+    6:  {'name': 'Mall Aventura Iquitos',                         'non_shiftable_base': 78.50,   'cooling_peak': 850.00,  'shiftable': 176.00,  'bldg_type': 'mall',              'area_techada_m2': 20637.00},
+    7:  {'name': 'UNAP Facultad de Biologia',                     'non_shiftable_base': 9.50,   'cooling_peak': 167.00,  'shiftable': 39.20,  'bldg_type': 'universitario',     'area_techada_m2': 8103.45},
+    8:  {'name': 'PNP Escuela Tecnica Superior Iquitos',          'non_shiftable_base': 6.90,   'cooling_peak': 222.00,  'shiftable': 99.30,  'bldg_type': 'educacion',         'area_techada_m2': 21000.00},
+    9:  {'name': 'Gobierno Regional Loreto COER',                 'non_shiftable_base': 2.18,   'cooling_peak': 19.50,  'shiftable': 10.70,  'bldg_type': 'transporte_24h',    'area_techada_m2': 4479.67},
+    10:  {'name': 'Gobierno Regional de Loreto',                   'non_shiftable_base': 12.43,   'cooling_peak': 117.50,  'shiftable': 22.20,  'bldg_type': 'administrativo',    'area_techada_m2': 14295.73},
+    11:  {'name': 'Hospital Regional de Loreto',                   'non_shiftable_base': 195.00,   'cooling_peak': 366.60,  'shiftable': 73.00,  'bldg_type': 'salud_24h',         'area_techada_m2': 42649.33},
+    12:  {'name': 'Seguro Social de Salud EsSalud',                'non_shiftable_base': 125.00,   'cooling_peak': 222.00,  'shiftable': 34.50,  'bldg_type': 'salud_24h',         'area_techada_m2': 18197.48},
+    13:  {'name': 'UNAP Facultad de Ciencias Economicas',          'non_shiftable_base': 1.75,   'cooling_peak': 62.50,  'shiftable': 14.80,  'bldg_type': 'universitario',     'area_techada_m2': 2723.00},
+    14:  {'name': 'Autoridad Portuaria Nacional Iquitos',          'non_shiftable_base': 15.70,   'cooling_peak': 49.50,  'shiftable': 47.00,  'bldg_type': 'portuario_24h',     'area_techada_m2': 17761.00},
+    15:  {'name': 'DREL Colegio Nacional de Iquitos',              'non_shiftable_base': 2.76,   'cooling_peak': 48.00,  'shiftable': 22.00,  'bldg_type': 'educacion',         'area_techada_m2': 9889.92},
+    16:  {'name': 'SIMA Iquitos S.R.Ltda',                         'non_shiftable_base': 4.55,   'cooling_peak': 100.00,  'shiftable': 51.54,  'bldg_type': 'industrial',        'area_techada_m2': 10294.00},
+    17:  {'name': 'Asociacion Civil Selva Amazonica',              'non_shiftable_base': 4.20,   'cooling_peak': 93.00,  'shiftable': 26.30,  'bldg_type': 'salud_24h',         'area_techada_m2': 1611.23},
 }
 
 # Cargas especiales
@@ -81,7 +81,7 @@ SHIFTABLE_B1_KW    = 14.8         # 2 cargadores EV x 7.4 kW
 
 ---
 
-## B2 — Complejo Deportivo Champios — 8 000 m2
+## B2 — Municipalidad Distrital San Juan Bautista — 8 000 m2
 
 **Datos**: Complejo multidisciplinar Iquitos. Datos web limitados; estimacion por tipo.
 **AC total estimado**: ~29 kW | **20 ventiladores HVLS/industriales**
@@ -109,7 +109,7 @@ REFRIGERACION_B3   = (30.0, 0.70) # catering refrigerado 24h
 
 ---
 
-## B4 — Hiperbodega Precio UNO — 2 500 m2
+## B4 — Hipermercados Tottus Oriente — 2 500 m2
 
 **Datos confirmados** (Tiendeo): hiperbodega gran superficie, Av. del Ejercito 1393.
 NO es mall -- formato bodega comercial con secciones frescos, ropa, hogar, electrodomesticos.
@@ -124,7 +124,7 @@ REFRIGERACION_B4   = (12.0, 0.85) # frescos + bebidas
 
 ---
 
-## B5 — Hotel El Dorado Plaza (5 estrellas, 24h) — 9 000 m2
+## B5 — Hotel Plaza S.A. (hotel 24h) — 1 141.89 m2
 
 **Datos confirmados** (Expedia 2026): Jr. Napo 258, Plaza de Armas.
 **65 habitaciones confirmadas** todas con AC, minibar y flat-screen TV.
@@ -162,7 +162,7 @@ REFRIGERACION_B6   = (515.0, 0.85)# Tottus + food court + heladerias (20 637 m2 
 
 ---
 
-## B7 — UNAP Zungarococha (Universitario / Forestal) — 8 300 m2
+## B7 — UNAP Facultad de Biologia (Universitario) — 8 103.45 m2
 
 **Datos confirmados** (unapiquitos.edu.pe): Campus 18 km de Iquitos, 2 000 ha totales.
 5 facultades: Biologicas, Farmacia, Forestales, Agronomia, Industrias Alimentarias. CIEFOR.
@@ -195,7 +195,7 @@ Nota: medidor especifico B8 registra consumo pequenio; campus completo tendria m
 
 ---
 
-## B9 — Complejo CNI (Deportivo / Institucional) — 3 500 m2
+## B9 — Gobierno Regional Loreto COER (Critico 24h) — 4 479.67 m2
 
 **Datos confirmados** (Wikipedia + fichajes.com): Estadio CNI capacidad 24 576 espectadores.
 Campo futbol cesped artificial + pista atletica. Club fundado 30 julio 1996.
@@ -210,7 +210,7 @@ SHIFTABLE_B9_KW    = 10.7         # riego + 2 EV ligeros
 
 ---
 
-## B10 — Gobierno Regional Loreto — 5 000 m2
+## B10 — Gobierno Regional de Loreto — 14 295.73 m2
 
 **Datos confirmados** (regionloreto.gob.pe): Sede Av. Jose Abelardo Quiniones Km. 1.4 (Belen).
 Horario: L-V 07:00-15:00. Gerencias: General Regional, Planeamiento/Presupuesto,
@@ -226,7 +226,7 @@ SHIFTABLE_B10_KW    = 22.2         # 3 EV chargers (solo dias laborales)
 
 ---
 
-## B11 — Hospital Regional Loreto "Felipe Santiago Arriola Iglesias" — 12 000 m2
+## B11 — Hospital Regional de Loreto "Felipe Santiago Arriola Iglesias" — 42 649.33 m2
 
 **Datos confirmados** (hrloreto.gob.pe + Doctoralia + gob.pe):
 6 pisos, 176 camas adultos + 9 cunas neonatologia, hospital referencial tercer nivel.
@@ -249,7 +249,7 @@ REFRIGERACION_B11   = (180.0, 1.00) # banco sangre + morgue + farmacia + cocina 
 
 ---
 
-## B12 — EsSalud Hospital III Iquitos — 6 000 m2
+## B12 — Seguro Social de Salud EsSalud — 18 197.48 m2
 
 **Datos confirmados** (essalud.gob.pe + noticias): Av. La Marina Km 1.5, Punchana.
 Hospital referencial principal EsSalud Loreto. 600 consultas/dia. 11 camas UCI.
@@ -267,7 +267,7 @@ REFRIGERACION_B12   = (90.0, 1.00)  # banco sangre + farmacia + cocina (CRITICO)
 
 ---
 
-## B13 — Facultad Economia y Negocios UNAP (FACEN) — 3 000 m2
+## B13 — UNAP Facultad de Ciencias Economicas — 2 723 m2
 
 **Datos confirmados** (enlinea.unapiquitos.edu.pe): FACEN 51 aniversario 2025.
 Escuelas: Administracion, Contabilidad, Economia, Negocios Internacionales, Turismo.
@@ -283,7 +283,7 @@ SHIFTABLE_B13_KW    = 14.8   # 2 EV chargers (solo laboral)
 
 ---
 
-## B14 — Terminal Portuario ENAPU — 5 000 m2
+## B14 — Autoridad Portuaria Nacional Iquitos — 17 761 m2
 
 **Datos confirmados** (enapu.com.pe): Muelles flotantes 114m y 72m.
 Zonas 7A (9 450 m2) y 1 (8 500 m2). Almacenes 4, 6 y 7 (dep. aduanero).
@@ -302,7 +302,7 @@ SHORE_POWER_B14     = {'kw_per_vessel': 15.0, 'max_vessels': 4}
 
 ---
 
-## B15 — Colegio Nacional de Iquitos CNI — 2 500 m2
+## B15 — DREL Colegio Nacional de Iquitos — 9 889.92 m2
 
 **Datos confirmados** (MINEDU Identicole + guiadecolegios.info):
 2 326 alumnos, 70 secciones secundaria, turnos maniana-tarde.
@@ -322,7 +322,7 @@ Correccion documentada: AC 45 -> 48 kW (talleres confirmados por MINEDU Identico
 
 ---
 
-## B16 — I.E. San Juan (Educacion secundaria) — 6 500 m2
+## B16 — SIMA Iquitos S.R.Ltda (Industrial) — 10 294 m2
 
 **Datos confirmados** (iesanjuan.edu.pe + MINEDU Identicole): Escuela emblematica Iquitos.
 Programa Escuelas Bicentenario. Instalaciones confirmadas: SUM (Sala de Usos Multiples),
@@ -339,7 +339,7 @@ SHIFTABLE_B16_KW    = 51.54  # piscina + coliseo + comedor + calentador + 1 EV
 
 ---
 
-## B17 — IEST Publico "Pedro A. del Aguila Hidalgo" — 5 200 m2
+## B17 — Asociacion Civil Selva Amazonica — 1 611.23 m2
 
 **Datos confirmados** (logrosperu.com + deperu.com):
 Av. Mariscal Caceres 1459, Iquitos. Instituto publico superior tecnologico.
@@ -361,22 +361,22 @@ SHIFTABLE_B17_KW    = 26.3   # autoclave + secador agropecuaria + 2 EV medianos
 | # | Edificio | Area techada m2 | n_modulos (est) | kWp (est) |
 |---|---------|----------------|----------------|----------|
 | 1 | Electro Oriente | 14 000 | ~4 410 | ~2 117 |
-| 2 | Complejo Champios | 8 000 | ~2 520 | ~1 210 |
-| 3 | Aeropuerto IQT | 6 000 | ~1 890 | ~907 |
-| 4 | Hiperbodega Precio UNO | 2 500 | ~787 | ~378 |
-| 5 | Hotel El Dorado Plaza | 9 000 | ~2 835 | ~1 361 |
+| 2 | Municipalidad Distrital San Juan Bautista | 8 000 | ~2 520 | ~1 210 |
+| 3 | Aeropuerto Internacional de Iquitos | 6 000 | ~1 890 | ~907 |
+| 4 | Hipermercados Tottus Oriente | 2 500 | ~787 | ~378 |
+| 5 | Hotel Plaza S.A. | 1 141.89 | ~2 835 | ~1 361 |
 | 6 | Mall Aventura Iquitos | 20 637 | ~6 500 | ~3 120 |
-| 7 | UNAP Zungarococha | 8 300 | ~2 614 | ~1 255 |
+| 7 | UNAP Facultad de Biologia | 8 103.45 | ~2 614 | ~1 255 |
 | 8 | Escuela Tecnica PNP | 21 000 | ~6 615 | ~3 175 |
-| 9 | Complejo CNI | 3 500 | ~1 102 | ~529 |
+| 9 | Gobierno Regional Loreto COER | 4 479.67 | ~1 102 | ~529 |
 | 10 | Gobierno Regional | 5 000 | ~1 575 | ~756 |
 | 11 | Hospital Regional | 12 000 | ~3 780 | ~1 814 |
-| 12 | EsSalud Hospital III | 6 000 | ~1 890 | ~907 |
+| 12 | Seguro Social de Salud EsSalud | 18 197.48 | ~1 890 | ~907 |
 | 13 | Facultad Economia UNAP | 3 000 | ~945 | ~453 |
-| 14 | Terminal Portuario ENAPU | 5 000 | ~1 575 | ~756 |
-| 15 | Colegio Nacional CNI | 2 500 | ~787 | ~378 |
-| 16 | I.E. San Juan | 6 500 | ~2 047 | ~982 |
-| 17 | IEST Publico | 5 200 | ~1 638 | ~786 |
+| 14 | Autoridad Portuaria Nacional Iquitos | 17 761 | ~1 575 | ~756 |
+| 15 | DREL Colegio Nacional de Iquitos | 9 889.92 | ~787 | ~378 |
+| 16 | SIMA Iquitos S.R.Ltda | 10 294 | ~2 047 | ~982 |
+| 17 | Asociacion Civil Selva Amazonica | 5 200 | ~1 638 | ~786 |
 
 *Estimado con modulo tipo ~480 W, Area ~2.0 m2 -- valores exactos se calculan con Sandia SAPM*
 
@@ -389,11 +389,11 @@ Factor sizing: area_techada x 0.70 (area util excl. HVAC) x 0.90 (pasillos mante
 | # | Edificio | kWh/mes real | kWh/dia real | Dem. max kW | PV modulos estudio | PV kWp |
 |---|---------|-------------|-------------|------------|-------------------|--------|
 | 1 | Electro Oriente | 482 735 | 16 091 | n/d | 5 900 | 500 |
-| 7 | UNAP Zungarococha | 13 089 | 436 | 139 | 179 | 105 |
+| 7 | UNAP Facultad de Biologia | 13 089 | 436 | 139 | 179 | 105 |
 | 8 | Escuela PNP | 8 925 | 297 | 37 | 135 | 79 |
 | 10 | Gobierno Regional | 100 751 | 3 358 | 597 | 1 156 | 400 |
 | 11 | Hospital Regional | 299 141 | 9 971 | 809 | 2 650+2 070 | 500 |
-| 12 | EsSalud Hospital III | 192 207 | 6 407 | 540 | 2 332 | 400 |
+| 12 | Seguro Social de Salud EsSalud | 192 207 | 6 407 | 540 | 2 332 | 400 |
 | 13 | Facultad Economia | 12 367 | 412 | 78 | -- | 90 |
 | 14 | ENAPU | 29 203 | 973 | 96 | 324 | 190 |
 | 15 | Colegio CNI | 14 171 | 472 | 92 | 169 | 99 |
@@ -402,24 +402,27 @@ Fuente: Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx
 
 ---
 
-## Asignacion de Cargadores EV por Edificio (50 archivos charger)
+## Asignacion de Cargadores EV por Edificio (185 archivos charger)
 
-| # | Edificio | N cargadores | kW/cargador | Tipo EV | Archivos |
-|---|---------|-------------|------------|---------|---------|
-| 1 | Electro Oriente | 2 | 7.4 AC | EV mediano | charger_1_1, charger_1_2 |
-| 2 | Complejo Champios | 4 | 7.4 AC | EV mediano/ligero | charger_2_1..4 |
-| 3 | Aeropuerto IQT | 4 | 22.0 DC fast | EV pesado + GSE | charger_3_1..4 |
-| 4 | Hiperbodega Precio UNO | 3 | 7.4 AC | EV mediano | charger_4_1..3 |
-| 5 | Hotel El Dorado Plaza | 3 | 11.0 AC | EV mediano | charger_5_1..3 |
-| 6 | Mall Aventura | 8 | 22.0 DC fast | EV mediano/pesado | charger_6_1..8 |
-| 7 | UNAP Zungarococha | 3 | 7.4 AC | EV mediano | charger_7_1..3 |
-| 8 | Escuela PNP | 2 | 7.4 AC | EV mediano | charger_8_1, charger_8_2 |
-| 9 | Complejo CNI | 2 | 3.3 AC | EV ligero | charger_9_1, charger_9_2 |
-| 10 | Gobierno Regional | 3 | 7.4 AC | EV mediano | charger_10_1..3 |
-| 11 | Hospital Regional | 4 | 11.0 AC + 1x22 kW | EV mediano + ambulancia | charger_11_1..4 |
-| 12 | EsSalud | 3 | 7.4 AC | EV mediano | charger_12_1..3 |
-| 13 | Facultad Economia | 2 | 7.4 AC | EV mediano | charger_13_1, charger_13_2 |
-| 14 | ENAPU | 2 | 11.0 AC | EV mediano + carga | charger_14_1, charger_14_2 |
-| 15 | Colegio CNI | 2 | 3.3 AC | EV ligero | charger_15_1, charger_15_2 |
-| 16 | I.E. San Juan | 1 | 3.3 AC | EV ligero | charger_16_1 |
-| 17 | IEST Publico | 2 | 7.4 AC | EV ligero/mediano | charger_17_1, charger_17_2 |
+Dimensionamiento vigente: `tools/dimension_ev_chargers.py`, auditado en `outputs/dataset_audit/ev_charger_sizing_audit.csv`. El schema activo contiene 185 tomas EV controlables, 96 equipos fisicos modo 3, 192 sockets y 749.4 kW instalados.
+
+| B# | Edificio | Tomas EV | Equipos fisicos modo 3 | Sockets modo 3 | kW |
+|---|---|---:|---:|---:|---:|
+| B01 | Electro Oriente S.A. | 4 | 2 | 4 | 21.8 |
+| B02 | Municipalidad Distrital San Juan Bautista | 6 | 3 | 6 | 24.4 |
+| B03 | Aeropuerto Internacional de Iquitos | 8 | 4 | 8 | 37.8 |
+| B04 | Hipermercados Tottus Oriente | 6 | 3 | 6 | 24.4 |
+| B05 | Hotel Plaza S.A. | 3 | 2 | 4 | 14.4 |
+| B06 | Mall Aventura Iquitos | 32 | 16 | 32 | 119.6 |
+| B07 | UNAP Facultad de Biologia | 42 | 21 | 42 | 153.2 |
+| B08 | PNP Escuela Tecnica Superior Iquitos | 17 | 9 | 18 | 73.6 |
+| B09 | Gobierno Regional Loreto COER | 10 | 5 | 10 | 37.4 |
+| B10 | Gobierno Regional de Loreto | 6 | 3 | 6 | 36.6 |
+| B11 | Hospital Regional de Loreto | 3 | 2 | 4 | 14.4 |
+| B12 | Seguro Social de Salud EsSalud | 3 | 2 | 4 | 14.4 |
+| B13 | UNAP Facultad de Ciencias Economicas | 11 | 6 | 12 | 41.4 |
+| B14 | Autoridad Portuaria Nacional Iquitos | 4 | 2 | 4 | 21.8 |
+| B15 | DREL Colegio Nacional de Iquitos | 8 | 4 | 8 | 31.4 |
+| B16 | SIMA Iquitos S.R.Ltda | 11 | 6 | 12 | 41.4 |
+| B17 | Asociacion Civil Selva Amazonica | 11 | 6 | 12 | 41.4 |
+| **Total** | | **185** | **96** | **192** | **749.4** |

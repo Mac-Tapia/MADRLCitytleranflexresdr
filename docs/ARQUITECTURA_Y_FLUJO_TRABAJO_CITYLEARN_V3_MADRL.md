@@ -4,6 +4,8 @@ Proyecto: **Multi-agente de aprendizaje por refuerzo profundo para gestion coord
 
 Este documento describe la arquitectura **real implementada** en el repositorio actual. No representa una arquitectura conceptual independiente: cada bloque apunta a rutas, scripts, backends, salidas y flujos existentes en el proyecto.
 
+Fuente operativa vigente: `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`. En comandos y diagramas, `<OutputRoot>` significa la ruta registrada en `outputs/latest_visible_training_output_root.txt`.
+
 ## 0. Plano maestro de seguimiento del proyecto
 
 Este plano es la lectura principal del proyecto. Se sigue de izquierda a derecha: empieza en el problema de tesis y el dataset, pasa por CityLearn v2, la capa CityLearn v3, los cuatro MADRL, los tres ejes, los artefactos de entrenamiento, la evaluacion, el benchmark CityLearn v2 y termina en los resultados comparativos para la tesis.
@@ -86,10 +88,10 @@ flowchart LR
 | 7 | 4 MADRL | `CityLearn/scripts/train_citylearn_v3_*.py` | HAPPO, MASAC, MATD3 y MAAC conectados. |
 | 8 | Launcher ALL | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | 12 corridas secuenciales: E1/E2/E3 x 4 MADRL. |
 | 9 | Monitor vivo | `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1` | GPU, `global_step`, rewards, pesos reward, costo, CO2 y estado por job. |
-| 10 | Artefactos | `outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1/{madrl}/{E*_seed_0}` | Checkpoints, JSON, CSV, figuras y tablas. |
+| 10 | Artefactos | `<OutputRoot>/{madrl}/{E*_seed_0}` | Checkpoints, JSON, CSV, figuras y tablas. |
 | 11 | Benchmark v2 | `CityLearn/scripts/benchmark_citylearn_v2_agents.py` | Linea base con agentes CityLearn v2. |
 | 12 | Comparador | `CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py` | Delta, mejora porcentual y ranking v2 vs v3. |
-| 13 | Fin | `docs/`, `outputs/citylearn_v2_vs_v3_comparison` | Evidencia final para tesis. |
+| 13 | Fin | `docs/`, `outputs/comparison_citylearn_v2_vs_v3_madrl` | Evidencia final para tesis. |
 
 ## 1. Lectura del proyecto de inicio a fin
 
@@ -140,7 +142,7 @@ flowchart TB
     subgraph RUN["Ejecucion oficial"]
         LAUNCH["launch_citylearn_v3_official_training.ps1<br/>-Scenario ALL -Episodes 5 -Cuda"]
         MON["monitor_citylearn_v3_official_training.ps1<br/>GPU, job, global_step, reward, costo, CO2"]
-        OUT["outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1<br/>{madrl}/{E*_seed_0}"]
+        OUT["<OutputRoot><br/>{madrl}/{E*_seed_0}"]
     end
 
     DS --> V2 --> ENV
@@ -255,8 +257,9 @@ powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_o
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
   -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
-  -TorchThreads 12 `
+  -OutputRoot <OutputRoot> `
+  -TorchThreads 8 `
+  -GpuProfile local4060_fast `
   -LiveProgressInterval 250 `
   -LiveOutput `
   -Cuda
@@ -281,7 +284,7 @@ Monitor visual:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 `
-  -OutputRoot outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
+  -OutputRoot <OutputRoot> `
   -IntervalSeconds 5 `
   -LogTail 20
 ```
@@ -318,7 +321,7 @@ Comando:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
-  --output outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1\cooperative_ctde_validation.json
+  --output outputs\validation\cooperative_ctde_validation.json
 ```
 
 Condiciones verificadas:
@@ -333,7 +336,7 @@ Condiciones verificadas:
 Salida:
 
 ```text
-outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1/cooperative_ctde_validation.json
+outputs/validation/cooperative_ctde_validation.json
 ```
 
 ## 10. Matriz oficial de ejecuciones
@@ -349,7 +352,7 @@ El launcher ejecuta secuencialmente 12 trabajos:
 ## 11. Estructura de salida esperada
 
 ```text
-outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1/
+<OutputRoot>/
   official_full_status.json
   official_full_manifest.json
   logs/
@@ -395,7 +398,7 @@ El cierre del proyecto no termina al entrenar. El flujo final usa los resultados
 
 ```mermaid
 flowchart LR
-    V3["Resultados CityLearn v3 MADRL<br/>outputs/citylearn_v3_madrl_iquitos_official_full_cuda_v1"]
+    V3["Resultados CityLearn v3 MADRL<br/><OutputRoot>"]
     V2["Benchmark CityLearn v2<br/>benchmark_citylearn_v2_agents.py"]
     CMP["Comparador maestro<br/>compare_citylearn_v2_vs_v3_madrl.py"]
     REP["Salidas finales<br/>comparison_summary.json<br/>figuras, tablas, ranking"]
@@ -411,14 +414,14 @@ Comandos base:
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\benchmark_citylearn_v2_agents.py `
   --scenario ALL `
-  --output-dir outputs\citylearn_v2_benchmark
+  --output-dir outputs\citylearn_v2_original_benchmark
 ```
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
-  --v2-root outputs\citylearn_v2_benchmark `
-  --v3-root outputs\citylearn_v3_madrl_iquitos_official_full_cuda_v1 `
-  --output-dir outputs\citylearn_v2_vs_v3_comparison
+  --v2-root outputs\citylearn_v2_original_benchmark `
+  --v3-root <OutputRoot> `
+  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl
 ```
 
 ## 14. Trazabilidad cientifica

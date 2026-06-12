@@ -13,7 +13,7 @@ Include:
 7. Datasets y fuentes.
 8. Configuración de hiperparámetros.
 9. Recompensa multiobjetivo.
-10. Resultados de simulación o resultados esperados.
+10. Resultados de simulación vigentes o pendientes.
 11. Evidencias de GitHub.
 12. Glosario MADRL.
 13. Cadenas de búsqueda.
@@ -119,4 +119,3 @@ MADRL:
 - Método: modelamiento, simulación, comparación de algoritmos y análisis de indicadores.
 - Técnica: análisis documental, simulación computacional, evaluación de KPIs y comparación multicriterio.
 - Instrumentos: matriz bibliográfica, entorno CityLearn v2, datasets, scripts de entrenamiento MADRL, matriz de KPIs, matriz de resultados.
-

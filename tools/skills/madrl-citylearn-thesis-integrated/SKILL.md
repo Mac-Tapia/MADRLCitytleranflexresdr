@@ -46,6 +46,15 @@ Create one integrated academic workflow that:
 - Mark incomplete source data as `dato bibliografico pendiente de verificacion`.
 - Mark unconfirmed results as `resultado no verificado` and do not use them as conclusive evidence.
 
+## Guide N. 02 Structure Rule
+
+- The final thesis report must preserve the exact Guide N. 02 section 5.1 structure defined in [module-b-thesis-report.md](references/module-b-thesis-report.md). The Guide N. 02 is only the report structure, not a source of experimental data.
+- Do not replace, remove, rename, or reorder the required front matter, chapters, subsections, references, or annexes.
+- Use only current project evidence from this repository for dataset, BESS/PV/EV, training, KPI, statistical, and GPU content.
+- Do not use historical, copied, external, or non-current data as thesis evidence. Tables, results, conclusions, and discussion must be based only on active current project sources.
+- Current project evidence must be inserted inside the corresponding Guide N. 02 sections, mainly Chapter III, without creating an alternative report structure.
+- If current results are incomplete, keep the Guide N. 02 structure and mark the missing values as pending, in progress, or not verified. Do not fill gaps with non-current values.
+
 ## Operating Workflow
 
 1. Read this `SKILL.md`.
@@ -55,7 +64,22 @@ Create one integrated academic workflow that:
 5. For consistency and operationalization matrices, use [matrices-and-appendices.md](references/matrices-and-appendices.md).
 6. Use `scripts/create_integrated_thesis_workbook.py` to create a workbook template when requested.
 7. Use `scripts/create_thesis_docx_skeleton.py` to create a DOCX thesis skeleton when requested.
-8. Use project evidence when available: README, `ESTRATEGIA_3PILARES_MADRL.md`, `docs/`, `CityLearn/configs/`, training outputs, benchmark scripts, and validation scripts.
+8. Use `scripts/create_available_thesis_report.py` to create a Guide N. 02 DOCX/Markdown draft from current project evidence only; final KPIs must remain pending when training artifacts are incomplete.
+9. Use project evidence when available:
+   - `README.md`, `docs/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md`
+   - `CityLearn/configs/citylearn_v3_madrl_training.yaml`
+   - Training v4 activo tras reinicio limpio: `outputs/citylearn_v3_madrl_oficial_v4/`
+     - Estado oficial: `official_full_status.json`
+     - Progreso vivo por corrida: `{algo}/{scenario}_seed_0/live_progress.json`
+     - Resultados finales por corrida, solo cuando existan tras completar el entrenamiento nuevo: `{algo}/{scenario}_seed_0/data/results.json`
+     - Series y trazas finales por corrida: `{algo}/{scenario}_seed_0/data/timeseries.csv`, `{algo}/{scenario}_seed_0/data/trace.csv`
+     - Comparación estadística final: `statistical_comparison/result_{algo}_{scenario}.json`, `timeseries_{algo}_{scenario}.csv`, `trace_{algo}_{scenario}.csv`
+     - Preflight de artefactos: `artifact_layout_preflight.json`
+   - Auditorías de dataset: `outputs/dataset_audit/` (`csv_integrity_manifest.json`, `training_dataset_ready_manifest.json`, `der_sizing_audit.csv`, `ev_charger_sizing_audit.csv`)
+   - Validación: `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md`
+   - Dimensiones del entorno: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`
+
+> **Vigencia:** Training oficial v4 relanzado desde cero el 2026-06-08 20:14:44 UTC-5 con CUDA=True, PyTorch 2.8.0+cu126 y perfil `local4060_fast` para NVIDIA GeForce RTX 4060 Laptop GPU 8 GB. Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios SEAI Iquitos, 26 304 h, 222 CSV auditados, 185 cargadores EV en schema, 96 equipos físicos modo 3, 17 máquinas controladas, `weather.csv`, `carbon_intensity.csv` y `pricing.csv` referenciados por los 17 edificios). Auditoría integral: 0 NaN, 0 Inf, sin cargadores/máquinas huérfanos ni faltantes; normalización permitida. Totales DER vigentes: PV 48 790.9 kWp; BESS 26 266 kWh / 6 648 kW; EV 749.4 kW. Regla implementada en el dataset: la generación solar prioriza recarga EV y carga del edificio por edificio; el BESS se dimensiona por balance PV-EV-red pública-cargas controladas/no controladas, prioriza recarga EV dentro de la ventana operativa del edificio y luego atiende carga del edificio/pico. Salida activa: `outputs/citylearn_v3_madrl_oficial_v4/`. Última actualización del skill: 2026-06-09.
 
 ## Required Final Products
 
@@ -76,4 +100,5 @@ Create one integrated academic workflow that:
 - Variable operationalization matrix.
 - Table of APA citations used.
 - Final quality-control checklist.
-
+- Tabla de resultados por KPI y algoritmo con datos reales de training v4 (cuando estén disponibles; no inventar).
+- Nota metodológica de las 4 pruebas estadísticas inter-algoritmo (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon) sobre los artefactos `statistical_comparison/`.

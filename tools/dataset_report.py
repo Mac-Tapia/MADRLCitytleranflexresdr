@@ -9,11 +9,6 @@ import numpy as np
 import json
 from pathlib import Path
 
-try:
-    from generate_iquitos_dataset import EV_CONFIG
-except Exception:  # pragma: no cover - report remains useful without generator imports.
-    EV_CONFIG = {}
-
 BASE = Path("CityLearn/data/datasets/citylearn_iquitos_2023_2025")
 BUILDINGCSV = Path("CityLearn/data/buildingcsv/building.csv")
 DISTILLATION_REPORT = Path("tools/dataset_docs/distillation_report.csv")
@@ -22,12 +17,12 @@ EXPECTED_ROWS = 26304
 PEAK_HOURS = {18, 19, 20, 21, 22}
 
 DEFAULT_NAMES = {
-    1:'Electro Oriente S.A.',   2:'Complejo Champios',      3:'Aeropuerto IQT',
-    4:'Hiperbodega Precio UNO', 5:'Hotel El Dorado Plaza',  6:'Mall Aventura Iquitos',
+    1:'Electro Oriente S.A.',   2:'Municipalidad San Juan Bautista',      3:'Aeropuerto IQT',
+    4:'Tottus Oriente Precio UNO', 5:'Hotel El Dorado Plaza',  6:'Mall Aventura Iquitos',
     7:'UNAP Zungarococha',      8:'Escuela Tecnica PNP',    9:'Complejo CNI',
     10:'Gobierno Regional',     11:'Hospital Regional',     12:'EsSalud Hospital III',
     13:'Fac. Economia UNAP',    14:'Terminal ENAPU',        15:'Colegio CNI',
-    16:'I.E. San Juan',         17:'IEST Pedro del Aguila',
+    16:'SIMA Iquitos',         17:'Asociacion Civil Selva Amazonica',
 }
 
 
@@ -79,8 +74,10 @@ print("=" * 100)
 print(f"  Total filas por edificio: 26 304 (8760 + 8784 + 8760)")
 print(f"  Columnas por edificio: 12")
 print(f"  Total edificios: 17")
+charger_count = len(list(BASE.glob("charger_*.csv")))
+machine_count = len(list(BASE.glob("Washing_Machine_*.csv")))
 print(f"  Total archivos: weather.csv + carbon_intensity.csv + pricing.csv +")
-print(f"                  50 charger_X_Y.csv + Washing_Machine_1.csv + schema.json")
+print(f"                  {charger_count} charger_X_Y.csv + {machine_count} Washing_Machine_X.csv + schema.json")
 
 print()
 print("ESTADO DE COLUMNAS POR EDIFICIO")

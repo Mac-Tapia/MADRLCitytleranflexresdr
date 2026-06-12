@@ -63,10 +63,10 @@ Verifica que `.cache/weather/2023.parquet`, `2024.parquet`, `2025.parquet` se ge
 ### Paso 3 -- Generacion completa del dataset
 
 ```bash
-python tools/generate_iquitos_dataset.py
+python tools/orchestrate_citylearn_dataset.py
 ```
 
-Genera los 72 archivos en `CityLearn/data/datasets/citylearn_iquitos_2023_2025/`.
+Genera, sincroniza y audita el dataset activo en `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` con 222 CSV vigentes.
 
 ### Paso 4 -- Validacion con CityLearnEnv
 
@@ -87,7 +87,7 @@ Cuando el usuario provea datos reales adicionales:
 2. Regenerar solo los edificios afectados: `--buildings X Y Z`
 3. Re-validar con CityLearnEnv
 
-## Archivos Generados (72 total)
+## Archivos Generados Vigentes
 
 | Tipo | Cantidad | Columnas | Filas | Notas |
 |------|----------|----------|-------|-------|
@@ -95,15 +95,18 @@ Cuando el usuario provea datos reales adicionales:
 | weather.csv | 1 | 16 | 26 304 | PVGIS-ERA5 + NASA POWER |
 | carbon_intensity.csv | 1 | 1 | 26 304 | 0.672-0.790 kg CO2/kWh |
 | pricing.csv | 1 | 4 | 26 304 | OSINERGMIN MT3/MT4 TOU |
-| charger_X_Y.csv | 50 | 6 | 26 304 | estocastico, seed determinista |
-| Washing_Machine_1.csv | 1 | 5 | 26 304 | solo B1 ELOR |
+| charger_X_Y.csv | 185 | 6 | 26 304 | EV v3 por edificio, auditado |
+| Washing_Machine_X.csv | 17 | 5 | 26 304 | una maquina controlada por edificio |
 | schema.json | 1 | -- | -- | 17 edificios + BESS + PV + EV |
 | carbon_intensity_metadata.json | 1 | -- | -- | fuentes MINAM/RAGEI |
 
 ## Script -- Referencia Rapida CLI
 
 ```bash
-# Dataset completo:
+# Dataset completo sincronizado:
+python tools/orchestrate_citylearn_dataset.py
+
+# Generador base:
 python tools/generate_iquitos_dataset.py
 
 # Solo edificios seleccionados:
@@ -123,23 +126,23 @@ python tools/generate_iquitos_dataset.py --output-dir ruta/al/directorio
 
 ```python
 MADRL_BUILDING_CONSTANTS = {
-    1:  {'name': 'Electro Oriente S.A.',         'non_shiftable_base': 17.7,  'cooling_peak': 126.86, 'shiftable': 14.8,  'bldg_type': 'industrial',    'area_techada_m2': 14000},
-    2:  {'name': 'Complejo Champios',             'non_shiftable_base': 3.76,  'cooling_peak': 29.0,   'shiftable': 35.6,  'bldg_type': 'deportivo',     'area_techada_m2': 8000},
-    3:  {'name': 'Aeropuerto IQT',                'non_shiftable_base': 55.3,  'cooling_peak': 67.0,   'shiftable': 95.0,  'bldg_type': 'transporte_24h','area_techada_m2': 6000},
-    4:  {'name': 'Hiperbodega Precio UNO',        'non_shiftable_base': 14.8,  'cooling_peak': 29.5,   'shiftable': 22.2,  'bldg_type': 'mall',          'area_techada_m2': 2500},
-    5:  {'name': 'Hotel El Dorado Plaza',         'non_shiftable_base': 5.4,   'cooling_peak': 150.5,  'shiftable': 99.0,  'bldg_type': 'hotelero_24h',  'area_techada_m2': 9000},
-    6:  {'name': 'Mall Aventura Iquitos',         'non_shiftable_base': 78.5,  'cooling_peak': 850.0,  'shiftable': 176.0, 'bldg_type': 'mall',          'area_techada_m2': 20637},
-    7:  {'name': 'UNAP Zungarococha',             'non_shiftable_base': 9.5,   'cooling_peak': 167.0,  'shiftable': 39.2,  'bldg_type': 'universitario', 'area_techada_m2': 8300},
-    8:  {'name': 'Escuela Tecnica PNP',           'non_shiftable_base': 6.9,   'cooling_peak': 222.0,  'shiftable': 99.3,  'bldg_type': 'educacion',     'area_techada_m2': 21000},
-    9:  {'name': 'Complejo CNI',                  'non_shiftable_base': 2.18,  'cooling_peak': 19.5,   'shiftable': 10.7,  'bldg_type': 'deportivo',     'area_techada_m2': 3500},
-    10: {'name': 'Gobierno Regional Loreto',      'non_shiftable_base': 12.43, 'cooling_peak': 117.5,  'shiftable': 22.2,  'bldg_type': 'administrativo','area_techada_m2': 5000},
-    11: {'name': 'Hospital Regional Loreto',      'non_shiftable_base': 195.0, 'cooling_peak': 366.6,  'shiftable': 73.0,  'bldg_type': 'salud_24h',     'area_techada_m2': 12000},
-    12: {'name': 'EsSalud Hospital III',          'non_shiftable_base': 125.0, 'cooling_peak': 222.0,  'shiftable': 34.5,  'bldg_type': 'salud_24h',     'area_techada_m2': 6000},
-    13: {'name': 'Facultad Economia UNAP',        'non_shiftable_base': 1.75,  'cooling_peak': 62.5,   'shiftable': 14.8,  'bldg_type': 'universitario', 'area_techada_m2': 3000},
-    14: {'name': 'Terminal Portuario ENAPU',      'non_shiftable_base': 15.7,  'cooling_peak': 49.5,   'shiftable': 47.0,  'bldg_type': 'portuario_24h', 'area_techada_m2': 5000},
-    15: {'name': 'Colegio Nacional CNI',          'non_shiftable_base': 2.76,  'cooling_peak': 48.0,   'shiftable': 22.2,  'bldg_type': 'educacion',     'area_techada_m2': 2500},
-    16: {'name': 'I.E. San Juan',                 'non_shiftable_base': 4.55,  'cooling_peak': 100.0,  'shiftable': 51.54, 'bldg_type': 'educacion',     'area_techada_m2': 6500},
-    17: {'name': 'IEST Pedro del Aguila Hidalgo', 'non_shiftable_base': 4.2,   'cooling_peak': 93.0,   'shiftable': 26.3,  'bldg_type': 'educacion',     'area_techada_m2': 5200},
+    1:  {'name': 'Electro Oriente S.A.',                    'non_shiftable_base': 17.7,   'cooling_peak': 175.0,  'shiftable': 14.8,  'bldg_type': 'industrial',       'area_techada_m2': 14000.00},
+    2:  {'name': 'Municipalidad Distrital San Juan Bautista','non_shiftable_base': 2.15,   'cooling_peak': 140.0,  'shiftable': 35.6,  'bldg_type': 'administrativo',   'area_techada_m2': 8000.00},
+    3:  {'name': 'Aeropuerto Internacional de Iquitos',      'non_shiftable_base': 62.5,   'cooling_peak': 465.0,  'shiftable': 95.0,  'bldg_type': 'transporte_24h',   'area_techada_m2': 6000.00},
+    4:  {'name': 'Hipermercados Tottus Oriente',             'non_shiftable_base': 78.2,   'cooling_peak': 350.0,  'shiftable': 22.2,  'bldg_type': 'mall',             'area_techada_m2': 2500.00},
+    5:  {'name': 'Hotel Plaza S.A.',                         'non_shiftable_base': 54.9,   'cooling_peak': 157.5,  'shiftable': 99.0,  'bldg_type': 'hotelero_24h',     'area_techada_m2': 1141.89},
+    6:  {'name': 'Mall Aventura Iquitos',                    'non_shiftable_base': 691.2,  'cooling_peak': 1800.0, 'shiftable': 176.0, 'bldg_type': 'mall',             'area_techada_m2': 20637.00},
+    7:  {'name': 'UNAP Facultad de Biologia',                'non_shiftable_base': 7.45,   'cooling_peak': 59.5,   'shiftable': 39.2,  'bldg_type': 'universitario',    'area_techada_m2': 8103.45},
+    8:  {'name': 'PNP Escuela Tecnica Superior Iquitos',     'non_shiftable_base': 3.62,   'cooling_peak': 105.0,  'shiftable': 99.3,  'bldg_type': 'educacion',        'area_techada_m2': 21000.00},
+    9:  {'name': 'Gobierno Regional Loreto COER',            'non_shiftable_base': 2.86,   'cooling_peak': 150.0,  'shiftable': 12.1,  'bldg_type': 'transporte_24h',   'area_techada_m2': 4479.67},
+    10: {'name': 'Gobierno Regional de Loreto',              'non_shiftable_base': 70.8,   'cooling_peak': 287.0,  'shiftable': 22.2,  'bldg_type': 'administrativo',   'area_techada_m2': 14295.73},
+    11: {'name': 'Hospital Regional de Loreto',              'non_shiftable_base': 53.4,   'cooling_peak': 1000.0, 'shiftable': 73.0,  'bldg_type': 'salud_24h',        'area_techada_m2': 42649.33},
+    12: {'name': 'Seguro Social de Salud EsSalud',           'non_shiftable_base': 133.3,  'cooling_peak': 427.5,  'shiftable': 34.5,  'bldg_type': 'salud_24h',        'area_techada_m2': 18197.48},
+    13: {'name': 'UNAP Facultad de Ciencias Economicas',     'non_shiftable_base': 2.45,   'cooling_peak': 45.5,   'shiftable': 14.8,  'bldg_type': 'universitario',    'area_techada_m2': 2723.00},
+    14: {'name': 'Autoridad Portuaria Nacional Iquitos',     'non_shiftable_base': 2.59,   'cooling_peak': 77.0,   'shiftable': 47.0,  'bldg_type': 'portuario_24h',    'area_techada_m2': 17761.00},
+    15: {'name': 'DREL Colegio Nacional de Iquitos',         'non_shiftable_base': 5.94,   'cooling_peak': 35.0,   'shiftable': 23.4,  'bldg_type': 'educacion',        'area_techada_m2': 9889.92},
+    16: {'name': 'SIMA Iquitos S.R.Ltda',                   'non_shiftable_base': 35.8,   'cooling_peak': 237.5,  'shiftable': 51.24, 'bldg_type': 'industrial',       'area_techada_m2': 10294.00},
+    17: {'name': 'Asociacion Civil Selva Amazonica',         'non_shiftable_base': 22.3,   'cooling_peak': 206.0,  'shiftable': 26.3,  'bldg_type': 'salud_24h',        'area_techada_m2': 1611.23},
 }
 ```
 
@@ -149,8 +152,8 @@ MADRL_BUILDING_CONSTANTS = {
 # Refrigeracion comercial (kW base electrico, factor nocturno 00-05h)
 REFRIGERACION_COMERCIAL = {
     3:  (30.0,  0.70),   # Aeropuerto -- catering + carga fria
-    4:  (12.0,  0.85),   # Hiperbodega Precio UNO -- frescos + bebidas
-    5:  (18.0,  0.90),   # Hotel El Dorado -- cocina + bar + frigobar
+    4:  (12.0,  0.85),   # Hipermercados Tottus Oriente -- frescos + bebidas
+    5:  (18.0,  0.90),   # Hotel Plaza S.A. -- cocina + bar + frigobar
     6:  (515.0, 0.85),   # Mall Aventura -- Tottus + food court
     11: (180.0, 1.00),   # Hospital Regional -- banco sangre + morgue (CRITICO)
     12: (90.0,  1.00),   # EsSalud -- banco sangre + farmacia (CRITICO)
@@ -212,11 +215,11 @@ BESS_TARGET_SS = 0.70   # target autoabastecimiento 70%
 | # | Edificio | kWh/mes real | kWh/dia real | Demanda max kW |
 |---|---------|-------------|-------------|----------------|
 | 1 | Electro Oriente | 482 735 | 16 091 | n/d |
-| 7 | UNAP Zungarococha | 13 089 | 436 | 139 |
+| 7 | UNAP Facultad de Biologia | 13 089 | 436 | 139 |
 | 8 | Escuela PNP | 8 925 | 297 | 37 |
 | 10 | Gobierno Regional | 100 751 | 3 358 | 597 |
 | 11 | Hospital Regional | 299 141 | 9 971 | 809 |
-| 12 | EsSalud Hospital III | 192 207 | 6 407 | 540 |
+| 12 | Seguro Social de Salud EsSalud | 192 207 | 6 407 | 540 |
 | 13 | Facultad Economia | 12 367 | 412 | 78 |
 | 14 | ENAPU | 29 203 | 973 | 96 |
 | 15 | Colegio CNI | 14 171 | 472 | 92 |

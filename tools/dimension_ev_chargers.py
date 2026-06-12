@@ -17,7 +17,7 @@ METODOLOGÍA: Peak Demand Factor (PDF) + Ley de Little (M/G/c queuing)
               IEC 61851-1 (2019). Electric vehicle conductive charging system — Part 1.
               OSINERGMIN (2022). Guía Técnica Infraestructura de Carga VE Perú.
 
-TIPOS DE EV VERIFICADOS (red/web 2026-05-17):
+TIPOS DE EV VERIFICADOS (auditoria vigente):
   moto_lineal: Honda PCX Electric / Kymco Ionex / Sunra / Yadea → 3.0 kW AC, 4.0 kWh
   mototaxi:   trimotos eléctricas amazónicas 60V 75Ah LiFePO4   → 4.0 kW AC, 6.0 kWh
   camioneta:  BYD T3=6.6kW, Maxus eDeliver=7.4kW → usado 7.4 kW (estándar LatAm L2)
@@ -570,16 +570,16 @@ def generate_charger_csv(bldg_id, charger_idx, ev_type, bldg_type, seed):
             req_soc[pos] = soc_r
             arr_soc[pos] = soc_a
 
-        # Marcar state=2 (1h antes de la sesión)
+        # Marcar state=2 (1h antes de la sesión). Si la llegada cae al inicio
+        # del día, la fila previa real es la última hora del día anterior.
         pre_h = arr_h - 1
-        if pre_h >= 0:
-            ts_pre = dt + pd.Timedelta(hours=pre_h)
-            pos_pre = _find_row(ts_pre)
-            if pos_pre is not None and pos_pre < n_rows and state[pos_pre] == 3:
-                state[pos_pre]   = 2
-                ev_id[pos_pre]   = ev_name
-                arr_eta[pos_pre] = float(arr_h)
-                arr_soc[pos_pre] = soc_a
+        ts_pre = dt + pd.Timedelta(hours=pre_h) if pre_h >= 0 else dt - pd.Timedelta(hours=1)
+        pos_pre = _find_row(ts_pre)
+        if pos_pre is not None and 0 <= pos_pre < n_rows and state[pos_pre] == 3:
+            state[pos_pre]   = 2
+            ev_id[pos_pre]   = ev_name
+            arr_eta[pos_pre] = float(arr_h)
+            arr_soc[pos_pre] = soc_a
 
     return pd.DataFrame({
         'electric_vehicle_charger_state':          state,

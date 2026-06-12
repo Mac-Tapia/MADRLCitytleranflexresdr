@@ -325,11 +325,13 @@ class IquitosDatasetPipeline:
                     DatasetValidator.validate_building_csv()
                     -> Building_{bldg_id}.csv
 
-        Etapa 6  -- Generacion charger_X_Y.csv [tqdm 50 iter]
+        Etapa 6  -- Generacion charger_X_Y.csv base
                     SupportFilesGenerator.build_charger_csv()
                     -> charger_{bldg_id}_{i}.csv
+                    Luego la orquestacion ejecuta dimension_ev_chargers.py
+                    para producir los 185 charger vigentes.
 
-        Etapa 7  -- Washing_Machine_1.csv (solo B1)
+        Etapa 7  -- Washing_Machine_X.csv por edificio
 
         Etapa 8  -- Archivos meteorologicos y de red
                     weather.csv (16 cols)
@@ -340,7 +342,7 @@ class IquitosDatasetPipeline:
 
         Etapa 10 -- Validacion final con CityLearnEnv
                     DatasetValidator.validate_with_citylearn(schema_path)
-                    -> imprime resumen: 72 archivos generados"""
+                    -> imprime resumen del dataset sincronizado"""
 ```
 
 ---
@@ -360,7 +362,7 @@ Opciones:
 
 ---
 
-## Archivos de Salida (72 total)
+## Archivos de Salida Vigentes
 
 ```
 CityLearn/data/datasets/citylearn_iquitos_2023_2025/
@@ -368,28 +370,12 @@ CityLearn/data/datasets/citylearn_iquitos_2023_2025/
 +-- weather.csv                                   (16 cols, 26 304 filas)
 +-- carbon_intensity.csv                          (1 col, 26 304 filas)
 +-- pricing.csv                                   (4 cols, 26 304 filas)
-+-- charger_1_1.csv  charger_1_2.csv             (B1: 2)
-+-- charger_2_1.csv  ... charger_2_4.csv          (B2: 4)
-+-- charger_3_1.csv  ... charger_3_4.csv          (B3: 4)
-+-- charger_4_1.csv  ... charger_4_3.csv          (B4: 3)
-+-- charger_5_1.csv  ... charger_5_3.csv          (B5: 3)
-+-- charger_6_1.csv  ... charger_6_8.csv          (B6: 8)
-+-- charger_7_1.csv  ... charger_7_3.csv          (B7: 3)
-+-- charger_8_1.csv  charger_8_2.csv              (B8: 2)
-+-- charger_9_1.csv  charger_9_2.csv              (B9: 2)
-+-- charger_10_1.csv ... charger_10_3.csv          (B10: 3)
-+-- charger_11_1.csv ... charger_11_4.csv          (B11: 4)
-+-- charger_12_1.csv ... charger_12_3.csv          (B12: 3)
-+-- charger_13_1.csv charger_13_2.csv              (B13: 2)
-+-- charger_14_1.csv charger_14_2.csv              (B14: 2)
-+-- charger_15_1.csv charger_15_2.csv              (B15: 2)
-+-- charger_16_1.csv                               (B16: 1)
-+-- charger_17_1.csv charger_17_2.csv              (B17: 2)
-+-- Washing_Machine_1.csv                          (solo B1, 5 cols)
++-- charger_*.csv                                  (185 archivos, 6 cols, 26 304 filas)
++-- Washing_Machine_*.csv                          (17 archivos, 5 cols, 26 304 filas)
 +-- schema.json                                    (17 edificios + BESS + PV + EV)
 +-- carbon_intensity_metadata.json                 (trazabilidad MINAM/RAGEI)
 ---
-  72 archivos totales
+  222 CSV auditados sin NaN/Inf
 ```
 
 ---
@@ -420,16 +406,17 @@ python tools/generate_iquitos_dataset.py
   |     +- DatasetValidator.validate_building_csv() -- falla = STOP
   |     -> Building_{N}.csv
   |
-  +-> [Etapa 6] charger_X_Y.csv x 50 [tqdm 50/50]
+  +-> [Etapa 6] charger_X_Y.csv base
+  +-> [Sync EV] dimension_ev_chargers.py -> 185 charger_X_Y.csv
   |
-  +-> [Etapa 7] Washing_Machine_1.csv (B1 ELOR)
+  +-> [Etapa 7] Washing_Machine_X.csv x 17
   |
   +-> [Etapa 8] weather + carbon_intensity + pricing
   |
   +-> [Etapa 9] schema.json
   |
   +-> [Etapa 10] Validacion CityLearnEnv
-        -> "72 archivos generados. CityLearnEnv cargado sin errores."
+        -> dataset sincronizado y validado sin NaN/Inf
 ```
 
 ---

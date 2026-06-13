@@ -24,7 +24,8 @@
       "training_dataset_validation.json",
       "der_sizing_audit.json",
       "ev_charger_sizing_audit.json",
-      "iquitos_citylearn_v3_dataset_evaluation.json"
+      "iquitos_citylearn_v3_dataset_evaluation.json",
+      "workflow_integrity_manifest.json"
     ]
   },
   "workflow": [
@@ -42,6 +43,11 @@
       "stage": "dataset_gate",
       "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/check_training_dataset_ready.py --manifest-out outputs/dataset_audit/training_dataset_ready_manifest.json",
       "acceptance": ["status=ready", "normalization_allowed_for_training=true"]
+    },
+    {
+      "stage": "workflow_integrity",
+      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/verify_workflow_integrity.py --manifest-out outputs/dataset_audit/workflow_integrity_manifest.json",
+      "acceptance": ["ok=true", "no stale active defaults", "schema/training/docs linked"]
     },
     {
       "stage": "training",

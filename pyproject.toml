@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "uc3m"
 version = "1.0.0"
 description = "UC3M — Universal CityLearn v3 Modified: Meta-Dec-POMDP MADRL framework for smart energy communities"
-readme = "README_UC3M.md"
+readme = "README.md"
 license = { text = "Apache-2.0" }
 authors = [
     { name = "MADRL Iquitos Team", email = "mac.tapia@unmsm.edu.pe" },
@@ -26,7 +26,7 @@ classifiers = [
 
 # Core runtime dependencies
 dependencies = [
-    "numpy>=1.24",
+    "numpy>=1.23.5,<2.0",
     "pandas>=2.0",
     "scipy>=1.10",
     # CityLearn v2 must be installed separately (local editable install)

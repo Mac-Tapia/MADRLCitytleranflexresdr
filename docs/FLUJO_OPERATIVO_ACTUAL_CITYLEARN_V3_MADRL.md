@@ -51,6 +51,7 @@ Auditorias canonicas:
 - `outputs/dataset_audit/training_dataset_validation.json`
 - `outputs/dataset_audit/der_sizing_audit.json`
 - `outputs/dataset_audit/ev_charger_sizing_audit.json`
+- `outputs/dataset_audit/workflow_integrity_manifest.json`
 
 Estado auditado vigente:
 
@@ -86,6 +87,9 @@ Antes de entrenar se debe comprobar que CityLearn carga el dataset crudo:
   --scenario E1 `
   --episode-time-steps 8760 `
   --steps 3
+
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\verify_workflow_integrity.py `
+  --manifest-out outputs\dataset_audit\workflow_integrity_manifest.json
 ```
 
 Los smoke tests con `episode_time_steps=4` pueden no representar el episodio anual completo y no deben usarse como evidencia de entrenamiento final.

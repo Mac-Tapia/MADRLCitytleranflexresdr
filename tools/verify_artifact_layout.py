@@ -1,12 +1,32 @@
 """Verifica y pre-crea los directorios de artefactos para las 12 corridas MADRL."""
+import argparse
 import sys
 sys.path.insert(0, 'CityLearn/scripts')
 from citylearn_v3_training_common import ensure_artifact_layout
 from pathlib import Path
 
-OUT        = Path('outputs/citylearn_v3_madrl_oficial_v3')
 ALGORITHMS = ['happo', 'masac', 'matd3', 'maac']
 SCENARIOS  = ['E1', 'E2', 'E3']
+
+
+def default_output_root() -> Path:
+    pointer = Path("outputs/latest_visible_training_output_root.txt")
+    if pointer.is_file():
+        value = pointer.read_text(encoding="utf-8-sig").strip()
+        if value:
+            return Path(value)
+    return Path("outputs/artifact_layout_probe")
+
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument(
+    "--output-root",
+    type=Path,
+    default=default_output_root(),
+    help="Output root to verify. Defaults to latest pointer, otherwise outputs/artifact_layout_probe.",
+)
+args = parser.parse_args()
+OUT = args.output_root
 
 print("=" * 70)
 print("VERIFICACION DE ESTRUCTURA DE DIRECTORIOS -- 12 CORRIDAS MADRL")

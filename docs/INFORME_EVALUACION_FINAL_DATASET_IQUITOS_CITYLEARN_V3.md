@@ -1,6 +1,6 @@
 # Evaluacion final dataset Iquitos - CityLearn v3
 
-Fecha UTC: `2026-06-13T02:05:51.840511+00:00`
+Fecha UTC: `2026-06-13T02:21:38.076871+00:00`
 
 ## Resultado
 

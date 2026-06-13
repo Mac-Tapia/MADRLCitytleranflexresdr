@@ -288,6 +288,9 @@ powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
   --scenario E1 `
   --episode-time-steps 4 `
   --steps 3
+
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\verify_workflow_integrity.py `
+  --manifest-out outputs\dataset_audit\workflow_integrity_manifest.json
 ```
 
 Validacion actual:

@@ -76,6 +76,10 @@ def verify_launcher(relative_path: str, expect_parallel: bool) -> None:
         require("MasacRnnHiddenDim = if ($IsLocal8GbGpu) { 64 } else { 256 }" in text, f"{relative_path} must use MASAC RNN hidden 64 on local 8GB GPUs")
         require("MasacQmixHiddenDim = if ($IsLocal8GbGpu) { 32 } else { 128 }" in text, f"{relative_path} must use MASAC QMIX hidden 32 on local 8GB GPUs")
         require('"--masac-preload-batch-device", "$MasacPreloadBatchDevice"' in text, f"{relative_path} must pass optimized MASAC batch preload mode")
+        require("start_from_algorithm = $StartFromAlgorithm" in text, f"{relative_path} must persist resume start algorithm in status")
+        require("algorithm_order = @(\"happo\", \"masac\", \"matd3\", \"maac\")" in text, f"{relative_path} must persist algorithm order in status")
+        require("skip_reason  = $Reason" in text, f"{relative_path} must explain skipped training records")
+        require('Add-SkippedTrainingJobRecord -Job $skippedJob -Reason "start_from_algorithm"' in text, f"{relative_path} must record StartFromAlgorithm skips")
     if "iquitos_training" in relative_path:
         require("$MasacMaxReplayBufferGib = if ($IsLocal8GbGpu) { 3.0 } else { 8 }" in text, f"{relative_path} must allow the validated 2.74 GiB MASAC replay estimate on local 8GB GPUs")
         require('$MasacPreloadBatchDevice = "auto"' in text, f"{relative_path} must default MASAC batch preload to auto")
@@ -202,6 +206,8 @@ def verify_monitors() -> None:
         official_path,
         [
             "function Clear-MonitorHost",
+            "function Test-TrainingResultsArtifact",
+            "done/artifact",
             'Join-Path $runDir "data\\results.json"',
             'Join-Path $runDir "data\\trace.csv"',
             "artifact_profile",

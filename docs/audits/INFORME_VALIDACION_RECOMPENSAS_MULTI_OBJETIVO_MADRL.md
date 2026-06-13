@@ -34,6 +34,8 @@ Actualizacion posterior: el relanzador de emergencia `scripts/restart_masac_matd
 
 Actualizacion de backend MASAC: `CityLearn/scripts/masac_runtime_optimizations.py` instala un parche runtime sobre `external/MARL` sin modificar el submodulo. El parche convierte el replay mini-batch una sola vez por actualizacion, intenta precargarlo en CUDA con fallback automatico a CPU si hay OOM, cachea la matriz identidad de agentes y elimina copias `.cuda()` repetidas dentro del loop temporal de 8,760 pasos. Esto ataca el cuello observado de CPU/MASAC manteniendo reproducibilidad del repositorio.
 
+Actualizacion del monitor: al reanudar desde `StartFromAlgorithm=masac`, el monitor anterior mostraba `happo:queued` porque solo leia `official_full_status.json` y no comprobaba artefactos ya existentes. `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1` ahora detecta `results.json`/`data/results.json` y reporta `done/artifact`; el launcher tambien persiste `start_from_algorithm`, `algorithm_order`, `skip_reason` y registros `skipped/done` para que HAPPO no aparezca como pendiente cuando ya fue completado.
+
 ## 2. Recompensa multiobjetivo validada
 
 La implementacion real usa una recompensa comun para los cuatro backends. Esto evita que HAPPO, MASAC, MATD3 y MAAC optimicen objetivos distintos y permite comparar resultados por algoritmo sin sesgo de funcion de recompensa.

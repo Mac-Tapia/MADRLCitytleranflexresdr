@@ -29,7 +29,7 @@ flowchart TD
     G["Wrappers MADRL<br/>citylearn_v3_training_common.py"]
     H["Launcher oficial<br/>launch_citylearn_v3_official_training.ps1"]
     I["Ventana visible + monitor<br/>live_progress, GPU, logs"]
-    J["Jobs secuenciales<br/>E1/E2/E3 x HAPPO/MASAC/MATD3/MAAC"]
+    J["Etapas por algoritmo<br/>hasta 2 escenarios concurrentes en 8 GB"]
     K["Artefactos por job<br/>results, summary, timeseries, trace, checkpoints"]
     L["Cierre del launcher<br/>official_full_status.json = completed"]
     M["Evidencia de tesis<br/>generate_thesis_objective_evidence.py"]
@@ -56,13 +56,16 @@ flowchart TD
 
 ## 4. Orden real de ejecucion
 
-El launcher oficial construye los jobs por escenario y dentro de cada escenario ejecuta los cuatro algoritmos:
+El launcher oficial construye 12 jobs y, en la ruta operativa normal, los agrupa por algoritmo para comparar E1/E2/E3 bajo el mismo backend. En RTX 4060 Laptop 8 GB usa hasta 2 escenarios concurrentes para HAPPO/MATD3 y conserva MASAC/MAAC en 1 por su mayor uso de memoria.
 
 ```text
-E1/HAPPO -> E1/MASAC -> E1/MATD3 -> E1/MAAC
-E2/HAPPO -> E2/MASAC -> E2/MATD3 -> E2/MAAC
-E3/HAPPO -> E3/MASAC -> E3/MATD3 -> E3/MAAC
+HAPPO: E1/E2/E3, hasta 2 concurrentes
+MASAC: E1/E2/E3, 1 concurrente
+MATD3: E1/E2/E3, hasta 2 concurrentes
+MAAC : E1/E2/E3, 1 concurrente
 ```
+
+Si se activa `-LiveOutput $true`, el mismo launcher cambia a modo secuencial para mostrar una vista rica de un solo job en pantalla.
 
 Cada job usa:
 
@@ -111,7 +114,6 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -ArtifactProfile efficient `
   -TraceRecordInterval 10 `
   -TraceDetail compact `
-  -LiveOutput `
   -Cuda
 ```
 
@@ -128,11 +130,10 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -TorchThreads 8 `
   -LiveProgressInterval 1000 `
   -GpuProfile local4060_fast `
-  -Cuda `
-  -LiveOutput $true
+  -Cuda
 ```
 
-El wrapper abre una ventana independiente para que el entrenamiento no dependa de la terminal inicial. El launcher oficial escribe `official_full_manifest.json` y `official_full_status.json` dentro del `OutputRoot`.
+El wrapper abre una ventana independiente para que el entrenamiento no dependa de la terminal inicial. El monitor visible lee `live_progress.json`, logs y `official_full_status.json`; por eso no hace falta `LiveOutput` para observar la corrida. El launcher oficial escribe `official_full_manifest.json` y `official_full_status.json` dentro del `OutputRoot`.
 
 ## 7. Monitor visible
 
@@ -240,7 +241,6 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -TorchThreads 8 `
   -GpuProfile local4060_fast `
   -LiveProgressInterval 1000 `
-  -LiveOutput `
   -Cuda `
   -SkipCompleted
 ```
@@ -278,7 +278,6 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -TorchThreads 8 `
   -GpuProfile local4060_fast `
   -LiveProgressInterval 1000 `
-  -LiveOutput `
   -Cuda `
   -SkipCompleted
 ```

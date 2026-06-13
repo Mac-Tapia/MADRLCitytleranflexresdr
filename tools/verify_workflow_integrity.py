@@ -77,6 +77,15 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
         return {}
 
     manifest = load_json(WORKFLOW_MANIFEST)
+    technical_reports = manifest.get("technical_reports", [])
+    require(
+        "docs/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md" in technical_reports,
+        "workflow_manifest must reference the CityLearn MADRL VRAM optimization report",
+        errors,
+    )
+    for report_path in technical_reports:
+        require(project_path(report_path).is_file(), f"Missing technical report referenced by workflow_manifest: {report_path}", errors)
+
     dataset = manifest.get("dataset", {})
     require(dataset.get("schema_path") == rel(SCHEMA_PATH), "workflow_manifest schema_path is not the Iquitos schema", errors)
     require(dataset.get("buildings") == 17, "workflow_manifest buildings must be 17", errors)
@@ -104,6 +113,10 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
     require(training.get("scenarios") == ["E1", "E2", "E3"], "Training scenarios are not E1/E2/E3", errors)
     require(training.get("episodes") == 5, "Training episodes must be 5", errors)
     require(training.get("episode_time_steps") == 8760, "Training episode_time_steps must be 8760", errors)
+    require(training.get("live_output") is False, "Training live_output must default to false for visible parallel monitoring", errors)
+    require(training.get("parallel_scenarios") is True, "Training parallel_scenarios must default to true", errors)
+    require(training.get("max_concurrent_scenario_jobs") == 2, "Training must request 2 concurrent scenario jobs", errors)
+    require(training.get("max_concurrent_heavy_jobs") == 1, "Training must cap heavy MADRL jobs at 1", errors)
 
     return manifest
 
@@ -174,8 +187,24 @@ def validate_training_scripts(errors: list[str]) -> None:
 
     require("tools\\check_training_dataset_ready.py" in text, "Launcher does not run dataset readiness gate", errors)
     require("local_8gb_safety_mode" in text, "Launcher does not record local 8GB VRAM safety mode", errors)
-    require("$MaxConcurrentScenarioJobs = 1" in text, "Launcher does not force scenario concurrency 1 for local 8GB GPU", errors)
+    require("$MaxConcurrentScenarioJobs = 2" in text, "Launcher does not cap scenario concurrency at 2 for local 8GB GPU", errors)
+    require("$MaxConcurrentHeavyJobs = 1" in text, "Launcher does not cap heavy algorithm concurrency at 1 for local 8GB GPU", errors)
+    require("local_8gb_concurrency_note" in text, "Launcher does not record local 8GB concurrency policy", errors)
     require("LiveOutput requires sequential" in text, "Launcher does not explain LiveOutput sequential mode", errors)
+
+    visible_wrapper = ROOT / "scripts" / "run_citylearn_v3_full_training_visible.ps1"
+    quick_launcher = ROOT / "scripts" / "training_launcher_window.ps1"
+    resume_launcher = ROOT / "scripts" / "training_resume_window.ps1"
+    for wrapper in (visible_wrapper, quick_launcher, resume_launcher):
+        require(wrapper.is_file(), f"Missing visible training wrapper {rel(wrapper)}", errors)
+    if visible_wrapper.is_file():
+        wrapper_text = visible_wrapper.read_text(encoding="utf-8")
+        require("[bool]$LiveOutput = $false" in wrapper_text, "Visible wrapper must default LiveOutput to false for parallel scenario stages", errors)
+    for wrapper in (quick_launcher, resume_launcher):
+        if wrapper.is_file():
+            wrapper_text = wrapper.read_text(encoding="utf-8")
+            require("-LiveOutput" not in wrapper_text, f"{rel(wrapper)} must omit LiveOutput by default so the launcher switch remains false", errors)
+            require("-MaxConcurrentScenarioJobs 2" in wrapper_text, f"{rel(wrapper)} must request 2 scenario jobs on local 8GB profile", errors)
 
 
 def validate_active_defaults(errors: list[str]) -> None:

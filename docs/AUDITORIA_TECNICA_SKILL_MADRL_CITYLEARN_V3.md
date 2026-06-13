@@ -7,7 +7,7 @@
 
 ## Resultado Principal
 
-El entrenamiento usa CUDA en la GPU local `NVIDIA GeForce RTX 4060 Laptop GPU`, pero el tiempo total no depende solo de la GPU. El cuello de botella dominante esta en la simulacion secuencial del entorno CityLearn, el armado de observaciones por edificio, la escritura de `live_progress.json`, `trace.csv`, `timeseries.csv` y la serializacion de artefactos.
+El entrenamiento usa CUDA en la GPU local `NVIDIA GeForce RTX 4060 Laptop GPU`, pero el tiempo total no depende solo de la GPU. Cada entorno CityLearn mantiene avance temporal ordenado por episodio, pero la campana completa no debe ejecutarse como una sola cola secuencial si `LiveOutput=false`. La ruta vigente usa monitor visible desacoplado, etapas por algoritmo y hasta 2 escenarios concurrentes en 8 GB para HAPPO/MATD3; MASAC/MAAC quedan en 1 por memoria de replay/critic. Los costos restantes estan en armado de observaciones por edificio, escritura de `live_progress.json`, `trace.csv`, `timeseries.csv` y serializacion de artefactos.
 
 ## Configuracion Vigente
 
@@ -22,6 +22,10 @@ El entrenamiento usa CUDA en la GPU local `NVIDIA GeForce RTX 4060 Laptop GPU`, 
 | CUDA | True |
 | Perfil GPU | `local4060_fast` |
 | Torch threads | 8 |
+| LiveOutput por defecto | False |
+| Paralelismo de escenarios | True |
+| Max escenarios concurrentes | 2 |
+| Max etapas pesadas MASAC/MAAC | 1 |
 | Output root | `<OutputRoot>` resuelto desde `outputs/latest_visible_training_output_root.txt` |
 
 ## Dataset Validado

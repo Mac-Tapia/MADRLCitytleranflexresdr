@@ -1,8 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project": "MADRLCitytleranflexresdr",
   "updated_at": "2026-06-12",
   "purpose": "Manifest canonico del flujo dataset -> carga -> entrenamiento -> comparacion -> resultados finales.",
+  "technical_reports": [
+    "docs/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md"
+  ],
   "dataset": {
     "name": "citylearn_iquitos_2023_2025",
     "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
@@ -64,7 +67,12 @@
       "trace_record_interval": 10,
       "trace_detail": "compact",
       "gpu_profile": "local4060_fast",
-      "cuda": true
+      "cuda": true,
+      "live_output": false,
+      "parallel_scenarios": true,
+      "max_concurrent_scenario_jobs": 2,
+      "max_concurrent_heavy_jobs": 1,
+      "parallelization_policy": "Visible monitoring is decoupled from rich per-job LiveOutput. On an 8 GB RTX 4060 Laptop GPU, HAPPO/MATD3 may run up to 2 scenarios concurrently; MASAC/MAAC remain capped at 1 for replay/critic memory stability. LiveOutput=true is reserved for sequential debugging."
     },
     {
       "stage": "monitoring",

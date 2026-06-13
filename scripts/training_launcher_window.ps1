@@ -13,7 +13,7 @@ Set-Content -Path "outputs\latest_visible_training_output_root.txt" -Value $Outp
 
 Write-Host "=== CityLearn MADRL v3 - Training Visible ===" -ForegroundColor Cyan
 Write-Host "Cadena: HAPPO/MASAC/MATD3/MAAC x E1,E2,E3 (12 runs)" -ForegroundColor White
-Write-Host "Perfil: efficient | trace compact cada 10 pasos | modo visible secuencial" -ForegroundColor DarkGray
+Write-Host "Perfil: efficient | trace compact cada 10 pasos | monitor visible + paralelismo por escenario" -ForegroundColor DarkGray
 Write-Host ("OutputRoot: " + $OutputRoot) -ForegroundColor Yellow
 Write-Host ""
 
@@ -22,7 +22,9 @@ try {
         -Scenario ALL `
         -Cuda `
         -GpuProfile local4060_fast `
-        -LiveOutput `
+        -ParallelScenarios $true `
+        -MaxConcurrentScenarioJobs 2 `
+        -MaxConcurrentHeavyJobs 1 `
         -ArtifactProfile efficient `
         -TraceRecordInterval 10 `
         -TraceDetail compact `

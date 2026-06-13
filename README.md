@@ -25,7 +25,7 @@ Actualizado: 2026-06-12.
 - Non-shiftable load destilada desde mediciones mensuales reales `B_02.csv` a `B_17.csv` (balance mensual delta < 0.1%).
 - Entrenamiento oficial vigente: la corrida activa se obtiene desde `outputs/latest_visible_training_output_root.txt`; si no existe, usar el `outputs/*/official_full_status.json` mas reciente. Los resultados finales se aceptan solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
 - Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida. 12 corridas totales.
-- Ejecucion local visible: `HAPPO/MASAC/MATD3/MAAC x E1/E2/E3` (4 algoritmos x 3 ejes). En RTX 4060 Laptop 8 GB el modo seguro de VRAM deja concurrencia efectiva 1; con `LiveOutput` el launcher tambien ejecuta en secuencia.
+- Ejecucion local: `HAPPO/MASAC/MATD3/MAAC x E1/E2/E3` (4 algoritmos x 3 ejes). En RTX 4060 Laptop 8 GB el modo operativo usa monitor visible y permite hasta 2 escenarios concurrentes; MASAC/MAAC quedan en 1 por etapa pesada. `LiveOutput` queda como modo opcional secuencial para depuracion visual rica.
 - Perfil local GPU-tuned activo para RTX 4060 Laptop 8 GB (torch 2.8.0+cu126).
 - Recompensa activa: `CityLearnV3MADRLRewardFunction` con pesos multiobjetivo por escenario.
 - Agregacion cooperativa Dec-POMDP: `team_mean` con team_ratio por algoritmo (HAPPO=0.75, MAAC=0.80).
@@ -326,8 +326,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -TraceRecordInterval 10 `
   -TraceDetail compact `
   -GpuProfile local4060_fast `
-  -Cuda `
-  -LiveOutput
+  -Cuda
 ```
 
 Antes del comando manual:
@@ -338,7 +337,7 @@ $root = "outputs\citylearn_v3_madrl_full_$ts"
 Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
 ```
 
-Esto genera 12 corridas secuenciales (4 algoritmos x 3 ejes):
+Esto genera 12 corridas (4 algoritmos x 3 ejes) con etapas por algoritmo. En 8 GB, HAPPO y MATD3 pueden ejecutar hasta 2 escenarios en paralelo; MASAC y MAAC conservan concurrencia 1 por memoria de replay/critic.
 
 ```text
 HAPPO x E1/E2/E3 -> MASAC x E1/E2/E3 -> MATD3 x E1/E2/E3 -> MAAC x E1/E2/E3
@@ -347,7 +346,7 @@ HAPPO x E1/E2/E3 -> MASAC x E1/E2/E3 -> MATD3 x E1/E2/E3 -> MAAC x E1/E2/E3
 Fixes aplicados al launcher:
 - `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1`: previene `forrtl: error (200)` al cerrar ventana.
 - `PYTHONUNBUFFERED=1`: flush inmediato de stdout a logs.
-- Display en tiempo real: episodio, paso, retorno, pesos OE1/OE2/OE3, CO2, precio, historial por episodio.
+- Monitor en tiempo real: episodio, paso, retorno, pesos OE1/OE2/OE3, CO2, precio, historial por episodio, GPU y logs. Para display rico dentro de cada job usar `-LiveOutput $true`, sabiendo que desactiva el paralelismo de escenarios.
 
 ### Perfil GPU-tuned local (RTX 4060 Laptop 8 GB)
 

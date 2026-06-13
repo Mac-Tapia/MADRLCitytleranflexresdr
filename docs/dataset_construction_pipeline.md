@@ -93,7 +93,6 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -TraceRecordInterval 10 `
   -TraceDetail compact `
   -GpuProfile local4060_fast `
-  -LiveOutput `
   -Cuda
 ```
 

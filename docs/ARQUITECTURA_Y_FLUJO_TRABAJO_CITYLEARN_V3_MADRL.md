@@ -20,7 +20,7 @@ flowchart LR
     REW["Reward v3 MADRL<br/>CityLearnV3MADRLRewardFunction<br/>pesos por eje + perfil por algoritmo"]
     ADAPT["Adaptador MADRL comun<br/>citylearn_v3_training_common.py<br/>Dec-POMDP + CTDE + artefactos"]
     ALGS["4 MADRL conectados<br/>HAPPO, MASAC, MATD3, MAAC<br/>scripts train_citylearn_v3_*.py"]
-    LAUNCH{"Launcher oficial<br/>-Scenario ALL<br/>12 corridas secuenciales"}
+    LAUNCH{"Launcher oficial<br/>-Scenario ALL<br/>12 corridas por etapas paralelas"}
 
     E1["OE1 / E1<br/>Flexibilidad energetica<br/>KPIs: peak, ramping, load factor,<br/>PV, bateria, EV"]
     E2["OE2 / E2<br/>Emisiones CO2<br/>KPIs: carbon_emissions,<br/>control, baseline, delta"]
@@ -86,7 +86,7 @@ flowchart LR
 | 5 | Reward v3 | `CityLearn/citylearn/reward_function.py` | `CityLearnV3MADRLRewardFunction` con pesos por eje y perfil por MADRL. |
 | 6 | Adaptador Dec-POMDP/CTDE | `CityLearn/scripts/citylearn_v3_training_common.py` | Wrappers, estado CTDE, reward metadata, trazas y artefactos. |
 | 7 | 4 MADRL | `CityLearn/scripts/train_citylearn_v3_*.py` | HAPPO, MASAC, MATD3 y MAAC conectados. |
-| 8 | Launcher ALL | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | 12 corridas secuenciales: E1/E2/E3 x 4 MADRL. |
+| 8 | Launcher ALL | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | 12 corridas: E1/E2/E3 x 4 MADRL, con etapas paralelas por algoritmo cuando `LiveOutput=false`. |
 | 9 | Monitor vivo | `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1` | GPU, `global_step`, rewards, pesos reward, costo, CO2 y estado por job. |
 | 10 | Artefactos | `<OutputRoot>/{madrl}/{E*_seed_0}` | Checkpoints, JSON, CSV, figuras y tablas. |
 | 11 | Benchmark v2 | `CityLearn/scripts/benchmark_citylearn_v2_agents.py` | Linea base con agentes CityLearn v2. |
@@ -106,7 +106,7 @@ flowchart LR
     E["Adaptador comun MADRL<br/>CityLearn/scripts/citylearn_v3_training_common.py"]
     F["4 scripts de entrenamiento<br/>HAPPO, MASAC, MATD3, MAAC"]
     G["Launcher oficial<br/>launch_citylearn_v3_official_training.ps1<br/>-Scenario ALL"]
-    H["12 corridas secuenciales<br/>E1/E2/E3 x 4 MADRL"]
+    H["12 corridas por etapas<br/>E1/E2/E3 x 4 MADRL"]
     I["Artefactos por corrida<br/>results.json, timeseries.csv,<br/>trace.csv, checkpoints, figures"]
     J["Benchmark CityLearn v2<br/>benchmark_citylearn_v2_agents.py"]
     K["Comparador v2 vs v3<br/>compare_citylearn_v2_vs_v3_madrl.py"]
@@ -261,7 +261,6 @@ powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_o
   -TorchThreads 8 `
   -GpuProfile local4060_fast `
   -LiveProgressInterval 250 `
-  -LiveOutput `
   -Cuda
 ```
 
@@ -341,7 +340,7 @@ outputs/validation/cooperative_ctde_validation.json
 
 ## 10. Matriz oficial de ejecuciones
 
-El launcher ejecuta secuencialmente 12 trabajos:
+El launcher planifica 12 trabajos. Con la ruta operativa normal (`LiveOutput=false`) ejecuta escenarios en paralelo dentro de cada algoritmo; en RTX 4060 Laptop 8 GB permite hasta 2 escenarios para HAPPO/MATD3 y mantiene MASAC/MAAC en 1 por seguridad de VRAM. Con `LiveOutput=true` pasa a modo secuencial para depuracion visual.
 
 | Escenario | HAPPO | MASAC | MATD3 | MAAC |
 |---|---|---|---|---|

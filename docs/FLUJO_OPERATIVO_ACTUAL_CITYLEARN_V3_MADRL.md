@@ -116,8 +116,7 @@ powershell -NoProfile -ExecutionPolicy Bypass `
   -TraceRecordInterval 10 `
   -TraceDetail compact `
   -GpuProfile local4060_fast `
-  -Cuda `
-  -LiveOutput
+  -Cuda
 ```
 
 Contrato:
@@ -131,7 +130,7 @@ Contrato:
 - CUDA activo con perfil `local4060_fast`.
 - Artefactos `efficient`, traza compacta cada 10 pasos.
 
-En RTX 4060 Laptop 8 GB, el launcher activa modo seguro de VRAM y puede fijar concurrencia efectiva en 1. Si se usa `LiveOutput`, el modo visible tambien fuerza ejecucion secuencial para mantener una salida legible.
+En RTX 4060 Laptop 8 GB, el launcher no fuerza toda la concurrencia a 1 por VRAM: el modo operativo usa monitor visible y permite hasta 2 escenarios concurrentes, manteniendo MASAC/MAAC en 1 por ser etapas pesadas. Si se activa `LiveOutput`, solo ese modo de display rico ejecuta en secuencia para mantener una salida legible.
 
 ## Monitor y Estado
 

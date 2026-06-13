@@ -342,7 +342,7 @@ Cada algoritmo tiene un perfil de recompensa diferenciado que ajusta multiplicad
 
 ### E.3 — Matriz de 12 Corridas Oficiales
 
-El experimento oficial ejecuta **12 corridas secuenciales** (4 algoritmos × 3 escenarios):
+El experimento oficial ejecuta **12 corridas por etapas de algoritmo** (4 algoritmos x 3 escenarios). En la ruta operativa normal usa `LiveOutput=false` para permitir paralelismo de escenarios: hasta 2 para HAPPO/MATD3 en RTX 4060 Laptop 8 GB y 1 para MASAC/MAAC por seguridad de memoria:
 
 | | HAPPO | MASAC | MATD3 | MAAC |
 |-|:-----:|:-----:|:-----:|:----:|

@@ -74,6 +74,18 @@ def verify_launcher(relative_path: str, expect_parallel: bool) -> None:
         )
 
 
+def verify_visible_wrappers() -> None:
+    wrapper_text = read_text("scripts/run_citylearn_v3_full_training_visible.ps1")
+    require('[bool]$LiveOutput = $false' in wrapper_text, "visible full-training wrapper must default LiveOutput to false")
+    require("visible monitor + parallel scenario stages" in wrapper_text, "visible wrapper must describe parallel monitor mode")
+
+    for relative_path in ("scripts/training_launcher_window.ps1", "scripts/training_resume_window.ps1"):
+        text = read_text(relative_path)
+        require("-LiveOutput" not in text, f"{relative_path} must omit LiveOutput so the launcher switch remains false")
+        require("-MaxConcurrentScenarioJobs 2" in text, f"{relative_path} must request 2 concurrent scenario jobs")
+        require("-MaxConcurrentHeavyJobs 1" in text, f"{relative_path} must keep heavy algorithms capped at 1")
+
+
 def verify_training_common() -> None:
     relative_path = "CityLearn/scripts/citylearn_v3_training_common.py"
     text = read_text(relative_path)
@@ -232,6 +244,7 @@ def verify_tests() -> None:
 def main() -> int:
     verify_launcher("CityLearn/scripts/launch_citylearn_v3_official_training.ps1", expect_parallel=True)
     verify_launcher("CityLearn/scripts/launch_citylearn_v3_iquitos_training.ps1", expect_parallel=True)
+    verify_visible_wrappers()
     verify_training_common()
     verify_train_scripts()
     verify_monitors()

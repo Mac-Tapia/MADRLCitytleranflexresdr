@@ -606,7 +606,7 @@ Cada backend MADRL utiliza un perfil diferenciado que ajusta los parámetros de 
 
 #### 4.11.4 Matriz de 12 Corridas Oficiales
 
-Las 12 corridas del experimento oficial se ejecutan secuencialmente mediante `CityLearn/scripts/launch_citylearn_v3_official_training.ps1 -Scenario ALL`. Las condiciones de entrenamiento para la run de referencia son: 5 episodios × 8,760 pasos = 43,800 pasos totales por algoritmo; seed = 0; CUDA habilitado; hardware: NVIDIA RTX 4060 Laptop 8 GB.
+Las 12 corridas del experimento oficial se ejecutan mediante `CityLearn/scripts/launch_citylearn_v3_official_training.ps1 -Scenario ALL`. La ruta operativa normal usa monitor visible con `LiveOutput=false`, agrupa por algoritmo y permite escenarios concurrentes dentro de cada etapa: hasta 2 para HAPPO/MATD3 en RTX 4060 Laptop 8 GB, y 1 para MASAC/MAAC por seguridad de memoria. Las condiciones de entrenamiento para la run de referencia son: 5 episodios × 8,760 pasos = 43,800 pasos totales por algoritmo; seed = 0; CUDA habilitado; hardware: NVIDIA RTX 4060 Laptop 8 GB.
 
 | | **HAPPO** | **MASAC** | **MATD3** | **MAAC** |
 |-|:---------:|:---------:|:---------:|:--------:|
@@ -866,7 +866,7 @@ Zhu, Y., et al. (2024). An overview: Attention mechanisms in multi-agent reinfor
 | Backend MASAC | `CityLearn/scripts/train_citylearn_v3_masac.py` | `external/MARL/src` |
 | Backend MATD3 | `CityLearn/scripts/train_citylearn_v3_matd3.py` | `external/off-policy` |
 | Backend MAAC | `CityLearn/scripts/train_citylearn_v3_maac.py` | `external/MAAC` |
-| Launcher oficial | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | Ejecuta 12 corridas secuenciales |
+| Launcher oficial | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | Ejecuta 12 corridas por etapas; paraleliza escenarios cuando `LiveOutput=false` |
 | Dataset Iquitos | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` | 17 edificios reales, 26,304 horas |
 
 ### Anexo 4 — Comparación de backends MADRL

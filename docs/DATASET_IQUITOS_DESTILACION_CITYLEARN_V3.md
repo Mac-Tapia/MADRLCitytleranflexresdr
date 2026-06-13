@@ -99,6 +99,5 @@ anteriores por accidente:
   -TorchThreads 8 `
   -GpuProfile local4060_fast `
   -LiveProgressInterval 250 `
-  -LiveOutput `
   -Cuda
 ```

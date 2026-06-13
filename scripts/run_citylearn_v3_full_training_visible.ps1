@@ -25,7 +25,7 @@ param(
     [ValidateRange(1, 16)]
     [int]$MaxConcurrentHeavyJobs = 1,
     [switch]$Cuda,
-    [bool]$LiveOutput = $true,
+    [bool]$LiveOutput = $false,
     [switch]$NoMonitor,
     [switch]$SelfLaunched   # uso interno: evita re-lanzamiento recursivo
 )
@@ -84,7 +84,7 @@ if (-not $SelfLaunched) {
     Write-Host "========================================================" -ForegroundColor Green
     Write-Host ""
     Write-Host "  Puedes cerrar ESTA ventana." -ForegroundColor Yellow
-    Write-Host "  NO cierres la ventana del entrenamiento hasta completar los 12 runs." -ForegroundColor Red
+    Write-Host "  El monitor visible queda separado; LiveOutput=false permite paralelismo real." -ForegroundColor Yellow
     Write-Host ""
     exit 0
 }
@@ -117,6 +117,12 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host ""
 Write-Host "Launching official training chain..." -ForegroundColor Green
+if (-not $LiveOutput -and [bool]$ParallelScenarios) {
+    Write-Host "Mode: visible monitor + parallel scenario stages. Use -LiveOutput `$true only when sequential rich display is required." -ForegroundColor Cyan
+}
+elseif ($LiveOutput) {
+    Write-Host "Mode: sequential rich live display. This disables parallel scenario stages." -ForegroundColor Yellow
+}
 Write-Host ("Command: CityLearn\scripts\launch_citylearn_v3_official_training.ps1 -Scenario {0} -Seed {1} -EpisodeTimeSteps {2} -Episodes {3} -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json -OutputRoot {4} -TorchThreads {5} -LiveProgressInterval {6} -ArtifactProfile {7} -TraceRecordInterval {8} -TraceDetail {9} -GpuProfile {10} -MaxGpuVramGib {11} -GpuVramReserveGib {12} -CudaMemoryFraction {13} -ParallelScenarios:{14} -MaxConcurrentScenarioJobs {15} -MaxConcurrentHeavyJobs {16} -Cuda:{17} -LiveOutput:{18}" -f $Scenario, $Seed, $EpisodeTimeSteps, $Episodes, $OutputRoot, $TorchThreads, $LiveProgressInterval, $ArtifactProfile, $TraceRecordInterval, $TraceDetail, $GpuProfile, $MaxGpuVramGib, $GpuVramReserveGib, $CudaMemoryFraction, [bool]$ParallelScenarios, $MaxConcurrentScenarioJobs, $MaxConcurrentHeavyJobs, [bool]$Cuda, [bool]$LiveOutput)
 Write-Host ""
 

@@ -105,6 +105,13 @@ def verify_visible_wrappers() -> None:
         require("-MaxConcurrentScenarioJobs 2" in text, f"{relative_path} must request 2 concurrent scenario jobs")
         require("-MaxConcurrentHeavyJobs 1" in text, f"{relative_path} must keep heavy algorithms capped at 1")
 
+    restart_text = read_text("scripts/restart_masac_matd3_maac.ps1")
+    require('cd d:\\' not in restart_text.lower(), "MASAC restart helper must use repo-relative project resolution")
+    require("-TorchThreads 12" not in restart_text, "MASAC restart helper must not override local4060_fast TorchThreads=8")
+    require("-LiveProgressInterval 250" not in restart_text, "MASAC restart helper must not override local4060_fast LiveProgressInterval=1000")
+    require("-SkipCompleted" in restart_text, "MASAC restart helper must skip completed runs on resume")
+    require("-MasacMaxReplayBufferGib 3" in restart_text, "MASAC restart helper must keep the validated 3 GiB replay guard")
+
 
 def verify_reward_profiles() -> None:
     data = json.loads(read_text("CityLearn/configs/citylearn_v3_madrl_training.json"))

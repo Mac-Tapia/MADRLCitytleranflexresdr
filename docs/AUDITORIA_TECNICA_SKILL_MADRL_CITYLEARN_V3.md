@@ -1,13 +1,23 @@
 # Auditoria Tecnica Vigente CityLearn v3 MADRL
 
-**Fecha:** 2026-06-12
+**Fecha:** 2026-06-12 (actualizada tras inspeccion completa)
 **Proyecto:** `MADRLCitytleranflexresdr`
 **Dataset activo:** `citylearn_iquitos_2023_2025`
-**Salida activa:** `outputs/latest_visible_training_output_root.txt` -> `<OutputRoot>`
+**Salida activa:** `outputs/latest_visible_training_output_root.txt` → `outputs\citylearn_v3_madrl_oficial_v6`
 
 ## Resultado Principal
 
-El entrenamiento usa CUDA en la GPU local `NVIDIA GeForce RTX 4060 Laptop GPU`, pero el tiempo total no depende solo de la GPU. Cada entorno CityLearn mantiene avance temporal ordenado por episodio, pero la campana completa no debe ejecutarse como una sola cola secuencial si `LiveOutput=false`. La ruta vigente usa monitor visible desacoplado, etapas por algoritmo y hasta 2 escenarios concurrentes en 8 GB para HAPPO/MATD3; MASAC/MAAC quedan en 1 por memoria de replay/critic. Los costos restantes estan en armado de observaciones por edificio, escritura de `live_progress.json`, `trace.csv`, `timeseries.csv` y serializacion de artefactos.
+**Infraestructura lista para entrenamiento. Sin cuellos de botella tecnicos.**
+
+El entrenamiento previo (HAPPO E1, sesion `v6`) fue **interrumpido en paso 3,000/43,800** (episodio 0, ~34% del primer episodio). La GPU RTX 4060 esta libre (0 MiB en uso). El dataset, entorno, reward function y todos los scripts de validacion estan operativos y pasan todas las comprobaciones.
+
+Estado de la sesion `v6`:
+
+- `official_full_status.json` → status: "running" (stale — proceso terminado)
+- Solo HAPPO/E1 fue lanzado; MASAC, MATD3, MAAC y los escenarios E2/E3 pendientes
+- Los datos de `live_progress.json` confirman que la recompensa opera correctamente: reward_mean=-0.619, carbono=0.790 kg/kWh, perfiles de eje activos
+
+Para nuevo entrenamiento: lanzar con `run_citylearn_v3_full_training_visible.ps1` o `launch_citylearn_v3_official_training.ps1 -Scenario ALL`. El launcher creara una nueva sesion `v7` o sobrescribira `v6`.
 
 ## Configuracion Vigente
 

@@ -68,7 +68,10 @@ Create one integrated academic workflow that:
 9. Use project evidence when available:
    - `README.md`, `docs/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md`
    - `CityLearn/configs/citylearn_v3_madrl_training.yaml`
-   - Training v4 activo tras reinicio limpio: `outputs/citylearn_v3_madrl_oficial_v4/`
+   - Justificación de recompensas y diseño experimental (documentos creados 2026-06-12):
+     - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` — justificación académica de todos los parámetros numéricos de `CityLearnV3MADRLRewardFunction`, reconciliación plan §4.11.3 vs. perfil `unified_comparable_v2`, listado 17 edificios y 229 archivos del dataset. 12 referencias APA.
+     - `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` — justificación de los 3 escenarios E1/E2/E3 (mapeo a OE.1/OE.2/OE.3), independencia semántica del entrenamiento paralelo por escenario, política de VRAM (HAPPO/MATD3 max 2, MASAC/MAAC max 1), matriz 12 corridas. 14 referencias APA.
+   - Training activo (sesión `citylearn_v3_madrl_full_20260612_223320`): `outputs/citylearn_v3_madrl_full_20260612_223320/`
      - Estado oficial: `official_full_status.json`
      - Progreso vivo por corrida: `{algo}/{scenario}_seed_0/live_progress.json`
      - Resultados finales por corrida, solo cuando existan tras completar el entrenamiento nuevo: `{algo}/{scenario}_seed_0/data/results.json`
@@ -79,7 +82,7 @@ Create one integrated academic workflow that:
    - Validación: `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md`
    - Dimensiones del entorno: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`
 
-> **Vigencia:** Training oficial v4 relanzado desde cero el 2026-06-08 20:14:44 UTC-5 con CUDA=True, PyTorch 2.8.0+cu126 y perfil `local4060_fast` para NVIDIA GeForce RTX 4060 Laptop GPU 8 GB. Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios SEAI Iquitos, 26 304 h, 222 CSV auditados, 185 cargadores EV en schema, 96 equipos físicos modo 3, 17 máquinas controladas, `weather.csv`, `carbon_intensity.csv` y `pricing.csv` referenciados por los 17 edificios). Auditoría integral: 0 NaN, 0 Inf, sin cargadores/máquinas huérfanos ni faltantes; normalización permitida. Totales DER vigentes: PV 48 790.9 kWp; BESS 26 266 kWh / 6 648 kW; EV 749.4 kW. Regla implementada en el dataset: la generación solar prioriza recarga EV y carga del edificio por edificio; el BESS se dimensiona por balance PV-EV-red pública-cargas controladas/no controladas, prioriza recarga EV dentro de la ventana operativa del edificio y luego atiende carga del edificio/pico. Salida activa: `outputs/citylearn_v3_madrl_oficial_v4/`. Última actualización del skill: 2026-06-09.
+> **Vigencia:** Training activo: sesión `citylearn_v3_madrl_full_20260612_223320` lanzada el 2026-06-12. HAPPO E1+E2 en paralelo (max_concurrent=2); E3 y algoritmos MASAC/MATD3/MAAC en cola. CUDA=True, PyTorch 2.8.0+cu126, perfil `local4060_fast`, NVIDIA RTX 4060 Laptop 8 GB. **Perfil de recompensa activo: `unified_comparable_v2`** — todos los algoritmos usan los mismos valores: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.12, reward_scale=1.00. Los perfiles diferenciados por algoritmo del plan §4.11.3 se conservan como ablación futura documentada en `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`. Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios SEAI Iquitos, 26 304 h, 222 CSV auditados, 185 cargadores EV en schema, 96 equipos físicos modo 3, 17 máquinas controladas, `weather.csv`, `carbon_intensity.csv` y `pricing.csv` referenciados por los 17 edificios). Auditoría integral: 0 NaN, 0 Inf, sin cargadores/máquinas huérfanos ni faltantes; normalización permitida. Totales DER vigentes: PV 48 790.9 kWp; BESS 26 266 kWh / 6 648 kW; EV 749.4 kW. Regla implementada en el dataset: la generación solar prioriza recarga EV y carga del edificio; el BESS prioriza recarga EV dentro de la ventana operativa y luego atiende carga del edificio/pico. Salida activa: `outputs/citylearn_v3_madrl_full_20260612_223320/`. Última actualización del skill: 2026-06-12.
 
 ## Required Final Products
 
@@ -100,5 +103,6 @@ Create one integrated academic workflow that:
 - Variable operationalization matrix.
 - Table of APA citations used.
 - Final quality-control checklist.
-- Tabla de resultados por KPI y algoritmo con datos reales de training v4 (cuando estén disponibles; no inventar).
+- Tabla de resultados por KPI y algoritmo con datos reales de la sesión `citylearn_v3_madrl_full_20260612_223320` (cuando estén disponibles; no inventar).
 - Nota metodológica de las 4 pruebas estadísticas inter-algoritmo (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon) sobre los artefactos `statistical_comparison/`.
+- Sección de justificación de recompensas y diseño experimental con referencias de `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` y `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`.

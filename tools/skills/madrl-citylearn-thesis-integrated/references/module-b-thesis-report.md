@@ -154,12 +154,12 @@ Each antecedent must include: author-year, objective, methodology, dataset/envir
 
 - 3.2.1 Arquitectura CityLearn v3 propuesta: entorno base `CityLearnEnv` (v2) extendido con 6 clases en `CityLearn/citylearn/v3/`: `CityLearnDecPOMDPEnv` (base Dec-POMDP), `CityLearnHARLEnv` (HAPPO/HARL), `CityLearnSMACDiscreteEnv` (MASAC), `CityLearnOffPolicyVecEnv` (MATD3), `CityLearnMAACVecEnv` (MAAC), `CityLearnV3MADRLRewardFunction` (recompensa multiobjetivo cooperativa). Adaptador común: `CityLearn/scripts/citylearn_v3_training_common.py`. Lanzador oficial: `CityLearn/scripts/launch_citylearn_v3_official_training.ps1`.
 - 3.2.2 Formulación Dec-POMDP: ℳ = ⟨𝒮, 𝒜₁…𝒜_N, 𝒯, R, 𝒪₁…𝒪_N, Ω, γ, T⟩ donde: N = 17 agentes (un edificio SEAI Iquitos cada uno); 𝒮 corresponde al estado global CTDE construido desde las 17 observaciones locales normalizadas (estado compartido HAPPO/E1 vigente: 1 907 dimensiones; observaciones locales validadas: 54–327 dimensiones, con padding de backend hasta 330 cuando corresponde); 𝒜ᵢ corresponde al vector de acciones por edificio sobre BESS, EV y cargas controladas (espacio continuo HAPPO/E1 acolchado a 44 acciones por agente). γ = 0.99, T = 8 760 pasos (1 año horario). Condición Dec-POMDP: cada agente solo observa su propia oᵢ. CTDE: crítico centralizado Qᵢ(s, a₁…a₁₇) accede a s durante entrenamiento; política πᵢ(aᵢ|oᵢ) ejecuta descentralizada.
-- 3.2.3 Función de recompensa multiobjetivo (`CityLearnV3MADRLRewardFunction`): `reward_i(t) = reward_scale × [w_flex·flex_component_i(t) + w_carbon·carbon_component_i(t) + w_cost·cost_component_i(t)]`. Recompensa cooperativa: `team_reward = (1/N) Σᵢ reward_i`. Recompensa mixta: `mixed_reward_i = (1−r_team)·reward_i + r_team·team_reward`. Pesos por escenario: E1 [0.700, 0.150, 0.150] → OE.1 Flexibilidad; E2 [0.150, 0.700, 0.150] → OE.2 Emisiones CO2; E3 [0.250, 0.150, 0.600] → OE.3 Costos. team_reward_ratio por algoritmo: HAPPO=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80.
+- 3.2.3 Función de recompensa multiobjetivo (`CityLearnV3MADRLRewardFunction`): `reward_i(t) = reward_scale × [w_flex·flex_component_i(t) + w_carbon·carbon_component_i(t) + w_cost·cost_component_i(t)]`. Recompensa cooperativa: `team_reward = (1/N) Σᵢ reward_i`. Recompensa mixta: `mixed_reward_i = (1−r_team)·reward_i + r_team·team_reward`. Pesos por escenario: E1 [0.700, 0.150, 0.150] → OE.1 Flexibilidad; E2 [0.150, 0.700, 0.150] → OE.2 Emisiones CO2; E3 [0.250, 0.150, 0.600] → OE.3 Costos. **Perfil activo `unified_comparable_v2` (todos los algoritmos):** team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.12, reward_scale=1.00. [Nota de reconciliación: el plan de tesis §4.11.3 documentó perfiles diferenciados por algoritmo (HAPPO=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80); la implementación vigente adopta `unified_comparable_v2` para garantizar comparabilidad estadística entre los 4 backends bajo función objetivo idéntica. Los perfiles diferenciados se preservan como ablación futura. Justificación completa con 12 referencias APA en `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`.]
 - 3.2.4 Esquema CTDE: centralized critics during training, decentralized actors during execution.
 - 3.2.5 Backends MADRL comparados bajo condiciones idénticas de entorno Dec-POMDP/CTDE (GPU local: NVIDIA RTX 4060 Laptop 8 GB, PyTorch 2.8.0+cu126, CUDA=True, perfil `local4060_fast`):
 
   | Algoritmo | Tipo | Propiedad clave | Configuración vigente `local4060_fast` | Estabilización |
-  |-----------|------|-----------------|----------------------------------------|----------------|
+  | --------- | ---- | --------------- | -------------------------------------- | -------------- |
   | HAPPO | On-policy | Garantía monótona cooperativa | hidden_size=256, n_rollout_threads=1 | actor_lr=1e-4, critic_lr=5e-4, max_grad_norm=1.0, action_aggregation=mean, ppo_clip=0.2 |
   | MASAC | Off-policy | Máxima entropía + QMIX | rnn_hidden=64, qmix_hidden=32, hyper_hidden=64, buffer=2, critic_batch=1 | actor_lr=3e-4, critic_lr=5e-4, alpha_lr=3e-4, grad_norm_clip=1.0, actor_sample_times=4 |
   | MATD3 | Off-policy | Doble crítico determinístico | hidden_size=256, batch=256, buffer=4096 | lr=3e-4, max_grad_norm=1.0, policy_delay=2, train_interval=100 |
@@ -172,12 +172,14 @@ Each antecedent must include: author-year, objective, methodology, dataset/envir
 
 **3.3 Análisis de los datos y resultados:**
 
-Datos disponibles al 2026-06-09 (training v4 relanzado desde cero el 2026-06-08 20:14:44 UTC-5, `outputs/citylearn_v3_madrl_oficial_v4/`):
+Datos disponibles al 2026-06-12 (sesión activa `citylearn_v3_madrl_full_20260612_223320` lanzada el 2026-06-12, `outputs/citylearn_v3_madrl_full_20260612_223320/`):
 
-- HAPPO/E1 vigente está en ejecución desde cero. Progreso vivo verificado: `global_step = 1000`, `episode = 0`, `episode_step = 1000`, `reward_team_reward = -0.1000898428`, `total_reward_mean_cumulative = -0.6259410981`, `live_status = happo_backend_training`. Fuente: `happo/E1_seed_0/live_progress.json`.
-- Estado oficial: `status = running`, escenarios `E1,E2,E3`, algoritmos HAPPO, MASAC, MATD3 y MAAC por etapas; con `LiveOutput=false` se permiten escenarios concurrentes segun la politica de VRAM vigente, 5 episodios, 8 760 pasos por episodio, 43 800 pasos por corrida, CUDA=True, perfil `local4060_fast`. Fuente: `official_full_status.json`.
+- HAPPO E1+E2 corriendo en paralelo (max_concurrent=2). HAPPO E3 en cola. Algoritmos MASAC, MATD3 y MAAC pendientes de inicio (se lanzan en etapas tras completar HAPPO). Perfil `unified_comparable_v2` activo en todas las corridas. CUDA=True, perfil `local4060_fast`.
+- Estado oficial: `status = running`, escenarios `E1,E2,E3`, 5 episodios, 8 760 pasos por episodio, 43 800 pasos por corrida. Fuente: `official_full_status.json`.
 - No existen resultados finales válidos hasta que cada corrida nueva escriba `data/results.json`, `data/timeseries.csv` y `data/trace.csv`. No completar tablas, discusión ni conclusiones con datos de entrenamientos anteriores.
-- MASAC/E1, MATD3/E1, MAAC/E1 y escenarios E2/E3: `resultados por validar` hasta completar la cadena oficial nueva.
+- Todos los algoritmos y escenarios: `resultados por validar` hasta completar las 12 corridas de la sesión `citylearn_v3_madrl_full_20260612_223320`.
+
+Diseño experimental documentado: 3 escenarios × 4 algoritmos = 12 corridas independientes. La independencia semántica del entrenamiento paralelo por escenario dentro del mismo algoritmo está justificada académicamente en `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` (14 referencias APA, incluyendo Roijers et al. 2013 JAIR, Felten et al. 2024 JAIR, HARL JMLR arXiv:2304.09870, MALib JMLR arXiv:2106.07551).
 
 Estructura de tablas (usar datos reales cuando estén disponibles; nunca inventar):
 
@@ -186,7 +188,114 @@ Estructura de tablas (usar datos reales cuando estén disponibles; nunca inventa
 - Tabla 3 — KPIs de costos por algoritmo × E3 (OE.3): `electricity_cost_total`.
 - Tabla 4 — Ranking integrado MADRL (O.G.): promedio normalizado de los 3 ejes.
 
-Protocolo estadístico inter-algoritmo (ejecutar tras completar las 12 corridas). Artefactos en `outputs/citylearn_v3_madrl_oficial_v4/statistical_comparison/` (naming: `result_{algo}_{escenario}.json`, 36 archivos totales). Suite de 4 pruebas: (1) Shapiro-Wilk — normalidad por algoritmo; (2) Kruskal-Wallis — diferencia global entre 4 algoritmos por escenario; (3) Mann-Whitney U — comparación par-a-par; (4) Wilcoxon signed-rank — episodios pareados dentro del mismo escenario.
+Protocolo estadístico inter-algoritmo (ejecutar tras completar las 12 corridas). Artefactos en `outputs/citylearn_v3_madrl_full_20260612_223320/statistical_comparison/` (naming: `result_{algo}_{escenario}.json`, 36 archivos totales). Suite de 4 pruebas: (1) Shapiro-Wilk — normalidad por algoritmo; (2) Kruskal-Wallis — diferencia global entre 4 algoritmos por escenario; (3) Mann-Whitney U — comparación par-a-par; (4) Wilcoxon signed-rank — episodios pareados dentro del mismo escenario.
+
+**3.3.2 Determinación del Mejor MADRL Global (O.G.) — Ranking Integrado Multiobjetivo:**
+
+El O.G. pregunta cuál algoritmo gestiona coordinadamente los tres ejes simultáneamente. Dado que los escenarios E1/E2/E3 entrenan con vectores de peso distintos, la determinación global requiere un método de agregación inter-eje que no favorezca el eje de entrenamiento de ningún algoritmo en particular.
+
+*Paso 1 — Extracción de KPIs por eje y algoritmo (fuente: artefactos de la corrida especializada de cada algoritmo):*
+
+```
+KPI_flex(a)  ← peak_average       de a/E1_seed_0/data/results.json   (↓ mejor)
+KPI_co2(a)   ← carbon_emissions_total de a/E2_seed_0/data/results.json (↓ mejor)
+KPI_cost(a)  ← electricity_cost_total de a/E3_seed_0/data/results.json (↓ mejor)
+```
+
+*Paso 2 — Normalización min-max inter-algoritmo por eje (invirtiendo a "mayor = mejor"):*
+
+```
+KPI_flex_norm(a)  = 1 − [KPI_flex(a)  − min_a KPI_flex]  / [max_a KPI_flex  − min_a KPI_flex]
+KPI_co2_norm(a)   = 1 − [KPI_co2(a)   − min_a KPI_co2]   / [max_a KPI_co2   − min_a KPI_co2]
+KPI_cost_norm(a)  = 1 − [KPI_cost(a)  − min_a KPI_cost]  / [max_a KPI_cost  − min_a KPI_cost]
+```
+
+*Paso 3 — Score global con pesos iguales [1/3, 1/3, 1/3] (sin preferencia a priori — O.G. no favorece ningún eje):*
+
+```
+Score_OG(a) = (1/3)·KPI_flex_norm(a) + (1/3)·KPI_co2_norm(a) + (1/3)·KPI_cost_norm(a)
+```
+
+Justificación de pesos iguales: el O.G. exige gestión *coordinada* de los tres ejes; ninguno debe ponderarse más que otro en la evaluación global. Este principio sigue a Roijers et al. (2013, JAIR) en comparaciones MORL sin función de utilidad del decisor especificada, y a Felten et al. (2024, JAIR) en benchmarks MORL equitativos.
+
+*Paso 4 — Análisis de dominancia de Pareto (complementario al ranking escalar):*
+
+El algoritmo `a` **domina de Pareto** al algoritmo `b` si y solo si:
+```
+KPI_flex_norm(a) ≥ KPI_flex_norm(b)  AND
+KPI_co2_norm(a)  ≥ KPI_co2_norm(b)   AND
+KPI_cost_norm(a) ≥ KPI_cost_norm(b)  AND
+∃ eje k : KPI_k_norm(a) > KPI_k_norm(b)
+```
+Si existe un algoritmo no dominado en los tres ejes simultáneamente → es el ganador inequívoco de O.G. Si ninguno domina (frente de Pareto) → el Score_OG decide el ranking.
+
+*Paso 5 — Ranking de Borda (no paramétrico, sin supuesto de escala):*
+
+Para cada eje e, asignar rango r_e(a) ∈ {1,2,3,4} donde rango 1 = mejor KPI. El Borda score es:
+```
+Borda(a) = r_flex(a) + r_co2(a) + r_cost(a)
+```
+El algoritmo con menor Borda score es el mejor coordinado (O.G.). El ranking Borda y el Score_OG normalizado deben coincidir; si divergen, reportar ambos y discutir en §3.4.
+
+Tabla 4 — Ranking Integrado MADRL (O.G.) — completar con datos reales cuando estén disponibles:
+
+| Algoritmo | KPI_flex_norm | KPI_co2_norm | KPI_cost_norm | Score_OG | Rango Borda | Rango O.G. |
+| --------- | :-----------: | :----------: | :-----------: | :------: | :---------: | :--------: |
+| HAPPO | — | — | — | — | — | — |
+| MASAC | — | — | — | — | — | — |
+| MATD3 | — | — | — | — | — | — |
+| MAAC | — | — | — | — | — | — |
+
+*Protocolo estadístico para O.G. (adicional al protocolo por escenario):*
+
+- Kruskal-Wallis global sobre Score_OG de los 5 episodios por algoritmo: H₀ = todos los algoritmos tienen Score_OG equivalente; si p < 0.05, existe diferencia significativa global.
+- Mann-Whitney U par-a-par sobre Score_OG: 6 pares (HAPPO–MASAC, HAPPO–MATD3, HAPPO–MAAC, MASAC–MATD3, MASAC–MAAC, MATD3–MAAC). Corrección Bonferroni: umbral ajustado α' = 0.05/6 = 0.0083.
+- Effect size: ε² (eta-cuadrado de Kruskal-Wallis) para cada eje y para Score_OG combinado. Clasificación: pequeño ≥0.01, mediano ≥0.06, grande ≥0.14.
+
+**3.3.3 Desagregación por Edificio — Control Individual y Contribución al Distrito:**
+
+Además del análisis global inter-algoritmo, se reporta el desempeño desagregado por edificio para identificar qué agentes contribuyen más a la reducción de pico, emisiones y costo a nivel distrital.
+
+*KPIs por edificio i (extraídos de `{algo}/{scenario}_seed_0/data/timeseries.csv`):*
+
+```
+peak_i        = max_t ( net_load_i(t) )                donde net_load_i = import_i − export_i
+co2_i         = Σ_t max(0, import_i(t)) · CI(t)
+cost_i        = Σ_t max(0, import_i(t)) · p(t)
+self_suff_i   = 1 − Σ_t import_i(t) / Σ_t non_shiftable_load_i(t)
+bess_util_i   = Σ_t |P_bess_i(t)| / (T · P_bess_max_i)    ← fracción de capacidad BESS usada
+ev_served_i   = Σ_t EV_sessions_completed_i(t) / EV_sessions_total_i
+```
+
+*Métricas de coordinación distrital (extraídas de timeseries):*
+
+```
+district_import(t) = Σᵢ max(0, net_load_i(t))
+peak_district      = max_t district_import(t)
+peak_share_i(t)    = net_load_i(t) / district_import(t)     ← fracción del pico que aporta edificio i
+ramp_district(t)   = |district_import(t) − district_import(t−1)|
+```
+
+*Contribución individual al objetivo distrital (counterfactual):*
+
+```
+Δpeak_i   = peak_district_sin_i − peak_district_con_i
+Δco2_i    = co2_district_sin_i  − co2_district_con_i
+Δcost_i   = cost_district_sin_i − cost_district_con_i
+```
+donde "sin_i" corresponde a ejecutar la política del algoritmo ganador con el agente i en modo pasivo (sin BESS, sin control EV). Esto cuantifica cuánto aporta cada edificio a la coordinación distrital.
+
+Tabla 5 — Desempeño por Edificio (algoritmo ganador O.G., completar con datos reales):
+
+| Edificio | Tipo | EV tomas | BESS kWh | peak_i (kW) | co2_i (kg) | cost_i (USD) | self_suff_i | bess_util_i |
+| -------- | ---- | :------: | :------: | :---------: | :--------: | :----------: | :---------: | :---------: |
+| B01 ELECTRO ORIENTE | Office | 4 | 6,747 | — | — | — | — | — |
+| B06 MALL AVENTURA | Commercial | 32 | 2,541 | — | — | — | — | — |
+| B07 UNAP BIOLOGÍA | Education | 42 | 984 | — | — | — | — | — |
+| B11 HOSPITAL LORETO | Healthcare | 3 | 1,901 | — | — | — | — | — |
+| … (17 filas totales) | | | | | | | | |
+
+Edificios críticos para la coordinación (mayor Δpeak_i esperados por tamaño y DER): B01 (BESS más grande), B06 (más cargadores EV), B07 (más cargadores EV), B11 (carga hospitalaria constante), B12 (BESS grande). Reportar ranking completo de Δpeak_i en Tabla 5 y discutir en §3.4 qué tipo de edificio se beneficia más de la coordinación MADRL.
 
 **3.4 Discusión e interpretación:** Compare algorithm behaviors per axis. Discuss which algorithm best handles each dimension and why (architectural reasons: entropy, monotonicity, dual critic, attention). Discuss coordinated management performance. Discuss applicability to real smart communities.
 

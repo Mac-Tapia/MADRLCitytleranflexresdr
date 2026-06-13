@@ -14,11 +14,12 @@ Este documento reemplaza las tablas historicas del pipeline. La fuente valida de
 |---|---:|
 | Edificios reales | 17 |
 | Horizonte horario | 26,304 horas (2023-2025) |
-| CSV auditados | 222 |
+| CSV activos auditados | 222 |
 | Celdas NaN/Inf | 0 |
 | Cargadores EV controlables | 185 |
 | Unidades fisicas Mode 3 | 96 |
 | Sockets Mode 3 | 192 |
+| EV en pool de simulacion | 1,850 |
 | Potencia EV instalada | 749.4 kW |
 | PV instalado | 48,790.9 kWp |
 | Energia PV anualizada 2023-2025 | 148,802.2 MWh |
@@ -50,7 +51,7 @@ El orquestador debe mantener sincronizados estos bloques antes de entregar el da
 
 - `weather.csv`, `carbon_intensity.csv`, `pricing.csv`
 - `Building_1.csv` a `Building_17.csv`
-- `charger_X_Y.csv` para 185 tomas EV controlables
+- `charger_X_Y.csv` para 185 tomas EV Mode 3 controlables por edificio/tipo/concurrencia
 - `Washing_Machine_1.csv` a `Washing_Machine_17.csv`
 - `schema.json`
 - auditorias de integridad, DER, EV y readiness
@@ -66,7 +67,7 @@ CityLearn/data/datasets/citylearn_iquitos_2023_2025/
   carbon_intensity.csv
   pricing.csv
   Building_1.csv ... Building_17.csv
-  charger_*.csv                 # 185 archivos
+  charger_*.csv                 # 185 archivos/tomas Mode 3
   Washing_Machine_*.csv          # 17 archivos
 ```
 

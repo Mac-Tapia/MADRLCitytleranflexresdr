@@ -52,6 +52,13 @@ Auditorias canonicas:
 - `outputs/dataset_audit/der_sizing_audit.json`
 - `outputs/dataset_audit/ev_charger_sizing_audit.json`
 
+Estado auditado vigente:
+
+- 17 edificios, 26,304 horas y 222 CSV activos sin NaN/Inf.
+- 185 tomas EV Mode 3, 96 equipos fisicos doble toma, 1,850 EV en pool y 749.4 kW nominales.
+- BESS recalculado despues de EV: 26,266 kWh / 6,648 kW.
+- PV vigente: 48,790.9 kWp con PVGIS TMY/pvlib.
+
 Comandos:
 
 ```powershell
@@ -60,7 +67,8 @@ powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
 .\.venv39-citylearn-v3\Scripts\python.exe -B tools\orchestrate_citylearn_dataset.py `
   --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
 
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\check_training_dataset_ready.py --strict
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\check_training_dataset_ready.py `
+  --manifest-out outputs\dataset_audit\training_dataset_ready_manifest.json
 ```
 
 ## Carga y Smoke

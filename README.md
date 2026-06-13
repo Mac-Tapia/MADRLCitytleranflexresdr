@@ -8,7 +8,7 @@ Este repositorio integra CityLearn v2 como simulador base y agrega una capa expe
 
 El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificios, DERs, EVs y KPIs, y agrega una capa CityLearn v3 para:
 
-- Modelar 17 edificios institucionales/comerciales reales de Iquitos + EV/V2G como comunidad multiagente.
+- Modelar 17 edificios institucionales/comerciales reales de Iquitos + EV por edificio/tipo/concurrencia como comunidad multiagente.
 - Exponer un entorno Dec-POMDP con observaciones locales y estado global para CTDE.
 - Conectar cuatro backends MADRL oficiales: HAPPO, MASAC, MATD3 y MAAC.
 - Ejecutar tres ejes cientificos: flexibilidad energetica, emisiones de CO2 y costos energeticos.
@@ -20,7 +20,7 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 Actualizado: 2026-06-12.
 
-- Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 222 CSV auditados, 185 cargadores EV, 17 maquinas controladas).
+- Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 222 CSV activos auditados, 185 tomas EV Mode 3, 96 equipos fisicos doble toma, 1,850 EV en pool y 17 maquinas controladas).
 - Dataset regenerado con parametros reales de `CityLearn/data/buildingcsv/building.csv`: nombres oficiales, areas techadas exactas, tipos de uso y sistemas de AC reales por edificio.
 - Non-shiftable load destilada desde mediciones mensuales reales `B_02.csv` a `B_17.csv` (balance mensual delta < 0.1%).
 - Entrenamiento oficial vigente: la corrida activa se obtiene desde `outputs/latest_visible_training_output_root.txt`; si no existe, usar el `outputs/*/official_full_status.json` mas reciente. Los resultados finales se aceptan solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
@@ -114,7 +114,7 @@ pytest tests/ -q --tb=short
 | Edificios | 17 institucionales/comerciales reales de Iquitos, Peru |
 | Nombres reales | Municipalidad San Juan Bautista, Aeropuerto, Tottus, Hotel Plaza, Mall Aventura, UNAP, PNP, COER, GRL, Hospital Regional, EsSalud, UNAP Economia, Autoridad Portuaria, DREL Colegio, SIMA Iquitos, Selva Amazonica Lab |
 | Rango temporal | 2023-2025 (26,304 pasos horarios) |
-| Cargadores EV | 185 archivos `charger_X_Y.csv`, 96 equipos fisicos modo 3, 749.4 kW instalados |
+| Cargadores EV | 185 archivos `charger_X_Y.csv`, 96 equipos fisicos modo 3 doble toma, 1,850 EV en pool, 749.4 kW instalados |
 | BESS | 138-6,747 kWh por edificio; total 26,266 kWh / 6,648 kW |
 | Generacion solar PV | 274.1-10,236.1 kWp DC por edificio; total 48,790.9 kWp |
 | Sistema de AC | Por tipo: Chiller agua (B03/B11), Multi-Chiller (B06), Precision AC (B01/B09), Ultra-Freezers -80C (B17) |

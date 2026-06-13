@@ -66,7 +66,7 @@ Verifica que `.cache/weather/2023.parquet`, `2024.parquet`, `2025.parquet` se ge
 python tools/orchestrate_citylearn_dataset.py
 ```
 
-Genera, sincroniza y audita el dataset activo en `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` con 222 CSV vigentes.
+Genera, sincroniza y audita el dataset activo en `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` con 222 CSV activos vigentes.
 
 ### Paso 4 -- Validacion con CityLearnEnv
 
@@ -95,7 +95,7 @@ Cuando el usuario provea datos reales adicionales:
 | weather.csv | 1 | 16 | 26 304 | PVGIS-ERA5 + NASA POWER |
 | carbon_intensity.csv | 1 | 1 | 26 304 | 0.672-0.790 kg CO2/kWh |
 | pricing.csv | 1 | 4 | 26 304 | OSINERGMIN MT3/MT4 TOU |
-| charger_X_Y.csv | 185 | 6 | 26 304 | EV v3 por edificio, auditado |
+| charger_X_Y.csv | 185 | 6 | 26 304 | EV de escenario Iquitos por edificio/tipo/concurrencia, Mode 3 |
 | Washing_Machine_X.csv | 17 | 5 | 26 304 | una maquina controlada por edificio |
 | schema.json | 1 | -- | -- | 17 edificios + BESS + PV + EV |
 | carbon_intensity_metadata.json | 1 | -- | -- | fuentes MINAM/RAGEI |

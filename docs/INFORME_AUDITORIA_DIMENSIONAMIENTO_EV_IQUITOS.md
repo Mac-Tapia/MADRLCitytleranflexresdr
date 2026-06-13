@@ -2,17 +2,34 @@
 
 ## Resultado ejecutivo
 
-El dataset queda dimensionado con cargadores AC IEC 61851 modo 3. En CityLearn cada `charger_X_Y` representa una toma o loadpoint controlable; el equipo fisico real agrupa dos tomas mediante `physical_charger_id` y `socket_count_per_physical_unit = 2`.
+El dataset queda dimensionado como escenario EV de tesis para Iquitos por edificio, tipo de vehiculo y concurrencia. En CityLearn cada `charger_X_Y` representa una toma o loadpoint controlable Mode 3; el equipo fisico real agrupa dos tomas simultaneas mediante `physical_charger_id` y `socket_count_per_physical_unit = 2`. Los EV no son 1:1 con tomas: cada toma usa un pool de vehiculos para que cada sesion cargue segun `estimated_soc_arrival` y `required_soc_departure`.
 
 - Tomas controlables CityLearn: 185
 - Equipos fisicos modo 3 de dos tomas: 96
 - Tomas de reserva por equipos con una toma libre: 7
+- EVs simulados en pool: 1850
 - Potencia EV nominal total: 749.4 kW
 - Edificios recortados por limite de estacionamiento: 0
 
+## Contexto externo usado
+
+La actualizacion no interpreta el marco normativo peruano como evidencia de una flota electrica historica medida en Iquitos. El Decreto Supremo 036-2023-EM se usa como marco habilitante de infraestructura; la estadistica MTC de parque vehicular se usa como fuente oficial de contexto; y el listado publico Electromaps Peru se usa como contraste de infraestructura visible. El dataset modela un escenario EV reproducible para entrenamiento, no un censo de EV actuales.
+
+| Fuente | Uso en el modelo | URL |
+|---|---|---|
+| MINEM DS 036-2023-EM | Marco regulatorio de infraestructura de carga | https://www.gob.pe/institucion/minem/normas-legales/5325447-036-2023-em |
+| MTC parque vehicular | Contexto oficial de movilidad terrestre | https://www.gob.pe/institucion/mtc/informes-publicaciones/344892-estadistica-servicios-de-transporte-terrestre-por-carretera-parque-automotor |
+| Electromaps Peru | Contraste publico de puntos de carga visibles | https://www.electromaps.com/es/puntos-carga/peru |
+| EAFO Recharging Systems | Diferencia estacion/punto/conector de recarga | https://alternative-fuels-observatory.ec.europa.eu/general-information/recharging-systems |
+| EMSD EV charging facilities | Guia publica de modos de carga EV y Mode 3 con EVSE dedicado | https://www.emsd.gov.hk/filemanager/en/content_444/Guidelines_for_EV_charging_facilities.pdf |
+
+## Revision web de cargadores Mode 3
+
+La revision tecnica confirma que Mode 3 corresponde a carga AC por EVSE dedicado con control y protecciones, no a una relacion fija un cargador-un vehiculo durante todo el horizonte. Las referencias publicas de infraestructura separan estacion/equipo fisico, punto de recarga y conector/toma. Por eso el dataset modela `charger_X_Y` como toma/loadpoint controlable; un equipo fisico Mode 3 agrupa dos tomas simultaneas, y cada toma atiende sesiones de EV segun SOC de llegada y SOC requerido.
+
 ## Revision de `external/evcc` y carpeta `external`
 
-Se reviso `external/evcc` como referencia tecnica de control de carga, no como motor de dimensionamiento de parqueo. EVCC modela loadpoints AC, corriente minima/maxima, fases, OCPP y plantillas de equipos, pero no calcula el numero de cargadores por edificio. Por eso el dimensionamiento del dataset usa afluencia diaria, tipo de edificio, permanencia, porcentaje que carga, utilizacion objetivo y area de estacionamiento del inventario local.
+Se reviso `external/evcc` como referencia tecnica de control de carga, no como motor de dimensionamiento de parqueo. EVCC modela loadpoints AC, corriente minima/maxima, fases, OCPP y plantillas de equipos, pero no calcula el numero de cargadores por edificio. Por eso el dimensionamiento vigente usa una politica local de escenario por tipo de edificio, concurrencia y area disponible, sin asumir demanda EV historica medida.
 
 Tambien se reviso la estructura restante de `external/`: `MicroGrids` y `prosumpy` son referencias de optimizacion/dispatch PV+BESS; `HARL`, `MAAC`, `MARL`, `MARLlib`, `MATD3implementation` y `off-policy` son backends de aprendizaje. Ninguno contiene un modelo local de dimensionamiento de cargadores por motos, mototaxis, camionetas, parqueo y afluencia de Iquitos, por lo que no se usan directamente para calcular las tomas EV.
 
@@ -28,41 +45,53 @@ Parametros adoptados desde la logica de control tipo EVCC/IEC:
 
 ## Metodo de dimensionamiento
 
-El numero de tomas por edificio se calcula con Peak Demand Factor y Ley de Little:
+El numero de tomas por edificio se calcula con PE + FC + duracion de carga por SOC + Ley de Little:
 
-`N_tomas = ceil(N_diario * min(permanencia_h, operacion_h) / operacion_h * pct_carga / utilizacion)`
+- `N_EV_dia = flujo_vehicular_diario * PE`.
+- `t_carga_SOC = ((SOC_requerido - SOC_llegada) * bateria_kWh) / (potencia_toma_kW * eficiencia)`.
+- `N_concurrente = N_EV_dia * FC * min(t_carga_SOC, horario_operativo) / horario_operativo`.
+- `tomas = ceil(N_concurrente / utilizacion_objetivo)` por tipo EV.
+- Cada edificio se calcula por moto lineal, mototaxi y camioneta; luego se limita por area EV-ready.
 
-Luego se valida que el area EV-ready no exceda el estacionamiento disponible del edificio. El area por plaza usada es 2.5 m2 para moto lineal, 7.5 m2 para mototaxi y 25.0 m2 para camioneta. Los edificios remotos reciben mayor fraccion EV-ready porque el usuario necesita carga para el retorno.
+Luego se valida que el area EV-ready no exceda el estacionamiento disponible del edificio. Cada equipo fisico Mode 3 contiene 2 tomas, pero el dimensionamiento CityLearn se mantiene por toma porque ambas pueden cargar simultaneamente.
+
+## Factores PE/FC usados
+
+| Tipo EV | PE base | FC base | PE remoto | FC remoto | t_carga_SOC |
+|---|---:|---:|---:|---:|---:|
+| Moto lineal electrica | 0.500 | 0.466 | 0.500 | 0.932 | 0.77 h |
+| Mototaxi electrica | 0.700 | 0.577 | 0.700 | 0.963 | 0.74 h |
+| Camioneta electrica | 0.650 | 0.822 | 0.650 | 0.822 | 2.84 h |
 
 ## Tipos EV usados
 
 | Tipo EV | Potencia toma | Bateria | Uso local |
 |---|---:|---:|---|
-| Moto lineal electrica | 3.0 kW | 4.0 kWh | Estudiantes, trabajadores, visitantes urbanos |
-| Mototaxi electrica | 4.0 kW | 6.0 kWh | Transporte publico ligero dominante en Iquitos |
-| Camioneta electrica | 7.4 kW | 47.0 kWh | Operacion institucional, salud, puerto, logistica y servicios |
+| Moto lineal electrica | 3.0 kW | 4.0 kWh | Escenario EV por flujo de motos del edificio |
+| Mototaxi electrica | 4.0 kW | 6.0 kWh | Escenario EV por flujo de mototaxis/motokars |
+| Camioneta electrica | 7.4 kW | 40.0 kWh | Escenario EV institucional/logistico |
 
 ## Dimensionamiento final por edificio
 
-| ID | Edificio | Tipo | Estac. m2 | Vehiculo dominante | ML | MT | CV | Tomas | Equipos modo 3 | Reserva | kW | Uso EV-ready | Recorte |
+| ID | Edificio | Tipo | Estac. m2 | Politica | ML | MT | CV | Tomas | Equipos modo 3 | Reserva | kW | Uso EV-ready | Recorte |
 |---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| B01 | Electro Oriente S.A. | institucional | 1350 | Mixed_Motos_Trucks | 1 | 1 | 2 | 4 | 2 | 0 | 21.8 | 24.7% | no |
-| B02 | Municipalidad Distrital San Juan Bautista | deportivo | 900 | Motos_Motokars | 3 | 2 | 1 | 6 | 3 | 0 | 24.4 | 29.3% | no |
-| B03 | Aeropuerto Internacional de Iquitos | transporte_24h | 5500 | Motos_Taxis_Buses | 1 | 5 | 2 | 8 | 4 | 0 | 37.8 | 7.4% | no |
-| B04 | Hipermercados Tottus Oriente | retail | 2500 | Motos_Cars | 3 | 2 | 1 | 6 | 3 | 0 | 24.4 | 9.5% | no |
-| B05 | Hotel Plaza S.A. | hotelero | 200 | Motos_Cars | 1 | 1 | 1 | 3 | 2 | 1 | 14.4 | 97.2% | no |
-| B06 | Mall Aventura Iquitos | mall | 9000 | Motos_Motokars_Massive | 22 | 6 | 4 | 32 | 16 | 0 | 119.6 | 10.1% | no |
-| B07 | UNAP Facultad de Biologia | universitario | 1250 | Motos_Students | 25 | 14 | 3 | 42 | 21 | 0 | 153.2 | 57.1% | no |
-| B08 | PNP Escuela Tecnica Superior Iquitos | militar | 3000 | Military_Vehicles | 8 | 5 | 4 | 17 | 9 | 1 | 73.6 | 16.4% | no |
-| B09 | Gobierno Regional Loreto COER | deportivo | 1500 | Emergency_Trucks | 6 | 3 | 1 | 10 | 5 | 0 | 37.4 | 23.1% | no |
-| B10 | Gobierno Regional de Loreto | administrativo | 2500 | Motos_Staff | 1 | 1 | 4 | 6 | 3 | 0 | 36.6 | 24.4% | no |
-| B11 | Hospital Regional de Loreto | salud | 4500 | Emergency_Ambulances | 1 | 1 | 1 | 3 | 2 | 1 | 14.4 | 3.2% | no |
-| B12 | Seguro Social de Salud EsSalud | salud | 2000 | Ambulances_Staff | 1 | 1 | 1 | 3 | 2 | 1 | 14.4 | 7.3% | no |
-| B13 | UNAP Facultad de Ciencias Economicas | universitario | 750 | Motos_Students | 6 | 4 | 1 | 11 | 6 | 1 | 41.4 | 35.9% | no |
-| B14 | Autoridad Portuaria Nacional Iquitos | portuario | 3750 | Heavy_Cargo_Trucks | 1 | 1 | 2 | 4 | 2 | 0 | 21.8 | 8.9% | no |
-| B15 | DREL Colegio Nacional de Iquitos | educacion | 1000 | Bicycles_Motos | 4 | 3 | 1 | 8 | 4 | 0 | 31.4 | 26.1% | no |
-| B16 | SIMA Iquitos S.R.Ltda | educacion | 5000 | Heavy_Industrial_Cranes | 6 | 4 | 1 | 11 | 6 | 1 | 41.4 | 6.4% | no |
-| B17 | Asociacion Civil Selva Amazonica | educacion | 4000 | Medical_Pickups | 6 | 4 | 1 | 11 | 6 | 1 | 41.4 | 8.0% | no |
+| B01 | Electro Oriente S.A. | institucional | 1350 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 1 | 1 | 2 | 4 | 2 | 0 | 21.8 | 24.7% | no |
+| B02 | Municipalidad Distrital San Juan Bautista | deportivo | 900 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 3 | 2 | 1 | 6 | 3 | 0 | 24.4 | 29.3% | no |
+| B03 | Aeropuerto Internacional de Iquitos | transporte_24h | 5500 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 1 | 5 | 2 | 8 | 4 | 0 | 37.8 | 7.4% | no |
+| B04 | Hipermercados Tottus Oriente | retail | 2500 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 3 | 2 | 1 | 6 | 3 | 0 | 24.4 | 9.5% | no |
+| B05 | Hotel Plaza S.A. | hotelero | 200 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 1 | 1 | 1 | 3 | 2 | 1 | 14.4 | 97.2% | no |
+| B06 | Mall Aventura Iquitos | mall | 9000 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 22 | 6 | 4 | 32 | 16 | 0 | 119.6 | 10.1% | no |
+| B07 | UNAP Facultad de Biologia | universitario | 1250 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 25 | 14 | 3 | 42 | 21 | 0 | 153.2 | 57.1% | no |
+| B08 | PNP Escuela Tecnica Superior Iquitos | militar | 3000 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 8 | 5 | 4 | 17 | 9 | 1 | 73.6 | 16.4% | no |
+| B09 | Gobierno Regional Loreto COER | deportivo | 1500 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 6 | 3 | 1 | 10 | 5 | 0 | 37.4 | 23.1% | no |
+| B10 | Gobierno Regional de Loreto | administrativo | 2500 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 1 | 1 | 4 | 6 | 3 | 0 | 36.6 | 24.4% | no |
+| B11 | Hospital Regional de Loreto | salud | 4500 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 1 | 1 | 1 | 3 | 2 | 1 | 14.4 | 3.2% | no |
+| B12 | Seguro Social de Salud EsSalud | salud | 2000 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 1 | 1 | 1 | 3 | 2 | 1 | 14.4 | 7.3% | no |
+| B13 | UNAP Facultad de Ciencias Economicas | universitario | 750 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 6 | 4 | 1 | 11 | 6 | 1 | 41.4 | 35.9% | no |
+| B14 | Autoridad Portuaria Nacional Iquitos | portuario | 3750 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 1 | 1 | 2 | 4 | 2 | 0 | 21.8 | 8.9% | no |
+| B15 | DREL Colegio Nacional de Iquitos | educacion | 1000 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 4 | 3 | 1 | 8 | 4 | 0 | 31.4 | 26.1% | no |
+| B16 | SIMA Iquitos S.R.Ltda | educacion | 5000 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 6 | 4 | 1 | 11 | 6 | 1 | 41.4 | 6.4% | no |
+| B17 | Asociacion Civil Selva Amazonica | educacion | 4000 | dimensionado por tipo de edificio, flujo EV de escenario, concurrencia y area EV-ready | 6 | 4 | 1 | 11 | 6 | 1 | 41.4 | 8.0% | no |
 
 ## Archivos modificados para entrenamiento
 

@@ -1,6 +1,6 @@
 # Auditoria Tecnica Vigente CityLearn v3 MADRL
 
-**Fecha:** 2026-06-09
+**Fecha:** 2026-06-12
 **Proyecto:** `MADRLCitytleranflexresdr`
 **Dataset activo:** `citylearn_iquitos_2023_2025`
 **Salida activa:** `outputs/latest_visible_training_output_root.txt` -> `<OutputRoot>`
@@ -28,11 +28,12 @@ El entrenamiento usa CUDA en la GPU local `NVIDIA GeForce RTX 4060 Laptop GPU`, 
 
 | Componente | Valor |
 |---|---:|
-| CSV auditados | 222 |
+| CSV activos auditados | 222 |
 | NaN/Inf | 0 |
 | Edificios | 17 |
 | Cargadores EV | 185 |
 | Unidades fisicas Mode 3 | 96 |
+| EV en pool de simulacion | 1,850 |
 | Maquinas controladas | 17 |
 | PV total | 48,790.9 kWp |
 | BESS total | 26,266.0 kWh / 6,648.0 kW |

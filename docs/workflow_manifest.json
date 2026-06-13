@@ -8,13 +8,23 @@
     "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
     "buildings": 17,
     "hours": 26304,
+    "active_csv_files": 222,
+    "ev_chargers": 185,
+    "ev_mode3_physical_units": 96,
+    "ev_mode3_sockets": 192,
+    "ev_definition_count": 1850,
+    "ev_nominal_power_kw": 749.4,
+    "bess_capacity_kwh": 26266.0,
+    "bess_nominal_power_kw": 6648.0,
+    "pv_nominal_power_kwp": 48790.9,
     "audit_root": "outputs/dataset_audit",
     "required_audits": [
       "training_dataset_ready_manifest.json",
       "csv_integrity_manifest.json",
       "training_dataset_validation.json",
       "der_sizing_audit.json",
-      "ev_charger_sizing_audit.json"
+      "ev_charger_sizing_audit.json",
+      "iquitos_citylearn_v3_dataset_evaluation.json"
     ]
   },
   "workflow": [
@@ -30,7 +40,7 @@
     },
     {
       "stage": "dataset_gate",
-      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/check_training_dataset_ready.py --strict",
+      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/check_training_dataset_ready.py --manifest-out outputs/dataset_audit/training_dataset_ready_manifest.json",
       "acceptance": ["status=ready", "normalization_allowed_for_training=true"]
     },
     {

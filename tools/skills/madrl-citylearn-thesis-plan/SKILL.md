@@ -112,7 +112,7 @@ The dataset covers **17 real institutional/commercial buildings** from the Siste
 | B16 | SIMA - IQUITOS S.R.LTDA | Industrial | 10,294 | 2,470.8 | 1,622 | 357 | 11 | 41.4 |
 | B17 | ASOCIACION CIVIL SELVA AMAZONICA | Laboratory | 1,611 | 386.9 | 737 | 158 | 11 | 41.4 |
 
-**Totales vigentes auditados:** PV = 48,790.9 kWp; BESS = 26,266 kWh; potencia BESS = 6,648 kW; EV = 185 tomas controlables CityLearn, agrupadas en 96 equipos fisicos IEC 61851 modo 3; potencia EV nominal = 749.4 kW. Fuente: `outputs/dataset_audit/der_sizing_audit.csv`, `outputs/dataset_audit/ev_charger_sizing_audit.csv` y `schema.json` activo.
+**Totales vigentes auditados:** PV = 48,790.9 kWp; BESS = 26,266 kWh; potencia BESS = 6,648 kW; EV = 185 tomas controlables CityLearn, agrupadas en 96 equipos fisicos IEC 61851 modo 3 doble toma, con 1,850 EV en pool; potencia EV nominal = 749.4 kW. Fuente: `outputs/dataset_audit/der_sizing_audit.csv`, `outputs/dataset_audit/ev_charger_sizing_audit.csv`, `outputs/dataset_audit/iquitos_citylearn_v3_dataset_evaluation.json` y `schema.json` activo.
 
 **Criterio de auditoria:** `AC modulo (kW)` es la potencia electrica pico instalada/estimada de climatizacion usada por el generador vigente `tools/generate_iquitos_dataset.py` en `MADRL_BUILDING_CONSTANTS[*].cooling_peak`. No debe confundirse con `cooling_demand` del CSV, que CityLearn almacena como demanda termica horaria. La conversion electrica validada usa el mismo COP del destilador de facturas: `non_shiftable_load + cooling_demand/COP + dhw_demand/COP`. `PV actual (kWp)`, `BESS (kWh)`, `BESS P (kW)` y conteos EV se toman de `outputs/dataset_audit/training_dataset_validation.csv`, `outputs/dataset_audit/der_sizing_audit.csv`, `outputs/dataset_audit/ev_charger_sizing_audit.csv` y del `schema.json` vigente. La PV se recalculo con `pvlib` usando PVGIS TMY local de Iquitos, `Area_Techada_m2` suministrada por edificio en `CityLearn/data/buildingcsv/building.csv` y densidad tecnica de 0.24 kWp/m2; no se usan areas inventadas. El excedente solar no infla el BESS: se exporta a la red. El BESS se recalculo para corte global de picos de 10% durante todo el horizonte horario; las ventanas por edificio se usan como referencia EV/recarga, no para limitar el corte de pico. EV representa tomas controlables, no solo equipos fisicos; cada equipo modo 3 agrupa dos tomas.
 
@@ -161,13 +161,14 @@ Integrate this pipeline as an ordered technical description in Section 4.9:
 - daylight_savings_status = 0 siempre (Perú, zona tropical, sin cambio de hora)
 - heating_demand = 0.0 siempre (Iquitos, temperatura mínima ~23°C)
 
-**Etapa 6 — Generación de 185 Archivos charger_X_Y.csv (Cargadores EV modo 3)**
+**Etapa 6 — Generacion de 185 Archivos charger_X_Y.csv (Tomas EV modo 3 por edificio/tipo/concurrencia)**
 - 185 archivos/tomas controlables distribuidos en los 17 edificios
-- 96 equipos fisicos IEC 61851 modo 3 AC; las tomas se agrupan por `physical_charger_id`
+- 96 equipos fisicos IEC 61851 modo 3 AC doble toma; las tomas se agrupan por `physical_charger_id`
+- 1,850 EV en pool de simulacion, 10 por toma, para que las sesiones carguen segun SOC de llegada y SOC requerido de salida
 - Sesiones estocásticas reproducibles: seed = building_id × 1000 + charger_idx
-- Dimensionamiento por Peak Demand Factor + Ley de Little, tipo de edificio, afluencia diaria, permanencia, utilizacion objetivo y area de estacionamiento EV-ready
+- Dimensionamiento por tipo de edificio, flujo EV de escenario, concurrencia y area de estacionamiento EV-ready
 - 6 columnas por archivo: electric_vehicle_charger_state, electric_vehicle_id, electric_vehicle_departure_time, electric_vehicle_required_soc_departure, electric_vehicle_estimated_arrival_time, electric_vehicle_estimated_soc_arrival
-- Tipos EV modelados: moto lineal electrica (3.0 kW), mototaxi electrica (4.0 kW) y camioneta electrica (7.4 kW)
+- Tipos EV modelados vigentes: moto lineal electrica (3.0 kW), mototaxi electrica (4.0 kW) y camioneta electrica (7.4 kW) como escenario reproducible de tesis, no como censo historico de flota electrica actual
 - V2G deshabilitado para esta version del dataset (`max_discharging_power = 0.0`)
 
 **Etapa 7 — Washing_Machine_X.csv (carga controlada por edificio)**
@@ -201,7 +202,7 @@ python tools/generate_iquitos_dataset.py --skip-cache        # Fuerza re-descarg
 python tools/generate_iquitos_dataset.py --no-validate       # Sin validación CityLearnEnv
 ```
 
-### C.3 — Estructura del Dataset (222 CSV auditados)
+### C.3 — Estructura del Dataset (222 CSV activos auditados)
 
 Total de archivos en `CityLearn/data/datasets/citylearn_iquitos_2023_2025/`:
 
@@ -230,11 +231,11 @@ CityLearn v3 propuesto formaliza el problema de gestión energética cooperativa
 
 **Definición formal:** ℳ = ⟨𝒮, 𝒜₁,…,𝒜_N, 𝒯, R, 𝒪₁,…,𝒪_N, Ω, γ, T⟩
 
-- **𝒮 ⊆ ℝ^(d_s)**: espacio de estado global. d_s = Σᵢ₌₁^N dim(oᵢ). Para el dataset vigente de 17 edificios del SEAI Iquitos, validado con `CityLearnEnv`, d_s = 1,635 dimensiones. El estado global concatena las observaciones locales de los N=17 agentes y es observable solo por el crítico centralizado durante el entrenamiento (paradigma CTDE).
-- **𝒜ᵢ ⊆ ℝ^(d_aᵢ)**: espacio de acción local del agente i. Para cada edificio: control BESS ∈ [−P_max, +P_max] kW y potencia de carga EV ∈ [0, P_nominal] kW por toma controlable; B1 incluye además carga flexible de lavadora. En el schema vigente, d_aᵢ varía de 4 a 44 dimensiones; el total distrital es 176 acciones. Ejemplo B1 (Electro Oriente S.A.): 6 dimensiones = 1 BESS + 4 tomas EV + 1 lavadora.
+- **𝒮 ⊆ ℝ^(d_s)**: espacio de estado global. d_s = Σᵢ₌₁^N dim(oᵢ). Para el dataset vigente de 17 edificios del SEAI Iquitos, validado con `CityLearnEnv`, d_s = 652 dimensiones crudas; con normalizacion/adaptador, `state_dim = 703`. El estado global concatena las observaciones locales de los N=17 agentes y es observable solo por el crítico centralizado durante el entrenamiento (paradigma CTDE).
+- **𝒜ᵢ ⊆ ℝ^(d_aᵢ)**: espacio de acción local del agente i. Para cada edificio: control BESS ∈ [−P_max, +P_max] kW y potencia de carga EV ∈ [0, P_nominal] kW por toma controlable; los edificios con maquina controlada agregan su accion shiftable. En el schema vigente, d_aᵢ varía de 2 a 4 dimensiones; el total distrital es 47 acciones. Ejemplo B6 (Mall Aventura): 4 dimensiones = 1 BESS + 2 tomas EV + 1 maquina controlada.
 - **𝒯: 𝒮 × 𝒜₁ × … × 𝒜_N → Δ(𝒮)**: función de transición. La dinámica del sistema incluye: balance energético por edificio, modelo RC de temperatura interior, carga/descarga del BESS con eficiencia η_RT=0.9025, y perfil de llegada EV estocástico.
 - **R: 𝒮 × 𝒜₁ × … × 𝒜_N → ℝ**: función de recompensa cooperativa compartida `CityLearnV3MADRLRewardFunction`. Escalar de recompensa global: `team_reward = mean(rewards_i)`.
-- **𝒪ᵢ ⊆ ℝ^(d_oᵢ)**: espacio de observación local del agente i. En el schema vigente d_oᵢ varía de 52 a 332 dimensiones, porque cada toma EV agrega señales locales de estado, salida, SOC requerido y llegada estimada. La observación incluye columnas Building_X, weather, pricing, intensidad de carbono, estado BESS y señales EV locales.
+- **𝒪ᵢ ⊆ ℝ^(d_oᵢ)**: espacio de observación local del agente i. En el schema vigente d_oᵢ varía de 33 a 47 dimensiones crudas, porque cada toma EV agrega señales locales de estado, salida, SOC requerido y llegada estimada. La observación incluye columnas Building_X, weather, pricing, intensidad de carbono, estado BESS y señales EV locales.
 - **Ω: 𝒮 → Δ(𝒪₁ × … × 𝒪_N)**: función de observación. El agente i solo observa oᵢ ∈ 𝒪ᵢ, no el estado global s ∈ 𝒮.
 - **γ ∈ [0,1)**: factor de descuento. Configurado en γ = 0.99 para horizonte largo (8,760 pasos = 1 año).
 - **T = 8,760**: horizonte de decisión (pasos horarios por año).

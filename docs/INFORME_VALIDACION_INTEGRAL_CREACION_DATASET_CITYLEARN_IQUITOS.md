@@ -1,6 +1,6 @@
 # Informe de validacion integral del dataset CityLearn Iquitos
 
-Fecha de validacion: 2026-06-08
+Fecha de validacion: 2026-06-12
 
 Dataset activo:
 
@@ -20,10 +20,11 @@ El dataset quedo sincronizado, limpio y cargable por CityLearn v3 antes de norma
 | Celdas NaN/vacias | 0 |
 | Celdas infinitas | 0 |
 | Archivos huerfanos activos del schema | 0 |
-| Schemas antiguos archivados en limpieza final | 1 |
+| Schemas antiguos archivados en limpieza final | 0 |
 | Edificios CityLearn | 17 |
 | Tomas EV controlables | 185 |
 | Equipos fisicos modo 3 doble toma | 96 |
+| EV en pool de simulacion | 1,850 |
 | Maquinas controladas | 17 |
 | Referencias weather/pricing/carbon en schema | 17/17/17 |
 
@@ -68,7 +69,7 @@ Etapas ejecutadas y validadas:
 | `weather.csv` | 26,304 filas, 16 columnas, sin NaN |
 | `pricing.csv` | 26,304 filas, 4 columnas, sin NaN |
 | `carbon_intensity.csv` | 26,304 filas, 1 columna, sin NaN |
-| `charger_*.csv` | 185 archivos referenciados, sin NaN |
+| `charger_*.csv` | 185 archivos/tomas referenciados, sin NaN |
 | `Washing_Machine_*.csv` | 17 archivos referenciados, sin NaN |
 
 Los centinelas negativos que permanecen son semantica oficial de CityLearn, no datos faltantes: `-1` para tiempo ausente y `-0.1` para SOC ausente en EV, y `-1` para ventana inactiva de maquina controlada.
@@ -86,7 +87,7 @@ Los centinelas negativos que permanecen son semantica oficial de CityLearn, no d
 | BESS a EV | 1,462.346 MWh |
 | BESS total | 26,266 kWh |
 | Potencia BESS total | 6,648 kW |
-| Red publica reduccion media | 52.306 % |
+| Red publica reduccion global | 25.791 % |
 
 ## Validaciones clave
 
@@ -99,7 +100,7 @@ Los centinelas negativos que permanecen son semantica oficial de CityLearn, no d
 | `csv_integrity_manifest.json` | status = ok |
 | NaN en CSV activos | 0 |
 | Infinitos en CSV activos | 0 |
-| `orphaned_dataset_files_manifest.json` | 1 schema antiguo archivado, 0 huerfanos activos |
+| `orphaned_dataset_files_manifest.json` | 0 huerfanos activos |
 | `check_training_dataset_ready.py` | status = ready |
 
 ## Carga CityLearn v3
@@ -108,9 +109,9 @@ La compuerta final cargo el dataset crudo en CityLearn v3 antes de normalizacion
 
 | Escenario | Estado | Agentes | Observaciones min/max |
 |---|---:|---:|---:|
-| E1 | ok | 17 | 54 / 327 |
-| E2 | ok | 17 | 54 / 327 |
-| E3 | ok | 17 | 54 / 327 |
+| E1 | ok | 17 | 54 / 327 raw; state_dim 1856 |
+| E2 | ok | 17 | 54 / 327 raw; state_dim 1856 |
+| E3 | ok | 17 | 54 / 327 raw; state_dim 1856 |
 
 ## Archivos de evidencia
 
@@ -124,6 +125,7 @@ La compuerta final cargo el dataset crudo en CityLearn v3 antes de normalizacion
 - `outputs/dataset_audit/der_sizing_audit.json`
 - `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md`
 - `docs/INFORME_AUDITORIA_DIMENSIONAMIENTO_DER_IQUITOS.md`
+- `docs/INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md`
 
 ## Limitaciones declaradas
 

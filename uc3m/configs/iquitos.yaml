@@ -111,12 +111,19 @@ buildings:
   16: {name: "SIMA - IQUITOS S.R.LTDA",                      type: "Industrial",          area_m2: 10294}
   17: {name: "ASOCIACION CIVIL SELVA AMAZONICA",             type: "Laboratory",          area_m2: 1611}
 
-# ── EV Iquitos — potencias reales del mercado local ──────────────────────
-# Fuente: inventario real de movilidad eléctrica Iquitos
+# ── EV Iquitos — escenario de tesis por edificio/tipo/concurrencia ───────
+# No representa un censo historico de flota electrica medida en Iquitos.
+# CityLearn controla tomas/loadpoints; cada equipo fisico Mode 3 agrupa
+# dos tomas simultaneas mediante physical_charger_id.
 ev:
-  mototaxi_kw:    4.0    # mototaxi eléctrico (kW carga) — mercado real Iquitos
-  motolineal_kw:  3.0    # motolineal personal (kW carga) — mercado real Iquitos
-  v2g_kw:         7.4    # van/camioneta V2G bidireccional
+  total_tomas_mode3: 185
+  equipos_fisicos_mode3_doble_toma: 96
+  ev_pool_total: 1850
+  potencia_nominal_total_kw: 749.4
+  mototaxi_kw:    4.0    # mototaxi electrica de escenario
+  motolineal_kw:  3.0    # moto lineal electrica de escenario
+  camioneta_kw:   7.4    # camioneta electrica institucional/logistica de escenario
+  v2g_enabled: false
 
 # ── Tarifa TOU OSINERGMIN MT3/MT4 ────────────────────────────────────────
 pricing:

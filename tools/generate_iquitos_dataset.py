@@ -229,81 +229,68 @@ CONTROLLED_MACHINE_RULES = {
     'administrativo':   {"days": "laboral", "profile": [0.60, 0.40]},
 }
 
-# EV charger config: {bldg_id: [(tipo, arr_h, dep_h, soc_min, soc_max, soc_req, bat_kwh, kw)]}
-# Mercado real Iquitos: mototaxi=4.0kW/6kWh; motolineal=3.0kW/4kWh; V2G=7.4kW/40kWh
-EV_CONFIG = {
-    1:  [('v2g',         7, 17, 0.20, 0.40, 0.85, 40, 7.4),   # B1 ELOR: 2×V2G + 1×mototaxi + 1×motolineal
-         ('v2g',         7, 17, 0.20, 0.40, 0.85, 40, 7.4),
-         ('mototaxi',    7, 17, 0.25, 0.45, 0.82,  6, 4.0),   # 5 mototaxis/día personal ELOR
-         ('motolineal',  7, 17, 0.20, 0.40, 0.80,  4, 3.0)],  # 20 motos/día personal ELOR
-    2:  [('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),   # B2 Municipalidad San Juan Bautista: 4×mototaxi + 1×motolineal
-         ('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),
-         ('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),
-         ('mototaxi',   15, 22, 0.25, 0.45, 0.80,  6, 4.0),
-         ('motolineal', 15, 22, 0.20, 0.40, 0.80,  4, 3.0)],  # 80 motos/día usuarios deportivos tarde
-    3:  [('v2g',         5, 21, 0.30, 0.50, 0.85, 40, 7.4),   # B3 Aeropuerto: 2×V2G + 2×motolineal
-         ('v2g',         5, 21, 0.30, 0.50, 0.85, 40, 7.4),
-         ('motolineal',  5, 21, 0.20, 0.40, 0.80,  4, 3.0),
-         ('motolineal',  5, 21, 0.20, 0.40, 0.80,  4, 3.0)],
-    4:  [('mototaxi',   10, 20, 0.20, 0.40, 0.75,  6, 4.0),   # B4 Tottus Oriente: 3×mototaxi + 1×motolineal
-         ('mototaxi',   10, 20, 0.20, 0.40, 0.75,  6, 4.0),
-         ('mototaxi',   10, 20, 0.20, 0.40, 0.75,  6, 4.0),
-         ('motolineal', 10, 19, 0.20, 0.40, 0.80,  4, 3.0)],  # 150 motos/día clientes retail
-    5:  [('v2g',         8, 12, 0.30, 0.50, 0.85, 40, 7.4),   # B5 Hotel: 1×V2G + 2×mototaxi
-         ('mototaxi',    8, 12, 0.25, 0.45, 0.80,  6, 4.0),
-         ('mototaxi',    8, 12, 0.25, 0.45, 0.80,  6, 4.0)],
-    6:  [('v2g',        10, 21, 0.20, 0.35, 0.85, 40, 7.4),   # B6 Mall: 3×V2G + 5×mototaxi
-         ('v2g',        10, 21, 0.20, 0.35, 0.85, 40, 7.4),
-         ('v2g',        10, 21, 0.20, 0.35, 0.85, 40, 7.4),
-         ('mototaxi',   10, 21, 0.20, 0.40, 0.75,  6, 4.0),
-         ('mototaxi',   10, 21, 0.20, 0.40, 0.75,  6, 4.0),
-         ('mototaxi',   10, 21, 0.20, 0.40, 0.75,  6, 4.0),
-         ('mototaxi',   10, 21, 0.20, 0.40, 0.75,  6, 4.0),
-         ('mototaxi',   10, 21, 0.20, 0.40, 0.75,  6, 4.0)],
-    7:  [('v2g',         8, 17, 0.25, 0.40, 0.80, 40, 7.4),   # B7 UNAP: 1×V2G + 2×motolineal
-         ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0),
-         ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0)],
-    8:  [('v2g',         7, 16, 0.20, 0.40, 0.90, 40, 7.4),   # B8 PNP: 2×V2G + 1×mototaxi + 1×motolineal
-         ('v2g',         7, 16, 0.20, 0.40, 0.90, 40, 7.4),
-         ('mototaxi',    7, 16, 0.25, 0.45, 0.82,  6, 4.0),   # 60 mototaxis/día campus militar
-         ('motolineal',  7, 16, 0.20, 0.40, 0.80,  4, 3.0)],  # 150 motos/día cadetes/staff
-    9:  [('mototaxi',    7, 16, 0.25, 0.45, 0.80,  6, 4.0),   # B9 GOREL COER: 2×mototaxi + 1×motolineal
-         ('mototaxi',    7, 16, 0.25, 0.45, 0.80,  6, 4.0),
-         ('motolineal',  7, 15, 0.20, 0.40, 0.80,  4, 3.0)],  # 120 motos/día personal COER
-    10: [('v2g',         8, 17, 0.20, 0.40, 0.85, 40, 7.4),   # B10 GOREL: 3×V2G + 1×mototaxi + 1×motolineal
-         ('v2g',         8, 17, 0.20, 0.40, 0.85, 40, 7.4),
-         ('v2g',         8, 17, 0.20, 0.40, 0.85, 40, 7.4),
-         ('mototaxi',    8, 17, 0.25, 0.45, 0.82,  6, 4.0),   # 8 mototaxis/día staff GOREL
-         ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0)],  # 25 motos/día personal GOREL
-    11: [('v2g',         7, 19, 0.20, 0.40, 0.80, 40, 7.4),   # B11 HRL: 2×V2G + 2×motolineal
-         ('v2g',         7, 19, 0.20, 0.40, 0.80, 40, 7.4),
-         ('motolineal',  7, 19, 0.20, 0.40, 0.80,  4, 3.0),
-         ('motolineal',  7, 19, 0.20, 0.40, 0.80,  4, 3.0)],
-    12: [('v2g',         8, 17, 0.25, 0.45, 0.80, 40, 7.4),   # B12 EsSalud: 2×V2G + 1×motolineal
-         ('v2g',         8, 17, 0.25, 0.45, 0.80, 40, 7.4),
-         ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0)],
-    13: [('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0),   # B13 UNAP Economicas: 2×motolineal + 1×mototaxi
-         ('motolineal',  8, 17, 0.20, 0.40, 0.80,  4, 3.0),
-         ('mototaxi',    8, 17, 0.25, 0.45, 0.82,  6, 4.0)],  # 80 mototaxis/día estudiantes FACEN
-    14: [('v2g',         6, 18, 0.20, 0.35, 0.85, 40, 7.4),   # B14 ENAPU: 2×V2G + 1×mototaxi + 1×motolineal
-         ('v2g',         6, 18, 0.20, 0.35, 0.85, 40, 7.4),
-         ('mototaxi',    6, 18, 0.25, 0.45, 0.82,  6, 4.0),   # 15 mototaxis/día trabajadores puerto
-         ('motolineal',  6, 18, 0.20, 0.40, 0.80,  4, 3.0)],  # 20 motos/día personal APN
-    15: [('mototaxi',    7, 15, 0.20, 0.40, 0.80,  6, 4.0),   # B15 Colegio Nacional Iquitos: 2×mototaxi + 1×motolineal
-         ('mototaxi',    7, 15, 0.20, 0.40, 0.80,  6, 4.0),
-         ('motolineal',  7, 14, 0.20, 0.40, 0.80,  4, 3.0)],  # 100 motos/día alumnos colegio
-    16: [('motolineal',  7, 15, 0.20, 0.40, 0.80,  4, 3.0),   # B16 SIMA Iquitos: 1×motolineal + 1×mototaxi
-         ('mototaxi',    7, 15, 0.25, 0.45, 0.82,  6, 4.0)],  # 70 mototaxis/día obreros SIMA
-    17: [('motolineal',  7, 16, 0.20, 0.40, 0.80,  4, 3.0),   # B17 Selva Amazonica: 2×motolineal + 1×mototaxi
-         ('motolineal',  7, 16, 0.20, 0.40, 0.80,  4, 3.0),
-         ('mototaxi',    7, 16, 0.25, 0.45, 0.82,  6, 4.0)],  # 90 mototaxis/día personal laboratorio
-}
+# EV charger config base:
+#   {bldg_id: [(tipo, arr_h, dep_h, soc_min, soc_max, soc_req, bat_kwh, kw)]}
+#
+# La fuente canonica de conteos EV es tools/dimension_ev_chargers.py. El
+# generador base usa ese mismo dimensionamiento para no producir una etapa
+# temporal con otro numero de tomas; la sincronizacion DER posterior reescribe
+# los charger_*.csv y schema con pools EV por toma y metadatos Mode 3 completos.
+def _build_canonical_ev_config() -> dict[int, list[tuple[str, int, int, float, float, float, float, float]]]:
+    empty = {bid: [] for bid in MADRL_BUILDING_CONSTANTS}
+    try:
+        import dimension_ev_chargers as evdim
+    except Exception as exc:  # pragma: no cover - only for isolated script copies
+        logger.warning("No se pudo importar dimension_ev_chargers.py (%s); EV_CONFIG queda vacio.", exc)
+        return empty
 
-# Dias activos por tipo de cargador: 'laboral' (lun-vie) o 'todos'
+    try:
+        charger_config = evdim.build_charger_config()
+    except Exception as exc:  # pragma: no cover - protects isolated generation
+        logger.warning("No se pudo calcular EV_CONFIG canonico (%s); EV_CONFIG queda vacio.", exc)
+        return empty
+
+    config: dict[int, list[tuple[str, int, int, float, float, float, float, float]]] = {}
+    default_profile = (8.0, 1.5, 1.5, 0.4, 0.40, 0.20)
+
+    for bldg_id in MADRL_BUILDING_CONSTANTS:
+        bldg_type = evdim.BUILDING_DATA.get(bldg_id, {}).get("bldg_type", "institucional")
+        entries = []
+        for ev_type in charger_config.get(bldg_id, []):
+            spec = evdim.EV_SPEC[ev_type]
+            arr_mu, _arr_sig, session_mu, _session_sig, _prob_wd, _prob_we = evdim.ARRIVAL_PROFILE.get(
+                (ev_type, bldg_type),
+                default_profile,
+            )
+            arr_h = int(np.clip(round(arr_mu), 1, 22))
+            dep_h = int(np.clip(math.ceil(arr_h + max(1.0, session_mu)), arr_h + 1, 23))
+            soc_min = max(0.05, (spec["soc_arr_mu"] - spec["soc_arr_sig"]) / 100.0)
+            soc_max = min(0.95, (spec["soc_arr_mu"] + spec["soc_arr_sig"]) / 100.0)
+            soc_req = min(0.98, spec["soc_req_mu"] / 100.0)
+            entries.append((
+                ev_type,
+                arr_h,
+                dep_h,
+                round(soc_min, 3),
+                round(soc_max, 3),
+                round(soc_req, 3),
+                float(spec["bat_kwh"]),
+                float(spec["charger_kw"]),
+            ))
+        config[bldg_id] = entries
+
+    return config
+
+
+EV_CONFIG = _build_canonical_ev_config()
+
+# Dias activos por tipo de cargador: 'laboral' (lun-vie) o 'todos'.
 EV_DAYS_ACTIVE = {
-    'v2g':       'laboral',   # Van/camioneta institucional
-    'mototaxi':  'todos',     # Mototaxi eléctrico (mercado real Iquitos, 4 kW)
-    'motolineal':'laboral',   # Motolineal personal docente (3 kW)
+    'v2g':       'laboral',
+    'mototaxi':  'todos',
+    'motolineal':'laboral',
+    'moto_lineal':'laboral',
+    'camioneta': 'laboral',
     # Legacy aliases
     'utility':   'laboral', 'deportivo': 'todos', 'aeropuerto': 'todos',
     'mall':      'todos',   'hotelero':  'todos', 'univ':       'laboral',
@@ -1075,15 +1062,13 @@ class SchemaBuilder:
             "washing_machine":        {"active": True},
         }
 
-        # ── Un EV por cargador (igual que demo: 1:1 charger→EV) ──────────────────
-        # Nombre EV_B{bldg}_C{idx+1} debe coincidir exactamente con el ev_id del CSV
-        # Parámetros por tipo real Iquitos:
-        #   mototaxi  : 4.0 kW / 6 kWh / DOD 0.80
-        #   motolineal: 3.0 kW / 4 kWh / DOD 0.80
-        #   v2g       : 7.4 kW / 40 kWh / DOD 0.85
+        # ── EV base por cargador. La sincronizacion DER final reemplaza esto por
+        # pools EV por toma para que cada sesion tenga SOC propio.
         EV_BATTERY_PARAMS = {
             'mototaxi':  {"capacity": 6,  "nominal_power": 4.0, "initial_soc": 0.40, "depth_of_discharge": 0.80},
             'motolineal':{"capacity": 4,  "nominal_power": 3.0, "initial_soc": 0.40, "depth_of_discharge": 0.80},
+            'moto_lineal':{"capacity": 4,  "nominal_power": 3.0, "initial_soc": 0.40, "depth_of_discharge": 0.80},
+            'camioneta': {"capacity": 40, "nominal_power": 7.4, "initial_soc": 0.35, "depth_of_discharge": 0.85},
             'v2g':       {"capacity": 40, "nominal_power": 7.4, "initial_soc": 0.25, "depth_of_discharge": 0.85},
         }
         electric_vehicles_def = {}

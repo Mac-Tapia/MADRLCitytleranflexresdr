@@ -1,7 +1,7 @@
 # Informe Vigente de Auditoria de Parametros de Edificios Iquitos
 
 **Dataset auditado:** `CityLearn/data/datasets/citylearn_iquitos_2023_2025`
-**Fecha vigente:** 2026-06-09
+**Fecha vigente:** 2026-06-12
 **Fuente canonica:** `outputs/dataset_audit/der_sizing_audit.csv`
 
 Este informe reemplaza la auditoria antigua de parametros. Los valores de PV, BESS y EV no deben tomarse de tablas preliminares ni de logs historicos. La fuente valida es la auditoria DER generada despues de la orquestacion completa del dataset.
@@ -13,10 +13,10 @@ Este informe reemplaza la auditoria antigua de parametros. Los valores de PV, BE
 | Edificios | 17 |
 | PV total | 48,790.9 kWp |
 | BESS total | 26,266.0 kWh / 6,648.0 kW |
-| EV total | 185 cargadores / 749.4 kW |
+| EV total | 185 tomas / 96 equipos modo 3 doble toma / 1,850 EV en pool / 749.4 kW |
 | Maquinas controladas | 17 |
 | Energia maquinas controladas | 876.6 MWh |
-| CSV auditados | 222 |
+| CSV activos auditados | 222 |
 | NaN/Inf | 0 |
 
 ## Cuadro Vigente por Edificio

@@ -28,7 +28,7 @@ Este informe valida trazabilidad y cierre energetico del dataset `citylearn_iqui
 
 | ID | Edificio | Fuente base | Med/Pron | Base dataset MWh | Maq ctrl MWh | EV MWh | EV ventana MWh | PV kWp | PV a EV MWh | PV a BESS MWh | BESS a EV MWh | BESS kWh | BESS kW | OK | Limitacion |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
-| B01 | ELECTRO ORIENTE S.A. | inventario_suministrado_sin_factura_mensual | 36/0 | 17,223.3 | 11.6 | 143.2 | 143.2 | 3,360.2 | 83.5 | 3,356.3 | 57.5 | 6,747.0 | 1,609.0 | OK | No existe B_01.csv; carga horaria base procede del modelo fisico calibrado por inventario, no de factura mensual. |
+| B01 | ELECTRO ORIENTE S.A. | inventario_suministrado_sin_factura_mensual | 0/0 | 17,223.3 | 11.6 | 143.2 | 143.2 | 3,360.2 | 83.5 | 3,356.3 | 57.5 | 6,747.0 | 1,609.0 | OK | No existe B_01.csv; carga horaria base procede del modelo fisico calibrado por inventario, no de factura mensual. |
 | B02 | MUNICIPALIDAD DISTRITAL DE SAN JUAN BAUTISTA | factura_mensual_medida | 36/0 | 204.5 | 27.9 | 15.1 | 15.1 | 1,920.0 | 15.0 | 113.7 | 0.1 | 244.0 | 50.0 | OK |  |
 | B03 | AEROPUERTO INTERNACIONAL | factura_mensual_medida | 36/0 | 2,868.4 | 104.1 | 182.7 | 182.7 | 1,440.2 | 67.6 | 1,390.6 | 114.3 | 2,363.0 | 511.0 | OK |  |
 | B04 | HIPERMERCADOS TOTTUS ORIENTE SAC | factura_mensual_medida | 36/0 | 4,047.5 | 24.3 | 60.1 | 60.1 | 600.2 | 43.1 | 93.3 | 8.8 | 454.0 | 409.0 | OK |  |

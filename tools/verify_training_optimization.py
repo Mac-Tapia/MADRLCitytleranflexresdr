@@ -7,6 +7,7 @@ mitigations is accidentally removed.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 
@@ -58,6 +59,23 @@ def verify_launcher(relative_path: str, expect_parallel: bool) -> None:
             "SkipCompleted",
         ],
     )
+    if "official_training" in relative_path:
+        require_all(
+            text,
+            relative_path,
+            [
+                "MasacCriticBatchSize",
+                "MasacRnnHiddenDim",
+                "MasacQmixHiddenDim",
+                "MasacHyperHiddenDim",
+            ],
+        )
+        require("MasacCriticBatchSize = if ($IsLocal8GbGpu) { 1 } else { 64 }" in text, f"{relative_path} must use MASAC critic batch 1 on local 8GB GPUs")
+        require("MasacRnnHiddenDim = if ($IsLocal8GbGpu) { 64 } else { 256 }" in text, f"{relative_path} must use MASAC RNN hidden 64 on local 8GB GPUs")
+        require("MasacQmixHiddenDim = if ($IsLocal8GbGpu) { 32 } else { 128 }" in text, f"{relative_path} must use MASAC QMIX hidden 32 on local 8GB GPUs")
+    if "iquitos_training" in relative_path:
+        require('"--critic-batch-size", "1"' in text, f"{relative_path} must keep MASAC critic batch 1")
+        require('"--actor-sample-times", "2"' in text, f"{relative_path} must keep MASAC actor samples at 2")
     if expect_parallel:
         require_all(
             text,
@@ -84,6 +102,30 @@ def verify_visible_wrappers() -> None:
         require("-LiveOutput" not in text, f"{relative_path} must omit LiveOutput so the launcher switch remains false")
         require("-MaxConcurrentScenarioJobs 2" in text, f"{relative_path} must request 2 concurrent scenario jobs")
         require("-MaxConcurrentHeavyJobs 1" in text, f"{relative_path} must keep heavy algorithms capped at 1")
+
+
+def verify_reward_profiles() -> None:
+    data = json.loads(read_text("CityLearn/configs/citylearn_v3_madrl_training.json"))
+    expected_axis = {
+        "E1": {"flex": 0.70, "carbon": 0.15, "cost": 0.15},
+        "E2": {"flex": 0.15, "carbon": 0.70, "cost": 0.15},
+        "E3": {"flex": 0.25, "carbon": 0.15, "cost": 0.60},
+    }
+    expected_profile = {
+        "team_reward_ratio": 0.70,
+        "ev_weight": 0.12,
+        "reward_scale": 1.00,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45,
+    }
+    require(data["reward"]["axis_weights"] == expected_axis, "reward axis weights must match the validated multi-objective scenarios")
+
+    for algorithm in ("HAPPO", "MASAC", "MATD3", "MAAC"):
+        profile = data["reward"]["profiles"][algorithm]
+        require(profile["profile_name"] == f"{algorithm.lower()}_unified_comparable_v2", f"{algorithm} reward profile is not unified comparable v2")
+        require(profile["axis_weight_multipliers"] == {"flex": 1.0, "carbon": 1.0, "cost": 1.0}, f"{algorithm} axis multipliers must be neutral")
+        for key, expected in expected_profile.items():
+            require(abs(float(profile[key]) - expected) < 1.0e-9, f"{algorithm} {key}={profile[key]}, expected {expected}")
 
 
 def verify_training_common() -> None:
@@ -245,6 +287,7 @@ def main() -> int:
     verify_launcher("CityLearn/scripts/launch_citylearn_v3_official_training.ps1", expect_parallel=True)
     verify_launcher("CityLearn/scripts/launch_citylearn_v3_iquitos_training.ps1", expect_parallel=True)
     verify_visible_wrappers()
+    verify_reward_profiles()
     verify_training_common()
     verify_train_scripts()
     verify_monitors()

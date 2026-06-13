@@ -27,7 +27,7 @@ La capa v3 agrega:
 - reporte multiobjetivo por tres ejes;
 - artefactos reproducibles por corrida: datos tecnicos, checkpoints, figuras, graficas y cuadros.
 
-La fuente operativa vigente del flujo completo esta en `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`. Para resultados de entrenamiento, no se fija una carpeta historica como canonica: se usa `outputs/latest_visible_training_output_root.txt` o, si no existe, el output mas reciente con `official_full_status.json`.
+La fuente operativa vigente del flujo completo esta en `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`. Para resultados de entrenamiento, no se fija una carpeta historica como canonica: se usa `outputs/latest_visible_training_output_root.txt` o, si no existe, el output mas reciente con `official_full_status.json`.
 
 ### Sustento cientifico integrado
 

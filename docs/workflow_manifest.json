@@ -1,10 +1,11 @@
 {
   "schema_version": 2,
   "project": "MADRLCitytleranflexresdr",
-  "updated_at": "2026-06-12",
+  "updated_at": "2026-06-13",
   "purpose": "Manifest canonico del flujo dataset -> carga -> entrenamiento -> comparacion -> resultados finales.",
   "technical_reports": [
-    "docs/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md"
+    "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
+    "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md"
   ],
   "dataset": {
     "name": "citylearn_iquitos_2023_2025",
@@ -120,9 +121,33 @@
       "outputs/citylearn_v3_madrl_oficial_v4",
       "outputs/citylearn_v3_madrl_oficial_v5",
       "outputs/citylearn_v3_madrl_official_full_cuda_v2",
-      "outputs/citylearn_v3_madrl_iquitos_official_full_cuda_visible_relaunch_20260602_222217"
+      "outputs/citylearn_v3_madrl_iquitos_official_full_cuda_visible_relaunch_20260602_222217",
+      "outputs/_archive/citylearn_v3_madrl_full_20260612_223320",
+      "outputs/_archive/citylearn_v3_madrl_full_20260613_004247",
+      "outputs/_archive/citylearn_v3_madrl_oficial_v6",
+      "outputs/_archive/citylearn_v3_madrl_oficial_v7",
+      "outputs/_archive/bottleneck_dryrun_20260612_052842",
+      "outputs/_archive/bottleneck_probe_20260612_052703",
+      "outputs/_archive/concurrency_policy_dryrun"
     ],
     "canonical_current_run_rule": "Use outputs/latest_visible_training_output_root.txt when present; otherwise use the newest output directory with official_full_status.json.",
-    "final_results_rule": "Do not report final KPIs/rankings until all 12 jobs have exit_code=0 and all required_job_artifacts exist."
+    "final_results_rule": "Do not report final KPIs/rankings until all 12 jobs have exit_code=0 and all required_job_artifacts exist.",
+    "archive_layout_note": "Runs marked failed/stale/dry-run are moved to outputs/_archive/ (added 2026-06-13 reorg). outputs/runs/ is reserved for future training runs; the run currently in progress (outputs/citylearn_v3_madrl_full_20260613_010234, see outputs/latest_visible_training_output_root.txt) was left in place at outputs/ root to avoid disrupting its open file handles while status=running."
+  },
+  "modified_submodules": {
+    "policy": "All git submodules (CityLearn + the 8 under external/, including the 4 MADRL backends HARL/HAPPO, MAAC, MATD3implementation, and any MASAC implementation) may be modified as MADRL-Iquitos research contributions. Every modification must be: (1) documented in docs/contributions/<module>/CHANGES.md with date, files, description, motivation and bibliographic reference; (2) backed by docs/contributions/<module>/bibliografia.bib entries from PhD/master's theses or peer-reviewed articles published 2021-2026; (3) traceable from code via '# MADRL-IQUITOS-MOD: ver docs/contributions/<module>/CHANGES.md#<entry>' comments.",
+    "fork_workflow": "Fork the submodule's upstream repo to the project owner's GitHub account, create a dedicated branch (e.g. 'madrl-iquitos-mods'), then repoint the corresponding entry in .gitmodules (url + branch) to the fork. CityLearn is already a fork (Mac-Tapia/CityLearn, branch citylearn-v3-madrl).",
+    "modules": {
+      "CityLearn": {"role": "core simulator (fork, already editable)", "docs": "docs/contributions/CityLearn/"},
+      "external/HARL": {"role": "HAPPO MADRL backend", "docs": "docs/contributions/HARL/"},
+      "external/MAAC": {"role": "MAAC MADRL backend", "docs": "docs/contributions/MAAC/"},
+      "external/MATD3implementation": {"role": "MATD3 MADRL backend", "docs": "docs/contributions/MATD3implementation/"},
+      "external/MARL": {"role": "auxiliary MARL reference implementation", "docs": "docs/contributions/MARL/"},
+      "external/MARLlib": {"role": "auxiliary MARL library", "docs": "docs/contributions/MARLlib/"},
+      "external/MicroGrids": {"role": "microgrid sizing/reference models", "docs": "docs/contributions/MicroGrids/"},
+      "external/evcc": {"role": "EV charging control reference", "docs": "docs/contributions/evcc/"},
+      "external/prosumpy": {"role": "prosumer simulation reference", "docs": "docs/contributions/prosumpy/"}
+    },
+    "note": "MASAC backend location not yet confirmed against a dedicated submodule; verify against external/ list in .gitmodules and update this table accordingly when identified."
   }
 }

@@ -35,6 +35,7 @@ Actualizado: 2026-06-12.
 - Fix forrtl error (200): `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` y `PYTHONUNBUFFERED=1` aplicados al launcher.
 - Monitor en tiempo real: refresca cada 5 s con pesos OE1/OE2/OE3, pasos, episodios y KPIs energeticos.
 - Suite de pruebas estadisticas completa: Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U y Wilcoxon signed-rank.
+- Reorganizacion documental completa (Fases 0-8) y politica de paralelismo E1/E2/E3 confirmadas y registradas en `docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md`: se mantiene `MaxConcurrentScenarioJobs=2` (HAPPO/MATD3), `MaxConcurrentHeavyJobs=1` (MASAC/MAAC), `torch_threads=12`, `GpuProfile=local4060_fast`.
 
 ## Ejes del proyecto
 
@@ -63,7 +64,7 @@ Dataset citylearn_iquitos_2023_2025 (17 edificios Iquitos, 2023-2025)
   -> Resultados para tesis
 ```
 
-Contrato operativo actualizado: `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`.
+Contrato operativo actualizado: `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`.
 
 Componentes principales:
 
@@ -157,7 +158,7 @@ Los insumos reales estan en `CityLearn/data/buildingcsv/`:
 
 La destilacion aplica: `NSL_residual = E_medido_mes - cooling_demand/COP - dhw_demand/COP`. Balance mensual garantizado con delta < 0.1%. Meses faltantes pronosticados con `calendar_month_mean_overlap_scaled`.
 
-Documentacion completa del pipeline: `docs/dataset_construction_pipeline.md`.
+Documentacion completa del pipeline: `docs/architecture/dataset_construction_pipeline.md`.
 
 Regenerar el dataset desde los insumos:
 
@@ -212,7 +213,7 @@ Los cuatro MADRL usan `CityLearnV3MADRLRewardFunction`. La recompensa combina pe
 - `team_reward = mean(reward_i)` — señal colectiva distrital; `mixed_reward_i = 0.30*reward_i + 0.70*team_reward`.
 - Control distrital es **emergente**: no hay agente distrital, el comportamiento coordinado surge de las 17 politicas aprendidas actuando en el mismo entorno fisico.
 - La ejecucion permanece completamente descentralizada: cada politica actua solo con oᵢ local, sin comunicacion entre edificios.
-- Documentacion completa: `docs/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md`.
+- Documentacion completa: `docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md`.
 
 Validar el contrato:
 
@@ -476,20 +477,21 @@ Comparar CityLearn v2 contra CityLearn v3 MADRL:
 
 | Documento | Ruta |
 | --------- | ---- |
-| **Pipeline dataset** | `docs/dataset_construction_pipeline.md` |
-| **Flujo operativo vigente** | `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` |
+| **Pipeline dataset** | `docs/architecture/dataset_construction_pipeline.md` |
+| **Flujo operativo vigente** | `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` |
 | **Manifest machine-readable del flujo** | `docs/workflow_manifest.json` |
-| **Justificacion recompensas multiobjetivo** | `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` |
-| **Justificacion diseno experimental** | `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` |
-| **Cooperacion, coordinacion y control distrital** | `docs/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md` |
-| **Informe optimizacion VRAM** | `docs/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md` |
-| Arquitectura y flujo | `docs/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
-| Destilacion dataset Iquitos | `docs/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md` |
-| Auditoria tecnica skill MADRL | `docs/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md` |
+| **Justificacion recompensas multiobjetivo** | `docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` |
+| **Justificacion diseno experimental** | `docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` |
+| **Cooperacion, coordinacion y control distrital** | `docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md` |
+| **Informe optimizacion VRAM** | `docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md` |
+| **Registro reorganizacion + politica paralelismo** | `docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md` |
+| Arquitectura y flujo | `docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
+| Destilacion dataset Iquitos | `docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md` |
+| Auditoria tecnica skill MADRL | `docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md` |
 | Tutorial notebook | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |
 | Quickstart notebook | `CityLearn/examples/madrl_citylearn_v3_quickstart.ipynb` |
-| Informe de tesis | `docs/INFORME_TESIS_MADRL_V1_COMPLETO.docx` |
-| Plan de tesis | `docs/PLAN_TESIS_MADRL_CITYLEARN_V3.docx` |
+| Informe de tesis | `docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx` |
+| Plan de tesis | `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3.docx` |
 
 ## Reproducibilidad
 

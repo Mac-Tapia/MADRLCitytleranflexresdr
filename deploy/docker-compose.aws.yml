@@ -1,0 +1,80 @@
+# Variante para despliegue en AWS (Fase 8 demo) — pensada para EC2 con Docker
+# Compose o como referencia para tareas ECS. Difiere de docker-compose.yml en:
+#   - Imágenes referenciadas desde ECR en lugar de build local.
+#   - Modelo y dataset montados desde volúmenes EBS / descargados de S3
+#     (ver aws/README_DEPLOY_AWS.md para el script de sincronización).
+#   - mqtt-broker puede sustituirse por AWS IoT Core (fuera de alcance de
+#     esta demo; se deja Mosquitto por simplicidad).
+#
+# Uso (en la instancia EC2, tras `docker login` a ECR y `aws s3 sync`):
+#   docker compose -f docker-compose.aws.yml up -d
+
+version: "3.9"
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  inference:
+    image: ${ECR_REGISTRY}/${ECR_REPO_INFERENCE}:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MODEL_PATH=/models/winning_agent.onnx
+      - MODEL_METADATA_PATH=/models/winning_agent.metadata.json
+    volumes:
+      - /opt/madrl/models:/models:ro
+    ports:
+      - "8000:8000"
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /madrl-iquitos/inference
+        awslogs-region: ${AWS_REGION}
+        awslogs-stream-prefix: inference
+
+  plant-adapter:
+    image: ${ECR_REGISTRY}/${ECR_REPO_PLANT_ADAPTER}:latest
+    restart: unless-stopped
+    depends_on:
+      - inference
+      - mqtt-broker
+    env_file: .env
+    environment:
+      - INFERENCE_SERVICE_URL=http://inference:8000
+      - ADAPTER_MODE=replay
+      - ADAPTER_PUBLISH_MQTT=true
+      - MQTT_HOST=mqtt-broker
+      - REPLAY_DATASET_DIR=/data/citylearn_iquitos_2023_2025
+    volumes:
+      - /opt/madrl/data/citylearn_iquitos_2023_2025:/data/citylearn_iquitos_2023_2025:ro
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /madrl-iquitos/plant-adapter
+        awslogs-region: ${AWS_REGION}
+        awslogs-stream-prefix: plant-adapter
+
+  dashboard:
+    image: ${ECR_REGISTRY}/${ECR_REPO_DASHBOARD}:latest
+    restart: unless-stopped
+    depends_on:
+      - inference
+      - mqtt-broker
+    env_file: .env
+    environment:
+      - INFERENCE_SERVICE_URL=http://inference:8000
+      - MQTT_HOST=mqtt-broker
+    ports:
+      - "8501:8501"
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /madrl-iquitos/dashboard
+        awslogs-region: ${AWS_REGION}
+        awslogs-stream-prefix: dashboard

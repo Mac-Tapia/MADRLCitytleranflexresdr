@@ -79,8 +79,13 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
     manifest = load_json(WORKFLOW_MANIFEST)
     technical_reports = manifest.get("technical_reports", [])
     require(
-        "docs/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md" in technical_reports,
+        "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md" in technical_reports,
         "workflow_manifest must reference the CityLearn MADRL VRAM optimization report",
+        errors,
+    )
+    require(
+        "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md" in technical_reports,
+        "workflow_manifest must reference the MADRL multi-objective reward validation report",
         errors,
     )
     for report_path in technical_reports:

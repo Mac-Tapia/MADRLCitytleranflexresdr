@@ -53,6 +53,7 @@ htmlcov/
 
 # Data y Resultados (generados, no versionados)
 outputs/
+data/cache/
 data/raw/**/*.csv
 data/raw/**/*.json
 data/processed/**/*.pkl

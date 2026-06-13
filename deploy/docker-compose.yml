@@ -1,0 +1,67 @@
+# Stack de demo local (Fase 8) — inference + plant-adapter (replay) + dashboard + broker MQTT.
+#
+# Uso:
+#   1. cp .env.example .env  y ajustar variables si es necesario.
+#   2. Colocar el modelo ganador exportado en ./models/ (opcional — si no
+#      existe, inference levanta en modo "stub" con política aleatoria).
+#   3. Colocar el dataset CityLearn Iquitos en ./data/citylearn_iquitos_2023_2025
+#      (o ajustar REPLAY_DATASET_DIR).
+#   4. docker compose up --build
+#
+# Servicios:
+#   - inference (puerto 8000): API de inferencia ONNX (o stub).
+#   - plant-adapter: replay del dataset, llama a inference, publica por MQTT.
+#   - dashboard (puerto 8501): panel Streamlit.
+#   - mqtt-broker (puerto 1883): Eclipse Mosquitto.
+
+version: "3.9"
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  inference:
+    build: ./inference
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MODEL_PATH=/models/winning_agent.onnx
+      - MODEL_METADATA_PATH=/models/winning_agent.metadata.json
+    volumes:
+      - ./models:/models:ro
+    ports:
+      - "8000:8000"
+
+  plant-adapter:
+    build: ./plant-adapter
+    restart: unless-stopped
+    depends_on:
+      - inference
+      - mqtt-broker
+    env_file: .env
+    environment:
+      - INFERENCE_SERVICE_URL=http://inference:8000
+      - ADAPTER_MODE=replay
+      - ADAPTER_PUBLISH_MQTT=true
+      - MQTT_HOST=mqtt-broker
+      - REPLAY_DATASET_DIR=/data/citylearn_iquitos_2023_2025
+    volumes:
+      - ./data/citylearn_iquitos_2023_2025:/data/citylearn_iquitos_2023_2025:ro
+
+  dashboard:
+    build: ./dashboard
+    restart: unless-stopped
+    depends_on:
+      - inference
+      - mqtt-broker
+    env_file: .env
+    environment:
+      - INFERENCE_SERVICE_URL=http://inference:8000
+      - MQTT_HOST=mqtt-broker
+    ports:
+      - "8501:8501"

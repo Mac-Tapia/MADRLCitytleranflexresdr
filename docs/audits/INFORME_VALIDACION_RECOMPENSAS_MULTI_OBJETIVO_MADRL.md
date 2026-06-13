@@ -32,6 +32,8 @@ La causa no fue el paralelismo de escenarios. MASAC ya corria con concurrencia p
 
 Actualizacion posterior: el relanzador de emergencia `scripts/restart_masac_matd3_maac.ps1` deja de forzar `TorchThreads=12` y `LiveProgressInterval=250`; ahora hereda los defaults de `local4060_fast` (`TorchThreads=8`, `LiveProgressInterval=1000`) y usa `-SkipCompleted`. Esto reduce sobrecarga de CPU/IO sin subir `critic_batch_size`, porque el proceso MASAC activo ya usa ~5.7 GiB de VRAM y aumentar batch en una RTX 4060 de 8 GB puede reintroducir OOM.
 
+Actualizacion de backend MASAC: `CityLearn/scripts/masac_runtime_optimizations.py` instala un parche runtime sobre `external/MARL` sin modificar el submodulo. El parche convierte el replay mini-batch una sola vez por actualizacion, intenta precargarlo en CUDA con fallback automatico a CPU si hay OOM, cachea la matriz identidad de agentes y elimina copias `.cuda()` repetidas dentro del loop temporal de 8,760 pasos. Esto ataca el cuello observado de CPU/MASAC manteniendo reproducibilidad del repositorio.
+
 ## 2. Recompensa multiobjetivo validada
 
 La implementacion real usa una recompensa comun para los cuatro backends. Esto evita que HAPPO, MASAC, MATD3 y MAAC optimicen objetivos distintos y permite comparar resultados por algoritmo sin sesgo de funcion de recompensa.

@@ -24,4 +24,5 @@ Set-Location $ProjectRoot
     -StartFromAlgorithm masac `
     -SkipCompleted `
     -MasacBufferSize 2 `
-    -MasacMaxReplayBufferGib 3
+    -MasacMaxReplayBufferGib 3 `
+    -MasacPreloadBatchDevice auto

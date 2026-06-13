@@ -68,14 +68,18 @@ def verify_launcher(relative_path: str, expect_parallel: bool) -> None:
                 "MasacRnnHiddenDim",
                 "MasacQmixHiddenDim",
                 "MasacHyperHiddenDim",
+                "MasacPreloadBatchDevice",
             ],
         )
         require("MasacCriticBatchSize = if ($IsLocal8GbGpu) { 1 } else { 64 }" in text, f"{relative_path} must use MASAC critic batch 1 on local 8GB GPUs")
         require("MasacMaxReplayBufferGib = if ($IsLocal8GbGpu) { 3.0 } else { 8 }" in text, f"{relative_path} must allow the validated 2.74 GiB MASAC replay estimate on local 8GB GPUs")
         require("MasacRnnHiddenDim = if ($IsLocal8GbGpu) { 64 } else { 256 }" in text, f"{relative_path} must use MASAC RNN hidden 64 on local 8GB GPUs")
         require("MasacQmixHiddenDim = if ($IsLocal8GbGpu) { 32 } else { 128 }" in text, f"{relative_path} must use MASAC QMIX hidden 32 on local 8GB GPUs")
+        require('"--masac-preload-batch-device", "$MasacPreloadBatchDevice"' in text, f"{relative_path} must pass optimized MASAC batch preload mode")
     if "iquitos_training" in relative_path:
         require("$MasacMaxReplayBufferGib = if ($IsLocal8GbGpu) { 3.0 } else { 8 }" in text, f"{relative_path} must allow the validated 2.74 GiB MASAC replay estimate on local 8GB GPUs")
+        require('$MasacPreloadBatchDevice = "auto"' in text, f"{relative_path} must default MASAC batch preload to auto")
+        require('"--masac-preload-batch-device", "$MasacPreloadBatchDevice"' in text, f"{relative_path} must pass optimized MASAC batch preload mode")
         require('"--critic-batch-size", "1"' in text, f"{relative_path} must keep MASAC critic batch 1")
         require('"--actor-sample-times", "2"' in text, f"{relative_path} must keep MASAC actor samples at 2")
     if expect_parallel:
@@ -111,6 +115,7 @@ def verify_visible_wrappers() -> None:
     require("-LiveProgressInterval 250" not in restart_text, "MASAC restart helper must not override local4060_fast LiveProgressInterval=1000")
     require("-SkipCompleted" in restart_text, "MASAC restart helper must skip completed runs on resume")
     require("-MasacMaxReplayBufferGib 3" in restart_text, "MASAC restart helper must keep the validated 3 GiB replay guard")
+    require("-MasacPreloadBatchDevice auto" in restart_text, "MASAC restart helper must enable optimized batch preload auto mode")
 
 
 def verify_reward_profiles() -> None:
@@ -130,6 +135,7 @@ def verify_reward_profiles() -> None:
     require(data["reward"]["axis_weights"] == expected_axis, "reward axis weights must match the validated multi-objective scenarios")
     require(float(data["algorithms"]["MASAC"]["cli"]["max_replay_buffer_gib"]) >= 3.0, "MASAC replay guard must cover the validated 2.74 GiB estimate")
     require(int(data["algorithms"]["MASAC"]["cli"]["buffer_size"]) == 2, "MASAC local buffer size must remain 2 for 8GB GPU safety")
+    require(data["algorithms"]["MASAC"]["cli"]["masac_preload_batch_device"] == "auto", "MASAC optimized batch preload mode must default to auto")
 
     for algorithm in ("HAPPO", "MASAC", "MATD3", "MAAC"):
         profile = data["reward"]["profiles"][algorithm]
@@ -178,6 +184,14 @@ def verify_train_scripts() -> None:
                 "cuda_memory_fraction=args.cuda_memory_fraction",
             ],
         )
+    masac_text = read_text("CityLearn/scripts/train_citylearn_v3_masac.py")
+    require("install_masac_runtime_optimizations" in masac_text, "MASAC train script must install runtime backend optimizations")
+    require("--masac-preload-batch-device" in masac_text, "MASAC train script must expose optimized batch preload mode")
+
+    masac_patch = read_text("CityLearn/scripts/masac_runtime_optimizations.py")
+    require("PATCH_VERSION = \"citylearn_masac_runtime_v1\"" in masac_patch, "MASAC runtime optimization patch version missing")
+    require("CUDA batch preload uses auto fallback to CPU after OOM" in masac_patch, "MASAC runtime patch must keep OOM fallback")
+    require("per-timestep .cuda() calls are removed" in masac_patch, "MASAC runtime patch must document repeated CUDA-copy removal")
 
 
 def verify_monitors() -> None:

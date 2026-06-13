@@ -71,9 +71,11 @@ def verify_launcher(relative_path: str, expect_parallel: bool) -> None:
             ],
         )
         require("MasacCriticBatchSize = if ($IsLocal8GbGpu) { 1 } else { 64 }" in text, f"{relative_path} must use MASAC critic batch 1 on local 8GB GPUs")
+        require("MasacMaxReplayBufferGib = if ($IsLocal8GbGpu) { 3.0 } else { 8 }" in text, f"{relative_path} must allow the validated 2.74 GiB MASAC replay estimate on local 8GB GPUs")
         require("MasacRnnHiddenDim = if ($IsLocal8GbGpu) { 64 } else { 256 }" in text, f"{relative_path} must use MASAC RNN hidden 64 on local 8GB GPUs")
         require("MasacQmixHiddenDim = if ($IsLocal8GbGpu) { 32 } else { 128 }" in text, f"{relative_path} must use MASAC QMIX hidden 32 on local 8GB GPUs")
     if "iquitos_training" in relative_path:
+        require("$MasacMaxReplayBufferGib = if ($IsLocal8GbGpu) { 3.0 } else { 8 }" in text, f"{relative_path} must allow the validated 2.74 GiB MASAC replay estimate on local 8GB GPUs")
         require('"--critic-batch-size", "1"' in text, f"{relative_path} must keep MASAC critic batch 1")
         require('"--actor-sample-times", "2"' in text, f"{relative_path} must keep MASAC actor samples at 2")
     if expect_parallel:
@@ -119,6 +121,8 @@ def verify_reward_profiles() -> None:
         "peak_weight": 0.45,
     }
     require(data["reward"]["axis_weights"] == expected_axis, "reward axis weights must match the validated multi-objective scenarios")
+    require(float(data["algorithms"]["MASAC"]["cli"]["max_replay_buffer_gib"]) >= 3.0, "MASAC replay guard must cover the validated 2.74 GiB estimate")
+    require(int(data["algorithms"]["MASAC"]["cli"]["buffer_size"]) == 2, "MASAC local buffer size must remain 2 for 8GB GPU safety")
 
     for algorithm in ("HAPPO", "MASAC", "MATD3", "MAAC"):
         profile = data["reward"]["profiles"][algorithm]

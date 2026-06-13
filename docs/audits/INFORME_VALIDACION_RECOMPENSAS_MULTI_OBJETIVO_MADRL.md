@@ -20,7 +20,7 @@ Correccion aplicada:
 
 - El perfil `local4060_fast` conserva `MaxConcurrentScenarioJobs=2`, pero MASAC/MAAC siguen con `MaxConcurrentHeavyJobs=1`.
 - MASAC en 8 GB baja su memoria por actualizacion:
-  - `max_replay_buffer_gib: 2.0`.
+  - `max_replay_buffer_gib: 3.0`; el replay buffer estimado con 17 edificios, `discrete_action_mode=axis`, 8,760 pasos y `buffer_size=2` es 2.74 GiB, por lo que 2.0 GiB bloqueaba el arranque antes de entrenar.
   - `buffer_size: 2`.
   - `critic_batch_size: 1`.
   - `actor_sample_times: 2`.

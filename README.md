@@ -20,24 +20,41 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 Actualizado: 2026-06-15.
 
+### Sesion de entrenamiento activa
+
+| Algoritmo | E1 | E2 | E3 | Perfil |
+| --------- | -- | -- | --- | ------ |
+| **HAPPO** | queued (v3 re-run) | queued | queued | `happo_unified_comparable_v3` |
+| **MASAC** | queued (v3 re-run) | queued | queued | `masac_unified_comparable_v3` |
+| **MATD3** | **running** ~68% | **running** ~68% | queued | `matd3_unified_comparable_v3` ✅ |
+| **MAAC** | queued | queued | queued | `maac_unified_comparable_v3` |
+
+- Sesion: `citylearn_v3_madrl_full_20260613_010234` — lanzada 2026-06-13.
+- MATD3 E1+E2: paso global ~30 000/43 800 (68%), episodio 3/5, checkpoints activos (17 politicas), perfil v3 confirmado.
+- HAPPO y MASAC: directorios eliminados (resultados v2 descartados). Re-run pendiente con perfil v3 via `scripts/restart_happo_masac_v3.ps1` al terminar MATD3+MAAC.
+- MAAC: en cola, inicia tras completar MATD3.
+- Monitor: `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1 -OutputRoot outputs\citylearn_v3_madrl_full_20260613_010234`.
+
+### Cambios v3 aplicados (desde 2026-06-14)
+
+- **Bug SOC corregido**: penalidad de salida EV tenia signo invertido en v2 (`+25` en lugar de `-25`); en v3 es `-abs(25)*mult` (agente ya no aprende a NO cargar EVs).
+- **ev_weight**: 0.12 → **0.25** (mayor peso al cumplimiento EV).
+- **`_ev_service_constraint_term()`**: nueva restriccion de urgencia por salida — penaliza en proporcion al deficit de SOC y horas restantes.
+- **V2G habilitado**: 31 tomas de camioneta con `bidirectional_v2g`, `max_discharging_power=7.4 kW`.
+- Submodulo CityLearn commits: `afb68187` (reward fix) + `acc0ada6` (V2G schema).
+
+### Configuracion fija
+
 - Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 222 CSV activos auditados, 185 tomas EV Mode 3, 96 equipos fisicos doble toma, 1,850 EV en pool y 17 maquinas controladas).
-- EV/V2G validado: las 31 tomas de camioneta institucional/logistica son bidireccionales (`max_discharging_power=7.4 kW`, `power_flow_direction=bidirectional_v2g`); moto lineal y mototaxi quedan solo carga. CityLearn expone 31 acciones EV con limite bajo `-1` y 154 acciones EV con limite bajo `0`.
-- Dataset regenerado con parametros reales de `CityLearn/data/buildingcsv/building.csv`: nombres oficiales, areas techadas exactas, tipos de uso y sistemas de AC reales por edificio.
-- Non-shiftable load destilada desde mediciones mensuales reales `B_02.csv` a `B_17.csv` (balance mensual delta < 0.1%).
-- Entrenamiento oficial vigente: no se fija una corrida antigua como activa en el README. La corrida vigente se obtiene desde `outputs/latest_visible_training_output_root.txt`; si no existe, usar el `outputs/*/official_full_status.json` mas reciente. Despues de cambios de schema/recompensa/V2G se debe reiniciar desde cero para no mezclar artefactos de configuraciones anteriores.
+- EV/V2G validado: las 31 tomas de camioneta institucional/logistica son bidireccionales (`max_discharging_power=7.4 kW`, `power_flow_direction=bidirectional_v2g`); moto lineal y mototaxi quedan solo carga.
+- Entorno unico: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1).
+- Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v3`**: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
+- Horizonte oficial: 5 episodios x 8760 pasos = 43 800 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
 - Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
-- Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
-- Ejecucion local: `HAPPO/MASAC/MATD3/MAAC x E1/E2/E3` (4 algoritmos x 3 ejes). En RTX 4060 Laptop 8 GB el modo operativo usa monitor visible y permite hasta 2 escenarios concurrentes; MASAC/MAAC quedan en 1 por etapa pesada. `LiveOutput` queda como modo opcional secuencial para depuracion visual rica.
-- Entorno unico del proyecto: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1). El verificador bloquea ambientes duplicados `.venv*` en la raiz.
-- Perfil local GPU-tuned activo para RTX 4060 Laptop 8 GB (torch 2.8.0+cu126).
-- Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v3`** (todos los algoritmos usan valores comparables): team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00, penalidad SOC/servicio EV reforzada. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
-- Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada sin comunicacion entre agentes. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
-- Determinacion O.G.: Score_OG=mean(KPI_flex_norm, KPI_co2_norm, KPI_cost_norm) con pesos iguales [1/3,1/3,1/3]; verificado con dominancia de Pareto y ranking de Borda.
-- Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes; readiness CityLearn v3: `python39_core_ready=true`.
-- Fix forrtl error (200): `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` y `PYTHONUNBUFFERED=1` aplicados al launcher.
-- Monitor en tiempo real: refresca cada 5 s con pesos OE1/OE2/OE3, pasos, episodios y KPIs energeticos.
-- Suite de pruebas estadisticas completa: Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U y Wilcoxon signed-rank.
-- Reorganizacion documental completa (Fases 0-8) y politica de paralelismo E1/E2/E3 confirmadas y registradas en `docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md`: se mantiene `MaxConcurrentScenarioJobs=2` (HAPPO/MATD3), `MaxConcurrentHeavyJobs=1` (MASAC/MAAC), `torch_threads=12`, `GpuProfile=local4060_fast`.
+- Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
+- Perfil GPU: `local4060_fast` — RTX 4060 Laptop 8 GB, max 2 escenarios concurrentes (HAPPO/MATD3), max 1 para MASAC/MAAC.
+- Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes; `python39_core_ready=true`.
+- Suite de pruebas estadisticas: Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U y Wilcoxon signed-rank.
 
 ## Ejes del proyecto
 

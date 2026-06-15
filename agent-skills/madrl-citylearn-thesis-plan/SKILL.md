@@ -355,7 +355,7 @@ El experimento oficial ejecuta **12 corridas por etapas de algoritmo** (4 algori
 | **E3 Costos** | happo/E3_s0 | masac/E3_s0 | matd3/E3_s0 | maac/E3_s0 |
 
 Launcher: `CityLearn/scripts/launch_citylearn_v3_official_training.ps1 -Scenario ALL`
-Condiciones: 8,760 pasos/episodio, 5 episodios, seed=0, CUDA habilitado, RTX 4060 Laptop 8 GB. Sesión activa: `citylearn_v3_madrl_full_20260613_010234` (lanzada 2026-06-13; MATD3 E1+E2 en paralelo; HAPPO+MASAC completados en v2 → re-run pendiente con v3 via `scripts/restart_happo_masac_v3.ps1`; MAAC en cola). Perfil `unified_comparable_v3` activo. Justificación del paralelismo: `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`.
+Condiciones: 8,760 pasos/episodio, 5 episodios, seed=0, CUDA habilitado, RTX 4060 Laptop 8 GB. **Sesión definitiva:** lanzar `scripts/restart_happo_masac_v3.ps1` tras MAAC E3 actual → crea `citylearn_v3_madrl_full_YYYYMMDD_v4`. TODOS los algoritmos entrenan desde cero. **Perfil `unified_comparable_v4`**: `bess_cycle_weight=0.10` (penalty ciclado BESS, Wan et al. 2022), `ev_urgency_hours=8.0` (4h→8h, Pinto et al. 2022), `ev_departure_deficit_weight=0.70`, `ev_idle_deficit_weight=0.25`. Fix `ev_type_code` (insertion order) activo. No hay "HAPPO skipped v2" ni "MASAC skipped v2" en sesión definitiva. Sesión `20260613_010234` conservada solo como referencia exploratoria. Justificación del paralelismo: `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`.
 
 ---
 

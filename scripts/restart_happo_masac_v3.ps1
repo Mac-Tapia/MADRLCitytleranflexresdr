@@ -2,8 +2,15 @@ $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 Set-Location $ProjectRoot
 
-$OutputRoot = "outputs\citylearn_v3_madrl_full_20260613_010234"
-$OutputRootFull = Join-Path $ProjectRoot $OutputRoot
+# Sesion definitiva v4 — nueva sesion con timestamp al momento de ejecucion.
+# Entrena TODOS los algoritmos (HAPPO, MASAC, MATD3, MAAC) con perfil v4:
+#   · bess_cycle_weight=0.10  (penalty ciclado BESS, Wan et al. 2022)
+#   · ev_urgency_hours=8.0    (ventana urgencia EV 4h->8h, Pinto et al. 2022)
+#   · ev_departure_deficit_weight=0.70
+#   · ev_idle_deficit_weight=0.25
+#   · ev_type_code fix activo (insertion order, commit 2ee72c72)
+$SessionStamp = Get-Date -Format "yyyyMMdd_HHmmss"
+$OutputRoot   = "outputs\citylearn_v3_madrl_full_${SessionStamp}_v4"
 
 # ── Guardar referencia para el monitor ──────────────────────────────────────
 New-Item -ItemType Directory -Path "outputs" -Force | Out-Null
@@ -11,36 +18,29 @@ Set-Content -Path "outputs\latest_visible_training_output_root.txt" -Value $Outp
 
 Write-Host ""
 Write-Host "================================================================" -ForegroundColor Cyan
-Write-Host "  RE-RUN HAPPO + MASAC con perfil v3 (EV SOC reforzado + V2G)" -ForegroundColor Cyan
+Write-Host "  ENTRENAMIENTO DEFINITIVO v4 — TODOS LOS ALGORITMOS" -ForegroundColor Cyan
 Write-Host "================================================================" -ForegroundColor Cyan
-Write-Host "  OutputRoot : $OutputRoot"
-Write-Host "  Perfil     : *_unified_comparable_v3 (ev_weight=0.25, bug SOC corregido)"
-Write-Host "  Schema     : V2G habilitado para camionetas (31 chargers bidireccionales)"
+Write-Host "  Sesion  : $OutputRoot"
+Write-Host "  Perfil  : *_unified_comparable_v4"
+Write-Host "  Fix     : ev_type_code (insertion order) + BESS cycling penalty"
+Write-Host "  EV      : urgency_hours=8h, departure_weight=0.70"
 Write-Host ""
 
 # ── Verificar que no haya training activo ──────────────────────────────────
-$activePython = Get-Process python* -ErrorAction SilentlyContinue | Where-Object { $_.WorkingSet -gt 10MB }
+$activePython = Get-Process python* -ErrorAction SilentlyContinue |
+    Where-Object { $_.WorkingSet -gt 100MB }
 if ($activePython) {
-    Write-Host "ADVERTENCIA: Hay procesos Python activos con memoria significativa:" -ForegroundColor Yellow
-    $activePython | ForEach-Object { Write-Host "  PID $($_.Id)  RAM $([math]::Round($_.WorkingSet/1MB))MB  CPU $([math]::Round($_.CPU))s" }
-    $resp = Read-Host "¿Continuar de todas formas? (s/N)"
+    Write-Host "ADVERTENCIA: Hay procesos Python con alto consumo de RAM:" -ForegroundColor Yellow
+    $activePython | ForEach-Object {
+        Write-Host "  PID $($_.Id)  RAM $([math]::Round($_.WorkingSet/1MB))MB  CPU $([math]::Round($_.CPU))s"
+    }
+    $resp = Read-Host "Espera a que el MAAC E3 actual termine. Continuar de todas formas? (s/N)"
     if ($resp -notmatch '^[sS]') {
         Write-Host "Cancelado." -ForegroundColor Red; exit 0
     }
 }
 
-# ── Eliminar resultados v2 de HAPPO y MASAC ────────────────────────────────
-Write-Host "Eliminando resultados v2 de HAPPO y MASAC..." -ForegroundColor Yellow
-foreach ($alg in @("happo", "masac")) {
-    $algDir = Join-Path $OutputRootFull $alg
-    if (Test-Path $algDir) {
-        Remove-Item -Recurse -Force $algDir
-        Write-Host "  Eliminado: $alg\" -ForegroundColor DarkGray
-    }
-}
-
-Write-Host ""
-Write-Host "Lanzando HAPPO + MASAC v3 (MATD3 y MAAC seran saltados via SkipCompleted)..." -ForegroundColor Green
+Write-Host "Lanzando HAPPO -> MASAC -> MATD3 -> MAAC (3 escenarios cada uno)..." -ForegroundColor Green
 Write-Host ""
 
 & "CityLearn\scripts\launch_citylearn_v3_official_training.ps1" `
@@ -63,13 +63,17 @@ Write-Host ""
     -Cuda `
     -LiveOutput:$false `
     -StartFromAlgorithm happo `
-    -SkipCompleted `
     -MasacBufferSize 2 `
     -MasacMaxReplayBufferGib 3 `
     -MasacPreloadBatchDevice auto
 
 $exitCode = $LASTEXITCODE
 Write-Host ""
-Write-Host "Re-run HAPPO+MASAC v3 finalizado con codigo: $exitCode" -ForegroundColor $(if ($exitCode -eq 0) { 'Green' } else { 'Red' })
+if ($exitCode -eq 0) {
+    Write-Host "Entrenamiento definitivo v4 COMPLETADO." -ForegroundColor Green
+    Write-Host "Sesion: $OutputRoot" -ForegroundColor Green
+} else {
+    Write-Host "Entrenamiento finalizado con codigo: $exitCode" -ForegroundColor Red
+}
 Read-Host "Presiona Enter para cerrar"
 exit $exitCode

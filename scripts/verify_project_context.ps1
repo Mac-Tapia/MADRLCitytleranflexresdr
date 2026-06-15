@@ -15,6 +15,17 @@ if ($origin -ne $expectedOrigin) {
     throw "Wrong git origin. Expected '$expectedOrigin' but found '$origin'."
 }
 
+$canonicalVenvName = ".venv39-citylearn-v3"
+$unexpectedVenvs = @(
+    Get-ChildItem -LiteralPath $rootNative -Force -Directory |
+        Where-Object { $_.Name -like ".venv*" -and $_.Name -ne $canonicalVenvName }
+)
+
+if ($unexpectedVenvs.Count -gt 0) {
+    $names = ($unexpectedVenvs | ForEach-Object { $_.Name } | Sort-Object -Unique) -join ", "
+    throw "Unexpected Python environment(s) in project root: $names. Use only '$canonicalVenvName' for this project."
+}
+
 $skillsRoot = Join-Path $rootNative "tools\skills"
 
 if (Test-Path -LiteralPath $skillsRoot) {

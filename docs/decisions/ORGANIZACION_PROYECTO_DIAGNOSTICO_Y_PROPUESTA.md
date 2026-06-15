@@ -57,8 +57,8 @@ El flujo oficial ya está documentado de forma excelente en `docs/workflow_manif
 
 ### 2.2 Problemas identificados
 
-**A. Entornos virtuales versionados dentro del repo de trabajo**
-`.venv/` y `.venv39-citylearn-v3/` viven en la raíz del proyecto (con `.exe`, site-packages completos). Aunque tengan su propio `.gitignore` y no se commiteen, inflan cualquier operación de indexado/búsqueda, IDEs, backups y `du`, y mezclan "entorno de ejecución" con "código fuente". Dos entornos paralelos (uno genérico + uno fijado a Python 3.9 para CityLearn v3) además sugiere que la gestión de dependencias no está unificada.
+**A. Entorno virtual dentro del repo de trabajo**
+El proyecto mantiene un único entorno local canónico: `.venv39-citylearn-v3/` con Python 3.9 para CityLearn v3, Ray 1.8 y PyTorch CUDA. El entorno genérico `.venv/` fue eliminado porque usaba Python 3.14, no tenía `pip` funcional y no cargaba el stack CityLearn. `scripts/verify_project_context.ps1` falla si aparece cualquier `.venv*` distinto del entorno canónico, para evitar volver a duplicar ambientes.
 
 **B. Artefactos de build/empaquetado obsoletos commiteados junto al código**
 `build/lib/uc3m/...` y `dist/uc3m-1.0.0-py3-none-any.whl` son productos de `setup.py build`/`pip wheel`. No deberían vivir en el repo de trabajo; son regenerables y quedan desactualizados respecto a `uc3m/` real (riesgo de confusión: "¿edito `uc3m/train.py` o `build/lib/uc3m/train.py`?").
@@ -195,7 +195,7 @@ Estos cambios reducen ruido sin reorganizar nada conceptual:
 
 1. **`build/` y `dist/`**: añadir a `.gitignore` (si no lo están) y borrar del working tree — son regenerables con `pip install -e .` / `python -m build`.
 2. **`__pycache__/`, `.pytest_cache/`** en la raíz: confirmar que están en `.gitignore` y borrarlos del working tree periódicamente.
-3. **`.venv/` y `.venv39-citylearn-v3/`**: evaluar si ambos son necesarios; si `.venv` no se usa activamente, documentar en `AGENTS.md`/README cuál es el entorno canónico para evitar ambigüedad ("¿con qué venv corro esto?"). Considerar moverlos fuera del árbol del repo (p.ej. una carpeta hermana) si el IDE/herramientas lo permiten, para que `find`/búsquedas/backups no los recorran.
+3. **Entorno Python**: mantener solo `.venv39-citylearn-v3/` como entorno canónico del proyecto. No recrear `.venv/` ni otros `.venv*`; el verificador de contexto bloquea entornos duplicados en la raíz.
 4. **`.sixth/`, `.claude/`**: si están vacíos o son cachés de herramientas, añadir a `.gitignore`.
 5. **`.markdownlint.json`**: ya existe — buena señal de que hay intención de lint en docs; se podría extender con un hook de pre-commit que también valide que cada nuevo run en `outputs/runs/` tenga su entrada correspondiente actualizada en `latest_visible_training_output_root.txt`.
 

@@ -7,6 +7,7 @@ Muestra las 12 columnas de cada edificio con estadisticas resumidas.
 import pandas as pd
 import numpy as np
 import json
+import sys
 from pathlib import Path
 
 BASE = Path("CityLearn/data/datasets/citylearn_iquitos_2023_2025")
@@ -15,6 +16,9 @@ DISTILLATION_REPORT = Path("tools/dataset_docs/distillation_report.csv")
 PRICING = BASE / "pricing.csv"
 EXPECTED_ROWS = 26304
 PEAK_HOURS = {18, 19, 20, 21, 22}
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from dimension_ev_chargers import build_charger_config  # noqa: E402
 
 DEFAULT_NAMES = {
     1:'Electro Oriente S.A.',   2:'Municipalidad San Juan Bautista',      3:'Aeropuerto IQT',
@@ -46,6 +50,7 @@ def load_names() -> dict[int, str]:
 
 
 NAMES = load_names()
+EV_CONFIG = build_charger_config()
 
 COLS_12 = ['month','hour','day_type','daylight_savings_status',
            'indoor_dry_bulb_temperature','average_unmet_cooling_setpoint_difference',
@@ -289,8 +294,11 @@ for bid in range(1, 18):
     building = schema.get("buildings", {}).get(f"Building_{bid}", {})
     chargers = building.get("chargers", {}) or {}
     expected_chargers = EV_CONFIG.get(bid, [])
-    ev_types = [cfg[0] for cfg in expected_chargers]
-    expected_v2g = sum(1 for ev_type in ev_types if ev_type == "v2g")
+    ev_types = [
+        str(cfg[0] if isinstance(cfg, (list, tuple)) else cfg).strip().lower()
+        for cfg in expected_chargers
+    ]
+    expected_v2g = sum(1 for ev_type in ev_types if ev_type in {"camioneta", "v2g"})
     schema_v2g = sum(
         1
         for charger in chargers.values()

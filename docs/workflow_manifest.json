@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "project": "MADRLCitytleranflexresdr",
-  "updated_at": "2026-06-13",
+  "updated_at": "2026-06-15",
   "purpose": "Manifest canonico del flujo dataset -> carga -> entrenamiento -> comparacion -> resultados finales.",
   "technical_reports": [
     "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
@@ -14,6 +14,7 @@
     "hours": 26304,
     "active_csv_files": 222,
     "ev_chargers": 185,
+    "ev_v2g_chargers": 31,
     "ev_mode3_physical_units": 96,
     "ev_mode3_sockets": 192,
     "ev_definition_count": 1850,

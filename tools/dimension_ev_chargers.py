@@ -246,8 +246,15 @@ MODE3_SOCKET_COUNT = 2
 MODE3_CONNECTOR_STANDARD = "IEC_62196_Type_2_socket"
 MODE3_EQUIPMENT_LABEL = "Mode_3_AC_dual_socket"
 EV_POOL_SIZE_PER_CHARGER = 10
+V2G_EV_TYPES = {"camioneta", "v2g"}
 
 LAST_SUMMARY_ROWS = []
+
+def _is_v2g_ev_type(ev_type: str) -> bool:
+    return str(ev_type).strip().lower() in V2G_EV_TYPES
+
+def _max_discharging_power_kw(ev_type: str, charger_kw: float) -> float:
+    return float(charger_kw) if _is_v2g_ev_type(ev_type) else 0.0
 
 # Parametros para edificios REMOTOS (>5 km del centro, sin cargadores
 # alternativos): se incrementa FC por publico cautivo y retorno largo.
@@ -912,7 +919,7 @@ def _build_ev_audit_markdown(summary_rows):
         f"- Corriente minima por toma: {MODE3_MIN_CURRENT_A} A",
         f"- Potencia minima de control por toma: {MODE3_MIN_POWER_KW:.2f} kW",
         "- Balance de fases: asignacion L1/L2/L3 por potencia nominal de cada toma",
-        "- V2G: deshabilitado (`max_discharging_power = 0.0`)",
+        "- V2G: habilitado solo para camionetas institucionales/logisticas (`max_discharging_power = 7.4 kW`); motos y mototaxis quedan solo carga.",
         "",
         "## Metodo de dimensionamiento",
         "",
@@ -936,11 +943,11 @@ def _build_ev_audit_markdown(summary_rows):
         "",
         "## Tipos EV usados",
         "",
-        "| Tipo EV | Potencia toma | Bateria | Uso local |",
-        "|---|---:|---:|---|",
-        f"| Moto lineal electrica | {EV_SPEC['moto_lineal']['charger_kw']:.1f} kW | {EV_SPEC['moto_lineal']['bat_kwh']:.1f} kWh | Escenario EV por flujo de motos del edificio |",
-        f"| Mototaxi electrica | {EV_SPEC['mototaxi']['charger_kw']:.1f} kW | {EV_SPEC['mototaxi']['bat_kwh']:.1f} kWh | Escenario EV por flujo de mototaxis/motokars |",
-        f"| Camioneta electrica | {EV_SPEC['camioneta']['charger_kw']:.1f} kW | {EV_SPEC['camioneta']['bat_kwh']:.1f} kWh | Escenario EV institucional/logistico |",
+        "| Tipo EV | Potencia toma | Potencia descarga V2G | Bateria | Uso local |",
+        "|---|---:|---:|---:|---|",
+        f"| Moto lineal electrica | {EV_SPEC['moto_lineal']['charger_kw']:.1f} kW | {_max_discharging_power_kw('moto_lineal', EV_SPEC['moto_lineal']['charger_kw']):.1f} kW | {EV_SPEC['moto_lineal']['bat_kwh']:.1f} kWh | Escenario EV por flujo de motos del edificio |",
+        f"| Mototaxi electrica | {EV_SPEC['mototaxi']['charger_kw']:.1f} kW | {_max_discharging_power_kw('mototaxi', EV_SPEC['mototaxi']['charger_kw']):.1f} kW | {EV_SPEC['mototaxi']['bat_kwh']:.1f} kWh | Escenario EV por flujo de mototaxis/motokars |",
+        f"| Camioneta electrica V2G | {EV_SPEC['camioneta']['charger_kw']:.1f} kW | {_max_discharging_power_kw('camioneta', EV_SPEC['camioneta']['charger_kw']):.1f} kW | {EV_SPEC['camioneta']['bat_kwh']:.1f} kWh | Escenario EV institucional/logistico con control bidireccional |",
         "",
         "## Dimensionamiento final por edificio",
         "",
@@ -1010,6 +1017,7 @@ def update_schema(charger_config, schema_path):
             cname = f'charger_{bid}_{idx}'
             spec  = EV_SPEC[ev_type]
             kw    = spec['charger_kw']
+            max_discharge_kw = _max_discharging_power_kw(ev_type, kw)
             physical_idx = math.ceil(idx / MODE3_SOCKET_COUNT)
             outlet_idx = 1 if idx % MODE3_SOCKET_COUNT == 1 else 2
             physical_id = f'mode3_B{bid:02d}_{physical_idx:02d}'
@@ -1033,6 +1041,9 @@ def update_schema(charger_config, schema_path):
                     'voltage_v': MODE3_VOLTAGE_V,
                     'min_current_a': MODE3_MIN_CURRENT_A,
                     'nominal_current_a': round(kw * 1000.0 / MODE3_VOLTAGE_V, 2),
+                    'v2g_capable': _is_v2g_ev_type(ev_type),
+                    'power_flow_direction': 'bidirectional_v2g' if _is_v2g_ev_type(ev_type) else 'charge_only',
+                    'v2g_max_export_power_kw': round(max_discharge_kw, 3),
                 },
                 'attributes': {
                     'nominal_power':         kw,
@@ -1040,7 +1051,7 @@ def update_schema(charger_config, schema_path):
                     'charger_type':          3,
                     'max_charging_power':    kw,
                     'min_charging_power':    min(kw, MODE3_MIN_POWER_KW),
-                    'max_discharging_power': 0.0,
+                    'max_discharging_power': max_discharge_kw,
                     'min_discharging_power': 0.0,
                     'phase_connection':      phase_connection,
                 }

@@ -1145,28 +1145,37 @@ class SchemaBuilder:
                     fname = c["file"].replace(".csv", "")  # "charger_1_1"
                     kw    = c["kw"]
                     ev_type = c.get("ev_type", "")
-                    # charger_type: 0=AC L1 (≤4 kW motolineal/mototaxi), 1=AC L2, 2=DC Fast
-                    if kw <= 4.0:
-                        ctype = 0
-                        max_d = 0.0
-                    elif kw <= 11.0:
-                        ctype = 1
-                        max_d = kw if ev_type == "v2g" else 0.0
-                    else:
-                        ctype = 2
-                        max_d = kw if ev_type == "v2g" else kw * 0.5
+                    v2g_capable = ev_type in {"camioneta", "v2g"}
+                    max_d = kw if v2g_capable else 0.0
+                    charger_idx = int(fname.rsplit("_", 1)[-1])
+                    physical_idx = math.ceil(charger_idx / 2)
+                    outlet_idx = 1 if charger_idx % 2 == 1 else 2
+                    phase_connection = ["L1", "L2", "L3"][(charger_idx - 1) % 3]
                     chargers_dict[fname] = {
                         "type": "citylearn.electric_vehicle_charger.Charger",
                         "charger_simulation": c["file"],
                         "autosize": False,
+                        "hardware": {
+                            "ev_type": ev_type,
+                            "mode": 3,
+                            "mode_label": "Mode_3_AC_dual_socket",
+                            "connector_standard": "IEC_62196_Type_2_socket",
+                            "physical_charger_id": f"mode3_B{bldg_id:02d}_{physical_idx:02d}",
+                            "socket_count_per_physical_unit": 2,
+                            "outlet_index": outlet_idx,
+                            "v2g_capable": v2g_capable,
+                            "power_flow_direction": "bidirectional_v2g" if v2g_capable else "charge_only",
+                            "v2g_max_export_power_kw": round(max_d, 3),
+                        },
                         "attributes": {
                             "nominal_power":        kw,
                             "efficiency":           0.95,
-                            "charger_type":         ctype,
+                            "charger_type":         3,
                             "max_charging_power":   kw,
-                            "min_charging_power":   round(kw * 0.13, 2),
+                            "min_charging_power":   round(min(kw, 230.0 * 6.0 / 1000.0), 3),
                             "max_discharging_power": max_d,
                             "min_discharging_power": 0.0,
+                            "phase_connection":     phase_connection,
                         }
                     }
                 b["chargers"] = chargers_dict

@@ -77,6 +77,10 @@ def evaluate_schema(schema: dict[str, Any]) -> dict[str, Any]:
     charger_counts_by_building: dict[str, int] = {}
     ev_pool_prefixes: dict[str, set[str]] = defaultdict(set)
     total_ev_kw = 0.0
+    v2g_charger_count = 0
+    camioneta_charger_count = 0
+    camioneta_v2g_charger_count = 0
+    non_camioneta_v2g_charger_count = 0
 
     for building_name, building in sorted(buildings.items()):
         energy_file = DATASET_DIR / str(building.get("energy_simulation", ""))
@@ -100,10 +104,27 @@ def evaluate_schema(schema: dict[str, Any]) -> dict[str, Any]:
             pool_size = int(hardware.get("electric_vehicle_pool_size", 0) or 0)
             pool_prefix = str(hardware.get("electric_vehicle_pool_prefix", ""))
             nominal_kw = float(attrs.get("nominal_power", 0.0) or 0.0)
+            ev_type = str(hardware.get("ev_type", "") or "").strip().lower()
+            max_discharge_kw = float(attrs.get("max_discharging_power", 0.0) or 0.0)
 
             total_ev_kw += nominal_kw
             physical_groups[physical_id].append(charger_name)
             ev_pool_prefixes[charger_name] = set()
+            if max_discharge_kw > 0.0:
+                v2g_charger_count += 1
+            if ev_type == "camioneta":
+                camioneta_charger_count += 1
+                if max_discharge_kw > 0.0:
+                    camioneta_v2g_charger_count += 1
+                else:
+                    errors.append(f"{building_name}/{charger_name}: camioneta without V2G discharge power")
+                if hardware.get("v2g_capable") is not True:
+                    errors.append(f"{building_name}/{charger_name}: camioneta missing v2g_capable=true")
+                if hardware.get("power_flow_direction") != "bidirectional_v2g":
+                    errors.append(f"{building_name}/{charger_name}: camioneta is not bidirectional_v2g")
+            elif max_discharge_kw > 0.0:
+                non_camioneta_v2g_charger_count += 1
+                errors.append(f"{building_name}/{charger_name}: non-camioneta V2G enabled")
 
             if socket_count != 2:
                 errors.append(f"{building_name}/{charger_name}: Mode 3 socket_count_per_physical_unit != 2")
@@ -149,6 +170,9 @@ def evaluate_schema(schema: dict[str, Any]) -> dict[str, Any]:
                     "physical_charger_id": physical_id,
                     "outlet_index": outlet_index,
                     "nominal_power_kw": nominal_kw,
+                    "ev_type": ev_type,
+                    "max_discharging_power_kw": max_discharge_kw,
+                    "v2g_capable": bool(hardware.get("v2g_capable")),
                     "pool_size": pool_size,
                     "unique_ev_ids_used": len(ev_ids),
                     "state1_hours": int(states.eq(1).sum()),
@@ -161,6 +185,12 @@ def evaluate_schema(schema: dict[str, Any]) -> dict[str, Any]:
     missing_defs = sorted(ev_id for ev_id in ev_ids_used if ev_id not in ev_defs)
     if missing_defs:
         errors.append(f"{len(missing_defs)} EV ids used in charger CSVs are missing from electric_vehicles_def")
+    if camioneta_charger_count != 31:
+        errors.append(f"camioneta chargers={camioneta_charger_count}, expected=31")
+    if camioneta_v2g_charger_count != 31:
+        errors.append(f"camioneta V2G chargers={camioneta_v2g_charger_count}, expected=31")
+    if non_camioneta_v2g_charger_count != 0:
+        errors.append(f"non-camioneta V2G chargers={non_camioneta_v2g_charger_count}, expected=0")
 
     physical_group_errors = []
     for physical_id, chargers in physical_groups.items():
@@ -180,6 +210,10 @@ def evaluate_schema(schema: dict[str, Any]) -> dict[str, Any]:
         "electric_vehicle_definitions": len(ev_defs),
         "electric_vehicle_ids_used": len(ev_ids_used),
         "ev_nominal_power_kw": round(total_ev_kw, 3),
+        "v2g_charger_count": v2g_charger_count,
+        "camioneta_charger_count": camioneta_charger_count,
+        "camioneta_v2g_charger_count": camioneta_v2g_charger_count,
+        "non_camioneta_v2g_charger_count": non_camioneta_v2g_charger_count,
         "charger_counts_by_building": charger_counts_by_building,
         "charger_records": charger_records,
     }
@@ -289,6 +323,8 @@ def write_report(payload: dict[str, Any]) -> None:
         f"- Equipos fisicos Mode 3 doble toma: `{schema_eval['physical_mode3_units']}`.",
         f"- EV definidos en pool: `{schema_eval['electric_vehicle_definitions']}`.",
         f"- Potencia EV nominal simultanea: `{schema_eval['ev_nominal_power_kw']}` kW.",
+        f"- Tomas camioneta V2G bidireccional: `{schema_eval['camioneta_v2g_charger_count']}` de `{schema_eval['camioneta_charger_count']}`.",
+        f"- Tomas no camioneta con V2G habilitado: `{schema_eval['non_camioneta_v2g_charger_count']}`.",
         f"- Unidades fisicas con simultaneidad observada en ambas tomas: `{sim_eval['units_observed_with_simultaneous_state1']}` de `{sim_eval['mode3_units_with_two_outlets']}`.",
         "",
         "## Carga CityLearn v3",
@@ -299,12 +335,12 @@ def write_report(payload: dict[str, Any]) -> None:
         "",
         "## Criterio EV",
         "",
-        "El dataset trata `charger_X_Y.csv` como toma/loadpoint controlable Mode 3. Cada equipo fisico agrupa dos tomas mediante `physical_charger_id` y ambas pueden cargar simultaneamente. Los EV no son fijos 1:1 con tomas: cada toma usa un pool de EVs y cada sesion queda gobernada por `electric_vehicle_estimated_soc_arrival` y `electric_vehicle_required_soc_departure`.",
+        "El dataset trata `charger_X_Y.csv` como toma/loadpoint controlable Mode 3. Cada equipo fisico agrupa dos tomas mediante `physical_charger_id` y ambas pueden cargar simultaneamente. Los EV no son fijos 1:1 con tomas: cada toma usa un pool de EVs y cada sesion queda gobernada por `electric_vehicle_estimated_soc_arrival` y `electric_vehicle_required_soc_departure`. Las camionetas institucionales/logisticas son las unicas tomas EV con V2G bidireccional (`max_discharging_power > 0`); moto lineal y mototaxi quedan solo carga.",
         "",
         "## Evidencia",
         "",
         f"- Manifest JSON: `{MANIFEST_PATH}`",
-        "- Compueras previas: `outputs/dataset_audit/csv_integrity_manifest.json` y `outputs/dataset_audit/training_dataset_ready_manifest.json`.",
+        "- Compuertas previas: `outputs/dataset_audit/csv_integrity_manifest.json` y `outputs/dataset_audit/training_dataset_ready_manifest.json`.",
         "",
     ]
     REPORT_PATH.write_text("\n".join(lines), encoding="utf-8")

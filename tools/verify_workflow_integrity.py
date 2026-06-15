@@ -96,6 +96,7 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
     require(dataset.get("buildings") == 17, "workflow_manifest buildings must be 17", errors)
     require(dataset.get("active_csv_files") == 222, "workflow_manifest active_csv_files must be 222", errors)
     require(dataset.get("ev_chargers") == 185, "workflow_manifest ev_chargers must be 185", errors)
+    require(dataset.get("ev_v2g_chargers") == 31, "workflow_manifest ev_v2g_chargers must be 31 camioneta V2G tomas", errors)
     require(dataset.get("ev_mode3_physical_units") == 96, "workflow_manifest Mode 3 physical units must be 96", errors)
     require(dataset.get("ev_definition_count") == 1850, "workflow_manifest EV definition count must be 1850", errors)
 
@@ -166,8 +167,29 @@ def validate_schema(errors: list[str]) -> dict[str, Any]:
         (charger.get("hardware") or {}).get("socket_count_per_physical_unit")
         for charger in chargers
     }
+    camioneta_chargers = [
+        charger
+        for charger in chargers
+        if ((charger.get("hardware") or {}).get("ev_type") or "").lower() == "camioneta"
+    ]
+    camioneta_v2g_chargers = [
+        charger
+        for charger in camioneta_chargers
+        if float((charger.get("attributes") or {}).get("max_discharging_power", 0.0) or 0.0) > 0.0
+        and (charger.get("hardware") or {}).get("v2g_capable") is True
+        and (charger.get("hardware") or {}).get("power_flow_direction") == "bidirectional_v2g"
+    ]
+    non_camioneta_v2g_chargers = [
+        charger
+        for charger in chargers
+        if ((charger.get("hardware") or {}).get("ev_type") or "").lower() != "camioneta"
+        and float((charger.get("attributes") or {}).get("max_discharging_power", 0.0) or 0.0) > 0.0
+    ]
     require(len(mode3_units) == 96, f"Schema has {len(mode3_units)} physical Mode 3 units, expected 96", errors)
     require(socket_counts == {2}, f"Mode 3 socket counts are {sorted(socket_counts)}, expected [2]", errors)
+    require(len(camioneta_chargers) == 31, f"Schema has {len(camioneta_chargers)} camioneta chargers, expected 31", errors)
+    require(len(camioneta_v2g_chargers) == 31, f"Schema has {len(camioneta_v2g_chargers)} V2G camioneta chargers, expected 31", errors)
+    require(len(non_camioneta_v2g_chargers) == 0, f"Schema has {len(non_camioneta_v2g_chargers)} non-camioneta V2G chargers, expected 0", errors)
 
     return {
         "buildings": len(buildings),
@@ -175,6 +197,7 @@ def validate_schema(errors: list[str]) -> dict[str, Any]:
         "charger_csv": len(charger_files),
         "ev_definitions": len(ev_defs),
         "mode3_physical_units": len(mode3_units),
+        "camioneta_v2g_chargers": len(camioneta_v2g_chargers),
     }
 
 

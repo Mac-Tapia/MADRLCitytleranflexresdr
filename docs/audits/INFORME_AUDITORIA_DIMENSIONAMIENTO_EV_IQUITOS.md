@@ -9,6 +9,7 @@ El dataset queda dimensionado como escenario EV de tesis para Iquitos por edific
 - Tomas de reserva por equipos con una toma libre: 7
 - EVs simulados en pool: 1850
 - Potencia EV nominal total: 749.4 kW
+- Tomas camioneta con V2G bidireccional: 31
 - Edificios recortados por limite de estacionamiento: 0
 
 ## Contexto externo usado
@@ -41,7 +42,7 @@ Parametros adoptados desde la logica de control tipo EVCC/IEC:
 - Corriente minima por toma: 6 A
 - Potencia minima de control por toma: 1.38 kW
 - Balance de fases: asignacion L1/L2/L3 por potencia nominal de cada toma
-- V2G: deshabilitado (`max_discharging_power = 0.0`)
+- V2G: habilitado solo para camionetas institucionales/logisticas (`max_discharging_power = 7.4 kW`, `power_flow_direction = bidirectional_v2g`); motos y mototaxis quedan solo carga.
 
 ## Metodo de dimensionamiento
 
@@ -65,11 +66,11 @@ Luego se valida que el area EV-ready no exceda el estacionamiento disponible del
 
 ## Tipos EV usados
 
-| Tipo EV | Potencia toma | Bateria | Uso local |
-|---|---:|---:|---|
-| Moto lineal electrica | 3.0 kW | 4.0 kWh | Escenario EV por flujo de motos del edificio |
-| Mototaxi electrica | 4.0 kW | 6.0 kWh | Escenario EV por flujo de mototaxis/motokars |
-| Camioneta electrica | 7.4 kW | 40.0 kWh | Escenario EV institucional/logistico |
+| Tipo EV | Potencia toma | Potencia descarga V2G | Bateria | Uso local |
+|---|---:|---:|---:|---|
+| Moto lineal electrica | 3.0 kW | 0.0 kW | 4.0 kWh | Escenario EV por flujo de motos del edificio |
+| Mototaxi electrica | 4.0 kW | 0.0 kW | 6.0 kWh | Escenario EV por flujo de mototaxis/motokars |
+| Camioneta electrica V2G | 7.4 kW | 7.4 kW | 40.0 kWh | Escenario EV institucional/logistico con control bidireccional |
 
 ## Dimensionamiento final por edificio
 
@@ -107,4 +108,4 @@ Cada edificio conserva sus tomas como recursos controlables dentro del entorno C
 
 ## Validacion esperada
 
-Antes de entrenar debe verificarse que el schema cargue con `CityLearnEnv`, que existan todos los CSV de cargadores, que cada CSV tenga 26 304 filas y que cada cargador tenga `charger_type = 3`, fase L1/L2/L3 y metadatos modo 3.
+Antes de entrenar debe verificarse que el schema cargue con `CityLearnEnv`, que existan todos los CSV de cargadores, que cada CSV tenga 26 304 filas, que cada cargador tenga `charger_type = 3`, fase L1/L2/L3 y metadatos modo 3, y que las 31 tomas de camioneta sean V2G con `max_discharging_power = 7.4`.

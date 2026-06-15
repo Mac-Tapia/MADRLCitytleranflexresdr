@@ -18,20 +18,22 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-12.
+Actualizado: 2026-06-15.
 
 - Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 222 CSV activos auditados, 185 tomas EV Mode 3, 96 equipos fisicos doble toma, 1,850 EV en pool y 17 maquinas controladas).
+- EV/V2G validado: las 31 tomas de camioneta institucional/logistica son bidireccionales (`max_discharging_power=7.4 kW`, `power_flow_direction=bidirectional_v2g`); moto lineal y mototaxi quedan solo carga. CityLearn expone 31 acciones EV con limite bajo `-1` y 154 acciones EV con limite bajo `0`.
 - Dataset regenerado con parametros reales de `CityLearn/data/buildingcsv/building.csv`: nombres oficiales, areas techadas exactas, tipos de uso y sistemas de AC reales por edificio.
 - Non-shiftable load destilada desde mediciones mensuales reales `B_02.csv` a `B_17.csv` (balance mensual delta < 0.1%).
-- **Sesion de entrenamiento activa:** `citylearn_v3_madrl_full_20260612_223320` (lanzada 2026-06-12). HAPPO E1+E2 corriendo en paralelo (max_concurrent=2); E3 y MASAC/MATD3/MAAC en cola.
-- Entrenamiento oficial vigente: la corrida activa se obtiene desde `outputs/latest_visible_training_output_root.txt`; si no existe, usar el `outputs/*/official_full_status.json` mas reciente. Los resultados finales se aceptan solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
+- Entrenamiento oficial vigente: no se fija una corrida antigua como activa en el README. La corrida vigente se obtiene desde `outputs/latest_visible_training_output_root.txt`; si no existe, usar el `outputs/*/official_full_status.json` mas reciente. Despues de cambios de schema/recompensa/V2G se debe reiniciar desde cero para no mezclar artefactos de configuraciones anteriores.
+- Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
 - Horizonte oficial: 5 episodios x 8760 pasos = 43800 pasos por corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
 - Ejecucion local: `HAPPO/MASAC/MATD3/MAAC x E1/E2/E3` (4 algoritmos x 3 ejes). En RTX 4060 Laptop 8 GB el modo operativo usa monitor visible y permite hasta 2 escenarios concurrentes; MASAC/MAAC quedan en 1 por etapa pesada. `LiveOutput` queda como modo opcional secuencial para depuracion visual rica.
+- Entorno unico del proyecto: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1). El verificador bloquea ambientes duplicados `.venv*` en la raiz.
 - Perfil local GPU-tuned activo para RTX 4060 Laptop 8 GB (torch 2.8.0+cu126).
-- Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfil **`unified_comparable_v2`** (todos los algoritmos usan los mismos valores para garantizar comparabilidad estadistica): team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.12, reward_scale=1.00. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
+- Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v3`** (todos los algoritmos usan valores comparables): team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00, penalidad SOC/servicio EV reforzada. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
 - Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada sin comunicacion entre agentes. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
 - Determinacion O.G.: Score_OG=mean(KPI_flex_norm, KPI_co2_norm, KPI_cost_norm) con pesos iguales [1/3,1/3,1/3]; verificado con dominancia de Pareto y ranking de Borda.
-- Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes.
+- Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes; readiness CityLearn v3: `python39_core_ready=true`.
 - Fix forrtl error (200): `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1` y `PYTHONUNBUFFERED=1` aplicados al launcher.
 - Monitor en tiempo real: refresca cada 5 s con pesos OE1/OE2/OE3, pasos, episodios y KPIs energeticos.
 - Suite de pruebas estadisticas completa: Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U y Wilcoxon signed-rank.
@@ -118,6 +120,7 @@ pytest tests/ -q --tb=short
 | Nombres reales | Municipalidad San Juan Bautista, Aeropuerto, Tottus, Hotel Plaza, Mall Aventura, UNAP, PNP, COER, GRL, Hospital Regional, EsSalud, UNAP Economia, Autoridad Portuaria, DREL Colegio, SIMA Iquitos, Selva Amazonica Lab |
 | Rango temporal | 2023-2025 (26,304 pasos horarios) |
 | Cargadores EV | 185 archivos `charger_X_Y.csv`, 96 equipos fisicos modo 3 doble toma, 1,850 EV en pool, 749.4 kW instalados |
+| V2G EV | 31 tomas de camioneta con control bidireccional; 0 tomas no-camioneta con descarga |
 | BESS | 138-6,747 kWh por edificio; total 26,266 kWh / 6,648 kW |
 | Generacion solar PV | 274.1-10,236.1 kWp DC por edificio; total 48,790.9 kWp |
 | Sistema de AC | Por tipo: Chiller agua (B03/B11), Multi-Chiller (B06), Precision AC (B01/B09), Ultra-Freezers -80C (B17) |
@@ -198,6 +201,10 @@ Submodulos externos de referencia adicionales:
 ## Recompensa v3
 
 Los cuatro MADRL usan `CityLearnV3MADRLRewardFunction`. La recompensa combina pesos por eje y perfil por algoritmo:
+
+- Perfiles activos: `happo_unified_comparable_v3`, `masac_unified_comparable_v3`, `matd3_unified_comparable_v3`, `maac_unified_comparable_v3`.
+- Comparabilidad: todos usan `team_ratio=0.70`, `peak_weight=0.45`, `ramp_weight=0.35`, `ev_weight=0.25` y `reward_scale=1.00`.
+- EV/SOC: se penaliza el incumplimiento de SOC requerido a la salida y se agrega restriccion de servicio EV para evitar descargar cuando compromete el SOC objetivo.
 
 | Escenario | flex | carbon | cost |
 | --------- | ---: | -----: | ---: |
@@ -357,7 +364,7 @@ Fixes aplicados al launcher:
 
 | MADRL | Backend | Ajustes activos |
 | ----- | ------- | --------------- |
-| HAPPO | HARL (on-policy) | `hidden_size=256`, `torch_threads=8`, `team_ratio=0.70` (unified_comparable_v2) |
+| HAPPO | HARL (on-policy) | `hidden_size=256`, `torch_threads=12`, `team_ratio=0.70` (unified_comparable_v3) |
 | MASAC | MARLlib (off-policy, RNN+QMIX) | `rnn_hidden_dim=64`, `qmix_hidden_dim=32`, `buffer_size=2` |
 | MATD3 | off-policy PyTorch | `batch_size=256`, `buffer_size=4096`, `hidden_size=256` |
 | MAAC | Attention SAC | `batch_size=64`, `buffer_length=256`, `hidden_size=128`, `attend_heads=4` |

@@ -53,7 +53,7 @@ Module B must not be drafted in isolation. It must use the bibliographic matrix,
 4. Use [methodological-design.md](references/methodological-design.md) for Chapter IV, variables, sample, techniques, instruments, and study phases.
 5. Use [administration-and-quality.md](references/administration-and-quality.md) for Chapter V, appendices, APA control, and final quality checklist.
 6. Use project evidence when available: `README.md`, `ESTRATEGIA_3PILARES_MADRL.md`, `docs/`, `CityLearn/configs/`, `CityLearn/scripts/`, validation outputs, and training outputs. Documentos de justificación creados en 2026-06-12:
-   - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` — justificación con 12 referencias APA de todos los parámetros numéricos de `CityLearnV3MADRLRewardFunction` y reconciliación `unified_comparable_v2` vs. perfiles diferenciados §4.11.3.
+   - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` — justificación con 12 referencias APA de todos los parámetros numéricos de `CityLearnV3MADRLRewardFunction` y reconciliación `unified_comparable_v3` vs. perfiles diferenciados §4.11.3.
    - `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` — justificación con 14 referencias APA de los 3 escenarios E1/E2/E3, independencia semántica del entrenamiento paralelo por escenario, política de VRAM.
 7. Use `scripts/create_plan_workbook.py` to create the Module A workbook template.
 8. Use `scripts/create_plan_docx_skeleton.py` to create a DOCX skeleton for the Guide N. 01 plan.
@@ -312,7 +312,7 @@ cost_component = −tanh(max(import_i × (0.25 + price_norm), 0) / 20)
 team_reward    = (1/N) Σᵢ reward_i
 mixed_reward_i = (1 − r_team) × reward_i + r_team × team_reward
 ```
-Perfil activo `unified_comparable_v2` (todos los algoritmos): r_team=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.12, reward_scale=1.00. [Nota de reconciliación: el plan §4.11.3 documentó team_ratio diferenciado por algoritmo (HAPPO=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80); la implementación vigente unifica en 0.70 para garantizar comparabilidad estadística. Los perfiles diferenciados se preservan como ablación futura. Ver `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`.]
+Perfil activo `unified_comparable_v3` (todos los algoritmos): r_team=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. [Nota de reconciliación: el plan §4.11.3 documentó team_ratio diferenciado por algoritmo (HAPPO=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80); la implementación vigente unifica en 0.70 para garantizar comparabilidad estadística. v3 corrige bug SOC y añade V2G bidireccional. Los perfiles diferenciados se preservan como ablación futura. Ver `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`.]
 
 ---
 
@@ -333,16 +333,16 @@ El experimento comparativo se estructura en **3 escenarios evaluativos** (E1, E2
 
 ### E.2 — Perfiles de Recompensa por Algoritmo MADRL
 
-**Perfil activo: `unified_comparable_v2` (todos los algoritmos usan los mismos valores):**
+**Perfil activo: `unified_comparable_v3` (todos los algoritmos usan los mismos valores):**
 
 | Algoritmo | Tipo | team_reward_ratio | w_peak | w_ramp | ev_weight | reward_scale |
 |-----------|------|:-----------------:|:------:|:------:|:---------:|:------------:|
-| HAPPO | On-policy cooperativo | **0.70** | **0.45** | **0.35** | **0.12** | **1.00** |
-| MASAC | Off-policy entropía | **0.70** | **0.45** | **0.35** | **0.12** | **1.00** |
-| MATD3 | Off-policy determinístico | **0.70** | **0.45** | **0.35** | **0.12** | **1.00** |
-| MAAC | Off-policy con atención | **0.70** | **0.45** | **0.35** | **0.12** | **1.00** |
+| HAPPO | On-policy cooperativo | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
+| MASAC | Off-policy entropía | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
+| MATD3 | Off-policy determinístico | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
+| MAAC | Off-policy con atención | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
 
-> **Nota de reconciliación:** Los perfiles diferenciados del plan §4.11.3 (HAPPO team_ratio=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80; reward_scale MASAC=0.80, MATD3=1.10) fueron unificados en `unified_comparable_v2` para garantizar comparabilidad estadística: los 4 backends se evalúan bajo función objetivo idéntica, siguiendo el principio de equidad experimental (Roijers et al., 2013; Felten et al., 2024). Los perfiles diferenciados se preservan como ablación futura en `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` (12 referencias APA).
+> **Nota de reconciliación:** Los perfiles diferenciados del plan §4.11.3 (HAPPO team_ratio=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80; reward_scale MASAC=0.80, MATD3=1.10) fueron unificados en `unified_comparable_v3` para garantizar comparabilidad estadística: los 4 backends se evalúan bajo función objetivo idéntica, siguiendo el principio de equidad experimental (Roijers et al., 2013; Felten et al., 2024). v3 añade: bug SOC corregido (signo invertido en penalización crítica), ev_weight 0.12→0.25, `_ev_service_constraint_term` (urgencia por salida) y V2G habilitado para camionetas (31 chargers bidireccionales 7.4 kW). Los perfiles diferenciados se preservan como ablación futura en `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` (12 referencias APA).
 
 ### E.3 — Matriz de 12 Corridas Oficiales
 
@@ -355,7 +355,7 @@ El experimento oficial ejecuta **12 corridas por etapas de algoritmo** (4 algori
 | **E3 Costos** | happo/E3_s0 | masac/E3_s0 | matd3/E3_s0 | maac/E3_s0 |
 
 Launcher: `CityLearn/scripts/launch_citylearn_v3_official_training.ps1 -Scenario ALL`
-Condiciones: 8,760 pasos/episodio, 5 episodios, seed=0, CUDA habilitado, RTX 4060 Laptop 8 GB. Sesión activa: `citylearn_v3_madrl_full_20260612_223320` (lanzada 2026-06-12; HAPPO E1+E2 en paralelo, E3+MASAC+MATD3+MAAC en cola). Perfil `unified_comparable_v2` activo. Justificación del paralelismo: `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`.
+Condiciones: 8,760 pasos/episodio, 5 episodios, seed=0, CUDA habilitado, RTX 4060 Laptop 8 GB. Sesión activa: `citylearn_v3_madrl_full_20260613_010234` (lanzada 2026-06-13; MATD3 E1+E2 en paralelo; HAPPO+MASAC completados en v2 → re-run pendiente con v3 via `scripts/restart_happo_masac_v3.ps1`; MAAC en cola). Perfil `unified_comparable_v3` activo. Justificación del paralelismo: `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`.
 
 ---
 

@@ -124,6 +124,7 @@ def verify_visible_wrappers() -> None:
 
 def verify_reward_profiles() -> None:
     data = json.loads(read_text("CityLearn/configs/citylearn_v3_madrl_training.json"))
+    reward_text = read_text("CityLearn/citylearn/reward_function.py")
     expected_axis = {
         "E1": {"flex": 0.70, "carbon": 0.15, "cost": 0.15},
         "E2": {"flex": 0.15, "carbon": 0.70, "cost": 0.15},
@@ -131,19 +132,27 @@ def verify_reward_profiles() -> None:
     }
     expected_profile = {
         "team_reward_ratio": 0.70,
-        "ev_weight": 0.12,
+        "ev_weight": 0.25,
         "reward_scale": 1.00,
         "ramp_weight": 0.35,
         "peak_weight": 0.45,
+        "ev_soc_tolerance": 0.05,
+        "ev_soc_critical_deficit": 0.25,
+        "ev_urgency_hours": 4.0,
+        "ev_departure_deficit_weight": 0.55,
+        "ev_urgency_deficit_weight": 0.30,
+        "ev_idle_deficit_weight": 0.15,
     }
     require(data["reward"]["axis_weights"] == expected_axis, "reward axis weights must match the validated multi-objective scenarios")
+    require("def _ev_service_constraint_term" in reward_text, "reward function must include reinforced EV SOC service constraint")
+    require('-abs(self.weights["soc_under"] ** 2)' in reward_text, "severe EV SOC deficit must remain a negative penalty")
     require(float(data["algorithms"]["MASAC"]["cli"]["max_replay_buffer_gib"]) >= 3.0, "MASAC replay guard must cover the validated 2.74 GiB estimate")
     require(int(data["algorithms"]["MASAC"]["cli"]["buffer_size"]) == 2, "MASAC local buffer size must remain 2 for 8GB GPU safety")
     require(data["algorithms"]["MASAC"]["cli"]["masac_preload_batch_device"] == "auto", "MASAC optimized batch preload mode must default to auto")
 
     for algorithm in ("HAPPO", "MASAC", "MATD3", "MAAC"):
         profile = data["reward"]["profiles"][algorithm]
-        require(profile["profile_name"] == f"{algorithm.lower()}_unified_comparable_v2", f"{algorithm} reward profile is not unified comparable v2")
+        require(profile["profile_name"] == f"{algorithm.lower()}_unified_comparable_v3", f"{algorithm} reward profile is not unified comparable v3")
         require(profile["axis_weight_multipliers"] == {"flex": 1.0, "carbon": 1.0, "cost": 1.0}, f"{algorithm} axis multipliers must be neutral")
         for key, expected in expected_profile.items():
             require(abs(float(profile[key]) - expected) < 1.0e-9, f"{algorithm} {key}={profile[key]}, expected {expected}")

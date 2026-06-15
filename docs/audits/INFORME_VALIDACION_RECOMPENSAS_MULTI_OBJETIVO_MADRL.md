@@ -55,18 +55,24 @@ Los pesos forman un simplex: suman 1.0 en cada escenario. El peso dominante defi
 | Parametro | Valor |
 |---|---:|
 | `team_reward_ratio` | 0.70 |
-| `ev_weight` | 0.12 |
+| `ev_weight` | 0.25 |
 | `reward_scale` | 1.00 |
 | `peak_weight` | 0.45 |
 | `ramp_weight` | 0.35 |
+| `ev_soc_tolerance` | 0.05 |
+| `ev_soc_critical_deficit` | 0.25 |
+| `ev_urgency_hours` | 4.0 |
+| `ev_departure_deficit_weight` | 0.55 |
+| `ev_urgency_deficit_weight` | 0.30 |
+| `ev_idle_deficit_weight` | 0.15 |
 | `axis_weight_multipliers` | 1.00, 1.00, 1.00 |
 
 Perfiles esperados:
 
-- HAPPO: `happo_unified_comparable_v2`.
-- MASAC: `masac_unified_comparable_v2`.
-- MATD3: `matd3_unified_comparable_v2`.
-- MAAC: `maac_unified_comparable_v2`.
+- HAPPO: `happo_unified_comparable_v3`.
+- MASAC: `masac_unified_comparable_v3`.
+- MATD3: `matd3_unified_comparable_v3`.
+- MAAC: `maac_unified_comparable_v3`.
 
 ### 2.3 Formula operativa
 
@@ -92,7 +98,12 @@ mixed_reward_i(t) = 0.30 * reward_i(t) + 0.70 * team_reward(t)
 | Importar con SOC alto | `0.10 * tanh(import * SOC / 20)` | Penaliza importar red cuando hay energia almacenada. |
 | Carbono | `tanh(import * (0.25 + carbon_norm) / 20)` | Penaliza importaciones en red diesel aislada. |
 | Costo | `tanh(import * (0.25 + price_norm) / 20)` | Penaliza importaciones, especialmente en tarifa alta. |
-| EV | `0.12 * tanh(ev_raw / 10)` | Corrige incumplimientos SOC/sesion sin dominar los tres ejes principales. |
+| EV base | `0.25 * clip(tanh(ev_raw / 10) + ev_service_constraint, -1, 1)` | Refuerza cumplimiento de SOC requerido; evita que el agente mejore costo/CO2 dejando EV sin cargar. |
+| EV SOC salida | `0.55 * mean(deficit_departure)` | Penalidad fuerte cuando el EV llega a la salida bajo el SOC requerido. |
+| EV urgencia | `0.30 * mean(deficit_urgency)` | Penaliza deficit dentro de las ultimas 4 h antes de salida. |
+| EV inactivo | `0.15 * mean(deficit_idle)` | Penaliza no cargar cuando existe deficit y la salida esta cerca. |
+
+Correccion aplicada al signo EV: el caso `soc_diff <= -0.25` ya no usa `self.weights["soc_under"] ** 2` con signo positivo; ahora conserva penalidad negativa. La validacion sintetica exige que un EV con SOC 0.40, SOC requerido 0.85 y salida inmediata produzca `ev_term <= -0.99`.
 
 ## 3. Sustento de investigacion
 
@@ -190,7 +201,7 @@ Validadores vinculados:
 El criterio de aceptacion es:
 
 - Recompensa `CityLearnV3MADRLRewardFunction` en los 4 algoritmos y 3 escenarios.
-- Perfiles `*_unified_comparable_v2`.
+- Perfiles `*_unified_comparable_v3` con penalidad SOC/EV reforzada.
 - Pesos por escenario exactos.
 - Recompensas finitas con accion cero.
 - Dataset listo para normalizacion y entrenamiento.

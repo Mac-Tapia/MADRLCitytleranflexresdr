@@ -615,16 +615,16 @@ mixed_reward_i   = (1 − r) × reward_i + r × team_reward
 
 #### 4.11.3 Perfiles de Recompensa por Algoritmo MADRL
 
-> **RECONCILIACION (2026-06-12):** La implementacion vigente adoptó el perfil **unified_comparable_v2** con valores idénticos para los cuatro algoritmos (ver `reward_function.py:533-579` y `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`). Los perfiles diferenciados de la tabla original se conservan como referencia de ablacion futura pero NO son los valores activos en entrenamiento.
+> **RECONCILIACION (2026-06-14):** La implementacion vigente adopta el perfil **unified_comparable_v3** con valores idénticos para los cuatro algoritmos y penalidad SOC/EV reforzada (ver `reward_function.py` y `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`). Los perfiles diferenciados de la tabla original se conservan como referencia de ablacion futura pero NO son los valores activos en entrenamiento.
 
-**Perfil activo (todos los algoritmos — unified_comparable_v2):**
+**Perfil activo (todos los algoritmos — unified_comparable_v3):**
 
 | Algoritmo | r (team_ratio) | w_peak | w_ramp | ev_weight | reward_scale |
 | --------- | :------------: | :----: | :----: | :-------: | :----------: |
-| HAPPO | **0.70** | **0.45** | **0.35** | **0.12** | **1.00** |
-| MASAC | **0.70** | **0.45** | **0.35** | **0.12** | **1.00** |
-| MATD3 | **0.70** | **0.45** | **0.35** | **0.12** | **1.00** |
-| MAAC | **0.70** | **0.45** | **0.35** | **0.12** | **1.00** |
+| HAPPO | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
+| MASAC | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
+| MATD3 | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
+| MAAC | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
 
 Razón de la unificación: garantizar comparabilidad estadística entre los 12 experimentos (4 algoritmos × 3 escenarios). Con perfiles diferenciados, las diferencias de rendimiento no son atribuibles exclusivamente a la arquitectura del algoritmo.
 

@@ -8,14 +8,14 @@
 
 ## 1. Reconciliacion: Plan de Tesis vs Implementacion Vigente
 
-El Plan de Tesis (§4.11.3) documento originalmente perfiles de recompensa diferenciados por algoritmo. La implementacion actual adopto el perfil **unified_comparable_v2** con valores identicos para los cuatro algoritmos.
+El Plan de Tesis (§4.11.3) documento originalmente perfiles de recompensa diferenciados por algoritmo. La implementacion actual adopto el perfil **unified_comparable_v3** con valores identicos para los cuatro algoritmos y penalidad reforzada de servicio EV/SOC.
 
 | Parametro | HAPPO (plan) | MASAC (plan) | MATD3 (plan) | MAAC (plan) | **Implementacion real (todos)** | Razon del cambio |
 |---|:---:|:---:|:---:|:---:|:---:|---|
 | `team_reward_ratio` | 0.75 | 0.55 | 0.65 | 0.80 | **0.70** | Comparabilidad estadistica entre algoritmos |
 | `peak_weight` | 0.45 | 0.40 | 0.50 | 0.42 | **0.45** | Peso canonico del KPI principal CityLearn |
 | `ramp_weight` | 0.35 | 0.30 | 0.45 | 0.38 | **0.35** | Peso canonico del segundo KPI |
-| `ev_weight` | 0.15 | 0.12 | 0.10 | 0.16 | **0.12** | Termino corrector uniforme |
+| `ev_weight` | 0.15 | 0.12 | 0.10 | 0.16 | **0.25** | Termino uniforme reforzado para evitar politicas que reducen costo/CO2 dejando EV sin cargar |
 | `reward_scale` | 1.00 | 0.80 | 1.10 | 1.00 | **1.00** | Escala unica para gradientes comparables |
 
 **Justificacion de la unificacion:** Para que los resultados de los 12 experimentos (4 algoritmos x 3 escenarios) sean comparables estadisticamente, la funcion de recompensa debe ser identica en todos los backends. Aplicar escalas o pesos distintos por algoritmo introduciria un factor de confusion que impediria atribuir diferencias de rendimiento a la arquitectura del algoritmo en lugar de a la forma de la recompensa. Los perfiles diferenciados del plan original se reservan como configuracion de ablacion futura. El valor `team_reward_ratio=0.70` es la media ponderada de los valores originales (promedio: 0.6875 ≈ 0.70) y mantiene la propiedad cooperativa necesaria para Dec-POMDP.
@@ -157,16 +157,31 @@ cost_i(t) = -cost_penalty + cost_credit            ∈ (-1, 0.08]
 
 ```
 ev_raw = EV_penalty_base - max(0, violation_kwh) × penalty_coefficient
-ev_i(t) = ev_weight × tanh(ev_raw / 10.0)         ∈ (-0.12, 0.12)
+ev_service_constraint = -clip(
+    0.55 × deficit_departure
+  + 0.30 × deficit_urgency_4h
+  + 0.15 × deficit_idle_4h,
+  0, 1
+)
+ev_i(t) = ev_weight × clip(tanh(ev_raw / 10.0) + ev_service_constraint, -1, 1)
+        ∈ (-0.25, 0.25)
 ```
 
 **Justificacion de cada parametro:**
 
 | Parametro | Valor | Justificacion |
 |---|---|---|
-| `ev_weight` | **0.12** | Peso fijo fuera de la normalizacion simplex de los tres ejes principales. El termino EV es corrector: penaliza violaciones de restricciones de carga (el EV debe llegar a la SOC de salida requerida) sin distorsionar la jerarquia flex/carbon/cost. 0.12 implica que incluso la maxima penalizacion EV (ev_i=-1) reduce la recompensa total en solo 12%, manteniendo la señal de los ejes principales dominante. |
+| `ev_weight` | **0.25** | Peso fijo fuera de la normalizacion simplex de los tres ejes principales. Se aumento desde 0.12 porque el entrenamiento MASAC mostro una politica que reducia importacion/costo/CO2 pero dejaba baja satisfaccion EV (~4% de salidas cumplidas). 0.25 mantiene dominante la jerarquia flex/carbon/cost, pero hace que incumplir SOC tenga impacto comparable a los terminos de energia. |
 | Divisor 10.0 | **10.0** | El framework base `Electric_Vehicles_Reward_Function` genera `ev_raw ∈ [-10, +10]` con 1 cargador activo (peso `close_soc` predeterminado). El divisor 10.0 acota el termino a tanh ∈ (-1,1) antes de aplicar `ev_weight`, manteniendo escala consistente con los demas ejes. Documentado en `reward_function.py:701-703`. |
+| `ev_soc_tolerance` | **0.05** | Tolerancia de 5 puntos porcentuales de SOC para evitar penalizar ruido numerico o diferencias marginales al partir. |
+| `ev_soc_critical_deficit` | **0.25** | Deficit de 25 puntos porcentuales se trata como incumplimiento severo y satura la penalidad de servicio. |
+| `ev_urgency_hours` | **4.0** | Ventana de urgencia antes de salida. Dentro de esta ventana, el deficit SOC genera penalidad aun antes del instante final. |
+| `ev_departure_deficit_weight` | **0.55** | Peso dominante de servicio: la salida bajo SOC requerido es la violacion principal. |
+| `ev_urgency_deficit_weight` | **0.30** | Penaliza esperar al ultimo paso; obliga a comenzar carga cuando el deficit ya no puede ignorarse. |
+| `ev_idle_deficit_weight` | **0.15** | Penaliza no cargar con deficit y salida cercana, evitando que el agente use el cargador como recurso desconectado. |
 | Cargadores Iquitos | **185** | 185 cargadores distribuidos en los 17 edificios (96 unidades fisicas Mode 3, 1,850 EVs en pool de simulacion, potencia nominal agregada 749.4 kW). |
+
+**Correccion de signo:** el caso severo `soc_diff <= -0.25` en `Electric_Vehicles_Reward_Function` antes elevaba al cuadrado `self.weights["soc_under"]`, convirtiendo `-5` en `+25`. La implementacion actual usa `-abs(self.weights["soc_under"] ** 2)` para mantener la penalidad negativa. La validacion sintetica exige `ev_term <= -0.99` para SOC 0.40, SOC requerido 0.85 y salida inmediata.
 
 ---
 
@@ -200,7 +215,10 @@ mixed_reward_i = (1 - 0.70) × reward_i + 0.70 × team_reward
 | team_reward_ratio | 0.70 | reward_function.py:537 | Media cooperativa Dec-POMDP |
 | peak_weight | 0.45 | reward_function.py:541 | KPI primario CityLearn |
 | ramp_weight | 0.35 | reward_function.py:540 | KPI secundario flexibilidad |
-| ev_weight | 0.12 | reward_function.py:538 | Termino corrector EV |
+| ev_weight | 0.25 | reward_function.py:538 | Termino EV/SOC reforzado |
+| ev_soc_tolerance | 0.05 | reward_function.py:543 | Tolerancia de cumplimiento SOC |
+| ev_soc_critical_deficit | 0.25 | reward_function.py:544 | Deficit severo que satura penalidad |
+| ev_urgency_hours | 4.0 | reward_function.py:545 | Ventana de urgencia antes de salida |
 | reward_scale | 1.00 | reward_function.py:539 | Escala uniforme comparabilidad |
 | carbon_reference | 0.35 | reward_function.py:600 | Media mundial IEA 2023 |
 | price_reference | 0.20 | reward_function.py:599 | Referencia spot competitivo |

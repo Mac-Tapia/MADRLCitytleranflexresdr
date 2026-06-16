@@ -8,9 +8,10 @@ para entrenamiento MADRL con CityLearn v3. Verifica:
   - Carga exitosa en CityLearn v3 (17 agentes, E1/E2/E3)
   - Mismo dataset para los 4 backends MADRL (hash de checksum)
 """
-import sys, hashlib, json, csv
+import sys
+import hashlib
+import json
 import pandas as pd
-import numpy as np
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8") if hasattr(sys.stdout, "reconfigure") else None
@@ -102,7 +103,6 @@ def analyze_building(bid: int) -> dict:
     nsl_mean   = df["non_shiftable_load"].mean()
     cool_mean  = df["cooling_demand"].mean()
     dhw_mean   = df["dhw_demand"].mean()
-    solar_mean = df["solar_generation"].mean()
     # consumo electrico diario (cooling es termico, dividir por COP=2.5 promedio)
     elec_daily = (nsl_mean + cool_mean / 2.5 + dhw_mean / 0.85) * 24
 
@@ -295,7 +295,8 @@ else:
 print("\n[2] ARCHIVOS DE SOPORTE")
 w = check_weather()
 print(f"  weather.csv       : {'OK' if w['ok'] else 'WARN'} | {w.get('rows',0)} filas x {w.get('cols',0)} cols")
-if w["issues"]: print(f"      {w['issues']}")
+if w["issues"]:
+    print(f"      {w['issues']}")
 
 ci = check_carbon()
 print(f"  carbon_intensity  : {'OK' if ci['ok'] else 'WARN'} | rango [{ci.get('min','?')}, {ci.get('max','?')}] kgCO2/kWh")
@@ -305,7 +306,8 @@ print(f"  pricing.csv       : {'OK' if pr['ok'] else 'WARN'} | rango [{pr.get('m
 
 cr = analyze_chargers()
 print(f"  chargers EV       : {'OK' if cr['ok'] else 'WARN'} | {cr['count']} archivos")
-if cr["issues"]: print(f"      {cr['issues']}")
+if cr["issues"]:
+    print(f"      {cr['issues']}")
 
 wm_files = sorted(DATASET.glob("Washing_Machine_*.csv"))
 wm_issues = []
@@ -324,13 +326,14 @@ if wm_issues:
 
 sc = check_schema()
 print(f"  schema.json       : {'OK' if sc['ok'] else 'WARN'} | {sc.get('n_buildings',0)} edificios | central_agent={sc.get('central_agent')}")
-if sc["issues"]: print(f"      {sc['issues']}")
+if sc["issues"]:
+    print(f"      {sc['issues']}")
 
 # 3. Verificar mismo dataset para los 4 MADRL (checksum schema.json)
 print("\n[3] MISMO DATASET PARA LOS 4 BACKENDS MADRL")
 schema_sha = sha256_file(SCHEMA) if SCHEMA.exists() else "N/A"
 print(f"  schema.json SHA256: {schema_sha}")
-print(f"  Building SHA256 muestra:")
+print("  Building SHA256 muestra:")
 for bid in [1, 6, 11, 17]:
     print(f"    Building_{bid}.csv: {shas.get(bid,'?')}")
 print("  -> Los 4 algoritmos (HAPPO/MASAC/MATD3/MAAC) usaran el MISMO schema.json")

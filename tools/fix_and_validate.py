@@ -8,7 +8,6 @@ PASO 3: Validacion con CityLearnEnv
 
 import pandas as pd
 import numpy as np
-import json
 from pathlib import Path
 import sys
 
@@ -260,7 +259,6 @@ try:
     print(f"  env.reset() OK — obs shape: {len(obs)} agentes")
 
     # Ejecutar 50 pasos con acciones aleatorias
-    import random
     errors_steps = 0
     for step in range(50):
         actions = [np.zeros(len(env.action_space[i].low)) for i in range(len(env.action_space))]
@@ -273,7 +271,7 @@ try:
                 break
 
     if errors_steps == 0:
-        print(f"  50 pasos completados sin errores")
+        print("  50 pasos completados sin errores")
     else:
         print(f"  {errors_steps} errores en 50 pasos")
 

@@ -22,8 +22,8 @@ Usado por:
 from __future__ import annotations
 
 import numpy as np
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from dataclasses import dataclass
+from typing import Dict
 
 from uc3m.reward.hphi import HPHI, compute_global_score
 
@@ -289,8 +289,6 @@ class KPIEvaluator:
 
     def _economic_kpis(self, env) -> Dict[str, float]:
         total_cost   = 0.0
-        offpeak_kw   = 0.0
-        peak_kw_paid = 0.0
 
         def _safe_arr(attr):
             v = attr if attr is not None else [0.0]

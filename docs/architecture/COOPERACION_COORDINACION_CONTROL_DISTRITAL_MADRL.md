@@ -244,7 +244,7 @@ Borda(a) = r_flex(a) + r_co2(a) + r_cost(a)
 ```
 El algoritmo con menor Borda score es el mejor coordinado (O.G.). El ranking de Borda es un método de votación por posición ampliamente utilizado en optimización multiobjetivo para sintetizar múltiples criterios sin necesidad de asignar pesos explícitos, lo que lo hace adecuado como verificación no paramétrica del Score_OG (Roijers et al., 2013; Felten et al., 2024). El ranking Borda y el Score_OG deben coincidir; si divergen, reportar ambos y discutir en §3.4.
 
-### 5.5 Protocolo estadístico para O.G.
+### 5.5 Protocolo estadístico para O.G
 
 - **Kruskal-Wallis** sobre Score_OG de los 5 episodios por algoritmo: H₀ = todos equivalentes; si p < 0.05 existe diferencia significativa global (Kruskal & Wallis, 1952). Prueba no paramétrica adecuada dado que no se asume normalidad en los retornos de RL.
 - **Mann-Whitney U** par-a-par (6 pares) sobre Score_OG con corrección Bonferroni α' = 0.05/6 = 0.0083 (Mann & Whitney, 1947). La corrección Bonferroni controla el error tipo I ante comparaciones múltiples.

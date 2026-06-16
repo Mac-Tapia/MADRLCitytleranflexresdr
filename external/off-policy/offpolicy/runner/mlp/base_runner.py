@@ -1,13 +1,11 @@
 import os
 import wandb
 import numpy as np
-from itertools import chain
 from tensorboardX import SummaryWriter
 import torch
-import time
 
 from offpolicy.utils.mlp_buffer import MlpReplayBuffer, PrioritizedMlpReplayBuffer
-from offpolicy.utils.util import is_discrete, is_multidiscrete, DecayThenFlatSchedule
+from offpolicy.utils.util import DecayThenFlatSchedule
 
 
 class MlpRunner(object):

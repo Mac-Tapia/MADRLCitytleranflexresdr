@@ -10,8 +10,6 @@ Analiza todos los archivos de soporte del dataset CityLearn Iquitos 2023-2025:
 """
 
 import pandas as pd
-import numpy as np
-import json
 from pathlib import Path
 
 BASE = Path("CityLearn/data/datasets/citylearn_iquitos_2023_2025")
@@ -80,7 +78,7 @@ for fname, s in summary.items():
 
 print(f"\n  Total archivos: {len(charger_files)}")
 if issues_charger:
-    print(f"  PROBLEMAS ENCONTRADOS:")
+    print("  PROBLEMAS ENCONTRADOS:")
     for item in issues_charger:
         print(f"    {item}")
 else:
@@ -100,7 +98,7 @@ if ci_path.exists():
     ci_col = ci.columns[0]
     print(f"  Columna principal: '{ci_col}'")
     print(f"  Min: {ci[ci_col].min():.4f}  Max: {ci[ci_col].max():.4f}  Mean: {ci[ci_col].mean():.4f}")
-    print(f"  Rango esperado: 0.672 – 0.790 kg CO2/kWh (diesel Iquitos con solar)")
+    print("  Rango esperado: 0.672 – 0.790 kg CO2/kWh (diesel Iquitos con solar)")
     in_range = (ci[ci_col] >= 0.60) & (ci[ci_col] <= 0.95)
     print(f"  Valores fuera de rango fisico [0.60-0.95]: {(~in_range).sum()}")
     nan_count = ci[ci_col].isna().sum()
@@ -109,10 +107,10 @@ if ci_path.exists():
     zero_count = (ci[ci_col] == 0).sum()
     print(f"  Valores == 0: {zero_count} {'(ERROR — no deberia haber ceros)' if zero_count > 0 else '(OK)'}")
     # Muestras
-    print(f"\n  Muestra de valores (primeras 6 horas):")
+    print("\n  Muestra de valores (primeras 6 horas):")
     for i in range(6):
         print(f"    hora {i:02d}: {ci[ci_col].iloc[i]:.4f} kg CO2/kWh")
-    print(f"\n  Muestra mediodía (hora 12):")
+    print("\n  Muestra mediodía (hora 12):")
     print(f"    hora 12 (fila 12): {ci[ci_col].iloc[12]:.4f}")
     print(f"    hora 19 (punta): {ci[ci_col].iloc[19]:.4f}")
 else:
@@ -148,7 +146,7 @@ if pr_path.exists():
     diferencial = (precio_punta - precio_fp) / precio_fp * 100
     print(f"  Diferencial punta/fp: {diferencial:.1f}%  (esperado ~46%)")
 
-    print(f"\n  Muestra patron TOU horas 16-23 (fila 16-23 del dia 1):")
+    print("\n  Muestra patron TOU horas 16-23 (fila 16-23 del dia 1):")
     for h in range(16, 24):
         print(f"    hora {h:02d}: {pr[pr_col].iloc[h]:.4f} USD/kWh  {'<-- PUNTA' if 18<=h<23 else ''}")
 else:
@@ -186,7 +184,7 @@ if wm_files:
         active = (~wm['load_profile'].astype(str).isin(["[]", "0", "0.0", "nan"])).sum()
         print(f"\n  Horas con ciclo activo (load_profile no vacio): {active}")
 
-    print(f"\n  Muestra fila 1-3:")
+    print("\n  Muestra fila 1-3:")
     print(wm.head(3).to_string())
 else:
     print("  ERROR: archivos Washing_Machine_X.csv no encontrados")
@@ -204,7 +202,7 @@ if wth_path.exists():
     print(f"  Columnas ({len(wth.columns)}): {len(wth.columns)} (esperado 16)")
     print(f"  Nombres: {list(wth.columns)}")
     nan_total = wth.isna().sum()
-    print(f"\n  NaN por columna (top 5):")
+    print("\n  NaN por columna (top 5):")
     top_nan = nan_total.sort_values(ascending=False).head(5)
     for col, n in top_nan.items():
         print(f"    {col}: {n} NaN")
@@ -213,7 +211,7 @@ if wth_path.exists():
     t_col = 'outdoor_dry_bulb_temperature'
     if t_col in wth.columns:
         print(f"\n  T_exterior: min={wth[t_col].min():.1f}C  max={wth[t_col].max():.1f}C  mean={wth[t_col].mean():.1f}C")
-        print(f"  Esperado Iquitos: 24-33°C")
+        print("  Esperado Iquitos: 24-33°C")
 
     # Irradiancia difusa
     dhi_col = 'diffuse_solar_irradiance'
@@ -231,14 +229,14 @@ if wth_path.exists():
     rh_col = 'outdoor_relative_humidity'
     if rh_col in wth.columns:
         print(f"\n  RH exterior: min={wth[rh_col].min():.1f}%  max={wth[rh_col].max():.1f}%  mean={wth[rh_col].mean():.1f}%")
-        print(f"  Esperado Iquitos: 75-98%")
+        print("  Esperado Iquitos: 75-98%")
 
     # Verificar predicciones (shift)
     pred_cols = [c for c in wth.columns if '_predicted_' in c]
     print(f"\n  Columnas de prediccion: {len(pred_cols)} (esperado 12)")
     if pred_cols:
         nan_preds = wth[pred_cols].isna().sum()
-        print(f"  NaN en predicciones:")
+        print("  NaN en predicciones:")
         for col, n in nan_preds.items():
             if n > 0:
                 print(f"    {col}: {n} NaN")

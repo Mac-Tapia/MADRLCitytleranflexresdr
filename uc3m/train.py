@@ -28,7 +28,7 @@ import logging
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 
@@ -41,11 +41,10 @@ logging.basicConfig(
 logger = logging.getLogger("uc3m.train")
 
 # ── Imports UC3M ──────────────────────────────────────────────────────────────
-from uc3m.env.uc3m_env       import UC3MEnv
-from uc3m.env.bact           import ClimateVector, IQUITOS_CLIMATE
-from uc3m.algorithms.factory import AlgorithmFactory
-from uc3m.kpis.evaluator     import KPIEvaluator
-from uc3m.reward.hphi        import HPHI
+from uc3m.env.uc3m_env import UC3MEnv  # noqa: E402
+from uc3m.env.bact import ClimateVector, IQUITOS_CLIMATE  # noqa: E402
+from uc3m.algorithms.factory import AlgorithmFactory  # noqa: E402
+from uc3m.kpis.evaluator import KPIEvaluator  # noqa: E402
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -267,8 +266,6 @@ def run_benchmark(algorithms: List[str], cfg: Dict, base_dir: Path) -> None:
     Entrena y evalúa múltiples algoritmos sobre el mismo entorno.
     Genera tabla comparativa HPHI al final.
     """
-    all_kpis = []
-
     for algo_name in algorithms:
         logger.info(f"\n{'='*60}")
         logger.info(f"  Algoritmo: {algo_name}")
@@ -278,7 +275,7 @@ def run_benchmark(algorithms: List[str], cfg: Dict, base_dir: Path) -> None:
         ckpt_dir.mkdir(parents=True, exist_ok=True)
 
         env = build_env(cfg, algo_name)
-        evaluator = train(
+        train(
             algorithm      = algo_name,
             cfg            = cfg,
             env            = env,

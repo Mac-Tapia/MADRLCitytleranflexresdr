@@ -2,42 +2,114 @@
   "python.defaultInterpreterPath": "${workspaceFolder}\\.venv39-citylearn-v3\\Scripts\\python.exe",
   "python.analysis.extraPaths": [
     "${workspaceFolder}",
+    "${workspaceFolder}\\tools",
     "${workspaceFolder}\\CityLearn"
   ],
+  "python.analysis.include": [
+    "uc3m",
+    "tests"
+  ],
+  "python.analysis.exclude": [
+    "**/__pycache__",
+    ".venv*/**",
+    "CityLearn/**",
+    "external/**",
+    "outputs/**",
+    "build/**",
+    "dist/**",
+    "agent-skills/**",
+    "deploy/**",
+    "tools/**"
+  ],
   "python.analysis.ignore": [
-    "CityLearn/examples/*.ipynb"
+    "CityLearn/**",
+    "external/**",
+    "outputs/**",
+    "build/**",
+    "dist/**",
+    "agent-skills/**",
+    "deploy/**",
+    "tools/**"
   ],
   "python.analysis.diagnosticSeverityOverrides": {
     "reportMissingImports": "warning"
   },
-  "python.formatting.provider": "black",
-  "python.linting.enabled": true,
-  "python.linting.pylintEnabled": true,
-  "python.linting.pylintArgs": [
-    "--max-line-length=88"
-  ],
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": [
-    "CityLearn\\tests"
+    "tests"
   ],
+  "ruff.lint.args": [
+    "--exclude",
+    "CityLearn",
+    "--exclude",
+    "external",
+    "--exclude",
+    "outputs",
+    "--exclude",
+    "build",
+    "--exclude",
+    "dist",
+    "--exclude",
+    "tools",
+    "--exclude",
+    "deploy",
+    "--exclude",
+    "agent-skills",
+    "--exclude",
+    ".venv39-citylearn-v3"
+  ],
+  "markdownlint.configFile": "${workspaceFolder}\\.markdownlint.json",
   "markdownlint.config": {
     "default": true,
     "MD013": false,
+    "MD022": false,
+    "MD029": false,
+    "MD031": false,
+    "MD032": false,
     "MD024": {
       "siblings_only": true
     },
     "MD025": false,
+    "MD036": false,
     "MD033": false,
-    "MD041": false
+    "MD034": false,
+    "MD040": false,
+    "MD041": false,
+    "MD058": false,
+    "MD060": false
   },
   "markdownlint.ignore": [
     "**/.venv*/**",
     "**/external/**",
     "**/outputs/**",
-    "**/.git/**"
+    "**/.git/**",
+    "**/CityLearn/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/agent-skills/**",
+    "**/docs/thesis/**",
+    "**/docs/audits/**",
+    "**/docs/contributions/**"
   ],
+  "cSpell.configFile": "${workspaceFolder}\\cspell.json",
+  "cSpell.enabled": false,
   "cSpell.language": "en,es-ES",
+  "cSpell.diagnosticLevel": "Hint",
+  "cSpell.ignorePaths": [
+    "CityLearn/**",
+    "external/**",
+    "outputs/**",
+    ".venv*/**",
+    "build/**",
+    "dist/**",
+    "agent-skills/**",
+    "docs/thesis/**",
+    "docs/audits/**",
+    "docs/contributions/**"
+  ],
   "cSpell.words": [
+    "BACT",
+    "BESS",
     "CityLearn",
     "CityLearnV",
     "CTDE",
@@ -52,6 +124,7 @@
     "POMDP",
     "PyTorch",
     "RBC",
+    "UC3M",
     "V2G",
     "checkpoints",
     "critic",
@@ -124,5 +197,9 @@
     }
   },
   "python.terminal.activateEnvironment": true,
-  "terminal.integrated.cwd": "${workspaceFolder}"
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "git.repositoryScanIgnoredFolders": [
+    "${workspaceFolder}\\CityLearn",
+    "${workspaceFolder}\\external"
+  ]
 }

@@ -8,7 +8,6 @@ adversary to goal. Adversary is rewarded for its distance to the goal.
 import numpy as np
 from offpolicy.envs.mpe.core import World, Agent, Landmark
 from offpolicy.envs.mpe.scenario import BaseScenario
-import random
 
 
 class CryptoAgent(Agent):

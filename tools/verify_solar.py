@@ -15,7 +15,6 @@ import sys
 import math
 import pvlib
 import pandas as pd
-import numpy as np
 
 from buildingcsv_inputs import load_building_inventory
 
@@ -103,7 +102,6 @@ print(f"  tz     = {loc.tz}  (UTC-5, Lima ✓)")
 print(f"  alt    = {loc.altitude} m  (Iquitos ~106 m s.n.m. ✓)")
 
 # Verificar que el amanecer/ocaso son correctos para Iquitos (Ecuador ~lat cero)
-import datetime
 sol = loc.get_sun_rise_set_transit(
     pd.DatetimeIndex([pd.Timestamp("2024-06-21", tz=TZ)])
 )

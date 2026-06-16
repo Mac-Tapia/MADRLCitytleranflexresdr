@@ -76,7 +76,7 @@ for bid in building_ids:
 
 # Verificar reward EV en live_progress más reciente
 print("\n=== VERIFICACION LIVE PROGRESS - EV REWARD ===")
-import json
+import json  # noqa: E402
 lp_files = sorted(
     list(Path("outputs").glob("**/live_progress.json")),
     key=lambda p: p.stat().st_mtime,

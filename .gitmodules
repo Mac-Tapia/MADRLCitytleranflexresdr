@@ -4,25 +4,25 @@
 	branch = citylearn-v3-madrl
 [submodule "external/HARL"]
 	path = external/HARL
-	url = https://github.com/PKU-MARL/HARL.git
+	url = https://github.com/Mac-Tapia/HARL.git
 [submodule "external/MAAC"]
 	path = external/MAAC
-	url = https://github.com/shariqiqbal2810/MAAC.git
+	url = https://github.com/Mac-Tapia/MAAC.git
 [submodule "external/MARL"]
 	path = external/MARL
-	url = https://github.com/puyuan1996/MARL.git
+	url = https://github.com/Mac-Tapia/MARL.git
 [submodule "external/MARLlib"]
 	path = external/MARLlib
-	url = https://github.com/Replicable-MARL/MARLlib.git
+	url = https://github.com/Mac-Tapia/MARLlib.git
 [submodule "external/MATD3implementation"]
 	path = external/MATD3implementation
-	url = https://github.com/JohannesAck/MATD3implementation.git
+	url = https://github.com/Mac-Tapia/MATD3implementation.git
 [submodule "external/MicroGrids"]
 	path = external/MicroGrids
-	url = https://github.com/squoilin/MicroGrids.git
+	url = https://github.com/Mac-Tapia/MicroGrids.git
 [submodule "external/evcc"]
 	path = external/evcc
 	url = https://github.com/evcc-io/evcc.git
 [submodule "external/prosumpy"]
 	path = external/prosumpy
-	url = https://github.com/energy-modelling-toolkit/prosumpy.git
+	url = https://github.com/Mac-Tapia/prosumpy.git

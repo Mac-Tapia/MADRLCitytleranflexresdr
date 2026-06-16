@@ -4,7 +4,6 @@ Tests de integración para uc3m.env.uc3m_env — UC3MEnv.
 from __future__ import annotations
 
 import numpy as np
-import pytest
 
 from uc3m.env.bact import IQUITOS_CLIMATE
 

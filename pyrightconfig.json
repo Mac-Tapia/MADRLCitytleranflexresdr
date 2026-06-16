@@ -1,0 +1,27 @@
+{
+  "include": [
+    "uc3m",
+    "tests"
+  ],
+  "exclude": [
+    "**/__pycache__",
+    ".venv*",
+    "CityLearn",
+    "external",
+    "outputs",
+    "build",
+    "dist",
+    "agent-skills",
+    "deploy",
+    "tools"
+  ],
+  "extraPaths": [
+    "tools",
+    "CityLearn"
+  ],
+  "venvPath": ".",
+  "venv": ".venv39-citylearn-v3",
+  "pythonVersion": "3.9",
+  "typeCheckingMode": "basic",
+  "reportMissingModuleSource": "none"
+}

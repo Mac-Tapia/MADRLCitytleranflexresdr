@@ -588,10 +588,10 @@ def update_schema_pv_nominal_power(results: dict, dry_run: bool = False) -> None
         building.setdefault("pv", {}).setdefault("attributes", {})["nominal_power"] = round(values["pdc_kw"], 1)
 
     if dry_run:
-        log.info(f"  dry-run: schema.json no fue modificado")
+        log.info("  dry-run: schema.json no fue modificado")
     else:
         schema_path.write_text(json.dumps(schema, indent=2, ensure_ascii=False), encoding="utf-8")
-        log.info(f"  schema.json actualizado con nominal_power PV desde building.csv")
+        log.info("  schema.json actualizado con nominal_power PV desde building.csv")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

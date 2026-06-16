@@ -1,1 +1,1 @@
-from uc3m.geography.ingest import UniversalDataIngester
+from uc3m.geography.ingest import UniversalDataIngester as UniversalDataIngester

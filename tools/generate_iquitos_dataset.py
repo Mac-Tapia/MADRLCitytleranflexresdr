@@ -387,7 +387,6 @@ class WeatherDataManager:
             pvcalculation=False,
             usehorizon=False,
         )
-        n_expected = 8784 if year == 2024 else 8760
         df = data.rename(columns={
             'G(h)': 'GHI', 'Gd(h)': 'DHI', 'Gb(n)': 'DNI',
             'T2m': 'T2M', 'WS10m': 'WS',
@@ -1089,7 +1088,6 @@ class SchemaBuilder:
         # ── Edificios (dict, no lista) ─────────────────────────────────────────
         buildings = {}
         for bldg_id in sorted(MADRL_BUILDING_CONSTANTS.keys()):
-            cfg      = MADRL_BUILDING_CONSTANTS[bldg_id]
             bess     = bess_params.get(bldg_id, {
                 'capacity': 100.0, 'nominal_power': 50.0,
                 'depth_of_discharge': 0.80, 'efficiency': 0.9025,
@@ -1346,7 +1344,6 @@ class IquitosDatasetPipeline:
         # ── Etapa 2: Selección de módulo Sandia ──────────────────────
         logger.info("[Etapa 2] Selección de modulo e inversor Sandia")
         try:
-            import pvlib
             sms = SandiaModelSelector()
             mod_key, mod_params = sms.select_module()
             mps = sms.modules_per_string()
@@ -1504,7 +1501,7 @@ class IquitosDatasetPipeline:
         files = list(self.output_dir.glob("*.csv")) + list(self.output_dir.glob("*.json"))
         charger_count = self._final_charger_count(schema_path)
         logger.info(f"\n{'='*60}")
-        logger.info(f"DATASET GENERADO EXITOSAMENTE")
+        logger.info("DATASET GENERADO EXITOSAMENTE")
         logger.info(f"  Directorio: {self.output_dir.resolve()}")
         logger.info(f"  Archivos:   {len(files)}")
         logger.info(f"  Edificios:  {len(self.buildings)}")
@@ -1747,7 +1744,7 @@ class IquitosDatasetPipeline:
         }
         with open(self.output_dir / "dataset_generation_log.json", 'w', encoding='utf-8') as f:
             json.dump(log, f, indent=2, ensure_ascii=False)
-        logger.info(f"  Log guardado: dataset_generation_log.json")
+        logger.info("  Log guardado: dataset_generation_log.json")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

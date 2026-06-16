@@ -913,7 +913,7 @@ def _build_ev_audit_markdown(summary_rows):
         "",
         "Parametros adoptados desde la logica de control tipo EVCC/IEC:",
         "",
-        f"- Modo de carga: IEC 61851 modo 3 AC",
+        "- Modo de carga: IEC 61851 modo 3 AC",
         f"- Conector/toma: {MODE3_CONNECTOR_STANDARD}",
         f"- Tension nominal monofasica: {MODE3_VOLTAGE_V} V",
         f"- Corriente minima por toma: {MODE3_MIN_CURRENT_A} A",
@@ -1121,7 +1121,6 @@ def main():
     for bid, ev_list in charger_config.items():
         btype = BUILDING_DATA[bid]['bldg_type']
         kw_list = [EV_SPEC[e]['charger_kw'] for e in ev_list]
-        ev_labels = [EV_SPEC[e]['ev_label'] for e in ev_list]
         log.info(f"  B{bid} ({len(ev_list)} cargadores @ {kw_list} kW | {btype}):")
 
         for idx, ev_type in enumerate(ev_list, start=1):

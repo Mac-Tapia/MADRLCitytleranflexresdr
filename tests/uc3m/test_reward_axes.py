@@ -88,8 +88,9 @@ class TestRewardAxes:
         )
         if isinstance(result, tuple):
             scalar, vec = result
-            assert np.isscalar(scalar) or (hasattr(scalar, 'shape') and scalar.shape == ())
-            assert hasattr(vec, 'to_array') or (hasattr(vec, 'shape') and vec.shape == (7,))
+            assert np.isscalar(scalar)
+            assert isinstance(vec, AxisValues)
+            assert vec.to_array().shape == (7,)
         else:
             assert np.isscalar(result) or hasattr(result, '__float__')
 

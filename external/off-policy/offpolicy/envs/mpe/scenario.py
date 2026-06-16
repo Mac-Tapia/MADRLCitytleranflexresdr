@@ -1,4 +1,3 @@
-import numpy as np
 
 # defines scenario upon which the world is built
 class BaseScenario(object):

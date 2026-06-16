@@ -21,8 +21,6 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Optional
-
 import numpy as np
 import pandas as pd
 
@@ -117,7 +115,7 @@ class UniversalDataIngester:
             logger.debug(f"[Ingester] Cargando caché {cache_file}")
             return pd.read_parquet(cache_file)
 
-        df = None
+        df: pd.DataFrame | None = None
 
         # 1° PVGIS-ERA5 (solo hasta ~2023)
         if year <= 2023:
@@ -137,6 +135,7 @@ class UniversalDataIngester:
                 df = self._synthetic_fallback(year)
                 logger.warning(f"[Ingester] Usando datos sintéticos para {year}")
 
+        assert df is not None
         df.to_parquet(cache_file)
         return df
 
@@ -146,8 +145,8 @@ class UniversalDataIngester:
 
     def _from_pvgis(self, year: int) -> pd.DataFrame:
         """Descarga desde PVGIS-ERA5 usando pvlib."""
-        import pvlib
-        data, _meta, _inputs = pvlib.iotools.get_pvgis_hourly(
+        import pvlib  # type: ignore[import-not-found]
+        result = pvlib.iotools.get_pvgis_hourly(
             latitude=self.lat,
             longitude=self.lon,
             start=year,
@@ -157,6 +156,7 @@ class UniversalDataIngester:
             outputformat="csv",
             pvcalculation=False,
         )
+        data = result[0]
         # Renombrar columnas estándar PVGIS → CityLearn
         col_map = {
             "G(h)":  "GHI",
@@ -166,10 +166,11 @@ class UniversalDataIngester:
             "WS10m": "WS",
         }
         df = data.rename(columns=col_map)
-        if df.index.tzinfo is None:
-            df.index = df.index.tz_localize("UTC").tz_convert(self.tz)
+        dt_index = pd.DatetimeIndex(df.index)
+        if dt_index.tz is None:
+            df.index = dt_index.tz_localize("UTC").tz_convert(self.tz)
         else:
-            df.index = df.index.tz_convert(self.tz)
+            df.index = dt_index.tz_convert(self.tz)
         return self._normalize_columns(df)
 
     def _from_nasa_power(self, year: int) -> pd.DataFrame:
@@ -200,19 +201,52 @@ class UniversalDataIngester:
         }, index=idx)
 
         # Reemplazar valores faltantes NASA (-999)
-        df = df.replace(-999.0, np.nan).replace(-999, np.nan)
-        df = df.clip(lower=0)
+        df = pd.DataFrame(df.replace(-999.0, np.nan).replace(-999, np.nan))
+        df = pd.DataFrame(df.clip(lower=0), index=df.index)
 
         return self._normalize_columns(df)
 
     def _normalize_columns(self, df: pd.DataFrame) -> pd.DataFrame:
         """Mapea columnas internas → nombres estándar CityLearn v2."""
         result = pd.DataFrame(index=df.index)
-        result["outdoor_dry_bulb_temperature"] = df.get("T2M", 25.0)
-        result["outdoor_relative_humidity"]    = df.get("RH2M", df.get("RH", 70.0))
-        result["diffuse_solar_irradiance"]     = df.get("DHI", 0.0).clip(lower=0)
-        result["direct_solar_irradiance"]      = df.get("DNI", 0.0).clip(lower=0)
+        result["outdoor_dry_bulb_temperature"] = self._column(df, "T2M", 25.0)
+        result["outdoor_relative_humidity"] = self._column(
+            df, "RH2M", 70.0 if "RH" not in df.columns else "RH"
+        )
+        result["diffuse_solar_irradiance"] = self._column(df, "DHI", 0.0).clip(
+            lower=0
+        )
+        result["direct_solar_irradiance"] = self._column(df, "DNI", 0.0).clip(
+            lower=0
+        )
         return result.astype(np.float32)
+
+    @staticmethod
+    def _column(
+        df: pd.DataFrame,
+        name: str,
+        default: float | str,
+    ) -> pd.Series:
+        if name in df.columns:
+            source = df[name]
+            if isinstance(source, pd.DataFrame):
+                source = source.iloc[:, 0]
+            return pd.Series(
+                pd.to_numeric(source, errors="coerce"),
+                index=df.index,
+                dtype="float64",
+            )
+        if isinstance(default, str) and default in df.columns:
+            source = df[default]
+            if isinstance(source, pd.DataFrame):
+                source = source.iloc[:, 0]
+            return pd.Series(
+                pd.to_numeric(source, errors="coerce"),
+                index=df.index,
+                dtype="float64",
+            )
+        value = float(default) if not isinstance(default, str) else 0.0
+        return pd.Series(value, index=df.index, dtype="float64")
 
     def _synthetic_fallback(self, year: int) -> pd.DataFrame:
         """

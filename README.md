@@ -20,28 +20,50 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 Actualizado: 2026-06-15.
 
-### Sesion de entrenamiento activa
+### Corridas de referencia y definitiva
 
-| Algoritmo | E1 | E2 | E3 | Perfil |
-| --------- | -- | -- | --- | ------ |
-| **HAPPO** | queued (v3 re-run) | queued | queued | `happo_unified_comparable_v3` |
-| **MASAC** | queued (v3 re-run) | queued | queued | `masac_unified_comparable_v3` |
-| **MATD3** | **running** ~68% | **running** ~68% | queued | `matd3_unified_comparable_v3` ✅ |
-| **MAAC** | queued | queued | queued | `maac_unified_comparable_v3` |
+| Corrida | Sesion | Estado | Descripcion |
+| ------- | ------ | ------ | ----------- |
+| **v3 referencia** | `citylearn_v3_madrl_full_20260613_010234` | COMPLETADA 12/12 | Perfiles `*_unified_comparable_v3`, todas las 12 corridas con artefactos validos |
+| **v4 definitivo** | `citylearn_v3_madrl_full_20260615_074011_v4` | EN CURSO | Penalidad BESS degradacion (LiFePO4 C-rate/Arrhenius) + urgencia EV (SOC), 6/12 completadas |
 
-- Sesion: `citylearn_v3_madrl_full_20260613_010234` — lanzada 2026-06-13.
-- MATD3 E1+E2: paso global ~30 000/43 800 (68%), episodio 3/5, checkpoints activos (17 politicas), perfil v3 confirmado.
-- HAPPO y MASAC: directorios eliminados (resultados v2 descartados). Re-run pendiente con perfil v3 via `scripts/restart_happo_masac_v3.ps1` al terminar MATD3+MAAC.
-- MAAC: en cola, inicia tras completar MATD3.
-- Monitor: `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1 -OutputRoot outputs\citylearn_v3_madrl_full_20260613_010234`.
+### Estado v4 definitivo (corrida activa)
 
-### Cambios v3 aplicados (desde 2026-06-14)
+| Algoritmo | E1 | E2 | E3 |
+| --------- | -- | -- | -- |
+| **HAPPO** | Completado | Completado | Completado |
+| **MASAC** | Completado | Completado | Completado |
+| **MATD3** | En curso | En curso | Pendiente |
+| **MAAC** | Pendiente | Pendiente | Pendiente |
+
+Monitor: `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1 -OutputRoot outputs\citylearn_v3_madrl_full_20260615_074011_v4`
+
+### Tiempos reales corrida v3 (referencia valida)
+
+| Algoritmo | E1 (flex) | E2 (CO2) | E3 (costo) | Total |
+| --------- | --------: | -------: | ---------: | ----: |
+| HAPPO | 66.50 min | 66.15 min | 57.75 min | 190.4 min |
+| MASAC | 125.88 min | 148.33 min | 135.72 min | 409.9 min |
+| MATD3 | 95.13 min | 95.30 min | 80.70 min | 271.1 min |
+| MAAC | 52.33 min | 51.74 min | 54.16 min | 158.2 min |
+
+Hardware: RTX 4060 Laptop, 8,188 MiB VRAM, driver 560.94, PyTorch 2.8.0+cu126, CUDA 12.6, `cuda_memory_fraction=0.812`.
+
+### Cambios aplicados en v3 y v4
+
+**v3 (corrida de referencia) — desde 2026-06-14:**
 
 - **Bug SOC corregido**: penalidad de salida EV tenia signo invertido en v2 (`+25` en lugar de `-25`); en v3 es `-abs(25)*mult` (agente ya no aprende a NO cargar EVs).
 - **ev_weight**: 0.12 → **0.25** (mayor peso al cumplimiento EV).
 - **`_ev_service_constraint_term()`**: nueva restriccion de urgencia por salida — penaliza en proporcion al deficit de SOC y horas restantes.
 - **V2G habilitado**: 31 tomas de camioneta con `bidirectional_v2g`, `max_discharging_power=7.4 kW`.
 - Submodulo CityLearn commits: `afb68187` (reward fix) + `acc0ada6` (V2G schema).
+
+**v4 (corrida definitiva) — desde 2026-06-15:**
+
+- **Penalidad degradacion BESS**: modelo LiFePO4 con ciclo Arrhenius. Penaliza C-rate alto durante carga/descarga de la bateria; incentiva ciclos suaves para prolongar vida util.
+- **Urgencia EV por SOC**: penalizacion proporcional al deficit de carga cuando el EV esta proximo a la hora de salida. Fuerza priorizacion de carga en ventana horaria restante.
+- Perfil activo: `*_unified_comparable_v4` con los mismos pesos de escenario que v3.
 
 ### Configuracion fija
 
@@ -215,13 +237,21 @@ Submodulos externos de referencia adicionales:
 | evcc | `external/evcc` | Gestor de carga EV (referencia) |
 | prosumpy | `external/prosumpy` | Gestion de prosumidores (referencia) |
 
-## Recompensa v3
+## Recompensa
 
-Los cuatro MADRL usan `CityLearnV3MADRLRewardFunction`. La recompensa combina pesos por eje y perfil por algoritmo:
+Los cuatro MADRL usan `CityLearnV3MADRLRewardFunction`. La recompensa combina pesos por eje y perfil por algoritmo.
 
-- Perfiles activos: `happo_unified_comparable_v3`, `masac_unified_comparable_v3`, `matd3_unified_comparable_v3`, `maac_unified_comparable_v3`.
-- Comparabilidad: todos usan `team_ratio=0.70`, `peak_weight=0.45`, `ramp_weight=0.35`, `ev_weight=0.25` y `reward_scale=1.00`.
-- EV/SOC: se penaliza el incumplimiento de SOC requerido a la salida y se agrega restriccion de servicio EV para evitar descargar cuando compromete el SOC objetivo.
+**Perfiles v3 (corrida referencia):**
+
+- Perfiles: `happo_unified_comparable_v3`, `masac_unified_comparable_v3`, `matd3_unified_comparable_v3`, `maac_unified_comparable_v3`.
+- Parametros comunes: `team_ratio=0.70`, `peak_weight=0.45`, `ramp_weight=0.35`, `ev_weight=0.25`, `reward_scale=1.00`.
+- EV/SOC: penalizacion de deficit de SOC a la salida + restriccion de servicio EV.
+
+**Perfiles v4 (corrida definitiva) — extensiones sobre v3:**
+
+- **Penalidad BESS**: modelo Arrhenius LiFePO4. Penaliza C-rate alto (carga/descarga intensa) para reducir degradacion ciclica de la bateria.
+- **Urgencia EV**: penalizacion proporcional al deficit `(SOC_obj - SOC_actual)` ponderada por `1/horas_restantes`. Fuerza carga prioritaria cuando el EV sale en las proximas horas.
+- Perfiles: `happo_unified_comparable_v4`, `masac_unified_comparable_v4`, `matd3_unified_comparable_v4`, `maac_unified_comparable_v4`.
 
 | Escenario | flex | carbon | cost |
 | --------- | ---: | -----: | ---: |
@@ -339,10 +369,10 @@ Opcion rapida — doble clic o desde PowerShell:
 .\relanzar_entrenamiento_madrl.bat
 ```
 
-Comando completo manual:
+Comando completo manual (requiere PowerShell 7 — `pwsh.exe`):
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass `
+pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_citylearn_v3_full_training_visible.ps1 `
   -OutputRoot $root `
   -Scenario ALL `
@@ -356,6 +386,18 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -TraceDetail compact `
   -GpuProfile local4060_fast `
   -Cuda
+```
+
+Para continuar una corrida interrumpida sin reejecutar lo ya completado:
+
+```powershell
+pwsh.exe -NoProfile -ExecutionPolicy Bypass `
+  -File scripts\run_citylearn_v3_full_training_visible.ps1 `
+  -OutputRoot $root -Scenario ALL -Seed 0 `
+  -EpisodeTimeSteps 8760 -Episodes 5 -TorchThreads 8 `
+  -LiveProgressInterval 1000 -ArtifactProfile efficient `
+  -TraceRecordInterval 10 -TraceDetail compact `
+  -GpuProfile local4060_fast -Cuda -SkipCompleted
 ```
 
 Antes del comando manual:
@@ -501,6 +543,7 @@ Comparar CityLearn v2 contra CityLearn v3 MADRL:
 
 | Documento | Ruta |
 | --------- | ---- |
+| **Historia de creacion del proyecto** | `docs/HISTORIA_CREACION_PROYECTO_MADRL_CITYLEARN.md` |
 | **Pipeline dataset** | `docs/architecture/dataset_construction_pipeline.md` |
 | **Flujo operativo vigente** | `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` |
 | **Manifest machine-readable del flujo** | `docs/workflow_manifest.json` |
@@ -509,7 +552,13 @@ Comparar CityLearn v2 contra CityLearn v3 MADRL:
 | **Cooperacion, coordinacion y control distrital** | `docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md` |
 | **Informe optimizacion VRAM** | `docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md` |
 | **Registro reorganizacion + politica paralelismo** | `docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md` |
-| Arquitectura y flujo | `docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
+| Arquitectura y flujo (MD) | `docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
+| Arquitectura y flujo (PDF) | `docs/architecture/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf` |
+| Flujo operativo (PDF) | `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf` |
+| Arquitectura operativa entrenamiento (PDF) | `docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf` |
+| Cooperacion/coordinacion/control (PDF) | `docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf` |
+| Pipeline dataset (PDF) | `docs/architecture/DATASET_CONSTRUCTION_PIPELINE.pdf` |
+| Infografias PNG (arquitectura + flujo) | `docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png`, `FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png` |
 | Destilacion dataset Iquitos | `docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md` |
 | Auditoria tecnica skill MADRL | `docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md` |
 | Tutorial notebook | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |

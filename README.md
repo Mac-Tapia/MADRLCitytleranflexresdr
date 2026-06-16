@@ -139,10 +139,11 @@ El paquete `uc3m/` es un framework universal reutilizable sobre CityLearn v2 que
 | `KPIEvaluator` | `uc3m/kpis/evaluator.py` | Calculo holistico de KPIs normalizados contra baseline RBC |
 | `AlgorithmFactory` | `uc3m/algorithms/factory.py` | Mapeo centralizado de 4 MADRL a sus backends externos |
 
-Instalar el paquete en modo desarrollo:
+Instalar todas las dependencias del proyecto (un solo comando, ver `docs/MANUAL_INSTALACION_DEPENDENCIAS.md`):
 
 ```bash
-pip install -e ".[train]"
+pip install -r requirements.txt
+pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu126
 ```
 
 Ejecutar tests:
@@ -419,6 +420,20 @@ Fixes aplicados al launcher:
 - `PYTHONUNBUFFERED=1`: flush inmediato de stdout a logs.
 - Monitor en tiempo real: episodio, paso, retorno, pesos OE1/OE2/OE3, CO2, precio, historial por episodio, GPU y logs. Para display rico dentro de cada job usar `-LiveOutput $true`, sabiendo que desactiva el paralelismo de escenarios.
 
+### Entrenamiento en paralelo (3 MADRL simultaneos, AWS)
+
+`launch_citylearn_v3_official_training.ps1` corre los 4 algoritmos en serie (HAPPO -> MASAC -> MATD3 -> MAAC), paralelizando solo los escenarios (E1/E2/E3) dentro de cada uno. Para correr varios algoritmos en paralelo (uno por proceso, cada uno con sus propios escenarios en paralelo) usar `scripts\run_3madrl_parallel.ps1`:
+
+```powershell
+pwsh.exe -NoProfile -ExecutionPolicy Bypass `
+  -File scripts\run_3madrl_parallel.ps1 `
+  -Algorithms happo,matd3,maac `
+  -Episodes 5 `
+  -GpuProfile aws
+```
+
+Requiere una GPU con VRAM suficiente para varios algoritmos+escenarios a la vez (no viable en RTX 4060 8 GB); el script bloquea la ejecucion si detecta <=8.5 GiB de VRAM dedicada salvo que se pase `-AllowGpuOversubscription`. Instancia AWS recomendada: `g5.2xlarge` (A10G, 24 GB VRAM). MASAC queda fuera de la lista por defecto por su mayor consumo de memoria de replay; se puede agregar explicitamente con `-Algorithms happo,masac,matd3,maac` si la VRAM lo permite.
+
 ### Perfil GPU-tuned local (RTX 4060 Laptop 8 GB)
 
 | MADRL | Backend | Ajustes activos |
@@ -474,11 +489,14 @@ torch 2.8.0+cu126
 CUDA 12.6
 ```
 
-Instalar dependencias del paquete UC3M:
+Instalar todas las dependencias (CityLearn + UC3M + stack RL) con un solo comando desde la raiz:
 
 ```bash
-pip install -e ".[train,dataset]"
+pip install -r requirements.txt
+pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu126
 ```
+
+Manual completo paso a paso (Windows y AWS): `docs/MANUAL_INSTALACION_DEPENDENCIAS.md`.
 
 ## Clonar el repositorio
 

@@ -58,19 +58,18 @@ python -m pip install --upgrade "pip>=23.3,<25" "setuptools>=68,<76" wheel
 echo "[6/8] Inicializando submodulos"
 git submodule update --init --recursive
 
-echo "[7/8] Instalando dependencias de entrenamiento"
-python -m pip install -r "${SCRIPT_DIR}/requirements-training-aws.txt"
+echo "[7/8] Instalando dependencias de entrenamiento (requirements.txt, incluye -e CityLearn y -e .)"
+python -m pip install -r "${PROJECT_ROOT}/requirements.txt"
 
 if [[ "${INSTALL_TORCH}" == "1" ]]; then
   echo "[7/8] Instalando PyTorch CUDA desde ${PYTORCH_INDEX_URL}"
+  # Debe ir DESPUES de requirements.txt: -e ./CityLearn instala un torch CPU
+  # generico como dependencia transitiva: este paso lo reemplaza con la build CUDA.
   # shellcheck disable=SC2086
   python -m pip install --upgrade ${TORCH_PACKAGES} --index-url "${PYTORCH_INDEX_URL}"
 else
   echo "[7/8] INSTALL_TORCH=0; se mantiene PyTorch existente si lo hay"
 fi
-
-python -m pip install -e "${PROJECT_ROOT}/CityLearn"
-python -m pip install -e "${PROJECT_ROOT}[train,dataset]"
 
 echo "[8/8] Verificacion CUDA/Torch"
 if command -v nvidia-smi >/dev/null 2>&1; then

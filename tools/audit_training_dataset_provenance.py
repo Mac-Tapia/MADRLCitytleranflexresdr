@@ -458,7 +458,6 @@ def write_outputs(df_out: pd.DataFrame, metadata: dict[str, Any]) -> None:
     ]
 
     for row in df_out.to_dict(orient="records"):
-        controlled_building = float(row["Cooling_controlado_MWh"]) + float(row["DHW_controlado_MWh"])
         lines.append(
             "| {ID} | {Edificio} | {Fuente} | {Meses}/{Pron} | {Base} | {Machine} | {EV} | {EVWindow} | {PV} | {PVToEV} | {PVToBESS} | {BESSToEV} | {BESS} | {BESSP} | {OK} | {Limitacion} |".format(
                 ID=row["ID"],

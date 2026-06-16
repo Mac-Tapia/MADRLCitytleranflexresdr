@@ -43,7 +43,6 @@ import json
 import math
 import openpyxl
 import pandas as pd
-import numpy as np
 from pathlib import Path
 
 # ── Rutas ─────────────────────────────────────────────────────────────────────
@@ -120,8 +119,6 @@ def forecast_missing(real: dict[tuple[int, int], float]) -> dict[tuple[int, int]
     available_2025 = sorted([(m, real[(2025, m)]) for (y, m), v in real.items()
                              if y == 2025], key=lambda x: x[0])
     if available_2025:
-        last4 = [v for _, v in available_2025[-4:]]
-        avg_last4 = sum(last4) / len(last4)
         for m in [11, 12]:
             if (2025, m) not in full:
                 # Usar factor estacional 2024 para nov/dic
@@ -242,7 +239,6 @@ def main():
 
     print("-" * 82)
     for y in YEARS_ALL:
-        dm = tot[y] / (365.25 * 24 / 12 * 12)
         print(f"  Total {y}: {tot[y]:>14,.1f} kWh  "
               f"({tot[y]/12:>10,.1f} kWh/mes  |  {tot[y]/365.25:>8,.1f} kWh/dia)")
 

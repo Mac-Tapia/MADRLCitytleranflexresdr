@@ -59,7 +59,7 @@ for sc in SCENARIOS:
         ]
         missing = [str(p.relative_to(OUT)) for p in expected if not p.exists()]
         if missing:
-            print(f"           Pendientes (se crean al completar):")
+            print("           Pendientes (se crean al completar):")
             for m in missing:
                 print(f"             - {m}")
 

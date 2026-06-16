@@ -8,7 +8,6 @@ path in the root workflow is missing, stale or disconnected.
 from __future__ import annotations
 
 import json
-import sys
 import argparse
 from pathlib import Path
 from typing import Any

@@ -43,7 +43,7 @@ def _hypervolume_nd(points: np.ndarray, ref: np.ndarray) -> float:
     frontera pequeña de laboratorio).  Para |F| > 500, usar pymoo HV.
     """
     try:
-        from pymoo.indicators.hv import HV
+        from pymoo.indicators.hv import HV  # type: ignore[import-not-found]
         ind = HV(ref_point=ref)
         return float(ind(points))
     except ImportError:
@@ -107,6 +107,18 @@ class HPHI:
     def clear(self) -> None:
         """Limpia la frontera acumulada (nuevo experimento)."""
         self._frontier.clear()
+
+    def update(self, axis_values: np.ndarray | Sequence[float]) -> None:
+        """Alias estable para callers antiguos que usaban update()."""
+        self.add_point(axis_values)
+
+    def reset(self) -> None:
+        """Alias estable para callers antiguos que usaban reset()."""
+        self.clear()
+
+    def compute_accumulated(self) -> float:
+        """Alias estable para callers antiguos que usaban compute_accumulated()."""
+        return self.compute()
 
     def pareto_front(self) -> np.ndarray:
         """Filtra la frontera de Pareto no dominada de los puntos acumulados."""

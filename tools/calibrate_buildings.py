@@ -27,7 +27,6 @@ B2,3,4,5,6,9,16,17 Sin cambio    (sin datos reales disponibles)
 """
 
 import pandas as pd
-import numpy as np
 from pathlib import Path
 import shutil
 

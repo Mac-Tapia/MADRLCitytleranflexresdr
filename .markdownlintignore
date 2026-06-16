@@ -1,0 +1,12 @@
+CityLearn/**
+external/**
+outputs/**
+.venv*/**
+build/**
+dist/**
+agent-skills/**
+docs/thesis/**
+docs/audits/**
+docs/contributions/**
+**/*.docx
+**/*.xlsx

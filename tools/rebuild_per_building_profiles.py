@@ -476,14 +476,20 @@ for bid in range(1, 18):
 
     # Verificaciones básicas
     errs = []
-    if nsl_cal.min() < 0:               errs.append('NSL<0')
+    if nsl_cal.min() < 0:
+        errs.append('NSL<0')
     if nsl_cal.min() < CALIB[bid]['nsl_floor'] * 0.95:
-        errs.append(f'NSL<floor')
-    if cd_cal.min() < 0:                errs.append('CD<0')
-    if np.any(np.isnan(nsl_cal)):       errs.append('NaN_NSL')
-    if np.any(np.isnan(T_in)):          errs.append('NaN_T')
-    if T_in.min() < 14 or T_in.max() > 46: errs.append('T_rango')
-    if RH_in.min() < 20 or RH_in.max() > 100: errs.append('RH_rango')
+        errs.append('NSL<floor')
+    if cd_cal.min() < 0:
+        errs.append('CD<0')
+    if np.any(np.isnan(nsl_cal)):
+        errs.append('NaN_NSL')
+    if np.any(np.isnan(T_in)):
+        errs.append('NaN_T')
+    if T_in.min() < 14 or T_in.max() > 46:
+        errs.append('T_rango')
+    if RH_in.min() < 20 or RH_in.max() > 100:
+        errs.append('RH_rango')
     if errs:
         all_ok = False
 
@@ -528,7 +534,8 @@ try:
     for step in range(100):
         actions = [env.action_space[i].sample() for i in range(len(env.buildings))]
         obs, rew, done, trunc, info = env.step(actions)
-        if done: break
+        if done:
+            break
     kpis = env.evaluate()
     print(f"  100 pasos OK — {len(kpis)} KPIs calculados")
     print()

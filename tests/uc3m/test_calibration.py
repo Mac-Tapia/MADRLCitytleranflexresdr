@@ -16,7 +16,7 @@ if str(ROOT) not in sys.path:
 
 # Importar las funciones de calibración directamente
 sys.path.insert(0, str(ROOT / "tools"))
-from distill_building_loads import (
+from distill_building_loads import (  # noqa: E402
     compute_cop_array,
     compute_managed_energy,
     build_month_year_index,
@@ -25,11 +25,10 @@ from distill_building_loads import (
     T_TARGET,
     COP_CLIP_LOW,
     COP_CLIP_HIGH,
-    COP_ACS_DEF,
     MEDIDAS_REALES,
     BUILDINGS_WITH_DATA,
 )
-from buildingcsv_inputs import load_building_inventory, load_monthly_measurements
+from buildingcsv_inputs import load_building_inventory, load_monthly_measurements  # noqa: E402
 
 
 class TestComputeCOPArray:
@@ -169,7 +168,10 @@ class TestBuildMonthYearIndex:
         months = np.tile(np.arange(1, 13), 26304 // 12 + 1)[:26304]
         df = pd.DataFrame({"month": months, "cooling_demand": 0.0})
         df_out = build_month_year_index(df)
-        assert (df_out["_month"].values == df_out["month"].values).all()
+        assert np.array_equal(
+            df_out["_month"].to_numpy(),
+            df_out["month"].to_numpy(),
+        )
 
     def test_total_rows_preserved(self):
         """build_month_year_index no cambia el número de filas."""
@@ -294,7 +296,8 @@ class TestCalibrationIntegration:
                                     dry_run=True, report_only=False)
 
         assert not report.empty, f"B{bldg_id}: reporte vacío"
-        max_delta = report["delta_%"].abs().max()
+        delta_values = np.asarray(report["delta_%"], dtype=float)
+        max_delta = float(np.nanmax(np.abs(delta_values)))
         assert max_delta < 0.01, (
             f"B{bldg_id}: Δ% máximo = {max_delta:.4f}% — debería ser < 0.01%"
         )

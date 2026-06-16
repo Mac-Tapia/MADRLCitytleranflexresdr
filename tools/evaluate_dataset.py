@@ -9,7 +9,6 @@ electricos, proporcion de cargas, intensidad energetica por m2).
 import pandas as pd
 import numpy as np
 from pathlib import Path
-import json
 
 BASE  = Path("CityLearn/data/datasets/citylearn_iquitos_2023_2025")
 BUILDINGCSV = Path("CityLearn/data/buildingcsv/building.csv")
@@ -337,9 +336,9 @@ print("=" * 90)
 print(f"  Edificios con medicion mensual buildingcsv: {len(DISTILLED_BUILDINGS)}/17 destilados")
 _b01_path = Path("CityLearn/data/buildingcsv/B_01.csv")
 if _b01_path.exists():
-    print(f"  B1 (ELECTRO ORIENTE S.A.):                  B_01.csv OK (MT2, COP=2.80, 36 meses)")
+    print("  B1 (ELECTRO ORIENTE S.A.):                  B_01.csv OK (MT2, COP=2.80, 36 meses)")
 else:
-    print(f"  B1 sin B_01.csv mensual:                    preservado por politica documentada")
+    print("  B1 sin B_01.csv mensual:                    preservado por politica documentada")
 print(f"  NSL no negativo y balance mensual OK:      {'SI' if all_nsl_balance_ok else 'NO'}")
 print(f"  DHW demand correcto en hospitales/hotel:   {'SI' if dhw_ok_all else 'NO'}")
 print(f"  Heating demand = 0 en todos:               {'SI' if heat_ok_all else 'NO'}")

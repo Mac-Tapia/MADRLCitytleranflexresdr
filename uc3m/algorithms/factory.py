@@ -21,9 +21,10 @@ Uso:
 
 from __future__ import annotations
 
+import importlib.util
 import logging
 from pathlib import Path
-from typing import Any, Dict, Optional, Type
+from typing import Any, Dict, Type
 
 logger = logging.getLogger(__name__)
 
@@ -123,7 +124,7 @@ class AlgorithmFactory:
     def _create_harl(cls, name: str, env, cfg: dict, checkpoint_dir) -> "_HARLAdapter":
         try:
             import sys
-            harl_path = Path(__file__).parents[3] / "external" / "HARL"
+            harl_path = Path(__file__).resolve().parents[2] / "external" / "HARL"
             if str(harl_path) not in sys.path:
                 sys.path.insert(0, str(harl_path))
             return _HARLAdapter(name, env, cfg, checkpoint_dir)
@@ -137,7 +138,7 @@ class AlgorithmFactory:
     def _create_marllib(cls, name: str, env, cfg: dict, checkpoint_dir) -> "_MARLlibAdapter":
         try:
             import sys
-            marllib_path = Path(__file__).parents[3] / "external" / "MARLlib"
+            marllib_path = Path(__file__).resolve().parents[2] / "external" / "MARLlib"
             if str(marllib_path) not in sys.path:
                 sys.path.insert(0, str(marllib_path))
             return _MARLlibAdapter(name, env, cfg, checkpoint_dir)
@@ -151,7 +152,7 @@ class AlgorithmFactory:
     def _create_offpolicy(cls, name: str, env, cfg: dict, checkpoint_dir) -> "_OffPolicyAdapter":
         try:
             import sys
-            op_path = Path(__file__).parents[3] / "external" / "off-policy"
+            op_path = Path(__file__).resolve().parents[2] / "external" / "off-policy"
             if str(op_path) not in sys.path:
                 sys.path.insert(0, str(op_path))
             return _OffPolicyAdapter(name, env, cfg, checkpoint_dir)
@@ -204,13 +205,15 @@ class _HARLAdapter(_BaseAdapter):
     def _setup(self):
         """Inicializa el runner HARL con la configuración del entorno."""
         try:
-            from harl.runners import RUNNER_REGISTRY
+            from harl.runners import RUNNER_REGISTRY  # type: ignore[import-not-found]
             algo_lower = self.name.lower()
             runner_cfg = self._build_harl_cfg()
             self._trainer = RUNNER_REGISTRY[algo_lower](runner_cfg, self.env)
             logger.info(f"[HARL] {self.name} runner inicializado. N={self.env.n_agents}")
-        except (ImportError, KeyError):
-            logger.warning(f"[HARL] Runner no disponible todavía para {self.name}. Usando stub.")
+        except Exception as e:
+            logger.warning(
+                f"[HARL] Runner no disponible para {self.name}: {e}. Usando stub."
+            )
             self._trainer = None
 
     def _build_harl_cfg(self) -> dict:
@@ -253,7 +256,7 @@ class _HARLAdapter(_BaseAdapter):
             ep_rewards.extend(rews)
             total += 1
             if done:
-                obs = self.env.reset()
+                self.env.reset()
         mean_rew = float(np.mean(ep_rewards)) if ep_rewards else 0.0
         logger.info(f"[HARL placeholder] {self.name} | steps={total} | mean_r={mean_rew:.4f}")
         return {"mean_reward": mean_rew, "total_steps": total}
@@ -285,7 +288,7 @@ class _MARLlibAdapter(_BaseAdapter):
 
     def _setup(self):
         try:
-            from marllib import marl
+            from marllib import marl  # type: ignore[import-not-found]
             self._marl = marl
             logger.info(f"[MARLlib] {self.name} inicializado.")
         except ImportError:
@@ -320,8 +323,9 @@ class _OffPolicyAdapter(_BaseAdapter):
     def _setup(self):
         try:
             import sys
-            op_path = Path(__file__).parents[3] / "external" / "off-policy"
-            import importlib
+            op_path = Path(__file__).resolve().parents[2] / "external" / "off-policy"
+            if str(op_path) not in sys.path:
+                sys.path.insert(0, str(op_path))
             spec = importlib.util.find_spec("algorithms")
             if spec:
                 from algorithms.runner import Runner   # type: ignore
@@ -364,7 +368,7 @@ class _OffPolicyAdapter(_BaseAdapter):
             ep_rewards.extend(rews if isinstance(rews, list) else list(rews.values()))
             total += 1
             if done:
-                obs = self.env.reset()
+                self.env.reset()
         mean_rew = float(np.mean(ep_rewards)) if ep_rewards else 0.0
         logger.info(f"[off-policy placeholder] {self.name} | steps={total} | mean_r={mean_rew:.4f}")
         return {"mean_reward": mean_rew, "total_steps": total}

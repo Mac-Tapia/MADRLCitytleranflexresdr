@@ -20,8 +20,7 @@ Ejes:
 from __future__ import annotations
 
 import numpy as np
-from dataclasses import dataclass, field
-from typing import Any
+from dataclasses import dataclass
 
 
 # ── Pesos por defecto (simplex Λ ≥ 0, Σλ_k = 1) ─────────────────────────────

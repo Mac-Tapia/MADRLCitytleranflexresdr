@@ -1,7 +1,6 @@
 import numpy as np
 from offpolicy.envs.mpe.core import World, Agent, Landmark
 from offpolicy.envs.mpe.scenario import BaseScenario
-import random
 
 
 class Scenario(BaseScenario):

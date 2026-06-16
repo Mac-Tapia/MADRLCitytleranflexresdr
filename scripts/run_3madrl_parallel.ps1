@@ -76,8 +76,9 @@ New-Item -ItemType Directory -Path "outputs" -Force | Out-Null
 New-Item -ItemType Directory -Path $OutputRoot -Force | Out-Null
 Set-Content -Path "outputs\latest_3madrl_parallel_output_root.txt" -Value $OutputRoot -Encoding UTF8
 
-$pwshExe = (Get-Command pwsh.exe -ErrorAction SilentlyContinue).Source
-if (-not $pwshExe) { $pwshExe = (Get-Command powershell.exe).Source }
+$pwshExe = (Get-Command pwsh -ErrorAction SilentlyContinue).Source
+if (-not $pwshExe -and $IsWindows) { $pwshExe = (Get-Command powershell.exe -ErrorAction SilentlyContinue).Source }
+if (-not $pwshExe) { throw "pwsh (PowerShell 7) not found in PATH." }
 
 $logDir = Join-Path $OutputRoot "parallel_launch_logs"
 New-Item -ItemType Directory -Path $logDir -Force | Out-Null
@@ -111,12 +112,16 @@ foreach ($algo in $Algorithms) {
 
     $stdOut = Join-Path $logDir "$algo.stdout.log"
     $stdErr = Join-Path $logDir "$algo.stderr.log"
-    $proc = Start-Process -FilePath $pwshExe -ArgumentList $launcherArgs `
-        -WorkingDirectory $ProjectRoot `
-        -WindowStyle Normal `
-        -RedirectStandardOutput $stdOut `
-        -RedirectStandardError $stdErr `
-        -PassThru
+    $startProcessArgs = @{
+        FilePath = $pwshExe
+        ArgumentList = $launcherArgs
+        WorkingDirectory = $ProjectRoot
+        RedirectStandardOutput = $stdOut
+        RedirectStandardError = $stdErr
+        PassThru = $true
+    }
+    if ($IsWindows) { $startProcessArgs["WindowStyle"] = "Normal" }
+    $proc = Start-Process @startProcessArgs
     $processes += [pscustomobject]@{ Algorithm = $algo; ProcessId = $proc.Id; Process = $proc }
 }
 

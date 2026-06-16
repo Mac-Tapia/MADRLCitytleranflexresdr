@@ -20,6 +20,7 @@ GPU_PROFILE="aws"
 CUDA="auto"
 MAX_PARALLEL_JOBS="1"
 OUTPUT_ROOT=""
+LOG_CHUNK_SIZE="10M"
 
 usage() {
   cat <<'EOF'
@@ -38,6 +39,8 @@ Opciones:
   --artifact-profile full|efficient|minimal
   --trace-record-interval N
   --trace-detail full|compact
+  --log-chunk-size SIZE            Tamano max. por archivo de log, formato
+                                    de "split -b" (default: 10M)
   --cuda                           Forzar CUDA
   --no-cuda                        Forzar CPU
   --help
@@ -59,6 +62,7 @@ while [[ $# -gt 0 ]]; do
     --gpu-profile) GPU_PROFILE="$2"; shift 2 ;;
     --max-parallel-jobs) MAX_PARALLEL_JOBS="$2"; shift 2 ;;
     --output-root) OUTPUT_ROOT="$2"; shift 2 ;;
+    --log-chunk-size) LOG_CHUNK_SIZE="$2"; shift 2 ;;
     --cuda) CUDA="1"; shift ;;
     --no-cuda) CUDA="0"; shift ;;
     --help|-h) usage; exit 0 ;;
@@ -293,28 +297,34 @@ build_command() {
 run_job() {
   local algorithm="$1"
   local scenario="$2"
-  local log_path="${OUTPUT_ROOT}/logs/${algorithm}_${scenario}.log"
+  local log_prefix="${OUTPUT_ROOT}/logs/${algorithm}_${scenario}-"
+  local log_pattern="${log_prefix}*.log"
   local rc=0
 
-  with_status_lock record_job "${algorithm}" "${scenario}" "running" "" "${log_path}"
+  with_status_lock record_job "${algorithm}" "${scenario}" "running" "" "${log_pattern}"
   build_command "${algorithm}" "${scenario}"
 
+  # Texto plano rotado: split es el unico escritor de cada parte, asi que
+  # no hay riesgo de truncar un archivo que otro proceso tiene abierto. El
+  # bloque agrupa el encabezado + la salida del entrenamiento en un solo
+  # pipe de 2 etapas (sin tee ni process-substitution) para que PIPESTATUS[0]
+  # refleje el exit code real del entrenamiento, no el de split.
+  set +e
   {
-    echo "==== $(date -u +%Y-%m-%dT%H:%M:%SZ) ${algorithm}/${scenario} ===="
+    printf '==== %s %s/%s ====\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${algorithm}" "${scenario}"
     printf 'CMD:'
     printf ' %q' "${CMD[@]}"
     printf '\n'
-  } | tee -a "${log_path}"
-
-  set +e
-  "${CMD[@]}" 2>&1 | tee -a "${log_path}"
+    "${CMD[@]}" 2>&1
+  } | split -b "${LOG_CHUNK_SIZE}" --numeric-suffixes=1 --suffix-length=5 \
+        --additional-suffix=.log - "${log_prefix}"
   rc=${PIPESTATUS[0]}
   set -e
 
   if [[ "${rc}" == "0" ]]; then
-    with_status_lock record_job "${algorithm}" "${scenario}" "completed" "${rc}" "${log_path}"
+    with_status_lock record_job "${algorithm}" "${scenario}" "completed" "${rc}" "${log_pattern}"
   else
-    with_status_lock record_job "${algorithm}" "${scenario}" "failed" "${rc}" "${log_path}"
+    with_status_lock record_job "${algorithm}" "${scenario}" "failed" "${rc}" "${log_pattern}"
   fi
 
   return "${rc}"

@@ -1,0 +1,53 @@
+# Entrenamiento MADRL (HAPPO/MASAC/MATD3/MAAC) sobre EC2 Ubuntu con GPU
+# NVIDIA, via Docker Compose. Requiere el plugin Compose V2 (`docker compose
+# version`, no el binario legado `docker-compose`) y NVIDIA Container
+# Toolkit configurado en el host (ver deploy/aws/README_TRAINING_AWS.md
+# seccion 15).
+#
+# Uso (desde la raiz del repo, con submodulos ya inicializados):
+#   git submodule update --init --recursive
+#   docker compose -f deploy/aws/training/docker-compose.yml build
+#   docker compose -f deploy/aws/training/docker-compose.yml up -d
+#   docker compose -f deploy/aws/training/docker-compose.yml logs -f
+#
+# Los resultados y logs rotados (texto plano, ~10 MB cada uno) quedan en
+# outputs/ en el HOST (mismo arbol que el flujo bare-metal de
+# run_aws_training.sh), por lo que se pueden monitorear sin entrar al
+# contenedor: bash deploy/aws/training/tail_aws_training.sh
+#
+# No se declara "version:" porque deploy.resources.reservations.devices
+# (reserva de GPU) es parte del Compose Spec actual, no del formato legado
+# versionado 3.x.
+
+services:
+  training:
+    build:
+      context: ../../..
+      dockerfile: deploy/aws/training/Dockerfile
+    image: madrl-training:latest
+    container_name: madrl-training
+    restart: "no"
+    shm_size: "8gb"
+    command:
+      - --scenario
+      - ALL
+      - --algorithms
+      - happo,masac,matd3,maac
+      - --episodes
+      - "75"
+      - --episode-time-steps
+      - "8760"
+      - --max-parallel-jobs
+      - "1"
+      - --log-chunk-size
+      - "10M"
+      - --cuda
+    volumes:
+      - ../../../outputs:/workspace/outputs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: ["gpu"]

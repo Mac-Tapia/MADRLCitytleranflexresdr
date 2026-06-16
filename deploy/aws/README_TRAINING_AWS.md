@@ -22,6 +22,12 @@ Entrenamiento canonico:
 - Salidas: `outputs/aws_citylearn_v3_madrl_<timestamp>/`.
 - Estado visible: `official_full_status.json`, logs por algoritmo y
   `live_progress.json` por corrida.
+- Logs en texto plano rotados automaticamente cada 10 MB (configurable con
+  `--log-chunk-size`): `logs/<algoritmo>_<escenario>-00001.log`,
+  `logs/<algoritmo>_<escenario>-00002.log`, etc. en vez de un solo archivo
+  que crece sin limite.
+- Tambien se puede ejecutar empaquetado en Docker / Docker Compose (ver
+  seccion 15) sin instalar Python directamente en la instancia.
 
 La infraestructura de inferencia de `deploy/aws/iac` se mantiene separada.
 Para entrenamiento GPU se usa `deploy/aws/iac-training`.
@@ -310,7 +316,154 @@ terraform destroy `
 
 Revise manualmente S3 si quiere conservar o eliminar los resultados.
 
-## 15. Problemas frecuentes
+## 15. Alternativa: entrenamiento con Docker / Docker Compose
+
+Si prefiere no instalar Python directamente en la instancia EC2, puede
+construir una imagen Docker que ejecuta exactamente el mismo
+`run_aws_training.sh` de las secciones 7-10, con sus logs rotados
+automaticamente en archivos de texto plano de ~10 MB. La instancia EC2 ya
+debe tener el driver NVIDIA (seccion 2); esta seccion agrega lo necesario
+para que Docker tambien pueda usar la GPU.
+
+### 15.1 Requisitos en el host: Docker, Compose V2 y NVIDIA Container Toolkit
+
+```bash
+docker --version
+docker compose version
+nvidia-smi
+```
+
+Si `docker compose version` falla, instale el plugin Compose V2 (no el
+binario legado `docker-compose`):
+
+```bash
+sudo apt-get update
+sudo apt-get install -y docker-compose-plugin
+```
+
+`nvidia-smi` confirma el driver NVIDIA en el host, pero Docker necesita
+ADEMAS el NVIDIA Container Toolkit para exponer la GPU dentro de los
+contenedores (tener CUDA en el host no implica que Docker ya pueda usarla):
+
+```bash
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+  sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+  sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo apt-get update
+sudo apt-get install -y nvidia-container-toolkit
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+```
+
+Verifique que un contenedor ya puede ver la GPU (comando estandar de
+NVIDIA, no depende de ninguna imagen del proyecto):
+
+```bash
+docker run --rm --gpus all ubuntu:22.04 nvidia-smi
+```
+
+Si esto no muestra la GPU, no continue: revise el toolkit antes de construir
+la imagen de entrenamiento.
+
+### 15.2 Construir la imagen
+
+```bash
+cd ~/MADRLCitytleranflexresdr
+git submodule update --init --recursive
+docker build -f deploy/aws/training/Dockerfile -t madrl-training:latest .
+```
+
+El build context es la raiz del repo (no `deploy/aws/training/`), porque la
+imagen necesita `CityLearn/`, `external/`, `data/` y `requirements.txt`
+completos. `deploy/aws/training/Dockerfile` y el `.dockerignore` de la raiz
+ya estan configurados para esto.
+
+### 15.3 Lanzar 75 episodios con Docker Compose (recomendado)
+
+```bash
+cd ~/MADRLCitytleranflexresdr
+mkdir -p outputs
+docker compose -f deploy/aws/training/docker-compose.yml up -d --build
+```
+
+El `command:` de `deploy/aws/training/docker-compose.yml` ya trae
+`--episodes 75 --algorithms happo,masac,matd3,maac --scenario ALL
+--max-parallel-jobs 1 --log-chunk-size 10M --cuda`. Edite ese archivo para
+cambiar escenario, algoritmos o paralelismo sin tocar el `Dockerfile`.
+
+### 15.4 Alternativa equivalente con `docker run`
+
+```bash
+cd ~/MADRLCitytleranflexresdr
+mkdir -p outputs
+docker run -d \
+  --name madrl-training \
+  --gpus all \
+  --shm-size=8g \
+  -v "$(pwd)/outputs:/workspace/outputs" \
+  madrl-training:latest \
+  --scenario ALL \
+  --algorithms happo,masac,matd3,maac \
+  --episodes 75 \
+  --episode-time-steps 8760 \
+  --max-parallel-jobs 1 \
+  --log-chunk-size 10M \
+  --cuda
+```
+
+Para relanzar solo un escenario/algoritmo, sobrescriba los argumentos (igual
+que en la seccion 13, pero pasados al contenedor):
+
+```bash
+docker run --rm --gpus all --shm-size=8g \
+  -v "$(pwd)/outputs:/workspace/outputs" \
+  madrl-training:latest \
+  --scenario E1 --algorithms matd3 --episodes 75 \
+  --output-root outputs/aws_citylearn_v3_madrl_reintento_E1_matd3 --cuda
+```
+
+### 15.5 Monitorear logs rotados (texto plano, ~10 MB cada uno)
+
+`outputs/` esta montado como volumen, asi que los resultados son visibles en
+el host exactamente igual que en el flujo bare-metal:
+
+```bash
+ls outputs/aws_citylearn_v3_madrl_*/logs/
+# happo_E1-00001.log  happo_E1-00002.log  masac_E1-00001.log  ...
+
+tail -f outputs/aws_citylearn_v3_madrl_*/logs/happo_E1-00001.log
+
+# Monitor existente, sin entrar al contenedor:
+bash deploy/aws/training/tail_aws_training.sh
+```
+
+Para ver solo los banners de inicio/fin del contenedor (el detalle paso a
+paso vive en los archivos rotados, no en la salida del contenedor):
+
+```bash
+docker compose -f deploy/aws/training/docker-compose.yml logs -f
+# o, con docker run:
+docker logs -f madrl-training
+```
+
+### 15.6 Verificar estado y detener
+
+```bash
+cat outputs/aws_citylearn_v3_madrl_*/official_full_status.json
+
+docker compose -f deploy/aws/training/docker-compose.yml down   # Compose
+docker stop madrl-training && docker rm madrl-training          # docker run
+```
+
+### 15.7 Sincronizar a S3 (igual que el flujo bare-metal, seccion 12)
+
+```bash
+OUTPUT_ROOT=$(cat outputs/latest_visible_training_output_root.txt)
+bash deploy/aws/training/sync_outputs_s3.sh "$OUTPUT_ROOT" "s3://NOMBRE_BUCKET_RESULTS/$(basename "$OUTPUT_ROOT")/"
+```
+
+## 16. Problemas frecuentes
 
 `nvidia-smi: command not found`
 
@@ -340,3 +493,21 @@ Revise manualmente S3 si quiere conservar o eliminar los resultados.
 - Ejecute `bash deploy/aws/training/check_aws_training_ready.sh`.
 - Confirme que el clone fue con `--recurse-submodules`.
 - Confirme que existe `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`.
+
+`could not select device driver "" with capabilities: [[gpu]]` (Docker)
+
+- El NVIDIA Container Toolkit no esta instalado o no esta configurado como
+  runtime de Docker. Repita la seccion 15.1 (`nvidia-ctk runtime configure
+  --runtime=docker` y `systemctl restart docker`).
+- Confirme con `docker run --rm --gpus all ubuntu:22.04 nvidia-smi` antes de
+  reintentar `docker compose up`.
+
+`docker build` falla por espacio o tarda demasiado en "transferring context"
+
+- El build context es la raiz del repo completa (CityLearn, external,
+  dataset incluidos). Confirme que `outputs/` y `.venv39-citylearn-v3/` NO
+  existen pesados en esa raiz, o que el `.dockerignore` de la raiz los esta
+  excluyendo (`docker build` debe imprimir un contexto de pocos GB, no
+  decenas).
+- Aumente `root_volume_size_gib` en Terraform si el disco se llena durante
+  el build (la imagen final pesa varios GB por el dataset + PyTorch CUDA).

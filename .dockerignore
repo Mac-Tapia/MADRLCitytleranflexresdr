@@ -1,0 +1,27 @@
+# Usado por deploy/aws/training/Dockerfile (build context = raiz del repo):
+#   docker build -f deploy/aws/training/Dockerfile -t madrl-training:latest .
+# Excluye artefactos pesados/regenerables que no deben entrar a la imagen.
+
+.git
+.github
+
+# entornos virtuales: se reconstruyen dentro de la imagen, no se copian
+.venv*/
+venv/
+*.egg-info/
+
+# salidas de entrenamientos previos (pueden pesar varios GB)
+outputs/
+
+# caches de build/test/lint
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.cache/
+build/
+dist/
+
+# editores / IDE
+.vscode/
+.idea/

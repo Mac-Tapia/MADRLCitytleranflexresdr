@@ -5,6 +5,10 @@
 > documenta los pasos que el usuario debe ejecutar manualmente cuando decida
 > desplegar la demo.
 
+> Para entrenamiento GPU desde cero en AWS use
+> `deploy/aws/README_TRAINING_AWS.md`. Esta guia es solo para inferencia/demo
+> con Docker Compose despues de tener un modelo ganador exportado.
+
 ## 0. Prerrequisitos
 
 - Cuenta AWS con permisos para EC2, ECR, S3, CloudWatch Logs, IAM (rol de

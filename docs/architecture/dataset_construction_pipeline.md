@@ -2,7 +2,7 @@
 
 **Proyecto:** `MADRLCitytleranflexresdr`
 **Dataset activo:** `citylearn_iquitos_2023_2025`
-**Ultima actualizacion:** 2026-06-12
+**Ultima actualizacion:** 2026-06-15
 **Fuente canonica dataset:** `python tools/orchestrate_citylearn_dataset.py`
 **Fuente canonica flujo completo:** `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md`
 
@@ -73,14 +73,19 @@ CityLearn/data/datasets/citylearn_iquitos_2023_2025/
 
 ## Entrenamiento Oficial Vigente
 
-La corrida vigente usa GPU local. El `OutputRoot` activo debe tomarse de `outputs/latest_visible_training_output_root.txt`; para una corrida nueva:
+La corrida vigente usa GPU local (RTX 4060 Laptop 8 GB, Torch 2.8.0+cu126). El `OutputRoot` activo debe tomarse de `outputs/latest_visible_training_output_root.txt`.
+
+Corrida activa: `outputs/citylearn_v3_madrl_full_20260615_074011_v4` (EN CURSO — v4 definitivo).  
+Corrida completa de referencia: `outputs/citylearn_v3_madrl_full_20260613_010234` (COMPLETADA).
+
+Para una corrida nueva (usar `pwsh.exe`, PowerShell 7):
 
 ```powershell
 $ts = Get-Date -Format 'yyyyMMdd_HHmmss'
 $root = "outputs\citylearn_v3_madrl_full_$ts"
 Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass `
+pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_citylearn_v3_full_training_visible.ps1 `
   -OutputRoot $root `
   -Scenario ALL `

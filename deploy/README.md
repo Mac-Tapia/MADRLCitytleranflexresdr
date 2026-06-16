@@ -17,6 +17,9 @@ deploy/
 ├── docker-compose.aws.yml     # Variante para ECS Fargate / EC2
 ├── aws/iac/            # Infraestructura como código (Terraform) para AWS
 ├── aws/README_DEPLOY_AWS.md   # Guía de despliegue en AWS
+├── aws/README_TRAINING_AWS.md # Manual de entrenamiento AWS desde cero
+├── aws/iac-training/          # Terraform EC2 GPU para entrenamiento
+├── aws/training/              # Bootstrap, launcher, monitor y sync S3
 ├── edge/README_DESPLIEGUE_FISICO.md  # Puente a despliegue físico (EMS/BMS real)
 └── .env.example
 ```
@@ -58,3 +61,11 @@ canónico (`outputs/latest_visible_training_output_root.txt` ->
 agente vía `KPIEvaluator`/HPHI, exportar su checkpoint con
 `tools/export_winning_model_onnx.py` (pendiente de implementar — ver
 `deploy/inference/model_loader.py` para el contrato esperado del export).
+
+## Entrenamiento en AWS
+
+El entrenamiento GPU en AWS esta documentado en
+`deploy/aws/README_TRAINING_AWS.md`. Ese flujo es independiente del stack de
+inferencia: crea/usa una instancia EC2 GPU, prepara `.venv39-citylearn-v3`,
+valida dataset y backends, lanza HAPPO/MASAC/MATD3/MAAC y guarda resultados en
+`outputs/aws_citylearn_v3_madrl_*` con sincronizacion opcional a S3.

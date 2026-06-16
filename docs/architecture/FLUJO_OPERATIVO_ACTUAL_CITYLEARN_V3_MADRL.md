@@ -1,16 +1,44 @@
 # Flujo operativo actual CityLearn v3 MADRL
 
-Actualizado: 2026-06-12
+Actualizado: 2026-06-15
 Fuente machine-readable: `docs/workflow_manifest.json`
 
 Este documento fija el flujo vigente del proyecto desde la creacion del dataset hasta los resultados finales. Reemplaza referencias historicas a carpetas fijas como `outputs/citylearn_v3_madrl_oficial_v4`, `outputs/citylearn_v3_madrl_oficial_v5` o relanzamientos con fecha 20260602.
+
+## Estado de Corridas Oficiales (2026-06-15)
+
+| Corrida | Ruta | Estado | Inicio | Fin | Notas |
+|---|---|:---:|---|---|---|
+| v3 | `outputs/citylearn_v3_madrl_full_20260613_010234` | **COMPLETADA** | 2026-06-15 00:46 | 2026-06-15 06:20 | 12/12 jobs exitosos. HAPPO+MASAC preexistentes. MATD3+MAAC completados. Perfil recompensa v3. |
+| v4 | `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | **EN CURSO** | 2026-06-15 07:40 | — | Re-run definitivo con penalidad BESS + urgencia EV. HAPPO ✓ MASAC ✓ MATD3 corriendo MAAC pendiente. |
+
+La corrida v4 es el re-run definitivo con la funcion de recompensa actualizada (penalidad degradacion BESS C-rate/Arrhenius + urgencia EV). Los KPIs de tesis deben tomarse de v4 cuando este completa; hasta entonces, v3 sirve como referencia.
+
+## Tiempos Reales por Algoritmo (GPU RTX 4060 Laptop 8 GB, 5 episodios 8760 pasos)
+
+| Algoritmo | Escenario | Concurrencia | Duracion real | Corrida fuente |
+|---|---|:---:|:---:|---|
+| HAPPO | E1 | paralelo con E2 | 66.5 min | v4 |
+| HAPPO | E2 | paralelo con E1 | 66.15 min | v4 |
+| HAPPO | E3 | secuencial | 57.75 min | v4 |
+| MASAC | E1 | secuencial | 125.88 min | v4 |
+| MASAC | E2 | secuencial | 148.33 min | v4 |
+| MASAC | E3 | secuencial | 135.72 min | v4 |
+| MATD3 | E1 | paralelo con E2 | 95.13 min | v3 |
+| MATD3 | E2 | paralelo con E1 | 95.30 min | v3 |
+| MATD3 | E3 | secuencial | 80.70 min | v3 |
+| MAAC | E1 | secuencial | 52.33 min | v3 |
+| MAAC | E2 | secuencial | 51.74 min | v3 |
+| MAAC | E3 | secuencial | 54.16 min | v3 |
+
+**Tiempo total estimado para corrida completa:** ~10-11 horas en RTX 4060 Laptop (HAPPO ~3h, MASAC ~5h, MATD3 ~4.5h paralelo, MAAC ~2.7h).
 
 ## Regla Canonica
 
 La corrida activa se obtiene asi:
 
 1. Leer `outputs/latest_visible_training_output_root.txt`.
-2. Si no existe, usar la carpeta mas reciente en `outputs/` que contenga `official_full_status.json`.
+2. Si no existe, usar la carpeta mas reciente en `outputs/` que contenga `official_full_status.json` con `status = completed`.
 3. No reportar KPIs finales si `official_full_status.json` no esta en `completed` o si falta algun artefacto requerido por job.
 
 La salida recomendada para nuevos lanzamientos es:
@@ -96,14 +124,14 @@ Los smoke tests con `episode_time_steps=4` pueden no representar el episodio anu
 
 ## Entrenamiento
 
-Lanzamiento visible recomendado:
+Lanzamiento visible recomendado (usar `pwsh.exe` — PowerShell 7, validado para la ruta operativa):
 
 ```powershell
 $ts = Get-Date -Format 'yyyyMMdd_HHmmss'
 $root = "outputs\citylearn_v3_madrl_full_$ts"
 Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
 
-powershell -NoProfile -ExecutionPolicy Bypass `
+pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_citylearn_v3_full_training_visible.ps1 `
   -OutputRoot $root `
   -Scenario ALL `
@@ -119,6 +147,8 @@ powershell -NoProfile -ExecutionPolicy Bypass `
   -Cuda
 ```
 
+Nota: el script `scripts\run_citylearn_v3_full_training_visible.ps1` es el wrapper visible raiz. Internamente invoca `CityLearn\scripts\launch_citylearn_v3_official_training.ps1`.
+
 Contrato:
 
 - 4 algoritmos: HAPPO, MASAC, MATD3 y MAAC.
@@ -127,7 +157,9 @@ Contrato:
 - 5 episodios por job.
 - 8760 pasos por episodio.
 - 43800 pasos de entorno por job.
-- CUDA activo con perfil `local4060_fast`.
+- CUDA activo con perfil `local4060_fast` (RTX 4060 Laptop, 8188 MiB, driver 560.94).
+- Torch 2.8.0+cu126.
+- Fraccion CUDA efectiva: 0.812 (`cuda_memory_fraction`).
 - Artefactos `efficient`, traza compacta cada 10 pasos.
 
 En RTX 4060 Laptop 8 GB, el launcher no fuerza toda la concurrencia a 1 por VRAM: el modo operativo usa monitor visible y permite hasta 2 escenarios concurrentes, manteniendo MASAC/MAAC en 1 por ser etapas pesadas. Si se activa `LiveOutput`, solo ese modo de display rico ejecuta en secuencia para mantener una salida legible.
@@ -242,6 +274,15 @@ No usar como fuente canonica de resultados finales:
 - `outputs/bottleneck_dryrun_*`
 
 Estos pueden conservarse para auditoria historica, pero los KPIs finales deben salir solo de la corrida activa/completa indicada por `outputs/latest_visible_training_output_root.txt`.
+
+## Corridas de Referencia Validas
+
+| Corrida | Ruta | Perfil recompensa | Uso |
+|---|---|---|---|
+| v3 (referencia) | `outputs/citylearn_v3_madrl_full_20260613_010234` | v3 base | Referencia de 12 jobs completos. HAPPO+MASAC con perfil anterior, MATD3+MAAC con perfil v3. |
+| v4 (definitiva) | `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | v4 BESS penalty + EV urgency | Re-run completo con funcion de recompensa definitiva. KPIs de tesis al completarse. |
+
+La corrida v4 usa la funcion de recompensa definitiva de la tesis con penalidad de degradacion BESS (C-rate + Arrhenius LiFePO4) y urgencia EV. Es la unica fuente valida para los KPIs finales de comparacion de la tesis una vez completada.
 
 ## Criterio de Resultado Final
 

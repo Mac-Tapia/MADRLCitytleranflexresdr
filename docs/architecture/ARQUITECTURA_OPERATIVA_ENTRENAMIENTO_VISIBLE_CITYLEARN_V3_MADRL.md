@@ -1,8 +1,13 @@
 # Arquitectura operativa del entrenamiento visible CityLearn v3 MADRL
 
+Actualizado: 2026-06-15
+
 Este documento explica el flujo completo del entrenamiento oficial de CityLearn v3 MADRL en este repositorio: desde la preparacion del proyecto hasta el cierre, auditoria y continuacion de una corrida interrumpida. Describe la arquitectura real implementada, con rutas y comandos verificables.
 
-Fuente operativa vigente: `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`. En este documento, `<OutputRoot>` es la ruta guardada en `outputs/latest_visible_training_output_root.txt`.
+Fuente operativa vigente: `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`. En este documento, `<OutputRoot>` es la ruta guardada en `outputs/latest_visible_training_output_root.txt`.
+
+**Corrida activa (2026-06-15):** `outputs/citylearn_v3_madrl_full_20260615_074011_v4` — EN CURSO (v4 re-run definitivo con BESS penalty + EV urgency).  
+**Corrida completa de referencia:** `outputs/citylearn_v3_madrl_full_20260613_010234` — COMPLETADA (12/12 jobs, exit_code=0).
 
 ## 1. Objetivo del flujo
 
@@ -117,23 +122,19 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -Cuda
 ```
 
-Tambien existe el wrapper visible:
+El script `scripts\run_citylearn_v3_full_training_visible.ps1` es el wrapper raiz visible. Internamente invoca `CityLearn\scripts\launch_citylearn_v3_official_training.ps1`. El launcher escribe `official_full_manifest.json` y `official_full_status.json` en el `OutputRoot`. El monitor visible lee `live_progress.json`, logs y `official_full_status.json`; no se necesita `-LiveOutput` para observar la corrida en tiempo real.
 
-```powershell
-pwsh.exe -NoProfile -ExecutionPolicy Bypass `
-  -File scripts\run_citylearn_v3_full_training_visible.ps1 `
-  -OutputRoot $root `
-  -Scenario ALL `
-  -Seed 0 `
-  -EpisodeTimeSteps 8760 `
-  -Episodes 5 `
-  -TorchThreads 8 `
-  -LiveProgressInterval 1000 `
-  -GpuProfile local4060_fast `
-  -Cuda
-```
+Parametros validados en corridas v3 y v4 (RTX 4060 Laptop, Torch 2.8.0+cu126):
 
-El wrapper abre una ventana independiente para que el entrenamiento no dependa de la terminal inicial. El monitor visible lee `live_progress.json`, logs y `official_full_status.json`; por eso no hace falta `LiveOutput` para observar la corrida. El launcher oficial escribe `official_full_manifest.json` y `official_full_status.json` dentro del `OutputRoot`.
+| Parametro | Valor usado |
+|---|---|
+| `GpuProfile` | `local4060_fast` |
+| `cuda_memory_fraction` | 0.812 (efectivo, calculado por launcher) |
+| `TorchThreads` | 8 |
+| `ArtifactProfile` | `efficient` |
+| `TraceRecordInterval` | 10 |
+| `TraceDetail` | `compact` |
+| `LiveProgressInterval` | 1000 pasos |
 
 ## 7. Monitor visible
 
@@ -253,7 +254,9 @@ Comportamiento esperado:
 
 Importante: esto continua la cadena sin empezar toda la campaña desde cero, pero no reanuda un job a mitad de episodio. En el estado actual del codigo, los scripts `train_citylearn_v3_*.py` guardan checkpoints, pero no exponen un parametro oficial de `--resume`/`--restore` para continuar exactamente desde un `global_step` intermedio. Por tanto, si `MASAC/E1` fue cortado en `global_step=17000`, el relanzamiento con `-SkipCompleted` conserva `HAPPO/E1` y reinicia solo el job incompleto `MASAC/E1`.
 
-## 11. Caso historico auditado: corte por actualizacion de Windows
+## 11. Corridas auditadas y antecedentes de continuacion
+
+### Caso historico: corte por actualizacion de Windows (corrida v4 original)
 
 En la corrida historica `outputs/citylearn_v3_madrl_oficial_v4` se observo:
 
@@ -264,7 +267,30 @@ MASAC/E1: incompleto, ultimo live_progress en global_step=17000.
 
 El ultimo `live_progress.json` de MASAC fue escrito el 2026-06-10 a las 11:50:17. Windows inicio un reinicio planeado por actualizacion el 2026-06-10 a las 11:50:19. No hubo traceback, error CUDA ni OOM en los logs. La interrupcion fue externa al codigo de entrenamiento.
 
-Ese caso se conserva como antecedente de auditoria. Para continuar cualquier corrida vigente se debe usar el `<OutputRoot>` activo:
+### Corrida v3 completada (20260613_010234)
+
+Primera corrida completa del proyecto. HAPPO y MASAC tenian artefactos preexistentes; MATD3 y MAAC se completaron en esta sesion. Todos los 12 jobs tuvieron `exit_code = 0`.
+
+```text
+Inicio:     2026-06-15 00:46 (hora Peru, UTC-5)
+Fin:        2026-06-15 06:20
+Duracion:   ~5.5 horas (MATD3 + MAAC + verificacion de HAPPO/MASAC)
+Status:     completed
+```
+
+### Corrida v4 en curso (20260615_074011_v4)
+
+Re-run definitivo con la funcion de recompensa v4 (penalidad BESS degradacion C-rate/Arrhenius LiFePO4 + urgencia EV). Todos los jobs desde cero.
+
+```text
+Inicio:     2026-06-15 07:40 (hora Peru, UTC-5)
+HAPPO:      completado (E1+E2 paralelo, E3 secuencial) — 3h 4min total
+MASAC:      completado (E1→E2→E3 secuencial) — 6h 49min total
+MATD3:      corriendo (E1+E2 paralelo iniciados 16:34)
+MAAC:       pendiente
+```
+
+Para continuar cualquier corrida interrumpida con `-SkipCompleted`:
 
 ```powershell
 pwsh.exe -NoProfile -ExecutionPolicy Bypass `

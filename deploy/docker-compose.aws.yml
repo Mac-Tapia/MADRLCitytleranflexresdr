@@ -9,8 +9,6 @@
 # Uso (en la instancia EC2, tras `docker login` a ECR y `aws s3 sync`):
 #   docker compose -f docker-compose.aws.yml up -d
 
-version: "3.9"
-
 services:
   mqtt-broker:
     image: eclipse-mosquitto:2

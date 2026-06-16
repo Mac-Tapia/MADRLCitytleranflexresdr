@@ -263,18 +263,40 @@ sequenceDiagram
 
 El entrenamiento oficial actual debe ejecutarse con `-Scenario ALL` para cubrir los tres ejes, pero solo despues de confirmacion explicita del usuario. Para revision de archivos se usan readiness y smoke tests; no se lanza la cadena completa.
 
+Lanzamiento visible recomendado (wrapper raiz):
+
 ```powershell
-powershell -ExecutionPolicy Bypass -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
+$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+$root = "outputs\citylearn_v3_madrl_full_$ts"
+Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
+
+pwsh.exe -NoProfile -ExecutionPolicy Bypass `
+  -File scripts\run_citylearn_v3_full_training_visible.ps1 `
+  -OutputRoot $root `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
   -Episodes 5 `
-  -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
-  -OutputRoot <OutputRoot> `
   -TorchThreads 8 `
   -GpuProfile local4060_fast `
-  -LiveProgressInterval 250 `
+  -LiveProgressInterval 1000 `
+  -ArtifactProfile efficient `
+  -TraceRecordInterval 10 `
+  -TraceDetail compact `
   -Cuda
+```
+
+El wrapper `scripts\run_citylearn_v3_full_training_visible.ps1` invoca internamente `CityLearn\scripts\launch_citylearn_v3_official_training.ps1`. Usar `pwsh.exe` (PowerShell 7), no `powershell.exe`.
+
+Continuar corrida interrumpida con `-SkipCompleted`:
+
+```powershell
+pwsh.exe -NoProfile -ExecutionPolicy Bypass `
+  -File CityLearn\scripts\launch_citylearn_v3_official_training.ps1 `
+  -Scenario ALL -Seed 0 -EpisodeTimeSteps 8760 -Episodes 5 `
+  -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
+  -OutputRoot <OutputRoot> -TorchThreads 8 -GpuProfile local4060_fast `
+  -LiveProgressInterval 1000 -Cuda -SkipCompleted
 ```
 
 Validacion previa sin entrenamiento:
@@ -353,13 +375,35 @@ outputs/validation/cooperative_ctde_validation.json
 
 ## 10. Matriz oficial de ejecuciones
 
-El launcher planifica 12 trabajos. Con la ruta operativa normal (`LiveOutput=false`) ejecuta escenarios en paralelo dentro de cada algoritmo; en RTX 4060 Laptop 8 GB permite hasta 2 escenarios para HAPPO/MATD3 y mantiene MASAC/MAAC en 1 por seguridad de VRAM. Con `LiveOutput=true` pasa a modo secuencial para depuracion visual.
+El launcher planifica 12 trabajos. Con la ruta operativa normal (`LiveOutput=false`) ejecuta escenarios en paralelo dentro de cada algoritmo; en RTX 4060 Laptop 8 GB (8188 MiB, driver 560.94) permite hasta 2 escenarios para HAPPO/MATD3 y mantiene MASAC/MAAC en 1 por seguridad de VRAM. Con `LiveOutput=true` pasa a modo secuencial para depuracion visual.
 
 | Escenario | HAPPO | MASAC | MATD3 | MAAC |
 |---|---|---|---|---|
 | E1 flexibilidad | `happo/E1_seed_0` | `masac/E1_seed_0` | `matd3/E1_seed_0` | `maac/E1_seed_0` |
 | E2 CO2 | `happo/E2_seed_0` | `masac/E2_seed_0` | `matd3/E2_seed_0` | `maac/E2_seed_0` |
 | E3 costos | `happo/E3_seed_0` | `masac/E3_seed_0` | `matd3/E3_seed_0` | `maac/E3_seed_0` |
+
+### Tiempos reales de entrenamiento (RTX 4060 Laptop, 5 episodios, 8760 pasos)
+
+Medidos en corridas v3 y v4 (Torch 2.8.0+cu126, cuda_memory_fraction=0.812):
+
+| Algoritmo | E1 | E2 | E3 | Modo | Fuente |
+|---|:---:|:---:|:---:|---|---|
+| HAPPO | 66.5 min | 66.15 min (paralelo c/E1) | 57.75 min | 2 paralelo → 1 sec | v4 corrida |
+| MASAC | 125.88 min | 148.33 min | 135.72 min | 1 secuencial | v4 corrida |
+| MATD3 | 95.13 min | 95.30 min (paralelo c/E1) | 80.70 min | 2 paralelo → 1 sec | v3 corrida |
+| MAAC | 52.33 min | 51.74 min | 54.16 min | 1 secuencial | v3 corrida |
+
+**Total corrida completa (estimado):** ~10-11 horas en RTX 4060 Laptop.
+
+### Estado actual de corridas (2026-06-15)
+
+| Corrida | Estado | Jobs completados |
+|---|---|---|
+| `outputs/citylearn_v3_madrl_full_20260613_010234` | **COMPLETADA** | 12/12 (HAPPO+MASAC preexistentes, MATD3+MAAC en esta sesion) |
+| `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | **EN CURSO** | 6/12 (HAPPO ✓, MASAC ✓, MATD3 E1+E2 corriendo, MAAC pendiente) |
+
+La corrida v4 es el re-run definitivo con funcion de recompensa actualizada (penalidad BESS C-rate/Arrhenius + urgencia EV). Corrida activa en `outputs/latest_visible_training_output_root.txt`.
 
 ## 11. Estructura de salida esperada
 
@@ -464,12 +508,31 @@ Estos componentes existen en el repositorio, pero no son el camino activo del la
 
 ## 16. Archivos de arquitectura renderizables ya generados
 
-| Archivo | Uso |
-|---|---|
-| `docs/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.pdf` | Plano visual de la arquitectura real implementada. |
-| `docs/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.png` | Imagen de alta resolucion del plano real. |
-| `docs/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf` | Copia integrada del plano real implementado. |
-| `docs/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf` | Version previa en dos laminas. |
+Generados con los scripts de la carpeta `tools/`. Regenerar con:
+
+```powershell
+C:\Python314\python.exe tools\generate_architecture_pdfs.py   # PDFs (markdown -> HTML -> PDF)
+C:\Python314\python.exe tools\generate_architecture_pngs.py   # PNGs (infografia HTML -> screenshot)
+```
+
+| Archivo PDF | Fuente Markdown | Contenido | Tamano |
+|---|---|---|---|
+| `docs/architecture/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf` | `ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` | Arquitectura completa + plano maestro de 19 secciones. | 567 KB |
+| `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf` | `FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` | Flujo operativo vigente + estado corridas + tiempos reales. | 230 KB |
+| `docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf` | `ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md` | Flujo de entrenamiento visible + continuacion de corridas. | 292 KB |
+| `docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf` | `COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md` | Cooperacion CTDE + KPIs por escenario + Score_OG. | 282 KB |
+| `docs/architecture/DATASET_CONSTRUCTION_PIPELINE.pdf` | `dataset_construction_pipeline.md` | Pipeline de construccion del dataset Iquitos 2023-2025. | 132 KB |
+| `docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.pdf` | — | Plano visual estatico de la arquitectura real (version anterior). | 45 KB |
+| `docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf` | — | Copia integrada del plano real (version anterior). | 45 KB |
+
+**PNGs de infografia** generados con `tools/generate_architecture_pngs.py` (Chrome headless, factor escala 2x):
+
+| Archivo PNG | Contenido | Tamano |
+|---|---|---|
+| `docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png` | Arquitectura completa: pipeline datos, formulacion multiagente, 4 backends, 3 ejes, estado v3/v4. | 494 KB |
+| `docs/architecture/FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png` | Flujo oficial: 5 pasos, matriz 12 corridas con tiempos reales y estado v4, artefactos y criterio de cierre. | 426 KB |
+| `docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.png` | Plano integrado version anterior (estatico). | — |
+| `docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.png` | Plano real version anterior (estatico). | — |
 
 ## 17. Renderizado del Markdown
 
@@ -496,3 +559,61 @@ El proyecto queda completo cuando existan:
 3. Benchmark CityLearn v2 con los agentes originales disponibles.
 4. Comparador maestro v2 vs v3 con delta, mejora porcentual y ranking por eje.
 5. Documentacion final con arquitectura, metodologia, resultados, graficas y conclusion por OE1, OE2 y OE3.
+
+## 19. Estado actual del proyecto (2026-06-15)
+
+### Hardware y entorno
+
+| Parametro | Valor |
+|---|---|
+| GPU | NVIDIA GeForce RTX 4060 Laptop GPU |
+| VRAM | 8,188 MiB dedicados |
+| Driver NVIDIA | 560.94 |
+| PyTorch | 2.8.0+cu126 |
+| Python | 3.9 (`.venv39-citylearn-v3`) |
+| CUDA memory fraction | 0.812 |
+| GPU profile activo | `local4060_fast` |
+
+### Progreso de corridas oficiales
+
+**Corrida v3** — `outputs/citylearn_v3_madrl_full_20260613_010234` — COMPLETADA
+
+| Job | Estado | Duracion | Perfil reward |
+|---|:---:|:---:|---|
+| HAPPO/E1 | ✓ completado (preexistente) | — | v3 base |
+| HAPPO/E2 | ✓ completado (preexistente) | — | v3 base |
+| HAPPO/E3 | ✓ completado (preexistente) | — | v3 base |
+| MASAC/E1 | ✓ completado (preexistente) | — | v3 base |
+| MASAC/E2 | ✓ completado (preexistente) | — | v3 base |
+| MASAC/E3 | ✓ completado (preexistente) | — | v3 base |
+| MATD3/E1 | ✓ completado | 95.13 min | v3 base |
+| MATD3/E2 | ✓ completado | 95.30 min | v3 base |
+| MATD3/E3 | ✓ completado | 80.70 min | v3 base |
+| MAAC/E1 | ✓ completado | 52.33 min | v3 base |
+| MAAC/E2 | ✓ completado | 51.74 min | v3 base |
+| MAAC/E3 | ✓ completado | 54.16 min | v3 base |
+
+**Corrida v4** — `outputs/citylearn_v3_madrl_full_20260615_074011_v4` — EN CURSO (re-run definitivo)
+
+| Job | Estado | Duracion | Perfil reward |
+|---|:---:|:---:|---|
+| HAPPO/E1 | ✓ completado | 66.5 min | v4 BESS penalty + EV urgency |
+| HAPPO/E2 | ✓ completado | 66.15 min | v4 BESS penalty + EV urgency |
+| HAPPO/E3 | ✓ completado | 57.75 min | v4 BESS penalty + EV urgency |
+| MASAC/E1 | ✓ completado | 125.88 min | v4 BESS penalty + EV urgency |
+| MASAC/E2 | ✓ completado | 148.33 min | v4 BESS penalty + EV urgency |
+| MASAC/E3 | ✓ completado | 135.72 min | v4 BESS penalty + EV urgency |
+| MATD3/E1 | ⟳ corriendo | — | v4 BESS penalty + EV urgency |
+| MATD3/E2 | ⟳ corriendo | — | v4 BESS penalty + EV urgency |
+| MATD3/E3 | ⏳ pendiente | — | v4 BESS penalty + EV urgency |
+| MAAC/E1 | ⏳ pendiente | — | v4 BESS penalty + EV urgency |
+| MAAC/E2 | ⏳ pendiente | — | v4 BESS penalty + EV urgency |
+| MAAC/E3 | ⏳ pendiente | — | v4 BESS penalty + EV urgency |
+
+### Proximos pasos al completar v4
+
+1. Verificar `official_full_status.json` con `status = completed` y 12 jobs `exit_code = 0`.
+2. Ejecutar benchmark CityLearn v2 (`benchmark_citylearn_v2_agents.py`).
+3. Ejecutar comparador v2 vs v3 MADRL (`compare_citylearn_v2_vs_v3_madrl.py`).
+4. Generar evidencia de tesis (`generate_thesis_objective_evidence.py`).
+5. Auditar KPIs, estadistica y artefactos finales en `outputs/thesis_objective_evidence/`.

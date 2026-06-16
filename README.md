@@ -4,6 +4,8 @@ Proyecto: **Multi-agente de aprendizaje por refuerzo profundo para gestion coord
 
 Este repositorio integra CityLearn v2 como simulador base y agrega una capa experimental CityLearn v3 para entrenar y evaluar algoritmos MADRL bajo Dec-POMDP, CTDE, tres ejes de investigacion y comparacion contra agentes originales CityLearn v2.
 
+> **"v2" y "v3" no son dos paquetes ni dos instalaciones separadas.** Ambos viven dentro del mismo submodulo `CityLearn/` (fork propio) y se instalan con un solo `-e ./CityLearn` (incluido en `requirements.txt`). "v2" es el simulador base (`CityLearn/citylearn/*.py`: fisica, edificios, DERs, EVs, KPIs) y "v3" es la capa adicional en `CityLearn/citylearn/v3/` (Dec-POMDP, CTDE, recompensa multiobjetivo) que se apoya sobre la v2. No existe un segundo `pip install` para "v3".
+
 ## Resumen
 
 El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificios, DERs, EVs y KPIs, y agrega una capa CityLearn v3 para:

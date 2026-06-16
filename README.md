@@ -20,7 +20,7 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-15.
+Actualizado: 2026-06-16.
 
 ### Corridas de referencia y definitiva
 
@@ -73,7 +73,7 @@ Hardware: RTX 4060 Laptop, 8,188 MiB VRAM, driver 560.94, PyTorch 2.8.0+cu126, C
 - EV/V2G validado: las 31 tomas de camioneta institucional/logistica son bidireccionales (`max_discharging_power=7.4 kW`, `power_flow_direction=bidirectional_v2g`); moto lineal y mototaxi quedan solo carga.
 - Entorno unico: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1).
 - Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v3`**: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
-- Horizonte oficial: 5 episodios x 8760 pasos = 43 800 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
+- Horizonte oficial para nuevas ejecuciones AWS/Docker: 75 episodios x 8760 pasos = 657 000 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
 - Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
 - Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
 - Perfil GPU: `local4060_fast` — RTX 4060 Laptop 8 GB, max 2 escenarios concurrentes (HAPPO/MATD3), max 1 para MASAC/MAAC.
@@ -381,7 +381,7 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
-  -Episodes 5 `
+  -Episodes 75 `
   -TorchThreads 8 `
   -LiveProgressInterval 1000 `
   -ArtifactProfile efficient `
@@ -397,7 +397,7 @@ Para continuar una corrida interrumpida sin reejecutar lo ya completado:
 pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_citylearn_v3_full_training_visible.ps1 `
   -OutputRoot $root -Scenario ALL -Seed 0 `
-  -EpisodeTimeSteps 8760 -Episodes 5 -TorchThreads 8 `
+  -EpisodeTimeSteps 8760 -Episodes 75 -TorchThreads 8 `
   -LiveProgressInterval 1000 -ArtifactProfile efficient `
   -TraceRecordInterval 10 -TraceDetail compact `
   -GpuProfile local4060_fast -Cuda -SkipCompleted
@@ -430,7 +430,7 @@ Fixes aplicados al launcher:
 pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_3madrl_parallel.ps1 `
   -Algorithms happo,matd3,maac `
-  -Episodes 5 `
+  -Episodes 75 `
   -GpuProfile aws
 ```
 
@@ -512,6 +512,45 @@ Si ya se clono sin submodulos:
 ```bash
 git submodule update --init --recursive
 ```
+
+## Inicio rapido AWS EC2 Ubuntu + Docker
+
+Flujo recomendado para una instancia Ubuntu con driver NVIDIA/CUDA y Docker:
+
+```bash
+cd ~
+git clone --recurse-submodules https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
+cd MADRLCitytleranflexresdr
+git submodule update --init --recursive
+
+docker --version
+docker compose version
+nvidia-smi
+docker run --rm --gpus all ubuntu:22.04 nvidia-smi
+
+mkdir -p outputs
+docker compose -f deploy/aws/training/docker-compose.yml up -d --build
+docker compose -f deploy/aws/training/docker-compose.yml logs -f
+```
+
+El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 75`,
+`--episode-time-steps 8760`, `--cuda`, `--max-parallel-jobs 1` y
+`--log-chunk-size 10M`. Los logs quedan como texto plano rotado:
+`outputs/aws_citylearn_v3_madrl_*/logs/<algoritmo>_<escenario>-00001.log`,
+`00002.log`, etc.
+
+Monitoreo y validacion rapida:
+
+```bash
+bash deploy/aws/training/tail_aws_training.sh
+cat outputs/latest_visible_training_output_root.txt
+cat "$(cat outputs/latest_visible_training_output_root.txt)/official_full_status.json"
+find "$(cat outputs/latest_visible_training_output_root.txt)/logs" -name '*.log' -size +10M -print
+```
+
+El ultimo `find` no debe listar archivos si la rotacion de 10 MB esta
+funcionando. Manual completo con instalacion del NVIDIA Container Toolkit:
+`deploy/aws/README_TRAINING_AWS.md`.
 
 ## Salidas esperadas por corrida
 

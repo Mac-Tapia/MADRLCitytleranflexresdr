@@ -17,7 +17,7 @@ Entrenamiento canonico:
 - Dataset: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`.
 - Escenarios: `E1`, `E2`, `E3`.
 - Algoritmos: `happo`, `masac`, `matd3`, `maac`.
-- Episodios: `5`.
+- Episodios: `75`.
 - Pasos por episodio: `8760`.
 - Salidas: `outputs/aws_citylearn_v3_madrl_<timestamp>/`.
 - Estado visible: `official_full_status.json`, logs por algoritmo y
@@ -176,9 +176,10 @@ Dentro de `tmux`, lance la corrida canonica:
 bash deploy/aws/training/run_aws_training.sh \
   --scenario ALL \
   --algorithms happo,masac,matd3,maac \
-  --episodes 5 \
+  --episodes 75 \
   --episode-time-steps 8760 \
   --max-parallel-jobs 1 \
+  --log-chunk-size 10M \
   --cuda
 ```
 
@@ -188,9 +189,10 @@ Para una instancia mas grande, puede probar paralelo:
 bash deploy/aws/training/run_aws_training.sh \
   --scenario ALL \
   --algorithms happo,masac,matd3,maac \
-  --episodes 5 \
+  --episodes 75 \
   --episode-time-steps 8760 \
   --max-parallel-jobs 2 \
+  --log-chunk-size 10M \
   --cuda
 ```
 
@@ -289,8 +291,9 @@ Para relanzar solo un escenario o algoritmo:
 bash deploy/aws/training/run_aws_training.sh \
   --scenario E1 \
   --algorithms matd3 \
-  --episodes 5 \
+  --episodes 75 \
   --episode-time-steps 8760 \
+  --log-chunk-size 10M \
   --output-root outputs/aws_citylearn_v3_madrl_reintento_E1_matd3 \
   --cuda
 ```

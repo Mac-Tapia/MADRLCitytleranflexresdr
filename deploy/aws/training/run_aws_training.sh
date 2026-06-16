@@ -9,7 +9,7 @@ SCHEMA_PATH="CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json"
 SCENARIOS="ALL"
 ALGORITHMS="happo,masac,matd3,maac"
 SEED="0"
-EPISODES="5"
+EPISODES="75"
 EPISODE_TIME_STEPS="8760"
 TORCH_THREADS="${TORCH_THREADS:-8}"
 LIVE_PROGRESS_INTERVAL="1000"
@@ -31,7 +31,7 @@ Opciones:
   --scenario E1|E2|E3|ALL          Escenario o todos (default: ALL)
   --algorithms a,b,c               happo,masac,matd3,maac (default: todos)
   --seed N                         Semilla (default: 0)
-  --episodes N                     Episodios (default: 5)
+  --episodes N                     Episodios (default: 75)
   --episode-time-steps N           Pasos por episodio (default: 8760)
   --torch-threads N                Threads Torch (default: 8)
   --max-parallel-jobs N            Jobs simultaneos (default: 1)

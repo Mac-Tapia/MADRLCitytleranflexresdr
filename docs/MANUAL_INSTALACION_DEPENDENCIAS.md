@@ -139,6 +139,49 @@ Pasos internos del script:
 6. `pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu126` (despues del paso 5, para reemplazar el torch CPU transitorio).
 7. Verifica `nvidia-smi` y reporta `torch.__version__`, `torch.cuda.is_available()`, `torch.cuda.device_count()`.
 
+### 5.1 Entrenamiento AWS con Docker / Docker Compose
+
+Para EC2 Ubuntu con Docker, Compose V2 y NVIDIA Container Toolkit ya
+configurados en el host, el contenedor se construye desde la raiz del repo y
+reutiliza `requirements.txt` como fuente unica de dependencias. No instala
+drivers NVIDIA ni CUDA del host dentro de la imagen; Docker expone la GPU al
+contenedor mediante `--gpus all`/Compose.
+
+```bash
+cd ~/MADRLCitytleranflexresdr
+git submodule update --init --recursive
+docker run --rm --gpus all ubuntu:22.04 nvidia-smi
+docker compose -f deploy/aws/training/docker-compose.yml up -d --build
+docker compose -f deploy/aws/training/docker-compose.yml logs -f
+```
+
+El Compose lanza los 4 MADRL (`happo,masac,matd3,maac`) sobre los 3
+escenarios (`E1,E2,E3`) con `--episodes 75`, `--episode-time-steps 8760`,
+`--cuda`, `--log-chunk-size 10M` y `--log-max-files 100`.
+
+Persistencia y organizacion:
+
+- `outputs/` del host se monta en `/workspace/outputs` dentro del contenedor.
+- Los artefactos quedan en `outputs/aws_citylearn_v3_madrl_<timestamp>/<escenario>/<algoritmo>/`.
+- Los logs se ven en `docker compose logs -f` y se guardan rotados en
+  `<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`, `00002.log`, etc.
+- Si el entrenamiento termina correctamente se crea `outputs/.training_completed`.
+- Si un job falla se crea `outputs/.training_failed` y el contenedor queda
+  inactivo en el siguiente reinicio, evitando bucles infinitos con
+  `restart: unless-stopped`.
+
+Comandos utiles:
+
+```bash
+bash deploy/aws/training/tail_aws_training.sh
+docker exec -it madrl-training nvidia-smi
+docker exec -it madrl-training ps aux | grep python
+docker compose -f deploy/aws/training/docker-compose.yml stop
+docker compose -f deploy/aws/training/docker-compose.yml down
+```
+
+Manual operativo completo: `deploy/aws/README_TRAINING_AWS.md`.
+
 ## 6. Librerias clave y por que la version esta fija
 
 | Libreria | Version fija | Por que no se puede subir |

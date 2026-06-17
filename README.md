@@ -526,7 +526,7 @@ git submodule update --init --recursive
 docker --version
 docker compose version
 nvidia-smi
-docker run --rm --gpus all ubuntu:22.04 nvidia-smi
+docker run --rm --gpus all ubuntu:22.04 nvidia-smi   # verificar GPU en Docker
 
 mkdir -p outputs
 docker compose -f deploy/aws/training/docker-compose.yml up -d --build
@@ -535,30 +535,47 @@ docker compose -f deploy/aws/training/docker-compose.yml logs -f
 
 El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 75`,
 `--episode-time-steps 8760`, `--cuda`, `--max-parallel-jobs 1` y
-`--log-chunk-size 10M`. Los logs quedan como texto plano rotado:
-`outputs/aws_citylearn_v3_madrl_*/logs/<algoritmo>_<escenario>-00001.log`,
-`00002.log`, etc.
+`--log-chunk-size 10M`. Los logs quedan como texto plano rotado por escenario
+y algoritmo: `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`,
+`00002.log`, etc. El contenedor usa `restart: unless-stopped`: sobrevive
+cierres de SSH/VS Code y reinicios de EC2 sin necesidad de tmux. Al completar
+el entrenamiento se crea `outputs/.training_completed` para evitar re-ejecucion
+automatica tras un reinicio; eliminarlo antes de lanzar un nuevo run.
 
 Monitoreo y validacion rapida:
 
 ```bash
+# Monitor interactivo (refresca cada 10 s)
 bash deploy/aws/training/tail_aws_training.sh
-cat outputs/latest_visible_training_output_root.txt
+
+# Estado general del entrenamiento
 cat "$(cat outputs/latest_visible_training_output_root.txt)/official_full_status.json"
-find "$(cat outputs/latest_visible_training_output_root.txt)/logs" -name '*.log' -size +10M -print
+
+# Estado y acceso directo al contenedor
+docker ps --filter name=madrl-training
+docker exec -it madrl-training nvidia-smi
+docker exec -it madrl-training ps aux | grep python
+
+# Verificar rotacion de logs (no debe haber archivos >10 MB)
+find "$(cat outputs/latest_visible_training_output_root.txt)" -path "*/logs/*.log" -size +10M -print
+
+# Detener cuando termine (o para relanzar)
+docker compose -f deploy/aws/training/docker-compose.yml stop
+rm outputs/.training_completed   # solo si se quiere un nuevo entrenamiento
 ```
 
-El ultimo `find` no debe listar archivos si la rotacion de 10 MB esta
-funcionando. Manual completo con instalacion del NVIDIA Container Toolkit:
+Manual completo con instalacion del NVIDIA Container Toolkit:
 `deploy/aws/README_TRAINING_AWS.md`.
 
 ## Salidas esperadas por corrida
 
 ```text
 outputs/<run_activo>/
-  happo/E1_seed_0/  masac/E1_seed_0/  matd3/E1_seed_0/  maac/E1_seed_0/
-  happo/E2_seed_0/  ...
-  happo/E3_seed_0/  ...
+  official_full_status.json
+  E1/happo/E1_seed_0/   E1/masac/E1_seed_0/   E1/matd3/E1_seed_0/   E1/maac/E1_seed_0/
+  E2/happo/E2_seed_0/   ...
+  E3/happo/E3_seed_0/   ...
+  E1/happo/logs/happo_E1-00001.log  E1/masac/logs/masac_E1-00001.log  ...
 ```
 
 Cada corrida contiene:

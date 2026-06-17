@@ -246,12 +246,11 @@ Rutas utiles para descargar:
 
 - `outputs/latest_visible_training_output_root.txt`
 - `outputs/aws_citylearn_v3_madrl_*/official_full_status.json`
-- `outputs/aws_citylearn_v3_madrl_*/logs/*.log`
-- `outputs/aws_citylearn_v3_madrl_*/*/*/training_summary.json`
-- `outputs/aws_citylearn_v3_madrl_*/*/*/results.json`
-- `outputs/aws_citylearn_v3_madrl_*/*/*/data/`
-- `outputs/aws_citylearn_v3_madrl_*/*/*/checkpoints/`
-- `outputs/aws_citylearn_v3_madrl_*/*/*/figures/`
+- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/*.log`
+- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/<escenario>_seed_0/training_summary.json`
+- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/<escenario>_seed_0/data/`
+- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/<escenario>_seed_0/checkpoints/`
+- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/<escenario>_seed_0/figures/`
 
 ## 12. Sincronizar resultados a S3
 
@@ -426,18 +425,50 @@ docker run --rm --gpus all --shm-size=8g \
   --output-root outputs/aws_citylearn_v3_madrl_reintento_E1_matd3 --cuda
 ```
 
-### 15.5 Monitorear logs rotados (texto plano, ~10 MB cada uno)
+### 15.5 Estructura de artefactos generados
+
+Los artefactos se organizan por escenario y luego por algoritmo dentro del
+directorio de salida con timestamp:
+
+```text
+outputs/aws_citylearn_v3_madrl_<timestamp>/
+├── official_full_status.json
+├── official_full_manifest.json
+├── E1/
+│   ├── happo/
+│   │   ├── E1_seed_0/
+│   │   │   ├── checkpoints/   ← modelos guardados (*.pt)
+│   │   │   ├── data/          ← timeseries_*.csv, trace_*.csv
+│   │   │   ├── figures/
+│   │   │   └── live_progress.json
+│   │   └── logs/
+│   │       ├── happo_E1-00001.log
+│   │       └── happo_E1-00002.log
+│   ├── masac/
+│   │   └── ...
+│   ├── matd3/
+│   │   └── ...
+│   └── maac/
+│       └── ...
+├── E2/
+│   └── ...
+└── E3/
+    └── ...
+```
+
+### 15.6 Monitorear logs rotados (texto plano, ~10 MB cada uno)
 
 `outputs/` esta montado como volumen, asi que los resultados son visibles en
 el host exactamente igual que en el flujo bare-metal:
 
 ```bash
-ls outputs/aws_citylearn_v3_madrl_*/logs/
-# happo_E1-00001.log  happo_E1-00002.log  masac_E1-00001.log  ...
+# Listar todos los logs del ultimo entrenamiento
+find outputs/aws_citylearn_v3_madrl_* -path "*/logs/*.log" | sort
 
-tail -f outputs/aws_citylearn_v3_madrl_*/logs/happo_E1-00001.log
+# Seguir el log mas reciente de happo/E1
+tail -f outputs/aws_citylearn_v3_madrl_*/E1/happo/logs/happo_E1-00001.log
 
-# Monitor existente, sin entrar al contenedor:
+# Monitor interactivo (refresca cada 10 s, sin entrar al contenedor):
 bash deploy/aws/training/tail_aws_training.sh
 ```
 
@@ -450,16 +481,66 @@ docker compose -f deploy/aws/training/docker-compose.yml logs -f
 docker logs -f madrl-training
 ```
 
-### 15.6 Verificar estado y detener
+### 15.7 Estado del contenedor y acceso directo
 
 ```bash
-cat outputs/aws_citylearn_v3_madrl_*/official_full_status.json
+# Estado de todos los contenedores
+docker ps
 
-docker compose -f deploy/aws/training/docker-compose.yml down   # Compose
-docker stop madrl-training && docker rm madrl-training          # docker run
+# Estado del contenedor de entrenamiento
+docker ps --filter name=madrl-training
+
+# Entrar al contenedor (shell interactivo)
+docker exec -it madrl-training bash
+
+# Verificar GPU dentro del contenedor
+docker exec -it madrl-training nvidia-smi
+
+# Verificar que el proceso de entrenamiento esta activo
+docker exec -it madrl-training ps aux | grep python
+
+# Ver GPU en el host
+nvidia-smi -l 10
 ```
 
-### 15.7 Sincronizar a S3 (igual que el flujo bare-metal, seccion 12)
+### 15.8 Verificar estado y detener
+
+```bash
+# Estado del entrenamiento (status JSON)
+cat outputs/aws_citylearn_v3_madrl_*/official_full_status.json
+
+# Detener el contenedor (no elimina artefactos; Docker no lo reinicia)
+docker compose -f deploy/aws/training/docker-compose.yml stop
+
+# Detener y eliminar el contenedor (artefactos en outputs/ intactos)
+docker compose -f deploy/aws/training/docker-compose.yml down
+
+# Con docker run:
+docker stop madrl-training && docker rm madrl-training
+```
+
+### 15.9 Comportamiento ante reinicios de EC2 (restart: unless-stopped)
+
+El contenedor usa `restart: unless-stopped`:
+
+- **SSH/VS Code/Jupyter/terminal se cierra**: el contenedor sigue corriendo
+  en modo detached, el entrenamiento no se interrumpe.
+- **EC2 se reinicia**: Docker daemon se recupera y relanza el contenedor
+  automaticamente; el entrenamiento continua desde el inicio en un nuevo
+  directorio con timestamp (los resultados previos quedan intactos).
+- **Entrenamiento completa con exito**: se crea el marcador
+  `outputs/.training_completed`. El contenedor se reinicia pero al detectar
+  el marcador queda en modo inactivo (`sleep infinity`) sin relanzar el
+  entrenamiento.
+- **Para detener el contenedor inactivo**: `docker compose -f deploy/aws/training/docker-compose.yml stop`
+- **Para lanzar un nuevo entrenamiento** despues de que el anterior completo:
+
+```bash
+rm outputs/.training_completed
+docker compose -f deploy/aws/training/docker-compose.yml up -d
+```
+
+### 15.10 Sincronizar a S3 (igual que el flujo bare-metal, seccion 12)
 
 ```bash
 OUTPUT_ROOT=$(cat outputs/latest_visible_training_output_root.txt)

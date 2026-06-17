@@ -89,8 +89,21 @@ if [[ "${OUTPUT_ROOT}" == "" ]]; then
   OUTPUT_ROOT="outputs/aws_citylearn_v3_madrl_$(date -u +%Y%m%d_%H%M%S)"
 fi
 
-mkdir -p "${OUTPUT_ROOT}/logs"
 mkdir -p outputs
+
+# Marcador de entrenamiento completo: evita que el contenedor relance el
+# entrenamiento automaticamente tras un reinicio de EC2 (restart: unless-stopped).
+DONE_MARKER="${PROJECT_ROOT}/outputs/.training_completed"
+if [[ -f "${DONE_MARKER}" ]]; then
+  echo "=== $(date -u +%Y-%m-%dT%H:%M:%SZ) === INFO: Entrenamiento ya completado."
+  echo "Marcador encontrado: ${DONE_MARKER}"
+  echo "Para lanzar un nuevo entrenamiento, elimine el marcador primero:"
+  echo "  rm ${DONE_MARKER}"
+  echo "Para detener el contenedor inactivo:"
+  echo "  docker compose -f deploy/aws/training/docker-compose.yml stop"
+  exec sleep infinity
+fi
+
 printf '%s\n' "${OUTPUT_ROOT}" > outputs/latest_visible_training_output_root.txt
 
 STATUS_PATH="${OUTPUT_ROOT}/official_full_status.json"
@@ -266,7 +279,7 @@ build_command() {
     --scenario "${scenario}"
     --seed "${SEED}"
     --episode-time-steps "${EPISODE_TIME_STEPS}"
-    --output-dir "${OUTPUT_ROOT}/${algorithm}"
+    --output-dir "${OUTPUT_ROOT}/${scenario}/${algorithm}"
     --torch-threads "${TORCH_THREADS}"
     --live-progress-interval "${LIVE_PROGRESS_INTERVAL}"
     --artifact-profile "${ARTIFACT_PROFILE}"
@@ -297,8 +310,9 @@ build_command() {
 run_job() {
   local algorithm="$1"
   local scenario="$2"
-  local log_prefix="${OUTPUT_ROOT}/logs/${algorithm}_${scenario}-"
+  local log_prefix="${OUTPUT_ROOT}/${scenario}/${algorithm}/logs/${algorithm}_${scenario}-"
   local log_pattern="${log_prefix}*.log"
+  mkdir -p "${OUTPUT_ROOT}/${scenario}/${algorithm}/logs"
   local rc=0
 
   with_status_lock record_job "${algorithm}" "${scenario}" "running" "" "${log_pattern}"
@@ -359,4 +373,6 @@ if [[ "${failures}" -gt 0 ]]; then
 fi
 
 with_status_lock mark_final_status "completed"
+touch "${DONE_MARKER}"
 echo "Entrenamiento completado: ${OUTPUT_ROOT}"
+echo "Marcador escrito: ${DONE_MARKER} — el contenedor permanecera inactivo hasta 'docker compose stop'."

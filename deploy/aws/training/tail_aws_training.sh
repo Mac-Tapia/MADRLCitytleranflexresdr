@@ -69,7 +69,7 @@ PY
 
   echo
   echo "Ultimas lineas de logs:"
-  find "${OUTPUT_ROOT}/logs" -name '*.log' -type f -printf '%T@ %p\n' 2>/dev/null \
+  find "${OUTPUT_ROOT}" -path "*/logs/*.log" -type f -printf '%T@ %p\n' 2>/dev/null \
     | sort -nr \
     | head -3 \
     | cut -d' ' -f2- \

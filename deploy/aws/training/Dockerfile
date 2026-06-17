@@ -21,7 +21,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        build-essential ca-certificates curl git git-lfs jq tmux unzip \
+        build-essential ca-certificates curl git git-lfs jq procps tmux unzip \
     && git lfs install \
     && rm -rf /var/lib/apt/lists/*
 

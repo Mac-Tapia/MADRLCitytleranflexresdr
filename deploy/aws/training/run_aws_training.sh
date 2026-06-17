@@ -21,6 +21,8 @@ CUDA="auto"
 MAX_PARALLEL_JOBS="1"
 OUTPUT_ROOT=""
 LOG_CHUNK_SIZE="10M"
+LOG_MAX_FILES="${LOG_MAX_FILES:-100}"
+STATUS_LOCK_STALE_SECONDS="${STATUS_LOCK_STALE_SECONDS:-600}"
 
 usage() {
   cat <<'EOF'
@@ -40,7 +42,9 @@ Opciones:
   --trace-record-interval N
   --trace-detail full|compact
   --log-chunk-size SIZE            Tamano max. por archivo de log, formato
-                                    de "split -b" (default: 10M)
+                                    10M, 512K o bytes (default: 10M)
+  --log-max-files N                Maximo de partes de log por job; 0 ilimitado
+                                    (default: 100)
   --cuda                           Forzar CUDA
   --no-cuda                        Forzar CPU
   --help
@@ -63,6 +67,7 @@ while [[ $# -gt 0 ]]; do
     --max-parallel-jobs) MAX_PARALLEL_JOBS="$2"; shift 2 ;;
     --output-root) OUTPUT_ROOT="$2"; shift 2 ;;
     --log-chunk-size) LOG_CHUNK_SIZE="$2"; shift 2 ;;
+    --log-max-files) LOG_MAX_FILES="$2"; shift 2 ;;
     --cuda) CUDA="1"; shift ;;
     --no-cuda) CUDA="0"; shift ;;
     --help|-h) usage; exit 0 ;;
@@ -90,15 +95,29 @@ if [[ "${OUTPUT_ROOT}" == "" ]]; then
 fi
 
 mkdir -p outputs
+mkdir -p "${OUTPUT_ROOT}"
 
 # Marcador de entrenamiento completo: evita que el contenedor relance el
 # entrenamiento automaticamente tras un reinicio de EC2 (restart: unless-stopped).
 DONE_MARKER="${PROJECT_ROOT}/outputs/.training_completed"
+FAILED_MARKER="${PROJECT_ROOT}/outputs/.training_failed"
 if [[ -f "${DONE_MARKER}" ]]; then
   echo "=== $(date -u +%Y-%m-%dT%H:%M:%SZ) === INFO: Entrenamiento ya completado."
   echo "Marcador encontrado: ${DONE_MARKER}"
   echo "Para lanzar un nuevo entrenamiento, elimine el marcador primero:"
   echo "  rm ${DONE_MARKER}"
+  echo "Para detener el contenedor inactivo:"
+  echo "  docker compose -f deploy/aws/training/docker-compose.yml stop"
+  exec sleep infinity
+fi
+if [[ -f "${FAILED_MARKER}" ]]; then
+  echo "=== $(date -u +%Y-%m-%dT%H:%M:%SZ) === ERROR: entrenamiento anterior fallo."
+  echo "Marcador encontrado: ${FAILED_MARKER}"
+  cat "${FAILED_MARKER}" || true
+  echo "Revise official_full_status.json y logs antes de relanzar."
+  echo "Para relanzar despues de corregir el problema:"
+  echo "  rm ${FAILED_MARKER}"
+  echo "  docker compose -f deploy/aws/training/docker-compose.yml up -d"
   echo "Para detener el contenedor inactivo:"
   echo "  docker compose -f deploy/aws/training/docker-compose.yml stop"
   exec sleep infinity
@@ -133,8 +152,15 @@ PY
 fi
 
 with_status_lock() {
+  local waited=0
   while ! mkdir "${STATUS_LOCK}" 2>/dev/null; do
     sleep 0.2
+    waited=$((waited + 1))
+    if [[ "$((waited / 5))" -ge "${STATUS_LOCK_STALE_SECONDS}" ]]; then
+      echo "ADVERTENCIA: eliminando lock stale ${STATUS_LOCK}" >&2
+      rm -rf "${STATUS_LOCK}"
+      waited=0
+    fi
   done
   set +e
   "$@"
@@ -145,7 +171,7 @@ with_status_lock() {
 }
 
 init_status() {
-  python - "$STATUS_PATH" "$MANIFEST_PATH" "$OUTPUT_ROOT" "$STARTED_AT" "$SCENARIOS" "$ALGORITHMS" "$EPISODES" "$EPISODE_TIME_STEPS" "$SEED" "$TORCH_THREADS" "$MAX_PARALLEL_JOBS" "$CUDA" "$ARTIFACT_PROFILE" "$TRACE_RECORD_INTERVAL" "$TRACE_DETAIL" "$GPU_PROFILE" <<'PY'
+  python - "$STATUS_PATH" "$MANIFEST_PATH" "$OUTPUT_ROOT" "$STARTED_AT" "$SCENARIOS" "$ALGORITHMS" "$EPISODES" "$EPISODE_TIME_STEPS" "$SEED" "$TORCH_THREADS" "$MAX_PARALLEL_JOBS" "$CUDA" "$ARTIFACT_PROFILE" "$TRACE_RECORD_INTERVAL" "$TRACE_DETAIL" "$GPU_PROFILE" "$LOG_CHUNK_SIZE" "$LOG_MAX_FILES" <<'PY'
 import json
 import socket
 import sys
@@ -174,6 +200,8 @@ payload = {
         "trace_record_interval": int(raw[9]),
         "trace_detail": raw[10],
         "gpu_profile": raw[11],
+        "log_chunk_size": raw[12],
+        "log_max_files": int(raw[13]),
     },
     "jobs": [],
 }
@@ -318,11 +346,9 @@ run_job() {
   with_status_lock record_job "${algorithm}" "${scenario}" "running" "" "${log_pattern}"
   build_command "${algorithm}" "${scenario}"
 
-  # Texto plano rotado: split es el unico escritor de cada parte, asi que
-  # no hay riesgo de truncar un archivo que otro proceso tiene abierto. El
-  # bloque agrupa el encabezado + la salida del entrenamiento en un solo
-  # pipe de 2 etapas (sin tee ni process-substitution) para que PIPESTATUS[0]
-  # refleje el exit code real del entrenamiento, no el de split.
+  # Texto plano rotado + stdout visible: el helper duplica el stream hacia
+  # Docker logs y hacia partes de log por tamano. PIPESTATUS[0] sigue siendo
+  # el exit code real del entrenamiento.
   set +e
   {
     printf '==== %s %s/%s ====\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${algorithm}" "${scenario}"
@@ -330,8 +356,8 @@ run_job() {
     printf ' %q' "${CMD[@]}"
     printf '\n'
     "${CMD[@]}" 2>&1
-  } | split -b "${LOG_CHUNK_SIZE}" --numeric-suffixes=1 --suffix-length=5 \
-        --additional-suffix=.log - "${log_prefix}"
+  } | python -B deploy/aws/training/rotate_training_log.py \
+        "${log_prefix}" "${LOG_CHUNK_SIZE}" "${LOG_MAX_FILES}"
   rc=${PIPESTATUS[0]}
   set -e
 
@@ -368,11 +394,19 @@ done
 
 if [[ "${failures}" -gt 0 ]]; then
   with_status_lock mark_final_status "failed"
+  cat > "${FAILED_MARKER}" <<EOF
+failed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+output_root=${OUTPUT_ROOT}
+status_path=${STATUS_PATH}
+failures=${failures}
+EOF
   echo "Entrenamiento finalizo con ${failures} job(s) fallidos. Revise ${STATUS_PATH}" >&2
+  echo "Marcador escrito: ${FAILED_MARKER}. El contenedor quedara inactivo tras el siguiente reinicio." >&2
   exit 1
 fi
 
 with_status_lock mark_final_status "completed"
+rm -f "${FAILED_MARKER}"
 touch "${DONE_MARKER}"
 echo "Entrenamiento completado: ${OUTPUT_ROOT}"
 echo "Marcador escrito: ${DONE_MARKER} — el contenedor permanecera inactivo hasta 'docker compose stop'."

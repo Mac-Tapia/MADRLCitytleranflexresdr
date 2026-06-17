@@ -27,6 +27,8 @@ services:
     image: madrl-training:latest
     container_name: madrl-training
     restart: unless-stopped
+    init: true
+    stop_grace_period: "5m"
     shm_size: "8gb"
     command:
       - --scenario
@@ -41,6 +43,8 @@ services:
       - "1"
       - --log-chunk-size
       - "10M"
+      - --log-max-files
+      - "100"
       - --cuda
     volumes:
       - ../../../outputs:/workspace/outputs

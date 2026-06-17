@@ -535,12 +535,13 @@ docker compose -f deploy/aws/training/docker-compose.yml logs -f
 
 El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 75`,
 `--episode-time-steps 8760`, `--cuda`, `--max-parallel-jobs 1` y
-`--log-chunk-size 10M`. Los logs quedan como texto plano rotado por escenario
-y algoritmo: `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`,
+`--log-chunk-size 10M --log-max-files 100`. Los logs se ven en
+`docker compose logs -f` y quedan como texto plano rotado por escenario y
+algoritmo: `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`,
 `00002.log`, etc. El contenedor usa `restart: unless-stopped`: sobrevive
 cierres de SSH/VS Code y reinicios de EC2 sin necesidad de tmux. Al completar
-el entrenamiento se crea `outputs/.training_completed` para evitar re-ejecucion
-automatica tras un reinicio; eliminarlo antes de lanzar un nuevo run.
+el entrenamiento se crea `outputs/.training_completed`; si falla, se crea
+`outputs/.training_failed` para evitar bucles de reinicio.
 
 Monitoreo y validacion rapida:
 

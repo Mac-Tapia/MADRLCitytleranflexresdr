@@ -20,12 +20,12 @@ Entrenamiento canonico:
 - Episodios: `75`.
 - Pasos por episodio: `8760`.
 - Salidas: `outputs/aws_citylearn_v3_madrl_<timestamp>/`.
-- Estado visible: `official_full_status.json`, logs por algoritmo y
-  `live_progress.json` por corrida.
+- Estado visible: `official_full_status.json`, logs por algoritmo,
+  `live_progress.json` por corrida y salida viva en `docker logs`.
 - Logs en texto plano rotados automaticamente cada 10 MB (configurable con
-  `--log-chunk-size`): `logs/<algoritmo>_<escenario>-00001.log`,
-  `logs/<algoritmo>_<escenario>-00002.log`, etc. en vez de un solo archivo
-  que crece sin limite.
+  `--log-chunk-size`) y con retencion configurable (default:
+  `--log-max-files 100`): `<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`,
+  `00002.log`, etc. en vez de un solo archivo que crece sin limite.
 - Tambien se puede ejecutar empaquetado en Docker / Docker Compose (ver
   seccion 15) sin instalar Python directamente en la instancia.
 
@@ -180,6 +180,7 @@ bash deploy/aws/training/run_aws_training.sh \
   --episode-time-steps 8760 \
   --max-parallel-jobs 1 \
   --log-chunk-size 10M \
+  --log-max-files 100 \
   --cuda
 ```
 
@@ -193,6 +194,7 @@ bash deploy/aws/training/run_aws_training.sh \
   --episode-time-steps 8760 \
   --max-parallel-jobs 2 \
   --log-chunk-size 10M \
+  --log-max-files 100 \
   --cuda
 ```
 
@@ -293,6 +295,7 @@ bash deploy/aws/training/run_aws_training.sh \
   --episodes 75 \
   --episode-time-steps 8760 \
   --log-chunk-size 10M \
+  --log-max-files 100 \
   --output-root outputs/aws_citylearn_v3_madrl_reintento_E1_matd3 \
   --cuda
 ```
@@ -391,8 +394,9 @@ docker compose -f deploy/aws/training/docker-compose.yml up -d --build
 
 El `command:` de `deploy/aws/training/docker-compose.yml` ya trae
 `--episodes 75 --algorithms happo,masac,matd3,maac --scenario ALL
---max-parallel-jobs 1 --log-chunk-size 10M --cuda`. Edite ese archivo para
-cambiar escenario, algoritmos o paralelismo sin tocar el `Dockerfile`.
+--max-parallel-jobs 1 --log-chunk-size 10M --log-max-files 100 --cuda`.
+Edite ese archivo para cambiar escenario, algoritmos, retencion de logs o
+paralelismo sin tocar el `Dockerfile`.
 
 ### 15.4 Alternativa equivalente con `docker run`
 
@@ -411,6 +415,7 @@ docker run -d \
   --episode-time-steps 8760 \
   --max-parallel-jobs 1 \
   --log-chunk-size 10M \
+  --log-max-files 100 \
   --cuda
 ```
 
@@ -422,6 +427,7 @@ docker run --rm --gpus all --shm-size=8g \
   -v "$(pwd)/outputs:/workspace/outputs" \
   madrl-training:latest \
   --scenario E1 --algorithms matd3 --episodes 75 \
+  --log-chunk-size 10M --log-max-files 100 \
   --output-root outputs/aws_citylearn_v3_madrl_reintento_E1_matd3 --cuda
 ```
 
@@ -456,10 +462,12 @@ outputs/aws_citylearn_v3_madrl_<timestamp>/
     └── ...
 ```
 
-### 15.6 Monitorear logs rotados (texto plano, ~10 MB cada uno)
+### 15.6 Monitorear logs rotados y stdout visible
 
 `outputs/` esta montado como volumen, asi que los resultados son visibles en
-el host exactamente igual que en el flujo bare-metal:
+el host exactamente igual que en el flujo bare-metal. El entrenamiento tambien
+se ve por stdout del contenedor (`docker compose logs -f`) mientras el mismo
+stream se escribe en archivos rotados:
 
 ```bash
 # Listar todos los logs del ultimo entrenamiento
@@ -472,14 +480,17 @@ tail -f outputs/aws_citylearn_v3_madrl_*/E1/happo/logs/happo_E1-00001.log
 bash deploy/aws/training/tail_aws_training.sh
 ```
 
-Para ver solo los banners de inicio/fin del contenedor (el detalle paso a
-paso vive en los archivos rotados, no en la salida del contenedor):
+Para ver la salida viva del contenedor:
 
 ```bash
 docker compose -f deploy/aws/training/docker-compose.yml logs -f
 # o, con docker run:
 docker logs -f madrl-training
 ```
+
+La retencion por job se controla con `--log-max-files`. Use `0` para no
+borrar partes antiguas. Con el default `100` y `--log-chunk-size 10M`, cada
+job conserva hasta ~1 GB de logs rotados.
 
 ### 15.7 Estado del contenedor y acceso directo
 
@@ -521,7 +532,8 @@ docker stop madrl-training && docker rm madrl-training
 
 ### 15.9 Comportamiento ante reinicios de EC2 (restart: unless-stopped)
 
-El contenedor usa `restart: unless-stopped`:
+El contenedor usa `restart: unless-stopped`, `init: true` y
+`stop_grace_period: 5m`:
 
 - **SSH/VS Code/Jupyter/terminal se cierra**: el contenedor sigue corriendo
   en modo detached, el entrenamiento no se interrumpe.
@@ -532,11 +544,27 @@ El contenedor usa `restart: unless-stopped`:
   `outputs/.training_completed`. El contenedor se reinicia pero al detectar
   el marcador queda en modo inactivo (`sleep infinity`) sin relanzar el
   entrenamiento.
+- **Entrenamiento falla**: se crea `outputs/.training_failed` con la ruta del
+  `official_full_status.json`. Si Docker relanza el contenedor, este detecta
+  el marcador y queda inactivo, evitando un bucle infinito de reintentos.
 - **Para detener el contenedor inactivo**: `docker compose -f deploy/aws/training/docker-compose.yml stop`
 - **Para lanzar un nuevo entrenamiento** despues de que el anterior completo:
 
 ```bash
 rm outputs/.training_completed
+docker compose -f deploy/aws/training/docker-compose.yml up -d
+```
+
+Para relanzar despues de un fallo, revise primero el status y los logs:
+
+```bash
+cat outputs/.training_failed
+OUTPUT_ROOT=$(grep '^output_root=' outputs/.training_failed | cut -d= -f2-)
+cat "$OUTPUT_ROOT/official_full_status.json"
+find "$OUTPUT_ROOT" -path "*/logs/*.log" | sort
+
+# cuando el problema ya este corregido:
+rm outputs/.training_failed
 docker compose -f deploy/aws/training/docker-compose.yml up -d
 ```
 

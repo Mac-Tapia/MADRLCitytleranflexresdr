@@ -1,11 +1,12 @@
 {
   "schema_version": 2,
   "project": "MADRLCitytleranflexresdr",
-  "updated_at": "2026-06-15",
+  "updated_at": "2026-06-17",
   "purpose": "Manifest canonico del flujo dataset -> carga -> entrenamiento -> comparacion -> resultados finales.",
   "technical_reports": [
     "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
-    "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md"
+    "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md",
+    "docs/audits/INFORME_CORRECCION_TRAZABILIDAD_MADRL_V4_2026-06-17.md"
   ],
   "dataset": {
     "name": "citylearn_iquitos_2023_2025",
@@ -80,7 +81,8 @@
       "stage": "monitoring",
       "primary_monitor": "CityLearn/scripts/monitor_citylearn_v3_official_training.ps1",
       "legacy_monitor_wrapper": "scripts/monitor_citylearn_training_visible.ps1",
-      "status_files": ["official_full_status.json", "official_full_manifest.json", "live_progress.json"]
+      "status_files": ["official_full_status.json", "official_full_manifest.json"],
+      "transient_status_files": ["live_progress.json"]
     },
     {
       "stage": "comparison",
@@ -99,6 +101,7 @@
   "required_job_artifacts": [
     "data/results.json",
     "data/training_summary.json",
+    "data/artifact_audit.json",
     "data/timeseries.csv",
     "data/trace.csv",
     "data/checkpoint_manifest.json",
@@ -133,7 +136,7 @@
     ],
     "canonical_current_run_rule": "Use outputs/latest_visible_training_output_root.txt when present; otherwise use the newest output directory with official_full_status.json.",
     "final_results_rule": "Do not report final KPIs/rankings until all 12 jobs have exit_code=0 and all required_job_artifacts exist.",
-    "archive_layout_note": "Runs marked failed/stale/dry-run are moved to outputs/_archive/ (added 2026-06-13 reorg). outputs/runs/ is reserved for future training runs; the run currently in progress (outputs/citylearn_v3_madrl_full_20260613_010234, see outputs/latest_visible_training_output_root.txt) was left in place at outputs/ root to avoid disrupting its open file handles while status=running."
+    "archive_layout_note": "Runs marked failed/stale/dry-run are moved to outputs/_archive/ (added 2026-06-13 reorg). outputs/runs/ is reserved for future training runs. Completed reference runs remain at outputs/ root when they are canonical evidence for audit or thesis reporting."
   },
   "modified_submodules": {
     "policy": "All git submodules (CityLearn + the 8 under external/, including the 4 MADRL backends HARL/HAPPO, MAAC, MATD3implementation, and any MASAC implementation) may be modified as MADRL-Iquitos research contributions. Every modification must be: (1) documented in docs/contributions/<module>/CHANGES.md with date, files, description, motivation and bibliographic reference; (2) backed by docs/contributions/<module>/bibliografia.bib entries from PhD/master's theses or peer-reviewed articles published 2021-2026; (3) traceable from code via '# MADRL-IQUITOS-MOD: ver docs/contributions/<module>/CHANGES.md#<entry>' comments.",

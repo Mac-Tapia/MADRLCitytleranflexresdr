@@ -473,7 +473,7 @@ MADRLCitytleranflexresdr/
 │   └── contributions/                  ← Registro de cambios por repo
 ├── outputs/                            ← Resultados de entrenamiento
 │   ├── citylearn_v3_madrl_full_20260613_010234/  ← Corrida v3 (COMPLETADA)
-│   ├── citylearn_v3_madrl_full_20260615_074011_v4/ ← Corrida v4 (EN CURSO)
+│   ├── citylearn_v3_madrl_full_20260615_074011_v4/ ← Corrida v4 (COMPLETADA 12/12)
 │   ├── dataset_audit/                  ← Auditorías del dataset
 │   └── latest_visible_training_output_root.txt
 ├── CityLearn/configs/
@@ -489,7 +489,7 @@ MADRLCitytleranflexresdr/
 | Corrida | Estado | Jobs completados | Perfil reward |
 |---|---|---|---|
 | `outputs/citylearn_v3_madrl_full_20260613_010234` | **COMPLETADA** | 12/12 (exit_code=0) | v3 base |
-| `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | **EN CURSO** | 6/12 (HAPPO ✓, MASAC ✓, MATD3 corriendo, MAAC pendiente) | v4 BESS penalty + EV urgency |
+| `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | **COMPLETADA** | 12/12 (HAPPO, MASAC, MATD3 y MAAC en E1/E2/E3) | v4 BESS penalty + EV urgency |
 
 **Hardware de entrenamiento:** NVIDIA GeForce RTX 4060 Laptop GPU · 8,188 MiB VRAM · Driver 560.94 · PyTorch 2.8.0+cu126  
 **Tiempo total estimado por corrida completa:** ~10-11 horas.

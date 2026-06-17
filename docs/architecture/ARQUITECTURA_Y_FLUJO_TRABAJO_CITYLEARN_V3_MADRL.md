@@ -396,14 +396,14 @@ Medidos en corridas v3 y v4 (Torch 2.8.0+cu126, cuda_memory_fraction=0.812):
 
 **Total corrida completa (estimado):** ~10-11 horas en RTX 4060 Laptop.
 
-### Estado actual de corridas (2026-06-15)
+### Estado actual de corridas (2026-06-17)
 
 | Corrida | Estado | Jobs completados |
 |---|---|---|
 | `outputs/citylearn_v3_madrl_full_20260613_010234` | **COMPLETADA** | 12/12 (HAPPO+MASAC preexistentes, MATD3+MAAC en esta sesion) |
-| `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | **EN CURSO** | 6/12 (HAPPO ✓, MASAC ✓, MATD3 E1+E2 corriendo, MAAC pendiente) |
+| `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | **COMPLETADA** | 12/12 (HAPPO, MASAC, MATD3 y MAAC en E1/E2/E3) |
 
-La corrida v4 es el re-run definitivo con funcion de recompensa actualizada (penalidad BESS C-rate/Arrhenius + urgencia EV). Corrida activa en `outputs/latest_visible_training_output_root.txt`.
+La corrida v4 es el re-run definitivo con funcion de recompensa actualizada (penalidad BESS C-rate/Arrhenius + urgencia EV). Es la fuente final vigente para KPIs de tesis desde los artefactos canónicos `data/`.
 
 ## 11. Estructura de salida esperada
 
@@ -418,13 +418,12 @@ La corrida v4 es el re-run definitivo con funcion de recompensa actualizada (pen
     ...
   happo/
     E1_seed_0/
-      live_progress.json
-      results.json
-      training_summary.json
-      timeseries.csv
-      trace.csv
-      checkpoint_manifest.json
-      data/
+      data/results.json
+      data/training_summary.json
+      data/timeseries.csv
+      data/trace.csv
+      data/checkpoint_manifest.json
+      data/artifact_audit.json
       checkpoints/
       figures/
         tables/
@@ -439,12 +438,13 @@ La corrida v4 es el re-run definitivo con funcion de recompensa actualizada (pen
 
 | Archivo / carpeta | Funcion |
 |---|---|
-| `live_progress.json` | Progreso vivo durante entrenamiento: `global_step`, episodio, `reward_sum`, `reward_mean`, costo, CO2, carga neta. |
-| `results.json` | Resultado consolidado de la corrida. |
-| `training_summary.json` | Resumen tecnico: algoritmo, backend, escenario, hiperparametros, artefactos y KPIs. |
-| `timeseries.csv` | Serie temporal distrital: rewards, carga, costo, emisiones, precio e intensidad de carbono. |
-| `trace.csv` | Traza por agente: reward, acciones, observaciones y estadisticos. |
-| `checkpoint_manifest.json` | Manifest de checkpoints guardados. |
+| `live_progress.json` | Progreso vivo transitorio durante entrenamiento activo; se elimina al completar. |
+| `data/results.json` | Resultado consolidado de la corrida. |
+| `data/training_summary.json` | Resumen tecnico: algoritmo, backend, escenario, hiperparametros, artefactos y KPIs. |
+| `data/timeseries.csv` | Serie temporal distrital: rewards, carga, costo, emisiones, precio e intensidad de carbono. |
+| `data/trace.csv` | Traza por agente: reward, acciones, observaciones y estadisticos. |
+| `data/checkpoint_manifest.json` | Manifest de checkpoints guardados. |
+| `data/artifact_audit.json` | Auditoria de consistencia entre pasos esperados, episodios y trazas. |
 | `figures/` | Figuras de entrenamiento, convergencia, rewards, KPIs y comparativas. |
 | `figures/tables/` | Tablas CSV auxiliares para analisis y graficas. |
 
@@ -593,7 +593,7 @@ El proyecto queda completo cuando existan:
 | MAAC/E2 | ✓ completado | 51.74 min | v3 base |
 | MAAC/E3 | ✓ completado | 54.16 min | v3 base |
 
-**Corrida v4** — `outputs/citylearn_v3_madrl_full_20260615_074011_v4` — EN CURSO (re-run definitivo)
+**Corrida v4** — `outputs/citylearn_v3_madrl_full_20260615_074011_v4` — COMPLETADA 12/12 (re-run definitivo)
 
 | Job | Estado | Duracion | Perfil reward |
 |---|:---:|:---:|---|

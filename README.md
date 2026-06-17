@@ -20,14 +20,14 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-16.
+Actualizado: 2026-06-17.
 
 ### Corridas de referencia y definitiva
 
 | Corrida | Sesion | Estado | Descripcion |
 | ------- | ------ | ------ | ----------- |
 | **v3 referencia** | `citylearn_v3_madrl_full_20260613_010234` | COMPLETADA 12/12 | Perfiles `*_unified_comparable_v3`, todas las 12 corridas con artefactos validos |
-| **v4 definitivo** | `citylearn_v3_madrl_full_20260615_074011_v4` | EN CURSO | Penalidad BESS degradacion (LiFePO4 C-rate/Arrhenius) + urgencia EV (SOC), 6/12 completadas |
+| **v4 definitivo** | `citylearn_v3_madrl_full_20260615_074011_v4` | COMPLETADA 12/12 | Penalidad BESS degradacion (LiFePO4 C-rate/Arrhenius) + urgencia EV (SOC); artefactos canónicos reparados y sin duplicados raíz |
 
 ### Estado v4 definitivo (corrida activa)
 
@@ -35,10 +35,10 @@ Actualizado: 2026-06-16.
 | --------- | -- | -- | -- |
 | **HAPPO** | Completado | Completado | Completado |
 | **MASAC** | Completado | Completado | Completado |
-| **MATD3** | En curso | En curso | Pendiente |
-| **MAAC** | Pendiente | Pendiente | Pendiente |
+| **MATD3** | Completado | Completado | Completado |
+| **MAAC** | Completado | Completado | Completado |
 
-Monitor: `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1 -OutputRoot outputs\citylearn_v3_madrl_full_20260615_074011_v4`
+La corrida v4 finalizó el 2026-06-16 22:44:19 con `official_full_status.json: completed` y 12 jobs con `exit_code=0`. El monitor fue corregido para cerrar automáticamente al detectar `completed` salvo uso explícito de `-KeepOpenOnComplete`.
 
 ### Tiempos reales corrida v3 (referencia valida)
 
@@ -74,7 +74,8 @@ Hardware: RTX 4060 Laptop, 8,188 MiB VRAM, driver 560.94, PyTorch 2.8.0+cu126, C
 - Entorno unico: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1).
 - Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v3`**: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
 - Horizonte oficial para nuevas ejecuciones AWS/Docker: 75 episodios x 8760 pasos = 657 000 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
-- Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
+- Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json`, `data/checkpoint_manifest.json`, `data/artifact_audit.json` y `figures/figures_manifest.json` por algoritmo/escenario.
+- Contrato de trazabilidad: `data/` es la fuente canónica por corrida; no se escriben espejos raíz ni `statistical_comparison/` salvo flags heredados explícitos. `live_progress.json` es transitorio y se elimina al finalizar correctamente.
 - Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
 - Perfil GPU: `local4060_fast` — RTX 4060 Laptop 8 GB, max 2 escenarios concurrentes (HAPPO/MATD3), max 1 para MASAC/MAAC.
 - Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes; `python39_core_ready=true`.
@@ -581,10 +582,11 @@ outputs/<run_activo>/
 
 Cada corrida contiene:
 
-- `live_progress.json`, `results.json`, `training_summary.json`
-- `timeseries.csv`, `trace.csv`, `checkpoint_manifest.json`
-- `building_behavior_summary.csv`, `building_kpis.csv`
-- `building_observation_action_schema.csv`, `building_trace_sample.csv`
+- `data/results.json`, `data/training_summary.json`, `data/artifact_audit.json`
+- `data/timeseries.csv`, `data/trace.csv`, `data/checkpoint_manifest.json`
+- `data/building_behavior_summary.csv`, `data/building_kpis.csv`
+- `data/building_observation_action_schema.csv`, `data/building_trace_sample.csv`
+- `live_progress.json` solo durante entrenamiento activo; al completar se elimina como estado transitorio
 - `figures/` con retornos, convergencia y comparacion KPI
 - `figures/tables/` con tablas Markdown por edificio
 

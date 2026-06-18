@@ -40,6 +40,27 @@ Actualizado: 2026-06-17.
 
 La corrida v4 finalizó el 2026-06-16 22:44:19 con `official_full_status.json: completed` y 12 jobs con `exit_code=0`. El monitor fue corregido para cerrar automáticamente al detectar `completed` salvo uso explícito de `-KeepOpenOnComplete`.
 
+### Resultados v4 regenerados y comparados
+
+Artefactos actualizados desde los checkpoints de `outputs/citylearn_v3_madrl_full_20260615_074011_v4`:
+
+- Evidencia estadistica: `outputs/thesis_objective_evidence/madrl_checkpoint_stats_v4`.
+- Figuras canonicas de entrenamiento regeneradas: 156 PNG bajo `*/figures/` (12 corridas x 13 figuras).
+- Tablas canonicas regeneradas: 144 CSV bajo `*/figures/tables/` (12 corridas x 12 CSV; cada carpeta conserva tambien sus pares Markdown).
+- Figuras comparativas regeneradas: 12 PNG bajo `outputs/comparison_citylearn_v2_vs_v3_madrl/E1..E3`.
+- PNG internos antiguos de MASAC bajo `data/backend_results/` eliminados; quedan 0 PNG fuera de `figures/`.
+
+Resumen descriptivo e inferencial:
+
+| Alcance | Mejor por mediana de gain relativo | Kruskal-Wallis p | Significativo 0.05 | Nota |
+| ------- | ---------------------------------- | ---------------: | ------------------ | ---- |
+| OE1 flexibilidad | MATD3 | 0.4450 | No | Sin diferencia global significativa por eje |
+| OE2 CO2 | MASAC | 0.1655 | No | Sin diferencia global significativa por eje |
+| OE3 costos | MAAC | 0.0774 | No | Tendencia, pero no significativa a 0.05 |
+| ALL global | MATD3 | 0.0459 | Si | Diferencia global significativa entre agentes |
+
+El mejor agente global de la corrida v4 es **MATD3**. Tambien gana el ranking ponderado global en las tres comparativas por escenario: E1 score 0.7486, E2 score 0.7515 y E3 score 0.7333. La comparacion inferencial global detecta diferencia significativa (`Kruskal-Wallis p=0.0459`) y las comparaciones contra HAPPO favorecen a MATD3 (`MWU p=0.0182`, `Wilcoxon p=2.62e-06`). Los warnings esperados de Wilcoxon por muestras pequeñas/ceros quedan suprimidos y documentados en `wilcoxon_status`.
+
 ### Tiempos reales corrida v3 (referencia valida)
 
 | Algoritmo | E1 (flex) | E2 (CO2) | E3 (costo) | Total |

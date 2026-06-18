@@ -14,7 +14,9 @@ https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
 
 Entrenamiento canonico:
 
-- Dataset: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`.
+- Dataset del proyecto: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/`.
+- Schema usado por AWS: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`.
+- Insumos trazables de facturas/buildingcsv: `CityLearn/data/buildingcsv/`.
 - Escenarios: `E1`, `E2`, `E3`.
 - Algoritmos: `happo`, `masac`, `matd3`, `maac`.
 - Episodios: `75`.
@@ -154,7 +156,7 @@ bash deploy/aws/training/check_aws_training_ready.sh
 La compuerta revisa:
 
 - Raiz del proyecto y submodulos externos.
-- `schema.json` y dataset Iquitos.
+- `schema.json`, dataset Iquitos y `CityLearn/data/buildingcsv`.
 - Manifiesto de dataset listo.
 - Importacion de los backends HAPPO/MASAC/MATD3/MAAC.
 - CUDA visible por `nvidia-smi` y `torch.cuda`.
@@ -605,6 +607,7 @@ bash deploy/aws/training/sync_outputs_s3.sh "$OUTPUT_ROOT" "s3://NOMBRE_BUCKET_R
 - Ejecute `bash deploy/aws/training/check_aws_training_ready.sh`.
 - Confirme que el clone fue con `--recurse-submodules`.
 - Confirme que existe `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`.
+- Confirme que existe `CityLearn/data/buildingcsv/`; esta es la ruta usada por la compuerta AWS.
 
 `could not select device driver "" with capabilities: [[gpu]]` (Docker)
 

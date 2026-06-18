@@ -220,10 +220,11 @@ Figuras esperadas:
 
 ## Comparacion Final
 
-Benchmark v2:
+Benchmark v2 (el script usa por defecto el dataset Iquitos `citylearn_iquitos_2023_2025/schema.json`):
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\benchmark_citylearn_v2_agents.py `
+  --scenario ALL `
   --episode-time-steps 8760 `
   --agents baseline hour_rbc `
   --output-dir outputs\citylearn_v2_original_benchmark `
@@ -238,8 +239,10 @@ $root = Get-Content outputs\latest_visible_training_output_root.txt
   --v2-root outputs\citylearn_v2_original_benchmark `
   --v3-root $root `
   --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
-  --scenario E3 `
+  --scenario ALL `
   --seed 0 `
+  --auto-benchmark-v2 `
+  --v2-agents baseline hour_rbc `
   --weights OE1=0.34,OE2=0.33,OE3=0.33
 ```
 

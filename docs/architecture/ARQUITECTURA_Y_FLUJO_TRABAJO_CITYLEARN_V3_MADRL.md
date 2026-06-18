@@ -465,11 +465,15 @@ flowchart LR
     CMP --> REP --> TESIS
 ```
 
+El script `benchmark_citylearn_v2_agents.py` apunta por defecto al dataset Iquitos (`citylearn_iquitos_2023_2025/schema.json`). No es necesario pasar `--schema-path`.
+
 Comandos base:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\benchmark_citylearn_v2_agents.py `
   --scenario ALL `
+  --episode-time-steps 8760 `
+  --agents baseline hour_rbc `
   --output-dir outputs\citylearn_v2_original_benchmark
 ```
 
@@ -477,7 +481,10 @@ Comandos base:
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
   --v2-root outputs\citylearn_v2_original_benchmark `
   --v3-root <OutputRoot> `
-  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl
+  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
+  --scenario ALL `
+  --auto-benchmark-v2 `
+  --v2-agents baseline hour_rbc
 ```
 
 ## 14. Trazabilidad cientifica

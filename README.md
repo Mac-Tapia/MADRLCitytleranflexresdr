@@ -613,21 +613,26 @@ Cada corrida contiene:
 
 ## Benchmark y comparacion
 
-Ejecutar agentes originales CityLearn v2 para linea base:
+Ejecutar agentes originales CityLearn v2 para linea base (el script apunta por defecto al dataset Iquitos `citylearn_iquitos_2023_2025/schema.json`):
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\benchmark_citylearn_v2_agents.py `
   --scenario ALL `
+  --episode-time-steps 8760 `
+  --agents baseline hour_rbc `
   --output-dir outputs\citylearn_v2_original_benchmark
 ```
 
-Comparar CityLearn v2 contra CityLearn v3 MADRL:
+Comparar CityLearn v2 contra CityLearn v3 MADRL. Si faltan artefactos v2, el comparador los genera con los agentes originales indicados:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
   --v2-root outputs\citylearn_v2_original_benchmark `
   --v3-root $root `
-  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl
+  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
+  --scenario ALL `
+  --auto-benchmark-v2 `
+  --v2-agents baseline hour_rbc
 ```
 
 ## Sustento cientifico y skills

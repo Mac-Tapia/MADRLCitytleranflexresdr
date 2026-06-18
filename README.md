@@ -559,7 +559,7 @@ El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 75`,
 `--episode-time-steps 8760`, `--cuda`, `--max-parallel-jobs 1` y
 `--log-chunk-size 10M --log-max-files 100`. Los logs se ven en
 `docker compose logs -f` y quedan como texto plano rotado por escenario y
-algoritmo: `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`,
+algoritmo: `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/training-00001.log`,
 `00002.log`, etc. El contenedor usa `restart: unless-stopped`: sobrevive
 cierres de SSH/VS Code y reinicios de EC2 sin necesidad de tmux. Al completar
 el entrenamiento se crea `outputs/.training_completed`; si falla, se crea
@@ -598,7 +598,7 @@ outputs/<run_activo>/
   E1/happo/E1_seed_0/   E1/masac/E1_seed_0/   E1/matd3/E1_seed_0/   E1/maac/E1_seed_0/
   E2/happo/E2_seed_0/   ...
   E3/happo/E3_seed_0/   ...
-  E1/happo/logs/happo_E1-00001.log  E1/masac/logs/masac_E1-00001.log  ...
+  E1/happo/logs/training-00001.log  E1/masac/logs/training-00001.log  ...
 ```
 
 Cada corrida contiene:

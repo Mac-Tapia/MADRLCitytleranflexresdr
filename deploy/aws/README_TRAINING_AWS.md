@@ -26,7 +26,7 @@ Entrenamiento canonico:
   `live_progress.json` por corrida y salida viva en `docker logs`.
 - Logs en texto plano rotados automaticamente cada 10 MB (configurable con
   `--log-chunk-size`) y con retencion configurable (default:
-  `--log-max-files 100`): `<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`,
+  `--log-max-files 100`): `<escenario>/<algoritmo>/logs/training-00001.log`,
   `00002.log`, etc. en vez de un solo archivo que crece sin limite.
 - Tambien se puede ejecutar empaquetado en Docker / Docker Compose (ver
   seccion 15) sin instalar Python directamente en la instancia.
@@ -450,8 +450,8 @@ outputs/aws_citylearn_v3_madrl_<timestamp>/
 │   │   │   ├── figures/
 │   │   │   └── live_progress.json
 │   │   └── logs/
-│   │       ├── happo_E1-00001.log
-│   │       └── happo_E1-00002.log
+│   │       ├── training-00001.log
+│   │       └── training-00002.log
 │   ├── masac/
 │   │   └── ...
 │   ├── matd3/
@@ -475,8 +475,8 @@ stream se escribe en archivos rotados:
 # Listar todos los logs del ultimo entrenamiento
 find outputs/aws_citylearn_v3_madrl_* -path "*/logs/*.log" | sort
 
-# Seguir el log mas reciente de happo/E1
-tail -f outputs/aws_citylearn_v3_madrl_*/E1/happo/logs/happo_E1-00001.log
+# Seguir el primer log rotado de happo/E1
+tail -f outputs/aws_citylearn_v3_madrl_*/E1/happo/logs/training-00001.log
 
 # Monitor interactivo (refresca cada 10 s, sin entrar al contenedor):
 bash deploy/aws/training/tail_aws_training.sh
@@ -576,6 +576,54 @@ docker compose -f deploy/aws/training/docker-compose.yml up -d
 OUTPUT_ROOT=$(cat outputs/latest_visible_training_output_root.txt)
 bash deploy/aws/training/sync_outputs_s3.sh "$OUTPUT_ROOT" "s3://NOMBRE_BUCKET_RESULTS/$(basename "$OUTPUT_ROOT")/"
 ```
+
+### 15.11 Validacion final contra el pedido Docker/AWS
+
+Estado validado para entrenar con el mismo dataset del proyecto:
+
+- Dataset canonico: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`.
+- Insumos trazables: `CityLearn/data/buildingcsv/`.
+- Dockerfile: `deploy/aws/training/Dockerfile`, build context = raiz del repo, sin instalar drivers NVIDIA/CUDA de sistema dentro del contenedor.
+- Docker Compose: `deploy/aws/training/docker-compose.yml`, GPU por NVIDIA Container Toolkit del host y volumen persistente `outputs:/workspace/outputs`.
+- Launcher: `deploy/aws/training/run_aws_training.sh`, 75 episodios por defecto, 8760 pasos por episodio, logs rotados `logs/training-00001.log`, `training-00002.log`, etc.
+- Readiness: `deploy/aws/training/check_aws_training_ready.sh`, valida schema, dataset, `buildingcsv`, CUDA/Torch y smoke estricto CityLearn v3.
+- Monitor: `deploy/aws/training/tail_aws_training.sh`, lee `official_full_status.json`, `live_progress.json` y logs rotados sin entrar al contenedor.
+- Sincronizacion: `deploy/aws/training/sync_outputs_s3.sh`, copia el `OUTPUT_ROOT` completo a S3.
+
+Comandos de validacion usados antes de dar por listo el flujo:
+
+```bash
+bash -n deploy/aws/training/run_aws_training.sh
+bash -n deploy/aws/training/check_aws_training_ready.sh
+bash -n deploy/aws/training/bootstrap_ubuntu_gpu.sh
+bash -n deploy/aws/training/tail_aws_training.sh
+bash -n deploy/aws/training/sync_outputs_s3.sh
+python -m py_compile deploy/aws/training/rotate_training_log.py
+docker compose -f deploy/aws/training/docker-compose.yml config
+```
+
+Compuertas de dataset/CityLearn v3 ejecutadas en el entorno del proyecto:
+
+```bash
+python -B tools/check_training_dataset_ready.py \
+  --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025 \
+  --buildingcsv-dir CityLearn/data/buildingcsv \
+  --audit-dir outputs/dataset_audit \
+  --manifest-out outputs/dataset_audit/training_dataset_ready_manifest.json \
+  --skip-citylearn-load
+
+python -B CityLearn/scripts/check_citylearn_v3_training_ready.py \
+  --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json \
+  --scenario E1 --strict
+python -B CityLearn/scripts/check_citylearn_v3_training_ready.py \
+  --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json \
+  --scenario E2 --strict
+python -B CityLearn/scripts/check_citylearn_v3_training_ready.py \
+  --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json \
+  --scenario E3 --strict
+```
+
+Resultado esperado de esas compuertas: dataset `READY`, 17 agentes, 185 cargadores EV, 31 cargadores V2G y `python39_core_ready=true`.
 
 ## 16. Problemas frecuentes
 

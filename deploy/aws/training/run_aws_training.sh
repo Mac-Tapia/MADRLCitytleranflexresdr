@@ -338,7 +338,7 @@ build_command() {
 run_job() {
   local algorithm="$1"
   local scenario="$2"
-  local log_prefix="${OUTPUT_ROOT}/${scenario}/${algorithm}/logs/${algorithm}_${scenario}-"
+  local log_prefix="${OUTPUT_ROOT}/${scenario}/${algorithm}/logs/training-"
   local log_pattern="${log_prefix}*.log"
   mkdir -p "${OUTPUT_ROOT}/${scenario}/${algorithm}/logs"
   local rc=0

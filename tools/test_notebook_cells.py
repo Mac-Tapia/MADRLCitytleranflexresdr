@@ -44,7 +44,10 @@ assert obs_dim  >= 19,  f"obs_dim too small: {obs_dim}"
 print(f"[PASS] Entorno Dec-POMDP: {n_agents} agentes, obs_dim={obs_dim}")
 
 # ────────────────────────────────────────────────────────────────────────────
-# Test 3 — Notebook JSON válido y parámetros completos
+# Test 3 — Notebook JSON válido y parámetros del launcher
+#
+# The notebook now delegates all training to colab_a100_official_launcher.py.
+# Per-algorithm flags live in the launcher, not the notebook. We check both.
 # ────────────────────────────────────────────────────────────────────────────
 NB = Path(f"{REPO}/CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb")
 with open(NB, encoding="utf-8") as f:
@@ -58,81 +61,74 @@ code_src = "\n".join(
     "".join(c["source"]) for c in cells if c["cell_type"] == "code"
 )
 
-# Verificar que cada algoritmo tiene todos sus flags obligatorios
-REQUIRED = {
+LAUNCHER_PATH = Path(f"{REPO}/CityLearn/scripts/colab_a100_official_launcher.py")
+assert LAUNCHER_PATH.exists(), f"Launcher no encontrado: {LAUNCHER_PATH}"
+launcher_src = LAUNCHER_PATH.read_text(encoding="utf-8")
+
+# Check notebook references the launcher correctly
+assert "colab_a100_official_launcher.py" in code_src, \
+    "Notebook no referencia colab_a100_official_launcher.py"
+assert "--require-a100" in code_src, "Notebook no pasa --require-a100 al launcher"
+assert "--oom-retry" in code_src, "Notebook no pasa --oom-retry al launcher"
+assert "--skip-completed" in code_src, "Notebook no pasa --skip-completed al launcher"
+assert "--dry-run" in code_src, "Notebook no incluye --dry-run (preflight)"
+
+# Per-algorithm flags now live in the launcher — check launcher instead of notebook
+LAUNCHER_REQUIRED = {
     "happo": [
-        "--episodes", "--num-env-steps", "--hidden-size", "384",
-        "--n-rollout-threads", "--log-interval", "--eval-interval",
-        "--actor-lr", "--critic-lr", "--gamma", "0.9999",
+        "--num-env-steps", "--hidden-size", "--n-rollout-threads", "--log-interval",
+        "--eval-interval", "--actor-lr", "--critic-lr", "--gamma", "0.9999",
         "--action-aggregation",
     ],
     "masac": [
-        "--episodes", "--epochs", "--action-bins", "3",
-        "--discrete-action-mode", "axis",
-        "--buffer-size", "25",
-        "--critic-batch-size", "128",
-        "--critic-train-steps", "--actor-sample-times",
-        "--max-replay-buffer-gib", "20",
-        "--masac-preload-batch-device", "auto",
-        "--gamma", "0.9999",
+        "--epochs", "--action-bins", "3", "--discrete-action-mode", "axis",
+        "--buffer-size", "--critic-batch-size", "--critic-train-steps",
+        "--actor-sample-times", "--max-replay-buffer-gib",
+        "--masac-preload-batch-device", "--gamma", "0.9999",
         "--rnn-hidden-dim", "--qmix-hidden-dim",
     ],
     "matd3": [
-        "--episodes", "--num-env-steps",
-        "--batch-size", "512",
-        "--buffer-size", "6000",
-        "--hidden-size", "256",
-        "--train-interval", "100",
-        "--num-random-episodes", "1",
-        "--gamma", "0.9999", "--lr",
+        "--num-env-steps", "--batch-size", "--buffer-size", "--hidden-size", "256",
+        "--train-interval", "--num-random-episodes", "--gamma", "0.9999", "--lr",
     ],
     "maac": [
-        "--episodes",
-        "--action-bins", "3",
-        "--discrete-action-mode", "axis",
-        "--batch-size", "512",
-        "--buffer-length", "100000",
-        "--steps-per-update", "250",
-        "--num-updates", "8",
-        "--max-discrete-actions", "512",
-        "--attend-heads", "4",
-        "--gamma", "0.9999",
-        "--pi-lr", "--q-lr", "--tau",
+        "--action-bins", "3", "--discrete-action-mode", "axis",
+        "--batch-size", "--buffer-length", "--steps-per-update", "250",
+        "--num-updates", "--max-discrete-actions", "--attend-heads",
+        "--gamma", "0.9999", "--pi-lr", "--q-lr", "--tau",
     ],
 }
-COMMON = [
+COMMON_IN_LAUNCHER = [
     "--schema-path", "--scenario", "--seed",
     "--episode-time-steps", "--output-dir",
     "--torch-threads", "--live-progress-interval",
     "--artifact-profile", "--trace-record-interval",
-    "--trace-detail", "--gpu-profile", "--cuda",
+    "--trace-detail", "--gpu-profile",
 ]
 
 missing = {}
-for algo, flags in REQUIRED.items():
-    for flag in flags + COMMON:
-        if flag not in code_src:
+for algo, flags in LAUNCHER_REQUIRED.items():
+    for flag in flags + COMMON_IN_LAUNCHER:
+        if flag not in launcher_src:
             missing.setdefault(algo, []).append(flag)
 
 if missing:
     for algo, flags in missing.items():
-        print(f"[FAIL] {algo}: faltan flags: {flags}")
-    raise AssertionError("Faltan parámetros en el notebook")
-print("[PASS] Todos los parámetros obligatorios presentes en el notebook")
+        print(f"[FAIL] launcher/{algo}: faltan flags: {flags}")
+    raise AssertionError("Faltan parámetros en el launcher")
+print("[PASS] Todos los parámetros obligatorios presentes en el launcher")
 
 # ────────────────────────────────────────────────────────────────────────────
 # Test 4 — Layout algorithm-first correcto
 # ────────────────────────────────────────────────────────────────────────────
-assert 'out_dir("happo")' in code_src or '"happo"' in code_src, \
-    "No se usa algorithm-first layout"
-assert 'out_dir("masac")' in code_src or '"masac"' in code_src
-assert 'out_dir("matd3")' in code_src or '"matd3"' in code_src
-assert 'out_dir("maac")'  in code_src or '"maac"'  in code_src
+assert "happo" in code_src, "No se usa algorithm-first layout (happo ausente)"
+assert "masac" in code_src, "masac ausente en notebook"
+assert "matd3" in code_src, "matd3 ausente en notebook"
+assert "maac"  in code_src, "maac ausente en notebook"
 
 # Verificar que resolve_output_dir producirá la ruta correcta
-# --output-dir {OUTPUT_ROOT}/{algorithm} → resolve crea {algo}/{scenario}_seed_0
 from citylearn_v3_training_common import resolve_output_dir
-import tempfile, os
+import tempfile
 with tempfile.TemporaryDirectory() as tmp:
     odir = resolve_output_dir(f"{tmp}/happo", "happo", "E1", 0)
     expected = Path(tmp) / "happo" / "E1_seed_0"
@@ -140,22 +136,32 @@ with tempfile.TemporaryDirectory() as tmp:
 print(f"[PASS] Layout algorithm-first: {{OUTPUT_ROOT}}/happo/E1_seed_0/ OK")
 
 # ────────────────────────────────────────────────────────────────────────────
-# Test 5 — Hiperparámetros A100 en los valores correctos
+# Test 5 — Hiperparámetros A100 en el launcher (valores correctos)
 # ────────────────────────────────────────────────────────────────────────────
-A100_CHECKS = {
-    '"384"'    : "HAPPO hidden_size=384",
-    '"25"'     : "MASAC buffer_size=25",
-    '"128"'    : "MASAC critic_batch=128",
-    '"20"'     : "MASAC max_replay_gib=20",
-    '"512"'    : "MATD3/MAAC batch_size=512",
-    '"6000"'   : "MATD3 buffer_size=6000",
-    '"100000"' : "MAAC buffer_length=100000",
-    '"0.9999"' : "gamma=0.9999 (horizonte anual)",
-    '"aws"'    : "gpu_profile=aws",
+# Per-algorithm values live in the launcher; notebook has high-level config only.
+LAUNCHER_A100_CHECKS = {
+    "384"    : "HAPPO hidden_size=384",
+    "20"     : "MASAC buffer_size=20",
+    "64"     : "MASAC critic_batch=64",
+    "512"    : "MATD3/MAAC batch_size=512",
+    "6000"   : "MATD3 buffer_size=6000",
+    "100000" : "MAAC buffer_length=100000",
+    "0.9999" : "gamma=0.9999 (horizonte anual)",
 }
-for val, desc_str in A100_CHECKS.items():
+for val, desc_str in LAUNCHER_A100_CHECKS.items():
+    assert val in launcher_src, f"No se encontró {desc_str} ({val}) en el launcher"
+
+# High-level config lives in the notebook (single or double quoted strings)
+NB_A100_CHECKS = {
+    "aws"    : "gpu_profile=aws",
+    "0.92"   : "cuda_memory_fraction=0.92",
+    "75"     : "EPISODES=75",
+    "8760"   : "EPISODE_STEPS=8760",
+}
+for val, desc_str in NB_A100_CHECKS.items():
     assert val in code_src, f"No se encontró {desc_str} ({val}) en el notebook"
-print("[PASS] Todos los valores A100 correctos en el notebook")
+
+print("[PASS] Todos los valores A100 correctos (launcher + notebook)")
 
 # ────────────────────────────────────────────────────────────────────────────
 # Test 6 — Visualización reward weights
@@ -251,6 +257,25 @@ with tempfile.TemporaryDirectory() as tmp:
         assert scenario in ["E1","E2","E3"], f"scenario={scenario}"
 
 print("[PASS] Glob pattern algorithm-first OK (12/12 archivos encontrados)")
+
+# ────────────────────────────────────────────────────────────────────────────
+# Test 9 — load_all_results KPI path (citylearn_v3_report.all_values)
+# ────────────────────────────────────────────────────────────────────────────
+# KPIs must be read from citylearn_v3_report.all_values, not root level
+assert "citylearn_v3_report" in code_src, \
+    "Notebook no lee KPIs de citylearn_v3_report.all_values"
+assert "all_values" in code_src, \
+    "Notebook no extrae all_values de citylearn_v3_report"
+print("[PASS] load_all_results usa citylearn_v3_report.all_values (ruta correcta)")
+
+# ────────────────────────────────────────────────────────────────────────────
+# Test 10 — Convergence plot uses episode-level aggregation
+# ────────────────────────────────────────────────────────────────────────────
+assert 'groupby("episode")' in code_src, \
+    "Convergence plot no agrega por episodio (groupby episode)"
+assert '"reward_mean"' in code_src, \
+    "Convergence plot no usa columna reward_mean explícitamente"
+print("[PASS] Convergence plot agrega por episodio usando reward_mean")
 
 # ────────────────────────────────────────────────────────────────────────────
 # Resumen

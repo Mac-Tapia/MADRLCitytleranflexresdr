@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from setuptools import setup
+from setuptools import find_packages, setup
 
 def get_version() -> str:
     # https://packaging.python.org/guides/single-sourcing-package-version/
@@ -15,7 +15,7 @@ setup(
     description="off-policy algorithms of marlbenchmark",
     long_description=open("README.md", encoding="utf8").read(),
     long_description_content_type="text/markdown",
-    packages=setuptools.find_packages(),
+    packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",

@@ -20,7 +20,7 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-17.
+Actualizado: 2026-06-19.
 
 ### Corridas de referencia y definitiva
 

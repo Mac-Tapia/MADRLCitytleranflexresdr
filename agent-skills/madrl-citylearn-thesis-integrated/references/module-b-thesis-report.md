@@ -88,7 +88,7 @@ ANEXOS
 
 ### Carátula
 
-Include: university (Universidad Nacional Mayor de San Marcos), graduate school/faculty, full thesis title, academic degree sought (Maestría de Especialización o Profesionalizante), student name, advisor name, Lima, Peru, year.
+Include: university (Universidad Nacional de Ingenieria - UNI), graduate school/faculty, full thesis title, academic degree sought (Maestría de Especialización o Profesionalizante), student name, advisor name, Lima, Peru, year.
 
 ### Resumen - Abstract
 

@@ -1074,7 +1074,7 @@ cells.append(md("""\
 ---
 
 Repositorio: [Mac-Tapia/MADRLCitytleranflexresdr](https://github.com/Mac-Tapia/MADRLCitytleranflexresdr)
-Contacto: mac.tapia@unmsm.edu.pe · Universidad Nacional Mayor de San Marcos · 2026
+Contacto: mac.tapia.c@uni.pe · Universidad Nacional de Ingenieria - UNI · 2026
 """))
 
 # ════════════════════════════════════════════════════════════════════════════

@@ -1,7 +1,7 @@
-# Aportes al Motor de Simulación CityLearn — MADRL Tesis UNMSM
+# Aportes al Motor de Simulación CityLearn — MADRL Tesis UNI
 
 **Proyecto:** Gestión Coordinada de Flexibilidad Energética, CO₂ y Costos mediante MADRL en Comunidades Inteligentes (CityLearn v3, Dataset Iquitos)  
-**Autor:** Mac Tapia — mac.tapia@unmsm.edu.pe  
+**Autor:** Mac Tapia — mac.tapia.c@uni.pe  
 **Fork:** github.com/Mac-Tapia/CityLearn.git  
 **Fecha:** 2026-06-13  
 

@@ -68,7 +68,7 @@ def make_cover() -> Image.Image:
            "Caso de estudio: 17 edificios reales de Iquitos, Peru (2023-2025)",
            fill=ACCENT, font=try_font(36), anchor="mm")
     d.text((W // 2, 520),
-           "Universidad Nacional Mayor de San Marcos  |  mac.tapia@unmsm.edu.pe",
+           "Universidad Nacional de Ingenieria - UNI  |  mac.tapia.c@uni.pe",
            fill=(71, 85, 105), font=try_font(30), anchor="mm")
 
     # Result box

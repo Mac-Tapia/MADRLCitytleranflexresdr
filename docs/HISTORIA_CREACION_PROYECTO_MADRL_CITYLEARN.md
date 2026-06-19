@@ -1,8 +1,8 @@
 # Historia de Creación del Proyecto — MADRL CityLearn v3 Iquitos
 
 **Proyecto:** Multi-agente de aprendizaje por refuerzo profundo para gestión coordinada de flexibilidad energética, emisiones de carbono y costos energéticos en comunidades inteligentes  
-**Autor:** Mac Tapia — mac.tapia@unmsm.edu.pe  
-**Universidad:** Universidad Nacional Mayor de San Marcos (UNMSM) — Maestría  
+**Autor:** Mac Tapia — mac.tapia.c@uni.pe  
+**Universidad:** Universidad Nacional de Ingenieria - UNI (UNI) — Maestría  
 **Caso de estudio:** Sistema Eléctrico Aislado de Iquitos (SEAI), Electro Oriente S.A., Loreto, Perú  
 **Repositorio principal:** `d:\MADRLCitytleranflexresdr`  
 **Total de commits registrados:** 78 (2026-05-03 al 2026-06-15)

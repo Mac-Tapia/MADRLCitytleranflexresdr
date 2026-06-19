@@ -57,6 +57,7 @@ assert nb["metadata"]["colab"]["gpuType"] == "A100"
 assert nb["metadata"].get("accelerator") == "GPU"
 
 cells   = nb["cells"]
+cell_ids = [c.get("id") for c in cells]
 code_src = "\n".join(
     "".join(c["source"]) for c in cells if c["cell_type"] == "code"
 )
@@ -72,6 +73,35 @@ assert "--require-a100" in code_src, "Notebook no pasa --require-a100 al launche
 assert "--oom-retry" in code_src, "Notebook no pasa --oom-retry al launcher"
 assert "--skip-completed" in code_src, "Notebook no pasa --skip-completed al launcher"
 assert "--dry-run" in code_src, "Notebook no incluye --dry-run (preflight)"
+
+required_order = [
+    "e6bd10e8",          # 1.1 GPU
+    "c06557c1",          # 1.2 clone validated branch
+    "repo_mirror_verify",# 1.2b project mirror
+    "188059f1",          # 1.3 deps
+    "221bf910",          # 1.4 sys.path/smoke imports
+    "56e338c7",          # 1.5 Drive
+    "c1f8ada9",          # 2.1 output root
+    "226d3513",          # 6.1 config
+    "2adf11df",          # 7.0 launcher helpers
+    "3c0758f9",          # 7.1 dry-run
+    "9a97f863",          # 7.2 training
+]
+missing_cells = [cell_id for cell_id in required_order if cell_id not in cell_ids]
+assert not missing_cells, f"Faltan celdas críticas: {missing_cells}"
+positions = [cell_ids.index(cell_id) for cell_id in required_order]
+assert positions == sorted(positions), f"Orden crítico de celdas incorrecto: {positions}"
+
+assert "REPO_BRANCH = 'codex/fix-madrl-traceability-docs'" in code_src, \
+    "Notebook no fija la rama del repo padre para Colab"
+assert "git_check(['clone', '--branch', REPO_BRANCH" in code_src, \
+    "Clone de Colab no usa --branch REPO_BRANCH"
+assert "submodule_status = sh(['git', 'submodule', 'status', '--recursive'])" in code_src, \
+    "Notebook no valida estado de submódulos"
+assert "actual_citylearn_commit == expected_citylearn_commit" in code_src, \
+    "Notebook no valida que CityLearn coincida con el commit fijado por el repo padre"
+assert "csv_count == 222" in code_src, "Notebook no valida dataset completo de 222 CSV"
+print("[PASS] Orden crítico y espejo repo/submódulos/dataset validados en notebook")
 
 # Per-algorithm flags now live in the launcher — check launcher instead of notebook
 LAUNCHER_REQUIRED = {
@@ -134,6 +164,67 @@ with tempfile.TemporaryDirectory() as tmp:
     expected = Path(tmp) / "happo" / "E1_seed_0"
     assert odir == expected, f"resolve_output_dir={odir} expected={expected}"
 print(f"[PASS] Layout algorithm-first: {{OUTPUT_ROOT}}/happo/E1_seed_0/ OK")
+
+# ────────────────────────────────────────────────────────────────────────────
+# Test 4b — Colab output isolation and resumability guardrails
+# ────────────────────────────────────────────────────────────────────────────
+OUTPUT_GUARDS = [
+    "REQUIRE_GOOGLE_DRIVE = True",
+    "GDRIVE_OUTPUT_PARENT = f'{GDRIVE_ROOT}/outputs'",
+    "MADRL_CityLearn_v3/{PROJECT_NAME}/outputs/colab_madrl_a100_",
+    "RESUME_OUTPUT_ROOT = None",
+    "resumed_existing_output_root",
+    "run_context_manifest.json",
+    "forbidden_markers",
+    "citylearn_v3_madrl_full_",
+    "relative_to(expected_root)",
+    "len(seen_outputs) == 12",
+    "outputs aislados en OUTPUT_ROOT",
+]
+for guard in OUTPUT_GUARDS:
+    assert guard in code_src, f"Falta guardrail de aislamiento/reanudación: {guard}"
+
+# Check launcher job construction directly without running GPU code.
+import importlib.util
+import tempfile
+
+spec = importlib.util.spec_from_file_location("colab_a100_official_launcher", LAUNCHER_PATH)
+launcher = importlib.util.module_from_spec(spec)
+assert spec.loader is not None
+spec.loader.exec_module(launcher)
+
+with tempfile.TemporaryDirectory() as tmp:
+    output_root = Path(tmp) / "colab_madrl_a100_test"
+    args = launcher.parse_args([
+        "--scenario", "ALL",
+        "--seed", "0",
+        "--episode-time-steps", "8760",
+        "--episodes", "75",
+        "--output-root", str(output_root),
+        "--schema-path", "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
+        "--skip-gpu-preflight",
+        "--no-require-a100",
+        "--no-smoke-imports",
+    ])
+    jobs = launcher.build_jobs(
+        args,
+        Path(REPO),
+        output_root,
+        "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
+    )
+    expected_dirs = {
+        str(output_root / algo / f"{sc}_seed_0")
+        for algo in ["happo", "masac", "matd3", "maac"]
+        for sc in ["E1", "E2", "E3"]
+    }
+    actual_dirs = {
+        str(launcher.run_dir(output_root, str(job["name"]), str(job["scenario"]), 0))
+        for job in jobs
+    }
+    assert len(jobs) == 12, f"Launcher planifica {len(jobs)} jobs, esperado 12"
+    assert actual_dirs == expected_dirs, "Launcher no produce output dirs algorithm-first únicos bajo OUTPUT_ROOT"
+
+print("[PASS] Guardrails de OUTPUT_ROOT Colab aislado y launcher 12 dirs únicos OK")
 
 # ────────────────────────────────────────────────────────────────────────────
 # Test 5 — Hiperparámetros A100 en el launcher (valores correctos)

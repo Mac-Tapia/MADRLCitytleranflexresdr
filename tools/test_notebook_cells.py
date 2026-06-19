@@ -61,6 +61,12 @@ cell_ids = [c.get("id") for c in cells]
 code_src = "\n".join(
     "".join(c["source"]) for c in cells if c["cell_type"] == "code"
 )
+dirty_code_cells = [
+    (i, c.get("id"), c.get("execution_count"), len(c.get("outputs", [])))
+    for i, c in enumerate(cells)
+    if c["cell_type"] == "code" and (c.get("execution_count") is not None or c.get("outputs"))
+]
+assert not dirty_code_cells, f"Notebook contiene outputs/execution_count: {dirty_code_cells[:5]}"
 
 LAUNCHER_PATH = Path(f"{REPO}/CityLearn/scripts/colab_a100_official_launcher.py")
 assert LAUNCHER_PATH.exists(), f"Launcher no encontrado: {LAUNCHER_PATH}"
@@ -102,6 +108,29 @@ assert "actual_citylearn_commit == expected_citylearn_commit" in code_src, \
     "Notebook no valida que CityLearn coincida con el commit fijado por el repo padre"
 assert "csv_count == 222" in code_src, "Notebook no valida dataset completo de 222 CSV"
 print("[PASS] Orden crítico y espejo repo/submódulos/dataset validados en notebook")
+
+DEPENDENCY_GUARDS = [
+    "PYTHON_MAX_EXCLUSIVE = (3, 12)",
+    "Python 3.12 rompe la combinación CityLearn/scikit-learn<=1.2.2",
+    "'numpy==1.26.4'",
+    "'pandas==2.1.4'",
+    "'scipy==1.11.4'",
+    "'scikit-learn==1.2.2'",
+    "'matplotlib==3.8.4'",
+    "'seaborn==0.13.2'",
+    "madrl_citylearn_colab_constraints.txt",
+    "--force-reinstall",
+    "--no-cache-dir",
+    "modules_loaded_before_install",
+    "Verificando ABI en un proceso Python nuevo",
+    "subprocess.check_call([sys.executable, '-c', compat_check])",
+    "'scipy'",
+    "'sklearn'",
+    "Detectado conflicto ABI numpy/pandas",
+]
+for guard in DEPENDENCY_GUARDS:
+    assert guard in code_src, f"Falta guardrail de dependencias Colab: {guard}"
+print("[PASS] Dependencias Colab fijadas y smoke imports con diagnóstico ABI")
 
 # Per-algorithm flags now live in the launcher — check launcher instead of notebook
 LAUNCHER_REQUIRED = {

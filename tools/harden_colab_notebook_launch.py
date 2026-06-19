@@ -168,6 +168,165 @@ print(f"Dataset : {csv_count} CSV, {COLAB_PROJECT_CONTEXT['buildings']} edificio
 """
 
 
+deps_cell = r"""
+# ── 1.3  Instalar dependencias del proyecto de forma reproducible ───────────
+# No se instalan como paquetes los backends que no tienen setup.py/pyproject
+# (external/MARL/src y external/MAAC). Esos se exponen via sys.path.
+import os, sys, subprocess
+from pathlib import Path
+
+os.chdir('/content/MADRLCitytleranflexresdr')
+
+PYTHON_MIN = (3, 9)
+PYTHON_MAX_EXCLUSIVE = (3, 12)
+if not (PYTHON_MIN <= sys.version_info[:2] < PYTHON_MAX_EXCLUSIVE):
+    raise RuntimeError(
+        f'Python {sys.version.split()[0]} no soportado para este notebook. '
+        'Usa un runtime Colab con Python 3.9, 3.10 o 3.11. '
+        'Python 3.12 rompe la combinación CityLearn/scikit-learn<=1.2.2 y '
+        'suele producir errores ABI numpy/pandas.'
+    )
+
+BINARY_MODULES = ['numpy', 'pandas', 'scipy', 'sklearn', 'matplotlib']
+modules_loaded_before_install = sorted(m for m in BINARY_MODULES if m in sys.modules)
+
+CONSTRAINTS = Path('/tmp/madrl_citylearn_colab_constraints.txt')
+COMPAT_WHEELS = [
+    'numpy==1.26.4',
+    'pandas==2.1.4',
+    'scipy==1.11.4',
+    'scikit-learn==1.2.2',
+    'matplotlib==3.8.4',
+    'seaborn==0.13.2',
+]
+RUNTIME_UTILS = [
+    'tensorboard',
+    'tensorboardX',
+    'setproctitle',
+    'simplejson',
+]
+CONSTRAINTS.write_text('\n'.join(COMPAT_WHEELS) + '\n')
+
+
+def pip_install(*args):
+    cmd = [sys.executable, '-m', 'pip', 'install', '--disable-pip-version-check', *args]
+    print(' '.join(cmd))
+    subprocess.check_call(cmd)
+
+
+# Usar constraints durante los editables evita que pip resuelva pandas/numpy a
+# ruedas incompatibles con CityLearn y el Python del runtime Colab.
+pip_install('-q', '-c', str(CONSTRAINTS), '-e', 'CityLearn/')
+pip_install('-q', '-c', str(CONSTRAINTS), '-e', 'external/HARL/')
+pip_install('-q', '-c', str(CONSTRAINTS), '-e', 'external/off-policy/')
+
+# Reinstalación final: deja numpy/pandas/scipy/sklearn en una ABI coherente.
+pip_install('-q', '--force-reinstall', '--no-cache-dir', *COMPAT_WHEELS, *RUNTIME_UTILS)
+
+compat_check = r'''
+import json
+import numpy, pandas, scipy, sklearn, matplotlib, seaborn
+versions = {
+    'numpy': numpy.__version__,
+    'pandas': pandas.__version__,
+    'scipy': scipy.__version__,
+    'scikit-learn': sklearn.__version__,
+    'matplotlib': matplotlib.__version__,
+    'seaborn': seaborn.__version__,
+}
+print(json.dumps(versions, indent=2))
+'''
+print('\nVerificando ABI en un proceso Python nuevo...')
+subprocess.check_call([sys.executable, '-c', compat_check])
+
+if modules_loaded_before_install:
+    raise RuntimeError(
+        'Se reinstalaron paquetes binarios, pero ya estaban cargados en este kernel: '
+        f'{modules_loaded_before_install}. Reinicia el runtime/kernel ahora y vuelve a '
+        'ejecutar desde 1.1 -> 1.2 -> 1.2b -> 1.3 -> 1.4.'
+    )
+
+print('\nDependencias instaladas con ABI compatible. MASAC y MAAC se cargan por sys.path, no por pip editable.')
+"""
+
+
+smoke_cell = r"""
+# ── 1.4  Configurar sys.path, CUDA y smoke imports ──────────────────────────
+import os, sys, importlib, json
+from pathlib import Path
+
+if not ((3, 9) <= sys.version_info[:2] < (3, 12)):
+    raise RuntimeError(
+        f'Python {sys.version.split()[0]} no soportado. '
+        'Selecciona un runtime Colab con Python 3.9, 3.10 o 3.11.'
+    )
+
+REPO = '/content/MADRLCitytleranflexresdr'
+_paths = [
+    REPO,
+    f'{REPO}/CityLearn',
+    f'{REPO}/CityLearn/scripts',
+    f'{REPO}/external/HARL',
+    f'{REPO}/external/MARL/src',
+    f'{REPO}/external/off-policy',
+    f'{REPO}/external/MAAC',
+]
+for p in reversed(_paths):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+os.environ['PYTHONPATH'] = ':'.join(_paths + [os.environ.get('PYTHONPATH', '')])
+os.environ['CITYLEARN_PROJECT_ROOT'] = REPO
+os.environ.setdefault('CUDA_DEVICE_ORDER', 'PCI_BUS_ID')
+os.environ.setdefault('PYTORCH_CUDA_ALLOC_CONF', 'expandable_segments:True,max_split_size_mb:128')
+os.environ.setdefault('WANDB_MODE', 'disabled')
+os.environ.setdefault('PYTHONHASHSEED', '0')
+
+required_paths = [Path(p) for p in _paths]
+missing = [str(p) for p in required_paths if not p.exists()]
+if missing:
+    raise FileNotFoundError(f'Rutas requeridas no encontradas: {missing}')
+
+modules = [
+    'torch',
+    'numpy',
+    'pandas',
+    'scipy',
+    'sklearn',
+    'citylearn',
+    'citylearn.v3.environment',
+    'harl',
+    'runner_msac',
+    'offpolicy',
+    'algorithms.attention_sac',
+]
+smoke = {}
+versions = {}
+for name in modules:
+    try:
+        module = importlib.import_module(name)
+        smoke[name] = 'ok'
+        version = getattr(module, '__version__', None)
+        if version:
+            versions[name] = version
+    except Exception as exc:
+        smoke[name] = f'FAILED: {exc}'
+
+print(json.dumps({'imports': smoke, 'versions': versions}, indent=2))
+failures = {k: v for k, v in smoke.items() if v.startswith('FAILED')}
+if failures:
+    abi_fail = any('numpy.dtype size changed' in v for v in failures.values())
+    hint = (
+        ' Detectado conflicto ABI numpy/pandas: ejecuta 1.3 en un runtime limpio, '
+        'reinicia el kernel si 1.3 indica que reinstalo paquetes ya cargados, y luego repite 1.4.'
+        if abi_fail else ''
+    )
+    raise RuntimeError(f'Smoke imports fallaron: {failures}.{hint}')
+
+print('sys.path, CUDA env y smoke imports configurados.')
+"""
+
+
 drive_cell = r"""
 # ── 1.5  Montar Google Drive para checkpoints y reanudacion ─────────────────
 import os
@@ -383,6 +542,8 @@ def main() -> None:
             "source": source_lines(mirror_cell),
         },
     )
+    set_cell_source(cells, "188059f1", deps_cell)
+    set_cell_source(cells, "221bf910", smoke_cell)
     set_cell_source(cells, "56e338c7", drive_cell)
     set_cell_source(cells, "c1f8ada9", paths_cell)
     set_cell_source(cells, "3c0758f9", dry_run_cell)
@@ -412,6 +573,11 @@ def main() -> None:
                 "# Luego ejecutar en orden: 1.2 -> 1.2b -> 1.3 -> 1.4 -> 1.5 -> 2.1 -> 6.1 -> 7.0 -> 7.2",
             )
             cell["source"] = source_lines(src)
+
+    for cell in cells:
+        if cell.get("cell_type") == "code":
+            cell["outputs"] = []
+            cell["execution_count"] = None
 
     NB_PATH.write_text(json.dumps(nb, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"Updated {NB_PATH}: {len(cells)} cells")

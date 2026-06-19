@@ -44,7 +44,7 @@ flowchart LR
         direction TB
         ALGS["4 algoritmos\nHAPPO · MASAC\nMATD3 · MAAC"]
         EJES["3 escenarios\nE1 Flex · E2 CO2 · E3 Costo"]
-        GPU["GPU RTX 4060 / AWS A10G\n75 episodios x 8 760 pasos\n12 corridas totales"]
+        GPU["GPU RTX 4060 local — corrida v4: 5 ep x 8 760 pasos\nObjetivo A100/AWS: 75 ep x 8 760 pasos\n12 corridas totales (4 algo x 3 escenarios)"]
         ALGS --> EJES --> GPU
     end
 
@@ -262,33 +262,33 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    START(["Launcher oficial\nrun_aws_training.sh\n--scenario ALL --episodes 75\n--algorithms happo,masac,matd3,maac"])
+    START(["Corrida v4 oficial (local RTX 4060 8GB)\nrun_aws_training.sh --scenario ALL\n--episodes 5 x 8760 pasos = 43800 steps/corrida\n[Objetivo Colab A100/AWS: 75 episodios]"])
 
-    subgraph HAPPO_RUN["HAPPO (on-policy) — ~190 min total"]
-        H_E1["HAPPO E1\nflexibilidad\n75 ep x 8760 pasos\n~66 min"]
-        H_E2["HAPPO E2\nemisiones CO2\n~66 min"]
-        H_E3["HAPPO E3\ncostos\n~58 min"]
+    subgraph HAPPO_RUN["HAPPO (on-policy) — 190 min v4 | ~2 800 min A100"]
+        H_E1["HAPPO E1\nflexibilidad\n5 ep x 8760 pasos\n~66 min (v4)"]
+        H_E2["HAPPO E2\nemisiones CO2\n~66 min (v4)"]
+        H_E3["HAPPO E3\ncostos\n~58 min (v4)"]
         H_E1 & H_E2 -->|"paralelo en GPU"| H_E3
     end
 
-    subgraph MASAC_RUN["MASAC (off-policy) — ~410 min total"]
-        M_E1["MASAC E1\n~126 min"]
-        M_E2["MASAC E2\n~148 min"]
-        M_E3["MASAC E3\n~136 min"]
+    subgraph MASAC_RUN["MASAC (off-policy) — 410 min v4 | ~6 100 min A100"]
+        M_E1["MASAC E1\n~126 min (v4)"]
+        M_E2["MASAC E2\n~148 min (v4)"]
+        M_E3["MASAC E3\n~136 min (v4)"]
         M_E1 --> M_E2 --> M_E3
     end
 
-    subgraph MATD3_RUN["MATD3 (off-policy) — ~271 min total"]
-        T_E1["MATD3 E1\n~95 min"]
-        T_E2["MATD3 E2\n~95 min"]
-        T_E3["MATD3 E3\n~81 min"]
+    subgraph MATD3_RUN["MATD3 (off-policy) — 1204 min v4 | ~18 000 min A100"]
+        T_E1["MATD3 E1\n~376 min (v4)"]
+        T_E2["MATD3 E2\n~377 min (v4)"]
+        T_E3["MATD3 E3\n~451 min (v4)"]
         T_E1 & T_E2 -->|"paralelo en GPU"| T_E3
     end
 
-    subgraph MAAC_RUN["MAAC (off-policy) — ~158 min total"]
-        A_E1["MAAC E1\n~52 min"]
-        A_E2["MAAC E2\n~52 min"]
-        A_E3["MAAC E3\n~54 min"]
+    subgraph MAAC_RUN["MAAC (off-policy) — 984 min v4 | ~14 700 min A100"]
+        A_E1["MAAC E1\n~332 min (v4)"]
+        A_E2["MAAC E2\n~329 min (v4)"]
+        A_E3["MAAC E3\n~323 min (v4)"]
         A_E1 --> A_E2 --> A_E3
     end
 

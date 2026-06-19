@@ -162,9 +162,9 @@ escenarios (`E1,E2,E3`) con `--episodes 75`, `--episode-time-steps 8760`,
 Persistencia y organizacion:
 
 - `outputs/` del host se monta en `/workspace/outputs` dentro del contenedor.
-- Los artefactos quedan en `outputs/aws_citylearn_v3_madrl_<timestamp>/<escenario>/<algoritmo>/`.
+- Los artefactos quedan en `outputs/aws_citylearn_v3_madrl_<timestamp>/<algoritmo>/<escenario>_seed_0/`.
 - Los logs se ven en `docker compose logs -f` y se guardan rotados en
-  `<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`, `00002.log`, etc.
+  `logs/<escenario>_<algoritmo>-00001.log`, `00002.log`, etc.
 - Si el entrenamiento termina correctamente se crea `outputs/.training_completed`.
 - Si un job falla se crea `outputs/.training_failed` y el contenedor queda
   inactivo en el siguiente reinicio, evitando bucles infinitos con

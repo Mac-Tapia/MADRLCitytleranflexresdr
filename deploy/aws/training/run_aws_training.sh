@@ -139,6 +139,15 @@ fi
 
 IFS=',' read -r -a ALGORITHM_LIST <<<"${ALGORITHMS}"
 
+mkdir -p "${OUTPUT_ROOT}/logs"
+for algorithm in "${ALGORITHM_LIST[@]}"; do
+  algorithm="$(echo "${algorithm}" | tr '[:upper:]' '[:lower:]' | xargs)"
+  for scenario in "${SCENARIO_LIST[@]}"; do
+    scenario="$(echo "${scenario}" | tr '[:lower:]' '[:upper:]' | xargs)"
+    mkdir -p "${OUTPUT_ROOT}/${algorithm}/${scenario}_seed_${SEED}"
+  done
+done
+
 if [[ "${CUDA}" == "auto" ]]; then
   if python - <<'PY'
 import torch
@@ -205,6 +214,23 @@ payload = {
     },
     "jobs": [],
 }
+scenarios = ["E1", "E2", "E3"] if raw[0].upper() == "ALL" else [
+    item.strip().upper() for item in raw[0].split(",") if item.strip()
+]
+algorithms = [item.strip().lower() for item in raw[1].split(",") if item.strip()]
+seed = int(raw[4])
+for scenario in scenarios:
+    for algorithm in algorithms:
+        payload["jobs"].append({
+            "algorithm": algorithm,
+            "scenario": scenario,
+            "status": "pending",
+            "started_at": None,
+            "completed_at": None,
+            "exit_code": None,
+            "log_path": f"{output_root}/logs/{scenario}_{algorithm}-*.log",
+            "output_dir": f"{output_root}/{algorithm}/{scenario}_seed_{seed}",
+        })
 status_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 PY
@@ -307,7 +333,7 @@ build_command() {
     --scenario "${scenario}"
     --seed "${SEED}"
     --episode-time-steps "${EPISODE_TIME_STEPS}"
-    --output-dir "${OUTPUT_ROOT}/${scenario}/${algorithm}"
+    --output-dir "${OUTPUT_ROOT}/${algorithm}"
     --torch-threads "${TORCH_THREADS}"
     --live-progress-interval "${LIVE_PROGRESS_INTERVAL}"
     --artifact-profile "${ARTIFACT_PROFILE}"
@@ -338,9 +364,9 @@ build_command() {
 run_job() {
   local algorithm="$1"
   local scenario="$2"
-  local log_prefix="${OUTPUT_ROOT}/${scenario}/${algorithm}/logs/training-"
+  local log_prefix="${OUTPUT_ROOT}/logs/${scenario}_${algorithm}-"
   local log_pattern="${log_prefix}*.log"
-  mkdir -p "${OUTPUT_ROOT}/${scenario}/${algorithm}/logs"
+  mkdir -p "${OUTPUT_ROOT}/logs"
   local rc=0
 
   with_status_lock record_job "${algorithm}" "${scenario}" "running" "" "${log_pattern}"

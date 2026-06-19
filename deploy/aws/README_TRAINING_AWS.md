@@ -24,9 +24,12 @@ Entrenamiento canonico:
 - Salidas: `outputs/aws_citylearn_v3_madrl_<timestamp>/`.
 - Estado visible: `official_full_status.json`, logs por algoritmo,
   `live_progress.json` por corrida y salida viva en `docker logs`.
+- El arbol `algoritmo/escenario_seed_0` se crea al iniciar la corrida para
+  todos los escenarios planificados; los artefactos `data/results.json`,
+  `checkpoints/` y `figures/` aparecen cuando cada job avanza o finaliza.
 - Logs en texto plano rotados automaticamente cada 10 MB (configurable con
   `--log-chunk-size`) y con retencion configurable (default:
-  `--log-max-files 100`): `<escenario>/<algoritmo>/logs/training-00001.log`,
+  `--log-max-files 100`): `logs/<escenario>_<algoritmo>-00001.log`,
   `00002.log`, etc. en vez de un solo archivo que crece sin limite.
 - Tambien se puede ejecutar empaquetado en Docker / Docker Compose (ver
   seccion 15) sin instalar Python directamente en la instancia.
@@ -250,11 +253,11 @@ Rutas utiles para descargar:
 
 - `outputs/latest_visible_training_output_root.txt`
 - `outputs/aws_citylearn_v3_madrl_*/official_full_status.json`
-- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/*.log`
-- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/<escenario>_seed_0/training_summary.json`
-- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/<escenario>_seed_0/data/`
-- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/<escenario>_seed_0/checkpoints/`
-- `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/<escenario>_seed_0/figures/`
+- `outputs/aws_citylearn_v3_madrl_*/logs/*.log`
+- `outputs/aws_citylearn_v3_madrl_*/<algoritmo>/<escenario>_seed_0/training_summary.json`
+- `outputs/aws_citylearn_v3_madrl_*/<algoritmo>/<escenario>_seed_0/data/`
+- `outputs/aws_citylearn_v3_madrl_*/<algoritmo>/<escenario>_seed_0/checkpoints/`
+- `outputs/aws_citylearn_v3_madrl_*/<algoritmo>/<escenario>_seed_0/figures/`
 
 ## 12. Sincronizar resultados a S3
 
@@ -464,12 +467,13 @@ outputs/
 └── aws_citylearn_v3_madrl_<YYYYMMDD_HHMMSS>/   ← OUTPUT ROOT
     ├── official_full_status.json              ← estado de todos los jobs (running/completed/failed)
     ├── official_full_manifest.json            ← copia del status.json
-    ├── E1/
-    │   ├── happo/
-    │   │   ├── logs/
-    │   │   │   ├── training-00001.log         ← rotados cada 10 MB, max 100 archivos
-    │   │   │   └── training-00002.log  ...
-    │   │   └── E1_seed_0/
+    ├── logs/
+    │   ├── E1_happo-00001.log                 ← rotados cada 10 MB, max 100 archivos
+    │   ├── E1_happo-00002.log  ...
+    │   ├── E1_masac-00001.log
+    │   └── E2_happo-00001.log  ...
+    ├── happo/
+    │   ├── E1_seed_0/
     │   │       ├── data/
     │   │       │   ├── results.json                          ← resultado tecnico completo
     │   │       │   ├── training_summary.json                 ← resumen con artifact_layout
@@ -512,9 +516,12 @@ outputs/
     │   │               ├── building_kpis.csv / .md
     │   │               ├── building_observation_action_schema.csv / .md
     │   │               └── building_trace_sample.csv / .md
-    │   ├── masac/
-    │   │   ├── logs/ ...
-    │   │   └── E1_seed_0/
+    │   ├── E2_seed_0/
+    │   │   └── [misma estructura que E1_seed_0]
+    │   └── E3_seed_0/
+    │       └── [misma estructura que E1_seed_0]
+    ├── masac/
+    │   ├── E1_seed_0/
     │   │       ├── data/
     │   │       │   ├── [mismos canonicos que happo]
     │   │       │   ├── masac_finite_gradient_guard.jsonl    ← NaN/Inf por optimizador
@@ -522,9 +529,10 @@ outputs/
     │   │       ├── checkpoints/
     │   │       │   └── models/                              ← modelos QMIX del backend MASAC
     │   │       └── figures/ ...
-    │   ├── matd3/
-    │   │   ├── logs/ ...
-    │   │   └── E1_seed_0/
+    │   ├── E2_seed_0/ ...
+    │   └── E3_seed_0/ ...
+    ├── matd3/
+    │   ├── E1_seed_0/
     │   │       ├── data/
     │   │       │   ├── [mismos canonicos que happo]
     │   │       │   ├── tensorboard_finite_filter.jsonl      ← MATD3 tambien tiene esto
@@ -532,26 +540,28 @@ outputs/
     │   │       ├── checkpoints/
     │   │       │   └── offpolicy_run/                       ← directorio del runner off-policy
     │   │       └── figures/ ...
-    │   └── maac/
-    │       ├── logs/ ...
-    │       └── E1_seed_0/
-    │           ├── data/
-    │           │   ├── [mismos canonicos que happo]
-    │           │   └── maac_finite_gradient_guard.jsonl
-    │           ├── checkpoints/
-    │           │   ├── checkpoint_episode_1.pt  ← uno por episodio (75 archivos)
-    │           │   ├── checkpoint_episode_2.pt  ...
-    │           │   └── model.pt                 ← modelo final
-    │           └── figures/ ...
-    ├── E2/
-    │   └── [misma estructura: happo/ masac/ matd3/ maac/]
-    └── E3/
-        └── [misma estructura: happo/ masac/ matd3/ maac/]
+    │   ├── E2_seed_0/ ...
+    │   └── E3_seed_0/ ...
+    └── maac/
+        ├── E1_seed_0/
+        │   ├── data/
+        │   │   ├── [mismos canonicos que happo]
+        │   │   └── maac_finite_gradient_guard.jsonl
+        │   ├── checkpoints/
+        │   │   ├── checkpoint_episode_1.pt  ← uno por episodio (75 archivos)
+        │   │   ├── checkpoint_episode_2.pt  ...
+        │   │   └── model.pt                 ← modelo final
+        │   └── figures/ ...
+        ├── E2_seed_0/ ...
+        └── E3_seed_0/ ...
 ```
 
 Nota: `live_progress.json` se escribe durante el entrenamiento y se elimina
 automaticamente al completar cada run. Si el entrenamiento falla, permanece
 con el ultimo estado para diagnostico.
+Las carpetas `E2_seed_0` y `E3_seed_0` pueden estar vacias al principio si
+`--max-parallel-jobs 1` aun esta ejecutando jobs de `E1`; revise
+`official_full_status.json` para verlos como `pending`.
 
 ### 15.5.1 Post-entrenamiento: benchmark v2 y comparacion (paso manual)
 
@@ -598,7 +608,7 @@ stream se escribe en archivos rotados:
 find outputs/aws_citylearn_v3_madrl_* -path "*/logs/*.log" | sort
 
 # Seguir el primer log rotado de happo/E1
-tail -f outputs/aws_citylearn_v3_madrl_*/E1/happo/logs/training-00001.log
+tail -f outputs/aws_citylearn_v3_madrl_*/logs/E1_happo-00001.log
 
 # Monitor interactivo (refresca cada 10 s, sin entrar al contenedor):
 bash deploy/aws/training/tail_aws_training.sh
@@ -707,7 +717,7 @@ Estado validado para entrenar con el mismo dataset del proyecto:
 - Insumos trazables: `CityLearn/data/buildingcsv/`.
 - Dockerfile: `deploy/aws/training/Dockerfile`, build context = raiz del repo, sin instalar drivers NVIDIA/CUDA de sistema dentro del contenedor.
 - Docker Compose: `deploy/aws/training/docker-compose.yml`, GPU por NVIDIA Container Toolkit del host y volumen persistente `outputs:/workspace/outputs`.
-- Launcher: `deploy/aws/training/run_aws_training.sh`, 75 episodios por defecto, 8760 pasos por episodio, logs rotados `logs/training-00001.log`, `training-00002.log`, etc.
+- Launcher: `deploy/aws/training/run_aws_training.sh`, 75 episodios por defecto, 8760 pasos por episodio, logs rotados `logs/E1_happo-00001.log`, `E1_happo-00002.log`, etc.
 - Readiness: `deploy/aws/training/check_aws_training_ready.sh`, valida schema, dataset, `buildingcsv`, CUDA/Torch y smoke estricto CityLearn v3.
 - Monitor: `deploy/aws/training/tail_aws_training.sh`, lee `official_full_status.json`, `live_progress.json` y logs rotados sin entrar al contenedor.
 - Sincronizacion: `deploy/aws/training/sync_outputs_s3.sh`, copia el `OUTPUT_ROOT` completo a S3.

@@ -559,8 +559,13 @@ El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 75`,
 `--episode-time-steps 8760`, `--cuda`, `--max-parallel-jobs 1` y
 `--log-chunk-size 10M --log-max-files 100`. Los logs se ven en
 `docker compose logs -f` y quedan como texto plano rotado por escenario y
-algoritmo: `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/training-00001.log`,
-`00002.log`, etc. El contenedor usa `restart: unless-stopped`: sobrevive
+algoritmo: `outputs/aws_citylearn_v3_madrl_*/logs/E1_happo-00001.log`,
+`E1_happo-00002.log`, etc. Los artefactos quedan con la misma organizacion
+que el flujo local: `outputs/aws_citylearn_v3_madrl_*/happo/E1_seed_0/`,
+`masac/E2_seed_0/`, etc. El launcher crea desde el inicio las carpetas
+`E1_seed_0`, `E2_seed_0` y `E3_seed_0` de cada algoritmo; al principio pueden
+estar vacias si `--max-parallel-jobs 1` aun esta ejecutando el job anterior.
+El contenedor usa `restart: unless-stopped`: sobrevive
 cierres de SSH/VS Code y reinicios de EC2 sin necesidad de tmux. Al completar
 el entrenamiento se crea `outputs/.training_completed`; si falla, se crea
 `outputs/.training_failed` para evitar bucles de reinicio.
@@ -573,6 +578,10 @@ bash deploy/aws/training/tail_aws_training.sh
 
 # Estado general del entrenamiento
 cat "$(cat outputs/latest_visible_training_output_root.txt)/official_full_status.json"
+
+# Jobs planificados/activos por algoritmo y escenario
+cat "$(cat outputs/latest_visible_training_output_root.txt)/official_full_status.json" | \
+  jq '.jobs[] | {algorithm, scenario, status, output_dir}'
 
 # Estado y acceso directo al contenedor
 docker ps --filter name=madrl-training
@@ -590,15 +599,45 @@ rm outputs/.training_completed   # solo si se quiere un nuevo entrenamiento
 Manual completo con instalacion del NVIDIA Container Toolkit:
 `deploy/aws/README_TRAINING_AWS.md`.
 
+## Resumen operativo de entrenamiento
+
+| Paso | Windows local | Ubuntu/AWS | Comentario |
+| ---- | ------------- | ---------- | ---------- |
+| Entrar al proyecto | `cd D:\MADRLCitytleranflexresdr` | `cd ~/MADRLCitytleranflexresdr` | Ejecutar siempre desde la raiz del repositorio correcto. |
+| Verificar contexto | `powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1` | `pwd && git remote -v` | En Windows este proyecto exige el verificador antes de editar o usar git. |
+| Verificar GPU | `nvidia-smi --query-gpu=index,name,utilization.gpu,memory.used,memory.total --format=csv,noheader` | `nvidia-smi` | Confirma que la GPU NVIDIA esta visible antes de entrenar. |
+| Lanzar local visible | `pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\run_citylearn_v3_full_training_visible.ps1 -OutputRoot $root -Scenario ALL -Seed 0 -EpisodeTimeSteps 8760 -Episodes 5 -GpuProfile local4060_fast -Cuda -SelfLaunched` | No aplica | Perfil local RTX 4060; util para pruebas visibles o corridas locales cortas. |
+| Lanzar AWS bare-metal | No aplica | `bash deploy/aws/training/run_aws_training.sh --scenario ALL --algorithms happo,masac,matd3,maac --episodes 75 --episode-time-steps 8760 --max-parallel-jobs 1 --log-chunk-size 10M --log-max-files 100 --cuda` | Configuracion canonica AWS sin cambiar hiperparametros. |
+| Lanzar AWS Docker | No aplica | `docker compose -f deploy/aws/training/docker-compose.yml up -d --build` | Usa la misma configuracion AWS y monta `outputs/` en el host. |
+| Monitorear | `powershell -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 -OutputRoot $root` | `bash deploy/aws/training/tail_aws_training.sh` | El monitor AWS lee status, live progress y logs rotados. |
+| Revisar resultados | `Get-ChildItem $root -Recurse -Filter results.json` | `find "$OUTPUT_ROOT" -name results.json -type f | sort` | Los `results.json` aparecen cuando cada job termina. |
+
 ## Salidas esperadas por corrida
 
 ```text
 outputs/<run_activo>/
   official_full_status.json
-  E1/happo/E1_seed_0/   E1/masac/E1_seed_0/   E1/matd3/E1_seed_0/   E1/maac/E1_seed_0/
-  E2/happo/E2_seed_0/   ...
-  E3/happo/E3_seed_0/   ...
-  E1/happo/logs/training-00001.log  E1/masac/logs/training-00001.log  ...
+  official_full_manifest.json
+  logs/
+    E1_happo-00001.log
+    E1_masac-00001.log
+    ...
+  happo/
+    E1_seed_0/
+    E2_seed_0/
+    E3_seed_0/
+  masac/
+    E1_seed_0/
+    E2_seed_0/
+    E3_seed_0/
+  matd3/
+    E1_seed_0/
+    E2_seed_0/
+    E3_seed_0/
+  maac/
+    E1_seed_0/
+    E2_seed_0/
+    E3_seed_0/
 ```
 
 Cada corrida contiene:

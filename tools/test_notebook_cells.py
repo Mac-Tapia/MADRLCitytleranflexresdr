@@ -102,6 +102,12 @@ assert "REPO_BRANCH = 'codex/fix-madrl-traceability-docs'" in code_src, \
     "Notebook no fija la rama del repo padre para Colab"
 assert "git_check(['clone', '--branch', REPO_BRANCH" in code_src, \
     "Clone de Colab no usa --branch REPO_BRANCH"
+assert "'pull', '--ff-only'" not in code_src, \
+    "Notebook no debe usar git pull --ff-only en el espejo Colab existente"
+assert "git_check(['-C', REPO, 'checkout', '-B', REPO_BRANCH, 'FETCH_HEAD'])" in code_src, \
+    "Notebook no resetea la rama Colab existente contra FETCH_HEAD"
+assert "git_check(['-C', REPO, 'submodule', 'update', '--init', '--recursive', '--force'])" in code_src, \
+    "Notebook no fuerza submódulos al commit fijado por el repo padre"
 assert "submodule_status = sh(['git', 'submodule', 'status', '--recursive'])" in code_src, \
     "Notebook no valida estado de submódulos"
 assert "actual_citylearn_commit == expected_citylearn_commit" in code_src, \

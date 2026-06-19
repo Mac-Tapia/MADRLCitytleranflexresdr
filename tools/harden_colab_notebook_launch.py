@@ -62,13 +62,14 @@ else:
     origin = git_out(['-C', REPO, 'config', '--get', 'remote.origin.url'])
     if origin != REPO_URL:
         raise RuntimeError(f'Repo existente apunta a {origin}, esperado {REPO_URL}')
-    print(f'Repositorio existente; actualizando rama {REPO_BRANCH} ...')
+    print(f'Repositorio existente; sincronizando espejo limpio de rama {REPO_BRANCH} ...')
     git_check(['-C', REPO, 'fetch', '--depth', '1', 'origin', REPO_BRANCH])
-    git_check(['-C', REPO, 'checkout', REPO_BRANCH])
-    git_check(['-C', REPO, 'pull', '--ff-only', 'origin', REPO_BRANCH])
+    git_check(['-C', REPO, 'reset', '--hard'])
+    git_check(['-C', REPO, 'checkout', '-B', REPO_BRANCH, 'FETCH_HEAD'])
+    git_check(['-C', REPO, 'reset', '--hard', 'FETCH_HEAD'])
 
 git_check(['-C', REPO, 'submodule', 'sync', '--recursive'])
-git_check(['-C', REPO, 'submodule', 'update', '--init', '--recursive'])
+git_check(['-C', REPO, 'submodule', 'update', '--init', '--recursive', '--force'])
 
 os.chdir(REPO)
 print(f'\nDirectorio de trabajo: {os.getcwd()}')

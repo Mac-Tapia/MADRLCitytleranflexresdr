@@ -3,6 +3,17 @@
 Punto de entrada a la documentación del proyecto. Para el contrato canónico
 de dataset/entrenamiento/comparación, ver [`workflow_manifest.json`](workflow_manifest.json).
 
+## Manuales operativos
+
+- `MANUAL_EJECUCION_DESDE_CERO_COLAB_A100.md` — guia para lanzar desde cero
+  `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` en VS Code + Google
+  Colab A100, incluyendo preflight, entrenamiento, monitoreo, reanudacion y
+  analisis final.
+- `LISTA_EJECUCION_COLAB_A100.md` — checklist corto celda por celda para
+  ejecutar el notebook en Colab A100.
+- `MANUAL_INSTALACION_DEPENDENCIAS.md` — instalacion de dependencias del
+  proyecto en Python 3.9, Windows local y AWS.
+
 ## architecture/
 Diagramas y documentos de arquitectura del sistema (CityLearn v3 + MADRL),
 flujo de trabajo operativo y pipeline de construcción del dataset.

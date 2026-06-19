@@ -173,7 +173,7 @@ deps_cell = r"""
 # ── 1.3  Instalar dependencias del proyecto de forma reproducible ───────────
 # No se instalan como paquetes los backends que no tienen setup.py/pyproject
 # (external/MARL/src y external/MAAC). Esos se exponen via sys.path.
-import os, sys, subprocess
+import json, os, sys, subprocess
 from pathlib import Path
 
 os.chdir('/content/MADRLCitytleranflexresdr')
@@ -188,8 +188,10 @@ if not (PYTHON_MIN <= sys.version_info[:2] < PYTHON_MAX_EXCLUSIVE):
         'suele producir errores ABI numpy/pandas.'
     )
 
-BINARY_MODULES = ['numpy', 'pandas', 'scipy', 'sklearn', 'matplotlib']
+BINARY_MODULES = ['numpy', 'pandas', 'scipy', 'sklearn', 'matplotlib', 'seaborn']
 modules_loaded_before_install = sorted(m for m in BINARY_MODULES if m in sys.modules)
+KERNEL_BINARY_MODULES_LOADED_BEFORE_INSTALL = modules_loaded_before_install
+KERNEL_BINARY_MODULES_STALE_AFTER_INSTALL = False
 
 CONSTRAINTS = Path('/tmp/madrl_citylearn_colab_constraints.txt')
 COMPAT_WHEELS = [
@@ -241,10 +243,18 @@ print('\nVerificando ABI en un proceso Python nuevo...')
 subprocess.check_call([sys.executable, '-c', compat_check])
 
 if modules_loaded_before_install:
-    raise RuntimeError(
-        'Se reinstalaron paquetes binarios, pero ya estaban cargados en este kernel: '
-        f'{modules_loaded_before_install}. Reinicia el runtime/kernel ahora y vuelve a '
-        'ejecutar desde 1.1 -> 1.2 -> 1.2b -> 1.3 -> 1.4.'
+    KERNEL_BINARY_MODULES_STALE_AFTER_INSTALL = True
+    print(
+        '\n[WARN] Se reinstalaron paquetes binarios, pero ya estaban cargados en este kernel: '
+        f'{modules_loaded_before_install}.'
+    )
+    print(
+        '[WARN] No se detiene el notebook: el entrenamiento oficial corre en procesos Python nuevos '
+        'y usara las ruedas compatibles recien instaladas.'
+    )
+    print(
+        '[WARN] Si necesitas ejecutar analisis/imports pesados dentro de este mismo kernel, '
+        'reinicia runtime y repite 1.1 -> 1.2 -> 1.2b -> 1.3 -> 1.4.'
     )
 
 print('\nDependencias instaladas con ABI compatible. MASAC y MAAC se cargan por sys.path, no por pip editable.')
@@ -253,7 +263,7 @@ print('\nDependencias instaladas con ABI compatible. MASAC y MAAC se cargan por 
 
 smoke_cell = r"""
 # ── 1.4  Configurar sys.path, CUDA y smoke imports ──────────────────────────
-import os, sys, importlib, json
+import os, sys, subprocess, json
 from pathlib import Path
 
 if not ((3, 9) <= sys.version_info[:2] < (3, 12)):
@@ -301,6 +311,23 @@ modules = [
     'offpolicy',
     'algorithms.attention_sac',
 ]
+
+smoke_check = r'''
+import importlib, json, os, sys
+
+_paths = __PATHS__
+modules = __MODULES__
+for p in reversed(_paths):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+os.environ['PYTHONPATH'] = ':'.join(_paths + [os.environ.get('PYTHONPATH', '')])
+os.environ['CITYLEARN_PROJECT_ROOT'] = _paths[0]
+os.environ.setdefault('CUDA_DEVICE_ORDER', 'PCI_BUS_ID')
+os.environ.setdefault('PYTORCH_CUDA_ALLOC_CONF', 'expandable_segments:True,max_split_size_mb:128')
+os.environ.setdefault('WANDB_MODE', 'disabled')
+os.environ.setdefault('PYTHONHASHSEED', '0')
+
 smoke = {}
 versions = {}
 for name in modules:
@@ -323,8 +350,15 @@ if failures:
         if abi_fail else ''
     )
     raise RuntimeError(f'Smoke imports fallaron: {failures}.{hint}')
+'''.replace('__PATHS__', repr(_paths)).replace('__MODULES__', repr(modules))
 
-print('sys.path, CUDA env y smoke imports configurados.')
+if globals().get('KERNEL_BINARY_MODULES_STALE_AFTER_INSTALL', False):
+    print('[WARN] Kernel con modulos binarios cargados antes de 1.3; validando smoke imports en un proceso Python nuevo.')
+    subprocess.check_call([sys.executable, '-c', smoke_check])
+    print('sys.path, CUDA env y smoke imports validados en proceso Python nuevo. Entrenamiento listo para launcher subprocess.')
+else:
+    exec(smoke_check)
+    print('sys.path, CUDA env y smoke imports configurados.')
 """
 
 

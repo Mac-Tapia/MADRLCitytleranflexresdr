@@ -75,7 +75,7 @@ CityLearn/data/datasets/citylearn_iquitos_2023_2025/
 
 La corrida vigente usa GPU local (RTX 4060 Laptop 8 GB, Torch 2.8.0+cu126). El `OutputRoot` activo debe tomarse de `outputs/latest_visible_training_output_root.txt`.
 
-Corrida activa: `outputs/citylearn_v3_madrl_full_20260615_074011_v4` (EN CURSO — v4 definitivo).  
+Corrida definitiva: `outputs/citylearn_v3_madrl_full_20260615_074011_v4` (COMPLETADA 12/12 — v4 definitivo).  
 Corrida completa de referencia: `outputs/citylearn_v3_madrl_full_20260613_010234` (COMPLETADA).
 
 Para una corrida nueva (usar `pwsh.exe`, PowerShell 7):

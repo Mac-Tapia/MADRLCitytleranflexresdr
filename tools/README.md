@@ -25,7 +25,19 @@ validación completa del pipeline de dataset):
 `audit_citylearn_csv_integrity.py`, `audit_der_sizing.py`,
 `audit_training_dataset_provenance.py`, `verify_ev_sessions.py`,
 `verify_solar.py`, `verify_training_optimization.py`,
-`verify_artifact_layout.py`
+`verify_artifact_layout.py`, `repair_citylearn_v3_traceability.py`,
+`prune_citylearn_v3_training_artifacts.ps1`
+
+Herramientas de trazabilidad MADRL:
+
+- `repair_citylearn_v3_traceability.py`: repara metadatos de artefactos
+  existentes sin reentrenar, actualiza `artifact_audit`/`traceability` y crea
+  auditorías faltantes del guard de gradientes cuando un manifiesto las
+  referencia.
+- `prune_citylearn_v3_training_artifacts.ps1`: dry-run por defecto; valida los
+  12 jobs esperados antes de borrar y elimina solo duplicados/residuos
+  derivados como espejos raíz, `live_progress.json` completados,
+  `statistical_comparison/` y logs de TensorBoard que no son estado de modelo.
 
 ## reports/ (análisis y reportes — ya iniciado en Fase 1)
 `analyze_support_files.py`, `dataset_report.py`, `deep_dataset_analysis.py`,

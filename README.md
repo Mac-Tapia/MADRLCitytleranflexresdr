@@ -20,14 +20,14 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-16.
+Actualizado: 2026-06-17.
 
 ### Corridas de referencia y definitiva
 
 | Corrida | Sesion | Estado | Descripcion |
 | ------- | ------ | ------ | ----------- |
 | **v3 referencia** | `citylearn_v3_madrl_full_20260613_010234` | COMPLETADA 12/12 | Perfiles `*_unified_comparable_v3`, todas las 12 corridas con artefactos validos |
-| **v4 definitivo** | `citylearn_v3_madrl_full_20260615_074011_v4` | EN CURSO | Penalidad BESS degradacion (LiFePO4 C-rate/Arrhenius) + urgencia EV (SOC), 6/12 completadas |
+| **v4 definitivo** | `citylearn_v3_madrl_full_20260615_074011_v4` | COMPLETADA 12/12 | Penalidad BESS degradacion (LiFePO4 C-rate/Arrhenius) + urgencia EV (SOC); artefactos canónicos reparados y sin duplicados raíz |
 
 ### Estado v4 definitivo (corrida activa)
 
@@ -35,10 +35,31 @@ Actualizado: 2026-06-16.
 | --------- | -- | -- | -- |
 | **HAPPO** | Completado | Completado | Completado |
 | **MASAC** | Completado | Completado | Completado |
-| **MATD3** | En curso | En curso | Pendiente |
-| **MAAC** | Pendiente | Pendiente | Pendiente |
+| **MATD3** | Completado | Completado | Completado |
+| **MAAC** | Completado | Completado | Completado |
 
-Monitor: `CityLearn/scripts/monitor_citylearn_v3_official_training.ps1 -OutputRoot outputs\citylearn_v3_madrl_full_20260615_074011_v4`
+La corrida v4 finalizó el 2026-06-16 22:44:19 con `official_full_status.json: completed` y 12 jobs con `exit_code=0`. El monitor fue corregido para cerrar automáticamente al detectar `completed` salvo uso explícito de `-KeepOpenOnComplete`.
+
+### Resultados v4 regenerados y comparados
+
+Artefactos actualizados desde los checkpoints de `outputs/citylearn_v3_madrl_full_20260615_074011_v4`:
+
+- Evidencia estadistica: `outputs/thesis_objective_evidence/madrl_checkpoint_stats_v4`.
+- Figuras canonicas de entrenamiento regeneradas: 156 PNG bajo `*/figures/` (12 corridas x 13 figuras).
+- Tablas canonicas regeneradas: 144 CSV bajo `*/figures/tables/` (12 corridas x 12 CSV; cada carpeta conserva tambien sus pares Markdown).
+- Figuras comparativas regeneradas: 12 PNG bajo `outputs/comparison_citylearn_v2_vs_v3_madrl/E1..E3`.
+- PNG internos antiguos de MASAC bajo `data/backend_results/` eliminados; quedan 0 PNG fuera de `figures/`.
+
+Resumen descriptivo e inferencial:
+
+| Alcance | Mejor por mediana de gain relativo | Kruskal-Wallis p | Significativo 0.05 | Nota |
+| ------- | ---------------------------------- | ---------------: | ------------------ | ---- |
+| OE1 flexibilidad | MATD3 | 0.4450 | No | Sin diferencia global significativa por eje |
+| OE2 CO2 | MASAC | 0.1655 | No | Sin diferencia global significativa por eje |
+| OE3 costos | MAAC | 0.0774 | No | Tendencia, pero no significativa a 0.05 |
+| ALL global | MATD3 | 0.0459 | Si | Diferencia global significativa entre agentes |
+
+El mejor agente global de la corrida v4 es **MATD3**. Tambien gana el ranking ponderado global en las tres comparativas por escenario: E1 score 0.7486, E2 score 0.7515 y E3 score 0.7333. La comparacion inferencial global detecta diferencia significativa (`Kruskal-Wallis p=0.0459`) y las comparaciones contra HAPPO favorecen a MATD3 (`MWU p=0.0182`, `Wilcoxon p=2.62e-06`). Los warnings esperados de Wilcoxon por muestras pequeñas/ceros quedan suprimidos y documentados en `wilcoxon_status`.
 
 ### Tiempos reales corrida v3 (referencia valida)
 
@@ -74,7 +95,8 @@ Hardware: RTX 4060 Laptop, 8,188 MiB VRAM, driver 560.94, PyTorch 2.8.0+cu126, C
 - Entorno unico: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1).
 - Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v3`**: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
 - Horizonte oficial para nuevas ejecuciones AWS/Docker: 75 episodios x 8760 pasos = 657 000 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
-- Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json` y `figures/figures_manifest.json` por algoritmo/escenario.
+- Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json`, `data/checkpoint_manifest.json`, `data/artifact_audit.json` y `figures/figures_manifest.json` por algoritmo/escenario.
+- Contrato de trazabilidad: `data/` es la fuente canónica por corrida; no se escriben espejos raíz ni `statistical_comparison/` salvo flags heredados explícitos. `live_progress.json` es transitorio y se elimina al finalizar correctamente.
 - Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
 - Perfil GPU: `local4060_fast` — RTX 4060 Laptop 8 GB, max 2 escenarios concurrentes (HAPPO/MATD3), max 1 para MASAC/MAAC.
 - Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes; `python39_core_ready=true`.
@@ -537,8 +559,13 @@ El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 75`,
 `--episode-time-steps 8760`, `--cuda`, `--max-parallel-jobs 1` y
 `--log-chunk-size 10M --log-max-files 100`. Los logs se ven en
 `docker compose logs -f` y quedan como texto plano rotado por escenario y
-algoritmo: `outputs/aws_citylearn_v3_madrl_*/<escenario>/<algoritmo>/logs/<algoritmo>_<escenario>-00001.log`,
-`00002.log`, etc. El contenedor usa `restart: unless-stopped`: sobrevive
+algoritmo: `outputs/aws_citylearn_v3_madrl_*/logs/E1_happo-00001.log`,
+`E1_happo-00002.log`, etc. Los artefactos quedan con la misma organizacion
+que el flujo local: `outputs/aws_citylearn_v3_madrl_*/happo/E1_seed_0/`,
+`masac/E2_seed_0/`, etc. El launcher crea desde el inicio las carpetas
+`E1_seed_0`, `E2_seed_0` y `E3_seed_0` de cada algoritmo; al principio pueden
+estar vacias si `--max-parallel-jobs 1` aun esta ejecutando el job anterior.
+El contenedor usa `restart: unless-stopped`: sobrevive
 cierres de SSH/VS Code y reinicios de EC2 sin necesidad de tmux. Al completar
 el entrenamiento se crea `outputs/.training_completed`; si falla, se crea
 `outputs/.training_failed` para evitar bucles de reinicio.
@@ -551,6 +578,10 @@ bash deploy/aws/training/tail_aws_training.sh
 
 # Estado general del entrenamiento
 cat "$(cat outputs/latest_visible_training_output_root.txt)/official_full_status.json"
+
+# Jobs planificados/activos por algoritmo y escenario
+cat "$(cat outputs/latest_visible_training_output_root.txt)/official_full_status.json" | \
+  jq '.jobs[] | {algorithm, scenario, status, output_dir}'
 
 # Estado y acceso directo al contenedor
 docker ps --filter name=madrl-training
@@ -568,43 +599,79 @@ rm outputs/.training_completed   # solo si se quiere un nuevo entrenamiento
 Manual completo con instalacion del NVIDIA Container Toolkit:
 `deploy/aws/README_TRAINING_AWS.md`.
 
+## Resumen operativo de entrenamiento
+
+| Paso | Windows local | Ubuntu/AWS | Comentario |
+| ---- | ------------- | ---------- | ---------- |
+| Entrar al proyecto | `cd D:\MADRLCitytleranflexresdr` | `cd ~/MADRLCitytleranflexresdr` | Ejecutar siempre desde la raiz del repositorio correcto. |
+| Verificar contexto | `powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1` | `pwd && git remote -v` | En Windows este proyecto exige el verificador antes de editar o usar git. |
+| Verificar GPU | `nvidia-smi --query-gpu=index,name,utilization.gpu,memory.used,memory.total --format=csv,noheader` | `nvidia-smi` | Confirma que la GPU NVIDIA esta visible antes de entrenar. |
+| Lanzar local visible | `pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\run_citylearn_v3_full_training_visible.ps1 -OutputRoot $root -Scenario ALL -Seed 0 -EpisodeTimeSteps 8760 -Episodes 5 -GpuProfile local4060_fast -Cuda -SelfLaunched` | No aplica | Perfil local RTX 4060; util para pruebas visibles o corridas locales cortas. |
+| Lanzar AWS bare-metal | No aplica | `bash deploy/aws/training/run_aws_training.sh --scenario ALL --algorithms happo,masac,matd3,maac --episodes 75 --episode-time-steps 8760 --max-parallel-jobs 1 --log-chunk-size 10M --log-max-files 100 --cuda` | Configuracion canonica AWS sin cambiar hiperparametros. |
+| Lanzar AWS Docker | No aplica | `docker compose -f deploy/aws/training/docker-compose.yml up -d --build` | Usa la misma configuracion AWS y monta `outputs/` en el host. |
+| Monitorear | `powershell -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 -OutputRoot $root` | `bash deploy/aws/training/tail_aws_training.sh` | El monitor AWS lee status, live progress y logs rotados. |
+| Revisar resultados | `Get-ChildItem $root -Recurse -Filter results.json` | `find "$OUTPUT_ROOT" -name results.json -type f | sort` | Los `results.json` aparecen cuando cada job termina. |
+
 ## Salidas esperadas por corrida
 
 ```text
 outputs/<run_activo>/
   official_full_status.json
-  E1/happo/E1_seed_0/   E1/masac/E1_seed_0/   E1/matd3/E1_seed_0/   E1/maac/E1_seed_0/
-  E2/happo/E2_seed_0/   ...
-  E3/happo/E3_seed_0/   ...
-  E1/happo/logs/happo_E1-00001.log  E1/masac/logs/masac_E1-00001.log  ...
+  official_full_manifest.json
+  logs/
+    E1_happo-00001.log
+    E1_masac-00001.log
+    ...
+  happo/
+    E1_seed_0/
+    E2_seed_0/
+    E3_seed_0/
+  masac/
+    E1_seed_0/
+    E2_seed_0/
+    E3_seed_0/
+  matd3/
+    E1_seed_0/
+    E2_seed_0/
+    E3_seed_0/
+  maac/
+    E1_seed_0/
+    E2_seed_0/
+    E3_seed_0/
 ```
 
 Cada corrida contiene:
 
-- `live_progress.json`, `results.json`, `training_summary.json`
-- `timeseries.csv`, `trace.csv`, `checkpoint_manifest.json`
-- `building_behavior_summary.csv`, `building_kpis.csv`
-- `building_observation_action_schema.csv`, `building_trace_sample.csv`
+- `data/results.json`, `data/training_summary.json`, `data/artifact_audit.json`
+- `data/timeseries.csv`, `data/trace.csv`, `data/checkpoint_manifest.json`
+- `data/building_behavior_summary.csv`, `data/building_kpis.csv`
+- `data/building_observation_action_schema.csv`, `data/building_trace_sample.csv`
+- `live_progress.json` solo durante entrenamiento activo; al completar se elimina como estado transitorio
 - `figures/` con retornos, convergencia y comparacion KPI
 - `figures/tables/` con tablas Markdown por edificio
 
 ## Benchmark y comparacion
 
-Ejecutar agentes originales CityLearn v2 para linea base:
+Ejecutar agentes originales CityLearn v2 para linea base (el script apunta por defecto al dataset Iquitos `citylearn_iquitos_2023_2025/schema.json`):
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\benchmark_citylearn_v2_agents.py `
   --scenario ALL `
+  --episode-time-steps 8760 `
+  --agents baseline hour_rbc `
   --output-dir outputs\citylearn_v2_original_benchmark
 ```
 
-Comparar CityLearn v2 contra CityLearn v3 MADRL:
+Comparar CityLearn v2 contra CityLearn v3 MADRL. Si faltan artefactos v2, el comparador los genera con los agentes originales indicados:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
   --v2-root outputs\citylearn_v2_original_benchmark `
   --v3-root $root `
-  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl
+  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
+  --scenario ALL `
+  --auto-benchmark-v2 `
+  --v2-agents baseline hour_rbc
 ```
 
 ## Sustento cientifico y skills

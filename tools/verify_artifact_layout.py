@@ -50,10 +50,10 @@ for sc in SCENARIOS:
         print(f"           {run_dir}")
         # Mostrar archivos que se generaran al completar
         expected = [
-            run_dir / "results.json",
-            run_dir / "timeseries.csv",
-            run_dir / "trace.csv",
             dirs["data"] / "results.json",
+            dirs["data"] / "training_summary.json",
+            dirs["data"] / "checkpoint_manifest.json",
+            dirs["data"] / "artifact_audit.json",
             dirs["data"] / "timeseries.csv",
             dirs["data"] / "trace.csv",
         ]

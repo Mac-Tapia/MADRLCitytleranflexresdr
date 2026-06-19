@@ -64,7 +64,7 @@ PY
 echo "[5/6] Dataset Iquitos"
 python -B tools/check_training_dataset_ready.py \
   --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025 \
-  --buildingcsv-dir data/raw/BuildingCSV \
+  --buildingcsv-dir CityLearn/data/buildingcsv \
   --audit-dir outputs/dataset_audit \
   --manifest-out outputs/dataset_audit/training_dataset_ready_manifest.json \
   --skip-citylearn-load

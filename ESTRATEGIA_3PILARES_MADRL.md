@@ -640,10 +640,13 @@ Agentes disponibles:
 - `marlisa`: `citylearn.agents.marlisa.MARLISA`
 - `random`: `citylearn.agents.base.Agent`
 
+El script apunta por defecto al dataset Iquitos (`CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`), el mismo usado en el entrenamiento MADRL v4. No es necesario pasar `--schema-path`.
+
 Comando recomendado para benchmark oficial v2 rapido, sin entrenamiento de SAC/MARLISA:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\benchmark_citylearn_v2_agents.py `
+  --scenario ALL `
   --episode-time-steps 8760 `
   --agents baseline hour_rbc `
   --output-dir outputs\citylearn_v2_original_benchmark `
@@ -654,6 +657,7 @@ Comando extendido con agentes entrenables originales:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\benchmark_citylearn_v2_agents.py `
+  --scenario ALL `
   --episode-time-steps 8760 `
   --train-episodes 5 `
   --agents baseline hour_rbc sac marlisa `
@@ -664,7 +668,7 @@ Comando extendido con agentes entrenables originales:
 Cada agente v2 queda con la misma estructura comparable:
 
 ```text
-outputs/citylearn_v2_original_benchmark/<agent>/E3_seed_0/
+outputs/citylearn_v2_original_benchmark/<agent>/<scenario>_seed_0/
   data/
     results.json
     timeseries.csv
@@ -694,8 +698,10 @@ Comando cuando los MADRL oficiales ya terminaron:
   --v2-root outputs\citylearn_v2_original_benchmark `
   --v3-root <OutputRoot> `
   --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
-  --scenario E3 `
+  --scenario ALL `
   --seed 0 `
+  --auto-benchmark-v2 `
+  --v2-agents baseline hour_rbc `
   --weights OE1=0.34,OE2=0.33,OE3=0.33
 ```
 

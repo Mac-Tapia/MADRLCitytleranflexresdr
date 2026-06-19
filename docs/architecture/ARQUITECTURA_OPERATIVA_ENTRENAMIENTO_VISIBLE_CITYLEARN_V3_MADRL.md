@@ -1,12 +1,12 @@
 # Arquitectura operativa del entrenamiento visible CityLearn v3 MADRL
 
-Actualizado: 2026-06-15
+Actualizado: 2026-06-17
 
 Este documento explica el flujo completo del entrenamiento oficial de CityLearn v3 MADRL en este repositorio: desde la preparacion del proyecto hasta el cierre, auditoria y continuacion de una corrida interrumpida. Describe la arquitectura real implementada, con rutas y comandos verificables.
 
 Fuente operativa vigente: `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`. En este documento, `<OutputRoot>` es la ruta guardada en `outputs/latest_visible_training_output_root.txt`.
 
-**Corrida activa (2026-06-15):** `outputs/citylearn_v3_madrl_full_20260615_074011_v4` — EN CURSO (v4 re-run definitivo con BESS penalty + EV urgency).  
+**Corrida definitiva (2026-06-17):** `outputs/citylearn_v3_madrl_full_20260615_074011_v4` — COMPLETADA 12/12 (v4 re-run definitivo con BESS penalty + EV urgency).  
 **Corrida completa de referencia:** `outputs/citylearn_v3_madrl_full_20260613_010234` — COMPLETADA (12/12 jobs, exit_code=0).
 
 ## 1. Objetivo del flujo
@@ -19,7 +19,7 @@ El flujo entrena cuatro algoritmos MADRL sobre el dataset Iquitos 2023-2025 para
 | OE2 | E2 | Reduccion de emisiones de CO2 y gestion carbon-aware. |
 | OE3 | E3 | Reduccion de costos energeticos y respuesta a tarifas dinamicas. |
 
-La corrida oficial produce artefactos reproducibles por algoritmo, escenario y seed: checkpoints, `results.json`, `training_summary.json`, `timeseries.csv`, `trace.csv`, tablas, figuras y logs.
+La corrida oficial produce artefactos reproducibles por algoritmo, escenario y seed: checkpoints, `data/results.json`, `data/training_summary.json`, `data/timeseries.csv`, `data/trace.csv`, tablas, figuras y logs.
 
 ## 2. Vista general de inicio a cierre
 
@@ -166,22 +166,22 @@ Cada job completo debe tener esta estructura:
 
 ```text
 <OutputRoot>/{algoritmo}/{escenario}_seed_0/
-  live_progress.json
-  results.json
-  training_summary.json
-  timeseries.csv
-  trace.csv
-  checkpoint_manifest.json
-  artifact_audit.json
-  building_behavior_summary.csv
-  building_kpis.csv
-  building_observation_action_schema.csv
-  building_trace_sample.csv
-  data/
+  data/results.json
+  data/training_summary.json
+  data/timeseries.csv
+  data/trace.csv
+  data/checkpoint_manifest.json
+  data/artifact_audit.json
+  data/building_behavior_summary.csv
+  data/building_kpis.csv
+  data/building_observation_action_schema.csv
+  data/building_trace_sample.csv
   checkpoints/
   figures/
   figures/tables/
 ```
+
+`live_progress.json` existe solo durante entrenamiento activo y se elimina al completar. Los espejos raíz son compatibilidad heredada y no forman parte del contrato canónico.
 
 Un job se considera completado para el launcher si existe:
 
@@ -192,11 +192,12 @@ Un job se considera completado para el launcher si existe:
 Para evidencia de tesis se recomienda exigir tambien:
 
 ```text
-results.json
-training_summary.json
-timeseries.csv
-trace.csv
-checkpoint_manifest.json
+data/results.json
+data/training_summary.json
+data/timeseries.csv
+data/trace.csv
+data/checkpoint_manifest.json
+data/artifact_audit.json
 figures/figures_manifest.json
 ```
 
@@ -379,7 +380,7 @@ Una corrida oficial se considera valida cuando:
 - El dataset readiness gate pasa sin errores.
 - `official_full_status.json` queda con `status = completed`.
 - Los 12 jobs tienen `exit_code = 0`.
-- Cada job tiene `data/results.json`, `data/training_summary.json`, `data/timeseries.csv`, `data/trace.csv` y `data/checkpoint_manifest.json`.
+- Cada job tiene `data/results.json`, `data/training_summary.json`, `data/artifact_audit.json`, `data/timeseries.csv`, `data/trace.csv` y `data/checkpoint_manifest.json`.
 - No hay tracebacks ni errores criticos en `outputs/.../logs`.
 - La evidencia consolidada se genera sin marcar jobs incompletos.
 

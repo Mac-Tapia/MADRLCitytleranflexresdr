@@ -1,18 +1,18 @@
 # Flujo operativo actual CityLearn v3 MADRL
 
-Actualizado: 2026-06-15
+Actualizado: 2026-06-17
 Fuente machine-readable: `docs/workflow_manifest.json`
 
 Este documento fija el flujo vigente del proyecto desde la creacion del dataset hasta los resultados finales. Reemplaza referencias historicas a carpetas fijas como `outputs/citylearn_v3_madrl_oficial_v4`, `outputs/citylearn_v3_madrl_oficial_v5` o relanzamientos con fecha 20260602.
 
-## Estado de Corridas Oficiales (2026-06-15)
+## Estado de Corridas Oficiales (2026-06-17)
 
 | Corrida | Ruta | Estado | Inicio | Fin | Notas |
 |---|---|:---:|---|---|---|
 | v3 | `outputs/citylearn_v3_madrl_full_20260613_010234` | **COMPLETADA** | 2026-06-15 00:46 | 2026-06-15 06:20 | 12/12 jobs exitosos. HAPPO+MASAC preexistentes. MATD3+MAAC completados. Perfil recompensa v3. |
-| v4 | `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | **EN CURSO** | 2026-06-15 07:40 | — | Re-run definitivo con penalidad BESS + urgencia EV. HAPPO ✓ MASAC ✓ MATD3 corriendo MAAC pendiente. |
+| v4 | `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | **COMPLETADA** | 2026-06-15 07:40 | 2026-06-16 22:44 | Re-run definitivo con penalidad BESS + urgencia EV. 12/12 jobs exitosos; artefactos canónicos reparados y sin duplicados raíz. |
 
-La corrida v4 es el re-run definitivo con la funcion de recompensa actualizada (penalidad degradacion BESS C-rate/Arrhenius + urgencia EV). Los KPIs de tesis deben tomarse de v4 cuando este completa; hasta entonces, v3 sirve como referencia.
+La corrida v4 es el re-run definitivo con la funcion de recompensa actualizada (penalidad degradacion BESS C-rate/Arrhenius + urgencia EV). Los KPIs de tesis deben tomarse de v4, siempre desde los artefactos canónicos bajo `data/`.
 
 ## Tiempos Reales por Algoritmo (GPU RTX 4060 Laptop 8 GB, 5 episodios 8760 pasos)
 
@@ -56,7 +56,7 @@ verify_project_context.ps1
   -> check_training_dataset_ready.py
   -> run_citylearn_v3_env_smoke.py
   -> launch_citylearn_v3_official_training.ps1 / run_citylearn_v3_full_training_visible.ps1
-  -> official_full_status.json + live_progress.json + logs
+  -> official_full_status.json + live_progress.json transitorio + logs
   -> data/results.json + data/timeseries.csv + data/trace.csv
   -> figures/ + figures/tables/
   -> benchmark_citylearn_v2_agents.py
@@ -181,7 +181,7 @@ Archivos de estado:
 
 - `<OutputRoot>/official_full_status.json`
 - `<OutputRoot>/official_full_manifest.json`
-- `<OutputRoot>/<algo>/<scenario>_seed_0/live_progress.json`
+- `<OutputRoot>/<algo>/<scenario>_seed_0/live_progress.json` solo mientras el job esta activo
 - `<OutputRoot>/logs/*.log`
 - `<OutputRoot>/logs/*.stderr.log`
 
@@ -196,10 +196,13 @@ Cada job valido debe producir:
   data/timeseries.csv
   data/trace.csv
   data/checkpoint_manifest.json
+  data/artifact_audit.json
   checkpoints/
   figures/figures_manifest.json
   figures/tables/
 ```
+
+No se aceptan duplicados raíz (`results.json`, `timeseries.csv`, `trace.csv`, etc.) como fuente primaria. La ruta `data/` es canónica; `statistical_comparison/` y espejos raíz solo se generan con flags heredados explícitos.
 
 Figuras esperadas:
 
@@ -217,10 +220,11 @@ Figuras esperadas:
 
 ## Comparacion Final
 
-Benchmark v2:
+Benchmark v2 (el script usa por defecto el dataset Iquitos `citylearn_iquitos_2023_2025/schema.json`):
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\benchmark_citylearn_v2_agents.py `
+  --scenario ALL `
   --episode-time-steps 8760 `
   --agents baseline hour_rbc `
   --output-dir outputs\citylearn_v2_original_benchmark `
@@ -235,8 +239,10 @@ $root = Get-Content outputs\latest_visible_training_output_root.txt
   --v2-root outputs\citylearn_v2_original_benchmark `
   --v3-root $root `
   --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
-  --scenario E3 `
+  --scenario ALL `
   --seed 0 `
+  --auto-benchmark-v2 `
+  --v2-agents baseline hour_rbc `
   --weights OE1=0.34,OE2=0.33,OE3=0.33
 ```
 
@@ -280,9 +286,9 @@ Estos pueden conservarse para auditoria historica, pero los KPIs finales deben s
 | Corrida | Ruta | Perfil recompensa | Uso |
 |---|---|---|---|
 | v3 (referencia) | `outputs/citylearn_v3_madrl_full_20260613_010234` | v3 base | Referencia de 12 jobs completos. HAPPO+MASAC con perfil anterior, MATD3+MAAC con perfil v3. |
-| v4 (definitiva) | `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | v4 BESS penalty + EV urgency | Re-run completo con funcion de recompensa definitiva. KPIs de tesis al completarse. |
+| v4 (definitiva) | `outputs/citylearn_v3_madrl_full_20260615_074011_v4` | v4 BESS penalty + EV urgency | Re-run completo con funcion de recompensa definitiva. KPIs de tesis desde `data/` canónico. |
 
-La corrida v4 usa la funcion de recompensa definitiva de la tesis con penalidad de degradacion BESS (C-rate + Arrhenius LiFePO4) y urgencia EV. Es la unica fuente valida para los KPIs finales de comparacion de la tesis una vez completada.
+La corrida v4 usa la funcion de recompensa definitiva de la tesis con penalidad de degradacion BESS (C-rate + Arrhenius LiFePO4) y urgencia EV. Es la unica fuente valida para los KPIs finales de comparacion de la tesis.
 
 ## Criterio de Resultado Final
 

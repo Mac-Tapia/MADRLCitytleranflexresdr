@@ -177,7 +177,8 @@ Instancia lista para clonar:
   bash deploy/aws/training/bootstrap_ubuntu_gpu.sh
   bash deploy/aws/training/check_aws_training_ready.sh
   tmux new -s madrl
-  bash deploy/aws/training/run_aws_training.sh --scenario ALL --algorithms happo,masac,matd3,maac --episodes 5 --episode-time-steps 8760 --cuda
+  # Dataset canonico: CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json
+  bash deploy/aws/training/run_aws_training.sh --scenario ALL --algorithms happo,masac,matd3,maac --episodes 75 --episode-time-steps 8760 --max-parallel-jobs 1 --cuda
 NOTE
 EOF
 

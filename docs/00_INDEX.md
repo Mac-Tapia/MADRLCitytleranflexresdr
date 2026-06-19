@@ -7,11 +7,29 @@ de dataset/entrenamiento/comparación, ver [`workflow_manifest.json`](workflow_m
 Diagramas y documentos de arquitectura del sistema (CityLearn v3 + MADRL),
 flujo de trabajo operativo y pipeline de construcción del dataset.
 
+### Documento principal de defensa (nuevo — 2026-06-18)
+
+- **`ARQUITECTURA_PROYECTO_DEFENSA.md`** — documento unificado para
+  sustentacion de tesis con 9 diagramas Mermaid:
+  - Diagrama 1: Vision general inicio → mejor MADRL
+  - Diagrama 2: Pipeline del dataset Iquitos 2023-2025
+  - Diagrama 3: Arquitectura Dec-POMDP y CTDE 17 agentes
+  - Diagrama 4: Los 4 algoritmos MADRL — taxonomia y diferencias
+  - Diagrama 5: Flujo de entrenamiento 12 corridas (4×3)
+  - Diagrama 6: Recompensa multiobjetivo por escenario
+  - Diagrama 7: Pipeline de evaluacion y seleccion del mejor MADRL
+  - Diagrama 8: Infraestructura despliegue local y AWS EC2
+  - Diagrama 9: Estructura de capas del software (6 niveles)
+  - Tablas de resultados v4 y pruebas estadisticas
+
+### Documentos de arquitectura existentes
+
 - `ARQUITECTURA_CITYLEARN_V3_MADRL.png` / `.pdf`
 - `ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf`
 - `ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md`
 - `ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md`
-- `FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md`
+- **`FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md`** — flujo vigente con rutas
+  canonicas para flujo local (PS) y AWS Docker
 - `FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png`
 - `PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf` / `.png`
 - `PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.pdf` / `.png`

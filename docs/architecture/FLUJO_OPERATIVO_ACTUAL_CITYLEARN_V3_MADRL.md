@@ -1,6 +1,6 @@
 # Flujo operativo actual CityLearn v3 MADRL
 
-Actualizado: 2026-06-17
+Actualizado: 2026-06-18
 Fuente machine-readable: `docs/workflow_manifest.json`
 
 Este documento fija el flujo vigente del proyecto desde la creacion del dataset hasta los resultados finales. Reemplaza referencias historicas a carpetas fijas como `outputs/citylearn_v3_madrl_oficial_v4`, `outputs/citylearn_v3_madrl_oficial_v5` o relanzamientos con fecha 20260602.
@@ -182,15 +182,18 @@ Archivos de estado:
 - `<OutputRoot>/official_full_status.json`
 - `<OutputRoot>/official_full_manifest.json`
 - `<OutputRoot>/<algo>/<scenario>_seed_0/live_progress.json` solo mientras el job esta activo
-- `<OutputRoot>/logs/*.log`
-- `<OutputRoot>/logs/*.stderr.log`
+- `<OutputRoot>/logs/*.log` (flujo local PS)
+- `<OutputRoot>/logs/*.stderr.log` (flujo local PS)
+- `<OutputRoot>/<scenario>/<algo>/logs/<algo>_<sc>-00001.log` (flujo AWS Docker)
 
 ## Artefactos Requeridos Por Job
 
-Cada job valido debe producir:
+Cada job valido debe producir (ruta canonica):
 
 ```text
-<OutputRoot>/<algo>/<scenario>_seed_0/
+<OutputRoot>/<algo>/<scenario>_seed_0/          <- flujo local PowerShell
+<OutputRoot>/<scenario>/<algo>/<scenario>_seed_0/ <- flujo AWS Docker (run_aws_training.sh)
+
   data/results.json
   data/training_summary.json
   data/timeseries.csv

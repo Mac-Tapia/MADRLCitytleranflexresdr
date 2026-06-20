@@ -24,12 +24,14 @@ Actualizado: 2026-06-20.
 
 ### Cambios actualizados (2026-06-20)
 
-- ✅ Arquitectura operativa de entrenamiento visible documentada y validada
-- ✅ Manifest de workflow actualizado con estructura completa de artefactos
-- ✅ Scripts de ejecución optimizados para control de entrenamiento en tiempo real
-- ✅ Herramientas de verificación y validación de notebooks mejoradas
-- ✅ Configuración de Iquitos (dataset) validada y sincronizada
-- ✅ Soporte tutorial notebook actualizado con cell patching
+- ✅ Corrida v4 completada 12/12 — HAPPO/MASAC/MATD3/MAAC × E1/E2/E3
+- ✅ Artefactos canonicos en `outputs/{ALGO}/{escenario}/` (CSV, JSON, PNG)
+- ✅ Informe tecnico de supervision: **APROBADO** — Mejor MADRL: **MATD3** (KW p=0.0459)
+- ✅ Tutorial notebook Colab A100 corregido: badge, metadatos, celdas 1.2 y 1.2b
+- ✅ CityLearn submodulo vive en rama `citylearn-v3-madrl` (no detached HEAD)
+- ✅ 9 submodulos registrados e inicializados en `.gitmodules`
+- ✅ Git LFS configurado para checkpoints `.pt` — resultados versionados en GitHub
+- ✅ README actualizado con instrucciones de clonado y manual Colab A100
 
 ### Corridas de referencia y definitiva
 
@@ -256,20 +258,20 @@ Regenerar el dataset desde los insumos:
 
 ## MADRL integrados
 
-| MADRL | Script activo | Wrapper CityLearn v3 | Backend |
-| ----- | ------------- | -------------------- | ------- |
+| MADRL | Script activo | Wrapper CityLearn v3 | Backend (submodulo) |
+| ----- | ------------- | -------------------- | ------------------- |
 | HAPPO | `train_citylearn_v3_happo.py` | `CityLearnHARLEnv` | `external/HARL` |
-| MASAC | `train_citylearn_v3_masac.py` | `CityLearnSMACDiscreteEnv` | `external/MARL/src` |
-| MATD3 | `train_citylearn_v3_matd3.py` | `CityLearnOffPolicyVecEnv` | `external/off-policy` |
+| MASAC | `train_citylearn_v3_masac.py` | `CityLearnSMACDiscreteEnv` | `external/MARL` + `external/MARLlib` |
+| MATD3 | `train_citylearn_v3_matd3.py` | `CityLearnOffPolicyVecEnv` | `external/MATD3implementation` |
 | MAAC | `train_citylearn_v3_maac.py` | `CityLearnMAACVecEnv` | `external/MAAC` |
 
-Submodulos externos de referencia adicionales:
+Submodulos de referencia adicionales:
 
 | Submodulo | Ruta | Proposito |
 | --------- | ---- | --------- |
 | MicroGrids | `external/MicroGrids` | Modelos de microgrillas (referencia) |
-| evcc | `external/evcc` | Gestor de carga EV (referencia) |
-| prosumpy | `external/prosumpy` | Gestion de prosumidores (referencia) |
+| evcc | `external/evcc` | Gestor de carga EV open-source (referencia) |
+| prosumpy | `external/prosumpy` | Gestion de prosumidores energia (referencia) |
 
 ## Recompensa
 
@@ -531,17 +533,69 @@ pip install --upgrade torch torchvision --index-url https://download.pytorch.org
 
 Manual completo paso a paso (Windows y AWS): `docs/MANUAL_INSTALACION_DEPENDENCIAS.md`.
 
+## Entrenamiento en Google Colab A100
+
+Abre el tutorial oficial y ejecuta celda a celda — clona, instala y entrena los 4 MADRL directamente en la GPU A100 de Colab:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/citylearn-v3-madrl/examples/madrl_citylearn_v3_tutorial.ipynb)
+
+El notebook ejecuta las 12 corridas (4 algoritmos × 3 escenarios) con `N_EPISODES=75` y genera los artefactos canonicos en `outputs/{ALGO}/{escenario}/`.
+
 ## Clonar el repositorio
 
+El repositorio tiene **9 submodulos** que deben inicializarse correctamente.
+
+### Clon completo (recomendado)
+
 ```bash
-git clone --recurse-submodules https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
+git clone \
+  --branch master \
+  --depth 1 \
+  --recurse-submodules \
+  --shallow-submodules \
+  https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
 cd MADRLCitytleranflexresdr
 ```
 
-Si ya se clono sin submodulos:
+Esto descarga el repo padre y los 9 submodulos en un solo comando:
+
+| Submodulo | Repositorio |
+| --------- | ----------- |
+| `CityLearn/` | `Mac-Tapia/CityLearn` (rama `citylearn-v3-madrl`) |
+| `external/HARL` | `Mac-Tapia/HARL` |
+| `external/MAAC` | `Mac-Tapia/MAAC` |
+| `external/MARL` | `Mac-Tapia/MARL` |
+| `external/MARLlib` | `Mac-Tapia/MARLlib` |
+| `external/MATD3implementation` | `Mac-Tapia/MATD3implementation` |
+| `external/MicroGrids` | `Mac-Tapia/MicroGrids` |
+| `external/evcc` | `evcc-io/evcc` |
+| `external/prosumpy` | `Mac-Tapia/prosumpy` |
+
+### Activar CityLearn en su rama viva
+
+Despues del clon, `CityLearn/` queda en detached HEAD apuntando al commit fijado por el padre. Para llevarlo a la rama viva `citylearn-v3-madrl`:
 
 ```bash
-git submodule update --init --recursive
+git -C CityLearn remote add mac-tapia https://github.com/Mac-Tapia/CityLearn.git
+git -C CityLearn fetch --depth 1 mac-tapia citylearn-v3-madrl
+git -C CityLearn checkout -B citylearn-v3-madrl mac-tapia/citylearn-v3-madrl
+```
+
+El notebook (celda 1.2) hace esto automaticamente en Colab.
+
+### Si ya se clono sin submodulos
+
+```bash
+git submodule init
+git submodule update --init --recursive --depth 1
+```
+
+### Verificar submodulos
+
+```bash
+git submodule status
+# Todos deben mostrar un commit sin prefijo '-' (no inicializado) ni 'U' (conflicto).
+# El prefijo '+' en CityLearn es esperado: esta en rama viva (adelante del commit fijado).
 ```
 
 ## Inicio rapido AWS EC2 Ubuntu + Docker

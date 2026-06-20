@@ -5,7 +5,7 @@ param(
     [string]$Scenario = "ALL",
     [int]$Seed = 0,
     [int]$EpisodeTimeSteps = 8760,
-    [int]$Episodes = 5,
+    [int]$Episodes = 75,
     [int]$TorchThreads = 12,
     [int]$LiveProgressInterval = 250,
     [ValidateSet("full", "efficient", "minimal")]
@@ -25,6 +25,7 @@ param(
     [ValidateRange(1, 16)]
     [int]$MaxConcurrentHeavyJobs = 1,
     [switch]$Cuda,
+    [switch]$IncludeBaselines,
     [bool]$LiveOutput = $false,
     [switch]$NoMonitor,
     [switch]$SelfLaunched   # uso interno: evita re-lanzamiento recursivo
@@ -67,6 +68,7 @@ if (-not $SelfLaunched) {
         "-SelfLaunched"
     )
     if ($Cuda)      { $selfArgs += "-Cuda" }
+    if ($IncludeBaselines) { $selfArgs += "-IncludeBaselines" }
     $selfArgs += @("-LiveOutput", "$LiveOutput")
     if ($NoMonitor) { $selfArgs += "-NoMonitor" }
 
@@ -123,7 +125,7 @@ if (-not $LiveOutput -and [bool]$ParallelScenarios) {
 elseif ($LiveOutput) {
     Write-Host "Mode: sequential rich live display. This disables parallel scenario stages." -ForegroundColor Yellow
 }
-Write-Host ("Command: CityLearn\scripts\launch_citylearn_v3_official_training.ps1 -Scenario {0} -Seed {1} -EpisodeTimeSteps {2} -Episodes {3} -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json -OutputRoot {4} -TorchThreads {5} -LiveProgressInterval {6} -ArtifactProfile {7} -TraceRecordInterval {8} -TraceDetail {9} -GpuProfile {10} -MaxGpuVramGib {11} -GpuVramReserveGib {12} -CudaMemoryFraction {13} -ParallelScenarios:{14} -MaxConcurrentScenarioJobs {15} -MaxConcurrentHeavyJobs {16} -Cuda:{17} -LiveOutput:{18}" -f $Scenario, $Seed, $EpisodeTimeSteps, $Episodes, $OutputRoot, $TorchThreads, $LiveProgressInterval, $ArtifactProfile, $TraceRecordInterval, $TraceDetail, $GpuProfile, $MaxGpuVramGib, $GpuVramReserveGib, $CudaMemoryFraction, [bool]$ParallelScenarios, $MaxConcurrentScenarioJobs, $MaxConcurrentHeavyJobs, [bool]$Cuda, [bool]$LiveOutput)
+Write-Host ("Command: CityLearn\scripts\launch_citylearn_v3_official_training.ps1 -Scenario {0} -Seed {1} -EpisodeTimeSteps {2} -Episodes {3} -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json -OutputRoot {4} -TorchThreads {5} -LiveProgressInterval {6} -ArtifactProfile {7} -TraceRecordInterval {8} -TraceDetail {9} -GpuProfile {10} -MaxGpuVramGib {11} -GpuVramReserveGib {12} -CudaMemoryFraction {13} -ParallelScenarios:{14} -MaxConcurrentScenarioJobs {15} -MaxConcurrentHeavyJobs {16} -Cuda:{17} -IncludeBaselines:{18} -LiveOutput:{19}" -f $Scenario, $Seed, $EpisodeTimeSteps, $Episodes, $OutputRoot, $TorchThreads, $LiveProgressInterval, $ArtifactProfile, $TraceRecordInterval, $TraceDetail, $GpuProfile, $MaxGpuVramGib, $GpuVramReserveGib, $CudaMemoryFraction, [bool]$ParallelScenarios, $MaxConcurrentScenarioJobs, $MaxConcurrentHeavyJobs, [bool]$Cuda, [bool]$IncludeBaselines, [bool]$LiveOutput)
 Write-Host ""
 
 if (-not $NoMonitor) {
@@ -166,6 +168,7 @@ if (-not $NoMonitor) {
     -MaxConcurrentScenarioJobs $MaxConcurrentScenarioJobs `
     -MaxConcurrentHeavyJobs $MaxConcurrentHeavyJobs `
     -Cuda:$Cuda `
+    -IncludeBaselines:$IncludeBaselines `
     -LiveOutput:$LiveOutput
 $exitCode = $LASTEXITCODE
 

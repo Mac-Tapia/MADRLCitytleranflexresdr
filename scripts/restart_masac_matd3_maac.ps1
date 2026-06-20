@@ -6,7 +6,7 @@ Set-Location $ProjectRoot
     -Scenario ALL `
     -Seed 0 `
     -EpisodeTimeSteps 8760 `
-    -Episodes 5 `
+    -Episodes 75 `
     -SchemaPath "CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json" `
     -OutputRoot "outputs\citylearn_v3_madrl_full_20260613_010234" `
     -ArtifactProfile efficient `

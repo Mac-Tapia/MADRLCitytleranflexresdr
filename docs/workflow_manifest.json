@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "project": "MADRLCitytleranflexresdr",
-  "updated_at": "2026-06-17",
+  "updated_at": "2026-06-20",
   "purpose": "Manifest canonico del flujo dataset -> carga -> entrenamiento -> comparacion -> resultados finales.",
   "technical_reports": [
     "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
@@ -38,22 +38,36 @@
     {
       "stage": "project_context",
       "command": "powershell -ExecutionPolicy Bypass -File scripts/verify_project_context.ps1",
-      "required_before": ["file_edits", "git_operations", "training_launch"]
+      "required_before": [
+        "file_edits",
+        "git_operations",
+        "training_launch"
+      ]
     },
     {
       "stage": "dataset_build",
       "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/orchestrate_citylearn_dataset.py --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025",
-      "outputs": ["CityLearn/data/datasets/citylearn_iquitos_2023_2025", "outputs/dataset_audit"]
+      "outputs": [
+        "CityLearn/data/datasets/citylearn_iquitos_2023_2025",
+        "outputs/dataset_audit"
+      ]
     },
     {
       "stage": "dataset_gate",
       "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/check_training_dataset_ready.py --manifest-out outputs/dataset_audit/training_dataset_ready_manifest.json",
-      "acceptance": ["status=ready", "normalization_allowed_for_training=true"]
+      "acceptance": [
+        "status=ready",
+        "normalization_allowed_for_training=true"
+      ]
     },
     {
       "stage": "workflow_integrity",
       "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/verify_workflow_integrity.py --manifest-out outputs/dataset_audit/workflow_integrity_manifest.json",
-      "acceptance": ["ok=true", "no stale active defaults", "schema/training/docs linked"]
+      "acceptance": [
+        "ok=true",
+        "no stale active defaults",
+        "schema/training/docs linked"
+      ]
     },
     {
       "stage": "training",
@@ -61,11 +75,20 @@
       "wrapper": "scripts/run_citylearn_v3_full_training_visible.ps1",
       "active_output_pointer": "outputs/latest_visible_training_output_root.txt",
       "output_root_pattern": "outputs/citylearn_v3_madrl_full_<yyyyMMdd_HHmmss>",
-      "algorithms": ["happo", "masac", "matd3", "maac"],
-      "scenarios": ["E1", "E2", "E3"],
-      "episodes": 5,
+      "algorithms": [
+        "happo",
+        "masac",
+        "matd3",
+        "maac"
+      ],
+      "scenarios": [
+        "E1",
+        "E2",
+        "E3"
+      ],
+      "episodes": 75,
       "episode_time_steps": 8760,
-      "num_env_steps": 43800,
+      "num_env_steps": 657000,
       "artifact_profile": "efficient",
       "trace_record_interval": 10,
       "trace_detail": "compact",
@@ -75,14 +98,29 @@
       "parallel_scenarios": true,
       "max_concurrent_scenario_jobs": 2,
       "max_concurrent_heavy_jobs": 1,
-      "parallelization_policy": "Visible monitoring is decoupled from rich per-job LiveOutput. On an 8 GB RTX 4060 Laptop GPU, HAPPO/MATD3 may run up to 2 scenarios concurrently; MASAC/MAAC remain capped at 1 for replay/critic memory stability. LiveOutput=true is reserved for sequential debugging."
+      "parallelization_policy": "Visible monitoring is decoupled from rich per-job LiveOutput. On an 8 GB RTX 4060 Laptop GPU, HAPPO/MATD3 may run up to 2 scenarios concurrently; MASAC/MAAC remain capped at 1 for replay/critic memory stability. LiveOutput=true is reserved for sequential debugging.",
+      "baseline_algorithms": [
+        "ppo",
+        "sac",
+        "a2c",
+        "maddpg",
+        "mappo"
+      ],
+      "primary_training_runs": 12,
+      "baseline_comparison_runs": 15,
+      "best_selection_required_line": "Mejor algoritmo MADRL seleccionado: [HAPPO / MASAC / MATD3 / MAAC]"
     },
     {
       "stage": "monitoring",
       "primary_monitor": "CityLearn/scripts/monitor_citylearn_v3_official_training.ps1",
       "legacy_monitor_wrapper": "scripts/monitor_citylearn_training_visible.ps1",
-      "status_files": ["official_full_status.json", "official_full_manifest.json"],
-      "transient_status_files": ["live_progress.json"]
+      "status_files": [
+        "official_full_status.json",
+        "official_full_manifest.json"
+      ],
+      "transient_status_files": [
+        "live_progress.json"
+      ]
     },
     {
       "stage": "comparison",
@@ -135,22 +173,49 @@
       "outputs/_archive/concurrency_policy_dryrun"
     ],
     "canonical_current_run_rule": "Use outputs/latest_visible_training_output_root.txt when present; otherwise use the newest output directory with official_full_status.json.",
-    "final_results_rule": "Do not report final KPIs/rankings until all 12 jobs have exit_code=0 and all required_job_artifacts exist.",
+    "final_results_rule": "Do not report final KPIs/rankings until all 12 primary MADRL jobs have exit_code=0, all required_job_artifacts exist, and baseline comparison jobs use the same Iquitos CityLearn v3 dataset/layer.",
     "archive_layout_note": "Runs marked failed/stale/dry-run are moved to outputs/_archive/ (added 2026-06-13 reorg). outputs/runs/ is reserved for future training runs. Completed reference runs remain at outputs/ root when they are canonical evidence for audit or thesis reporting."
   },
   "modified_submodules": {
     "policy": "All git submodules (CityLearn + the 8 under external/, including the 4 MADRL backends HARL/HAPPO, MAAC, MATD3implementation, and any MASAC implementation) may be modified as MADRL-Iquitos research contributions. Every modification must be: (1) documented in docs/contributions/<module>/CHANGES.md with date, files, description, motivation and bibliographic reference; (2) backed by docs/contributions/<module>/bibliografia.bib entries from PhD/master's theses or peer-reviewed articles published 2021-2026; (3) traceable from code via '# MADRL-IQUITOS-MOD: ver docs/contributions/<module>/CHANGES.md#<entry>' comments.",
     "fork_workflow": "Fork the submodule's upstream repo to the project owner's GitHub account, create a dedicated branch (e.g. 'madrl-iquitos-mods'), then repoint the corresponding entry in .gitmodules (url + branch) to the fork. CityLearn is already a fork (Mac-Tapia/CityLearn, branch citylearn-v3-madrl).",
     "modules": {
-      "CityLearn": {"role": "core simulator (fork, already editable)", "docs": "docs/contributions/CityLearn/"},
-      "external/HARL": {"role": "HAPPO MADRL backend", "docs": "docs/contributions/HARL/"},
-      "external/MAAC": {"role": "MAAC MADRL backend", "docs": "docs/contributions/MAAC/"},
-      "external/MATD3implementation": {"role": "MATD3 MADRL backend", "docs": "docs/contributions/MATD3implementation/"},
-      "external/MARL": {"role": "auxiliary MARL reference implementation", "docs": "docs/contributions/MARL/"},
-      "external/MARLlib": {"role": "auxiliary MARL library", "docs": "docs/contributions/MARLlib/"},
-      "external/MicroGrids": {"role": "microgrid sizing/reference models", "docs": "docs/contributions/MicroGrids/"},
-      "external/evcc": {"role": "EV charging control reference", "docs": "docs/contributions/evcc/"},
-      "external/prosumpy": {"role": "prosumer simulation reference", "docs": "docs/contributions/prosumpy/"}
+      "CityLearn": {
+        "role": "core simulator (fork, already editable)",
+        "docs": "docs/contributions/CityLearn/"
+      },
+      "external/HARL": {
+        "role": "HAPPO MADRL backend",
+        "docs": "docs/contributions/HARL/"
+      },
+      "external/MAAC": {
+        "role": "MAAC MADRL backend",
+        "docs": "docs/contributions/MAAC/"
+      },
+      "external/MATD3implementation": {
+        "role": "MATD3 MADRL backend",
+        "docs": "docs/contributions/MATD3implementation/"
+      },
+      "external/MARL": {
+        "role": "auxiliary MARL reference implementation",
+        "docs": "docs/contributions/MARL/"
+      },
+      "external/MARLlib": {
+        "role": "auxiliary MARL library",
+        "docs": "docs/contributions/MARLlib/"
+      },
+      "external/MicroGrids": {
+        "role": "microgrid sizing/reference models",
+        "docs": "docs/contributions/MicroGrids/"
+      },
+      "external/evcc": {
+        "role": "EV charging control reference",
+        "docs": "docs/contributions/evcc/"
+      },
+      "external/prosumpy": {
+        "role": "prosumer simulation reference",
+        "docs": "docs/contributions/prosumpy/"
+      }
     },
     "note": "MASAC backend location not yet confirmed against a dedicated submodule; verify against external/ list in .gitmodules and update this table accordingly when identified."
   }

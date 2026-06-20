@@ -65,11 +65,12 @@ official_training:
   active_output_pointer: "outputs/latest_visible_training_output_root.txt"
   output_root_pattern: "outputs/citylearn_v3_madrl_full_<yyyyMMdd_HHmmss>"
   algorithms: ["happo", "masac", "matd3", "maac"]
+  baseline_algorithms: ["ppo", "sac", "a2c", "maddpg", "mappo"]
   scenarios: ["E1", "E2", "E3"]
   seed: 0
-  episodes: 5
+  episodes: 75
   episode_time_steps: 8760
-  num_env_steps: 43800
+  num_env_steps: 657000
   cuda: true
   gpu_profile: "local4060_fast"
   torch_threads: 8

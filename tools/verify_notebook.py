@@ -49,7 +49,7 @@ check("REPO_BRANCH = codex/fix-madrl-traceability-docs",
       str(branch_lines))
 
 # ── 4. Total de celdas ───────────────────────────────────────────────────────
-check("51 celdas en el notebook", len(nb["cells"]) == 51, f"actual={len(nb['cells'])}")
+check("53 celdas en el notebook", len(nb["cells"]) == 53, f"actual={len(nb['cells'])}")
 
 # ── 5. Rutas requeridas ──────────────────────────────────────────────────────
 required = [
@@ -57,6 +57,9 @@ required = [
     "CityLearn/scripts/train_citylearn_v3_masac.py",
     "CityLearn/scripts/train_citylearn_v3_matd3.py",
     "CityLearn/scripts/train_citylearn_v3_maac.py",
+    # Baseline comparison scripts (Observacion 1 corregida)
+    "CityLearn/scripts/train_citylearn_v3_mappo.py",
+    "CityLearn/scripts/train_citylearn_v3_maddpg.py",
     "CityLearn/citylearn/v3/environment.py",
     "external/HARL",
     "external/MARL/src",

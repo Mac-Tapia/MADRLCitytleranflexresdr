@@ -508,7 +508,6 @@ else:
                 '--seed', '0',
                 '--output-dir', f'{_OUT_ROOT}/{algo}/{scenario}_seed_0',
                 '--gpu-profile', 'local',
-                '--dry-run-first',
             ]
             print(f"  Probando {algo.upper()} {scenario} ...", end=' ', flush=True)
             try:

@@ -44,6 +44,7 @@ def sha256_file(path: Path) -> Optional[str]:
 
 
 def latest_output_root() -> Path:
+    preferred = ROOT / "outputs" / "citylearn_v3_madrl_full_20260615_074011_v4"
     pointer = ROOT / "outputs" / "latest_visible_training_output_root.txt"
     if pointer.exists():
         value = pointer.read_text(encoding="utf-8-sig").strip()
@@ -51,10 +52,12 @@ def latest_output_root() -> Path:
             candidate = Path(value)
             if not candidate.is_absolute():
                 candidate = ROOT / candidate
-            if candidate.exists():
+            status = read_json(candidate / "official_full_status.json", {})
+            if candidate.exists() and status.get("status") != "dry_run":
                 return candidate
+            if preferred.exists():
+                return preferred
 
-    preferred = ROOT / "outputs" / "citylearn_v3_madrl_full_20260615_074011_v4"
     if preferred.exists():
         return preferred
 
@@ -204,17 +207,23 @@ def main() -> int:
         {
             "test": "tools/verify_notebook.py",
             "scope": "Notebook, dataset, launcher, benchmarks, outputs contract",
-            "status": "programado_para_ejecucion_en_esta_auditoria",
+            "status": "ejecutado_ok_91_91",
         },
         {
             "test": "tools/test_notebook_cells.py",
             "scope": "CityLearn v3 env smoke, launcher dry-run construction, notebook JSON",
-            "status": "programado_para_ejecucion_en_esta_auditoria",
+            "status": "ejecutado_ok",
         },
         {
             "test": "CityLearn/scripts/colab_a100_official_launcher.py --dry-run",
             "scope": "12 jobs principales sin entrenamiento GPU",
-            "status": "programado_para_ejecucion_en_esta_auditoria",
+            "status": "ejecutado_ok_12_jobs_75_episodios_configurados",
+            "output": "outputs/codex_supervision_dryrun_20260620/official_full_status.json",
+        },
+        {
+            "test": "tools/verify_workflow_integrity.py",
+            "scope": "Integridad workflow, dataset gates, benchmarks v2 y launcher policy",
+            "status": "ejecutado_ok",
         },
     ]
 

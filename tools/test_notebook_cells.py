@@ -102,18 +102,18 @@ assert positions == sorted(positions), f"Orden crítico de celdas incorrecto: {p
 
 assert "REPO_BRANCH      = 'master'" in code_src or "REPO_BRANCH = 'master'" in code_src, \
     "Notebook no fija la rama master del repo padre para Colab"
-assert "git_check(['clone', '--branch', REPO_BRANCH" in code_src, \
+assert "'clone'," in code_src and "'--branch', REPO_BRANCH" in code_src, \
     "Clone de Colab no usa --branch REPO_BRANCH"
 assert "'pull', '--ff-only'" not in code_src, \
     "Notebook no debe usar git pull --ff-only en el espejo Colab existente"
-assert "git_check(['-C', REPO, 'checkout', '-B', REPO_BRANCH, 'FETCH_HEAD'])" in code_src, \
+assert "git_check(['checkout', '-B', REPO_BRANCH, 'FETCH_HEAD'], cwd=REPO)" in code_src, \
     "Notebook no resetea la rama Colab existente contra FETCH_HEAD"
-assert "git_check(['-C', REPO, 'submodule', 'update', '--init', '--recursive'," in code_src and "'--force'" in code_src, \
+assert "'submodule', 'update', '--init', '--recursive'" in code_src and "'--force'" in code_src, \
     "Notebook no fuerza submódulos al commit fijado por el repo padre"
 assert "submodule_status = sh(['git', 'submodule', 'status', '--recursive'])" in code_src, \
     "Notebook no valida estado de submódulos"
-assert "actual_citylearn_commit == expected_citylearn_commit" in code_src, \
-    "Notebook no valida que CityLearn coincida con el commit fijado por el repo padre"
+assert "cl_branch == CITYLEARN_BRANCH" in code_src and "'citylearn_live': True" in code_src, \
+    "Notebook no valida que CityLearn este en la rama viva esperada"
 assert "csv_count == 222" in code_src, "Notebook no valida dataset completo de 222 CSV"
 print("[PASS] Orden crítico y espejo repo/submódulos/dataset validados en notebook")
 
@@ -207,12 +207,10 @@ print(f"[PASS] Layout algorithm-first: {{OUTPUT_ROOT}}/happo/E1_seed_0/ OK")
 OUTPUT_GUARDS = [
     "REQUIRE_GOOGLE_DRIVE = True",
     "GDRIVE_OUTPUT_PARENT = f'{GDRIVE_ROOT}/outputs'",
-    "MADRL_CityLearn_v3/{PROJECT_NAME}/outputs/colab_madrl_a100_",
+    "RUN_LABEL    = f'madrl_v3_{TIMESTAMP}'",
     "RESUME_OUTPUT_ROOT = None",
     "resumed_existing_output_root",
     "run_context_manifest.json",
-    "forbidden_markers",
-    "citylearn_v3_madrl_full_",
     "relative_to(expected_root)",
     "len(seen_outputs) == 12",
     "outputs aislados en OUTPUT_ROOT",

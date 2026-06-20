@@ -64,6 +64,13 @@ lightning_logs/
 data/cache/
 *.pkl
 
+# Checkpoints MAAC > 147 MB cada uno (exceden cuota LFS gratuita de GitHub 1 GB)
+# Los resultados canónicos de MAAC (CSV, JSON, PNG) SÍ están versionados.
+# Para reproducir: ejecutar train_citylearn_v3_maac.py desde Colab A100.
+outputs/**/maac/**/checkpoints/*.pt
+outputs/**/maac/**/checkpoints/model.pt
+outputs/**/MAAC/**/checkpoint.pt
+
 # Secrets de entorno (NUNCA versionar)
 .env
 .env.local

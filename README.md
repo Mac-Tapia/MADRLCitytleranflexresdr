@@ -20,7 +20,16 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-19.
+Actualizado: 2026-06-20.
+
+### Cambios actualizados (2026-06-20)
+
+- ✅ Arquitectura operativa de entrenamiento visible documentada y validada
+- ✅ Manifest de workflow actualizado con estructura completa de artefactos
+- ✅ Scripts de ejecución optimizados para control de entrenamiento en tiempo real
+- ✅ Herramientas de verificación y validación de notebooks mejoradas
+- ✅ Configuración de Iquitos (dataset) validada y sincronizada
+- ✅ Soporte tutorial notebook actualizado con cell patching
 
 ### Corridas de referencia y definitiva
 

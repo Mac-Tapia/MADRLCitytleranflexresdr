@@ -1,0 +1,343 @@
+--- Cell 20 (code) ---
+# 1.4 Configurar sys.path, CUDA y smoke imports
+# Vinculada con 1.3: usa PROJECT_PYTHON aunque el kernel Colab sea Python 3.11.
+import importlib
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(globals().get('PROJECT_DIR', '/content/MADRLCitytleranflexresdr'))
+if not PROJECT_ROOT.exists() and Path.cwd().name == 'MADRLCitytleranflexresdr':
+    PROJECT
+
+--- Cell 21 (markdown) ---
+### Persistencia obligatoria en Google Drive
+
+Para 75 episodios en Colab, los artefactos deben persistir fuera de `/content`. La siguiente celda monta Drive por defecto. Si no estas en Colab, usa el fallback local dentro del repo.
+
+
+--- Cell 22 (code) ---
+# ── 1.5  Montar Google Drive para checkpoints y reanudacion ─────────────────
+import os
+
+USE_GOOGLE_DRIVE = True
+REQUIRE_GOOGLE_DRIVE = True
+DRIVE_WORKSPACE_ROOT = '/content/drive/MyDrive/MADRL_CityLearn_v3'
+PROJECT_NAME = globals().get('PROJECT_NAME', 'MADRLCitytleranflexresdr')
+GDRIVE_ROOT = None
+GDRIVE_OUTPUT_PARENT = None
+
+if USE_GOOGLE_DRIVE:
+    try:
+        from google.colab import drive
+ 
+
+--- Cell 23 (markdown) ---
+## Sección 2: Configuración del proyecto
+
+--- Cell 24 (code) ---
+# ── 2.1  Rutas, timestamp y directorio de salida recuperable ────────────────
+import json, os, sys
+from datetime import datetime
+from pathlib import Path
+
+REPO        = '/content/MADRLCitytleranflexresdr'
+PROJECT_NAME = globals().get('PROJECT_NAME', 'MADRLCitytleranflexresdr')
+TIMESTAMP   = datetime.now().strftime('%Y%m%d_%H%M%S')
+RUN_LABEL   = f'colab_madrl_a100_{TIMESTAMP}'
+SCHEMA_PATH = f'{REP
+
+--- Cell 25 (markdown) ---
+## Sección 3: Dataset Iquitos 2023-2025
+
+**17 edificios reales** · 26 304 pasos horarios · 222 CSV sin NaN/Inf
+
+| Recurso | Detalle |
+|---|---|
+| Período | 2023-2025 · año horario completo |
+| BESS total | 26 266 kWh / 6 648 kW |
+| PV total | 48 790 kWp (PVGIS TMY/pvlib) |
+| EV chargers | 185 tomas · 96 equipos · 1 850 EVs en pool |
+| V2G | 31 tomas de camiones (B01 Electro Oriente) |
+| Intensidad
+
+--- Cell 26 (code) ---
+# ── 3.1  Verificar estructura del dataset ────────────────────────────────────
+import json, os, pandas as pd
+
+with open(SCHEMA_PATH) as f:
+    schema = json.load(f)
+
+buildings = schema.get("buildings", {})
+print(f"Edificios: {len(buildings)}")
+print(f"Pasos de simulación: {schema.get('simulation_end_time_step', 0) + 1}")
+print(f"Agente central: {schema.get('central_agent', False)}")
+
+# Mostrar pr
+
+--- Cell 27 (markdown) ---
+## Sección 4: Entorno Dec-POMDP — 17 agentes
+
+**Dec-POMDP:** cada edificio es un agente con observación parcial local.
+**CTDE:** el crítico usa el estado global durante entrenamiento; la ejecución es completamente local.
+
+```
+Observación local oᵢ(t) ≈ 40 dimensiones
+  ├── Tiempo (mes, hora, tipo_día)
+  ├── Física edificio (NSL, DHW, cooling, T_interior)
+  ├── BESS (SOC, acción previa)
+  ├── EV (SO
+
+--- Cell 28 (code) ---
+# ── 4.1  Crear entorno smoke-test (4 pasos) y describir agentes ─────────────
+import json
+import os
+import subprocess
+import sys
+
+PYTHON = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+REPO = globals().get('REPO', '/content/MADRLCitytleranflexresdr')
+
+smoke_code = r'''
+import json
+from citylearn.v3.environment import make_citylearn_v3_project_env, describe_environment
+
+
+
+--- Cell 29 (markdown) ---
+## Sección 5: Función de recompensa multiobjetivo
+
+### Componentes (v4)
+
+| Componente | Descripción |
+|---|---|
+| **Flexibilidad** | peak_penalty + ramping_penalty + load_factor + ev_service |
+| **CO₂** | carbon_emissions × carbon_intensity |
+| **Costo** | electricity_cost × price_signal |
+| **EV urgency** | SOC_deficit × 1/horas_hasta_salida |
+| **BESS degradación** | C-rate penalty Arrhenius LiF
+
+--- Cell 30 (code) ---
+# ── 5.1  Visualizar pesos de recompensa por escenario ────────────────────────
+import matplotlib; matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np, os
+
+WEIGHTS = {
+    "E1": {"Flexibilidad": 0.70, "CO₂": 0.15, "Costo": 0.15},
+    "E2": {"Flexibilidad": 0.15, "CO₂": 0.70, "Costo": 0.15},
+    "E3": {"Flexibilidad": 0.25, "CO₂": 0.15, "Costo": 0.60},
+}
+COLORS = ["#3b82f6", "#
+
+--- Cell 31 (markdown) ---
+## Seccion 6: Hiperparametros (A100 estable · 75 episodios)
+
+La configuracion usa un perfil A100 secuencial y recuperable. La meta no es "nunca fallar" —Colab no garantiza recursos— sino fallar temprano, guardar estado, reanudar y reducir riesgo de OOM.
+
+| Parametro | Valor estable A100 |
+|---|:---:|
+| Episodios | 75 |
+| Pasos/episodio | 8 760 |
+| Torch threads | 2 |
+| Artifact profile | efficient
+
+--- Cell 32 (code) ---
+# ── 6.1  Configuracion central de entrenamiento A100 ───────────────────────
+import os, sys, subprocess, json, time
+from pathlib import Path
+
+REPO        = '/content/MADRLCitytleranflexresdr'
+PYTHON      = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+SCHEMA_PATH = f'{REPO}/CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json'
+LAUNCHER    = f'{REPO}/CityLearn
+
+--- Cell 33 (markdown) ---
+## Seccion 7: Lanzamiento oficial recuperable
+
+El entrenamiento ya no se lanza con cuatro bloques manuales. Se usa un orquestador unico que genera `official_full_status.json`, `official_full_manifest.json`, logs por job, checkpoint/resume y monitor visible.
+
+
+--- Cell 34 (code) ---
+# ── 7.0  Helpers de ejecucion y monitor ─────────────────────────────────────
+import subprocess, sys, os, json
+from pathlib import Path
+
+
+def run_cmd(cmd, *, cwd=REPO, check=True):
+    print('\n' + '=' * 80)
+    print(' '.join(str(c) for c in cmd))
+    print('=' * 80)
+    proc = subprocess.run(cmd, cwd=cwd, text=True)
+    if check and proc.returncode != 0:
+        raise RuntimeError(f'Comando fal
+
+--- Cell 35 (markdown) ---
+### 7.1 Preflight y dry-run obligatorio
+
+Esta celda valida A100, CUDA, imports, rutas, manifest y los 12 comandos planificados sin entrenar. Si falla aqui, no ejecutes el entrenamiento completo.
+
+
+--- Cell 36 (code) ---
+# ── 7.1  Preflight A100 + dry-run oficial ───────────────────────────────────
+dry_run_cmd = launcher_base_args() + ['--dry-run', '--skip-completed']
+run_cmd(dry_run_cmd)
+monitor_once()
+
+status_path = Path(OUTPUT_ROOT) / 'official_full_status.json'
+with open(status_path) as f:
+    status = json.load(f)
+assert status['status'] == 'dry_run', status['status']
+assert status['training_config']['a100_re
+
+--- Cell 37 (markdown) ---
+### 7.2 Entrenamiento completo 75 episodios
+
+Ejecuta 12 corridas secuenciales: HAPPO, MASAC, MATD3 y MAAC para E1/E2/E3. Usa `--skip-completed`, por lo que si Colab se desconecta puedes reejecutar esta celda y continuara desde los artefactos completos.
+
+
+--- Cell 38 (code) ---
+# ── 7.2  Lanzar entrenamiento + monitor en paralelo ─────────────────────────
+# Usa Popen (no blocking) + bucle de monitoreo: mientras el launcher
+# entrena, esta celda muestra snapshots de progreso cada 60 s.
+# Si un job falla, imprime diagnostico S1-S3 con instrucciones de relaunch.
+LAUNCH_FULL_TRAINING = True
+
+if not LAUNCH_FULL_TRAINING:
+    print('LAUNCH_FULL_TRAINING=False — cambia a True p
+
+--- Cell 39 (markdown) ---
+### 7.3 Monitor visible manual
+
+Puedes ejecutar esta celda despues del entrenamiento, o tras reabrir el notebook, para ver el ultimo estado guardado. Durante el entrenamiento, el launcher imprime snapshots visibles cada 30 segundos.
+
+
+--- Cell 40 (code) ---
+# ── 7.3  Monitor visible en notebook ────────────────────────────────────────
+# Autosuficiente: funciona aunque el kernel haya sido reiniciado.
+import subprocess, sys, os
+from pathlib import Path
+
+_repo   = '/content/MADRLCitytleranflexresdr'
+_mon    = f'{_repo}/CityLearn/scripts/colab_a100_live_monitor.py'
+_python = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+
+# Inte
+
+--- Cell 41 (code) ---
+# ── 7.4  Resumen global de jobs y artefactos ────────────────────────────────
+import json, glob, os
+from pathlib import Path
+
+status_path = Path(OUTPUT_ROOT) / 'official_full_status.json'
+if not status_path.exists():
+    raise FileNotFoundError(f'No existe status oficial: {status_path}')
+
+with open(status_path) as f:
+    official_status = json.load(f)
+
+print('=' * 72)
+print('  RESUMEN DE ENTRENAM
+
+--- Cell 42 (markdown) ---
+### 7.5 Diagnostico de Drive — ejecutar en cualquier momento
+
+Celda autocontenida: funciona aunque el kernel haya reiniciado. Verifica las 4 senales de problema y muestra instrucciones de relaunch. **Tambien se ejecuta automaticamente dentro de la celda 7.2 si el entrenamiento falla.**
+
+--- Cell 43 (code) ---
+# ── 7.5  Diagnostico de Drive + senales de problema + relaunch ──────────────
+import json, sys, os
+from pathlib import Path
+from datetime import datetime, timezone
+
+_repo = '/content/MADRLCitytleranflexresdr'
+_ref  = Path(_repo) / 'outputs' / 'latest_colab_output_root.txt'
+
+# Auto-descubrir OUTPUT_ROOT aunque se haya reiniciado el kernel
+_out = globals().get('OUTPUT_ROOT', '') or (
+    _ref.read_
+
+--- Cell 44 (markdown) ---
+## Sección 8: Análisis de resultados y KPIs
+
+### Estructura de artefactos (algorithm-first)
+```
+{OUTPUT_ROOT}/
+  happo/
+    E1_seed_0/data/results.json  timeseries.csv  training_summary.json
+    E2_seed_0/data/results.json  ...
+    E3_seed_0/data/results.json  ...
+  masac/ matd3/ maac/  → misma estructura
+  logs/  happo_E1.log  masac_E1.log  ...
+  figures/  evaluation/
+```
+
+
+--- Cell 45 (code) ---
+# ── 8.1  Cargar todos los results.json ──────────────────────────────────────
+import json, os, glob
+import pandas as pd
+import numpy as np
+
+def load_all_results(output_root: str) -> pd.DataFrame:
+    records = []
+    # Layout algorithm-first: {output_root}/{algo}/{scenario}_seed_0/data/results.json
+    for fp in sorted(glob.glob(f"{output_root}/*/*/data/results.json", recursive=False)):
+        p
+
+--- Cell 46 (code) ---
+# ── 8.2  Curvas de convergencia (timeseries.csv, por episodio) ───────────────
+import matplotlib.pyplot as plt, glob, pandas as pd
+from pathlib import Path
+
+ts_data = {}
+for fp in sorted(glob.glob(f"{OUTPUT_ROOT}/*/*/data/timeseries.csv")):
+    parts = Path(fp).parts
+    root_idx = next(i for i,p in enumerate(parts) if p == Path(OUTPUT_ROOT).name)
+    algo     = parts[root_idx + 1].upper()
+    sc
+
+--- Cell 47 (markdown) ---
+## Sección 9: Evaluación estadística — Selección del mejor MADRL
+
+Protocolo idéntico al análisis oficial:
+1. **Shapiro-Wilk** — normalidad por algoritmo
+2. **Kruskal-Wallis** — diferencia global (4 grupos)
+3. **Mann-Whitney U** — pares con effect size (Cliff's δ)
+4. **Ranking global** — score ponderado por escenario
+
+
+--- Cell 48 (code) ---
+# ── 9.1  Suite de pruebas estadísticas ──────────────────────────────────────
+from scipy import stats
+import itertools, json, os
+import numpy as np, pandas as pd
+
+SCENARIO_WEIGHTS = {
+    "E1": {"peak_average": 0.50, "carbon_emissions": 0.25, "electricity_cost": 0.25},
+    "E2": {"peak_average": 0.25, "carbon_emissions": 0.50, "electricity_cost": 0.25},
+    "E3": {"peak_average": 0.25, "carbon_em
+
+--- Cell 49 (code) ---
+# ── 10.  Resumen final de la sesión Colab ───────────────────────────────────
+import json, glob, os
+from datetime import datetime
+
+print("=" * 65)
+print("  RESUMEN FINAL — MADRL CityLearn v3 · Colab A100")
+print("=" * 65)
+print(f"  Output root : {OUTPUT_ROOT}")
+print(f"  Timestamp   : {TIMESTAMP}")
+print(f"  Modo        : {'QUICK_TEST' if QUICK_TEST else 'FULL TRAINING (75 ep)'}")
+
+n_json = len(g
+
+--- Cell 50 (markdown) ---
+## Proximos pasos
+
+1. Si Colab se desconecta, vuelve a ejecutar configuracion inicial y la celda **7.2**; `--skip-completed` evita repetir jobs completos.
+2. Para revisar estado sin entrenar, ejecuta `CityLearn/scripts/colab_a100_live_monitor.py --output-root <OUTPUT_ROOT> --once`.
+3. Para evidencia de tesis, conserva `official_full_status.json`, `official_full_manifest.json`, `training_summary.js
+

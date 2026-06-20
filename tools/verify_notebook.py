@@ -75,14 +75,65 @@ for p in required:
     check(f"Ruta existe: {p}", os.path.exists(full))
 
 # ── 6. Dataset Iquitos ───────────────────────────────────────────────────────
-csv_count = len(glob.glob(os.path.join(ROOT, "CityLearn/data/datasets/citylearn_iquitos_2023_2025/*.csv")))
+DATASET_DIR = os.path.join(ROOT, "CityLearn/data/datasets/citylearn_iquitos_2023_2025")
+csv_count = len(glob.glob(os.path.join(DATASET_DIR, "*.csv")))
 check("222 CSV en dataset Iquitos", csv_count == 222, f"actual={csv_count}")
 
-schema_path = os.path.join(ROOT, "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json")
+schema_path = os.path.join(DATASET_DIR, "schema.json")
 with open(schema_path) as sf:
     schema = json.load(sf)
 check("17 edificios en schema.json", len(schema.get("buildings", {})) == 17)
 check("simulation_end_time_step = 26303", schema.get("simulation_end_time_step") == 26303)
+
+# ── 6b. Columnas reales del dataset Iquitos ──────────────────────────────────
+try:
+    import pandas as pd
+    _has_pandas = True
+except ImportError:
+    _has_pandas = False
+# Building CSV — snake_case reales
+bld_csv = os.path.join(DATASET_DIR, "Building_1.csv")
+if os.path.exists(bld_csv) and _has_pandas:
+    df_b = pd.read_csv(bld_csv)
+    required_bld_cols = ["month", "hour", "day_type", "non_shiftable_load",
+                         "solar_generation", "cooling_demand", "dhw_demand"]
+    missing_bld = [c for c in required_bld_cols if c not in df_b.columns]
+    check("Building_1.csv columnas reales (snake_case)", not missing_bld,
+          f"faltantes={missing_bld}" if missing_bld else "")
+    check("Building_1.csv 26304 filas", len(df_b) == 26304, f"actual={len(df_b)}")
+elif os.path.exists(bld_csv):
+    check("Building_1.csv existe", True)
+# Weather CSV
+wthr_csv = os.path.join(DATASET_DIR, "weather.csv")
+if os.path.exists(wthr_csv) and _has_pandas:
+    df_w = pd.read_csv(wthr_csv)
+    required_w_cols = ["outdoor_dry_bulb_temperature", "outdoor_relative_humidity",
+                       "direct_solar_irradiance", "diffuse_solar_irradiance"]
+    missing_w = [c for c in required_w_cols if c not in df_w.columns]
+    check("weather.csv columnas reales", not missing_w,
+          f"faltantes={missing_w}" if missing_w else "")
+elif os.path.exists(wthr_csv):
+    check("weather.csv existe", True)
+# Charger CSVs — 185 puntos EV
+charger_count = len(glob.glob(os.path.join(DATASET_DIR, "charger_*.csv")))
+check("185 charger CSVs en dataset Iquitos", charger_count == 185, f"actual={charger_count}")
+# carbon_intensity + pricing
+check("carbon_intensity.csv existe", os.path.exists(os.path.join(DATASET_DIR, "carbon_intensity.csv")))
+check("pricing.csv existe", os.path.exists(os.path.join(DATASET_DIR, "pricing.csv")))
+
+# ── 6c. Notebook usa dataset Iquitos (no challenge_2022) ─────────────────────
+cell26 = "".join(nb["cells"][26]["source"])
+check("Celda 26: usa dataset citylearn_iquitos_2023_2025",
+      "citylearn_iquitos_2023_2025" in cell26)
+check("Celda 26: BUILDING_REQUIRED_COLS con snake_case reales",
+      "non_shiftable_load" in cell26 and "solar_generation" in cell26)
+check("Celda 26: NO usa columnas CityLearn v2 antiguas",
+      "Equipment Electric Power" not in cell26 and "Solar Generation [W/kW]" not in cell26)
+cell28 = "".join(nb["cells"][28]["source"])
+check("Celda 28: smoke test pasa schema_path explícito (no DEFAULT)",
+      "schema_path=IQUITOS_SCHEMA" in cell28 or "schema_path=" in cell28)
+check("Celda 28: verifica dataset iquitos_2023_2025",
+      "iquitos_2023_2025" in cell28 or "IQUITOS_SCHEMA" in cell28)
 
 # ── 7. venv Python 3.9 ───────────────────────────────────────────────────────
 venv_python = os.path.join(ROOT, ".venv39-citylearn-v3", "Scripts", "python.exe")

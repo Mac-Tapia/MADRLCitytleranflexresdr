@@ -44,10 +44,9 @@ def verify_launcher(relative_path: str, expect_parallel: bool) -> None:
             '"--trace-record-interval", "$TraceRecordInterval"',
             '"--trace-detail", "$TraceDetail"',
             "artifact_optimization = [ordered]@",
-            "legacy_root_artifacts = $false",
-            "root_trace_csv = $false",
-            "statistical_comparison_artifacts = $false",
-            "statistical_trace_copy = $false",
+            'profile = $ArtifactProfile',
+            'root_trace_csv = ($ArtifactProfile -eq "full")',
+            'statistical_trace_copy = ($ArtifactProfile -eq "full")',
             "Get-DedicatedCudaGpuInfo",
             "nvidia-smi --query-gpu=name,memory.total,memory.free,driver_version",
             "source = \"nvidia-smi dedicated memory, not Windows shared GPU memory\"",
@@ -79,7 +78,9 @@ def verify_launcher(relative_path: str, expect_parallel: bool) -> None:
         require("MasacQmixHiddenDim = if ($IsLocal8GbGpu) { 32 } else { 128 }" in text, f"{relative_path} must use MASAC QMIX hidden 32 on local 8GB GPUs")
         require('"--masac-preload-batch-device", "$MasacPreloadBatchDevice"' in text, f"{relative_path} must pass optimized MASAC batch preload mode")
         require("start_from_algorithm = $StartFromAlgorithm" in text, f"{relative_path} must persist resume start algorithm in status")
-        require("algorithm_order = @(\"happo\", \"masac\", \"matd3\", \"maac\")" in text, f"{relative_path} must persist algorithm order in status")
+        require("$PrimaryAlgorithmOrder = @(\"happo\", \"masac\", \"matd3\", \"maac\")" in text, f"{relative_path} must define the primary algorithm order")
+        require("algorithm_order = $AlgorithmOrder" in text, f"{relative_path} must persist algorithm order in status")
+        require("[string]$EndAtAlgorithm" in text, f"{relative_path} must support EndAtAlgorithm for single-stage runs")
         require("skip_reason  = $Reason" in text, f"{relative_path} must explain skipped training records")
         require('Add-SkippedTrainingJobRecord -Job $skippedJob -Reason "start_from_algorithm"' in text, f"{relative_path} must record StartFromAlgorithm skips")
     if "iquitos_training" in relative_path:
@@ -169,11 +170,12 @@ def verify_training_common() -> None:
         [
             'choices=("full", "efficient", "minimal")',
             'artifact_profile not in {"full", "efficient", "minimal"}',
-            'legacy_root_artifacts = bool(getattr(args, "legacy_root_artifacts", False))',
-            'export_statistical_comparison = bool(getattr(args, "statistical_comparison_artifacts", False))',
-            'write_root_trace = legacy_root_artifacts and artifact_profile == "full"',
-            'include_statistical_trace = export_statistical_comparison and artifact_profile == "full"',
-            "def _remove_completed_live_progress",
+            'write_root_timeseries = artifact_profile in {"full", "efficient"}',
+            'write_root_trace = artifact_profile == "full"',
+            'write_root_detail_tables = artifact_profile == "full"',
+            'include_statistical_trace = artifact_profile == "full"',
+            "def start_live_progress_heartbeat",
+            "def stop_live_progress_heartbeat",
             "def _trace_sampling_payload",
             '"trace_is_sampled": sampled',
             "self.trace_record_interval = max(0, int(trace_record_interval))",
@@ -319,13 +321,11 @@ def verify_tests() -> None:
         text,
         relative_path,
         [
-            "test_default_artifact_profile_avoids_duplicate_root_and_comparison_artifacts",
-            "test_legacy_root_and_statistical_comparison_artifacts_are_explicit",
-            'policy["legacy_root_artifacts"] is False',
-            'policy["statistical_comparison_artifacts"] is False',
+            "test_efficient_artifact_profile_avoids_duplicate_heavy_trace_csv",
             "trace_happo_E3.csv",
-            'policy["root_timeseries_csv"] is False',
+            'policy["root_timeseries_csv"] is True',
             'policy["root_trace_csv"] is False',
+            'policy["statistical_comparison_trace_csv"] is False',
             'policy["trace_is_sampled"] is True',
             'policy["trace_record_interval"] == 10',
         ],

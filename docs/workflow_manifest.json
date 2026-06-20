@@ -99,16 +99,31 @@
       "max_concurrent_scenario_jobs": 2,
       "max_concurrent_heavy_jobs": 1,
       "parallelization_policy": "Visible monitoring is decoupled from rich per-job LiveOutput. On an 8 GB RTX 4060 Laptop GPU, HAPPO/MATD3 may run up to 2 scenarios concurrently; MASAC/MAAC remain capped at 1 for replay/critic memory stability. LiveOutput=true is reserved for sequential debugging.",
-      "baseline_algorithms": [
-        "ppo",
-        "sac",
-        "a2c",
-        "maddpg",
-        "mappo"
-      ],
       "primary_training_runs": 12,
-      "baseline_comparison_runs": 15,
-      "best_selection_required_line": "Mejor algoritmo MADRL seleccionado: [HAPPO / MASAC / MATD3 / MAAC]"
+      "best_selection_required_line": "Mejor algoritmo MADRL seleccionado: [HAPPO / MASAC / MATD3 / MAAC]",
+      "baseline_comparison": {
+        "mode": "project_local_citylearn_v2",
+        "internal_citylearn_v2_baseline": "evaluate_v2 written by every MADRL training run into objective_kpis/axis_baseline_comparison/baseline_gain_by_kpi",
+        "benchmark_script": "CityLearn/scripts/benchmark_citylearn_v2_agents.py",
+        "benchmark_agents_default": [
+          "baseline",
+          "hour_rbc"
+        ],
+        "comparator": "CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py",
+        "rule": "PPO/SAC/A2C are implemented only as CityLearn v2 central-agent Stable-Baselines3 comparison baselines on the same local Iquitos schema, not as MADRL v3 agents.",
+        "sb3_comparison_agents": [
+          "ppo",
+          "sac",
+          "a2c"
+        ],
+        "sb3_comparison_scripts": {
+          "ppo": "CityLearn/scripts/benchmark_citylearn_v2_ppo.py",
+          "sac": "CityLearn/scripts/benchmark_citylearn_v2_sac.py",
+          "a2c": "CityLearn/scripts/benchmark_citylearn_v2_a2c.py"
+        },
+        "sb3_train_episodes": 75,
+        "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json"
+      }
     },
     {
       "stage": "monitoring",
@@ -173,7 +188,7 @@
       "outputs/_archive/concurrency_policy_dryrun"
     ],
     "canonical_current_run_rule": "Use outputs/latest_visible_training_output_root.txt when present; otherwise use the newest output directory with official_full_status.json.",
-    "final_results_rule": "Do not report final KPIs/rankings until all 12 primary MADRL jobs have exit_code=0, all required_job_artifacts exist, and baseline comparison jobs use the same Iquitos CityLearn v3 dataset/layer.",
+    "final_results_rule": "Do not report final KPIs/rankings until all 12 primary MADRL jobs have exit_code=0, all required_job_artifacts exist, and CityLearn v2 baseline/hour_rbc plus SB3 PPO/SAC/A2C comparison scripts use the same Iquitos schema.",
     "archive_layout_note": "Runs marked failed/stale/dry-run are moved to outputs/_archive/ (added 2026-06-13 reorg). outputs/runs/ is reserved for future training runs. Completed reference runs remain at outputs/ root when they are canonical evidence for audit or thesis reporting."
   },
   "modified_submodules": {

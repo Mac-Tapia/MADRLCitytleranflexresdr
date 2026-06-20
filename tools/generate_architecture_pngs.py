@@ -411,7 +411,7 @@ HTML_FLUJO = """<!DOCTYPE html>
     <div class="box-title"><span class="num">3</span>Launcher ALL</div>
     <div class="box-text">
       <code>run_citylearn_v3_full_training_visible.ps1</code><br>
-      -Scenario ALL · -Episodes 5 · -Cuda<br>
+      -Scenario ALL · -Episodes 75 · -Cuda<br>
       -GpuProfile local4060_fast<br>
       12 jobs: 4 MADRL × 3 ejes<br>
       -ArtifactProfile efficient

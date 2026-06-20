@@ -75,9 +75,9 @@ Si se activa `-LiveOutput $true`, el mismo launcher cambia a modo secuencial par
 Cada job usa:
 
 ```text
-episodes = 5
+episodes = 75
 episode_time_steps = 8760
-num_env_steps = 43800
+num_env_steps = 657000
 seed = 0
 dataset = citylearn_iquitos_2023_2025
 ```
@@ -112,7 +112,7 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
-  -Episodes 5 `
+  -Episodes 75 `
   -TorchThreads 8 `
   -GpuProfile local4060_fast `
   -LiveProgressInterval 1000 `
@@ -237,7 +237,7 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
-  -Episodes 5 `
+  -Episodes 75 `
   -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
   -OutputRoot <OutputRoot> `
   -TorchThreads 8 `
@@ -262,7 +262,7 @@ Importante: esto continua la cadena sin empezar toda la campaña desde cero, per
 En la corrida historica `outputs/citylearn_v3_madrl_oficial_v4` se observo:
 
 ```text
-HAPPO/E1: completo, 5 episodios, 43800 pasos.
+HAPPO/E1: completo, 5 episodios, 43800 pasos (corrida historica previa al contrato actual de 75 episodios).
 MASAC/E1: incompleto, ultimo live_progress en global_step=17000.
 ```
 
@@ -299,7 +299,7 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
-  -Episodes 5 `
+  -Episodes 75 `
   -SchemaPath CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
   -OutputRoot <OutputRoot> `
   -TorchThreads 8 `

@@ -65,7 +65,13 @@ official_training:
   active_output_pointer: "outputs/latest_visible_training_output_root.txt"
   output_root_pattern: "outputs/citylearn_v3_madrl_full_<yyyyMMdd_HHmmss>"
   algorithms: ["happo", "masac", "matd3", "maac"]
-  baseline_algorithms: ["ppo", "sac", "a2c", "maddpg", "mappo"]
+  baseline_comparison_agents: ["baseline", "hour_rbc"]
+  baseline_comparison_script: "CityLearn/scripts/benchmark_citylearn_v2_agents.py"
+  sb3_comparison_agents: ["ppo", "sac", "a2c"]
+  sb3_comparison_scripts:
+    ppo: "CityLearn/scripts/benchmark_citylearn_v2_ppo.py"
+    sac: "CityLearn/scripts/benchmark_citylearn_v2_sac.py"
+    a2c: "CityLearn/scripts/benchmark_citylearn_v2_a2c.py"
   scenarios: ["E1", "E2", "E3"]
   seed: 0
   episodes: 75

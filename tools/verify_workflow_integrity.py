@@ -116,8 +116,39 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
     require(training.get("wrapper") == "scripts/run_citylearn_v3_full_training_visible.ps1", "Training wrapper is not canonical", errors)
     require(training.get("algorithms") == ["happo", "masac", "matd3", "maac"], "Training algorithms are not HAPPO/MASAC/MATD3/MAAC", errors)
     require(training.get("scenarios") == ["E1", "E2", "E3"], "Training scenarios are not E1/E2/E3", errors)
-    require(training.get("episodes") == 5, "Training episodes must be 5", errors)
+    require(training.get("episodes") == 75, "Training episodes must be 75", errors)
     require(training.get("episode_time_steps") == 8760, "Training episode_time_steps must be 8760", errors)
+    require(training.get("num_env_steps") == 657000, "Training num_env_steps must be 657000", errors)
+    baseline = training.get("baseline_comparison", {})
+    require(baseline.get("mode") == "project_local_citylearn_v2", "Training baseline must use the project-local CityLearn v2 flow", errors)
+    require(
+        baseline.get("benchmark_script") == "CityLearn/scripts/benchmark_citylearn_v2_agents.py",
+        "Training baseline benchmark script is not canonical",
+        errors,
+    )
+    require(
+        baseline.get("benchmark_agents_default") == ["baseline", "hour_rbc"],
+        "Training baseline agents must be the local CityLearn v2 baseline/hour_rbc defaults",
+        errors,
+    )
+    require(
+        baseline.get("sb3_comparison_agents") == ["ppo", "sac", "a2c"],
+        "Training must declare CityLearn v2 SB3 PPO/SAC/A2C comparison agents",
+        errors,
+    )
+    sb3_scripts = baseline.get("sb3_comparison_scripts", {})
+    for agent, expected_script in {
+        "ppo": "CityLearn/scripts/benchmark_citylearn_v2_ppo.py",
+        "sac": "CityLearn/scripts/benchmark_citylearn_v2_sac.py",
+        "a2c": "CityLearn/scripts/benchmark_citylearn_v2_a2c.py",
+    }.items():
+        require(sb3_scripts.get(agent) == expected_script, f"Missing canonical SB3 {agent} comparison script in workflow_manifest", errors)
+        require(project_path(expected_script).is_file(), f"Missing SB3 comparison script: {expected_script}", errors)
+    require(
+        "CityLearn v2 central-agent Stable-Baselines3" in str(baseline.get("rule", "")),
+        "Training baseline rule must keep PPO/SAC/A2C in CityLearn v2 SB3 comparison flow",
+        errors,
+    )
     require(training.get("live_output") is False, "Training live_output must default to false for visible parallel monitoring", errors)
     require(training.get("parallel_scenarios") is True, "Training parallel_scenarios must default to true", errors)
     require(training.get("max_concurrent_scenario_jobs") == 2, "Training must request 2 concurrent scenario jobs", errors)
@@ -212,6 +243,33 @@ def validate_training_scripts(errors: list[str]) -> None:
         require(script.is_file(), f"Missing training script {rel(script)}", errors)
         require(f"train_citylearn_v3_{algorithm}.py" in text, f"Launcher does not reference train_citylearn_v3_{algorithm}.py", errors)
 
+    for script_name in ("benchmark_citylearn_v2_ppo.py", "benchmark_citylearn_v2_sac.py", "benchmark_citylearn_v2_a2c.py"):
+        script = ROOT / "CityLearn" / "scripts" / script_name
+        require(script.is_file(), f"Missing CityLearn v2 SB3 comparison script {rel(script)}", errors)
+
+    sb3_common = ROOT / "CityLearn" / "scripts" / "benchmark_citylearn_v2_sb3_common.py"
+    require(sb3_common.is_file(), f"Missing {rel(sb3_common)}", errors)
+    if sb3_common.is_file():
+        sb3_text = sb3_common.read_text(encoding="utf-8")
+        require("central_agent=True" in sb3_text, "SB3 comparison scripts must use CityLearn v2 central_agent=True", errors)
+        require("CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json" in sb3_text, "SB3 comparison scripts must default to the local Iquitos schema", errors)
+        require("StableBaselines3Wrapper" in sb3_text, "SB3 comparison scripts must use StableBaselines3Wrapper", errors)
+
+    notebook_path = ROOT / "CityLearn" / "examples" / "madrl_citylearn_v3_tutorial.ipynb"
+    notebook = json.loads(notebook_path.read_text(encoding="utf-8"))
+    notebook_text = "\n".join("".join(cell.get("source", [])) for cell in notebook.get("cells", []))
+    require(
+        'CITYLEARN_V2_BENCHMARKS = ["PPO", "SAC", "A2C"]' in notebook_text,
+        "Notebook must declare PPO/SAC/A2C as the only CityLearn v2 SB3 benchmarks",
+        errors,
+    )
+    require(
+        "Nota MAPPO (baseline)" not in notebook_text and "baselines MADRL opcionales" not in notebook_text,
+        "Notebook must not describe MAPPO/MADDPG as official baselines",
+        errors,
+    )
+
+    require("[string]$EndAtAlgorithm" in text, "Launcher must support EndAtAlgorithm for single-stage runs", errors)
     require("tools\\check_training_dataset_ready.py" in text, "Launcher does not run dataset readiness gate", errors)
     require("local_8gb_safety_mode" in text, "Launcher does not record local 8GB VRAM safety mode", errors)
     require("$MaxConcurrentScenarioJobs = 2" in text, "Launcher does not cap scenario concurrency at 2 for local 8GB GPU", errors)

@@ -11,6 +11,7 @@ NB_PATH = os.path.join(ROOT, "CityLearn", "examples", "madrl_citylearn_v3_tutori
 with open(NB_PATH, encoding="utf-8") as f:
     nb = json.load(f)
 
+notebook_source = "\n".join("".join(cell.get("source", [])) for cell in nb.get("cells", []))
 results = []
 
 
@@ -57,9 +58,9 @@ required = [
     "CityLearn/scripts/train_citylearn_v3_masac.py",
     "CityLearn/scripts/train_citylearn_v3_matd3.py",
     "CityLearn/scripts/train_citylearn_v3_maac.py",
-    # Baseline comparison scripts (Observacion 1 corregida)
-    "CityLearn/scripts/train_citylearn_v3_mappo.py",
-    "CityLearn/scripts/train_citylearn_v3_maddpg.py",
+    "CityLearn/scripts/benchmark_citylearn_v2_ppo.py",
+    "CityLearn/scripts/benchmark_citylearn_v2_sac.py",
+    "CityLearn/scripts/benchmark_citylearn_v2_a2c.py",
     "CityLearn/citylearn/v3/environment.py",
     "external/HARL",
     "external/MARL/src",
@@ -134,6 +135,10 @@ check("Celda 28: smoke test pasa schema_path explícito (no DEFAULT)",
       "schema_path=IQUITOS_SCHEMA" in cell28 or "schema_path=" in cell28)
 check("Celda 28: verifica dataset iquitos_2023_2025",
       "iquitos_2023_2025" in cell28 or "IQUITOS_SCHEMA" in cell28)
+check("Notebook: PPO/SAC/A2C quedan como benchmarks v2 y MAPPO/MADDPG no son baseline oficial",
+      'CITYLEARN_V2_BENCHMARKS = ["PPO", "SAC", "A2C"]' in notebook_source
+      and "Nota MAPPO (baseline)" not in notebook_source
+      and "baselines MADRL opcionales" not in notebook_source)
 
 # ── 7. venv Python 3.9 ───────────────────────────────────────────────────────
 venv_python = os.path.join(ROOT, ".venv39-citylearn-v3", "Scripts", "python.exe")

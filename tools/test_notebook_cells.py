@@ -106,7 +106,7 @@ assert "'pull', '--ff-only'" not in code_src, \
     "Notebook no debe usar git pull --ff-only en el espejo Colab existente"
 assert "git_check(['-C', REPO, 'checkout', '-B', REPO_BRANCH, 'FETCH_HEAD'])" in code_src, \
     "Notebook no resetea la rama Colab existente contra FETCH_HEAD"
-assert "git_check(['-C', REPO, 'submodule', 'update', '--init', '--recursive', '--force'])" in code_src, \
+assert "git_check(['-C', REPO, 'submodule', 'update', '--init', '--recursive'," in code_src and "'--force'" in code_src, \
     "Notebook no fuerza submódulos al commit fijado por el repo padre"
 assert "submodule_status = sh(['git', 'submodule', 'status', '--recursive'])" in code_src, \
     "Notebook no valida estado de submódulos"
@@ -116,23 +116,22 @@ assert "csv_count == 222" in code_src, "Notebook no valida dataset completo de 2
 print("[PASS] Orden crítico y espejo repo/submódulos/dataset validados en notebook")
 
 DEPENDENCY_GUARDS = [
-    "PYTHON_MAX_EXCLUSIVE = (3, 12)",
-    "Python 3.12 rompe la combinación CityLearn/scikit-learn<=1.2.2",
-    "'numpy==1.26.4'",
-    "'pandas==2.1.4'",
-    "'scipy==1.11.4'",
+    "PYTHON_MAX_EXCLUSIVE = (3, 10)",
+    "Usa Python 3.9 del proyecto",
+    "'numpy==1.23.5'",
+    "'pandas>=2.0,<2.3'",
+    "'scipy>=1.10,<1.14'",
     "'scikit-learn==1.2.2'",
-    "'matplotlib==3.8.4'",
-    "'seaborn==0.13.2'",
-    "madrl_citylearn_colab_constraints.txt",
+    "'matplotlib>=3.7,<3.9'",
+    "'seaborn>=0.12,<0.14'",
+    "CONSTRAINTS = Path('/tmp/madrl_compat.txt')",
     "--force-reinstall",
-    "--no-cache-dir",
-    "modules_loaded_before_install",
-    "Verificando ABI en un proceso Python nuevo",
-    "subprocess.check_call([sys.executable, '-c', compat_check])",
+    "BINARY_DEPS = ('numpy', 'pandas', 'scipy', 'scikit-learn', 'matplotlib', 'seaborn')",
+    "Verificando ABI en Python 3.9 del proyecto",
+    "result = subprocess.run([PROJECT_PYTHON, '-c', ABI_CHECK], capture_output=True, text=True)",
     "'scipy'",
     "'sklearn'",
-    "Detectado conflicto ABI numpy/pandas",
+    "Esto ocurre si pip cambio numpy/scipy sin reiniciar",
 ]
 for guard in DEPENDENCY_GUARDS:
     assert guard in code_src, f"Falta guardrail de dependencias Colab: {guard}"

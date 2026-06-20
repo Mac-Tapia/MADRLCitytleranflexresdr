@@ -49,7 +49,7 @@ check("REPO_BRANCH = codex/fix-madrl-traceability-docs",
       str(branch_lines))
 
 # ── 4. Total de celdas ───────────────────────────────────────────────────────
-check("53 celdas en el notebook", len(nb["cells"]) == 53, f"actual={len(nb['cells'])}")
+check("55 celdas en el notebook", len(nb["cells"]) == 55, f"actual={len(nb['cells'])}")
 
 # ── 5. Rutas requeridas ──────────────────────────────────────────────────────
 required = [

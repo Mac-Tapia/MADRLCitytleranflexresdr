@@ -269,6 +269,19 @@ def validate_training_scripts(errors: list[str]) -> None:
         errors,
     )
 
+    colab_launcher = ROOT / "CityLearn" / "scripts" / "colab_a100_official_launcher.py"
+    require(colab_launcher.is_file(), f"Missing {rel(colab_launcher)}", errors)
+    if colab_launcher.is_file():
+        colab_launcher_text = colab_launcher.read_text(encoding="utf-8")
+        require("--include-baselines" not in colab_launcher_text, "Colab launcher must not expose MAPPO/MADDPG baseline flag", errors)
+        require('"name": "mappo"' not in colab_launcher_text, "Colab launcher must not plan MAPPO v3 jobs", errors)
+        require('"name": "maddpg"' not in colab_launcher_text, "Colab launcher must not plan MADDPG v3 jobs", errors)
+        require(
+            'CITYLEARN_V2_BENCHMARKS = ("PPO", "SAC", "A2C")' in colab_launcher_text,
+            "Colab launcher must document PPO/SAC/A2C as the only comparison benchmarks",
+            errors,
+        )
+
     require("[string]$EndAtAlgorithm" in text, "Launcher must support EndAtAlgorithm for single-stage runs", errors)
     require("tools\\check_training_dataset_ready.py" in text, "Launcher does not run dataset readiness gate", errors)
     require("local_8gb_safety_mode" in text, "Launcher does not record local 8GB VRAM safety mode", errors)

@@ -1,0 +1,46 @@
+flowchart TD
+    subgraph INSUMOS["Insumos primarios (reales)"]
+        FAC["Facturas electricas\nB02-B17.csv\nkWh punta / fuera punta\nGastos reales 2023-2025"]
+        MET["Datos meteorologicos\nOpen-Meteo API\nGHI, T_amb, HR\nIquitos -3.74 lat"]
+        AUD["Auditoria tecnica\nAreas techadas\nTipos HVAC\nFlota EV por edificio"]
+    end
+
+    subgraph PIPELINE["Pipeline de generacion (tools/)"]
+        DEST["distill_building_loads.py\nNSL residual = E_medido - cooling/COP - DHW/COP\nBalance mensual < 0.1 percent error"]
+        GEN["generate_iquitos_dataset.py\nInterpolacion horaria\nPronostico meses faltantes\ncalendar_month_mean_overlap_scaled"]
+        SCHEMA["fix_schema_cooling.py\nAutosize safety factor\nchiller agua / multi-chiller\nprecision AC / ultra-freezers -80C"]
+        VALID["orchestrate_citylearn_dataset.py\nIntegridad 222 CSV\n26 304 filas x edificio\ncharger NaN check"]
+    end
+
+    subgraph DATASET["Dataset final (CityLearn/data/datasets/)"]
+        direction LR
+        BUILD["Building_X.csv x17\nNSL + cooling + DHW\n26 304 pasos horarios"]
+        WEATH["weather.csv\nGHI, T, HR, presion\nIquitos tropical"]
+        CARBON["carbon_intensity.csv\n0.671-0.790 kgCO2/kWh\nMINAM RAGEI 2019"]
+        PRICE["pricing.csv\nPunta 18-22h: 0.38 USD/kWh\nFuera punta: 0.26 USD/kWh"]
+        EV["charger_X_Y.csv x185\n96 equipos Modo 3\n1 850 EV en pool"]
+        SC["schema.json\n17 edificios registrados\nBESS + PV + EV por edificio"]
+        BUILD --- WEATH --- CARBON --- PRICE --- EV --- SC
+    end
+
+    subgraph EDIFICIOS["17 edificios reales de Iquitos"]
+        B["B01 ELECTRO ORIENTE 6747 kWh BESS\nB03 AEROPUERTO 2363 kWh BESS\nB06 MALL AVENTURA 2541 kWh BESS\nB07 UNAP BIOLOGIA 984 kWh BESS\nB11 HOSPITAL REGIONAL 1901 kWh BESS\n... 12 edificios mas"]
+    end
+
+    FAC --> DEST
+    MET --> GEN
+    AUD --> SCHEMA
+    DEST --> VALID
+    GEN --> VALID
+    SCHEMA --> VALID
+    VALID --> DATASET
+    DATASET --> EDIFICIOS
+
+    classDef ins fill:#fef3c7,stroke:#d97706,color:#1c1917
+    classDef pipe fill:#e0f2fe,stroke:#0284c7,color:#1c1917
+    classDef ds fill:#dbeafe,stroke:#2563eb,color:#1c1917
+    classDef edif fill:#f0fdf4,stroke:#16a34a,color:#1c1917
+    class INSUMOS ins
+    class PIPELINE pipe
+    class DATASET ds
+    class EDIFICIOS edif

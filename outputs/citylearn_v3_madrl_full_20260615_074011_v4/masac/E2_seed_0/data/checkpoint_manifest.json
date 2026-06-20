@@ -1,0 +1,142 @@
+{
+  "algorithm": "MASAC",
+  "backend": "external/MADRL-MASAC",
+  "checkpoint_count": 3,
+  "checkpoint_dir": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\masac\\E2_seed_0\\checkpoints",
+  "checkpoints": [
+    {
+      "bytes": 249333,
+      "path": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\masac\\E2_seed_0\\checkpoints\\models\\linear_mix\\qmix_sac\\clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_5_1.0\\citylearn_v3_E2\\0_policy_net_params.pkl",
+      "relative_path": "checkpoints\\models\\linear_mix\\qmix_sac\\clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_5_1.0\\citylearn_v3_E2\\0_policy_net_params.pkl"
+    },
+    {
+      "bytes": 139969,
+      "path": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\masac\\E2_seed_0\\checkpoints\\models\\linear_mix\\qmix_sac\\clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_5_1.0\\citylearn_v3_E2\\0_qmix_net_params.pkl",
+      "relative_path": "checkpoints\\models\\linear_mix\\qmix_sac\\clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_5_1.0\\citylearn_v3_E2\\0_qmix_net_params.pkl"
+    },
+    {
+      "bytes": 249291,
+      "path": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\masac\\E2_seed_0\\checkpoints\\models\\linear_mix\\qmix_sac\\clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_5_1.0\\citylearn_v3_E2\\0_rnn_net_params.pkl",
+      "relative_path": "checkpoints\\models\\linear_mix\\qmix_sac\\clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_5_1.0\\citylearn_v3_E2\\0_rnn_net_params.pkl"
+    }
+  ],
+  "hyperparameters": {
+    "action_bins": 3,
+    "actor_lr": 0.0003,
+    "actor_sample_times": 2,
+    "algorithm_family": "MADRL",
+    "alpha_lr": 0.0003,
+    "backend_repository": "external/MARL/src",
+    "buffer_size": 2,
+    "critic_batch_size": 1,
+    "critic_lr": 0.0005,
+    "critic_train_steps": 1,
+    "ctde_state_shape": 1907,
+    "cuda": true,
+    "discrete_action_metadata": {
+      "action_bins": 3,
+      "cartesian_action_count": 984770902183611232881,
+      "growth": "linear",
+      "max_action_dim": 44,
+      "mode": "axis",
+      "n_discrete_actions": 89,
+      "note": "Axis mode avoids the cartesian explosion from MultiDiscrete-style joint actuator combinations while preserving a single Discrete action id required by the external MASAC/MAAC backends."
+    },
+    "discrete_action_mode": "axis",
+    "episode_limit": 8760,
+    "episodes": 5,
+    "estimated_replay_buffer_gib": 2.743958830833435,
+    "finite_optimizer_step_guard": {
+      "audit_file_exists": true,
+      "audit_file_repaired": true,
+      "audit_file_repaired_at": "2026-06-17T10:11:57.839514+00:00",
+      "audit_initialized": true,
+      "audit_path": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\masac\\E2_seed_0\\data\\masac_finite_gradient_guard.jsonl",
+      "installed_optimizers": 4
+    },
+    "gamma": 0.9999,
+    "gpu_runtime": {
+      "cuda_available": true,
+      "cuda_device": "cuda:0",
+      "cuda_device_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "cuda_device_total_memory_gib": 7.99560546875,
+      "cuda_enabled": true,
+      "cuda_memory_fraction_applied": 0.812,
+      "cuda_memory_fraction_error": null,
+      "cuda_memory_fraction_requested": 0.812,
+      "cuda_requested": true,
+      "cudnn_benchmark": true,
+      "matmul_precision": "high",
+      "profile": "local4060_fast",
+      "pytorch_cuda_alloc_conf": "max_split_size_mb:128",
+      "tf32_allowed": true,
+      "torch_threads": 8
+    },
+    "grad_norm_clip": 1.0,
+    "hyper_hidden_dim": 64,
+    "live_heartbeat_seconds": 30,
+    "live_progress_interval": 1000,
+    "masac_backend_optimization": {
+      "already_installed": false,
+      "changes": [
+        "sampled replay batches are tensorized once per update",
+        "CUDA batch preload uses auto fallback to CPU after OOM",
+        "agent identity matrix is cached per device/dtype/batch",
+        "hidden-state allocation is created directly on target device",
+        "per-timestep .cuda() calls are removed when batch preload succeeds"
+      ],
+      "enabled": true,
+      "patch_version": "citylearn_masac_runtime_v1"
+    },
+    "masac_preload_batch_device": "auto",
+    "max_replay_buffer_gib": 3.0,
+    "n_discrete_actions": 89,
+    "n_episodes_per_epoch": 1,
+    "n_epoch": 5,
+    "qmix_hidden_dim": 32,
+    "reward_function": "CityLearnV3MADRLRewardFunction",
+    "reward_metadata": {
+      "algorithm": "MASAC",
+      "axis_weights": {
+        "carbon": 0.7,
+        "cost": 0.15,
+        "flex": 0.15
+      },
+      "base_reward": "CityLearnV3MADRLRewardFunction",
+      "function": "CityLearnV3MADRLRewardFunction",
+      "not_using_marl_base_weights": true,
+      "profile": {
+        "axis_weight_multipliers": {
+          "carbon": 1.0,
+          "cost": 1.0,
+          "flex": 1.0
+        },
+        "bess_cycle_scale": 0.05,
+        "bess_cycle_weight": 0.1,
+        "ev_departure_deficit_weight": 0.7,
+        "ev_idle_deficit_weight": 0.25,
+        "ev_soc_critical_deficit": 0.25,
+        "ev_soc_tolerance": 0.05,
+        "ev_urgency_deficit_weight": 0.3,
+        "ev_urgency_hours": 8.0,
+        "ev_weight": 0.25,
+        "peak_weight": 0.45,
+        "profile_name": "masac_unified_comparable_v4",
+        "ramp_weight": 0.35,
+        "reward_scale": 1.0,
+        "team_reward_ratio": 0.7
+      },
+      "scenario": "E2"
+    },
+    "reward_profile": "MASAC",
+    "rnn_hidden_dim": 64,
+    "torch_threads": 8,
+    "use_recurrent_policy": false
+  },
+  "normalization": {
+    "action_note": "CityLearn storage/EV actions already use the native control-space bounds exposed by action_space.",
+    "normalize_actions": false,
+    "normalize_observations": true,
+    "observation_method": "CityLearn NormalizedObservationWrapper plus adapter clipping to [0, 1]."
+  }
+}

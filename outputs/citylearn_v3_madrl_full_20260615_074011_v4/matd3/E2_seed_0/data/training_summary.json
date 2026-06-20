@@ -1,0 +1,4465 @@
+{
+  "algorithm": "MATD3",
+  "algorithm_family": "MADRL",
+  "artifact_layout": {
+    "checkpoints": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\checkpoints",
+    "data": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data",
+    "figures": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\figures",
+    "run": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0",
+    "tables": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\figures\\tables"
+  },
+  "artifacts": {
+    "artifact_audit": {
+      "completed_episode_count_from_timeseries": 43800,
+      "episode_step_count_mismatches": [],
+      "episode_summaries": [
+        {
+          "episode": 0,
+          "first_global_step": "0",
+          "last_all_done": "False",
+          "last_episode_step": "8759",
+          "last_global_step": "8759",
+          "last_time_step": "3",
+          "reward_mean_average": -0.5464507429692338,
+          "reward_sum_total": -81377.4446429783,
+          "steps": 8760
+        },
+        {
+          "episode": 1,
+          "first_global_step": "8760",
+          "last_all_done": "False",
+          "last_episode_step": "8759",
+          "last_global_step": "17519",
+          "last_time_step": "4",
+          "reward_mean_average": -0.5207840899681015,
+          "reward_sum_total": -77555.16667804969,
+          "steps": 8760
+        },
+        {
+          "episode": 2,
+          "first_global_step": "17520",
+          "last_all_done": "False",
+          "last_episode_step": "8759",
+          "last_global_step": "26279",
+          "last_time_step": "5",
+          "reward_mean_average": -0.5356525117536577,
+          "reward_sum_total": -79769.3720503547,
+          "steps": 8760
+        },
+        {
+          "episode": 3,
+          "first_global_step": "26280",
+          "last_all_done": "False",
+          "last_episode_step": "8759",
+          "last_global_step": "35039",
+          "last_time_step": "6",
+          "reward_mean_average": -0.5439423803696735,
+          "reward_sum_total": -81003.89928465178,
+          "steps": 8760
+        },
+        {
+          "episode": 4,
+          "first_global_step": "35040",
+          "last_all_done": "False",
+          "last_episode_step": "8759",
+          "last_global_step": "43799",
+          "last_time_step": "7",
+          "reward_mean_average": -0.5198770247332538,
+          "reward_sum_total": -77420.08652327616,
+          "steps": 8760
+        }
+      ],
+      "expected_episode_time_steps": 8760,
+      "expected_episodes": 5,
+      "expected_timeseries_row_options": [
+        43800
+      ],
+      "expected_timeseries_rows": 43800,
+      "last_timeseries_row": {
+        "algorithm": "MATD3",
+        "all_done": "False",
+        "carbon_intensity_mean": "0.7617499828338623",
+        "district_net_electricity_consumption": "0.0",
+        "district_net_electricity_consumption_cost": "0.0",
+        "district_net_electricity_consumption_emission": "0.0",
+        "district_net_electricity_consumption_without_storage": "0.0",
+        "electricity_price_mean": "0.5324955582618713",
+        "episode": "4",
+        "episode_step": "8759",
+        "global_step": "43799",
+        "reset_count": "5",
+        "reward_axis_weights": "{\"carbon\": 0.7, \"cost\": 0.15, \"flex\": 0.15}",
+        "reward_function": "CityLearnV3MADRLRewardFunction",
+        "reward_mean": "-0.6282632946968079",
+        "reward_profile": "matd3_unified_comparable_v4",
+        "reward_sum": "-10.680476009845734",
+        "scenario": "E2",
+        "time_step": "7"
+      },
+      "objective_report_values": {
+        "carbon_emissions": 1.074489406306728,
+        "electricity_cost": 1.0123352068964833,
+        "ev_charge_total": 192178.31263886765,
+        "ev_departure_count": 39682.0,
+        "ev_departure_success_rate": 0.4635603044201401,
+        "grid_import_baseline": 11142223.199565887,
+        "grid_import_control": 11279664.831277953,
+        "pv_export_total": 41397380.94457448,
+        "pv_generation_total": 49538029.867697105,
+        "ramping_average": 1.0014307130196627
+      },
+      "report_source": {
+        "adapter_algorithm": "MATD3",
+        "adapter_class": "CityLearnV3BackendAdapter",
+        "candidate_class": "CityLearnOffPolicyVecEnv",
+        "completed_episode_count": 5,
+        "episode_time_steps": 8760,
+        "last_completed_episode": 4,
+        "last_completed_global_step": 43792,
+        "last_completed_time_step": 8759,
+        "last_recorded_all_done": false,
+        "last_recorded_episode": 4,
+        "last_recorded_episode_step": 8759,
+        "last_recorded_global_step": 43799,
+        "last_recorded_time_step": 7,
+        "objective_env_class": "CityLearnDecPOMDPEnv",
+        "snapshot_error": null,
+        "timeseries_rows": 43800,
+        "trace_rows": 74545,
+        "type": "last_completed_episode_snapshot"
+      },
+      "status": "ok",
+      "timeseries_row_delta_vs_expected": 0,
+      "timeseries_rows": 43800,
+      "trace_rows": 74545,
+      "training_trace_totals": {
+        "ev_charge_kwh": 0.0,
+        "ev_v2g_export_kwh": 0.0,
+        "grid_export_kwh": 0.0,
+        "grid_import_kwh": 6653.598691344261,
+        "pv_export_kwh": 0.0,
+        "pv_generation_kwh": 24662127.604285702
+      },
+      "warnings": [
+        {
+          "code": "using_completed_snapshot_after_backend_reset",
+          "message": "The backend current environment is incomplete; KPIs come from the last completed episode snapshot.",
+          "severity": "info"
+        }
+      ]
+    },
+    "artifact_audit_json": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\artifact_audit.json",
+    "artifact_audit_json_root": null,
+    "artifact_layout": {
+      "checkpoints": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\checkpoints",
+      "data": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data",
+      "figures": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\figures",
+      "run": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0",
+      "tables": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\figures\\tables"
+    },
+    "artifact_profile": "efficient",
+    "artifact_write_policy": {
+      "root_building_detail_csv": false,
+      "root_timeseries_csv": false,
+      "root_trace_csv": false,
+      "statistical_comparison_trace_csv": false,
+      "trace_detail": "compact",
+      "trace_is_sampled": true,
+      "trace_record_interval": 10,
+      "trace_weighting_note": "Trace-derived totals are sampled diagnostics, not full-run energy totals.",
+      "legacy_root_artifacts": false,
+      "statistical_comparison_artifacts": false
+    },
+    "building_detail": {
+      "building_behavior_summary": {
+        "csv": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\building_behavior_summary.csv",
+        "rows": 17
+      },
+      "building_kpis": {
+        "csv": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\building_kpis.csv",
+        "rows": 1275
+      },
+      "building_observation_action_schema": {
+        "csv": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\building_observation_action_schema.csv",
+        "rows": 2075
+      },
+      "building_trace_sample": {
+        "csv": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\building_trace_sample.csv",
+        "rows": 120
+      }
+    },
+    "checkpoint_count": 34,
+    "checkpoint_manifest": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\checkpoint_manifest.json",
+    "checkpoint_manifest_root": null,
+    "figure_count": 13,
+    "figures_dir": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\figures",
+    "figures_manifest": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\figures\\figures_manifest.json",
+    "results_json": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\results.json",
+    "results_json_root": null,
+    "statistical_comparison_dir": null,
+    "table_count": 24,
+    "tables_dir": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\figures\\tables",
+    "timeseries_csv": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\timeseries.csv",
+    "timeseries_csv_root": null,
+    "timeseries_rows": 43800,
+    "trace_csv": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\trace.csv",
+    "trace_csv_root": null,
+    "trace_rows": 74545
+  },
+  "backend": "external/off-policy",
+  "citylearn_v3_report": {
+    "all_values": {
+      "battery_capacity_fade_ratio": 8.011053678679772E-07,
+      "battery_charge_total": 6473.014259601426,
+      "battery_discharge_total": 4088.46691936412,
+      "battery_equivalent_full_cycles": 0.2010485262119384,
+      "battery_throughput_total": 10561.481178965547,
+      "carbon_emissions": 1.074489406306728,
+      "carbon_emissions_baseline": 9115228.281413369,
+      "carbon_emissions_control": 9224017.200870441,
+      "carbon_emissions_daily_average_baseline": 24976.079318862983,
+      "carbon_emissions_daily_average_control": 25274.165181058408,
+      "carbon_emissions_daily_average_delta": 298.08586219542616,
+      "carbon_emissions_delta": 54543.50265963391,
+      "community_import_share": 0.06895604510325233,
+      "community_local_traded_daily_average": 2131.2051426560247,
+      "community_local_traded_total": 777801.0768551717,
+      "cost_one_minus_load_factor_average": 0.9897631484203935,
+      "cost_peak_average": 1.0165753156311008,
+      "cost_ramping_average": 1.0014307130196627,
+      "electricity_cost": 1.0123352068964833,
+      "electricity_cost_baseline": 5933184.36464527,
+      "electricity_cost_control": 6006371.421338149,
+      "electricity_cost_daily_average_baseline": 16257.155468830515,
+      "electricity_cost_daily_average_control": 16457.690845086836,
+      "electricity_cost_daily_average_delta": 200.53537625632055,
+      "electricity_cost_delta": 36693.79603456798,
+      "ev_charge_total": 192178.31263886765,
+      "ev_departure_count": 39682.0,
+      "ev_departure_met_count": 18395.0,
+      "ev_departure_soc_deficit_mean": 0.2975604583216197,
+      "ev_departure_success_rate": 0.4635603044201401,
+      "ev_departure_within_tolerance_count": 645.0,
+      "ev_departure_within_tolerance_rate": 0.01625422105740638,
+      "ev_v2g_export_total": 21079.67414651485,
+      "grid_export_baseline": 40660924.96252823,
+      "grid_export_control": 40624883.336406454,
+      "grid_export_delta": -18070.19078819179,
+      "grid_export_ratio": 0.9991136053556334,
+      "grid_import": 1.0759700039557534,
+      "grid_import_baseline": 11142223.199565887,
+      "grid_import_control": 11279664.831277953,
+      "grid_import_delta": 68909.11355902933,
+      "net_exchange_baseline": -29518701.76296234,
+      "net_exchange_control": -29345218.505128495,
+      "net_exchange_delta": 86979.30434722392,
+      "one_minus_load_factor_average": 0.9897631484203935,
+      "peak_average": 1.0165753156311008,
+      "pv_export_daily_average": 113430.43071923594,
+      "pv_export_total": 41397380.94457448,
+      "pv_generation_daily_average": 135736.12476592427,
+      "pv_generation_total": 49538029.867697105,
+      "pv_self_consumption_ratio": 0.16433130152458886,
+      "ramping_average": 1.0014307130196627,
+      "zero_net_energy": 0.993746134899151
+    },
+    "axis_kpis": {
+      "battery_capacity_fade_ratio": 8.011053678679772E-07,
+      "battery_charge_total": 6473.014259601426,
+      "battery_discharge_total": 4088.46691936412,
+      "battery_equivalent_full_cycles": 0.2010485262119384,
+      "battery_throughput_total": 10561.481178965547,
+      "carbon_emissions": 1.074489406306728,
+      "carbon_emissions_baseline": 9115228.281413369,
+      "carbon_emissions_control": 9224017.200870441,
+      "carbon_emissions_daily_average_baseline": 24976.079318862983,
+      "carbon_emissions_daily_average_control": 25274.165181058408,
+      "carbon_emissions_daily_average_delta": 298.08586219542616,
+      "carbon_emissions_delta": 54543.50265963391,
+      "community_import_share": 0.06895604510325233,
+      "community_local_traded_daily_average": 2131.2051426560247,
+      "community_local_traded_total": 777801.0768551717,
+      "cost_one_minus_load_factor_average": 0.9897631484203935,
+      "cost_peak_average": 1.0165753156311008,
+      "cost_ramping_average": 1.0014307130196627,
+      "electricity_cost": 1.0123352068964833,
+      "electricity_cost_baseline": 5933184.36464527,
+      "electricity_cost_control": 6006371.421338149,
+      "electricity_cost_daily_average_baseline": 16257.155468830515,
+      "electricity_cost_daily_average_control": 16457.690845086836,
+      "electricity_cost_daily_average_delta": 200.53537625632055,
+      "electricity_cost_delta": 36693.79603456798,
+      "ev_charge_total": 192178.31263886765,
+      "ev_departure_count": 39682.0,
+      "ev_departure_met_count": 18395.0,
+      "ev_departure_soc_deficit_mean": 0.2975604583216197,
+      "ev_departure_success_rate": 0.4635603044201401,
+      "ev_departure_within_tolerance_count": 645.0,
+      "ev_departure_within_tolerance_rate": 0.01625422105740638,
+      "ev_v2g_export_total": 21079.67414651485,
+      "grid_export_baseline": 40660924.96252823,
+      "grid_export_control": 40624883.336406454,
+      "grid_export_delta": -18070.19078819179,
+      "grid_export_ratio": 0.9991136053556334,
+      "grid_import": 1.0759700039557534,
+      "grid_import_baseline": 11142223.199565887,
+      "grid_import_control": 11279664.831277953,
+      "grid_import_delta": 68909.11355902933,
+      "net_exchange_baseline": -29518701.76296234,
+      "net_exchange_control": -29345218.505128495,
+      "net_exchange_delta": 86979.30434722392,
+      "one_minus_load_factor_average": 0.9897631484203935,
+      "peak_average": 1.0165753156311008,
+      "price_signal_deviation": null,
+      "pv_export_daily_average": 113430.43071923594,
+      "pv_export_total": 41397380.94457448,
+      "pv_generation_daily_average": 135736.12476592427,
+      "pv_generation_total": 49538029.867697105,
+      "pv_self_consumption_ratio": 0.16433130152458886,
+      "ramping_average": 1.0014307130196627,
+      "zero_net_energy": 0.993746134899151
+    },
+    "kpi_frame_rows": 1361,
+    "objective_axis_kpis": {
+      "OE1": {
+        "axis_scenario": "E1",
+        "baseline_comparison": {
+          "comparable_kpis": 12,
+          "improved_kpis": 5,
+          "not_improved_kpis": 7
+        },
+        "code": "OE1",
+        "kpis": {
+          "battery_capacity_fade_ratio": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_health_capacity_fade_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "battery_capacity_fade_ratio",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 8.011053678679772E-07
+          },
+          "battery_charge_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_total_charge_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "battery_charge_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 6473.014259601426
+          },
+          "battery_discharge_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_total_discharge_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "battery_discharge_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 4088.46691936412
+          },
+          "battery_equivalent_full_cycles": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_health_equivalent_full_cycles_count"
+              ],
+              "lower_is_better": false,
+              "name": "battery_equivalent_full_cycles",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.2010485262119384
+          },
+          "battery_throughput_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_total_throughput_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "battery_throughput_total",
+              "note": "CityLearn v2 district battery throughput in kWh.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 10561.481178965547
+          },
+          "community_import_share": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_community_market_import_share_ratio"
+              ],
+              "lower_is_better": false,
+              "name": "community_import_share",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.06895604510325233
+          },
+          "community_local_traded_daily_average": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_community_market_local_traded_daily_average_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "community_local_traded_daily_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 2131.2051426560247
+          },
+          "community_local_traded_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_community_market_local_traded_total_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "community_local_traded_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 777801.0768551717
+          },
+          "ev_charge_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_total_charge_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "ev_charge_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 192178.31263886765
+          },
+          "ev_departure_count": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_events_departure_count"
+              ],
+              "lower_is_better": true,
+              "name": "ev_departure_count",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 39682.0
+          },
+          "ev_departure_met_count": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_events_departure_met_count"
+              ],
+              "lower_is_better": false,
+              "name": "ev_departure_met_count",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 18395.0
+          },
+          "ev_departure_soc_deficit_mean": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_performance_departure_soc_deficit_mean_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "ev_departure_soc_deficit_mean",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.2975604583216197
+          },
+          "ev_departure_success_rate": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_performance_departure_success_ratio"
+              ],
+              "lower_is_better": false,
+              "name": "ev_departure_success_rate",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.4635603044201401
+          },
+          "ev_departure_within_tolerance_count": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_events_departure_within_tolerance_count"
+              ],
+              "lower_is_better": false,
+              "name": "ev_departure_within_tolerance_count",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 645.0
+          },
+          "ev_departure_within_tolerance_rate": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_performance_departure_within_tolerance_ratio"
+              ],
+              "lower_is_better": false,
+              "name": "ev_departure_within_tolerance_rate",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.01625422105740638
+          },
+          "ev_v2g_export_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_total_v2g_export_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "ev_v2g_export_total",
+              "note": "CityLearn v2 EV vehicle-to-grid export in kWh.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 21079.67414651485
+          },
+          "grid_export_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_export_baseline_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_export_baseline",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 40660924.96252823
+          },
+          "grid_export_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 40660924.96252823,
+              "delta_vs_baseline": -36041.626121774316,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_export_control_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_export_control",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 40624883.336406454
+          },
+          "grid_export_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": -18070.19078819179,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_export_delta_kwh",
+                "district_energy_grid_daily_average_export_delta_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_export_delta",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": -18070.19078819179
+          },
+          "grid_export_ratio": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": -0.0008863946443665727,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_ratio_to_baseline_export_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "grid_export_ratio",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.9991136053556334
+          },
+          "grid_import": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.07597000395575337,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_ratio_to_baseline_import_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "grid_import",
+              "note": "CityLearn v2 district import ratio to baseline.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0759700039557534
+          },
+          "grid_import_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_import_baseline_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_import_baseline",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 11142223.199565887
+          },
+          "grid_import_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 11142223.199565887,
+              "delta_vs_baseline": 137441.631712066,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_import_control_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_import_control",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 11279664.831277953
+          },
+          "grid_import_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 68909.11355902933,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_import_delta_kwh",
+                "district_energy_grid_daily_average_import_delta_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_import_delta",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 68909.11355902933
+          },
+          "net_exchange_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_net_exchange_baseline_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "net_exchange_baseline",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": -29518701.76296234
+          },
+          "net_exchange_control": {
+            "comparison": {
+              "available": true,
+              "baseline": -29518701.76296234,
+              "delta_vs_baseline": 173483.2578338459,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_net_exchange_control_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "net_exchange_control",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": -29345218.505128495
+          },
+          "net_exchange_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 86979.30434722392,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_net_exchange_delta_kwh",
+                "district_energy_grid_daily_average_net_exchange_delta_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "net_exchange_delta",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 86979.30434722392
+          },
+          "one_minus_load_factor_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": -0.01023685157960652,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio",
+                "district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "one_minus_load_factor_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.9897631484203935
+          },
+          "peak_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.016575315631100818,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio",
+                "district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "peak_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0165753156311008
+          },
+          "pv_export_daily_average": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_daily_average_export_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "pv_export_daily_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 113430.43071923594
+          },
+          "pv_export_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_total_export_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "pv_export_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 41397380.94457448
+          },
+          "pv_generation_daily_average": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_daily_average_generation_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "pv_generation_daily_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 135736.12476592427
+          },
+          "pv_generation_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_total_generation_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "pv_generation_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 49538029.867697105
+          },
+          "pv_self_consumption_ratio": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_ratio_self_consumption_ratio"
+              ],
+              "lower_is_better": false,
+              "name": "pv_self_consumption_ratio",
+              "note": "CityLearn v2 PV self-consumption ratio for autoconsumption.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.16433130152458886
+          },
+          "ramping_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.0014307130196626883,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_ramping_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "ramping_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0014307130196627
+          },
+          "zero_net_energy": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": -0.006253865100849021,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_ratio_to_baseline_net_exchange_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "zero_net_energy",
+              "note": "CityLearn v2 district net exchange ratio to baseline.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.993746134899151
+          }
+        },
+        "name": "Flexibilidad energetica",
+        "scenario": "E1",
+        "scenario_semantics": "objective_axis_label",
+        "statement": "Aumentar la capacidad de desplazar cargas y aprovechar almacenamiento, EVs y autoconsumo en comunidades de edificios interactivos con la red electrica."
+      },
+      "OE2": {
+        "axis_scenario": "E2",
+        "baseline_comparison": {
+          "comparable_kpis": 5,
+          "improved_kpis": 0,
+          "not_improved_kpis": 5
+        },
+        "code": "OE2",
+        "kpis": {
+          "carbon_emissions": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.07448940630672807,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_ratio_to_baseline_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions",
+              "note": "CityLearn v2 district CO2 ratio to baseline.",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.074489406306728
+          },
+          "carbon_emissions_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_total_baseline_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_baseline",
+              "note": "Total district greenhouse gas emissions for the CityLearn v2 baseline in kgCO2.",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 9115228.281413369
+          },
+          "carbon_emissions_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 9115228.281413369,
+              "delta_vs_baseline": 108788.91945707239,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_total_control_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_control",
+              "note": "Total district greenhouse gas emissions under control in kgCO2.",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 9224017.200870441
+          },
+          "carbon_emissions_daily_average_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_daily_average_baseline_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_daily_average_baseline",
+              "note": "",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 24976.079318862983
+          },
+          "carbon_emissions_daily_average_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 24976.079318862983,
+              "delta_vs_baseline": 298.08586219542485,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_daily_average_control_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_daily_average_control",
+              "note": "",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 25274.165181058408
+          },
+          "carbon_emissions_daily_average_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 298.08586219542616,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_daily_average_delta_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_daily_average_delta",
+              "note": "",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 298.08586219542616
+          },
+          "carbon_emissions_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 54543.50265963391,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_total_delta_kgco2",
+                "district_emissions_daily_average_delta_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_delta",
+              "note": "Control minus baseline total district greenhouse gas emissions in kgCO2.",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 54543.50265963391
+          }
+        },
+        "name": "Emisiones de CO2",
+        "scenario": "E2",
+        "scenario_semantics": "objective_axis_label",
+        "statement": "Reducir la huella ambiental del distrito, minimizando importaciones en horas de alta intensidad de carbono."
+      },
+      "OE3": {
+        "axis_scenario": "E3",
+        "baseline_comparison": {
+          "comparable_kpis": 8,
+          "improved_kpis": 1,
+          "not_improved_kpis": 7
+        },
+        "code": "OE3",
+        "kpis": {
+          "cost_one_minus_load_factor_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": -0.01023685157960652,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio",
+                "district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "cost_one_minus_load_factor_average",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.9897631484203935
+          },
+          "cost_peak_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.016575315631100818,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio",
+                "district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "cost_peak_average",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0165753156311008
+          },
+          "cost_ramping_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.0014307130196626883,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_ramping_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "cost_ramping_average",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0014307130196627
+          },
+          "electricity_cost": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.012335206896483264,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_ratio_to_baseline_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost",
+              "note": "CityLearn v2 normalized district cost ratio to baseline.",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0123352068964833
+          },
+          "electricity_cost_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_total_baseline_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_baseline",
+              "note": "Total district electricity cost for the CityLearn v2 baseline in EUR.",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 5933184.36464527
+          },
+          "electricity_cost_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 5933184.36464527,
+              "delta_vs_baseline": 73187.05669287965,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_total_control_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_control",
+              "note": "Total district electricity cost under control in EUR.",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 6006371.421338149
+          },
+          "electricity_cost_daily_average_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_daily_average_baseline_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_daily_average_baseline",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 16257.155468830515
+          },
+          "electricity_cost_daily_average_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 16257.155468830515,
+              "delta_vs_baseline": 200.5353762563209,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_daily_average_control_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_daily_average_control",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 16457.690845086836
+          },
+          "electricity_cost_daily_average_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 200.53537625632055,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_daily_average_delta_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_daily_average_delta",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 200.53537625632055
+          },
+          "electricity_cost_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 36693.79603456798,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_total_delta_eur",
+                "district_cost_daily_average_delta_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_delta",
+              "note": "Control minus baseline total district electricity cost in EUR.",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 36693.79603456798
+          },
+          "price_signal_deviation": {
+            "comparison": {
+              "available": false,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_demand_response_price_signal_deviation_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "price_signal_deviation",
+              "note": "Not a native evaluate_v2 KPI in this codebase; derived from district net import and the electricity_pricing signal.",
+              "objective": "OE3",
+              "source": "derived_from_citylearn_v2_timeseries"
+            },
+            "value": null
+          }
+        },
+        "name": "Costos energeticos",
+        "scenario": "E3",
+        "scenario_semantics": "objective_axis_label",
+        "statement": "Optimizar el gasto energetico, reduciendo picos de demanda y aprovechando tarifas dinamicas."
+      }
+    },
+    "objective_manifest": {
+      "axes": {
+        "OE1": {
+          "axis_scenario": "E1",
+          "code": "OE1",
+          "kpis": [
+            "grid_import",
+            "grid_import_control",
+            "grid_import_baseline",
+            "grid_import_delta",
+            "zero_net_energy",
+            "net_exchange_control",
+            "net_exchange_baseline",
+            "net_exchange_delta",
+            "grid_export_ratio",
+            "grid_export_control",
+            "grid_export_baseline",
+            "grid_export_delta",
+            "peak_average",
+            "ramping_average",
+            "one_minus_load_factor_average",
+            "pv_generation_total",
+            "pv_generation_daily_average",
+            "pv_export_total",
+            "pv_export_daily_average",
+            "pv_self_consumption_ratio",
+            "community_local_traded_total",
+            "community_local_traded_daily_average",
+            "community_import_share",
+            "battery_charge_total",
+            "battery_discharge_total",
+            "battery_throughput_total",
+            "battery_equivalent_full_cycles",
+            "battery_capacity_fade_ratio",
+            "ev_departure_count",
+            "ev_departure_met_count",
+            "ev_departure_within_tolerance_count",
+            "ev_departure_success_rate",
+            "ev_departure_within_tolerance_rate",
+            "ev_departure_soc_deficit_mean",
+            "ev_charge_total",
+            "ev_v2g_export_total"
+          ],
+          "name": "Flexibilidad energetica",
+          "scenario": "E1",
+          "scenario_semantics": "objective_axis_label",
+          "statement": "Aumentar la capacidad de desplazar cargas y aprovechar almacenamiento, EVs y autoconsumo en comunidades de edificios interactivos con la red electrica."
+        },
+        "OE2": {
+          "axis_scenario": "E2",
+          "code": "OE2",
+          "kpis": [
+            "carbon_emissions",
+            "carbon_emissions_control",
+            "carbon_emissions_baseline",
+            "carbon_emissions_delta",
+            "carbon_emissions_daily_average_control",
+            "carbon_emissions_daily_average_baseline",
+            "carbon_emissions_daily_average_delta"
+          ],
+          "name": "Emisiones de CO2",
+          "scenario": "E2",
+          "scenario_semantics": "objective_axis_label",
+          "statement": "Reducir la huella ambiental del distrito, minimizando importaciones en horas de alta intensidad de carbono."
+        },
+        "OE3": {
+          "axis_scenario": "E3",
+          "code": "OE3",
+          "kpis": [
+            "electricity_cost",
+            "electricity_cost_control",
+            "electricity_cost_baseline",
+            "electricity_cost_delta",
+            "electricity_cost_daily_average_control",
+            "electricity_cost_daily_average_baseline",
+            "electricity_cost_daily_average_delta",
+            "cost_peak_average",
+            "cost_ramping_average",
+            "cost_one_minus_load_factor_average",
+            "price_signal_deviation"
+          ],
+          "name": "Costos energeticos",
+          "scenario": "E3",
+          "scenario_semantics": "objective_axis_label",
+          "statement": "Optimizar el gasto energetico, reduciendo picos de demanda y aprovechando tarifas dinamicas."
+        }
+      },
+      "axis_kpis": {
+        "battery_capacity_fade_ratio": {
+          "citylearn_v2_names": [
+            "district_battery_health_capacity_fade_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "battery_capacity_fade_ratio",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "battery_charge_total": {
+          "citylearn_v2_names": [
+            "district_battery_total_charge_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "battery_charge_total",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "battery_discharge_total": {
+          "citylearn_v2_names": [
+            "district_battery_total_discharge_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "battery_discharge_total",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "battery_equivalent_full_cycles": {
+          "citylearn_v2_names": [
+            "district_battery_health_equivalent_full_cycles_count"
+          ],
+          "lower_is_better": false,
+          "name": "battery_equivalent_full_cycles",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "battery_throughput_total": {
+          "citylearn_v2_names": [
+            "district_battery_total_throughput_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "battery_throughput_total",
+          "note": "CityLearn v2 district battery throughput in kWh.",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "carbon_emissions": {
+          "citylearn_v2_names": [
+            "district_emissions_ratio_to_baseline_total_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "carbon_emissions",
+          "note": "CityLearn v2 district CO2 ratio to baseline.",
+          "objective": "OE2",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "carbon_emissions_baseline": {
+          "citylearn_v2_names": [
+            "district_emissions_total_baseline_kgco2"
+          ],
+          "lower_is_better": true,
+          "name": "carbon_emissions_baseline",
+          "note": "Total district greenhouse gas emissions for the CityLearn v2 baseline in kgCO2.",
+          "objective": "OE2",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "carbon_emissions_control": {
+          "citylearn_v2_names": [
+            "district_emissions_total_control_kgco2"
+          ],
+          "lower_is_better": true,
+          "name": "carbon_emissions_control",
+          "note": "Total district greenhouse gas emissions under control in kgCO2.",
+          "objective": "OE2",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "carbon_emissions_daily_average_baseline": {
+          "citylearn_v2_names": [
+            "district_emissions_daily_average_baseline_kgco2"
+          ],
+          "lower_is_better": true,
+          "name": "carbon_emissions_daily_average_baseline",
+          "note": "",
+          "objective": "OE2",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "carbon_emissions_daily_average_control": {
+          "citylearn_v2_names": [
+            "district_emissions_daily_average_control_kgco2"
+          ],
+          "lower_is_better": true,
+          "name": "carbon_emissions_daily_average_control",
+          "note": "",
+          "objective": "OE2",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "carbon_emissions_daily_average_delta": {
+          "citylearn_v2_names": [
+            "district_emissions_daily_average_delta_kgco2"
+          ],
+          "lower_is_better": true,
+          "name": "carbon_emissions_daily_average_delta",
+          "note": "",
+          "objective": "OE2",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "carbon_emissions_delta": {
+          "citylearn_v2_names": [
+            "district_emissions_total_delta_kgco2",
+            "district_emissions_daily_average_delta_kgco2"
+          ],
+          "lower_is_better": true,
+          "name": "carbon_emissions_delta",
+          "note": "Control minus baseline total district greenhouse gas emissions in kgCO2.",
+          "objective": "OE2",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "community_import_share": {
+          "citylearn_v2_names": [
+            "district_solar_self_consumption_community_market_import_share_ratio"
+          ],
+          "lower_is_better": false,
+          "name": "community_import_share",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "community_local_traded_daily_average": {
+          "citylearn_v2_names": [
+            "district_energy_grid_community_market_local_traded_daily_average_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "community_local_traded_daily_average",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "community_local_traded_total": {
+          "citylearn_v2_names": [
+            "district_energy_grid_community_market_local_traded_total_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "community_local_traded_total",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "cost_one_minus_load_factor_average": {
+          "citylearn_v2_names": [
+            "district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio",
+            "district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "cost_one_minus_load_factor_average",
+          "note": "",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "cost_peak_average": {
+          "citylearn_v2_names": [
+            "district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio",
+            "district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "cost_peak_average",
+          "note": "",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "cost_ramping_average": {
+          "citylearn_v2_names": [
+            "district_energy_grid_shape_quality_ramping_average_to_baseline_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "cost_ramping_average",
+          "note": "",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "electricity_cost": {
+          "citylearn_v2_names": [
+            "district_cost_ratio_to_baseline_total_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "electricity_cost",
+          "note": "CityLearn v2 normalized district cost ratio to baseline.",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "electricity_cost_baseline": {
+          "citylearn_v2_names": [
+            "district_cost_total_baseline_eur"
+          ],
+          "lower_is_better": true,
+          "name": "electricity_cost_baseline",
+          "note": "Total district electricity cost for the CityLearn v2 baseline in EUR.",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "electricity_cost_control": {
+          "citylearn_v2_names": [
+            "district_cost_total_control_eur"
+          ],
+          "lower_is_better": true,
+          "name": "electricity_cost_control",
+          "note": "Total district electricity cost under control in EUR.",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "electricity_cost_daily_average_baseline": {
+          "citylearn_v2_names": [
+            "district_cost_daily_average_baseline_eur"
+          ],
+          "lower_is_better": true,
+          "name": "electricity_cost_daily_average_baseline",
+          "note": "",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "electricity_cost_daily_average_control": {
+          "citylearn_v2_names": [
+            "district_cost_daily_average_control_eur"
+          ],
+          "lower_is_better": true,
+          "name": "electricity_cost_daily_average_control",
+          "note": "",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "electricity_cost_daily_average_delta": {
+          "citylearn_v2_names": [
+            "district_cost_daily_average_delta_eur"
+          ],
+          "lower_is_better": true,
+          "name": "electricity_cost_daily_average_delta",
+          "note": "",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "electricity_cost_delta": {
+          "citylearn_v2_names": [
+            "district_cost_total_delta_eur",
+            "district_cost_daily_average_delta_eur"
+          ],
+          "lower_is_better": true,
+          "name": "electricity_cost_delta",
+          "note": "Control minus baseline total district electricity cost in EUR.",
+          "objective": "OE3",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ev_charge_total": {
+          "citylearn_v2_names": [
+            "district_ev_total_charge_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "ev_charge_total",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ev_departure_count": {
+          "citylearn_v2_names": [
+            "district_ev_events_departure_count"
+          ],
+          "lower_is_better": true,
+          "name": "ev_departure_count",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ev_departure_met_count": {
+          "citylearn_v2_names": [
+            "district_ev_events_departure_met_count"
+          ],
+          "lower_is_better": false,
+          "name": "ev_departure_met_count",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ev_departure_soc_deficit_mean": {
+          "citylearn_v2_names": [
+            "district_ev_performance_departure_soc_deficit_mean_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "ev_departure_soc_deficit_mean",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ev_departure_success_rate": {
+          "citylearn_v2_names": [
+            "district_ev_performance_departure_success_ratio"
+          ],
+          "lower_is_better": false,
+          "name": "ev_departure_success_rate",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ev_departure_within_tolerance_count": {
+          "citylearn_v2_names": [
+            "district_ev_events_departure_within_tolerance_count"
+          ],
+          "lower_is_better": false,
+          "name": "ev_departure_within_tolerance_count",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ev_departure_within_tolerance_rate": {
+          "citylearn_v2_names": [
+            "district_ev_performance_departure_within_tolerance_ratio"
+          ],
+          "lower_is_better": false,
+          "name": "ev_departure_within_tolerance_rate",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ev_v2g_export_total": {
+          "citylearn_v2_names": [
+            "district_ev_total_v2g_export_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "ev_v2g_export_total",
+          "note": "CityLearn v2 EV vehicle-to-grid export in kWh.",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "grid_export_baseline": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_export_baseline_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "grid_export_baseline",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "grid_export_control": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_export_control_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "grid_export_control",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "grid_export_delta": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_export_delta_kwh",
+            "district_energy_grid_daily_average_export_delta_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "grid_export_delta",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "grid_export_ratio": {
+          "citylearn_v2_names": [
+            "district_energy_grid_ratio_to_baseline_export_total_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "grid_export_ratio",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "grid_import": {
+          "citylearn_v2_names": [
+            "district_energy_grid_ratio_to_baseline_import_total_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "grid_import",
+          "note": "CityLearn v2 district import ratio to baseline.",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "grid_import_baseline": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_import_baseline_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "grid_import_baseline",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "grid_import_control": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_import_control_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "grid_import_control",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "grid_import_delta": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_import_delta_kwh",
+            "district_energy_grid_daily_average_import_delta_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "grid_import_delta",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "net_exchange_baseline": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_net_exchange_baseline_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "net_exchange_baseline",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "net_exchange_control": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_net_exchange_control_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "net_exchange_control",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "net_exchange_delta": {
+          "citylearn_v2_names": [
+            "district_energy_grid_total_net_exchange_delta_kwh",
+            "district_energy_grid_daily_average_net_exchange_delta_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "net_exchange_delta",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "one_minus_load_factor_average": {
+          "citylearn_v2_names": [
+            "district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio",
+            "district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "one_minus_load_factor_average",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "peak_average": {
+          "citylearn_v2_names": [
+            "district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio",
+            "district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "peak_average",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "price_signal_deviation": {
+          "citylearn_v2_names": [
+            "district_demand_response_price_signal_deviation_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "price_signal_deviation",
+          "note": "Not a native evaluate_v2 KPI in this codebase; derived from district net import and the electricity_pricing signal.",
+          "objective": "OE3",
+          "source": "derived_from_citylearn_v2_timeseries"
+        },
+        "pv_export_daily_average": {
+          "citylearn_v2_names": [
+            "district_solar_self_consumption_daily_average_export_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "pv_export_daily_average",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "pv_export_total": {
+          "citylearn_v2_names": [
+            "district_solar_self_consumption_total_export_kwh"
+          ],
+          "lower_is_better": true,
+          "name": "pv_export_total",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "pv_generation_daily_average": {
+          "citylearn_v2_names": [
+            "district_solar_self_consumption_daily_average_generation_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "pv_generation_daily_average",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "pv_generation_total": {
+          "citylearn_v2_names": [
+            "district_solar_self_consumption_total_generation_kwh"
+          ],
+          "lower_is_better": false,
+          "name": "pv_generation_total",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "pv_self_consumption_ratio": {
+          "citylearn_v2_names": [
+            "district_solar_self_consumption_ratio_self_consumption_ratio"
+          ],
+          "lower_is_better": false,
+          "name": "pv_self_consumption_ratio",
+          "note": "CityLearn v2 PV self-consumption ratio for autoconsumption.",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "ramping_average": {
+          "citylearn_v2_names": [
+            "district_energy_grid_shape_quality_ramping_average_to_baseline_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "ramping_average",
+          "note": "",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        },
+        "zero_net_energy": {
+          "citylearn_v2_names": [
+            "district_energy_grid_ratio_to_baseline_net_exchange_total_ratio"
+          ],
+          "lower_is_better": true,
+          "name": "zero_net_energy",
+          "note": "CityLearn v2 district net exchange ratio to baseline.",
+          "objective": "OE1",
+          "source": "citylearn_v2.evaluate_v2"
+        }
+      },
+      "metrics": {
+        "note": "The project metrics are the three objective axes OE1, OE2 and OE3.",
+        "project_axis_metrics": [
+          "OE1",
+          "OE2",
+          "OE3"
+        ]
+      },
+      "multiobjective": {
+        "lower_is_better": {
+          "battery_capacity_fade_ratio": true,
+          "battery_charge_total": false,
+          "battery_discharge_total": false,
+          "battery_equivalent_full_cycles": false,
+          "battery_throughput_total": false,
+          "carbon_emissions": true,
+          "carbon_emissions_baseline": true,
+          "carbon_emissions_control": true,
+          "carbon_emissions_daily_average_baseline": true,
+          "carbon_emissions_daily_average_control": true,
+          "carbon_emissions_daily_average_delta": true,
+          "carbon_emissions_delta": true,
+          "community_import_share": false,
+          "community_local_traded_daily_average": false,
+          "community_local_traded_total": false,
+          "cost_one_minus_load_factor_average": true,
+          "cost_peak_average": true,
+          "cost_ramping_average": true,
+          "electricity_cost": true,
+          "electricity_cost_baseline": true,
+          "electricity_cost_control": true,
+          "electricity_cost_daily_average_baseline": true,
+          "electricity_cost_daily_average_control": true,
+          "electricity_cost_daily_average_delta": true,
+          "electricity_cost_delta": true,
+          "ev_charge_total": false,
+          "ev_departure_count": true,
+          "ev_departure_met_count": false,
+          "ev_departure_soc_deficit_mean": true,
+          "ev_departure_success_rate": false,
+          "ev_departure_within_tolerance_count": false,
+          "ev_departure_within_tolerance_rate": false,
+          "ev_v2g_export_total": false,
+          "grid_export_baseline": true,
+          "grid_export_control": true,
+          "grid_export_delta": true,
+          "grid_export_ratio": true,
+          "grid_import": true,
+          "grid_import_baseline": true,
+          "grid_import_control": true,
+          "grid_import_delta": true,
+          "net_exchange_baseline": true,
+          "net_exchange_control": true,
+          "net_exchange_delta": true,
+          "one_minus_load_factor_average": true,
+          "peak_average": true,
+          "price_signal_deviation": true,
+          "pv_export_daily_average": true,
+          "pv_export_total": true,
+          "pv_generation_daily_average": false,
+          "pv_generation_total": false,
+          "pv_self_consumption_ratio": false,
+          "ramping_average": true,
+          "zero_net_energy": true
+        },
+        "method": "weighted_scalar_report_with_topsis_ready_inputs",
+        "project_metrics": [
+          "OE1",
+          "OE2",
+          "OE3"
+        ]
+      },
+      "project_axis_metrics": [
+        "OE1",
+        "OE2",
+        "OE3"
+      ]
+    },
+    "project_axis_metrics": {
+      "OE1": {
+        "axis_scenario": "E1",
+        "baseline_comparison": {
+          "comparable_kpis": 12,
+          "improved_kpis": 5,
+          "not_improved_kpis": 7
+        },
+        "code": "OE1",
+        "kpis": {
+          "battery_capacity_fade_ratio": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_health_capacity_fade_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "battery_capacity_fade_ratio",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 8.011053678679772E-07
+          },
+          "battery_charge_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_total_charge_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "battery_charge_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 6473.014259601426
+          },
+          "battery_discharge_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_total_discharge_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "battery_discharge_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 4088.46691936412
+          },
+          "battery_equivalent_full_cycles": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_health_equivalent_full_cycles_count"
+              ],
+              "lower_is_better": false,
+              "name": "battery_equivalent_full_cycles",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.2010485262119384
+          },
+          "battery_throughput_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_battery_total_throughput_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "battery_throughput_total",
+              "note": "CityLearn v2 district battery throughput in kWh.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 10561.481178965547
+          },
+          "community_import_share": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_community_market_import_share_ratio"
+              ],
+              "lower_is_better": false,
+              "name": "community_import_share",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.06895604510325233
+          },
+          "community_local_traded_daily_average": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_community_market_local_traded_daily_average_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "community_local_traded_daily_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 2131.2051426560247
+          },
+          "community_local_traded_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_community_market_local_traded_total_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "community_local_traded_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 777801.0768551717
+          },
+          "ev_charge_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_total_charge_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "ev_charge_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 192178.31263886765
+          },
+          "ev_departure_count": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_events_departure_count"
+              ],
+              "lower_is_better": true,
+              "name": "ev_departure_count",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 39682.0
+          },
+          "ev_departure_met_count": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_events_departure_met_count"
+              ],
+              "lower_is_better": false,
+              "name": "ev_departure_met_count",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 18395.0
+          },
+          "ev_departure_soc_deficit_mean": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_performance_departure_soc_deficit_mean_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "ev_departure_soc_deficit_mean",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.2975604583216197
+          },
+          "ev_departure_success_rate": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_performance_departure_success_ratio"
+              ],
+              "lower_is_better": false,
+              "name": "ev_departure_success_rate",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.4635603044201401
+          },
+          "ev_departure_within_tolerance_count": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_events_departure_within_tolerance_count"
+              ],
+              "lower_is_better": false,
+              "name": "ev_departure_within_tolerance_count",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 645.0
+          },
+          "ev_departure_within_tolerance_rate": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_performance_departure_within_tolerance_ratio"
+              ],
+              "lower_is_better": false,
+              "name": "ev_departure_within_tolerance_rate",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.01625422105740638
+          },
+          "ev_v2g_export_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_ev_total_v2g_export_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "ev_v2g_export_total",
+              "note": "CityLearn v2 EV vehicle-to-grid export in kWh.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 21079.67414651485
+          },
+          "grid_export_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_export_baseline_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_export_baseline",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 40660924.96252823
+          },
+          "grid_export_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 40660924.96252823,
+              "delta_vs_baseline": -36041.626121774316,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_export_control_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_export_control",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 40624883.336406454
+          },
+          "grid_export_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": -18070.19078819179,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_export_delta_kwh",
+                "district_energy_grid_daily_average_export_delta_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_export_delta",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": -18070.19078819179
+          },
+          "grid_export_ratio": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": -0.0008863946443665727,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_ratio_to_baseline_export_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "grid_export_ratio",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.9991136053556334
+          },
+          "grid_import": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.07597000395575337,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_ratio_to_baseline_import_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "grid_import",
+              "note": "CityLearn v2 district import ratio to baseline.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0759700039557534
+          },
+          "grid_import_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_import_baseline_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_import_baseline",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 11142223.199565887
+          },
+          "grid_import_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 11142223.199565887,
+              "delta_vs_baseline": 137441.631712066,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_import_control_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_import_control",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 11279664.831277953
+          },
+          "grid_import_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 68909.11355902933,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_import_delta_kwh",
+                "district_energy_grid_daily_average_import_delta_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "grid_import_delta",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 68909.11355902933
+          },
+          "net_exchange_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_net_exchange_baseline_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "net_exchange_baseline",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": -29518701.76296234
+          },
+          "net_exchange_control": {
+            "comparison": {
+              "available": true,
+              "baseline": -29518701.76296234,
+              "delta_vs_baseline": 173483.2578338459,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_net_exchange_control_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "net_exchange_control",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": -29345218.505128495
+          },
+          "net_exchange_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 86979.30434722392,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_total_net_exchange_delta_kwh",
+                "district_energy_grid_daily_average_net_exchange_delta_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "net_exchange_delta",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 86979.30434722392
+          },
+          "one_minus_load_factor_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": -0.01023685157960652,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio",
+                "district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "one_minus_load_factor_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.9897631484203935
+          },
+          "peak_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.016575315631100818,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio",
+                "district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "peak_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0165753156311008
+          },
+          "pv_export_daily_average": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_daily_average_export_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "pv_export_daily_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 113430.43071923594
+          },
+          "pv_export_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_total_export_kwh"
+              ],
+              "lower_is_better": true,
+              "name": "pv_export_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 41397380.94457448
+          },
+          "pv_generation_daily_average": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_daily_average_generation_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "pv_generation_daily_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 135736.12476592427
+          },
+          "pv_generation_total": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_total_generation_kwh"
+              ],
+              "lower_is_better": false,
+              "name": "pv_generation_total",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 49538029.867697105
+          },
+          "pv_self_consumption_ratio": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_solar_self_consumption_ratio_self_consumption_ratio"
+              ],
+              "lower_is_better": false,
+              "name": "pv_self_consumption_ratio",
+              "note": "CityLearn v2 PV self-consumption ratio for autoconsumption.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.16433130152458886
+          },
+          "ramping_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.0014307130196626883,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_ramping_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "ramping_average",
+              "note": "",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0014307130196627
+          },
+          "zero_net_energy": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": -0.006253865100849021,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_ratio_to_baseline_net_exchange_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "zero_net_energy",
+              "note": "CityLearn v2 district net exchange ratio to baseline.",
+              "objective": "OE1",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.993746134899151
+          }
+        },
+        "name": "Flexibilidad energetica",
+        "scenario": "E1",
+        "scenario_semantics": "objective_axis_label",
+        "statement": "Aumentar la capacidad de desplazar cargas y aprovechar almacenamiento, EVs y autoconsumo en comunidades de edificios interactivos con la red electrica."
+      },
+      "OE2": {
+        "axis_scenario": "E2",
+        "baseline_comparison": {
+          "comparable_kpis": 5,
+          "improved_kpis": 0,
+          "not_improved_kpis": 5
+        },
+        "code": "OE2",
+        "kpis": {
+          "carbon_emissions": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.07448940630672807,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_ratio_to_baseline_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions",
+              "note": "CityLearn v2 district CO2 ratio to baseline.",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.074489406306728
+          },
+          "carbon_emissions_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_total_baseline_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_baseline",
+              "note": "Total district greenhouse gas emissions for the CityLearn v2 baseline in kgCO2.",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 9115228.281413369
+          },
+          "carbon_emissions_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 9115228.281413369,
+              "delta_vs_baseline": 108788.91945707239,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_total_control_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_control",
+              "note": "Total district greenhouse gas emissions under control in kgCO2.",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 9224017.200870441
+          },
+          "carbon_emissions_daily_average_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_daily_average_baseline_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_daily_average_baseline",
+              "note": "",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 24976.079318862983
+          },
+          "carbon_emissions_daily_average_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 24976.079318862983,
+              "delta_vs_baseline": 298.08586219542485,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_daily_average_control_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_daily_average_control",
+              "note": "",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 25274.165181058408
+          },
+          "carbon_emissions_daily_average_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 298.08586219542616,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_daily_average_delta_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_daily_average_delta",
+              "note": "",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 298.08586219542616
+          },
+          "carbon_emissions_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 54543.50265963391,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_emissions_total_delta_kgco2",
+                "district_emissions_daily_average_delta_kgco2"
+              ],
+              "lower_is_better": true,
+              "name": "carbon_emissions_delta",
+              "note": "Control minus baseline total district greenhouse gas emissions in kgCO2.",
+              "objective": "OE2",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 54543.50265963391
+          }
+        },
+        "name": "Emisiones de CO2",
+        "scenario": "E2",
+        "scenario_semantics": "objective_axis_label",
+        "statement": "Reducir la huella ambiental del distrito, minimizando importaciones en horas de alta intensidad de carbono."
+      },
+      "OE3": {
+        "axis_scenario": "E3",
+        "baseline_comparison": {
+          "comparable_kpis": 8,
+          "improved_kpis": 1,
+          "not_improved_kpis": 7
+        },
+        "code": "OE3",
+        "kpis": {
+          "cost_one_minus_load_factor_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": -0.01023685157960652,
+              "improved_vs_baseline": true
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio",
+                "district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "cost_one_minus_load_factor_average",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 0.9897631484203935
+          },
+          "cost_peak_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.016575315631100818,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio",
+                "district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "cost_peak_average",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0165753156311008
+          },
+          "cost_ramping_average": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.0014307130196626883,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_energy_grid_shape_quality_ramping_average_to_baseline_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "cost_ramping_average",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0014307130196627
+          },
+          "electricity_cost": {
+            "comparison": {
+              "available": true,
+              "baseline": 1.0,
+              "delta_vs_baseline": 0.012335206896483264,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_ratio_to_baseline_total_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost",
+              "note": "CityLearn v2 normalized district cost ratio to baseline.",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 1.0123352068964833
+          },
+          "electricity_cost_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_total_baseline_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_baseline",
+              "note": "Total district electricity cost for the CityLearn v2 baseline in EUR.",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 5933184.36464527
+          },
+          "electricity_cost_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 5933184.36464527,
+              "delta_vs_baseline": 73187.05669287965,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_total_control_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_control",
+              "note": "Total district electricity cost under control in EUR.",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 6006371.421338149
+          },
+          "electricity_cost_daily_average_baseline": {
+            "comparison": {
+              "available": true,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_daily_average_baseline_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_daily_average_baseline",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 16257.155468830515
+          },
+          "electricity_cost_daily_average_control": {
+            "comparison": {
+              "available": true,
+              "baseline": 16257.155468830515,
+              "delta_vs_baseline": 200.5353762563209,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_daily_average_control_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_daily_average_control",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 16457.690845086836
+          },
+          "electricity_cost_daily_average_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 200.53537625632055,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_daily_average_delta_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_daily_average_delta",
+              "note": "",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 200.53537625632055
+          },
+          "electricity_cost_delta": {
+            "comparison": {
+              "available": true,
+              "baseline": 0.0,
+              "delta_vs_baseline": 36693.79603456798,
+              "improved_vs_baseline": false
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_cost_total_delta_eur",
+                "district_cost_daily_average_delta_eur"
+              ],
+              "lower_is_better": true,
+              "name": "electricity_cost_delta",
+              "note": "Control minus baseline total district electricity cost in EUR.",
+              "objective": "OE3",
+              "source": "citylearn_v2.evaluate_v2"
+            },
+            "value": 36693.79603456798
+          },
+          "price_signal_deviation": {
+            "comparison": {
+              "available": false,
+              "baseline": null,
+              "delta_vs_baseline": null,
+              "improved_vs_baseline": null
+            },
+            "trace": {
+              "citylearn_v2_names": [
+                "district_demand_response_price_signal_deviation_ratio"
+              ],
+              "lower_is_better": true,
+              "name": "price_signal_deviation",
+              "note": "Not a native evaluate_v2 KPI in this codebase; derived from district net import and the electricity_pricing signal.",
+              "objective": "OE3",
+              "source": "derived_from_citylearn_v2_timeseries"
+            },
+            "value": null
+          }
+        },
+        "name": "Costos energeticos",
+        "scenario": "E3",
+        "scenario_semantics": "objective_axis_label",
+        "statement": "Optimizar el gasto energetico, reduciendo picos de demanda y aprovechando tarifas dinamicas."
+      }
+    },
+    "report_source": {
+      "adapter_algorithm": "MATD3",
+      "adapter_class": "CityLearnV3BackendAdapter",
+      "candidate_class": "CityLearnOffPolicyVecEnv",
+      "completed_episode_count": 5,
+      "episode_time_steps": 8760,
+      "last_completed_episode": 4,
+      "last_completed_global_step": 43792,
+      "last_completed_time_step": 8759,
+      "last_recorded_all_done": false,
+      "last_recorded_episode": 4,
+      "last_recorded_episode_step": 8759,
+      "last_recorded_global_step": 43799,
+      "last_recorded_time_step": 7,
+      "objective_env_class": "CityLearnDecPOMDPEnv",
+      "snapshot_error": null,
+      "timeseries_rows": 43800,
+      "trace_rows": 74545,
+      "type": "last_completed_episode_snapshot"
+    },
+    "report_warnings": [
+      {
+        "code": "using_completed_snapshot_after_backend_reset",
+        "message": "The backend current environment is incomplete; KPIs come from the last completed episode snapshot.",
+        "severity": "info"
+      }
+    ],
+    "supporting_values": {}
+  },
+  "episode_time_steps": 8760,
+  "episodes": 5,
+  "gpu_runtime": {
+    "cuda_available": true,
+    "cuda_device": "cuda:0",
+    "cuda_device_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "cuda_device_total_memory_gib": 7.99560546875,
+    "cuda_enabled": true,
+    "cuda_memory_fraction_applied": 0.812,
+    "cuda_memory_fraction_error": null,
+    "cuda_memory_fraction_requested": 0.812,
+    "cuda_requested": true,
+    "cudnn_benchmark": true,
+    "matmul_precision": "high",
+    "profile": "local4060_fast",
+    "pytorch_cuda_alloc_conf": "max_split_size_mb:128",
+    "tf32_allowed": true,
+    "torch_threads": 8
+  },
+  "hyperparameters": {
+    "algorithm_family": "MADRL",
+    "batch_size": 256,
+    "buffer_size": 4096,
+    "checkpoint_interval_steps": 8760,
+    "ctde_share_observation": "padded_joint_observation",
+    "cuda": true,
+    "episode_length": 8760,
+    "episodes": 5,
+    "finite_optimizer_step_guard": {
+      "audit_file_exists": true,
+      "audit_initialized": true,
+      "audit_path": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0\\data\\matd3_finite_gradient_guard.jsonl",
+      "installed_optimizers": 34
+    },
+    "gamma": 0.9999,
+    "gpu_runtime": {
+      "cuda_available": true,
+      "cuda_device": "cuda:0",
+      "cuda_device_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "cuda_device_total_memory_gib": 7.99560546875,
+      "cuda_enabled": true,
+      "cuda_memory_fraction_applied": 0.812,
+      "cuda_memory_fraction_error": null,
+      "cuda_memory_fraction_requested": 0.812,
+      "cuda_requested": true,
+      "cudnn_benchmark": true,
+      "matmul_precision": "high",
+      "profile": "local4060_fast",
+      "pytorch_cuda_alloc_conf": "max_split_size_mb:128",
+      "tf32_allowed": true,
+      "torch_threads": 8
+    },
+    "hidden_size": 256,
+    "live_heartbeat_seconds": 30,
+    "live_progress_interval": 1000,
+    "lr": 0.0003,
+    "max_grad_norm": 1.0,
+    "num_env_steps": 43800,
+    "num_random_episodes": 1,
+    "reward_function": "CityLearnV3MADRLRewardFunction",
+    "reward_metadata": {
+      "algorithm": "MATD3",
+      "axis_weights": {
+        "carbon": 0.7,
+        "cost": 0.15,
+        "flex": 0.15
+      },
+      "base_reward": "CityLearnV3MADRLRewardFunction",
+      "function": "CityLearnV3MADRLRewardFunction",
+      "not_using_marl_base_weights": true,
+      "profile": {
+        "axis_weight_multipliers": {
+          "carbon": 1.0,
+          "cost": 1.0,
+          "flex": 1.0
+        },
+        "bess_cycle_scale": 0.05,
+        "bess_cycle_weight": 0.1,
+        "ev_departure_deficit_weight": 0.7,
+        "ev_idle_deficit_weight": 0.25,
+        "ev_soc_critical_deficit": 0.25,
+        "ev_soc_tolerance": 0.05,
+        "ev_urgency_deficit_weight": 0.3,
+        "ev_urgency_hours": 8.0,
+        "ev_weight": 0.25,
+        "peak_weight": 0.45,
+        "profile_name": "matd3_unified_comparable_v4",
+        "ramp_weight": 0.35,
+        "reward_scale": 1.0,
+        "team_reward_ratio": 0.7
+      },
+      "scenario": "E2"
+    },
+    "reward_profile": "MATD3",
+    "share_policy": false,
+    "torch_threads": 8,
+    "train_interval": 100,
+    "use_same_share_obs": true
+  },
+  "num_env_steps": 43800,
+  "output_dir": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\matd3\\E2_seed_0",
+  "project_axis_metrics": {
+    "OE1": {
+      "axis_scenario": "E1",
+      "baseline_comparison": {
+        "comparable_kpis": 12,
+        "improved_kpis": 5,
+        "not_improved_kpis": 7
+      },
+      "code": "OE1",
+      "kpis": {
+        "battery_capacity_fade_ratio": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_battery_health_capacity_fade_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "battery_capacity_fade_ratio",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 8.011053678679772E-07
+        },
+        "battery_charge_total": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_battery_total_charge_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "battery_charge_total",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 6473.014259601426
+        },
+        "battery_discharge_total": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_battery_total_discharge_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "battery_discharge_total",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 4088.46691936412
+        },
+        "battery_equivalent_full_cycles": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_battery_health_equivalent_full_cycles_count"
+            ],
+            "lower_is_better": false,
+            "name": "battery_equivalent_full_cycles",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.2010485262119384
+        },
+        "battery_throughput_total": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_battery_total_throughput_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "battery_throughput_total",
+            "note": "CityLearn v2 district battery throughput in kWh.",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 10561.481178965547
+        },
+        "community_import_share": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_solar_self_consumption_community_market_import_share_ratio"
+            ],
+            "lower_is_better": false,
+            "name": "community_import_share",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.06895604510325233
+        },
+        "community_local_traded_daily_average": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_community_market_local_traded_daily_average_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "community_local_traded_daily_average",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 2131.2051426560247
+        },
+        "community_local_traded_total": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_community_market_local_traded_total_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "community_local_traded_total",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 777801.0768551717
+        },
+        "ev_charge_total": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_ev_total_charge_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "ev_charge_total",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 192178.31263886765
+        },
+        "ev_departure_count": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_ev_events_departure_count"
+            ],
+            "lower_is_better": true,
+            "name": "ev_departure_count",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 39682.0
+        },
+        "ev_departure_met_count": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_ev_events_departure_met_count"
+            ],
+            "lower_is_better": false,
+            "name": "ev_departure_met_count",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 18395.0
+        },
+        "ev_departure_soc_deficit_mean": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_ev_performance_departure_soc_deficit_mean_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "ev_departure_soc_deficit_mean",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.2975604583216197
+        },
+        "ev_departure_success_rate": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_ev_performance_departure_success_ratio"
+            ],
+            "lower_is_better": false,
+            "name": "ev_departure_success_rate",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.4635603044201401
+        },
+        "ev_departure_within_tolerance_count": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_ev_events_departure_within_tolerance_count"
+            ],
+            "lower_is_better": false,
+            "name": "ev_departure_within_tolerance_count",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 645.0
+        },
+        "ev_departure_within_tolerance_rate": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_ev_performance_departure_within_tolerance_ratio"
+            ],
+            "lower_is_better": false,
+            "name": "ev_departure_within_tolerance_rate",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.01625422105740638
+        },
+        "ev_v2g_export_total": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_ev_total_v2g_export_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "ev_v2g_export_total",
+            "note": "CityLearn v2 EV vehicle-to-grid export in kWh.",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 21079.67414651485
+        },
+        "grid_export_baseline": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_export_baseline_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "grid_export_baseline",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 40660924.96252823
+        },
+        "grid_export_control": {
+          "comparison": {
+            "available": true,
+            "baseline": 40660924.96252823,
+            "delta_vs_baseline": -36041.626121774316,
+            "improved_vs_baseline": true
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_export_control_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "grid_export_control",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 40624883.336406454
+        },
+        "grid_export_delta": {
+          "comparison": {
+            "available": true,
+            "baseline": 0.0,
+            "delta_vs_baseline": -18070.19078819179,
+            "improved_vs_baseline": true
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_export_delta_kwh",
+              "district_energy_grid_daily_average_export_delta_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "grid_export_delta",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": -18070.19078819179
+        },
+        "grid_export_ratio": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": -0.0008863946443665727,
+            "improved_vs_baseline": true
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_ratio_to_baseline_export_total_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "grid_export_ratio",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.9991136053556334
+        },
+        "grid_import": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": 0.07597000395575337,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_ratio_to_baseline_import_total_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "grid_import",
+            "note": "CityLearn v2 district import ratio to baseline.",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 1.0759700039557534
+        },
+        "grid_import_baseline": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_import_baseline_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "grid_import_baseline",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 11142223.199565887
+        },
+        "grid_import_control": {
+          "comparison": {
+            "available": true,
+            "baseline": 11142223.199565887,
+            "delta_vs_baseline": 137441.631712066,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_import_control_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "grid_import_control",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 11279664.831277953
+        },
+        "grid_import_delta": {
+          "comparison": {
+            "available": true,
+            "baseline": 0.0,
+            "delta_vs_baseline": 68909.11355902933,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_import_delta_kwh",
+              "district_energy_grid_daily_average_import_delta_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "grid_import_delta",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 68909.11355902933
+        },
+        "net_exchange_baseline": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_net_exchange_baseline_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "net_exchange_baseline",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": -29518701.76296234
+        },
+        "net_exchange_control": {
+          "comparison": {
+            "available": true,
+            "baseline": -29518701.76296234,
+            "delta_vs_baseline": 173483.2578338459,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_net_exchange_control_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "net_exchange_control",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": -29345218.505128495
+        },
+        "net_exchange_delta": {
+          "comparison": {
+            "available": true,
+            "baseline": 0.0,
+            "delta_vs_baseline": 86979.30434722392,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_total_net_exchange_delta_kwh",
+              "district_energy_grid_daily_average_net_exchange_delta_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "net_exchange_delta",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 86979.30434722392
+        },
+        "one_minus_load_factor_average": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": -0.01023685157960652,
+            "improved_vs_baseline": true
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio",
+              "district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "one_minus_load_factor_average",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.9897631484203935
+        },
+        "peak_average": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": 0.016575315631100818,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio",
+              "district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "peak_average",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 1.0165753156311008
+        },
+        "pv_export_daily_average": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_solar_self_consumption_daily_average_export_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "pv_export_daily_average",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 113430.43071923594
+        },
+        "pv_export_total": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_solar_self_consumption_total_export_kwh"
+            ],
+            "lower_is_better": true,
+            "name": "pv_export_total",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 41397380.94457448
+        },
+        "pv_generation_daily_average": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_solar_self_consumption_daily_average_generation_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "pv_generation_daily_average",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 135736.12476592427
+        },
+        "pv_generation_total": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_solar_self_consumption_total_generation_kwh"
+            ],
+            "lower_is_better": false,
+            "name": "pv_generation_total",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 49538029.867697105
+        },
+        "pv_self_consumption_ratio": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_solar_self_consumption_ratio_self_consumption_ratio"
+            ],
+            "lower_is_better": false,
+            "name": "pv_self_consumption_ratio",
+            "note": "CityLearn v2 PV self-consumption ratio for autoconsumption.",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.16433130152458886
+        },
+        "ramping_average": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": 0.0014307130196626883,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_shape_quality_ramping_average_to_baseline_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "ramping_average",
+            "note": "",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 1.0014307130196627
+        },
+        "zero_net_energy": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": -0.006253865100849021,
+            "improved_vs_baseline": true
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_ratio_to_baseline_net_exchange_total_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "zero_net_energy",
+            "note": "CityLearn v2 district net exchange ratio to baseline.",
+            "objective": "OE1",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.993746134899151
+        }
+      },
+      "name": "Flexibilidad energetica",
+      "scenario": "E1",
+      "scenario_semantics": "objective_axis_label",
+      "statement": "Aumentar la capacidad de desplazar cargas y aprovechar almacenamiento, EVs y autoconsumo en comunidades de edificios interactivos con la red electrica."
+    },
+    "OE2": {
+      "axis_scenario": "E2",
+      "baseline_comparison": {
+        "comparable_kpis": 5,
+        "improved_kpis": 0,
+        "not_improved_kpis": 5
+      },
+      "code": "OE2",
+      "kpis": {
+        "carbon_emissions": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": 0.07448940630672807,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_emissions_ratio_to_baseline_total_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "carbon_emissions",
+            "note": "CityLearn v2 district CO2 ratio to baseline.",
+            "objective": "OE2",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 1.074489406306728
+        },
+        "carbon_emissions_baseline": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_emissions_total_baseline_kgco2"
+            ],
+            "lower_is_better": true,
+            "name": "carbon_emissions_baseline",
+            "note": "Total district greenhouse gas emissions for the CityLearn v2 baseline in kgCO2.",
+            "objective": "OE2",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 9115228.281413369
+        },
+        "carbon_emissions_control": {
+          "comparison": {
+            "available": true,
+            "baseline": 9115228.281413369,
+            "delta_vs_baseline": 108788.91945707239,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_emissions_total_control_kgco2"
+            ],
+            "lower_is_better": true,
+            "name": "carbon_emissions_control",
+            "note": "Total district greenhouse gas emissions under control in kgCO2.",
+            "objective": "OE2",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 9224017.200870441
+        },
+        "carbon_emissions_daily_average_baseline": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_emissions_daily_average_baseline_kgco2"
+            ],
+            "lower_is_better": true,
+            "name": "carbon_emissions_daily_average_baseline",
+            "note": "",
+            "objective": "OE2",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 24976.079318862983
+        },
+        "carbon_emissions_daily_average_control": {
+          "comparison": {
+            "available": true,
+            "baseline": 24976.079318862983,
+            "delta_vs_baseline": 298.08586219542485,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_emissions_daily_average_control_kgco2"
+            ],
+            "lower_is_better": true,
+            "name": "carbon_emissions_daily_average_control",
+            "note": "",
+            "objective": "OE2",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 25274.165181058408
+        },
+        "carbon_emissions_daily_average_delta": {
+          "comparison": {
+            "available": true,
+            "baseline": 0.0,
+            "delta_vs_baseline": 298.08586219542616,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_emissions_daily_average_delta_kgco2"
+            ],
+            "lower_is_better": true,
+            "name": "carbon_emissions_daily_average_delta",
+            "note": "",
+            "objective": "OE2",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 298.08586219542616
+        },
+        "carbon_emissions_delta": {
+          "comparison": {
+            "available": true,
+            "baseline": 0.0,
+            "delta_vs_baseline": 54543.50265963391,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_emissions_total_delta_kgco2",
+              "district_emissions_daily_average_delta_kgco2"
+            ],
+            "lower_is_better": true,
+            "name": "carbon_emissions_delta",
+            "note": "Control minus baseline total district greenhouse gas emissions in kgCO2.",
+            "objective": "OE2",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 54543.50265963391
+        }
+      },
+      "name": "Emisiones de CO2",
+      "scenario": "E2",
+      "scenario_semantics": "objective_axis_label",
+      "statement": "Reducir la huella ambiental del distrito, minimizando importaciones en horas de alta intensidad de carbono."
+    },
+    "OE3": {
+      "axis_scenario": "E3",
+      "baseline_comparison": {
+        "comparable_kpis": 8,
+        "improved_kpis": 1,
+        "not_improved_kpis": 7
+      },
+      "code": "OE3",
+      "kpis": {
+        "cost_one_minus_load_factor_average": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": -0.01023685157960652,
+            "improved_vs_baseline": true
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio",
+              "district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "cost_one_minus_load_factor_average",
+            "note": "",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 0.9897631484203935
+        },
+        "cost_peak_average": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": 0.016575315631100818,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio",
+              "district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "cost_peak_average",
+            "note": "",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 1.0165753156311008
+        },
+        "cost_ramping_average": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": 0.0014307130196626883,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_energy_grid_shape_quality_ramping_average_to_baseline_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "cost_ramping_average",
+            "note": "",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 1.0014307130196627
+        },
+        "electricity_cost": {
+          "comparison": {
+            "available": true,
+            "baseline": 1.0,
+            "delta_vs_baseline": 0.012335206896483264,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_cost_ratio_to_baseline_total_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "electricity_cost",
+            "note": "CityLearn v2 normalized district cost ratio to baseline.",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 1.0123352068964833
+        },
+        "electricity_cost_baseline": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_cost_total_baseline_eur"
+            ],
+            "lower_is_better": true,
+            "name": "electricity_cost_baseline",
+            "note": "Total district electricity cost for the CityLearn v2 baseline in EUR.",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 5933184.36464527
+        },
+        "electricity_cost_control": {
+          "comparison": {
+            "available": true,
+            "baseline": 5933184.36464527,
+            "delta_vs_baseline": 73187.05669287965,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_cost_total_control_eur"
+            ],
+            "lower_is_better": true,
+            "name": "electricity_cost_control",
+            "note": "Total district electricity cost under control in EUR.",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 6006371.421338149
+        },
+        "electricity_cost_daily_average_baseline": {
+          "comparison": {
+            "available": true,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_cost_daily_average_baseline_eur"
+            ],
+            "lower_is_better": true,
+            "name": "electricity_cost_daily_average_baseline",
+            "note": "",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 16257.155468830515
+        },
+        "electricity_cost_daily_average_control": {
+          "comparison": {
+            "available": true,
+            "baseline": 16257.155468830515,
+            "delta_vs_baseline": 200.5353762563209,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_cost_daily_average_control_eur"
+            ],
+            "lower_is_better": true,
+            "name": "electricity_cost_daily_average_control",
+            "note": "",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 16457.690845086836
+        },
+        "electricity_cost_daily_average_delta": {
+          "comparison": {
+            "available": true,
+            "baseline": 0.0,
+            "delta_vs_baseline": 200.53537625632055,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_cost_daily_average_delta_eur"
+            ],
+            "lower_is_better": true,
+            "name": "electricity_cost_daily_average_delta",
+            "note": "",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 200.53537625632055
+        },
+        "electricity_cost_delta": {
+          "comparison": {
+            "available": true,
+            "baseline": 0.0,
+            "delta_vs_baseline": 36693.79603456798,
+            "improved_vs_baseline": false
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_cost_total_delta_eur",
+              "district_cost_daily_average_delta_eur"
+            ],
+            "lower_is_better": true,
+            "name": "electricity_cost_delta",
+            "note": "Control minus baseline total district electricity cost in EUR.",
+            "objective": "OE3",
+            "source": "citylearn_v2.evaluate_v2"
+          },
+          "value": 36693.79603456798
+        },
+        "price_signal_deviation": {
+          "comparison": {
+            "available": false,
+            "baseline": null,
+            "delta_vs_baseline": null,
+            "improved_vs_baseline": null
+          },
+          "trace": {
+            "citylearn_v2_names": [
+              "district_demand_response_price_signal_deviation_ratio"
+            ],
+            "lower_is_better": true,
+            "name": "price_signal_deviation",
+            "note": "Not a native evaluate_v2 KPI in this codebase; derived from district net import and the electricity_pricing signal.",
+            "objective": "OE3",
+            "source": "derived_from_citylearn_v2_timeseries"
+          },
+          "value": null
+        }
+      },
+      "name": "Costos energeticos",
+      "scenario": "E3",
+      "scenario_semantics": "objective_axis_label",
+      "statement": "Optimizar el gasto energetico, reduciendo picos de demanda y aprovechando tarifas dinamicas."
+    }
+  },
+  "reward_metadata": {
+    "algorithm": "MATD3",
+    "axis_weights": {
+      "carbon": 0.7,
+      "cost": 0.15,
+      "flex": 0.15
+    },
+    "base_reward": "CityLearnV3MADRLRewardFunction",
+    "function": "CityLearnV3MADRLRewardFunction",
+    "not_using_marl_base_weights": true,
+    "profile": {
+      "axis_weight_multipliers": {
+        "carbon": 1.0,
+        "cost": 1.0,
+        "flex": 1.0
+      },
+      "bess_cycle_scale": 0.05,
+      "bess_cycle_weight": 0.1,
+      "ev_departure_deficit_weight": 0.7,
+      "ev_idle_deficit_weight": 0.25,
+      "ev_soc_critical_deficit": 0.25,
+      "ev_soc_tolerance": 0.05,
+      "ev_urgency_deficit_weight": 0.3,
+      "ev_urgency_hours": 8.0,
+      "ev_weight": 0.25,
+      "peak_weight": 0.45,
+      "profile_name": "matd3_unified_comparable_v4",
+      "ramp_weight": 0.35,
+      "reward_scale": 1.0,
+      "team_reward_ratio": 0.7
+    },
+    "scenario": "E2"
+  },
+  "scenario": "E2",
+  "seed": 0,
+  "traceability": {
+    "completed_episode_count": 43800,
+    "environment_step_delta_vs_plan": 0,
+    "expected_episode_count": 5,
+    "planned_environment_steps": 43800,
+    "recorded_environment_steps": 43800,
+    "status": "ok",
+    "warnings": [
+      {
+        "code": "using_completed_snapshot_after_backend_reset",
+        "message": "The backend current environment is incomplete; KPIs come from the last completed episode snapshot.",
+        "severity": "info"
+      }
+    ]
+  }
+}

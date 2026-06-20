@@ -1,0 +1,12 @@
+metric,value
+action_bins,3
+algorithm,MAAC
+algorithm_family,MADRL
+backend,external/MAAC
+discrete_action_mode,axis
+episode_time_steps,8760
+episodes,5
+n_discrete_actions,89
+output_dir,outputs\citylearn_v3_madrl_full_20260615_074011_v4\maac\E3_seed_0
+scenario,E3
+seed,0

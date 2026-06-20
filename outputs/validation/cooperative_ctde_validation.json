@@ -1,0 +1,281 @@
+{
+  "status": "passed",
+  "rows": [
+    {
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.0233176,
+      "reward_profile": {
+        "profile_name": "happo_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.02984577,
+      "reward_profile": {
+        "profile_name": "happo_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.03083161,
+      "reward_profile": {
+        "profile_name": "happo_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.0233176,
+      "reward_profile": {
+        "profile_name": "masac_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.02984577,
+      "reward_profile": {
+        "profile_name": "masac_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.03083161,
+      "reward_profile": {
+        "profile_name": "masac_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.0233176,
+      "reward_profile": {
+        "profile_name": "matd3_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.02984577,
+      "reward_profile": {
+        "profile_name": "matd3_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.03083161,
+      "reward_profile": {
+        "profile_name": "matd3_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.0233176,
+      "reward_profile": {
+        "profile_name": "maac_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.02984577,
+      "reward_profile": {
+        "profile_name": "maac_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "agents": 17,
+      "reward_aggregation": "team_mean",
+      "state_dim": 534,
+      "obs_dim_sum": 534,
+      "shared_reward_value": -0.03083161,
+      "reward_profile": {
+        "profile_name": "maac_unified_comparable_v2",
+        "axis_weight_multipliers": {
+          "flex": 1.0,
+          "carbon": 1.0,
+          "cost": 1.0
+        },
+        "team_reward_ratio": 0.7,
+        "ev_weight": 0.12,
+        "reward_scale": 1.0,
+        "ramp_weight": 0.35,
+        "peak_weight": 0.45
+      },
+      "not_using_marl_base_weights": true
+    }
+  ]
+}

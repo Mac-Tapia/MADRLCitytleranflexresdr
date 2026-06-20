@@ -1,0 +1,14 @@
+{
+  "algorithm": "sac",
+  "family": "citylearn_v2_original",
+  "backend": "stable_baselines3",
+  "schema_path": "D:\\MADRLCitytleranflexresdr\\CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json",
+  "scenario": "E1",
+  "seed": 0,
+  "episode_time_steps": 4,
+  "train_episodes": 0,
+  "total_timesteps": 0,
+  "central_agent": true,
+  "checkpoint": "outputs\\citylearn_v2_sb3_smoke_buffer50k\\sac\\E1_seed_0\\checkpoints\\sac_citylearn_v2_sb3.zip",
+  "same_dataset_as_madrl": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json"
+}

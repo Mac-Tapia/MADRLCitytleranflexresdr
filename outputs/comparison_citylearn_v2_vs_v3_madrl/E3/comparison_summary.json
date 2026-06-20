@@ -1,0 +1,45 @@
+{
+  "weights": {
+    "OE1": 0.34,
+    "OE2": 0.33,
+    "OE3": 0.33
+  },
+  "rows": 216,
+  "families": [
+    "citylearn_v3_madrl"
+  ],
+  "methods": [
+    "HAPPO",
+    "MAAC",
+    "MASAC",
+    "MATD3"
+  ],
+  "best_by_axis": {
+    "OE1": {
+      "family": "citylearn_v3_madrl",
+      "method": "HAPPO",
+      "score": 0.680585084112608
+    },
+    "OE2": {
+      "family": "citylearn_v3_madrl",
+      "method": "MATD3",
+      "score": 0.9811172945932373
+    },
+    "OE3": {
+      "family": "citylearn_v3_madrl",
+      "method": "MAAC",
+      "score": 0.7878990719950392
+    }
+  },
+  "best_global": {
+    "family": "citylearn_v3_madrl",
+    "method": "MATD3",
+    "score": 0.7332528976440587
+  },
+  "figures": [
+    "outputs\\comparison_citylearn_v2_vs_v3_madrl\\E3\\OE1_comparison.png",
+    "outputs\\comparison_citylearn_v2_vs_v3_madrl\\E3\\OE2_comparison.png",
+    "outputs\\comparison_citylearn_v2_vs_v3_madrl\\E3\\OE3_comparison.png",
+    "outputs\\comparison_citylearn_v2_vs_v3_madrl\\E3\\baseline_gain_heatmap.png"
+  ]
+}

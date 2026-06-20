@@ -1,0 +1,310 @@
+{
+  "generated_at": "2026-06-20T17:23:36.021405+00:00",
+  "dataset_dir": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025",
+  "buildingcsv_dir": "CityLearn\\data\\buildingcsv",
+  "audit_dir": "outputs\\dataset_audit",
+  "schema_sha256": "37b8999ee1d00c241cc807b9b3d259c2f00d30a6113a2b2a492a127ad5287eb8",
+  "status": "ready",
+  "raw_dataset_loaded_before_normalization": true,
+  "normalization_allowed_for_training": true,
+  "checks": {
+    "raw_inputs": {
+      "building_inventory": "CityLearn\\data\\buildingcsv\\building.csv",
+      "monthly_files_required": [
+        "CityLearn\\data\\buildingcsv\\B_02.csv",
+        "CityLearn\\data\\buildingcsv\\B_03.csv",
+        "CityLearn\\data\\buildingcsv\\B_04.csv",
+        "CityLearn\\data\\buildingcsv\\B_05.csv",
+        "CityLearn\\data\\buildingcsv\\B_06.csv",
+        "CityLearn\\data\\buildingcsv\\B_07.csv",
+        "CityLearn\\data\\buildingcsv\\B_08.csv",
+        "CityLearn\\data\\buildingcsv\\B_09.csv",
+        "CityLearn\\data\\buildingcsv\\B_10.csv",
+        "CityLearn\\data\\buildingcsv\\B_11.csv",
+        "CityLearn\\data\\buildingcsv\\B_12.csv",
+        "CityLearn\\data\\buildingcsv\\B_13.csv",
+        "CityLearn\\data\\buildingcsv\\B_14.csv",
+        "CityLearn\\data\\buildingcsv\\B_15.csv",
+        "CityLearn\\data\\buildingcsv\\B_16.csv",
+        "CityLearn\\data\\buildingcsv\\B_17.csv"
+      ],
+      "monthly_files_optional": [
+        "CityLearn\\data\\buildingcsv\\B_01.csv"
+      ]
+    },
+    "support_files": {
+      "weather.csv": {
+        "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\weather.csv",
+        "exists": true,
+        "rows": 26304,
+        "columns": 16,
+        "sha256": "ed8995f0f4492100f05c423aada537dac652a42160267774e9d9f721989baf79",
+        "role": "clima_CityLearn"
+      },
+      "carbon_intensity.csv": {
+        "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\carbon_intensity.csv",
+        "exists": true,
+        "rows": 26304,
+        "columns": 1,
+        "sha256": "b0b12d35a7de2766f97072e3e87b8263586093278395a9c8706e0f1da65e098c",
+        "role": "emisiones_CO2",
+        "min": 0.6715,
+        "max": 0.79,
+        "mean": 0.7670889343065693
+      },
+      "pricing.csv": {
+        "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\pricing.csv",
+        "exists": true,
+        "rows": 26304,
+        "columns": 4,
+        "sha256": "645422fb6763612cded092630ecc1d0ebf6c926d7da68c3c498e949a719fb552",
+        "role": "costos_energia",
+        "min": 0.383220954,
+        "max": 1.066918914,
+        "mean": 0.5328898858357284
+      },
+      "controlled_machines": {
+        "role": "maquinas_controladas_por_edificio",
+        "files": {
+          "B01": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_1.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "aa2310812749d4f3029abe5eb9dc9176f474b1cfc027f53150fce2e2fdff40c6",
+            "active_cycle_rows": 7830
+          },
+          "B02": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_2.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "4ade78b71770b4af279558bf18d668f2fe9363146a5dcf24e9075cd35ffa7bbc",
+            "active_cycle_rows": 7047
+          },
+          "B03": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_3.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "086ece930d63b0ccf15428d21d97144be1e016ffebe88e39d89ba686b7b8e8c4",
+            "active_cycle_rows": 24112
+          },
+          "B04": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_4.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "91e8683827fda2274ba3d7df67ca6b5dc8f04ead42770de14c1a33c50f68f322",
+            "active_cycle_rows": 10960
+          },
+          "B05": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_5.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "261320a1d3403d44b666d1752d5c02411892940102b54d35fa37b09762c1addb",
+            "active_cycle_rows": 24112
+          },
+          "B06": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_6.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "6757e54fae53ba19ad389f7a5faa43ba7b95dc138819ae2f29ceb356fcbdceb9",
+            "active_cycle_rows": 10960
+          },
+          "B07": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_7.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "52388a19473e975c54f049ae482e01ed4348e082214275737d00bc2016f1bb6c",
+            "active_cycle_rows": 8613
+          },
+          "B08": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_8.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "a6e6d969bf2e13830c9c15b5d4becb15a9836f85b9f31ea10a9f7b9ae17c44ea",
+            "active_cycle_rows": 6264
+          },
+          "B09": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_9.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "5121685869a35de1b26f6461ebee2c260c276e7f49efc176a10a0caf4b58a229",
+            "active_cycle_rows": 24112
+          },
+          "B10": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_10.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "c52e2efeae1083dd669125ac8b10e8e36792f04349532a0fa979b0274b56d5d9",
+            "active_cycle_rows": 7047
+          },
+          "B11": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_11.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "95375cdb4db4ee52ae879a3d9d2f7a317fdd7e867a8802a30f4c06baa073b8aa",
+            "active_cycle_rows": 24112
+          },
+          "B12": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_12.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "25570d1514932b3b81c471aa0506848db79551a5667a0f09af0aedfc06483884",
+            "active_cycle_rows": 24112
+          },
+          "B13": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_13.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "a74ca63b2946b104c188eb2e4e213cad175c42d12fa49d1af67e4a7af3f09cc7",
+            "active_cycle_rows": 8613
+          },
+          "B14": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_14.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "f1fd0cee0e5d7039fabcf4075e1fc98a3ac67ceb26580effe8386ae86e32f050",
+            "active_cycle_rows": 13152
+          },
+          "B15": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_15.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "c06103be70adc03bc2beafb884fc1a1dcff449aa34c9b3308ece3dca1cbe404b",
+            "active_cycle_rows": 6264
+          },
+          "B16": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_16.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "a4f0467940ab70036ee182b2ad2f79c69693fef90274ead7e9f492c39fd2f130",
+            "active_cycle_rows": 7830
+          },
+          "B17": {
+            "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_17.csv",
+            "exists": true,
+            "rows": 26304,
+            "columns": 5,
+            "sha256": "a5f8dfb04c48ea490b812ad931ea4fe77765bfea97fa76cbdf48d58575852ab4",
+            "active_cycle_rows": 24112
+          }
+        }
+      }
+    },
+    "citylearn_files": {
+      "building_count": 17,
+      "charger_count": 185,
+      "physical_charger_count": 96,
+      "ev_definition_count": 1850,
+      "building_hashes": {
+        "Building_1": "d4d995fe00471574212298b87018e0589fa4a23dec59461db68c3535b8814272",
+        "Building_2": "8ed4d29c932cabab68dbed0adae47c7f240477c0b6cc2eeb9eb2b052717736bc",
+        "Building_3": "986e1a1928bbcc4219faa2ec4efe5833ea0a2a197d0ae047f46acf0b14dceb6f",
+        "Building_4": "c0a7d7850ea2870eba4e2cdb8002883c4f9d0e14e08c028ef951a2490dd3840b",
+        "Building_5": "da2427aec7567aca4e774b90b0613c12e731ad6d354e33b056537404453d25fb",
+        "Building_6": "8349101c32ada4b47cd2a011bd85278436dc2574a7d35438e40f6ded3b85611b",
+        "Building_7": "789111fd0045750a04987b74e6ea91f4306068e57c9eea32f378b4340722cdde",
+        "Building_8": "a78767a61dcc07a1ef5e98d954d76c27f65138ca5293c8400d3f48d6bfcc13ee",
+        "Building_9": "f141e34ae911ffa887a87fed23913c487f73b773b6f90ee0125bb82ad9ad940f",
+        "Building_10": "e02a962a16709e0abc46ebfef62e6190bd5099fe88f2cae56a37e08a8d783906",
+        "Building_11": "566ff117726317fbb258624542c6e191b42c8992128b7ccd375c85037d3326e0",
+        "Building_12": "8dd221ea5a47f1ab5977d394ea2f673d87913cdf15735f4a16fc8cd3324a9733",
+        "Building_13": "882037333da2170c09ffebdc240c985be78109cab403090a656759c20a3611af",
+        "Building_14": "5f5dac014ec8b679da0d7bae25ebc55459dd710b069962d4306b6e7de3287e6b",
+        "Building_15": "8010babd517303e752f04c5c483b34ed55edd1baf1b7d68c542a6c793b3faedb",
+        "Building_16": "067ac3eb6656a3a42df24b0163d70107c0010d83c3c7e58731c9b8a0695f30d2",
+        "Building_17": "73b0bc7d59de62ae21beb09de0930478563d5f118fd1272371c346b6aa803fbb"
+      },
+      "support_references": {
+        "weather": 17,
+        "carbon_intensity": 17,
+        "pricing": 17
+      },
+      "controlled_machine_references": 17,
+      "orphan_charger_files": [],
+      "missing_charger_files": [],
+      "orphan_machine_files": [],
+      "missing_machine_files": []
+    },
+    "training_audit": {
+      "path": "outputs\\dataset_audit\\training_dataset_validation.json",
+      "all_valid": true,
+      "rows": 17,
+      "max_abs_base_delta_pct_B02_B17": 1.45e-07,
+      "pv_closure_max_MWh": 0.0010000000011132215,
+      "total_forecast_months": 8
+    },
+    "der_audit": {
+      "path": "outputs\\dataset_audit\\der_sizing_audit.csv",
+      "rows": 17,
+      "sha256": "1a87166f6d9275b8acffd0753ba20c702e62568dc2ffe6ddae2480691e6fbe39"
+    },
+    "auxiliary_audit_files": {
+      "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\solar_fix_log.json": {
+        "exists": true,
+        "sha256": "69aea8e4d6f207ab0336594554efdad1e61bb4be0b8bb2476f8ea80976b30d02"
+      },
+      "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\ev_charger_sizing_log.json": {
+        "exists": true,
+        "sha256": "b8b38fdbdb5658d324e7d8b50c4ad0f9000afaab211fdc2ca8d26ccfece04224"
+      },
+      "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\controlled_machines_log.json": {
+        "exists": true,
+        "sha256": "3c82814d688c31169b361bda9002abba2a22a8d5d120f6f73394d55e98c831d3"
+      },
+      "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\building_metadata.json": {
+        "exists": true,
+        "sha256": "ce6ab306c6d9b6a338fb5892e6f58948d089160a60d9a7c8aefac8696ef4b213"
+      },
+      "tools\\dataset_docs\\distillation_report.csv": {
+        "exists": true,
+        "sha256": "8c50a53c64a36f6033dc86af8d3c163d3aef50995b581fe76dc8e05b7f822534"
+      },
+      "outputs\\dataset_audit\\ev_charger_sizing_audit.csv": {
+        "exists": true,
+        "sha256": "18ae8772242112ca21ecf5fa911b8d8351efc39276584460abdce05cfd00e3fd"
+      },
+      "outputs\\dataset_audit\\ev_charger_sizing_audit.json": {
+        "exists": true,
+        "sha256": "b8b38fdbdb5658d324e7d8b50c4ad0f9000afaab211fdc2ca8d26ccfece04224"
+      },
+      "outputs\\dataset_audit\\training_dataset_validation.csv": {
+        "exists": true,
+        "sha256": "40d45110ea8c856eab1457ae30bcde3ee0e81da67f91f3389e352fa4c6c40d83"
+      },
+      "outputs\\dataset_audit\\der_sizing_audit.json": {
+        "exists": true,
+        "sha256": "bdc8b7781f423f3112d7ec8ddb014a95bff7be43aecb703e8d6a0b049162ee04"
+      },
+      "outputs\\dataset_audit\\orphaned_dataset_files_manifest.json": {
+        "exists": true,
+        "sha256": "a409c9d10acb7907ebbee3deb096dff8ad83458a047e3942c5245608fb1f0f1b"
+      },
+      "outputs\\dataset_audit\\csv_integrity_manifest.json": {
+        "exists": true,
+        "sha256": "ab1f093293b22c445b5348883324b06f16e0ae912f6086c6fd444ac0cb736bcd",
+        "status": "ok",
+        "nan_cells": 0,
+        "inf_cells": 0
+      }
+    }
+  },
+  "issues": [],
+  "warnings": [
+    "B01 se mantiene como perfil de inventario sin factura mensual directa."
+  ]
+}

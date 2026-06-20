@@ -1,0 +1,139 @@
+{
+  "started_at": "2026-06-12T22:29:07.9189881-05:00",
+  "completed_at": "2026-06-12T22:32:48.5273353-05:00",
+  "status": "failed",
+  "dataset": "citylearn_iquitos_2023_2025",
+  "schema_path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json",
+  "schema_path_resolved": "D:\\MADRLCitytleranflexresdr\\CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json",
+  "scenario": "ALL",
+  "scenarios": [
+    "E1",
+    "E2",
+    "E3"
+  ],
+  "seed": 0,
+  "episode_time_steps": 8760,
+  "episodes": 5,
+  "num_env_steps": 43800,
+  "torch": "torch 2.8.0+cu126",
+  "cuda": true,
+  "algorithm_family": "MADRL",
+  "execution": "parallel_scenarios_by_algorithm",
+  "parallelization": {
+    "requested": true,
+    "effective": true,
+    "max_concurrent_scenario_jobs": 2,
+    "max_concurrent_heavy_jobs": 1,
+    "heavy_algorithms": [
+      "masac",
+      "maac"
+    ],
+    "strategy": "Run the same MADRL algorithm across scenarios concurrently, while keeping MASAC/MAAC limited for memory stability.",
+    "local_8gb_concurrency_adjusted": false,
+    "local_8gb_concurrency_note": "8GB VRAM profile allows up to 2 concurrent scenario jobs and keeps MASAC/MAAC heavy stages at 1; visible monitoring is parallel-safe, while LiveOutput=true is sequential debug display.",
+    "disabled_reason": null
+  },
+  "active_project_environment": {
+    "python": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+    "virtual_env": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3",
+    "pythonpath": "D:\\MADRLCitytleranflexresdr;D:\\MADRLCitytleranflexresdr\\CityLearn"
+  },
+  "gpu_optimization": {
+    "enabled": true,
+    "profile": "local4060_fast",
+    "detected_gpu": "NVIDIA GeForce RTX 4060 Laptop GPU, 8188 MiB dedicated, driver 560.94",
+    "dedicated_gpu": {
+      "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "memory_total_mib": 8188.0,
+      "memory_free_mib": 7957.0,
+      "dedicated_vram_gib": 8.0,
+      "free_vram_gib": 7.77,
+      "driver_version": "560.94",
+      "source": "nvidia-smi dedicated memory, not Windows shared GPU memory"
+    },
+    "max_gpu_vram_gib_requested": 0.0,
+    "max_gpu_vram_gib_effective": 8.0,
+    "gpu_vram_reserve_gib": 1.5,
+    "cuda_memory_fraction_requested": 0.0,
+    "cuda_memory_fraction_effective": 0.812,
+    "local_8gb_safety_mode": true,
+    "allow_gpu_oversubscription": false,
+    "cuda_device_order": "PCI_BUS_ID",
+    "pytorch_cuda_alloc_conf": "max_split_size_mb:128",
+    "live_progress_interval": 250,
+    "strategy": "RTX 4060 fast local profile: TF32-enabled Torch runtime, lighter network/update sizes, lower logging IO",
+    "note": "CityLearn environment stepping remains sequential to preserve episode accounting. GPU is used by the four MADRL neural backends."
+  },
+  "algorithm_resource_limits": {
+    "happo_hidden_size": 256,
+    "happo_live_heartbeat_seconds": 30,
+    "masac_max_replay_buffer_gib": 3.5,
+    "masac_buffer_size": 20,
+    "masac_critic_batch_size": 64,
+    "masac_critic_train_steps": 1,
+    "masac_actor_sample_times": 4,
+    "masac_rnn_hidden_dim": 256,
+    "masac_qmix_hidden_dim": 128,
+    "masac_hyper_hidden_dim": 256,
+    "masac_live_heartbeat_seconds": 30,
+    "matd3_batch_size": 256,
+    "matd3_buffer_size": 4096,
+    "matd3_hidden_size": 256,
+    "matd3_train_interval": 100,
+    "matd3_live_heartbeat_seconds": 30,
+    "maac_batch_size": 256,
+    "maac_buffer_length": 50000,
+    "maac_hidden_size": 256,
+    "maac_steps_per_update": 250,
+    "maac_num_updates": 4,
+    "maac_live_heartbeat_seconds": 30
+  },
+  "training_config": {
+    "yaml": "CityLearn\\configs\\citylearn_v3_madrl_training.yaml",
+    "json": "CityLearn\\configs\\citylearn_v3_madrl_training.json",
+    "schema_version": 2
+  },
+  "artifact_optimization": {
+    "profile": "efficient",
+    "trace_record_interval": 10,
+    "trace_detail": "compact",
+    "root_trace_csv": false,
+    "statistical_trace_copy": false,
+    "note": "efficient/minimal reduce per-agent trace generation and avoid duplicate heavy trace CSV mirrors."
+  },
+  "reward": {
+    "function": "citylearn.reward_function.CityLearnV3MADRLRewardFunction",
+    "aggregation": "team_mean",
+    "not_using_marl_base_weights": true
+  },
+  "output_root": "outputs\\citylearn_v3_madrl_oficial_v7",
+  "jobs": [
+    {
+      "name": "happo",
+      "scenario": "E1",
+      "script": "CityLearn\\scripts\\train_citylearn_v3_happo.py",
+      "started_at": "2026-06-12T22:29:08.1056581-05:00",
+      "completed_at": "2026-06-12T22:32:48.5100081-05:00",
+      "exit_code": -1,
+      "log": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v3_madrl_oficial_v7\\logs\\E1_happo.log",
+      "stderr_log": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v3_madrl_oficial_v7\\logs\\E1_happo.stderr.log",
+      "output_dir": "outputs\\citylearn_v3_madrl_oficial_v7\\happo\\E1_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn\\scripts\\train_citylearn_v3_happo.py --scenario E1 --schema-path CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json --seed 0 --episode-time-steps 8760 --episodes 5 --num-env-steps 43800 --hidden-size 256 --gamma 0.9999 --torch-threads 8 --n-rollout-threads 1 --log-interval 1 --eval-interval 1 --live-progress-interval 250 --live-heartbeat-seconds 30 --gpu-profile local4060_fast --cuda --cuda-memory-fraction 0.812 --artifact-profile efficient --trace-record-interval 10 --trace-detail compact --output-dir outputs\\citylearn_v3_madrl_oficial_v7\\happo",
+      "parallel_stage": "happo",
+      "duration_minutes": 3.67
+    },
+    {
+      "name": "happo",
+      "scenario": "E2",
+      "script": "CityLearn\\scripts\\train_citylearn_v3_happo.py",
+      "started_at": "2026-06-12T22:29:08.2317530-05:00",
+      "completed_at": null,
+      "exit_code": null,
+      "log": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v3_madrl_oficial_v7\\logs\\E2_happo.log",
+      "stderr_log": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v3_madrl_oficial_v7\\logs\\E2_happo.stderr.log",
+      "output_dir": "outputs\\citylearn_v3_madrl_oficial_v7\\happo\\E2_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn\\scripts\\train_citylearn_v3_happo.py --scenario E2 --schema-path CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json --seed 0 --episode-time-steps 8760 --episodes 5 --num-env-steps 43800 --hidden-size 256 --gamma 0.9999 --torch-threads 8 --n-rollout-threads 1 --log-interval 1 --eval-interval 1 --live-progress-interval 250 --live-heartbeat-seconds 30 --gpu-profile local4060_fast --cuda --cuda-memory-fraction 0.812 --artifact-profile efficient --trace-record-interval 10 --trace-detail compact --output-dir outputs\\citylearn_v3_madrl_oficial_v7\\happo",
+      "parallel_stage": "happo"
+    }
+  ]
+}

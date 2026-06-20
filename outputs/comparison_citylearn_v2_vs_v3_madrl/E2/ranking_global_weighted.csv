@@ -1,0 +1,5 @@
+family,method,global_score,mean_axis_score,improved_kpis,total_kpis,available_kpis,global_rank
+citylearn_v3_madrl,MATD3,0.7514733838506504,0.7546398122237171,6,54,53,1
+citylearn_v3_madrl,MAAC,0.5358805156330496,0.5372914393248855,3,54,53,2
+citylearn_v3_madrl,MASAC,0.4281379220095693,0.42909495331037006,6,54,53,3
+citylearn_v3_madrl,HAPPO,0.30706763713587504,0.3033318856733404,6,54,53,4

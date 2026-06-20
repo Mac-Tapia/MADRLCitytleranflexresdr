@@ -1,0 +1,46 @@
+flowchart LR
+    subgraph HAPPO_BOX["HAPPO — Heterogeneous-Agent PPO"]
+        direction TB
+        HAPPO_T["Tipo: On-policy\nActualizacion secuencial\nTrust region por agente"]
+        HAPPO_C["Critico: Centralizado V(s)\nActor: π(a|o) local\nBackend: HARL/external/HARL"]
+        HAPPO_P["Parametros v4\nhidden_size=384\nn_rollout_threads=1\nlog_interval=1"]
+    end
+
+    subgraph MASAC_BOX["MASAC — Multi-Agent SAC Discreto"]
+        direction TB
+        MASAC_T["Tipo: Off-policy\nEntropy regularization\nAcciones discretas por eje"]
+        MASAC_C["Critico: Q-mix centralizado\nActor: π(a|o) + temperatura\nBackend: MARL/external/MARL/src"]
+        MASAC_P["Parametros v4\naction_bins=3 axis mode\nbuffer_size=20 GiB\ncritic_batch_size=64"]
+    end
+
+    subgraph MATD3_BOX["MATD3 — Multi-Agent TD3"]
+        direction TB
+        MATD3_T["Tipo: Off-policy\nDoble critico (anti-overest)\nPolicy delay + target noise"]
+        MATD3_C["Critico: Par Q₁ Q₂ centralizado\nActor: μ(o) deterministico\nBackend: off-policy/external"]
+        MATD3_P["Parametros v4\nbatch_size=256\nbuffer_size=4096\nhidden_size=256"]
+    end
+
+    subgraph MAAC_BOX["MAAC — Multi-Agent Attention Critic"]
+        direction TB
+        MAAC_T["Tipo: Off-policy\nAtencion sobre agentes\nSAC con Q de atencion"]
+        MAAC_C["Critico: Attention SAC Q(s,a)\nActor: π(a|o) estocastico\nBackend: MAAC/external/MAAC"]
+        MAAC_P["Parametros v4\naction_bins=3\nbatch_size=256\nsteps_per_update=250"]
+    end
+
+    HAPPO_BOX -->|"12/12 corridas\nv3+v4"| COMP(["Comparacion\nKPIs CityLearn\npor escenario"])
+    MASAC_BOX --> COMP
+    MATD3_BOX --> COMP
+    MAAC_BOX --> COMP
+
+    COMP -->|"ranking global"| WINNER(["Mejor: MATD3\nScore E1=0.75 E2=0.75 E3=0.73\nKW p=0.0459"])
+
+    classDef happo fill:#dbeafe,stroke:#2563eb,color:#1c1917,stroke-width:2px
+    classDef masac fill:#fae8ff,stroke:#a21caf,color:#1c1917,stroke-width:2px
+    classDef matd3 fill:#dcfce7,stroke:#16a34a,color:#1c1917,stroke-width:2px
+    classDef maac fill:#fef3c7,stroke:#d97706,color:#1c1917,stroke-width:2px
+    classDef winner fill:#ffedd5,stroke:#ea580c,color:#1c1917,stroke-width:3px
+    class HAPPO_BOX happo
+    class MASAC_BOX masac
+    class MATD3_BOX matd3
+    class MAAC_BOX maac
+    class WINNER winner

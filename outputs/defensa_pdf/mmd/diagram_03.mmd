@@ -1,0 +1,59 @@
+flowchart TD
+    subgraph ENV["Entorno CityLearn v3 (simulacion horaria)"]
+        direction LR
+        B1["Edificio 1\nBESS + PV + EV"]
+        B2["Edificio 2\nBESS + PV + EV"]
+        BN["... Edificio 17\nBESS + PV + EV"]
+        GRID(["Red electrica\nElectro Oriente\nSistema aislado diesel"])
+        B1 --- B2 --- BN
+        B1 & B2 & BN --> GRID
+    end
+
+    subgraph OBS["Observaciones locales oᵢ(t) — 19 dimensiones"]
+        direction LR
+        TIME["Tiempo\nmes hora tipo_dia"]
+        PHYS["Fisica edificio\nT_interior DHW\ncarga_no_desplazable\ngeneracion_solar"]
+        BESS_OBS["Estado BESS\nSOC accion_previa"]
+        EV_OBS["Estado EV\nSOC_k salida_k\nSOC_req_k llegada_k"]
+        SIG["Senales globales\ncarbono precio\nGHI T_amb HR"]
+    end
+
+    subgraph POLICY["Politicas descentralizadas (ejecucion)"]
+        P1["π₁(a₁|o₁)\nred neuronal\nedificio 1"]
+        P2["π₂(a₂|o₂)\nred neuronal\nedificio 2"]
+        PN["π₁₇(a₁₇|o₁₇)\nred neuronal\nedificio 17"]
+    end
+
+    subgraph ACTIONS["Acciones locales aᵢ(t)"]
+        A1["a₁: BESS carga/descarga\nEV carga\nLavadora on/off"]
+        A2["a₂: BESS · EV · Lavadora"]
+        AN["a₁₇: BESS · EV · Lavadora"]
+    end
+
+    subgraph CRITIC["Critico centralizado (solo en entrenamiento CTDE)"]
+        STATE["Estado global s = concat(o₁,...,o₁₇)\nV(s) o Q(s,a) centralizado"]
+        REWARD["Recompensa mixta por agente\nr_i_mix = 0.30 * r_i + 0.70 * team_reward\nteam_reward = mean(r₁,...,r₁₇)"]
+        STATE --> REWARD
+    end
+
+    subgraph UPDATE["Actualizacion de politicas (CTDE)"]
+        GRAD["Gradiente con informacion global\nHAPPO: secuencial con trust region\nMASAC: Q-mix + SAC discreto\nMATD3: TD3 con critico centralizado\nMAC: attention sobre Q"]
+    end
+
+    ENV -->|"emite oᵢ(t)"| OBS
+    OBS --> POLICY
+    POLICY -->|"accion aᵢ"| ACTIONS
+    ACTIONS -->|"aplica en entorno"| ENV
+    ENV -->|"estado global\nsolo entrenamiento"| CRITIC
+    CRITIC --> UPDATE
+    UPDATE -->|"actualiza pesos"| POLICY
+
+    classDef env fill:#f0fdf4,stroke:#16a34a,color:#1c1917
+    classDef obs fill:#dbeafe,stroke:#2563eb,color:#1c1917
+    classDef pol fill:#fae8ff,stroke:#a21caf,color:#1c1917
+    classDef crit fill:#fef3c7,stroke:#d97706,color:#1c1917
+    classDef act fill:#ffedd5,stroke:#ea580c,color:#1c1917
+    class ENV env
+    class OBS obs
+    class POLICY,ACTIONS pol
+    class CRITIC,UPDATE crit

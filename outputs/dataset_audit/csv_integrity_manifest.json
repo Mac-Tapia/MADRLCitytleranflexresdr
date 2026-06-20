@@ -1,0 +1,4353 @@
+{
+  "generated_at": "2026-06-13T03:18:27.439637+00:00",
+  "dataset_dir": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025",
+  "status": "ok",
+  "expected_rows": 26304,
+  "csv_files_checked": 222,
+  "nan_cells": 0,
+  "inf_cells": 0,
+  "schema_references": {
+    "buildings": 17,
+    "chargers": 185,
+    "controlled_machines": 17,
+    "orphan_chargers": [],
+    "orphan_machines": [],
+    "missing_chargers": [],
+    "missing_machines": [],
+    "stale_schema_backups": []
+  },
+  "issues": [],
+  "files": {
+    "weather.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\weather.csv",
+      "sha256": "ed8995f0f4492100f05c423aada537dac652a42160267774e9d9f721989baf79",
+      "rows": 26304,
+      "columns": 16,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "numeric_min": 0.0,
+      "numeric_max": 894.33
+    },
+    "carbon_intensity.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\carbon_intensity.csv",
+      "sha256": "b0b12d35a7de2766f97072e3e87b8263586093278395a9c8706e0f1da65e098c",
+      "rows": 26304,
+      "columns": 1,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "numeric_min": 0.6715,
+      "numeric_max": 0.79
+    },
+    "pricing.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\pricing.csv",
+      "sha256": "645422fb6763612cded092630ecc1d0ebf6c926d7da68c3c498e949a719fb552",
+      "rows": 26304,
+      "columns": 4,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "numeric_min": 0.383220954,
+      "numeric_max": 1.066918914
+    },
+    "Building_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_1.csv",
+      "sha256": "d4d995fe00471574212298b87018e0589fa4a23dec59461db68c3535b8814272",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 237.260231,
+        "dhw_demand": 0.0,
+        "cooling_demand": 50.089225,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_10.csv",
+      "sha256": "e02a962a16709e0abc46ebfef62e6190bd5099fe88f2cae56a37e08a8d783906",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 4.221251,
+        "dhw_demand": 0.0,
+        "cooling_demand": 1.470518,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_11.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_11.csv",
+      "sha256": "566ff117726317fbb258624542c6e191b42c8992128b7ccd375c85037d3326e0",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 2.993556,
+        "cooling_demand": 146.806937,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_12.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_12.csv",
+      "sha256": "8dd221ea5a47f1ab5977d394ea2f673d87913cdf15735f4a16fc8cd3324a9733",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 11.481337,
+        "cooling_demand": 374.900649,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_13.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_13.csv",
+      "sha256": "882037333da2170c09ffebdc240c985be78109cab403090a656759c20a3611af",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 0.137484,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_14.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_14.csv",
+      "sha256": "5f5dac014ec8b679da0d7bae25ebc55459dd710b069962d4306b6e7de3287e6b",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 2.78086,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_15.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_15.csv",
+      "sha256": "8010babd517303e752f04c5c483b34ed55edd1baf1b7d68c542a6c793b3faedb",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 0.0565,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_16.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_16.csv",
+      "sha256": "067ac3eb6656a3a42df24b0163d70107c0010d83c3c7e58731c9b8a0695f30d2",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 28.950993,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_17.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_17.csv",
+      "sha256": "73b0bc7d59de62ae21beb09de0930478563d5f118fd1272371c346b6aa803fbb",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 73.921954,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_2.csv",
+      "sha256": "8ed4d29c932cabab68dbed0adae47c7f240477c0b6cc2eeb9eb2b052717736bc",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 0.025669,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_3.csv",
+      "sha256": "986e1a1928bbcc4219faa2ec4efe5833ea0a2a197d0ae047f46acf0b14dceb6f",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 95.748061,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_4.csv",
+      "sha256": "c0a7d7850ea2870eba4e2cdb8002883c4f9d0e14e08c028ef951a2490dd3840b",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 52.674298,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_5.csv",
+      "sha256": "da2427aec7567aca4e774b90b0613c12e731ad6d354e33b056537404453d25fb",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 4.142079,
+        "cooling_demand": 143.402689,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_6.csv",
+      "sha256": "8349101c32ada4b47cd2a011bd85278436dc2574a7d35438e40f6ded3b85611b",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 137.224035,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_7.csv",
+      "sha256": "789111fd0045750a04987b74e6ea91f4306068e57c9eea32f378b4340722cdde",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 0.217568,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_8.csv",
+      "sha256": "a78767a61dcc07a1ef5e98d954d76c27f65138ca5293c8400d3f48d6bfcc13ee",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 0.062904,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "Building_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Building_9.csv",
+      "sha256": "f141e34ae911ffa887a87fed23913c487f73b773b6f90ee0125bb82ad9ad940f",
+      "rows": 26304,
+      "columns": 12,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "energy_min": {
+        "non_shiftable_load": 0.0,
+        "dhw_demand": 0.0,
+        "cooling_demand": 5.906145,
+        "heating_demand": 0.0,
+        "solar_generation": 0.0
+      }
+    },
+    "charger_10_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_10_1.csv",
+      "sha256": "c022dbe3d39f9ca75519b0145506af87569efaaaac5ee444cff0318c1c9ea4b7",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_10_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_10_2.csv",
+      "sha256": "4a8fcd46d6bc6726a469e69670d80ae57e1597f2c5eeb9a09d8bcee1f13307b3",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_10_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_10_3.csv",
+      "sha256": "cfe5aeb2b3aa14b74dd0c86183b5b11772d9c25e1961444b60e6c31e616138eb",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_10_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_10_4.csv",
+      "sha256": "e9d7030efaae3f1c9e60af555e387cef423ee35f89450215fbb594f5dc213175",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_10_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_10_5.csv",
+      "sha256": "3873861b937aeda17eb475a33cb068b5bf9ad0be9065e86c9f904bd8e244c432",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_10_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_10_6.csv",
+      "sha256": "519c81474612e862aacb6b9200fca2882d63b29b41150197c85d880141b57e9a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_11_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_11_1.csv",
+      "sha256": "1b05a8cd3eb4990f39e841bd083920608285060578617b8a20cd5bdb20297477",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_11_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_11_2.csv",
+      "sha256": "a424091898fe69409757b2d124f6b1a3e840cd3afb6f7047e840ef4d69079c4a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_11_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_11_3.csv",
+      "sha256": "21994d98fdd2e105fd80c97f3c4df4997fd8c410f3f6034cee48e5f9cbc3714f",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_12_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_12_1.csv",
+      "sha256": "744a5a3c8307ae71b48f8f57722593ed358993f39a5e1804fdb9e9bf30186900",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_12_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_12_2.csv",
+      "sha256": "f42c8a7015efb0f0b5f1e99cd4c0579e5f36b146412e23961135d9827e5bf64e",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_12_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_12_3.csv",
+      "sha256": "ea37d1f3447f701d396a430106173b140c4e683b75927bd8121d8a495a181f2d",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_1.csv",
+      "sha256": "c9ca3be2735e690231cf4108a5f237516ab2b83b175fb757e9dd1dec7370d7ff",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_10.csv",
+      "sha256": "c2a92907a0b12f661872fc7364970214dd61e476fce3f97781cdc45d5c9988da",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_11.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_11.csv",
+      "sha256": "61e9e4f728ecc38ace1f8184dd5e2476d1c68a39d388404bad5a88aa7b81973f",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_2.csv",
+      "sha256": "0aaab06faaa5f5f58e9c9a18383b4e40aa9d6364462892f363f95548decabfb9",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_3.csv",
+      "sha256": "5658755e63fe8e9456b653e9426757b4fae69280c6e5faf9572782f47d71bb25",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_4.csv",
+      "sha256": "ff290046202abec5577aead9bf76066efd4856f95f00ec956be7f8b07d9d68ab",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_5.csv",
+      "sha256": "72454b9a9498ea10aedd473a4cae3cd5165cb773e059f692cea807a8f3d033eb",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_6.csv",
+      "sha256": "b5c9b7edeae22b62ed42756a930a08c3dd1333878ee7e1f9e91b96699c21d9bd",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_7.csv",
+      "sha256": "db84ca47401057fce789a468df215e95778aaea9129d0db93c674e616ba85f32",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_8.csv",
+      "sha256": "67ebd528123fe46da81d6fc3925db5a9d7c6812f7f0c48f659f86f4a161025d4",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_13_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_13_9.csv",
+      "sha256": "9ffd21d257f34150229dc3f7f3fc9ac25f351c47c7c30635d113b776c15acf83",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_14_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_14_1.csv",
+      "sha256": "32d48870ad2f493cdb1b7156c488ad7bb4207faa48da82e44e18ace556c51536",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_14_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_14_2.csv",
+      "sha256": "08e134f9c43482df83af103f20220b8311e8910b42b013bebac2ea4a5980b823",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_14_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_14_3.csv",
+      "sha256": "e59bd92420195031d10594cbda84198f53c733755e86c3a8b36c49582914d5cd",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_14_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_14_4.csv",
+      "sha256": "80e80471739df49d3d51d6aec491e34afc30b741beb38e76307f8f372ad216e3",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_15_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_15_1.csv",
+      "sha256": "7af8f1093a1a94c4061c52fd609840c19b243f255a61f40b86a027faa8f2054b",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_15_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_15_2.csv",
+      "sha256": "243c4f15786712209893a5886901b27e001f1cb0b1d4a8435b9d8e8505d67e19",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_15_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_15_3.csv",
+      "sha256": "e186ae92343fe7411a3372f300072f66259108b74a1b3268b087e0487ec33384",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_15_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_15_4.csv",
+      "sha256": "d30d20cf5654211dc163e1ec57e57aebb2bf38dd9713d3478644c2d381b1685a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_15_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_15_5.csv",
+      "sha256": "c6ff1d26860a7252b9f14b112b4cbbeee361033fcbd32d6c6b69516cbafedc78",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_15_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_15_6.csv",
+      "sha256": "c47f7c835d89a4289cffb2cb3f970ec64773d94bb16a2a4127410bf6ef9fd9c2",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_15_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_15_7.csv",
+      "sha256": "2a1944ee9e91d670fc9a27705ce4e30ab770a44b28c30404725c0dd87670fd6a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_15_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_15_8.csv",
+      "sha256": "788e1362de9a62de669c55cd9be6db2a1b66d121db08695eb8a546ccdfb5916c",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_1.csv",
+      "sha256": "1b235ec952573466b773d1f2b593ecfb6897bb26f0d03e33dd9d80660abcf029",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_10.csv",
+      "sha256": "8c76ac5bf694e0646153c858ee8836c2976a9e6eb0d3c23053b53fa1e94dc6aa",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_11.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_11.csv",
+      "sha256": "cf3bdf453b52b65c8d263e38392943dbef569361732c84776ec6950c884603fb",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_2.csv",
+      "sha256": "02519072e0a77e7e248e0983f2c0ab0275d294160ff7621118c8f5ddd70c5e57",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_3.csv",
+      "sha256": "9e5ca4e27572813526b2da608acbce5841c93df42e72ff066278968fa9e77daa",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_4.csv",
+      "sha256": "62eb028d5762a6881ba7b44dfe109693d39f8fb292fdc78e72f66c01af46d7a8",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_5.csv",
+      "sha256": "20858750c5c0976182f6e996a20ff6eb3e083fb0cf6edbc39aedafee70d160a1",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_6.csv",
+      "sha256": "c629187775d094473f77921931ebbba57540b1137addafc55ac2466d7c26acf7",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_7.csv",
+      "sha256": "a626bc30373dcfabb067283dd54d0675d7e5e871242ea2d57ae4c4efea129e5c",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_8.csv",
+      "sha256": "80684328afedb19284095523037aed9b4c5e44d99579611b4462bd6e70d1bcb4",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_16_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_16_9.csv",
+      "sha256": "4bc4906989e8598e045d32eac906b7d6a5b91b7622c2805ddadd7ed040decbd8",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_1.csv",
+      "sha256": "70449a5243397248476161884a482cea4e1417e27386993988d7757fc59ed7c5",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_10.csv",
+      "sha256": "1bc74c4fb3a643c299aad713b744f4510330afca3533d6f86700ff6ae62fb800",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_11.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_11.csv",
+      "sha256": "ce2959adda5e13e3276245fe9757b8db26ade3796fb13928ae059bd79e0ee0ec",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_2.csv",
+      "sha256": "e9f107ffe03ede863735dbc12ce164c1e6fed296f68275c5142258cf69a72712",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_3.csv",
+      "sha256": "a78b2a237597077e3cca7dffd607da96b5e40b4d5bed4c4aa71b67cab8910594",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_4.csv",
+      "sha256": "81f0442a45998e6f35b02551f7eea5b2b89a217d3e90a1308239f6c3a405423f",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_5.csv",
+      "sha256": "ce60cc25f38e36f3681e3c93d4beb8729dcbd81e0705d5507ba4c83c9822d1e8",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_6.csv",
+      "sha256": "d5dcaa372f218dd41f143d14832ce417d9b1a72ecae488d73cb010c1bd3ffd96",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_7.csv",
+      "sha256": "fbbd9197dd900c5cea7b48975b5bf178fa0d52298a8a1a1cafeb3d851ada6aa5",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_8.csv",
+      "sha256": "7f318cc106c7c7911dfc9d5545769d80768c3908ead286afd2ca85d0736be57d",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_17_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_17_9.csv",
+      "sha256": "4129e1998b49eb9ac4b4f7aa7ee106ad19082882be130a825fc725f326646899",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_1_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_1_1.csv",
+      "sha256": "ee1b1767f856446b9138e8c9b49233c8f2b4a083bf8ceb78fdbf2d1fbe7e7fd8",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_1_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_1_2.csv",
+      "sha256": "f5df6cb82f17c21667a714fe0f901a13af4c0e68ced3e19fc0d22cfca6fc6644",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_1_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_1_3.csv",
+      "sha256": "7c3f00e5f9e2a08c14c8319b9d7b578b2cdf7cda269873042346c721c82e9b4f",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_1_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_1_4.csv",
+      "sha256": "cd4836090519ffc9c723a4c4624438433fe26b30fee3463a825ac0f26148f149",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_2_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_2_1.csv",
+      "sha256": "cdc6a93ba2b46df8ab018f8efdacab4f9656a5162af170a23b7576c1f7d529a9",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_2_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_2_2.csv",
+      "sha256": "01fd4ec098ac64d9ba2a5b54a67cff591a33f888fd951e1a669d086dced996ca",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_2_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_2_3.csv",
+      "sha256": "f15b01eb2a5961897b10b78570c03333432070c9e5e6e8ee2b465aa9dc1a891b",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_2_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_2_4.csv",
+      "sha256": "ff4cb048c2d6d5f45437fde8d9ac7d12c5fd83ae448c61da4643c15a38dfd0b2",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_2_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_2_5.csv",
+      "sha256": "a99d9eb8ca103ba59882eb4702637806019061aaf731e7085347a6baf8d175c0",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_2_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_2_6.csv",
+      "sha256": "08710f9a79467640c2d1ea96fdd4b851652bffec52044c8f70667fc09426d82d",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_3_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_3_1.csv",
+      "sha256": "6ecde572c0baccf9432bd418447feb802bf7ee6f52c3793af141b6e0ba04ae9e",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_3_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_3_2.csv",
+      "sha256": "50bc69059df308e20a06f2418b16de51e22f533d805e8ee9c36d6d967652eb61",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_3_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_3_3.csv",
+      "sha256": "a01bf63a3b197998a34bdb059a88d44855f730dd95306d197a04b19837f5bbac",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_3_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_3_4.csv",
+      "sha256": "5bc030ed1024f5b99c2da4707cd57019c7149ae64f35961531776668a90ba9c1",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_3_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_3_5.csv",
+      "sha256": "d2f6cb8d75b06bcc4792c5f1ed74770c2cec0235e40e0cdf43d84a7041c5b921",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_3_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_3_6.csv",
+      "sha256": "fce6ddee0638b2c3101ed3758d2e93b660d4d987637c31fce0a4395d114ffcf9",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_3_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_3_7.csv",
+      "sha256": "98671def47b5742a2e79f95645bb8a004441acca88a44a2687f35afbcb5c2573",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_3_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_3_8.csv",
+      "sha256": "bd0567e433450bab5cc74b1341c7a87b3fa5686474cd6641cb73cd13d3609444",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_4_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_4_1.csv",
+      "sha256": "117b008e821401cfc2c95f6ebb16a0d87846826daa4fb819365613ad0ec93124",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_4_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_4_2.csv",
+      "sha256": "5de1d2cfde265d3c9425cca40e43fff6bf00033df1f631b8f45b6e114d311d40",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_4_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_4_3.csv",
+      "sha256": "421f9d1b1afaef49680e3f4e7e4e846800f82a73037f411d624e6c6d0c435b8f",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_4_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_4_4.csv",
+      "sha256": "5f76fae72a5cff2749d90ce3f553145342e0bd54a135d5e83a59cb6a9be0dd44",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_4_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_4_5.csv",
+      "sha256": "b62a79e4da56900597c1af23e69494d85af417b810b35373d2bc2ae6f0261719",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_4_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_4_6.csv",
+      "sha256": "f478df73741b6448d41d993f6b6a38a3d90bec2aeb67509500edf0c5406f63fc",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_5_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_5_1.csv",
+      "sha256": "1acf23246a810550e08ffb7bc033c13ae318846a8eed5ee7a1280447e4be9367",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_5_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_5_2.csv",
+      "sha256": "852627fcf743c06233a6ee5904e1622e611500fba88a99642770265665afdd22",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_5_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_5_3.csv",
+      "sha256": "e057124548acbcf02c1f413fb17699aff96a3c672ba67b564ee7e66b3d4f6ee2",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_1.csv",
+      "sha256": "2ad98af1ed5b0fc21750aa3289593150a1be441dcc6ac51f290cf538d9468662",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_10.csv",
+      "sha256": "19235b2f24b404d06e985577f438abf320d9e32f78ce767338268e9b84c9d732",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_11.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_11.csv",
+      "sha256": "336ac85f6adc5b65e8a50b0b120b2b33ee1c3123ca14c278a2bf370accbdce06",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_12.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_12.csv",
+      "sha256": "66dfa1bd9302050899f411f552f872016d0dbe4e5a5f215919d78e673766a84e",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_13.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_13.csv",
+      "sha256": "60258628ac69f5400a37adc6fce93038a6a6b91e6d222cbf53ba2d3d2bc538ff",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_14.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_14.csv",
+      "sha256": "c245d309524c3e615389216756bac5e358beb4faa18d71761af5d01d5d4e1bbd",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_15.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_15.csv",
+      "sha256": "74dcc33fd048729334c00e9e0975b2a9e3212257d8bcfd912f3f9b4bfe02acc9",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_16.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_16.csv",
+      "sha256": "67c581056f982b1f941655bfeb85388c320c1844d3aa44c96b62887db2cb3917",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_17.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_17.csv",
+      "sha256": "4f164eb1609d1c8ddf752100ce22d35c74d8a12ca87b8138c43b0ba2b3fa0177",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_18.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_18.csv",
+      "sha256": "17f73fb53668b631bcc7dd4852f1610acb9bf80024b4c83ecf5e51f70ed43b73",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_19.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_19.csv",
+      "sha256": "d1e628bb2f136d9401eb11870c49e31a92de29ee7818667398f5a2dc579947be",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_2.csv",
+      "sha256": "b5d303f459edaacbc5c12cebffee181cea69d09521493d3f8ebc76519c98a232",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_20.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_20.csv",
+      "sha256": "fc23dfb5dc52332772bc2d552c03ff1764ced77891333a068b91a6ffb5091fe4",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_21.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_21.csv",
+      "sha256": "94ccbda6f44049d51deca2080a8ed0a7db363087c8b18de929415166d6533e22",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_22.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_22.csv",
+      "sha256": "5a4538eb8560904bbea930aa1321c8e8a8897d324b95a9ebcf9c660436a8fdcd",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_23.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_23.csv",
+      "sha256": "cf35588cc4b7f66033b1753746b3ba08d70fe34dcec122b74db404f9b7508194",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_24.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_24.csv",
+      "sha256": "05f3dcef68037f2f8a27c8a8b2a5e2bb49d8ffc93dfa3934d4ea2246506216df",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_25.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_25.csv",
+      "sha256": "d3cbd8c1654d91862523a24b7e55487c92fea2dc5f0adb9b40c647ae59ea8b1c",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_26.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_26.csv",
+      "sha256": "9fbe4dabcd9d2aa95dbf820005b6c583658465248011200ac43980d2ca8ce27d",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_27.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_27.csv",
+      "sha256": "dd380978eb71e3853dc744348124484d3a254fc4b32e574c8b62a7c71ccacdb9",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_28.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_28.csv",
+      "sha256": "4168125178a0a66c78e974607547aefc607d60e540211c9258c959b6811a8224",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_29.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_29.csv",
+      "sha256": "8963d50dc0b929d9e6b68b1691df5b0bd65ee09b01f6909ecd79b744eb28392c",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_3.csv",
+      "sha256": "85bdd290cc043d87a9ecb82ab35504d4e0c015e858e5f4e0e716cda5bb985f2e",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_30.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_30.csv",
+      "sha256": "8408a9b8d4f61f9652fb994c0f320018a7b18c94196ad936746bd555118f4104",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_31.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_31.csv",
+      "sha256": "c3870ed81ba9bd317ae7e2f01a18605d44007a6e9f419c35f1c7e550ecb1853d",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_32.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_32.csv",
+      "sha256": "3748e5f49940f3cae6de6dd528c1e255ff28808ee05f809a929551da4e21b282",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_4.csv",
+      "sha256": "8c1e0c1469ff3a9a882df38d3f78032673c4e5b1f82530d02b17c73b151b2158",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_5.csv",
+      "sha256": "3dec38094cf043f6946766f2d8c99a4e38da0f6fe9b7835a815f23843d0931f9",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_6.csv",
+      "sha256": "3aec96cff5b60d04323b4c7a54ed7358a418c91cfe98e31b3a3a92298ca3a788",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_7.csv",
+      "sha256": "360c78beea08355a26519ad26f55586577e26fac83a9ebb7a25dd8952a8e8940",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_8.csv",
+      "sha256": "fcef9153d3d625075affb9a7a14955194d6a589c44a56b01142a7cafcb137716",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_6_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_6_9.csv",
+      "sha256": "173a9784c0327f4420f088b1af63fcbe96d407f63b63004d5841d643b95dc779",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_1.csv",
+      "sha256": "a95f48253c0ecfca5c81ffcc54e24abded242a67cd26e5e9744d8e8c945128a3",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_10.csv",
+      "sha256": "734281a9f3cefc0d9ffb80e749f8969cdfc84019ab0f86af5532af2c829e5c18",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_11.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_11.csv",
+      "sha256": "f618cf1e4ff904663ffcec9e4828dcaaf3b5342625000357764c9f84b615373c",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_12.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_12.csv",
+      "sha256": "9fbd1889860925969bdbccb196b4584f241aaa740895a7f1f3e9c45f9af7867f",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_13.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_13.csv",
+      "sha256": "9bc4e53725cf395940e2133d41a64645827e53718c84281441d9288c6863d937",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_14.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_14.csv",
+      "sha256": "38943dfeb520d4dd80840e37901a91930fdfdefa66a1cd560b70a7abeae47807",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_15.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_15.csv",
+      "sha256": "dab7cb529ca4ec690880d7695207bd85ba2891926c414f781f2cc91f58bca8f5",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_16.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_16.csv",
+      "sha256": "b6ad4178c7ec615b15e1592bc11f8acdf1528ab054cd164975d9527676a5f265",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_17.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_17.csv",
+      "sha256": "855d3b5f35f750d609ea1ff26382f3f6874476e4005f73d773b76f88bb61d4df",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_18.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_18.csv",
+      "sha256": "a9d426f6bcf573ba06a54f76afc973c83b164334e367cb48974a5e57363331af",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_19.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_19.csv",
+      "sha256": "8a086f7230d006bea9c81184df6ecc0d1cc0d94b0b34e4ca7f1fdcc51783ec9e",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_2.csv",
+      "sha256": "5375101e594c4aee5a29d366f68cf86adffeb91993e8888581454f4ca9c441d7",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_20.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_20.csv",
+      "sha256": "5763b0e142747dcaae49eaeb31f2287b8a379353fb52220dfff1ccf99cab5cda",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_21.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_21.csv",
+      "sha256": "d54aed1ef77fae1fd0c8e1c86db4896c2942414356e4bde9532a18bbb13f8b03",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_22.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_22.csv",
+      "sha256": "52df7de4b76cf712ffbd0c7d5baa8303661b1dc73bfa29cbcdfd8b5d630c3e64",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_23.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_23.csv",
+      "sha256": "4ec945630b95e23a30bf07fefd4d2f274503f0f7c897139e954e910e8cf544a8",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_24.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_24.csv",
+      "sha256": "27d6c79839171011bfbbaa59eac53f56ac418b835f7e0c64045c3d8db9cb1bad",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_25.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_25.csv",
+      "sha256": "601a4bfd3c010537565d9774aaf7506b3a8f0752cb0f544b6bba5cea853e4129",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_26.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_26.csv",
+      "sha256": "b66b1fa39f09e3db62b675be1d7266cf2ee0a10c28fb844410d15f43a4ca5330",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_27.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_27.csv",
+      "sha256": "6f0ec9d4be7686eface048a351565fb21896e0a6b29949512d768327eb850887",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_28.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_28.csv",
+      "sha256": "53fe1c56baae2404b5bfcbae079458017127dcf15d0cf2f7c6cbca18caac0195",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_29.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_29.csv",
+      "sha256": "ec61b95a2813698d03024fa4a153adc9bccb1c0167a76a1da2cfbf6f39de1258",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_3.csv",
+      "sha256": "62a771b7a9a8ffab26dc809d9a0e3cb7831a5e1e8e21fb40b7539c4acc205099",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_30.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_30.csv",
+      "sha256": "0a142a784c5bbfdac868550677992058c1f2982ce752790cc82047677aed672b",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_31.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_31.csv",
+      "sha256": "64bf5f29bbb601a9bf960926b7d77dfbffb8f90bd14ca18e412aa99618ed7584",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_32.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_32.csv",
+      "sha256": "4e43bf1e72a4848df564178cfa4d5ca15e0e523609464e89ee28f27075e77efd",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_33.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_33.csv",
+      "sha256": "bb23165ae27c9564b1cabe99afe848dc1d6617a6948f5930891a8a47c40f67d4",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_34.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_34.csv",
+      "sha256": "371684d9b590a19698087549c7791041fd2330baf125f9d84804e8f35c298426",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_35.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_35.csv",
+      "sha256": "730c98f0c8cf9b0cd907222f3db127bcdf23991ff2ac01acabd498b8475ab48c",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_36.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_36.csv",
+      "sha256": "d5f5526d57e3b8088a8b8d8d40f6a688d4110682db2f8e8538a5f5c853519467",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_37.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_37.csv",
+      "sha256": "1ce56f8087709f80458cae6d92b156c1d31b6e61edc40181b7dbea484fd5100d",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_38.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_38.csv",
+      "sha256": "2f168cafbdb3e02761f697e919bf8f0dec7e86a23b9fdb665249cb93bf6b5e31",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_39.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_39.csv",
+      "sha256": "f18092f5b2549a09af026bd9cdebb2157bd9bdf9d6c93d5cafdbec83f11ef25d",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_4.csv",
+      "sha256": "51fc173bf02e0fb3cfd41b2862e6f5666192c09b083f61d8de69acb62ae4e443",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_40.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_40.csv",
+      "sha256": "9cc05bcb32941d66e20614a1283740a4788fbf49607f65d1335e18d4f738aa0a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_41.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_41.csv",
+      "sha256": "da5cc8154a06c728d927efb0c4aca1d9ac3574ca4d3bc163cbc90521975ad963",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_42.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_42.csv",
+      "sha256": "e5fb881f23221c31299809c4a08e6c778aa2389d2064713ebdfb8d3ee6a2413a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_5.csv",
+      "sha256": "26bb79cb4952c322450a28fe71e5468d7f29e25ace9b8783dcefd72870fe85a7",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_6.csv",
+      "sha256": "4910c120dc57117e03a9b1f4b002efe12b056528d0dcec1e25aa661ac4a357ba",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_7.csv",
+      "sha256": "14dbfec7b81b991524e8110b121d8f17f2bb60ef058d2c09a83c8d6174c9b6cd",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_8.csv",
+      "sha256": "550f2d67e03a817abf4ed92b5e1fafc6c6304764bcd05ffc4ddf63f71ce2a590",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_7_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_7_9.csv",
+      "sha256": "36dc04aa2452ae6ff5580354ee7083f58089a401489fde2b6a9b5b0e16acdd94",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_1.csv",
+      "sha256": "439b39afdc9fc77ac57ff5e4275f1e90d5d34eaa82b65b91c4528c79c3c10797",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_10.csv",
+      "sha256": "c63bb760f5f83bfd2f82e6557ff0b2005c2708d9383b57f16f06955fc6be67fe",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_11.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_11.csv",
+      "sha256": "f143ba508ce9c0d195cb4558f339ab1196a429d30714a602e699fc777e151b23",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_12.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_12.csv",
+      "sha256": "438a720f678b8c1a45b8ff94e428c130823a60ec099060f7cd7554e21b04bf79",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_13.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_13.csv",
+      "sha256": "ef0e9be37cb7ce378c1c41f5b52c81438011b1b7fe6990d9aa20c342e0f9c3fe",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_14.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_14.csv",
+      "sha256": "cc4fe188bd8eb61bad30d002538e6953efe6aa2b0eeee5ae04ccb861782ac426",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_15.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_15.csv",
+      "sha256": "f938ba49c163f8e353981d223d6552acf4d230e28f0c9ba2cf3dad86d89ae88f",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_16.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_16.csv",
+      "sha256": "ed545aa078615e4982394a3b47195d63b660d6a711c91860db865380578fc127",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_17.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_17.csv",
+      "sha256": "f3db86fa000552781f31456d5b198688f7e12cfca96d0f7bf37210d04642a7f5",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_2.csv",
+      "sha256": "042c9f0b099af76bbab5ddd5e5f49f498cca07571ef8c8ce286280a61f997bb9",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_3.csv",
+      "sha256": "78370aa69f631496e60bad90611b654077e610aa26657310cc0fdc9d6daf033c",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_4.csv",
+      "sha256": "b0aba2b12cf7a1d8605be8dbc0f95e0f7a2747f47ac6a2a464f5fb279a1bdc7a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_5.csv",
+      "sha256": "7bdc89f4776b78df0c34e88b2fb6222d18f2b40a75c93e7e003d103b480b569a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_6.csv",
+      "sha256": "bdc0a88e81ab28bb011b687c7d7d7ccd8821c1d90c4693a03d3faa437780d422",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_7.csv",
+      "sha256": "0b28bd0992a5e8f611276b983ee104fe6d99eb9e182e0d91fd1332304add1e92",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_8.csv",
+      "sha256": "920f28028d3aca9e5ab3b8f6cf2cfafb001f3ecfff07ff7d459ab4d95e281f95",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_8_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_8_9.csv",
+      "sha256": "450e81f9970e361b67aeb8f1bec5c32e52f943149c3fa27f7070514bd6302792",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_1.csv",
+      "sha256": "4575895354183b33d4ad5e310f791a51a2302b9203fb1b44a0f95e703116010d",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_10.csv",
+      "sha256": "00a0b67142721f3746b146e6f63de7762764cc9b3be60a5feae95992962ca731",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_2.csv",
+      "sha256": "892edcd50c6cd918bf2fdc4dc31ce8b60075bcde43ae4b2fb4edbc64281acb2a",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_3.csv",
+      "sha256": "84eb06afd30da6d88d6f083c37ff85feb5d761be4c6534528d6a6e258e514928",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_4.csv",
+      "sha256": "e9fd944921180a66865824833fee26d6da03899e069faf69a6a8394ac470a3a3",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_5.csv",
+      "sha256": "1173b51a2839dcc643c730d531207103f41f85a600f25c83e8729a21235ea151",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_6.csv",
+      "sha256": "38765e30df5343669ce7c731262af1160eff1edbf957bd54c87909c7103d7c79",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_7.csv",
+      "sha256": "62303dacbb6550bbface589f612f182ae9ec0cf9d997b366fd136629bd4f35c9",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_8.csv",
+      "sha256": "c2f2eea48b62adad1239f1224d56611615bd26196217eeca2cfba96d7d4e67f0",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "charger_9_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\charger_9_9.csv",
+      "sha256": "7efd615b23d8744f8db4bb739fba20dbd7c9c96a0a78b820a534b47ec5d7cab2",
+      "rows": 26304,
+      "columns": 6,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "states": [
+        1,
+        2,
+        3
+      ],
+      "allowed_sentinels": {
+        "time_absent": -1,
+        "soc_absent": -0.1,
+        "ev_id_absent": "NONE"
+      }
+    },
+    "Washing_Machine_1.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_1.csv",
+      "sha256": "aa2310812749d4f3029abe5eb9dc9176f474b1cfc027f53150fce2e2fdff40c6",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 7830,
+      "active_cycle_count": 783,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_10.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_10.csv",
+      "sha256": "c52e2efeae1083dd669125ac8b10e8e36792f04349532a0fa979b0274b56d5d9",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 7047,
+      "active_cycle_count": 783,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_11.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_11.csv",
+      "sha256": "95375cdb4db4ee52ae879a3d9d2f7a317fdd7e867a8802a30f4c06baa073b8aa",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 24112,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_12.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_12.csv",
+      "sha256": "25570d1514932b3b81c471aa0506848db79551a5667a0f09af0aedfc06483884",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 24112,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_13.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_13.csv",
+      "sha256": "a74ca63b2946b104c188eb2e4e213cad175c42d12fa49d1af67e4a7af3f09cc7",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 8613,
+      "active_cycle_count": 783,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_14.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_14.csv",
+      "sha256": "f1fd0cee0e5d7039fabcf4075e1fc98a3ac67ceb26580effe8386ae86e32f050",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 13152,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_15.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_15.csv",
+      "sha256": "c06103be70adc03bc2beafb884fc1a1dcff449aa34c9b3308ece3dca1cbe404b",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 6264,
+      "active_cycle_count": 783,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_16.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_16.csv",
+      "sha256": "a4f0467940ab70036ee182b2ad2f79c69693fef90274ead7e9f492c39fd2f130",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 7830,
+      "active_cycle_count": 783,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_17.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_17.csv",
+      "sha256": "a5f8dfb04c48ea490b812ad931ea4fe77765bfea97fa76cbdf48d58575852ab4",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 24112,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_2.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_2.csv",
+      "sha256": "4ade78b71770b4af279558bf18d668f2fe9363146a5dcf24e9075cd35ffa7bbc",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 7047,
+      "active_cycle_count": 783,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_3.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_3.csv",
+      "sha256": "086ece930d63b0ccf15428d21d97144be1e016ffebe88e39d89ba686b7b8e8c4",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 24112,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_4.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_4.csv",
+      "sha256": "91e8683827fda2274ba3d7df67ca6b5dc8f04ead42770de14c1a33c50f68f322",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 10960,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_5.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_5.csv",
+      "sha256": "261320a1d3403d44b666d1752d5c02411892940102b54d35fa37b09762c1addb",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 24112,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_6.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_6.csv",
+      "sha256": "6757e54fae53ba19ad389f7a5faa43ba7b95dc138819ae2f29ceb356fcbdceb9",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 10960,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_7.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_7.csv",
+      "sha256": "52388a19473e975c54f049ae482e01ed4348e082214275737d00bc2016f1bb6c",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 8613,
+      "active_cycle_count": 783,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_8.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_8.csv",
+      "sha256": "a6e6d969bf2e13830c9c15b5d4becb15a9836f85b9f31ea10a9f7b9ae17c44ea",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 6264,
+      "active_cycle_count": 783,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    },
+    "Washing_Machine_9.csv": {
+      "path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\Washing_Machine_9.csv",
+      "sha256": "5121685869a35de1b26f6461ebee2c260c276e7f49efc176a10a0caf4b58a229",
+      "rows": 26304,
+      "columns": 5,
+      "nan_cells": 0,
+      "inf_cells": 0,
+      "empty_columns": [],
+      "status": "ok",
+      "active_window_rows": 24112,
+      "active_cycle_count": 1096,
+      "profile_parse_errors": 0,
+      "negative_profile_rows": 0,
+      "allowed_sentinels": {
+        "inactive_start_end": -1,
+        "inactive_load_profile": "[]"
+      }
+    }
+  }
+}

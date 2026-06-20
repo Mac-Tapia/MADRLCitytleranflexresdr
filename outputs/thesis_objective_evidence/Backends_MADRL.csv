@@ -1,0 +1,5 @@
+backend,source,training_script,ctde_role,action_space,evidence_outputs
+HAPPO,external/HARL,CityLearn/scripts/train_citylearn_v3_happo.py,Critico centralizado con observacion compartida; actor local por edificio,Continuo,"training_summary.json, timeseries.csv, trace.csv, objective_kpis.csv, checkpoints"
+MASAC,external/MARL/src,CityLearn/scripts/train_citylearn_v3_masac.py,Estado global estilo SMAC mediante get_state(); politica local discretizada,Accion continua discretizada,"training_summary.json, timeseries.csv, trace.csv, objective_kpis.csv, checkpoints"
+MATD3,external/off-policy,CityLearn/scripts/train_citylearn_v3_matd3.py,Criticos centralizados con observaciones/acciones conjuntas; actores locales continuos,Continuo,"training_summary.json, timeseries.csv, trace.csv, objective_kpis.csv, checkpoints"
+MAAC,external/MAAC,CityLearn/scripts/train_citylearn_v3_maac.py,Critico de atencion multiagente; politicas locales discretizadas,Accion continua discretizada,"training_summary.json, timeseries.csv, trace.csv, objective_kpis.csv, checkpoints"

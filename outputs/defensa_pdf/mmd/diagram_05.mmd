@@ -1,0 +1,66 @@
+flowchart TD
+    START(["Launcher oficial\nrun_aws_training.sh\n--scenario ALL --episodes 75\n--algorithms happo,masac,matd3,maac"])
+
+    subgraph HAPPO_RUN["HAPPO (on-policy) — ~190 min total"]
+        H_E1["HAPPO E1\nflexibilidad\n75 ep x 8760 pasos\n~66 min"]
+        H_E2["HAPPO E2\nemisiones CO2\n~66 min"]
+        H_E3["HAPPO E3\ncostos\n~58 min"]
+        H_E1 & H_E2 -->|"paralelo en GPU"| H_E3
+    end
+
+    subgraph MASAC_RUN["MASAC (off-policy) — ~410 min total"]
+        M_E1["MASAC E1\n~126 min"]
+        M_E2["MASAC E2\n~148 min"]
+        M_E3["MASAC E3\n~136 min"]
+        M_E1 --> M_E2 --> M_E3
+    end
+
+    subgraph MATD3_RUN["MATD3 (off-policy) — ~271 min total"]
+        T_E1["MATD3 E1\n~95 min"]
+        T_E2["MATD3 E2\n~95 min"]
+        T_E3["MATD3 E3\n~81 min"]
+        T_E1 & T_E2 -->|"paralelo en GPU"| T_E3
+    end
+
+    subgraph MAAC_RUN["MAAC (off-policy) — ~158 min total"]
+        A_E1["MAAC E1\n~52 min"]
+        A_E2["MAAC E2\n~52 min"]
+        A_E3["MAAC E3\n~54 min"]
+        A_E1 --> A_E2 --> A_E3
+    end
+
+    subgraph ARTEFACTOS["Artefactos por corrida (outputs/<ts>/<sc>/<algo>/)"]
+        direction LR
+        CHK["checkpoints/\nmodelos .pt\npor episodio"]
+        DATA["data/\nresults.json\ntimeseries.csv\ntrace.csv\ntraining_summary.json"]
+        FIG["figures/\n13 graficas PNG\nretorno convergencia\nKPI comparacion"]
+        LOG["logs/\n<algo>_<sc>-00001.log\nrotacion 10 MB"]
+        CHK --- DATA --- FIG --- LOG
+    end
+
+    START --> HAPPO_RUN
+    HAPPO_RUN -->|"secuencial"| MASAC_RUN
+    MASAC_RUN -->|"secuencial"| MATD3_RUN
+    MATD3_RUN -->|"secuencial"| MAAC_RUN
+    MAAC_RUN --> ARTEFACTOS
+
+    subgraph STATUS["Estado y monitoreo"]
+        S1["official_full_status.json\njobs: running/completed/failed"]
+        S2["live_progress.json\nepisodio, paso, reward\nCO2, precio, GPU"]
+        S1 --- S2
+    end
+
+    HAPPO_RUN & MASAC_RUN & MATD3_RUN & MAAC_RUN -->|"escribe en tiempo real"| STATUS
+
+    classDef happo fill:#dbeafe,stroke:#2563eb,color:#1c1917
+    classDef masac fill:#fae8ff,stroke:#a21caf,color:#1c1917
+    classDef matd3 fill:#dcfce7,stroke:#16a34a,color:#1c1917
+    classDef maac fill:#fef3c7,stroke:#d97706,color:#1c1917
+    classDef art fill:#f8fafc,stroke:#64748b,color:#1c1917
+    classDef stat fill:#fff7ed,stroke:#ea580c,color:#1c1917
+    class HAPPO_RUN happo
+    class MASAC_RUN masac
+    class MATD3_RUN matd3
+    class MAAC_RUN maac
+    class ARTEFACTOS art
+    class STATUS stat

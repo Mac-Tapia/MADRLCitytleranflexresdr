@@ -1,9 +1,9 @@
-# .gitignore - Excluye archivos que NO deben versionarse
+# .gitignore - MADRLCitytleranflexresdr (repositorio público de tesis)
+# Solo se excluyen archivos de entorno local y generados temporales.
+# Resultados, checkpoints y datos de entrenamiento SÍ se versionan.
 
-# Cache
+# Cache Python
 .cache/
-
-# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -28,7 +28,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Virtual environments
+# Entornos virtuales (locales, no de tesis)
 venv/
 ENV/
 env/
@@ -43,6 +43,7 @@ env/
 *.swo
 *~
 .DS_Store
+Thumbs.db
 
 # Testing
 .pytest_cache/
@@ -51,35 +52,19 @@ htmlcov/
 .tox/
 .hypothesis/
 
-# Data y Resultados (generados, no versionados)
-outputs/
-data/cache/
-data/raw/**/*.csv
-data/raw/**/*.json
-data/processed/**/*.pkl
-results/
-reports/
-logs/
-
-# Modelo checkpoints
-*.pt
-*.pth
-*.ckpt
-models/
-
-# Notebooks temporales
+# Notebooks checkpoints temporales
 .ipynb_checkpoints/
 */.ipynb_checkpoints/
 
-# Weights & Biases
+# Weights & Biases (no se usa)
 wandb/
 lightning_logs/
 
-# Environment
+# Caché automática de CityLearn (regenerada en cada entorno, ~1 GB, no es dato de tesis)
+data/cache/
+*.pkl
+
+# Secrets de entorno (NUNCA versionar)
 .env
 .env.local
 .env.*.local
-
-# OS
-Thumbs.db
-.DS_Store

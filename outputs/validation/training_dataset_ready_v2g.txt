@@ -1,0 +1,11 @@
+INFO:citylearn.scenario_manager:Selected scenario E1: Flexibility Scenario - load shifting, storage, EV flexibility and PV self-consumption
+INFO:citylearn.scenario_manager:Scenario E1: applied rtp_daily_amplified_x1.0 tariff to 17 buildings.
+INFO:citylearn.scenario_manager:Selected scenario E2: Carbon Emissions Scenario - carbon-aware operation without legacy resilience reward
+INFO:citylearn.scenario_manager:Scenario E2: applied flat_mean_price tariff to 17 buildings.
+INFO:citylearn.scenario_manager:Selected scenario E3: Cost Scenario - RTP pricing, peak reduction and dynamic-tariff optimization
+INFO:citylearn.scenario_manager:Scenario E3: applied rtp_daily_amplified_x1.2 tariff to 17 buildings.
+Manifest: D:\MADRLCitytleranflexresdr\outputs\dataset_audit\training_dataset_ready_manifest.json
+Estado dataset entrenamiento: READY
+Normalizacion permitida: True
+Advertencias:
+  - B01 se mantiene como perfil de inventario sin factura mensual directa.

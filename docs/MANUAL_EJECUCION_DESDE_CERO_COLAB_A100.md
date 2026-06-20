@@ -3,7 +3,7 @@
 **Proyecto:** `MADRLCitytleranflexresdr`  
 **Notebook:** `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`  
 **Modo objetivo:** Google Colab A100, 75 episodios, 12 corridas  
-**Ultima verificacion local:** 2026-06-19 con `.venv39-citylearn-v3` / Python 3.9.25
+**Ultima verificacion local:** 2026-06-20 con `.venv39-citylearn-v3` / Python 3.9.25
 
 Este manual explica como lanzar el entrenamiento oficial desde cero usando el
 notebook `madrl_citylearn_v3_tutorial.ipynb`.
@@ -22,19 +22,16 @@ notebook `madrl_citylearn_v3_tutorial.ipynb`.
 
 ## 2. Requisitos previos
 
-En la maquina local:
-
-- Git instalado.
-- VS Code instalado.
-- Extension de VS Code `google.colab` instalada.
-- Repositorio local en `D:\MADRLCitytleranflexresdr`.
-- Rama actual sincronizada con GitHub.
-
 En Google:
 
-- Cuenta con acceso a Colab Pro/Pro+.
-- Runtime A100 disponible.
-- Google Drive disponible para guardar checkpoints y resultados.
+- Cuenta con Colab **Pro+** (necesario para A100).
+- Google Drive disponible para checkpoints y resultados.
+- Navegador web (Chrome o Edge) para abrir Colab.
+
+En la maquina local (solo para editar el proyecto):
+
+- Git instalado.
+- Repositorio local en `D:\MADRLCitytleranflexresdr` sincronizado con GitHub `master`.
 
 ## 3. Preparar el repo local
 
@@ -52,39 +49,33 @@ Si se parte de cero en una maquina nueva:
 
 ```powershell
 cd D:\
-git clone --recurse-submodules --branch codex/fix-madrl-traceability-docs https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
+git clone --recurse-submodules --branch master https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
 cd D:\MADRLCitytleranflexresdr
 powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
 ```
 
-## 4. Abrir el notebook
+## 4. Abrir el notebook en Colab
 
-Abrir en VS Code:
+Abrir directamente en el **navegador web** con el badge o la URL:
 
-```text
-CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb
+```
+https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/citylearn-v3-madrl/examples/madrl_citylearn_v3_tutorial.ipynb
 ```
 
-No ejecutar el notebook con un kernel local para el entrenamiento completo. El
-kernel debe ser Google Colab A100.
+El notebook se carga desde la rama `citylearn-v3-madrl` del submodulo CityLearn.
 
-## 5. Conectar VS Code a Colab A100
+## 5. Seleccionar runtime A100
 
-En el notebook:
+En el navegador, dentro de Colab:
 
-1. Clic en `Select Kernel`.
-2. Elegir `Google Colab`.
-3. Iniciar sesion con la cuenta que tiene Colab Pro/Pro+.
-4. Elegir `New runtime (A100)`.
-5. Confirmar que el runtime tiene GPU A100.
+1. `Runtime → Change runtime type`.
+2. Hardware accelerator: **GPU**.
+3. GPU type: **A100** (visible solo con Pro+).
+4. Clic en `Save`.
+5. Clic en `Connect` (esquina superior derecha).
+6. Esperar la barra de RAM/Disk — confirma runtime activo.
 
-Si no aparece Google Colab:
-
-```text
-Ctrl+Shift+P -> Colab: Sign In
-```
-
-Despues repetir la seleccion de kernel.
+Verificar A100 activa: la barra debe mostrar aprox. `~83 GB RAM` y `~166 GB Disk`.
 
 ## 6. Orden de ejecucion desde cero
 
@@ -126,8 +117,8 @@ Ejecutar en orden:
 Puntos criticos:
 
 - `1.1` debe detectar A100.
-- `1.2` clona la rama `codex/fix-madrl-traceability-docs` en
-  `/content/MADRLCitytleranflexresdr`.
+- `1.2` clona la rama `master` del repo padre en `/content/MADRLCitytleranflexresdr`
+  y activa CityLearn en su rama viva `citylearn-v3-madrl`.
 - `1.2b` valida submodulos, dataset y que `CityLearn` coincida con el commit
   fijado por el repo padre.
 - `1.3` instala dependencias compatibles para Colab.
@@ -263,8 +254,9 @@ correctamente.
 
 ## 8. Reanudar si Colab se desconecta
 
-1. Reconectar VS Code a un runtime Colab A100.
-2. Ejecutar:
+1. Abrir el notebook en el navegador nuevamente (misma URL del badge).
+2. `Runtime → Change runtime type → GPU → A100 → Save → Connect`.
+3. Ejecutar:
    - `0.verify`
    - `1.1`
    - `1.2`
@@ -332,13 +324,13 @@ Dry-run local sin A100, solo para revisar planificacion:
 
 ### No aparece A100
 
-Cambiar el runtime:
+Cambiar el runtime en el navegador:
 
 ```text
-Runtime -> Change runtime type -> A100 GPU
+Runtime → Change runtime type → GPU → A100 → Save → Connect
 ```
 
-Despues repetir `0.verify` y `1.1`.
+La opcion A100 solo aparece con cuenta Colab Pro+. Despues repetir `0.verify` y `1.1`.
 
 ### Google Drive no monta
 

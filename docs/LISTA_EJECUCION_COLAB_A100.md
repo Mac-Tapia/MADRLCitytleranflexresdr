@@ -8,10 +8,13 @@ CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb
 
 ## 0. Antes de ejecutar
 
-- Abrir el notebook en VS Code.
-- Seleccionar kernel `Google Colab`.
-- Elegir runtime `A100`.
-- Confirmar que se usa la cuenta con Colab Pro/Pro+.
+- Abrir el notebook en el **navegador web** usando el badge o la URL directa:
+  ```
+  https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/citylearn-v3-madrl/examples/madrl_citylearn_v3_tutorial.ipynb
+  ```
+- En Colab: `Runtime → Change runtime type → GPU → A100 → Save`.
+- Confirmar que se usa la cuenta con Colab **Pro+** (necesario para A100).
+- Clic en `Connect` — esperar que aparezca la barra de RAM/Disk (confirmacion de runtime activo).
 
 ## 1. Verificacion inicial
 
@@ -188,7 +191,7 @@ Al final deben existir 12 archivos:
 
 ## 9. Reanudacion si Colab se desconecta
 
-Reconectar a A100 y ejecutar:
+Abrir el notebook en el navegador nuevamente, cambiar runtime a A100 y ejecutar:
 
 ```text
 0.verify

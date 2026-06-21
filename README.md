@@ -859,6 +859,7 @@ Este repositorio esta orientado a investigacion de tesis. La arquitectura y los 
 La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Kruskal-Wallis (diferencias globales entre 4 MADRL) → Mann-Whitney U (diferencias por par, independiente) → Wilcoxon signed-rank (diferencias por par, pareado), aplicados sobre KPI-gains de entrenamiento de HAPPO, MASAC, MATD3 y MAAC.
 
 ## Cambios Recientes
+- **2026-06-21 07:50**: tools/_fix_notebook_newlines.py
 - **2026-06-21 07:11**: README.md, nb_keycells.txt
 - **2026-06-21 07:08**: nb_keycells.txt
 - **2026-06-21 05:52**: tools/generate_colab_notebook.py, tools/test_notebook_cells.py

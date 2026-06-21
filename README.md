@@ -22,7 +22,7 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 Actualizado: 2026-06-21.
 
-### Cambios aplicados (2026-06-21) — corrida Colab A100 en curso
+### Cambios aplicados (2026-06-21) — corrida Colab A100 en curso (paralelo 12 jobs)
 
 - ✅ **HAPPO SubprocVecEnv x4**: `ShareDummyVecEnv` (secuencial, ~4 FPS) reemplazado por `ShareSubprocVecEnv` con `--happo-n-rollout-threads 4` — cada escenario corre 4 subprocesos paralelos de CityLearn, bypasando el GIL. FPS efectivo: ~11 × 4 = **~44 FPS** → HAPPO pasa de ~30 h a **~2.8 h**.
 - ✅ **HAPPO hidden-size 512**: revertido de 1024 (era 4× mas lento) a 512 — objetivo ~11 FPS base por hilo.
@@ -33,7 +33,10 @@ Actualizado: 2026-06-21.
 - ✅ **platformdirs re-añadido a BASE_DEPS** (celda 1.3): `platformdirs>=3.0` habia sido eliminado accidentalmente por el autosave de Colab en commits intermedios; restaurado en BASE_DEPS y añadido como instalacion explicita post-lote para garantizar que `pip 21.3.1` no lo omita silenciosamente.
 - ✅ **Stdout garantizado celda 7.2**: `subprocess.Popen(stdout=None)` reemplazado por `PIPE + dos reader threads` (`_pipe_to_cell`) que hacen `sys.stdout.write(line)` explicito — garantiza que los prints del launcher (START/DONE/monitor) lleguen a la celda Colab independientemente del routing de fd1 en la sesion.
 - ✅ **Monitor celda 7.2 capture_output**: llamada externa al monitor cada 60 s ahora usa `capture_output=True` + `sys.stdout.write(_mr.stdout)` explicito.
-- ✅ **Monitor todos los jobs en paralelo** (`colab_a100_live_monitor.py`): `print_progress` ahora itera sobre **todos** los jobs activos simultaneamente (HAPPO/E1, E2, E3 en paralelo) en vez de solo el primero — cada bloque muestra episodio, paso_ep, paso_global, pesos OE1/OE2/OE3, rewards y heartbeat.
+- ✅ **Monitor todos los jobs en paralelo** (`colab_a100_live_monitor.py`): `print_progress` ahora itera sobre **todos** los jobs activos simultaneamente (HAPPO/E1, E2, E3 en paralelo) en vez de solo el primero — cada bloque muestra episodio, paso_ep, paso_global, pesos OE1/OE2/OE3, rewards y heartbeat. `print_logs` muestra los logs de todos los jobs en ejecucion simultanea (con lineas reducidas por job para evitar exceso de output).
+- ✅ **Paralelismo real 12 jobs simultáneos** (`colab_a100_official_launcher.py`): `--max-parallel 12` (default) lanza los 12 jobs (HAPPO, MASAC, MATD3, MAAC) x (E1, E2, E3) con `ThreadPoolExecutor(max_workers=12)`. Monitor espera ver: `E1: happo:running | masac:running | matd3:running | maac:running` para los 3 escenarios. OOM retry, skip-completed y lock de escritura en `official_full_status.json` preservados. `--max-parallel 1` restaura modo secuencial.
+- ✅ **Validacion de sintaxis + badge Colab** (`scripts/validate_notebook_syntax.py`): valida newlines literales, `ast.parse()` por celda y URL del badge Open-in-Colab apuntando a `citylearn-v3-madrl`.
+- ✅ **Push integrado** (`scripts/push.py`): un solo comando valida + push CityLearn a `mac-tapia/citylearn-v3-madrl` + bump padre + push padre — el badge siempre refleja el ultimo commit.
 
 ### Cambios actualizados (2026-06-20)
 
@@ -51,7 +54,7 @@ Actualizado: 2026-06-21.
 | ----- | ----- |
 | Hardware | NVIDIA A100-SXM4-80GB · 80 GiB VRAM · 167 GiB RAM · CUDA 12.4 |
 | Episodios | 50 x 8760 pasos = 438 000 pasos/corrida |
-| Paralelismo | 3 escenarios concurrentes por algoritmo (`--parallel-scenarios 3`) |
+| Paralelismo | **12 jobs simultáneos**: 4 MADRL × 3 escenarios (`--max-parallel 12`, `ThreadPoolExecutor`) |
 | HAPPO hidden | [512, 512] · `--happo-n-rollout-threads 4` (SubprocVecEnv) |
 | HAPPO rollout | `ShareSubprocVecEnv` — 4 procesos paralelos por escenario, ~44 FPS efectivo |
 | MASAC | off-policy GPU-bound · rnn-hidden 1024 · qmix-hidden 512 · buffer 40 ep CPU |

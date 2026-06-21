@@ -30,6 +30,10 @@ Actualizado: 2026-06-21.
 - ✅ **MASAC/MATD3/MAAC sin cambios (correcto)**: algoritmos off-policy son GPU-bound; `num_envs=1` y `n_rollout_threads=1` son correctos. No requieren SubprocVecEnv.
 - ✅ **Drive path aplanado**: eliminados 2 niveles extra (`MADRL_CityLearn_v3/MADRLCitytleranflexresdr/`). Nuevo path: `MyDrive/MADRLCitytleranflexresdr/outputs/` — espejo exacto de la estructura local.
 - ✅ **Auditoria completa del notebook**: verificados todos los valores criticos (N_EPISODES=50, QUICK_TEST=False, parallel-scenarios=3, hidden-sizes, buffers, steps-per-update) contra valores prohibidos; cero residuos antiguos.
+- ✅ **platformdirs re-añadido a BASE_DEPS** (celda 1.3): `platformdirs>=3.0` habia sido eliminado accidentalmente por el autosave de Colab en commits intermedios; restaurado en BASE_DEPS y añadido como instalacion explicita post-lote para garantizar que `pip 21.3.1` no lo omita silenciosamente.
+- ✅ **Stdout garantizado celda 7.2**: `subprocess.Popen(stdout=None)` reemplazado por `PIPE + dos reader threads` (`_pipe_to_cell`) que hacen `sys.stdout.write(line)` explicito — garantiza que los prints del launcher (START/DONE/monitor) lleguen a la celda Colab independientemente del routing de fd1 en la sesion.
+- ✅ **Monitor celda 7.2 capture_output**: llamada externa al monitor cada 60 s ahora usa `capture_output=True` + `sys.stdout.write(_mr.stdout)` explicito.
+- ✅ **Monitor todos los jobs en paralelo** (`colab_a100_live_monitor.py`): `print_progress` ahora itera sobre **todos** los jobs activos simultaneamente (HAPPO/E1, E2, E3 en paralelo) en vez de solo el primero — cada bloque muestra episodio, paso_ep, paso_global, pesos OE1/OE2/OE3, rewards y heartbeat.
 
 ### Cambios actualizados (2026-06-20)
 
@@ -590,15 +594,19 @@ Verificacion de hardware en celda 1.2 del notebook (salida esperada):
 [OK] CUDA: 12.4
 ```
 
-Lanzar entrenamiento (celda 6 del notebook — ya configurada):
+Lanzar entrenamiento (celda 7.2 del notebook — ya configurada):
 
 ```bash
 python -B CityLearn/scripts/colab_a100_official_launcher.py \
-  --scenario ALL --seed 0 --episodes 50 --episode-time-steps 8760 \
-  --parallel-scenarios 3 --masac-preload-batch-device cpu \
+  --scenario ALL --seed 0 --episodes 75 --episode-time-steps 8760 \
+  --torch-threads 2 --live-progress-interval 1000 --live-heartbeat-seconds 30 \
+  --artifact-profile efficient --trace-record-interval 24 --trace-detail compact \
   --gpu-profile aws --cuda-memory-fraction 0.92 \
-  --require-a100 --oom-retry --skip-completed --live-monitor
+  --require-a100 --smoke-imports --oom-retry \
+  --live-monitor --monitor-interval 30 --skip-completed
 ```
+
+El launcher corre E1/E2/E3 en paralelo por grupo de algoritmo (`_run_group`). El progreso de cada escenario aparece en la celda cada 60 s via monitor con `capture_output` explicito.
 
 ## Clonar el repositorio
 
@@ -859,6 +867,7 @@ Este repositorio esta orientado a investigacion de tesis. La arquitectura y los 
 La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Kruskal-Wallis (diferencias globales entre 4 MADRL) → Mann-Whitney U (diferencias por par, independiente) → Wilcoxon signed-rank (diferencias por par, pareado), aplicados sobre KPI-gains de entrenamiento de HAPPO, MASAC, MATD3 y MAAC.
 
 ## Cambios Recientes
+- **2026-06-21 (actual)**: `colab_a100_live_monitor.py` — `print_progress` muestra todos los jobs paralelos (E1/E2/E3 simultaneos); celda 7.2 stdout garantizado via PIPE+threads+capture_output; `platformdirs` re-añadido a BASE_DEPS
 - **2026-06-21 07:50**: tools/_fix_notebook_newlines.py
 - **2026-06-21 07:11**: README.md, nb_keycells.txt
 - **2026-06-21 07:08**: nb_keycells.txt

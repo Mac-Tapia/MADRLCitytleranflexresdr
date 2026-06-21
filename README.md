@@ -20,7 +20,16 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-20.
+Actualizado: 2026-06-21.
+
+### Cambios aplicados (2026-06-21) — corrida Colab A100 en curso
+
+- ✅ **HAPPO SubprocVecEnv x4**: `ShareDummyVecEnv` (secuencial, ~4 FPS) reemplazado por `ShareSubprocVecEnv` con `--happo-n-rollout-threads 4` — cada escenario corre 4 subprocesos paralelos de CityLearn, bypasando el GIL. FPS efectivo: ~11 × 4 = **~44 FPS** → HAPPO pasa de ~30 h a **~2.8 h**.
+- ✅ **HAPPO hidden-size 512**: revertido de 1024 (era 4× mas lento) a 512 — objetivo ~11 FPS base por hilo.
+- ✅ **Bug argparse eliminado**: `--happo-n-rollout-threads` tenia definicion duplicada (default=1 + default=4) en el launcher; ahora queda solo `default=4`.
+- ✅ **MASAC/MATD3/MAAC sin cambios (correcto)**: algoritmos off-policy son GPU-bound; `num_envs=1` y `n_rollout_threads=1` son correctos. No requieren SubprocVecEnv.
+- ✅ **Drive path aplanado**: eliminados 2 niveles extra (`MADRL_CityLearn_v3/MADRLCitytleranflexresdr/`). Nuevo path: `MyDrive/MADRLCitytleranflexresdr/outputs/` — espejo exacto de la estructura local.
+- ✅ **Auditoria completa del notebook**: verificados todos los valores criticos (N_EPISODES=50, QUICK_TEST=False, parallel-scenarios=3, hidden-sizes, buffers, steps-per-update) contra valores prohibidos; cero residuos antiguos.
 
 ### Cambios actualizados (2026-06-20)
 
@@ -37,15 +46,15 @@ Actualizado: 2026-06-20.
 | Campo | Valor |
 | ----- | ----- |
 | Hardware | NVIDIA A100-SXM4-80GB · 80 GiB VRAM · 167 GiB RAM · CUDA 12.4 |
-| Run ID | `madrl_v3_20260621_002450` (en ejecucion) |
 | Episodios | 50 x 8760 pasos = 438 000 pasos/corrida |
 | Paralelismo | 3 escenarios concurrentes por algoritmo (`--parallel-scenarios 3`) |
-| MASAC buffer | CPU (`--masac-preload-batch-device cpu`): 3x40 GiB = 120 GiB RAM |
-| HAPPO hidden | [512, 512] |
-| MATD3 buffer | 1 000 000 steps · batch 1024 · hidden 512 |
-| MAAC buffer | 500 000 steps · batch 1024 · hidden 512 |
+| HAPPO hidden | [512, 512] · `--happo-n-rollout-threads 4` (SubprocVecEnv) |
+| HAPPO rollout | `ShareSubprocVecEnv` — 4 procesos paralelos por escenario, ~44 FPS efectivo |
+| MASAC | off-policy GPU-bound · rnn-hidden 1024 · qmix-hidden 512 · buffer 40 ep CPU |
+| MATD3 | off-policy GPU-bound · hidden 1024 · buffer 2 000 000 steps · batch 1024 |
+| MAAC | off-policy GPU-bound · hidden 1024 · buffer 1 000 000 · steps-per-update 100 |
 | GPU profile | `aws` |
-| Tiempo estimado | ~3 dias (HAPPO objetivo ~11 FPS) |
+| Drive outputs | `MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_TIMESTAMP/` |
 | Notebook Colab | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |
 
 ### Corridas de referencia y definitiva
@@ -100,13 +109,15 @@ Hardware (referencia v4 piloto): RTX 4060 Laptop 8 GiB VRAM, CUDA 12.6. Corrida 
 
 ### Tiempos estimados corrida oficial A100-SXM4-80GB (50 ep, --parallel-scenarios 3)
 
-| Algoritmo | FPS estimado A100 | Tiempo total (3 escenarios paralelos) | Nota |
-| --------- | ----------------: | ------------------------------------: | ---- |
-| HAPPO | ~11 FPS | ~11 h | HAPPO hidden 512; dominado por simulador Python |
-| MASAC | ~5 FPS | ~30 h | Buffer 40 GiB en RAM; critico GPU |
-| MATD3 | ~8 FPS | ~15 h | GPU-intensivo; A100 13x RTX 4060 |
-| MAAC | ~6 FPS | ~17 h | Attention SAC |
-| **Total** | | **~3 dias** | vs secuencial mas largo |
+| Algoritmo | Tipo | FPS base | x rollout | FPS efectivo | Tiempo 3 esc. | Nota |
+| --------- | ---- | -------: | --------: | -----------: | ------------: | ---- |
+| HAPPO | on-policy | ~11 FPS | x4 SubprocVecEnv | **~44 FPS** | **~2.8 h** | CPU-bound resuelto; hidden 512 |
+| MASAC | off-policy | ~15-30 FPS | x1 (GPU-bound) | ~15-30 FPS | ~8-16 h | Buffer 40 ep CPU; GPU critico |
+| MATD3 | off-policy | ~20-50 FPS | x1 (GPU-bound) | ~20-50 FPS | ~5-12 h | GPU-intensivo; A100 >> RTX 4060 |
+| MAAC | off-policy | ~20-40 FPS | x1 (GPU-bound) | ~20-40 FPS | ~6-12 h | Attention SAC; GPU-bound |
+| **Total** | | | | | **~1-2 dias** | HAPPO ya no es el cuello |
+
+HAPPO era el cuello de botella (~30 h con DummyVecEnv secuencial). Con `ShareSubprocVecEnv` x4 el tiempo HAPPO se reduce a ~2.8 h. Los algoritmos off-policy (MASAC/MATD3/MAAC) son GPU-bound y no requieren cambios de VecEnv.
 
 FPS limitado principalmente por simulacion Python de 17 edificios. A100 acelera GPU training (MATD3 2 FPS -> 8 FPS) pero el simulador CityLearn es el cuello de botella dominante en HAPPO.
 

@@ -27,11 +27,26 @@ Actualizado: 2026-06-20.
 - ✅ Corrida v4 completada 12/12 — HAPPO/MASAC/MATD3/MAAC × E1/E2/E3
 - ✅ Artefactos canonicos en `outputs/{ALGO}/{escenario}/` (CSV, JSON, PNG)
 - ✅ Informe tecnico de supervision: **APROBADO** — Mejor MADRL: **MATD3** (KW p=0.0459)
-- ✅ Tutorial notebook Colab A100 corregido: badge, metadatos, celdas 1.2 y 1.2b
-- ✅ CityLearn submodulo vive en rama `citylearn-v3-madrl` (no detached HEAD)
+- ✅ Tutorial notebook actualizado a **NVIDIA A100-SXM4-80GB + 167 GiB RAM** (eliminadas todas las referencias RTX 4060 como entorno objetivo)
+- ✅ Launcher `colab_a100_official_launcher.py`: `--parallel-scenarios 3`, hyperparams A100-80GB, MASAC buffer CPU (3x40 GiB = 120 GiB RAM)
 - ✅ 9 submodulos registrados e inicializados en `.gitmodules`
 - ✅ Git LFS configurado para checkpoints `.pt` — resultados versionados en GitHub
-- ✅ README actualizado con instrucciones de clonado y manual Colab A100
+
+### Corrida oficial activa — Google Colab A100-SXM4-80GB
+
+| Campo | Valor |
+| ----- | ----- |
+| Hardware | NVIDIA A100-SXM4-80GB · 80 GiB VRAM · 167 GiB RAM · CUDA 12.4 |
+| Run ID | `madrl_v3_20260621_002450` (en ejecucion) |
+| Episodios | 75 x 8760 pasos = 657 000 pasos/corrida |
+| Paralelismo | 3 escenarios concurrentes por algoritmo (`--parallel-scenarios 3`) |
+| MASAC buffer | CPU (`--masac-preload-batch-device cpu`): 3x40 GiB = 120 GiB RAM |
+| HAPPO hidden | [512, 512] |
+| MATD3 buffer | 1 000 000 steps · batch 1024 · hidden 512 |
+| MAAC buffer | 500 000 steps · batch 1024 · hidden 512 |
+| GPU profile | `aws` |
+| Tiempo estimado | ~4-5 dias (vs ~13 dias secuencial) |
+| Notebook Colab | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |
 
 ### Corridas de referencia y definitiva
 
@@ -72,7 +87,7 @@ Resumen descriptivo e inferencial:
 
 El mejor agente global de la corrida v4 es **MATD3**. Tambien gana el ranking ponderado global en las tres comparativas por escenario: E1 score 0.7486, E2 score 0.7515 y E3 score 0.7333. La comparacion inferencial global detecta diferencia significativa (`Kruskal-Wallis p=0.0459`) y las comparaciones contra HAPPO favorecen a MATD3 (`MWU p=0.0182`, `Wilcoxon p=2.62e-06`). Los warnings esperados de Wilcoxon por muestras pequeñas/ceros quedan suprimidos y documentados en `wilcoxon_status`.
 
-### Tiempos reales corrida v3 (referencia valida)
+### Tiempos reales corrida v3 (referencia historica — RTX 4060 Laptop 5 ep piloto)
 
 | Algoritmo | E1 (flex) | E2 (CO2) | E3 (costo) | Total |
 | --------- | --------: | -------: | ---------: | ----: |
@@ -81,7 +96,19 @@ El mejor agente global de la corrida v4 es **MATD3**. Tambien gana el ranking po
 | MATD3 | 95.13 min | 95.30 min | 80.70 min | 271.1 min |
 | MAAC | 52.33 min | 51.74 min | 54.16 min | 158.2 min |
 
-Hardware: RTX 4060 Laptop, 8,188 MiB VRAM, driver 560.94, PyTorch 2.8.0+cu126, CUDA 12.6, `cuda_memory_fraction=0.812`.
+Hardware (referencia v4 piloto): RTX 4060 Laptop 8 GiB VRAM, CUDA 12.6. Corrida oficial: NVIDIA A100-SXM4-80GB 80 GiB VRAM, 167 GiB RAM, CUDA 12.4 (Colab).
+
+### Tiempos estimados corrida oficial A100-SXM4-80GB (75 ep, --parallel-scenarios 3)
+
+| Algoritmo | FPS estimado A100 | Tiempo total (3 escenarios paralelos) | Nota |
+| --------- | ----------------: | ------------------------------------: | ---- |
+| HAPPO | ~11 FPS | ~11 h | Dominado por simulador Python |
+| MASAC | ~5 FPS | ~45 h | Buffer 40 GiB en RAM; critico GPU |
+| MATD3 | ~8 FPS | ~23 h | GPU-intensivo; A100 13x RTX 4060 |
+| MAAC | ~6 FPS | ~26 h | Attention SAC |
+| **Total** | | **~4-5 dias** | vs ~13 dias secuencial |
+
+FPS limitado principalmente por simulacion Python de 17 edificios. A100 acelera GPU training (MATD3 2 FPS -> 8 FPS) pero el simulador CityLearn es el cuello de botella dominante en HAPPO.
 
 ### Cambios aplicados en v3 y v4
 
@@ -109,7 +136,7 @@ Hardware: RTX 4060 Laptop, 8,188 MiB VRAM, driver 560.94, PyTorch 2.8.0+cu126, C
 - Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json`, `data/checkpoint_manifest.json`, `data/artifact_audit.json` y `figures/figures_manifest.json` por algoritmo/escenario.
 - Contrato de trazabilidad: `data/` es la fuente canónica por corrida; no se escriben espejos raíz ni `statistical_comparison/` salvo flags heredados explícitos. `live_progress.json` es transitorio y se elimina al finalizar correctamente.
 - Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
-- Perfil GPU: `local4060_fast` — RTX 4060 Laptop 8 GB, max 2 escenarios concurrentes (HAPPO/MATD3), max 1 para MASAC/MAAC.
+- Perfil GPU Colab (oficial): `aws` — A100-SXM4-80GB 80 GiB VRAM, 3 escenarios concurrentes por algoritmo (`--parallel-scenarios 3`). Perfil local de referencia: `local4060_fast` (RTX 4060 8 GiB, 1-2 escenarios).
 - Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes; `python39_core_ready=true`.
 - Suite de pruebas estadisticas: Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U y Wilcoxon signed-rank.
 
@@ -469,7 +496,7 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
 
 Requiere una GPU con VRAM suficiente para varios algoritmos+escenarios a la vez (no viable en RTX 4060 8 GB); el script bloquea la ejecucion si detecta <=8.5 GiB de VRAM dedicada salvo que se pase `-AllowGpuOversubscription`. Instancia AWS recomendada: `g5.2xlarge` (A10G, 24 GB VRAM). MASAC queda fuera de la lista por defecto por su mayor consumo de memoria de replay; se puede agregar explicitamente con `-Algorithms happo,masac,matd3,maac` si la VRAM lo permite.
 
-### Perfil GPU-tuned local (RTX 4060 Laptop 8 GB)
+### Perfil GPU-tuned local (referencia historica — RTX 4060 Laptop 8 GB)
 
 | MADRL | Backend | Ajustes activos |
 | ----- | ------- | --------------- |
@@ -540,6 +567,27 @@ Abre el tutorial oficial y ejecuta celda a celda — clona, instala y entrena lo
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/citylearn-v3-madrl/examples/madrl_citylearn_v3_tutorial.ipynb)
 
 El notebook ejecuta las 12 corridas (4 algoritmos × 3 escenarios) con `N_EPISODES=75` y genera los artefactos canonicos en `outputs/{ALGO}/{escenario}/`.
+
+**Hardware requerido: NVIDIA A100-SXM4-80GB + 167 GiB RAM** (Colab Pro+ > runtime A100 High-RAM).
+
+Verificacion de hardware en celda 1.2 del notebook (salida esperada):
+
+```text
+[OK] GPU: NVIDIA A100-SXM4-80GB (80.0 GiB VRAM)
+[OK] RAM: ~167 GiB
+[OK] Python: 3.11.13 (Linux x86_64)
+[OK] CUDA: 12.4
+```
+
+Lanzar entrenamiento (celda 6 del notebook — ya configurada):
+
+```bash
+python -B CityLearn/scripts/colab_a100_official_launcher.py \
+  --scenario ALL --seed 0 --episodes 75 --episode-time-steps 8760 \
+  --parallel-scenarios 3 --masac-preload-batch-device cpu \
+  --gpu-profile aws --cuda-memory-fraction 0.92 \
+  --require-a100 --oom-retry --skip-completed --live-monitor
+```
 
 ## Clonar el repositorio
 
@@ -800,17 +848,12 @@ Este repositorio esta orientado a investigacion de tesis. La arquitectura y los 
 La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Kruskal-Wallis (diferencias globales entre 4 MADRL) → Mann-Whitney U (diferencias por par, independiente) → Wilcoxon signed-rank (diferencias por par, pareado), aplicados sobre KPI-gains de entrenamiento de HAPPO, MASAC, MATD3 y MAAC.
 
 ## Cambios Recientes
-- **2026-06-20 17:42**: outputs/citylearn_v3_madrl_full_20260615_074011_v4/masac/escenario_1/checkpoint.pt, outputs/citylearn_v3_madrl_full_20260615_074011_v4/masac/escenario_2/checkpoint.pt, outputs/citylearn_v3_madrl_full_20260615_074011_v4/masac/escenario_3/checkpoint.pt, outputs/citylearn_v3_madrl_full_20260615_074011_v4/resumen_comparativo/global_comparison.png (+7 mas)
+- **2026-06-20 (actual)**: `madrl_citylearn_v3_tutorial.ipynb` — actualizado a A100-SXM4-80GB (80 GiB VRAM, 167 GiB RAM, CUDA 12.4); eliminadas todas las referencias RTX 4060 como entorno objetivo; MIN_VRAM 39→78 GiB, MIN_RAM 60→120 GiB, --gpu-profile local→aws
+- **2026-06-20 (actual)**: `colab_a100_official_launcher.py` — `--parallel-scenarios 3` (ThreadPoolExecutor), hyperparams A100-80GB (HAPPO hidden 512, MATD3 buffer 1M batch 1024, MASAC buffer 40 GiB CPU), manifest thread-safe con threading.Lock
+- **2026-06-20 17:42**: outputs/citylearn_v3_madrl_full_20260615_074011_v4 — masac checkpoints E1/E2/E3, resumen_comparativo/global_comparison.png (+7 mas)
 - **2026-06-20 17:28**: tools/generate_informe_final.py, tools/test_notebook_cells.py, tools/verify_notebook.py, tools/verify_workflow_integrity.py
-- **2026-06-20 15:55**: tools/fix_clone_submodule.py
 - **2026-06-20 15:50**: README.md, tools/fix_colab_cell2.py, tools/generate_informe_final.py, tools/patch_notebook_final.py
-- **2026-06-20 15:47**: tools/generate_informe_final.py, tools/patch_notebook_final.py
 - **2026-06-20 11:47**: docs/workflow_manifest.json, scripts/restart_happo_masac_v3.ps1, scripts/restart_masac_matd3_maac.ps1, scripts/run_3madrl_parallel.ps1 (+3 mas)
-- **2026-06-20 11:27**: tools/verify_notebook.py
-- **2026-06-20 11:11**: tools/verify_notebook.py
-- **2026-06-20 11:02**: tools/verify_notebook.py
-- **2026-06-20 10:41**: nb_gpu_cells.txt, tools/patch_notebook_a100.py, tools/verify_notebook.py
-- **2026-06-20 10:30**: nb_cells.txt, nb_cells2.txt, nb_keycells.txt, tools/verify_notebook.py
 
 <!-- auto_save.sh inserta entradas nuevas justo debajo de este encabezado -->
 

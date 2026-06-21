@@ -848,6 +848,7 @@ Este repositorio esta orientado a investigacion de tesis. La arquitectura y los 
 La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Kruskal-Wallis (diferencias globales entre 4 MADRL) → Mann-Whitney U (diferencias por par, independiente) → Wilcoxon signed-rank (diferencias por par, pareado), aplicados sobre KPI-gains de entrenamiento de HAPPO, MASAC, MATD3 y MAAC.
 
 ## Cambios Recientes
+- **2026-06-21 05:52**: tools/generate_colab_notebook.py, tools/test_notebook_cells.py
 - **2026-06-20 22:40**: tools/_find_cell.py
 - **2026-06-20 22:24**: tools/_find_cell.py, tools/_patch_cell72.py
 - **2026-06-20 (actual)**: `madrl_citylearn_v3_tutorial.ipynb` — actualizado a A100-SXM4-80GB (80 GiB VRAM, 167 GiB RAM, CUDA 12.4); eliminadas todas las referencias RTX 4060 como entorno objetivo; MIN_VRAM 39→78 GiB, MIN_RAM 60→120 GiB, --gpu-profile local→aws

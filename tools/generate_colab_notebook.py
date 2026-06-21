@@ -686,7 +686,7 @@ Backend: `external/MAAC/`
 **Hiperparámetros A100:**
 - `batch_size = 512`  (oficial: 256)
 - `buffer_length = 100 000`  transiciones (oficial: 50 000)
-- `steps_per_update = 250`  (igual a oficial)
+- `steps_per_update = 100`  (perfil A100 actual)
 - `num_updates = 8`  (igual a oficial)
 - `attend_heads = 4`  (igual a oficial)
 """))
@@ -722,7 +722,7 @@ for scenario in SCENARIOS:
         "--discrete-action-mode",   "axis",         # lineal en dims (no cartesiano)
         "--batch-size",             "512",           # doble vs oficial (A100)
         "--buffer-length",          "100000",        # doble vs oficial (A100)
-        "--steps-per-update",       "250",           # igual a oficial
+        "--steps-per-update",       "100",           # perfil A100 actual
         "--num-updates",            "8",             # igual a oficial
         "--max-discrete-actions",   "512",           # límite safety check
         "--hidden-size",            "256",

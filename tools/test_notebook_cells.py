@@ -159,7 +159,7 @@ LAUNCHER_REQUIRED = {
     ],
     "maac": [
         "--action-bins", "3", "--discrete-action-mode", "axis",
-        "--batch-size", "--buffer-length", "--steps-per-update", "250",
+        "--batch-size", "--buffer-length", "--steps-per-update", "100",
         "--num-updates", "--max-discrete-actions", "--attend-heads",
         "--gamma", "0.9999", "--pi-lr", "--q-lr", "--tau",
     ],
@@ -267,13 +267,15 @@ print("[PASS] Guardrails de OUTPUT_ROOT Colab aislado y launcher 12 dirs únicos
 # ────────────────────────────────────────────────────────────────────────────
 # Per-algorithm values live in the launcher; notebook has high-level config only.
 LAUNCHER_A100_CHECKS = {
-    "default=512": "HAPPO hidden_size=512",
-    "20"     : "MASAC buffer_size=20",
-    "64"     : "MASAC critic_batch=64",
-    "512"    : "MATD3/MAAC batch_size=512",
-    "6000"   : "MATD3 buffer_size=6000",
-    "100000" : "MAAC buffer_length=100000",
-    "0.9999" : "gamma=0.9999 (horizonte anual)",
+    'parser.add_argument("--happo-hidden-size", default=512': "HAPPO hidden_size=512",
+    'parser.add_argument("--masac-buffer-size", default=40': "MASAC buffer_size=40",
+    'parser.add_argument("--masac-critic-batch-size", default=1024': "MASAC critic_batch=1024",
+    'parser.add_argument("--matd3-batch-size", default=1024': "MATD3 batch_size=1024",
+    'parser.add_argument("--matd3-buffer-size", default=2000000': "MATD3 buffer_size=2000000",
+    'parser.add_argument("--maac-batch-size", default=1024': "MAAC batch_size=1024",
+    'parser.add_argument("--maac-buffer-length", default=1000000': "MAAC buffer_length=1000000",
+    'parser.add_argument("--maac-steps-per-update", default=100': "MAAC steps_per_update=100",
+    "0.9999": "gamma=0.9999 (horizonte anual)",
 }
 for val, desc_str in LAUNCHER_A100_CHECKS.items():
     assert val in launcher_src, f"No se encontró {desc_str} ({val}) en el launcher"

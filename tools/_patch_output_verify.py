@@ -23,7 +23,7 @@ def set_cell_source(ci, src):
 # ─────────────────────────────────────────────────────────────────────────────
 src22 = ''.join(nb['cells'][22]['source'])
 old22 = 'MIN_DRIVE_FREE_GIB = 15.0  # artefactos ~10-12 GiB para 12 corridas completas'
-new22 = 'MIN_DRIVE_FREE_GIB = 30.0  # A100-80GB hidden=1024: checkpoints ~2-5 GiB/algo + timeseries ~1.5 GiB total'
+new22 = 'MIN_DRIVE_FREE_GIB = 30.0  # A100-80GB HAPPO hidden=512: checkpoints + timeseries persistentes'
 if old22 in src22:
     src22 = src22.replace(old22, new22, 1)
     set_cell_source(22, src22)
@@ -244,7 +244,7 @@ print()
 print('  ESTRUCTURA ESPERADA POR JOB:')
 print('  {OUTPUT_ROOT}/{algo}/{scenario}_seed_0/')
 print('    data/results.json         ← KPIs finales, ganancia vs baseline')
-print('    data/timeseries.csv       ← retorno y métricas por episodio (75 filas)')
+print('    data/timeseries.csv       ← retorno y métricas por episodio (50 filas)')
 print('    data/trace.csv            ← observ./acciones muestreadas (cada 24 pasos)')
 print('    data/checkpoint_manifest.json')
 print('    data/artifact_audit.json')
@@ -273,7 +273,7 @@ OLD_TUNING = """    "a100_tuning": {
     },"""
 
 NEW_TUNING = """    "a100_tuning": {
-        "happo_hidden_size"    : 1024,
+        "happo_hidden_size"    : 512,
         "masac_buffer_episodes": 40,
         "masac_critic_batch"   : 1024,
         "masac_rnn_hidden_dim" : 1024,

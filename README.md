@@ -38,14 +38,14 @@ Actualizado: 2026-06-20.
 | ----- | ----- |
 | Hardware | NVIDIA A100-SXM4-80GB · 80 GiB VRAM · 167 GiB RAM · CUDA 12.4 |
 | Run ID | `madrl_v3_20260621_002450` (en ejecucion) |
-| Episodios | 75 x 8760 pasos = 657 000 pasos/corrida |
+| Episodios | 50 x 8760 pasos = 438 000 pasos/corrida |
 | Paralelismo | 3 escenarios concurrentes por algoritmo (`--parallel-scenarios 3`) |
 | MASAC buffer | CPU (`--masac-preload-batch-device cpu`): 3x40 GiB = 120 GiB RAM |
 | HAPPO hidden | [512, 512] |
 | MATD3 buffer | 1 000 000 steps · batch 1024 · hidden 512 |
 | MAAC buffer | 500 000 steps · batch 1024 · hidden 512 |
 | GPU profile | `aws` |
-| Tiempo estimado | ~4-5 dias (vs ~13 dias secuencial) |
+| Tiempo estimado | ~3 dias (HAPPO objetivo ~11 FPS) |
 | Notebook Colab | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |
 
 ### Corridas de referencia y definitiva
@@ -98,15 +98,15 @@ El mejor agente global de la corrida v4 es **MATD3**. Tambien gana el ranking po
 
 Hardware (referencia v4 piloto): RTX 4060 Laptop 8 GiB VRAM, CUDA 12.6. Corrida oficial: NVIDIA A100-SXM4-80GB 80 GiB VRAM, 167 GiB RAM, CUDA 12.4 (Colab).
 
-### Tiempos estimados corrida oficial A100-SXM4-80GB (75 ep, --parallel-scenarios 3)
+### Tiempos estimados corrida oficial A100-SXM4-80GB (50 ep, --parallel-scenarios 3)
 
 | Algoritmo | FPS estimado A100 | Tiempo total (3 escenarios paralelos) | Nota |
 | --------- | ----------------: | ------------------------------------: | ---- |
-| HAPPO | ~11 FPS | ~11 h | Dominado por simulador Python |
-| MASAC | ~5 FPS | ~45 h | Buffer 40 GiB en RAM; critico GPU |
-| MATD3 | ~8 FPS | ~23 h | GPU-intensivo; A100 13x RTX 4060 |
-| MAAC | ~6 FPS | ~26 h | Attention SAC |
-| **Total** | | **~4-5 dias** | vs ~13 dias secuencial |
+| HAPPO | ~11 FPS | ~11 h | HAPPO hidden 512; dominado por simulador Python |
+| MASAC | ~5 FPS | ~30 h | Buffer 40 GiB en RAM; critico GPU |
+| MATD3 | ~8 FPS | ~15 h | GPU-intensivo; A100 13x RTX 4060 |
+| MAAC | ~6 FPS | ~17 h | Attention SAC |
+| **Total** | | **~3 dias** | vs secuencial mas largo |
 
 FPS limitado principalmente por simulacion Python de 17 edificios. A100 acelera GPU training (MATD3 2 FPS -> 8 FPS) pero el simulador CityLearn es el cuello de botella dominante en HAPPO.
 
@@ -132,7 +132,7 @@ FPS limitado principalmente por simulacion Python de 17 edificios. A100 acelera 
 - EV/V2G validado: las 31 tomas de camioneta institucional/logistica son bidireccionales (`max_discharging_power=7.4 kW`, `power_flow_direction=bidirectional_v2g`); moto lineal y mototaxi quedan solo carga.
 - Entorno unico: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1).
 - Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v3`**: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
-- Horizonte oficial para nuevas ejecuciones AWS/Docker: 75 episodios x 8760 pasos = 657 000 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
+- Horizonte oficial ajustado para nuevas ejecuciones A100: 50 episodios x 8760 pasos = 438 000 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
 - Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json`, `data/checkpoint_manifest.json`, `data/artifact_audit.json` y `figures/figures_manifest.json` por algoritmo/escenario.
 - Contrato de trazabilidad: `data/` es la fuente canónica por corrida; no se escriben espejos raíz ni `statistical_comparison/` salvo flags heredados explícitos. `live_progress.json` es transitorio y se elimina al finalizar correctamente.
 - Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
@@ -441,7 +441,7 @@ pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
-  -Episodes 75 `
+  -Episodes 50 `
   -TorchThreads 8 `
   -LiveProgressInterval 1000 `
   -ArtifactProfile efficient `
@@ -457,7 +457,7 @@ Para continuar una corrida interrumpida sin reejecutar lo ya completado:
 pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_citylearn_v3_full_training_visible.ps1 `
   -OutputRoot $root -Scenario ALL -Seed 0 `
-  -EpisodeTimeSteps 8760 -Episodes 75 -TorchThreads 8 `
+  -EpisodeTimeSteps 8760 -Episodes 50 -TorchThreads 8 `
   -LiveProgressInterval 1000 -ArtifactProfile efficient `
   -TraceRecordInterval 10 -TraceDetail compact `
   -GpuProfile local4060_fast -Cuda -SkipCompleted
@@ -490,7 +490,7 @@ Fixes aplicados al launcher:
 pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_3madrl_parallel.ps1 `
   -Algorithms happo,matd3,maac `
-  -Episodes 75 `
+  -Episodes 50 `
   -GpuProfile aws
 ```
 
@@ -566,7 +566,7 @@ Abre el tutorial oficial y ejecuta celda a celda — clona, instala y entrena lo
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/citylearn-v3-madrl/examples/madrl_citylearn_v3_tutorial.ipynb)
 
-El notebook ejecuta las 12 corridas (4 algoritmos × 3 escenarios) con `N_EPISODES=75` y genera los artefactos canonicos en `outputs/{ALGO}/{escenario}/`.
+El notebook ejecuta las 12 corridas (4 algoritmos × 3 escenarios) con `N_EPISODES=50` y genera los artefactos canonicos en `outputs/{ALGO}/{escenario}/`.
 
 **Hardware requerido: NVIDIA A100-SXM4-80GB + 167 GiB RAM** (Colab Pro+ > runtime A100 High-RAM).
 
@@ -583,7 +583,7 @@ Lanzar entrenamiento (celda 6 del notebook — ya configurada):
 
 ```bash
 python -B CityLearn/scripts/colab_a100_official_launcher.py \
-  --scenario ALL --seed 0 --episodes 75 --episode-time-steps 8760 \
+  --scenario ALL --seed 0 --episodes 50 --episode-time-steps 8760 \
   --parallel-scenarios 3 --masac-preload-batch-device cpu \
   --gpu-profile aws --cuda-memory-fraction 0.92 \
   --require-a100 --oom-retry --skip-completed --live-monitor
@@ -666,7 +666,7 @@ docker compose -f deploy/aws/training/docker-compose.yml up -d --build
 docker compose -f deploy/aws/training/docker-compose.yml logs -f
 ```
 
-El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 75`,
+El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 50`,
 `--episode-time-steps 8760`, `--cuda`, `--max-parallel-jobs 1` y
 `--log-chunk-size 10M --log-max-files 100`. Los logs se ven en
 `docker compose logs -f` y quedan como texto plano rotado por escenario y
@@ -718,7 +718,7 @@ Manual completo con instalacion del NVIDIA Container Toolkit:
 | Verificar contexto | `powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1` | `pwd && git remote -v` | En Windows este proyecto exige el verificador antes de editar o usar git. |
 | Verificar GPU | `nvidia-smi --query-gpu=index,name,utilization.gpu,memory.used,memory.total --format=csv,noheader` | `nvidia-smi` | Confirma que la GPU NVIDIA esta visible antes de entrenar. |
 | Lanzar local visible | `pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\run_citylearn_v3_full_training_visible.ps1 -OutputRoot $root -Scenario ALL -Seed 0 -EpisodeTimeSteps 8760 -Episodes 5 -GpuProfile local4060_fast -Cuda -SelfLaunched` | No aplica | Perfil local RTX 4060; util para pruebas visibles o corridas locales cortas. |
-| Lanzar AWS bare-metal | No aplica | `bash deploy/aws/training/run_aws_training.sh --scenario ALL --algorithms happo,masac,matd3,maac --episodes 75 --episode-time-steps 8760 --max-parallel-jobs 1 --log-chunk-size 10M --log-max-files 100 --cuda` | Configuracion canonica AWS sin cambiar hiperparametros. |
+| Lanzar AWS bare-metal | No aplica | `bash deploy/aws/training/run_aws_training.sh --scenario ALL --algorithms happo,masac,matd3,maac --episodes 50 --episode-time-steps 8760 --max-parallel-jobs 1 --log-chunk-size 10M --log-max-files 100 --cuda` | Configuracion canonica AWS sin cambiar hiperparametros. |
 | Lanzar AWS Docker | No aplica | `docker compose -f deploy/aws/training/docker-compose.yml up -d --build` | Usa la misma configuracion AWS y monta `outputs/` en el host. |
 | Monitorear | `powershell -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 -OutputRoot $root` | `bash deploy/aws/training/tail_aws_training.sh` | El monitor AWS lee status, live progress y logs rotados. |
 | Revisar resultados | `Get-ChildItem $root -Recurse -Filter results.json` | `find "$OUTPUT_ROOT" -name results.json -type f | sort` | Los `results.json` aparecen cuando cada job termina. |

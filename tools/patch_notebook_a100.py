@@ -233,11 +233,11 @@ LAUNCHER    = f'{REPO}/CityLearn/scripts/colab_a100_official_launcher.py'
 MONITOR     = f'{REPO}/CityLearn/scripts/colab_a100_live_monitor.py'
 
 # ── QUICK_TEST ────────────────────────────────────────────────────────────
-# False  → entrenamiento oficial completo (75 episodios, ~30 h en A100).
+# False  → entrenamiento oficial completo ajustado (50 episodios, HAPPO ~11 FPS objetivo).
 # True   → prueba de infraestructura rapida (3 episodios, ~15 min).
 #          Util para verificar que el pipeline funciona antes del run largo.
 QUICK_TEST      = False
-EPISODES        = 3 if QUICK_TEST else 75
+EPISODES        = 3 if QUICK_TEST else 50
 EPISODE_STEPS   = 8760
 NUM_ENV_STEPS   = EPISODES * EPISODE_STEPS
 SEED            = 0
@@ -265,7 +265,7 @@ if 'OUTPUT_ROOT' not in globals():
         "OUTPUT_ROOT no definido. Ejecuta las celdas 1.x y 2.1 en orden antes de 6.1."
     )
 
-mode = 'QUICK_TEST (3 ep)' if QUICK_TEST else 'FULL TRAINING (75 ep)'
+mode = 'QUICK_TEST (3 ep)' if QUICK_TEST else 'FULL TRAINING (50 ep)'
 print(f'Modo          : {mode}')
 print(f'Episodios     : {EPISODES} x {EPISODE_STEPS} pasos = {NUM_ENV_STEPS:,} pasos/corrida')
 print(f'Corridas total: {len(SCENARIOS) * len(ALGORITHMS)} ({len(ALGORITHMS)} algos x {len(SCENARIOS)} escenarios)')

@@ -120,7 +120,7 @@ Para corrida oficial:
 
 ```python
 QUICK_TEST = False
-EPISODES = 75
+EPISODES = 50
 EPISODE_STEPS = 8760
 ```
 

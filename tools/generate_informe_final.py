@@ -159,7 +159,7 @@ def main() -> int:
         "cells": len(cells),
         "python_required": "3.9.25",
         "metadata_python": notebook.get("metadata", {}).get("language_info", {}).get("version"),
-        "n_episodes_75": "N_EPISODES      = 75" in notebook_source or "N_EPISODES = 75" in notebook_source,
+        "n_episodes_50": "N_EPISODES      = 50" in notebook_source or "N_EPISODES = 50" in notebook_source,
         "twelve_main_runs": "ALGORITHMS = ['happo', 'masac', 'matd3', 'maac']" in notebook_source,
         "colab_a100_ready": all(token in notebook_source for token in ("IN_COLAB", "A100", "CUDA_MEMORY_FRACTION")),
         "quick_validation_cell": "_N_EPISODES_TEST = 1" in notebook_source and "--dry-run-first" not in notebook_source,
@@ -192,7 +192,7 @@ def main() -> int:
         "jobs_failed": len(job_fail),
         "algorithms": sorted({str(job.get("name", "")).upper() for job in job_records if job.get("name")}),
         "scenarios": status.get("scenarios", []) if isinstance(status, dict) else [],
-        "note": "La configuracion final del notebook es 75 episodios; el run existente usado como evidencia local reporta el numero de episodios indicado aqui.",
+        "note": "La configuracion final del notebook es 50 episodios; el run existente usado como evidencia local reporta el numero de episodios indicado aqui.",
     }
 
     output_audit = canonical_output_audit(output_root)
@@ -217,7 +217,7 @@ def main() -> int:
         {
             "test": "CityLearn/scripts/colab_a100_official_launcher.py --dry-run",
             "scope": "12 jobs principales sin entrenamiento GPU",
-            "status": "ejecutado_ok_12_jobs_75_episodios_configurados",
+            "status": "ejecutado_ok_12_jobs_50_episodios_configurados",
             "output": "outputs/codex_supervision_dryrun_20260620/official_full_status.json",
         },
         {
@@ -229,11 +229,11 @@ def main() -> int:
 
     conclusion = "APROBADO"
     risks = []
-    if completed_run_summary["episodes_recorded_in_status"] != 75:
+    if completed_run_summary["episodes_recorded_in_status"] != 50:
         conclusion = "APROBADO CON OBSERVACIONES"
         risks.append(
-            "El output local existente usado como evidencia no corresponde a 75 episodios; "
-            "el notebook si queda configurado para N_EPISODES=75."
+            "El output local existente usado como evidencia no corresponde a 50 episodios; "
+            "el notebook si queda configurado para N_EPISODES=50."
         )
     if output_audit["checkpoint_pt_folders"] < output_audit["total_folders"]:
         risks.append(
@@ -353,8 +353,8 @@ def main() -> int:
         "21_masac": "Configurado y corregido para checkpoint final real.",
         "22_matd3": "Configurado en launcher y notebook HYPERPARAMS.",
         "23_maac": "Configurado en launcher y notebook HYPERPARAMS.",
-        "24_entrenamiento_75_episodios": {
-            "notebook_n_episodes": 75,
+        "24_entrenamiento_50_episodios": {
+            "notebook_n_episodes": 50,
             "notebook_episode_steps": 8760,
             "main_runs": "3 escenarios x 4 algoritmos = 12",
             "existing_output_status_episodes": completed_run_summary["episodes_recorded_in_status"],
@@ -371,7 +371,7 @@ def main() -> int:
         ],
         "30_riesgos_pendientes": risks,
         "31_recomendacion_final": (
-            "Ejecutar en Colab A100 el dry-run y luego el entrenamiento completo con N_EPISODES=75; "
+            "Ejecutar en Colab A100 el dry-run y luego el entrenamiento completo con N_EPISODES=50; "
             "reanudar con el mismo OUTPUT_ROOT si la sesion se interrumpe."
         ),
         "32_mejor_algoritmo_madrl_seleccionado": {
@@ -385,7 +385,7 @@ def main() -> int:
             "veredicto": conclusion,
             "motivo": (
                 "El notebook y los modulos vinculados quedan listos para entrenamiento. "
-                "La observacion principal es que la evidencia local existente no es una ejecucion completa de 75 episodios."
+                "La observacion principal es que la evidencia local existente no es una ejecucion completa de 50 episodios."
                 if conclusion != "APROBADO"
                 else "El notebook y los modulos vinculados quedan listos para entrenamiento."
             ),
@@ -406,7 +406,7 @@ def main() -> int:
         f"- Notebook: {NOTEBOOK.relative_to(ROOT)}",
         f"- Dataset CSV: {dataset_checks['csv_count']} archivos; edificios: {dataset_checks['building_count']}",
         f"- Jobs existentes OK: {completed_run_summary['jobs_ok']}/{completed_run_summary['jobs_total']}",
-        f"- Configuracion final: N_EPISODES=75, 12 corridas principales",
+        f"- Configuracion final: N_EPISODES=50, 12 corridas principales",
         f"- Output algorithm-first completo: {output_audit['complete_folders']}/{output_audit['total_folders']} carpetas",
         "",
         "## Observaciones",

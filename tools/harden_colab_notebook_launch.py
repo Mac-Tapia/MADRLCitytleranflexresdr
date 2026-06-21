@@ -505,7 +505,7 @@ print("  RESUMEN FINAL — MADRL CityLearn v3 · Colab A100")
 print("=" * 65)
 print(f"  Output root : {OUTPUT_ROOT}")
 print(f"  Timestamp   : {TIMESTAMP}")
-print(f"  Modo        : {'QUICK_TEST' if QUICK_TEST else 'FULL TRAINING (75 ep)'}")
+print(f"  Modo        : {'QUICK_TEST' if QUICK_TEST else 'FULL TRAINING (50 ep)'}")
 
 n_json = len(glob.glob(f"{OUTPUT_ROOT}/**/*.json",  recursive=True))
 n_csv  = len(glob.glob(f"{OUTPUT_ROOT}/**/*.csv",   recursive=True))
@@ -540,7 +540,7 @@ summary = {
     "algorithms":       ALGORITHMS,
     "scenarios":        SCENARIOS,
     "a100_tuning": {
-        "happo_hidden":         384,
+        "happo_hidden":         512,
         "masac_buffer_size":    20,
         "masac_critic_batch":   64,
         "masac_max_buf_gib":    20,

@@ -156,7 +156,7 @@ docker compose -f deploy/aws/training/docker-compose.yml logs -f
 ```
 
 El Compose lanza los 4 MADRL (`happo,masac,matd3,maac`) sobre los 3
-escenarios (`E1,E2,E3`) con `--episodes 75`, `--episode-time-steps 8760`,
+escenarios (`E1,E2,E3`) con `--episodes 50`, `--episode-time-steps 8760`,
 `--cuda`, `--log-chunk-size 10M` y `--log-max-files 100`.
 
 Persistencia y organizacion:

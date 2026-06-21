@@ -31,7 +31,7 @@ new = (
     "| ----- | ----- |\n"
     "| Hardware | NVIDIA A100-SXM4-80GB · 80 GiB VRAM · 167 GiB RAM · CUDA 12.4 |\n"
     "| Run ID | `madrl_v3_20260621_002450` (en ejecucion) |\n"
-    "| Episodios | 75 x 8760 pasos = 657 000 pasos/corrida |\n"
+    "| Episodios | 50 x 8760 pasos = 438 000 pasos/corrida |\n"
     "| Paralelismo | 3 escenarios concurrentes por algoritmo (`--parallel-scenarios 3`) |\n"
     "| MASAC buffer | CPU (`--masac-preload-batch-device cpu`): 3x40 GiB = 120 GiB RAM |\n"
     "| HAPPO hidden | [512, 512] |\n"
@@ -65,7 +65,7 @@ msg.append(m)
 # 5. Insert A100 timing table after MAAC row in timing table
 old5 = "### Cambios aplicados en v3 y v4"
 new5 = (
-    "### Tiempos estimados corrida oficial A100-SXM4-80GB (75 ep, --parallel-scenarios 3)\n"
+    "### Tiempos estimados corrida oficial A100-SXM4-80GB (50 ep, --parallel-scenarios 3)\n"
     "\n"
     "| Algoritmo | FPS estimado A100 | Tiempo total (3 escenarios paralelos) | Nota |\n"
     "| --------- | ----------------: | ------------------------------------: | ---- |\n"
@@ -83,9 +83,9 @@ txt, m = rep(old5, new5, "5-a100-timing")
 msg.append(m)
 
 # 6. Colab section: add hardware note + launch command
-old6 = "El notebook ejecuta las 12 corridas (4 algoritmos × 3 escenarios) con `N_EPISODES=75` y genera los artefactos canonicos en `outputs/{ALGO}/{escenario}/`."
+old6 = "El notebook ejecuta las 12 corridas (4 algoritmos × 3 escenarios) con `N_EPISODES=50` y genera los artefactos canonicos en `outputs/{ALGO}/{escenario}/`."
 new6 = (
-    "El notebook ejecuta las 12 corridas (4 algoritmos × 3 escenarios) con `N_EPISODES=75` y genera los artefactos canonicos en `outputs/{ALGO}/{escenario}/`.\n"
+    "El notebook ejecuta las 12 corridas (4 algoritmos × 3 escenarios) con `N_EPISODES=50` y genera los artefactos canonicos en `outputs/{ALGO}/{escenario}/`.\n"
     "\n"
     "**Hardware requerido: NVIDIA A100-SXM4-80GB + 167 GiB RAM** (Colab Pro+ > runtime A100 High-RAM).\n"
     "\n"
@@ -102,7 +102,7 @@ new6 = (
     "\n"
     "```bash\n"
     "python -B CityLearn/scripts/colab_a100_official_launcher.py \\\n"
-    "  --scenario ALL --seed 0 --episodes 75 --episode-time-steps 8760 \\\n"
+    "  --scenario ALL --seed 0 --episodes 50 --episode-time-steps 8760 \\\n"
     "  --parallel-scenarios 3 --masac-preload-batch-device cpu \\\n"
     "  --gpu-profile aws --cuda-memory-fraction 0.92 \\\n"
     "  --require-a100 --oom-retry --skip-completed --live-monitor\n"

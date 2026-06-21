@@ -6,7 +6,7 @@ Cambios aplicados (trazables):
   C02 – Cell 16: GPU/CUDA check tolerante en entorno local sin GPU A100
   C03 – Cell 24: Detección automática de ruta REPO (Colab vs. local)
   C04 – Cell 27: Eliminar referencia "MAPPO (baseline)"
-  C05 – Cell 32: Agregar constante explícita N_EPISODES = 75
+  C05 – Cell 32: Agregar constante explícita N_EPISODES = 50
   C06 – Cell 53: Agregar print explícito "Mejor algoritmo MADRL seleccionado: X"
   C07 – Cell 54: Eliminar referencia "MAPPO vs HAPPO, MADDPG vs MATD3" como baselines
   C08 – NEW:     Insertar sección "Prueba rápida de validación (1 episodio)"
@@ -370,20 +370,20 @@ cells[27]['source'] = [src27_fixed]
 log("C04", 27, "Eliminada referencia 'MAPPO (baseline)' — MAPPO no es baseline oficial del proyecto")
 
 # ─────────────────────────────────────────────────────────────────────────────
-# C05 – Cell 32: Agregar constante explícita N_EPISODES = 75
+# C05 – Cell 32: Agregar constante explícita N_EPISODES = 50
 # ─────────────────────────────────────────────────────────────────────────────
 src32 = ''.join(cells[32]['source'])
-# Insert N_EPISODES = 75 right after QUICK_TEST block
-old_quick_test_block = "QUICK_TEST      = False\nEPISODES        = 3 if QUICK_TEST else 75"
+# Insert N_EPISODES = 50 right after QUICK_TEST block
+old_quick_test_block = "QUICK_TEST      = False\nEPISODES        = 3 if QUICK_TEST else 50"
 new_quick_test_block = ("QUICK_TEST      = False\n"
-                        "N_EPISODES      = 75           # Entrenamiento oficial: 75 episodios (3 escenarios x 4 algos = 12 corridas)\n"
+                        "N_EPISODES      = 50           # Entrenamiento oficial: 50 episodios (3 escenarios x 4 algos = 12 corridas)\n"
                         "EPISODES        = 3 if QUICK_TEST else N_EPISODES")
 src32_fixed = src32.replace(old_quick_test_block, new_quick_test_block)
 if src32_fixed == src32:
     # Try alternate spacing
-    old_quick_test_block2 = "QUICK_TEST = False\nEPISODES = 3 if QUICK_TEST else 75"
+    old_quick_test_block2 = "QUICK_TEST = False\nEPISODES = 3 if QUICK_TEST else 50"
     new_quick_test_block2 = ("QUICK_TEST = False\n"
-                             "N_EPISODES = 75  # Entrenamiento oficial: 75 episodios\n"
+                             "N_EPISODES = 50  # Entrenamiento oficial: 50 episodios\n"
                              "EPISODES   = 3 if QUICK_TEST else N_EPISODES")
     src32_fixed = src32.replace(old_quick_test_block2, new_quick_test_block2)
 if src32_fixed == src32:
@@ -391,11 +391,11 @@ if src32_fixed == src32:
     lines32 = src32.split('\n')
     for idx_l, line in enumerate(lines32):
         if 'QUICK_TEST' in line and '=' in line and 'False' in line:
-            lines32.insert(idx_l + 1, "N_EPISODES      = 75           # Entrenamiento oficial: 75 episodios completos")
+            lines32.insert(idx_l + 1, "N_EPISODES      = 50           # Entrenamiento oficial: 50 episodios completos")
             break
     src32_fixed = '\n'.join(lines32)
 cells[32]['source'] = [src32_fixed]
-log("C05", 32, "Agregada constante explícita N_EPISODES = 75")
+log("C05", 32, "Agregada constante explícita N_EPISODES = 50")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # C06 – Cell 53: Agregar print explícito del mejor algoritmo MADRL
@@ -446,7 +446,7 @@ PRUEBA_RAPIDA_MD = '''\
 
 > **SOLO PARA VERIFICAR QUE EL PIPELINE FUNCIONA.**
 > No usar como resultado de entrenamiento.
-> El entrenamiento oficial usa **N_EPISODES = 75** (celda 7.2).
+> El entrenamiento oficial usa **N_EPISODES = 50** (celda 7.2).
 
 Esta prueba ejecuta **1 episodio de 8 760 pasos** por algoritmo y escenario
 para validar:
@@ -461,7 +461,7 @@ para validar:
 
 PRUEBA_RAPIDA_CODE = '''\
 # ── 6.2  Prueba rapida de validacion — 1 episodio (NO es entrenamiento oficial) ──
-# Solo verifica que el pipeline funciona. El entrenamiento oficial usa N_EPISODES=75.
+# Solo verifica que el pipeline funciona. El entrenamiento oficial usa N_EPISODES=50.
 # Controla con QUICK_TEST: si True, ejecuta; si False, imprime instrucciones y sale.
 
 _N_EPISODES_TEST = 1   # Prueba rapida: 1 episodio por corrida
@@ -470,7 +470,7 @@ _EPISODE_STEPS   = 168 # 1 semana en pasos horarios (rapido para validar)
 print("=" * 70)
 print("  PRUEBA RAPIDA DE VALIDACION — 1 episodio x algoritmo x escenario")
 print("  Este bloque NO genera resultados de tesis.")
-print("  Para entrenamiento oficial: ejecuta la Seccion 7 (N_EPISODES=75).")
+print("  Para entrenamiento oficial: ejecuta la Seccion 7 (N_EPISODES=50).")
 print("=" * 70)
 
 if not globals().get('QUICK_TEST', False):
@@ -529,7 +529,7 @@ else:
     print()
     print(f"  Resultado prueba rapida: {ok_count}/{total} corridas OK")
     if ok_count == total:
-        print("  ✅ Pipeline validado. Procede a la Seccion 7 para el entrenamiento oficial (75 ep).")
+        print("  ✅ Pipeline validado. Procede a la Seccion 7 para el entrenamiento oficial (50 ep).")
     else:
         failed = [k for k, v in _results_quick.items() if v != 'OK']
         print(f"  ⚠️  Fallos: {failed}")
@@ -677,7 +677,7 @@ _quick   = globals().get("QUICK_TEST", False)
 _algos_g = globals().get("ALGORITHMS", [])
 _scens_g = globals().get("SCENARIOS", [])
 _corridas = len(_algos_g) * len(_scens_g)
-print(f"  N_EPISODES     : {_n_ep}  {'✅' if _n_ep == 75 else '⚠️ (esperado 75)'}")
+print(f"  N_EPISODES     : {_n_ep}  {'✅' if _n_ep == 50 else '⚠️ (esperado 50)'}")
 print(f"  QUICK_TEST     : {_quick}  {'(prueba rapida activa)' if _quick else '(entrenamiento completo)'}")
 print(f"  Algoritmos     : {_algos_g}")
 print(f"  Escenarios     : {_scens_g}")
@@ -715,7 +715,7 @@ _correcciones = [
     "C02: Cell 16 — GPU/CUDA check tolerante en entorno local sin GPU A100",
     "C03: Cell 24 — REPO detectado automaticamente (Colab vs. local)",
     "C04: Cell 27 — Eliminada referencia 'MAPPO (baseline)' del notebook",
-    "C05: Cell 32 — Agregada constante explicita N_EPISODES = 75",
+    "C05: Cell 32 — Agregada constante explicita N_EPISODES = 50",
     "C06: Cell 53 — Agregado print explicito 'MEJOR ALGORITMO MADRL SELECCIONADO: X'",
     "C07: Cell 54 — Eliminada referencia 'MAPPO vs HAPPO, MADDPG vs MATD3' como baselines opcionales",
     "C08: NEW — Insertada seccion 'Prueba rapida de validacion (1 episodio)' claramente separada",
@@ -748,15 +748,15 @@ informe["mejor_madrl"] = {"algoritmo": _best_algo, "fuente": "entrenamiento_prop
 print()
 _has_ds   = informe["dataset_validado"]["status"] == "VALIDADO"
 _has_12   = _corridas == 12
-_has_n75  = _n_ep == 75
+_has_n50  = _n_ep == 50
 _no_fails = not informe["deficiencias_reportadas"]
 
-if _has_ds and _has_12 and _has_n75:
+if _has_ds and _has_12 and _has_n50:
     veredicto = "APROBADO"
     motivo    = "Notebook y modulos vinculados listos para entrenamiento MADRL."
-elif _has_ds and _has_12 and not _has_n75:
+elif _has_ds and _has_12 and not _has_n50:
     veredicto = "APROBADO CON OBSERVACIONES"
-    motivo    = f"N_EPISODES={_n_ep} (esperado 75). Cambia N_EPISODES=75 en celda 6.1 antes de entrenar."
+    motivo    = f"N_EPISODES={_n_ep} (esperado 50). Cambia N_EPISODES=50 en celda 6.1 antes de entrenar."
 else:
     veredicto = "APROBADO CON OBSERVACIONES"
     motivo    = f"Dataset: {informe['dataset_validado']['status']}. Corridas: {_corridas}/12."

@@ -44,7 +44,7 @@ flowchart LR
         direction TB
         ALGS["4 algoritmos\nHAPPO · MASAC\nMATD3 · MAAC"]
         EJES["3 escenarios\nE1 Flex · E2 CO2 · E3 Costo"]
-        GPU["GPU RTX 4060 local — corrida v4: 5 ep x 8 760 pasos\nObjetivo A100/AWS: 75 ep x 8 760 pasos\n12 corridas totales (4 algo x 3 escenarios)"]
+        GPU["GPU RTX 4060 local — corrida v4: 5 ep x 8 760 pasos\nObjetivo A100/AWS: 50 ep x 8 760 pasos\n12 corridas totales (4 algo x 3 escenarios)"]
         ALGS --> EJES --> GPU
     end
 
@@ -262,7 +262,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    START(["Corrida v4 oficial (local RTX 4060 8GB)\nrun_aws_training.sh --scenario ALL\n--episodes 5 x 8760 pasos = 43800 steps/corrida\n[Objetivo Colab A100/AWS: 75 episodios]"])
+    START(["Corrida v4 oficial (local RTX 4060 8GB)\nrun_aws_training.sh --scenario ALL\n--episodes 5 x 8760 pasos = 43800 steps/corrida\n[Objetivo Colab A100/AWS: 50 episodios]"])
 
     subgraph HAPPO_RUN["HAPPO (on-policy) — 190 min v4 | ~2 800 min A100"]
         H_E1["HAPPO E1\nflexibilidad\n5 ep x 8760 pasos\n~66 min (v4)"]
@@ -493,7 +493,7 @@ flowchart LR
         direction TB
         subgraph DOCKER["Docker Compose"]
             IMG["madrl-training:latest\nubuntu:22.04 + PyTorch cu126\nSin drivers en contenedor"]
-            ENTRY["ENTRYPOINT\nrun_aws_training.sh\n--episodes 75 --scenario ALL\n--cuda"]
+            ENTRY["ENTRYPOINT\nrun_aws_training.sh\n--episodes 50 --scenario ALL\n--cuda"]
             DONE["DONE_MARKER\noutputs/.training_completed\nevita re-entrenamiento"]
             IMG --> ENTRY --> DONE
         end

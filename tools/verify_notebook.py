@@ -82,7 +82,7 @@ check("Celda 4.1 pasa schema_path explicito", "schema_path=IQUITOS_SCHEMA" in ce
 check("Celda 4.1 prueba reset/step", ".reset()" in cell28 and ".step(" in cell28)
 
 cell32 = cell("226d3513")
-check("N_EPISODES = 75", "N_EPISODES      = 75" in cell32 or "N_EPISODES = 75" in cell32)
+check("N_EPISODES = 50", "N_EPISODES      = 50" in cell32 or "N_EPISODES = 50" in cell32)
 check("EPISODE_STEPS = 8760", "EPISODE_STEPS" in cell32 and "8760" in cell32)
 check("QUICK_TEST = False por defecto", "QUICK_TEST" in cell32 and "False" in cell32)
 check("12 corridas principales", "ALGORITHMS = ['happo', 'masac', 'matd3', 'maac']" in cell32)

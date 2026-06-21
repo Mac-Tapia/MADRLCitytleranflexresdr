@@ -122,10 +122,10 @@ else:
                 fps   = float(lp.get('fps', 0.0))
                 ret   = lp.get('mean_return', None)
                 lag   = lp.get('_lag', 0)
-                bar_s = _bar(ep, 75, 16)
+                bar_s = _bar(ep, globals().get('N_EPISODES', 50), 16)
                 ret_s = f'{ret:+.4f}' if ret is not None else '    —   '
                 lag_s = f'{lag:.0f}s'
-                print(f'  {algo}/{esc:<5}  [{bar_s}] {ep:>3}/75  {step:>8}  '
+                print(f'  {algo}/{esc:<5}  [{bar_s}] {ep:>3}/{globals().get("N_EPISODES", 50)}  {step:>8}  '
                       f'{fps:>4.1f}  {ret_s:>11}  {lag_s:>5}')
         else:
             print('\n  (sin corridas activas aun — el launcher puede estar iniciando)')

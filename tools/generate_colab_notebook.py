@@ -1,4 +1,4 @@
-"""Generate madrl_citylearn_v3_tutorial.ipynb — Colab A100, 75 episodios.
+"""Generate madrl_citylearn_v3_tutorial.ipynb — Colab A100, 50 episodios.
 
 Parámetros base: corrida oficial v4 (run_aws_training.sh build_command).
 Ajustes A100: mayor batch/buffer donde es seguro sin riesgo OOM.
@@ -46,9 +46,9 @@ de flexibilidad energética, emisiones de CO₂ y eficiencia económica en comun
 |---|---|
 | Algoritmos | HAPPO · MASAC · MATD3 · MAAC |
 | Escenarios | E1 (Flexibilidad) · E2 (CO₂) · E3 (Costos) |
-| Episodios | 75 por corrida · 8 760 pasos/episodio |
-| Total steps | 657 000 por corrida · 7 884 000 en total |
-| GPU objetivo | A100 40 GB (Colab Pro/Pro+) |
+| Episodios | 50 por corrida · 8 760 pasos/episodio |
+| Total steps | 438 000 por corrida · 5 256 000 en total |
+| GPU objetivo | A100 80 GB (Colab Pro/Pro+) |
 | Resultado v4 | **MATD3** es el mejor MADRL global (KW p=0.0459) |
 
 > **Requisito:** Seleccionar A100 en *Runtime → Change runtime type → A100 GPU*
@@ -361,19 +361,19 @@ print(f"✅  Figura: {OUTPUT_ROOT}/figures/reward_weights.png")
 # SECCIÓN 6 — HIPERPARÁMETROS A100
 # ════════════════════════════════════════════════════════════════════════════
 cells.append(md("""\
-## Sección 6: Hiperparámetros (A100 optimizado · 75 episodios)
+## Sección 6: Hiperparámetros (A100 optimizado · 50 episodios)
 
 Todos los parámetros base vienen de la **corrida oficial v4** (`run_aws_training.sh`).
-Los ajustes A100 aumentan batch, buffer y red donde el VRAM de 40 GB lo permite.
+Los ajustes A100 aumentan batch, buffer y red donde la VRAM de 80 GB lo permite.
 
 ### Tabla comparativa
 
-| Parámetro | Official v4 (A10G 24 GB) | **A100 40 GB (este notebook)** |
+| Parámetro | Official v4 (A10G 24 GB) | **A100 80 GB (este notebook)** |
 |---|:---:|:---:|
 | Torch threads | 8 (servidor) | 2 (Colab CPU) |
 | Artifact profile | efficient | efficient |
 | Trace interval | 24 pasos | 24 pasos |
-| **HAPPO hidden_size** | 384 | 384 |
+| **HAPPO hidden_size** | 384 | 512 |
 | **MASAC buffer_size** | 20 epis. | 25 epis. |
 | **MASAC critic_batch** | 64 | 128 |
 | **MASAC max_buf_gib** | 8 GiB | 20 GiB |
@@ -383,7 +383,7 @@ Los ajustes A100 aumentan batch, buffer y red donde el VRAM de 40 GB lo permite.
 | **MAAC buffer_length** | 50 000 | 100 000 |
 
 > **QUICK_TEST = True** ejecuta 3 episodios × 8 760 pasos para verificar el pipeline sin costo de tiempo.
-> **QUICK_TEST = False** lanza el entrenamiento completo de 75 episodios.
+> **QUICK_TEST = False** lanza el entrenamiento completo de 50 episodios.
 """))
 
 cells.append(code("""\
@@ -397,12 +397,12 @@ SCHEMA_PATH = f"{REPO}/CityLearn/data/datasets/citylearn_iquitos_2023_2025/schem
 
 # ── Toggle principal ─────────────────────────────────────────────────────────
 QUICK_TEST = False   # ← True  = 3 ep × 8760 steps (smoke test ~30 min)
-                     # ← False = 75 ep × 8760 steps (entrenamiento real ~8 h)
+                     # ← False = 50 ep × 8760 steps (entrenamiento real)
 
 # ── Parámetros comunes ───────────────────────────────────────────────────────
-EPISODES        = 3      if QUICK_TEST else 75
+EPISODES        = 3      if QUICK_TEST else 50
 EPISODE_STEPS   = 8760                        # año completo (no cambiar)
-NUM_ENV_STEPS   = EPISODES * EPISODE_STEPS    # 26 280 (QT) o 657 000 (full)
+NUM_ENV_STEPS   = EPISODES * EPISODE_STEPS    # 26 280 (QT) o 438 000 (full)
 SEED            = 0
 
 TORCH_THREADS        = 2       # Colab A100 expone 2 cores CPU
@@ -420,7 +420,7 @@ ALGORITHMS = ["happo", "masac", "matd3", "maac"]
 def out_dir(algorithm: str) -> str:
     return f"{OUTPUT_ROOT}/{algorithm}"
 
-mode = "QUICK_TEST (3 ep)" if QUICK_TEST else "FULL TRAINING (75 ep)"
+mode = "QUICK_TEST (3 ep)" if QUICK_TEST else "FULL TRAINING (50 ep)"
 print(f"Modo          : {mode}")
 print(f"Episodios     : {EPISODES}  ×  {EPISODE_STEPS} pasos  =  {NUM_ENV_STEPS:,} pasos/corrida")
 print(f"Corridas total: {len(SCENARIOS) * len(ALGORITHMS)} ({len(ALGORITHMS)} algos × {len(SCENARIOS)} escenarios)")
@@ -498,7 +498,7 @@ On-policy · Actualización secuencial por agente · Trust region individual
 Backend: `external/HARL/`
 
 **Hiperparámetros A100:**
-- `hidden_size = 384`  (igual a oficial v4)
+- `hidden_size = 512`  (perfil HAPPO ~11 FPS con 3 escenarios paralelos)
 - `actor_lr = 1e-4`, `critic_lr = 5e-4`
 - `gamma = 0.9999`  (esencial para horizonte anual 8 760 pasos)
 - `n_rollout_threads = 1`  (CityLearn no paraleliza nodo-a-nodo)
@@ -533,7 +533,7 @@ for scenario in SCENARIOS:
         # ── Argumentos HAPPO-específicos (base: oficial v4) ─────────────────
         "--episodes",               str(EPISODES),
         "--num-env-steps",          str(NUM_ENV_STEPS),
-        "--hidden-size",            "384",      # red actor/crítico
+        "--hidden-size",            "512",      # red actor/crítico, perfil ~11 FPS
         "--n-rollout-threads",      "1",        # CityLearn serial
         "--log-interval",           "1",        # loggear cada episodio
         "--eval-interval",          "1",        # checkpoint cada episodio
@@ -1009,7 +1009,7 @@ print("  RESUMEN FINAL — MADRL CityLearn v3 · Colab A100")
 print("=" * 65)
 print(f"  Output root : {OUTPUT_ROOT}")
 print(f"  Timestamp   : {TIMESTAMP}")
-print(f"  Modo        : {'QUICK_TEST' if QUICK_TEST else 'FULL TRAINING (75 ep)'}")
+print(f"  Modo        : {'QUICK_TEST' if QUICK_TEST else 'FULL TRAINING (50 ep)'}")
 
 n_json = len(glob.glob(f"{OUTPUT_ROOT}/**/*.json",  recursive=True))
 n_csv  = len(glob.glob(f"{OUTPUT_ROOT}/**/*.csv",   recursive=True))
@@ -1044,7 +1044,7 @@ summary = {
     "algorithms":       ALGORITHMS,
     "scenarios":        SCENARIOS,
     "a100_tuning": {
-        "happo_hidden":         384,
+        "happo_hidden":         512,
         "masac_buffer_size":    25,
         "masac_critic_batch":   128,
         "masac_max_buf_gib":    20,

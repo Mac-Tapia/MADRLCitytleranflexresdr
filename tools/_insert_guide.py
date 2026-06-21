@@ -9,7 +9,7 @@ nb = json.load(open(nb_path, encoding='utf-8'))
 guide_source = """\
 ## Guia Rapida de Lanzamiento en Colab A100
 
-> **Tiempo estimado:** ~30 h para 75 episodios completos (12 corridas).
+> **Tiempo estimado:** ~3 días para 50 episodios completos (12 corridas).
 > **Prerequisito:** Runtime tipo A100 activado antes de ejecutar celda 1.1.
 
 ---
@@ -55,8 +55,8 @@ Opcional pero recomendado en la primera corrida:
 Ejecutar **celda 6.1**. Variables clave:
 
 ```python
-QUICK_TEST = False   # True = 3 ep (prueba infra), False = 75 ep (real)
-EPISODES   = 75      # episodios por corrida
+QUICK_TEST = False   # True = 3 ep (prueba infra), False = 50 ep (real)
+EPISODES   = 50      # episodios por corrida
 GPU_PROFILE = 'aws'  # perfil memoria CUDA para A100
 ```
 
@@ -68,7 +68,7 @@ GPU_PROFILE = 'aws'  # perfil memoria CUDA para A100
 |-------|--------|-----------------|
 | **7.0** | Cargar helpers de ejecucion | < 1 s |
 | **7.1** | **Dry-run / Preflight** — valida A100 + 12 jobs | ~ 20 s |
-| **7.2** | **Lanzar entrenamiento completo** (75 ep x 12 corridas) | ~ 30 h |
+| **7.2** | **Lanzar entrenamiento completo** (50 ep x 12 corridas) | ~ 3 días |
 | **7.3** | Monitor manual (puede ejecutarse mientras corre) | en cualquier momento |
 
 > Si Colab se desconecta: vuelve a ejecutar 1.1 → 1.5 → 2.1 → 6.1 → 7.0 → 7.2.

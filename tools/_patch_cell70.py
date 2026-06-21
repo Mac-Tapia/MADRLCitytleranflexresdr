@@ -175,7 +175,7 @@ new_src_70 = [
     "        '--live-monitor',\n",
     "        '--monitor-interval', '30',\n",
     "        # ── HAPPO ─────────────────────────────────────────────────────────────\n",
-    "        '--happo-hidden-size', '1024',\n",
+    "        '--happo-hidden-size', '512',\n",
     "        '--happo-n-rollout-threads', '4',\n",
     "        # ── MASAC ─────────────────────────────────────────────────────────────\n",
     "        '--masac-critic-batch-size', '1024',\n",

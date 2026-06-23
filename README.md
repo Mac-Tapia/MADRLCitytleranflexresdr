@@ -890,6 +890,7 @@ Este repositorio esta orientado a investigacion de tesis. La arquitectura y los 
 La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Kruskal-Wallis (diferencias globales entre 4 MADRL) → Mann-Whitney U (diferencias por par, independiente) → Wilcoxon signed-rank (diferencias por par, pareado), aplicados sobre KPI-gains de entrenamiento de HAPPO, MASAC, MATD3 y MAAC.
 
 ## Cambios Recientes
+- **2026-06-22 20:31**: 1.2, 1.2b, 1.3, 1.4 (+5 mas)
 - **2026-06-22 (actual)**: `two_phase_concurrent` — 12 jobs simultaneos; MATD3 buffer 200k/batch 2048; MASAC critic_batch 256 + preload_cpu; MAAC buffer 200k; torch_threads 1; live_progress 300; artifact_profile full; auto-stop 11.5h celda 7.2; README + notebook actualizados
 - **2026-06-21 21:58**: outputs/dataset_cache/citylearn_csv_4fef05da2f6c8f5ade87.meta.json
 - **2026-06-21 11:53**: _cell_src.py

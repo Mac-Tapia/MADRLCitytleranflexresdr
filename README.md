@@ -626,7 +626,7 @@ python -B CityLearn/scripts/colab_a100_official_launcher.py \
   --masac-critic-batch-size 256 \
   --maac-buffer-length 200000 \
   --require-a100 --smoke-imports --oom-retry \
-  --live-monitor --monitor-interval 60 --skip-completed
+  --live-monitor --monitor-interval 30 --skip-completed
 ```
 
 El launcher corre E1/E2/E3 en paralelo por grupo de algoritmo (`_run_group`). El progreso de cada escenario aparece en la celda cada 60 s via monitor con `capture_output` explicito.

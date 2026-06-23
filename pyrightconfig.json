@@ -15,6 +15,16 @@
     "deploy",
     "tools"
   ],
+  "ignore": [
+    "CityLearn/**",
+    "external/**",
+    "outputs/**",
+    "build/**",
+    "dist/**",
+    "agent-skills/**",
+    "deploy/**",
+    "tools/**"
+  ],
   "extraPaths": [
     "tools",
     "CityLearn"

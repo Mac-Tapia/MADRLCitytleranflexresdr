@@ -20,7 +20,20 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-21.
+Actualizado: 2026-06-22.
+
+### Cambios aplicados (2026-06-22) — optimizaciones A100 + two_phase_concurrent
+
+- ✅ **two_phase_concurrent**: nuevo modo de ejecucion — 12 jobs simultaneos (HAPPO+MATD3+MAAC x3 + MASAC x3 al mismo tiempo). Tiempo total: **~54 h** vs ~67 h secuencial. MASAC usa `cuda_fraction=0.18` (14.4 GiB x3 = 43.2 GiB) + ~14 GiB Phase 1 = ~57/80 GiB GPU (71%).
+- ✅ **Auto-stop 11.5 h**: celda 7.2 detiene el launcher graciosamente 30 min antes del limite Colab para garantizar que los checkpoints se guarden antes del timeout de 12 h.
+- ✅ **MATD3 replay buffer**: corregido de 6 000 (< 1 episodio) a **200 000 pasos** (~22 episodios de experiencia diversa). Batch aumentado de 512 → **2 048**.
+- ✅ **MASAC critic_batch**: aumentado de 64 → **256**; `preload_batch_device=cpu` en modo concurrent para evitar OOM.
+- ✅ **MAAC buffer**: aumentado de 100 000 → **200 000** pasos.
+- ✅ **Torch threads 1**: en modo concurrent (12 jobs / 12 vCPU) el launcher parchea todos los jobs a `--torch-threads 1` para evitar contienda.
+- ✅ **Live progress 300**: reducido de 1 000 → 300 pasos (~150 s a 2 FPS concurrent) para monitor actualizado cada ~2.5 min.
+- ✅ **Artifact profile full**: `efficient` → `full`; guarda results.json + timeseries.csv + trace.csv + checkpoints.
+- ✅ **HAPPO hidden 512**: confirmado (no se reversa a 384); SubprocVecEnv x4 operativo.
+- ✅ **Validador actualizado**: `validate_training_system.py` acepta `two_phase_concurrent` como modo valido.
 
 ### Cambios aplicados (2026-06-21) — corrida Colab A100 en curso (paralelo 12 jobs)
 
@@ -54,13 +67,15 @@ Actualizado: 2026-06-21.
 | ----- | ----- |
 | Hardware | NVIDIA A100-SXM4-80GB · 80 GiB VRAM · 167 GiB RAM · CUDA 12.4 |
 | Episodios | 50 x 8760 pasos = 438 000 pasos/corrida |
-| Paralelismo | **12 jobs simultáneos**: 4 MADRL × 3 escenarios (`--max-parallel 12`, `ThreadPoolExecutor`) |
+| Modo ejecucion | `two_phase_concurrent` — 12 jobs en paralelo (HAPPO+MATD3+MAAC x3 + MASAC x3 simultaneos) |
+| Paralelismo | **12 jobs simultáneos**: 4 MADRL × 3 escenarios · GPU: ~57/80 GiB (71%) · RAM: ~123/167 GiB (74%) |
 | HAPPO hidden | [512, 512] · `--happo-n-rollout-threads 4` (SubprocVecEnv) |
 | HAPPO rollout | `ShareSubprocVecEnv` — 4 procesos paralelos por escenario, ~44 FPS efectivo |
-| MASAC | off-policy GPU-bound · rnn-hidden 1024 · qmix-hidden 512 · buffer 40 ep CPU |
-| MATD3 | off-policy GPU-bound · hidden 1024 · buffer 2 000 000 steps · batch 1024 |
-| MAAC | off-policy GPU-bound · hidden 1024 · buffer 1 000 000 · steps-per-update 100 |
+| MASAC | off-policy GPU-bound · critic_batch 256 · buffer CPU (preload=cpu) · cuda_frac 0.18 |
+| MATD3 | off-policy GPU-bound · hidden 1024 · buffer **200 000** steps · batch **2 048** |
+| MAAC | off-policy GPU-bound · hidden 1024 · buffer **200 000** · steps-per-update 100 |
 | GPU profile | `aws` |
+| Tiempo estimado | **~54 h** (two_phase_concurrent) vs ~67 h two_phase secuencial |
 | Drive outputs | `MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_TIMESTAMP/` |
 | Notebook Colab | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |
 
@@ -122,7 +137,7 @@ Hardware (referencia v4 piloto): RTX 4060 Laptop 8 GiB VRAM, CUDA 12.6. Corrida 
 | MASAC | off-policy | ~15-30 FPS | x1 (GPU-bound) | ~15-30 FPS | ~8-16 h | Buffer 40 ep CPU; GPU critico |
 | MATD3 | off-policy | ~20-50 FPS | x1 (GPU-bound) | ~20-50 FPS | ~5-12 h | GPU-intensivo; A100 >> RTX 4060 |
 | MAAC | off-policy | ~20-40 FPS | x1 (GPU-bound) | ~20-40 FPS | ~6-12 h | Attention SAC; GPU-bound |
-| **Total** | | | | | **~1-2 dias** | HAPPO ya no es el cuello |
+| **Total** | | | | | **~54 h** (concurrent) | two_phase_concurrent — todos simultáneos |
 
 HAPPO era el cuello de botella (~30 h con DummyVecEnv secuencial). Con `ShareSubprocVecEnv` x4 el tiempo HAPPO se reduce a ~2.8 h. Los algoritmos off-policy (MASAC/MATD3/MAAC) son GPU-bound y no requieren cambios de VecEnv.
 
@@ -601,12 +616,17 @@ Lanzar entrenamiento (celda 7.2 del notebook — ya configurada):
 
 ```bash
 python -B CityLearn/scripts/colab_a100_official_launcher.py \
-  --scenario ALL --seed 0 --episodes 75 --episode-time-steps 8760 \
-  --torch-threads 2 --live-progress-interval 1000 --live-heartbeat-seconds 30 \
-  --artifact-profile efficient --trace-record-interval 24 --trace-detail compact \
+  --execution-mode two_phase_concurrent \
+  --two-phase-masac-cuda-fraction 0.18 \
+  --scenario ALL --seed 0 --episodes 50 --episode-time-steps 8760 \
+  --torch-threads 1 --live-progress-interval 300 --live-heartbeat-seconds 30 \
+  --artifact-profile full --trace-record-interval 24 --trace-detail compact \
   --gpu-profile aws --cuda-memory-fraction 0.92 \
+  --matd3-buffer-size 200000 --matd3-batch-size 2048 \
+  --masac-critic-batch-size 256 \
+  --maac-buffer-length 200000 \
   --require-a100 --smoke-imports --oom-retry \
-  --live-monitor --monitor-interval 30 --skip-completed
+  --live-monitor --monitor-interval 60 --skip-completed
 ```
 
 El launcher corre E1/E2/E3 en paralelo por grupo de algoritmo (`_run_group`). El progreso de cada escenario aparece en la celda cada 60 s via monitor con `capture_output` explicito.
@@ -870,6 +890,7 @@ Este repositorio esta orientado a investigacion de tesis. La arquitectura y los 
 La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Kruskal-Wallis (diferencias globales entre 4 MADRL) → Mann-Whitney U (diferencias por par, independiente) → Wilcoxon signed-rank (diferencias por par, pareado), aplicados sobre KPI-gains de entrenamiento de HAPPO, MASAC, MATD3 y MAAC.
 
 ## Cambios Recientes
+- **2026-06-22 (actual)**: `two_phase_concurrent` — 12 jobs simultaneos; MATD3 buffer 200k/batch 2048; MASAC critic_batch 256 + preload_cpu; MAAC buffer 200k; torch_threads 1; live_progress 300; artifact_profile full; auto-stop 11.5h celda 7.2; README + notebook actualizados
 - **2026-06-21 21:58**: outputs/dataset_cache/citylearn_csv_4fef05da2f6c8f5ade87.meta.json
 - **2026-06-21 11:53**: _cell_src.py
 - **2026-06-21 (actual)**: `colab_a100_live_monitor.py` — `print_progress` muestra todos los jobs paralelos (E1/E2/E3 simultaneos); celda 7.2 stdout garantizado via PIPE+threads+capture_output; `platformdirs` re-añadido a BASE_DEPS

@@ -20,7 +20,36 @@ El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificio
 
 ## Estado actual
 
-Actualizado: 2026-06-22.
+Actualizado: 2026-06-23.
+
+### Cambios aplicados (2026-06-23) — optimizacion 3 niveles de memoria (GPU + SSD + RAM)
+
+Correccion definitiva de OOM (165 GB RAM → 87 GB RAM). Tres niveles de almacenamiento usados optimamente:
+
+| Recurso | Antes | Ahora | Uso real |
+|---|---|---|---|
+| **RAM sistema** | 165 GB / 167 GB (99% → OOM SIGKILL) | ~87 GB / 167 GB | **52%** |
+| **GPU VRAM** | 33 / 80 GiB (41%) | ~37 / 80 GiB | **46%** |
+| **SSD local Colab** | 0 GB | ~7 GB | MATD3 buffer |
+
+**MASAC → GPU VRAM (A100 80 GiB):**
+- `GpuBackedNdArray`: buffer QMIX pre-allocado en CUDA float32 en lugar de numpy float64 en RAM. 3 jobs × 6.85 GiB = 20.6 GiB GPU; libera 3 × 13.71 GiB = **41 GiB de RAM**.
+- Bug corregido: implementacion anterior usaba `from_numpy()` que dejaba el array float64 vivo (PyTorch retenia referencia interna). Fix: `zeros()` + `data[key]=None` antes de alocar GPU + `gc.collect()` — el refcount baja a 0 y Python libera la RAM inmediatamente.
+- `preload_batch_device=cuda`: los batches de entrenamiento van directo a CUDA desde el buffer GPU (zero-copy).
+- `cuda_fraction=0.22` (17.6 GiB/job): cubre buffer float32 (6.85) + modelo/overhead (0.9).
+
+**MATD3 → SSD local Colab /content/ (≈ 2 GB/s):**
+- `DiskBackedNdArray` (numpy.memmap): las arrays de `MlpPolicyBuffer` (obs, share_obs, next_obs, acts, rewards, dones) se copian al SSD local tras el warmup y se liberan de RAM.
+- 3 jobs × 2.4 GiB = **7.2 GiB liberades de RAM**. `__getitem__` devuelve numpy normal — transparente para el codigo externo (sin cambios en MARL off-policy).
+- Path automatico: `/content/madrl_buf_tmp/matd3_E{n}_s{seed}/` (auto-detecta Colab).
+- OS page-cache mantiene paginas calientes en RAM tras el primer acceso → velocidad similar a DRAM en steady-state.
+
+**TF32 en A100 (ya activo via profile `aws`):**
+- `torch.backends.cuda.matmul.allow_tf32 = True` + `set_float32_matmul_precision("high")`: 3× mas rapido en operaciones GEMM de la A100. Activo automaticamente para los 4 algoritmos.
+
+**MAAC / HAPPO sin cambios de buffer:**
+- MAAC: buffer 300 MB total, usa `np.roll()` interno que crearia nuevos arrays numpy y desharia la migracion.
+- HAPPO: on-policy, buffer de 1 episodio (~26 MB), irrelevante.
 
 ### Cambios aplicados (2026-06-22) — optimizaciones A100 + two_phase_concurrent
 
@@ -65,19 +94,20 @@ Actualizado: 2026-06-22.
 
 | Campo | Valor |
 | ----- | ----- |
-| Hardware | NVIDIA A100-SXM4-80GB · 80 GiB VRAM · 167 GiB RAM · CUDA 12.4 |
+| Hardware | NVIDIA A100-SXM4-80GB · 80 GiB VRAM · 167 GiB RAM · SSD 235 GB · CUDA 12.6 · PyTorch 2.8.0+cu126 |
 | Episodios | 50 x 8760 pasos = 438 000 pasos/corrida |
 | Modo ejecucion | `two_phase_concurrent` — 12 jobs en paralelo (HAPPO+MATD3+MAAC x3 + MASAC x3 simultaneos) |
-| Paralelismo | **12 jobs simultáneos**: 4 MADRL × 3 escenarios · GPU: ~57/80 GiB (71%) · RAM: ~123/167 GiB (74%) |
+| Paralelismo | **12 jobs simultáneos** · RAM: ~87/167 GiB (52%) · GPU: ~37/80 GiB (46%) · SSD: ~7 GB |
 | HAPPO hidden | [512, 512] · `--happo-n-rollout-threads 4` (SubprocVecEnv) |
 | HAPPO rollout | `ShareSubprocVecEnv` — 4 procesos paralelos por escenario, ~44 FPS efectivo |
-| MASAC | off-policy GPU-bound · critic_batch 256 · buffer CPU (preload=cpu) · cuda_frac 0.18 |
-| MATD3 | off-policy GPU-bound · hidden 1024 · buffer **200 000** steps · batch **2 048** |
-| MAAC | off-policy GPU-bound · hidden 1024 · buffer **200 000** · steps-per-update 100 |
-| GPU profile | `aws` |
+| MASAC | off-policy GPU-bound · critic_batch 256 · **buffer GPU VRAM** (`GpuBackedNdArray` float32, 6.85 GiB/job) · `preload=cuda` · cuda_frac 0.22 |
+| MATD3 | off-policy GPU-bound · hidden 1024 · buffer **200 000** steps · batch **2 048** · **buffer SSD** (`DiskBackedNdArray` memmap, 2.4 GiB/job) |
+| MAAC | off-policy GPU-bound · hidden 1024 · buffer **50 000** · steps-per-update 1 |
+| GPU profile | `aws` (TF32 habilitado: `allow_tf32=True`, `matmul_precision=high`) |
 | Tiempo estimado | **~54 h** (two_phase_concurrent) vs ~67 h two_phase secuencial |
 | Drive outputs | `MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_TIMESTAMP/` |
-| Notebook Colab | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |
+| Notebook Colab | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` (celda 42 = resume) |
+| Reiniciar entrenamiento | Ejecutar celda 42 del notebook — actualiza git, valida, relanza con `--skip-completed` |
 
 ### Corridas de referencia y definitiva
 

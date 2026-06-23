@@ -1,7 +1,7 @@
 [submodule "CityLearn"]
 	path = CityLearn
 	url = https://github.com/Mac-Tapia/CityLearn.git
-	branch = codex/iquitos-distillation-madrl-docs
+	branch = fix/platformdirs-colab
 [submodule "external/HARL"]
 	path = external/HARL
 	url = https://github.com/Mac-Tapia/HARL.git

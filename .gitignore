@@ -35,6 +35,9 @@ env/
 .venv
 .venv*/
 .venv39-citylearn-v3/
+# El paquete uc3m/env (UC3MEnv, BACT) NO es un entorno virtual: debe versionarse.
+!uc3m/env/
+!uc3m/env/**
 
 # IDE
 .vscode/

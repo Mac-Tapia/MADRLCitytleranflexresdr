@@ -8,7 +8,7 @@ with open(NB, "r", encoding="utf-8") as f:
 
 COLAB_URL = (
     "https://colab.research.google.com/github/Mac-Tapia/CityLearn"
-    "/blob/citylearn-v3-madrl/examples/madrl_citylearn_v3_tutorial.ipynb"
+    "/blob/codex/iquitos-distillation-madrl-docs/examples/madrl_citylearn_v3_tutorial.ipynb"
 )
 
 src2 = "".join(nb["cells"][2]["source"])

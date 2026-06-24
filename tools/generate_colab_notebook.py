@@ -32,10 +32,23 @@ cells = []
 # ════════════════════════════════════════════════════════════════════════════
 # SECCIÓN 0 — PORTADA
 # ════════════════════════════════════════════════════════════════════════════
-cells.append(md("""\
+COLAB_NOTEBOOK_BRANCH = "codex/iquitos-distillation-madrl-docs"
+PARENT_REPO_BRANCH = "codex/fix-madrl-traceability-docs"
+COLAB_NOTEBOOK_PATH = "examples/madrl_citylearn_v3_tutorial.ipynb"
+
+COLAB_OPEN_URL = (
+    "https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/"
+    f"{COLAB_NOTEBOOK_BRANCH}/{COLAB_NOTEBOOK_PATH}"
+)
+PARENT_COLAB_OPEN_URL = (
+    "https://colab.research.google.com/github/Mac-Tapia/MADRLCitytleranflexresdr/blob/"
+    f"{PARENT_REPO_BRANCH}/CityLearn/{COLAB_NOTEBOOK_PATH}"
+)
+
+cells.append(md(f"""\
 # MADRL CityLearn v3 — Tutorial Completo (Google Colab · A100)
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mac-Tapia/MADRLCitytleranflexresdr/blob/master/CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]({COLAB_OPEN_URL})
 
 **Proyecto:** Multi-Agente de Aprendizaje por Refuerzo Profundo para gestión coordinada
 de flexibilidad energética, emisiones de CO₂ y eficiencia económica en comunidades inteligentes.

@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CL = ROOT / "CityLearn"
 LAUNCHER = CL / "scripts" / "colab_a100_official_launcher.py"
 MONITOR = CL / "scripts" / "colab_a100_live_monitor.py"
+GUARD = CL / "scripts" / "colab_protocol_guard.py"
 NOTEBOOK = CL / "examples" / "madrl_citylearn_v3_tutorial.ipynb"
 SCHEMA = CL / "data" / "datasets" / "citylearn_iquitos_2023_2025" / "schema.json"
 
@@ -76,6 +77,9 @@ def main() -> int:
         if s not in mo:
             fail(f"Monitor falta: {s}")
     ok("Monitor: protocolo y fases P1/P2")
+    if not GUARD.is_file():
+        fail("Falta colab_protocol_guard.py")
+    ok("protocol-guard presente")
 
     # 3. Notebook bindings
     print("\n3. Notebook Colab")
@@ -91,6 +95,15 @@ def main() -> int:
         if needle not in src:
             fail(f"Notebook falta: {needle!r}")
     ok("Ramas Colab + EXECUTION_MODE + verify_two_phase_protocol")
+    sys.path.insert(0, str(CL / "scripts"))
+    from colab_notebook_urls import badge_must_contain, open_in_colab_url
+
+    badge_needle = badge_must_contain()
+    if badge_needle not in src:
+        fail(f"Badge Open in Colab desactualizado; falta: {badge_needle!r}")
+    if "citylearn-v3-madrl/examples/madrl_citylearn_v3_tutorial.ipynb" in src:
+        fail("Notebook aun referencia rama legacy citylearn-v3-madrl en badge")
+    ok(f"Open in Colab -> {open_in_colab_url()}")
 
     # 4. Argparse: solo two_phase
     print("\n4. CLI launcher")

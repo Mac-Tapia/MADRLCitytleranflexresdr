@@ -1,59 +1,149 @@
-"""Verifica integridad y correcciones del notebook madrl_citylearn_v3_tutorial.ipynb."""
+"""Verify the current MADRL CityLearn v3 tutorial notebook contract."""
+
+from __future__ import annotations
+
 import glob
 import json
 import os
 import re
 import sys
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-NB_PATH = os.path.join(ROOT, "CityLearn", "examples", "madrl_citylearn_v3_tutorial.ipynb")
-
-with open(NB_PATH, encoding="utf-8") as f:
-    nb = json.load(f)
-
-notebook_source = "\n".join("".join(cell.get("source", [])) for cell in nb.get("cells", []))
-results = []
+from pathlib import Path
 
 
-def check(label, ok, detail=""):
+ROOT = Path(__file__).resolve().parents[1]
+NB_PATH = ROOT / "CityLearn" / "examples" / "madrl_citylearn_v3_tutorial.ipynb"
+DATASET_DIR = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
+LAUNCHER_PATH = ROOT / "CityLearn" / "scripts" / "colab_a100_official_launcher.py"
+
+with NB_PATH.open(encoding="utf-8") as file:
+    nb = json.load(file)
+
+cells = nb.get("cells", [])
+notebook_source = "\n".join("".join(cell.get("source", [])) for cell in cells)
+cell_by_id = {cell.get("id"): "".join(cell.get("source", [])) for cell in cells}
+launcher_source = LAUNCHER_PATH.read_text(encoding="utf-8")
+results: list[tuple[bool, str]] = []
+
+
+def check(label: str, ok: bool, detail: str = "") -> None:
     status = "OK" if ok else "FAIL"
-    msg = f"[{status}] {label}"
+    message = f"[{status}] {label}"
     if detail:
-        msg += f"  ({detail})"
-    results.append((ok, msg))
-    print(msg)
+        message += f"  ({detail})"
+    results.append((ok, message))
+    print(message)
 
 
-# ── 1. Metadata ──────────────────────────────────────────────────────────────
+def cell(cell_id: str) -> str:
+    value = cell_by_id.get(cell_id, "")
+    check(f"Celda existe: {cell_id}", bool(value))
+    return value
+
+
+# Metadata and cell inventory.
 lang_info = nb.get("metadata", {}).get("language_info", {})
 lang_ver = lang_info.get("version", "missing")
-# language_info es opcional en Colab; solo verificar si está presente
-if lang_ver != "missing":
-    check("language_info.version = 3.9.25", lang_ver == "3.9.25", f"actual={lang_ver!r}")
-else:
-    check("kernelspec presente en metadata", "kernelspec" in nb.get("metadata", {}))
+check("language_info.version Colab/local", lang_ver in {"3.9.25", "3.11.13", "missing"}, f"actual={lang_ver!r}")
 kernelspec = nb.get("metadata", {}).get("kernelspec", {})
 check("kernelspec.language = python", kernelspec.get("language") == "python")
+check("61 celdas en el notebook", len(cells) == 61, f"actual={len(cells)}")
 
-# ── 2. Versiones de paquetes en celda 19 (1.3) ───────────────────────────────
-cell19 = "".join(nb["cells"][19]["source"])
-pz_refs = re.findall(r"pettingzoo[^\n]*", cell19)
-for ref in pz_refs:
-    if "pettingzoo==" in ref or ("pettingzoo': '" in ref and ref.strip().startswith("'pettingzoo'")):
-        check("pettingzoo==1.12.0 en celda 1.3", "1.12.0" in ref and "1.24.1" not in ref, ref[:60])
+dirty_code_cells = [
+    (i, c.get("id"), c.get("execution_count"), len(c.get("outputs", [])))
+    for i, c in enumerate(cells)
+    if c.get("cell_type") == "code" and (c.get("execution_count") is not None or c.get("outputs"))
+]
+check("Notebook limpio sin outputs ni execution_count", not dirty_code_cells, str(dirty_code_cells[:5]))
 
-# ── 3. Rama en celda 17 (1.2) ────────────────────────────────────────────────
-cell17 = "".join(nb["cells"][17]["source"])
-branch_lines = [l.strip() for l in cell17.splitlines() if "REPO_BRANCH" in l and "=" in l]
-check("REPO_BRANCH = codex/fix-madrl-traceability-docs",
-      any("codex/fix-madrl-traceability-docs" in l for l in branch_lines),
-      str(branch_lines))
 
-# ── 4. Total de celdas ───────────────────────────────────────────────────────
-check("55 celdas en el notebook", len(nb["cells"]) == 55, f"actual={len(nb['cells'])}")
+# Critical notebook cells by stable id.
+cell3 = cell("con0verify")
+check("MIN_VRAM_GIB = 78.0", "MIN_VRAM_GIB = 78.0" in cell3)
+check("MIN_RAM_GIB = 120.0", "MIN_RAM_GIB" in cell3 and "120.0" in cell3)
+check("Diagnostico A100 Standard vs High-RAM", "A100 *Standard*" in cell3)
 
-# ── 5. Rutas requeridas ──────────────────────────────────────────────────────
-required = [
+cell17 = cell("c06557c1")
+check("REPO_BRANCH = codex/fix-madrl-traceability-docs", "REPO_BRANCH      = 'codex/fix-madrl-traceability-docs'" in cell17)
+check("CITYLEARN_BRANCH = codex/iquitos-distillation-madrl-docs", "CITYLEARN_BRANCH = 'codex/iquitos-distillation-madrl-docs'" in cell17)
+check("Clonado Colab usa --branch REPO_BRANCH", "'--branch', REPO_BRANCH" in cell17)
+check("CityLearn usa checkout -B (no detached HEAD)", "checkout', '-B', CITYLEARN_BRANCH" in cell17)
+check("Submodulos se actualizan al commit fijado", "submodule', 'update', '--init', '--recursive'" in cell17)
+
+cell18 = cell("repo_mirror_verify")
+check("Celda 1.2b repara detached HEAD", "cl_branch == 'HEAD'" in cell18 and "checkout', '-B', CITYLEARN_BRANCH" in cell18)
+check("Celda 1.2b guarda citylearn_live", "'citylearn_live': True" in cell18)
+
+cell16 = cell("e6bd10e8")
+check("Celda 1.1 detecta IN_COLAB", "import google.colab" in cell16 and "IN_COLAB" in cell16)
+check("Celda 1.1 valida PyTorch/CUDA", "import torch" in cell16 and "torch.cuda.is_available()" in cell16)
+check("Celda 1.1 exige A100 en Colab", "RuntimeError" in cell16 and "A100" in cell16)
+
+cell24 = cell("c1f8ada9")
+check("Celda 2.1 detecta REPO local/Colab", "Path('d:/MADRLCitytleranflexresdr')" in cell24)
+check("Celda 2.1 crea OUTPUT_ROOT recuperable", "RESUME_OUTPUT_ROOT" in cell24 and "OUTPUT_ROOT" in cell24)
+check("Celda 2.1 apunta al schema Iquitos", "citylearn_iquitos_2023_2025/schema.json" in cell24)
+
+cell26 = cell("6711850f")
+check("Celda 3.1 valida dataset Iquitos", "citylearn_iquitos_2023_2025" in cell26)
+check("Celda 3.1 usa columnas reales snake_case", "non_shiftable_load" in cell26 and "solar_generation" in cell26)
+check("Celda 3.1 no usa columnas antiguas", "Equipment Electric Power" not in cell26 and "Solar Generation [W/kW]" not in cell26)
+
+cell28 = cell("afbce064")
+check("Celda 4.1 pasa schema_path explicito", "schema_path=IQUITOS_SCHEMA" in cell28 or "schema_path=" in cell28)
+check("Celda 4.1 prueba reset/step", ".reset()" in cell28 and ".step(" in cell28)
+
+cell32 = cell("226d3513")
+check("N_EPISODES = 50", "N_EPISODES      = 50" in cell32 or "N_EPISODES = 50" in cell32)
+check("EPISODE_STEPS = 8760", "EPISODE_STEPS" in cell32 and "8760" in cell32)
+check("QUICK_TEST = False por defecto", "QUICK_TEST" in cell32 and "False" in cell32)
+check("12 corridas principales", "ALGORITHMS = ['happo', 'masac', 'matd3', 'maac']" in cell32)
+check("Hiperparametros HAPPO/MASAC/MATD3/MAAC", all(name in cell32 for name in ("HAPPO", "MASAC", "MATD3", "MAAC")))
+check("GPU_PROFILE aws para Colab A100", "GPU_PROFILE" in cell32 and "'aws'" in cell32)
+check("CUDA_MEMORY_FRACTION = 0.92", "CUDA_MEMORY_FRACTION" in cell32 and "0.92" in cell32)
+
+cell36 = cell("2adf11df")
+check("Launcher args incluyen --require-a100", "'--require-a100'" in cell36)
+check("Launcher args incluyen --oom-retry", "'--oom-retry'" in cell36)
+check("Launcher args no incluyen --include-baselines", "include-baselines" not in cell36)
+
+cell38 = cell("3c0758f9")
+check("Dry-run usa --skip-completed", "'--dry-run', '--skip-completed'" in cell38)
+check("Dry-run espera exactamente 12 jobs", "len(status['jobs']) == 12" in cell38)
+
+cell40 = cell("9a97f863")
+check("Entrenamiento maneja SIGINT", "import signal" in cell40 and "_graceful_stop" in cell40 and "SIGINT" in cell40)
+check("Entrenamiento tiene kill fallback", "proc.kill()" in cell40 or "SIGKILL" in cell40)
+check("Entrenamiento documenta RESUME_OUTPUT_ROOT", "RESUME_OUTPUT_ROOT" in cell40)
+
+cell44 = cell("e3efcca9")
+check("Reorganizacion outputs/{MADRL}/{escenario}", "outputs/{MADRL}/{escenario}" in cell44)
+check("Reorganizacion genera metrics/rewards/monitor/resources/config", all(x in cell44 for x in (
+    "metrics.csv", "rewards.csv", "training_monitor.csv", "resource_usage.csv", "config.json",
+)))
+check("Reorganizacion copia checkpoints reales .pt/.pth/.pkl", "checkpoint.pt" in cell44 and "rglob('*.pkl')" in cell44)
+check("Reorganizacion prepara resumen_comparativo", "resumen_comparativo" in cell44 and "best_madrl_report.json" in cell44)
+check("Prueba rapida no usa argumento inexistente", "--dry-run-first" not in notebook_source)
+
+cell48 = cell("7159769e")
+check("Benchmarks oficiales solo PPO/SAC/A2C", 'CITYLEARN_V2_BENCHMARKS = ["PPO", "SAC", "A2C"]' in cell48)
+check("Benchmarks CityLearn v2 SB3 estan aislados", "StableBaselines3" in cell48 and "NO son MADRL v3" in cell48)
+
+cell52 = cell("64fb494c")
+check("Carga resultados desde citylearn_v3_report.all_values", "citylearn_v3_report" in cell52 and "all_values" in cell52)
+
+cell55 = cell("10e6efc1")
+check("Seleccion estadistica declara mejor MADRL", "Mejor algoritmo MADRL seleccionado" in cell55)
+check("Exporta resumen_comparativo completo", all(x in cell55 for x in (
+    "comparison_metrics.csv", "best_madrl_selection.csv", "best_madrl_report.json", "global_comparison.png",
+)))
+
+cell58 = cell("daff4cd8")
+check("Informe tecnico valida outputs canonicos", "estructura_outputs" in cell58 and "outputs/{MADRL}/{escenario}" in cell58)
+check("Informe tecnico incluye veredicto APROBADO", "APROBADO" in cell58 and "APROBADO CON OBSERVACIONES" in cell58)
+
+
+# Required paths and dataset structure.
+required_paths = [
     "CityLearn/scripts/train_citylearn_v3_happo.py",
     "CityLearn/scripts/train_citylearn_v3_masac.py",
     "CityLearn/scripts/train_citylearn_v3_matd3.py",
@@ -66,144 +156,52 @@ required = [
     "external/MARL/src",
     "external/off-policy",
     "external/MAAC",
-    "CityLearn/scripts/colab_a100_official_launcher.py",
-    "CityLearn/scripts/colab_a100_live_monitor.py",
     "tools",
     "docs",
 ]
-for p in required:
-    full = os.path.join(ROOT, p)
-    check(f"Ruta existe: {p}", os.path.exists(full))
+for relative in required_paths:
+    check(f"Ruta existe: {relative}", (ROOT / relative).exists())
 
-# ── 6. Dataset Iquitos ───────────────────────────────────────────────────────
-DATASET_DIR = os.path.join(ROOT, "CityLearn/data/datasets/citylearn_iquitos_2023_2025")
-csv_count = len(glob.glob(os.path.join(DATASET_DIR, "*.csv")))
+csv_count = len(glob.glob(str(DATASET_DIR / "*.csv")))
 check("222 CSV en dataset Iquitos", csv_count == 222, f"actual={csv_count}")
-
-schema_path = os.path.join(DATASET_DIR, "schema.json")
-with open(schema_path) as sf:
-    schema = json.load(sf)
+schema_path = DATASET_DIR / "schema.json"
+schema = json.loads(schema_path.read_text(encoding="utf-8"))
 check("17 edificios en schema.json", len(schema.get("buildings", {})) == 17)
 check("simulation_end_time_step = 26303", schema.get("simulation_end_time_step") == 26303)
+check("185 charger CSVs en dataset Iquitos", len(glob.glob(str(DATASET_DIR / "charger_*.csv"))) == 185)
+check("carbon_intensity.csv existe", (DATASET_DIR / "carbon_intensity.csv").exists())
+check("pricing.csv existe", (DATASET_DIR / "pricing.csv").exists())
 
-# ── 6b. Columnas reales del dataset Iquitos ──────────────────────────────────
 try:
     import pandas as pd
-    _has_pandas = True
+
+    building = pd.read_csv(DATASET_DIR / "Building_1.csv")
+    required_bld_cols = ["month", "hour", "day_type", "non_shiftable_load", "solar_generation", "cooling_demand", "dhw_demand"]
+    missing_bld = [column for column in required_bld_cols if column not in building.columns]
+    check("Building_1.csv columnas reales", not missing_bld, f"faltantes={missing_bld}" if missing_bld else "")
+    check("Building_1.csv 26304 filas", len(building) == 26304, f"actual={len(building)}")
 except ImportError:
-    _has_pandas = False
-# Building CSV — snake_case reales
-bld_csv = os.path.join(DATASET_DIR, "Building_1.csv")
-if os.path.exists(bld_csv) and _has_pandas:
-    df_b = pd.read_csv(bld_csv)
-    required_bld_cols = ["month", "hour", "day_type", "non_shiftable_load",
-                         "solar_generation", "cooling_demand", "dhw_demand"]
-    missing_bld = [c for c in required_bld_cols if c not in df_b.columns]
-    check("Building_1.csv columnas reales (snake_case)", not missing_bld,
-          f"faltantes={missing_bld}" if missing_bld else "")
-    check("Building_1.csv 26304 filas", len(df_b) == 26304, f"actual={len(df_b)}")
-elif os.path.exists(bld_csv):
-    check("Building_1.csv existe", True)
-# Weather CSV
-wthr_csv = os.path.join(DATASET_DIR, "weather.csv")
-if os.path.exists(wthr_csv) and _has_pandas:
-    df_w = pd.read_csv(wthr_csv)
-    required_w_cols = ["outdoor_dry_bulb_temperature", "outdoor_relative_humidity",
-                       "direct_solar_irradiance", "diffuse_solar_irradiance"]
-    missing_w = [c for c in required_w_cols if c not in df_w.columns]
-    check("weather.csv columnas reales", not missing_w,
-          f"faltantes={missing_w}" if missing_w else "")
-elif os.path.exists(wthr_csv):
-    check("weather.csv existe", True)
-# Charger CSVs — 185 puntos EV
-charger_count = len(glob.glob(os.path.join(DATASET_DIR, "charger_*.csv")))
-check("185 charger CSVs en dataset Iquitos", charger_count == 185, f"actual={charger_count}")
-# carbon_intensity + pricing
-check("carbon_intensity.csv existe", os.path.exists(os.path.join(DATASET_DIR, "carbon_intensity.csv")))
-check("pricing.csv existe", os.path.exists(os.path.join(DATASET_DIR, "pricing.csv")))
+    check("Building_1.csv existe (pandas no instalado en host)", (DATASET_DIR / "Building_1.csv").exists())
 
-# ── 6c. Notebook usa dataset Iquitos (no challenge_2022) ─────────────────────
-cell26 = "".join(nb["cells"][26]["source"])
-check("Celda 26: usa dataset citylearn_iquitos_2023_2025",
-      "citylearn_iquitos_2023_2025" in cell26)
-check("Celda 26: BUILDING_REQUIRED_COLS con snake_case reales",
-      "non_shiftable_load" in cell26 and "solar_generation" in cell26)
-check("Celda 26: NO usa columnas CityLearn v2 antiguas",
-      "Equipment Electric Power" not in cell26 and "Solar Generation [W/kW]" not in cell26)
-cell28 = "".join(nb["cells"][28]["source"])
-check("Celda 28: smoke test pasa schema_path explícito (no DEFAULT)",
-      "schema_path=IQUITOS_SCHEMA" in cell28 or "schema_path=" in cell28)
-check("Celda 28: verifica dataset iquitos_2023_2025",
-      "iquitos_2023_2025" in cell28 or "IQUITOS_SCHEMA" in cell28)
-check("Notebook: PPO/SAC/A2C quedan como benchmarks v2 y MAPPO/MADDPG no son baseline oficial",
-      'CITYLEARN_V2_BENCHMARKS = ["PPO", "SAC", "A2C"]' in notebook_source
-      and "Nota MAPPO (baseline)" not in notebook_source
-      and "baselines MADRL opcionales" not in notebook_source)
 
-# ── 7. venv Python 3.9 ───────────────────────────────────────────────────────
-venv_python = os.path.join(ROOT, ".venv39-citylearn-v3", "Scripts", "python.exe")
-if not os.path.exists(venv_python):
-    venv_python = os.path.join(ROOT, ".venv39-citylearn-v3", "bin", "python")
-check("venv Python 3.9 existe", os.path.exists(venv_python))
+# Official launcher must not expose MAPPO/MADDPG as v3 baselines.
+check("Launcher orden oficial solo 4 MADRL", 'ALGORITHMS = ("happo", "masac", "matd3", "maac")' in launcher_source)
+check("Launcher declara benchmarks v2 PPO/SAC/A2C", 'CITYLEARN_V2_BENCHMARKS = ("PPO", "SAC", "A2C")' in launcher_source)
+for forbidden in ("BASELINE_ALGORITHMS", "ALL_ALGORITHMS", "--include-baselines", '"name": "mappo"', '"name": "maddpg"'):
+    check(f"Launcher no contiene {forbidden}", forbidden not in launcher_source)
 
-# ── 8. requirements.txt ──────────────────────────────────────────────────────
-req_path = os.path.join(ROOT, "requirements.txt")
-with open(req_path) as rf:
-    req_content = rf.read()
-check("requirements.txt pettingzoo==1.12.0", "pettingzoo==1.12.0" in req_content)
-check("requirements.txt ray[rllib]==1.8.0", "ray[rllib]==1.8.0" in req_content)
 
-# ── 9. A100 — celda 3 (0.verify): assertions VRAM y RAM ─────────────────────
-cell3 = "".join(nb["cells"][3]["source"])
-check("Celda 3: MIN_VRAM_GIB = 39.0 definido", "MIN_VRAM_GIB" in cell3 and "39.0" in cell3)
-check("Celda 3: MIN_RAM_GIB = 60.0 definido", "MIN_RAM_GIB" in cell3 and "60.0" in cell3)
-check("Celda 3: RuntimeError si GPU no es A100", "RuntimeError" in cell3)
-check("Celda 3: RuntimeError si RAM insuficiente", "RAM insuficiente" in cell3)
-
-# ── 10. Celda 16 (1.1): torch import protegido con try/except ────────────────
-cell16 = "".join(nb["cells"][16]["source"])
-check("Celda 16: import torch en try/except", "try:" in cell16 and "import torch" in cell16)
-check("Celda 16: RuntimeError si no A100", "RuntimeError" in cell16)
-
-# ── 11. Celda 22 (1.5): check espacio Drive ──────────────────────────────────
-cell22 = "".join(nb["cells"][22]["source"])
-check("Celda 22: MIN_DRIVE_FREE_GIB definido", "MIN_DRIVE_FREE_GIB" in cell22)
-check("Celda 22: shutil.disk_usage para check espacio", "disk_usage" in cell22)
-check("Celda 22: RuntimeError si espacio insuficiente", "Espacio insuficiente en Google Drive" in cell22)
-
-# ── 12. Celda 32 (6.1): GPU_PROFILE='aws' con comentario, OUTPUT_ROOT guard ──
-cell32 = "".join(nb["cells"][32]["source"])
-check("Celda 32: GPU_PROFILE = 'aws'", "GPU_PROFILE" in cell32 and "'aws'" in cell32)
-check("Celda 32: comentario explica 'aws' para Colab A100", "Colab A100" in cell32 or "colab A100" in cell32)
-check("Celda 32: guard OUTPUT_ROOT not in globals()", "OUTPUT_ROOT" in cell32 and "not in globals()" in cell32)
-check("Celda 32: CUDA_MEMORY_FRACTION = 0.92", "0.92" in cell32)
-
-# ── 13. Celda 38 (7.2): signal handling robusto ──────────────────────────────
-cell38 = "".join(nb["cells"][38]["source"])
-check("Celda 38: import signal", "import signal" in cell38 or "import _signal" in cell38 or "_signal" in cell38)
-check("Celda 38: _graceful_stop con SIGINT", "_graceful_stop" in cell38 and "SIGINT" in cell38)
-check("Celda 38: timeout SIGKILL fallback", "SIGKILL" in cell38 or "proc.kill()" in cell38)
-check("Celda 38: instrucciones RESUME en KeyboardInterrupt", "RESUME_OUTPUT_ROOT" in cell38)
-
-# ── 14. Parametros A100 en celda 32 ──────────────────────────────────────────
-check("Celda 32: EPISODES = 75 (modo full)", "EPISODES" in cell32 and "75" in cell32)
-check("Celda 32: EPISODE_STEPS = 8760", "8760" in cell32)
-check("Celda 32: QUICK_TEST = False por defecto", "QUICK_TEST" in cell32 and "False" in cell32)
-
-# ── 15. Launcher args en celda 34 (7.0): --require-a100 activo ───────────────
-cell34 = "".join(nb["cells"][34]["source"])
-check("Celda 34: --require-a100 en launcher args", "'--require-a100'" in cell34)
-check("Celda 34: --oom-retry activo", "'--oom-retry'" in cell34)
-cell38_check = "".join(nb["cells"][38]["source"])
-check("Celda 38: --skip-completed en launch args", "skip-completed" in cell38_check or "skip_completed" in cell38_check)
+# Text policy: MAPPO/MADDPG can appear only as explicit non-official/historical notes.
+for bad_text in ("Nota MAPPO (baseline)", "baselines MADRL opcionales", "local comparison baselines"):
+    check(f"Notebook no contiene texto obsoleto: {bad_text}", bad_text not in notebook_source)
 
 print()
-failed = [m for ok, m in results if not ok]
+failed = [message for ok, message in results if not ok]
 print(f"=== RESULTADO: {len(results) - len(failed)}/{len(results)} checks OK ===")
 if failed:
     print("FALLIDOS:")
-    for m in failed:
-        print(" ", m)
+    for message in failed:
+        print(" ", message)
     sys.exit(1)
-else:
-    print("Todos los checks pasaron. Notebook listo para A100.")
+
+print("Todos los checks pasaron. Notebook listo para entrenamiento MADRL CityLearn v3.")

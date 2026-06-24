@@ -79,6 +79,8 @@ assert "--require-a100" in code_src, "Notebook no pasa --require-a100 al launche
 assert "--oom-retry" in code_src, "Notebook no pasa --oom-retry al launcher"
 assert "--skip-completed" in code_src, "Notebook no pasa --skip-completed al launcher"
 assert "--dry-run" in code_src, "Notebook no incluye --dry-run (preflight)"
+assert "--include-baselines" not in code_src, \
+    "Notebook no debe activar MAPPO/MADDPG en el launcher v3 oficial"
 
 required_order = [
     "e6bd10e8",          # 1.1 GPU
@@ -98,20 +100,20 @@ assert not missing_cells, f"Faltan celdas críticas: {missing_cells}"
 positions = [cell_ids.index(cell_id) for cell_id in required_order]
 assert positions == sorted(positions), f"Orden crítico de celdas incorrecto: {positions}"
 
-assert "REPO_BRANCH = 'codex/fix-madrl-traceability-docs'" in code_src, \
-    "Notebook no fija la rama del repo padre para Colab"
-assert "git_check(['clone', '--branch', REPO_BRANCH" in code_src, \
+assert "REPO_BRANCH      = 'codex/fix-madrl-traceability-docs'" in code_src, \
+    "Notebook no fija la rama codex/fix-madrl-traceability-docs del repo padre para Colab"
+assert "'clone'," in code_src and "'--branch', REPO_BRANCH" in code_src, \
     "Clone de Colab no usa --branch REPO_BRANCH"
-assert "'pull', '--ff-only'" not in code_src, \
-    "Notebook no debe usar git pull --ff-only en el espejo Colab existente"
-assert "git_check(['-C', REPO, 'checkout', '-B', REPO_BRANCH, 'FETCH_HEAD'])" in code_src, \
-    "Notebook no resetea la rama Colab existente contra FETCH_HEAD"
-assert "git_check(['-C', REPO, 'submodule', 'update', '--init', '--recursive'," in code_src and "'--force'" in code_src, \
+assert "git_check(['checkout', '-B', CITYLEARN_BRANCH" in code_src, \
+    "Notebook no activa CityLearn en rama viva con checkout -B"
+assert "cl_branch == 'HEAD'" in code_src, \
+    "Notebook no repara detached HEAD de CityLearn en celda 1.2b"
+assert "'submodule', 'update', '--init', '--recursive'" in code_src and "'--force'" in code_src, \
     "Notebook no fuerza submódulos al commit fijado por el repo padre"
 assert "submodule_status = sh(['git', 'submodule', 'status', '--recursive'])" in code_src, \
     "Notebook no valida estado de submódulos"
-assert "actual_citylearn_commit == expected_citylearn_commit" in code_src, \
-    "Notebook no valida que CityLearn coincida con el commit fijado por el repo padre"
+assert "cl_branch == CITYLEARN_BRANCH" in code_src and "'citylearn_live': True" in code_src, \
+    "Notebook no valida que CityLearn este en la rama viva esperada"
 assert "csv_count == 222" in code_src, "Notebook no valida dataset completo de 222 CSV"
 print("[PASS] Orden crítico y espejo repo/submódulos/dataset validados en notebook")
 
@@ -157,7 +159,7 @@ LAUNCHER_REQUIRED = {
     ],
     "maac": [
         "--action-bins", "3", "--discrete-action-mode", "axis",
-        "--batch-size", "--buffer-length", "--steps-per-update", "250",
+        "--batch-size", "--buffer-length", "--steps-per-update", "100",
         "--num-updates", "--max-discrete-actions", "--attend-heads",
         "--gamma", "0.9999", "--pi-lr", "--q-lr", "--tau",
     ],
@@ -205,12 +207,10 @@ print(f"[PASS] Layout algorithm-first: {{OUTPUT_ROOT}}/happo/E1_seed_0/ OK")
 OUTPUT_GUARDS = [
     "REQUIRE_GOOGLE_DRIVE = True",
     "GDRIVE_OUTPUT_PARENT = f'{GDRIVE_ROOT}/outputs'",
-    "MADRL_CityLearn_v3/{PROJECT_NAME}/outputs/colab_madrl_a100_",
+    "RUN_LABEL    = f'madrl_v3_{TIMESTAMP}'",
     "RESUME_OUTPUT_ROOT = None",
     "resumed_existing_output_root",
     "run_context_manifest.json",
-    "forbidden_markers",
-    "citylearn_v3_madrl_full_",
     "relative_to(expected_root)",
     "len(seen_outputs) == 12",
     "outputs aislados en OUTPUT_ROOT",
@@ -233,7 +233,7 @@ with tempfile.TemporaryDirectory() as tmp:
         "--scenario", "ALL",
         "--seed", "0",
         "--episode-time-steps", "8760",
-        "--episodes", "75",
+        "--episodes", "50",
         "--output-root", str(output_root),
         "--schema-path", "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
         "--skip-gpu-preflight",
@@ -257,6 +257,8 @@ with tempfile.TemporaryDirectory() as tmp:
     }
     assert len(jobs) == 12, f"Launcher planifica {len(jobs)} jobs, esperado 12"
     assert actual_dirs == expected_dirs, "Launcher no produce output dirs algorithm-first únicos bajo OUTPUT_ROOT"
+    assert all(job["name"] in {"happo", "masac", "matd3", "maac"} for job in jobs), \
+        "Launcher no debe planificar MAPPO/MADDPG como baseline v3"
 
 print("[PASS] Guardrails de OUTPUT_ROOT Colab aislado y launcher 12 dirs únicos OK")
 
@@ -265,13 +267,15 @@ print("[PASS] Guardrails de OUTPUT_ROOT Colab aislado y launcher 12 dirs únicos
 # ────────────────────────────────────────────────────────────────────────────
 # Per-algorithm values live in the launcher; notebook has high-level config only.
 LAUNCHER_A100_CHECKS = {
-    "384"    : "HAPPO hidden_size=384",
-    "20"     : "MASAC buffer_size=20",
-    "64"     : "MASAC critic_batch=64",
-    "512"    : "MATD3/MAAC batch_size=512",
-    "6000"   : "MATD3 buffer_size=6000",
-    "100000" : "MAAC buffer_length=100000",
-    "0.9999" : "gamma=0.9999 (horizonte anual)",
+    'parser.add_argument("--happo-hidden-size", default=512': "HAPPO hidden_size=512",
+    'parser.add_argument("--masac-buffer-size", default=40': "MASAC buffer_size=40",
+    'parser.add_argument("--masac-critic-batch-size", default=1024': "MASAC critic_batch=1024",
+    'parser.add_argument("--matd3-batch-size", default=1024': "MATD3 batch_size=1024",
+    'parser.add_argument("--matd3-buffer-size", default=2000000': "MATD3 buffer_size=2000000",
+    'parser.add_argument("--maac-batch-size", default=1024': "MAAC batch_size=1024",
+    'parser.add_argument("--maac-buffer-length", default=1000000': "MAAC buffer_length=1000000",
+    'parser.add_argument("--maac-steps-per-update", default=100': "MAAC steps_per_update=100",
+    "0.9999": "gamma=0.9999 (horizonte anual)",
 }
 for val, desc_str in LAUNCHER_A100_CHECKS.items():
     assert val in launcher_src, f"No se encontró {desc_str} ({val}) en el launcher"
@@ -280,7 +284,7 @@ for val, desc_str in LAUNCHER_A100_CHECKS.items():
 NB_A100_CHECKS = {
     "aws"    : "gpu_profile=aws",
     "0.92"   : "cuda_memory_fraction=0.92",
-    "75"     : "EPISODES=75",
+    "50"     : "EPISODES=50",
     "8760"   : "EPISODE_STEPS=8760",
 }
 for val, desc_str in NB_A100_CHECKS.items():

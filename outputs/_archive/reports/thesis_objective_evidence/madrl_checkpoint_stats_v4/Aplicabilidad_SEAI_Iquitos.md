@@ -1,0 +1,7 @@
+| aspect | evidence | status |
+| --- | --- | --- |
+| Pertinencia territorial | El marco metodologico conserva SEAI Iquitos como caso de aplicabilidad; los resultados simulados no sustituyen mediciones reales del sistema. | aplicable_metodologicamente |
+| Flexibilidad energetica | OE1 usa KPIs de picos, ramping, factor de carga, almacenamiento, PV y EV/V2G como proxies de flexibilidad. | medible_por_simulacion |
+| Emisiones de CO2 | OE2 usa intensidad de carbono y emisiones control/baseline/delta para evaluar operacion carbon-aware. | medible_por_simulacion |
+| Costos energeticos | OE3 usa costos, precio dinamico, picos y desviacion de senal tarifaria para evaluar eficiencia economica. | medible_por_simulacion |
+| Limitacion | La transferencia a SEAI Iquitos requiere calibracion con datos operativos reales y restricciones electricas especificas. | pendiente_de_validacion_operativa_real |

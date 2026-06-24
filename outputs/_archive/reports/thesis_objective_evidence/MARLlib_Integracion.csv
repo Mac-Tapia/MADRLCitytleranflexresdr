@@ -1,0 +1,4 @@
+section,content,evidence,status
+Rol en la tesis,"MARLlib se conserva como marco de referencia para comparar terminologia, patrones CTDE y organizacion de algoritmos multiagente.",tools/skills/madrl-citylearn-thesis-plan/references/module-a-plan-literature.md,referencia_metodologica
+Backends implementados,"El proyecto ejecuta HAPPO, MASAC, MATD3 y MAAC mediante scripts propios conectados a la capa CityLearn v3 propuesta.",Backends_MADRL.csv; CityLearn/scripts/train_citylearn_v3_*.py,implementado_en_scripts
+Limite,"No se afirma que MARLlib sea el motor de ejecucion de todos los entrenamientos si el script usa HARL, MARL/src, off-policy o MAAC externos.",Backends_MADRL.csv,delimitacion_tecnica

@@ -1,0 +1,163 @@
+{
+  "completed_episode_count_from_timeseries": 43795,
+  "episode_step_count_mismatches": [
+    {
+      "episode": 4,
+      "expected_steps": 8760,
+      "last_all_done": "True",
+      "last_global_step": "43794",
+      "last_time_step": "8759",
+      "steps": 8755
+    }
+  ],
+  "episode_summaries": [
+    {
+      "episode": 0,
+      "first_global_step": "0",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "8759",
+      "last_time_step": "1",
+      "reward_mean_average": -0.5926788541975274,
+      "reward_sum_total": -88261.73496709578,
+      "steps": 8760
+    },
+    {
+      "episode": 1,
+      "first_global_step": "8760",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "17519",
+      "last_time_step": "2",
+      "reward_mean_average": -0.6186860314815956,
+      "reward_sum_total": -92134.72380823921,
+      "steps": 8760
+    },
+    {
+      "episode": 2,
+      "first_global_step": "17520",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "26279",
+      "last_time_step": "3",
+      "reward_mean_average": -0.6252873685173733,
+      "reward_sum_total": -93117.79491960723,
+      "steps": 8760
+    },
+    {
+      "episode": 3,
+      "first_global_step": "26280",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "35039",
+      "last_time_step": "4",
+      "reward_mean_average": -0.591942039784044,
+      "reward_sum_total": -88152.00856463984,
+      "steps": 8760
+    },
+    {
+      "episode": 4,
+      "first_global_step": "35040",
+      "last_all_done": "True",
+      "last_episode_step": "8754",
+      "last_global_step": "43794",
+      "last_time_step": "8759",
+      "reward_mean_average": -0.6197626231442488,
+      "reward_sum_total": -92242.37001567427,
+      "steps": 8755
+    }
+  ],
+  "expected_episode_time_steps": 8760,
+  "expected_episodes": 5,
+  "expected_timeseries_row_options": [
+    43800
+  ],
+  "expected_timeseries_rows": 43800,
+  "last_timeseries_row": {
+    "algorithm": "MAAC",
+    "all_done": "True",
+    "carbon_intensity_mean": "0.7900000214576721",
+    "district_net_electricity_consumption": "1464.1593930721283",
+    "district_net_electricity_consumption_cost": "583.2473254799843",
+    "district_net_electricity_consumption_emission": "1159.0460687875748",
+    "district_net_electricity_consumption_without_storage": "1442.4946496486664",
+    "electricity_price_mean": "0.28695225715637207",
+    "episode": "4",
+    "episode_step": "8754",
+    "global_step": "43794",
+    "reset_count": "5",
+    "reward_axis_weights": "{\"carbon\": 0.15, \"cost\": 0.15, \"flex\": 0.7}",
+    "reward_function": "CityLearnV3MADRLRewardFunction",
+    "reward_mean": "-0.812568724155426",
+    "reward_profile": "maac_unified_comparable_v4",
+    "reward_sum": "-13.813668310642242",
+    "scenario": "E1",
+    "time_step": "8759"
+  },
+  "objective_report_values": {
+    "carbon_emissions": 1.0507306584450575,
+    "electricity_cost": 1.004567482935532,
+    "ev_charge_total": 11359.92720144242,
+    "ev_departure_count": 39682.0,
+    "ev_departure_success_rate": 0.04135376241116879,
+    "grid_import_baseline": 12473692.698825836,
+    "grid_import_control": 12529392.019004568,
+    "pv_export_total": 40768977.472567,
+    "pv_generation_total": 49669237.752368875,
+    "ramping_average": 1.0215272114711218
+  },
+  "report_source": {
+    "adapter_algorithm": "MAAC",
+    "adapter_class": "CityLearnV3BackendAdapter",
+    "candidate_class": "CityLearnMAACVecEnv",
+    "completed_episode_count": 5,
+    "episode_time_steps": 8760,
+    "last_completed_episode": 4,
+    "last_completed_global_step": 43794,
+    "last_completed_time_step": 8759,
+    "last_recorded_all_done": true,
+    "last_recorded_episode": 4,
+    "last_recorded_episode_step": 8754,
+    "last_recorded_global_step": 43794,
+    "last_recorded_time_step": 8759,
+    "objective_env_class": "CityLearnDecPOMDPEnv",
+    "snapshot_error": null,
+    "timeseries_rows": 43795,
+    "trace_rows": 74545,
+    "type": "last_completed_episode_snapshot"
+  },
+  "status": "warning",
+  "timeseries_row_delta_vs_expected": -5,
+  "timeseries_rows": 43795,
+  "trace_rows": 74545,
+  "training_trace_totals": {
+    "ev_charge_kwh": 0.0,
+    "ev_v2g_export_kwh": 0.0,
+    "grid_export_kwh": 2.987478256225586,
+    "grid_import_kwh": 6687.015075370669,
+    "pv_export_kwh": 0.0,
+    "pv_generation_kwh": 24775237.109308943
+  },
+  "warnings": [
+    {
+      "code": "unexpected_timeseries_rows",
+      "message": "Recorded 43795 timeseries rows; expected 43800 from 5 episodes x 8760 steps.",
+      "severity": "warning"
+    },
+    {
+      "code": "episode_step_count_mismatch",
+      "episodes": [
+        {
+          "episode": 4,
+          "expected_steps": 8760,
+          "last_all_done": "True",
+          "last_global_step": "43794",
+          "last_time_step": "8759",
+          "steps": 8755
+        }
+      ],
+      "message": "One or more recorded episodes have a step count different from the configured episode_time_steps=8760.",
+      "severity": "warning"
+    }
+  ]
+}

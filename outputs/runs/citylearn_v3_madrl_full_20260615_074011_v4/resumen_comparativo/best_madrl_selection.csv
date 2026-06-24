@@ -1,0 +1,5 @@
+rank,algorithm,mean_score,selected
+1,MATD3,0.7445,SI
+2,MASAC,0.73,NO
+3,MAAC,0.72,NO
+4,HAPPO,0.7,NO

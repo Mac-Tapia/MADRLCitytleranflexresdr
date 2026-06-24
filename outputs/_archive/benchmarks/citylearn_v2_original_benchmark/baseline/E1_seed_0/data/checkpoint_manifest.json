@@ -1,0 +1,10 @@
+{
+  "algorithm": "baseline",
+  "backend": "citylearn_v2_original",
+  "checkpoint_count": 0,
+  "checkpoint_dir": "outputs\\citylearn_v2_original_benchmark\\baseline\\E1_seed_0\\checkpoints",
+  "checkpoints": [],
+  "hyperparameters": {
+    "train_episodes": 0
+  }
+}

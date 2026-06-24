@@ -1,0 +1,374 @@
+{
+  "checks": {
+    "citylearn_v3_dataset_smoke": {
+      "detail": {
+        "environment": {
+          "action_dims": {
+            "Building_1": 6,
+            "Building_10": 8,
+            "Building_11": 5,
+            "Building_12": 5,
+            "Building_13": 13,
+            "Building_14": 6,
+            "Building_15": 10,
+            "Building_16": 13,
+            "Building_17": 13,
+            "Building_2": 8,
+            "Building_3": 10,
+            "Building_4": 8,
+            "Building_5": 5,
+            "Building_6": 34,
+            "Building_7": 44,
+            "Building_8": 19,
+            "Building_9": 12
+          },
+          "agents": [
+            "Building_1",
+            "Building_2",
+            "Building_3",
+            "Building_4",
+            "Building_5",
+            "Building_6",
+            "Building_7",
+            "Building_8",
+            "Building_9",
+            "Building_10",
+            "Building_11",
+            "Building_12",
+            "Building_13",
+            "Building_14",
+            "Building_15",
+            "Building_16",
+            "Building_17"
+          ],
+          "has_ev_actions": true,
+          "has_ev_observations": true,
+          "normalize_observations": false,
+          "num_agents": 17,
+          "observation_dims": {
+            "Building_1": 61,
+            "Building_10": 75,
+            "Building_11": 54,
+            "Building_12": 54,
+            "Building_13": 110,
+            "Building_14": 61,
+            "Building_15": 89,
+            "Building_16": 110,
+            "Building_17": 110,
+            "Building_2": 75,
+            "Building_3": 89,
+            "Building_4": 75,
+            "Building_5": 54,
+            "Building_6": 257,
+            "Building_7": 327,
+            "Building_8": 152,
+            "Building_9": 103
+          },
+          "reward_aggregation": "team_mean",
+          "reward_function": "CityLearnV3MADRLRewardFunction",
+          "reward_metadata": {
+            "algorithm": "MADRL",
+            "axis_weights": {
+              "carbon": 0.15,
+              "cost": 0.15,
+              "flex": 0.7
+            },
+            "base_reward": "CityLearnV3MADRLRewardFunction",
+            "function": "CityLearnV3MADRLRewardFunction",
+            "not_using_marl_base_weights": true,
+            "profile": {
+              "axis_weight_multipliers": {
+                "carbon": 1.0,
+                "cost": 1.0,
+                "flex": 1.0
+              },
+              "ev_departure_deficit_weight": 0.55,
+              "ev_idle_deficit_weight": 0.15,
+              "ev_soc_critical_deficit": 0.25,
+              "ev_soc_tolerance": 0.05,
+              "ev_urgency_deficit_weight": 0.3,
+              "ev_urgency_hours": 4.0,
+              "ev_weight": 0.25,
+              "peak_weight": 0.45,
+              "profile_name": "generic_citylearn_v3_madrl_v3",
+              "ramp_weight": 0.35,
+              "reward_scale": 1.0,
+              "team_reward_ratio": 0.7
+            },
+            "scenario": "E1"
+          },
+          "scenario": "E1",
+          "simulator": "citylearn-v2",
+          "state_dim": 1856,
+          "supports_all_citylearn_v2_kpis": true,
+          "version_layer": "citylearn-v3-madrl"
+        },
+        "ev_action_bounds": {
+          "bidirectional_ev_action_low_minus_1": 31,
+          "charge_only_ev_action_low_0": 154,
+          "total_chargers": 185
+        },
+        "info_agents": [
+          "Building_1",
+          "Building_10",
+          "Building_11",
+          "Building_12",
+          "Building_13",
+          "Building_14",
+          "Building_15",
+          "Building_16",
+          "Building_17",
+          "Building_2",
+          "Building_3",
+          "Building_4",
+          "Building_5",
+          "Building_6",
+          "Building_7",
+          "Building_8",
+          "Building_9"
+        ],
+        "initial_observation_agents": [
+          "Building_1",
+          "Building_10",
+          "Building_11",
+          "Building_12",
+          "Building_13",
+          "Building_14",
+          "Building_15",
+          "Building_16",
+          "Building_17",
+          "Building_2",
+          "Building_3",
+          "Building_4",
+          "Building_5",
+          "Building_6",
+          "Building_7",
+          "Building_8",
+          "Building_9"
+        ],
+        "kpi_frame_shape": [
+          1361,
+          4
+        ],
+        "next_observation_agents": [
+          "Building_1",
+          "Building_10",
+          "Building_11",
+          "Building_12",
+          "Building_13",
+          "Building_14",
+          "Building_15",
+          "Building_16",
+          "Building_17",
+          "Building_2",
+          "Building_3",
+          "Building_4",
+          "Building_5",
+          "Building_6",
+          "Building_7",
+          "Building_8",
+          "Building_9"
+        ],
+        "reward_agents": [
+          "Building_1",
+          "Building_10",
+          "Building_11",
+          "Building_12",
+          "Building_13",
+          "Building_14",
+          "Building_15",
+          "Building_16",
+          "Building_17",
+          "Building_2",
+          "Building_3",
+          "Building_4",
+          "Building_5",
+          "Building_6",
+          "Building_7",
+          "Building_8",
+          "Building_9"
+        ],
+        "scenario": "E1",
+        "schema_path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json",
+        "step_info_agents": [
+          "Building_1",
+          "Building_10",
+          "Building_11",
+          "Building_12",
+          "Building_13",
+          "Building_14",
+          "Building_15",
+          "Building_16",
+          "Building_17",
+          "Building_2",
+          "Building_3",
+          "Building_4",
+          "Building_5",
+          "Building_6",
+          "Building_7",
+          "Building_8",
+          "Building_9"
+        ],
+        "terminated": false,
+        "truncated": false
+      },
+      "ok": true
+    },
+    "citylearn_v3_schema_dataset_integrity": {
+      "detail": {
+        "active_ev_actions": [
+          "electric_vehicle_storage"
+        ],
+        "active_ev_observations": [
+          "electric_vehicle_charger_connected_state",
+          "connected_electric_vehicle_at_charger_battery_capacity",
+          "connected_electric_vehicle_at_charger_departure_time",
+          "connected_electric_vehicle_at_charger_required_soc_departure",
+          "connected_electric_vehicle_at_charger_soc",
+          "electric_vehicle_charger_incoming_state",
+          "incoming_electric_vehicle_at_charger_estimated_arrival_time"
+        ],
+        "active_ev_session_rows": 756050,
+        "building_csv_structure": "12-column CityLearn standard",
+        "camioneta_chargers": 31,
+        "camioneta_v2g_chargers": 31,
+        "chargers": 185,
+        "dataset_dir": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025",
+        "electric_vehicle_definitions": 1850,
+        "expected_rows_per_timeseries": 26304,
+        "included_buildings": 17,
+        "non_camioneta_v2g_chargers": 0,
+        "pricing_files": [
+          "pricing.csv"
+        ],
+        "pricing_ranges": {
+          "pricing.csv": {
+            "max": 1.066918914,
+            "mean": 0.5329014692391841,
+            "min": 0.383220954
+          }
+        },
+        "schema_path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json",
+        "v2g_chargers": 31
+      },
+      "ok": true
+    },
+    "citylearn_v3_training_adapter_normalization_smoke": {
+      "detail": {
+        "agents": [
+          "Building_1",
+          "Building_2",
+          "Building_3",
+          "Building_4",
+          "Building_5",
+          "Building_6",
+          "Building_7",
+          "Building_8",
+          "Building_9",
+          "Building_10",
+          "Building_11",
+          "Building_12",
+          "Building_13",
+          "Building_14",
+          "Building_15",
+          "Building_16",
+          "Building_17"
+        ],
+        "has_ev_observation_names": true,
+        "max_observation_dim": 372,
+        "normalization": {
+          "action_note": "CityLearn storage/EV actions already use the native control-space bounds exposed by action_space.",
+          "normalize_actions": false,
+          "normalize_observations": true,
+          "observation_method": "CityLearn NormalizedObservationWrapper plus adapter clipping to [0, 1]."
+        },
+        "num_agents": 17,
+        "observation_max": 1.0,
+        "observation_min": 0.0,
+        "scenario": "E1",
+        "schema_path": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json",
+        "state_dim": 1907,
+        "state_max": 1.0,
+        "state_min": 0.0
+      },
+      "ok": true
+    },
+    "harl_happo_import": {
+      "detail": {
+        "class": "HAPPO",
+        "has_runner_registry": true
+      },
+      "ok": true
+    },
+    "maac_import": {
+      "detail": "AttentionSAC",
+      "ok": true
+    },
+    "marllib_citylearn_v3_registration": {
+      "detail": "citylearn_v3",
+      "ok": true
+    },
+    "marllib_import": {
+      "detail": "D:\\MADRLCitytleranflexresdr\\external\\MARLlib\\marllib\\__init__.py",
+      "ok": true
+    },
+    "masac_import": {
+      "detail": "D:\\MADRLCitytleranflexresdr\\external\\MARL\\src\\runner_msac.py",
+      "ok": true
+    },
+    "matd3_legacy_tf1_training_import": {
+      "error": "ModuleNotFoundError: No module named 'tensorflow'",
+      "ok": false
+    },
+    "matd3_pytorch_offpolicy_import": {
+      "detail": {
+        "backend": "marlbenchmark/off-policy",
+        "matd3_class": "MATD3",
+        "path": "D:\\MADRLCitytleranflexresdr\\external\\off-policy",
+        "policy_class": "MATD3Policy",
+        "rmatd3_class": "R_MATD3"
+      },
+      "ok": true
+    },
+    "matd3_source_present": {
+      "detail": {
+        "legacy_note": "Official training entry point imports tensorflow.contrib and requires TensorFlow 1.x.",
+        "path": "D:\\MADRLCitytleranflexresdr\\external\\MATD3implementation",
+        "train_entrypoint": "D:\\MADRLCitytleranflexresdr\\external\\MATD3implementation\\matd3\\train.py"
+      },
+      "ok": true
+    },
+    "pip_check": {
+      "detail": "No broken requirements found.",
+      "ok": true
+    },
+    "ray_rllib_import": {
+      "detail": "ray.rllib",
+      "ok": true
+    },
+    "versions": {
+      "detail": {
+        "citylearn": "2.6.0b2",
+        "gym": "0.20.0",
+        "gymnasium": "0.28.1",
+        "numpy": "1.23.5",
+        "pettingzoo": "1.12.0",
+        "python": "3.9.25 (main, Oct 31 2025, 22:56:13) [MSC v.1929 64 bit (AMD64)]",
+        "ray": "1.8.0",
+        "supersuit": "3.2.0",
+        "torch": "2.8.0+cu126"
+      },
+      "ok": true
+    }
+  },
+  "four_algorithm_python39_training_imports_ready": true,
+  "four_algorithm_sources_present": true,
+  "matd3_legacy_tf1_available": false,
+  "matd3_legacy_tf1_note": "Legacy TensorFlow 1.x MATD3 source is kept for reference; active training uses the PyTorch off-policy backend.",
+  "matd3_legacy_tf1_required": false,
+  "matd3_pytorch_backend_ready": true,
+  "pip_check_required": false,
+  "pip_metadata_consistent": true,
+  "project_root": "D:\\MADRLCitytleranflexresdr",
+  "python39_core_ready": true
+}

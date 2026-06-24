@@ -1,0 +1,10 @@
+metric,value
+algorithm,HAPPO
+algorithm_family,MADRL
+backend,external/HARL
+episode_time_steps,8760
+episodes,5
+num_env_steps,43800
+output_dir,outputs\citylearn_v3_madrl_full_20260615_074011_v4\happo\E3_seed_0
+scenario,E3
+seed,0

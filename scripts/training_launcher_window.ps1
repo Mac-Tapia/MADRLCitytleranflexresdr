@@ -6,7 +6,7 @@ $OutputRoot = if ($env:CITYLEARN_MADRL_OUTPUT_ROOT) {
     $env:CITYLEARN_MADRL_OUTPUT_ROOT
 }
 else {
-    "outputs\citylearn_v3_madrl_full_" + (Get-Date -Format "yyyyMMdd_HHmmss")
+    "outputs\runs\citylearn_v3_madrl_full_" + (Get-Date -Format "yyyyMMdd_HHmmss")
 }
 New-Item -ItemType Directory -Path "outputs" -Force | Out-Null
 Set-Content -Path "outputs\latest_visible_training_output_root.txt" -Value $OutputRoot -Encoding UTF8

@@ -1,0 +1,50 @@
+{
+  "mejor_madrl": "MATD3",
+  "fuente": "corrida_v4_oficial",
+  "kruskal_wallis": {
+    "p": 0.0459,
+    "h": null,
+    "significant": true
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "algorithm": "MATD3",
+      "mean_score": 0.7445,
+      "selected": true
+    },
+    {
+      "rank": 2,
+      "algorithm": "MASAC",
+      "mean_score": 0.73,
+      "selected": false
+    },
+    {
+      "rank": 3,
+      "algorithm": "MAAC",
+      "mean_score": 0.72,
+      "selected": false
+    },
+    {
+      "rank": 4,
+      "algorithm": "HAPPO",
+      "mean_score": 0.7,
+      "selected": false
+    }
+  ],
+  "criterios_seleccion": [
+    "reward_promedio",
+    "reduccion_picos",
+    "gestion_soc_bess",
+    "reduccion_co2",
+    "cumplimiento_restricciones",
+    "robustez"
+  ],
+  "n_episodios": 75,
+  "escenarios": [
+    "E1",
+    "E2",
+    "E3"
+  ],
+  "generated_at": "2026-06-20T15:44:02.290993"
+}

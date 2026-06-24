@@ -1,0 +1,139 @@
+{
+  "completed_episode_count_from_timeseries": 43800,
+  "episode_step_count_mismatches": [],
+  "episode_summaries": [
+    {
+      "episode": 0,
+      "first_global_step": "0",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "8759",
+      "last_time_step": "1",
+      "reward_mean_average": -0.5703142368316224,
+      "reward_sum_total": -84931.19614896522,
+      "steps": 8760
+    },
+    {
+      "episode": 1,
+      "first_global_step": "8760",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "17519",
+      "last_time_step": "2",
+      "reward_mean_average": -0.5753874155783772,
+      "reward_sum_total": -85686.69392793193,
+      "steps": 8760
+    },
+    {
+      "episode": 2,
+      "first_global_step": "17520",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "26279",
+      "last_time_step": "3",
+      "reward_mean_average": -0.5806196601594483,
+      "reward_sum_total": -86465.87979094505,
+      "steps": 8760
+    },
+    {
+      "episode": 3,
+      "first_global_step": "26280",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "35039",
+      "last_time_step": "4",
+      "reward_mean_average": -0.551831897046249,
+      "reward_sum_total": -82178.8061081274,
+      "steps": 8760
+    },
+    {
+      "episode": 4,
+      "first_global_step": "35040",
+      "last_all_done": "False",
+      "last_episode_step": "8759",
+      "last_global_step": "43799",
+      "last_time_step": "5",
+      "reward_mean_average": -0.5609013325154417,
+      "reward_sum_total": -83529.42643819959,
+      "steps": 8760
+    }
+  ],
+  "expected_episode_time_steps": 8760,
+  "expected_episodes": 5,
+  "expected_timeseries_row_options": [
+    43800
+  ],
+  "expected_timeseries_rows": 43800,
+  "last_timeseries_row": {
+    "algorithm": "HAPPO",
+    "all_done": "False",
+    "carbon_intensity_mean": "0.7900000214576721",
+    "district_net_electricity_consumption": "0.0",
+    "district_net_electricity_consumption_cost": "0.0",
+    "district_net_electricity_consumption_emission": "0.0",
+    "district_net_electricity_consumption_without_storage": "0.0",
+    "electricity_price_mean": "0.5805823802947998",
+    "episode": "4",
+    "episode_step": "8759",
+    "global_step": "43799",
+    "reset_count": "6",
+    "reward_axis_weights": "{\"carbon\": 0.15, \"cost\": 0.6, \"flex\": 0.25}",
+    "reward_function": "CityLearnV3MADRLRewardFunction",
+    "reward_mean": "-0.4855051040649414",
+    "reward_profile": "happo_unified_comparable_v4",
+    "reward_sum": "-8.253586769104004",
+    "scenario": "E3",
+    "time_step": "5"
+  },
+  "objective_report_values": {
+    "carbon_emissions": 1.3932207853310676,
+    "electricity_cost": 1.0436246228049002,
+    "ev_charge_total": 103933.3879561834,
+    "ev_departure_count": 39682.0,
+    "ev_departure_success_rate": 0.19888110478302504,
+    "grid_import_baseline": 12573542.40342331,
+    "grid_import_control": 13105960.232582707,
+    "pv_export_total": 40420617.87998162,
+    "pv_generation_total": 49669237.752368875,
+    "ramping_average": 1.1194173043816145
+  },
+  "report_source": {
+    "adapter_algorithm": "HAPPO",
+    "adapter_class": "CityLearnV3BackendAdapter",
+    "candidate_class": "CityLearnHARLEnv",
+    "completed_episode_count": 5,
+    "episode_time_steps": 8760,
+    "last_completed_episode": 4,
+    "last_completed_global_step": 43794,
+    "last_completed_time_step": 8759,
+    "last_recorded_all_done": false,
+    "last_recorded_episode": 4,
+    "last_recorded_episode_step": 8759,
+    "last_recorded_global_step": 43799,
+    "last_recorded_time_step": 5,
+    "objective_env_class": "CityLearnDecPOMDPEnv",
+    "snapshot_error": null,
+    "timeseries_rows": 43800,
+    "trace_rows": 74545,
+    "type": "last_completed_episode_snapshot"
+  },
+  "status": "ok",
+  "timeseries_row_delta_vs_expected": 0,
+  "timeseries_rows": 43800,
+  "trace_rows": 74545,
+  "training_trace_totals": {
+    "ev_charge_kwh": 0.0,
+    "ev_v2g_export_kwh": 0.0,
+    "grid_export_kwh": 1659.0745521187782,
+    "grid_import_kwh": 8913.898237973452,
+    "pv_export_kwh": 0.0,
+    "pv_generation_kwh": 24775237.109308943
+  },
+  "warnings": [
+    {
+      "code": "using_completed_snapshot_after_backend_reset",
+      "message": "The backend current environment is incomplete; KPIs come from the last completed episode snapshot.",
+      "severity": "info"
+    }
+  ]
+}

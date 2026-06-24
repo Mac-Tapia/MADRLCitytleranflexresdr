@@ -1,5 +1,0 @@
-| axis | axis_name | comparable_kpis | improved_kpis | not_improved_kpis |
-| --- | --- | --- | --- | --- |
-| OE1 | Flexibilidad energetica | 12 | 6 | 6 |
-| OE2 | Emisiones de CO2 | 5 | 4 | 1 |
-| OE3 | Costos energeticos | 9 | 7 | 2 |

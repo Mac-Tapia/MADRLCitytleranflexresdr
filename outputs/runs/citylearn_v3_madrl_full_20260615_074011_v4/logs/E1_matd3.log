@@ -1,0 +1,22 @@
+warm up...
+warmup average episode rewards: -6438.0419921875
+
+ Env E1 Algo matd3 Exp citylearn_v3_matd3 runs total num timesteps 8760/43800, FPS 2.
+
+average_episode_rewards is -5506.882
+
+ Env E1 Algo matd3 Exp citylearn_v3_matd3 runs total num timesteps 17520/43800, FPS 2.
+
+average_episode_rewards is -5177.5728
+
+ Env E1 Algo matd3 Exp citylearn_v3_matd3 runs total num timesteps 26280/43800, FPS 2.
+
+average_episode_rewards is -5407.104
+
+ Env E1 Algo matd3 Exp citylearn_v3_matd3 runs total num timesteps 35040/43800, FPS 2.
+
+average_episode_rewards is -5465.7026
+
+ Env E1 Algo matd3 Exp citylearn_v3_matd3 runs total num timesteps 43800/43800, FPS 2.
+
+average_episode_rewards is -5165.383

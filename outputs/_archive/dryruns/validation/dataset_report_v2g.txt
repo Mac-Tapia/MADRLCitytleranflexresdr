@@ -1,0 +1,153 @@
+2026-06-14 23:47:22,111 [INFO] 
+====================================================================================================
+DIMENSIONAMIENTO CARGADORES IQUITOS (escenario por edificio, tipo y concurrencia)
+  ML=Moto_Lineal 3.0kW | MT=Mototaxi 4.0kW | CV=Camioneta 7.4kW | Eq=Modo3 doble toma | EV_* = flujos diarios de escenario por edificio
+====================================================================================================
+  B Edificio                 Tipo                EV_ML  EV_MT EV_CV |   ML   MT   CV Tomas  Eq      kW  Est% R
+----------------------------------------------------------------------------------------------------
+  1 Electro Oriente S.A.     institucional          20      5    5 |    1    1    2     4   2    21.8   25%  
+  2 Municipalidad Distrital  deportivo              80     30    2 |    3    2    1     6   3    24.4   29%  
+  3 Aeropuerto Internacional transporte_24h         40    180    8 |    1    5    2     8   4    37.8    7%  
+  4 Hipermercados Tottus Ori retail                150     60    3 |    3    2    1     6   3    24.4   10%  
+  5 Hotel Plaza S.A.         hotelero                8     15    4 |    1    1    1     3   2    14.4   97%  
+  6 Mall Aventura Iquitos    mall                  930    150   20 |   22    6    4    32  16   119.6   10%  
+  7 UNAP Facultad de Biologi universitario         500    200   10 |   25   14    3    42  21   153.2   57% *
+  8 PNP Escuela Tecnica Supe militar               150     60   15 |    8    5    4    17   9    73.6   16% *
+  9 Gobierno Regional Loreto deportivo             120     40    2 |    6    3    1    10   5    37.4   23%  
+ 10 Gobierno Regional de Lor administrativo         25      8   15 |    1    1    4     6   3    36.6   24%  
+ 11 Hospital Regional de Lor salud                  80     40   10 |    1    1    1     3   2    14.4    3%  
+ 12 Seguro Social de Salud E salud                  60     30    8 |    1    1    1     3   2    14.4    7%  
+ 13 UNAP Facultad de Ciencia universitario         200     80    3 |    6    4    1    11   6    41.4   36%  
+ 14 Autoridad Portuaria Naci portuario              20     15   10 |    1    1    2     4   2    21.8    9%  
+ 15 DREL Colegio Nacional de educacion             100     50    2 |    4    3    1     8   4    31.4   26%  
+ 16 SIMA Iquitos S.R.Ltda    educacion             180     70    2 |    6    4    1    11   6    41.4    6%  
+ 17 Asociacion Civil Selva A educacion             220     90    3 |    6    4    1    11   6    41.4    8%  
+----------------------------------------------------------------------------------------------------
+  TOTAL: 185 tomas controlables | 96 equipos fisicos modo 3 doble toma | * = remoto
+====================================================================================================
+====================================================================================================
+INFORME FINAL — DATASET CITYLEARN IQUITOS 2023-2025 (CALIBRADO)
+====================================================================================================
+  Total filas por edificio: 26 304 (8760 + 8784 + 8760)
+  Columnas por edificio: 12
+  Total edificios: 17
+  Total archivos: weather.csv + carbon_intensity.csv + pricing.csv +
+                  185 charger_X_Y.csv + 17 Washing_Machine_X.csv + schema.json
+
+ESTADO DE COLUMNAS POR EDIFICIO
+----------------------------------------------------------------------------------------------------
+  B Edificio                     month hour dst     T_in  unmet     RH        NSL      DHW         CD  heat      solar
+----------------------------------------------------------------------------------------------------
+  1 ELECTRO ORIENTE S.A.          1-12 0-23   0    24.0C   0.06    71%      566.8     0.00      268.5     0      116.9  OK
+  2 MUNICIPALIDAD DISTRITAL DE S  1-12 0-23   0    24.4C   0.04    81%        1.0     0.00       20.0     0      117.4  OK
+  3 AEROPUERTO INTERNACIONAL      1-12 0-23   0    24.0C   0.12    65%        0.0     0.00      360.5     0      116.4  OK
+  4 HIPERMERCADOS TOTTUS ORIENTE  1-12 0-23   0    23.0C   0.07    75%        0.0     0.00      476.4     0      117.4  OK
+  5 HOTEL PLAZA S.A.              1-12 0-23   0    23.0C   0.12    64%        0.0    22.28      267.3     0      111.5  OK
+  6 MALL AVENTURA S.A.            1-12 0-23   0    23.0C   0.06    75%       81.8     0.00     3782.7     0      113.3  OK
+  7 UNAP-FACULTAD DE BIOLOGIA-AU  1-12 0-23   0    25.1C   0.04    80%        6.0     0.00       50.3     0      117.0  OK
+  8 PNP- ESCUELA TECNICA SUPERIO  1-12 0-23   0    25.2C   0.03    82%        1.7     0.00       27.7     0      112.9  OK
+  9 GOBIERNO REGIONAL DE LORETO   1-12 0-23   0    24.0C   0.12    65%        0.0     0.00       17.7     0      116.2  OK
+ 10 GOBIERNO REGIONAL DE LORETO   1-12 0-23   0    24.4C   0.04    81%       49.3     0.00      253.5     0      116.9  OK
+ 11 HOSPITAL REGIONAL DE LORETO   1-12 0-23   0    22.0C   0.12    64%        0.0     4.73      276.9     0      117.1  OK
+ 12 SEGURO SOCIAL DE SALUD - ESS  1-12 0-23   0    22.0C   0.12    64%        0.0    17.33      666.7     0      115.6  OK
+ 13 UNAP-FACULTAD DE CIENCIAS AD  1-12 0-23   0    25.1C   0.04    80%        0.0     0.00       20.9     0      116.8  OK
+ 14 AUTORIDAD PORTUARIA NACIONAL  1-12 0-23   0    26.0C   0.07    71%        0.0     0.00       13.9     0      115.8  OK
+ 15 DREL- COLEGIO NACIONAL DE IQ  1-12 0-23   0    25.2C   0.03    82%       10.4     0.00       23.9     0      117.2  OK
+ 16 SIMA - IQUITOS S.R.LTDA       1-12 0-23   0    24.0C   0.06    71%        3.2     0.00      210.8     0      117.1  OK
+ 17 ASOCIACION CIVIL SELVA AMAZO  1-12 0-23   0    22.0C   0.12    64%        0.0     0.00      122.8     0      117.0  OK
+----------------------------------------------------------------------------------------------------
+  Todas las columnas validadas: SI
+  Building_1 usa la misma estructura CSV de entrenamiento que B2-B17: SI
+
+LEYENDA DE COLUMNAS (kWh o C o % segun columna):
+  month=1-12 | hour=0-23 | dst=0 (Peru no tiene horario verano)
+  T_in = temperatura interior media [C]
+  unmet = diferencia media del setpoint no satisfecho [C] (>0 = calor)
+  RH = humedad relativa interior media [%]
+  NSL = non_shiftable_load media [kW = kWh/h]  (residuo no controlable del medidor)
+  DHW = dhw_demand media [kWh_thermal/h]  (solo Hotel B5, Hospitales B11 B12)
+  CD = cooling_demand media [kWh_thermal/h]  (carga AC en kWh termicos)
+  heat = heating_demand [kWh_thermal/h]  (siempre 0, Iquitos tropical 24-33C)
+  solar = solar_generation media [kWh_elec/h]  (pvlib ModelChain SAPM)
+
+BALANCE MENSUAL BUILDINGCSV — RESUMEN DE DESTILACION
+--------------------------------------------------------------------------------------------
+  B Edificio                         meses  medido/dia citylearn/dia  max_delta  Estado
+--------------------------------------------------------------------------------------------
+  1 ELECTRO ORIENTE S.A.                36       15715         15715    0.0000%  OK
+  2 MUNICIPALIDAD DISTRITAL DE SAN J    36         187           187    0.0000%  OK
+  3 AEROPUERTO INTERNACIONAL            36        2617          2617    0.0000%  OK
+  4 HIPERMERCADOS TOTTUS ORIENTE SAC    36        3693          3693    0.0000%  OK
+  5 HOTEL PLAZA S.A.                    36        2588          2588    0.0000%  OK
+  6 MALL AVENTURA S.A.                  36       31095         31095    0.0000%  OK
+  7 UNAP-FACULTAD DE BIOLOGIA-AULAS     36         610           610    0.0000%  OK
+  8 PNP- ESCUELA TECNICA SUPERIOR-IQ    36         299           299    0.0000%  OK
+  9 GOBIERNO REGIONAL DE LORETO - CO    36         139           139    0.0000%  OK
+ 10 GOBIERNO REGIONAL DE LORETO         36        3303          3303    0.0000%  OK
+ 11 HOSPITAL REGIONAL DE LORETO         36        2562          2562    0.0000%  OK
+ 12 SEGURO SOCIAL DE SALUD - ESSALUD    36        6342          6342    0.0000%  OK
+ 13 UNAP-FACULTAD DE CIENCIAS AD..CO    36         193           193    0.0000%  OK
+ 14 AUTORIDAD PORTUARIA NACIONAL        36         122           122    0.0000%  OK
+ 15 DREL- COLEGIO NACIONAL DE IQUITO    36         473           473    0.0000%  OK
+ 16 SIMA - IQUITOS S.R.LTDA             36        1732          1732    0.0000%  OK
+ 17 ASOCIACION CIVIL SELVA AMAZONICA    36        1080          1080    0.0000%  OK
+
+AUDITORIA DE COLUMNAS MEDIDAS BUILDINGCSV
+--------------------------------------------------------------------------------------------
+  forecast                                8 meses
+  split_matches_reported_total          407 meses
+  split_reported_total_mismatch         197 meses
+
+  Nota: esos meses conservan EnergiaActivaHoraPunta + EnergiaActivaFueraPunta
+        como kWh fisico y dejan totalEnergiaActiva/TotalFacturado como auditoria.
+        TotalFacturado no se convierte a kWh; calibra pricing.csv como costo.
+
+AUDITORIA DE TARIFAS Y FACTURACION — PRICING.CSV
+----------------------------------------------------------------------------------------------------
+  pricing.csv: filas=26304 columnas=4 rango=[0.383221, 1.066919] media=0.532890 OK
+  factura agregada 2023-2025: medida=42272337.11 reconstruida=42272337.11 max_delta=0.000000091% OK
+  pricing.csv calibrado desde TotalFacturado + punta/fuera punta: SI
+
+AUDITORIA EQUIPOS CONTROLABLES, PV, BESS Y EV
+------------------------------------------------------------------------------------------------------------------------
+  B Edificio                       splits equipo_ctrl               PV_kW  BESS_kWh  EV V2G archivos  Estado
+------------------------------------------------------------------------------------------------------------------------
+  1 ELECTRO ORIENTE S.A.               50 preservado               3360.2    6747.0   4   2       OK  OK
+  2 MUNICIPALIDAD DISTRITAL DE SAN     40 none                     1920.0     244.0   6   1       OK  OK
+  3 AEROPUERTO INTERNACIONAL           30 controlled_cooling       1440.2    2363.0   8   2       OK  OK
+  4 HIPERMERCADOS TOTTUS ORIENTE S     11 critical_refrigeration    600.2     454.0   6   1       OK  OK
+  5 HOTEL PLAZA S.A.                   45 critical_refrigeration    274.1     234.0   3   1       OK  OK
+  6 MALL AVENTURA S.A.                135 controlled_cooling       4952.9    2541.0  32   4       OK  OK
+  7 UNAP-FACULTAD DE BIOLOGIA-AULA     17 none                     1944.9     984.0  42   3       OK  OK
+  8 PNP- ESCUELA TECNICA SUPERIOR-     30 none                     5040.2     601.0  17   4       OK  OK
+  9 GOBIERNO REGIONAL DE LORETO -      27 critical_precision_ac    1075.3     138.0  10   1       OK  OK
+ 10 GOBIERNO REGIONAL DE LORETO        82 controlled_cooling       3431.1    2353.0   6   4       OK  OK
+ 11 HOSPITAL REGIONAL DE LORETO       120 critical_refrigeration  10236.1    1901.0   3   1       OK  OK
+ 12 SEGURO SOCIAL DE SALUD - ESSAL     65 critical_refrigeration   4367.5    4346.0   3   1       OK  OK
+ 13 UNAP-FACULTAD DE CIENCIAS AD..     13 none                      653.8     272.0  11   1       OK  OK
+ 14 AUTORIDAD PORTUARIA NACIONAL       22 none                     4262.9     229.0   4   2       OK  OK
+ 15 DREL- COLEGIO NACIONAL DE IQUI     10 none                     2373.8     500.0   8   1       OK  OK
+ 16 SIMA - IQUITOS S.R.LTDA            25 controlled_cooling       2470.8    1622.0  11   1       OK  OK
+ 17 ASOCIACION CIVIL SELVA AMAZONI     16 critical_refrigeration    386.9     737.0  11   1       OK  OK
+------------------------------------------------------------------------------------------------------------------------
+  Equipos/EV/PV/BESS sincronizados con building.csv, schema.json y charger_X_Y.csv: SI
+
+====================================================================================================
+CONCLUSION: Dataset calibrado y validado. Listo para entrenamiento MADRL.
+
+  - 17 edificios con perfiles horarios propios (tipo uso, ocupacion, AC, EV)
+  - building.csv sincroniza nombres, areas, oficinas, equipos y EV por edificio
+  - 16 edificios (B2-B17) destilados desde mediciones mensuales buildingcsv
+  - B1 preservado por politica documentada: no existe B_01.csv mensual
+  - B1 mantiene las mismas 12 columnas y 26 304 filas que B2-B17 para entrenamiento
+  - weather.csv corregido desde NASA POWER cache (2023: T_ext 26C, no zeros)
+  - CityLearnEnv validado: reset + 100 pasos + 293 KPIs
+  - NSL no negativo y balance mensual documentado/destilado validado
+  - NSL residual = energia activa medida - cooling_demand/COP - dhw_demand/COP
+  - pricing.csv = factura mensual destilada a tarifa horaria punta/fuera punta
+  - DHW solo en Hotel (B5) y Hospitales (B11, B12)
+  - heating_demand = 0 en todos (Iquitos climaticamente tropical)
+
+  Algoritmos MADRL compatibles: HAPPO | MASAC | MATD3 | MAAC
+  26 304 pasos temporales | 3 anos (2023-2024-2025) | tz=America/Lima
+====================================================================================================

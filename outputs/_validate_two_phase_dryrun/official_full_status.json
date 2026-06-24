@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-06-24T16:58:30.759508+00:00",
-  "completed_at": "2026-06-24T16:58:30.765382+00:00",
+  "started_at": "2026-06-24T17:48:30.688513+00:00",
+  "completed_at": "2026-06-24T17:48:30.695692+00:00",
   "status": "dry_run",
   "dataset": "citylearn_iquitos_2023_2025",
   "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
@@ -38,7 +38,7 @@
     "two_phase_torch_threads": 2,
     "six_job_cuda_fraction": 0.12,
     "six_job_masac_buffer_size": 12,
-    "six_job_masac_max_replay_gib": 16.0,
+    "six_job_masac_max_replay_gib": 18.0,
     "six_job_masac_critic_batch_size": 1024,
     "two_phase_masac_cuda_fraction": 0.12,
     "strategy": "two_phase_happo_masac: Phase1=HAPPO+MASAC x3 (6 parallel, no stagger); Phase2=MATD3+MAAC x3 (6 parallel, no stagger); ~70 GiB VRAM budget",
@@ -77,7 +77,7 @@
       "available": true,
       "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
       "memory_total_mib": 8188.0,
-      "memory_free_mib": 7479.0,
+      "memory_free_mib": 7476.0,
       "memory_total_gib": 8.0,
       "memory_free_gib": 7.3,
       "driver_version": "560.94",
@@ -92,7 +92,7 @@
   },
   "algorithm_resource_limits": {
     "happo_hidden_size": 512,
-    "masac_max_replay_buffer_gib": 16.0,
+    "masac_max_replay_buffer_gib": 18.0,
     "masac_buffer_size": 12,
     "masac_critic_batch_size": 1024,
     "masac_preload_batch_device": "cuda",
@@ -238,7 +238,7 @@
       "completed_at": null,
       "exit_code": null,
       "output_dir": "outputs/_validate_two_phase_dryrun/masac/E1_seed_0",
-      "command": "C:\\Python314\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E1 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --epochs 50 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 16.0 --buffer-size 12 --critic-batch-size 1024 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 640 --qmix-hidden-dim 320 --hyper-hidden-dim 640",
+      "command": "C:\\Python314\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E1 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --epochs 50 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 18.0 --buffer-size 12 --critic-batch-size 1024 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 640 --qmix-hidden-dim 320 --hyper-hidden-dim 640",
       "planned_only": true
     },
     {
@@ -282,7 +282,7 @@
       "completed_at": null,
       "exit_code": null,
       "output_dir": "outputs/_validate_two_phase_dryrun/masac/E2_seed_0",
-      "command": "C:\\Python314\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E2 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --epochs 50 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 16.0 --buffer-size 12 --critic-batch-size 1024 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 640 --qmix-hidden-dim 320 --hyper-hidden-dim 640",
+      "command": "C:\\Python314\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E2 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --epochs 50 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 18.0 --buffer-size 12 --critic-batch-size 1024 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 640 --qmix-hidden-dim 320 --hyper-hidden-dim 640",
       "planned_only": true
     },
     {
@@ -326,7 +326,7 @@
       "completed_at": null,
       "exit_code": null,
       "output_dir": "outputs/_validate_two_phase_dryrun/masac/E3_seed_0",
-      "command": "C:\\Python314\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E3 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --epochs 50 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 16.0 --buffer-size 12 --critic-batch-size 1024 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 640 --qmix-hidden-dim 320 --hyper-hidden-dim 640",
+      "command": "C:\\Python314\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E3 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --epochs 50 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 18.0 --buffer-size 12 --critic-batch-size 1024 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 640 --qmix-hidden-dim 320 --hyper-hidden-dim 640",
       "planned_only": true
     },
     {

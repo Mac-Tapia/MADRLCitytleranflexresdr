@@ -201,5 +201,39 @@
   "git.repositoryScanIgnoredFolders": [
     "${workspaceFolder}\\CityLearn",
     "${workspaceFolder}\\external"
+  ],
+  "cursorpyright.analysis.diagnosticSeverityOverrides": {
+    "reportMissingImports": "warning"
+  },
+  "cursorpyright.analysis.exclude": [
+    "**/__pycache__",
+    ".venv*/**",
+    "CityLearn/**",
+    "external/**",
+    "outputs/**",
+    "build/**",
+    "dist/**",
+    "agent-skills/**",
+    "deploy/**",
+    "tools/**"
+  ],
+  "cursorpyright.analysis.extraPaths": [
+    "${workspaceFolder}",
+    "${workspaceFolder}\\tools",
+    "${workspaceFolder}\\CityLearn"
+  ],
+  "cursorpyright.analysis.ignore": [
+    "CityLearn/**",
+    "external/**",
+    "outputs/**",
+    "build/**",
+    "dist/**",
+    "agent-skills/**",
+    "deploy/**",
+    "tools/**"
+  ],
+  "cursorpyright.analysis.include": [
+    "uc3m",
+    "tests"
   ]
 }

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv39-citylearn-v3/Scripts/python.exe -m pip list --format=freeze)",
+      "Bash(cd /d/MADRLCitytleranflexresdr && cat .gitmodules)",
+      "Read(//d/d/MADRLCitytleranflexresdr/**)"
+    ]
+  }
+}

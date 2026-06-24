@@ -3,28 +3,28 @@ flowchart LR
         direction TB
         HAPPO_T["Tipo: On-policy\nActualizacion secuencial\nTrust region por agente"]
         HAPPO_C["Critico: Centralizado V(s)\nActor: π(a|o) local\nBackend: HARL/external/HARL"]
-        HAPPO_P["Parametros v4\nhidden_size=384\nn_rollout_threads=1\nlog_interval=1"]
+        HAPPO_P["Parametros A100 Colab\nhidden_size=512\nn_rollout_threads=1\nlog_interval=1"]
     end
 
     subgraph MASAC_BOX["MASAC — Multi-Agent SAC Discreto"]
         direction TB
         MASAC_T["Tipo: Off-policy\nEntropy regularization\nAcciones discretas por eje"]
         MASAC_C["Critico: Q-mix centralizado\nActor: π(a|o) + temperatura\nBackend: MARL/external/MARL/src"]
-        MASAC_P["Parametros v4\naction_bins=3 axis mode\nbuffer_size=20 GiB\ncritic_batch_size=64"]
+        MASAC_P["Parametros A100 Colab\naction_bins=3 axis mode\nbuffer_size=8 ep · max 11 GiB GPU\ncritic_batch_size=512 · cuda_frac=0.26"]
     end
 
     subgraph MATD3_BOX["MATD3 — Multi-Agent TD3"]
         direction TB
         MATD3_T["Tipo: Off-policy\nDoble critico (anti-overest)\nPolicy delay + target noise"]
         MATD3_C["Critico: Par Q₁ Q₂ centralizado\nActor: μ(o) deterministico\nBackend: off-policy/external"]
-        MATD3_P["Parametros v4\nbatch_size=256\nbuffer_size=4096\nhidden_size=256"]
+        MATD3_P["Parametros A100 Colab\nbatch_size=1024\nbuffer_size=2M\nhidden_size=1024\ntrain_interval=100"]
     end
 
     subgraph MAAC_BOX["MAAC — Multi-Agent Attention Critic"]
         direction TB
         MAAC_T["Tipo: Off-policy\nAtencion sobre agentes\nSAC con Q de atencion"]
         MAAC_C["Critico: Attention SAC Q(s,a)\nActor: π(a|o) estocastico\nBackend: MAAC/external/MAAC"]
-        MAAC_P["Parametros v4\naction_bins=3\nbatch_size=256\nsteps_per_update=250"]
+        MAAC_P["Parametros A100 Colab\nbatch_size=1024\nbuffer_length=1M\nhidden_size=1024\nnum_updates=16"]
     end
 
     HAPPO_BOX -->|"12/12 corridas\nv3+v4"| COMP(["Comparacion\nKPIs CityLearn\npor escenario"])

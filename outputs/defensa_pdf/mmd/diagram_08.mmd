@@ -1,52 +1,47 @@
 flowchart LR
-    subgraph DEV["Desarrollo (Windows — RTX 4060)"]
+    subgraph COLAB["Colab A100 Pro+ (canal oficial de entrenamiento)"]
+        direction TB
+        BADGE["Open in Colab\nMac-Tapia/CityLearn\ncodex/iquitos-distillation-madrl-docs"]
+        SYNC["Celda 1.2 hard sync\n/content/MADRLCitytleranflexresdr"]
+        LAUNCH_C["colab_a100_official_launcher.py\ntwo_phase_happo_masac_v3\n50 ep · 12 jobs"]
+        DRIVE["Google Drive outputs\nMADRLCitytleranflexresdr/outputs"]
+        MON_C["colab_a100_live_monitor.py\ncolab_protocol_guard.py"]
+        BADGE --> SYNC --> LAUNCH_C --> DRIVE
+        LAUNCH_C --> MON_C
+    end
+
+    subgraph DEV["Desarrollo local (Windows — RTX 4060)"]
         direction TB
         CODE["Codigo fuente\nCityLearn/ + uc3m/\nscripts/ + tools/"]
-        VENV["Entorno Python 3.9\n.venv39-citylearn-v3\nPyTorch 2.8.0+cu126\nCUDA 12.6"]
-        PS["Launcher local\nrun_citylearn_v3_full_training_visible.ps1\n5 episodios test rapido"]
-        MON_L["Monitor PowerShell\nmonitor_citylearn_v3_official_training.ps1\nLive GPU + reward + KPIs"]
+        VENV["Entorno .venv39-citylearn-v3\nPyTorch 2.8.0+cu126"]
+        PS["Launcher local PS1\nsmoke test rapido"]
+        MON_L["monitor_citylearn_v3_official_training.ps1"]
         CODE --> VENV --> PS --> MON_L
     end
 
     subgraph GIT["Repositorio GitHub"]
-        REPO["Mac-Tapia/MADRLCitytleranflexresdr\ngit submodule --recurse\nCityLearn/ + external/*"]
+        REPO_P["Mac-Tapia/MADRLCitytleranflexresdr\ncodex/fix-madrl-traceability-docs"]
+        REPO_CL["Mac-Tapia/CityLearn\ncodex/iquitos-distillation-madrl-docs"]
+        REPO_P --- REPO_CL
     end
 
-    subgraph AWS["Produccion AWS EC2 (Ubuntu — A10G 24 GB)"]
+    subgraph AWS["Produccion AWS EC2 (opcional)"]
         direction TB
-        subgraph DOCKER["Docker Compose"]
-            IMG["madrl-training:latest\nubuntu:22.04 + PyTorch cu126\nSin drivers en contenedor"]
-            ENTRY["ENTRYPOINT\nrun_aws_training.sh\n--episodes 75 --scenario ALL\n--cuda"]
-            DONE["DONE_MARKER\noutputs/.training_completed\nevita re-entrenamiento"]
-            IMG --> ENTRY --> DONE
-        end
-        subgraph PERSIST["Persistencia (bind mount)"]
-            VOL["./outputs:/workspace/outputs\ncheckpoints + logs + CSVs\nsobrevive container recreation"]
-        end
-        subgraph POLICY_RESTART["Politica de restart"]
-            RST["restart: unless-stopped\n✓ SSH desconecta → sigue\n✓ VS Code desconecta → sigue\n✓ EC2 reinicia → re-arranca\n✓ Training completo → idle"]
-        end
-        subgraph MON_AWS["Monitoreo AWS"]
-            T1["docker compose logs -f\nbanner inicio/fin"]
-            T2["tail_aws_training.sh\nlive_progress + logs rotados"]
-            T3["docker exec nvidia-smi\nGPU dentro del contenedor"]
-        end
-    end
-
-    subgraph S3["S3 (backup de resultados)"]
-        S3B["sync_outputs_s3.sh\nawscli sync\noutputs/ → s3://bucket/"]
+        DOCKER["Docker madrl-training\nrun_aws_training.sh"]
+        VOL["bind mount outputs/"]
+        DOCKER --> VOL
     end
 
     DEV -->|"git push"| GIT
-    GIT -->|"git clone --recurse-submodules"| AWS
-    AWS -->|"artefactos completados"| S3
-    S3 -->|"aws s3 sync download"| DEV
+    GIT -->|"clone + submodule"| COLAB
+    GIT -->|"clone --recurse-submodules"| AWS
+    COLAB -->|"artefactos Drive"| DEV
 
+    classDef colab fill:#e0e7ff,stroke:#4f46e5,color:#1c1917
     classDef dev fill:#e0f2fe,stroke:#0284c7,color:#1c1917
     classDef git fill:#f0fdf4,stroke:#16a34a,color:#1c1917
     classDef aws fill:#fef3c7,stroke:#d97706,color:#1c1917
-    classDef s3 fill:#ffedd5,stroke:#ea580c,color:#1c1917
+    class COLAB colab
     class DEV dev
     class GIT git
     class AWS aws
-    class S3 s3

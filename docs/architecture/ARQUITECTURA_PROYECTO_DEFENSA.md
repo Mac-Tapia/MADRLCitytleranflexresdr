@@ -44,7 +44,7 @@ flowchart LR
         direction TB
         ALGS["4 algoritmos\nHAPPO · MASAC\nMATD3 · MAAC"]
         EJES["3 escenarios\nE1 Flex · E2 CO2 · E3 Costo"]
-        GPU["GPU RTX 4060 local — corrida v4: 5 ep x 8 760 pasos\nObjetivo A100/AWS: 75 ep x 8 760 pasos\n12 corridas totales (4 algo x 3 escenarios)"]
+        GPU["Colab A100 oficial (two_phase_happo_masac_v3)\n50 ep x 8 760 pasos = 438 000 steps/corrida\n12 jobs: Fase1 HAPPO+MASAC · Fase2 MATD3+MAAC\n~20 h wall (6 paralelos/fase, sin stagger)"]
         ALGS --> EJES --> GPU
     end
 
@@ -213,28 +213,28 @@ flowchart LR
         direction TB
         HAPPO_T["Tipo: On-policy\nActualizacion secuencial\nTrust region por agente"]
         HAPPO_C["Critico: Centralizado V(s)\nActor: π(a|o) local\nBackend: HARL/external/HARL"]
-        HAPPO_P["Parametros v4\nhidden_size=384\nn_rollout_threads=1\nlog_interval=1"]
+        HAPPO_P["Parametros A100 Colab\nhidden_size=512\nn_rollout_threads=1\nlog_interval=1"]
     end
 
     subgraph MASAC_BOX["MASAC — Multi-Agent SAC Discreto"]
         direction TB
         MASAC_T["Tipo: Off-policy\nEntropy regularization\nAcciones discretas por eje"]
         MASAC_C["Critico: Q-mix centralizado\nActor: π(a|o) + temperatura\nBackend: MARL/external/MARL/src"]
-        MASAC_P["Parametros v4\naction_bins=3 axis mode\nbuffer_size=20 GiB\ncritic_batch_size=64"]
+        MASAC_P["Parametros A100 Colab\naction_bins=3 axis mode\nbuffer_size=8 ep · max 11 GiB GPU\ncritic_batch_size=512 · cuda_frac=0.26"]
     end
 
     subgraph MATD3_BOX["MATD3 — Multi-Agent TD3"]
         direction TB
         MATD3_T["Tipo: Off-policy\nDoble critico (anti-overest)\nPolicy delay + target noise"]
         MATD3_C["Critico: Par Q₁ Q₂ centralizado\nActor: μ(o) deterministico\nBackend: off-policy/external"]
-        MATD3_P["Parametros v4\nbatch_size=256\nbuffer_size=4096\nhidden_size=256"]
+        MATD3_P["Parametros A100 Colab\nbatch_size=1024\nbuffer_size=2M\nhidden_size=1024\ntrain_interval=100"]
     end
 
     subgraph MAAC_BOX["MAAC — Multi-Agent Attention Critic"]
         direction TB
         MAAC_T["Tipo: Off-policy\nAtencion sobre agentes\nSAC con Q de atencion"]
         MAAC_C["Critico: Attention SAC Q(s,a)\nActor: π(a|o) estocastico\nBackend: MAAC/external/MAAC"]
-        MAAC_P["Parametros v4\naction_bins=3\nbatch_size=256\nsteps_per_update=250"]
+        MAAC_P["Parametros A100 Colab\nbatch_size=1024\nbuffer_length=1M\nhidden_size=1024\nnum_updates=16"]
     end
 
     HAPPO_BOX -->|"12/12 corridas\nv3+v4"| COMP(["Comparacion\nKPIs CityLearn\npor escenario"])
@@ -258,73 +258,69 @@ flowchart LR
 
 ---
 
-## Diagrama 5 — Flujo de Entrenamiento: 12 Corridas (4 Algoritmos x 3 Escenarios)
+## Diagrama 5 — Flujo de Entrenamiento: 12 Corridas (two_phase_happo_masac_v3)
 
 ```mermaid
 flowchart TD
-    START(["Corrida v4 oficial (local RTX 4060 8GB)\nrun_aws_training.sh --scenario ALL\n--episodes 5 x 8760 pasos = 43800 steps/corrida\n[Objetivo Colab A100/AWS: 75 episodios]"])
+    START(["Colab A100-SXM4-80GB · protocolo two_phase_happo_masac_v3\ncolab_a100_official_launcher.py --execution-mode two_phase_happo_masac\n--scenario ALL --episodes 50 --episode-time-steps 8760\n438 000 steps/corrida · --skip-completed · OOM retry"])
 
-    subgraph HAPPO_RUN["HAPPO (on-policy) — 190 min v4 | ~2 800 min A100"]
-        H_E1["HAPPO E1\nflexibilidad\n5 ep x 8760 pasos\n~66 min (v4)"]
-        H_E2["HAPPO E2\nemisiones CO2\n~66 min (v4)"]
-        H_E3["HAPPO E3\ncostos\n~58 min (v4)"]
-        H_E1 & H_E2 -->|"paralelo en GPU"| H_E3
-    end
-
-    subgraph MASAC_RUN["MASAC (off-policy) — 410 min v4 | ~6 100 min A100"]
-        M_E1["MASAC E1\n~126 min (v4)"]
-        M_E2["MASAC E2\n~148 min (v4)"]
-        M_E3["MASAC E3\n~136 min (v4)"]
-        M_E1 --> M_E2 --> M_E3
-    end
-
-    subgraph MATD3_RUN["MATD3 (off-policy) — 1204 min v4 | ~18 000 min A100"]
-        T_E1["MATD3 E1\n~376 min (v4)"]
-        T_E2["MATD3 E2\n~377 min (v4)"]
-        T_E3["MATD3 E3\n~451 min (v4)"]
-        T_E1 & T_E2 -->|"paralelo en GPU"| T_E3
-    end
-
-    subgraph MAAC_RUN["MAAC (off-policy) — 984 min v4 | ~14 700 min A100"]
-        A_E1["MAAC E1\n~332 min (v4)"]
-        A_E2["MAAC E2\n~329 min (v4)"]
-        A_E3["MAAC E3\n~323 min (v4)"]
-        A_E1 --> A_E2 --> A_E3
-    end
-
-    subgraph ARTEFACTOS["Artefactos por corrida (outputs/<ts>/<sc>/<algo>/)"]
+    subgraph PHASE1["FASE 1 — HAPPO + MASAC (6 jobs en paralelo, sin stagger) · ~10 h"]
         direction LR
-        CHK["checkpoints/\nmodelos .pt\npor episodio"]
-        DATA["data/\nresults.json\ntimeseries.csv\ntrace.csv\ntraining_summary.json"]
-        FIG["figures/\n13 graficas PNG\nretorno convergencia\nKPI comparacion"]
-        LOG["logs/\n<algo>_<sc>-00001.log\nrotacion 10 MB"]
-        CHK --- DATA --- FIG --- LOG
+        subgraph P1_H["HAPPO x3 (on-policy)"]
+            H_E1["E1 flex\nw: 0.70/0.15/0.15"]
+            H_E2["E2 CO2\nw: 0.15/0.70/0.15"]
+            H_E3["E3 costo\nw: 0.25/0.15/0.60"]
+        end
+        subgraph P1_M["MASAC x3 (off-policy, buffer GPU)"]
+            M_E1["E1\nbuf 8 ep · 11 GiB"]
+            M_E2["E2\ncuda_frac 0.26"]
+            M_E3["E3\npreload cuda"]
+        end
     end
 
-    START --> HAPPO_RUN
-    HAPPO_RUN -->|"secuencial"| MASAC_RUN
-    MASAC_RUN -->|"secuencial"| MATD3_RUN
-    MATD3_RUN -->|"secuencial"| MAAC_RUN
-    MAAC_RUN --> ARTEFACTOS
-
-    subgraph STATUS["Estado y monitoreo"]
-        S1["official_full_status.json\njobs: running/completed/failed"]
-        S2["live_progress.json\nepisodio, paso, reward\nCO2, precio, GPU"]
-        S1 --- S2
+    subgraph PHASE2["FASE 2 — MATD3 + MAAC (6 jobs en paralelo, tras Fase 1) · ~10 h"]
+        direction LR
+        subgraph P2_T["MATD3 x3"]
+            T_E1["E1\nbatch 1024"]
+            T_E2["E2\nbuf 2M"]
+            T_E3["E3\nhidden 1024"]
+        end
+        subgraph P2_A["MAAC x3"]
+            A_E1["E1\nbatch 1024"]
+            A_E2["E2\nbuf 1M"]
+            A_E3["E3\nupdates 16"]
+        end
     end
 
-    HAPPO_RUN & MASAC_RUN & MATD3_RUN & MAAC_RUN -->|"escribe en tiempo real"| STATUS
+    subgraph ARTEFACTOS["Artefactos por corrida (algorithm-first layout)"]
+        direction LR
+        PATH["outputs/<ts>/<algo>/<Escenario>_seed_0/"]
+        CHK["checkpoints/\nmodelos .pt"]
+        DATA["data/\nresults.json · timeseries.csv\ntrace.csv · training_summary.json"]
+        FIG["figures/\n13 graficas PNG"]
+        LOG["logs/\nE?_algo.log · stderr"]
+        PATH --- CHK --- DATA --- FIG --- LOG
+    end
 
-    classDef happo fill:#dbeafe,stroke:#2563eb,color:#1c1917
-    classDef masac fill:#fae8ff,stroke:#a21caf,color:#1c1917
-    classDef matd3 fill:#dcfce7,stroke:#16a34a,color:#1c1917
-    classDef maac fill:#fef3c7,stroke:#d97706,color:#1c1917
+    subgraph STATUS["Protocolo, estado y monitoreo"]
+        G1["colab_protocol_guard.py\nbloquea layout legacy 9+3"]
+        S1["official_full_status.json\nofficial_full_manifest.json"]
+        S2["live_progress.json\nepisodio · paso · reward · GPU"]
+        MON["colab_a100_live_monitor.py\nprotocol=two_phase_happo_masac_v3"]
+        G1 --- S1 --- S2 --- MON
+    end
+
+    START --> PHASE1
+    PHASE1 -->|"6/6 completados"| PHASE2
+    PHASE2 --> ARTEFACTOS
+    PHASE1 & PHASE2 -->|"escribe en tiempo real"| STATUS
+
+    classDef p1 fill:#dbeafe,stroke:#2563eb,color:#1c1917
+    classDef p2 fill:#dcfce7,stroke:#16a34a,color:#1c1917
     classDef art fill:#f8fafc,stroke:#64748b,color:#1c1917
     classDef stat fill:#fff7ed,stroke:#ea580c,color:#1c1917
-    class HAPPO_RUN happo
-    class MASAC_RUN masac
-    class MATD3_RUN matd3
-    class MAAC_RUN maac
+    class PHASE1,P1_H,P1_M p1
+    class PHASE2,P2_T,P2_A p2
     class ARTEFACTOS art
     class STATUS stat
 ```
@@ -386,7 +382,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    subgraph ARTIFACTS_IN["Entrada: artefactos de 12 corridas v4"]
+    subgraph ARTIFACTS_IN["Entrada: artefactos de 12 corridas (50 ep · two_phase)"]
         direction LR
         R_J["results.json\npor cada algo/escenario"]
         TS["timeseries.csv\npor cada algo/escenario"]
@@ -472,61 +468,56 @@ flowchart TD
 
 ---
 
-## Diagrama 8 — Infraestructura de Despliegue: Local y AWS EC2
+## Diagrama 8 — Infraestructura de Despliegue: Local, Colab A100 y AWS EC2
 
 ```mermaid
 flowchart LR
-    subgraph DEV["Desarrollo (Windows — RTX 4060)"]
+    subgraph COLAB["Colab A100 Pro+ (canal oficial de entrenamiento)"]
+        direction TB
+        BADGE["Open in Colab\nMac-Tapia/CityLearn\ncodex/iquitos-distillation-madrl-docs"]
+        SYNC["Celda 1.2 hard sync\n/content/MADRLCitytleranflexresdr"]
+        LAUNCH_C["colab_a100_official_launcher.py\ntwo_phase_happo_masac_v3\n50 ep · 12 jobs"]
+        DRIVE["Google Drive outputs\nMADRLCitytleranflexresdr/outputs"]
+        MON_C["colab_a100_live_monitor.py\ncolab_protocol_guard.py"]
+        BADGE --> SYNC --> LAUNCH_C --> DRIVE
+        LAUNCH_C --> MON_C
+    end
+
+    subgraph DEV["Desarrollo local (Windows — RTX 4060)"]
         direction TB
         CODE["Codigo fuente\nCityLearn/ + uc3m/\nscripts/ + tools/"]
-        VENV["Entorno Python 3.9\n.venv39-citylearn-v3\nPyTorch 2.8.0+cu126\nCUDA 12.6"]
-        PS["Launcher local\nrun_citylearn_v3_full_training_visible.ps1\n5 episodios test rapido"]
-        MON_L["Monitor PowerShell\nmonitor_citylearn_v3_official_training.ps1\nLive GPU + reward + KPIs"]
+        VENV["Entorno .venv39-citylearn-v3\nPyTorch 2.8.0+cu126"]
+        PS["Launcher local PS1\nsmoke test rapido"]
+        MON_L["monitor_citylearn_v3_official_training.ps1"]
         CODE --> VENV --> PS --> MON_L
     end
 
     subgraph GIT["Repositorio GitHub"]
-        REPO["Mac-Tapia/MADRLCitytleranflexresdr\ngit submodule --recurse\nCityLearn/ + external/*"]
+        REPO_P["Mac-Tapia/MADRLCitytleranflexresdr\ncodex/fix-madrl-traceability-docs"]
+        REPO_CL["Mac-Tapia/CityLearn\ncodex/iquitos-distillation-madrl-docs"]
+        REPO_P --- REPO_CL
     end
 
-    subgraph AWS["Produccion AWS EC2 (Ubuntu — A10G 24 GB)"]
+    subgraph AWS["Produccion AWS EC2 (opcional)"]
         direction TB
-        subgraph DOCKER["Docker Compose"]
-            IMG["madrl-training:latest\nubuntu:22.04 + PyTorch cu126\nSin drivers en contenedor"]
-            ENTRY["ENTRYPOINT\nrun_aws_training.sh\n--episodes 75 --scenario ALL\n--cuda"]
-            DONE["DONE_MARKER\noutputs/.training_completed\nevita re-entrenamiento"]
-            IMG --> ENTRY --> DONE
-        end
-        subgraph PERSIST["Persistencia (bind mount)"]
-            VOL["./outputs:/workspace/outputs\ncheckpoints + logs + CSVs\nsobrevive container recreation"]
-        end
-        subgraph POLICY_RESTART["Politica de restart"]
-            RST["restart: unless-stopped\n✓ SSH desconecta → sigue\n✓ VS Code desconecta → sigue\n✓ EC2 reinicia → re-arranca\n✓ Training completo → idle"]
-        end
-        subgraph MON_AWS["Monitoreo AWS"]
-            T1["docker compose logs -f\nbanner inicio/fin"]
-            T2["tail_aws_training.sh\nlive_progress + logs rotados"]
-            T3["docker exec nvidia-smi\nGPU dentro del contenedor"]
-        end
-    end
-
-    subgraph S3["S3 (backup de resultados)"]
-        S3B["sync_outputs_s3.sh\nawscli sync\noutputs/ → s3://bucket/"]
+        DOCKER["Docker madrl-training\nrun_aws_training.sh"]
+        VOL["bind mount outputs/"]
+        DOCKER --> VOL
     end
 
     DEV -->|"git push"| GIT
-    GIT -->|"git clone --recurse-submodules"| AWS
-    AWS -->|"artefactos completados"| S3
-    S3 -->|"aws s3 sync download"| DEV
+    GIT -->|"clone + submodule"| COLAB
+    GIT -->|"clone --recurse-submodules"| AWS
+    COLAB -->|"artefactos Drive"| DEV
 
+    classDef colab fill:#e0e7ff,stroke:#4f46e5,color:#1c1917
     classDef dev fill:#e0f2fe,stroke:#0284c7,color:#1c1917
     classDef git fill:#f0fdf4,stroke:#16a34a,color:#1c1917
     classDef aws fill:#fef3c7,stroke:#d97706,color:#1c1917
-    classDef s3 fill:#ffedd5,stroke:#ea580c,color:#1c1917
+    class COLAB colab
     class DEV dev
     class GIT git
     class AWS aws
-    class S3 s3
 ```
 
 ---
@@ -569,8 +560,9 @@ flowchart TD
     subgraph L5["Capa 5: Launchers y orquestacion"]
         direction LR
         TRAIN_S["CityLearn/scripts/train_citylearn_v3_*.py\n4 scripts de entrenamiento\nuno por algoritmo"]
+        COLAB_L["CityLearn/scripts/colab_a100_official_launcher.py\ncolab_a100_live_monitor.py\ncolab_protocol_guard.py · two_phase_happo_masac_v3"]
         LAUNCH["scripts/ + deploy/aws/training/\nLaunchers locales PS + AWS bash\nMonitoreo + checkpointing"]
-        TRAIN_S --- LAUNCH
+        TRAIN_S --- COLAB_L --- LAUNCH
     end
 
     subgraph L6["Capa 6: Evaluacion y evidencia"]

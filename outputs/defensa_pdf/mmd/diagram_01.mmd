@@ -25,7 +25,7 @@ flowchart LR
         direction TB
         ALGS["4 algoritmos\nHAPPO · MASAC\nMATD3 · MAAC"]
         EJES["3 escenarios\nE1 Flex · E2 CO2 · E3 Costo"]
-        GPU["GPU RTX 4060 / AWS A10G\n75 episodios x 8 760 pasos\n12 corridas totales"]
+        GPU["Colab A100 oficial (two_phase_happo_masac_v3)\n50 ep x 8 760 pasos = 438 000 steps/corrida\n12 jobs: Fase1 HAPPO+MASAC · Fase2 MATD3+MAAC\n~20 h wall (6 paralelos/fase, sin stagger)"]
         ALGS --> EJES --> GPU
     end
 

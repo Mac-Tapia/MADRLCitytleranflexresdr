@@ -33,8 +33,9 @@ flowchart TD
     subgraph L5["Capa 5: Launchers y orquestacion"]
         direction LR
         TRAIN_S["CityLearn/scripts/train_citylearn_v3_*.py\n4 scripts de entrenamiento\nuno por algoritmo"]
+        COLAB_L["CityLearn/scripts/colab_a100_official_launcher.py\ncolab_a100_live_monitor.py\ncolab_protocol_guard.py · two_phase_happo_masac_v3"]
         LAUNCH["scripts/ + deploy/aws/training/\nLaunchers locales PS + AWS bash\nMonitoreo + checkpointing"]
-        TRAIN_S --- LAUNCH
+        TRAIN_S --- COLAB_L --- LAUNCH
     end
 
     subgraph L6["Capa 6: Evaluacion y evidencia"]

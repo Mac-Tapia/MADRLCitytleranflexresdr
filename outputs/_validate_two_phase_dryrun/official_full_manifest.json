@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-06-24T17:48:30.688513+00:00",
-  "completed_at": "2026-06-24T17:48:30.695692+00:00",
+  "started_at": "2026-06-24T18:36:02.394890+00:00",
+  "completed_at": "2026-06-24T18:36:02.401162+00:00",
   "status": "dry_run",
   "dataset": "citylearn_iquitos_2023_2025",
   "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
@@ -77,9 +77,9 @@
       "available": true,
       "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
       "memory_total_mib": 8188.0,
-      "memory_free_mib": 7476.0,
+      "memory_free_mib": 7457.0,
       "memory_total_gib": 8.0,
-      "memory_free_gib": 7.3,
+      "memory_free_gib": 7.28,
       "driver_version": "560.94",
       "preflight_skipped": true
     },

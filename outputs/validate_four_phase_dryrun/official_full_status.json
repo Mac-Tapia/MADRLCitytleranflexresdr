@@ -1,0 +1,361 @@
+{
+  "started_at": "2026-06-24T14:59:13.891454+00:00",
+  "completed_at": "2026-06-24T14:59:13.894728+00:00",
+  "status": "dry_run",
+  "dataset": "citylearn_iquitos_2023_2025",
+  "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
+  "schema_path_resolved": "D:\\MADRLCitytleranflexresdr\\CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025\\schema.json",
+  "scenario": "ALL",
+  "scenarios": [
+    "E1",
+    "E2",
+    "E3"
+  ],
+  "seed": 0,
+  "episode_time_steps": 168,
+  "episodes": 2,
+  "num_env_steps": 336,
+  "torch": null,
+  "cuda": true,
+  "algorithm_family": "MADRL",
+  "execution": "two_phase_happo_masac",
+  "parallelization": {
+    "execution_mode": "two_phase_happo_masac",
+    "four_phase_algo_order": [
+      "happo",
+      "masac",
+      "matd3",
+      "maac"
+    ],
+    "jobs_per_subphase": 3,
+    "requested": true,
+    "effective": true,
+    "parallel_scenarios": 3,
+    "two_phase_torch_threads": 4,
+    "three_job_cuda_fraction": 0.3,
+    "three_job_masac_buffer_size": 10,
+    "three_job_masac_max_replay_gib": 14.0,
+    "three_job_masac_critic_batch_size": 1024,
+    "two_phase_masac_cuda_fraction": 0.3,
+    "strategy": "four_subphases: HAPPO\u00d73 \u2192 MASAC\u00d73 \u2192 MATD3\u00d73 \u2192 MAAC\u00d73 (3 parallel each, no stagger; ~70 GiB VRAM budget when headroom available)",
+    "est_min_per_episode_by_algo": {
+      "happo": 13.0,
+      "masac": 18.0,
+      "matd3": 14.0,
+      "maac": 9.0
+    },
+    "est_min_per_episode": 13.0,
+    "est_phase_wall_hours": 1.8,
+    "est_total_wall_hours": 1.8
+  },
+  "active_project_environment": {
+    "python": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python_version": "3.9.25 (main, Oct 31 2025, 22:56:13) [MSC v.1929 64 bit (AMD64)]",
+    "pythonpath_prefix": [
+      "D:\\MADRLCitytleranflexresdr",
+      "D:\\MADRLCitytleranflexresdr\\CityLearn",
+      "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts",
+      "D:\\MADRLCitytleranflexresdr\\external\\HARL",
+      "D:\\MADRLCitytleranflexresdr\\external\\MARL\\src",
+      "D:\\MADRLCitytleranflexresdr\\external\\off-policy",
+      "D:\\MADRLCitytleranflexresdr\\external\\MAAC"
+    ],
+    "cuda_device_order": "PCI_BUS_ID",
+    "pytorch_cuda_alloc_conf": "expandable_segments:True,max_split_size_mb:128",
+    "pythonhashseed": "0"
+  },
+  "gpu_optimization": {
+    "enabled": true,
+    "profile": "aws",
+    "require_a100": true,
+    "gpu": {
+      "available": true,
+      "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "memory_total_mib": 8188.0,
+      "memory_free_mib": 7545.0,
+      "memory_total_gib": 8.0,
+      "memory_free_gib": 7.37,
+      "driver_version": "560.94",
+      "preflight_skipped": true
+    },
+    "torch_runtime": {
+      "skipped": true
+    },
+    "cuda_memory_fraction_requested": 0.92,
+    "live_progress_interval": 5000,
+    "strategy": "A100 MADRL jobs with parallel scenarios, TF32-enabled Torch runtime, resumable artifacts, OOM retry fallback."
+  },
+  "algorithm_resource_limits": {
+    "happo_hidden_size": 512,
+    "masac_max_replay_buffer_gib": 11.0,
+    "masac_buffer_size": 8,
+    "masac_critic_batch_size": 512,
+    "masac_preload_batch_device": "cuda",
+    "matd3_batch_size": 1024,
+    "matd3_buffer_size": 2000000,
+    "maac_batch_size": 1024,
+    "maac_buffer_length": 1000000,
+    "oom_retry": true,
+    "citylearn_v2_benchmarks": [
+      "PPO",
+      "SAC",
+      "A2C"
+    ]
+  },
+  "artifact_optimization": {
+    "profile": "efficient",
+    "trace_record_interval": 8760,
+    "trace_detail": "compact",
+    "note": "efficient/minimal reduce per-agent trace generation and duplicate CSV mirrors."
+  },
+  "reward": {
+    "function": "citylearn.reward_function.CityLearnV3MADRLRewardFunction",
+    "aggregation": "team_mean",
+    "axes": [
+      "OE1_flexibility",
+      "OE2_carbon",
+      "OE3_cost"
+    ]
+  },
+  "training_config": {
+    "episodes_required": 50,
+    "episode_time_steps_required": 8760,
+    "a100_ready": false,
+    "smoke_imports": {
+      "torch": "ok",
+      "numpy": "ok",
+      "pandas": "ok",
+      "citylearn": "ok",
+      "citylearn.v3.environment": "ok",
+      "harl": "ok",
+      "runner_msac": "ok",
+      "offpolicy": "ok",
+      "algorithms.attention_sac": "ok"
+    }
+  },
+  "output_root": "outputs/validate_four_phase_dryrun",
+  "start_from_algorithm": "happo",
+  "citylearn_v2_benchmarks": [
+    "PPO",
+    "SAC",
+    "A2C"
+  ],
+  "algorithm_order": [
+    "happo",
+    "masac",
+    "matd3",
+    "maac"
+  ],
+  "references": [
+    {
+      "key": "citylearn_standardization",
+      "title": "CityLearn: Standardizing Research in Multi-Agent Reinforcement Learning for Demand Response and Urban Energy Management",
+      "url": "https://arxiv.org/abs/2012.10504"
+    },
+    {
+      "key": "citylearn_v2",
+      "title": "CityLearn v2: energy-flexible, resilient, occupant-centric, and carbon-aware",
+      "url": "https://escholarship.org/content/qt5t48x8xk/qt5t48x8xk.pdf"
+    },
+    {
+      "key": "citylearn_challenge_2022",
+      "title": "The CityLearn Challenge 2022: Overview, Results, and Lessons Learned",
+      "url": "https://proceedings.mlr.press/v220/nweye23a.html"
+    },
+    {
+      "key": "happo_hatrpo",
+      "title": "Trust Region Policy Optimisation in Multi-Agent Reinforcement Learning",
+      "url": "https://openreview.net/forum?id=EcGGFkNTxdJ"
+    },
+    {
+      "key": "maac",
+      "title": "Actor-Attention-Critic for Multi-Agent Reinforcement Learning",
+      "url": "https://proceedings.mlr.press/v97/iqbal19a.html"
+    },
+    {
+      "key": "matd3",
+      "title": "Reducing Overestimation Bias in Multi-Agent Domains Using Double Centralized Critics",
+      "url": "https://arxiv.org/abs/1910.01465"
+    },
+    {
+      "key": "qmix",
+      "title": "QMIX: Monotonic Value Function Factorisation for Deep Multi-Agent Reinforcement Learning",
+      "url": "https://arxiv.org/abs/1803.11485"
+    },
+    {
+      "key": "sac",
+      "title": "Soft Actor-Critic Algorithms and Applications",
+      "url": "https://arxiv.org/abs/1812.05905"
+    },
+    {
+      "key": "pytorch_cuda",
+      "title": "PyTorch CUDA semantics and memory management",
+      "url": "https://docs.pytorch.org/docs/stable/notes/cuda.html"
+    },
+    {
+      "key": "pytorch_reproducibility",
+      "title": "PyTorch reproducibility notes",
+      "url": "https://docs.pytorch.org/docs/stable/notes/randomness.html"
+    },
+    {
+      "key": "colab_limits",
+      "title": "Google Colab FAQ: resources and GPU availability are not guaranteed",
+      "url": "https://research.google.com/colaboratory/faq.html"
+    },
+    {
+      "key": "nvidia_a100",
+      "title": "NVIDIA A100 Tensor Core GPU datasheet",
+      "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf"
+    },
+    {
+      "key": "ross_may_phd",
+      "title": "On the Feasibility of Reinforcement Learning in Single- and Multi-Agent Systems",
+      "url": "https://www.diva-portal.org/smash/get/diva2:1731696/FULLTEXT01.pdf"
+    },
+    {
+      "key": "oxford_energy_flexibility_thesis",
+      "title": "Multi-agent reinforcement learning for the coordination of residential energy flexibility",
+      "url": "https://ora.ox.ac.uk/objects/uuid:4acf19ee-76b3-4e71-a424-259cd9e2d6f5"
+    },
+    {
+      "key": "polito_marl_building_energy_thesis",
+      "title": "Multi-Agent Reinforcement Learning Building Energy Optimization",
+      "url": "https://webthesis.biblio.polito.it/40396/1/tesi.pdf"
+    }
+  ],
+  "jobs": [
+    {
+      "name": "happo",
+      "scenario": "E1",
+      "script": "CityLearn/scripts/train_citylearn_v3_happo.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/happo/E1_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E1 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\happo --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --num-env-steps 336 --hidden-size 512 --n-rollout-threads 1 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
+      "planned_only": true
+    },
+    {
+      "name": "masac",
+      "scenario": "E1",
+      "script": "CityLearn/scripts/train_citylearn_v3_masac.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/masac/E1_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E1 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --epochs 2 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 11.0 --buffer-size 8 --critic-batch-size 512 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 512 --qmix-hidden-dim 256 --hyper-hidden-dim 512",
+      "planned_only": true
+    },
+    {
+      "name": "matd3",
+      "scenario": "E1",
+      "script": "CityLearn/scripts/train_citylearn_v3_matd3.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/matd3/E1_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_matd3.py --scenario E1 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\matd3 --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --num-env-steps 336 --batch-size 1024 --buffer-size 2000000 --hidden-size 1024 --lr 3e-4 --max-grad-norm 1.0 --gamma 0.9999 --train-interval 100 --num-random-episodes 1",
+      "planned_only": true
+    },
+    {
+      "name": "maac",
+      "scenario": "E1",
+      "script": "CityLearn/scripts/train_citylearn_v3_maac.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/maac/E1_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_maac.py --scenario E1 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\maac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --action-bins 3 --discrete-action-mode axis --max-discrete-actions 512 --batch-size 1024 --buffer-length 1000000 --steps-per-update 100 --num-updates 16 --hidden-size 1024 --attend-heads 4 --pi-lr 3e-4 --q-lr 1e-3 --tau 1e-3 --gamma 0.9999 --reward-scale 10.0",
+      "planned_only": true
+    },
+    {
+      "name": "happo",
+      "scenario": "E2",
+      "script": "CityLearn/scripts/train_citylearn_v3_happo.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/happo/E2_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E2 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\happo --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --num-env-steps 336 --hidden-size 512 --n-rollout-threads 1 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
+      "planned_only": true
+    },
+    {
+      "name": "masac",
+      "scenario": "E2",
+      "script": "CityLearn/scripts/train_citylearn_v3_masac.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/masac/E2_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E2 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --epochs 2 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 11.0 --buffer-size 8 --critic-batch-size 512 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 512 --qmix-hidden-dim 256 --hyper-hidden-dim 512",
+      "planned_only": true
+    },
+    {
+      "name": "matd3",
+      "scenario": "E2",
+      "script": "CityLearn/scripts/train_citylearn_v3_matd3.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/matd3/E2_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_matd3.py --scenario E2 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\matd3 --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --num-env-steps 336 --batch-size 1024 --buffer-size 2000000 --hidden-size 1024 --lr 3e-4 --max-grad-norm 1.0 --gamma 0.9999 --train-interval 100 --num-random-episodes 1",
+      "planned_only": true
+    },
+    {
+      "name": "maac",
+      "scenario": "E2",
+      "script": "CityLearn/scripts/train_citylearn_v3_maac.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/maac/E2_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_maac.py --scenario E2 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\maac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --action-bins 3 --discrete-action-mode axis --max-discrete-actions 512 --batch-size 1024 --buffer-length 1000000 --steps-per-update 100 --num-updates 16 --hidden-size 1024 --attend-heads 4 --pi-lr 3e-4 --q-lr 1e-3 --tau 1e-3 --gamma 0.9999 --reward-scale 10.0",
+      "planned_only": true
+    },
+    {
+      "name": "happo",
+      "scenario": "E3",
+      "script": "CityLearn/scripts/train_citylearn_v3_happo.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/happo/E3_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E3 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\happo --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --num-env-steps 336 --hidden-size 512 --n-rollout-threads 1 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
+      "planned_only": true
+    },
+    {
+      "name": "masac",
+      "scenario": "E3",
+      "script": "CityLearn/scripts/train_citylearn_v3_masac.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/masac/E3_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_masac.py --scenario E3 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\masac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --epochs 2 --action-bins 3 --discrete-action-mode axis --max-replay-buffer-gib 11.0 --buffer-size 8 --critic-batch-size 512 --critic-train-steps 2 --actor-sample-times 10 --masac-preload-batch-device cuda --actor-lr 3e-4 --critic-lr 5e-4 --alpha-lr 3e-4 --grad-norm-clip 1.0 --gamma 0.9999 --rnn-hidden-dim 512 --qmix-hidden-dim 256 --hyper-hidden-dim 512",
+      "planned_only": true
+    },
+    {
+      "name": "matd3",
+      "scenario": "E3",
+      "script": "CityLearn/scripts/train_citylearn_v3_matd3.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/matd3/E3_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_matd3.py --scenario E3 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\matd3 --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --num-env-steps 336 --batch-size 1024 --buffer-size 2000000 --hidden-size 1024 --lr 3e-4 --max-grad-norm 1.0 --gamma 0.9999 --train-interval 100 --num-random-episodes 1",
+      "planned_only": true
+    },
+    {
+      "name": "maac",
+      "scenario": "E3",
+      "script": "CityLearn/scripts/train_citylearn_v3_maac.py",
+      "started_at": null,
+      "completed_at": null,
+      "exit_code": null,
+      "output_dir": "outputs/validate_four_phase_dryrun/maac/E3_seed_0",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_maac.py --scenario E3 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 168 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\validate_four_phase_dryrun\\maac --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda --cuda-memory-fraction 0.92 --episodes 2 --action-bins 3 --discrete-action-mode axis --max-discrete-actions 512 --batch-size 1024 --buffer-length 1000000 --steps-per-update 100 --num-updates 16 --hidden-size 1024 --attend-heads 4 --pi-lr 3e-4 --q-lr 1e-3 --tau 1e-3 --gamma 0.9999 --reward-scale 10.0",
+      "planned_only": true
+    }
+  ]
+}

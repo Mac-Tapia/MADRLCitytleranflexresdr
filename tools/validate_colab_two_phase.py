@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -111,7 +112,10 @@ def main() -> int:
         [sys.executable, str(LAUNCHER), "--help"],
         capture_output=True,
         text=True,
-        cwd=CL,
+        encoding="utf-8",
+        errors="replace",
+        cwd=ROOT,
+        env={**os.environ, "PYTHONUTF8": "1"},
     )
     help_text = proc.stdout + proc.stderr
     if "algo_sequential" in help_text:

@@ -93,6 +93,28 @@ exclude_lines = [
     "if TYPE_CHECKING:",
 ]
 
+# ── Pylint ───────────────────────────────────────────────────────────────────
+# Disable codes that are false positives in Jupyter notebooks (cells are
+# analysed as concatenated source: reimports, shared scope, Colab imports).
+[tool.pylint.messages-control]
+disable = [
+    "reimported",             # W0404 — each notebook cell imports independently
+    "redefined-outer-name",   # W0621 — notebook cells share global scope
+    "function-redefined",     # E0102 — utility fns duplicated across independent cells
+    "import-error",           # E0401 — google.colab not available locally
+    "no-name-in-module",      # E0611 — google.colab.drive not resolvable locally
+    "unused-import",          # W0611 — side-effect imports
+    "unspecified-encoding",   # W1514 — tutorial code omits encoding for readability
+    "broad-exception-caught", # W0718 — intentional in notebook try/except blocks
+    "subprocess-run-check",   # W1510 — check= omitted intentionally in tutorials
+    "missing-module-docstring",   # C0114 — notebooks use markdown cells for docs
+    "missing-function-docstring", # C0116
+    "invalid-name",           # C0103 — short names (ln, f, g) are fine in notebooks
+]
+
+[tool.pylint.master]
+ignored-modules = ["google.colab", "google"]
+
 [tool.ruff]
 extend-exclude = [
     ".venv39-citylearn-v3",

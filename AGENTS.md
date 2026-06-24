@@ -36,6 +36,8 @@ This runs on a Linux VM. The Windows-only `scripts/verify_project_context.ps1` g
 - Tests that pass standalone: `pytest tests/citylearn_v3`.
 - Simulator smoke run: build `citylearn.citylearn.CityLearnEnv` from `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json` (17 buildings, Iquitos). Each step is ~2.4 s, so use a short horizon (e.g. 24 steps) for smoke tests.
 
-### KNOWN BLOCKER — missing `uc3m/env/` package
-- `uc3m/__init__.py` imports `uc3m.env.uc3m_env.UC3MEnv` and `uc3m.env.bact`, but `uc3m/env/` is **not committed**: the `.gitignore` `env/` pattern excluded it. As a result `import uc3m` fails, so **all `tests/uc3m/*` and `python -m uc3m.train` cannot run** until that package is provided.
-- `.gitignore` now has a `!uc3m/env/` exception so the owner can commit the local `uc3m/env/` source. Until those files are committed, only the CityLearn simulator layer is runnable here.
+### `uc3m/env/` package (was previously missing)
+- `uc3m/__init__.py` imports `uc3m.env.uc3m_env.UC3MEnv` and `uc3m.env.bact`. The `uc3m/env/` package was originally excluded by the `.gitignore` `env/` pattern; a `!uc3m/env/` exception now allows it to be versioned and the package is committed.
+- `uc3m/env/bact.py` provides `ClimateVector`, `IQUITOS_CLIMATE`, `BACTEncoder`, `KOPPEN_CODES`, `BLDG_TYPE_CODES`, and the `KA=14 / KC=8 / KB=7` (BACT dim 29) constants.
+- `uc3m/env/uc3m_env.py` provides `UC3MEnv`, which wraps `citylearn.citylearn.CityLearnEnv` (`central_agent=False`), augments each observation with the 29-D BACT vector, and computes the 7-axis holistic reward (`uc3m.reward.axes.RewardAxes`). `harl_mode=False` → `dict` obs/rewards keyed by `agent_id`; `harl_mode=True` → `list` obs/rewards (HARL runners).
+- Running training: `python -m uc3m.train --algorithm HAPPO --schema CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`. Pass `--schema` explicitly (the layered `base.yaml` sets `dataset.schema_path: null`). The HARL/off-policy backends require the `external/*` submodules; without them the factory falls back to a random-policy stub, so the training loop still runs end-to-end.

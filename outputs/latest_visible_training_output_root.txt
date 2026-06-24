@@ -1,1 +1,1 @@
-outputs/validate_a100_profile_dryrun
+outputs/_validate_six_parallel_dryrun

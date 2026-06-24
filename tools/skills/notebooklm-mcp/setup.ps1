@@ -1,7 +1,6 @@
 # Instala el MCP de NotebookLM para este repositorio
 $ErrorActionPreference = "Stop"
-$SkillDir = Join-Path $PSScriptRoot ".."
-$SkillDir = (Resolve-Path $SkillDir).Path
+$SkillDir = (Resolve-Path $PSScriptRoot).Path
 
 Write-Host "Instalando NotebookLM MCP en: $SkillDir"
 

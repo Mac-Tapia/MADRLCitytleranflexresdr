@@ -1,0 +1,6 @@
+.venv/
+data/browser_state/
+data/auth_info.json
+__pycache__/
+*.pyc
+.env

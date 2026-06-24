@@ -170,7 +170,9 @@ def main() -> int:
         assert status.get("execution") == "two_phase_happo_masac"
         assert len(status.get("jobs", [])) == 12
         strat = status.get("parallelization", {}).get("strategy", "")
-        assert "Phase1=HAPPO+MASAC" in strat and "Phase2=MATD3+MAAC" in strat
+        assert "four_subphases" in strat.lower(), f"strategy inesperada: {strat!r}"
+        for algo in ("HAPPO", "MASAC", "MATD3", "MAAC"):
+            assert algo in strat, f"strategy sin {algo}: {strat!r}"
         assert "no stagger" in strat.lower()
         algos = {j["name"] for j in status["jobs"]}
         assert algos == {"happo", "masac", "matd3", "maac"}
@@ -179,8 +181,7 @@ def main() -> int:
 
     print("\n" + "=" * 72)
     print("RESULTADO: LISTO PARA COLAB (two_phase_happo_masac)")
-    print("  Fase 1: HAPPO+MASAC x3 (6 paralelo, sin stagger)")
-    print("  Fase 2: MATD3+MAAC x3 (6 paralelo, sin stagger)")
+    print("  four_subphases: HAPPO×3 → MASAC×3 → MATD3×3 → MAAC×3 (3 paralelo, sin stagger)")
     print("=" * 72)
     return 0
 

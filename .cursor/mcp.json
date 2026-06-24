@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "python",
+      "args": [
+        "tools/skills/notebooklm-mcp/run_server.py"
+      ],
+      "cwd": "${workspaceFolder}"
+    }
+  }
+}

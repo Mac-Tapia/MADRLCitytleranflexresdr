@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW_MANIFEST = ROOT / "docs" / "workflow_manifest.json"
 DATASET_DIR = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
 SCHEMA_PATH = DATASET_DIR / "schema.json"
-AUDIT_DIR = ROOT / "outputs" / "dataset_audit"
+AUDIT_DIR = ROOT / "data" / "dataset_audit"
 LATEST_OUTPUT_POINTER = ROOT / "outputs" / "latest_visible_training_output_root.txt"
 DEFAULT_MANIFEST_OUT = AUDIT_DIR / "workflow_integrity_manifest.json"
 
@@ -103,7 +103,7 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
     for audit_name in required_audits:
         if audit_name == "workflow_integrity_manifest.json":
             continue
-        require((AUDIT_DIR / audit_name).is_file(), f"Missing audit manifest: outputs/dataset_audit/{audit_name}", errors)
+        require((AUDIT_DIR / audit_name).is_file(), f"Missing audit manifest: data/dataset_audit/{audit_name}", errors)
 
     workflow = manifest.get("workflow", [])
     for stage in workflow:
@@ -347,7 +347,7 @@ def main() -> int:
         "--manifest-out",
         type=Path,
         default=DEFAULT_MANIFEST_OUT,
-        help="Optional JSON report path. Defaults to outputs/dataset_audit/workflow_integrity_manifest.json.",
+        help="Optional JSON report path. Defaults to data/dataset_audit/workflow_integrity_manifest.json.",
     )
     args = parser.parse_args()
     manifest_out = args.manifest_out if args.manifest_out.is_absolute() else ROOT / args.manifest_out

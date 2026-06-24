@@ -129,9 +129,9 @@ def synchronization_commands(args: argparse.Namespace) -> list[tuple[str, list[s
         "--buildingcsv-dir",
         "CityLearn/data/buildingcsv",
         "--audit-dir",
-        "outputs/dataset_audit",
+        "data/dataset_audit",
         "--manifest-out",
-        "outputs/dataset_audit/training_dataset_ready_manifest.json",
+        "data/dataset_audit/training_dataset_ready_manifest.json",
     ]
     if args.skip_citylearn_load:
         ready_cmd.append("--skip-citylearn-load")
@@ -218,7 +218,7 @@ def synchronization_commands(args: argparse.Namespace) -> list[tuple[str, list[s
                 "--dataset-dir",
                 dataset_dir,
                 "--manifest-out",
-                "outputs/dataset_audit/csv_integrity_manifest.json",
+                "data/dataset_audit/csv_integrity_manifest.json",
             ],
         ),
         (

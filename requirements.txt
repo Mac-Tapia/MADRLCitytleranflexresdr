@@ -4,6 +4,8 @@
 # Instalacion completa (despues de crear y activar un venv Python 3.9):
 #   pip install -r requirements.txt
 #   pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu126
+# Blackwell (RTX PRO 6000 sm_120): cu128 required — notebook cell 1.3 auto-selects.
+#   pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu128
 #
 # El segundo comando es el unico paso separado: PyTorch necesita el indice de
 # wheels CUDA especifico (cu126) para acelerar por GPU. El primer comando ya

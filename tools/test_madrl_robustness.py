@@ -228,6 +228,61 @@ def test_dynamic_backfill_scheduler() -> None:
     check("scheduler surfaces a job failure (rc != 0)", rc2 != 0, f"rc2={rc2}")
 
 
+# ---------------------------------------------------------------------------
+# Test 6 — Drive durability helpers + resume safety. Proves recent checkpoints
+# get flushed to durable storage and that a resume never proceeds without real
+# restorable weights (which previously caused a silent fresh restart on Colab).
+# ---------------------------------------------------------------------------
+def test_drive_durability_and_resume_safety() -> None:
+    print("\n[6] Drive durability + resume safety")
+    import citylearn_v3_training_common as common
+
+    check("flush_filesystem_buffers exists", callable(getattr(common, "flush_filesystem_buffers", None)))
+    check("fsync_file exists", callable(getattr(common, "fsync_file", None)))
+
+    try:
+        common.flush_filesystem_buffers()
+        flush_ok = True
+    except Exception:
+        flush_ok = False
+    check("flush_filesystem_buffers runs without error (no-op off-Colab)", flush_ok)
+
+    src = (SCRIPTS / "citylearn_v3_training_common.py").read_text(encoding="utf-8")
+    check("live_progress write is fsync'd", "fsync_file(self.live_progress_path)" in src)
+    check("heartbeat flushes buffers to Drive", "Flush buffered checkpoint" in src)
+
+    patch_src = (SCRIPTS / "masac_runtime_optimizations.py").read_text(encoding="utf-8")
+    check("MASAC flushes after checkpoint save", "_sync()" in patch_src)
+
+    # Resume safety: live_progress present (episode>0) but NO checkpoints -> must NOT
+    # resume (would otherwise train fewer episodes from random weights).
+    import json as _json
+
+    with tempfile.TemporaryDirectory() as tmp:
+        out = Path(tmp) / "happo" / "E1_seed_0"
+        out.mkdir(parents=True)
+        (out / "live_progress.json").write_text(
+            _json.dumps({"episode": 35, "global_step": 313800}), encoding="utf-8"
+        )
+        plan = common.discover_job_resume_plan(
+            out,
+            algorithm="happo",
+            target_episodes=50,
+            episode_time_steps=8760,
+            allow_resume=True,
+        )
+        check(
+            "resume inactive when weights are missing",
+            plan.get("active") is False,
+            f"active={plan.get('active')}",
+        )
+        check(
+            "resume note flags missing weights",
+            "without_weights" in str(plan.get("note")),
+            str(plan.get("note")),
+        )
+
+
 def main() -> int:
     print("=" * 72)
     print("FORCED ROBUSTNESS TESTS — CityLearn v3 MADRL")
@@ -237,6 +292,7 @@ def main() -> int:
     test_masac_checkpoint_and_patch()
     test_all_algos_have_salvage()
     test_dynamic_backfill_scheduler()
+    test_drive_durability_and_resume_safety()
 
     print("\n" + "=" * 72)
     print(f"RESULT: {len(PASSED)} passed, {len(FAILED)} failed")

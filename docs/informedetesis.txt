@@ -1,0 +1,71 @@
+Objetivo
+
+Evaluar el avance del trabajo de tesis considerando la implementación metodológica, el análisis de resultados y la calidad científica del documento.
+
+Instrucciones
+
+Cada estudiante deberá entregar un borrador actualizado de su tesis, incorporando las mejoras realizadas durante el curso y los resultados obtenidos hasta la fecha.
+
+El documento deberá seguir el formato oficial de tesis de la universidad y contener, como mínimo, los siguientes capítulos.
+Capítulo 1. Introducción
+
+    Problema de investigación
+    Objetivos
+    Hipótesis (si corresponde)
+    Justificación
+    Alcances y limitaciones
+
+Capítulo 2. Marco teórico
+
+    Estado del arte actualizado
+    Bases teóricas
+    Trabajos relacionados
+
+Capítulo 3. Metodología
+
+Según aplique:
+
+    Tipo de investigación
+    Diseño metodológico
+    Datos utilizados
+    Variables
+    Técnicas
+    Herramientas
+    Procedimiento experimental
+
+Capítulo 4. Desarrollo de la propuesta
+
+Dependiendo del tipo de tesis:
+
+    Desarrollo del sistema
+    Arquitectura
+    Modelo de IA
+    Algoritmos
+    Diseño experimental
+    Implementación
+
+Capítulo 5. Resultados
+
+Este es el capítulo que debería tener mayor peso.
+
+Debe incluir:
+
+    Experimentos realizados
+    Métricas utilizadas
+    Resultados obtenidos
+    Comparación con trabajos relacionados o baseline
+    Tablas
+    Figuras
+    Discusión de resultados
+
+No importa si los resultados aún son preliminares; lo importante es que exista evidencia del trabajo experimental.
+Capítulo 6. Conclusiones preliminares
+
+    Principales hallazgos
+    Limitaciones encontradas
+    Trabajo pendiente
+    Plan para culminar la tesis
+
+Referencias bibliográficas
+
+Con formato APA.

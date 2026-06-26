@@ -37,7 +37,7 @@
 
 ## 6.3 Trabajo pendiente
 
-- **Corrida canónica de 50 episodios** (438 000 pasos) en Colab A100 con `hidden_size=384`, `gamma=0.99`: **actualmente en curso**. Al finalizar, **reemplazar** los resultados preliminares de 5 episodios del Capítulo 5 por los de 50 episodios y recalcular KPIs normalizados, pruebas estadísticas y % de mejora vs baseline, insertando las figuras `.png` definitivas.
+- **Corrida canónica de 50 episodios** (438 000 pasos/corrida; 5 256 000 pasos en las 12 corridas) en Colab A100-SXM4-80GB, modo `two_phase_happo_masac`, con `gamma=0.9999` y `hidden_size` 512 (HAPPO) / 768 (MATD3, MAAC) según la celda 6.1 del notebook `madrl_citylearn_v3_tutorial.ipynb`: **actualmente en curso**. Al finalizar, **reemplazar** los resultados preliminares de 5 episodios del Capítulo 5 por los de 50 episodios y recalcular KPIs normalizados, pruebas estadísticas y % de mejora vs baseline, insertando las figuras `.png` definitivas. Los artefactos del entrenamiento (results.json, training_summary.json, comparativas y figuras) se integrarán desde `outputs/colab_50ep/` o desde la carpeta de Google Drive de la corrida.
 - Añadir **múltiples semillas** (p. ej. 3-5) para intervalos de confianza y bootstrap.
 - Completar la **matriz estadística** (MWU/Wilcoxon de todos los pares + tamaños de efecto Cliff's δ / Hedges g).
 - Reportar **porcentajes de mejora vs baseline** por KPI y construir la **frontera de Pareto** multiobjetivo.

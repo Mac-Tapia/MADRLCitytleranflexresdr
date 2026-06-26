@@ -636,14 +636,18 @@ def build():
     bullet(doc, "N = 17 agentes (edificios del SEAI Iquitos).")
     bullet(doc, "Estado global S: concatenacion de las observaciones locales (state dim global = 1856 "
                 "en el entorno cargado), accesible solo por el critico centralizado durante el entrenamiento.")
-    bullet(doc, "Observacion local Oi: variables del propio edificio (fisica del edificio, subset "
-                "meteorologico, precio y predicciones, CI, estado SOC del BESS y estado de cada cargador EV).")
-    bullet(doc, "Accion local Ai: control de HVAC, potencia de BESS (carga/descarga), potencia de "
-                "carga EV por cargador y lavadora; la dimensionalidad varia por edificio (de ~2 a ~5).")
+    bullet(doc, "Observacion local Oi: heterogenea por edificio (tiempo, fisica del edificio, "
+                "subset meteorologico, precio, CI, estado SOC del BESS y estado de cada cargador EV); "
+                "su dimension depende del numero de cargadores EV, en un rango aproximado de 57 a 330 "
+                "dimensiones por agente (notebook madrl_citylearn_v3_tutorial.ipynb, Seccion 4).")
+    bullet(doc, "Accion local Ai: heterogenea por edificio (potencia de BESS carga/descarga, potencia "
+                "de carga EV por cargador y control de carga desplazable); la dimensionalidad varia de "
+                "~5 a ~44 acciones segun la flota EV del edificio (B06 con 32 y B07 con 42 cargadores "
+                "concentran las acciones de mayor dimension).")
     bullet(doc, "T: dinamica del balance energetico, modelo RC de temperatura, BESS con eficiencia "
                 "round-trip 0.9025 y perfiles EV estocasticos.")
     bullet(doc, "R: recompensa cooperativa CityLearnV3MADRLRewardFunction; team_reward = media de reward_i.")
-    bullet(doc, "gamma = 0.99; horizonte T = 8 760 pasos (1 ano horario).")
+    bullet(doc, "gamma = 0.9999; horizonte T = 8 760 pasos (1 ano horario).")
     p(doc,
       "La condicion de observabilidad parcial estricta se satisface: cada edificio solo "
       "observa su propio estado local y no accede a la temperatura, demanda, SOC ni perfil EV "
@@ -678,7 +682,7 @@ def build():
             ["hidden_sizes", "[256, 256]", "Todos"],
             ["actor_lr", "3e-4", "Todos"],
             ["critic_lr", "1e-3", "Todos"],
-            ["gamma", "0.99 (0.9999 en corrida v4)", "Todos"],
+            ["gamma", "0.9999 (canonico y corrida v4)", "Todos"],
             ["batch_size", "256", "Todos"],
             ["replay_buffer_size", "1 000 000 (4 096 en MATD3 local 8 GB)", "MASAC, MATD3, MAAC"],
             ["tau", "0.005", "MASAC, MATD3, MAAC"],
@@ -693,6 +697,28 @@ def build():
     p(doc,
       "La optimizacion automatica de hiperparametros con Optuna (TPE) queda como mejora "
       "experimental posterior; la evidencia cuantitativa se toma de la corrida vigente.")
+    p(doc,
+      "Configuracion canonica de 50 episodios (Colab A100). La corrida definitiva se ejecuta "
+      "en Google Colab sobre una NVIDIA A100-SXM4-80GB en modo two_phase_happo_masac (Fase 1 "
+      "HAPPO+MASAC, Fase 2 MATD3+MAAC, seis trabajos por fase). Conforme a la celda 6.1 del "
+      "notebook CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb (fuente unica de verdad), "
+      "los hiperparametros canonicos son los siguientes:")
+    add_table(
+        doc,
+        ["Parametro", "HAPPO", "MASAC", "MATD3", "MAAC"],
+        [
+            ["Episodios x pasos", "50 x 8 760", "50 x 8 760", "50 x 8 760", "50 x 8 760"],
+            ["gamma", "0.9999", "0.9999", "0.9999", "0.9999"],
+            ["hidden_size", "[512, 512]", "rnn 64 / qmix 32 / hyper 64", "768", "768"],
+            ["Buffer", "on-policy", "2 ep (replay CPU)", "2 000 000", "1 000 000"],
+            ["Batch", "rollout", "512 (critic_batch 1 ep)", "1 024 (GPU 1 280)", "512 (GPU 768)"],
+            ["LR actor / critico", "1e-4 / 5e-4", "3e-4 / 5e-4", "3e-4 / 3e-4", "3e-4 / 1e-3"],
+            ["Especificos", "clip 0.2, GAE 0.95, epochs 5", "action_bins 3, 89 acc.", "policy_delay 2, train_int 50", "attend_heads 4, num_updates 12"],
+        ],
+        caption="Tabla 4.3b. Hiperparametros canonicos de 50 episodios (Colab A100, notebook celda 6.1).",
+        col_widths=[3.6, 3.0, 3.6, 3.0, 3.0],
+        font_size=8,
+    )
 
     heading(doc, "4.5 Funcion de recompensa multiobjetivo", 2)
     p(doc,
@@ -771,10 +797,29 @@ def build():
       "results.json, training_summary.json, timeseries.csv, trace.csv, checkpoint_manifest.json "
       "y figures_manifest.json. El despliegue admite ejecucion local (PowerShell) y en la nube "
       "(Colab A100; Docker/AWS EC2 opcional).")
+    p(doc,
+      "La corrida canonica de 50 episodios se ejecuta en Colab sobre una NVIDIA A100-SXM4-80GB "
+      "(Pro+ High-RAM, ~167 GiB de RAM) mediante colab_a100_official_launcher.py en modo "
+      "two_phase_happo_masac (protocolo two_phase_happo_masac_v3): la Fase 1 entrena HAPPO y "
+      "MASAC y la Fase 2 MATD3 y MAAC, con seis trabajos en paralelo por fase, replay de MASAC "
+      "en CPU, monitoreo con colab_a100_live_monitor.py y reanudacion intra-job mediante "
+      "live_progress.json y --skip-completed. Los artefactos de esa corrida se integraran desde "
+      "outputs/colab_50ep/ o desde la carpeta de Google Drive del entrenamiento. Fuente: "
+      "notebook CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb.")
 
     # ===================== CAP 5 =====================
     doc.add_page_break()
     heading(doc, "Capitulo 5. Resultados", 1)
+
+    status_note(doc,
+      "AVISO - RESULTADOS PRELIMINARES. Todas las cifras de este capitulo son PRELIMINARES y "
+      "provienen de la corrida local de 5 episodios (citylearn_v3_madrl_full_20260615_074011_v4). "
+      "La corrida canonica de 50 episodios se esta ejecutando en Google Colab (A100, modo "
+      "two_phase_happo_masac). Al finalizar, estos valores se reemplazaran por los de 50 "
+      "episodios, recalculando KPIs normalizados, pruebas estadisticas y % de mejora vs baseline, "
+      "e insertando las figuras .png definitivas; los artefactos se integraran desde "
+      "outputs/colab_50ep/ o la carpeta de Google Drive de la corrida. "
+      "[REEMPLAZAR con resultados de la corrida canonica de 50 episodios en Colab]")
 
     heading(doc, "5.1 Experimentos realizados", 2)
     p(doc,
@@ -831,6 +876,10 @@ def build():
         col_widths=[6.5, 3.0, 6.5],
     )
 
+    status_note(doc,
+      "[REEMPLAZAR con resultados de la corrida canonica de 50 episodios en Colab - "
+      "scores y KPIs de las Tablas 5.1 y 5.2 son preliminares (5 episodios).]")
+
     heading(doc, "5.4 Comparacion con baseline / trabajos relacionados", 2)
     p(doc,
       "La comparacion entre familias (CityLearn v2 original vs CityLearn v3 MADRL) se calcula "
@@ -867,9 +916,13 @@ def build():
             ["Mann-Whitney U (MATD3 vs HAPPO)", "MATD3 superior", "0.0182", "Significativo."],
             ["Wilcoxon SR (MATD3 vs HAPPO)", "Diferencia sistematica", "2.62e-6", "Muy significativo."],
         ],
-        caption="Tabla 5.4. Pruebas estadisticas sobre el score global (corrida v4, n = 75 episodios agregados).",
+        caption="Tabla 5.4. Pruebas estadisticas sobre el score global (corrida v4 preliminar, 5 episodios).",
         col_widths=[5.0, 4.5, 2.5, 4.0],
     )
+
+    status_note(doc,
+      "[REEMPLAZAR con resultados de la corrida canonica de 50 episodios en Colab - "
+      "comparacion vs baseline y pruebas estadisticas (Tablas 5.3 y 5.4) son preliminares.]")
 
     heading(doc, "5.6 Figuras", 2)
     p(doc,
@@ -895,7 +948,7 @@ def build():
       "crudos normalizados aun se situan cerca o por encima del baseline, evidenciando que el "
       "presupuesto de entrenamiento local (5 episodios) es insuficiente para que las politicas "
       "MADRL superen consistentemente a un control basado en reglas bien sintonizado. La "
-      "configuracion canonica (75 episodios) y la HPO con Optuna son las palancas previstas "
+      "configuracion canonica (50 episodios) y la HPO con Optuna son las palancas previstas "
       "para cerrar esta brecha en la version final de la tesis.")
 
     # ===================== CAP 6 =====================
@@ -923,7 +976,7 @@ def build():
     bullet(doc, "Algunas referencias bibliograficas estan marcadas como pendientes de verificacion de datos secundarios.")
 
     heading(doc, "6.3 Trabajo pendiente", 2)
-    bullet(doc, "Ejecutar la configuracion canonica de 75 episodios x 8 760 pasos (657 000 pasos/corrida), "
+    bullet(doc, "Ejecutar la configuracion canonica de 50 episodios x 8 760 pasos (438 000 pasos/corrida), "
                 "preferentemente en Colab A100, para las 12 corridas.")
     bullet(doc, "Repetir con multiples semillas y aplicar HPO con Optuna (TPE) a cada backend.")
     bullet(doc, "Completar el benchmark de comparacion con SB3 (PPO/SAC/A2C) sobre el mismo schema.")
@@ -937,7 +990,7 @@ def build():
         [
             ["Preparatoria", "Revision bibliografica, Modulo A (50 antecedentes), diagnostico, dataset y KPIs.", "1-3"],
             ["Diseno tecnico", "Arquitectura CityLearn v3, Dec-POMDP, CTDE, integracion de backends, Optuna.", "4-8"],
-            ["Evaluacion por eje", "Entrenamiento E1/E2/E3 x 4 algoritmos (75 ep), evaluacion de KPIs OE.1/OE.2/OE.3.", "9-18"],
+            ["Evaluacion por eje", "Entrenamiento E1/E2/E3 x 4 algoritmos (50 ep), evaluacion de KPIs OE.1/OE.2/OE.3.", "9-18"],
             ["Determinacion y cierre", "Comparacion, ranking, analisis estadistico, discusion SEAI Iquitos, redaccion y sustentacion.", "19-24"],
         ],
         caption="Tabla 6.1. Cronograma para la culminacion de la tesis.",

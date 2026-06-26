@@ -1,6 +1,6 @@
 # Capítulo 3. Metodología
 
-> **Documento de tesis — borrador integral alineado para Perplexity.** Datos tomados del Plan de Tesis (§4), `docs/INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md`, `docs/workflow_manifest.json`, `CityLearn/configs/citylearn_v3_madrl_training.yaml`, el pipeline `tools/generate_iquitos_dataset.py` / `tools/orchestrate_citylearn_dataset.py`, y auditorías en `outputs/dataset_audit/`. Cifras reales verificadas. No inventar datos.
+> **Documento de tesis — borrador integral alineado para Perplexity.** Datos tomados del Plan de Tesis (§4), `docs/INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md`, `docs/workflow_manifest.json`, `CityLearn/configs/citylearn_v3_madrl_training.yaml`, el pipeline `tools/generate_iquitos_dataset.py` / `tools/orchestrate_citylearn_dataset.py`, auditorías en `outputs/dataset_audit/` y el notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` (procedimiento de entrenamiento canónico en Colab A100). Cifras reales verificadas. No inventar datos.
 
 ---
 
@@ -118,7 +118,7 @@ Python 3.9 (`.venv39-citylearn-v3`), PyTorch 2.8.0+cu126, CUDA 12.6, CityLearn v
 
 1. **Verificación de contexto:** `scripts/verify_project_context.ps1` (obligatorio antes de editar/entrenar).
 2. **Construcción y validación del dataset** (gates anteriores).
-3. **Entrenamiento de 12 corridas** (4 algoritmos × 3 escenarios), lanzadas por `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` (wrapper `scripts/run_citylearn_v3_full_training_visible.ps1`). Política de concurrencia en 8 GB VRAM: `MaxConcurrentScenarioJobs=2`, MASAC/MAAC limitados a 1.
+3. **Entrenamiento de 12 corridas** (4 algoritmos × 3 escenarios). En el plano local de validación se lanzan con `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` (wrapper `scripts/run_citylearn_v3_full_training_visible.ps1`) bajo una política de concurrencia para 8 GB de VRAM (`MaxConcurrentScenarioJobs=2`, MASAC/MAAC limitados a 1). La corrida canónica de 50 episodios se ejecuta en Google Colab (NVIDIA A100-SXM4-80GB) con `CityLearn/scripts/colab_a100_official_launcher.py` en modo `two_phase_happo_masac`: una primera fase entrena HAPPO y MASAC y una segunda fase MATD3 y MAAC, con seis trabajos en paralelo por fase, según se documenta en el notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`.
 4. **Monitoreo:** `monitor_citylearn_v3_official_training.ps1` (GPU, global_step, reward, KPIs).
 5. **Benchmark v2** (`benchmark_citylearn_v2_agents.py`: `baseline`, `hour_rbc`) y comparadores SB3.
 6. **Comparación v2 vs v3** y **evidencia de tesis** (KPIs, estadística, figuras).

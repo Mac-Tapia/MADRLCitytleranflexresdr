@@ -47,7 +47,7 @@ Los KPIs se calculan con `env.evaluate_v2()` y se normalizan contra la línea ba
 
 ## 5.3 Resultados obtenidos — Selección del mejor MADRL *(PRELIMINAR — corrida local, 5 episodios)*
 
-El reporte `best_madrl_report.json` (generado 2026-06-20, n_episodios = 75 de evaluación agregada sobre E1/E2/E3) determina:
+El reporte `best_madrl_report.json` (generado 2026-06-20, evaluación agregada sobre E1/E2/E3, corrida local preliminar de 5 episodios) determina:
 
 | Rango | Algoritmo | Score medio | Seleccionado |
 |:---:|---|:---:|:---:|

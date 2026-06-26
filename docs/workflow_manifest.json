@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "project": "MADRLCitytleranflexresdr",
-  "updated_at": "2026-06-20",
+  "updated_at": "2026-06-25",
   "purpose": "Manifest canonico del flujo dataset -> carga -> entrenamiento -> comparacion -> resultados finales.",
   "technical_reports": [
     "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
@@ -86,9 +86,9 @@
         "E2",
         "E3"
       ],
-      "episodes": 75,
+      "episodes": 50,
       "episode_time_steps": 8760,
-      "num_env_steps": 657000,
+      "num_env_steps": 438000,
       "artifact_profile": "efficient",
       "trace_record_interval": 10,
       "trace_detail": "compact",
@@ -121,7 +121,7 @@
           "sac": "CityLearn/scripts/benchmark_citylearn_v2_sac.py",
           "a2c": "CityLearn/scripts/benchmark_citylearn_v2_a2c.py"
         },
-        "sb3_train_episodes": 75,
+        "sb3_train_episodes": 50,
         "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json"
       }
     },

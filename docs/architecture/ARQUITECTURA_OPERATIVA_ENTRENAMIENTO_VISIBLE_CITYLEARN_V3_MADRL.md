@@ -75,9 +75,9 @@ Si se activa `-LiveOutput $true`, el mismo launcher cambia a modo secuencial par
 Cada job usa:
 
 ```text
-episodes = 75
+episodes = 50
 episode_time_steps = 8760
-num_env_steps = 657000
+num_env_steps = 438000
 seed = 0
 dataset = citylearn_iquitos_2023_2025
 ```
@@ -262,7 +262,7 @@ Importante: esto continua la cadena sin empezar toda la campaña desde cero, per
 En la corrida historica `outputs/citylearn_v3_madrl_oficial_v4` se observo:
 
 ```text
-HAPPO/E1: completo, 5 episodios, 43800 pasos (corrida historica previa al contrato actual de 75 episodios).
+HAPPO/E1: completo, 5 episodios, 43800 pasos (corrida historica previa al contrato actual de 50 episodios).
 MASAC/E1: incompleto, ultimo live_progress en global_step=17000.
 ```
 

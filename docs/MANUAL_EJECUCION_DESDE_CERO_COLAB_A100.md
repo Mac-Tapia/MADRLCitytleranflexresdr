@@ -2,7 +2,7 @@
 
 **Proyecto:** `MADRLCitytleranflexresdr`  
 **Notebook:** `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`  
-**Modo objetivo:** Google Colab A100, 75 episodios, 12 corridas  
+**Modo objetivo:** Google Colab A100, 50 episodios, 12 corridas  
 **Ultima verificacion local:** 2026-06-19 con `.venv39-citylearn-v3` / Python 3.9.25
 
 Este manual explica como lanzar el entrenamiento oficial desde cero usando el
@@ -15,8 +15,8 @@ notebook `madrl_citylearn_v3_tutorial.ipynb`.
 - El entrenamiento real se ejecuta en Colab A100, no en la maquina local.
 - El notebook esta preparado para 4 algoritmos x 3 escenarios:
   `happo`, `masac`, `matd3`, `maac` x `E1`, `E2`, `E3`.
-- La corrida completa usa 75 episodios por job:
-  `75 x 8760 = 657000` pasos por corrida.
+- La corrida completa usa 50 episodios por job:
+  `50 x 8760 = 438000` pasos por corrida.
 - Tiempo estimado: alrededor de 30 horas para las 12 corridas, segun carga de
   Colab y estabilidad del runtime.
 
@@ -180,7 +180,8 @@ Valores actuales del notebook:
 
 ```python
 QUICK_TEST = False
-EPISODES = 75
+N_EPISODES = 50
+EPISODES = 50
 EPISODE_STEPS = 8760
 SEED = 0
 SCENARIOS = ['E1', 'E2', 'E3']
@@ -221,7 +222,7 @@ La celda `7.2` inicia el entrenamiento real. Actualmente esta asi:
 LAUNCH_FULL_TRAINING = True
 ```
 
-Eso significa que al ejecutar `7.2` se lanza la corrida completa de 75 episodios.
+Eso significa que al ejecutar `7.2` se lanza la corrida completa de 50 episodios.
 
 Si solo se quiere revisar comandos sin entrenar, cambiar temporalmente:
 
@@ -325,7 +326,7 @@ Para validar readiness por escenario:
 Dry-run local sin A100, solo para revisar planificacion:
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\colab_a100_official_launcher.py --dry-run --scenario ALL --seed 0 --episode-time-steps 8760 --episodes 75 --output-root outputs\notebook_verify_dryrun --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json --skip-gpu-preflight --no-require-a100 --no-smoke-imports --skip-completed
+.\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\colab_a100_official_launcher.py --dry-run --scenario ALL --seed 0 --episode-time-steps 8760 --episodes 50 --output-root outputs\notebook_verify_dryrun --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json --skip-gpu-preflight --no-require-a100 --no-smoke-imports --skip-completed
 ```
 
 ## 11. Errores comunes

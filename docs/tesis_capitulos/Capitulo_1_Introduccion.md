@@ -106,7 +106,7 @@ La literatura reporta evaluaciones aisladas de algoritmos individuales sobre dim
 - No se modela ninguna red eléctrica física; los resultados **no constituyen validación de despliegue real**.
 - **CityLearn v3 es una extensión experimental de tesis, no una versión oficial de CityLearn.**
 - El dataset de Iquitos se construye por **destilación** de facturación mensual real a perfiles horarios sintéticos que preservan la magnitud energética (Capítulo 3).
-- Las corridas locales reportadas usan **5 episodios × 8 760 pasos = 43 800 pasos** por job (presupuesto de cómputo en 8 GB VRAM); la configuración canónica vigente apunta a **75 episodios = 657 000 pasos** (ver `workflow_manifest.json`). El número de semillas para robustez es **seed = 0** en la corrida vigente. `[Pendiente: ampliar a múltiples semillas para robustez estadística completa.]`
+- Las corridas locales reportadas usan **5 episodios × 8 760 pasos = 43 800 pasos** por job (presupuesto de cómputo en 8 GB VRAM); la configuración canónica vigente apunta a **50 episodios = 438 000 pasos**. El número de semillas para robustez es **seed = 0** en la corrida vigente. `[Pendiente: ampliar a múltiples semillas para robustez estadística completa.]`
 - **Exclusiones:** despliegue en campo, sujetos humanos, despacho económico de generación física y análisis de estabilidad de red.
 
 ---

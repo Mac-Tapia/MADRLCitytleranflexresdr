@@ -31,7 +31,7 @@
 - **Capítulo 3 — Metodología.** Estudio cuantitativo, aplicado, comparativo, no experimental. Detalla el dataset real de Iquitos (pipeline de 10 etapas, fuentes PVGIS/NASA POWER, destilación de facturación) y el procedimiento de 12 corridas con sus gates de validación y las 4 pruebas estadísticas.
 - **Capítulo 4 — Desarrollo de la propuesta.** Arquitectura por capas; formulación Dec-POMDP (17 agentes, γ=0.9999, T=8 760); recompensa multiobjetivo con pesos por escenario (E1 0.70/0.15/0.15; E2 0.15/0.70/0.15; E3 0.25/0.15/0.60) y perfil unificado (r=0.70, peak 0.45, ramp 0.35, ev 0.25); hiperparámetros reales (v4 vs canónico); 4 aportes al motor (A1-A4).
 - **Capítulo 5 — Resultados.** Corrida v4 completada (12/12, ~39 h en RTX 4060). **MATD3** es el mejor MADRL global (score 0.7445; KW p=0.0459; MATD3>HAPPO MWU p=0.0182, Wilcoxon p=2.62e-6). HAPPO lidera flexibilidad pura (OE.1); MATD3 lidera CO₂/costos (E2/E3). Resultados preliminares (5 episodios, semilla única).
-- **Capítulo 6 — Conclusiones preliminares.** Responde OG/OE con evidencia; limitaciones (cómputo, semilla única, servicio EV); trabajo pendiente (75 ep, multi-semilla, Pareto, Optuna); plan H1-H7.
+- **Capítulo 6 — Conclusiones preliminares.** Responde OG/OE con evidencia; limitaciones (cómputo, semilla única, servicio EV); trabajo pendiente (corrida canónica de 50 ep en Colab —en curso—, reemplazo de los resultados preliminares de 5 ep, multi-semilla, Pareto, Optuna); plan H1-H7.
 - **Referencias APA.** Lista consolidada; pendiente completar entradas `[PV]`.
 
 ---
@@ -48,4 +48,6 @@
 | 6 | Sí | confirmación con corrida canónica |
 | Ref. | Sí | ~10 entradas `[PV]` |
 
-**Recomendación de uso:** abrir cada archivo en Perplexity, ejecutar el bloque "PROMPT PARA PERPLEXITY" para pulir a versión final, y completar primero los placeholders del Capítulo 5 tras la corrida canónica de 75 episodios.
+**Recomendación de uso:** abrir cada archivo en Perplexity, ejecutar el bloque "PROMPT PARA PERPLEXITY" para pulir a versión final, y completar primero los placeholders del Capítulo 5 tras la corrida canónica de 50 episodios.
+
+> **Aviso sobre los resultados del Capítulo 5 (preliminares).** Las cifras actuales del Capítulo 5 provienen de la corrida local preliminar de **5 episodios**. La **corrida canónica de 50 episodios** se está ejecutando en Google Colab. Al finalizar, se deben **reemplazar** los resultados preliminares de 5 episodios por los de 50 episodios, recalcular los KPIs normalizados, las pruebas estadísticas y los % de mejora vs baseline, e insertar las figuras `.png` definitivas.

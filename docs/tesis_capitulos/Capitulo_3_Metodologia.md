@@ -39,7 +39,7 @@ El nivel **comparativo** es esencial (determinar el *mejor* MADRL); el nivel **p
 - **Unidad de análisis:** comunidad inteligente simulada (17 edificios SEAI) y agentes MADRL cooperativos.
 - **Población:** escenarios simulados con múltiples edificios y DER; series temporales de demanda, precio e intensidad de carbono (2023-2025).
 - **Muestreo:** no probabilístico, intencional y técnicamente conveniente, justificado por la disponibilidad del dataset real de Iquitos y la pertinencia de los cuatro algoritmos.
-- **Tamaño de muestra:** 4 algoritmos MADRL + líneas base (CityLearn v2 `baseline`, `hour_rbc`) + comparadores SB3 (PPO/SAC/A2C). Corrida vigente: **5 episodios × 8 760 = 43 800 pasos** por job; configuración canónica objetivo: **75 episodios = 657 000 pasos** (`workflow_manifest.json`). `[Pendiente: número de semillas para robustez > 1.]`
+- **Tamaño de muestra:** 4 algoritmos MADRL + líneas base (CityLearn v2 `baseline`, `hour_rbc`) + comparadores SB3 (PPO/SAC/A2C). Corrida vigente: **5 episodios × 8 760 = 43 800 pasos** por job; configuración canónica objetivo: **50 episodios = 438 000 pasos**. `[Pendiente: número de semillas para robustez > 1.]`
 
 ## 3.4 Datos utilizados — Dataset `citylearn_iquitos_2023_2025`
 
@@ -134,4 +134,4 @@ Python 3.9 (`.venv39-citylearn-v3`), PyTorch 2.8.0+cu126, CUDA 12.6, CityLearn v
 ---
 
 ### Estado del capítulo
-**Completo con placeholders menores.** Pendientes: número de semillas para robustez; consolidación de episodios objetivo (5 vigentes vs 75 canónicos).
+**Completo con placeholders menores.** Pendientes: número de semillas para robustez; consolidación de episodios objetivo (5 vigentes vs 50 canónicos).

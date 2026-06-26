@@ -29,7 +29,7 @@
 
 ## 6.2 Limitaciones encontradas
 
-- **Presupuesto de cómputo:** la corrida reportada usa 5 episodios × 8 760 pasos (43 800 pasos) por job, por debajo de la configuración canónica de 75 episodios (657 000 pasos). Las políticas no están plenamente convergidas (reward medio MATD3-E3 ≈ −0.53).
+- **Presupuesto de cómputo:** la corrida reportada usa 5 episodios × 8 760 pasos (43 800 pasos) por job, por debajo de la configuración canónica de 50 episodios (438 000 pasos). Las políticas no están plenamente convergidas (reward medio MATD3-E3 ≈ −0.53).
 - **Semilla única (seed = 0):** sin réplicas no se cuantifica completamente la robustez ni los intervalos de confianza.
 - **KPIs de servicio EV:** `ev_departure_success_rate ≈ 0.47` (MATD3-E3) indica margen de mejora en la gestión de urgencia SOC.
 - **Comparación equiponderada:** el comparador usa pesos OE 0.34/0.33/0.33, lo que en E1 favorece al baseline por dominancia de OE.2; se requiere análisis de Pareto.
@@ -37,7 +37,7 @@
 
 ## 6.3 Trabajo pendiente
 
-- Ejecutar la **corrida canónica de 75 episodios** (657 000 pasos) en Colab A100 con `hidden_size=384`, `gamma=0.99`.
+- **Corrida canónica de 50 episodios** (438 000 pasos) en Colab A100 con `hidden_size=384`, `gamma=0.99`: **actualmente en curso**. Al finalizar, **reemplazar** los resultados preliminares de 5 episodios del Capítulo 5 por los de 50 episodios y recalcular KPIs normalizados, pruebas estadísticas y % de mejora vs baseline, insertando las figuras `.png` definitivas.
 - Añadir **múltiples semillas** (p. ej. 3-5) para intervalos de confianza y bootstrap.
 - Completar la **matriz estadística** (MWU/Wilcoxon de todos los pares + tamaños de efecto Cliff's δ / Hedges g).
 - Reportar **porcentajes de mejora vs baseline** por KPI y construir la **frontera de Pareto** multiobjetivo.
@@ -49,7 +49,7 @@
 
 | Hito | Entregable verificable | Estado |
 |---|---|---|
-| H1. Corrida canónica 75 ep | `outputs/<run>/official_full_status.json` con 12/12 exit_code 0 | Pendiente |
+| H1. Corrida canónica 50 ep (Colab) | `outputs/<run>/official_full_status.json` con 12/12 exit_code 0; reemplazar resultados preliminares de 5 ep en Cap. 5 | En curso |
 | H2. Robustez multi-semilla | Resultados con ≥3 seeds + IC | Pendiente |
 | H3. Estadística completa | `hipotesis_estadisticas_madrl.csv` con todos los pares | Parcial |
 | H4. Pareto y % mejora | Tablas/figuras OE1/OE2/OE3 vs baseline | Pendiente |

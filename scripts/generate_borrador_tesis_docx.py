@@ -746,8 +746,8 @@ def build():
     heading(doc, "4.7 Diseno experimental: matriz de 12 corridas", 2)
     p(doc,
       "El experimento oficial ejecuta 12 corridas (4 algoritmos x 3 escenarios, seed = 0). "
-      "La configuracion canonica objetivo (workflow_manifest.json) es de 75 episodios x 8 760 "
-      "pasos (657 000 pasos/corrida); la corrida local de referencia v4 completo 5 episodios "
+      "La configuracion canonica objetivo es de 50 episodios x 8 760 "
+      "pasos (438 000 pasos/corrida); la corrida local de referencia v4 completo 5 episodios "
       "x 8 760 pasos (43 800 pasos/corrida) en GPU RTX 4060 Laptop 8 GB. La paralelizacion "
       "es valida porque las corridas son experimentos independientes (Roijers et al., 2013; "
       "MALib, Zhou et al., 2021).")

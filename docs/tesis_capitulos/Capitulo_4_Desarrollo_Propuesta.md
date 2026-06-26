@@ -12,7 +12,7 @@
 1. Descripción de la arquitectura por capas, el Dec-POMDP, el esquema CTDE y la función de recompensa multiobjetivo (ecuaciones).
 2. Tablas de **hiperparámetros reales** por algoritmo (sin redondear) y descripción de los wrappers/backends.
 3. **Citas APA** consistentes con `Referencias_APA.md`.
-4. Mantener la distinción entre la configuración canónica (`workflow_manifest.json`, 75 ep) y la corrida ejecutada v4 (5 ep).
+4. Mantener la distinción entre la configuración canónica (50 ep) y la corrida ejecutada v4 (5 ep).
 
 **Instrucciones específicas:** (a) no alterar valores de pesos de recompensa ni hiperparámetros; (b) explicitar dimensiones de observación/acción; (c) describir los 4 aportes al motor con sus ecuaciones; (d) marcar `[Pendiente: ...]` donde el proyecto no fije un valor.
 
@@ -127,11 +127,11 @@ Cada algoritmo se conecta al entorno v3 mediante un wrapper específico definido
 | Específicos | `n_rollout_threads` 1, `action_aggregation` mean | `action_bins` 3 `axis`, `actor_sample_times` 2 | `train_interval` 100, `tau` 0.005, `target_noise` 0.2 | `attend_heads` 4, `tau` 0.005, `steps_per_update` 250, `num_updates` 4 |
 | Reward profile | HAPPO unified | MASAC unified | MATD3 unified | MAAC unified |
 
-### 4.5.2 Hiperparámetros — configuración canónica objetivo (`workflow_manifest.json` / YAML, 75 ep)
+### 4.5.2 Hiperparámetros — configuración canónica objetivo (50 ep)
 
 | Parámetro | HAPPO | MASAC | MATD3 | MAAC |
 |---|:---:|:---:|:---:|:---:|
-| Episodios / `num_env_steps` | 75 / 657 000 | 75 | 75 / 657 000 | 75 |
+| Episodios / `num_env_steps` | 50 / 438 000 | 50 | 50 / 438 000 | 50 |
 | `hidden_size` | 384 | rnn 64 / qmix 32 / hyper 64 | 384 | 384 |
 | Buffer | (on-policy) | 2 ep | 50 000 | 200 000 |
 | Batch | — | 1 | 512 | 512 |
@@ -174,4 +174,4 @@ Artefactos por corrida: `results.json`, `training_summary.json`, `timeseries.csv
 ---
 
 ### Estado del capítulo
-**Completo con placeholders menores.** Pendientes: composición exacta de las 1856 dimensiones de estado; consolidación de la configuración objetivo (75 ep) vs ejecutada (5 ep).
+**Completo con placeholders menores.** Pendientes: composición exacta de las 1856 dimensiones de estado; consolidación de la configuración objetivo (50 ep) vs ejecutada (5 ep).

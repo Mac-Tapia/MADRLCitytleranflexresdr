@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-06-26T12:08:15.494002+00:00",
-  "completed_at": "2026-06-26T12:08:15.494002+00:00",
+  "started_at": "2026-06-26T12:52:31.038108+00:00",
+  "completed_at": "2026-06-26T12:52:31.046632+00:00",
   "status": "dry_run",
   "dataset": "citylearn_iquitos_2023_2025",
   "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
@@ -46,7 +46,7 @@
     "six_job_masac_cuda_fraction": 0.16,
     "two_phase_masac_cuda_fraction": 0.16,
     "gpu_vram_gib": 8.0,
-    "strategy": "two_phase_happo_masac: Phase1=HAPPO+MASAC x3 (6 parallel, no stagger); Phase2=MATD3+MAAC x3 (6 parallel, no stagger); VRAM 8 GiB | HAPPO cap 1 GiB/job | MASAC cap 1 GiB/job",
+    "strategy": "dynamic_backfill: start 6 (HAPPO+MASAC x3); backfill MATD3+MAAC lightest-first as each slot frees (no wait for all phase 1); cap=6 | VRAM 8 GiB | HAPPO/MATD3/MAAC cap 1 GiB/job | MASAC cap 1 GiB/job",
     "est_min_per_episode_by_algo": {
       "happo": 11.0,
       "masac": 15.0,
@@ -55,7 +55,8 @@
     },
     "est_min_per_episode": 12.0,
     "est_phase_wall_hours": 10.0,
-    "est_total_wall_hours": 20.0
+    "est_total_wall_hours": 20.0,
+    "est_total_wall_hours_is_upper_bound": true
   },
   "active_project_environment": {
     "python": "C:\\Users\\Lenovo Legion\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
@@ -82,9 +83,9 @@
       "available": true,
       "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
       "memory_total_mib": 8188.0,
-      "memory_free_mib": 7812.0,
+      "memory_free_mib": 7790.0,
       "memory_total_gib": 8.0,
-      "memory_free_gib": 7.63,
+      "memory_free_gib": 7.61,
       "driver_version": "560.94",
       "preflight_skipped": true
     },

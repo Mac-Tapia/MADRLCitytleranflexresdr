@@ -173,9 +173,15 @@ def main() -> int:
         assert status["status"] == "dry_run"
         assert status.get("execution") == "two_phase_happo_masac"
         assert len(status.get("jobs", [])) == 12
-        strat = status.get("parallelization", {}).get("strategy", "")
-        assert "Phase1=HAPPO+MASAC" in strat, f"strategy inesperada: {strat!r}"
-        assert "6 parallel" in strat, f"strategy sin 6 paralelos: {strat!r}"
+        par = status.get("parallelization", {})
+        strat = par.get("strategy", "")
+        if par.get("dynamic_backfill", True):
+            assert "dynamic_backfill" in strat, f"strategy inesperada (backfill): {strat!r}"
+            assert "HAPPO+MASAC" in strat, f"strategy sin grupo fase1: {strat!r}"
+            assert "cap=6" in strat, f"strategy sin cap=6: {strat!r}"
+        else:
+            assert "Phase1=HAPPO+MASAC" in strat, f"strategy inesperada: {strat!r}"
+            assert "6 parallel" in strat, f"strategy sin 6 paralelos: {strat!r}"
         algos = {j["name"] for j in status["jobs"]}
         assert algos == {"happo", "masac", "matd3", "maac"}
         ok(f"12 jobs, execution=two_phase_happo_masac, strategy OK")

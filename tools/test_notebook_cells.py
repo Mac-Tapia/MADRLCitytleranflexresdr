@@ -249,8 +249,8 @@ with tempfile.TemporaryDirectory() as tmp:
         "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
     )
     expected_dirs = {
-        str(output_root / algo / f"{sc}_seed_0")
-        for algo in ["happo", "masac", "matd3", "maac"]
+        str(output_root / algo / sc)
+        for algo in ["HAPPO", "MASAC", "MATD3", "MAAC"]
         for sc in ["E1", "E2", "E3"]
     }
     actual_dirs = {
@@ -270,11 +270,11 @@ print("[PASS] Guardrails de OUTPUT_ROOT Colab aislado y launcher 12 dirs únicos
 # Per-algorithm values live in the launcher; notebook has high-level config only.
 LAUNCHER_A100_CHECKS = {
     'parser.add_argument("--happo-hidden-size", default=512': "HAPPO hidden_size=512",
-    'parser.add_argument("--masac-buffer-size", default=8': "MASAC buffer_size=8",
-    'parser.add_argument("--masac-critic-batch-size", default=512': "MASAC critic_batch=512",
-    'parser.add_argument("--matd3-batch-size", default=1024': "MATD3 batch_size=1024",
+    'parser.add_argument("--masac-buffer-size", default=2': "MASAC buffer_size=2 (ep replay RAM)",
+    'parser.add_argument("--masac-critic-batch-size", default=1': "MASAC critic_batch=1 (ep QMIX)",
+    'parser.add_argument("--matd3-batch-size", default=1280': "MATD3 batch_size=1280",
     'parser.add_argument("--matd3-buffer-size", default=2000000': "MATD3 buffer_size=2000000",
-    'parser.add_argument("--maac-batch-size", default=512': "MAAC batch_size=512",
+    'parser.add_argument("--maac-batch-size", default=768': "MAAC batch_size=768",
     'parser.add_argument("--maac-buffer-length", default=1000000': "MAAC buffer_length=1000000",
     'parser.add_argument("--maac-num-updates", default=12': "MAAC num_updates=12",
     "0.9999": "gamma=0.9999 (horizonte anual)",
@@ -367,10 +367,10 @@ print(f"[PASS] Ranking: {[a for a,_ in ranking]} — Mejor: {best}")
 # ────────────────────────────────────────────────────────────────────────────
 import tempfile, glob
 with tempfile.TemporaryDirectory() as tmp:
-    # Simular estructura algorithm-first
-    for algo in ["happo","masac","matd3","maac"]:
+    # Simular estructura simple <MADRL>/<Escenario>
+    for algo in ["HAPPO","MASAC","MATD3","MAAC"]:
         for sc in ["E1","E2","E3"]:
-            p = Path(tmp) / algo / f"{sc}_seed_0" / "data"
+            p = Path(tmp) / algo / sc / "data"
             p.mkdir(parents=True, exist_ok=True)
             (p / "results.json").write_text("{}")
 
@@ -384,7 +384,7 @@ with tempfile.TemporaryDirectory() as tmp:
         algo     = parts[root_idx + 1]
         sc_seed  = parts[root_idx + 2]
         scenario = sc_seed.split("_seed_")[0]
-        assert algo in ["happo","masac","matd3","maac"], f"algo={algo}"
+        assert algo in ["HAPPO","MASAC","MATD3","MAAC"], f"algo={algo}"
         assert scenario in ["E1","E2","E3"], f"scenario={scenario}"
 
 print("[PASS] Glob pattern algorithm-first OK (12/12 archivos encontrados)")

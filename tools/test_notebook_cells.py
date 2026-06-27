@@ -198,10 +198,10 @@ assert "maac"  in code_src, "maac ausente en notebook"
 from citylearn_v3_training_common import resolve_output_dir
 import tempfile
 with tempfile.TemporaryDirectory() as tmp:
-    odir = resolve_output_dir(f"{tmp}/happo", "happo", "E1", 0)
-    expected = Path(tmp) / "happo" / "E1_seed_0"
+    odir = resolve_output_dir(f"{tmp}/HAPPO", "happo", "E1", 0)
+    expected = Path(tmp) / "HAPPO" / "E1"
     assert odir == expected, f"resolve_output_dir={odir} expected={expected}"
-print(f"[PASS] Layout algorithm-first: {{OUTPUT_ROOT}}/happo/E1_seed_0/ OK")
+print(f"[PASS] Layout simple: {{OUTPUT_ROOT}}/HAPPO/E1/ OK")
 
 # ────────────────────────────────────────────────────────────────────────────
 # Test 4b — Colab output isolation and resumability guardrails

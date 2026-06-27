@@ -2,7 +2,7 @@
 import argparse
 import sys
 sys.path.insert(0, 'CityLearn/scripts')
-from citylearn_v3_training_common import ensure_artifact_layout
+from citylearn_v3_training_common import ensure_artifact_layout, resolve_job_run_dir
 from pathlib import Path
 
 ALGORITHMS = ['happo', 'masac', 'matd3', 'maac']
@@ -36,7 +36,7 @@ all_ok = True
 for sc in SCENARIOS:
     print(f"\n  Escenario {sc}:")
     for alg in ALGORITHMS:
-        run_dir = OUT / alg / f"{sc}_seed_0"
+        run_dir = resolve_job_run_dir(OUT, alg, sc, 0)
         dirs = ensure_artifact_layout(run_dir)
         chk  = dirs["checkpoints"].exists()
         dat  = dirs["data"].exists()

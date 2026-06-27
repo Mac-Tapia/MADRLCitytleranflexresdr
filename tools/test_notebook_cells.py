@@ -235,7 +235,7 @@ with tempfile.TemporaryDirectory() as tmp:
         "--scenario", "ALL",
         "--seed", "0",
         "--episode-time-steps", "8760",
-        "--episodes", "50",
+        "--episodes", "17",
         "--output-root", str(output_root),
         "--schema-path", "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
         "--skip-gpu-preflight",
@@ -286,7 +286,7 @@ for val, desc_str in LAUNCHER_A100_CHECKS.items():
 NB_A100_CHECKS = {
     "aws"    : "gpu_profile=aws",
     "0.92"   : "cuda_memory_fraction=0.92",
-    "50"     : "EPISODES=50",
+    "17"     : "N_EPISODES=17",
     "8760"   : "EPISODE_STEPS=8760",
 }
 for val, desc_str in NB_A100_CHECKS.items():

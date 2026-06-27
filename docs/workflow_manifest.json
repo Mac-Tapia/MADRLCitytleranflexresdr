@@ -86,9 +86,9 @@
         "E2",
         "E3"
       ],
-      "episodes": 50,
+      "episodes": 17,
       "episode_time_steps": 8760,
-      "num_env_steps": 438000,
+      "num_env_steps": 148920,
       "artifact_profile": "efficient",
       "trace_record_interval": 10,
       "trace_detail": "compact",

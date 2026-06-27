@@ -83,7 +83,7 @@ def main() -> int:
     args = L.parse_args(
         [
             "--scenario", "ALL",
-            "--episodes", "50",
+            "--episodes", "17",
             "--episode-time-steps", "8760",
             "--no-cuda",
             "--no-require-a100",

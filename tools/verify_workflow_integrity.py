@@ -116,9 +116,9 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
     require(training.get("wrapper") == "scripts/run_citylearn_v3_full_training_visible.ps1", "Training wrapper is not canonical", errors)
     require(training.get("algorithms") == ["happo", "masac", "matd3", "maac"], "Training algorithms are not HAPPO/MASAC/MATD3/MAAC", errors)
     require(training.get("scenarios") == ["E1", "E2", "E3"], "Training scenarios are not E1/E2/E3", errors)
-    require(training.get("episodes") == 75, "Training episodes must be 75", errors)
+    require(training.get("episodes") == 17, "Training episodes must be 17", errors)
     require(training.get("episode_time_steps") == 8760, "Training episode_time_steps must be 8760", errors)
-    require(training.get("num_env_steps") == 657000, "Training num_env_steps must be 657000", errors)
+    require(training.get("num_env_steps") == 148920, "Training num_env_steps must be 148920", errors)
     baseline = training.get("baseline_comparison", {})
     require(baseline.get("mode") == "project_local_citylearn_v2", "Training baseline must use the project-local CityLearn v2 flow", errors)
     require(

@@ -122,6 +122,18 @@ def test_masac_checkpoint_and_patch() -> None:
 
 
 # ---------------------------------------------------------------------------
+# Test 4b — SIGKILL exit codes trigger OOM retry path (empty logs on Linux OOM killer).
+# ---------------------------------------------------------------------------
+def test_sigkill_exit_detection() -> None:
+    print("\n[4b] SIGKILL exit code detection")
+    import colab_a100_official_launcher as launcher
+
+    check("137 is sigkill", launcher.is_sigkill_exit(137))
+    check("247 is sigkill", launcher.is_sigkill_exit(247))
+    check("0 is not sigkill", not launcher.is_sigkill_exit(0))
+
+
+# ---------------------------------------------------------------------------
 # Test 4 — every train script writes a salvage results.json on artifact failure.
 # ---------------------------------------------------------------------------
 def test_all_algos_have_salvage() -> None:
@@ -130,6 +142,8 @@ def test_all_algos_have_salvage() -> None:
         src = (SCRIPTS / f"train_citylearn_v3_{algo}.py").read_text(encoding="utf-8")
         check(f"{algo}: imports write_minimal_results_json", "write_minimal_results_json" in src)
         check(f"{algo}: calls salvage on artifact failure", "minimal salvage results.json" in src)
+        if algo == "matd3":
+            check("matd3: replay RAM preflight", "estimate_matd3_replay_ram_gib" in src)
 
 
 # ---------------------------------------------------------------------------
@@ -290,6 +304,7 @@ def main() -> int:
     test_matplotlib_agg()
     test_salvage_results_json()
     test_masac_checkpoint_and_patch()
+    test_sigkill_exit_detection()
     test_all_algos_have_salvage()
     test_dynamic_backfill_scheduler()
     test_drive_durability_and_resume_safety()

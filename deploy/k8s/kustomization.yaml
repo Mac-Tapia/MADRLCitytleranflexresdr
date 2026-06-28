@@ -1,0 +1,21 @@
+# Agrupa todos los recursos de la demo MADRL Iquitos para:
+#   kubectl apply -k deploy/k8s/
+#
+# Validación de render sin clúster:
+#   kubectl kustomize deploy/k8s/
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: madrl
+
+resources:
+  - namespace.yaml
+  - mongo.yaml
+  - inference.yaml
+  - dashboard.yaml
+  - ingress.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: madrl-iquitos
+    includeSelectors: true

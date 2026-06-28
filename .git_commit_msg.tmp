@@ -1,0 +1,4 @@
+chore(submodules): MAAC+CityLearn fix MAAC resume/checkpoint Colab
+
+CityLearn c434a7f5: atomic Drive checkpoints, buffer cap 450k, launcher retry.
+MAAC 03e3c08: init_from_save map_location for PyTorch 2.6+ resume.

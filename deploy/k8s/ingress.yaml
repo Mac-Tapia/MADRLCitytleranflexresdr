@@ -1,0 +1,45 @@
+# Ingress (clase nginx) para acceso WEB a la demo.
+#
+# Requisitos:
+#   - Un ingress-controller NGINX instalado en el clúster, p.ej.:
+#       kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+#     (en Docker Desktop / kind / minikube usar el provider correspondiente).
+#   - Resolver el host "madrl.local" a la IP del ingress (editar /etc/hosts o
+#     C:\Windows\System32\drivers\etc\hosts), p.ej.:  127.0.0.1 madrl.local
+#
+# Enrutamiento:
+#   - http://madrl.local/        -> dashboard (Streamlit, 8501)
+#   - http://madrl.local/api/... -> inference (FastAPI, 8000); el prefijo /api
+#     se reescribe a "/" para que /api/health llegue como /health al servicio.
+#
+# ALTERNATIVA SIMPLE (sin ingress-controller): usar port-forward, ver README.md:
+#   kubectl port-forward -n madrl svc/inference 8000:8000
+#   kubectl port-forward -n madrl svc/dashboard 8501:8501
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: madrl-ingress
+  namespace: madrl
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: madrl.local
+      http:
+        paths:
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: inference
+                port:
+                  number: 8000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard
+                port:
+                  number: 8501

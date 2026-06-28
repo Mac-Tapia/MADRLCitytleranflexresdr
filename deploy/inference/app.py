@@ -1,9 +1,15 @@
 """Servicio de inferencia FastAPI para el agente MADRL ganador (demo Fase 8).
 
 Endpoints:
-- GET  /health      -> liveness/readiness probe
-- GET  /model/info  -> metadatos del modelo cargado (algoritmo, escenario, dims)
-- POST /act         -> {"observations": [[...], ...]} -> {"actions": [[...], ...]}
+- GET  /health              -> liveness/readiness probe
+- GET  /model/info          -> metadatos del modelo cargado (algoritmo, escenario, dims)
+- POST /act                 -> {"observations": [[...], ...]} -> {"actions": [[...], ...]}
+- GET  /analytics/summary   -> estadísticas agregadas desde MongoDB (si está disponible)
+- GET  /analytics/recent    -> últimas inferencias persistidas (resumidas)
+
+Persistencia opcional: si ``MONGODB_URI`` apunta a un MongoDB accesible y
+``pymongo`` está instalado, cada ``/act`` se registra en la colección
+``inferences``. Si no, la persistencia queda desactivada sin afectar al servicio.
 
 Ejecutar localmente:
     uvicorn app:app --host 0.0.0.0 --port 8000
@@ -12,12 +18,14 @@ from __future__ import annotations
 
 import logging
 import os
+import time
 
 import numpy as np
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 from model_loader import ModelBundle
+from mongo_store import MongoStore
 
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "info").upper())
 logger = logging.getLogger("inference.app")
@@ -27,12 +35,19 @@ MODEL_METADATA_PATH = os.environ.get("MODEL_METADATA_PATH", "/models/winning_age
 
 app = FastAPI(title="MADRL Iquitos — Inference Service", version="0.1.0")
 _bundle: ModelBundle | None = None
+# Cliente de persistencia perezoso y tolerante a fallos (ver mongo_store.py).
+_store = MongoStore()
 
 
 @app.on_event("startup")
 def _load_model() -> None:
     global _bundle
     _bundle = ModelBundle.load(MODEL_PATH, MODEL_METADATA_PATH)
+
+
+@app.on_event("shutdown")
+def _close_store() -> None:
+    _store.close()
 
 
 class ActRequest(BaseModel):
@@ -76,15 +91,45 @@ def act(request: ActRequest) -> ActResponse:
     if obs.ndim != 2:
         raise HTTPException(status_code=422, detail="observations must be a 2D array (n_agents, obs_dim)")
 
+    started = time.perf_counter()
     try:
         actions = _bundle.act(obs)
     except Exception as exc:  # pragma: no cover - defensive
         logger.exception("Inference failed")
         raise HTTPException(status_code=500, detail=f"Inference failed: {exc}") from exc
+    latency_ms = (time.perf_counter() - started) * 1000.0
+
+    actions_list = actions.tolist()
+
+    # Persistencia no bloqueante: nunca tumba el request si Mongo falla.
+    _store.record_inference(
+        algorithm=_bundle.metadata.algorithm,
+        scenario=_bundle.metadata.scenario,
+        is_stub=_bundle.is_stub,
+        observations=request.observations,
+        actions=actions_list,
+        latency_ms=latency_ms,
+    )
 
     return ActResponse(
-        actions=actions.tolist(),
+        actions=actions_list,
         algorithm=_bundle.metadata.algorithm,
         scenario=_bundle.metadata.scenario,
         is_stub=_bundle.is_stub,
     )
+
+
+@app.get("/analytics/summary")
+def analytics_summary() -> dict:
+    """Estadísticas agregadas de las inferencias persistidas en MongoDB.
+
+    Devuelve ``{"persistence": "disabled"}`` con HTTP 200 si Mongo no está
+    configurado/disponible.
+    """
+    return _store.summary()
+
+
+@app.get("/analytics/recent")
+def analytics_recent(limit: int = 10) -> dict:
+    """Últimas ``limit`` inferencias persistidas (resumidas, sin arrays grandes)."""
+    return _store.recent(limit=limit)

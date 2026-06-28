@@ -1,0 +1,78 @@
+# Servicio de inferencia FastAPI (demo de operatividad, modo stub por defecto).
+#
+# Construir la imagen local antes de aplicar:
+#   docker build -t madrl-inference:local deploy/inference
+# y cargarla al clúster local (ver deploy/k8s/README.md). Por eso usamos
+# imagePullPolicy: IfNotPresent para no intentar bajarla de un registry.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inference
+  namespace: madrl
+  labels:
+    app.kubernetes.io/name: inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: inference
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: inference
+    spec:
+      containers:
+        - name: inference
+          image: madrl-inference:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: MONGODB_URI
+              value: "mongodb://mongo:27017"
+            - name: MONGODB_DB
+              value: "madrl"
+            # Ruta inexistente a propósito: fuerza el modo stub (demo sin checkpoint).
+            - name: MODEL_PATH
+              value: "/models/nonexistent_winning_agent.onnx"
+            - name: LOG_LEVEL
+              value: "info"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            timeoutSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inference
+  namespace: madrl
+  labels:
+    app.kubernetes.io/name: inference
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: inference
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000

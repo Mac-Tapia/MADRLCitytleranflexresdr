@@ -5,7 +5,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py model_loader.py ./
+COPY app.py model_loader.py mongo_store.py ./
 
 # Modelo y metadatos se montan como volumen (ver docker-compose.yml) o se
 # copian en build para imágenes inmutables de producción:

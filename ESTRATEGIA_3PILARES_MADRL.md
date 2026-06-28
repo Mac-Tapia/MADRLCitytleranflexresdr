@@ -31,11 +31,11 @@ La fuente operativa vigente del flujo completo esta en `docs/architecture/FLUJO_
 
 ### Sustento cientifico integrado
 
-El proyecto incluye el skill versionado `tools/skills/madrl-citylearn-literature-review/` como soporte directo para la revision bibliografica sistematica de la implementacion CityLearn v3 MADRL propuesta.
+El proyecto incluye el skill versionado `agent-skills/madrl-citylearn-literature-review/` como soporte directo para la revision bibliografica sistematica de la implementacion CityLearn v3 MADRL propuesta.
 
-Tambien incluye el skill exclusivo del proyecto `tools/skills/madrl-citylearn-thesis-integrated/`, orientado a convertir la matriz bibliografica, los KPIs, la arquitectura y los resultados del proyecto en un informe de tesis de Maestria de Especializacion o Profesionalizante bajo la estructura 5.1 de la Guia N. 02, con citas y referencias APA vigentes.
+Tambien incluye el skill exclusivo del proyecto `agent-skills/madrl-citylearn-thesis-integrated/`, orientado a convertir la matriz bibliografica, los KPIs, la arquitectura y los resultados del proyecto en un informe de tesis de Maestria de Especializacion o Profesionalizante bajo la estructura 5.1 de la Guia N. 02, con citas y referencias APA vigentes.
 
-Para el **Plan de Tesis**, el proyecto incluye el skill exclusivo `tools/skills/madrl-citylearn-thesis-plan/`. Este recurso trabaja con dos modulos conectados: busqueda bibliografica verificable y redaccion del Plan de Tesis bajo la estructura 5.1 de la Guia N. 01, incluyendo datos generales, planteamiento del problema, objetivos, marco teorico, diseno metodologico, cronograma, presupuesto, financiamiento, referencias APA y anexos.
+Para el **Plan de Tesis**, el proyecto incluye el skill exclusivo `agent-skills/madrl-citylearn-thesis-plan/`. Este recurso trabaja con dos modulos conectados: busqueda bibliografica verificable y redaccion del Plan de Tesis bajo la estructura 5.1 de la Guia N. 01, incluyendo datos generales, planteamiento del problema, objetivos, marco teorico, diseno metodologico, cronograma, presupuesto, financiamiento, referencias APA y anexos.
 
 Este recurso fija reglas terminologicas y metodologicas para:
 
@@ -49,27 +49,27 @@ Este recurso fija reglas terminologicas y metodologicas para:
 La plantilla de Excel se genera con:
 
 ```powershell
-python tools\skills\madrl-citylearn-literature-review\scripts\create_workbook_template.py `
+python agent-skills\madrl-citylearn-literature-review\scripts\create_workbook_template.py `
   --output outputs\sustento_cientifico\revision_bibliografica_madrl_citylearn.xlsx
 ```
 
 La plantilla integrada para tesis se genera con:
 
 ```powershell
-python tools\skills\madrl-citylearn-thesis-integrated\scripts\create_integrated_thesis_workbook.py `
+python agent-skills\madrl-citylearn-thesis-integrated\scripts\create_integrated_thesis_workbook.py `
   --output outputs\sustento_cientifico\tesis_integrada_madrl_citylearn.xlsx
 
-python tools\skills\madrl-citylearn-thesis-integrated\scripts\create_thesis_docx_skeleton.py `
+python agent-skills\madrl-citylearn-thesis-integrated\scripts\create_thesis_docx_skeleton.py `
   --output outputs\sustento_cientifico\informe_tesis_madrl_citylearn_esqueleto.docx
 ```
 
 La plantilla para Plan de Tesis se genera con:
 
 ```powershell
-python tools\skills\madrl-citylearn-thesis-plan\scripts\create_plan_workbook.py `
+python agent-skills\madrl-citylearn-thesis-plan\scripts\create_plan_workbook.py `
   --output outputs\sustento_cientifico\plan_tesis_madrl_citylearn_matriz.xlsx
 
-python tools\skills\madrl-citylearn-thesis-plan\scripts\create_plan_docx_skeleton.py `
+python agent-skills\madrl-citylearn-thesis-plan\scripts\create_plan_docx_skeleton.py `
   --output outputs\sustento_cientifico\plan_tesis_madrl_citylearn_esqueleto.docx
 ```
 

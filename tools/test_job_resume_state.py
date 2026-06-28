@@ -120,6 +120,23 @@ def test_maac_full_checkpoints_count_as_complete(tmp_path: Path):
     assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
 
 
+def test_happo_results_json_trusted_when_timeseries_low(tmp_path: Path):
+    data = tmp_path / "data"
+    data.mkdir(parents=True)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "episodes_recorded": 50,
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+    # No timeseries/checkpoints: non-MAAC should still trust a clean results.json.
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
@@ -133,4 +150,6 @@ if __name__ == "__main__":
         test_maac_inflated_results_json_not_complete(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_maac_full_checkpoints_count_as_complete(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_happo_results_json_trusted_when_timeseries_low(Path(td))
     print("OK: test_job_resume_state")

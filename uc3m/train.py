@@ -104,13 +104,44 @@ def _set_nested(d: Dict, dotted_key: str, value):
 # Construcción del entorno UC3MEnv desde config
 # ════════════════════════════════════════════════════════════════════════════
 
-def build_env(cfg: Dict, algorithm: str) -> UC3MEnv:
-    """Construye UC3MEnv desde la configuración cargada."""
+def _resolve_schema_path(cfg: Dict) -> str:
+    """Resuelve el ``schema.json`` del dataset desde la config.
 
-    schema_path = cfg.get("dataset", {}).get(
+    Soporta dos formatos en ``cfg["dataset"]`` (compatibles hacia atrás):
+
+      1. Formato nuevo (``uc3m.data``): ``{source, args}`` — se delega en
+         ``build_source(cfg)`` que materializa el dataset (local/http/s3) de
+         forma idempotente y registra su *manifest* (provenance) vía logging.
+      2. Formato clásico: ``{schema_path: ...}`` — se usa la ruta directamente.
+    """
+    dataset = cfg.get("dataset", {}) or {}
+
+    if dataset.get("source"):
+        from uc3m.data import build_source
+
+        src = build_source(cfg)
+        schema_path = str(src.schema_path())
+        try:
+            manifest = src.describe()
+            logger.info(
+                "Dataset provenance — name=%s source=%s buildings=%d hours=%d hash=%s",
+                manifest.name, manifest.source_uri, manifest.buildings,
+                manifest.hours, manifest.content_hash,
+            )
+        except Exception as exc:  # noqa: BLE001 — provenance no debe romper el run
+            logger.warning("No se pudo describir el dataset (provenance): %s", exc)
+        return schema_path
+
+    return dataset.get(
         "schema_path",
         "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
     )
+
+
+def build_env(cfg: Dict, algorithm: str) -> UC3MEnv:
+    """Construye UC3MEnv desde la configuración cargada."""
+
+    schema_path = _resolve_schema_path(cfg)
 
     # Clima desde config o Iquitos por defecto
     c = cfg.get("climate", {})
@@ -404,6 +435,9 @@ def main():
     overrides: Dict = {}
     if args.schema:
         overrides["dataset.schema_path"] = args.schema
+        # Un --schema explícito tiene precedencia sobre el adaptador `source`:
+        # se neutraliza `source` para usar la ruta directa (compat hacia atrás).
+        overrides["dataset.source"] = ""
     if args.total_timesteps:
         overrides["training.total_timesteps"] = args.total_timesteps
 

@@ -92,7 +92,7 @@ This module must be integrated into Chapter IV of the thesis plan as Section 4.9
 
 ### C.1 — Los 17 Edificios del SEAI Iquitos
 
-The dataset covers **17 real institutional/commercial buildings** from the Sistema Eléctrico Aislado de Iquitos (SEAI), Loreto, Perú. Use the following exact names, areas, and parameters (sourced from `tools/skills/iquitos-citylearn-dataset/references/module-a-building-configs.md` and billing data from Electro Oriente S.A.):
+The dataset covers **17 real institutional/commercial buildings** from the Sistema Eléctrico Aislado de Iquitos (SEAI), Loreto, Perú. Use the following exact names, areas, and parameters (sourced from `agent-skills/iquitos-citylearn-dataset/references/module-a-building-configs.md` and billing data from Electro Oriente S.A.):
 
 | ID | Edificio | Tipo auditado | Area (m2) | PV actual (kWp) | BESS (kWh) | BESS P (kW) | EV tomas | EV kW |
 |----|----------|---------------|----------:|----------------:|-----------:|------------:|---------:|------:|

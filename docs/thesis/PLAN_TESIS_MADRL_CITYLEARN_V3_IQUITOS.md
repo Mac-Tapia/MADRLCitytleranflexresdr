@@ -929,7 +929,7 @@ Los KPIs por eje y algoritmo deben generarse solamente desde la corrida vigente 
 
 ### Anexo 7 — Cadenas de búsqueda (Módulo A)
 
-*(Ver `tools/skills/madrl-citylearn-thesis-plan/references/module-a-plan-literature.md` para las 13 cadenas de búsqueda booleanas completas y los 15 worksheets requeridos.)*
+*(Ver `agent-skills/madrl-citylearn-thesis-plan/references/module-a-plan-literature.md` para las 13 cadenas de búsqueda booleanas completas y los 15 worksheets requeridos.)*
 
 ### Anexo 8 — Glosario MADRL
 

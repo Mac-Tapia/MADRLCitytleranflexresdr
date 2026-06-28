@@ -16,7 +16,17 @@ experiment:
   seed:    42
 
 # ── Dataset Iquitos 2023–2025 (26 304 horas) ────────────────────────────
+# Formato nuevo (uc3m.data): `source` + `args` selecciona el adaptador de
+# ingreso de datos (local | http | s3) sin tocar el código del dominio.
+#   - local: lee un directorio con schema.json ya presente en disco.
+#   - http:  args: { url: "https://.../dataset.zip" }  (descarga + descomprime)
+#   - s3:    args: { bucket: "mi-bucket", prefix: "datasets/iquitos" }
+# `schema_path` se conserva como fallback compatible hacia atrás (si no hay
+# `source`, train.py usa esta ruta directamente).
 dataset:
+  source: local
+  args:
+    dataset_dir: "CityLearn/data/datasets/citylearn_iquitos_2023_2025"
   schema_path: "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json"
   name:        "iquitos_2023_2025"
   n_buildings: 17

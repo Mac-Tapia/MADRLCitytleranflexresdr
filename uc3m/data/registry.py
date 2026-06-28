@@ -21,8 +21,26 @@ from typing import Any, Callable, Dict, Mapping
 from uc3m.data.adapters.local_csv import LocalCsvDatasetAdapter
 from uc3m.data.ports import DatasetSource
 
+
+def _build_http(**kwargs: Any) -> DatasetSource:
+    """Builder perezoso: importa el adaptador HTTP solo al usarse."""
+    from uc3m.data.adapters.remote_http import RemoteHttpDatasetAdapter
+
+    return RemoteHttpDatasetAdapter(**kwargs)
+
+
+def _build_s3(**kwargs: Any) -> DatasetSource:
+    """Builder perezoso: importa el adaptador S3 solo al usarse (boto3 opcional)."""
+    from uc3m.data.adapters.s3 import S3DatasetAdapter
+
+    return S3DatasetAdapter(**kwargs)
+
+
 _BUILDERS: Dict[str, Callable[..., DatasetSource]] = {
     "local": LocalCsvDatasetAdapter,
+    "http": _build_http,
+    "https": _build_http,
+    "s3": _build_s3,
 }
 
 

@@ -1,5 +1,8 @@
-# Usado por deploy/aws/training/Dockerfile (build context = raiz del repo):
-#   docker build -f deploy/aws/training/Dockerfile -t madrl-training:latest .
+# Build context = raiz del repo. Usado por:
+#   - Dockerfile (raiz): imagen CPU para tests/inferencia
+#       docker build -t madrl-citylearn:cpu .
+#   - deploy/aws/training/Dockerfile: imagen GPU de entrenamiento
+#       docker build -f deploy/aws/training/Dockerfile -t madrl-training:latest .
 # Excluye artefactos pesados/regenerables que no deben entrar a la imagen.
 
 .git
@@ -13,14 +16,27 @@ venv/
 # salidas de entrenamientos previos (pueden pesar varios GB)
 outputs/
 
+# caches de datasets descargados localmente (se regeneran on-demand)
+data/cache/
+
+# checkpoints/pesos de modelos (no se hornean en la imagen)
+*.pt
+*.pth
+*.ckpt
+
 # caches de build/test/lint
 __pycache__/
 *.pyc
+*.pyo
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
 .cache/
 build/
 dist/
+
+# notebooks ejecutados / checkpoints de jupyter
+.ipynb_checkpoints/
 
 # editores / IDE
 .vscode/

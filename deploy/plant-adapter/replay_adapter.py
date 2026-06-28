@@ -79,7 +79,6 @@ def build_observations(frames: dict[str, pd.DataFrame], step: int, obs_dim: int)
     obs = np.zeros((n_agents, obs_dim), dtype=np.float32)
     for i, (_name, df) in enumerate(frames.items()):
         row = df.iloc[step % len(df)]
-        numeric = row.select_dtypes(include="number") if hasattr(row, "select_dtypes") else row
         values = np.asarray(pd.to_numeric(row, errors="coerce").fillna(0.0).values, dtype=np.float32)
         n = min(obs_dim, len(values))
         obs[i, :n] = values[:n]

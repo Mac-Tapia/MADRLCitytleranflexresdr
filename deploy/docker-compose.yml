@@ -14,8 +14,6 @@
 #   - dashboard (puerto 8501): panel Streamlit.
 #   - mqtt-broker (puerto 1883): Eclipse Mosquitto.
 
-version: "3.9"
-
 services:
   mqtt-broker:
     image: eclipse-mosquitto:2
@@ -28,7 +26,11 @@ services:
   inference:
     build: ./inference
     restart: unless-stopped
-    env_file: .env
+    # .env es opcional: si no existe, el servicio arranca en modo "stub"
+    # (política aleatoria) porque MODEL_PATH apunta a un .onnx inexistente.
+    env_file:
+      - path: .env
+        required: false
     environment:
       - MODEL_PATH=/models/winning_agent.onnx
       - MODEL_METADATA_PATH=/models/winning_agent.metadata.json
@@ -36,6 +38,12 @@ services:
       - ./models:/models:ro
     ports:
       - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   plant-adapter:
     build: ./plant-adapter
@@ -43,7 +51,9 @@ services:
     depends_on:
       - inference
       - mqtt-broker
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
     environment:
       - INFERENCE_SERVICE_URL=http://inference:8000
       - ADAPTER_MODE=replay
@@ -59,7 +69,9 @@ services:
     depends_on:
       - inference
       - mqtt-broker
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
     environment:
       - INFERENCE_SERVICE_URL=http://inference:8000
       - MQTT_HOST=mqtt-broker

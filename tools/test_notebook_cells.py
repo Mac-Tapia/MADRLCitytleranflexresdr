@@ -275,7 +275,7 @@ LAUNCHER_A100_CHECKS = {
     'parser.add_argument("--matd3-batch-size", default=1280': "MATD3 batch_size=1280",
     'parser.add_argument("--matd3-buffer-size", default=2000000': "MATD3 buffer_size=2000000",
     'parser.add_argument("--maac-batch-size", default=768': "MAAC batch_size=768",
-    'parser.add_argument("--maac-buffer-length", default=1000000': "MAAC buffer_length=1000000",
+    'parser.add_argument("--maac-buffer-length", default=450000': "MAAC buffer_length=450000",
     'parser.add_argument("--maac-num-updates", default=12': "MAAC num_updates=12",
     "0.9999": "gamma=0.9999 (horizonte anual)",
 }

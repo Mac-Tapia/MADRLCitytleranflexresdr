@@ -13,6 +13,7 @@ from citylearn_v3_training_common import (  # noqa: E402
     infer_completed_episodes_from_live_progress,
     job_counts_as_launcher_complete,
     job_has_final_results,
+    preview_job_launcher_decision,
 )
 
 
@@ -261,6 +262,73 @@ def test_happo_inflated_csv_resumes_from_global_step(tmp_path: Path):
     assert plan["note"] == "resume_from_checkpoint"
 
 
+def test_preview_matches_skip_for_complete_masac(tmp_path: Path):
+    data = tmp_path / "data"
+    data.mkdir(parents=True)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "MASAC",
+                "episodes_recorded": 50,
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+    dec = preview_job_launcher_decision(
+        tmp_path, algorithm="masac", target_episodes=50, episode_time_steps=8760
+    )
+    assert dec["skip"] is True
+    assert dec["action"] == "skip"
+    assert "se omite" in dec["status_line"]
+
+
+def test_preview_happo_salvage_resumes_not_complete(tmp_path: Path):
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    rollout_threads = 12
+    max_gs = 4 * 8760 * rollout_threads
+    import csv
+
+    rows = [
+        {"episode": "49", "episode_step": "0", "global_step": str(max_gs), "all_done": "True"},
+    ]
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 4,
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "n_rollout_threads": rollout_threads,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    dec = preview_job_launcher_decision(
+        tmp_path,
+        algorithm="happo",
+        target_episodes=50,
+        episode_time_steps=8760,
+        rollout_threads=rollout_threads,
+    )
+    assert dec["skip"] is False
+    assert dec["action"] == "resume"
+    assert dec["completed_episodes"] == 4
+    assert "not skipping" in dec["launcher_line"]
+    assert "COMPLETO" not in dec["status_line"]
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
@@ -284,4 +352,8 @@ if __name__ == "__main__":
         test_happo_recovered_from_timeseries_global_step_with_rollout_threads(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_inflated_csv_resumes_from_global_step(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_preview_matches_skip_for_complete_masac(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_preview_happo_salvage_resumes_not_complete(Path(td))
     print("OK: test_job_resume_state")

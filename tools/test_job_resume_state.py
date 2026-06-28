@@ -214,6 +214,53 @@ def test_happo_recovered_from_timeseries_global_step_with_rollout_threads(tmp_pa
     assert (data / "job_launcher_complete.json").is_file()
 
 
+def test_happo_inflated_csv_resumes_from_global_step(tmp_path: Path):
+    """CSV episode-index can claim 50 ep while global_step proves only 4 (rollout_threads=12)."""
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    rollout_threads = 12
+    episode_time_steps = 8760
+    max_gs = 4 * episode_time_steps * rollout_threads
+    import csv
+
+    rows = [
+        {"episode": "49", "episode_step": "0", "global_step": str(max_gs), "all_done": "True"},
+    ]
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 4,
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "n_rollout_threads": rollout_threads,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    plan = discover_job_resume_plan(
+        tmp_path,
+        algorithm="happo",
+        target_episodes=50,
+        episode_time_steps=episode_time_steps,
+        rollout_threads=rollout_threads,
+    )
+    assert plan["active"] is True
+    assert plan["completed_episodes"] == 4
+    assert plan["remaining_episodes"] == 46
+    assert plan["note"] == "resume_from_checkpoint"
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
@@ -235,4 +282,6 @@ if __name__ == "__main__":
         test_salvage_results_json_not_complete(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_recovered_from_timeseries_global_step_with_rollout_threads(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_happo_inflated_csv_resumes_from_global_step(Path(td))
     print("OK: test_job_resume_state")

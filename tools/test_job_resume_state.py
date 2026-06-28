@@ -175,6 +175,45 @@ def test_salvage_results_json_not_complete(tmp_path: Path):
     assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is False
 
 
+def test_happo_recovered_from_timeseries_global_step_with_rollout_threads(tmp_path: Path):
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    rollout_threads = 12
+    episode_time_steps = 8760
+    target = 50
+    max_gs = target * episode_time_steps * rollout_threads
+    rows = [
+        {"episode": "0", "episode_step": "0", "global_step": str(max_gs), "all_done": "True"},
+    ]
+    import csv
+
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 1,
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "n_rollout_threads": rollout_threads,
+                    "run_completed_with_salvage": True,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
+    assert (data / "job_launcher_complete.json").is_file()
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
@@ -194,4 +233,6 @@ if __name__ == "__main__":
         test_maac_complete_without_per_episode_checkpoints(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_salvage_results_json_not_complete(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_happo_recovered_from_timeseries_global_step_with_rollout_threads(Path(td))
     print("OK: test_job_resume_state")

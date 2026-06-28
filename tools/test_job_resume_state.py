@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "CityLearn" / "scripts"))
 from citylearn_v3_training_common import (  # noqa: E402
     discover_job_resume_plan,
     infer_completed_episodes_from_live_progress,
+    job_counts_as_launcher_complete,
     job_has_final_results,
 )
 
@@ -70,6 +71,55 @@ def test_job_complete_blocks_resume(tmp_path: Path):
     assert plan["active"] is False
 
 
+def test_maac_inflated_results_json_not_complete(tmp_path: Path):
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    for episode in range(1, 10):
+        (ckpt / f"checkpoint_episode_{episode}.pt").write_bytes(b"x")
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "MAAC",
+                "episodes_recorded": 50,
+                "episode_summaries": [{"episode": i, "steps": 8760} for i in range(50)],
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is False
+    plan = discover_job_resume_plan(
+        tmp_path,
+        algorithm="maac",
+        target_episodes=50,
+        episode_time_steps=8760,
+    )
+    assert plan["active"] is True
+    assert plan["completed_episodes"] == 9
+    assert plan["remaining_episodes"] == 41
+
+
+def test_maac_full_checkpoints_count_as_complete(tmp_path: Path):
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "checkpoint_episode_50.pt").write_bytes(b"x")
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "MAAC",
+                "episodes_recorded": 50,
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
@@ -77,5 +127,10 @@ if __name__ == "__main__":
 
     with tempfile.TemporaryDirectory() as td:
         test_discover_resume_with_live_progress(Path(td))
+    with tempfile.TemporaryDirectory() as td:
         test_job_complete_blocks_resume(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_maac_inflated_results_json_not_complete(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_maac_full_checkpoints_count_as_complete(Path(td))
     print("OK: test_job_resume_state")

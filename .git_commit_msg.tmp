@@ -1,3 +1,4 @@
-chore(submodule): bump CityLearn + tests for target-episode completion
+chore(submodule): bump CityLearn + tests for (global_step+1) completion
 
-Closes HAPPO/MASAC/MATD3 at target via all_done boundary (no more 49/50 loop).
+Fixes the real 49/50 root cause (0-indexed pre-increment global_step + HAPPO
+never writing all_done=True). HAPPO/MASAC/MATD3 now close at the target episode.

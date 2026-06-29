@@ -1,3 +1,3 @@
-chore(submodule): bump CityLearn HAPPO 49/50 completion fix
+chore(submodule): bump CityLearn + tests for target-episode completion
 
-Fixes HAPPO stuck at ep 49/50 when training actually finished all 50 episodes.
+Closes HAPPO/MASAC/MATD3 at target via all_done boundary (no more 49/50 loop).

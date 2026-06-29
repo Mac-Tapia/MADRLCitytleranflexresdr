@@ -178,7 +178,7 @@ def main() -> int:
                  for j in sorted(phase2_jobs, key=L._job_backfill_weight)]
     expected_p2 = [("maac", "E1"), ("maac", "E2"), ("maac", "E3"),
                    ("matd3", "E1"), ("matd3", "E2"), ("matd3", "E3")]
-    check("admision fase 2 lightest-first (MAAC antes que MATD3)",
+    check("admision fase 2 por escenario (MAAC luego MATD3)",
           admission == expected_p2, str(admission))
     ran_p2 = sorted((n, s) for (n, s) in order if n in ("matd3", "maac"))
     check("los 6 jobs fase 2 corrieron", ran_p2 == sorted(expected_p2), str(ran_p2))

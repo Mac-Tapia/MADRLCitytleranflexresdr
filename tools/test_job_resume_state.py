@@ -185,7 +185,7 @@ def test_happo_recovered_from_timeseries_global_step_with_rollout_threads(tmp_pa
     rollout_threads = 12
     episode_time_steps = 8760
     target = 50
-    max_gs = target * episode_time_steps * rollout_threads
+    max_gs = target * episode_time_steps
     rows = [
         {"episode": "0", "episode_step": "0", "global_step": str(max_gs), "all_done": "True"},
     ]
@@ -224,7 +224,7 @@ def test_happo_inflated_csv_resumes_from_global_step(tmp_path: Path):
     (ckpt / "actor_agent0.pt").write_bytes(b"x")
     rollout_threads = 12
     episode_time_steps = 8760
-    max_gs = 4 * episode_time_steps * rollout_threads
+    max_gs = 4 * episode_time_steps
     import csv
 
     rows = [
@@ -290,7 +290,7 @@ def test_preview_happo_salvage_resumes_not_complete(tmp_path: Path):
     ckpt.mkdir(parents=True)
     (ckpt / "actor_agent0.pt").write_bytes(b"x")
     rollout_threads = 12
-    max_gs = 4 * 8760 * rollout_threads
+    max_gs = 4 * 8760
     import csv
 
     rows = [
@@ -329,6 +329,76 @@ def test_preview_happo_salvage_resumes_not_complete(tmp_path: Path):
     assert "COMPLETO" not in dec["status_line"]
 
 
+def test_happo_stale_live_progress_does_not_inflate_resume(tmp_path: Path):
+    """Stale live_progress.episode after preload must not block skip when artifacts prove 50/50."""
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    episode_time_steps = 8760
+    target = 50
+    max_gs = target * episode_time_steps
+    import csv
+
+    rows = [
+        {
+            "episode": str(target - 1),
+            "episode_step": str(episode_time_steps - 1),
+            "global_step": str(max_gs - 1),
+            "all_done": "True",
+        },
+    ]
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (tmp_path / "live_progress.json").write_text(
+        json.dumps(
+            {
+                "global_step": max_gs - 1,
+                "episode": target - 1,
+                "episode_step": episode_time_steps - 1,
+                "completed_episode_count": target,
+                "algorithm": "HAPPO",
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=target) is True
+    dec = preview_job_launcher_decision(
+        tmp_path,
+        algorithm="happo",
+        target_episodes=target,
+        episode_time_steps=episode_time_steps,
+        rollout_threads=12,
+    )
+    assert dec["skip"] is True
+    assert dec["action"] == "skip"
+
+
+def test_happo_live_progress_episode_ahead_of_global_step(tmp_path: Path):
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    (tmp_path / "live_progress.json").write_text(
+        json.dumps({"global_step": 35040, "episode": 49, "episode_step": 0}),
+        encoding="utf-8",
+    )
+    plan = discover_job_resume_plan(
+        tmp_path,
+        algorithm="happo",
+        target_episodes=50,
+        episode_time_steps=8760,
+        rollout_threads=12,
+    )
+    assert plan["active"] is True
+    assert plan["completed_episodes"] == 4
+    assert plan["remaining_episodes"] == 46
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
@@ -356,4 +426,8 @@ if __name__ == "__main__":
         test_preview_matches_skip_for_complete_masac(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_preview_happo_salvage_resumes_not_complete(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_happo_stale_live_progress_does_not_inflate_resume(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_happo_live_progress_episode_ahead_of_global_step(Path(td))
     print("OK: test_job_resume_state")

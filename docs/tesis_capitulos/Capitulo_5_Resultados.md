@@ -119,7 +119,7 @@ Comparación con la literatura: las mejoras reportadas por trabajos análogos (Y
 
 > `[REEMPLAZAR con resultados de la corrida canónica de 50 episodios en Colab]`
 
-Artefactos: `outputs/thesis_objective_evidence/{analisis_estadistico_madrl.csv, comparaciones_mwu_madrl.csv, comparaciones_wilcoxon_madrl.csv, hipotesis_estadisticas_madrl.csv, scores_kpi_algoritmo_madrl.csv}`. `[Pendiente: completar comparaciones MWU/Wilcoxon para los pares restantes (MATD3 vs MASAC, MATD3 vs MAAC) y sus tamaños de efecto Cliff's δ / Hedges g.]`
+Artefactos: `outputs/thesis_objective_evidence/{analisis_estadistico_madrl.csv, comparaciones_mwu_madrl.csv, comparaciones_wilcoxon_madrl.csv, hipotesis_estadisticas_madrl.csv, scores_kpi_algoritmo_madrl.csv}`. Para la corrida canónica, esta batería se reproduce en el notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`, que consolida los `results.json` de las 12 corridas en un *DataFrame* de KPIs (celda 8.1) y ejecuta la suite estadística —Kruskal-Wallis, Mann-Whitney U y ranking global— en la celda 9.1. `[Pendiente: completar comparaciones MWU/Wilcoxon para los pares restantes (MATD3 vs MASAC, MATD3 vs MAAC) y sus tamaños de efecto Cliff's δ / Hedges g.]`
 
 ## 5.6 Figuras
 
@@ -140,7 +140,7 @@ Comparación v2 vs v3: `outputs/comparison_citylearn_v2_vs_v3_madrl/{E1,E2,E3}/{
 1. **MATD3 es el mejor MADRL global** (score 0.7445; KW p = 0.0459). Su doble crítico (anti-sobreestimación) y la política determinística parecen favorecer la estabilidad en el horizonte largo (8 760 pasos), pese a ser el más costoso computacionalmente.
 2. **Especialización por eje:** HAPPO destaca en flexibilidad pura (OE.1) en los tres escenarios del comparador, mientras MATD3 domina CO₂ (OE.2) y costos (OE.3). Esto es coherente con la naturaleza on-policy/heterogénea de HAPPO para coordinación de picos y con la eficiencia de muestreo off-policy de MATD3 para optimización fina.
 3. **Frente al baseline v2:** los agentes MADRL superan al baseline en E2 y E3; en E1 el baseline puntúa alto por la ponderación equiponderada del comparador (dominada por OE.2). La interpretación correcta exige análisis por eje y, preferiblemente, frontera de Pareto.
-4. **Carácter preliminar:** las cifras provienen de 5 episodios por job (presupuesto de 8 GB VRAM). La configuración canónica (50 episodios = 438 000 pasos), actualmente en ejecución en Colab, y múltiples semillas robustecerán las conclusiones. Al finalizar, se reemplazarán todos los resultados preliminares de este capítulo.
+4. **Carácter preliminar:** las cifras provienen de 5 episodios por job (presupuesto de 8 GB VRAM). La configuración canónica (50 episodios = 438 000 pasos), actualmente en ejecución en Colab bajo el protocolo `two_phase_happo_masac_v3` (GPU objetivo H100 primaria / A100-80GB compatible, ~20 h de pared), y múltiples semillas robustecerán las conclusiones. Sus artefactos (`results.json`, `training_summary.json`, `timeseries.csv`, figuras) persisten en Google Drive (`MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_<timestamp>/`) y se cargarán con las celdas 8.1/9.1 del notebook. Al finalizar, se reemplazarán todos los resultados preliminares de este capítulo.
 
 ---
 

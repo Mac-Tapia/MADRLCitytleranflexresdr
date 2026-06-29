@@ -95,7 +95,7 @@ Use the exact PG/PE/OG/OE/HG/HE wording from [module-b-thesis-report.md](referen
    - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`
    - `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`
    - Corrida local referencia (5 ep): `outputs/citylearn_v3_madrl_full_20260615_074011_v4/`
-   - Corrida canónica objetivo (50 ep): Colab A100 → `outputs/colab_50ep/` (cuando exista)
+   - Corrida canónica objetivo (50 ep): Colab H100/A100, protocolo `two_phase_happo_masac_v3` → Drive `MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_<timestamp>/` (ver notebook celda 7.2)
    - Notebook canónico: `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` (celda 6.1)
    - Auditorías dataset: `outputs/dataset_audit/`
    - Validación: `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md`

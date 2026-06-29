@@ -98,11 +98,12 @@ Todos los algoritmos usan el **mismo perfil** (`*_unified_comparable_v3/v4`) par
 | `ev_weight` | 0.25 |
 | `reward_scale` | 1.00 |
 | `axis_weight_multipliers` (flex/carbon/cost) | 1.00 / 1.00 / 1.00 |
+| `bess_cycle_weight` / `bess_cycle_scale` | 0.10 / 0.05 |
 | `ev_soc_tolerance` / `ev_soc_critical_deficit` | 0.05 / 0.25 |
-| `ev_urgency_hours` | 4.0 |
-| `ev_departure/urgency/idle_deficit_weight` | 0.55 / 0.30 / 0.15 |
+| `ev_urgency_hours` | 8.0 |
+| `ev_departure/urgency/idle_deficit_weight` | 0.70 / 0.30 / 0.25 |
 
-> Razón de la unificación: con perfiles diferenciados, las diferencias de rendimiento no serían atribuibles solo a la arquitectura del algoritmo. Los perfiles diferenciados se conservan para ablación futura (no activos).
+> Fuente canónica de entrenamiento: `CityLearn/citylearn/reward_function.py` (`*_unified_comparable_v4`). Los YAML/JSON en `CityLearn/configs/` pueden listar `ev_urgency_hours: 4.0` como valor heredado; el perfil v4 activo en código usa 8.0 h.
 
 ## 4.5 Algoritmos y wrappers
 
@@ -128,9 +129,9 @@ Cada algoritmo se conecta al entorno v3 mediante un wrapper específico definido
 | Específicos | `n_rollout_threads` 1, `action_aggregation` mean | `action_bins` 3 `axis`, `actor_sample_times` 2 | `train_interval` 100, `tau` 0.005, `target_noise` 0.2 | `attend_heads` 4, `tau` 0.005, `steps_per_update` 250, `num_updates` 4 |
 | Reward profile | HAPPO unified | MASAC unified | MATD3 unified | MAAC unified |
 
-### 4.5.2 Hiperparámetros — configuración canónica objetivo (50 ep, Colab A100)
+### 4.5.2 Hiperparámetros — configuración canónica objetivo (50 ep, Colab H100/A100)
 
-La corrida canónica se ejecuta en Google Colab (NVIDIA A100-SXM4-80GB, High-RAM) bajo el modo de lanzamiento `two_phase_happo_masac` (Fase 1: HAPPO + MASAC en sus tres escenarios en paralelo; Fase 2: MATD3 + MAAC, también ×3), con seis trabajos por fase. La validación operacional fija el horizonte total en 50 episodios × 8 760 pasos = 438 000 pasos por corrida y 5 256 000 pasos para las doce corridas. Los valores siguientes corresponden a la celda 6.1 (`HYPERPARAMS`, declarada como fuente única de verdad) del notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`:
+La corrida canónica se ejecuta en Google Colab (High-RAM, ~167 GiB) bajo el protocolo de lanzamiento `two_phase_happo_masac_v3` (Fase 1: HAPPO + MASAC en sus tres escenarios en paralelo; Fase 2: MATD3 + MAAC, también ×3), con seis trabajos por fase. El notebook fija como GPU objetivo primaria una NVIDIA H100 (~26 vCPU) y declara compatibles NVIDIA A100-SXM4-80GB (12 vCPU) y RTX PRO 6000 Blackwell (96 GiB); en H100 el entrenamiento es ~2× más rápido por su mayor número de vCPU (el cuello de botella es la CPU de `env.step` de CityLearn, no la GPU). La validación operacional fija el horizonte total en 50 episodios × 8 760 pasos = 438 000 pasos por corrida y 5 256 000 pasos para las doce corridas, con un tiempo de pared estimado de ~20 h. Los valores siguientes corresponden a la celda 6.1 (`HYPERPARAMS`, declarada como fuente única de verdad) del notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`:
 
 | Parámetro | HAPPO | MASAC | MATD3 | MAAC |
 |---|:---:|:---:|:---:|:---:|
@@ -144,7 +145,7 @@ La corrida canónica se ejecuta en Google Colab (NVIDIA A100-SXM4-80GB, High-RAM
 | `tau` | — | 0.005 | 0.005 | 5e-3 |
 | Específicos | clip 0.2, GAE 0.95, `update_epochs` 5, `n_rollout_threads` 2 (auto), `share_param` False | `action_bins` 3 `axis` (89 acciones discretas), `update_frequency` 2, `actor_sample_times` 10 | `policy_noise` 0.2, `noise_clip` 0.5, `policy_delay` 2, `train_interval` 50 | `attention_heads` 4, `steps_per_update` 50, `num_updates` 12, `reward_scale` 10.0, `action_bins` 3 |
 
-> Nota: estos valores corresponden a la corrida canónica de 50 episodios en Colab A100 (celda 6.1 del notebook, modo `two_phase_happo_masac`) y difieren de la corrida v4 local (tabla 4.5.1), ajustada a los 8 GB de VRAM de una RTX 4060 Laptop. El Capítulo 5 todavía reporta resultados preliminares de la corrida v4 (5 episodios); se reemplazarán al concluir la corrida canónica, cuyos artefactos se integrarán desde `outputs/colab_50ep/` (o la carpeta de Google Drive del entrenamiento).
+> Nota: estos valores corresponden a la corrida canónica de 50 episodios en Colab (celda 6.1 del notebook, protocolo `two_phase_happo_masac_v3`) y difieren de la corrida v4 local (tabla 4.5.1), ajustada a los 8 GB de VRAM de una RTX 4060 Laptop. El Capítulo 5 todavía reporta resultados preliminares de la corrida v4 (5 episodios); se reemplazarán al concluir la corrida canónica, cuyos artefactos persisten en Google Drive (`MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_<timestamp>/`, con subcarpetas `{ALGORITMO}/E{1,2,3}/`) y se integrarán al repositorio para el análisis.
 
 ## 4.6 Aportes originales al motor de simulación (CityLearn fork)
 
@@ -175,7 +176,7 @@ Una vez fijada la formulación, la implementación distingue dos planos de ejecu
 
 - **Lenguaje/stack:** Python 3.9 (`.venv39-citylearn-v3`), PyTorch 2.8.0+cu126, CUDA 12.6.
 - **Hardware (corrida v4 local):** NVIDIA RTX 4060 Laptop, 8 188 MiB VRAM, driver 560.94; perfil `local4060_fast` (TF32, `cuda_memory_fraction≈0.812`, `max_split_size_mb:128`).
-- **Cómputo canónico (Colab A100):** NVIDIA A100-SXM4-80GB con ~167 GiB de RAM (Colab Pro+ High-RAM), orquestado por `CityLearn/scripts/colab_a100_official_launcher.py` en modo `two_phase_happo_masac` (protocolo `two_phase_happo_masac_v3`). La Fase 1 entrena HAPPO y MASAC (6 jobs en paralelo) y la Fase 2 MATD3 y MAAC (otros 6 jobs); MASAC mantiene el replay en CPU y los hilos por fase se autoajustan a las vCPU del runtime. El monitoreo y la reanudación intra-job usan `colab_a100_live_monitor.py`, `live_progress.json` y `--skip-completed`. Fuente: notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` (celdas 6.1 y 7.x).
+- **Cómputo canónico (Colab Pro+ High-RAM, ~167 GiB RAM):** GPU objetivo primaria NVIDIA H100 (~26 vCPU) y compatibles NVIDIA A100-SXM4-80GB (12 vCPU) y RTX PRO 6000 Blackwell (96 GiB), orquestado por `CityLearn/scripts/colab_a100_official_launcher.py` bajo el protocolo `two_phase_happo_masac_v3`. La Fase 1 entrena HAPPO y MASAC (6 jobs en paralelo) y la Fase 2 MATD3 y MAAC (otros 6 jobs); MASAC mantiene el replay en CPU y los hilos por fase se autoajustan a las vCPU del runtime (A100 12 → Fase 1 torch=1/rollout=2, Fase 2 torch=2; H100 ~26 → Fase 1 torch=2/rollout=4, Fase 2 torch=4). El monitoreo y la reanudación intra-job usan `colab_a100_live_monitor.py`, `live_progress.json` y `--skip-completed` (con escritura atómica y precarga de `timeseries.csv`/`trace.csv` para no perder episodios al reconectar). Los artefactos persisten en Google Drive (`MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_<timestamp>/`). Tiempo de pared estimado ~20 h. Fuente: notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` (celdas 0.verify, 6.1 y 7.x).
 - **Concurrencia (local):** `MaxConcurrentScenarioJobs=2`; MASAC/MAAC limitados a 1 (estabilidad de memoria); `torch_threads` 8-12.
 - **Guardas de robustez:** filtros de gradientes/valores finitos (`install_finite_optimizer_step_guard`, `FiniteTensorBoardWriter`), heartbeats de progreso y reanudación por checkpoints (`discover_job_resume_plan`).
 

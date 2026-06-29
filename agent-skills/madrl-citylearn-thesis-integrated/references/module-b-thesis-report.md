@@ -220,7 +220,7 @@ Protocolo de comparación experimental de algoritmos MADRL, fundamentado en los 
 
 **4.4 Algoritmos e hiperparámetros** — Tabla 4.3
 
-- Corrida canónica objetivo: 50 episodios × 8 760 pasos, GPU A100 80 GB (Colab, `two_phase_happo_masac`)
+- Corrida canónica objetivo: 50 episodios × 8 760 pasos, protocolo `two_phase_happo_masac_v3` en Colab (GPU **H100** objetivo primario; **A100-SXM4-80GB** compatible; ver `madrl_citylearn_v3_tutorial.ipynb` celdas 1.1 y 7.2)
 - Corrida de referencia local: 5 episodios, RTX 4060 8 GB
 - Hiperparámetros comunes: hidden [256,256], actor_lr 3e-4, critic_lr 1e-3, gamma 0,9999, batch 256
 

@@ -1,0 +1,8 @@
+{
+  "algorithm": "HAPPO",
+  "episodes_completed": 5,
+  "marked_at": "2026-06-29T19:46:23.993714+00:00",
+  "scenario": "E1",
+  "source": "results.json",
+  "target_episodes": 5
+}

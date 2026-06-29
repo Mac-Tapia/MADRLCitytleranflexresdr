@@ -487,6 +487,99 @@ def test_happo_stale_live_progress_does_not_inflate_resume(tmp_path: Path):
     assert dec["action"] == "skip"
 
 
+def test_happo_launcher_manifest_skips_stuck_49_of_50(tmp_path: Path):
+    """Flow B / cell 2.1b: stale live_progress at 49/50 must skip when launcher recorded exit=0."""
+    import csv
+
+    run_root = tmp_path / "madrl_run"
+    job_dir = run_root / "happo" / "E1_seed_0"
+    data = job_dir / "data"
+    ckpt = job_dir / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+
+    ets = 8760
+    target = 50
+    rows = []
+    for ep in range(49):
+        for step in range(ets):
+            gs = ep * ets + step
+            rows.append(
+                {
+                    "episode": str(ep),
+                    "episode_step": str(step),
+                    "global_step": str(gs),
+                    "all_done": "False",
+                }
+            )
+    for step in range(8460):
+        gs = 49 * ets + step
+        rows.append(
+            {
+                "episode": "49",
+                "episode_step": str(step),
+                "global_step": str(gs),
+                "all_done": "False",
+            }
+        )
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (job_dir / "live_progress.json").write_text(
+        json.dumps(
+            {
+                "global_step": 49 * ets + 8459,
+                "episode": 49,
+                "episode_step": 8459,
+                "completed_episode_count": 49,
+                "algorithm": "HAPPO",
+                "episode_time_steps": ets,
+            }
+        ),
+        encoding="utf-8",
+    )
+    (run_root / "official_full_status.json").write_text(
+        json.dumps(
+            {
+                "episodes": target,
+                "jobs": [
+                    {
+                        "name": "happo",
+                        "scenario": "E1",
+                        "exit_code": 0,
+                        "completed_at": "2026-06-29T00:00:00Z",
+                        "skipped": False,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    dec = preview_job_launcher_decision(
+        job_dir,
+        algorithm="happo",
+        target_episodes=target,
+        episode_time_steps=ets,
+        output_root=run_root,
+    )
+    assert dec["skip"] is True, dec["status_line"]
+    assert dec["action"] == "skip"
+
+    report = build_jobs_resume_report(
+        run_root,
+        target_episodes=target,
+        algorithms=["happo"],
+        scenarios=["E1"],
+        episode_time_steps=ets,
+    )
+    row = report["jobs"][0]
+    assert row["action"] == "skip"
+    assert "COMPLETO" in row["status_line"]
+
+
 def test_happo_live_progress_episode_ahead_of_global_step(tmp_path: Path):
     data = tmp_path / "data"
     ckpt = tmp_path / "checkpoints" / "gym" / "run"

@@ -185,6 +185,176 @@ def test_salvage_results_json_not_complete(tmp_path: Path):
     assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is False
 
 
+def test_salvage_results_json_complete_with_checkpoints(tmp_path: Path):
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 50,
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "run_completed_with_salvage": True,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
+    dec = preview_job_launcher_decision(
+        tmp_path, algorithm="happo", target_episodes=50, episode_time_steps=8760
+    )
+    assert dec["skip"] is True
+    assert dec["action"] == "skip"
+
+
+def test_happo_colab_salvage_49_inferred_launcher_exit0(tmp_path: Path):
+    """Reproduce Colab 2.1b: salvage + inferred 49 + launcher exit 0 must skip (not 49/50 loop)."""
+    import csv
+
+    run_root = tmp_path / "madrl_v3_20260627_164047"
+    job_dir = run_root / "happo" / "E1_seed_0"
+    data = job_dir / "data"
+    ckpt = job_dir / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+
+    ets = 8760
+    target = 50
+    max_gs = target * ets - 2
+    rows = [
+        {
+            "episode": str(target - 1),
+            "episode_step": str(ets - 2),
+            "global_step": str(max_gs),
+            "all_done": "False",
+        },
+    ]
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 49,
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "n_rollout_threads": 12,
+                    "run_completed_with_salvage": True,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (job_dir / "live_progress.json").write_text(
+        json.dumps(
+            {
+                "global_step": max_gs,
+                "episode": target - 1,
+                "episode_step": ets - 2,
+                "completed_episode_count": 49,
+                "algorithm": "HAPPO",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (run_root / "official_full_status.json").write_text(
+        json.dumps(
+            {
+                "episodes": target,
+                "jobs": [
+                    {
+                        "name": "happo",
+                        "scenario": "E1",
+                        "exit_code": 0,
+                        "completed_at": "2026-06-27T16:40:47Z",
+                        "skipped": False,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert job_counts_as_launcher_complete(
+        job_dir, target_episodes=target, output_root=run_root
+    ) is True
+    dec = preview_job_launcher_decision(
+        job_dir,
+        algorithm="happo",
+        target_episodes=target,
+        episode_time_steps=ets,
+        rollout_threads=12,
+        output_root=run_root,
+    )
+    assert dec["skip"] is True, dec
+    assert dec["action"] == "skip"
+    assert "COMPLETO" in dec["status_line"]
+    assert not dec["blockers"]
+
+
+def test_happo_salvage_49_tail_without_launcher_manifest(tmp_path: Path):
+    """Salvage stuck at 49/50 must skip even when official_full_status.json is missing."""
+    import csv
+
+    job_dir = tmp_path / "happo" / "E1_seed_0"
+    data = job_dir / "data"
+    ckpt = job_dir / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+
+    ets = 8760
+    target = 50
+    max_gs = target * ets - 2
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(
+            fh, fieldnames=["episode", "episode_step", "global_step", "all_done"]
+        )
+        writer.writeheader()
+        writer.writerow(
+            {
+                "episode": str(target - 1),
+                "episode_step": str(ets - 2),
+                "global_step": str(max_gs),
+                "all_done": "False",
+            }
+        )
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 49,
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "run_completed_with_salvage": True,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert job_counts_as_launcher_complete(job_dir, target_episodes=target) is True
+    dec = preview_job_launcher_decision(
+        job_dir, algorithm="happo", target_episodes=target, episode_time_steps=ets
+    )
+    assert dec["skip"] is True
+    assert dec["action"] == "skip"
+
+
 def test_happo_recovered_from_timeseries_global_step_with_rollout_threads(tmp_path: Path):
     data = tmp_path / "data"
     ckpt = tmp_path / "checkpoints" / "gym" / "run"

@@ -27,6 +27,13 @@ def test_infer_completed_episodes():
     assert infer_completed_episodes_from_live_progress(
         {"global_step": 13000, "episode": 1, "episode_step": 4240}, episode_time_steps=8760
     ) == 1
+    # global_step is the 0-indexed pre-increment counter: the final step of episode
+    # index 49 is stored as 50*8760-1 and must count as 50 complete (the 49/50 bug).
+    assert infer_completed_episodes_from_live_progress(
+        {"global_step": 50 * 8760 - 1, "episode": 49, "episode_step": 8759},
+        episode_time_steps=8760,
+        algorithm="happo",
+    ) == 50
 
 
 def test_discover_resume_without_artifacts(tmp_path: Path):
@@ -216,7 +223,10 @@ def test_happo_recovered_from_timeseries_global_step_with_rollout_threads(tmp_pa
 
 
 def test_happo_fifty_episodes_at_all_done_boundary(tmp_path: Path):
-    """Real HAPPO tail: max global_step is target*8760-1, not target*8760."""
+    """Real HAPPO tail: max global_step is target*8760-1 and HAPPO writes all_done=False.
+
+    Completion must be derived from the 0-indexed global_step budget, not the flag.
+    """
     data = tmp_path / "data"
     ckpt = tmp_path / "checkpoints" / "gym" / "run"
     data.mkdir(parents=True)
@@ -234,7 +244,7 @@ def test_happo_fifty_episodes_at_all_done_boundary(tmp_path: Path):
             "episode": str(last_episode),
             "episode_step": str(episode_time_steps - 1),
             "global_step": str(max_gs),
-            "all_done": "True",
+            "all_done": "False",
         },
     ]
     with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
@@ -288,7 +298,7 @@ def test_masac_salvage_fifty_episodes_at_all_done_boundary(tmp_path: Path):
             "episode": str(target - 1),
             "episode_step": str(episode_time_steps - 1),
             "global_step": str(max_gs),
-            "all_done": "True",
+            "all_done": "False",
         },
     ]
     with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:

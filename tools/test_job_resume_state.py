@@ -270,6 +270,49 @@ def test_happo_fifty_episodes_at_all_done_boundary(tmp_path: Path):
     assert "COMPLETO" in dec["status_line"]
 
 
+def test_masac_salvage_fifty_episodes_at_all_done_boundary(tmp_path: Path):
+    """MASAC salvage path must also recognize 50/50 at the global_step tail (no 49/50)."""
+    data = tmp_path / "data"
+    models = tmp_path / "checkpoints" / "models"
+    data.mkdir(parents=True)
+    models.mkdir(parents=True)
+    (models / "100_rnn_net_params.pkl").write_bytes(b"x")
+    (models / "100_qmix_net_params.pkl").write_bytes(b"x")
+    episode_time_steps = 8760
+    target = 50
+    max_gs = (target * episode_time_steps) - 1
+    import csv
+
+    rows = [
+        {
+            "episode": str(target - 1),
+            "episode_step": str(episode_time_steps - 1),
+            "global_step": str(max_gs),
+            "all_done": "True",
+        },
+    ]
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "MASAC",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 49,
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "run_completed_with_salvage": True,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
+
+
 def test_happo_inflated_csv_resumes_from_global_step(tmp_path: Path):
     """CSV episode-index can claim 50 ep while global_step proves only 4 (rollout_threads=12)."""
     data = tmp_path / "data"
@@ -477,6 +520,8 @@ if __name__ == "__main__":
         test_happo_recovered_from_timeseries_global_step_with_rollout_threads(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_fifty_episodes_at_all_done_boundary(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_masac_salvage_fifty_episodes_at_all_done_boundary(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_inflated_csv_resumes_from_global_step(Path(td))
     with tempfile.TemporaryDirectory() as td:

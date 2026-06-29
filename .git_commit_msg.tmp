@@ -1,4 +1,3 @@
-chore(submodules): MAAC+CityLearn fix MAAC resume/checkpoint Colab
+chore(submodule): bump CityLearn to launcher singleton lock fix
 
-CityLearn c434a7f5: atomic Drive checkpoints, buffer cap 450k, launcher retry.
-MAAC 03e3c08: init_from_save map_location for PyTorch 2.6+ resume.
+Prevents a second Colab launcher from resetting in-progress MATD3 jobs to ep1.

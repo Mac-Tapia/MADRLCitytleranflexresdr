@@ -179,9 +179,18 @@ Preserve this structure exactly. Do not replace it with Guide N. 02, an engineer
 
 **3.7 Técnicas de análisis estadístico**
 
-- Descriptivo: media, desviación estándar, extremos, CV por tratamiento
-- Inferencial (α = 0,05): Shapiro-Wilk → Kruskal-Wallis → Mann-Whitney U → Wilcoxon (Colas et al., 2019; Agarwal et al., 2021; Demšar, 2006)
-- KPIs expresados como **razón al baseline CityLearn v2** (1,0 = baseline; menor = mejor)
+Protocolo de comparación experimental de algoritmos MADRL, fundamentado en los estándares vigentes de comparación rigurosa de RL (Colas et al., 2019; Agarwal et al., 2021; Patterson et al., 2024; Demšar, 2006):
+
+- **Nivel descriptivo:** por tratamiento, media, desviación estándar, valores extremos y coeficiente de variación (CV) de los KPI por dimensión. La estocasticidad del entrenamiento se trata como error de medición, por lo que se reporta tendencia central con su incertidumbre, no solo estimadores puntuales (Agarwal et al., 2021).
+- **Réplicas y potencia estadística:** cada tratamiento debe ejecutarse con **múltiples semillas independientes**. La literatura advierte que menos de 5 corridas es insuficiente para conclusiones causales sólidas y recomienda análisis de potencia (idealmente ≥ 20 semillas para efectos moderados) (Colas et al., 2019; Patterson et al., 2024). La corrida de referencia (1 semilla, 5 episodios) se declara explícitamente como **limitación de validez** y se consolida con la corrida canónica multi-semilla.
+- **Nivel inferencial (α = 0,05):**
+  1. **Shapiro-Wilk** — normalidad por grupo (justifica el uso de pruebas no paramétricas).
+  2. **Kruskal-Wallis** — diferencia global entre los 4 niveles del factor algoritmo por escenario (equivalente no paramétrico de ANOVA de una vía).
+  3. **Post-hoc de Dunn con corrección Bonferroni/Holm** — comparaciones por pares tras un Kruskal-Wallis significativo, controlando el error family-wise (Dunn, 1964). Mann-Whitney U y Wilcoxon se reportan como pruebas complementarias par-a-par y pareadas; recordar que Mann-Whitney U contrasta **dominancia estocástica**, no estrictamente medianas, salvo igualdad de forma y dispersión.
+  4. **Wilcoxon de rangos con signo** — diferencias pareadas por indicador dentro del mismo escenario.
+- **Tamaños de efecto e intervalos:** ε² (eta-cuadrado) de Kruskal-Wallis, rank-biserial para pares, e intervalos de confianza por bootstrap. Cuando sea aplicable, métricas agregadas robustas tipo media intercuartil (IQM) y performance profiles (`rliable`, Agarwal et al., 2021).
+- **Corrección por comparaciones múltiples:** ante 6 pares de algoritmos, aplicar umbral ajustado (Bonferroni α' = 0,05/6 ≈ 0,0083 o Holm) para preservar garantías de error.
+- KPIs expresados como **razón al baseline CityLearn v2** (1,0 = baseline; menor = mejor).
 
 ### Capítulo 4. Desarrollo de la propuesta
 
@@ -252,11 +261,13 @@ Organize in two levels: **descriptive effect** then **inferential hypothesis tes
 
 **5.4 Contrastación inferencial de las hipótesis**
 
-- Shapiro-Wilk → justifica no paramétricas
-- Kruskal-Wallis global: **p = 0,0459** (< 0,05) → rechaza H₀; respalda HG
-- Tabla 5.3 Wilcoxon pareado (α = 0,05): HAPPO difiere significativamente de MASAC, MATD3 y MAAC; MATD3 vs MASAC/MAAC sin diferencia sistemática en agregado
-- Contrastación HE.1–HE.3 y HG según evidencia disponible
-- Figura 5.6 matriz p-valores Wilcoxon
+- Shapiro-Wilk → justifica el uso de pruebas no paramétricas
+- Kruskal-Wallis global: **p = 0,0459** (< 0,05) → rechaza H₀ de ausencia de efecto del factor algoritmo; respalda HG. Reportar el tamaño de efecto ε² asociado.
+- Post-hoc de Dunn (Bonferroni/Holm) tras el Kruskal-Wallis significativo, con su tabla de p ajustados y tamaños de efecto.
+- Tabla 5.3 Wilcoxon pareado (α = 0,05): HAPPO difiere significativamente de MASAC, MATD3 y MAAC; MATD3 vs MASAC/MAAC sin diferencia sistemática en el agregado. Acompañar con rank-biserial e intervalos bootstrap.
+- Contrastación HE.1–HE.3 y HG según evidencia disponible; declarar cada decisión (rechazo / no rechazo de H₀) con su prueba, p ajustado y tamaño de efecto.
+- Figura 5.6 matriz de p-valores Wilcoxon
+- **Validez:** las cifras provienen de 1 semilla / 5 episodios; los contrastes se reconfirman con la corrida canónica multi-semilla antes de elevar las conclusiones a definitivas (Colas et al., 2019; Agarwal et al., 2021).
 
 **5.5 Discusión de resultados**
 
@@ -294,6 +305,17 @@ Mark all values from the 5-episode reference run as **preliminares** until the c
 - APA 7.ª edición
 - Priorizar literatura últimos 5 años + obras seminales CTDE/Dec-POMDP
 - Fuente consolidada: `docs/tesis_capitulos/Referencias_APA.md`
+
+**Referencias metodológicas obligatorias (diseño experimental y estadística RL):**
+
+- Colas, C., Sigaud, O., & Oudeyer, P.-Y. (2019). *A hitchhiker's guide to statistical comparisons of reinforcement learning algorithms.* arXiv:1904.06979. https://arxiv.org/abs/1904.06979
+- Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A., & Bellemare, M. G. (2021). *Deep reinforcement learning at the edge of the statistical precipice.* NeurIPS, 34, 29304–29320. https://arxiv.org/abs/2108.13264
+- Patterson, A., Neumann, S., White, M., & White, A. (2024). *Empirical design in reinforcement learning.* Journal of Machine Learning Research, 25. https://arxiv.org/abs/2304.01315
+- Henderson, P., Islam, R., Bachman, P., Pineau, J., Precup, D., & Meger, D. (2018). *Deep reinforcement learning that matters.* AAAI, 32(1). https://doi.org/10.1609/aaai.v32i1.11694
+- Demšar, J. (2006). *Statistical comparisons of classifiers over multiple data sets.* JMLR, 7, 1–30.
+- Dunn, O. J. (1964). *Multiple comparisons using rank sums.* Technometrics, 6(3), 241–252. https://doi.org/10.1080/00401706.1964.10490181
+
+Marcar como `dato bibliográfico pendiente de verificación` cualquier dato faltante (volumen, página, DOI).
 
 ## Evidence sources (current project only)
 

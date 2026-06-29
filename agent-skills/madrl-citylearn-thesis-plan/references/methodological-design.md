@@ -64,17 +64,22 @@ Include:
 
 ## 4.7 Técnicas e instrumentos de análisis y procesamiento de datos
 
-Include:
+Por tratarse de un **diseño experimental de relación causa-efecto**, el análisis sigue los estándares vigentes de comparación rigurosa de algoritmos RL (Colas et al., 2019; Agarwal et al., 2021; Patterson et al., 2024; Demšar, 2006). Include:
 
 - Limpieza, normalización y procesamiento de series temporales de los datasets.
-- Análisis descriptivo de KPIs por algoritmo y por eje de evaluación.
-- **Comparación de algoritmos MADRL:** tabla comparativa de HAPPO, MASAC, MATD3, y MAAC por KPI en cada eje (OE.1, OE.2, OE.3) y ranking integrado para el O.G.
+- **Análisis descriptivo** por tratamiento: media, desviación estándar, valores extremos y coeficiente de variación (CV) de los KPI por dimensión; la estocasticidad se trata como error de medición y se reporta con su incertidumbre, no solo con estimadores puntuales.
+- **Réplicas y potencia estadística:** múltiples semillas independientes por tratamiento; <5 corridas es insuficiente y se recomienda análisis de potencia (idealmente ≥ 20 semillas para efectos moderados). Toda corrida con semilla única se declara como limitación de validez.
+- **Comparación inferencial de algoritmos MADRL (α = 0,05):** (1) Shapiro-Wilk (normalidad); (2) Kruskal-Wallis (diferencia global entre los 4 niveles del factor algoritmo por escenario); (3) **post-hoc de Dunn con corrección Bonferroni/Holm** tras un Kruskal-Wallis significativo; (4) Mann-Whitney U (dominancia estocástica par-a-par) y Wilcoxon de rangos con signo (diferencias pareadas). Corrección por comparaciones múltiples (Bonferroni α' = 0,05/6 ≈ 0,0083 o Holm) para 6 pares.
+- **Tamaños de efecto e intervalos:** ε² de Kruskal-Wallis, rank-biserial por pares, intervalos de confianza por bootstrap; métricas agregadas robustas (IQM, performance profiles, `rliable`) cuando sea aplicable.
+- Tabla comparativa HAPPO/MASAC/MATD3/MAAC por KPI en cada eje (OE.1, OE.2, OE.3) y ranking integrado para el O.G.
 - Análisis de convergencia, estabilidad y robustez del entrenamiento MADRL.
-- Análisis multiobjetivo y multicriterio para la determinación del mejor algoritmo.
+- Análisis multiobjetivo y multicriterio (dominancia de Pareto, ranking de Borda) para la determinación del mejor algoritmo.
 - Comparación contra baseline (reglas o DRL de agente único).
 - Visualizaciones: curvas de entrenamiento, gráficas de KPIs por eje, matrices de comparación, tablas de ranking.
 
 Instruments: matriz bibliográfica (Module A), matriz de KPIs, CityLearn v2, CityLearn v3 propuesto, scripts MADRL en Python/PyTorch, backends HAPPO/MASAC/MATD3/MAAC, MARLlib como referencia técnica, Optuna, Gymnasium, PettingZoo si aplica, datasets de CityLearn v2, y hojas de resultados.
+
+> Referencias metodológicas obligatorias en APA: Colas et al. (2019, arXiv:1904.06979), Agarwal et al. (2021, NeurIPS), Patterson et al. (2024, JMLR — *Empirical design in reinforcement learning*), Henderson et al. (2018, AAAI — *Deep RL that matters*), Demšar (2006, JMLR) y Dunn (1964, Technometrics).
 
 ## 4.8 Etapas de intervención del estudio
 

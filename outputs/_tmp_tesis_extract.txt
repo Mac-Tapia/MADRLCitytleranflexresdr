@@ -1,0 +1,541 @@
+   0 [] UNIVERSIDAD NACIONAL DE INGENIERÍA
+   1 [] Escuela de Posgrado
+   2 [] Doctorado en Ingeniería — Inteligencia Artificial aplicada a Sistemas Eléctricos Inteligentes
+   3 [] MULTI-AGENTE DE APRENDIZAJE POR REFUERZO PROFUNDO PARA LA GESTIÓN COORDINADA DE LA FLEXIBILIDAD ENERGÉTICA, LAS EMISIONES DE CARBONO Y LOS COSTOS ENERGÉTICOS EN COMUNIDADES INTELIGENTES
+   4 [] Caso de estudio experimental: Sistema Eléctrico Aislado de Iquitos (SEAI) — 17 edificios institucionales y comerciales reales, Loreto, Perú (2023–2025)
+   5 [] TESIS
+   6 [] Para optar el Grado Académico de Doctor en Ingeniería
+   7 [] Presentada por:
+   8 [] Mac Tapia
+   9 [] Asesor: [por definir]
+  10 [] Lima — Iquitos, Perú
+  11 [] 2026
+  12 [Heading1] Índice
+  13 [Heading1] Resumen
+  14 [] Esta tesis aborda, mediante un diseño experimental basado en simulación computacional, la pregunta de cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo (MADRL, por sus siglas en inglés) para gestionar de manera coordinada y simultánea la flexibilidad energética, las emisiones de dióxido de carbono y los costos energéticos en comunidades inteligentes. El estudio se estructura como un experimento de relación causa-efecto en el que la variable independiente —el algoritmo MADRL aplicado a la comunidad— se manipula de forma controlada a través de sus dos dimensiones (el tipo de algoritmo: HAPPO, MASAC, MATD3 y MAAC; y el escenario de ponderación de objetivos: E1, E2 y E3), mientras se observa su efecto sobre la variable dependiente, el desempeño coordinado de la comunidad, descompuesta en tres dimensiones medibles mediante cincuenta y cuatro indicadores de desempeño (KPI) oficiales.
+  15 [] El experimento se ejecuta sobre una capa de simulación propia (CityLearn v3 propuesto) construida encima del simulador CityLearn v2, aplicada al dataset original citylearn_iquitos_2023_2025, que reproduce diecisiete edificios institucionales y comerciales reales del Sistema Eléctrico Aislado de Iquitos a lo largo de 26 304 horas, con 48 790,9 kWp de generación fotovoltaica, 26 266 kWh de almacenamiento en baterías y 185 tomas de carga para vehículos eléctricos. La formulación se realiza como un proceso de decisión de Markov descentralizado y parcialmente observable (Dec-POMDP) bajo el esquema de entrenamiento centralizado con ejecución descentralizada (CTDE), y los cuatro algoritmos se entrenan bajo una misma función de recompensa multiobjetivo para garantizar comparabilidad estadística.
+  16 [] Las hipótesis se contrastan combinando estadística descriptiva (media, desviación estándar, valores extremos y coeficiente de variación por tratamiento) con estadística inferencial no paramétrica (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U y Wilcoxon, con un nivel de significación de 0,05). Los resultados de la corrida de referencia identifican a MATD3 como el algoritmo que produce el mayor y más estable efecto coordinado: lidera el ranking ponderado en los escenarios de carbono (0,751) y costos (0,733), encabeza los algoritmos MADRL en el escenario de flexibilidad y exhibe el menor coeficiente de variación entre indicadores (inferior al 1,1 %, frente a más del 10 % de HAPPO). Las pruebas inferenciales confirman que HAPPO difiere significativamente del resto de algoritmos. Se concluye que los algoritmos fuera de política con crítico centralizado son los más adecuados para la coordinación de recursos energéticos distribuidos en sistemas aislados.
+  17 [] Palabras clave: aprendizaje por refuerzo multiagente, diseño experimental, relación causa-efecto, Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC, flexibilidad energética, emisiones de CO₂, costos energéticos, microrred aislada, Iquitos.
+  18 [Heading1] Abstract
+  19 [] This dissertation addresses, through a simulation-based experimental design, the question of which Multi-Agent Deep Reinforcement Learning (MADRL) algorithm best manages, in a coordinated and simultaneous manner, energy flexibility, carbon dioxide emissions, and energy costs in smart communities. The study is framed as a cause-and-effect experiment in which the independent variable —the MADRL algorithm applied to the community— is manipulated in a controlled way through its two dimensions (algorithm type: HAPPO, MASAC, MATD3, and MAAC; and objective weighting scenario: E1, E2, and E3), while its effect on the dependent variable, the community coordinated performance, is observed and measured through fifty-four official key performance indicators across three dimensions.
+  20 [] The experiment runs on an in-house simulation layer (proposed CityLearn v3) built on top of the CityLearn v2 simulator, applied to the original citylearn_iquitos_2023_2025 dataset, which reproduces seventeen real institutional and commercial buildings of the Iquitos Isolated Electrical System over 26,304 hours. Hypotheses are tested by combining descriptive statistics (mean, standard deviation, extrema, and coefficient of variation per treatment) with non-parametric inferential statistics (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, and Wilcoxon, at a 0.05 significance level). Results identify MATD3 as the algorithm producing the largest and most stable coordinated effect, leading the weighted ranking in the carbon (0.751) and cost (0.733) scenarios and exhibiting the lowest coefficient of variation across indicators. Off-policy algorithms with a centralized critic are concluded to be the most suitable for distributed energy resource coordination in isolated systems.
+  21 [] Keywords: multi-agent deep reinforcement learning, experimental design, cause-and-effect, Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC, energy flexibility, CO₂ emissions, energy costs, isolated microgrid, Iquitos.
+  22 [Heading1] Capítulo 1. Introducción
+  23 [Heading2] 1.1 Planteamiento y formulación del problema
+  24 [] Las comunidades inteligentes integran un conjunto creciente de recursos de energía distribuida —generación solar fotovoltaica, sistemas de almacenamiento en baterías y estaciones de carga de vehículos eléctricos— cuya operación, si no se coordina, deriva en picos de demanda elevados, consumo en horas de alta intensidad de carbono y un gasto eléctrico evitable. El problema cobra especial relevancia en el Sistema Eléctrico Aislado de Iquitos (SEAI), operado por Electro Oriente S.A., donde el suministro depende mayoritariamente de generación diésel con una penetración solar creciente cercana al quince por ciento. En este sistema, el factor de emisión base es de 0,790 kgCO₂/kWh y la tarifa por uso horario distingue una hora punta (de 18:00 a 22:59) de las horas fuera de punta, lo que convierte la coordinación de los recursos distribuidos en un problema simultáneamente técnico, ambiental y económico.
+  25 [] Desde una perspectiva formal, la coordinación de estos recursos bajo observabilidad parcial constituye un problema de decisión secuencial cooperativa que afecta de manera conjunta a tres dimensiones críticas: la flexibilidad energética, las emisiones de carbono y los costos energéticos. La literatura especializada (Nweye et al., 2024; Keren et al., 2024) reconoce que el aprendizaje por refuerzo profundo de agente único no escala adecuadamente a portafolios de edificios heterogéneos, y que el enfoque multiagente es la vía natural para capturar la interacción entre los nodos de la comunidad. Sin embargo, el estado del arte reporta evaluaciones aisladas de algoritmos individuales sobre dimensiones únicas; no existe un marco comparativo unificado que, bajo una misma formulación y un mismo esquema de entrenamiento, determine cuál de los principales algoritmos multiagente produce el mejor efecto coordinado sobre las tres dimensiones de manera simultánea.
+  26 [] Esta tesis adopta un enfoque experimental de relación causa-efecto. La causa que se manipula de forma controlada es el algoritmo MADRL aplicado a la comunidad —la variable independiente—, y el efecto que se observa y mide es el desempeño coordinado de la comunidad —la variable dependiente—. La Figura 1.1 sintetiza este modelo causal, que vertebra la totalidad del estudio: la variable independiente se mantiene fija en cada tratamiento mientras la variable dependiente varía, y las variables de control se conservan constantes para aislar el efecto.
+  27 [] Figura 1.1. Modelo causal de la investigación: la variable independiente (algoritmo MADRL) se fija y manipula; la variable dependiente (desempeño coordinado) varía y se mide.
+  28 [] Sobre la base de este modelo causal, el problema general se formula del siguiente modo:
+  29 [] Problema general (PG). ¿En qué medida el algoritmo Multi-Agente de Aprendizaje por Refuerzo Profundo aplicado a una comunidad inteligente (variable independiente) produce un efecto diferenciado sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (variable dependiente), y cuál de los algoritmos comparados genera el mayor efecto?
+  30 [] Los problemas específicos descomponen la variable dependiente en sus tres dimensiones, manteniendo en todos los casos la misma variable independiente como causa:
+  31 [ListParagraph] PE.1. ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de flexibilidad energética de la comunidad (D-VD.1), y cuál algoritmo genera el mayor efecto?
+  32 [ListParagraph] PE.2. ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de emisiones de CO₂ de la comunidad (D-VD.2), y cuál algoritmo genera el mayor efecto?
+  33 [ListParagraph] PE.3. ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de costos energéticos de la comunidad (D-VD.3), y cuál algoritmo genera el mayor efecto?
+  34 [Heading2] 1.2 Objetivos
+  35 [] La coherencia entre problemas, objetivos e hipótesis se mantiene de forma estricta: cada objetivo responde a un problema, se operacionaliza mediante una dimensión de la variable dependiente y se contrasta con una hipótesis. El objetivo general guía el experimento en su conjunto, y los objetivos específicos lo descomponen por dimensión.
+  36 [] Objetivo general (OG). Determinar el efecto del algoritmo MADRL aplicado a una comunidad inteligente (VI) sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (VD), e identificar el algoritmo que produce el mayor efecto coordinado.
+  37 [ListParagraph] OE.1. Determinar el efecto del algoritmo MADRL (VI) sobre la flexibilidad energética (D-VD.1) e identificar el algoritmo de mayor efecto en esta dimensión.
+  38 [ListParagraph] OE.2. Determinar el efecto del algoritmo MADRL (VI) sobre las emisiones de CO₂ (D-VD.2) e identificar el algoritmo de mayor efecto en esta dimensión.
+  39 [ListParagraph] OE.3. Determinar el efecto del algoritmo MADRL (VI) sobre los costos energéticos (D-VD.3) e identificar el algoritmo de mayor efecto en esta dimensión.
+  40 [Heading2] 1.3 Hipótesis
+  41 [] Por tratarse de un diseño experimental de relación causa-efecto, las hipótesis se plantean en términos direccionales: afirman la existencia de un efecto significativo de la variable independiente sobre cada dimensión de la variable dependiente y anticipan cuál nivel del factor algoritmo produce el mayor efecto. Cada hipótesis se demuestra con estadística descriptiva e inferencial.
+  42 [] Hipótesis general (HG). La aplicación del algoritmo MADRL a la comunidad inteligente (VI) produce un efecto estadísticamente significativo y diferenciado sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (VD), siendo MATD3 el algoritmo que genera el mayor efecto coordinado.
+  43 [ListParagraph] HE.1. El algoritmo MADRL (VI) produce un efecto significativo sobre la flexibilidad energética (D-VD.1); el mayor efecto corresponde al algoritmo con menor variabilidad en los KPI de pico y rampa.
+  44 [ListParagraph] HE.2. El algoritmo MADRL (VI) produce un efecto significativo sobre las emisiones de CO₂ (D-VD.2); el mayor efecto corresponde a MATD3.
+  45 [ListParagraph] HE.3. El algoritmo MADRL (VI) produce un efecto significativo sobre los costos energéticos (D-VD.3); el mayor efecto corresponde a MATD3.
+  46 [] A cada hipótesis específica corresponde su hipótesis nula (ausencia de diferencias significativas entre los niveles del factor algoritmo), que se rechaza o no se rechaza con la prueba de Kruskal-Wallis y las comparaciones por pares de Mann-Whitney U y Wilcoxon, conforme a la metodología de comparación estadística de algoritmos de aprendizaje por refuerzo (Colas et al., 2019; Agarwal et al., 2021).
+  47 [Heading2] 1.4 Matriz de consistencia y operacionalización de variables
+  48 [] La Tabla 1.1 presenta la matriz de consistencia que articula problemas, objetivos e hipótesis en torno al modelo causal. La Tabla 1.2 operacionaliza ambas variables: la independiente, con sus dos dimensiones manipuladas, y la dependiente, con sus tres dimensiones y los indicadores con los que se mide.
+  49 [] Problema
+  50 [] Objetivo
+  51 [] Hipótesis
+  52 [] Dimensión VD
+  53 [] PG: efecto del MADRL sobre la gestión coordinada
+  54 [] OG: determinar el efecto coordinado e identificar el mejor algoritmo
+  55 [] HG: efecto significativo; MATD3 mayor efecto
+  56 [] VD completa
+  57 [] PE.1: efecto sobre flexibilidad
+  58 [] OE.1: efecto sobre flexibilidad
+  59 [] HE.1: efecto significativo
+  60 [] D-VD.1 Flexibilidad
+  61 [] PE.2: efecto sobre CO₂
+  62 [] OE.2: efecto sobre CO₂
+  63 [] HE.2: MATD3 mayor efecto
+  64 [] D-VD.2 CO₂
+  65 [] PE.3: efecto sobre costos
+  66 [] OE.3: efecto sobre costos
+  67 [] HE.3: MATD3 mayor efecto
+  68 [] D-VD.3 Costos
+  69 [] Tabla 1.1. Matriz de consistencia causa-efecto (problema → objetivo → hipótesis → dimensión de la variable dependiente).
+  70 [] Variable
+  71 [] Dimensión
+  72 [] Indicadores / niveles
+  73 [] Naturaleza
+  74 [] Independiente (VI): algoritmo MADRL
+  75 [] D-VI.1 Tipo de algoritmo
+  76 [] HAPPO, MASAC, MATD3, MAAC
+  77 [] Fija (manipulada)
+  78 [] D-VI.2 Escenario de ponderación
+  79 [] E1, E2, E3
+  80 [] Fija (manipulada)
+  81 [] Dependiente (VD): desempeño coordinado
+  82 [] D-VD.1 Flexibilidad
+  83 [] peak_average, ramping_average, one_minus_load_factor
+  84 [] Varía (medida)
+  85 [] D-VD.2 Emisiones CO₂
+  86 [] carbon_emissions, carbon_emissions_delta
+  87 [] Varía (medida)
+  88 [] D-VD.3 Costos
+  89 [] electricity_cost, electricity_cost_delta, price_signal_deviation
+  90 [] Varía (medida)
+  91 [] Control
+  92 [] Constantes
+  93 [] Dataset, clima, CI, tarifa TOU, recompensa v4, semilla
+  94 [] Constante
+  95 [] Tabla 1.2. Operacionalización de las variables del experimento.
+  96 [Heading2] 1.5 Justificación
+  97 [] La justificación técnica reside en aportar una evaluación experimental unificada de cuatro algoritmos multiagente bajo una misma formulación Dec-POMDP y un mismo esquema CTDE, lo que permite atribuir las diferencias de desempeño exclusivamente al factor algoritmo. La justificación ambiental se vincula con la dimensión de emisiones: identificar el algoritmo que más reduce el CO₂ contribuye a la descarbonización de comunidades grid-interactive, con aplicabilidad directa al SEAI de Iquitos. La justificación económica se asocia a la dimensión de costos, orientando la reducción del gasto eléctrico bajo tarifas dinámicas. Finalmente, la justificación metodológica radica en el diseño experimental factorial, la operacionalización causal de las variables y el protocolo estadístico reproducible, que constituyen una contribución transferible a otros sistemas aislados.
+  98 [Heading2] 1.6 Alcances y limitaciones
+  99 [] El estudio es de enfoque cuantitativo, tipo aplicada y nivel explicativo, y se circunscribe a la comparación experimental de HAPPO, MASAC, MATD3 y MAAC sobre cincuenta y cuatro indicadores de desempeño en tres escenarios, con aplicabilidad al SEAI de Iquitos a partir de diecisiete edificios reales y un horizonte horario de 26 304 pasos. Entre sus limitaciones, no se modela una red eléctrica física, por lo que los resultados de simulación no constituyen una validación de despliegue real; la capa CityLearn v3 propuesta es una extensión experimental de tesis y no una versión oficial del simulador; y la corrida de referencia se ejecutó con una sola semilla y un presupuesto de entrenamiento acotado, lo que delimita el análisis de robustez que se completará en la corrida canónica.
+ 100 [Heading1] Capítulo 2. Marco teórico
+ 101 [Heading2] 2.1 Antecedentes de la investigación
+ 102 [] La revisión sistemática que sustenta esta tesis se organiza en torno a las dos variables del experimento y privilegia la literatura de los últimos cinco años, incluyendo tesis doctorales, tesis de maestría y artículos científicos arbitrados. El propósito es doble: situar el aporte de la investigación frente al estado del arte y respaldar las decisiones de diseño experimental con evidencia reciente.
+ 103 [Heading3] 2.1.1 Antecedentes sobre flexibilidad energética con MADRL (D-VD.1)
+ 104 [] El entorno CityLearn ha consolidado un marco común para evaluar el aprendizaje por refuerzo en la respuesta a la demanda multiedificio. Su versión 2 (Nweye et al., 2024) incorpora vehículos eléctricos, intensidad de carbono dinámica, almacenamiento y los indicadores de flexibilidad que esta tesis adopta, y extiende su uso a un benchmarking multiobjetivo de edificios y distritos (Nweye & Nagy, 2024). A escala de comunidad, Bušić et al. (2023) demuestran que el aprendizaje multiagente heterogéneo coordina eficazmente comunidades grid-interactive, y Nweye et al. (2023) analizan su escalabilidad. La tesis doctoral de Charbonnier (2024) en la Universidad de Oxford constituye un antecedente directo: desarrolla aprendizaje multiagente para la coordinación descentralizada de la flexibilidad residencial sin compartir datos personales, con resultados de mejora de la autonomía energética, y se apoya en su propuesta de arquitectura escalable (Charbonnier et al., 2022). Wilk et al. (2024) y Homod et al. (2022) refuerzan, respectivamente, la gestión de comunidades con recursos compartidos y la optimización cooperativa de sistemas HVAC.
+ 105 [Heading3] 2.1.2 Antecedentes sobre emisiones de carbono con MADRL (D-VD.2)
+ 106 [] La operación de bajo carbono mediante aprendizaje multiagente seguro ha sido abordada por Zhang et al. (2024), que incorporan restricciones de emisiones en redes de distribución, y por Song et al. (2025), que aplican un Multi-Agent Soft Actor-Critic a microrredes multi-energía interconectadas con objetivo explícito de descarbonización. Alabi et al. (2023) integran captura de carbono en la programación de sistemas multi-energía, y el panorama general queda sintetizado en el estudio de Keren et al. (2024) sobre desafíos abiertos del aprendizaje multiagente en redes de energía. La tesis doctoral de Zhang (2024) en la Universidad de Aalborg modela y optimiza la operación de sistemas multi-energía con aprendizaje por refuerzo profundo, mientras que la revisión de Hoummadi et al. (2024) documenta los parámetros ajustables de las microrredes para reducir conjuntamente costos y emisiones.
+ 107 [Heading3] 2.1.3 Antecedentes sobre costos energéticos con MADRL (D-VD.3)
+ 108 [] La optimización de costos bajo tarifas dinámicas ha sido tratada por Amer et al. (2023), que diseñan un agente de respuesta a la demanda para sistemas domésticos considerando tarifa por uso horario, y por Weber et al. (2024), que minimizan el cargo por demanda mediante almacenamiento. Kathirgamanathan et al. (2021) establecen un referente de actor-crítico suave para aprovechar la flexibilidad en edificios de oficinas, y Li et al. (2023) proponen un esquema federado con recompensa informada por física para múltiples microrredes. Entre las tesis, la de Fernández Valderrama (2024) en la Universidad de Sevilla desarrolla sistemas de gestión energética para la respuesta a la demanda con prosumidores y vehículos eléctricos, y la tesis de maestría de Schaap (2024) en la Universidad de Leiden realiza precisamente un benchmarking de algoritmos de aprendizaje por refuerzo para la respuesta a la demanda usando CityLearn, antecedente metodológico cercano al presente trabajo.
+ 109 [Heading3] 2.1.4 Antecedentes sobre el marco técnico MADRL y sistemas aislados
+ 110 [] El paradigma de entrenamiento centralizado con ejecución descentralizada se origina en MADDPG (Lowe et al., 2017) y se formaliza sobre el Dec-POMDP (Oliehoek & Amato, 2016). Los cuatro algoritmos comparados se sustentan, respectivamente, en HAPPO con garantías de mejora monótona para agentes heterogéneos (Kuba et al., 2021; Zhong et al., 2023), en el actor-crítico suave (Haarnoja et al., 2018) que fundamenta MASAC, en TD3 (Fujimoto et al., 2018) que da lugar a MATD3 y en el crítico de atención de MAAC (Iqbal & Sha, 2019). Su aplicación reciente a sistemas de potencia incluye HAPPO para la restauración de redes de distribución (Dolatyabi et al., 2026) y comparativas multiobjetivo en microrredes con almacenamiento (Myint et al., 2026). En el ámbito de los sistemas aislados —el más próximo al caso de estudio— destacan las tesis doctorales de Domínguez Barbero (2026) en la Universidad Pontificia Comillas, centrada en el modelado y la optimización de microrredes aisladas con aprendizaje por refuerzo, y de Rosero Bernal (2024) en la Universidad Distrital Francisco José de Caldas, sobre sistemas de gestión energética autónoma para zonas con acceso limitado a la red, junto con los estudios de optimización de microrredes híbridas diésel-solar de Belboul et al. (2022) y Tarife et al. (2022).
+ 111 [Heading2] 2.2 Bases teóricas
+ 112 [Heading3] 2.2.1 Flexibilidad energética
+ 113 [] La flexibilidad energética es la capacidad de la comunidad para modificar la forma de su curva de demanda mediante el desplazamiento de cargas, el almacenamiento en baterías, el autoconsumo solar y la carga y descarga de vehículos eléctricos. En esta tesis constituye la primera dimensión de la variable dependiente, y se mide con los indicadores de reducción de pico (peak_average), suavizado de rampa (ramping_average) y factor de carga (one_minus_load_factor_average), complementados por el autoconsumo y la autosuficiencia.
+ 114 [Heading3] 2.2.2 Emisiones de carbono
+ 115 [] La intensidad de carbono del SEAI de Iquitos varía con la mezcla horaria de generación según la expresión CI(t) = 0,790 × (1 − 0,15 × GHI(t)/1000) kgCO₂/kWh, en el rango de 0,672 a 0,790. La gestión consciente de esta señal desplaza el consumo hacia las horas de menor emisión. Esta segunda dimensión de la variable dependiente se mide con las emisiones totales y su reducción frente a la línea base.
+ 116 [Heading3] 2.2.3 Costos energéticos
+ 117 [] La tarifa por uso horario crea incentivos para el arbitraje temporal mediante almacenamiento y carga diferida de vehículos. La tercera dimensión de la variable dependiente se mide con el costo total de electricidad, su reducción frente a la línea base y la desviación respecto de la señal de precio.
+ 118 [Heading3] 2.2.4 Marco técnico: Dec-POMDP, CTDE y los cuatro algoritmos
+ 119 [] El problema se formaliza como un proceso de decisión de Markov descentralizado y parcialmente observable, en el que cada edificio es un agente que solo observa su estado local. El esquema CTDE permite que, durante el entrenamiento, un crítico centralizado acceda al estado global para corregir la no estacionariedad del aprendizaje independiente, mientras que en la ejecución cada agente actúa únicamente con su observación local. La Figura 2.1 ilustra este esquema, que es común a los cuatro algoritmos y constituye, por tanto, una condición experimental controlada.
+ 120 [] Figura 2.1. Esquema de entrenamiento centralizado con ejecución descentralizada (CTDE) aplicado a la comunidad de 17 agentes.
+ 121 [] Algoritmo
+ 122 [] Tipo
+ 123 [] Característica distintiva
+ 124 [] HAPPO
+ 125 [] En política
+ 126 [] Actualización secuencial por agente con región de confianza; mejora monótona para agentes heterogéneos (Kuba et al., 2021).
+ 127 [] MASAC
+ 128 [] Fuera de política
+ 129 [] Actor-crítico suave con mezcla cooperativa tipo QMIX y redes recurrentes (Haarnoja et al., 2018; Gao et al., 2023).
+ 130 [] MATD3
+ 131 [] Fuera de política
+ 132 [] Doble crítico centralizado contra la sobreestimación, retardo de política y ruido objetivo (Fujimoto et al., 2018).
+ 133 [] MAAC
+ 134 [] Fuera de política
+ 135 [] Crítico de atención multi-cabeza para coordinación selectiva entre agentes (Iqbal & Sha, 2019).
+ 136 [] Tabla 2.1. Los cuatro niveles del factor algoritmo (dimensión D-VI.1 de la variable independiente).
+ 137 [Heading2] 2.3 Definición de términos
+ 138 [] Se entiende por comunidad inteligente el conjunto de edificios con recursos energéticos distribuidos que comparten una señal de red común; por recurso de energía distribuida (DER), cada activo controlable de generación, almacenamiento o carga; por indicador de desempeño (KPI), cada métrica oficial con la que CityLearn v2 evalúa el resultado de una corrida; y por tratamiento, cada combinación de un nivel del factor algoritmo con un nivel del factor escenario.
+ 139 [Heading1] Capítulo 3. Metodología
+ 140 [Heading2] 3.1 Tipo, enfoque y nivel de investigación
+ 141 [] La investigación es de enfoque cuantitativo, tipo aplicada y nivel explicativo, en tanto busca establecer una relación de causa y efecto entre el algoritmo MADRL y el desempeño coordinado de la comunidad. El diseño es experimental, puesto que la variable independiente se manipula de forma deliberada y controlada, se mantienen constantes las variables de control y se mide el efecto sobre la variable dependiente en condiciones de plena reproducibilidad. Se trata, en concreto, de un experimento de simulación computacional con un diseño factorial completo, lo que distingue a esta versión de la tesis de planteamientos meramente descriptivos o comparativos.
+ 142 [] La elección de un diseño experimental de simulación se sustenta en que el entorno CityLearn proporciona un sistema controlado en el que es posible fijar el factor algoritmo y observar su efecto sin la interferencia de variables externas, garantizando la validez interna del experimento. La comparación rigurosa de algoritmos de aprendizaje por refuerzo en este tipo de entornos se apoya en la metodología estadística establecida por Colas et al. (2019) y Agarwal et al. (2021).
+ 143 [Heading2] 3.2 Diseño experimental
+ 144 [] El experimento adopta un diseño factorial 4×3 en el que se cruzan los dos factores que conforman la variable independiente: el factor algoritmo, con cuatro niveles (HAPPO, MASAC, MATD3 y MAAC), y el factor escenario de ponderación, con tres niveles (E1, E2 y E3). El cruce de ambos factores genera doce tratamientos o unidades experimentales, cada uno ejecutado bajo idénticas variables de control. La Figura 3.1 representa esta estructura factorial.
+ 145 [] Figura 3.1. Diseño experimental factorial 4×3: doce tratamientos resultantes del cruce del factor algoritmo y el factor escenario.
+ 146 [] Cada escenario fija un vector de pesos sobre las tres dimensiones de la variable dependiente, orientando la política hacia un objetivo dominante y permitiendo así examinar el efecto del algoritmo en condiciones de énfasis controlado. La Tabla 3.1 detalla esta configuración.
+ 147 [] Escenario
+ 148 [] Pesos [flex, CO₂, costo]
+ 149 [] Objetivo dominante
+ 150 [] Asociado a
+ 151 [] E1
+ 152 [] [0,70; 0,15; 0,15]
+ 153 [] Flexibilidad
+ 154 [] OE.1 / HE.1
+ 155 [] E2
+ 156 [] [0,15; 0,70; 0,15]
+ 157 [] Emisiones de CO₂
+ 158 [] OE.2 / HE.2
+ 159 [] E3
+ 160 [] [0,25; 0,15; 0,60]
+ 161 [] Costos energéticos
+ 162 [] OE.3 / HE.3
+ 163 [] Tabla 3.1. Niveles del factor escenario (dimensión D-VI.2 de la variable independiente).
+ 164 [Heading2] 3.3 Unidad de análisis, población y muestra
+ 165 [] La unidad de análisis es el tratamiento, esto es, la ejecución de un algoritmo en un escenario sobre la comunidad simulada. La población corresponde al conjunto de configuraciones posibles del experimento, y la muestra es el diseño factorial completo de doce tratamientos. Por tratarse de un experimento de simulación, no intervienen sujetos humanos.
+ 166 [Heading2] 3.4 Datos: dataset citylearn_iquitos_2023_2025
+ 167 [] El experimento se alimenta de un dataset construido íntegramente desde datos primarios mediante un pipeline reproducible de diez etapas con control de semilla y validación en cada paso. No se adoptan datasets preexistentes porque el SEAI de Iquitos presenta condiciones irrepresentables en ellos: sistema aislado, generación diésel dominante, clima ecuatorial sin calefacción y tarifas locales. La Figura 3.2 esquematiza la comunidad energética modelada, y la Tabla 3.2 resume sus características auditadas.
+ 168 [] Figura 3.2. Comunidad energética del SEAI de Iquitos modelada en CityLearn v3 (constituye la variable de control del experimento).
+ 169 [] Componente
+ 170 [] Valor auditado
+ 171 [] Edificios (agentes)
+ 172 [] 17 institucionales/comerciales reales
+ 173 [] Horizonte / pasos
+ 174 [] 2023–2025 / 26 304 h (episodio = 8 760 h)
+ 175 [] Archivos CSV
+ 176 [] 222 (0 NaN, 0 Inf)
+ 177 [] PV total
+ 178 [] 48 790,9 kWp
+ 179 [] BESS total
+ 180 [] 26 266 kWh / 6 648 kW
+ 181 [] Cargadores EV
+ 182 [] 185 tomas Mode 3 / 96 equipos físicos / 749,4 kW
+ 183 [] Intensidad de carbono
+ 184 [] 0,672–0,790 kgCO₂/kWh
+ 185 [] Tarifa TOU
+ 186 [] 0,26 USD/kWh fuera punta; 0,38 USD/kWh punta (18–22 h)
+ 187 [] Ubicación
+ 188 [] lat −3,7491; lon −73,2538; tz America/Lima
+ 189 [] Tabla 3.2. Características del dataset citylearn_iquitos_2023_2025 (Electro Oriente S.A., 2023–2025; MINAM, 2019; OSINERGMIN, 2024).
+ 190 [] Los diecisiete edificios abarcan usos heterogéneos —hospital, aeropuerto, centros comerciales, sedes administrativas, universidades e instalaciones industriales—, heterogeneidad que es prerrequisito de la formulación Dec-POMDP y que justifica la inclusión de HAPPO, diseñado específicamente para agentes heterogéneos.
+ 191 [Heading2] 3.5 Variables y su operacionalización
+ 192 [] La variable independiente es el algoritmo MADRL aplicado a la comunidad, manipulada a través de sus dos dimensiones (tipo de algoritmo y escenario de ponderación). La variable dependiente es el desempeño coordinado, medido a través de sus tres dimensiones mediante los cincuenta y cuatro indicadores oficiales calculados con la función de evaluación de CityLearn v2. Las variables de control —dataset, clima, intensidad de carbono, tarifa, función de recompensa y semilla— se mantienen constantes en los doce tratamientos para aislar el efecto del factor algoritmo. Esta operacionalización fue presentada en la Tabla 1.2.
+ 193 [Heading2] 3.6 Técnicas e instrumentos de recolección de datos
+ 194 [] La recolección de datos se realiza por instrumentación del propio experimento: cada tratamiento registra de forma automática las métricas de entrenamiento (recompensa acumulada y media por episodio, pesos por eje, intensidad de carbono, precio y carga neta del distrito) y los indicadores de desempeño por dimensión. Cada corrida produce artefactos reproducibles (results.json, training_summary.json, timeseries.csv, trace.csv y manifiestos de checkpoints y figuras). Los instrumentos son el simulador CityLearn v2, la capa CityLearn v3 propuesta, los cuatro backends algorítmicos y el dataset descrito.
+ 195 [Heading2] 3.7 Técnicas de análisis estadístico
+ 196 [] El análisis combina dos niveles complementarios. En el nivel descriptivo se calculan, para cada uno de los doce tratamientos, la media, la desviación estándar, los valores extremos y el coeficiente de variación de los indicadores por dimensión, lo que caracteriza la magnitud y la estabilidad del efecto. En el nivel inferencial se aplican cuatro pruebas no paramétricas con un nivel de significación de 0,05: la prueba de Shapiro-Wilk para verificar la normalidad y justificar el uso de pruebas no paramétricas; la prueba de Kruskal-Wallis para contrastar la hipótesis nula de ausencia de diferencias globales entre los niveles del factor algoritmo; la prueba de Mann-Whitney U para las comparaciones por pares con sus tamaños de efecto; y la prueba de Wilcoxon de rangos con signo para las diferencias pareadas por indicador. Este protocolo sigue las recomendaciones metodológicas de Colas et al. (2019), Agarwal et al. (2021) y Demšar (2006) para la comparación rigurosa de algoritmos.
+ 197 [Heading1] Capítulo 4. Desarrollo de la propuesta
+ 198 [Heading2] 4.1 Arquitectura del sistema experimental
+ 199 [] El sistema que materializa el experimento se organiza en capas que van del simulador físico a la generación de evidencia estadística. CityLearn v2 aporta la física de los edificios, las baterías, la generación fotovoltaica, los vehículos eléctricos y los indicadores oficiales. Sobre él se asienta la capa CityLearn v3 propuesta, alojada en el mismo submódulo y responsable de la formulación Dec-POMDP, la gestión de escenarios y la función de recompensa multiobjetivo. Los cuatro backends algorítmicos se conectan mediante adaptadores específicos, y una capa final de evaluación produce las tablas, figuras y pruebas estadísticas. Esta separación garantiza que el único elemento que varía entre tratamientos sea el factor algoritmo, preservando la validez interna del experimento.
+ 200 [] Capa
+ 201 [] Componente
+ 202 [] Función en el experimento
+ 203 [] 1
+ 204 [] CityLearn v2
+ 205 [] Física de edificios, BESS, PV, EV y KPIs oficiales (variable de control).
+ 206 [] 2
+ 207 [] CityLearn v3 propuesto
+ 208 [] Dec-POMDP, escenarios E1/E2/E3 y recompensa multiobjetivo.
+ 209 [] 3
+ 210 [] Backends (external/)
+ 211 [] HARL (HAPPO), MARL (MASAC), off-policy (MATD3), MAAC.
+ 212 [] 4
+ 213 [] Evaluación y evidencia
+ 214 [] Benchmark v2, comparación v2 vs v3 y evidencia estadística.
+ 215 [] Tabla 4.1. Capas de software del sistema experimental MADRL CityLearn v3.
+ 216 [Heading2] 4.2 Formulación Dec-POMDP
+ 217 [] La comunidad se formaliza como el proceso ⟨S, {Aᵢ}, T, R, {Oᵢ}, Ω, γ, T⟩ con diecisiete agentes, uno por edificio. El estado global resulta de la concatenación de las observaciones locales —1 856 dimensiones en el entorno cargado— y solo es accesible por el crítico centralizado durante el entrenamiento. Cada observación local es heterogénea por edificio e incluye el tiempo, la física del edificio, un subconjunto meteorológico, el precio, la intensidad de carbono y el estado de carga del almacenamiento y de cada cargador de vehículos. La acción local, también heterogénea, controla la potencia de carga y descarga del almacenamiento, la potencia de carga por cargador y las cargas desplazables. El factor de descuento es 0,9999 y el horizonte es de 8 760 pasos. La observabilidad parcial estricta se satisface porque ningún edificio accede al estado de los demás durante la ejecución.
+ 218 [Heading2] 4.3 Esquema CTDE y función de recompensa multiobjetivo
+ 219 [] Durante el entrenamiento, el crítico centralizado accede al estado global y corrige la no estacionariedad del aprendizaje independiente; en la ejecución, cada política actúa solo con su observación local. La función de recompensa CityLearnV3MADRLRewardFunction escalariza las tres dimensiones de la variable dependiente y añade un término de vehículos eléctricos, con una agregación cooperativa que pondera al setenta por ciento la señal del distrito. El perfil activo, denominado unificado v4, es idéntico para los cuatro algoritmos, lo que constituye una condición experimental controlada esencial para la comparabilidad estadística. La Tabla 4.2 resume sus parámetros.
+ 220 [] Parámetro
+ 221 [] Valor
+ 222 [] Justificación
+ 223 [] team_reward_ratio
+ 224 [] 0,70
+ 225 [] Coordinación cooperativa Dec-POMDP.
+ 226 [] peak_weight / ramp_weight
+ 227 [] 0,45 / 0,35
+ 228 [] KPI primario y secundario de flexibilidad.
+ 229 [] ev_weight
+ 230 [] 0,25
+ 231 [] Refuerzo del cumplimiento de carga de vehículos.
+ 232 [] bess_cycle_weight
+ 233 [] 0,10
+ 234 [] Penalización de la oscilación del almacenamiento (v4).
+ 235 [] ev_urgency_hours
+ 236 [] 8,0
+ 237 [] Ventana de urgencia de carga ampliada (v4).
+ 238 [] reward_scale
+ 239 [] 1,00
+ 240 [] Escala uniforme para gradientes comparables.
+ 241 [] Tabla 4.2. Parámetros de la función de recompensa multiobjetivo (perfil unificado v4), constante entre tratamientos.
+ 242 [Heading2] 4.4 Algoritmos e hiperparámetros
+ 243 [] Los cuatro niveles del factor algoritmo se integran mediante adaptadores de entorno dedicados. La configuración canónica objetivo es de cincuenta episodios por 8 760 pasos en GPU NVIDIA A100, mientras que la corrida local de referencia completó cinco episodios por 8 760 pasos en una GPU RTX 4060 de 8 GB. Los hiperparámetros comunes —capas ocultas, tasas de aprendizaje, factor de descuento y tamaño de lote— se fijan de forma homogénea, y solo se ajustan los parámetros propios de cada familia algorítmica, como el recorte de PPO en HAPPO, el retardo de política en MATD3 o el número de cabezas de atención en MAAC. La Tabla 4.3 sintetiza esta configuración.
+ 244 [] Hiperparámetro
+ 245 [] Valor
+ 246 [] Aplicabilidad
+ 247 [] hidden_sizes
+ 248 [] [256, 256]
+ 249 [] Todos
+ 250 [] actor_lr / critic_lr
+ 251 [] 3e-4 / 1e-3
+ 252 [] Todos
+ 253 [] gamma
+ 254 [] 0,9999
+ 255 [] Todos
+ 256 [] batch_size
+ 257 [] 256
+ 258 [] Todos
+ 259 [] ppo_clip
+ 260 [] 0,2
+ 261 [] Solo HAPPO
+ 262 [] matd3_policy_delay
+ 263 [] 2
+ 264 [] Solo MATD3
+ 265 [] maac_attention_heads
+ 266 [] 4
+ 267 [] Solo MAAC
+ 268 [] masac_alpha
+ 269 [] auto
+ 270 [] Solo MASAC
+ 271 [] Tabla 4.3. Hiperparámetros del entrenamiento MADRL.
+ 272 [Heading2] 4.5 Aportes originales al motor de simulación
+ 273 [] Como contribución metodológica diferencial, se introdujeron cuatro extensiones originales y retrocompatibles al motor de CityLearn, todas con valores por defecto que reproducen el comportamiento original. La primera incorpora un modelo de degradación del almacenamiento dependiente de la tasa de carga y de la temperatura mediante un factor de Arrhenius, de modo que a 35 °C —característicos del mediodía amazónico— la degradación es un catorce por ciento mayor que en condiciones estándar, lo que induce a las políticas a evitar sobrecargas en horas calurosas. La segunda corrige la generación fotovoltaica por temperatura de célula según la norma IEC 61215, corrigiendo un error sistemático del orden del diez por ciento en clima tropical. La tercera alinea el indicador de pico con la ventana de facturación regulatoria de quince minutos. La cuarta formaliza la intensidad de carbono dinámica diésel-solar en una clase reutilizable y configurable. La Tabla 4.4 resume estos aportes.
+ 274 [] #
+ 275 [] Aporte
+ 276 [] Modelo incorporado
+ 277 [] A1
+ 278 [] Degradación BESS C-rate + Arrhenius
+ 279 [] ΔC = base·(C_rate)^0,55·exp[Ea/R·(1/T_ref − 1/T)], Ea = 24 500 J/mol.
+ 280 [] A2
+ 281 [] Corrección PV tropical (IEC 61215)
+ 282 [] T_cell = T_amb + (NOCT−20)/800·G; P(T) = P_STC·[1+γ(T_cell−25)], γ = −0,0035/°C.
+ 283 [] A3
+ 284 [] KPI de pico con ventana de facturación
+ 285 [] Máximo rodante sub-horario (OSINERGMIN MT-3/MT-4, 15 min).
+ 286 [] A4
+ 287 [] Modelo de intensidad de carbono
+ 288 [] CI(t) = 0,790·(1 − 0,15·mín(GHI/1000, 1)).
+ 289 [] Tabla 4.4. Aportes originales al motor de simulación CityLearn (commit 54b1938e).
+ 290 [Heading2] 4.6 Implementación y entorno computacional
+ 291 [] La implementación se realizó en Python 3.9 con PyTorch 2.8.0 y CUDA 12.6. Los cuatro scripts de entrenamiento comparten un adaptador común que homogeneiza la normalización, el cálculo de indicadores, las trazas, las figuras y los metadatos, garantizando que los doce tratamientos se ejecuten bajo idéntico procedimiento. El despliegue admite ejecución local y en la nube; la corrida canónica de cincuenta episodios se ejecuta en Google Colab sobre una GPU A100 de 80 GB en un protocolo de dos fases que entrena primero HAPPO y MASAC y después MATD3 y MAAC, con reanudación intra-trabajo y monitoreo en vivo.
+ 292 [Heading1] Capítulo 5. Resultados y contrastación de hipótesis
+ 293 [] Este capítulo presenta la evidencia experimental de la corrida de referencia, organizada en dos niveles: primero el análisis descriptivo del efecto del factor algoritmo sobre cada dimensión de la variable dependiente y, a continuación, el contraste inferencial de las hipótesis. Todos los indicadores se expresan como razón respecto de la línea base de CityLearn v2, de modo que un valor de 1,0 equivale al desempeño de la línea base y los valores menores indican mejora. Conviene precisar que las cifras provienen de la corrida local de cinco episodios; la corrida canónica de cincuenta episodios, en ejecución, refinará las magnitudes sin alterar la estructura del análisis.
+ 294 [Heading2] 5.1 Experimentos realizados
+ 295 [] Se completaron los doce tratamientos del diseño factorial, todos con terminación correcta. El tiempo de entrenamiento varió según la familia algorítmica: HAPPO requirió entre cincuenta y siete y sesenta y siete minutos por escenario; MASAC, entre dos y dos horas y media; MAAC, alrededor de cinco horas y media; y MATD3, entre seis y siete horas y media, lo que refleja el costo de su doble crítico centralizado.
+ 296 [Heading2] 5.2 Análisis descriptivo del efecto sobre la variable dependiente
+ 297 [] El primer nivel de demostración es descriptivo. La Tabla 5.1 reúne, para cada tratamiento, la media, la desviación estándar y el coeficiente de variación de los indicadores de la dimensión de flexibilidad, la más rica en indicadores. El hallazgo más relevante es la diferencia de estabilidad entre algoritmos: MATD3 presenta un coeficiente de variación inferior al 1,1 % en los tres escenarios, frente a valores superiores al 9 % en HAPPO. Es decir, MATD3 no solo se aproxima a la línea base en media, sino que lo hace con una dispersión mínima entre indicadores, lo que evidencia el efecto más estable y consistente del factor algoritmo.
+ 298 [] Esc.
+ 299 [] Algoritmo
+ 300 [] Media
+ 301 [] Desv. est.
+ 302 [] Mín.
+ 303 [] Máx.
+ 304 [] CV (%)
+ 305 [] E1
+ 306 [] HAPPO
+ 307 [] 1,0639
+ 308 [] 0,0937
+ 309 [] 0,9340
+ 310 [] 1,1520
+ 311 [] 8,81
+ 312 [] E1
+ 313 [] MASAC
+ 314 [] 1,0403
+ 315 [] 0,0557
+ 316 [] 0,9852
+ 317 [] 1,1166
+ 318 [] 5,35
+ 319 [] E1
+ 320 [] MATD3
+ 321 [] 1,0017
+ 322 [] 0,0095
+ 323 [] 0,9903
+ 324 [] 1,0135
+ 325 [] 0,94
+ 326 [] E1
+ 327 [] MAAC
+ 328 [] 1,0312
+ 329 [] 0,0440
+ 330 [] 0,9828
+ 331 [] 1,0892
+ 332 [] 4,26
+ 333 [] E2
+ 334 [] HAPPO
+ 335 [] 1,0771
+ 336 [] 0,1097
+ 337 [] 0,9259
+ 338 [] 1,1829
+ 339 [] 10,19
+ 340 [] E2
+ 341 [] MASAC
+ 342 [] 1,0396
+ 343 [] 0,0563
+ 344 [] 0,9835
+ 345 [] 1,1166
+ 346 [] 5,42
+ 347 [] E2
+ 348 [] MATD3
+ 349 [] 1,0026
+ 350 [] 0,0110
+ 351 [] 0,9898
+ 352 [] 1,0166
+ 353 [] 1,09
+ 354 [] E2
+ 355 [] MAAC
+ 356 [] 1,0286
+ 357 [] 0,0418
+ 358 [] 0,9796
+ 359 [] 1,0818
+ 360 [] 4,07
+ 361 [] E3
+ 362 [] HAPPO
+ 363 [] 1,0713
+ 364 [] 0,1026
+ 365 [] 0,9287
+ 366 [] 1,1657
+ 367 [] 9,57
+ 368 [] E3
+ 369 [] MASAC
+ 370 [] 1,0395
+ 371 [] 0,0569
+ 372 [] 0,9820
+ 373 [] 1,1170
+ 374 [] 5,48
+ 375 [] E3
+ 376 [] MATD3
+ 377 [] 1,0017
+ 378 [] 0,0075
+ 379 [] 0,9930
+ 380 [] 1,0112
+ 381 [] 0,74
+ 382 [] E3
+ 383 [] MAAC
+ 384 [] 1,0281
+ 385 [] 0,0411
+ 386 [] 0,9807
+ 387 [] 1,0809
+ 388 [] 4,00
+ 389 [] Tabla 5.1. Estadística descriptiva de la dimensión de flexibilidad (D-VD.1) por tratamiento (razón al baseline).
+ 390 [] Al descender al nivel de indicador individual (Figura 5.2), se confirma que MATD3 domina los dos indicadores de forma de curva: su reducción de pico (1,01) y su rampa (1,001) son prácticamente neutras respecto de la línea base, mientras que HAPPO se aleja notablemente. La Figura 5.4 añade una segunda evidencia descriptiva: MATD3 más que duplica la tasa de éxito de partida de vehículos eléctricos respecto del resto, lo que indica un efecto positivo sobre el cumplimiento del servicio.
+ 391 [] Figura 5.2. Indicadores de flexibilidad por algoritmo en el escenario E1 (razón al baseline; menor es mejor).
+ 392 [] Figura 5.4. Tasa de éxito de partida de vehículos eléctricos por escenario (mayor es mejor).
+ 393 [] Figura 5.5. Matriz de indicadores clave por algoritmo en el escenario E1 (verde indica mejor desempeño).
+ 394 [Heading2] 5.3 Efecto coordinado: ranking ponderado por escenario
+ 395 [] Para evaluar el efecto coordinado sobre las tres dimensiones simultáneamente, se calcula una puntuación global ponderada por eje. La Figura 5.1 y la Tabla 5.2 muestran que MATD3 es el algoritmo MADRL de mayor efecto en los tres escenarios: lidera el ranking global en los escenarios de carbono y de costos, y encabeza los algoritmos MADRL en el escenario de flexibilidad. En este último, los agentes originales de CityLearn v2 conservan ventaja global, lo que se interpreta en la sección de discusión.
+ 396 [] Figura 5.1. Ranking global ponderado por escenario (CityLearn v2 frente a MADRL v3).
+ 397 [] Escenario
+ 398 [] Mejor MADRL
+ 399 [] Puntuación
+ 400 [] 2.º
+ 401 [] 3.º
+ 402 [] 4.º
+ 403 [] E1 (flexibilidad)
+ 404 [] MATD3
+ 405 [] 0,487
+ 406 [] MAAC 0,440
+ 407 [] MASAC 0,395
+ 408 [] HAPPO 0,338
+ 409 [] E2 (CO₂)
+ 410 [] MATD3
+ 411 [] 0,751
+ 412 [] MAAC 0,536
+ 413 [] MASAC 0,428
+ 414 [] HAPPO 0,307
+ 415 [] E3 (costos)
+ 416 [] MATD3
+ 417 [] 0,733
+ 418 [] MAAC 0,602
+ 419 [] MASAC 0,442
+ 420 [] HAPPO 0,395
+ 421 [] Tabla 5.2. Ranking global ponderado por escenario (pesos por eje 0,34/0,33/0,33).
+ 422 [] La Figura 5.3 complementa este resultado con una representación radial del desempeño por eje, donde se aprecia que MATD3 cubre la mayor área en los escenarios de carbono y costos, especialmente en la dimensión de emisiones, en la que alcanza puntuaciones cercanas a 0,99.
+ 423 [] Figura 5.3. Desempeño normalizado por eje y escenario (representación radial).
+ 424 [Heading2] 5.4 Contrastación inferencial de las hipótesis
+ 425 [] El segundo nivel de demostración es inferencial. La prueba de Shapiro-Wilk indica que varios grupos no siguen una distribución normal, lo que justifica el empleo de pruebas no paramétricas. La prueba de Kruskal-Wallis sobre la puntuación global arroja un valor p de 0,0459, inferior al nivel de significación de 0,05, por lo que se rechaza la hipótesis nula de ausencia de diferencias entre los niveles del factor algoritmo: existe un efecto significativo de la variable independiente sobre la variable dependiente, lo que respalda la hipótesis general.
+ 426 [] Las comparaciones por pares mediante la prueba de Wilcoxon de rangos con signo, calculadas sobre los indicadores pareados, precisan la naturaleza de ese efecto (Tabla 5.3 y Figura 5.6). HAPPO difiere de forma significativa de los tres algoritmos fuera de política, siempre en su contra; en cambio, MATD3, MASAC y MAAC no muestran diferencias sistemáticas entre sí en el agregado. Esto indica que la superioridad de MATD3 proviene de su consistencia entre ejes —documentada en el análisis descriptivo— más que de una ventaja uniforme indicador a indicador.
+ 427 [] Comparación
+ 428 [] Mediana de dif.
+ 429 [] p-valor
+ 430 [] ¿Significativa?
+ 431 [] Mejor
+ 432 [] HAPPO vs MASAC
+ 433 [] −0,0297
+ 434 [] 9,8×10⁻⁶
+ 435 [] Sí
+ 436 [] MASAC
+ 437 [] HAPPO vs MATD3
+ 438 [] −0,0251
+ 439 [] 2,6×10⁻⁶
+ 440 [] Sí
+ 441 [] MATD3
+ 442 [] HAPPO vs MAAC
+ 443 [] −0,0282
+ 444 [] 2,3×10⁻⁴
+ 445 [] Sí
+ 446 [] MAAC
+ 447 [] MASAC vs MATD3
+ 448 [] 0,0000
+ 449 [] 0,738
+ 450 [] No
+ 451 [] empate
+ 452 [] MASAC vs MAAC
+ 453 [] 0,00034
+ 454 [] 0,0139
+ 455 [] Sí
+ 456 [] MASAC
+ 457 [] MATD3 vs MAAC
+ 458 [] 0,0000
+ 459 [] 0,406
+ 460 [] No
+ 461 [] empate
+ 462 [] Tabla 5.3. Pruebas de Wilcoxon pareadas entre algoritmos (α = 0,05).
+ 463 [] Figura 5.6. Matriz de valores p de Wilcoxon entre algoritmos (verde ≥ 0,05 indica ausencia de diferencia significativa).
+ 464 [] La Figura 5.0 muestra, además, la trayectoria de convergencia por algoritmo, donde MATD3 alcanza la puntuación más alta de forma estable a lo largo de los episodios.
+ 465 [] Figura 5.0. Trayectoria de convergencia por algoritmo (escenario E1, corrida de referencia de 5 episodios).
+ 466 [] Con esta evidencia, las hipótesis se contrastan del siguiente modo:
+ 467 [ListParagraph] HE.1 (flexibilidad): se acepta el efecto significativo del factor algoritmo; el mayor efecto, por menor variabilidad (CV < 1,1 %), corresponde a MATD3, complementado por el mejor factor de carga de HAPPO.
+ 468 [ListParagraph] HE.2 (CO₂): se acepta; MATD3 produce el mayor efecto, con puntuación de eje de 0,986 en E2.
+ 469 [ListParagraph] HE.3 (costos): se acepta; MATD3 lidera el eje en E2 (0,840) y comparte el liderazgo con MAAC en E3.
+ 470 [ListParagraph] HG (efecto coordinado): se acepta; la prueba de Kruskal-Wallis confirma el efecto significativo (p = 0,0459) y MATD3 es el algoritmo de mayor efecto coordinado.
+ 471 [Heading2] 5.5 Discusión de resultados
+ 472 [] Los resultados admiten tres lecturas. En primer lugar, el efecto del factor algoritmo es estadísticamente significativo y favorece a los métodos fuera de política con crítico centralizado, lo que sugiere que la estabilidad del doble crítico de MATD3 es ventajosa en un entorno heterogéneo de diecisiete agentes; este hallazgo es coherente con la evidencia de Bušić et al. (2023) sobre el aprendizaje heterogéneo en comunidades grid-interactive. En segundo lugar, la competitividad de la línea base de CityLearn v2 en el escenario de flexibilidad indica que, con un presupuesto de entrenamiento de cinco episodios, las políticas multiagente aún no superan de forma global a un control de reglas bien sintonizado en todas las dimensiones, limitación documentada también por Schaap (2024) en su benchmarking con CityLearn. En tercer lugar, la baja variabilidad de MATD3 constituye un argumento de robustez que trasciende la magnitud puntual de los indicadores y que la corrida canónica de cincuenta episodios permitirá consolidar.
+ 473 [Heading1] Capítulo 6. Conclusiones y trabajo futuro
+ 474 [Heading2] 6.1 Conclusiones
+ 475 [] La investigación demostró, mediante un diseño experimental de relación causa-efecto, que el algoritmo MADRL aplicado a la comunidad inteligente (variable independiente) produce un efecto estadísticamente significativo sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (variable dependiente). La prueba de Kruskal-Wallis sobre la puntuación global (p = 0,0459) permitió rechazar la hipótesis nula y aceptar la hipótesis general, identificando a MATD3 como el algoritmo de mayor efecto coordinado.
+ 476 [] Respecto de los objetivos específicos, el análisis descriptivo e inferencial sostiene que MATD3 produce el efecto más estable sobre la flexibilidad —con un coeficiente de variación inferior al 1,1 %, muy por debajo del 9–10 % de HAPPO—, el mayor efecto sobre las emisiones de CO₂ —con puntuación de eje de 0,986 en el escenario correspondiente— y un efecto destacado sobre los costos, donde lidera o comparte el liderazgo. Las comparaciones de Wilcoxon confirmaron que los tres algoritmos fuera de política superan significativamente a HAPPO, mientras que entre ellos no se observan diferencias sistemáticas, de modo que la ventaja de MATD3 se explica por su consistencia entre ejes.
+ 477 [] En el plano metodológico, la tesis aporta un benchmark experimental unificado, reproducible y estadísticamente fundamentado de cuatro algoritmos multiagente sobre un dataset real de un sistema eléctrico aislado, así como cuatro extensiones originales al motor de simulación que incorporan condiciones físicas y regulatorias del SEAI de Iquitos.
+ 478 [Heading2] 6.2 Limitaciones
+ 479 [] La principal limitación es el presupuesto de entrenamiento de la corrida de referencia (cinco episodios, una sola semilla), que explica que algunos indicadores crudos de las políticas multiagente aún se sitúen cerca o por encima de la línea base y que esta conserve ventaja global en el escenario de flexibilidad. A ello se suman las restricciones de memoria de la GPU local, que obligaron a limitar los búferes y la concurrencia, y la naturaleza experimental de la capa CityLearn v3 propuesta.
+ 480 [Heading2] 6.3 Trabajo futuro
+ 481 [ListParagraph] Ejecutar la configuración canónica de cincuenta episodios por 8 760 pasos en GPU A100 para los doce tratamientos, con múltiples semillas, y consolidar el análisis de robustez.
+ 482 [ListParagraph] Optimizar la función de recompensa y los hiperparámetros mediante búsqueda automática, con el fin de que las políticas multiagente superen a la línea base también en la dimensión de emisiones.
+ 483 [ListParagraph] Completar las pruebas de Mann-Whitney U con sus tamaños de efecto y los intervalos de confianza por remuestreo, conforme a Agarwal et al. (2021).
+ 484 [ListParagraph] Extender el benchmark a otros sistemas aislados peruanos para evaluar la transferibilidad del mejor algoritmo identificado.
+ 485 [Heading2] 6.4 Cronograma de culminación
+ 486 [] Figura 6.1. Cronograma para la culminación de la tesis (24 meses).
+ 487 [Heading1] Referencias bibliográficas
+ 488 [] Las referencias siguen el formato APA (7.ª edición). Se prioriza la literatura de los últimos cinco años —tesis doctorales, tesis de maestría y artículos arbitrados— y se conservan las obras seminales imprescindibles del marco técnico.
+ 489 [] Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A., & Bellemare, M. G. (2021). Deep reinforcement learning at the edge of the statistical precipice. Advances in Neural Information Processing Systems, 34, 29304–29320. https://arxiv.org/abs/2108.13264
+ 490 [] Alabi, T. M., Lawrence, N. P., Lu, L., Yang, Z., & Bhusari, R. (2023). Automated deep reinforcement learning for real-time scheduling strategy of multi-energy system integrated with post-carbon and direct-air carbon capture. Applied Energy, 333, 120633. https://doi.org/10.1016/j.apenergy.2022.120633
+ 491 [] Amer, A., Shaban, K., & Massoud, A. (2023). DRL-HEMS: Deep reinforcement learning agent for demand response in home energy management systems. IEEE Transactions on Smart Grid, 14(1), 347–358. https://doi.org/10.1109/TSG.2022.3198401
+ 492 [] Belboul, Z., Toual, B., Kouzou, A., Mokrani, L., & Bensalem, A. (2022). Multiobjective optimization of a hybrid PV/wind/battery/diesel generator system integrated in microgrid: A case study in Djelfa, Algeria. Energies, 15(10), 3579. https://doi.org/10.3390/en15103579
+ 493 [] Bousnina, D. (2023). Deep reinforcement learning for optimal energy management in smart multi-energy systems [Tesis doctoral, Mines Paris – PSL]. HAL Science. https://hal.science/tel-04558019
+ 494 [] Bušić, A., Nweye, K., Morstyn, T., & Nagy, Z. (2023). Heterogeneous multi-agent reinforcement learning for grid-interactive communities. Proceedings of BuildSys 2023, 132–141. https://doi.org/10.1145/3600100.3626276
+ 495 [] Caputo, C., Cardin, M.-A., Ge, P., Teng, F., & Korr, A. (2022). Design and planning of flexible mobile micro-grids using deep reinforcement learning. arXiv:2212.04136. https://arxiv.org/abs/2212.04136
+ 496 [] Charbonnier, F. (2024). Multi-agent reinforcement learning for the coordination of residential energy flexibility [Tesis doctoral, University of Oxford]. Oxford University Research Archive. https://ora.ox.ac.uk/objects/uuid:4acf19ee-76b3-4e71-a424-259cd9e2d6f5
+ 497 [] Charbonnier, F., Morstyn, T., & McCulloch, M. D. (2022). Scalable multi-agent reinforcement learning for distributed control of residential energy flexibility. IEEE Transactions on Smart Grid. https://arxiv.org/abs/2203.03417
+ 498 [] Chen, T. (2022). Empowering peer-to-peer energy trading in smart grid via deep reinforcement learning [Tesis doctoral, University of Glasgow]. https://theses.gla.ac.uk/83065/
+ 499 [] Colas, C., Sigaud, O., & Oudeyer, P.-Y. (2019). A hitchhiker’s guide to statistical comparisons of reinforcement learning algorithms. arXiv:1904.06979. https://arxiv.org/abs/1904.06979
+ 500 [] Cordeiro-Costas, M., Moreno, M. Á., Alonso, M., Amaris, H., & Grela, E. (2026). Multi-agent soft actor-critic for coordinated energy management in buildings with EV parks. International Journal of Electrical Power & Energy Systems, 165, 111938. https://doi.org/10.1016/j.ijepes.2026.111938
+ 501 [] Cuadrado, N., Gutierrez, R., Zhu, Y., & Takac, M. (2023). MAHTM: A multi-agent framework for hierarchical transactive microgrids. arXiv:2303.08447. https://arxiv.org/abs/2303.08447
+ 502 [] Demirel, G. (2023). Multi-agent reinforcement learning grid-oriented control for distributed energy resources on smart grids [Tesis de maestría, Karlsruhe Institute of Technology]. https://www.iai.kit.edu/5139.php
+ 503 [] Demšar, J. (2006). Statistical comparisons of classifiers over multiple data sets. Journal of Machine Learning Research, 7, 1–30. https://www.jmlr.org/papers/v7/demsar06a.html
+ 504 [] Dolatyabi, P., Farajzadeh Bavil, A., & Khodayar, M. (2026). Heterogeneous multi-agent proximal policy optimization for power distribution system restoration. Proceedings of the 2026 IEEE Texas Power and Energy Conference, 1–6. https://doi.org/10.1109/TPEC67884.2026.11513130
+ 505 [] Domínguez Barbero, C. (2026). Modeling and optimizing isolated microgrids using reinforcement learning techniques [Tesis doctoral, Universidad Pontificia Comillas]. Dialnet. https://dialnet.unirioja.es/servlet/tesis?codigo=398458
+ 506 [] Electro Oriente S.A. (2023–2025). Facturas mensuales de edificios institucionales del SEAI Iquitos. Loreto, Perú.
+ 507 [] Fernández Valderrama, D. (2024). Energy management systems for demand response in power distribution systems including prosumers [Tesis doctoral, Universidad de Sevilla]. Dialnet. https://dialnet.unirioja.es/servlet/tesis?codigo=394692
+ 508 [] Fonseca, T., Ferreira, L. L., Cabral, B., Severino, R., & Guedes Soares, C. (2024). EnergAIze: Multi-agent deep deterministic policy gradient for vehicle-to-grid energy management. Proceedings of IEEE SmartGridComm 2024, 1–6. https://doi.org/10.1109/SmartGridComm60555.2024.10738095
+ 509 [] Fujimoto, S., van Hoof, H., & Meger, D. (2018). Addressing function approximation error in actor-critic methods. Proceedings of the 35th ICML, PMLR 80, 1587–1596. https://arxiv.org/abs/1802.09477
+ 510 [] Gao, J., Li, Y., Wang, B., & Wu, H. (2023). Multi-microgrid collaborative optimization scheduling using an improved multi-agent soft actor-critic algorithm. Energies, 16(7), 3248. https://doi.org/10.3390/en16073248
+ 511 [] Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. Proceedings of the 35th ICML, PMLR 80, 1861–1870.
+ 512 [] Homod, R. Z., Yaseen, Z. M., Hussein, A. K., Almusaed, A., Alawi, O. A., & Falah, M. W. (2022). Deep clustering of cooperative multi-agent reinforcement learning to optimize multi-chiller HVAC systems. Journal of Building Engineering, 60, 105689. https://doi.org/10.1016/j.jobe.2022.105689
+ 513 [] Hoummadi, M. A., Alami Aroussi, H., & Bossoufi, B. (2024). A review of constraints and adjustable parameters in microgrids for cost and CO₂ emission reduction. Heliyon, 10(5), e27489. https://doi.org/10.1016/j.heliyon.2024.e27489
+ 514 [] Iqbal, S., & Sha, F. (2019). Actor-attention-critic for multi-agent reinforcement learning. Proceedings of the 36th ICML, PMLR 97, 2961–2970.
+ 515 [] Kathirgamanathan, A., Mangina, E., & Finn, D. P. (2021). Development of a soft actor critic deep reinforcement learning approach for harnessing energy flexibility in a large office building. Energy and AI, 5, 100101. https://doi.org/10.1016/j.egyai.2021.100101
+ 516 [] Keren, S., Essayeh, C., Albrecht, S. V., & Morstyn, T. (2024). Multi-agent reinforcement learning for energy networks: Computational challenges, progress and open problems. arXiv:2404.15583. https://arxiv.org/abs/2404.15583
+ 517 [] Kuba, J. G., Chen, R., Wen, M., Wen, Y., Sun, F., Wang, J., & Yang, Y. (2021). Trust region policy optimisation in multi-agent reinforcement learning. arXiv:2109.11251. https://arxiv.org/abs/2109.11251
+ 518 [] Li, Y., He, S., Yang, Y., Shi, Y., & Zeng, Z. (2023). Federated multi-agent deep reinforcement learning via physics-informed reward for multi-microgrid energy management. IEEE Transactions on Neural Networks and Learning Systems, 35(3), 3919–3932. https://doi.org/10.1109/TNNLS.2022.3232630
+ 519 [] Lowe, R., Wu, Y., Tamar, A., Harb, J., Abbeel, P., & Mordatch, I. (2017). Multi-agent actor-critic for mixed cooperative-competitive environments. Advances in Neural Information Processing Systems, 30, 6382–6393.
+ 520 [] MINAM. (2019). INFOCARBONO — RAGEI 2019 Energía. Ministerio del Ambiente del Perú. https://infocarbono.minam.gob.pe/
+ 521 [] Myint, K., Deanseekeaw, A., Pahasa, J., Boonraksa, P., & Boonraksa, T. (2026). Multi-objective energy management optimization on grid-integrated microgrid using MADRL for enhanced stability in HRES and BESS. IEEE Access, 14, 1–15. https://doi.org/10.1109/ACCESS.2026.3668993
+ 522 [] Nweye, K., & Nagy, Z. (2024). Applications in CityLearn gym environment for multi-objective control benchmarking in grid-interactive buildings and districts. arXiv:2408.15170. https://arxiv.org/abs/2408.15170
+ 523 [] Nweye, K., Kaspar, K., Buscemi, G., Fonseca, T., & Nagy, Z. (2024). CityLearn v2: Energy-flexible, resilient, occupant-centric, and carbon-aware management of grid-interactive communities. Journal of Building Performance Simulation, 18(1), 1–21. https://doi.org/10.1080/19401493.2024.2418813
+ 524 [] Nweye, K., Sankaranarayanan, S., & Nagy, Z. (2023). MERLIN: Multi-agent offline and transfer learning for occupant-centric energy flexible operation of grid-interactive communities. Applied Energy, 346, 121323. https://doi.org/10.1016/j.apenergy.2023.121323
+ 525 [] Okoń, M. T. (2023). Uncovering sequential social dilemmas in multi-agent reinforcement learning: Challenges and strategies for local energy communities [Tesis de maestría, Delft University of Technology]. https://repository.tudelft.nl/record/uuid:23f1c267-e5f8-4086-917c-66951416ec3d
+ 526 [] Oliehoek, F. A., & Amato, C. (2016). A concise introduction to decentralized POMDPs. Springer. https://doi.org/10.1007/978-3-319-28929-8
+ 527 [] OSINERGMIN. (2024). Resolución de Consejo Directivo N.º 0024-2024-OS/CD. Tarifas de distribución eléctrica MT-3/MT-4 Electro Oriente S.A. Lima, Perú.
+ 528 [] Poco Aguilar, S. E. M. (2023). A multi-agent reinforcement learning (MARL) decision-support tool for energy-efficient incremental residential development [Tesis doctoral, University of Sheffield]. https://etheses.whiterose.ac.uk/id/eprint/34644/
+ 529 [] Rosero Bernal, D. G. (2024). Modelo de un sistema de administración de energía autónomo operado desde la nube para optimizar la gestión de sistemas energéticos con acceso limitado al suministro eléctrico interconectado [Tesis doctoral, Universidad Distrital Francisco José de Caldas]. Dialnet. https://dialnet.unirioja.es/servlet/tesis?codigo=347742
+ 530 [] Saberi, H., Zhang, C., & Dong, Z. (2024). A multi-agent deep constrained Q-learning method for smart building energy management under uncertainties. IEEE Transactions on Smart Grid, 15(5), 4693–4703. https://doi.org/10.1109/TSG.2024.3386896
+ 531 [] Schaap, L. (2024). Benchmarking reinforcement learning algorithms for demand response in urban energy systems [Tesis de maestría, Leiden University]. https://theses.liacs.nl/pdf/2023-2024-SchaapLLennard.pdf
+ 532 [] Song, D., Yan, L., Dai, X., Zhu, X., Hagenmeyer, V., & Matteson, D. S. (2025). Low-carbon energy management for networked multi-energy microgrids using multi-agent soft actor-critic. Sustainable Energy, Grids and Networks, 42, 101821. https://doi.org/10.1016/j.segan.2025.101821
+ 533 [] Sun, X., & Qiu, J. (2021). Two-stage volt/var control in active distribution networks with multi-agent deep reinforcement learning. IEEE Transactions on Smart Grid, 12(4), 2903–2912. https://doi.org/10.1109/TSG.2021.3052998
+ 534 [] Tarife, R. P., Nakanishi, Y., Chen, Y., Zhou, Y., & Estoperez, N. (2022). Optimization of hybrid renewable energy microgrid for rural agricultural area in Southern Philippines. Energies, 15(6), 2251. https://doi.org/10.3390/en15062251
+ 535 [] Vázquez-Canteli, J. R., Dey, S., Henze, G., & Nagy, Z. (2020). CityLearn: Standardizing research in multi-agent reinforcement learning for demand response and urban energy management. arXiv:2012.09861. https://arxiv.org/abs/2012.09861
+ 536 [] Weber, L., Bušić, A., & Zhu, J. (2024). Reinforcement learning based demand charge minimization using energy storage. arXiv:2402.07525. https://arxiv.org/abs/2402.07525
+ 537 [] Wilk, P., Wang, N., & Li, J. (2024). Multi-agent reinforcement learning for smart community energy management. Energies, 17(20), 5211. https://doi.org/10.3390/en17205211
+ 538 [] Zhang, B. (2024). Modelling and optimization of multi-energy system operation based on deep reinforcement learning [Tesis doctoral, Aalborg University]. https://doi.org/10.54337/aau763295893
+ 539 [] Zhang, J., Sang, L., Xu, Y., & Sun, H. (2024). Networked multiagent safe reinforcement learning for low-carbon demand management in distribution network. IEEE Transactions on Sustainable Energy, 15(3), 1234–1246. https://doi.org/10.1109/TSTE.2024.3355123
+ 540 [] Zhong, Y., Kuba, J. G., Feng, X., Hu, S., Ji, J., & Yang, Y. (2023). Heterogeneous-agent reinforcement learning. Journal of Machine Learning Research, 25. https://jmlr.org/papers/v25/23-0488.html

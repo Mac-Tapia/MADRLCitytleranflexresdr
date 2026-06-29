@@ -215,6 +215,61 @@ def test_happo_recovered_from_timeseries_global_step_with_rollout_threads(tmp_pa
     assert (data / "job_launcher_complete.json").is_file()
 
 
+def test_happo_fifty_episodes_at_all_done_boundary(tmp_path: Path):
+    """Real HAPPO tail: max global_step is target*8760-1, not target*8760."""
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    rollout_threads = 12
+    episode_time_steps = 8760
+    target = 50
+    last_episode = target - 1
+    max_gs = (target * episode_time_steps) - 1
+    import csv
+
+    rows = [
+        {
+            "episode": str(last_episode),
+            "episode_step": str(episode_time_steps - 1),
+            "global_step": str(max_gs),
+            "all_done": "True",
+        },
+    ]
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 49,
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "n_rollout_threads": rollout_threads,
+                    "run_completed_with_salvage": True,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
+    dec = preview_job_launcher_decision(
+        tmp_path,
+        algorithm="happo",
+        target_episodes=50,
+        episode_time_steps=episode_time_steps,
+        rollout_threads=rollout_threads,
+    )
+    assert dec["skip"] is True
+    assert dec["action"] == "skip"
+    assert "COMPLETO" in dec["status_line"]
+
+
 def test_happo_inflated_csv_resumes_from_global_step(tmp_path: Path):
     """CSV episode-index can claim 50 ep while global_step proves only 4 (rollout_threads=12)."""
     data = tmp_path / "data"
@@ -420,6 +475,8 @@ if __name__ == "__main__":
         test_salvage_results_json_not_complete(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_recovered_from_timeseries_global_step_with_rollout_threads(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_happo_fifty_episodes_at_all_done_boundary(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_inflated_csv_resumes_from_global_step(Path(td))
     with tempfile.TemporaryDirectory() as td:

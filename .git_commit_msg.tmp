@@ -1,3 +1,3 @@
-chore(submodule): bump CityLearn to launcher singleton lock fix
+chore(submodule): bump CityLearn HAPPO 49/50 completion fix
 
-Prevents a second Colab launcher from resetting in-progress MATD3 jobs to ep1.
+Fixes HAPPO stuck at ep 49/50 when training actually finished all 50 episodes.

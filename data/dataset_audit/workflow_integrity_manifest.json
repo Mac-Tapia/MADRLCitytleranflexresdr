@@ -17,7 +17,7 @@
   },
   "latest_output_pointer": {
     "present": true,
-    "value": "outputs/notebook_verify_dryrun",
+    "value": "outputs/_validate_two_phase_dryrun",
     "target_exists": true,
     "status_exists": true
   },

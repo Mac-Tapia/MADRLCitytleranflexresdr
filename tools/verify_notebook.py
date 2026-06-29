@@ -46,7 +46,7 @@ lang_ver = lang_info.get("version", "missing")
 check("language_info.version Colab/local", lang_ver in {"3.9.25", "3.11.13", "missing"}, f"actual={lang_ver!r}")
 kernelspec = nb.get("metadata", {}).get("kernelspec", {})
 check("kernelspec.language = python", kernelspec.get("language") == "python")
-check("61 celdas en el notebook", len(cells) == 61, f"actual={len(cells)}")
+check("68 celdas en el notebook", len(cells) == 68, f"actual={len(cells)}")
 
 dirty_code_cells = [
     (i, c.get("id"), c.get("execution_count"), len(c.get("outputs", [])))
@@ -58,8 +58,8 @@ check("Notebook limpio sin outputs ni execution_count", not dirty_code_cells, st
 
 # Critical notebook cells by stable id.
 cell3 = cell("con0verify")
-check("MIN_VRAM_GIB = 78.0", "MIN_VRAM_GIB = 78.0" in cell3)
-check("MIN_RAM_GIB = 120.0", "MIN_RAM_GIB" in cell3 and "120.0" in cell3)
+check("MIN_VRAM_GIB = 38.0 (config conservadora 6-jobs)", "MIN_VRAM_GIB = 38.0" in cell3)
+check("MIN_RAM_GIB = 64.0 (buffers replay CPU)", "MIN_RAM_GIB" in cell3 and "64.0" in cell3)
 check("Diagnostico A100 Standard vs High-RAM", "A100 *Standard*" in cell3)
 
 cell17 = cell("c06557c1")
@@ -108,7 +108,7 @@ check("Launcher args no incluyen --include-baselines", "include-baselines" not i
 
 cell38 = cell("3c0758f9")
 check("Dry-run usa --skip-completed", "'--dry-run', '--skip-completed'" in cell38)
-check("Dry-run espera exactamente 12 jobs", "len(status['jobs']) == 12" in cell38)
+check("Dry-run espera exactamente 12 jobs", "len(seen_outputs) == 12" in cell38)
 
 cell40 = cell("9a97f863")
 check("Entrenamiento maneja SIGINT", "import signal" in cell40 and "_graceful_stop" in cell40 and "SIGINT" in cell40)

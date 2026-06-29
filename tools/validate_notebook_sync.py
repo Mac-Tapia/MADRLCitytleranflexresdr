@@ -6,8 +6,9 @@ Checks (no network, no training):
   2. Every `_common.<name>` / `citylearn_v3_training_common.<name>` symbol referenced
      in the notebook actually exists in the module (catches the prior class of bug
      where a cell called a function that no longer existed).
-  3. The skip/resume preview is funneled through the single canonical function
-     `preview_job_launcher_decision` in cells 2.1b and 7.1 (no divergent ad-hoc logic).
+  3. The skip/resume preview is funneled through the single canonical helper
+     `build_jobs_resume_report` (which wraps `preview_job_launcher_decision`) in
+     cells 2.1b and 7.1 — no divergent ad-hoc loop duplicated across cells.
   4. No stale strings from the removed buggy branch remain in the notebook.
 """
 from __future__ import annotations
@@ -85,11 +86,15 @@ def main() -> int:
                 f"which does NOT exist in the module"
             )
 
-    # 3. Canonical preview function present in module + used by notebook.
-    if "preview_job_launcher_decision" not in common_symbols:
-        errors.append("[api] preview_job_launcher_decision missing from training_common")
-    if "preview_job_launcher_decision" not in full_src:
-        errors.append("[sync] notebook never calls preview_job_launcher_decision")
+    # 3. Canonical preview funnel present in module + used by notebook.
+    #    build_jobs_resume_report wraps preview_job_launcher_decision so the
+    #    12-job loop lives in ONE place (module), not copied across cells.
+    for required_symbol in ("preview_job_launcher_decision", "build_jobs_resume_report",
+                            "print_jobs_resume_report"):
+        if required_symbol not in common_symbols:
+            errors.append(f"[api] {required_symbol} missing from training_common")
+    if "build_jobs_resume_report" not in full_src:
+        errors.append("[sync] notebook never calls build_jobs_resume_report")
 
     # 4. Stale buggy strings must be gone.
     stale = [
@@ -107,7 +112,7 @@ def main() -> int:
                     f"[stale] cell id={cid} still contains '{needle}'"
                 )
 
-    # 5. Both 2.1b and 7.1 funnel through the canonical preview.
+    # 5. Both 2.1b and 7.1 funnel through the canonical shared helper.
     for marker, label in (("# ── 2.1b", "2.1b"), ("# ── 7.1", "7.1")):
         cell = next(
             (c for c in code_cells if "".join(c.get("source", [])).startswith(marker)),
@@ -117,8 +122,8 @@ def main() -> int:
             warnings.append(f"[locate] could not find cell {label}")
             continue
         src = "".join(cell.get("source", []))
-        if "preview_job_launcher_decision" not in src:
-            errors.append(f"[sync] cell {label} does not use preview_job_launcher_decision")
+        if "build_jobs_resume_report" not in src:
+            errors.append(f"[sync] cell {label} does not use build_jobs_resume_report")
 
     print(f"notebook: {NB_PATH}")
     print(f"code cells: {len(code_cells)}")

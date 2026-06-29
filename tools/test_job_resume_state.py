@@ -9,11 +9,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "CityLearn" / "scripts"))
 
 from citylearn_v3_training_common import (  # noqa: E402
+    build_jobs_resume_report,
     discover_job_resume_plan,
     infer_completed_episodes_from_live_progress,
     job_counts_as_launcher_complete,
     job_has_final_results,
     preview_job_launcher_decision,
+    resolve_job_run_dir,
 )
 
 
@@ -507,6 +509,59 @@ def test_happo_live_progress_episode_ahead_of_global_step(tmp_path: Path):
     assert plan["remaining_episodes"] == 46
 
 
+def test_build_jobs_resume_report_counts(tmp_path: Path):
+    """build_jobs_resume_report aggregates skip/resume/pending across the 12 jobs."""
+    import csv
+
+    # MASAC/E1 complete (50/50) -> skip.
+    masac = resolve_job_run_dir(tmp_path, "masac", "E1", 0)
+    (masac / "data").mkdir(parents=True, exist_ok=True)
+    (masac / "data" / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "MASAC",
+                "episodes_recorded": 50,
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    # HAPPO/E1 salvage at 4/50 -> resume.
+    happo = resolve_job_run_dir(tmp_path, "happo", "E1", 0)
+    (happo / "data").mkdir(parents=True, exist_ok=True)
+    ckpt = happo / "checkpoints" / "gym" / "run"
+    ckpt.mkdir(parents=True, exist_ok=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    with (happo / "data" / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=["episode", "episode_step", "global_step", "all_done"])
+        writer.writeheader()
+        writer.writerow(
+            {"episode": "49", "episode_step": "0", "global_step": str(4 * 8760), "all_done": "True"}
+        )
+    (happo / "data" / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "episodes_recorded": 4,
+                "hyperparameters": {"target_episodes": 50, "episodes": 50, "n_rollout_threads": 12},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    report = build_jobs_resume_report(
+        tmp_path, target_episodes=50, episode_time_steps=8760, happo_rollout_threads=12
+    )
+    assert len(report["jobs"]) == 12
+    assert report["completed"] == 1
+    assert report["resumable"] == 1
+    assert report["pending"] == 10
+    assert report["episodes_done"] == 50 + 4
+    assert report["episodes_target"] == 12 * 50
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
@@ -542,4 +597,6 @@ if __name__ == "__main__":
         test_happo_stale_live_progress_does_not_inflate_resume(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_live_progress_episode_ahead_of_global_step(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_build_jobs_resume_report_counts(Path(td))
     print("OK: test_job_resume_state")

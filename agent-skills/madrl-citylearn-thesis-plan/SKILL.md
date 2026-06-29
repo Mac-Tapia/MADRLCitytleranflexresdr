@@ -7,6 +7,8 @@ description: Project-local workflow for creating the professional master's thesi
 
 Use this project-local skill only inside this repository to create or update the **Plan de Tesis de Maestría de Especialización o Profesionalizante** under **Guía N. 01 Metodológica**, section 5.1.
 
+**Coherencia vertical obligatoria:** el plan debe ser coherente con el informe final de tesis doctoral en `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` y con `docs/tesis_capitulos/`. Los problemas (PG/PE), objetivos (OG/OE), hipótesis (HG/HE), diseño factorial 4×3, operacionalización VI/VD y escenarios E1/E2/E3 deben coincidir con ese documento.
+
 Thesis reference title:
 
 > "Multi-Agente de Aprendizaje por Refuerzo Profundo para la Gestión Coordinada de Flexibilidad Energética, Emisiones de Carbono y Costos Energéticos en Comunidades Inteligentes".
@@ -52,8 +54,8 @@ Module B must not be drafted in isolation. It must use the bibliographic matrix,
 3. Use [guide-01-plan-structure.md](references/guide-01-plan-structure.md) for the exact Guide N. 01 thesis-plan structure.
 4. Use [methodological-design.md](references/methodological-design.md) for Chapter IV, variables, sample, techniques, instruments, and study phases.
 5. Use [administration-and-quality.md](references/administration-and-quality.md) for Chapter V, appendices, APA control, and final quality checklist.
-6. Use project evidence when available: `README.md`, `ESTRATEGIA_3PILARES_MADRL.md`, `docs/`, `CityLearn/configs/`, `CityLearn/scripts/`, validation outputs, and training outputs. Documentos de justificación creados en 2026-06-12:
-   - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` — justificación con 12 referencias APA de todos los parámetros numéricos de `CityLearnV3MADRLRewardFunction` y reconciliación `unified_comparable_v3` vs. perfiles diferenciados §4.11.3.
+6. Use project evidence when available: `README.md`, `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`, `docs/tesis_capitulos/`, `ESTRATEGIA_3PILARES_MADRL.md`, `docs/`, `CityLearn/configs/`, `CityLearn/scripts/`, validation outputs, and training outputs. Documentos de justificación:
+   - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` — justificación con 12 referencias APA de `CityLearnV3MADRLRewardFunction` y perfil `unified_comparable_v4`.
    - `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` — justificación con 14 referencias APA de los 3 escenarios E1/E2/E3, independencia semántica del entrenamiento paralelo por escenario, política de VRAM.
 7. Use `scripts/create_plan_workbook.py` to create the Module A workbook template.
 8. Use `scripts/create_plan_docx_skeleton.py` to create a DOCX skeleton for the Guide N. 01 plan.
@@ -86,9 +88,29 @@ Module B must not be drafted in isolation. It must use the bibliographic matrix,
 
 ---
 
+## Problem, objective, and hypothesis block (canonical — from doctoral thesis)
+
+Use these exact formulations in Chapters I and II of the plan. They must match `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`.
+
+**PG:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto diferenciado sobre la gestión coordinada de flexibilidad, CO₂ y costos (VD), y cuál algoritmo genera el mayor efecto?
+
+**PE.1–PE.3:** efecto sobre D-VD.1 flexibilidad, D-VD.2 CO₂, D-VD.3 costos.
+
+**OG:** Determinar el efecto del algoritmo MADRL (VI) sobre la gestión coordinada (VD) e identificar el algoritmo de mayor efecto coordinado.
+
+**OE.1–OE.3:** efecto por dimensión + identificación del algoritmo de mayor efecto.
+
+**HG:** efecto significativo; MATD3 mayor efecto coordinado (hipótesis direccional, contrastada con Kruskal-Wallis y Wilcoxon).
+
+**HE.1–HE.3:** efecto significativo por dimensión; HE.2 y HE.3 anticipan MATD3; HE.1 anticipa menor variabilidad en KPI pico/rampa.
+
+**Diseño experimental:** factorial 4×3 (12 tratamientos); VI = algoritmo × escenario E1/E2/E3; VD = 54 KPI oficiales; control = dataset Iquitos + recompensa `unified_comparable_v4` + semilla.
+
+---
+
 ## MÓDULO C — DATASET `citylearn_iquitos_2023_2025`
 
-This module must be integrated into Chapter IV of the thesis plan as Section 4.9 and into dedicated annexes. It documents the complete dataset construction pipeline developed in the project.
+This module must be integrated into Chapter IV of the thesis plan as Section 4.9 and into dedicated annexes.
 
 ### C.1 — Los 17 Edificios del SEAI Iquitos
 
@@ -312,7 +334,7 @@ cost_component = −tanh(max(import_i × (0.25 + price_norm), 0) / 20)
 team_reward    = (1/N) Σᵢ reward_i
 mixed_reward_i = (1 − r_team) × reward_i + r_team × team_reward
 ```
-Perfil activo `unified_comparable_v3` (todos los algoritmos): r_team=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. [Nota de reconciliación: el plan §4.11.3 documentó team_ratio diferenciado por algoritmo (HAPPO=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80); la implementación vigente unifica en 0.70 para garantizar comparabilidad estadística. v3 corrige bug SOC y añade V2G bidireccional. Los perfiles diferenciados se preservan como ablación futura. Ver `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`.]
+Perfil activo `unified_comparable_v4` (todos los algoritmos): r_team=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, bess_cycle_weight=0.10, ev_urgency_hours=8.0, reward_scale=1.00. Ver `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`.
 
 ---
 
@@ -333,7 +355,7 @@ El experimento comparativo se estructura en **3 escenarios evaluativos** (E1, E2
 
 ### E.2 — Perfiles de Recompensa por Algoritmo MADRL
 
-**Perfil activo: `unified_comparable_v3` (todos los algoritmos usan los mismos valores):**
+**Perfil activo: `unified_comparable_v4` (todos los algoritmos usan los mismos valores):**
 
 | Algoritmo | Tipo | team_reward_ratio | w_peak | w_ramp | ev_weight | reward_scale |
 |-----------|------|:-----------------:|:------:|:------:|:---------:|:------------:|
@@ -342,7 +364,7 @@ El experimento comparativo se estructura en **3 escenarios evaluativos** (E1, E2
 | MATD3 | Off-policy determinístico | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
 | MAAC | Off-policy con atención | **0.70** | **0.45** | **0.35** | **0.25** | **1.00** |
 
-> **Nota de reconciliación:** Los perfiles diferenciados del plan §4.11.3 (HAPPO team_ratio=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80; reward_scale MASAC=0.80, MATD3=1.10) fueron unificados en `unified_comparable_v3` para garantizar comparabilidad estadística: los 4 backends se evalúan bajo función objetivo idéntica, siguiendo el principio de equidad experimental (Roijers et al., 2013; Felten et al., 2024). v3 añade: bug SOC corregido (signo invertido en penalización crítica), ev_weight 0.12→0.25, `_ev_service_constraint_term` (urgencia por salida) y V2G habilitado para camionetas (31 chargers bidireccionales 7.4 kW). Los perfiles diferenciados se preservan como ablación futura en `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` (12 referencias APA).
+> **Nota:** Perfil `unified_comparable_v4` unifica los 4 backends bajo función objetivo idéntica (Roijers et al., 2013; Felten et al., 2024). v4 añade `bess_cycle_weight=0.10`, `ev_urgency_hours=8.0`, `ev_departure_deficit_weight=0.70`, `ev_idle_deficit_weight=0.25`. Justificación: `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`.
 
 ### E.3 — Matriz de 12 Corridas Oficiales
 
@@ -388,7 +410,7 @@ A nivel de distrito, la coordinación opera solo durante el **entrenamiento**:
 hidden_sizes = [256, 256]
 actor_lr = 3×10⁻⁴
 critic_lr = 1×10⁻³
-gamma = 0.99
+gamma = 0.9999
 batch_size = 256
 replay_buffer = 1,000,000
 tau = 0.005

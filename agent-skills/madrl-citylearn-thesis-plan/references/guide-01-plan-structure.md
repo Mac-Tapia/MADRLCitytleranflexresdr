@@ -74,17 +74,17 @@ Formulate the problem from the diagnosis and the identified gap: **no comparativ
 
 Use a question that integrates coordinated MADRL performance across the three dimensions in smart communities:
 
-> ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO2 y los costos energéticos en comunidades inteligentes?
+> ¿En qué medida el algoritmo Multi-Agente de Aprendizaje por Refuerzo Profundo aplicado a una comunidad inteligente (variable independiente) produce un efecto diferenciado sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (variable dependiente), y cuál de los algoritmos comparados genera el mayor efecto?
 
 ### 1.2.2.2 Formulación de los problemas específicos
 
 Formulate three specific problems, each aligned to one specific objective, one performance dimension, and one evaluation axis:
 
-> **PE.1:** ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza la flexibilidad energética en comunidades inteligentes?
+> **PE.1:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de flexibilidad energética de la comunidad (D-VD.1), y cuál algoritmo genera el mayor efecto?
 >
-> **PE.2:** ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que reduce las emisiones de CO2 en comunidades inteligentes?
+> **PE.2:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de emisiones de CO₂ de la comunidad (D-VD.2), y cuál algoritmo genera el mayor efecto?
 >
-> **PE.3:** ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza los costos energéticos en comunidades inteligentes?
+> **PE.3:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de costos energéticos de la comunidad (D-VD.3), y cuál algoritmo genera el mayor efecto?
 
 Each specific problem must be traceable to: (a) the corresponding dimension of the diagnosis, (b) its specific objective, (c) its KPI set, and (d) its comparative evaluation methodology.
 
@@ -117,21 +117,33 @@ Specify:
 
 ### 2.1 Objetivo general
 
-Use:
+Use (canonical doctoral thesis wording):
 
-> **O.G.** — Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO2 y los costos energéticos en comunidades inteligentes.
+> **O.G.** — Determinar el efecto del algoritmo MADRL aplicado a una comunidad inteligente (VI) sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (VD), e identificar el algoritmo que produce el mayor efecto coordinado.
 
 ### 2.2 Objetivos específicos
 
-Include exactly three specific objectives, each aligned to one problem, one evaluation axis, and one set of KPIs:
+Include exactly three specific objectives:
 
-> **OE.1** — Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza la flexibilidad energética en comunidades inteligentes.
+> **OE.1** — Determinar el efecto del algoritmo MADRL (VI) sobre la flexibilidad energética (D-VD.1) e identificar el algoritmo de mayor efecto en esta dimensión.
 >
-> **OE.2** — Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que reduce las emisiones de CO2 en comunidades inteligentes.
+> **OE.2** — Determinar el efecto del algoritmo MADRL (VI) sobre las emisiones de CO₂ (D-VD.2) e identificar el algoritmo de mayor efecto en esta dimensión.
 >
-> **OE.3** — Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza los costos energéticos en comunidades inteligentes.
+> **OE.3** — Determinar el efecto del algoritmo MADRL (VI) sobre los costos energéticos (D-VD.3) e identificar el algoritmo de mayor efecto en esta dimensión.
 
-**Vertical coherence rule:** Each specific objective must respond directly to its corresponding specific problem, operationalize through its KPI axis, and be evaluated through the comparative methodology of CityLearn v3 propuesto with HAPPO, MASAC, MATD3, and MAAC under Dec-POMDP and CTDE.
+### 2.3 Hipótesis (add to Chapter II or cross-reference Chapter I)
+
+Include directional hypotheses aligned with `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`:
+
+> **HG** — La aplicación del algoritmo MADRL (VI) produce un efecto estadísticamente significativo sobre la gestión coordinada (VD); MATD3 genera el mayor efecto coordinado.
+>
+> **HE.1** — Efecto significativo sobre flexibilidad (D-VD.1); mayor efecto = menor variabilidad en KPI pico/rampa.
+>
+> **HE.2** — Efecto significativo sobre CO₂ (D-VD.2); mayor efecto = MATD3.
+>
+> **HE.3** — Efecto significativo sobre costos (D-VD.3); mayor efecto = MATD3.
+
+Contrast with Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon (α = 0,05). Reference Colas et al. (2019) and Agarwal et al. (2021).
 
 ## CAPÍTULO III. MARCO TEÓRICO
 

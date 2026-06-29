@@ -1,4 +1,4 @@
 display_name: MADRL CityLearn Thesis
-short_description: Tesis integrada MADRL CityLearn
-default_prompt: Redacta y valida el informe de tesis profesionalizante usando la matriz bibliografica, APA vigente, CityLearn v2, CityLearn v3 propuesto, MADRL, Dec-POMDP, CTDE y SEAI Iquitos.
+short_description: Tesis doctoral integrada MADRL CityLearn
+default_prompt: Redacta o valida el informe final de tesis doctoral siguiendo docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx (6 capitulos, diseno experimental causa-efecto, hipotesis HG/HE, 12 tratamientos, 54 KPI, perfil unified_comparable_v4). Usa matriz bibliografica, APA 7, CityLearn v2, CityLearn v3 propuesto, MADRL, Dec-POMDP, CTDE y SEAI Iquitos. No inventes resultados; marca pendientes de la corrida canonica 50 ep.
 

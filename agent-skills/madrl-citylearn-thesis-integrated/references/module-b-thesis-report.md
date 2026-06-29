@@ -1,319 +1,337 @@
-# Module B: Thesis Report under Guide N. 02 Section 5.1
+# Module B: Informe final de tesis doctoral
 
 Use Module A outputs as mandatory input. Do not draft the report in isolation.
 
+**Documento canónico de referencia:** `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
+
+**Borradores por capítulo (Markdown):** `docs/tesis_capitulos/` (`Capitulo_1_Introduccion.md` … `Capitulo_6_Conclusiones.md`, `Referencias_APA.md`, `00_INDICE.md`).
+
+The final thesis report must follow the **six-chapter doctoral structure** defined in the canonical DOCX above. Guide N. 02 is **not** the governing structure for this project; use it only if the institution explicitly requires it in a separate submission.
+
 ## Thesis Title (official)
 
-> MULTI-AGENTE DE APRENDIZAJE POR REFUERZO PROFUNDO PARA LA GESTIÓN COORDINADA DE FLEXIBILIDAD ENERGÉTICA, EMISIONES DE CARBONO Y COSTOS ENERGÉTICOS EN COMUNIDADES INTELIGENTES
+> MULTI-AGENTE DE APRENDIZAJE POR REFUERZO PROFUNDO PARA LA GESTIÓN COORDINADA DE LA FLEXIBILIDAD ENERGÉTICA, LAS EMISIONES DE CARBONO Y LOS COSTOS ENERGÉTICOS EN COMUNIDADES INTELIGENTES
 
-## Objective Block (use exactly as stated)
+**Subtítulo de caso de estudio (carátula):**
 
-**O.G.** — Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO2 y los costos energéticos en comunidades inteligentes.
+> Caso de estudio experimental: Sistema Eléctrico Aislado de Iquitos (SEAI) — 17 edificios institucionales y comerciales reales, Loreto, Perú (2023–2025)
 
-**OE.1** — Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza la flexibilidad energética en comunidades inteligentes.
+## Carátula — datos obligatorios
 
-**OE.2** — Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que reduce las emisiones de CO2 en comunidades inteligentes.
+- Universidad: Universidad Nacional de Ingeniería (UNI)
+- Unidad: Escuela de Posgrado
+- Programa: Doctorado en Ingeniería — Inteligencia Artificial aplicada a Sistemas Eléctricos Inteligentes
+- Grado académico: Doctor en Ingeniería
+- Autor: Mac Tapia
+- Asesor: `[por definir]` hasta confirmación institucional
+- Lugar: Lima — Iquitos, Perú
+- Año: 2026
 
-**OE.3** — Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza los costos energéticos en comunidades inteligentes.
+## Epistemological frame — diseño experimental causa-efecto
 
-## Mandatory Structure
+The thesis is framed as a **simulation-based cause-and-effect experiment**:
 
-Preserve this structure exactly for the final thesis report. The Guide N. 02 supplies the report structure only. Do not replace it with an engineering report, experiment log, dataset audit, training dashboard, or statistical appendix. All data, metrics, tables, conclusions, and discussion must come only from the current active project evidence in this repository and must be placed under the appropriate Guide N. 02 section. Do not use non-current training outputs as source data.
+- **Variable independiente (VI):** algoritmo MADRL aplicado a la comunidad, manipulado en dos dimensiones:
+  - **D-VI.1 Tipo de algoritmo:** HAPPO, MASAC, MATD3, MAAC
+  - **D-VI.2 Escenario de ponderación:** E1, E2, E3
+- **Variable dependiente (VD):** desempeño coordinado de la comunidad, medido en tres dimensiones con **54 KPI oficiales** de CityLearn v2:
+  - **D-VD.1 Flexibilidad:** `peak_average`, `ramping_average`, `one_minus_load_factor_average`, autoconsumo, autosuficiencia
+  - **D-VD.2 Emisiones CO₂:** `carbon_emissions_total`, `carbon_emissions_delta`
+  - **D-VD.3 Costos:** `electricity_cost_total`, `electricity_cost_delta`, `price_signal_deviation`
+- **Variables de control (constantes):** dataset `citylearn_iquitos_2023_2025`, clima, intensidad de carbono, tarifa TOU, perfil de recompensa `unified_comparable_v4`, semilla
 
-CARÁTULA
+**Diseño factorial completo:** 4 × 3 = **12 tratamientos** (unidades experimentales).
 
-DATOS GENERALES
+## Problem, objective, and hypothesis block (use exactly)
 
-- Dedicatoria
-- Agradecimientos
-- Copia de documentos
-- Índice de contenidos
-- Lista de tablas, ilustraciones y cuadros
-- Resumen - Abstract
-- Introducción
+**Problema general (PG):**
 
-CAPÍTULO I. PLANTEAMIENTO DEL PROBLEMA
+> ¿En qué medida el algoritmo Multi-Agente de Aprendizaje por Refuerzo Profundo aplicado a una comunidad inteligente (variable independiente) produce un efecto diferenciado sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (variable dependiente), y cuál de los algoritmos comparados genera el mayor efecto?
 
-1.1 Diagnóstico
+**Problemas específicos:**
 
-1.2 Identificación y descripción del problema de estudio
+> **PE.1:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de flexibilidad energética de la comunidad (D-VD.1), y cuál algoritmo genera el mayor efecto?
+>
+> **PE.2:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de emisiones de CO₂ de la comunidad (D-VD.2), y cuál algoritmo genera el mayor efecto?
+>
+> **PE.3:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de costos energéticos de la comunidad (D-VD.3), y cuál algoritmo genera el mayor efecto?
 
-1.3 Formulación del problema
+**Objetivo general (OG):**
 
-1.3.1 Formulación del problema general
+> Determinar el efecto del algoritmo MADRL aplicado a una comunidad inteligente (VI) sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (VD), e identificar el algoritmo que produce el mayor efecto coordinado.
 
-1.3.2 Formulación de los problemas específicos
+**Objetivos específicos:**
 
-1.4 Objetivos
+> **OE.1:** Determinar el efecto del algoritmo MADRL (VI) sobre la flexibilidad energética (D-VD.1) e identificar el algoritmo de mayor efecto en esta dimensión.
+>
+> **OE.2:** Determinar el efecto del algoritmo MADRL (VI) sobre las emisiones de CO₂ (D-VD.2) e identificar el algoritmo de mayor efecto en esta dimensión.
+>
+> **OE.3:** Determinar el efecto del algoritmo MADRL (VI) sobre los costos energéticos (D-VD.3) e identificar el algoritmo de mayor efecto en esta dimensión.
 
-1.4.1 Objetivo general
+**Hipótesis general (HG):**
 
-1.4.2 Objetivos específicos
+> La aplicación del algoritmo MADRL a la comunidad inteligente (VI) produce un efecto estadísticamente significativo y diferenciado sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (VD), siendo MATD3 el algoritmo que genera el mayor efecto coordinado.
 
-1.5 Justificación del estudio
+**Hipótesis específicas:**
 
-1.6 Alcance del estudio
+> **HE.1:** El algoritmo MADRL (VI) produce un efecto significativo sobre la flexibilidad energética (D-VD.1); el mayor efecto corresponde al algoritmo con menor variabilidad en los KPI de pico y rampa.
+>
+> **HE.2:** El algoritmo MADRL (VI) produce un efecto significativo sobre las emisiones de CO₂ (D-VD.2); el mayor efecto corresponde a MATD3.
+>
+> **HE.3:** El algoritmo MADRL (VI) produce un efecto significativo sobre los costos energéticos (D-VD.3); el mayor efecto corresponde a MATD3.
 
-CAPÍTULO II. MARCO TEÓRICO
+Each specific hypothesis has a corresponding null hypothesis (no significant differences between algorithm levels), tested with Kruskal-Wallis and pair-wise Mann-Whitney U / Wilcoxon (Colas et al., 2019; Agarwal et al., 2021).
 
-2.1 Antecedentes
+## Mandatory six-chapter structure
 
-2.2 Bases teóricas
+Preserve this structure exactly. Do not replace it with Guide N. 02, an engineering log, or a dataset audit.
 
-2.3 Definición de términos
+### Front matter
 
-CAPÍTULO III. DESARROLLO DEL TRABAJO DE TESIS
+- Carátula (datos anteriores)
+- Índice
+- Resumen (español)
+- Abstract (inglés)
 
-3.1 Presentación de la propuesta de solución
+### Capítulo 1. Introducción
 
-3.2 Desarrollo de la propuesta de solución
+**1.1 Planteamiento y formulación del problema**
 
-3.3 Análisis de los datos y resultados
+- Contexto SEAI Iquitos: sistema aislado diésel, CI base 0,790 kgCO₂/kWh, TOU 0,26 / 0,38 USD/kWh (18:00–22:59)
+- Brecha metodológica: ausencia de benchmark unificado HAPPO/MASAC/MATD3/MAAC bajo Dec-POMDP/CTDE en tres ejes
+- Modelo causal Figura 1.1: VI fija y manipulada; VD varía y se mide
+- PG, PE.1–PE.3
 
-3.4 Discusión e interpretación de los resultados
+**1.2 Objetivos**
 
-3.5 Estimación del impacto de la solución
+- OG, OE.1–OE.3 con coherencia vertical PG→OG→HG
 
-CAPÍTULO IV. CONCLUSIONES Y RECOMENDACIONES
+**1.3 Hipótesis**
 
-4.1 Conclusiones
+- HG, HE.1–HE.3 y criterio inferencial (α = 0,05)
 
-4.2 Recomendaciones
+**1.4 Matriz de consistencia y operacionalización de variables**
 
-REFERENCIAS
+- Tabla 1.1: problema → objetivo → hipótesis → dimensión VD
+- Tabla 1.2: VI (D-VI.1, D-VI.2), VD (D-VD.1–3), variables de control
 
-ANEXOS
+**1.5 Justificación**
 
-## Content Requirements
+- Técnica, ambiental, económica y metodológica (diseño factorial, operacionalización causal, protocolo estadístico reproducible)
 
-### Carátula
+**1.6 Alcances y limitaciones**
 
-Include: university (Universidad Nacional de Ingenieria - UNI), graduate school/faculty, full thesis title, academic degree sought (Maestría de Especialización o Profesionalizante), student name, advisor name, Lima, Peru, year.
+- Cuantitativa, aplicada, explicativa; 12 tratamientos; 54 KPI; SEAI Iquitos
+- Limitaciones: sin red física, CityLearn v3 propuesto = extensión experimental, corrida de referencia 5 episodios / 1 semilla
 
-### Resumen - Abstract
+### Capítulo 2. Marco teórico
 
-Write in Spanish and English. Include:
+**2.1 Antecedentes de la investigación** (literatura últimos 5 años; tesis doctorales, maestría y artículos arbitrados)
 
-- Context: smart communities (comunidades inteligentes) with PV, BESS, and EV charging.
-- Problem: absence of determination of the best MADRL for coordinated management of energy flexibility, CO2 emissions, and energy costs.
-- General objective: determine the best MADRL that coordinately manages the three dimensions.
-- Methodology: CityLearn v2 + CityLearn v3 propuesto, Dec-POMDP, CTDE, comparative evaluation of HAPPO/MASAC/MATD3/MAAC, Optuna.
-- Expected results or obtained results (if available): ranking of algorithms per axis (OE.1, OE.2, OE.3) and overall (O.G.).
-- Main conclusions.
-- Keywords (Spanish and English): MADRL, CityLearn, Dec-POMDP, CTDE, flexibilidad energética, emisiones CO2, costos energéticos, comunidades inteligentes.
+- 2.1.1 Flexibilidad energética con MADRL (D-VD.1): CityLearn v2, MERLIN, Charbonnier (2024), Bušić et al. (2023)
+- 2.1.2 Emisiones de carbono con MADRL (D-VD.2): Zhang et al. (2024), Song et al. (2025), Keren et al. (2024)
+- 2.1.3 Costos energéticos con MADRL (D-VD.3): Amer et al. (2023), Weber et al. (2024), Schaap (2024)
+- 2.1.4 Marco técnico MADRL y sistemas aislados: CTDE, Dec-POMDP, HAPPO/MASAC/MATD3/MAAC, Domínguez Barbero (2026), Rosero Bernal (2024)
 
-### Introducción
+**2.2 Bases teóricas**
 
-Develop: context of smart communities and distributed energy resources; challenge of coordinating energy flexibility, CO2 emissions reduction, and energy cost optimization; limitations of single-agent DRL; need for cooperative MADRL under Dec-POMDP/CTDE; CityLearn v2 as base environment; CityLearn v3 propuesto as experimental extension; comparative evaluation of HAPPO, MASAC, MATD3, MAAC; MARLlib as technical reference; Optuna for hyperparameter tuning; chapter synthesis (I: problem, II: theory, III: development and results, IV: conclusions).
+- 2.2.1 Flexibilidad energética
+- 2.2.2 Emisiones de carbono (CI dinámica SEAI)
+- 2.2.3 Costos energéticos (TOU)
+- 2.2.4 Dec-POMDP, CTDE y los cuatro algoritmos — Tabla 2.1
 
-### Chapter I — Planteamiento del problema
+**2.3 Definición de términos**
 
-**1.1 Diagnóstico:** Three-dimension diagnosis aligned to OE.1/OE.2/OE.3:
+- comunidad inteligente, DER, KPI, tratamiento, MADRL, CityLearn v2, CityLearn v3 propuesto
 
-- Flexibilidad energética: uncoordinated DER in smart communities, single-agent DRL limitations, gap in determining best MADRL for flexibility.
-- Emisiones de CO2: variable carbon intensity, lack of carbon-aware MADRL coordination, gap in determining best MADRL for CO2 reduction.
-- Costos energéticos: dynamic pricing, uncoordinated TOU response, gap in determining best MADRL for cost optimization.
-- Methodological gap: no unified benchmark of HAPPO/MASAC/MATD3/MAAC under identical Dec-POMDP/CTDE conditions across the three axes.
+### Capítulo 3. Metodología
 
-**1.2 Identificación y descripción del problema:** Main problem = absence of determination of the best MADRL for coordinated management. Symptoms, technical/methodological causes, operational/environmental/economic consequences, independent/dependent variables, spatial scope (smart communities via CityLearn v2 datasets), temporal scope (2015–2026).
+**3.1 Tipo, enfoque y nivel de investigación**
 
-**1.3.1 Problema general:**
-> ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO2 y los costos energéticos en comunidades inteligentes?
+- Cuantitativa, aplicada, explicativa; diseño experimental de simulación; validez interna por control de variables
 
-**1.3.2 Problemas específicos:**
-> PE.1: ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza la flexibilidad energética en comunidades inteligentes?
-> PE.2: ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que reduce las emisiones de CO2 en comunidades inteligentes?
-> PE.3: ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza los costos energéticos en comunidades inteligentes?
+**3.2 Diseño experimental**
 
-**1.4 Objectives:** Use exact text from the Objective Block above.
+- Factorial 4×3; Figura 3.1; Tabla 3.1 escenarios E1/E2/E3 con pesos [flex, CO₂, costo]
 
-**1.5 Justificación:** Technical, environmental, economic, methodological, scientific, and social dimensions all articulated with the three-axis (OE.1/OE.2/OE.3) structure.
+| Escenario | Pesos | Objetivo dominante | Asociado a |
+|-----------|-------|-------------------|------------|
+| E1 | [0,70; 0,15; 0,15] | Flexibilidad | OE.1 / HE.1 |
+| E2 | [0,15; 0,70; 0,15] | Emisiones CO₂ | OE.2 / HE.2 |
+| E3 | [0,25; 0,15; 0,60] | Costos | OE.3 / HE.3 |
 
-**1.6 Alcance:** Thematic (comparative HAPPO/MASAC/MATD3/MAAC on three KPI axes), spatial (CityLearn v2 smart community datasets), temporal (2015–2026), methodological (quantitative, comparative, simulation-based), computational (Python/PyTorch/CityLearn v2/CityLearn v3 propuesto/Optuna), limits and exclusions.
+**3.3 Unidad de análisis, población y muestra**
 
-### Chapter II — Marco teórico
+- Unidad: tratamiento (algoritmo × escenario)
+- Muestra: diseño factorial completo (12 tratamientos)
 
-**2.1 Antecedentes:** Use Module A matrix. Organize antecedents by four axes:
+**3.4 Datos: dataset `citylearn_iquitos_2023_2025`**
 
-- Eje 1 (OE.1): MADRL for energy flexibility, demand response, peak reduction, CityLearn v2, BESS/PV/EV.
-- Eje 2 (OE.2): MADRL for CO2 emission reduction, carbon-aware demand response, carbon-intensity-weighted KPIs.
-- Eje 3 (OE.3): MADRL for energy cost optimization, TOU/RTP response, cost KPIs.
-- Eje transversal: Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC, MARLlib, Optuna, cooperative MADRL benchmarks.
+- Pipeline 10 etapas; Figura 3.2; Tabla 3.2 (17 edificios, 26 304 h, 222 CSV, PV 48 790,9 kWp, BESS 26 266 kWh / 6 648 kW, 185 tomas EV, CI 0,672–0,790, TOU 0,26/0,38)
 
-Each antecedent must include: author-year, objective, methodology, dataset/environment, algorithm, main results, contribution to this thesis, APA citation.
+**3.5 Variables y operacionalización**
 
-**2.2 Bases teóricas:** Four axes matching antecedents. All claims must carry APA citations.
+- Referencia Tabla 1.2; 54 KPI oficiales
 
-**2.3 Definición de términos:** MADRL, DRL, agente, entorno, Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC, MARLlib, Optuna, CityLearn v2, CityLearn v3 propuesto, comunidad inteligente, flexibilidad energética, intensidad de carbono, costos energéticos, BESS, PV, EV, KPI.
+**3.6 Técnicas e instrumentos de recolección**
 
-### Chapter III — Desarrollo del trabajo de tesis
+- Artefactos por corrida: `results.json`, `training_summary.json`, `timeseries.csv`, `trace.csv`, checkpoints, figuras
 
-**3.1 Presentación de la propuesta de solución:** Present CityLearn v3 propuesto as the experimental extension of CityLearn v2 that implements the cooperative MADRL layer. Include architecture diagram reference (docs/ARQUITECTURA_CITYLEARN_V3_MADRL.png). Describe the proposed solution as the comparative evaluation of HAPPO, MASAC, MATD3, and MAAC under unified Dec-POMDP/CTDE conditions on the three KPI axes.
+**3.7 Técnicas de análisis estadístico**
 
-**3.2 Desarrollo de la propuesta de solución:** Develop in subsections:
+- Descriptivo: media, desviación estándar, extremos, CV por tratamiento
+- Inferencial (α = 0,05): Shapiro-Wilk → Kruskal-Wallis → Mann-Whitney U → Wilcoxon (Colas et al., 2019; Agarwal et al., 2021; Demšar, 2006)
+- KPIs expresados como **razón al baseline CityLearn v2** (1,0 = baseline; menor = mejor)
 
-- 3.2.1 Arquitectura CityLearn v3 propuesta: entorno base `CityLearnEnv` (v2) extendido con 6 clases en `CityLearn/citylearn/v3/`: `CityLearnDecPOMDPEnv` (base Dec-POMDP), `CityLearnHARLEnv` (HAPPO/HARL), `CityLearnSMACDiscreteEnv` (MASAC), `CityLearnOffPolicyVecEnv` (MATD3), `CityLearnMAACVecEnv` (MAAC), `CityLearnV3MADRLRewardFunction` (recompensa multiobjetivo cooperativa). Adaptador común: `CityLearn/scripts/citylearn_v3_training_common.py`. Lanzador oficial: `CityLearn/scripts/launch_citylearn_v3_official_training.ps1`.
-- 3.2.2 Formulación Dec-POMDP: ℳ = ⟨𝒮, 𝒜₁…𝒜_N, 𝒯, R, 𝒪₁…𝒪_N, Ω, γ, T⟩ donde: N = 17 agentes (un edificio SEAI Iquitos cada uno); 𝒮 corresponde al estado global CTDE construido desde las 17 observaciones locales normalizadas (estado compartido HAPPO/E1 vigente: 1 907 dimensiones; observaciones locales validadas: 54–327 dimensiones, con padding de backend hasta 330 cuando corresponde); 𝒜ᵢ corresponde al vector de acciones por edificio sobre BESS, EV y cargas controladas (espacio continuo HAPPO/E1 acolchado a 44 acciones por agente). γ = 0.99, T = 8 760 pasos (1 año horario). Condición Dec-POMDP: cada agente solo observa su propia oᵢ. CTDE: crítico centralizado Qᵢ(s, a₁…a₁₇) accede a s durante entrenamiento; política πᵢ(aᵢ|oᵢ) ejecuta descentralizada.
-- 3.2.3 Función de recompensa multiobjetivo (`CityLearnV3MADRLRewardFunction`): `reward_i(t) = reward_scale × [w_flex·flex_component_i(t) + w_carbon·carbon_component_i(t) + w_cost·cost_component_i(t)]`. Recompensa cooperativa: `team_reward = (1/N) Σᵢ reward_i`. Recompensa mixta: `mixed_reward_i = (1−r_team)·reward_i + r_team·team_reward`. Pesos por escenario: E1 [0.700, 0.150, 0.150] → OE.1 Flexibilidad; E2 [0.150, 0.700, 0.150] → OE.2 Emisiones CO2; E3 [0.250, 0.150, 0.600] → OE.3 Costos. **Perfil activo `unified_comparable_v3` (todos los algoritmos):** team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. v3 corrige bug en penalización SOC (signo invertido), añade `_ev_service_constraint_term()` con urgencia por salida y habilita V2G para 31 camionetas (7.4 kW bidireccionales). [Nota de reconciliación: el plan de tesis §4.11.3 documentó perfiles diferenciados por algoritmo (HAPPO=0.75, MASAC=0.55, MATD3=0.65, MAAC=0.80); la implementación vigente adopta `unified_comparable_v3` para garantizar comparabilidad estadística entre los 4 backends bajo función objetivo idéntica. Los perfiles diferenciados se preservan como ablación futura. Justificación completa con 12 referencias APA en `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`.]
-- 3.2.4 Esquema CTDE: centralized critics during training, decentralized actors during execution.
-- 3.2.5 Backends MADRL comparados bajo condiciones idénticas de entorno Dec-POMDP/CTDE (GPU local: NVIDIA RTX 4060 Laptop 8 GB, PyTorch 2.8.0+cu126, CUDA=True, perfil `local4060_fast`):
+### Capítulo 4. Desarrollo de la propuesta
 
-  | Algoritmo | Tipo | Propiedad clave | Configuración vigente `local4060_fast` | Estabilización |
-  | --------- | ---- | --------------- | -------------------------------------- | -------------- |
-  | HAPPO | On-policy | Garantía monótona cooperativa | hidden_size=256, n_rollout_threads=1 | actor_lr=1e-4, critic_lr=5e-4, max_grad_norm=1.0, action_aggregation=mean, ppo_clip=0.2 |
-  | MASAC | Off-policy | Máxima entropía + QMIX | rnn_hidden=64, qmix_hidden=32, hyper_hidden=64, buffer=2, critic_batch=1 | actor_lr=3e-4, critic_lr=5e-4, alpha_lr=3e-4, grad_norm_clip=1.0, actor_sample_times=4 |
-  | MATD3 | Off-policy | Doble crítico determinístico | hidden_size=256, batch=256, buffer=4096 | lr=3e-4, max_grad_norm=1.0, policy_delay=2, train_interval=100 |
-  | MAAC | Off-policy | Mecanismo de atención | hidden_size=128, batch=64, buffer=256 | pi_lr=3e-4, q_lr=1e-3, steps_per_update=250, num_updates=4, attention_heads=4 |
+**4.1 Arquitectura del sistema experimental** — Tabla 4.1 (4 capas: CityLearn v2, v3 propuesto, backends, evaluación)
 
-  Referencia de implementación: MARLlib (Hu et al., 2023); backends adaptados a CityLearn v3 propuesto. Se incorporan guardas finitas para TensorBoard y pasos de optimización, a fin de impedir que métricas NaN/Inf de gradientes contaminen logs o checkpoints. La baja utilización sostenida de GPU no invalida CUDA porque CityLearn conserva avance temporal por entorno; la GPU se usa durante los backends neuronales. La ruta operativa actual usa monitor visible con `LiveOutput=false` para permitir paralelismo de escenarios por algoritmo sin perder trazabilidad.
-- 3.2.6 Ajuste de hiperparámetros con Optuna.
-- 3.2.7 Dataset `citylearn_iquitos_2023_2025` — 17 edificios reales del Sistema Eléctrico Aislado de Iquitos (SEAI), Loreto, Perú (Electro Oriente S.A., 2023-2025). 26 304 horas; 222 CSV auditados: 17 `Building_X.csv`, 185 `charger_X_Y.csv`, 17 `Washing_Machine_X.csv`, `weather.csv`, `carbon_intensity.csv` y `pricing.csv`; `schema.json` referencia clima, emisiones y precios para los 17 edificios. PV real: pvlib + PVGIS TMY, 48 790.9 kWp totales y 148 802.232 MWh anuales simulados. BESS vigente: 26 266 kWh / 6 648 kW, dimensionado por edificio con balance entre generación solar, demanda EV, carga no controlada, carga controlada, red pública antes/después de BESS y corte de pico. La regla operativa implementada prioriza la generación solar hacia recarga EV y carga del edificio; el BESS prioriza recarga EV en la ventana horaria de operación del edificio hasta cierre y luego atiende carga del edificio/pico. EV: 185 cargadores/tomas EV en schema, 96 equipos físicos modo 3, 749.4 kW instalados, sesiones estocásticas reproducibles (seed = building_id × 1000 + charger_idx). Cargas controladas: 17 máquinas, una por edificio, 876.593 MWh anuales. Carbon intensity: 0.6715–0.7900 kgCO₂/kWh (MINAM RAGEI 2019, sistema diésel SEAI). Pricing: 0.383220954–1.066918914 USD/kWh en `pricing.csv`. Trazabilidad validada: delta máximo B02-B17 = 0.000000145% vs. facturas mensuales. Auditoría integral al 2026-06-09: 222 CSV, 0 NaN, 0 Inf, sin cargadores/máquinas huérfanos ni faltantes; normalización permitida antes de entrenamiento.
-- 3.2.8 KPIs por eje (nombres exactos del entorno CityLearn v2/v3): OE.1 Flexibilidad: `peak_average`, `ramping_average`, `one_minus_load_factor_average`; OE.2 Emisiones CO2: `carbon_emissions_total`, `carbon_emissions_from_electrical_consumption`; OE.3 Costos: `electricity_cost_total`, `electricity_cost_from_electrical_consumption`. KPI de recompensa: `reward_mean` por episodio, componentes `flex_mean`, `co2_mean`, `cost_mean`.
+**4.2 Formulación Dec-POMDP**
 
-**3.3 Análisis de los datos y resultados:**
+- ℳ = ⟨S, {Aᵢ}, T, R, {Oᵢ}, Ω, γ, T⟩; N = 17 agentes
+- Estado global concatenado: **1 856 dimensiones** (entorno cargado)
+- Observaciones locales heterogéneas: 57–330 dims por edificio
+- Acciones heterogéneas: 5–44 por edificio
+- **γ = 0,9999**; T = 8 760 pasos
 
-Datos disponibles al 2026-06-15 (sesión activa `citylearn_v3_madrl_full_20260613_010234` lanzada el 2026-06-13, `outputs/citylearn_v3_madrl_full_20260613_010234/`):
+**4.3 Esquema CTDE y función de recompensa multiobjetivo**
 
-- MATD3 E1+E2 corriendo en paralelo con perfil `unified_comparable_v3`. HAPPO y MASAC completados con perfil v2 (re-run pendiente vía `scripts/restart_happo_masac_v3.ps1` cuando MATD3+MAAC finalicen). MAAC en cola. Perfil `unified_comparable_v3` activo para MATD3 y MAAC. CUDA=True, perfil `local4060_fast`.
-- Estado oficial: `status = running`, escenarios `E1,E2,E3`, 5 episodios, 8 760 pasos por episodio, 43 800 pasos por corrida. Fuente: `official_full_status.json`.
-- No existen resultados finales válidos hasta que cada corrida nueva escriba `data/results.json`, `data/timeseries.csv` y `data/trace.csv`. No completar tablas, discusión ni conclusiones con datos de entrenamientos anteriores.
-- Todos los algoritmos y escenarios: `resultados por validar` hasta completar las 12 corridas con perfil v3 (incluyendo re-run HAPPO+MASAC).
+- `CityLearnV3MADRLRewardFunction`; perfil activo **`unified_comparable_v4`** (idéntico en los 4 algoritmos)
+- Tabla 4.2:
 
-Diseño experimental documentado: 3 escenarios × 4 algoritmos = 12 corridas independientes. La independencia semántica del entrenamiento paralelo por escenario dentro del mismo algoritmo está justificada académicamente en `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` (14 referencias APA, incluyendo Roijers et al. 2013 JAIR, Felten et al. 2024 JAIR, HARL JMLR arXiv:2304.09870, MALib JMLR arXiv:2106.07551).
+| Parámetro | Valor | Justificación |
+|-----------|-------|---------------|
+| team_reward_ratio | 0,70 | Coordinación cooperativa Dec-POMDP |
+| peak_weight / ramp_weight | 0,45 / 0,35 | KPI primario y secundario flexibilidad |
+| ev_weight | 0,25 | Cumplimiento carga EV |
+| bess_cycle_weight | 0,10 | Penalización oscilación BESS (v4) |
+| ev_urgency_hours | 8,0 | Ventana urgencia ampliada (v4) |
+| reward_scale | 1,00 | Gradientes comparables |
 
-Estructura de tablas (usar datos reales cuando estén disponibles; nunca inventar):
+**4.4 Algoritmos e hiperparámetros** — Tabla 4.3
 
-- Tabla 1 — KPIs de flexibilidad por algoritmo × E1 (OE.1): `peak_average`, `ramping_average`, `one_minus_load_factor_average`.
-- Tabla 2 — KPIs de CO2 por algoritmo × E2 (OE.2): `carbon_emissions_total`.
-- Tabla 3 — KPIs de costos por algoritmo × E3 (OE.3): `electricity_cost_total`.
-- Tabla 4 — Ranking integrado MADRL (O.G.): promedio normalizado de los 3 ejes.
+- Corrida canónica objetivo: 50 episodios × 8 760 pasos, GPU A100 80 GB (Colab, `two_phase_happo_masac`)
+- Corrida de referencia local: 5 episodios, RTX 4060 8 GB
+- Hiperparámetros comunes: hidden [256,256], actor_lr 3e-4, critic_lr 1e-3, gamma 0,9999, batch 256
 
-Protocolo estadístico inter-algoritmo (ejecutar tras completar las 12 corridas). Artefactos en `outputs/citylearn_v3_madrl_full_20260613_010234/statistical_comparison/` (naming: `result_{algo}_{escenario}.json`, 36 archivos totales). Suite de 4 pruebas: (1) Shapiro-Wilk — normalidad por algoritmo; (2) Kruskal-Wallis — diferencia global entre 4 algoritmos por escenario; (3) Mann-Whitney U — comparación par-a-par; (4) Wilcoxon signed-rank — episodios pareados dentro del mismo escenario.
+**4.5 Aportes originales al motor de simulación** — Tabla 4.4 (A1–A4; commit 54b1938e)
 
-**3.3.2 Determinación del Mejor MADRL Global (O.G.) — Ranking Integrado Multiobjetivo:**
+**4.6 Implementación y entorno computacional**
 
-El O.G. pregunta cuál algoritmo gestiona coordinadamente los tres ejes simultáneamente. Dado que los escenarios E1/E2/E3 entrenan con vectores de peso distintos, la determinación global requiere un método de agregación inter-eje que no favorezca el eje de entrenamiento de ningún algoritmo en particular.
+- Python 3.9, PyTorch 2.8.0+cu126, adaptador común `citylearn_v3_training_common.py`
 
-*Paso 1 — Extracción de KPIs por eje y algoritmo (fuente: artefactos de la corrida especializada de cada algoritmo):*
+### Capítulo 5. Resultados y contrastación de hipótesis
 
-```
-KPI_flex(a)  ← peak_average       de a/E1_seed_0/data/results.json   (↓ mejor)
-KPI_co2(a)   ← carbon_emissions_total de a/E2_seed_0/data/results.json (↓ mejor)
-KPI_cost(a)  ← electricity_cost_total de a/E3_seed_0/data/results.json (↓ mejor)
-```
+Organize in two levels: **descriptive effect** then **inferential hypothesis testing**.
 
-*Paso 2 — Normalización min-max inter-algoritmo por eje (invirtiendo a "mayor = mejor"):*
+**5.1 Experimentos realizados**
 
-```
-KPI_flex_norm(a)  = 1 − [KPI_flex(a)  − min_a KPI_flex]  / [max_a KPI_flex  − min_a KPI_flex]
-KPI_co2_norm(a)   = 1 − [KPI_co2(a)   − min_a KPI_co2]   / [max_a KPI_co2   − min_a KPI_co2]
-KPI_cost_norm(a)  = 1 − [KPI_cost(a)  − min_a KPI_cost]  / [max_a KPI_cost  − min_a KPI_cost]
-```
+- 12/12 tratamientos completados (corrida de referencia v4, 5 episodios)
+- Tiempos orientativos: HAPPO 57–67 min/escenario; MASAC 2–2,5 h; MAAC ~5,5 h; MATD3 6–7,5 h
 
-*Paso 3 — Score global con pesos iguales [1/3, 1/3, 1/3] (sin preferencia a priori — O.G. no favorece ningún eje):*
+**5.2 Análisis descriptivo del efecto sobre la VD**
 
-```
-Score_OG(a) = (1/3)·KPI_flex_norm(a) + (1/3)·KPI_co2_norm(a) + (1/3)·KPI_cost_norm(a)
-```
+- Tabla 5.1: estadística descriptiva D-VD.1 por tratamiento (media, desv., mín., máx., CV %)
+- Hallazgo clave preliminar: **MATD3 CV < 1,1 %** vs HAPPO **> 9 %**
+- Figuras 5.0 (convergencia), 5.2 (flexibilidad E1), 5.4 (éxito partida EV), 5.5 (matriz KPI E1)
 
-Justificación de pesos iguales: el O.G. exige gestión *coordinada* de los tres ejes; ninguno debe ponderarse más que otro en la evaluación global. Este principio sigue a Roijers et al. (2013, JAIR) en comparaciones MORL sin función de utilidad del decisor especificada, y a Felten et al. (2024, JAIR) en benchmarks MORL equitativos.
+**5.3 Efecto coordinado: ranking ponderado por escenario**
 
-*Paso 4 — Análisis de dominancia de Pareto (complementario al ranking escalar):*
+- Puntuación global ponderada por eje (pesos 0,34 / 0,33 / 0,33)
+- Tabla 5.2 preliminar (corrida 5 ep):
 
-El algoritmo `a` **domina de Pareto** al algoritmo `b` si y solo si:
-```
-KPI_flex_norm(a) ≥ KPI_flex_norm(b)  AND
-KPI_co2_norm(a)  ≥ KPI_co2_norm(b)   AND
-KPI_cost_norm(a) ≥ KPI_cost_norm(b)  AND
-∃ eje k : KPI_k_norm(a) > KPI_k_norm(b)
-```
-Si existe un algoritmo no dominado en los tres ejes simultáneamente → es el ganador inequívoco de O.G. Si ninguno domina (frente de Pareto) → el Score_OG decide el ranking.
+| Escenario | Mejor MADRL | Puntuación | 2.º | 3.º | 4.º |
+|-----------|-------------|------------|-----|-----|-----|
+| E1 flexibilidad | MATD3 | 0,487 | MAAC 0,440 | MASAC 0,395 | HAPPO 0,338 |
+| E2 CO₂ | MATD3 | 0,751 | MAAC 0,536 | MASAC 0,428 | HAPPO 0,307 |
+| E3 costos | MATD3 | 0,733 | MAAC 0,602 | MASAC 0,442 | HAPPO 0,395 |
 
-*Paso 5 — Ranking de Borda (no paramétrico, sin supuesto de escala):*
+- Figuras 5.1 (ranking global), 5.3 (radial por eje)
+- Nota: CityLearn v2 baseline puede conservar ventaja global en E1 con presupuesto 5 episodios
 
-Para cada eje e, asignar rango r_e(a) ∈ {1,2,3,4} donde rango 1 = mejor KPI. El Borda score es:
-```
-Borda(a) = r_flex(a) + r_co2(a) + r_cost(a)
-```
-El algoritmo con menor Borda score es el mejor coordinado (O.G.). El ranking Borda y el Score_OG normalizado deben coincidir; si divergen, reportar ambos y discutir en §3.4.
+**5.4 Contrastación inferencial de las hipótesis**
 
-Tabla 4 — Ranking Integrado MADRL (O.G.) — completar con datos reales cuando estén disponibles:
+- Shapiro-Wilk → justifica no paramétricas
+- Kruskal-Wallis global: **p = 0,0459** (< 0,05) → rechaza H₀; respalda HG
+- Tabla 5.3 Wilcoxon pareado (α = 0,05): HAPPO difiere significativamente de MASAC, MATD3 y MAAC; MATD3 vs MASAC/MAAC sin diferencia sistemática en agregado
+- Contrastación HE.1–HE.3 y HG según evidencia disponible
+- Figura 5.6 matriz p-valores Wilcoxon
 
-| Algoritmo | KPI_flex_norm | KPI_co2_norm | KPI_cost_norm | Score_OG | Rango Borda | Rango O.G. |
-| --------- | :-----------: | :----------: | :-----------: | :------: | :---------: | :--------: |
-| HAPPO | — | — | — | — | — | — |
-| MASAC | — | — | — | — | — | — |
-| MATD3 | — | — | — | — | — | — |
-| MAAC | — | — | — | — | — | — |
+**5.5 Discusión de resultados**
 
-*Protocolo estadístico para O.G. (adicional al protocolo por escenario):*
+- Ventaja off-policy + crítico centralizado (MATD3)
+- Limitación presupuesto entrenamiento vs baseline CityLearn v2 (Schaap, 2024)
+- Robustez por baja variabilidad inter-indicador
 
-- Kruskal-Wallis global sobre Score_OG de los 5 episodios por algoritmo: H₀ = todos los algoritmos tienen Score_OG equivalente; si p < 0.05, existe diferencia significativa global.
-- Mann-Whitney U par-a-par sobre Score_OG: 6 pares (HAPPO–MASAC, HAPPO–MATD3, HAPPO–MAAC, MASAC–MATD3, MASAC–MAAC, MATD3–MAAC). Corrección Bonferroni: umbral ajustado α' = 0.05/6 = 0.0083.
-- Effect size: ε² (eta-cuadrado de Kruskal-Wallis) para cada eje y para Score_OG combinado. Clasificación: pequeño ≥0.01, mediano ≥0.06, grande ≥0.14.
+Mark all values from the 5-episode reference run as **preliminares** until the canonical 50-episode Colab run replaces them. Use `[REEMPLAZAR con corrida canónica 50 ep]` when canonical artifacts are unavailable.
 
-**3.3.3 Desagregación por Edificio — Control Individual y Contribución al Distrito:**
+### Capítulo 6. Conclusiones y trabajo futuro
 
-Además del análisis global inter-algoritmo, se reporta el desempeño desagregado por edificio para identificar qué agentes contribuyen más a la reducción de pico, emisiones y costo a nivel distrital.
+**6.1 Conclusiones**
 
-*KPIs por edificio i (extraídos de `{algo}/{scenario}_seed_0/data/timeseries.csv`):*
+- Respuesta a OG/OE con evidencia causa-efecto
+- MATD3 = mayor efecto coordinado preliminar
+- Aportes metodológicos: benchmark unificado + 4 extensiones motor CityLearn
 
-```
-peak_i        = max_t ( net_load_i(t) )                donde net_load_i = import_i − export_i
-co2_i         = Σ_t max(0, import_i(t)) · CI(t)
-cost_i        = Σ_t max(0, import_i(t)) · p(t)
-self_suff_i   = 1 − Σ_t import_i(t) / Σ_t non_shiftable_load_i(t)
-bess_util_i   = Σ_t |P_bess_i(t)| / (T · P_bess_max_i)    ← fracción de capacidad BESS usada
-ev_served_i   = Σ_t EV_sessions_completed_i(t) / EV_sessions_total_i
-```
+**6.2 Limitaciones**
 
-*Métricas de coordinación distrital (extraídas de timeseries):*
+- 5 episodios, 1 semilla, GPU local, v3 propuesto experimental
 
-```
-district_import(t) = Σᵢ max(0, net_load_i(t))
-peak_district      = max_t district_import(t)
-peak_share_i(t)    = net_load_i(t) / district_import(t)     ← fracción del pico que aporta edificio i
-ramp_district(t)   = |district_import(t) − district_import(t−1)|
-```
+**6.3 Trabajo futuro**
 
-*Contribución individual al objetivo distrital (counterfactual):*
+- Corrida canónica 50 ep × 12 tratamientos, multi-semilla
+- Optuna recompensa/hiperparámetros
+- Mann-Whitney U con effect sizes (Agarwal et al., 2021)
+- Transferibilidad a otros sistemas aislados peruanos
 
-```
-Δpeak_i   = peak_district_sin_i − peak_district_con_i
-Δco2_i    = co2_district_sin_i  − co2_district_con_i
-Δcost_i   = cost_district_sin_i − cost_district_con_i
-```
-donde "sin_i" corresponde a ejecutar la política del algoritmo ganador con el agente i en modo pasivo (sin BESS, sin control EV). Esto cuantifica cuánto aporta cada edificio a la coordinación distrital.
+**6.4 Cronograma de culminación**
 
-Tabla 5 — Desempeño por Edificio (algoritmo ganador O.G., completar con datos reales):
+- Figura 6.1 (24 meses)
 
-| Edificio | Tipo | EV tomas | BESS kWh | peak_i (kW) | co2_i (kg) | cost_i (USD) | self_suff_i | bess_util_i |
-| -------- | ---- | :------: | :------: | :---------: | :--------: | :----------: | :---------: | :---------: |
-| B01 ELECTRO ORIENTE | Office | 4 | 6,747 | — | — | — | — | — |
-| B06 MALL AVENTURA | Commercial | 32 | 2,541 | — | — | — | — | — |
-| B07 UNAP BIOLOGÍA | Education | 42 | 984 | — | — | — | — | — |
-| B11 HOSPITAL LORETO | Healthcare | 3 | 1,901 | — | — | — | — | — |
-| … (17 filas totales) | | | | | | | | |
+### Referencias bibliográficas
 
-Edificios críticos para la coordinación (mayor Δpeak_i esperados por tamaño y DER): B01 (BESS más grande), B06 (más cargadores EV), B07 (más cargadores EV), B11 (carga hospitalaria constante), B12 (BESS grande). Reportar ranking completo de Δpeak_i en Tabla 5 y discutir en §3.4 qué tipo de edificio se beneficia más de la coordinación MADRL.
+- APA 7.ª edición
+- Priorizar literatura últimos 5 años + obras seminales CTDE/Dec-POMDP
+- Fuente consolidada: `docs/tesis_capitulos/Referencias_APA.md`
 
-**3.4 Discusión e interpretación:** Compare algorithm behaviors per axis. Discuss which algorithm best handles each dimension and why (architectural reasons: entropy, monotonicity, dual critic, attention). Discuss coordinated management performance. Discuss applicability to real smart communities.
+## Evidence sources (current project only)
 
-**3.5 Estimación del impacto de la solución:** Environmental impact (CO2 reduction potential), economic impact (energy cost savings potential), technical impact (flexibility gain, peak reduction), scientific impact (reproducible MADRL benchmark for smart communities).
+Primary:
 
-### Chapter IV — Conclusiones y recomendaciones
+- `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
+- `docs/tesis_capitulos/`
+- `CityLearn/configs/citylearn_v3_madrl_training.yaml`
+- `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`
+- `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`
+- `docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md`
 
-**4.1 Conclusiones:** Write:
+Training outputs (use latest completed v4 session):
 
-- Conclusión general (O.G.): which algorithm best coordinately manages the three dimensions, or expected determination criteria.
-- Conclusión OE.1: which algorithm best optimizes energy flexibility.
-- Conclusión OE.2: which algorithm best reduces CO2 emissions.
-- Conclusión OE.3: which algorithm best optimizes energy costs.
-- Conclusión metodológica: contribution of Dec-POMDP/CTDE/CityLearn v3 propuesto framework.
-- Conclusión técnica: CityLearn v3 propuesto as reproducible benchmark.
-- Conclusión ambiental: CO2 reduction potential.
-- Conclusión económica: energy cost reduction potential.
+- `outputs/citylearn_v3_madrl_full_20260615_074011_v4/` (corrida local referencia 5 ep)
+- Canonical target: `outputs/colab_50ep/` or new `citylearn_v3_madrl_full_*_v4` with 50 episodes
 
-If final results are not available, express conclusions as expected/anticipated findings based on the methodological design.
+Dataset audit:
 
-**4.2 Recomendaciones:** Derive from conclusions. Include: extending to real smart community datasets, validating in isolated power systems, incorporating additional DER types, exploring hybrid MADRL-MPC approaches, publishing the CityLearn v3 propuesto framework as open-source.
+- `outputs/dataset_audit/`
+- `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md`
+
+Do **not** use archived sessions (`20260613_010234`, `_archive/`) as definitive thesis evidence unless explicitly labeled exploratory.
+
+## Resumen / Abstract content requirements
+
+Spanish Resumen and English Abstract must include:
+
+- Experimental cause-effect framing (VI/VD, 12 treatments, 54 KPI)
+- CityLearn v2 + v3 propuesto + dataset Iquitos (17 buildings, DER totals)
+- Dec-POMDP/CTDE; four algorithms; unified v4 reward
+- Statistical protocol (descriptive + Shapiro/KW/MWU/Wilcoxon)
+- Preliminary finding: MATD3 largest and most stable coordinated effect; KW p = 0,0459
+- Keywords: aprendizaje por refuerzo multiagente, diseño experimental, Dec-POMDP, CTDE, flexibilidad energética, emisiones CO₂, microrred aislada, Iquitos
+
+## Quality rules
+
+- Never invent DOI, results, p-values, or KPI values not present in current artifacts or the canonical DOCX
+- Mark pending canonical-run values explicitly
+- Keep MADRL terminology (not MARL) per project rules
+- Distinguish CityLearn v2 (base) from CityLearn v3 propuesto (thesis extension)

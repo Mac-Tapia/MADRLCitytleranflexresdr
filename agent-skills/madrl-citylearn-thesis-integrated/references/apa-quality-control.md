@@ -24,8 +24,9 @@
 
 Verify:
 
-1. The structure follows Guide N. 02 section 5.1.
-2. The report corresponds to a professional/specialization master's thesis.
+1. The structure follows the six-chapter doctoral layout in `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` (see `module-b-thesis-report.md`).
+2. The report corresponds to a **doctoral thesis** (Doctor en Ingeniería, UNI).
+3. PG/PE, OG/OE, HG/HE, Tablas 1.1–1.2, diseño factorial 4×3, and Cap. 5 hypothesis contrastation are present and coherent.
 3. APA is used throughout.
 4. IEEE is not used.
 5. `Marco_metodologico_MARL` does not appear.

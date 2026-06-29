@@ -2,15 +2,15 @@
 
 ## 4.1 Tipo y nivel de investigación
 
-Default classification unless the user provides a different institutional requirement:
+Default classification (aligned with `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`):
 
 - Enfoque: cuantitativo.
 - Tipo: aplicada.
-- Nivel: descriptivo, comparativo y propositivo.
-- Diseño: no experimental, transversal, basado en simulación computacional y comparación de algoritmos.
-- Método: modelamiento computacional, simulación de entornos energéticos, comparación de algoritmos MADRL y análisis de indicadores de desempeño (KPIs).
+- Nivel: explicativo (relación causa-efecto).
+- Diseño: **experimental de simulación computacional**, factorial completo 4×3 (12 tratamientos).
+- Método: modelamiento Dec-POMDP/CTDE, manipulación controlada de VI (algoritmo × escenario E1/E2/E3), medición de VD con 54 KPI oficiales, análisis descriptivo e inferencial no paramétrico.
 
-Justify every methodological classification. The comparative level is essential: the study determines the *best* MADRL by comparing HAPPO, MASAC, MATD3, and MAAC on three evaluation axes (energy flexibility, CO2 emissions, energy costs).
+Justify every methodological classification. The experimental level is essential: the study determines the *effect* of each MADRL algorithm and identifies the algorithm with the largest coordinated effect on energy flexibility, CO2 emissions, and energy costs.
 
 ## 4.2 Unidad de análisis
 

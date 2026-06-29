@@ -1,13 +1,17 @@
 ---
 name: madrl-citylearn-thesis-integrated
-description: Project-local thesis integration workflow for the CityLearn v3 proposed MADRL thesis. Use when Codex must create or update the professional master's thesis report, APA-cited bibliography matrix, systematic review outputs, methodology, consistency matrices, operationalization matrices, appendices, and final quality control for the project on CityLearn v2, CityLearn v3 propuesto, cooperative MADRL, Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC, MARLlib, Optuna, energy flexibility, CO2 emissions, energy costs, and SEAI Iquitos.
+description: Project-local thesis integration workflow for the doctoral CityLearn v3 proposed MADRL thesis. Use when Codex must create or update the doctoral thesis report (informe final), APA-cited bibliography matrix, systematic review outputs, experimental cause-effect methodology, hypotheses testing, consistency matrices, operationalization matrices, appendices, and final quality control for CityLearn v2, CityLearn v3 propuesto, cooperative MADRL, Dec-POMDP, CTDE, HAPPO, MASAC, MATD3, MAAC, MARLlib, energy flexibility, CO2 emissions, energy costs, and SEAI Iquitos.
 ---
 
 # MADRL CityLearn Integrated Thesis Skill
 
-Use this project-local skill only inside this repository to connect the scientific literature review, implementation evidence, and final thesis report for:
+Use this project-local skill only inside this repository to connect the scientific literature review, implementation evidence, and final **doctoral thesis report** for:
 
-> "Multi-Agente de Aprendizaje por Refuerzo Profundo para la Gestión Coordinada de Flexibilidad Energética, Emisiones de Carbono y Costos Energéticos en Comunidades Inteligentes".
+> "Multi-Agente de Aprendizaje por Refuerzo Profundo para la Gestión Coordinada de la Flexibilidad Energética, las Emisiones de Carbono y los Costos Energéticos en Comunidades Inteligentes".
+
+**Documento canónico:** `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
+
+**Borradores Markdown:** `docs/tesis_capitulos/` (Capítulos 1–6 + Referencias APA).
 
 ## Purpose
 
@@ -16,9 +20,18 @@ Create one integrated academic workflow that:
 1. Builds a deep, verifiable bibliography on CityLearn v2, MADRL, Dec-POMDP, CTDE, MARLlib, HAPPO, MASAC, MATD3, MAAC, energy flexibility, CO2 emissions, and energy costs.
 2. Produces a comparative matrix of 50 relevant investigations from the last 10 years when possible.
 3. Extracts antecedents, theoretical bases, datasets, GitHub repositories, KPIs, results, scientific contributions, and conclusions from the matrix.
-4. Drafts a professional master's thesis report following the mandatory Guide N. 02 structure.
+4. Drafts the **doctoral thesis report** following the six-chapter structure of `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` (not Guide N. 02 unless the institution requires a separate submission).
 5. Applies current APA style throughout.
 6. Generates only verified references; never invent DOI, links, datasets, repositories, citations, or results.
+
+## Degree and cover metadata
+
+- **Universidad:** UNI — Escuela de Posgrado
+- **Programa:** Doctorado en Ingeniería — Inteligencia Artificial aplicada a Sistemas Eléctricos Inteligentes
+- **Grado:** Doctor en Ingeniería
+- **Autor:** Mac Tapia
+- **Caso de estudio:** SEAI Iquitos — 17 edificios reales (2023–2025)
+- **Asesor:** `[por definir]` until confirmed
 
 ## Mandatory Terminology
 
@@ -34,6 +47,17 @@ Create one integrated academic workflow that:
 - Write in formal academic Spanish, third person.
 - Do not invent results, DOI, links, datasets, GitHub repositories, citations, or references.
 
+## Experimental cause-effect frame
+
+The thesis uses a **simulation-based experimental design** (not merely comparative-descriptive):
+
+- **VI:** algoritmo MADRL — D-VI.1 (HAPPO, MASAC, MATD3, MAAC) × D-VI.2 (E1, E2, E3) → 12 tratamientos
+- **VD:** desempeño coordinado medido con **54 KPI oficiales** en D-VD.1 flexibilidad, D-VD.2 CO₂, D-VD.3 costos
+- **Control:** dataset Iquitos, clima, CI, TOU, recompensa `unified_comparable_v4`, semilla
+- **Hipótesis:** HG, HE.1, HE.2, HE.3 (directional; contrastadas con Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon; α = 0,05)
+
+Use the exact PG/PE/OG/OE/HG/HE wording from [module-b-thesis-report.md](references/module-b-thesis-report.md).
+
 ## APA Rules
 
 - Use current APA style only; do not use IEEE.
@@ -46,63 +70,63 @@ Create one integrated academic workflow that:
 - Mark incomplete source data as `dato bibliografico pendiente de verificacion`.
 - Mark unconfirmed results as `resultado no verificado` and do not use them as conclusive evidence.
 
-## Guide N. 02 Structure Rule
+## Thesis structure rule (six chapters)
 
-- The final thesis report must preserve the exact Guide N. 02 section 5.1 structure defined in [module-b-thesis-report.md](references/module-b-thesis-report.md). The Guide N. 02 is only the report structure, not a source of experimental data.
-- Do not replace, remove, rename, or reorder the required front matter, chapters, subsections, references, or annexes.
+- The final thesis report must preserve the exact structure defined in [module-b-thesis-report.md](references/module-b-thesis-report.md), aligned with `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`.
+- Chapters: 1 Introducción, 2 Marco teórico, 3 Metodología, 4 Desarrollo de la propuesta, 5 Resultados y contrastación de hipótesis, 6 Conclusiones y trabajo futuro.
+- Do not replace, remove, rename, or reorder required front matter, chapters, subsections, references, or annexes without explicit user instruction.
 - Use only current project evidence from this repository for dataset, BESS/PV/EV, training, KPI, statistical, and GPU content.
-- Do not use historical, copied, external, or non-current data as thesis evidence. Tables, results, conclusions, and discussion must be based only on active current project sources.
-- Current project evidence must be inserted inside the corresponding Guide N. 02 sections, mainly Chapter III, without creating an alternative report structure.
-- If current results are incomplete, keep the Guide N. 02 structure and mark the missing values as pending, in progress, or not verified. Do not fill gaps with non-current values.
+- If canonical 50-episode results are incomplete, keep the structure and mark values as preliminares or `[Pendiente: corrida canónica 50 ep]`.
 
 ## Operating Workflow
 
 1. Read this `SKILL.md`.
-2. For the literature search and Excel matrix, use [module-a-literature-matrix.md](references/module-a-literature-matrix.md).
-3. For the thesis report structure and required content, use [module-b-thesis-report.md](references/module-b-thesis-report.md).
-4. For APA and quality checks, use [apa-quality-control.md](references/apa-quality-control.md).
-5. For consistency and operationalization matrices, use [matrices-and-appendices.md](references/matrices-and-appendices.md).
-6. Use `scripts/create_integrated_thesis_workbook.py` to create a workbook template when requested.
-7. Use `scripts/create_thesis_docx_skeleton.py` to create a DOCX thesis skeleton when requested.
-8. Use `scripts/create_available_thesis_report.py` to create a Guide N. 02 DOCX/Markdown draft from current project evidence only; final KPIs must remain pending when training artifacts are incomplete.
-9. Use project evidence when available:
-   - `README.md`, `docs/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md`
+2. Read `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` or `docs/tesis_capitulos/` for the authoritative wording and structure.
+3. For the literature search and Excel matrix, use [module-a-literature-matrix.md](references/module-a-literature-matrix.md).
+4. For the thesis report structure and required content, use [module-b-thesis-report.md](references/module-b-thesis-report.md).
+5. For APA and quality checks, use [apa-quality-control.md](references/apa-quality-control.md).
+6. For consistency and operationalization matrices, use [matrices-and-appendices.md](references/matrices-and-appendices.md).
+7. Use `scripts/create_integrated_thesis_workbook.py` to create a workbook template when requested.
+8. Use `scripts/create_thesis_docx_skeleton.py` to create a DOCX thesis skeleton when requested.
+9. Use `scripts/create_available_thesis_report.py` to create a DOCX/Markdown draft from current project evidence only.
+10. Use project evidence when available:
+   - `README.md`, `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md`
    - `CityLearn/configs/citylearn_v3_madrl_training.yaml`
-   - Justificación de recompensas y diseño experimental (documentos creados 2026-06-12):
-     - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` — justificación académica de todos los parámetros numéricos de `CityLearnV3MADRLRewardFunction`, reconciliación plan §4.11.3 vs. perfil `unified_comparable_v3`, listado 17 edificios y 229 archivos del dataset. 12 referencias APA.
-     - `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` — justificación de los 3 escenarios E1/E2/E3 (mapeo a OE.1/OE.2/OE.3), independencia semántica del entrenamiento paralelo por escenario, política de VRAM (HAPPO/MATD3 max 2, MASAC/MAAC max 1), matriz 12 corridas. 14 referencias APA.
-   - Training activo (sesión `citylearn_v3_madrl_full_20260613_010234`): `outputs/citylearn_v3_madrl_full_20260613_010234/`
-     - Estado oficial: `official_full_status.json`
-     - Progreso vivo por corrida: `{algo}/{scenario}_seed_0/live_progress.json`
-     - Resultados finales por corrida, solo cuando existan tras completar el entrenamiento nuevo: `{algo}/{scenario}_seed_0/data/results.json`
-     - Series y trazas finales por corrida: `{algo}/{scenario}_seed_0/data/timeseries.csv`, `{algo}/{scenario}_seed_0/data/trace.csv`
-     - Comparación estadística final: `statistical_comparison/result_{algo}_{scenario}.json`, `timeseries_{algo}_{scenario}.csv`, `trace_{algo}_{scenario}.csv`
-     - Preflight de artefactos: `artifact_layout_preflight.json`
-   - Auditorías de dataset: `outputs/dataset_audit/` (`csv_integrity_manifest.json`, `training_dataset_ready_manifest.json`, `der_sizing_audit.csv`, `ev_charger_sizing_audit.csv`)
+   - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`
+   - `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`
+   - Corrida local referencia (5 ep): `outputs/citylearn_v3_madrl_full_20260615_074011_v4/`
+   - Corrida canónica objetivo (50 ep): Colab A100 → `outputs/colab_50ep/` (cuando exista)
+   - Notebook canónico: `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` (celda 6.1)
+   - Auditorías dataset: `outputs/dataset_audit/`
    - Validación: `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md`
-   - Dimensiones del entorno: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`
 
-> **Vigencia:** Próxima sesión definitiva: `citylearn_v3_madrl_full_YYYYMMDD_HHmmss_v4` (lanzar con `scripts/restart_happo_masac_v3.ps1` tras finalizar MAAC E3 actual). TODOS los algoritmos (HAPPO, MASAC, MATD3, MAAC) se entrenan desde cero con perfil `unified_comparable_v4`. CUDA=True, PyTorch 2.8.0+cu126, perfil `local4060_fast`, NVIDIA RTX 4060 Laptop 8 GB. **Perfil de recompensa activo: `unified_comparable_v4`** — mismos valores base que v3 más: `bess_cycle_weight=0.10` (penalty |ΔSOC|/paso, inhibe oscilación BESS, Wan et al. 2022), `ev_urgency_hours=8.0` (ventana urgencia EV ampliada 4h→8h, Pinto et al. 2022), `ev_departure_deficit_weight=0.70` (0.55→0.70), `ev_idle_deficit_weight=0.25` (0.15→0.25). Fix `ev_type_code` (insertion order, commit 2ee72c72) activo en submodule. No hay algoritmos en estado "skipped v2": todos parten de cero en sesión nueva. Sesión previa `20260613_010234` conservada como referencia exploratoria (MATD3+MAAC completados con perfil v3; HAPPO+MASAC ejecutados con perfil v2 histórico — no usar para comparación definitiva). Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios SEAI Iquitos, 26 304 h, 222 CSV auditados, 185 cargadores EV en schema, 96 equipos físicos modo 3, 17 máquinas controladas, `weather.csv`, `carbon_intensity.csv` y `pricing.csv` referenciados por los 17 edificios). Auditoría integral: 0 NaN, 0 Inf, sin cargadores/máquinas huérfanos ni faltantes; normalización permitida. Totales DER vigentes: PV 48 790.9 kWp; BESS 26 266 kWh / 6 648 kW; EV 749.4 kW. Regla implementada en el dataset: la generación solar prioriza recarga EV y carga del edificio; el BESS prioriza recarga EV dentro de la ventana operativa y luego atiende carga del edificio/pico. Salida definitiva: `outputs/citylearn_v3_madrl_full_YYYYMMDD_HHmmss_v4/`. Última actualización del skill: 2026-06-15.
+> **Vigencia técnica (2026-06-28):** Perfil de recompensa activo **`unified_comparable_v4`** (team_ratio=0.70, peak=0.45, ramp=0.35, ev=0.25, bess_cycle=0.10, ev_urgency_hours=8.0, reward_scale=1.00). **γ = 0,9999**. Estado global Dec-POMDP: **1 856 dimensiones**. Dataset: `citylearn_iquitos_2023_2025` (17 edificios, 26 304 h, 222 CSV, PV 48 790,9 kWp, BESS 26 266 kWh / 6 648 kW, 185 tomas EV). Resultados preliminares (5 ep, 1 semilla): MATD3 lidera ranking ponderado (E1 0,487; E2 0,751; E3 0,733); Kruskal-Wallis p=0,0459; MATD3 CV < 1,1 % en flexibilidad. Reemplazar con corrida canónica 50 ep cuando esté disponible.
 
 ## Required Final Products
 
 - Bibliographic matrix of 50 investigations.
 - Dataset, GitHub, and source matrix.
-- KPI matrix.
+- KPI matrix (54 official KPIs mapped to D-VD.1–3).
 - `Marco_metodologico_MADRL`.
 - `CityLearn_v3_Propuesto`.
 - `Backends_MADRL`.
 - `MARLlib_Integracion`.
 - `Arquitectura_Propuesta`.
 - `Aplicabilidad_SEAI_Iquitos`.
-- Complete thesis report under Guide N. 02 section 5.1.
-- Spanish `Resumen` and English `Abstract`.
-- APA references.
+- Complete doctoral thesis report (six chapters) aligned with `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`.
+- Spanish `Resumen` and English `Abstract` with cause-effect framing.
+- Matrices Tabla 1.1 (consistencia) and Tabla 1.2 (operacionalización VI/VD).
+- Hypothesis contrastation section (Cap. 5.4) with descriptive + inferential statistics.
+- APA references (`docs/tesis_capitulos/Referencias_APA.md`).
 - Methodological appendices.
 - Consistency matrix.
 - Variable operationalization matrix.
 - Table of APA citations used.
 - Final quality-control checklist.
-- Tabla de resultados por KPI y algoritmo con datos reales de la sesión `citylearn_v3_madrl_full_20260613_010234` (cuando estén disponibles; no inventar).
-- Nota metodológica de las 4 pruebas estadísticas inter-algoritmo (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon) sobre los artefactos `statistical_comparison/`.
-- Sección de justificación de recompensas y diseño experimental con referencias de `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` y `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`.
+- Tabla ranking por escenario (Tabla 5.2) and Wilcoxon matrix (Tabla 5.3) with real or marked-pending values.
+- Nota metodológica: 4 pruebas estadísticas (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon).
+- Sección aportes A1–A4 al motor CityLearn (`docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md`).
+
+## Related skill — Plan de Tesis
+
+For the **Plan de Tesis** under Guía N. 01 (pre-doctoral planning document), use the companion skill `agent-skills/madrl-citylearn-thesis-plan/`. Its objectives, hypotheses, and experimental design must remain **vertically coherent** with this doctoral thesis report.

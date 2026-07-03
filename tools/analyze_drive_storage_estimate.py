@@ -10,12 +10,13 @@ REPO = Path(__file__).resolve().parents[1]
 KPIS = REPO / "outputs" / "_drive_madrl" / "kpis"
 RUN_ID = "madrl_v3_20260627_164047"
 
-# Checkpoint MB per scenario (order-of-magnitude from hidden sizes + agent count)
-CKPT_MB_PER_JOB = {
-    "HAPPO": 150,  # 17 actors + critic + value_norm x ~50 saves + heavy TensorBoard logs
-    "MAAC": 90,    # 52 checkpoint files reported
-    "MASAC": 70,   # 12 bundles but large replay-related artifacts
-    "MATD3": 110,  # 17 policies x actor+critic x 34 saves
+# Bytes medidos en outputs/citylearn_v3_madrl_full_20260615_074011_v4 (5 ep).
+# MASAC guarda bundles QMIX como .pkl (policy/qmix/rnn), NO .pt.
+CKPT_BYTES_EACH = {
+    "HAPPO": int(46.23e6 / 60),   # ~0.77 MB por .pt (17 actores + critic)
+    "MAAC": int(154.2e6),          # 154.2 MB por checkpoint_episode_*.pt monolitico
+    "MASAC": int(638593 / 3),      # ~213 KB por archivo .pkl (bundle de 3 ~624 KB)
+    "MATD3": int(452e6 / 105),     # ~4.3 MB por .pt
 }
 BYTES_PER_TS_ROW = 140
 BYTES_PER_TRACE_ROW = 900  # compact trace @ interval 8760 still has building cols
@@ -119,7 +120,8 @@ def main() -> None:
         ts_gb = v.get("ts_rows", 0) * BYTES_PER_TS_ROW / 1e9
         tr_gb = v.get("tr_rows", 0) * BYTES_PER_TRACE_ROW / 1e9
         csv_gb = ts_gb + tr_gb
-        ckpt_gb = v["jobs"] * CKPT_MB_PER_JOB.get(algo, 80) / 1024
+        ckpt_bytes_each = CKPT_BYTES_EACH.get(algo, 4_000_000)
+        ckpt_gb = v.get("ckpt", 0) * ckpt_bytes_each / 1e9
         tb_gb = (150 if algo == "HAPPO" else 20) * v["jobs"] / 1024  # TensorBoard events
         fig_gb = 0.05 * v["jobs"]
         total_gb = csv_gb + ckpt_gb + tb_gb + fig_gb
@@ -131,7 +133,8 @@ def main() -> None:
             f"\n{algo} ({v.get('jobs',0)} escenarios):"
             f"\n  timeseries.csv  ~{ts_gb:6.2f} GB  ({v.get('ts_rows',0):,} filas)"
             f"\n  trace.csv       ~{tr_gb:6.2f} GB  ({v.get('tr_rows',0):,} filas)"
-            f"\n  checkpoints     ~{ckpt_gb:6.2f} GB  ({v.get('ckpt',0)} archivos contados)"
+            f"\n  checkpoints     ~{ckpt_gb:6.2f} GB  ({v.get('ckpt',0)} archivos; "
+            f"~{ckpt_bytes_each/1e6:.2f} MB c/u medidos en v4)"
             f"\n  TensorBoard     ~{tb_gb:6.2f} GB  (logs HAPPO muy pesados)"
             f"\n  figuras/tablas  ~{fig_gb:6.2f} GB"
             f"\n  SUBTOTAL        ~{total_gb:6.2f} GB"
@@ -145,7 +148,9 @@ def main() -> None:
     print(f"  Figuras            ~{grand['fig_gb']:.1f} GB")
     print(f"  ESTIMADO RUN       ~{run_total:.1f} GB")
 
-    print("\n=== CAUSA PROBABLE >130 GB EN DRIVE ===")
+    print("\n=== NOTA METODOLOGICA ===")
+    print("  MASAC: checkpoints son .pkl (QMIX), no .pt. Contar solo .pt da 0 erroneamente.")
+    print("  MAAC: un .pt monolitico por episodio (~154 MB) con 17 agentes + critic atencion.")
     print("  1. Varias carpetas madrl_v3_* (reintentos Colab) — celda 2.1c lista duplicados")
     print("  2. HAPPO: checkpoint cada ep + 12 rollouts + logs TB por 17 agentes")
     print("  3. MATD3: timeseries inflado (437k+ filas/job vs ~350k esperadas)")

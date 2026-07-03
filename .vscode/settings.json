@@ -5,7 +5,9 @@
     "${workspaceFolder}/tools"
   ],
   "python.analysis.stubPath": "${workspaceFolder}/CityLearn/examples/typings",
+  "python.analysis.typeCheckingMode": "basic",
   "python.analysis.diagnosticSeverityOverrides": {
-    "reportMissingModuleSource": "none"
+    "reportMissingModuleSource": "none",
+    "reportMissingImports": "none"
   }
 }

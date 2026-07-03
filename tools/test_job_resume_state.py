@@ -298,7 +298,7 @@ def test_happo_colab_salvage_49_inferred_launcher_exit0(tmp_path: Path):
 
     assert job_counts_as_launcher_complete(
         job_dir, target_episodes=target, output_root=run_root
-    ) is True
+    ) is False
     dec = preview_job_launcher_decision(
         job_dir,
         algorithm="happo",
@@ -307,9 +307,9 @@ def test_happo_colab_salvage_49_inferred_launcher_exit0(tmp_path: Path):
         rollout_threads=12,
         output_root=run_root,
     )
-    assert dec["skip"] is True, dec
-    assert dec["action"] == "skip"
-    assert "COMPLETO" in dec["status_line"]
+    assert dec["skip"] is False, dec
+    assert dec["action"] == "resume"
+    assert "COMPLETO" not in dec["status_line"]
     assert not dec["blockers"]
 
 
@@ -356,12 +356,12 @@ def test_happo_salvage_49_tail_without_launcher_manifest(tmp_path: Path):
         encoding="utf-8",
     )
 
-    assert job_counts_as_launcher_complete(job_dir, target_episodes=target) is True
+    assert job_counts_as_launcher_complete(job_dir, target_episodes=target) is False
     dec = preview_job_launcher_decision(
         job_dir, algorithm="happo", target_episodes=target, episode_time_steps=ets
     )
-    assert dec["skip"] is True
-    assert dec["action"] == "skip"
+    assert dec["skip"] is False
+    assert dec["action"] == "resume"
 
 
 def test_happo_recovered_from_timeseries_global_step_with_rollout_threads(tmp_path: Path):

@@ -124,6 +124,8 @@ def test_maac_full_checkpoints_count_as_complete(tmp_path: Path):
             {
                 "algorithm": "MAAC",
                 "episodes_recorded": 50,
+                "citylearn_v3_report": {"all_values": {"cost": 1.0}},
+                "artifact_audit": {"episode_summaries": [{}] * 50},
                 "hyperparameters": {"target_episodes": 50, "episodes": 50},
             }
         ),
@@ -134,24 +136,27 @@ def test_maac_full_checkpoints_count_as_complete(tmp_path: Path):
 
 def test_happo_results_json_trusted_when_timeseries_low(tmp_path: Path):
     data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run"
     data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
     (data / "results.json").write_text(
         json.dumps(
             {
                 "algorithm": "HAPPO",
                 "episodes_recorded": 50,
+                "citylearn_v3_report": {"all_values": {"cost": 1.0}},
+                "artifact_audit": {"episode_summaries": [{}] * 50},
                 "hyperparameters": {"target_episodes": 50, "episodes": 50},
             }
         ),
         encoding="utf-8",
     )
-    # No timeseries/checkpoints: non-MAAC should still trust a clean results.json.
     assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
 
 
 def test_maac_complete_without_per_episode_checkpoints(tmp_path: Path):
-    # MAAC finished (results.json valid) but only a rolling model.pt remains (no
-    # checkpoint_episode_N.pt). max_ckpt==0 -> trust results.json instead of demoting.
+    # MAAC finished (results.json + KPI audit) but only a rolling model.pt remains.
     data = tmp_path / "data"
     ckpt = tmp_path / "checkpoints"
     data.mkdir(parents=True)
@@ -162,6 +167,8 @@ def test_maac_complete_without_per_episode_checkpoints(tmp_path: Path):
             {
                 "algorithm": "MAAC",
                 "episodes_recorded": 50,
+                "citylearn_v3_report": {"all_values": {"cost": 1.0}},
+                "artifact_audit": {"episode_summaries": [{}] * 50},
                 "hyperparameters": {"target_episodes": 50, "episodes": 50},
             }
         ),
@@ -552,6 +559,8 @@ def test_preview_matches_skip_for_complete_masac(tmp_path: Path):
             {
                 "algorithm": "MASAC",
                 "episodes_recorded": 50,
+                "citylearn_v3_report": {"all_values": {"cost": 1.0}},
+                "artifact_audit": {"episode_summaries": [{}] * 50},
                 "hyperparameters": {"target_episodes": 50, "episodes": 50},
             }
         ),
@@ -635,6 +644,19 @@ def test_happo_stale_live_progress_does_not_inflate_resume(tmp_path: Path):
         writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
         writer.writeheader()
         writer.writerows(rows)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "hyperparameters": {
+                    "target_episodes": target,
+                    "episodes": target,
+                    "n_rollout_threads": 12,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
     (tmp_path / "live_progress.json").write_text(
         json.dumps(
             {
@@ -774,6 +796,29 @@ def test_happo_live_progress_episode_ahead_of_global_step(tmp_path: Path):
     assert plan["remaining_episodes"] == 46
 
 
+def test_kpi_audited_results_skip_without_checkpoints(tmp_path: Path):
+    data = tmp_path / "data"
+    data.mkdir(parents=True)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "MASAC",
+                "episodes_recorded": 50,
+                "citylearn_v3_report": {"all_values": {"cost": 1.0}},
+                "artifact_audit": {"episode_summaries": [{}] * 50},
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert job_counts_as_launcher_complete(tmp_path, target_episodes=50) is True
+    dec = preview_job_launcher_decision(
+        tmp_path, algorithm="masac", target_episodes=50, episode_time_steps=8760
+    )
+    assert dec["skip"] is True
+    assert dec["action"] == "skip"
+
+
 def test_resolve_existing_prefers_legacy_with_artifacts(tmp_path: Path):
     """Empty canonical HAPPO/E1 must not hide populated happo/E1_seed_0 on Drive."""
     run_root = tmp_path / "madrl_v3_run"
@@ -808,8 +853,8 @@ def test_launcher_run_dir_finds_legacy_not_empty_canonical(tmp_path: Path):
     import colab_a100_official_launcher as launcher
 
     run_root = tmp_path / "madrl_v3_20260627_164047"
-    (run_root / "HAPPO" / "E1").mkdir(parents=True)
-    legacy = run_root / "happo" / "E1_seed_0" / "data"
+    (run_root / "MASAC" / "E1").mkdir(parents=True)
+    legacy = run_root / "masac" / "E1_seed_0" / "data"
     legacy.mkdir(parents=True)
     (legacy / "results.json").write_text(
         json.dumps(
@@ -838,6 +883,8 @@ def test_build_jobs_resume_report_counts(tmp_path: Path):
             {
                 "algorithm": "MASAC",
                 "episodes_recorded": 50,
+                "citylearn_v3_report": {"all_values": {"cost": 1.0}},
+                "artifact_audit": {"episode_summaries": [{}] * 50},
                 "hyperparameters": {"target_episodes": 50, "episodes": 50},
             }
         ),
@@ -914,6 +961,8 @@ if __name__ == "__main__":
         test_happo_stale_live_progress_does_not_inflate_resume(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_live_progress_episode_ahead_of_global_step(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_kpi_audited_results_skip_without_checkpoints(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_resolve_existing_prefers_legacy_with_artifacts(Path(td))
     with tempfile.TemporaryDirectory() as td:

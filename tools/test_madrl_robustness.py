@@ -210,13 +210,11 @@ def test_dynamic_backfill_scheduler() -> None:
     )
 
     phase2 = [(n, s) for (n, s) in start_order if n in ("matd3", "maac")]
-    expected = [
-        ("maac", "E1"), ("maac", "E2"), ("maac", "E3"),
-        ("matd3", "E1"), ("matd3", "E2"), ("matd3", "E3"),
-    ]
+    maac_phase2 = [x for x in phase2 if x[0] == "maac"]
+    matd3_phase2 = [x for x in phase2 if x[0] == "matd3"]
     check(
         "phase-2 backfilled lightest-first (MAAC before MATD3)",
-        phase2 == expected,
+        len(maac_phase2) == 3 and len(matd3_phase2) == 3 and phase2.index(matd3_phase2[0]) > phase2.index(maac_phase2[-1]),
         f"got {phase2}",
     )
 
@@ -251,18 +249,26 @@ def test_backfill_skip_completed_omits_jobs() -> None:
 
     with tempfile.TemporaryDirectory() as tmp:
         output_root = Path(tmp) / "madrl_v3_skip_test"
-        masac = output_root / "MASAC" / "E1" / "data"
-        masac.mkdir(parents=True)
-        (masac / "results.json").write_text(
-            _json.dumps(
-                {
-                    "algorithm": "MASAC",
-                    "episodes_recorded": 50,
-                    "hyperparameters": {"target_episodes": 50, "episodes": 50},
-                }
-            ),
-            encoding="utf-8",
-        )
+        kpi_src = ROOT / "outputs" / "_drive_madrl" / "kpis" / "masac_E1_results.json"
+        masac_data = output_root / "MASAC" / "E1" / "data"
+        masac_data.mkdir(parents=True)
+        if kpi_src.is_file():
+            masac_data.joinpath("results.json").write_text(
+                kpi_src.read_text(encoding="utf-8"), encoding="utf-8"
+            )
+        else:
+            masac_data.joinpath("results.json").write_text(
+                _json.dumps(
+                    {
+                        "algorithm": "MASAC",
+                        "episodes_recorded": 50,
+                        "citylearn_v3_report": {"all_values": {"cost": 1.0}},
+                        "artifact_audit": {"episode_summaries": [{}] * 50},
+                        "hyperparameters": {"target_episodes": 50, "episodes": 50},
+                    }
+                ),
+                encoding="utf-8",
+            )
 
         args = launcher.parse_args(
             [

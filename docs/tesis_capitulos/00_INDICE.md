@@ -18,8 +18,8 @@
 | 2 | `Capitulo_2_Marco_Teorico.md` | Estado del arte (4 ejes), bases teóricas (Dec-POMDP, CTDE, 4 algoritmos), tabla de trabajos relacionados, *gap analysis* | Completo · placeholders menores |
 | 3 | `Capitulo_3_Metodologia.md` | Tipo/diseño, variables, muestreo, **dataset Iquitos** (17 edificios, 222 CSV, 26 304 h, DER), técnicas, instrumentos, procedimiento (12 corridas) | Completo · placeholders menores |
 | 4 | `Capitulo_4_Desarrollo_Propuesta.md` | Arquitectura 6 capas, Dec-POMDP, CTDE, recompensa multiobjetivo (ecuaciones + pesos), hiperparámetros reales por algoritmo (v4 y canónico), 4 aportes al motor | Completo · placeholders menores |
-| 5 | `Capitulo_5_Resultados.md` | 12 corridas v4, métricas, ranking (MATD3 0.7445), comparación con baseline, estadística (KW p=0.0459), figuras, discusión | Con placeholders pendientes (corrida canónica) |
-| 6 | `Capitulo_6_Conclusiones.md` | Hallazgos por OG/OE, limitaciones, trabajo pendiente, plan de culminación (H1-H7) | Completo · placeholders de cierre |
+| 5 | `Capitulo_5_Resultados.md` | Corrida Colab/Drive, métricas, ranking (MATD3 0.6667), KPIs OE.1–OE.3, comparación baseline, estadística (v4 + Colab pendiente), figuras, discusión | Integrado (cobertura parcial 40/11/12 ep) |
+| 6 | `Capitulo_6_Conclusiones.md` | Hallazgos por OG/OE (Colab), limitaciones, trabajo pendiente, plan de culminación (H1-H7) | Actualizado · pendientes de cierre |
 | R | `Referencias_APA.md` | ~55 referencias APA (A-F), marcas ✓ / `[PV]` | Consolidado · ~10 `[PV]` por verificar |
 
 ---
@@ -30,8 +30,8 @@
 - **Capítulo 2 — Marco teórico.** Sintetiza 50 antecedentes en 4 ejes, formaliza Dec-POMDP y CTDE, y describe técnicamente HAPPO/MASAC/MATD3/MAAC con sus backends (`external/HARL`, `MARL/src`, `off-policy`, `MAAC`). Identifica la brecha: ausencia de benchmark unificado de los 4 algoritmos en 3 ejes.
 - **Capítulo 3 — Metodología.** Estudio cuantitativo, aplicado, comparativo, no experimental. Detalla el dataset real de Iquitos (pipeline de 10 etapas, fuentes PVGIS/NASA POWER, destilación de facturación) y el procedimiento de 12 corridas con sus gates de validación y las 4 pruebas estadísticas.
 - **Capítulo 4 — Desarrollo de la propuesta.** Arquitectura por capas; formulación Dec-POMDP (17 agentes, γ=0.9999, T=8 760; observaciones y acciones heterogéneas por edificio, 57-330 obs y 5-44 acciones según cargadores EV); recompensa multiobjetivo con pesos por escenario (E1 0.70/0.15/0.15; E2 0.15/0.70/0.15; E3 0.25/0.15/0.60) y perfil unificado (r=0.70, peak 0.45, ramp 0.35, ev 0.25); hiperparámetros reales (v4 local vs canónico de 50 ep en Colab H100/A100, protocolo `two_phase_happo_masac_v3`, tomados de la celda 6.1 del notebook); 4 aportes al motor (A1-A4).
-- **Capítulo 5 — Resultados.** Corrida v4 completada (12/12, ~39 h en RTX 4060). **MATD3** es el mejor MADRL global (score 0.7445; KW p=0.0459; MATD3>HAPPO MWU p=0.0182, Wilcoxon p=2.62e-6). HAPPO lidera flexibilidad pura (OE.1); MATD3 lidera CO₂/costos (E2/E3). Resultados preliminares (5 episodios, semilla única).
-- **Capítulo 6 — Conclusiones preliminares.** Responde OG/OE con evidencia; limitaciones (cómputo, semilla única, servicio EV); trabajo pendiente (corrida canónica de 50 ep en Colab H100/A100, protocolo `two_phase_happo_masac_v3` —en curso—, reemplazo de los resultados preliminares de 5 ep, multi-semilla, Pareto, Optuna); plan H1-H7.
+- **Capítulo 5 — Resultados.** Corrida canónica Colab/Drive `madrl_v3_20260627_164047` (GPU RTX PRO 6000 Blackwell). **MATD3** es el mejor MADRL global entre algoritmos evaluables (score 0.6667; 40/50 ep con KPIs). MAAC lidera costos (OE.3); MASAC con 12 ep parcial. HAPPO sin KPIs finales (error evaluación). Corrida local v4 (5 ep) conservada como referencia (KW p=0.0459).
+- **Capítulo 6 — Conclusiones.** Responde OG/OE con evidencia Colab; limitaciones (cobertura parcial, semilla única, HAPPO); trabajo pendiente (50 ep completos, re-eval HAPPO, estadística Colab, multi-semilla, Pareto); plan H1-H7.
 - **Referencias APA.** Lista consolidada; pendiente completar entradas `[PV]`.
 
 ---
@@ -44,12 +44,11 @@
 | 2 | Sí | datos `[PV]`; benchmarks 2025-2026 |
 | 3 | Sí | nº semillas; episodios objetivo |
 | 4 | Sí | composición de 1856 dims de estado |
-| 5 | **Parcial** | scores exactos por algoritmo; KPIs OE normalizados; % mejora vs baseline; MWU/Wilcoxon pares restantes; figuras |
-| 6 | Sí | confirmación con corrida canónica |
+| 5 | **Integrado** | 50 ep completos; HAPPO re-eval; estadística Colab; % mejora vs baseline; figuras Drive |
+| 6 | Sí | confirmación con 50 ep + HAPPO |
 | Ref. | Sí | ~10 entradas `[PV]` |
 
-**Recomendación de uso:** abrir cada archivo en Perplexity, ejecutar el bloque "PROMPT PARA PERPLEXITY" para pulir a versión final, y completar primero los placeholders del Capítulo 5 tras la corrida canónica de 50 episodios.
+**Recomendación de uso:** abrir cada archivo en Perplexity, ejecutar el bloque "PROMPT PARA PERPLEXITY" para pulir a versión final, y completar los placeholders restantes del Capítulo 5 (50 ep completos, HAPPO, estadística Colab, figuras).
 
-> **Aviso sobre los resultados del Capítulo 5 (preliminares).** Las cifras actuales del Capítulo 5 provienen de la corrida local preliminar de **5 episodios**. La **corrida canónica de 50 episodios** se está ejecutando en Google Colab bajo el protocolo `two_phase_happo_masac_v3` (GPU objetivo H100 primaria, ~26 vCPU; A100-SXM4-80GB y RTX PRO 6000 Blackwell compatibles; `gamma=0.9999`, `hidden_size` 512/768; tiempo de pared estimado ~20 h; ver celda 6.1 del notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`). Al finalizar, se deben **reemplazar** los resultados preliminares de 5 episodios por los de 50 episodios, recalcular los KPIs normalizados, las pruebas estadísticas y los % de mejora vs baseline, e insertar las figuras `.png` definitivas.
->
-> **Integración de resultados de Colab/Drive.** Los artefactos de la corrida canónica (results.json, training_summary.json, comparativas y figuras) persisten en Google Drive en `MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_<timestamp>/` (con subcarpetas `{ALGORITMO}/E{1,2,3}/`) y se analizan con las celdas 8.1 (carga de los 12 `results.json` en un DataFrame de KPIs) y 9.1 (Kruskal-Wallis, Mann-Whitney U y ranking global) del notebook. A la fecha de esta edición, la carpeta de Drive **no es accesible automáticamente** (responde HTTP 401): requiere compartirla como "Cualquier persona con el enlace" o realizar una descarga manual al repositorio. Mientras tanto, el Capítulo 5 mantiene los resultados preliminares de 5 episodios con marcadores explícitos `[REEMPLAZAR con resultados de la corrida canónica de 50 episodios en Colab]`.
+> **Resultados del Capítulo 5 (Colab/Drive).** Las cifras principales provienen de la corrida canónica `madrl_v3_20260627_164047` en Google Colab (protocolo `two_phase_happo_masac_v3`, GPU RTX PRO 6000 Blackwell). KPIs descargados a `outputs/_drive_madrl/kpis/` y agregados en `outputs/madrl_v3_20260627_164047/resumen_comparativo/best_madrl_report.json`. Cobertura parcial: MATD3 40/50 ep, MAAC 11/50, MASAC 12/50, HAPPO sin KPIs finales. La corrida local v4 (5 ep) se mantiene como referencia de validación y estadística preliminar (KW p=0.0459).
+

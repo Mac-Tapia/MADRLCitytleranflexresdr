@@ -145,7 +145,7 @@ La corrida canónica se ejecuta en Google Colab (High-RAM, ~167 GiB) bajo el pro
 | `tau` | — | 0.005 | 0.005 | 5e-3 |
 | Específicos | clip 0.2, GAE 0.95, `update_epochs` 5, `n_rollout_threads` 2 (auto), `share_param` False | `action_bins` 3 `axis` (89 acciones discretas), `update_frequency` 2, `actor_sample_times` 10 | `policy_noise` 0.2, `noise_clip` 0.5, `policy_delay` 2, `train_interval` 50 | `attention_heads` 4, `steps_per_update` 50, `num_updates` 12, `reward_scale` 10.0, `action_bins` 3 |
 
-> Nota: estos valores corresponden a la corrida canónica de 50 episodios en Colab (celda 6.1 del notebook, protocolo `two_phase_happo_masac_v3`) y difieren de la corrida v4 local (tabla 4.5.1), ajustada a los 8 GB de VRAM de una RTX 4060 Laptop. El Capítulo 5 todavía reporta resultados preliminares de la corrida v4 (5 episodios); se reemplazarán al concluir la corrida canónica, cuyos artefactos persisten en Google Drive (`MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_<timestamp>/`, con subcarpetas `{ALGORITMO}/E{1,2,3}/`) y se integrarán al repositorio para el análisis.
+> Nota: estos valores corresponden a la corrida canónica de 50 episodios en Colab (celda 6.1 del notebook, protocolo `two_phase_happo_masac_v3`) y difieren de la corrida v4 local (tabla 4.5.1), ajustada a los 8 GB de VRAM de una RTX 4060 Laptop. El Capítulo 5 reporta resultados de la corrida Colab/Drive `madrl_v3_20260627_164047` (cobertura parcial; ver Cap. 5).
 
 ## 4.6 Aportes originales al motor de simulación (CityLearn fork)
 

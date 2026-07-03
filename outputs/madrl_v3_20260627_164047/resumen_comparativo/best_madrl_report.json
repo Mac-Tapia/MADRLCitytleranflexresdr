@@ -1,0 +1,64 @@
+{
+  "mejor_madrl": "MATD3",
+  "fuente": "colab_drive",
+  "run_id": "madrl_v3_20260627_164047",
+  "drive_folder": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+  "target_episodes": 50,
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition (Colab)",
+  "nota_episodios": "MATD3: 40/50 con KPIs auditados; MAAC: 11; MASAC: 12; HAPPO: 49/50 sin KPIs finales (error VecEnvWrapper en evaluacion).",
+  "ranking": [
+    {
+      "algorithm": "MATD3",
+      "score_oe1_flex": 1.0,
+      "score_oe2_co2": 1.0,
+      "score_oe3_cost": 0.0,
+      "score_global": 0.6667,
+      "episodes_e1": 40,
+      "episodes_e2": 40,
+      "episodes_e3": 40,
+      "rank": 1,
+      "selected": true
+    },
+    {
+      "algorithm": "MAAC",
+      "score_oe1_flex": 0.5837,
+      "score_oe2_co2": 0.1282,
+      "score_oe3_cost": 1.0,
+      "score_global": 0.5706,
+      "episodes_e1": 11,
+      "episodes_e2": 11,
+      "episodes_e3": 11,
+      "rank": 2,
+      "selected": false
+    },
+    {
+      "algorithm": "MASAC",
+      "score_oe1_flex": 0.0,
+      "score_oe2_co2": 0.0,
+      "score_oe3_cost": 0.0,
+      "score_global": 0.0,
+      "episodes_e1": 12,
+      "episodes_e2": 12,
+      "episodes_e3": 12,
+      "rank": 3,
+      "selected": false
+    }
+  ],
+  "kpis_primarios": {
+    "flex_composite_e1": {
+      "MASAC": 1.028552547361268,
+      "MATD3": 1.0009229901555254,
+      "MAAC": 1.0124257995412176
+    },
+    "co2_delta_kg_e2": {
+      "MASAC": 77648.98780810599,
+      "MATD3": 23070.418478806503,
+      "MAAC": 70654.19071758597
+    },
+    "cost_delta_eur_e3": {
+      "MATD3": 44399.364069434494,
+      "MAAC": 9515.151784724349
+    }
+  },
+  "generated_at": "2026-07-03T01:55:31.155453+00:00"
+}

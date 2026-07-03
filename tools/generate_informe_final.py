@@ -9,6 +9,15 @@ from datetime import datetime
 
 REPO = Path("d:/MADRLCitytleranflexresdr")
 V4   = REPO / "outputs/citylearn_v3_madrl_full_20260615_074011_v4"
+COLAB = REPO / "outputs/madrl_v3_20260627_164047"
+COLAB_REPORT = COLAB / "resumen_comparativo/best_madrl_report.json"
+
+def _load_colab_report() -> dict:
+    if COLAB_REPORT.exists():
+        return json.loads(COLAB_REPORT.read_text(encoding="utf-8"))
+    return {}
+
+_colab = _load_colab_report()
 
 informe = {
     "meta": {
@@ -287,29 +296,41 @@ informe = {
     ],
 
     "18_mejor_madrl_seleccionado": {
-        "algoritmo": "MATD3",
-        "fuente": "Corrida oficial v4 (2026-06-15, local RTX 4060, 75 episodios)",
-        "score_global": 0.7445,
-        "kruskal_wallis_p": 0.0459,
-        "significativo_estadisticamente": True,
-        "ranking": [
-            {"rank": 1, "algorithm": "MATD3", "score": 0.7445,
+        "algoritmo": _colab.get("mejor_madrl", "MATD3"),
+        "fuente": (
+            f"Corrida canónica Colab/Drive ({_colab.get('run_id', 'madrl_v3_20260627_164047')}, "
+            f"{_colab.get('gpu', 'RTX PRO 6000 Blackwell')})"
+            if _colab
+            else "Corrida oficial v4 (2026-06-15, local RTX 4060, 5 episodios)"
+        ),
+        "score_global": _colab.get("ranking", [{}])[0].get("score_global", 0.7445) if _colab else 0.7445,
+        "kruskal_wallis_p": "Pendiente (celda 9.1 Colab)" if _colab else 0.0459,
+        "significativo_estadisticamente": False if _colab else True,
+        "nota_episodios": _colab.get(
+            "nota_episodios",
+            "MATD3 40/50; MAAC 11/50; MASAC 12/50; HAPPO sin KPIs finales",
+        ),
+        "drive_folder": _colab.get(
+            "drive_folder",
+            "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        ),
+        "ranking": _colab.get("ranking") if _colab else [
+            {"rank": 1, "algorithm": "MATD3", "score_global": 0.7445,
              "justificacion": "Mejor reduccion de picos demanda + convergencia consistente 3 escenarios"},
-            {"rank": 2, "algorithm": "MASAC", "score": 0.73,
+            {"rank": 2, "algorithm": "MASAC", "score_global": 0.73,
              "justificacion": "Mejor CO2 y costo energetico"},
-            {"rank": 3, "algorithm": "MAAC",  "score": 0.72,
+            {"rank": 3, "algorithm": "MAAC",  "score_global": 0.72,
              "justificacion": "Buena atencion multiagente, menor convergencia"},
-            {"rank": 4, "algorithm": "HAPPO", "score": 0.70,
+            {"rank": 4, "algorithm": "HAPPO", "score_global": 0.70,
              "justificacion": "On-policy, lento en convergencia vs off-policy"},
         ],
-        "kpis_principales_v4": {
-            "MATD3_peak_average_mean": 1.0138,
-            "MASAC_peak_average_mean": 1.1167,
-            "MAAC_peak_average_mean":  1.0840,
-            "HAPPO_peak_average_mean": 1.1669,
-            "nota": "menor = mejor (KPIs son ratios vs baseline RBC)",
+        "kpis_primarios_colab": _colab.get("kpis_primarios", {}),
+        "ranking_v4_referencia": {
+            "score_global": 0.7445,
+            "kruskal_wallis_p": 0.0459,
+            "fuente": "citylearn_v3_madrl_full_20260615_074011_v4 (5 ep local)",
         },
-        "instruccion": "Ejecutar cell 9.1 tras el entrenamiento para ranking propio del run",
+        "instruccion": "Ejecutar cell 9.1 tras completar 50 ep y re-evaluar HAPPO para ranking estadistico definitivo",
     },
 
     "19_conclusion_final": {
@@ -324,7 +345,9 @@ informe = {
             "PPO/SAC/A2C correctamente aislados como benchmarks CityLearn v2 + SB3. "
             "MADDPG y MAPPO excluidos como baseline oficial. "
             "Google Colab con GPU A100 preparado. "
-            "Mejor MADRL seleccionado: MATD3 (Score=0.7445, KW p=0.0459)."
+            "Mejor MADRL seleccionado: MATD3 "
+            f"(Score Colab={_colab.get('ranking', [{}])[0].get('score_global', 'N/A') if _colab else 0.7445}; "
+            f"KW v4 p=0.0459)."
         ),
         "mejor_madrl": "MATD3",
     },

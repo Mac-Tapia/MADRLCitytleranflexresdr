@@ -229,6 +229,31 @@ def upload_file(
 
 
 @mcp.tool()
+def folder_size(
+    folder_id: str | None = None,
+    folder_path: str | None = None,
+    max_depth: int = 12,
+) -> dict[str, Any]:
+    """
+    Tamaño real (bytes/GB) de una carpeta en Drive, sumando todos los archivos.
+
+    Args:
+        folder_id: ID de carpeta (ej. 1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX)
+        folder_path: Ruta bajo My Drive (ej. MADRLCitytleranflexresdr/outputs)
+        max_depth: Profundidad máxima de recursión (default 12)
+    """
+    try:
+        return _client().folder_size(
+            folder_id=folder_id,
+            folder_path=folder_path,
+            max_depth=max_depth,
+            include_breakdown=True,
+        )
+    except Exception as exc:
+        return {"error": str(exc)}
+
+
+@mcp.tool()
 def create_folder(
     name: str,
     parent_folder_path: str | None = None,

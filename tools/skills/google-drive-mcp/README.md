@@ -61,6 +61,7 @@ La primera ejecución crea el venv en `tools/skills/google-drive-mcp/.venv`.
 | `search_files` | Buscar por nombre |
 | `get_file_info` | Metadatos por file ID |
 | `resolve_folder_path` | Ruta → ID de carpeta |
+| `folder_size` | Tamaño real GB (recursivo) por carpeta y desglose hijos |
 | `download_file` | Descargar a disco local |
 | `read_file_content` | Leer texto/JSON pequeño inline |
 | `upload_file` | Subir archivo local |

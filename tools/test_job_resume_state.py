@@ -14,7 +14,9 @@ from citylearn_v3_training_common import (  # noqa: E402
     infer_completed_episodes_from_live_progress,
     job_counts_as_launcher_complete,
     job_has_final_results,
+    job_run_dir_for_launcher,
     preview_job_launcher_decision,
+    resolve_existing_job_run_dir,
     resolve_job_run_dir,
 )
 
@@ -772,6 +774,58 @@ def test_happo_live_progress_episode_ahead_of_global_step(tmp_path: Path):
     assert plan["remaining_episodes"] == 46
 
 
+def test_resolve_existing_prefers_legacy_with_artifacts(tmp_path: Path):
+    """Empty canonical HAPPO/E1 must not hide populated happo/E1_seed_0 on Drive."""
+    run_root = tmp_path / "madrl_v3_run"
+    empty_canonical = run_root / "HAPPO" / "E1"
+    legacy = run_root / "happo" / "E1_seed_0"
+    empty_canonical.mkdir(parents=True)
+    data = legacy / "data"
+    data.mkdir(parents=True)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "episodes_recorded": 50,
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    resolved = resolve_existing_job_run_dir(run_root, "happo", "E1", 0)
+    assert resolved == legacy
+
+    launcher_dir = job_run_dir_for_launcher(run_root, "happo", "E1", 0, create_if_missing=False)
+    assert launcher_dir == legacy
+    assert job_counts_as_launcher_complete(
+        legacy, target_episodes=50, output_root=run_root
+    ) is False  # minimal results without KPI audit — still finds the right folder
+
+
+def test_launcher_run_dir_finds_legacy_not_empty_canonical(tmp_path: Path):
+    """run_dir() must attach to the artifact tree, not an empty canonical stub."""
+    import colab_a100_official_launcher as launcher
+
+    run_root = tmp_path / "madrl_v3_20260627_164047"
+    (run_root / "HAPPO" / "E1").mkdir(parents=True)
+    legacy = run_root / "happo" / "E1_seed_0" / "data"
+    legacy.mkdir(parents=True)
+    (legacy / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "MASAC",
+                "episodes_recorded": 50,
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    path = launcher.run_dir(run_root, "masac", "E1", 0)
+    assert path.name == "E1_seed_0" or "E1_seed_0" in str(path)
+
+
 def test_build_jobs_resume_report_counts(tmp_path: Path):
     """build_jobs_resume_report aggregates skip/resume/pending across the 12 jobs."""
     import csv
@@ -860,6 +914,10 @@ if __name__ == "__main__":
         test_happo_stale_live_progress_does_not_inflate_resume(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_happo_live_progress_episode_ahead_of_global_step(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_resolve_existing_prefers_legacy_with_artifacts(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_launcher_run_dir_finds_legacy_not_empty_canonical(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_build_jobs_resume_report_counts(Path(td))
     print("OK: test_job_resume_state")

@@ -203,6 +203,136 @@ class DriveClient:
         )
         return self._format_file(created)
 
+    def folder_size(
+        self,
+        folder_id: str | None = None,
+        folder_path: str | None = None,
+        max_depth: int = 12,
+        include_breakdown: bool = True,
+    ) -> dict[str, Any]:
+        """
+        Recursively sum file sizes under a Drive folder.
+
+        Folders do not expose a size in Drive API; this walks the tree and
+        sums each file's ``size`` metadata field.
+        """
+        root_id = folder_id or self._resolve_folder_path(folder_path)
+        root_meta = self.get_file_info(root_id)
+        totals = self._folder_size_recursive(
+            root_id,
+            max_depth=max_depth,
+            include_breakdown=include_breakdown,
+        )
+        return {
+            "folder_id": root_id,
+            "folder_name": root_meta.get("name"),
+            "folder_path": folder_path,
+            "total_bytes": totals["total_bytes"],
+            "total_gb": totals["total_bytes"] / 1e9,
+            "file_count": totals["file_count"],
+            "folder_count": totals["folder_count"],
+            "max_depth": max_depth,
+            "by_child": totals.get("by_child", []),
+        }
+
+    def _folder_size_recursive(
+        self,
+        folder_id: str,
+        *,
+        max_depth: int,
+        include_breakdown: bool,
+        _depth: int = 0,
+    ) -> dict[str, Any]:
+        if _depth > max_depth:
+            return {
+                "total_bytes": 0,
+                "file_count": 0,
+                "folder_count": 0,
+                "by_child": [],
+                "truncated": True,
+            }
+
+        total_bytes = 0
+        file_count = 0
+        folder_count = 0
+        by_child: list[dict[str, Any]] = []
+
+        page_token: str | None = None
+        while True:
+            results = (
+                self._service.files()
+                .list(
+                    q=f"'{folder_id}' in parents and trashed = false",
+                    pageSize=1000,
+                    pageToken=page_token,
+                    fields="nextPageToken, files(id, name, mimeType, size)",
+                    supportsAllDrives=True,
+                    includeItemsFromAllDrives=True,
+                )
+                .execute()
+            )
+            for item in results.get("files", []):
+                if item.get("mimeType") == FOLDER_MIME:
+                    folder_count += 1
+                    if include_breakdown and _depth == 0:
+                        child = self._folder_size_recursive(
+                            item["id"],
+                            max_depth=max_depth,
+                            include_breakdown=False,
+                            _depth=_depth + 1,
+                        )
+                        by_child.append(
+                            {
+                                "id": item.get("id"),
+                                "name": item.get("name"),
+                                "is_folder": True,
+                                "total_bytes": child["total_bytes"],
+                                "total_gb": child["total_bytes"] / 1e9,
+                                "file_count": child["file_count"],
+                                "folder_count": child["folder_count"],
+                            }
+                        )
+                        total_bytes += child["total_bytes"]
+                        file_count += child["file_count"]
+                        folder_count += child["folder_count"]
+                    else:
+                        child = self._folder_size_recursive(
+                            item["id"],
+                            max_depth=max_depth,
+                            include_breakdown=False,
+                            _depth=_depth + 1,
+                        )
+                        total_bytes += child["total_bytes"]
+                        file_count += child["file_count"]
+                        folder_count += child["folder_count"]
+                else:
+                    size = int(item.get("size") or 0)
+                    total_bytes += size
+                    file_count += 1
+                    if include_breakdown and _depth == 0:
+                        by_child.append(
+                            {
+                                "id": item.get("id"),
+                                "name": item.get("name"),
+                                "is_folder": False,
+                                "total_bytes": size,
+                                "total_gb": size / 1e9,
+                                "file_count": 1,
+                                "folder_count": 0,
+                            }
+                        )
+            page_token = results.get("nextPageToken")
+            if not page_token:
+                break
+
+        by_child.sort(key=lambda row: row["total_bytes"], reverse=True)
+        return {
+            "total_bytes": total_bytes,
+            "file_count": file_count,
+            "folder_count": folder_count,
+            "by_child": by_child,
+        }
+
     def create_folder(
         self,
         name: str,

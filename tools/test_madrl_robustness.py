@@ -242,6 +242,73 @@ def test_dynamic_backfill_scheduler() -> None:
     check("scheduler surfaces a job failure (rc != 0)", rc2 != 0, f"rc2={rc2}")
 
 
+def test_backfill_skip_completed_omits_jobs() -> None:
+    """Completed MASAC jobs must not enter the thread pool when --skip-completed."""
+    print("\n[5b] backfill skip-completed omits complete jobs")
+    import json as _json
+
+    import colab_a100_official_launcher as launcher
+
+    with tempfile.TemporaryDirectory() as tmp:
+        output_root = Path(tmp) / "madrl_v3_skip_test"
+        masac = output_root / "MASAC" / "E1" / "data"
+        masac.mkdir(parents=True)
+        (masac / "results.json").write_text(
+            _json.dumps(
+                {
+                    "algorithm": "MASAC",
+                    "episodes_recorded": 50,
+                    "hyperparameters": {"target_episodes": 50, "episodes": 50},
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        args = launcher.parse_args(
+            [
+                "--scenario", "E1",
+                "--episodes", "50",
+                "--episode-time-steps", "8760",
+                "--no-cuda",
+                "--no-require-a100",
+                "--skip-gpu-preflight",
+                "--skip-completed",
+            ]
+        )
+        launcher._sync_six_job_masac_defaults(args)
+        root = ROOT
+        schema_arg = "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json"
+        jobs = launcher.build_jobs(args, root, output_root, schema_arg)
+        started: list[tuple[str, str]] = []
+
+        def fake_run(*, job, **kw):
+            started.append((str(job["name"]), str(job["scenario"])))
+            return 0
+
+        original = launcher.run_job_with_retry
+        launcher.run_job_with_retry = fake_run
+        try:
+            rc = launcher.run_dynamic_backfill_jobs(
+                root=root,
+                manifest={"jobs": []},
+                status_path=output_root / "status.json",
+                jobs=jobs,
+                output_root=output_root,
+                log_dir=output_root / "logs",
+                args=args,
+            )
+        finally:
+            launcher.run_job_with_retry = original
+
+        check("skip backfill returns 0", rc == 0, f"rc={rc}")
+        check(
+            "MASAC/E1 not submitted when complete",
+            ("masac", "E1") not in started,
+            f"started={started}",
+        )
+        check("other E1 jobs still run", len(started) >= 1, f"started={started}")
+
+
 # ---------------------------------------------------------------------------
 # Test 6 — Drive durability helpers + resume safety. Proves recent checkpoints
 # get flushed to durable storage and that a resume never proceeds without real
@@ -307,6 +374,7 @@ def main() -> int:
     test_sigkill_exit_detection()
     test_all_algos_have_salvage()
     test_dynamic_backfill_scheduler()
+    test_backfill_skip_completed_omits_jobs()
     test_drive_durability_and_resume_safety()
 
     print("\n" + "=" * 72)

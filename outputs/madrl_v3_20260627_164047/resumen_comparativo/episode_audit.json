@@ -20,24 +20,8 @@
       "file": "happo_E2_results.json",
       "algorithm": "HAPPO",
       "filename_scenario": "E2",
-      "true_scenario": "E3",
-      "name_mismatch": true,
-      "episodes_field": null,
-      "episodes_recorded": null,
-      "episode_summaries": 0,
-      "resume_done": 49,
-      "resume_target": 50,
-      "status": "completed_with_salvage",
-      "has_kpis": false,
-      "salvage": "NameError: name 'VecEnvWrapper' is not defined",
-      "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E3"
-    },
-    {
-      "file": "happo_E3_results.json",
-      "algorithm": "HAPPO",
-      "filename_scenario": "E3",
       "true_scenario": "E2",
-      "name_mismatch": true,
+      "name_mismatch": false,
       "episodes_field": null,
       "episodes_recorded": null,
       "episode_summaries": 0,
@@ -47,6 +31,22 @@
       "has_kpis": false,
       "salvage": "NameError: name 'VecEnvWrapper' is not defined",
       "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E2"
+    },
+    {
+      "file": "happo_E3_results.json",
+      "algorithm": "HAPPO",
+      "filename_scenario": "E3",
+      "true_scenario": "E3",
+      "name_mismatch": false,
+      "episodes_field": null,
+      "episodes_recorded": null,
+      "episode_summaries": 0,
+      "resume_done": 49,
+      "resume_target": 50,
+      "status": "completed_with_salvage",
+      "has_kpis": false,
+      "salvage": "NameError: name 'VecEnvWrapper' is not defined",
+      "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E3"
     },
     {
       "file": "maac_E1_results.json",
@@ -84,8 +84,8 @@
       "file": "maac_E3_results.json",
       "algorithm": "MAAC",
       "filename_scenario": "E3",
-      "true_scenario": "E2",
-      "name_mismatch": true,
+      "true_scenario": "E3",
+      "name_mismatch": false,
       "episodes_field": 11,
       "episodes_recorded": 50,
       "episode_summaries": 50,
@@ -94,7 +94,7 @@
       "status": "ok",
       "has_kpis": true,
       "salvage": null,
-      "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MAAC/E2"
+      "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MAAC/E3"
     },
     {
       "file": "masac_E1_results.json",
@@ -116,24 +116,8 @@
       "file": "masac_E2_results.json",
       "algorithm": "MASAC",
       "filename_scenario": "E2",
-      "true_scenario": "E1",
-      "name_mismatch": true,
-      "episodes_field": 12,
-      "episodes_recorded": 50,
-      "episode_summaries": 50,
-      "resume_done": 38,
-      "resume_target": 50,
-      "status": "ok",
-      "has_kpis": true,
-      "salvage": null,
-      "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E1"
-    },
-    {
-      "file": "masac_E3_results.json",
-      "algorithm": "MASAC",
-      "filename_scenario": "E3",
       "true_scenario": "E2",
-      "name_mismatch": true,
+      "name_mismatch": false,
       "episodes_field": 12,
       "episodes_recorded": 50,
       "episode_summaries": 50,
@@ -143,6 +127,22 @@
       "has_kpis": true,
       "salvage": null,
       "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2"
+    },
+    {
+      "file": "masac_E3_results.json",
+      "algorithm": "MASAC",
+      "filename_scenario": "E3",
+      "true_scenario": "E3",
+      "name_mismatch": false,
+      "episodes_field": 12,
+      "episodes_recorded": 50,
+      "episode_summaries": 50,
+      "resume_done": 38,
+      "resume_target": 50,
+      "status": "ok",
+      "has_kpis": true,
+      "salvage": null,
+      "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3"
     },
     {
       "file": "matd3_E1_results.json",
@@ -211,28 +211,12 @@
         "salvage": "NameError: name 'VecEnvWrapper' is not defined",
         "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1"
       },
-      "E3": {
+      "E2": {
         "file": "happo_E2_results.json",
         "algorithm": "HAPPO",
         "filename_scenario": "E2",
-        "true_scenario": "E3",
-        "name_mismatch": true,
-        "episodes_field": null,
-        "episodes_recorded": null,
-        "episode_summaries": 0,
-        "resume_done": 49,
-        "resume_target": 50,
-        "status": "completed_with_salvage",
-        "has_kpis": false,
-        "salvage": "NameError: name 'VecEnvWrapper' is not defined",
-        "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E3"
-      },
-      "E2": {
-        "file": "happo_E3_results.json",
-        "algorithm": "HAPPO",
-        "filename_scenario": "E3",
         "true_scenario": "E2",
-        "name_mismatch": true,
+        "name_mismatch": false,
         "episodes_field": null,
         "episodes_recorded": null,
         "episode_summaries": 0,
@@ -242,15 +226,31 @@
         "has_kpis": false,
         "salvage": "NameError: name 'VecEnvWrapper' is not defined",
         "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E2"
+      },
+      "E3": {
+        "file": "happo_E3_results.json",
+        "algorithm": "HAPPO",
+        "filename_scenario": "E3",
+        "true_scenario": "E3",
+        "name_mismatch": false,
+        "episodes_field": null,
+        "episodes_recorded": null,
+        "episode_summaries": 0,
+        "resume_done": 49,
+        "resume_target": 50,
+        "status": "completed_with_salvage",
+        "has_kpis": false,
+        "salvage": "NameError: name 'VecEnvWrapper' is not defined",
+        "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E3"
       }
     },
     "MASAC": {
       "E1": {
-        "file": "masac_E2_results.json",
+        "file": "masac_E1_results.json",
         "algorithm": "MASAC",
-        "filename_scenario": "E2",
+        "filename_scenario": "E1",
         "true_scenario": "E1",
-        "name_mismatch": true,
+        "name_mismatch": false,
         "episodes_field": 12,
         "episodes_recorded": 50,
         "episode_summaries": 50,
@@ -262,11 +262,11 @@
         "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E1"
       },
       "E2": {
-        "file": "masac_E3_results.json",
+        "file": "masac_E2_results.json",
         "algorithm": "MASAC",
-        "filename_scenario": "E3",
+        "filename_scenario": "E2",
         "true_scenario": "E2",
-        "name_mismatch": true,
+        "name_mismatch": false,
         "episodes_field": 12,
         "episodes_recorded": 50,
         "episode_summaries": 50,
@@ -276,6 +276,22 @@
         "has_kpis": true,
         "salvage": null,
         "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2"
+      },
+      "E3": {
+        "file": "masac_E3_results.json",
+        "algorithm": "MASAC",
+        "filename_scenario": "E3",
+        "true_scenario": "E3",
+        "name_mismatch": false,
+        "episodes_field": 12,
+        "episodes_recorded": 50,
+        "episode_summaries": 50,
+        "resume_done": 38,
+        "resume_target": 50,
+        "status": "ok",
+        "has_kpis": true,
+        "salvage": null,
+        "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3"
       }
     },
     "MATD3": {
@@ -346,11 +362,11 @@
         "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MAAC/E1"
       },
       "E2": {
-        "file": "maac_E3_results.json",
+        "file": "maac_E2_results.json",
         "algorithm": "MAAC",
-        "filename_scenario": "E3",
+        "filename_scenario": "E2",
         "true_scenario": "E2",
-        "name_mismatch": true,
+        "name_mismatch": false,
         "episodes_field": 11,
         "episodes_recorded": 50,
         "episode_summaries": 50,
@@ -360,6 +376,22 @@
         "has_kpis": true,
         "salvage": null,
         "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MAAC/E2"
+      },
+      "E3": {
+        "file": "maac_E3_results.json",
+        "algorithm": "MAAC",
+        "filename_scenario": "E3",
+        "true_scenario": "E3",
+        "name_mismatch": false,
+        "episodes_field": 11,
+        "episodes_recorded": 50,
+        "episode_summaries": 50,
+        "resume_done": 39,
+        "resume_target": 50,
+        "status": "ok",
+        "has_kpis": true,
+        "salvage": null,
+        "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MAAC/E3"
       }
     }
   },
@@ -378,6 +410,9 @@
     ],
     "MASAC_E2": [
       "masac_E2_core_kpis.csv"
+    ],
+    "MASAC_E3": [
+      "masac_E3_core_kpis.csv"
     ],
     "MATD3_E1": [
       "matd3_E1_core_kpis.csv"

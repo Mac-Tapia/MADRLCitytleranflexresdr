@@ -10,8 +10,8 @@
         "last_episode_step": "8759",
         "last_global_step": "8759",
         "last_time_step": "1",
-        "reward_mean_average": -0.528240462095925,
-        "reward_sum_total": -78665.56961532516,
+        "reward_mean_average": -0.54328587221065,
+        "reward_sum_total": -80906.13208961,
         "steps": 8760
       },
       {
@@ -21,8 +21,8 @@
         "last_episode_step": "8759",
         "last_global_step": "17519",
         "last_time_step": "2",
-        "reward_mean_average": -0.5342859520192066,
-        "reward_sum_total": -79565.86397470025,
+        "reward_mean_average": -0.5518098292620185,
+        "reward_sum_total": -82175.51977369978,
         "steps": 8760
       },
       {
@@ -32,8 +32,8 @@
         "last_episode_step": "8759",
         "last_global_step": "26279",
         "last_time_step": "3",
-        "reward_mean_average": -0.51241294757989,
-        "reward_sum_total": -76308.53615359722,
+        "reward_mean_average": -0.5266826511246796,
+        "reward_sum_total": -78433.58040548729,
         "steps": 8760
       },
       {
@@ -43,8 +43,8 @@
         "last_episode_step": "8759",
         "last_global_step": "35039",
         "last_time_step": "4",
-        "reward_mean_average": -0.5284359870146329,
-        "reward_sum_total": -78694.68718621913,
+        "reward_mean_average": -0.5437156108790443,
+        "reward_sum_total": -80970.12877210727,
         "steps": 8760
       },
       {
@@ -54,8 +54,8 @@
         "last_episode_step": "8759",
         "last_global_step": "43799",
         "last_time_step": "5",
-        "reward_mean_average": -0.5342089289762134,
-        "reward_sum_total": -79554.39370313771,
+        "reward_mean_average": -0.5516603422252431,
+        "reward_sum_total": -82153.25816418321,
         "steps": 8760
       },
       {
@@ -65,8 +65,8 @@
         "last_episode_step": "8759",
         "last_global_step": "52559",
         "last_time_step": "6",
-        "reward_mean_average": -0.5124602174516978,
-        "reward_sum_total": -76315.57558290684,
+        "reward_mean_average": -0.5269059164552964,
+        "reward_sum_total": -78466.82907852274,
         "steps": 8760
       },
       {
@@ -76,8 +76,8 @@
         "last_episode_step": "8759",
         "last_global_step": "61319",
         "last_time_step": "7",
-        "reward_mean_average": -0.5278329040124459,
-        "reward_sum_total": -78604.87606553343,
+        "reward_mean_average": -0.5428022325761069,
+        "reward_sum_total": -80834.10847523384,
         "steps": 8760
       },
       {
@@ -87,8 +87,8 @@
         "last_episode_step": "8759",
         "last_global_step": "70079",
         "last_time_step": "8",
-        "reward_mean_average": -0.5341600304390212,
-        "reward_sum_total": -79547.11173297903,
+        "reward_mean_average": -0.5515759494845673,
+        "reward_sum_total": -82140.69039724176,
         "steps": 8760
       },
       {
@@ -98,8 +98,8 @@
         "last_episode_step": "8759",
         "last_global_step": "78839",
         "last_time_step": "9",
-        "reward_mean_average": -0.5127932614670209,
-        "reward_sum_total": -76365.17249766874,
+        "reward_mean_average": -0.5271277014266983,
+        "reward_sum_total": -78499.85729646392,
         "steps": 8760
       },
       {
@@ -109,8 +109,8 @@
         "last_episode_step": "8759",
         "last_global_step": "87599",
         "last_time_step": "10",
-        "reward_mean_average": -0.528396128213109,
-        "reward_sum_total": -78688.7514134962,
+        "reward_mean_average": -0.5433765672185381,
+        "reward_sum_total": -80919.6383901847,
         "steps": 8760
       },
       {
@@ -120,8 +120,8 @@
         "last_episode_step": "8759",
         "last_global_step": "96359",
         "last_time_step": "11",
-        "reward_mean_average": -0.5344206644554094,
-        "reward_sum_total": -79585.92535069956,
+        "reward_mean_average": -0.5518946498872621,
+        "reward_sum_total": -82188.15126121108,
         "steps": 8760
       },
       {
@@ -131,8 +131,8 @@
         "last_episode_step": "8759",
         "last_global_step": "105119",
         "last_time_step": "12",
-        "reward_mean_average": -0.5128660689783334,
-        "reward_sum_total": -76376.01499225342,
+        "reward_mean_average": -0.527185775624718,
+        "reward_sum_total": -78508.505706033,
         "steps": 8760
       },
       {
@@ -142,8 +142,8 @@
         "last_episode_step": "8759",
         "last_global_step": "113879",
         "last_time_step": "13",
-        "reward_mean_average": -0.5280416566818644,
-        "reward_sum_total": -78635.96351306327,
+        "reward_mean_average": -0.5428711335833696,
+        "reward_sum_total": -80844.36921323539,
         "steps": 8760
       },
       {
@@ -153,8 +153,8 @@
         "last_episode_step": "8759",
         "last_global_step": "122639",
         "last_time_step": "14",
-        "reward_mean_average": -0.5341204026896166,
-        "reward_sum_total": -79541.2103685377,
+        "reward_mean_average": -0.5515063561842355,
+        "reward_sum_total": -82130.32656295635,
         "steps": 8760
       },
       {
@@ -164,8 +164,8 @@
         "last_episode_step": "8759",
         "last_global_step": "131399",
         "last_time_step": "15",
-        "reward_mean_average": -0.5124616506653793,
-        "reward_sum_total": -76315.78901708829,
+        "reward_mean_average": -0.526716133105878,
+        "reward_sum_total": -78438.56654212734,
         "steps": 8760
       },
       {
@@ -175,8 +175,8 @@
         "last_episode_step": "8759",
         "last_global_step": "140159",
         "last_time_step": "16",
-        "reward_mean_average": -0.5282891881860986,
-        "reward_sum_total": -78672.82590467381,
+        "reward_mean_average": -0.5434030689842839,
+        "reward_sum_total": -80923.58503313956,
         "steps": 8760
       },
       {
@@ -186,8 +186,8 @@
         "last_episode_step": "8759",
         "last_global_step": "148919",
         "last_time_step": "17",
-        "reward_mean_average": -0.5344664911717443,
-        "reward_sum_total": -79592.74986529615,
+        "reward_mean_average": -0.5518058895075868,
+        "reward_sum_total": -82174.93306546981,
         "steps": 8760
       },
       {
@@ -197,8 +197,8 @@
         "last_episode_step": "8759",
         "last_global_step": "157679",
         "last_time_step": "18",
-        "reward_mean_average": -0.512841510416361,
-        "reward_sum_total": -76372.35773120447,
+        "reward_mean_average": -0.5271417917155541,
+        "reward_sum_total": -78501.95562228031,
         "steps": 8760
       },
       {
@@ -208,8 +208,8 @@
         "last_episode_step": "8759",
         "last_global_step": "166439",
         "last_time_step": "19",
-        "reward_mean_average": -0.5282145512657044,
-        "reward_sum_total": -78661.7109744887,
+        "reward_mean_average": -0.543199383343419,
+        "reward_sum_total": -80893.25216750195,
         "steps": 8760
       },
       {
@@ -219,8 +219,8 @@
         "last_episode_step": "8759",
         "last_global_step": "175199",
         "last_time_step": "20",
-        "reward_mean_average": -0.5344791460117901,
-        "reward_sum_total": -79594.63442407579,
+        "reward_mean_average": -0.5519228590949066,
+        "reward_sum_total": -82192.3521764135,
         "steps": 8760
       },
       {
@@ -230,8 +230,8 @@
         "last_episode_step": "8759",
         "last_global_step": "183959",
         "last_time_step": "21",
-        "reward_mean_average": -0.5124952866072731,
-        "reward_sum_total": -76320.7980815551,
+        "reward_mean_average": -0.5268976734633181,
+        "reward_sum_total": -78465.60153215734,
         "steps": 8760
       },
       {
@@ -241,8 +241,8 @@
         "last_episode_step": "8759",
         "last_global_step": "192719",
         "last_time_step": "22",
-        "reward_mean_average": -0.5284842861702306,
-        "reward_sum_total": -78701.87989647072,
+        "reward_mean_average": -0.5434026496022172,
+        "reward_sum_total": -80923.52257876217,
         "steps": 8760
       },
       {
@@ -252,8 +252,8 @@
         "last_episode_step": "8736",
         "last_global_step": "201456",
         "last_time_step": "8759",
-        "reward_mean_average": -0.5342170296540485,
-        "reward_sum_total": -79346.72119748619,
+        "reward_mean_average": -0.551733265259201,
+        "reward_sum_total": -81948.39015568385,
         "steps": 8737
       },
       {
@@ -263,8 +263,8 @@
         "last_episode_step": "8759",
         "last_global_step": "210239",
         "last_time_step": "1",
-        "reward_mean_average": -0.528316323448379,
-        "reward_sum_total": -78676.8668879326,
+        "reward_mean_average": -0.5431901089086011,
+        "reward_sum_total": -80891.87101866888,
         "steps": 8760
       },
       {
@@ -274,8 +274,8 @@
         "last_episode_step": "8759",
         "last_global_step": "218999",
         "last_time_step": "2",
-        "reward_mean_average": -0.5342200265674227,
-        "reward_sum_total": -79556.04635642059,
+        "reward_mean_average": -0.5512860059573528,
+        "reward_sum_total": -82097.51200716899,
         "steps": 8760
       },
       {
@@ -285,8 +285,8 @@
         "last_episode_step": "8759",
         "last_global_step": "227759",
         "last_time_step": "3",
-        "reward_mean_average": -0.5122386797760721,
-        "reward_sum_total": -76282.58419225266,
+        "reward_mean_average": -0.5263660388880146,
+        "reward_sum_total": -78386.43051120313,
         "steps": 8760
       },
       {
@@ -296,8 +296,8 @@
         "last_episode_step": "8759",
         "last_global_step": "236519",
         "last_time_step": "4",
-        "reward_mean_average": -0.5281246595625226,
-        "reward_sum_total": -78648.32430205088,
+        "reward_mean_average": -0.5425584560941135,
+        "reward_sum_total": -80797.80528153537,
         "steps": 8760
       },
       {
@@ -307,8 +307,8 @@
         "last_episode_step": "8759",
         "last_global_step": "245279",
         "last_time_step": "5",
-        "reward_mean_average": -0.5341713049896714,
-        "reward_sum_total": -79548.79073906186,
+        "reward_mean_average": -0.5511507904264829,
+        "reward_sum_total": -82077.37571031181,
         "steps": 8760
       },
       {
@@ -318,8 +318,8 @@
         "last_episode_step": "8759",
         "last_global_step": "254039",
         "last_time_step": "6",
-        "reward_mean_average": -0.5124019091372712,
-        "reward_sum_total": -76306.89230872242,
+        "reward_mean_average": -0.5263098821800003,
+        "reward_sum_total": -78378.06765424565,
         "steps": 8760
       },
       {
@@ -329,8 +329,8 @@
         "last_episode_step": "8759",
         "last_global_step": "262799",
         "last_time_step": "7",
-        "reward_mean_average": -0.5280629675781271,
-        "reward_sum_total": -78639.13713173468,
+        "reward_mean_average": -0.5424389493246577,
+        "reward_sum_total": -80780.00833342804,
         "steps": 8760
       },
       {
@@ -340,8 +340,8 @@
         "last_episode_step": "8751",
         "last_global_step": "271551",
         "last_time_step": "8759",
-        "reward_mean_average": -0.5341520103821658,
-        "reward_sum_total": -79473.27271270016,
+        "reward_mean_average": -0.5507925898136747,
+        "reward_sum_total": -81949.12468283779,
         "steps": 8752
       },
       {
@@ -351,8 +351,8 @@
         "last_episode_step": "8759",
         "last_global_step": "280319",
         "last_time_step": "1",
-        "reward_mean_average": -0.528316323448379,
-        "reward_sum_total": -78676.8668879326,
+        "reward_mean_average": -0.5431901089086011,
+        "reward_sum_total": -80891.87101866888,
         "steps": 8760
       },
       {
@@ -362,8 +362,8 @@
         "last_episode_step": "8759",
         "last_global_step": "289079",
         "last_time_step": "2",
-        "reward_mean_average": -0.5342200265674227,
-        "reward_sum_total": -79556.04635642059,
+        "reward_mean_average": -0.5512860059573528,
+        "reward_sum_total": -82097.51200716899,
         "steps": 8760
       },
       {
@@ -373,8 +373,8 @@
         "last_episode_step": "8759",
         "last_global_step": "297839",
         "last_time_step": "3",
-        "reward_mean_average": -0.5122386797760721,
-        "reward_sum_total": -76282.58419225266,
+        "reward_mean_average": -0.5263660388880146,
+        "reward_sum_total": -78386.43051120313,
         "steps": 8760
       },
       {
@@ -384,8 +384,8 @@
         "last_episode_step": "8759",
         "last_global_step": "306599",
         "last_time_step": "4",
-        "reward_mean_average": -0.5281246595625226,
-        "reward_sum_total": -78648.32430205088,
+        "reward_mean_average": -0.5425584560941135,
+        "reward_sum_total": -80797.80528153537,
         "steps": 8760
       },
       {
@@ -395,8 +395,8 @@
         "last_episode_step": "8759",
         "last_global_step": "315359",
         "last_time_step": "5",
-        "reward_mean_average": -0.5341713049896714,
-        "reward_sum_total": -79548.79073906186,
+        "reward_mean_average": -0.5511507904264829,
+        "reward_sum_total": -82077.37571031181,
         "steps": 8760
       },
       {
@@ -406,8 +406,8 @@
         "last_episode_step": "8759",
         "last_global_step": "324119",
         "last_time_step": "6",
-        "reward_mean_average": -0.5124019091372712,
-        "reward_sum_total": -76306.89230872242,
+        "reward_mean_average": -0.5263098821800003,
+        "reward_sum_total": -78378.06765424565,
         "steps": 8760
       },
       {
@@ -417,8 +417,8 @@
         "last_episode_step": "8752",
         "last_global_step": "332872",
         "last_time_step": "8759",
-        "reward_mean_average": -0.5279973791614397,
-        "reward_sum_total": -78566.5380166014,
+        "reward_mean_average": -0.5423942671547753,
+        "reward_sum_total": -80708.80934689773,
         "steps": 8753
       },
       {
@@ -428,8 +428,8 @@
         "last_episode_step": 8759,
         "last_global_step": 341639,
         "last_time_step": 1,
-        "reward_mean_average": -0.528316323448379,
-        "reward_sum_total": -78676.8668879326,
+        "reward_mean_average": -0.5431901089086011,
+        "reward_sum_total": -80891.87101866888,
         "steps": 8760
       },
       {
@@ -439,8 +439,8 @@
         "last_episode_step": 8759,
         "last_global_step": 350399,
         "last_time_step": 2,
-        "reward_mean_average": -0.5342200265674227,
-        "reward_sum_total": -79556.04635642059,
+        "reward_mean_average": -0.5512860059573528,
+        "reward_sum_total": -82097.51200716899,
         "steps": 8760
       },
       {
@@ -450,8 +450,8 @@
         "last_episode_step": 8759,
         "last_global_step": 359159,
         "last_time_step": 3,
-        "reward_mean_average": -0.5122386797760721,
-        "reward_sum_total": -76282.58419225266,
+        "reward_mean_average": -0.5263660388880146,
+        "reward_sum_total": -78386.43051120313,
         "steps": 8760
       },
       {
@@ -461,8 +461,8 @@
         "last_episode_step": 8759,
         "last_global_step": 367919,
         "last_time_step": 4,
-        "reward_mean_average": -0.5281246595625226,
-        "reward_sum_total": -78648.32430205088,
+        "reward_mean_average": -0.5425584560941135,
+        "reward_sum_total": -80797.80528153537,
         "steps": 8760
       },
       {
@@ -472,8 +472,8 @@
         "last_episode_step": 8759,
         "last_global_step": 376679,
         "last_time_step": 5,
-        "reward_mean_average": -0.5341713049896714,
-        "reward_sum_total": -79548.79073906186,
+        "reward_mean_average": -0.5511507904264829,
+        "reward_sum_total": -82077.37571031181,
         "steps": 8760
       },
       {
@@ -483,8 +483,8 @@
         "last_episode_step": 8759,
         "last_global_step": 385439,
         "last_time_step": 6,
-        "reward_mean_average": -0.5124019091372712,
-        "reward_sum_total": -76306.89230872242,
+        "reward_mean_average": -0.5263098821800003,
+        "reward_sum_total": -78378.06765424565,
         "steps": 8760
       },
       {
@@ -494,8 +494,8 @@
         "last_episode_step": 8759,
         "last_global_step": 394199,
         "last_time_step": 7,
-        "reward_mean_average": -0.5280629675781271,
-        "reward_sum_total": -78639.13713173468,
+        "reward_mean_average": -0.5424389493246577,
+        "reward_sum_total": -80780.00833342804,
         "steps": 8760
       },
       {
@@ -505,8 +505,8 @@
         "last_episode_step": 8759,
         "last_global_step": 402959,
         "last_time_step": 8,
-        "reward_mean_average": -0.5341292031088826,
-        "reward_sum_total": -79542.5209269748,
+        "reward_mean_average": -0.5507613602389888,
+        "reward_sum_total": -82019.38176679022,
         "steps": 8760
       },
       {
@@ -516,8 +516,8 @@
         "last_episode_step": 8759,
         "last_global_step": 411719,
         "last_time_step": 9,
-        "reward_mean_average": -0.5126333496593685,
-        "reward_sum_total": -76341.35843127315,
+        "reward_mean_average": -0.5265661854577639,
+        "reward_sum_total": -78416.23633837019,
         "steps": 8760
       },
       {
@@ -527,8 +527,8 @@
         "last_episode_step": 8759,
         "last_global_step": 420479,
         "last_time_step": 10,
-        "reward_mean_average": -0.5281921079341843,
-        "reward_sum_total": -78658.36871355871,
+        "reward_mean_average": -0.5426501765817953,
+        "reward_sum_total": -80811.46429656095,
         "steps": 8760
       },
       {
@@ -538,8 +538,8 @@
         "last_episode_step": 8759,
         "last_global_step": 429239,
         "last_time_step": 11,
-        "reward_mean_average": -0.5341373025630299,
-        "reward_sum_total": -79543.72709768642,
+        "reward_mean_average": -0.5510169561042634,
+        "reward_sum_total": -82057.44510304689,
         "steps": 8760
       },
       {
@@ -549,8 +549,8 @@
         "last_episode_step": 8747,
         "last_global_step": 437987,
         "last_time_step": 8759,
-        "reward_mean_average": -0.5125064952745902,
-        "reward_sum_total": -76217.91595125597,
+        "reward_mean_average": -0.5263825588275348,
+        "reward_sum_total": -78281.50861859568,
         "steps": 8748
       }
     ],
@@ -566,37 +566,37 @@
       "all_done": true,
       "carbon_intensity_mean": 0.7900000214576721,
       "district_net_electricity_consumption": 1171.828942976892,
-      "district_net_electricity_consumption_cost": 623.9936952479184,
+      "district_net_electricity_consumption_cost": 643.3719779960811,
       "district_net_electricity_consumption_emission": 925.7448929771781,
       "district_net_electricity_consumption_without_storage": 1171.828942976892,
-      "electricity_price_mean": 0.5324955582618713,
+      "electricity_price_mean": 0.39549699425697327,
       "episode": 49,
       "episode_step": 8747,
       "global_step": 437987,
       "reset_count": 51,
       "reward_axis_weights": {
-        "carbon": 0.7,
-        "cost": 0.15,
-        "flex": 0.15
+        "carbon": 0.15,
+        "cost": 0.6,
+        "flex": 0.25
       },
       "reward_function": "CityLearnV3MADRLRewardFunction",
-      "reward_mean": -0.6310113668441772,
+      "reward_mean": -0.6563848853111267,
       "reward_profile": "masac_unified_comparable_v4",
-      "reward_sum": -10.727193236351013,
-      "scenario": "E2",
+      "reward_sum": -11.158543050289154,
+      "scenario": "E3",
       "time_step": 8759
     },
     "objective_report_values": {
-      "carbon_emissions": 1.051639591972696,
-      "electricity_cost": 1.0050652080032747,
-      "ev_charge_total": 11514.183938987553,
+      "carbon_emissions": 1.0601897274206082,
+      "electricity_cost": 1.0055554410308447,
+      "ev_charge_total": 11565.11733596772,
       "ev_departure_count": 39682.0,
-      "ev_departure_success_rate": 0.04062295247215362,
-      "grid_import_baseline": 11107242.547481537,
-      "grid_import_control": 11163503.039496081,
-      "pv_export_total": 41399732.63071702,
+      "ev_departure_success_rate": 0.04140416309661812,
+      "grid_import_baseline": 11107847.682125092,
+      "grid_import_control": 11172043.961813642,
+      "pv_export_total": 41398188.40463425,
       "pv_generation_total": 49538029.867697105,
-      "ramping_average": 1.0208812307447095
+      "ramping_average": 1.024945867130649
     },
     "report_source": {
       "adapter_algorithm": "MASAC",
@@ -624,8 +624,8 @@
     "training_trace_totals": {
       "ev_charge_kwh": 0.0,
       "ev_v2g_export_kwh": 0.0,
-      "grid_export_kwh": 2357.3492279052734,
-      "grid_import_kwh": 68251.16583553702,
+      "grid_export_kwh": 1212.5469818115234,
+      "grid_import_kwh": 68538.07892171293,
       "pv_export_kwh": 0.0,
       "pv_generation_kwh": 85228.06218535842
     },
@@ -637,14 +637,14 @@
       }
     ]
   },
-  "artifact_audit_json": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/artifact_audit.json",
-  "artifact_audit_json_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/artifact_audit.json",
+  "artifact_audit_json": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/artifact_audit.json",
+  "artifact_audit_json_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/artifact_audit.json",
   "artifact_layout": {
-    "checkpoints": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/checkpoints",
-    "data": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data",
-    "figures": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures",
-    "run": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2",
-    "tables": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables"
+    "checkpoints": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/checkpoints",
+    "data": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data",
+    "figures": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures",
+    "run": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3",
+    "tables": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables"
   },
   "artifact_profile": "efficient",
   "artifact_write_policy": {
@@ -661,136 +661,140 @@
   "building_count": 17,
   "building_detail": {
     "building_behavior_summary": {
-      "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/building_behavior_summary.csv",
+      "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/building_behavior_summary.csv",
       "rows": 17
     },
     "building_kpis": {
-      "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/building_kpis.csv",
+      "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/building_kpis.csv",
       "rows": 1275
     },
     "building_observation_action_schema": {
-      "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/building_observation_action_schema.csv",
+      "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/building_observation_action_schema.csv",
       "rows": 2075
     },
     "building_trace_sample": {
-      "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/building_trace_sample.csv",
+      "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/building_trace_sample.csv",
       "rows": 120
     }
   },
   "checkpoint_count": 12,
-  "checkpoint_manifest": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/checkpoint_manifest.json",
-  "checkpoint_manifest_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/checkpoint_manifest.json",
+  "checkpoint_manifest": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/checkpoint_manifest.json",
+  "checkpoint_manifest_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/checkpoint_manifest.json",
   "citylearn_v3_report": {
     "all_values": {
-      "battery_capacity_fade_ratio": 4.9553800053448544e-05,
-      "battery_charge_total": 345132.82154580933,
-      "battery_discharge_total": 292814.6935327461,
-      "battery_equivalent_full_cycles": 12.143979195129742,
-      "battery_throughput_total": 637947.5150785556,
-      "carbon_emissions": 1.051639591972696,
-      "carbon_emissions_baseline": 9088297.682261093,
-      "carbon_emissions_control": 9243171.298157984,
-      "carbon_emissions_daily_average_baseline": 24902.288431814846,
-      "carbon_emissions_daily_average_control": 25326.64815113502,
-      "carbon_emissions_daily_average_delta": 424.35971932017395,
-      "carbon_emissions_delta": 77648.98780810599,
-      "community_import_share": 0.08180134800760319,
-      "community_local_traded_daily_average": 2502.1749435810157,
-      "community_local_traded_total": 913189.5971177549,
-      "cost_one_minus_load_factor_average": 0.9788572813323027,
-      "cost_peak_average": 1.0956074399714257,
-      "cost_ramping_average": 1.0208812307447095,
-      "electricity_cost": 1.0050652080032747,
-      "electricity_cost_baseline": 5914557.320100955,
-      "electricity_cost_control": 5944515.783174557,
-      "electricity_cost_daily_average_baseline": 16206.11664372907,
-      "electricity_cost_daily_average_control": 16288.203995454889,
-      "electricity_cost_daily_average_delta": 82.08735172581879,
-      "electricity_cost_delta": 15020.275212663882,
-      "ev_charge_total": 11514.183938987553,
+      "battery_capacity_fade_ratio": 5.80514716116429e-05,
+      "battery_charge_total": 383545.61018115666,
+      "battery_discharge_total": 333467.48643100867,
+      "battery_equivalent_full_cycles": 13.649072881522985,
+      "battery_throughput_total": 717013.0966121654,
+      "carbon_emissions": 1.0601897274206082,
+      "carbon_emissions_baseline": 9088742.930663891,
+      "carbon_emissions_control": 9270045.676568365,
+      "carbon_emissions_daily_average_baseline": 24903.508429721816,
+      "carbon_emissions_daily_average_control": 25400.284991168028,
+      "carbon_emissions_daily_average_delta": 496.7765614462115,
+      "carbon_emissions_delta": 90899.7612329599,
+      "community_import_share": 0.08410696734872088,
+      "community_local_traded_daily_average": 2574.6685330692567,
+      "community_local_traded_total": 939646.7367147341,
+      "cost_one_minus_load_factor_average": 0.9777831177218483,
+      "cost_peak_average": 1.0863807148533065,
+      "cost_ramping_average": 1.024945867130649,
+      "electricity_cost": 1.0055554410308447,
+      "electricity_cost_baseline": 7106081.274015802,
+      "electricity_cost_control": 7145558.689493987,
+      "electricity_cost_daily_average_baseline": 19470.938529099127,
+      "electricity_cost_daily_average_control": 19579.10817991274,
+      "electricity_cost_daily_average_delta": 108.16965081361293,
+      "electricity_cost_delta": 19792.792564499217,
+      "ev_charge_total": 11565.11733596772,
       "ev_departure_count": 39682.0,
-      "ev_departure_met_count": 1612.0,
-      "ev_departure_soc_deficit_mean": 0.5010665009797093,
-      "ev_departure_success_rate": 0.04062295247215362,
-      "ev_departure_within_tolerance_count": 507.0,
-      "ev_departure_within_tolerance_rate": 0.012776573761403155,
-      "ev_v2g_export_total": 3494.122005420897,
-      "grid_export_baseline": 40654819.36426163,
-      "grid_export_control": 40650741.652760245,
-      "grid_export_delta": -2044.4422945907447,
-      "grid_export_ratio": 0.9998996991853574,
-      "grid_import": 1.0508408423700657,
-      "grid_import_baseline": 11107242.547481537,
-      "grid_import_control": 11163503.039496081,
-      "grid_import_delta": 28207.32397326982,
-      "net_exchange_baseline": -29547576.81678009,
-      "net_exchange_control": -29487238.613264162,
-      "net_exchange_delta": 30251.766267861498,
-      "one_minus_load_factor_average": 0.9788572813323027,
-      "peak_average": 1.0956074399714257,
-      "pv_export_daily_average": 113436.8744305524,
-      "pv_export_total": 41399732.63071702,
+      "ev_departure_met_count": 1643.0,
+      "ev_departure_soc_deficit_mean": 0.5003155133857917,
+      "ev_departure_success_rate": 0.04140416309661812,
+      "ev_departure_within_tolerance_count": 516.0,
+      "ev_departure_within_tolerance_rate": 0.013003376845925105,
+      "ev_v2g_export_total": 3547.4206320410594,
+      "grid_export_baseline": 40654393.347537994,
+      "grid_export_control": 40660493.791114934,
+      "grid_export_delta": 3058.5795145712286,
+      "grid_export_ratio": 1.000150056195029,
+      "grid_import": 1.059114980913243,
+      "grid_import_baseline": 11107847.682125092,
+      "grid_import_control": 11172043.961813642,
+      "grid_import_delta": 32186.08999340884,
+      "net_exchange_baseline": -29546545.665412903,
+      "net_exchange_control": -29488449.82930129,
+      "net_exchange_delta": 29127.510478838543,
+      "one_minus_load_factor_average": 0.9777831177218483,
+      "peak_average": 1.0863807148533065,
+      "price_signal_deviation": 0.3899742202101317,
+      "price_signal_deviation_baseline": 0.38457995010225254,
+      "price_signal_deviation_delta": 0.005394270107879129,
+      "price_signal_deviation_ratio": 1.0140263945284846,
+      "pv_export_daily_average": 113432.64319114307,
+      "pv_export_total": 41398188.40463425,
       "pv_generation_daily_average": 135736.12476592427,
       "pv_generation_total": 49538029.867697105,
-      "pv_self_consumption_ratio": 0.1642838291856845,
-      "ramping_average": 1.0208812307447095,
-      "zero_net_energy": 0.9988687270130299
+      "pv_self_consumption_ratio": 0.1643150017229632,
+      "ramping_average": 1.024945867130649,
+      "zero_net_energy": 0.9992077522258009
     },
     "axis_kpis": {
-      "battery_capacity_fade_ratio": 4.9553800053448544e-05,
-      "battery_charge_total": 345132.82154580933,
-      "battery_discharge_total": 292814.6935327461,
-      "battery_equivalent_full_cycles": 12.143979195129742,
-      "battery_throughput_total": 637947.5150785556,
-      "carbon_emissions": 1.051639591972696,
-      "carbon_emissions_baseline": 9088297.682261093,
-      "carbon_emissions_control": 9243171.298157984,
-      "carbon_emissions_daily_average_baseline": 24902.288431814846,
-      "carbon_emissions_daily_average_control": 25326.64815113502,
-      "carbon_emissions_daily_average_delta": 424.35971932017395,
-      "carbon_emissions_delta": 77648.98780810599,
-      "community_import_share": 0.08180134800760319,
-      "community_local_traded_daily_average": 2502.1749435810157,
-      "community_local_traded_total": 913189.5971177549,
-      "cost_one_minus_load_factor_average": 0.9788572813323027,
-      "cost_peak_average": 1.0956074399714257,
-      "cost_ramping_average": 1.0208812307447095,
-      "electricity_cost": 1.0050652080032747,
-      "electricity_cost_baseline": 5914557.320100955,
-      "electricity_cost_control": 5944515.783174557,
-      "electricity_cost_daily_average_baseline": 16206.11664372907,
-      "electricity_cost_daily_average_control": 16288.203995454889,
-      "electricity_cost_daily_average_delta": 82.08735172581879,
-      "electricity_cost_delta": 15020.275212663882,
-      "ev_charge_total": 11514.183938987553,
+      "battery_capacity_fade_ratio": 5.80514716116429e-05,
+      "battery_charge_total": 383545.61018115666,
+      "battery_discharge_total": 333467.48643100867,
+      "battery_equivalent_full_cycles": 13.649072881522985,
+      "battery_throughput_total": 717013.0966121654,
+      "carbon_emissions": 1.0601897274206082,
+      "carbon_emissions_baseline": 9088742.930663891,
+      "carbon_emissions_control": 9270045.676568365,
+      "carbon_emissions_daily_average_baseline": 24903.508429721816,
+      "carbon_emissions_daily_average_control": 25400.284991168028,
+      "carbon_emissions_daily_average_delta": 496.7765614462115,
+      "carbon_emissions_delta": 90899.7612329599,
+      "community_import_share": 0.08410696734872088,
+      "community_local_traded_daily_average": 2574.6685330692567,
+      "community_local_traded_total": 939646.7367147341,
+      "cost_one_minus_load_factor_average": 0.9777831177218483,
+      "cost_peak_average": 1.0863807148533065,
+      "cost_ramping_average": 1.024945867130649,
+      "electricity_cost": 1.0055554410308447,
+      "electricity_cost_baseline": 7106081.274015802,
+      "electricity_cost_control": 7145558.689493987,
+      "electricity_cost_daily_average_baseline": 19470.938529099127,
+      "electricity_cost_daily_average_control": 19579.10817991274,
+      "electricity_cost_daily_average_delta": 108.16965081361293,
+      "electricity_cost_delta": 19792.792564499217,
+      "ev_charge_total": 11565.11733596772,
       "ev_departure_count": 39682.0,
-      "ev_departure_met_count": 1612.0,
-      "ev_departure_soc_deficit_mean": 0.5010665009797093,
-      "ev_departure_success_rate": 0.04062295247215362,
-      "ev_departure_within_tolerance_count": 507.0,
-      "ev_departure_within_tolerance_rate": 0.012776573761403155,
-      "ev_v2g_export_total": 3494.122005420897,
-      "grid_export_baseline": 40654819.36426163,
-      "grid_export_control": 40650741.652760245,
-      "grid_export_delta": -2044.4422945907447,
-      "grid_export_ratio": 0.9998996991853574,
-      "grid_import": 1.0508408423700657,
-      "grid_import_baseline": 11107242.547481537,
-      "grid_import_control": 11163503.039496081,
-      "grid_import_delta": 28207.32397326982,
-      "net_exchange_baseline": -29547576.81678009,
-      "net_exchange_control": -29487238.613264162,
-      "net_exchange_delta": 30251.766267861498,
-      "one_minus_load_factor_average": 0.9788572813323027,
-      "peak_average": 1.0956074399714257,
-      "price_signal_deviation": null,
-      "pv_export_daily_average": 113436.8744305524,
-      "pv_export_total": 41399732.63071702,
+      "ev_departure_met_count": 1643.0,
+      "ev_departure_soc_deficit_mean": 0.5003155133857917,
+      "ev_departure_success_rate": 0.04140416309661812,
+      "ev_departure_within_tolerance_count": 516.0,
+      "ev_departure_within_tolerance_rate": 0.013003376845925105,
+      "ev_v2g_export_total": 3547.4206320410594,
+      "grid_export_baseline": 40654393.347537994,
+      "grid_export_control": 40660493.791114934,
+      "grid_export_delta": 3058.5795145712286,
+      "grid_export_ratio": 1.000150056195029,
+      "grid_import": 1.059114980913243,
+      "grid_import_baseline": 11107847.682125092,
+      "grid_import_control": 11172043.961813642,
+      "grid_import_delta": 32186.08999340884,
+      "net_exchange_baseline": -29546545.665412903,
+      "net_exchange_control": -29488449.82930129,
+      "net_exchange_delta": 29127.510478838543,
+      "one_minus_load_factor_average": 0.9777831177218483,
+      "peak_average": 1.0863807148533065,
+      "price_signal_deviation": 0.3899742202101317,
+      "pv_export_daily_average": 113432.64319114307,
+      "pv_export_total": 41398188.40463425,
       "pv_generation_daily_average": 135736.12476592427,
       "pv_generation_total": 49538029.867697105,
-      "pv_self_consumption_ratio": 0.1642838291856845,
-      "ramping_average": 1.0208812307447095,
-      "zero_net_energy": 0.9988687270130299
+      "pv_self_consumption_ratio": 0.1643150017229632,
+      "ramping_average": 1.024945867130649,
+      "zero_net_energy": 0.9992077522258009
     },
     "kpi_frame_rows": 1361,
     "objective_axis_kpis": {
@@ -798,8 +802,8 @@
         "axis_scenario": "E1",
         "baseline_comparison": {
           "comparable_kpis": 12,
-          "improved_kpis": 5,
-          "not_improved_kpis": 7
+          "improved_kpis": 2,
+          "not_improved_kpis": 10
         },
         "code": "OE1",
         "kpis": {
@@ -820,7 +824,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 4.9553800053448544e-05
+            "value": 5.80514716116429e-05
           },
           "battery_charge_total": {
             "comparison": {
@@ -839,7 +843,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 345132.82154580933
+            "value": 383545.61018115666
           },
           "battery_discharge_total": {
             "comparison": {
@@ -858,7 +862,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 292814.6935327461
+            "value": 333467.48643100867
           },
           "battery_equivalent_full_cycles": {
             "comparison": {
@@ -877,7 +881,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 12.143979195129742
+            "value": 13.649072881522985
           },
           "battery_throughput_total": {
             "comparison": {
@@ -896,7 +900,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 637947.5150785556
+            "value": 717013.0966121654
           },
           "community_import_share": {
             "comparison": {
@@ -915,7 +919,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.08180134800760319
+            "value": 0.08410696734872088
           },
           "community_local_traded_daily_average": {
             "comparison": {
@@ -934,7 +938,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 2502.1749435810157
+            "value": 2574.6685330692567
           },
           "community_local_traded_total": {
             "comparison": {
@@ -953,7 +957,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 913189.5971177549
+            "value": 939646.7367147341
           },
           "ev_charge_total": {
             "comparison": {
@@ -972,7 +976,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11514.183938987553
+            "value": 11565.11733596772
           },
           "ev_departure_count": {
             "comparison": {
@@ -1010,7 +1014,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1612.0
+            "value": 1643.0
           },
           "ev_departure_soc_deficit_mean": {
             "comparison": {
@@ -1029,7 +1033,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.5010665009797093
+            "value": 0.5003155133857917
           },
           "ev_departure_success_rate": {
             "comparison": {
@@ -1048,7 +1052,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.04062295247215362
+            "value": 0.04140416309661812
           },
           "ev_departure_within_tolerance_count": {
             "comparison": {
@@ -1067,7 +1071,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 507.0
+            "value": 516.0
           },
           "ev_departure_within_tolerance_rate": {
             "comparison": {
@@ -1086,7 +1090,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.012776573761403155
+            "value": 0.013003376845925105
           },
           "ev_v2g_export_total": {
             "comparison": {
@@ -1105,7 +1109,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 3494.122005420897
+            "value": 3547.4206320410594
           },
           "grid_export_baseline": {
             "comparison": {
@@ -1124,14 +1128,14 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 40654819.36426163
+            "value": 40654393.347537994
           },
           "grid_export_control": {
             "comparison": {
               "available": true,
-              "baseline": 40654819.36426163,
-              "delta_vs_baseline": -4077.7115013822913,
-              "improved_vs_baseline": true
+              "baseline": 40654393.347537994,
+              "delta_vs_baseline": 6100.443576939404,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -1143,14 +1147,14 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 40650741.652760245
+            "value": 40660493.791114934
           },
           "grid_export_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": -2044.4422945907447,
-              "improved_vs_baseline": true
+              "delta_vs_baseline": 3058.5795145712286,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -1163,14 +1167,14 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -2044.4422945907447
+            "value": 3058.5795145712286
           },
           "grid_export_ratio": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.00010030081464262874,
-              "improved_vs_baseline": true
+              "delta_vs_baseline": 0.00015005619502894696,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -1182,13 +1186,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9998996991853574
+            "value": 1.000150056195029
           },
           "grid_import": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.0508408423700657,
+              "delta_vs_baseline": 0.059114980913242965,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1201,7 +1205,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0508408423700657
+            "value": 1.059114980913243
           },
           "grid_import_baseline": {
             "comparison": {
@@ -1220,13 +1224,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11107242.547481537
+            "value": 11107847.682125092
           },
           "grid_import_control": {
             "comparison": {
               "available": true,
-              "baseline": 11107242.547481537,
-              "delta_vs_baseline": 56260.492014544085,
+              "baseline": 11107847.682125092,
+              "delta_vs_baseline": 64196.27968855016,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1239,13 +1243,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11163503.039496081
+            "value": 11172043.961813642
           },
           "grid_import_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 28207.32397326982,
+              "delta_vs_baseline": 32186.08999340884,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1259,7 +1263,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 28207.32397326982
+            "value": 32186.08999340884
           },
           "net_exchange_baseline": {
             "comparison": {
@@ -1278,13 +1282,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -29547576.81678009
+            "value": -29546545.665412903
           },
           "net_exchange_control": {
             "comparison": {
               "available": true,
-              "baseline": -29547576.81678009,
-              "delta_vs_baseline": 60338.20351592824,
+              "baseline": -29546545.665412903,
+              "delta_vs_baseline": 58095.83611161262,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1297,13 +1301,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -29487238.613264162
+            "value": -29488449.82930129
           },
           "net_exchange_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 30251.766267861498,
+              "delta_vs_baseline": 29127.510478838543,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1317,13 +1321,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 30251.766267861498
+            "value": 29127.510478838543
           },
           "one_minus_load_factor_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.021142718667697347,
+              "delta_vs_baseline": -0.02221688227815166,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1337,13 +1341,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9788572813323027
+            "value": 0.9777831177218483
           },
           "peak_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.09560743997142573,
+              "delta_vs_baseline": 0.08638071485330645,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1357,7 +1361,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0956074399714257
+            "value": 1.0863807148533065
           },
           "pv_export_daily_average": {
             "comparison": {
@@ -1376,7 +1380,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 113436.8744305524
+            "value": 113432.64319114307
           },
           "pv_export_total": {
             "comparison": {
@@ -1395,7 +1399,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 41399732.63071702
+            "value": 41398188.40463425
           },
           "pv_generation_daily_average": {
             "comparison": {
@@ -1452,13 +1456,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.1642838291856845
+            "value": 0.1643150017229632
           },
           "ramping_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.02088123074470949,
+              "delta_vs_baseline": 0.024945867130649058,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1471,13 +1475,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0208812307447095
+            "value": 1.024945867130649
           },
           "zero_net_energy": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.0011312729869701332,
+              "delta_vs_baseline": -0.0007922477741990619,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1490,7 +1494,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9988687270130299
+            "value": 0.9992077522258009
           }
         },
         "name": "Flexibilidad energetica",
@@ -1511,7 +1515,7 @@
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.051639591972695964,
+              "delta_vs_baseline": 0.06018972742060824,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1524,7 +1528,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.051639591972696
+            "value": 1.0601897274206082
           },
           "carbon_emissions_baseline": {
             "comparison": {
@@ -1543,13 +1547,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 9088297.682261093
+            "value": 9088742.930663891
           },
           "carbon_emissions_control": {
             "comparison": {
               "available": true,
-              "baseline": 9088297.682261093,
-              "delta_vs_baseline": 154873.6158968918,
+              "baseline": 9088742.930663891,
+              "delta_vs_baseline": 181302.7459044736,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1562,7 +1566,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 9243171.298157984
+            "value": 9270045.676568365
           },
           "carbon_emissions_daily_average_baseline": {
             "comparison": {
@@ -1581,13 +1585,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 24902.288431814846
+            "value": 24903.508429721816
           },
           "carbon_emissions_daily_average_control": {
             "comparison": {
               "available": true,
-              "baseline": 24902.288431814846,
-              "delta_vs_baseline": 424.3597193201749,
+              "baseline": 24903.508429721816,
+              "delta_vs_baseline": 496.7765614462114,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1600,13 +1604,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 25326.64815113502
+            "value": 25400.284991168028
           },
           "carbon_emissions_daily_average_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 424.35971932017395,
+              "delta_vs_baseline": 496.7765614462115,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1619,13 +1623,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 424.35971932017395
+            "value": 496.7765614462115
           },
           "carbon_emissions_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 77648.98780810599,
+              "delta_vs_baseline": 90899.7612329599,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1639,7 +1643,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 77648.98780810599
+            "value": 90899.7612329599
           }
         },
         "name": "Emisiones de CO2",
@@ -1650,9 +1654,9 @@
       "OE3": {
         "axis_scenario": "E3",
         "baseline_comparison": {
-          "comparable_kpis": 8,
+          "comparable_kpis": 9,
           "improved_kpis": 1,
-          "not_improved_kpis": 7
+          "not_improved_kpis": 8
         },
         "code": "OE3",
         "kpis": {
@@ -1660,7 +1664,7 @@
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.021142718667697347,
+              "delta_vs_baseline": -0.02221688227815166,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1674,13 +1678,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9788572813323027
+            "value": 0.9777831177218483
           },
           "cost_peak_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.09560743997142573,
+              "delta_vs_baseline": 0.08638071485330645,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1694,13 +1698,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0956074399714257
+            "value": 1.0863807148533065
           },
           "cost_ramping_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.02088123074470949,
+              "delta_vs_baseline": 0.024945867130649058,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1713,13 +1717,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0208812307447095
+            "value": 1.024945867130649
           },
           "electricity_cost": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.0050652080032747016,
+              "delta_vs_baseline": 0.00555544103084471,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1732,7 +1736,7 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0050652080032747
+            "value": 1.0055554410308447
           },
           "electricity_cost_baseline": {
             "comparison": {
@@ -1751,13 +1755,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 5914557.320100955
+            "value": 7106081.274015802
           },
           "electricity_cost_control": {
             "comparison": {
               "available": true,
-              "baseline": 5914557.320100955,
-              "delta_vs_baseline": 29958.463073601946,
+              "baseline": 7106081.274015802,
+              "delta_vs_baseline": 39477.41547818482,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1770,7 +1774,7 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 5944515.783174557
+            "value": 7145558.689493987
           },
           "electricity_cost_daily_average_baseline": {
             "comparison": {
@@ -1789,13 +1793,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 16206.11664372907
+            "value": 19470.938529099127
           },
           "electricity_cost_daily_average_control": {
             "comparison": {
               "available": true,
-              "baseline": 16206.11664372907,
-              "delta_vs_baseline": 82.08735172581873,
+              "baseline": 19470.938529099127,
+              "delta_vs_baseline": 108.16965081361195,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1808,13 +1812,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 16288.203995454889
+            "value": 19579.10817991274
           },
           "electricity_cost_daily_average_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 82.08735172581879,
+              "delta_vs_baseline": 108.16965081361293,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1827,13 +1831,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 82.08735172581879
+            "value": 108.16965081361293
           },
           "electricity_cost_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 15020.275212663882,
+              "delta_vs_baseline": 19792.792564499217,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1847,14 +1851,14 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 15020.275212663882
+            "value": 19792.792564499217
           },
           "price_signal_deviation": {
             "comparison": {
-              "available": false,
-              "baseline": null,
-              "delta_vs_baseline": null,
-              "improved_vs_baseline": null
+              "available": true,
+              "baseline": 0.38457995010225254,
+              "delta_vs_baseline": 0.005394270107879129,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -1866,7 +1870,7 @@
               "objective": "OE3",
               "source": "derived_from_citylearn_v2_timeseries"
             },
-            "value": null
+            "value": 0.3899742202101317
           }
         },
         "name": "Costos energeticos",
@@ -2596,8 +2600,8 @@
         "axis_scenario": "E1",
         "baseline_comparison": {
           "comparable_kpis": 12,
-          "improved_kpis": 5,
-          "not_improved_kpis": 7
+          "improved_kpis": 2,
+          "not_improved_kpis": 10
         },
         "code": "OE1",
         "kpis": {
@@ -2618,7 +2622,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 4.9553800053448544e-05
+            "value": 5.80514716116429e-05
           },
           "battery_charge_total": {
             "comparison": {
@@ -2637,7 +2641,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 345132.82154580933
+            "value": 383545.61018115666
           },
           "battery_discharge_total": {
             "comparison": {
@@ -2656,7 +2660,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 292814.6935327461
+            "value": 333467.48643100867
           },
           "battery_equivalent_full_cycles": {
             "comparison": {
@@ -2675,7 +2679,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 12.143979195129742
+            "value": 13.649072881522985
           },
           "battery_throughput_total": {
             "comparison": {
@@ -2694,7 +2698,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 637947.5150785556
+            "value": 717013.0966121654
           },
           "community_import_share": {
             "comparison": {
@@ -2713,7 +2717,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.08180134800760319
+            "value": 0.08410696734872088
           },
           "community_local_traded_daily_average": {
             "comparison": {
@@ -2732,7 +2736,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 2502.1749435810157
+            "value": 2574.6685330692567
           },
           "community_local_traded_total": {
             "comparison": {
@@ -2751,7 +2755,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 913189.5971177549
+            "value": 939646.7367147341
           },
           "ev_charge_total": {
             "comparison": {
@@ -2770,7 +2774,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11514.183938987553
+            "value": 11565.11733596772
           },
           "ev_departure_count": {
             "comparison": {
@@ -2808,7 +2812,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1612.0
+            "value": 1643.0
           },
           "ev_departure_soc_deficit_mean": {
             "comparison": {
@@ -2827,7 +2831,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.5010665009797093
+            "value": 0.5003155133857917
           },
           "ev_departure_success_rate": {
             "comparison": {
@@ -2846,7 +2850,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.04062295247215362
+            "value": 0.04140416309661812
           },
           "ev_departure_within_tolerance_count": {
             "comparison": {
@@ -2865,7 +2869,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 507.0
+            "value": 516.0
           },
           "ev_departure_within_tolerance_rate": {
             "comparison": {
@@ -2884,7 +2888,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.012776573761403155
+            "value": 0.013003376845925105
           },
           "ev_v2g_export_total": {
             "comparison": {
@@ -2903,7 +2907,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 3494.122005420897
+            "value": 3547.4206320410594
           },
           "grid_export_baseline": {
             "comparison": {
@@ -2922,14 +2926,14 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 40654819.36426163
+            "value": 40654393.347537994
           },
           "grid_export_control": {
             "comparison": {
               "available": true,
-              "baseline": 40654819.36426163,
-              "delta_vs_baseline": -4077.7115013822913,
-              "improved_vs_baseline": true
+              "baseline": 40654393.347537994,
+              "delta_vs_baseline": 6100.443576939404,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -2941,14 +2945,14 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 40650741.652760245
+            "value": 40660493.791114934
           },
           "grid_export_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": -2044.4422945907447,
-              "improved_vs_baseline": true
+              "delta_vs_baseline": 3058.5795145712286,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -2961,14 +2965,14 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -2044.4422945907447
+            "value": 3058.5795145712286
           },
           "grid_export_ratio": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.00010030081464262874,
-              "improved_vs_baseline": true
+              "delta_vs_baseline": 0.00015005619502894696,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -2980,13 +2984,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9998996991853574
+            "value": 1.000150056195029
           },
           "grid_import": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.0508408423700657,
+              "delta_vs_baseline": 0.059114980913242965,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -2999,7 +3003,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0508408423700657
+            "value": 1.059114980913243
           },
           "grid_import_baseline": {
             "comparison": {
@@ -3018,13 +3022,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11107242.547481537
+            "value": 11107847.682125092
           },
           "grid_import_control": {
             "comparison": {
               "available": true,
-              "baseline": 11107242.547481537,
-              "delta_vs_baseline": 56260.492014544085,
+              "baseline": 11107847.682125092,
+              "delta_vs_baseline": 64196.27968855016,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3037,13 +3041,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11163503.039496081
+            "value": 11172043.961813642
           },
           "grid_import_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 28207.32397326982,
+              "delta_vs_baseline": 32186.08999340884,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3057,7 +3061,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 28207.32397326982
+            "value": 32186.08999340884
           },
           "net_exchange_baseline": {
             "comparison": {
@@ -3076,13 +3080,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -29547576.81678009
+            "value": -29546545.665412903
           },
           "net_exchange_control": {
             "comparison": {
               "available": true,
-              "baseline": -29547576.81678009,
-              "delta_vs_baseline": 60338.20351592824,
+              "baseline": -29546545.665412903,
+              "delta_vs_baseline": 58095.83611161262,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3095,13 +3099,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -29487238.613264162
+            "value": -29488449.82930129
           },
           "net_exchange_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 30251.766267861498,
+              "delta_vs_baseline": 29127.510478838543,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3115,13 +3119,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 30251.766267861498
+            "value": 29127.510478838543
           },
           "one_minus_load_factor_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.021142718667697347,
+              "delta_vs_baseline": -0.02221688227815166,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -3135,13 +3139,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9788572813323027
+            "value": 0.9777831177218483
           },
           "peak_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.09560743997142573,
+              "delta_vs_baseline": 0.08638071485330645,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3155,7 +3159,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0956074399714257
+            "value": 1.0863807148533065
           },
           "pv_export_daily_average": {
             "comparison": {
@@ -3174,7 +3178,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 113436.8744305524
+            "value": 113432.64319114307
           },
           "pv_export_total": {
             "comparison": {
@@ -3193,7 +3197,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 41399732.63071702
+            "value": 41398188.40463425
           },
           "pv_generation_daily_average": {
             "comparison": {
@@ -3250,13 +3254,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.1642838291856845
+            "value": 0.1643150017229632
           },
           "ramping_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.02088123074470949,
+              "delta_vs_baseline": 0.024945867130649058,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3269,13 +3273,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0208812307447095
+            "value": 1.024945867130649
           },
           "zero_net_energy": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.0011312729869701332,
+              "delta_vs_baseline": -0.0007922477741990619,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -3288,7 +3292,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9988687270130299
+            "value": 0.9992077522258009
           }
         },
         "name": "Flexibilidad energetica",
@@ -3309,7 +3313,7 @@
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.051639591972695964,
+              "delta_vs_baseline": 0.06018972742060824,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3322,7 +3326,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.051639591972696
+            "value": 1.0601897274206082
           },
           "carbon_emissions_baseline": {
             "comparison": {
@@ -3341,13 +3345,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 9088297.682261093
+            "value": 9088742.930663891
           },
           "carbon_emissions_control": {
             "comparison": {
               "available": true,
-              "baseline": 9088297.682261093,
-              "delta_vs_baseline": 154873.6158968918,
+              "baseline": 9088742.930663891,
+              "delta_vs_baseline": 181302.7459044736,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3360,7 +3364,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 9243171.298157984
+            "value": 9270045.676568365
           },
           "carbon_emissions_daily_average_baseline": {
             "comparison": {
@@ -3379,13 +3383,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 24902.288431814846
+            "value": 24903.508429721816
           },
           "carbon_emissions_daily_average_control": {
             "comparison": {
               "available": true,
-              "baseline": 24902.288431814846,
-              "delta_vs_baseline": 424.3597193201749,
+              "baseline": 24903.508429721816,
+              "delta_vs_baseline": 496.7765614462114,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3398,13 +3402,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 25326.64815113502
+            "value": 25400.284991168028
           },
           "carbon_emissions_daily_average_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 424.35971932017395,
+              "delta_vs_baseline": 496.7765614462115,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3417,13 +3421,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 424.35971932017395
+            "value": 496.7765614462115
           },
           "carbon_emissions_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 77648.98780810599,
+              "delta_vs_baseline": 90899.7612329599,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3437,7 +3441,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 77648.98780810599
+            "value": 90899.7612329599
           }
         },
         "name": "Emisiones de CO2",
@@ -3448,9 +3452,9 @@
       "OE3": {
         "axis_scenario": "E3",
         "baseline_comparison": {
-          "comparable_kpis": 8,
+          "comparable_kpis": 9,
           "improved_kpis": 1,
-          "not_improved_kpis": 7
+          "not_improved_kpis": 8
         },
         "code": "OE3",
         "kpis": {
@@ -3458,7 +3462,7 @@
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.021142718667697347,
+              "delta_vs_baseline": -0.02221688227815166,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -3472,13 +3476,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9788572813323027
+            "value": 0.9777831177218483
           },
           "cost_peak_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.09560743997142573,
+              "delta_vs_baseline": 0.08638071485330645,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3492,13 +3496,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0956074399714257
+            "value": 1.0863807148533065
           },
           "cost_ramping_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.02088123074470949,
+              "delta_vs_baseline": 0.024945867130649058,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3511,13 +3515,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0208812307447095
+            "value": 1.024945867130649
           },
           "electricity_cost": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.0050652080032747016,
+              "delta_vs_baseline": 0.00555544103084471,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3530,7 +3534,7 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0050652080032747
+            "value": 1.0055554410308447
           },
           "electricity_cost_baseline": {
             "comparison": {
@@ -3549,13 +3553,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 5914557.320100955
+            "value": 7106081.274015802
           },
           "electricity_cost_control": {
             "comparison": {
               "available": true,
-              "baseline": 5914557.320100955,
-              "delta_vs_baseline": 29958.463073601946,
+              "baseline": 7106081.274015802,
+              "delta_vs_baseline": 39477.41547818482,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3568,7 +3572,7 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 5944515.783174557
+            "value": 7145558.689493987
           },
           "electricity_cost_daily_average_baseline": {
             "comparison": {
@@ -3587,13 +3591,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 16206.11664372907
+            "value": 19470.938529099127
           },
           "electricity_cost_daily_average_control": {
             "comparison": {
               "available": true,
-              "baseline": 16206.11664372907,
-              "delta_vs_baseline": 82.08735172581873,
+              "baseline": 19470.938529099127,
+              "delta_vs_baseline": 108.16965081361195,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3606,13 +3610,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 16288.203995454889
+            "value": 19579.10817991274
           },
           "electricity_cost_daily_average_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 82.08735172581879,
+              "delta_vs_baseline": 108.16965081361293,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3625,13 +3629,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 82.08735172581879
+            "value": 108.16965081361293
           },
           "electricity_cost_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 15020.275212663882,
+              "delta_vs_baseline": 19792.792564499217,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3645,14 +3649,14 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 15020.275212663882
+            "value": 19792.792564499217
           },
           "price_signal_deviation": {
             "comparison": {
-              "available": false,
-              "baseline": null,
-              "delta_vs_baseline": null,
-              "improved_vs_baseline": null
+              "available": true,
+              "baseline": 0.38457995010225254,
+              "delta_vs_baseline": 0.005394270107879129,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -3664,7 +3668,7 @@
               "objective": "OE3",
               "source": "derived_from_citylearn_v2_timeseries"
             },
-            "value": null
+            "value": 0.3899742202101317
           }
         },
         "name": "Costos energeticos",
@@ -3694,7 +3698,11 @@
       "type": "last_completed_episode_snapshot"
     },
     "report_warnings": [],
-    "supporting_values": {}
+    "supporting_values": {
+      "price_signal_deviation_baseline": 0.38457995010225254,
+      "price_signal_deviation_delta": 0.005394270107879129,
+      "price_signal_deviation_ratio": 1.0140263945284846
+    }
   },
   "episode_summaries": [
     {
@@ -3704,8 +3712,8 @@
       "last_episode_step": "8759",
       "last_global_step": "8759",
       "last_time_step": "1",
-      "reward_mean_average": -0.528240462095925,
-      "reward_sum_total": -78665.56961532516,
+      "reward_mean_average": -0.54328587221065,
+      "reward_sum_total": -80906.13208961,
       "steps": 8760
     },
     {
@@ -3715,8 +3723,8 @@
       "last_episode_step": "8759",
       "last_global_step": "17519",
       "last_time_step": "2",
-      "reward_mean_average": -0.5342859520192066,
-      "reward_sum_total": -79565.86397470025,
+      "reward_mean_average": -0.5518098292620185,
+      "reward_sum_total": -82175.51977369978,
       "steps": 8760
     },
     {
@@ -3726,8 +3734,8 @@
       "last_episode_step": "8759",
       "last_global_step": "26279",
       "last_time_step": "3",
-      "reward_mean_average": -0.51241294757989,
-      "reward_sum_total": -76308.53615359722,
+      "reward_mean_average": -0.5266826511246796,
+      "reward_sum_total": -78433.58040548729,
       "steps": 8760
     },
     {
@@ -3737,8 +3745,8 @@
       "last_episode_step": "8759",
       "last_global_step": "35039",
       "last_time_step": "4",
-      "reward_mean_average": -0.5284359870146329,
-      "reward_sum_total": -78694.68718621913,
+      "reward_mean_average": -0.5437156108790443,
+      "reward_sum_total": -80970.12877210727,
       "steps": 8760
     },
     {
@@ -3748,8 +3756,8 @@
       "last_episode_step": "8759",
       "last_global_step": "43799",
       "last_time_step": "5",
-      "reward_mean_average": -0.5342089289762134,
-      "reward_sum_total": -79554.39370313771,
+      "reward_mean_average": -0.5516603422252431,
+      "reward_sum_total": -82153.25816418321,
       "steps": 8760
     },
     {
@@ -3759,8 +3767,8 @@
       "last_episode_step": "8759",
       "last_global_step": "52559",
       "last_time_step": "6",
-      "reward_mean_average": -0.5124602174516978,
-      "reward_sum_total": -76315.57558290684,
+      "reward_mean_average": -0.5269059164552964,
+      "reward_sum_total": -78466.82907852274,
       "steps": 8760
     },
     {
@@ -3770,8 +3778,8 @@
       "last_episode_step": "8759",
       "last_global_step": "61319",
       "last_time_step": "7",
-      "reward_mean_average": -0.5278329040124459,
-      "reward_sum_total": -78604.87606553343,
+      "reward_mean_average": -0.5428022325761069,
+      "reward_sum_total": -80834.10847523384,
       "steps": 8760
     },
     {
@@ -3781,8 +3789,8 @@
       "last_episode_step": "8759",
       "last_global_step": "70079",
       "last_time_step": "8",
-      "reward_mean_average": -0.5341600304390212,
-      "reward_sum_total": -79547.11173297903,
+      "reward_mean_average": -0.5515759494845673,
+      "reward_sum_total": -82140.69039724176,
       "steps": 8760
     },
     {
@@ -3792,8 +3800,8 @@
       "last_episode_step": "8759",
       "last_global_step": "78839",
       "last_time_step": "9",
-      "reward_mean_average": -0.5127932614670209,
-      "reward_sum_total": -76365.17249766874,
+      "reward_mean_average": -0.5271277014266983,
+      "reward_sum_total": -78499.85729646392,
       "steps": 8760
     },
     {
@@ -3803,8 +3811,8 @@
       "last_episode_step": "8759",
       "last_global_step": "87599",
       "last_time_step": "10",
-      "reward_mean_average": -0.528396128213109,
-      "reward_sum_total": -78688.7514134962,
+      "reward_mean_average": -0.5433765672185381,
+      "reward_sum_total": -80919.6383901847,
       "steps": 8760
     },
     {
@@ -3814,8 +3822,8 @@
       "last_episode_step": "8759",
       "last_global_step": "96359",
       "last_time_step": "11",
-      "reward_mean_average": -0.5344206644554094,
-      "reward_sum_total": -79585.92535069956,
+      "reward_mean_average": -0.5518946498872621,
+      "reward_sum_total": -82188.15126121108,
       "steps": 8760
     },
     {
@@ -3825,8 +3833,8 @@
       "last_episode_step": "8759",
       "last_global_step": "105119",
       "last_time_step": "12",
-      "reward_mean_average": -0.5128660689783334,
-      "reward_sum_total": -76376.01499225342,
+      "reward_mean_average": -0.527185775624718,
+      "reward_sum_total": -78508.505706033,
       "steps": 8760
     },
     {
@@ -3836,8 +3844,8 @@
       "last_episode_step": "8759",
       "last_global_step": "113879",
       "last_time_step": "13",
-      "reward_mean_average": -0.5280416566818644,
-      "reward_sum_total": -78635.96351306327,
+      "reward_mean_average": -0.5428711335833696,
+      "reward_sum_total": -80844.36921323539,
       "steps": 8760
     },
     {
@@ -3847,8 +3855,8 @@
       "last_episode_step": "8759",
       "last_global_step": "122639",
       "last_time_step": "14",
-      "reward_mean_average": -0.5341204026896166,
-      "reward_sum_total": -79541.2103685377,
+      "reward_mean_average": -0.5515063561842355,
+      "reward_sum_total": -82130.32656295635,
       "steps": 8760
     },
     {
@@ -3858,8 +3866,8 @@
       "last_episode_step": "8759",
       "last_global_step": "131399",
       "last_time_step": "15",
-      "reward_mean_average": -0.5124616506653793,
-      "reward_sum_total": -76315.78901708829,
+      "reward_mean_average": -0.526716133105878,
+      "reward_sum_total": -78438.56654212734,
       "steps": 8760
     },
     {
@@ -3869,8 +3877,8 @@
       "last_episode_step": "8759",
       "last_global_step": "140159",
       "last_time_step": "16",
-      "reward_mean_average": -0.5282891881860986,
-      "reward_sum_total": -78672.82590467381,
+      "reward_mean_average": -0.5434030689842839,
+      "reward_sum_total": -80923.58503313956,
       "steps": 8760
     },
     {
@@ -3880,8 +3888,8 @@
       "last_episode_step": "8759",
       "last_global_step": "148919",
       "last_time_step": "17",
-      "reward_mean_average": -0.5344664911717443,
-      "reward_sum_total": -79592.74986529615,
+      "reward_mean_average": -0.5518058895075868,
+      "reward_sum_total": -82174.93306546981,
       "steps": 8760
     },
     {
@@ -3891,8 +3899,8 @@
       "last_episode_step": "8759",
       "last_global_step": "157679",
       "last_time_step": "18",
-      "reward_mean_average": -0.512841510416361,
-      "reward_sum_total": -76372.35773120447,
+      "reward_mean_average": -0.5271417917155541,
+      "reward_sum_total": -78501.95562228031,
       "steps": 8760
     },
     {
@@ -3902,8 +3910,8 @@
       "last_episode_step": "8759",
       "last_global_step": "166439",
       "last_time_step": "19",
-      "reward_mean_average": -0.5282145512657044,
-      "reward_sum_total": -78661.7109744887,
+      "reward_mean_average": -0.543199383343419,
+      "reward_sum_total": -80893.25216750195,
       "steps": 8760
     },
     {
@@ -3913,8 +3921,8 @@
       "last_episode_step": "8759",
       "last_global_step": "175199",
       "last_time_step": "20",
-      "reward_mean_average": -0.5344791460117901,
-      "reward_sum_total": -79594.63442407579,
+      "reward_mean_average": -0.5519228590949066,
+      "reward_sum_total": -82192.3521764135,
       "steps": 8760
     },
     {
@@ -3924,8 +3932,8 @@
       "last_episode_step": "8759",
       "last_global_step": "183959",
       "last_time_step": "21",
-      "reward_mean_average": -0.5124952866072731,
-      "reward_sum_total": -76320.7980815551,
+      "reward_mean_average": -0.5268976734633181,
+      "reward_sum_total": -78465.60153215734,
       "steps": 8760
     },
     {
@@ -3935,8 +3943,8 @@
       "last_episode_step": "8759",
       "last_global_step": "192719",
       "last_time_step": "22",
-      "reward_mean_average": -0.5284842861702306,
-      "reward_sum_total": -78701.87989647072,
+      "reward_mean_average": -0.5434026496022172,
+      "reward_sum_total": -80923.52257876217,
       "steps": 8760
     },
     {
@@ -3946,8 +3954,8 @@
       "last_episode_step": "8736",
       "last_global_step": "201456",
       "last_time_step": "8759",
-      "reward_mean_average": -0.5342170296540485,
-      "reward_sum_total": -79346.72119748619,
+      "reward_mean_average": -0.551733265259201,
+      "reward_sum_total": -81948.39015568385,
       "steps": 8737
     },
     {
@@ -3957,8 +3965,8 @@
       "last_episode_step": "8759",
       "last_global_step": "210239",
       "last_time_step": "1",
-      "reward_mean_average": -0.528316323448379,
-      "reward_sum_total": -78676.8668879326,
+      "reward_mean_average": -0.5431901089086011,
+      "reward_sum_total": -80891.87101866888,
       "steps": 8760
     },
     {
@@ -3968,8 +3976,8 @@
       "last_episode_step": "8759",
       "last_global_step": "218999",
       "last_time_step": "2",
-      "reward_mean_average": -0.5342200265674227,
-      "reward_sum_total": -79556.04635642059,
+      "reward_mean_average": -0.5512860059573528,
+      "reward_sum_total": -82097.51200716899,
       "steps": 8760
     },
     {
@@ -3979,8 +3987,8 @@
       "last_episode_step": "8759",
       "last_global_step": "227759",
       "last_time_step": "3",
-      "reward_mean_average": -0.5122386797760721,
-      "reward_sum_total": -76282.58419225266,
+      "reward_mean_average": -0.5263660388880146,
+      "reward_sum_total": -78386.43051120313,
       "steps": 8760
     },
     {
@@ -3990,8 +3998,8 @@
       "last_episode_step": "8759",
       "last_global_step": "236519",
       "last_time_step": "4",
-      "reward_mean_average": -0.5281246595625226,
-      "reward_sum_total": -78648.32430205088,
+      "reward_mean_average": -0.5425584560941135,
+      "reward_sum_total": -80797.80528153537,
       "steps": 8760
     },
     {
@@ -4001,8 +4009,8 @@
       "last_episode_step": "8759",
       "last_global_step": "245279",
       "last_time_step": "5",
-      "reward_mean_average": -0.5341713049896714,
-      "reward_sum_total": -79548.79073906186,
+      "reward_mean_average": -0.5511507904264829,
+      "reward_sum_total": -82077.37571031181,
       "steps": 8760
     },
     {
@@ -4012,8 +4020,8 @@
       "last_episode_step": "8759",
       "last_global_step": "254039",
       "last_time_step": "6",
-      "reward_mean_average": -0.5124019091372712,
-      "reward_sum_total": -76306.89230872242,
+      "reward_mean_average": -0.5263098821800003,
+      "reward_sum_total": -78378.06765424565,
       "steps": 8760
     },
     {
@@ -4023,8 +4031,8 @@
       "last_episode_step": "8759",
       "last_global_step": "262799",
       "last_time_step": "7",
-      "reward_mean_average": -0.5280629675781271,
-      "reward_sum_total": -78639.13713173468,
+      "reward_mean_average": -0.5424389493246577,
+      "reward_sum_total": -80780.00833342804,
       "steps": 8760
     },
     {
@@ -4034,8 +4042,8 @@
       "last_episode_step": "8751",
       "last_global_step": "271551",
       "last_time_step": "8759",
-      "reward_mean_average": -0.5341520103821658,
-      "reward_sum_total": -79473.27271270016,
+      "reward_mean_average": -0.5507925898136747,
+      "reward_sum_total": -81949.12468283779,
       "steps": 8752
     },
     {
@@ -4045,8 +4053,8 @@
       "last_episode_step": "8759",
       "last_global_step": "280319",
       "last_time_step": "1",
-      "reward_mean_average": -0.528316323448379,
-      "reward_sum_total": -78676.8668879326,
+      "reward_mean_average": -0.5431901089086011,
+      "reward_sum_total": -80891.87101866888,
       "steps": 8760
     },
     {
@@ -4056,8 +4064,8 @@
       "last_episode_step": "8759",
       "last_global_step": "289079",
       "last_time_step": "2",
-      "reward_mean_average": -0.5342200265674227,
-      "reward_sum_total": -79556.04635642059,
+      "reward_mean_average": -0.5512860059573528,
+      "reward_sum_total": -82097.51200716899,
       "steps": 8760
     },
     {
@@ -4067,8 +4075,8 @@
       "last_episode_step": "8759",
       "last_global_step": "297839",
       "last_time_step": "3",
-      "reward_mean_average": -0.5122386797760721,
-      "reward_sum_total": -76282.58419225266,
+      "reward_mean_average": -0.5263660388880146,
+      "reward_sum_total": -78386.43051120313,
       "steps": 8760
     },
     {
@@ -4078,8 +4086,8 @@
       "last_episode_step": "8759",
       "last_global_step": "306599",
       "last_time_step": "4",
-      "reward_mean_average": -0.5281246595625226,
-      "reward_sum_total": -78648.32430205088,
+      "reward_mean_average": -0.5425584560941135,
+      "reward_sum_total": -80797.80528153537,
       "steps": 8760
     },
     {
@@ -4089,8 +4097,8 @@
       "last_episode_step": "8759",
       "last_global_step": "315359",
       "last_time_step": "5",
-      "reward_mean_average": -0.5341713049896714,
-      "reward_sum_total": -79548.79073906186,
+      "reward_mean_average": -0.5511507904264829,
+      "reward_sum_total": -82077.37571031181,
       "steps": 8760
     },
     {
@@ -4100,8 +4108,8 @@
       "last_episode_step": "8759",
       "last_global_step": "324119",
       "last_time_step": "6",
-      "reward_mean_average": -0.5124019091372712,
-      "reward_sum_total": -76306.89230872242,
+      "reward_mean_average": -0.5263098821800003,
+      "reward_sum_total": -78378.06765424565,
       "steps": 8760
     },
     {
@@ -4111,8 +4119,8 @@
       "last_episode_step": "8752",
       "last_global_step": "332872",
       "last_time_step": "8759",
-      "reward_mean_average": -0.5279973791614397,
-      "reward_sum_total": -78566.5380166014,
+      "reward_mean_average": -0.5423942671547753,
+      "reward_sum_total": -80708.80934689773,
       "steps": 8753
     },
     {
@@ -4122,8 +4130,8 @@
       "last_episode_step": 8759,
       "last_global_step": 341639,
       "last_time_step": 1,
-      "reward_mean_average": -0.528316323448379,
-      "reward_sum_total": -78676.8668879326,
+      "reward_mean_average": -0.5431901089086011,
+      "reward_sum_total": -80891.87101866888,
       "steps": 8760
     },
     {
@@ -4133,8 +4141,8 @@
       "last_episode_step": 8759,
       "last_global_step": 350399,
       "last_time_step": 2,
-      "reward_mean_average": -0.5342200265674227,
-      "reward_sum_total": -79556.04635642059,
+      "reward_mean_average": -0.5512860059573528,
+      "reward_sum_total": -82097.51200716899,
       "steps": 8760
     },
     {
@@ -4144,8 +4152,8 @@
       "last_episode_step": 8759,
       "last_global_step": 359159,
       "last_time_step": 3,
-      "reward_mean_average": -0.5122386797760721,
-      "reward_sum_total": -76282.58419225266,
+      "reward_mean_average": -0.5263660388880146,
+      "reward_sum_total": -78386.43051120313,
       "steps": 8760
     },
     {
@@ -4155,8 +4163,8 @@
       "last_episode_step": 8759,
       "last_global_step": 367919,
       "last_time_step": 4,
-      "reward_mean_average": -0.5281246595625226,
-      "reward_sum_total": -78648.32430205088,
+      "reward_mean_average": -0.5425584560941135,
+      "reward_sum_total": -80797.80528153537,
       "steps": 8760
     },
     {
@@ -4166,8 +4174,8 @@
       "last_episode_step": 8759,
       "last_global_step": 376679,
       "last_time_step": 5,
-      "reward_mean_average": -0.5341713049896714,
-      "reward_sum_total": -79548.79073906186,
+      "reward_mean_average": -0.5511507904264829,
+      "reward_sum_total": -82077.37571031181,
       "steps": 8760
     },
     {
@@ -4177,8 +4185,8 @@
       "last_episode_step": 8759,
       "last_global_step": 385439,
       "last_time_step": 6,
-      "reward_mean_average": -0.5124019091372712,
-      "reward_sum_total": -76306.89230872242,
+      "reward_mean_average": -0.5263098821800003,
+      "reward_sum_total": -78378.06765424565,
       "steps": 8760
     },
     {
@@ -4188,8 +4196,8 @@
       "last_episode_step": 8759,
       "last_global_step": 394199,
       "last_time_step": 7,
-      "reward_mean_average": -0.5280629675781271,
-      "reward_sum_total": -78639.13713173468,
+      "reward_mean_average": -0.5424389493246577,
+      "reward_sum_total": -80780.00833342804,
       "steps": 8760
     },
     {
@@ -4199,8 +4207,8 @@
       "last_episode_step": 8759,
       "last_global_step": 402959,
       "last_time_step": 8,
-      "reward_mean_average": -0.5341292031088826,
-      "reward_sum_total": -79542.5209269748,
+      "reward_mean_average": -0.5507613602389888,
+      "reward_sum_total": -82019.38176679022,
       "steps": 8760
     },
     {
@@ -4210,8 +4218,8 @@
       "last_episode_step": 8759,
       "last_global_step": 411719,
       "last_time_step": 9,
-      "reward_mean_average": -0.5126333496593685,
-      "reward_sum_total": -76341.35843127315,
+      "reward_mean_average": -0.5265661854577639,
+      "reward_sum_total": -78416.23633837019,
       "steps": 8760
     },
     {
@@ -4221,8 +4229,8 @@
       "last_episode_step": 8759,
       "last_global_step": 420479,
       "last_time_step": 10,
-      "reward_mean_average": -0.5281921079341843,
-      "reward_sum_total": -78658.36871355871,
+      "reward_mean_average": -0.5426501765817953,
+      "reward_sum_total": -80811.46429656095,
       "steps": 8760
     },
     {
@@ -4232,8 +4240,8 @@
       "last_episode_step": 8759,
       "last_global_step": 429239,
       "last_time_step": 11,
-      "reward_mean_average": -0.5341373025630299,
-      "reward_sum_total": -79543.72709768642,
+      "reward_mean_average": -0.5510169561042634,
+      "reward_sum_total": -82057.44510304689,
       "steps": 8760
     },
     {
@@ -4243,8 +4251,8 @@
       "last_episode_step": 8747,
       "last_global_step": 437987,
       "last_time_step": 8759,
-      "reward_mean_average": -0.5125064952745902,
-      "reward_sum_total": -76217.91595125597,
+      "reward_mean_average": -0.5263825588275348,
+      "reward_sum_total": -78281.50861859568,
       "steps": 8748
     }
   ],
@@ -4259,220 +4267,220 @@
       {
         "kind": "line_plot",
         "name": "reward_timeseries.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/reward_timeseries.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/reward_timeseries.png"
       },
       {
         "kind": "convergence_plot",
         "name": "convergence_returns.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/convergence_returns.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/convergence_returns.png"
       },
       {
         "kind": "bar_line_plot",
         "name": "episode_reward_summary.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/episode_reward_summary.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/episode_reward_summary.png"
       },
       {
         "kind": "efficiency_plot",
         "name": "learning_efficiency.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/learning_efficiency.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/learning_efficiency.png"
       },
       {
         "kind": "citylearn_v2_timeseries_plot",
         "name": "citylearn_v2_district_timeseries.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/citylearn_v2_district_timeseries.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/citylearn_v2_district_timeseries.png"
       },
       {
         "kind": "exploration_plot",
         "name": "exploration_action_l2.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/exploration_action_l2.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/exploration_action_l2.png"
       },
       {
         "kind": "agent_reward_plot",
         "name": "agent_reward_contribution.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/agent_reward_contribution.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/agent_reward_contribution.png"
       },
       {
         "kind": "bar_plot",
         "name": "axis_baseline_comparison.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/axis_baseline_comparison.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/axis_baseline_comparison.png"
       },
       {
         "kind": "baseline_gain_plot",
         "name": "baseline_gain_by_kpi.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/baseline_gain_by_kpi.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/baseline_gain_by_kpi.png"
       },
       {
         "kind": "horizontal_bar_plot",
         "name": "core_kpis.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/core_kpis.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/core_kpis.png"
       },
       {
         "kind": "axis_kpi_plot",
         "name": "OE1_flexibility_kpis.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/OE1_flexibility_kpis.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/OE1_flexibility_kpis.png"
       },
       {
         "kind": "axis_kpi_plot",
         "name": "OE2_co2_kpis.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/OE2_co2_kpis.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/OE2_co2_kpis.png"
       },
       {
         "kind": "axis_kpi_plot",
         "name": "OE3_cost_kpis.png",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/OE3_cost_kpis.png"
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/OE3_cost_kpis.png"
       }
     ],
-    "figures_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures",
+    "figures_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures",
     "table_count": 24,
     "tables": [
       {
         "kind": "csv_table",
         "name": "episode_summary.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/episode_summary.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/episode_summary.csv",
         "rows": 50
       },
       {
         "kind": "markdown_table",
         "name": "episode_summary.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/episode_summary.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/episode_summary.md",
         "rows": 50
       },
       {
         "kind": "csv_table",
         "name": "objective_kpis.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/objective_kpis.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/objective_kpis.csv",
         "rows": 54
       },
       {
         "kind": "markdown_table",
         "name": "objective_kpis.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/objective_kpis.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/objective_kpis.md",
         "rows": 54
       },
       {
         "kind": "csv_table",
         "name": "axis_baseline_comparison.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/axis_baseline_comparison.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/axis_baseline_comparison.csv",
         "rows": 3
       },
       {
         "kind": "markdown_table",
         "name": "axis_baseline_comparison.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/axis_baseline_comparison.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/axis_baseline_comparison.md",
         "rows": 3
       },
       {
         "kind": "csv_table",
         "name": "core_kpis.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/core_kpis.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/core_kpis.csv",
         "rows": 14
       },
       {
         "kind": "markdown_table",
         "name": "core_kpis.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/core_kpis.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/core_kpis.md",
         "rows": 14
       },
       {
         "kind": "csv_table",
         "name": "training_efficiency.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/training_efficiency.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/training_efficiency.csv",
         "rows": 50
       },
       {
         "kind": "markdown_table",
         "name": "training_efficiency.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/training_efficiency.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/training_efficiency.md",
         "rows": 50
       },
       {
         "kind": "csv_table",
         "name": "exploration_summary.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/exploration_summary.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/exploration_summary.csv",
         "rows": 50
       },
       {
         "kind": "markdown_table",
         "name": "exploration_summary.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/exploration_summary.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/exploration_summary.md",
         "rows": 50
       },
       {
         "kind": "csv_table",
         "name": "agent_reward_summary.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/agent_reward_summary.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/agent_reward_summary.csv",
         "rows": 17
       },
       {
         "kind": "markdown_table",
         "name": "agent_reward_summary.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/agent_reward_summary.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/agent_reward_summary.md",
         "rows": 17
       },
       {
         "kind": "csv_table",
         "name": "checkpoint_inventory.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/checkpoint_inventory.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/checkpoint_inventory.csv",
         "rows": 12
       },
       {
         "kind": "markdown_table",
         "name": "checkpoint_inventory.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/checkpoint_inventory.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/checkpoint_inventory.md",
         "rows": 12
       },
       {
         "kind": "csv_table",
         "name": "building_behavior_summary.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/building_behavior_summary.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/building_behavior_summary.csv",
         "rows": 17
       },
       {
         "kind": "markdown_table",
         "name": "building_behavior_summary.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/building_behavior_summary.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/building_behavior_summary.md",
         "rows": 17
       },
       {
         "kind": "csv_table",
         "name": "building_kpis.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/building_kpis.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/building_kpis.csv",
         "rows": 1275
       },
       {
         "kind": "markdown_table",
         "name": "building_kpis.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/building_kpis.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/building_kpis.md",
         "rows": 1275
       },
       {
         "kind": "csv_table",
         "name": "building_observation_action_schema.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/building_observation_action_schema.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/building_observation_action_schema.csv",
         "rows": 2075
       },
       {
         "kind": "markdown_table",
         "name": "building_observation_action_schema.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/building_observation_action_schema.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/building_observation_action_schema.md",
         "rows": 2075
       },
       {
         "kind": "csv_table",
         "name": "building_trace_sample.csv",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/building_trace_sample.csv",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/building_trace_sample.csv",
         "rows": 120
       },
       {
         "kind": "markdown_table",
         "name": "building_trace_sample.md",
-        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables/building_trace_sample.md",
+        "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables/building_trace_sample.md",
         "rows": 120
       }
     ],
-    "tables_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables"
+    "tables_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/tables"
   },
-  "figures_manifest": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/figures_manifest.json",
+  "figures_manifest": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/figures/figures_manifest.json",
   "hyperparameters": {
     "action_bins": 3,
     "actor_lr": 0.0003,
@@ -4501,7 +4509,7 @@
     "estimated_replay_buffer_gib": 2.743958830833435,
     "final_checkpoint_save_step": 12,
     "finite_optimizer_step_guard": {
-      "audit_path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/masac_finite_gradient_guard.jsonl",
+      "audit_path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/masac_finite_gradient_guard.jsonl",
       "installed_optimizers": 4
     },
     "gamma": 0.9999,
@@ -4534,7 +4542,7 @@
       "live_progress_global_step": 333600,
       "maac_checkpoint": null,
       "maac_start_episode": 0,
-      "model_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/checkpoints/models",
+      "model_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/checkpoints/models",
       "note": "resume_from_checkpoint",
       "remaining_episodes": 12,
       "remaining_num_env_steps": 105120,
@@ -4564,9 +4572,9 @@
     "reward_metadata": {
       "algorithm": "MASAC",
       "axis_weights": {
-        "carbon": 0.7,
-        "cost": 0.15,
-        "flex": 0.15
+        "carbon": 0.15,
+        "cost": 0.6,
+        "flex": 0.25
       },
       "base_reward": "CityLearnV3MADRLRewardFunction",
       "function": "CityLearnV3MADRLRewardFunction",
@@ -4592,7 +4600,7 @@
         "reward_scale": 1.0,
         "team_reward_ratio": 0.7
       },
-      "scenario": "E2"
+      "scenario": "E3"
     },
     "reward_profile": "MASAC",
     "rnn_hidden_dim": 64,
@@ -4605,14 +4613,14 @@
     "normalize_observations": true,
     "observation_method": "CityLearn NormalizedObservationWrapper plus adapter clipping to [0, 1]."
   },
-  "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2",
+  "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3",
   "project_axis_metrics": {
     "OE1": {
       "axis_scenario": "E1",
       "baseline_comparison": {
         "comparable_kpis": 12,
-        "improved_kpis": 5,
-        "not_improved_kpis": 7
+        "improved_kpis": 2,
+        "not_improved_kpis": 10
       },
       "code": "OE1",
       "kpis": {
@@ -4633,7 +4641,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 4.9553800053448544e-05
+          "value": 5.80514716116429e-05
         },
         "battery_charge_total": {
           "comparison": {
@@ -4652,7 +4660,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 345132.82154580933
+          "value": 383545.61018115666
         },
         "battery_discharge_total": {
           "comparison": {
@@ -4671,7 +4679,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 292814.6935327461
+          "value": 333467.48643100867
         },
         "battery_equivalent_full_cycles": {
           "comparison": {
@@ -4690,7 +4698,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 12.143979195129742
+          "value": 13.649072881522985
         },
         "battery_throughput_total": {
           "comparison": {
@@ -4709,7 +4717,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 637947.5150785556
+          "value": 717013.0966121654
         },
         "community_import_share": {
           "comparison": {
@@ -4728,7 +4736,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.08180134800760319
+          "value": 0.08410696734872088
         },
         "community_local_traded_daily_average": {
           "comparison": {
@@ -4747,7 +4755,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 2502.1749435810157
+          "value": 2574.6685330692567
         },
         "community_local_traded_total": {
           "comparison": {
@@ -4766,7 +4774,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 913189.5971177549
+          "value": 939646.7367147341
         },
         "ev_charge_total": {
           "comparison": {
@@ -4785,7 +4793,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 11514.183938987553
+          "value": 11565.11733596772
         },
         "ev_departure_count": {
           "comparison": {
@@ -4823,7 +4831,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1612.0
+          "value": 1643.0
         },
         "ev_departure_soc_deficit_mean": {
           "comparison": {
@@ -4842,7 +4850,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.5010665009797093
+          "value": 0.5003155133857917
         },
         "ev_departure_success_rate": {
           "comparison": {
@@ -4861,7 +4869,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.04062295247215362
+          "value": 0.04140416309661812
         },
         "ev_departure_within_tolerance_count": {
           "comparison": {
@@ -4880,7 +4888,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 507.0
+          "value": 516.0
         },
         "ev_departure_within_tolerance_rate": {
           "comparison": {
@@ -4899,7 +4907,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.012776573761403155
+          "value": 0.013003376845925105
         },
         "ev_v2g_export_total": {
           "comparison": {
@@ -4918,7 +4926,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 3494.122005420897
+          "value": 3547.4206320410594
         },
         "grid_export_baseline": {
           "comparison": {
@@ -4937,14 +4945,14 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 40654819.36426163
+          "value": 40654393.347537994
         },
         "grid_export_control": {
           "comparison": {
             "available": true,
-            "baseline": 40654819.36426163,
-            "delta_vs_baseline": -4077.7115013822913,
-            "improved_vs_baseline": true
+            "baseline": 40654393.347537994,
+            "delta_vs_baseline": 6100.443576939404,
+            "improved_vs_baseline": false
           },
           "trace": {
             "citylearn_v2_names": [
@@ -4956,14 +4964,14 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 40650741.652760245
+          "value": 40660493.791114934
         },
         "grid_export_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": -2044.4422945907447,
-            "improved_vs_baseline": true
+            "delta_vs_baseline": 3058.5795145712286,
+            "improved_vs_baseline": false
           },
           "trace": {
             "citylearn_v2_names": [
@@ -4976,14 +4984,14 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": -2044.4422945907447
+          "value": 3058.5795145712286
         },
         "grid_export_ratio": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": -0.00010030081464262874,
-            "improved_vs_baseline": true
+            "delta_vs_baseline": 0.00015005619502894696,
+            "improved_vs_baseline": false
           },
           "trace": {
             "citylearn_v2_names": [
@@ -4995,13 +5003,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.9998996991853574
+          "value": 1.000150056195029
         },
         "grid_import": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.0508408423700657,
+            "delta_vs_baseline": 0.059114980913242965,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5014,7 +5022,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0508408423700657
+          "value": 1.059114980913243
         },
         "grid_import_baseline": {
           "comparison": {
@@ -5033,13 +5041,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 11107242.547481537
+          "value": 11107847.682125092
         },
         "grid_import_control": {
           "comparison": {
             "available": true,
-            "baseline": 11107242.547481537,
-            "delta_vs_baseline": 56260.492014544085,
+            "baseline": 11107847.682125092,
+            "delta_vs_baseline": 64196.27968855016,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5052,13 +5060,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 11163503.039496081
+          "value": 11172043.961813642
         },
         "grid_import_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 28207.32397326982,
+            "delta_vs_baseline": 32186.08999340884,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5072,7 +5080,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 28207.32397326982
+          "value": 32186.08999340884
         },
         "net_exchange_baseline": {
           "comparison": {
@@ -5091,13 +5099,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": -29547576.81678009
+          "value": -29546545.665412903
         },
         "net_exchange_control": {
           "comparison": {
             "available": true,
-            "baseline": -29547576.81678009,
-            "delta_vs_baseline": 60338.20351592824,
+            "baseline": -29546545.665412903,
+            "delta_vs_baseline": 58095.83611161262,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5110,13 +5118,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": -29487238.613264162
+          "value": -29488449.82930129
         },
         "net_exchange_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 30251.766267861498,
+            "delta_vs_baseline": 29127.510478838543,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5130,13 +5138,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 30251.766267861498
+          "value": 29127.510478838543
         },
         "one_minus_load_factor_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": -0.021142718667697347,
+            "delta_vs_baseline": -0.02221688227815166,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -5150,13 +5158,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.9788572813323027
+          "value": 0.9777831177218483
         },
         "peak_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.09560743997142573,
+            "delta_vs_baseline": 0.08638071485330645,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5170,7 +5178,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0956074399714257
+          "value": 1.0863807148533065
         },
         "pv_export_daily_average": {
           "comparison": {
@@ -5189,7 +5197,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 113436.8744305524
+          "value": 113432.64319114307
         },
         "pv_export_total": {
           "comparison": {
@@ -5208,7 +5216,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 41399732.63071702
+          "value": 41398188.40463425
         },
         "pv_generation_daily_average": {
           "comparison": {
@@ -5265,13 +5273,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.1642838291856845
+          "value": 0.1643150017229632
         },
         "ramping_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.02088123074470949,
+            "delta_vs_baseline": 0.024945867130649058,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5284,13 +5292,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0208812307447095
+          "value": 1.024945867130649
         },
         "zero_net_energy": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": -0.0011312729869701332,
+            "delta_vs_baseline": -0.0007922477741990619,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -5303,7 +5311,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.9988687270130299
+          "value": 0.9992077522258009
         }
       },
       "name": "Flexibilidad energetica",
@@ -5324,7 +5332,7 @@
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.051639591972695964,
+            "delta_vs_baseline": 0.06018972742060824,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5337,7 +5345,7 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.051639591972696
+          "value": 1.0601897274206082
         },
         "carbon_emissions_baseline": {
           "comparison": {
@@ -5356,13 +5364,13 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 9088297.682261093
+          "value": 9088742.930663891
         },
         "carbon_emissions_control": {
           "comparison": {
             "available": true,
-            "baseline": 9088297.682261093,
-            "delta_vs_baseline": 154873.6158968918,
+            "baseline": 9088742.930663891,
+            "delta_vs_baseline": 181302.7459044736,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5375,7 +5383,7 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 9243171.298157984
+          "value": 9270045.676568365
         },
         "carbon_emissions_daily_average_baseline": {
           "comparison": {
@@ -5394,13 +5402,13 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 24902.288431814846
+          "value": 24903.508429721816
         },
         "carbon_emissions_daily_average_control": {
           "comparison": {
             "available": true,
-            "baseline": 24902.288431814846,
-            "delta_vs_baseline": 424.3597193201749,
+            "baseline": 24903.508429721816,
+            "delta_vs_baseline": 496.7765614462114,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5413,13 +5421,13 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 25326.64815113502
+          "value": 25400.284991168028
         },
         "carbon_emissions_daily_average_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 424.35971932017395,
+            "delta_vs_baseline": 496.7765614462115,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5432,13 +5440,13 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 424.35971932017395
+          "value": 496.7765614462115
         },
         "carbon_emissions_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 77648.98780810599,
+            "delta_vs_baseline": 90899.7612329599,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5452,7 +5460,7 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 77648.98780810599
+          "value": 90899.7612329599
         }
       },
       "name": "Emisiones de CO2",
@@ -5463,9 +5471,9 @@
     "OE3": {
       "axis_scenario": "E3",
       "baseline_comparison": {
-        "comparable_kpis": 8,
+        "comparable_kpis": 9,
         "improved_kpis": 1,
-        "not_improved_kpis": 7
+        "not_improved_kpis": 8
       },
       "code": "OE3",
       "kpis": {
@@ -5473,7 +5481,7 @@
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": -0.021142718667697347,
+            "delta_vs_baseline": -0.02221688227815166,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -5487,13 +5495,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.9788572813323027
+          "value": 0.9777831177218483
         },
         "cost_peak_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.09560743997142573,
+            "delta_vs_baseline": 0.08638071485330645,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5507,13 +5515,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0956074399714257
+          "value": 1.0863807148533065
         },
         "cost_ramping_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.02088123074470949,
+            "delta_vs_baseline": 0.024945867130649058,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5526,13 +5534,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0208812307447095
+          "value": 1.024945867130649
         },
         "electricity_cost": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.0050652080032747016,
+            "delta_vs_baseline": 0.00555544103084471,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5545,7 +5553,7 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0050652080032747
+          "value": 1.0055554410308447
         },
         "electricity_cost_baseline": {
           "comparison": {
@@ -5564,13 +5572,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 5914557.320100955
+          "value": 7106081.274015802
         },
         "electricity_cost_control": {
           "comparison": {
             "available": true,
-            "baseline": 5914557.320100955,
-            "delta_vs_baseline": 29958.463073601946,
+            "baseline": 7106081.274015802,
+            "delta_vs_baseline": 39477.41547818482,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5583,7 +5591,7 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 5944515.783174557
+          "value": 7145558.689493987
         },
         "electricity_cost_daily_average_baseline": {
           "comparison": {
@@ -5602,13 +5610,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 16206.11664372907
+          "value": 19470.938529099127
         },
         "electricity_cost_daily_average_control": {
           "comparison": {
             "available": true,
-            "baseline": 16206.11664372907,
-            "delta_vs_baseline": 82.08735172581873,
+            "baseline": 19470.938529099127,
+            "delta_vs_baseline": 108.16965081361195,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5621,13 +5629,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 16288.203995454889
+          "value": 19579.10817991274
         },
         "electricity_cost_daily_average_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 82.08735172581879,
+            "delta_vs_baseline": 108.16965081361293,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5640,13 +5648,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 82.08735172581879
+          "value": 108.16965081361293
         },
         "electricity_cost_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 15020.275212663882,
+            "delta_vs_baseline": 19792.792564499217,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -5660,14 +5668,14 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 15020.275212663882
+          "value": 19792.792564499217
         },
         "price_signal_deviation": {
           "comparison": {
-            "available": false,
-            "baseline": null,
-            "delta_vs_baseline": null,
-            "improved_vs_baseline": null
+            "available": true,
+            "baseline": 0.38457995010225254,
+            "delta_vs_baseline": 0.005394270107879129,
+            "improved_vs_baseline": false
           },
           "trace": {
             "citylearn_v2_names": [
@@ -5679,7 +5687,7 @@
             "objective": "OE3",
             "source": "derived_from_citylearn_v2_timeseries"
           },
-          "value": null
+          "value": 0.3899742202101317
         }
       },
       "name": "Costos energeticos",
@@ -5688,12 +5696,12 @@
       "statement": "Optimizar el gasto energetico, reduciendo picos de demanda y aprovechando tarifas dinamicas."
     }
   },
-  "scenario": "E2",
+  "scenario": "E3",
   "seed": 0,
-  "timeseries_csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/timeseries.csv",
-  "timeseries_csv_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/timeseries.csv",
+  "timeseries_csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/timeseries.csv",
+  "timeseries_csv_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/timeseries.csv",
   "timeseries_rows": 437950,
-  "trace_csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/trace.csv",
+  "trace_csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E3/data/trace.csv",
   "trace_csv_root": null,
   "trace_rows": 1700
 }

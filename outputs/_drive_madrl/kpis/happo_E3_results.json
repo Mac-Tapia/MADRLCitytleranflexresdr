@@ -15,7 +15,7 @@
     "episode_length": 8760,
     "episodes": 1,
     "finite_optimizer_step_guard": {
-      "audit_path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E2/data/happo_finite_gradient_guard.jsonl",
+      "audit_path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E3/data/happo_finite_gradient_guard.jsonl",
       "installed_optimizers": 18
     },
     "gamma": 0.9999,
@@ -50,7 +50,7 @@
       "live_progress_global_step": 437700,
       "maac_checkpoint": null,
       "maac_start_episode": 0,
-      "model_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E2/checkpoints/models",
+      "model_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E3/checkpoints/models",
       "note": "resume_from_checkpoint",
       "remaining_episodes": 1,
       "remaining_num_env_steps": 105120,
@@ -69,10 +69,10 @@
     "torch_threads": 2,
     "use_recurrent_policy": false
   },
-  "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E2",
+  "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E3",
   "project_axis_metrics": {},
   "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined",
-  "scenario": "E2",
+  "scenario": "E3",
   "seed": 0,
   "status": "completed_with_salvage"
 }

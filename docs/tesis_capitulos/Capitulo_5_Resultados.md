@@ -64,21 +64,12 @@ Se ejecutaron las **12 corridas oficiales** (4 algoritmos × 3 escenarios, seed 
 
 | **MATD3** | **50** | **50** | **50** | E1, E2, E3 | Completo (audit `warning`) |
 
-| **MAAC** | **50** | **50** | **—**† | E1, E2; E3‡ | E3 sin `results.json` local |
-
-| **MASAC** | **50** | **50** | **—**† | E1, E2; E3 pendiente | E3 sin `results.json` local |
+| **MAAC** | **50** | **50** | **50** | E1, E2, E3 | Completo |
+| **MASAC** | **50** | **50** | **50** | E1, E2, E3 | Completo |
 
 | **HAPPO** | 49 | 49 | 49 | Ninguno | `completed_with_salvage`; error `VecEnvWrapper` |
 
-
-
-† En Drive pueden existir; no descargados localmente al 2026-07-03.  
-
-‡ El archivo local `maac_E3_*` es **duplicado de E2** (error de exportación; validar por `output_dir`).
-
-
-
-> **Nota técnica:** el campo `episodes` (40 / 11 / 12) es el tamaño del **último resume**, no el total. No usarlo para reportar completitud.
+> **Nota técnica:** el campo `episodes` (40 / 11 / 12) es el tamaño del **último resume**, no el total. Usar `episodes_recorded` para reportar completitud.
 
 
 
@@ -146,9 +137,9 @@ El reporte `best_madrl_report.json` (generado 2026-07-03, evaluación agregada s
 
 | **1** | **MATD3** | **0.6667** | **1.0000** | **1.0000** | 0.0000 | 50 / 50 / 50 | **Sí** |
 
-| 2 | MAAC | 0.5706 | 0.5837 | 0.1282 | **1.0000** | 50 / 50 / — | No |
+| 2 | MAAC | 0.5706 | 0.5837 | 0.1282 | **1.0000** | 50 / 50 / 50 | No |
 
-| 3 | MASAC | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 50 / 50 / — | No |
+| 3 | MASAC | 0.2351 | 0.0000 | 0.0000 | 0.7054 | 50 / 50 / 50 | No |
 
 | — | HAPPO | — | — | — | — | 49 / 49 / 49 | Excluido (sin KPIs) |
 
@@ -214,7 +205,7 @@ Criterios de selección: score global normalizado (flexibilidad E1 + CO₂ E2 + 
 
 | MATD3 | 44 399 | 1.0092 |
 
-| MASAC | `[Pendiente]` | `[Pendiente]` |
+| MASAC | 19 793 | 1.0051 |
 
 
 
@@ -378,6 +369,6 @@ Figuras Colab: persisten en Drive bajo `madrl_v3_20260627_164047/{ALGORITMO}/E{n
 
 ### Estado del capítulo
 
-**Resultados canónicos Colab/Drive integrados (auditoría 2026-07-03).** Completados: ranking MATD3/MAAC/MASAC, KPIs E1–E2 (+ E3 MATD3), episodios vía `episodes_recorded`. Pendientes: descargar MAAC/E3 y MASAC/E3 desde Drive; re-evaluar HAPPO; corregir archivos cruzados en `kpis/`; estadística Colab; figuras definitivas.
+**Resultados canónicos Colab/Drive integrados (auditoría 2026-07-03).** Completados: 9/9 jobs off-policy con 50 ep y KPIs E1–E3; ranking MATD3/MAAC/MASAC; episodios vía `episodes_recorded`. Pendientes: re-evaluar HAPPO (49/50, sin KPIs); estadística Colab (celda 9.1); figuras definitivas desde Drive.
 
 

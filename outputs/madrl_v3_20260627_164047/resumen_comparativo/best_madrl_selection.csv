@@ -1,4 +1,4 @@
 rank,algorithm,score_global,score_oe1_flex,score_oe2_co2,score_oe3_cost,selected
 1,MATD3,0.6667,1.0,1.0,0.0,True
 2,MAAC,0.5706,0.5837,0.1282,1.0,False
-3,MASAC,0.0,0.0,0.0,0.0,False
+3,MASAC,0.2351,0.0,0.0,0.7054,False

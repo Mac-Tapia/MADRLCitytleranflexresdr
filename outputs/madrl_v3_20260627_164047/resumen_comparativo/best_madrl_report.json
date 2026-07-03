@@ -5,7 +5,7 @@
   "drive_folder": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
   "target_episodes": 50,
   "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition (Colab)",
-  "nota_episodios": "Episodios = episodes_recorded en results.json (no el campo episodes del último resume). MATD3/MAAC/MASAC: 50 ep registrados en E1/E2 (y E3 MATD3); MAAC E3 y MASAC E3 sin results.json local; HAPPO: 49/50 entrenados, sin KPIs (error VecEnvWrapper). Varios archivos kpis/ tienen nombre de escenario cruzado — validar por output_dir.",
+  "nota_episodios": "Episodios = episodes_recorded. MATD3/MAAC/MASAC: 50 ep en E1/E2/E3. HAPPO: 49/50 sin KPIs (VecEnvWrapper).",
   "ranking": [
     {
       "algorithm": "MATD3",
@@ -27,7 +27,7 @@
       "score_global": 0.5706,
       "episodes_e1": 50,
       "episodes_e2": 50,
-      "episodes_e3": null,
+      "episodes_e3": 50,
       "rank": 2,
       "selected": false
     },
@@ -35,11 +35,11 @@
       "algorithm": "MASAC",
       "score_oe1_flex": 0.0,
       "score_oe2_co2": 0.0,
-      "score_oe3_cost": 0.0,
-      "score_global": 0.0,
+      "score_oe3_cost": 0.7054,
+      "score_global": 0.2351,
       "episodes_e1": 50,
       "episodes_e2": 50,
-      "episodes_e3": null,
+      "episodes_e3": 50,
       "rank": 3,
       "selected": false
     }
@@ -56,9 +56,10 @@
       "MAAC": 70654.19071758597
     },
     "cost_delta_eur_e3": {
+      "MASAC": 19792.792564499217,
       "MATD3": 44399.364069434494,
       "MAAC": 9515.151784724349
     }
   },
-  "generated_at": "2026-07-03T02:13:26.046247+00:00"
+  "generated_at": "2026-07-03T02:41:31.335221+00:00"
 }

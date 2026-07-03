@@ -136,10 +136,8 @@ def main() -> int:
         "target_episodes": 50,
         "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition (Colab)",
         "nota_episodios": (
-            "Episodios = episodes_recorded en results.json (no el campo episodes del último resume). "
-            "MATD3/MAAC/MASAC: 50 ep registrados en E1/E2 (y E3 MATD3); MAAC E3 y MASAC E3 sin results.json local; "
-            "HAPPO: 49/50 entrenados, sin KPIs (error VecEnvWrapper). "
-            "Varios archivos kpis/ tienen nombre de escenario cruzado — validar por output_dir."
+            "Episodios = episodes_recorded. MATD3/MAAC/MASAC: 50 ep en E1/E2/E3. "
+            "HAPPO: 49/50 sin KPIs (VecEnvWrapper)."
         ),
         "ranking": ranking,
         "kpis_primarios": {

@@ -5,7 +5,77 @@
   "drive_folder": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
   "target_episodes": 50,
   "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition (Colab)",
-  "nota_episodios": "Episodios = episodes_recorded. MATD3/MAAC/MASAC: 50 ep en E1/E2/E3. HAPPO: 49/50 sin KPIs (VecEnvWrapper).",
+  "algorithms_in_study": [
+    "HAPPO",
+    "MASAC",
+    "MATD3",
+    "MAAC"
+  ],
+  "nota_episodios": "Episodios = episodes_recorded (o job_resume.completed_episodes si salvage). MATD3/MAAC/MASAC: 50/50 con KPIs. HAPPO: 49/50 — pendiente resume celda 2.3 (NO excluido del estudio; checkpoints en Drive).",
+  "happo_pending": [
+    {
+      "scenario": "E1",
+      "episodes_recorded": 49,
+      "target_episodes": 50,
+      "has_kpis": false,
+      "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined",
+      "action": "celda_2.3_resume_execute"
+    },
+    {
+      "scenario": "E2",
+      "episodes_recorded": 49,
+      "target_episodes": 50,
+      "has_kpis": false,
+      "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined",
+      "action": "celda_2.3_resume_execute"
+    },
+    {
+      "scenario": "E3",
+      "episodes_recorded": 49,
+      "target_episodes": 50,
+      "has_kpis": false,
+      "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined",
+      "action": "celda_2.3_resume_execute"
+    }
+  ],
+  "ranking_with_kpis": [
+    {
+      "algorithm": "MATD3",
+      "score_oe1_flex": 1.0,
+      "score_oe2_co2": 1.0,
+      "score_oe3_cost": 0.0,
+      "score_global": 0.6667,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 1,
+      "selected": true
+    },
+    {
+      "algorithm": "MAAC",
+      "score_oe1_flex": 0.5837,
+      "score_oe2_co2": 0.1282,
+      "score_oe3_cost": 1.0,
+      "score_global": 0.5706,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 2,
+      "selected": false
+    },
+    {
+      "algorithm": "MASAC",
+      "score_oe1_flex": 0.0,
+      "score_oe2_co2": 0.0,
+      "score_oe3_cost": 0.7054,
+      "score_global": 0.2351,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 3,
+      "selected": false
+    }
+  ],
   "ranking": [
     {
       "algorithm": "MATD3",
@@ -61,5 +131,5 @@
       "MAAC": 9515.151784724349
     }
   },
-  "generated_at": "2026-07-03T02:41:31.335221+00:00"
+  "generated_at": "2026-07-03T03:09:39.712195+00:00"
 }

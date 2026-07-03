@@ -126,6 +126,25 @@ def main() -> int:
         item["rank"] = i
         item["selected"] = i == 1
 
+    happo_pending = []
+    for scen in SCENARIOS:
+        ep = read_episodes("happo", scen)
+        path = resolve_results_path("happo", scen)
+        salvage = None
+        if path and path.is_file():
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            salvage = payload.get("salvage_reason")
+        happo_pending.append(
+            {
+                "scenario": scen,
+                "episodes_recorded": ep,
+                "target_episodes": 50,
+                "has_kpis": read_core_kpis("happo", scen) is not None,
+                "salvage_reason": salvage,
+                "action": "celda_2.3_resume_execute",
+            }
+        )
+
     best = ranking[0]["algorithm"] if ranking else None
 
     report = {
@@ -135,10 +154,14 @@ def main() -> int:
         "drive_folder": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
         "target_episodes": 50,
         "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition (Colab)",
+        "algorithms_in_study": ["HAPPO", "MASAC", "MATD3", "MAAC"],
         "nota_episodios": (
-            "Episodios = episodes_recorded. MATD3/MAAC/MASAC: 50 ep en E1/E2/E3. "
-            "HAPPO: 49/50 sin KPIs (VecEnvWrapper)."
+            "Episodios = episodes_recorded (o job_resume.completed_episodes si salvage). "
+            "MATD3/MAAC/MASAC: 50/50 con KPIs. HAPPO: 49/50 — pendiente resume celda 2.3 "
+            "(NO excluido del estudio; checkpoints en Drive)."
         ),
+        "happo_pending": happo_pending,
+        "ranking_with_kpis": ranking,
         "ranking": ranking,
         "kpis_primarios": {
             "flex_composite_e1": flex_raw,

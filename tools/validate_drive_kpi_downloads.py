@@ -120,13 +120,13 @@ def main() -> int:
         "mislabeled_exports": bad,
         "missing_or_invalid_jobs": missing,
         "drive_conclusion": {
-            "complete_e1_e2": ["MATD3", "MAAC", "MASAC"],
-            "complete_e3": ["MATD3"],
-            "incomplete": ["HAPPO (49/50 ep, no KPIs)", "MAAC E3", "MASAC E3"],
-            "redownload_hint": (
-                "From Drive .../MAAC/E3/data/results.json save as maac_E3_results.json; "
-                "same for MASAC/E3 -> masac_E3_results.json. Verify output_dir ends with /E3."
-            ),
+            "complete_50ep_with_kpis": ["MATD3", "MAAC", "MASAC"],
+            "happo": {
+                "episodes": "49/50 per E1/E2/E3",
+                "kpis": "pending",
+                "action": "CityLearn/scripts/regenerate_happo_kpis.py --execute (celda 2.3)",
+            },
+            "mislabeled_exports": len(bad),
         },
     }
 

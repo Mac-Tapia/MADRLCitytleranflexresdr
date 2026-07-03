@@ -105,5 +105,5 @@ extend-exclude = [
 
 [tool.ruff.lint.per-file-ignores]
 "external/**/*.py" = ["F401", "F403", "F405", "F821", "F841", "E402", "E701", "E711", "E712", "E721", "E722", "E731", "E741", "F811"]
-"CityLearn/examples/*.ipynb" = ["E402", "F404", "F821", "F841", "E712", "E731"]
+"CityLearn/examples/*.ipynb" = ["E402", "F401", "F404", "F821", "F841", "E712", "E731"]
 "CityLearn/scripts/*.py" = ["E402"]

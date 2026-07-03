@@ -1,5 +1,11 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv39-citylearn-v3/Scripts/python.exe",
-  "python.terminal.activateEnvironment": true,
-  "jupyter.jupyterServerType": "local"
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/CityLearn",
+    "${workspaceFolder}/CityLearn/scripts",
+    "${workspaceFolder}/tools"
+  ],
+  "python.analysis.stubPath": "${workspaceFolder}/CityLearn/examples/typings",
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingModuleSource": "none"
+  }
 }

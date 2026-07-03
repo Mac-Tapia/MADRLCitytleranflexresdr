@@ -30,11 +30,29 @@ def read_core_kpis(algo: str, scen: str) -> dict[str, float] | None:
 
 
 def read_episodes(algo: str, scen: str) -> int | None:
-    path = KPIS_DIR / f"{algo}_{scen.lower()}_results.json"
-    if not path.exists():
+    path = resolve_results_path(algo, scen)
+    if path is None:
         return None
     payload = json.loads(path.read_text(encoding="utf-8"))
-    return int(payload.get("episodes", 0) or 0) or None
+    recorded = payload.get("episodes_recorded")
+    if recorded is not None:
+        return int(recorded)
+    hp = payload.get("hyperparameters") or {}
+    jr = hp.get("job_resume") or {}
+    if jr.get("completed_episodes") is not None:
+        return int(jr["completed_episodes"])
+    ep = payload.get("episodes")
+    return int(ep) if ep else None
+
+
+def resolve_results_path(algo: str, scen: str) -> Path | None:
+    """Busca results.json por output_dir/scenario interno (nombres locales pueden estar cruzados)."""
+    for path in KPIS_DIR.glob(f"{algo}_*_results.json"):
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        out = (payload.get("output_dir") or "").rstrip("/")
+        if out.endswith(f"/{scen}") and payload.get("algorithm", "").upper() == algo.upper():
+            return path
+    return None
 
 
 def flex_composite(kpis: dict[str, float]) -> float:
@@ -118,8 +136,10 @@ def main() -> int:
         "target_episodes": 50,
         "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition (Colab)",
         "nota_episodios": (
-            "MATD3: 40/50 con KPIs auditados; MAAC: 11; MASAC: 12; "
-            "HAPPO: 49/50 sin KPIs finales (error VecEnvWrapper en evaluacion)."
+            "Episodios = episodes_recorded en results.json (no el campo episodes del último resume). "
+            "MATD3/MAAC/MASAC: 50 ep registrados en E1/E2 (y E3 MATD3); MAAC E3 y MASAC E3 sin results.json local; "
+            "HAPPO: 49/50 entrenados, sin KPIs (error VecEnvWrapper). "
+            "Varios archivos kpis/ tienen nombre de escenario cruzado — validar por output_dir."
         ),
         "ranking": ranking,
         "kpis_primarios": {

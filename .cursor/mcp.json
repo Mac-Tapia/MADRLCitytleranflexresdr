@@ -3,6 +3,10 @@
     "notebooklm": {
       "command": "tools/skills/notebooklm-mcp/notebooklm-mcp.cmd",
       "cwd": "${workspaceFolder}"
+    },
+    "google-drive": {
+      "command": "tools/skills/google-drive-mcp/google-drive-mcp.cmd",
+      "cwd": "${workspaceFolder}"
     }
   }
 }

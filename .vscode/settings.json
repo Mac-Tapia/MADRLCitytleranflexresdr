@@ -1,4 +1,5 @@
 {
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv39-citylearn-v3/Scripts/python.exe",
   "python.analysis.extraPaths": [
     "${workspaceFolder}/CityLearn",
     "${workspaceFolder}/CityLearn/scripts",

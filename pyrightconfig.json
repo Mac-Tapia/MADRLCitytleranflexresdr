@@ -17,11 +17,14 @@
   ],
   "extraPaths": [
     "tools",
-    "CityLearn"
+    "CityLearn",
+    "CityLearn/scripts"
   ],
+  "stubPath": "CityLearn/examples/typings",
   "venvPath": ".",
   "venv": ".venv39-citylearn-v3",
   "pythonVersion": "3.9",
   "typeCheckingMode": "basic",
-  "reportMissingModuleSource": "none"
+  "reportMissingModuleSource": "none",
+  "reportMissingImports": "none"
 }

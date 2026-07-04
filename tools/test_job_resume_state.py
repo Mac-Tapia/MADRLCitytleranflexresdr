@@ -10,15 +10,40 @@ sys.path.insert(0, str(ROOT / "CityLearn" / "scripts"))
 
 from citylearn_v3_training_common import (  # noqa: E402
     build_jobs_resume_report,
+    clamp_happo_n_rollout_threads,
     discover_job_resume_plan,
     infer_completed_episodes_from_live_progress,
     job_counts_as_launcher_complete,
     job_has_final_results,
     job_run_dir_for_launcher,
     preview_job_launcher_decision,
+    recommend_happo_rollout_threads,
     resolve_existing_job_run_dir,
+    resolve_job_rollout_threads,
     resolve_job_run_dir,
 )
+
+
+def test_clamp_happo_rollout_threads():
+    assert recommend_happo_rollout_threads(usable_vcpus=12) == 2
+    assert recommend_happo_rollout_threads(usable_vcpus=26) == 4
+    assert clamp_happo_n_rollout_threads(12, usable_vcpus=12) == 2
+    assert clamp_happo_n_rollout_threads(12, fallback=2, usable_vcpus=48) == 4
+
+
+def test_resolve_job_rollout_threads_clamps_salvage(tmp_path: Path):
+    data = tmp_path / "data"
+    data.mkdir(parents=True)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "hyperparameters": {"n_rollout_threads": 12},
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert resolve_job_rollout_threads(tmp_path, "happo", fallback=2) == 2
 
 
 def test_infer_completed_episodes():
@@ -928,8 +953,12 @@ def test_build_jobs_resume_report_counts(tmp_path: Path):
 
 if __name__ == "__main__":
     test_infer_completed_episodes()
-    test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
+    test_clamp_happo_rollout_threads()
     import tempfile
+
+    with tempfile.TemporaryDirectory() as td:
+        test_resolve_job_rollout_threads_clamps_salvage(Path(td))
+    test_discover_resume_without_artifacts(Path("outputs/_test_resume_empty"))
 
     with tempfile.TemporaryDirectory() as td:
         test_discover_resume_with_live_progress(Path(td))

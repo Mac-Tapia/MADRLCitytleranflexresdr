@@ -1294,6 +1294,15 @@ def test_validate_canonical_accepts_happo_salvage_kpi_action():
     assert v["ok"] is True
 
 
+def test_job_action_is_resumable_includes_happo_salvage_kpi():
+    from citylearn_v3_training_common import job_action_is_resumable
+
+    assert job_action_is_resumable("resume") is True
+    assert job_action_is_resumable("happo_salvage_kpi") is True
+    assert job_action_is_resumable("skip") is False
+    assert job_action_is_resumable("run_fresh") is False
+
+
 def test_build_official_launcher_argv_includes_skip_completed_flags():
     import importlib.util
     from pathlib import Path
@@ -1314,6 +1323,7 @@ def test_build_official_launcher_argv_includes_skip_completed_flags():
     assert "--happo-n-rollout-threads" in argv
 
 
+if __name__ == "__main__":
     test_infer_completed_episodes()
     test_clamp_happo_rollout_threads()
     import tempfile
@@ -1380,6 +1390,7 @@ def test_build_official_launcher_argv_includes_skip_completed_flags():
         test_colab_training_globals_defaults_shape(Path(td))
     test_validate_canonical_accepts_happo_salvage_kpi_action()
     test_build_official_launcher_argv_includes_skip_completed_flags()
+    test_job_action_is_resumable_includes_happo_salvage_kpi()
     with tempfile.TemporaryDirectory() as td:
         test_happo_salvage_kpi_tail_job_at_49_of_50(Path(td))
     print("OK: test_job_resume_state")

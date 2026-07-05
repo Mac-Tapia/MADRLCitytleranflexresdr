@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-07-05T02:19:54.808525+00:00",
-  "completed_at": "2026-07-05T02:19:54.816002+00:00",
+  "started_at": "2026-07-05T12:02:46.858554+00:00",
+  "completed_at": "2026-07-05T12:02:46.863421+00:00",
   "status": "dry_run",
   "dataset": "citylearn_iquitos_2023_2025",
   "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
@@ -61,7 +61,7 @@
   },
   "active_project_environment": {
     "python": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
-    "platform": "Windows-10-10.0.26100-SP0",
+    "platform": "Windows-10-10.0.26200-SP0",
     "python_version": "3.9.25 (main, Oct 31 2025, 22:56:13) [MSC v.1929 64 bit (AMD64)]",
     "pythonpath_prefix": [
       "D:\\MADRLCitytleranflexresdr",
@@ -84,9 +84,9 @@
       "available": true,
       "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
       "memory_total_mib": 8188.0,
-      "memory_free_mib": 7728.0,
+      "memory_free_mib": 7822.0,
       "memory_total_gib": 8.0,
-      "memory_free_gib": 7.55,
+      "memory_free_gib": 7.64,
       "driver_version": "560.94",
       "preflight_skipped": true
     },

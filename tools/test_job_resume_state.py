@@ -1269,6 +1269,38 @@ def test_flush_skips_os_sync_on_colab_mydrive():
         mock_sync.assert_called_once()
 
 
+def test_fsync_skips_on_colab_mydrive_auto():
+    import tempfile
+    from unittest.mock import patch
+
+    import citylearn_v3_training_common as common
+
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        path = Path(tmp.name)
+    try:
+        with patch.object(common.os, "fsync") as mock_fsync, patch.object(
+            common, "_colab_mydrive_mount_active", return_value=True
+        ):
+            common.fsync_file(path)
+            mock_fsync.assert_not_called()
+    finally:
+        path.unlink(missing_ok=True)
+
+
+def test_live_progress_interval_uses_episode_step_not_global_step():
+    """Resumed gs=428100 ep_step=60 must not match interval=300 via global_step modulo."""
+    interval = 300
+    episode_length = 8760
+    ep_step = 60
+    global_step = 49 * episode_length + ep_step
+    is_boundary = ep_step >= episode_length - 1
+    assert global_step % interval == 0
+    assert not is_boundary
+    assert ep_step % interval != 0
+    should_skip = not is_boundary and ep_step % interval != 0
+    assert should_skip
+
+
 def test_validate_canonical_accepts_happo_salvage_kpi_action():
     from citylearn_v3_training_common import validate_canonical_colab_skip_plan
 
@@ -1472,6 +1504,8 @@ if __name__ == "__main__":
     with tempfile.TemporaryDirectory() as td:
         test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(Path(td))
     test_flush_skips_os_sync_on_colab_mydrive()
+    test_fsync_skips_on_colab_mydrive_auto()
+    test_live_progress_interval_uses_episode_step_not_global_step()
     test_bootstrap_colab_notebook_cell_72_off_colab_raises()
     with tempfile.TemporaryDirectory() as td:
         test_colab_training_globals_defaults_shape(Path(td))

@@ -1385,6 +1385,41 @@ def test_happo_salvage_concurrency_cap_serial_env_override():
             os.environ["CITYLEARN_HAPPO_SALVAGE_SERIAL"] = prev
 
 
+
+
+def test_happo_salvage_only_plan_default_serial_max_workers():
+    import os
+    from colab_a100_official_launcher import _resolve_happo_salvage_only_max_workers
+
+    prev = os.environ.get("CITYLEARN_HAPPO_SALVAGE_SERIAL")
+    try:
+        os.environ.pop("CITYLEARN_HAPPO_SALVAGE_SERIAL", None)
+        assert (
+            _resolve_happo_salvage_only_max_workers(
+                max_workers=3,
+                salvage_only=True,
+                pending_salvage=3,
+                salvage_cap=3,
+            )
+            == 1
+        )
+        os.environ["CITYLEARN_HAPPO_SALVAGE_SERIAL"] = "0"
+        assert (
+            _resolve_happo_salvage_only_max_workers(
+                max_workers=3,
+                salvage_only=True,
+                pending_salvage=3,
+                salvage_cap=3,
+            )
+            == 3
+        )
+    finally:
+        if prev is None:
+            os.environ.pop("CITYLEARN_HAPPO_SALVAGE_SERIAL", None)
+        else:
+            os.environ["CITYLEARN_HAPPO_SALVAGE_SERIAL"] = prev
+
+
 def test_happo_salvage_concurrency_cap_none_when_mixed_pending():
     from colab_a100_official_launcher import _happo_salvage_tail_concurrency_cap
 

@@ -1015,6 +1015,41 @@ def test_plan_duplicate_run_cleanup_keeps_active_and_best(tmp_path: Path):
     assert str(empty) in plan["delete"]
 
 
+def test_stub_only_run_not_selected_as_restorable(tmp_path: Path):
+    parent = tmp_path / "outputs"
+    parent.mkdir(parents=True)
+    stub = parent / "madrl_v3_20260704_232255"
+    happo = resolve_job_run_dir(stub, "happo", "E1", 0)
+    (happo / "data").mkdir(parents=True, exist_ok=True)
+    (happo / "data" / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "salvage_reason": "NameError: VecEnvWrapper",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    from citylearn_v3_training_common import audit_madrl_drive_output_runs, pick_colab_output_root
+
+    audit = audit_madrl_drive_output_runs(parent, target_episodes=50, print_audit=False)
+    assert audit["runs_with_artifacts"] == 0
+    assert audit["summaries"][0]["stub_only"] is True
+
+    try:
+        pick_colab_output_root(
+            parent,
+            run_label="madrl_v3_new",
+            auto_resume_latest=True,
+            print_audit=False,
+        )
+        raise AssertionError("expected RuntimeError for stub-only Drive")
+    except RuntimeError as exc:
+        assert "STUB" in str(exc)
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_clamp_happo_rollout_threads()
@@ -1066,4 +1101,6 @@ if __name__ == "__main__":
         test_select_best_resume_prefers_artifacts_over_empty_newer_run(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_plan_duplicate_run_cleanup_keeps_active_and_best(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_stub_only_run_not_selected_as_restorable(Path(td))
     print("OK: test_job_resume_state")

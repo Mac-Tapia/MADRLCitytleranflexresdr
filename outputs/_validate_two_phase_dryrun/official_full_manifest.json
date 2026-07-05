@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-06-29T18:07:11.917216+00:00",
-  "completed_at": "2026-06-29T18:07:12.185516+00:00",
+  "started_at": "2026-07-05T02:19:54.808525+00:00",
+  "completed_at": "2026-07-05T02:19:54.816002+00:00",
   "status": "dry_run",
   "dataset": "citylearn_iquitos_2023_2025",
   "schema_path": "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json",
@@ -39,7 +39,7 @@
     "parallel_scenarios": 3,
     "two_phase_torch_threads": 2,
     "two_phase_p1_torch_threads": 2,
-    "two_phase_p2_torch_threads": 2,
+    "two_phase_p2_torch_threads": 4,
     "six_job_cuda_fraction": 0.14,
     "six_job_masac_buffer_size": 2,
     "six_job_masac_max_replay_gib": 8.0,
@@ -61,7 +61,7 @@
   },
   "active_project_environment": {
     "python": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
-    "platform": "Windows-10-10.0.26200-SP0",
+    "platform": "Windows-10-10.0.26100-SP0",
     "python_version": "3.9.25 (main, Oct 31 2025, 22:56:13) [MSC v.1929 64 bit (AMD64)]",
     "pythonpath_prefix": [
       "D:\\MADRLCitytleranflexresdr",
@@ -84,9 +84,9 @@
       "available": true,
       "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
       "memory_total_mib": 8188.0,
-      "memory_free_mib": 7743.0,
+      "memory_free_mib": 7728.0,
       "memory_total_gib": 8.0,
-      "memory_free_gib": 7.56,
+      "memory_free_gib": 7.55,
       "driver_version": "560.94",
       "preflight_skipped": true
     },
@@ -235,7 +235,7 @@
       "completed_at": null,
       "exit_code": null,
       "output_dir": "outputs/_validate_two_phase_dryrun/HAPPO/E1",
-      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E1 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\HAPPO --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --num-env-steps 438000 --hidden-size 512 --n-rollout-threads 6 --num-mini-batch 0 --gpu-rollout-ref 8 --ppo-epoch 10 --critic-epoch 10 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E1 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\HAPPO --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --num-env-steps 438000 --hidden-size 512 --n-rollout-threads 4 --num-mini-batch 0 --gpu-rollout-ref 8 --ppo-epoch 10 --critic-epoch 10 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
       "planned_only": true
     },
     {
@@ -279,7 +279,7 @@
       "completed_at": null,
       "exit_code": null,
       "output_dir": "outputs/_validate_two_phase_dryrun/HAPPO/E2",
-      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E2 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\HAPPO --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --num-env-steps 438000 --hidden-size 512 --n-rollout-threads 6 --num-mini-batch 0 --gpu-rollout-ref 8 --ppo-epoch 10 --critic-epoch 10 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E2 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\HAPPO --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --num-env-steps 438000 --hidden-size 512 --n-rollout-threads 4 --num-mini-batch 0 --gpu-rollout-ref 8 --ppo-epoch 10 --critic-epoch 10 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
       "planned_only": true
     },
     {
@@ -323,7 +323,7 @@
       "completed_at": null,
       "exit_code": null,
       "output_dir": "outputs/_validate_two_phase_dryrun/HAPPO/E3",
-      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E3 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\HAPPO --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --num-env-steps 438000 --hidden-size 512 --n-rollout-threads 6 --num-mini-batch 0 --gpu-rollout-ref 8 --ppo-epoch 10 --critic-epoch 10 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
+      "command": "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe -B CityLearn/scripts/train_citylearn_v3_happo.py --scenario E3 --schema-path CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json --seed 0 --episode-time-steps 8760 --output-dir D:\\MADRLCitytleranflexresdr\\outputs\\_validate_two_phase_dryrun\\HAPPO --torch-threads 2 --live-progress-interval 5000 --live-heartbeat-seconds 120 --artifact-profile efficient --trace-record-interval 8760 --trace-detail compact --gpu-profile aws --cuda-memory-fraction 0.92 --episodes 50 --num-env-steps 438000 --hidden-size 512 --n-rollout-threads 4 --num-mini-batch 0 --gpu-rollout-ref 8 --ppo-epoch 10 --critic-epoch 10 --log-interval 1 --eval-interval 1 --actor-lr 1e-4 --critic-lr 5e-4 --max-grad-norm 1.0 --gamma 0.9999 --action-aggregation mean",
       "planned_only": true
     },
     {

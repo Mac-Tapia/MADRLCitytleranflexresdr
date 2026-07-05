@@ -1050,6 +1050,51 @@ def test_stub_only_run_not_selected_as_restorable(tmp_path: Path):
         assert "STUB" in str(exc)
 
 
+def test_list_madrl_runs_on_colab_mount_finds_nested_outputs(tmp_path: Path):
+    mount = tmp_path / "drive"
+    outputs = mount / "MyDrive" / "MADRLCitytleranflexresdr" / "outputs"
+    canonical = outputs / "madrl_v3_20260627_164047"
+    canonical.mkdir(parents=True)
+    happo = resolve_job_run_dir(canonical, "happo", "E1", 0)
+    (happo / "checkpoints" / "gym" / "run").mkdir(parents=True)
+    (happo / "checkpoints" / "gym" / "run" / "actor_agent0.pt").write_bytes(b"x")
+
+    from citylearn_v3_training_common import list_madrl_runs_on_colab_mount
+
+    found = list_madrl_runs_on_colab_mount(mount)
+    assert [p.name for p in found] == ["madrl_v3_20260627_164047"]
+
+
+def test_bind_colab_drive_workspace_selects_restorable_run(tmp_path: Path):
+    mount = tmp_path / "drive"
+    repo = tmp_path / "repo"
+    (repo / "outputs").mkdir(parents=True)
+    (repo / "outputs" / "latest_colab_output_root.txt").write_text(
+        "outputs/madrl_v3_20260627_164047\n",
+        encoding="utf-8",
+    )
+    outputs = mount / "MyDrive" / "MADRLCitytleranflexresdr" / "outputs"
+    stub = outputs / "madrl_v3_20260704_232255"
+    canonical = outputs / "madrl_v3_20260627_164047"
+    stub.mkdir(parents=True)
+    canonical.mkdir(parents=True)
+    (stub / "run_context_manifest.json").write_text("{}", encoding="utf-8")
+    happo = resolve_job_run_dir(canonical, "happo", "E1", 0)
+    (happo / "checkpoints" / "gym" / "run").mkdir(parents=True)
+    (happo / "checkpoints" / "gym" / "run" / "actor_agent0.pt").write_bytes(b"x")
+
+    from citylearn_v3_training_common import bind_colab_drive_workspace
+
+    binding = bind_colab_drive_workspace(
+        mount,
+        repo=repo,
+        allow_drive_api_shortcut=False,
+    )
+    assert binding["is_correct_drive"] is True
+    assert binding["output_root"] == str(canonical)
+    assert "madrl_v3_20260704_232255" in binding["stub_runs"]
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_clamp_happo_rollout_threads()
@@ -1103,4 +1148,8 @@ if __name__ == "__main__":
         test_plan_duplicate_run_cleanup_keeps_active_and_best(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_stub_only_run_not_selected_as_restorable(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_list_madrl_runs_on_colab_mount_finds_nested_outputs(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_bind_colab_drive_workspace_selects_restorable_run(Path(td))
     print("OK: test_job_resume_state")

@@ -1166,6 +1166,48 @@ def test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(tmp_path: Pa
         assert ctx["pointer_value"] == str(run_dir)
 
 
+def test_flush_skips_os_sync_on_colab_mydrive():
+    import citylearn_v3_training_common as common
+    from unittest.mock import patch
+
+    with patch.object(common.os, "sync") as mock_sync, patch.object(
+        common, "_colab_mydrive_mount_active", return_value=True
+    ):
+        common.flush_filesystem_buffers()
+        mock_sync.assert_not_called()
+
+    with patch.object(common.os, "sync") as mock_sync, patch.object(
+        common, "_colab_mydrive_mount_active", return_value=False
+    ):
+        common.flush_filesystem_buffers()
+        mock_sync.assert_called_once()
+
+
+def test_validate_canonical_accepts_happo_salvage_kpi_action():
+    from citylearn_v3_training_common import validate_canonical_colab_skip_plan
+
+    report = {
+        "completed": 9,
+        "resumable": 3,
+        "jobs": [
+            {"algorithm": "happo", "scenario": "E1", "action": "happo_salvage_kpi", "status_line": ""},
+            {"algorithm": "happo", "scenario": "E2", "action": "happo_salvage_kpi", "status_line": ""},
+            {"algorithm": "happo", "scenario": "E3", "action": "happo_salvage_kpi", "status_line": ""},
+            {"algorithm": "masac", "scenario": "E1", "action": "skip", "status_line": ""},
+            {"algorithm": "masac", "scenario": "E2", "action": "skip", "status_line": ""},
+            {"algorithm": "masac", "scenario": "E3", "action": "skip", "status_line": ""},
+            {"algorithm": "matd3", "scenario": "E1", "action": "skip", "status_line": ""},
+            {"algorithm": "matd3", "scenario": "E2", "action": "skip", "status_line": ""},
+            {"algorithm": "matd3", "scenario": "E3", "action": "skip", "status_line": ""},
+            {"algorithm": "maac", "scenario": "E1", "action": "skip", "status_line": ""},
+            {"algorithm": "maac", "scenario": "E2", "action": "skip", "status_line": ""},
+            {"algorithm": "maac", "scenario": "E3", "action": "skip", "status_line": ""},
+        ],
+    }
+    v = validate_canonical_colab_skip_plan(report)
+    assert v["ok"] is True
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_clamp_happo_rollout_threads()
@@ -1227,4 +1269,6 @@ if __name__ == "__main__":
         test_validate_canonical_skip_plan_from_drive_kpis(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(Path(td))
+    test_flush_skips_os_sync_on_colab_mydrive()
+    test_validate_canonical_accepts_happo_salvage_kpi_action()
     print("OK: test_job_resume_state")

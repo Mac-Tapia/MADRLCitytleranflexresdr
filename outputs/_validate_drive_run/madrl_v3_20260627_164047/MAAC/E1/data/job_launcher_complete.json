@@ -1,7 +1,7 @@
 {
   "algorithm": "MAAC",
   "episodes_completed": 50,
-  "marked_at": "2026-07-05T12:12:01.783524+00:00",
+  "marked_at": "2026-07-05T12:19:41.260866+00:00",
   "scenario": "E1",
   "source": "kpi_audited_complete",
   "target_episodes": 50

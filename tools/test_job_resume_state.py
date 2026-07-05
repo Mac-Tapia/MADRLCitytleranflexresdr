@@ -1034,7 +1034,7 @@ def test_stub_only_run_not_selected_as_restorable(tmp_path: Path):
 
     from citylearn_v3_training_common import audit_madrl_drive_output_runs, pick_colab_output_root
 
-    audit = audit_madrl_drive_output_runs(parent, target_episodes=50, print_audit=False)
+    audit = audit_madrl_drive_output_runs(parent, target_episodes=50)
     assert audit["runs_with_artifacts"] == 0
     assert audit["summaries"][0]["stub_only"] is True
 
@@ -1079,6 +1079,12 @@ def test_bind_colab_drive_workspace_selects_restorable_run(tmp_path: Path):
     stub.mkdir(parents=True)
     canonical.mkdir(parents=True)
     (stub / "run_context_manifest.json").write_text("{}", encoding="utf-8")
+    stub_happo = resolve_job_run_dir(stub, "happo", "E1", 0)
+    (stub_happo / "data").mkdir(parents=True)
+    (stub_happo / "data" / "results.json").write_text(
+        json.dumps({"algorithm": "HAPPO", "status": "completed_with_salvage"}),
+        encoding="utf-8",
+    )
     happo = resolve_job_run_dir(canonical, "happo", "E1", 0)
     (happo / "checkpoints" / "gym" / "run").mkdir(parents=True)
     (happo / "checkpoints" / "gym" / "run" / "actor_agent0.pt").write_bytes(b"x")

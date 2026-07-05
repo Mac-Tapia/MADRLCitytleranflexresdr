@@ -1,0 +1,8 @@
+{
+  "algorithm": "MASAC",
+  "episodes_completed": 50,
+  "marked_at": "2026-07-05T12:12:01.652100+00:00",
+  "scenario": "E3",
+  "source": "kpi_audited_complete",
+  "target_episodes": 50
+}

@@ -1226,6 +1226,32 @@ def test_happo_salvage_kpi_tail_job_at_49_of_50(tmp_path: Path):
     assert dec["completed_episodes"] == 49
 
 
+def test_bootstrap_colab_notebook_cell_72_off_colab_raises():
+    import citylearn_v3_training_common as common
+
+    try:
+        common.bootstrap_colab_notebook_cell_72()
+        assert False, "expected RuntimeError off Colab"
+    except RuntimeError as exc:
+        assert "solo aplica en Google Colab" in str(exc)
+
+
+def test_colab_training_globals_defaults_shape(tmp_path: Path):
+    from citylearn_v3_training_common import colab_official_launcher_argv, colab_training_globals_defaults
+
+    repo = tmp_path / "repo"
+    (repo / "CityLearn/data/datasets/citylearn_iquitos_2023_2025").mkdir(parents=True)
+    out = tmp_path / "run"
+    out.mkdir()
+    cfg = colab_training_globals_defaults(repo, out, python_executable=sys.executable)
+    assert cfg["OUTPUT_ROOT"] == str(out)
+    assert int(cfg["HAPPO_ROLLOUT_THREADS"]) >= 1
+    argv = colab_official_launcher_argv(cfg)
+    assert "--skip-completed" not in argv
+    assert "--execution-mode" in argv
+    assert "two_phase_happo_masac" in argv
+
+
 def test_flush_skips_os_sync_on_colab_mydrive():
     import citylearn_v3_training_common as common
     from unittest.mock import patch
@@ -1349,6 +1375,9 @@ def test_build_official_launcher_argv_includes_skip_completed_flags():
     with tempfile.TemporaryDirectory() as td:
         test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(Path(td))
     test_flush_skips_os_sync_on_colab_mydrive()
+    test_bootstrap_colab_notebook_cell_72_off_colab_raises()
+    with tempfile.TemporaryDirectory() as td:
+        test_colab_training_globals_defaults_shape(Path(td))
     test_validate_canonical_accepts_happo_salvage_kpi_action()
     test_build_official_launcher_argv_includes_skip_completed_flags()
     with tempfile.TemporaryDirectory() as td:

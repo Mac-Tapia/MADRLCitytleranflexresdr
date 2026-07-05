@@ -85,7 +85,7 @@ assert "--include-baselines" not in code_src, \
 required_order = [
     "e6bd10e8",          # 1.1 GPU
     "c06557c1",          # 1.2 clone validated branch
-    "repo_mirror_verify",# 1.2b project mirror
+    "repo_colab_verify", # 1.2b repo Colab
     "188059f1",          # 1.3 deps
     "221bf910",          # 1.4 sys.path/smoke imports
     "56e338c7",          # 1.5 Drive
@@ -115,7 +115,7 @@ assert "submodule_status = sh(['git', 'submodule', 'status', '--recursive'])" in
 assert "cl_branch == CITYLEARN_BRANCH" in code_src and "'citylearn_live': True" in code_src, \
     "Notebook no valida que CityLearn este en la rama viva esperada"
 assert "csv_count == 222" in code_src, "Notebook no valida dataset completo de 222 CSV"
-print("[PASS] Orden crítico y espejo repo/submódulos/dataset validados en notebook")
+print("[PASS] Orden crítico y repo/submódulos/dataset validados en notebook")
 
 DEPENDENCY_GUARDS = [
     "PYTHON_MAX_EXCLUSIVE = (3, 10)",
@@ -208,7 +208,9 @@ print(f"[PASS] Layout simple: {{OUTPUT_ROOT}}/HAPPO/E1/ OK")
 # ────────────────────────────────────────────────────────────────────────────
 OUTPUT_GUARDS = [
     "REQUIRE_GOOGLE_DRIVE = True",
-    "GDRIVE_OUTPUT_PARENT = f'{GDRIVE_ROOT}/outputs'",
+    "prepare_colab_drive_mount_context",
+    "pick_colab_output_root",
+    "ENABLE_FUSE_MIRROR",
     "RUN_LABEL    = f'madrl_v3_{TIMESTAMP}'",
     "RESUME_OUTPUT_ROOT = globals().get('RESUME_OUTPUT_ROOT', None)",
     "resumed_existing_output_root",

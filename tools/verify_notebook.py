@@ -46,7 +46,7 @@ lang_ver = lang_info.get("version", "missing")
 check("language_info.version Colab/local", lang_ver in {"3.9.25", "3.11.13", "missing"}, f"actual={lang_ver!r}")
 kernelspec = nb.get("metadata", {}).get("kernelspec", {})
 check("kernelspec.language = python", kernelspec.get("language") == "python")
-check("68 celdas en el notebook", len(cells) == 68, f"actual={len(cells)}")
+check("70 celdas en el notebook", len(cells) == 70, f"actual={len(cells)}")
 
 dirty_code_cells = [
     (i, c.get("id"), c.get("execution_count"), len(c.get("outputs", [])))
@@ -69,18 +69,19 @@ check("Clonado Colab usa --branch REPO_BRANCH", "'--branch', REPO_BRANCH" in cel
 check("CityLearn usa checkout -B (no detached HEAD)", "checkout', '-B', CITYLEARN_BRANCH" in cell17)
 check("Submodulos se actualizan al commit fijado", "submodule', 'update', '--init', '--recursive'" in cell17)
 
-cell18 = cell("repo_mirror_verify")
+cell18 = cell("repo_colab_verify")
 check("Celda 1.2b repara detached HEAD", "cl_branch == 'HEAD'" in cell18 and "checkout', '-B', CITYLEARN_BRANCH" in cell18)
 check("Celda 1.2b guarda citylearn_live", "'citylearn_live': True" in cell18)
 
 cell16 = cell("e6bd10e8")
-check("Celda 1.1 detecta IN_COLAB", "import google.colab" in cell16 and "IN_COLAB" in cell16)
+check("Celda 1.1 detecta IN_COLAB", "importlib.util.find_spec('google.colab')" in cell16 and "IN_COLAB" in cell16)
 check("Celda 1.1 valida PyTorch/CUDA", "import torch" in cell16 and "torch.cuda.is_available()" in cell16)
 check("Celda 1.1 exige A100 en Colab", "RuntimeError" in cell16 and "A100" in cell16)
 
 cell24 = cell("c1f8ada9")
 check("Celda 2.1 detecta REPO local/Colab", "Path('d:/MADRLCitytleranflexresdr')" in cell24)
 check("Celda 2.1 crea OUTPUT_ROOT recuperable", "RESUME_OUTPUT_ROOT" in cell24 and "OUTPUT_ROOT" in cell24)
+check("Celda 2.1 usa pick_colab_output_root", "pick_colab_output_root" in cell24)
 check("Celda 2.1 apunta al schema Iquitos", "citylearn_iquitos_2023_2025/schema.json" in cell24)
 
 cell26 = cell("6711850f")

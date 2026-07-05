@@ -1350,6 +1350,7 @@ def test_build_official_launcher_argv_includes_skip_completed_flags():
         test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(Path(td))
     test_flush_skips_os_sync_on_colab_mydrive()
     test_validate_canonical_accepts_happo_salvage_kpi_action()
+    test_build_official_launcher_argv_includes_skip_completed_flags()
     with tempfile.TemporaryDirectory() as td:
         test_happo_salvage_kpi_tail_job_at_49_of_50(Path(td))
     print("OK: test_job_resume_state")

@@ -1303,6 +1303,93 @@ def test_job_action_is_resumable_includes_happo_salvage_kpi():
     assert job_action_is_resumable("run_fresh") is False
 
 
+def test_happo_salvage_concurrency_cap_parallel_on_96gib():
+    from colab_a100_official_launcher import _happo_salvage_tail_concurrency_cap
+
+    cap = _happo_salvage_tail_concurrency_cap(
+        pending_tail=3,
+        pending_other=0,
+        vram_gib=96.0,
+        cuda_fraction=0.15,
+    )
+    assert cap == 3
+
+
+def test_happo_salvage_concurrency_cap_serial_env_override():
+    import os
+    from colab_a100_official_launcher import _happo_salvage_tail_concurrency_cap
+
+    prev = os.environ.get("CITYLEARN_HAPPO_SALVAGE_SERIAL")
+    try:
+        os.environ["CITYLEARN_HAPPO_SALVAGE_SERIAL"] = "1"
+        cap = _happo_salvage_tail_concurrency_cap(
+            pending_tail=3,
+            pending_other=0,
+            vram_gib=96.0,
+            cuda_fraction=0.15,
+        )
+        assert cap == 1
+    finally:
+        if prev is None:
+            os.environ.pop("CITYLEARN_HAPPO_SALVAGE_SERIAL", None)
+        else:
+            os.environ["CITYLEARN_HAPPO_SALVAGE_SERIAL"] = prev
+
+
+def test_happo_salvage_concurrency_cap_none_when_mixed_pending():
+    from colab_a100_official_launcher import _happo_salvage_tail_concurrency_cap
+
+    assert (
+        _happo_salvage_tail_concurrency_cap(
+            pending_tail=2,
+            pending_other=1,
+            vram_gib=96.0,
+            cuda_fraction=0.15,
+        )
+        is None
+    )
+
+
+def test_is_happo_salvage_only_plan_requires_other_algos_complete(tmp_path: Path):
+    from unittest.mock import patch
+
+    from colab_a100_official_launcher import _is_happo_salvage_only_plan
+
+    class _Args:
+        episodes = 50
+        episode_time_steps = 8760
+        seed = 0
+        happo_n_rollout_threads = 1
+
+    jobs = [
+        {"name": "happo", "scenario": "E1"},
+        {"name": "masac", "scenario": "E1"},
+    ]
+    kwargs = dict(
+        root=tmp_path,
+        jobs=jobs,
+        output_root=tmp_path / "outputs",
+        args=_Args(),
+        pending_salvage=1,
+        pending_other_happo=0,
+    )
+
+    with patch(
+        "citylearn_v3_training_common.job_counts_as_launcher_complete",
+        return_value=True,
+    ):
+        assert _is_happo_salvage_only_plan(**kwargs)
+
+    def _masac_incomplete(output_dir, **kw):
+        return "masac" not in str(output_dir).lower()
+
+    with patch(
+        "citylearn_v3_training_common.job_counts_as_launcher_complete",
+        side_effect=_masac_incomplete,
+    ):
+        assert not _is_happo_salvage_only_plan(**kwargs)
+
+
 def test_build_official_launcher_argv_includes_skip_completed_flags():
     import importlib.util
     from pathlib import Path
@@ -1389,6 +1476,11 @@ if __name__ == "__main__":
     with tempfile.TemporaryDirectory() as td:
         test_colab_training_globals_defaults_shape(Path(td))
     test_validate_canonical_accepts_happo_salvage_kpi_action()
+    test_happo_salvage_concurrency_cap_parallel_on_96gib()
+    test_happo_salvage_concurrency_cap_serial_env_override()
+    test_happo_salvage_concurrency_cap_none_when_mixed_pending()
+    with tempfile.TemporaryDirectory() as td:
+        test_is_happo_salvage_only_plan_requires_other_algos_complete(Path(td))
     test_build_official_launcher_argv_includes_skip_completed_flags()
     test_job_action_is_resumable_includes_happo_salvage_kpi()
     with tempfile.TemporaryDirectory() as td:

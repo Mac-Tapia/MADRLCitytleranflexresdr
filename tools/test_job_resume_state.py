@@ -951,6 +951,70 @@ def test_build_jobs_resume_report_counts(tmp_path: Path):
     assert report["episodes_target"] == 12 * 50
 
 
+def test_select_best_resume_prefers_artifacts_over_empty_newer_run(tmp_path: Path):
+    """Empty madrl_v3_* stubs must not beat a run with real MADRL checkpoints."""
+    import csv
+
+    parent = tmp_path / "outputs"
+    parent.mkdir(parents=True)
+    canonical = parent / "madrl_v3_20260627_164047"
+    empty_new = parent / "madrl_v3_20260704_232255"
+    empty_new.mkdir(parents=True)
+    (empty_new / "run_context_manifest.json").write_text("{}", encoding="utf-8")
+
+    happo = resolve_job_run_dir(canonical, "happo", "E1", 0)
+    (happo / "data").mkdir(parents=True, exist_ok=True)
+    ckpt = happo / "checkpoints" / "gym" / "run"
+    ckpt.mkdir(parents=True, exist_ok=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    with (happo / "data" / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=["episode", "episode_step", "global_step", "all_done"])
+        writer.writeheader()
+        writer.writerow(
+            {"episode": "49", "episode_step": "0", "global_step": str(49 * 8760), "all_done": "True"}
+        )
+
+    from citylearn_v3_training_common import pick_colab_output_root
+
+    picked = pick_colab_output_root(
+        parent,
+        run_label="madrl_v3_test",
+        auto_resume_latest=True,
+        print_audit=False,
+    )
+    assert picked["output_root"] == str(canonical)
+    assert picked["created_new_run"] is False
+
+
+def test_plan_duplicate_run_cleanup_keeps_active_and_best(tmp_path: Path):
+    parent = tmp_path / "outputs"
+    parent.mkdir(parents=True)
+    best = parent / "madrl_v3_20260627_164047"
+    empty = parent / "madrl_v3_20260704_232255"
+    empty.mkdir(parents=True)
+    (empty / "run_context_manifest.json").write_text("{}", encoding="utf-8")
+    masac = resolve_job_run_dir(best, "masac", "E1", 0)
+    (masac / "data").mkdir(parents=True, exist_ok=True)
+    (masac / "data" / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "MASAC",
+                "episodes_recorded": 50,
+                "citylearn_v3_report": {"all_values": {"cost": 1.0}},
+                "artifact_audit": {"episode_summaries": [{}] * 50},
+                "hyperparameters": {"target_episodes": 50, "episodes": 50},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    from citylearn_v3_training_common import plan_madrl_duplicate_run_cleanup
+
+    plan = plan_madrl_duplicate_run_cleanup(parent, active_output_root=best, target_episodes=50)
+    assert str(best) in plan["keep"]
+    assert str(empty) in plan["delete"]
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_clamp_happo_rollout_threads()
@@ -998,4 +1062,8 @@ if __name__ == "__main__":
         test_launcher_run_dir_finds_legacy_not_empty_canonical(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_build_jobs_resume_report_counts(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_select_best_resume_prefers_artifacts_over_empty_newer_run(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_plan_duplicate_run_cleanup_keeps_active_and_best(Path(td))
     print("OK: test_job_resume_state")

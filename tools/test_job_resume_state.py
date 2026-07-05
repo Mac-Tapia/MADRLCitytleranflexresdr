@@ -1301,6 +1301,23 @@ def test_live_progress_interval_uses_episode_step_not_global_step():
     assert should_skip
 
 
+def test_live_progress_should_fsync_throttled_on_mydrive():
+    from citylearn_v3_training_common import _live_progress_should_fsync
+
+    assert not _live_progress_should_fsync(
+        {"live_status": "happo_backend_training", "backend_training_active": True, "episode_step": 300}
+    )
+    assert _live_progress_should_fsync(
+        {"live_status": "env_step", "episode_step": 300, "episode_time_steps": 8760}
+    )
+    assert not _live_progress_should_fsync(
+        {"live_status": "env_step", "episode_step": 60, "episode_time_steps": 8760}
+    )
+    assert _live_progress_should_fsync(
+        {"live_status": "training_finalized", "episode_step": 8759, "episode_time_steps": 8760}
+    )
+
+
 def test_validate_canonical_accepts_happo_salvage_kpi_action():
     from citylearn_v3_training_common import validate_canonical_colab_skip_plan
 
@@ -1506,6 +1523,7 @@ if __name__ == "__main__":
     test_flush_skips_os_sync_on_colab_mydrive()
     test_fsync_skips_on_colab_mydrive_auto()
     test_live_progress_interval_uses_episode_step_not_global_step()
+    test_live_progress_should_fsync_throttled_on_mydrive()
     test_bootstrap_colab_notebook_cell_72_off_colab_raises()
     with tempfile.TemporaryDirectory() as td:
         test_colab_training_globals_defaults_shape(Path(td))

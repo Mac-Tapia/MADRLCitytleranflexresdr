@@ -1137,6 +1137,35 @@ def test_validate_canonical_skip_plan_from_drive_kpis(tmp_path: Path):
     assert_canonical_colab_skip_plan(report)
 
 
+def test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(tmp_path: Path):
+    """Cell 1.5 must not call summarize_madrl_output_run / build_jobs_resume_report."""
+    from unittest.mock import patch
+
+    mount = tmp_path / "drive"
+    workspace = mount / "MyDrive" / "MADRLCitytleranflexresdr"
+    (workspace / "outputs").mkdir(parents=True)
+    run_dir = workspace / "outputs" / "madrl_v3_20260627_164047"
+    run_dir.mkdir(parents=True)
+    (workspace / "latest_colab_output_root.txt").write_text(str(run_dir), encoding="utf-8")
+
+    def _forbidden(*args, **kwargs):
+        raise AssertionError("summarize_madrl_output_run must not run during mount-only discovery")
+
+    from citylearn_v3_training_common import (
+        discover_colab_gdrive_workspace,
+        prepare_colab_drive_mount_context,
+    )
+
+    with patch("citylearn_v3_training_common.summarize_madrl_output_run", _forbidden):
+        picked = discover_colab_gdrive_workspace(mount, audit_runs=False)
+        assert picked == workspace
+
+        ctx = prepare_colab_drive_mount_context(mount)
+        assert ctx["gdrive_root"] == str(workspace)
+        assert ctx["outputs_parent"] == str(workspace / "outputs")
+        assert ctx["pointer_value"] == str(run_dir)
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_clamp_happo_rollout_threads()
@@ -1196,4 +1225,6 @@ if __name__ == "__main__":
         test_bind_colab_drive_workspace_selects_restorable_run(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_validate_canonical_skip_plan_from_drive_kpis(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(Path(td))
     print("OK: test_job_resume_state")

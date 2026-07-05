@@ -222,6 +222,15 @@ OUTPUT_GUARDS = [
 for guard in OUTPUT_GUARDS:
     assert guard in code_src, f"Falta guardrail de aislamiento/reanudación: {guard}"
 
+COMMON_SRC = Path(REPO) / "CityLearn" / "scripts" / "citylearn_v3_training_common.py"
+common_src = COMMON_SRC.read_text(encoding="utf-8")
+assert "audit_runs=False" in common_src, (
+    "prepare_colab_drive_mount_context debe usar discover_colab_gdrive_workspace(audit_runs=False)"
+)
+assert common_src.index("audit_runs=False") < common_src.index("def pick_colab_output_root"), (
+    "audit_runs=False debe estar en la ruta mount-only (celda 1.5), no en pick_colab_output_root"
+)
+
 # Check launcher job construction directly without running GPU code.
 import importlib.util
 import tempfile

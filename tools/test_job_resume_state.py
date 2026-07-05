@@ -1101,6 +1101,42 @@ def test_bind_colab_drive_workspace_selects_restorable_run(tmp_path: Path):
     assert "madrl_v3_20260704_232255" in binding["stub_runs"]
 
 
+def test_validate_canonical_skip_plan_from_drive_kpis(tmp_path: Path):
+    kpi_dir = Path("outputs/_drive_madrl/kpis")
+    if not kpi_dir.is_dir():
+        return
+    run_root = tmp_path / "madrl_v3_20260627_164047"
+    copied = 0
+    for algo in ("happo", "masac", "matd3", "maac"):
+        for scen in ("E1", "E2", "E3"):
+            src = kpi_dir / f"{algo}_{scen}_results.json"
+            if not src.is_file():
+                continue
+            dest = run_root / algo.upper() / scen / "data"
+            dest.mkdir(parents=True, exist_ok=True)
+            dest.joinpath("results.json").write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+            copied += 1
+            if algo == "happo":
+                ckpt = run_root / algo.upper() / scen / "checkpoints" / "gym" / "run" / "models"
+                ckpt.mkdir(parents=True, exist_ok=True)
+                (ckpt / "actor_agent0.pt").write_bytes(b"x")
+                (ckpt / "critic_agent.pt").write_bytes(b"x")
+    assert copied >= 12
+
+    from citylearn_v3_training_common import (
+        assert_canonical_colab_skip_plan,
+        build_jobs_resume_report,
+        validate_canonical_colab_skip_plan,
+    )
+
+    report = build_jobs_resume_report(run_root, target_episodes=50, happo_rollout_threads=2)
+    validation = validate_canonical_colab_skip_plan(report)
+    assert validation["ok"] is True
+    assert validation["completed"] == 9
+    assert validation["resumable"] == 3
+    assert_canonical_colab_skip_plan(report)
+
+
 if __name__ == "__main__":
     test_infer_completed_episodes()
     test_clamp_happo_rollout_threads()
@@ -1158,4 +1194,6 @@ if __name__ == "__main__":
         test_list_madrl_runs_on_colab_mount_finds_nested_outputs(Path(td))
     with tempfile.TemporaryDirectory() as td:
         test_bind_colab_drive_workspace_selects_restorable_run(Path(td))
+    with tempfile.TemporaryDirectory() as td:
+        test_validate_canonical_skip_plan_from_drive_kpis(Path(td))
     print("OK: test_job_resume_state")

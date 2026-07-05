@@ -15,7 +15,10 @@ SCRIPTS = REPO / "CityLearn" / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
-from citylearn_v3_training_common import build_jobs_resume_report  # noqa: E402
+from citylearn_v3_training_common import (  # noqa: E402
+    build_jobs_resume_report,
+    validate_canonical_colab_skip_plan,
+)
 
 KPI_DIR = REPO / "outputs" / "_drive_madrl" / "kpis"
 EXPECTED = {
@@ -90,7 +93,8 @@ def main() -> int:
     )
     print("-" * 72)
 
-    mismatches = []
+    validation = validate_canonical_colab_skip_plan(report)
+    mismatches = list(validation.get("mismatches") or [])
     for row in report["jobs"]:
         algo = str(row["algorithm"]).lower()
         scen = str(row["scenario"]).upper()
@@ -98,15 +102,16 @@ def main() -> int:
         exp = EXPECTED.get((algo, scen), "?")
         ok = action == exp
         mark = "OK" if ok else "MISMATCH"
-        if not ok:
-            mismatches.append((algo, scen, exp, action, row.get("status_line", "")))
         print(f"  [{mark}] {algo.upper()}/{scen}: {action} (expected {exp})")
 
     print("=" * 72)
-    if mismatches:
+    if not validation.get("ok"):
         print("FAIL: plan does not match Drive ground truth")
-        for m in mismatches:
-            print(f"  {m[0].upper()}/{m[1]}: expected {m[2]}, got {m[3]} — {m[4]}")
+        for item in mismatches:
+            print(
+                f"  {item.get('job')}: expected {item.get('expected')}, "
+                f"got {item.get('actual')} — {item.get('status_line')}"
+            )
         return 1
 
     if report["completed"] != 9 or report["resumable"] != 3:

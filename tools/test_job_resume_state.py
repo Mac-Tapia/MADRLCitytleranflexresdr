@@ -1166,17 +1166,77 @@ def test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(tmp_path: Pa
         assert ctx["pointer_value"] == str(run_dir)
 
 
+def test_happo_salvage_kpi_tail_job_at_49_of_50(tmp_path: Path):
+    """49/50 salvage without KPIs is a KPI tail (remaining=1), not a full retrain."""
+    from citylearn_v3_training_common import happo_salvage_kpi_tail_job, preview_job_launcher_decision
+
+    data = tmp_path / "data"
+    ckpt = tmp_path / "checkpoints" / "gym" / "run" / "models"
+    data.mkdir(parents=True)
+    ckpt.mkdir(parents=True)
+    (ckpt / "actor_agent0.pt").write_bytes(b"x")
+    episode_time_steps = 8760
+    completed = 49
+    import csv
+
+    rows = [
+        {
+            "episode": str(completed - 1),
+            "episode_step": str(episode_time_steps - 1),
+            "global_step": str(completed * episode_time_steps - 1),
+            "all_done": "True",
+        },
+    ]
+    with (data / "timeseries.csv").open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+    (data / "results.json").write_text(
+        json.dumps(
+            {
+                "algorithm": "HAPPO",
+                "status": "completed_with_salvage",
+                "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined",
+                "project_axis_metrics": {},
+                "hyperparameters": {
+                    "target_episodes": 50,
+                    "episodes": 50,
+                    "n_rollout_threads": 12,
+                    "run_completed_with_salvage": True,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert happo_salvage_kpi_tail_job(
+        tmp_path,
+        target_episodes=50,
+        episode_time_steps=episode_time_steps,
+        rollout_threads=12,
+    )
+    dec = preview_job_launcher_decision(
+        tmp_path,
+        algorithm="happo",
+        target_episodes=50,
+        episode_time_steps=episode_time_steps,
+        rollout_threads=12,
+    )
+    assert dec["action"] == "happo_salvage_kpi"
+    assert dec["remaining_episodes"] == 1
+    assert dec["completed_episodes"] == 49
+
+
 def test_flush_skips_os_sync_on_colab_mydrive():
     import citylearn_v3_training_common as common
     from unittest.mock import patch
 
-    with patch.object(common.os, "sync") as mock_sync, patch.object(
+    with patch.object(common.os, "sync", create=True) as mock_sync, patch.object(
         common, "_colab_mydrive_mount_active", return_value=True
     ):
         common.flush_filesystem_buffers()
         mock_sync.assert_not_called()
 
-    with patch.object(common.os, "sync") as mock_sync, patch.object(
+    with patch.object(common.os, "sync", create=True) as mock_sync, patch.object(
         common, "_colab_mydrive_mount_active", return_value=False
     ):
         common.flush_filesystem_buffers()
@@ -1208,7 +1268,26 @@ def test_validate_canonical_accepts_happo_salvage_kpi_action():
     assert v["ok"] is True
 
 
-if __name__ == "__main__":
+def test_build_official_launcher_argv_includes_skip_completed_flags():
+    import importlib.util
+    from pathlib import Path
+
+    helpers = Path(__file__).resolve().parents[1] / "CityLearn/scripts/colab_notebook_launch_helpers.py"
+    spec = importlib.util.spec_from_file_location("_nb_helpers_test", helpers)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    repo = Path(__file__).resolve().parents[1]
+    cfg = mod.colab_a100_training_config(
+        repo,
+        output_root=repo / "outputs" / "_test_bootstrap",
+        target_episodes=50,
+    )
+    argv = mod.build_official_launcher_argv(cfg)
+    assert "--execution-mode" in argv
+    assert "two_phase_happo_masac" in argv
+    assert "--happo-n-rollout-threads" in argv
+
+
     test_infer_completed_episodes()
     test_clamp_happo_rollout_threads()
     import tempfile
@@ -1271,4 +1350,6 @@ if __name__ == "__main__":
         test_discover_colab_gdrive_workspace_mount_only_skips_run_audit(Path(td))
     test_flush_skips_os_sync_on_colab_mydrive()
     test_validate_canonical_accepts_happo_salvage_kpi_action()
+    with tempfile.TemporaryDirectory() as td:
+        test_happo_salvage_kpi_tail_job_at_49_of_50(Path(td))
     print("OK: test_job_resume_state")

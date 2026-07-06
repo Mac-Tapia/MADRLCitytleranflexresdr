@@ -1,0 +1,44 @@
+{
+  "descriptive": {
+    "MAAC": {
+      "n": 3,
+      "mean": 0.8065549453557427,
+      "std": 0.14736598311480303,
+      "min": 0.6414917071600018,
+      "max": 0.9248961794563537
+    },
+    "MASAC": {
+      "n": 3,
+      "mean": 0.169356344004614,
+      "std": 0.20275026714819322,
+      "min": 0.0,
+      "max": 0.39402198825964385
+    },
+    "MATD3": {
+      "n": 3,
+      "mean": 0.6323335705454837,
+      "std": 0.37521506335811833,
+      "min": 0.25,
+      "max": 1.0
+    }
+  },
+  "kruskal_wallis": {
+    "H": 4.355555555555554,
+    "p": 0.11329301336363029,
+    "significant_alpha_0_05": false
+  },
+  "mann_whitney_u": {
+    "MAAC_vs_MASAC": {
+      "p": 0.1,
+      "significant_alpha_0_05": false
+    },
+    "MAAC_vs_MATD3": {
+      "p": 1.0,
+      "significant_alpha_0_05": false
+    },
+    "MASAC_vs_MATD3": {
+      "p": 0.2,
+      "significant_alpha_0_05": false
+    }
+  }
+}

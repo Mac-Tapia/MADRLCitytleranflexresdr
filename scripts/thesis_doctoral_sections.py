@@ -66,8 +66,9 @@ def add_resumen_doctoral(doc, p, heading) -> None:
         "MAAC lidera costos (OE3). Las figuras de convergencia, control MADRL y ranking provienen de "
         "timeseries.csv y trace.csv auditados en Drive (sin datos sinteticos). El analisis multiobjetivo "
         "desagrega KPIs por distrito y por edificio (153 registros). HAPPO alcanzo 49/50 episodios sin "
-        "KPIs finales por error de evaluacion (VecEnvWrapper). La evidencia inferencial preliminar local "
-        "(5 ep, Kruskal-Wallis p = 0,0459) anticipa la direccion del ranking Colab.",
+        "KPIs finales por error de evaluacion (VecEnvWrapper). La evidencia inferencial Colab "
+        "(Kruskal-Wallis ALL p=0.155; Wilcoxon MASAC vs MATD3 p=0.0049) complementa el ranking "
+        "descriptivo; la referencia local v4 (KW p=0.0459) es exploratoria con 5 episodios.",
     )
     p(
         doc,
@@ -236,16 +237,36 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         add_figure(doc, path, caption)
 
     heading(doc, "5.8 Pruebas estadisticas", 2)
+    p(
+        doc,
+        "La bateria inferencial se ejecuto localmente sobre KPIs auditados de la corrida "
+        f"Colab/Drive ({RUN_ID}) con tools/run_colab_drive_statistical_analysis.py "
+        "(231 filas signed_relative_gain; MATD3, MAAC, MASAC; HAPPO excluido sin KPIs). "
+        "La corrida local v4 (5 ep, 4 algoritmos) se conserva solo como referencia historica.",
+    )
     add_table(
         doc,
-        ["Fuente", "Prueba", "p-valor", "Estado"],
+        ["Alcance", "Prueba", "Estadistico / p", "Decision alpha=0.05"],
         [
-            ["Local v4 (5 ep)", "Kruskal-Wallis", "0.0459", "Significativo"],
-            ["Local v4 (5 ep)", "Mann-Whitney MATD3 vs HAPPO", "0.0182", "Significativo"],
-            ["Colab canonica (50 ep)", "Kruskal-Wallis / post-hoc", "[Pendiente]", "Celda 9.1 notebook"],
+            ["Colab ALL (KPI-level)", "Shapiro-Wilk", "MASAC/MATD3/MAAC: p<1e-11", "No normal → no parametricos"],
+            ["Colab ALL (KPI-level)", "Kruskal-Wallis", "H=3.72, p=0.155", "No rechaza H0 global"],
+            ["Colab ALL (KPI-level)", "Wilcoxon SR", "MASAC vs MATD3: p=0.0049", "Significativo (pareado)"],
+            ["Colab ALL (KPI-level)", "Mann-Whitney U", "MASAC vs MATD3: p=0.070", "No significativo (0.05)"],
+            ["Colab OE1", "Kruskal-Wallis", "p=0.281", "No significativo"],
+            ["Colab OE2", "Kruskal-Wallis", "p=0.546", "No significativo"],
+            ["Colab OE3", "Kruskal-Wallis", "p=0.388", "No significativo"],
+            ["Score escenario (3x3)", "Kruskal-Wallis", "H=4.36, p=0.113", "No significativo"],
+            ["Local v4 (referencia)", "Kruskal-Wallis", "p=0.0459", "Significativo (5 ep, exploratorio)"],
         ],
-        caption="Tabla 5.5. Contrastacion inferencial (local vs canonica).",
-        col_widths=[4.0, 4.5, 2.5, 4.0],
+        caption="Tabla 5.5. Contrastacion inferencial Colab vs referencia local v4.",
+        col_widths=[3.5, 3.0, 3.5, 4.0],
+    )
+    p(
+        doc,
+        "Interpretacion: el ranking descriptivo Colab (MATD3 score global 0.6667) se sostiene "
+        "por KPIs de distrito y edificio; la significancia global KW sobre KPI-gains no alcanza "
+        "alpha=0.05 con una semilla y sin HAPPO. Wilcoxon pareado detecta diferencia MASAC-MATD3 "
+        "en el agregado ALL. Se requiere multi-semilla para elevar conclusiones causales (Colas et al., 2019).",
     )
 
     heading(doc, "5.9 Discusion", 2)

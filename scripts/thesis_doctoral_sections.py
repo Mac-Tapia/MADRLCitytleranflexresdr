@@ -275,7 +275,11 @@ def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
 
 
 def verify_doctoral_docx(path: Path) -> dict:
+    import re
+
     from docx import Document
+
+    from thesis_references_apa import reference_stats
 
     required_sections = [
         "Dedicatoria",
@@ -289,15 +293,26 @@ def verify_doctoral_docx(path: Path) -> dict:
     ]
     required_tables_min = 15
     required_figures_min = 12
+    ref_stats = reference_stats()
+    required_refs_min = max(50, ref_stats["total_unique"] - 5)
 
     doc = Document(str(path))
     text = "\n".join(p.text for p in doc.paragraphs if p.text)
-    styles = [p.style.name if p.style else "" for p in doc.paragraphs]
     headings = [p.text for p in doc.paragraphs if p.style and p.style.name.startswith("Heading")]
 
     section_ok = {s: any(s.lower() in h.lower() for h in headings) or s.lower() in text.lower() for s in required_sections}
     n_tables = len(doc.tables)
     n_images = sum(1 for rel in doc.part.rels.values() if "image" in rel.target_ref)
+
+    in_refs = False
+    n_ref_paras = 0
+    for para in doc.paragraphs:
+        t = (para.text or "").strip()
+        if "Referencias bibliograficas" in t:
+            in_refs = True
+            continue
+        if in_refs and re.match(r"^[A-Za-z]", t) and re.search(r"\(\d{4}", t):
+            n_ref_paras += 1
 
     checks = {
         "sections": section_ok,
@@ -305,9 +320,18 @@ def verify_doctoral_docx(path: Path) -> dict:
         "tables_ok": n_tables >= required_tables_min,
         "images_count": n_images,
         "images_ok": n_images >= required_figures_min,
-        "has_matd3_selection": "MATD3" in text and "0.6667" in text or "0,6667" in text,
+        "references_count": n_ref_paras,
+        "references_expected": ref_stats["total_unique"],
+        "references_ok": n_ref_paras >= required_refs_min,
+        "has_matd3_selection": "MATD3" in text and ("0.6667" in text or "0,6667" in text),
         "has_multiobjetivo": "multiobjetivo" in text.lower() or "185" in text,
         "has_drive_figures": "timeseries.csv" in text.lower() or "artefactos drive" in text.lower(),
-        "complete": all(section_ok.values()) and n_tables >= required_tables_min and n_images >= required_figures_min,
+        "has_referencias_apa": "Referencias_APA.md" in text or "referencias bibliograficas" in text.lower(),
+        "complete": (
+            all(section_ok.values())
+            and n_tables >= required_tables_min
+            and n_images >= required_figures_min
+            and n_ref_paras >= required_refs_min
+        ),
     }
     return checks

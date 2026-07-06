@@ -17,7 +17,11 @@ Uso:
 from __future__ import annotations
 
 import datetime as _dt
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from thesis_references_apa import load_all_thesis_references, reference_stats  # noqa: E402
 
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor
@@ -1000,63 +1004,18 @@ def build():
     # ===================== REFERENCIAS =====================
     doc.add_page_break()
     heading(doc, "Referencias bibliograficas", 1)
-    p(doc,
-      "Formato APA (7.ª ed.). Las referencias marcadas [PV] tienen datos secundarios "
-      "pendientes de verificacion.", italic=True, size=10, color=GREY)
+    stats = reference_stats()
+    p(
+        doc,
+        f"Formato APA (7.a ed.). Fuente consolidada del skill: docs/tesis_capitulos/Referencias_APA.md "
+        f"({stats['from_apa_md']} entradas) + citas en texto y protocolo estadistico RL "
+        f"({stats['total_unique']} referencias unicas; {stats['pv_marked']} marcadas [PV]).",
+        italic=True,
+        size=10,
+        color=GREY,
+    )
 
-    references = [
-        "Abels, A., Roijers, D., Lenaerts, T., Nowe, A., & Steckelmacher, D. (2019). Dynamic weights in multi-objective deep reinforcement learning. En Proceedings of the 36th International Conference on Machine Learning (ICML), PMLR 97, 11-20. https://arxiv.org/abs/1809.07803",
-        "Ahmed, A., et al. (2025). Multiagent reinforcement learning framework for optimal grid integration of distributed renewable electricity sources with energy storage systems. International Journal of Low-Carbon Technologies. https://doi.org/10.1093/ijlct/ctaf142 [PV]",
-        "Akiba, T., Sano, S., Yanase, T., Ohta, T., & Koyama, M. (2019). Optuna: A next-generation hyperparameter optimization framework. En Proceedings of the 25th ACM SIGKDD (pp. 2623-2631). ACM. https://doi.org/10.1145/3292500.3330701",
-        "Chen, L., He, H., Jing, R., Xie, M., & Ye, K. (2024). Energy management in integrated energy system with electric vehicles as mobile energy storage: An approach using bi-level deep reinforcement learning. Energy, 307. https://doi.org/10.1016/j.energy.2024.132599",
-        "Chen, X., et al. (2024). SOC-boundary and battery aging aware hierarchical coordination of multiple EV aggregates with multi-agent constrained deep reinforcement learning. arXiv. https://arxiv.org/abs/2407.13790 [PV]",
-        "Dolatyabi, P., et al. (2025). Heterogeneous multi-agent proximal policy optimization for power distribution system restoration. arXiv. https://arxiv.org/abs/2511.14730 [PV]",
-        "Electro Oriente S.A. (2023-2025). Facturas mensuales de edificios institucionales del SEAI Iquitos. Loreto, Peru.",
-        "Fang, X., Zhao, Q., Wang, J., Han, Y., & Li, Y. (2021). Multi-agent deep reinforcement learning for distributed energy management and strategy optimization of microgrid market. Sustainable Cities and Society, 74, 103163. https://doi.org/10.1016/j.scs.2021.103163",
-        "Felicetti, R., Iarlori, S., Monteriu, A., et al. (2024). Peak shaving and self-consumption maximization in home energy management systems: A combined integer programming and reinforcement learning approach. Computers & Electrical Engineering, 117, 109217. https://doi.org/10.1016/j.compeleceng.2024.109217",
-        "Felten, F., Talbi, E.-G., & Danoy, G. (2024). Multi-objective reinforcement learning based on decomposition: A taxonomy and framework. Journal of Artificial Intelligence Research, 79. https://arxiv.org/abs/2311.12495",
-        "Felten, F., Ucak, B., Azmani, M., et al. (2024). MOMAland: A set of benchmarks for multi-objective multi-agent reinforcement learning. arXiv. https://arxiv.org/abs/2407.16312",
-        "Fujimoto, S., van Hoof, H., & Meger, D. (2018). Addressing function approximation error in actor-critic methods (TD3). En Proceedings of the 35th ICML, PMLR 80, 1587-1596. https://arxiv.org/abs/1802.09477",
-        "Gao, J., Li, Y., Wang, B., & Wu, H. (2023). Multi-microgrid collaborative optimization scheduling using an improved multi-agent soft actor-critic algorithm. Energies, 16(7), 3248. https://doi.org/10.3390/en16073248",
-        "Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. En Proceedings of the 35th ICML, PMLR 80, 1861-1870. https://proceedings.mlr.press/v80/haarnoja18b.html",
-        "Hribar, J., Mohorcic, M., & Campa, A. (2025). Improving energy autonomy of positive energy districts using multi-agent deep reinforcement learning. Scientific Reports, 15, 27798. https://doi.org/10.1038/s41598-025-12554-x",
-        "Hu, S., Zhong, Y., Gao, M., Wang, W., Dong, H., Liang, X., Li, Z., Chang, X., & Yang, Y. (2023). MARLlib: A scalable and efficient multi-agent reinforcement learning library. Journal of Machine Learning Research, 24(315), 1-23. https://www.jmlr.org/papers/v24/23-0378.html",
-        "IEA. (2023). Electricity 2023 - Analysis and forecast to 2025. International Energy Agency.",
-        "IEC. (2021). IEC 61215-1:2021 - Terrestrial photovoltaic (PV) modules - Design qualification and type approval. International Electrotechnical Commission, Geneva.",
-        "Iqbal, S., & Sha, F. (2019). Actor-attention-critic for multi-agent reinforcement learning. En Proceedings of the 36th ICML, PMLR 97, 2961-2970. https://proceedings.mlr.press/v97/iqbal19a.html",
-        "Kathirgamanathan, A., Twardowski, K., Mangina, E., & Finn, D. P. (2020). A centralised soft actor critic deep reinforcement learning approach to district demand side management through CityLearn. En RLEM 2020. ACM. https://doi.org/10.1145/3427773.3427869",
-        "Kim, J., et al. (2025). Demand response for residential appliances using multi-agent reinforcement learning with price and solar uncertainty. Energy Reports, 13. https://doi.org/10.1016/j.egyr.2025.005 [PV]",
-        "Kuba, J. G., Chen, R., Wen, M., Wen, Y., Sun, F., Wang, J., & Yang, Y. (2021). Trust region policy optimisation in multi-agent reinforcement learning. arXiv. https://arxiv.org/abs/2109.11251",
-        "Li, Y., Wu, J., & Pan, Y. (2024). Deep reinforcement learning for online scheduling of photovoltaic systems with battery energy storage systems. Intelligent and Converged Networks, 5(1), 28-41. https://doi.org/10.23919/ICN.2024.0003",
-        "Liu, Y., Zhang, Q., & Guo, Y. (2022). Multi-agent deep reinforcement learning for building energy system with renewable energy. Applied Energy, 313, 118703. https://doi.org/10.1016/j.apenergy.2022.118703",
-        "Lowe, R., Wu, Y., Tamar, A., Harb, J., Abbeel, P., & Mordatch, I. (2017). Multi-agent actor-critic for mixed cooperative-competitive environments. En Advances in Neural Information Processing Systems 30 (pp. 6382-6393).",
-        "Lu, R., et al. (2022). A multi-objective multi-agent deep reinforcement learning approach to residential appliance scheduling. IET Smart Grid, 5(3).",
-        "Lund, H., Ostergaard, P. A., Connolly, D., & Mathiesen, B. V. (2017). Smart energy and smart energy systems. Energy, 137, 556-565. https://doi.org/10.1016/j.energy.2016.12.003",
-        "Ma, Q., Ye, Y., Liu, Z., Liu, X., & Strbac, G. (2025). Carbon cap based multi-energy sharing among heterogeneous microgrids using multi-agent safe reinforcement learning. Applied Energy, 393, 126018. https://doi.org/10.1016/j.apenergy.2025.126018",
-        "MINAM. (2019). INFOCARBONO - RAGEI 2019 Energia. Ministerio del Ambiente del Peru. https://infocarbono.minam.gob.pe/",
-        "Nweye, K., Kaspar, R., Manweiler, A., Kalbfleisch, M., Amara, N., & Nagy, Z. (2024). CityLearn v2: Energy-flexible, resilient, occupant-centric, and carbon-aware management of grid-interactive communities. Journal of Building Performance Simulation, 18(1). https://doi.org/10.1080/19401493.2024.2418813",
-        "Nweye, K., Liu, B., Stone, P., & Nagy, Z. (2022). Real-world challenges for multi-agent reinforcement learning in grid-interactive buildings. Energy and AI. https://doi.org/10.1016/j.egyai.2022.100202",
-        "Nweye, K., Sankaranarayanan, S., & Nagy, Z. (2023a). MERLIN: Multi-agent offline and transfer learning for occupant-centric operation of grid-interactive communities. Applied Energy. https://arxiv.org/abs/2301.01148",
-        "Nweye, K., et al. (2023b). Heterogeneous multi-agent reinforcement learning for grid-interactive communities. En BuildSys '23. ACM. https://doi.org/10.1145/3600100.3626276",
-        "Oliehoek, F. A., & Amato, C. (2016). A concise introduction to decentralized POMDPs. Springer. https://doi.org/10.1007/978-3-319-28929-8",
-        "OSINERGMIN. (2024). Resolucion de Consejo Directivo N. 0024-2024-OS/CD. Tarifas de distribucion electrica MT-3/MT-4 Electro Oriente S.A. Lima, Peru.",
-        "Roijers, D. M., Vamplew, P., Whiteson, S., & Dazeley, R. (2013). A survey of multi-objective sequential decision-making. Journal of Artificial Intelligence Research, 47, 67-113.",
-        "Sarkar, S., Naug, A., Luna, R., et al. (2024). Carbon footprint reduction for sustainable data centers in real-time. En Proceedings of the AAAI Conference on Artificial Intelligence, 38. https://arxiv.org/abs/2403.14092",
-        "Shojaeighadikolaei, A., et al. (2022). Distributed energy management and demand response in smart grids: A multi-agent deep reinforcement learning framework. arXiv. https://arxiv.org/abs/2211.15858",
-        "Sutton, R. S., & Barto, A. G. (2018). Reinforcement learning: An introduction (2.a ed.). MIT Press.",
-        "Vazquez-Canteli, J. R., & Nagy, Z. (2019a). CityLearn v1.0: An OpenAI Gym environment for demand response with deep reinforcement learning. En BuildSys '19 (pp. 356-357). ACM. https://doi.org/10.1145/3360322.3360998",
-        "Vazquez-Canteli, J. R., & Nagy, Z. (2019b). Reinforcement learning for demand response: A review of algorithms and modeling techniques. Applied Energy, 235, 1072-1089. https://doi.org/10.1016/j.apenergy.2018.11.028",
-        "Vazquez-Canteli, J. R., Dey, S., Henze, G., & Nagy, Z. (2020). CityLearn: Standardizing research in multi-agent reinforcement learning for demand response and urban energy management. arXiv. https://arxiv.org/abs/2012.10504",
-        "Wu, J., Wang, Z., Han, J., et al. (2025). A novel data-driven multi-agent reinforcement learning approach for voltage control under weak grid support. Sensors, 25(23), 7399. https://doi.org/10.3390/s25237399",
-        "Xie, J., Ajagekar, A., & You, F. (2023). Multi-agent attention-based deep reinforcement learning for demand response in grid-responsive buildings. Applied Energy, 342, 121213. https://doi.org/10.1016/j.apenergy.2023.121213",
-        "Xiong, S., Liu, D., Chen, Y., & Zhang, Y. (2024). A deep reinforcement learning approach based energy management strategy for home energy system considering the time-of-use price and real-time control of energy storage system. Energy Reports, 11, 3501-3508. https://doi.org/10.1016/j.egyr.2024.001501",
-        "Yao, Y., Wang, X., & Sun, J. (2023). Multi-agent reinforcement learning for smart community energy management. Energies, 17(20), 5211. https://doi.org/10.3390/en17205211",
-        "Ye, T., Huang, Y., Yang, W., Cai, G., Yang, Y., & Pan, F. (2025). Safe multi-agent deep reinforcement learning for decentralized low-carbon operation in active distribution networks and multi-microgrids. Applied Energy, 387. https://doi.org/10.1016/j.apenergy.2025.125339",
-        "Zhang, Y., Chen, X., Gu, Y., Li, Z., & Kai, W. (2023). Deep reinforcement learning-based battery conditioning hierarchical V2G coordination for multi-stakeholder benefits. arXiv. https://arxiv.org/abs/2308.00218",
-        "Zhong, Y., Kuba, J. G., Feng, X., Hu, S., Ji, J., & Yang, Y. (2023). Heterogeneous-agent reinforcement learning. Journal of Machine Learning Research, 25. https://jmlr.org/papers/v25/23-0488.html",
-        "Zhou, M., Wan, J., Wang, H., et al. (2021). MALib: A parallel framework for population-based multi-agent reinforcement learning. Journal of Machine Learning Research, 24(1). https://arxiv.org/abs/2106.07551",
-        "Zhu, Y., et al. (2024). An overview: Attention mechanisms in multi-agent reinforcement learning. Neurocomputing, 598, 128015. https://doi.org/10.1016/j.neucom.2024.128015 [PV]",
-    ]
+    references = load_all_thesis_references()
     for ref in references:
         para = doc.add_paragraph()
         para.paragraph_format.left_indent = Cm(1.0)
@@ -1069,6 +1028,8 @@ def build():
     doc.save(str(OUT_PATH))
     print(f"OK -> {OUT_PATH}")
     print(f"size_bytes={OUT_PATH.stat().st_size}")
+    rs = reference_stats()
+    print(f"referencias_apa={rs['total_unique']} (md={rs['from_apa_md']}, pv={rs['pv_marked']})")
 
 
 if __name__ == "__main__":

@@ -100,6 +100,7 @@ Use the exact PG/PE/OG/OE/HG/HE wording from [module-b-thesis-report.md](referen
      - `scripts/generate_tesis_doctoral_final_docx.py` → `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
      - `tools/build_multiobjective_thesis_docx.py` → anexo multiobjetivo `.docx`
      - `scripts/thesis_doctoral_sections.py` + `scripts/verify_tesis_doctoral_docx.py` (verificación)
+     - `scripts/thesis_references_apa.py` → carga `docs/tesis_capitulos/Referencias_APA.md` (66 refs APA)
 
 ## Pipeline Drive → figuras → tesis (obligatorio para Cap. 5)
 

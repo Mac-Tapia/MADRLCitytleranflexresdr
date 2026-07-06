@@ -1,0 +1,10 @@
+algorithm,scenario,backend,checkpoint_count_declared,checkpoint_files_listed,matd3_policies_with_checkpoints,maac_checkpoint_episodes,masac_checkpoint_groups,checkpoint_file_types,checkpoint_bytes_total
+MAAC,E1,external/MAAC,52,52,0,50,0,.pt,41622957662
+MAAC,E2,external/MAAC,52,52,0,50,0,.pt,41622957662
+MAAC,E3,external/MAAC,52,52,0,50,0,.pt,41622957662
+MASAC,E1,external/MADRL-MASAC,12,12,0,0,4,.pkl,2554372
+MASAC,E2,external/MADRL-MASAC,12,12,0,0,4,.pkl,2554372
+MASAC,E3,external/MADRL-MASAC,12,12,0,0,4,.pkl,2554372
+MATD3,E1,external/off-policy,34,34,17,0,0,.pt,149731036
+MATD3,E2,external/off-policy,34,34,17,0,0,.pt,149731036
+MATD3,E3,external/off-policy,34,34,17,0,0,.pt,149731036

@@ -1,0 +1,111 @@
+{
+  "run_id": "madrl_v3_20260627_164047",
+  "drive_folder": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+  "per_job": [
+    {
+      "algo": "MASAC",
+      "scen": "E1",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E1\\figures"
+    },
+    {
+      "algo": "MASAC",
+      "scen": "E2",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures"
+    },
+    {
+      "algo": "MASAC",
+      "scen": "E3",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E3\\figures"
+    },
+    {
+      "algo": "MATD3",
+      "scen": "E1",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures"
+    },
+    {
+      "algo": "MATD3",
+      "scen": "E2",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E2\\figures"
+    },
+    {
+      "algo": "MATD3",
+      "scen": "E3",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E3\\figures"
+    },
+    {
+      "algo": "MAAC",
+      "scen": "E1",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E1\\figures"
+    },
+    {
+      "algo": "MAAC",
+      "scen": "E2",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E2\\figures"
+    },
+    {
+      "algo": "MAAC",
+      "scen": "E3",
+      "status": "ok",
+      "figure_count": 13,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E3\\figures"
+    },
+    {
+      "algo": "HAPPO",
+      "scen": "E1",
+      "status": "ok",
+      "figure_count": 7,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E1\\figures"
+    },
+    {
+      "algo": "HAPPO",
+      "scen": "E2",
+      "status": "ok",
+      "figure_count": 7,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E2\\figures"
+    },
+    {
+      "algo": "HAPPO",
+      "scen": "E3",
+      "status": "ok",
+      "figure_count": 7,
+      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E3\\figures"
+    }
+  ],
+  "comparative_figures": [
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_convergence_reward_mean.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_convergence_reward_mean.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_convergence_reward_mean.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_OE1_kpi.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_OE2_kpi.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_OE3_kpi.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_district_net_electricity_consumption_cost.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_district_net_electricity_consumption_emission.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_district_net_electricity_consumption_cost.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_district_net_electricity_consumption_emission.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_district_net_electricity_consumption_cost.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_district_net_electricity_consumption_emission.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_control_trace.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_control_trace.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_control_trace.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_global_ranking_oe.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_best_worst_por_escenario.png"
+  ],
+  "ranking_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\ranking_global_oe_drive.csv",
+  "mapping_md": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\drive_figures_thesis_mapping.md"
+}

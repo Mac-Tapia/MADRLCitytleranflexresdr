@@ -1,5 +1,5 @@
 {
-  "figure_count": 10,
+  "figure_count": 13,
   "figure_errors": [],
   "figures": [
     {
@@ -21,6 +21,21 @@
       "kind": "efficiency_plot",
       "name": "learning_efficiency.png",
       "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\learning_efficiency.png"
+    },
+    {
+      "kind": "citylearn_v2_timeseries_plot",
+      "name": "citylearn_v2_district_timeseries.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\citylearn_v2_district_timeseries.png"
+    },
+    {
+      "kind": "exploration_plot",
+      "name": "exploration_action_l2.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\exploration_action_l2.png"
+    },
+    {
+      "kind": "agent_reward_plot",
+      "name": "agent_reward_contribution.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\agent_reward_contribution.png"
     },
     {
       "kind": "bar_plot",
@@ -54,7 +69,7 @@
     }
   ],
   "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures",
-  "table_count": 20,
+  "table_count": 18,
   "tables": [
     {
       "kind": "csv_table",
@@ -120,61 +135,49 @@
       "kind": "csv_table",
       "name": "exploration_summary.csv",
       "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\exploration_summary.csv",
-      "rows": 0
+      "rows": 50
     },
     {
       "kind": "markdown_table",
       "name": "exploration_summary.md",
       "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\exploration_summary.md",
-      "rows": 0
+      "rows": 50
     },
     {
       "kind": "csv_table",
       "name": "agent_reward_summary.csv",
       "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\agent_reward_summary.csv",
-      "rows": 0
+      "rows": 17
     },
     {
       "kind": "markdown_table",
       "name": "agent_reward_summary.md",
       "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\agent_reward_summary.md",
-      "rows": 0
+      "rows": 17
     },
     {
       "kind": "csv_table",
       "name": "checkpoint_inventory.csv",
       "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\checkpoint_inventory.csv",
-      "rows": 0
+      "rows": 34
     },
     {
       "kind": "markdown_table",
       "name": "checkpoint_inventory.md",
       "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\checkpoint_inventory.md",
-      "rows": 0
+      "rows": 34
     },
     {
       "kind": "csv_table",
-      "name": "drive_core_kpis.csv",
-      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\drive_core_kpis.csv",
-      "rows": 14
+      "name": "drive_data_provenance.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\drive_data_provenance.csv",
+      "rows": 1
     },
     {
       "kind": "markdown_table",
-      "name": "drive_core_kpis.md",
-      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\drive_core_kpis.md",
-      "rows": 14
-    },
-    {
-      "kind": "csv_table",
-      "name": "drive_episode_summary.csv",
-      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\drive_episode_summary.csv",
-      "rows": 50
-    },
-    {
-      "kind": "markdown_table",
-      "name": "drive_episode_summary.md",
-      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\drive_episode_summary.md",
-      "rows": 50
+      "name": "drive_data_provenance.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables\\drive_data_provenance.md",
+      "rows": 1
     }
   ],
   "tables_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\tables"

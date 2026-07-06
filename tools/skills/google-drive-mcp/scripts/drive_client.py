@@ -333,6 +333,59 @@ class DriveClient:
             "by_child": by_child,
         }
 
+    def find_files_recursive(
+        self,
+        folder_id: str,
+        wanted_names: set[str],
+        *,
+        max_depth: int = 12,
+        _depth: int = 0,
+        _path_parts: tuple[str, ...] = (),
+    ) -> list[dict[str, Any]]:
+        """Walk folder tree and return metadata for files whose names are in wanted_names."""
+        if _depth > max_depth:
+            return []
+
+        found: list[dict[str, Any]] = []
+        page_token: str | None = None
+        while True:
+            results = (
+                self._service.files()
+                .list(
+                    q=f"'{folder_id}' in parents and trashed = false",
+                    pageSize=1000,
+                    pageToken=page_token,
+                    fields="nextPageToken, files(id, name, mimeType, size, modifiedTime, webViewLink)",
+                    supportsAllDrives=True,
+                    includeItemsFromAllDrives=True,
+                )
+                .execute()
+            )
+            for item in results.get("files", []):
+                name = item.get("name", "")
+                parts = _path_parts + (name,)
+                if item.get("mimeType") == FOLDER_MIME:
+                    found.extend(
+                        self.find_files_recursive(
+                            item["id"],
+                            wanted_names,
+                            max_depth=max_depth,
+                            _depth=_depth + 1,
+                            _path_parts=parts,
+                        )
+                    )
+                elif name in wanted_names:
+                    found.append(
+                        {
+                            **self._format_file(item),
+                            "drive_path": "/".join(parts),
+                        }
+                    )
+            page_token = results.get("nextPageToken")
+            if not page_token:
+                break
+        return found
+
     def create_folder(
         self,
         name: str,

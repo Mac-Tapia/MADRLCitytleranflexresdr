@@ -3,47 +3,41 @@
 Source: `outputs/_drive_madrl/full_data`, downloaded from the user-provided Google Drive folder.
 No synthetic time-series, trace, building KPI, or checkpoint values are generated.
 
-## Complete Runs
+## Runs With Real Timeseries And Trace
+
+HAPPO-E1, HAPPO-E2, HAPPO-E3, MAAC-E1, MAAC-E2, MAAC-E3, MASAC-E1, MASAC-E2, MASAC-E3, MATD3-E1, MATD3-E2, MATD3-E3
+
+## Runs With Complete Building KPIs And Checkpoints
 
 MAAC-E1, MAAC-E2, MAAC-E3, MASAC-E1, MASAC-E2, MASAC-E3, MATD3-E1, MATD3-E2, MATD3-E3
+
+HAPPO is included in district and trace tables where real files exist, but it is not used for building KPI/checkpoint comparisons because Drive does not contain the required `building_kpis.csv`, `building_behavior_summary.csv`, or `checkpoint_manifest.json` files.
 
 ## Missing Or Incomplete Artifacts
 
 | algorithm   | scenario   | file                                   | exists   |   bytes |
 |:------------|:-----------|:---------------------------------------|:---------|--------:|
-| HAPPO       | E1         | timeseries.csv                         | False    |       0 |
-| HAPPO       | E1         | trace.csv                              | False    |       0 |
 | HAPPO       | E1         | building_kpis.csv                      | False    |       0 |
 | HAPPO       | E1         | building_behavior_summary.csv          | False    |       0 |
 | HAPPO       | E1         | building_observation_action_schema.csv | False    |       0 |
 | HAPPO       | E1         | building_trace_sample.csv              | False    |       0 |
 | HAPPO       | E1         | checkpoint_manifest.json               | False    |       0 |
-| HAPPO       | E1         | results.json                           | False    |       0 |
-| HAPPO       | E1         | training_summary.json                  | False    |       0 |
-| HAPPO       | E2         | timeseries.csv                         | False    |       0 |
-| HAPPO       | E2         | trace.csv                              | False    |       0 |
 | HAPPO       | E2         | building_kpis.csv                      | False    |       0 |
 | HAPPO       | E2         | building_behavior_summary.csv          | False    |       0 |
 | HAPPO       | E2         | building_observation_action_schema.csv | False    |       0 |
 | HAPPO       | E2         | building_trace_sample.csv              | False    |       0 |
 | HAPPO       | E2         | checkpoint_manifest.json               | False    |       0 |
-| HAPPO       | E2         | results.json                           | False    |       0 |
-| HAPPO       | E2         | training_summary.json                  | False    |       0 |
-| HAPPO       | E3         | timeseries.csv                         | False    |       0 |
-| HAPPO       | E3         | trace.csv                              | False    |       0 |
 | HAPPO       | E3         | building_kpis.csv                      | False    |       0 |
 | HAPPO       | E3         | building_behavior_summary.csv          | False    |       0 |
 | HAPPO       | E3         | building_observation_action_schema.csv | False    |       0 |
 | HAPPO       | E3         | building_trace_sample.csv              | False    |       0 |
 | HAPPO       | E3         | checkpoint_manifest.json               | False    |       0 |
-| HAPPO       | E3         | results.json                           | False    |       0 |
-| HAPPO       | E3         | training_summary.json                  | False    |       0 |
 
 ## District-Level Interpretation
 
-Highest mean reward: MAAC-E2 with reward_mean=-0.523716.
-Lowest mean district cost: MATD3-E1 with district_cost_mean=631.506.
-Lowest mean district emissions: MAAC-E3 with district_emission_mean=1053.55.
+Highest mean reward: HAPPO-E2 with reward_mean=-0.484196.
+Lowest mean district cost: HAPPO-E2 with district_cost_mean=195.45.
+Lowest mean district emissions: HAPPO-E3 with district_emission_mean=839.717.
 
 ## Building-Level Interpretation
 

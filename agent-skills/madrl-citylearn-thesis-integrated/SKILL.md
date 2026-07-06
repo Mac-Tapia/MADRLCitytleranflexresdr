@@ -91,16 +91,15 @@ Use the exact PG/PE/OG/OE/HG/HE wording from [module-b-thesis-report.md](referen
 9. Use `scripts/create_available_thesis_report.py` to create a DOCX/Markdown draft from current project evidence only.
 10. Use project evidence when available:
    - `README.md`, `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md`
-   - `CityLearn/configs/citylearn_v3_madrl_training.yaml`
-   - `docs/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md`
-   - `docs/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md`
-   - Corrida local referencia (5 ep): `outputs/citylearn_v3_madrl_full_20260615_074011_v4/`
-   - Corrida canónica objetivo (50 ep): Colab H100/A100, protocolo `two_phase_happo_masac_v3` → Drive `MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_<timestamp>/` (ver notebook celda 7.2)
-   - Notebook canónico: `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` (celda 6.1)
-   - Auditorías dataset: `outputs/dataset_audit/`
-   - Validación: `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md`
+   - Corrida canónica Colab/Drive: `outputs/madrl_v3_20260627_164047/` (`best_madrl_report.json`, `resumen_comparativo/`)
+   - Análisis multiobjetivo distrito/edificio: `outputs/madrl_v3_20260627_164047/resumen_comparativo/multiobjetivo/`
+   - KPIs auditados: `outputs/_drive_madrl/kpis/`, CSVs por edificio en `outputs/_drive_madrl/full_data/`
+   - Generadores Word finales:
+     - `scripts/generate_tesis_doctoral_final_docx.py` → `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
+     - `tools/build_multiobjective_thesis_docx.py` → anexo multiobjetivo `.docx`
+     - `scripts/thesis_doctoral_sections.py` + `scripts/verify_tesis_doctoral_docx` (verificación)
 
-> **Vigencia técnica (2026-06-28):** Perfil de recompensa activo **`unified_comparable_v4`** (team_ratio=0.70, peak=0.45, ramp=0.35, ev=0.25, bess_cycle=0.10, ev_urgency_hours=8.0, reward_scale=1.00). **γ = 0,9999**. Estado global Dec-POMDP: **1 856 dimensiones**. Dataset: `citylearn_iquitos_2023_2025` (17 edificios, 26 304 h, 222 CSV, PV 48 790,9 kWp, BESS 26 266 kWh / 6 648 kW, 185 tomas EV). Resultados preliminares (5 ep, 1 semilla): MATD3 lidera ranking ponderado (E1 0,487; E2 0,751; E3 0,733); Kruskal-Wallis p=0,0459; MATD3 CV < 1,1 % en flexibilidad. Reemplazar con corrida canónica 50 ep cuando esté disponible.
+> **Vigencia técnica (2026-07-05):** Corrida canónica **`madrl_v3_20260627_164047`** (Colab, 50 ep MATD3/MAAC/MASAC). Mejor MADRL: **MATD3** (score 0,6667). Análisis multiobjetivo: 17 edificios, 185 EV, 153 filas KPI edificio. HAPPO: 49/50 ep, sin KPIs. Perfil `unified_comparable_v4`, γ = 0,9999, estado global 1 856 dims.
 
 ## Required Final Products
 

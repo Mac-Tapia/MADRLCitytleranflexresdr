@@ -331,7 +331,17 @@ Primary:
 Training outputs (use latest completed v4 session):
 
 - `outputs/citylearn_v3_madrl_full_20260615_074011_v4/` (corrida local referencia 5 ep)
-- Canonical target: `outputs/colab_50ep/` or new `citylearn_v3_madrl_full_*_v4` with 50 episodes
+- **Corrida canónica Colab/Drive:** `outputs/madrl_v3_20260627_164047/` (`best_madrl_report.json`, `resumen_comparativo/`)
+- **Multiobjetivo distrito/edificio:** `outputs/madrl_v3_20260627_164047/resumen_comparativo/multiobjetivo/` (153 filas edificio, 17 figuras B01–B17)
+- KPIs auditados: `outputs/_drive_madrl/kpis/`, CSVs edificio: `outputs/_drive_madrl/full_data/{MASAC,MATD3,MAAC}/`
+
+Word final (doctorado):
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe scripts\generate_tesis_doctoral_final_docx.py
+.\.venv39-citylearn-v3\Scripts\python.exe scripts\verify_tesis_doctoral_docx.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\build_multiobjective_thesis_docx.py
+```
 
 Dataset audit:
 

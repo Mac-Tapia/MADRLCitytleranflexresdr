@@ -104,12 +104,14 @@ Documentos compilados para defensa/anexo:
 - Word: `../outputs/madrl_v3_20260627_164047/resumen_comparativo/multiobjetivo/RESUMEN_MULTIOBJETIVO_TESIS.docx`
 - PDF: `../outputs/madrl_v3_20260627_164047/resumen_comparativo/multiobjetivo/RESUMEN_MULTIOBJETIVO_TESIS.pdf`
 
-Regenerar:
+Regenerar tesis doctoral final:
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe tools\build_multiobjective_thesis_docx.py
-.\.venv39-citylearn-v3\Scripts\python.exe tools\build_multiobjective_thesis_pdf.py
+.\.venv39-citylearn-v3\Scripts\python.exe scripts\generate_tesis_doctoral_final_docx.py
+.\.venv39-citylearn-v3\Scripts\python.exe scripts\verify_tesis_doctoral_docx.py
 ```
+
+Salida canónica: `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` (verificado: dedicatoria, 6 capítulos, tablas, figuras Colab/multiobjetivo).
 
 ## Regla (histórica)
 

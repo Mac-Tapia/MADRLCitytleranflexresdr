@@ -1,0 +1,5 @@
+algorithm,flex_composite_e1,co2_delta_kg_e2,cost_delta_eur_e3,episodes_e1,episodes_e2,episodes_e3,has_kpis,status,notes
+HAPPO,,,,49,49,49,False,completed_with_salvage,49/50 episodios; sin KPIs; pendiente resume celda 2.3 por VecEnvWrapper.
+MASAC,1.028552547361268,77648.98780810599,19792.792564499217,50,50,50,True,ok,KPIs auditados desde Drive y reconciliados por output_dir.
+MATD3,1.0009229901555254,23070.418478806503,44399.364069434494,50,50,50,True,ok,KPIs auditados desde Drive y reconciliados por output_dir.
+MAAC,1.0124257995412176,70654.19071758597,9515.151784724349,50,50,50,True,ok,KPIs auditados desde Drive y reconciliados por output_dir.

@@ -1,0 +1,181 @@
+{
+  "figure_count": 10,
+  "figure_errors": [],
+  "figures": [
+    {
+      "kind": "line_plot",
+      "name": "reward_timeseries.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\reward_timeseries.png"
+    },
+    {
+      "kind": "convergence_plot",
+      "name": "convergence_returns.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\convergence_returns.png"
+    },
+    {
+      "kind": "bar_line_plot",
+      "name": "episode_reward_summary.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\episode_reward_summary.png"
+    },
+    {
+      "kind": "efficiency_plot",
+      "name": "learning_efficiency.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\learning_efficiency.png"
+    },
+    {
+      "kind": "bar_plot",
+      "name": "axis_baseline_comparison.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\axis_baseline_comparison.png"
+    },
+    {
+      "kind": "baseline_gain_plot",
+      "name": "baseline_gain_by_kpi.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\baseline_gain_by_kpi.png"
+    },
+    {
+      "kind": "horizontal_bar_plot",
+      "name": "core_kpis.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\core_kpis.png"
+    },
+    {
+      "kind": "axis_kpi_plot",
+      "name": "OE1_flexibility_kpis.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\OE1_flexibility_kpis.png"
+    },
+    {
+      "kind": "axis_kpi_plot",
+      "name": "OE2_co2_kpis.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\OE2_co2_kpis.png"
+    },
+    {
+      "kind": "axis_kpi_plot",
+      "name": "OE3_cost_kpis.png",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\OE3_cost_kpis.png"
+    }
+  ],
+  "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures",
+  "table_count": 20,
+  "tables": [
+    {
+      "kind": "csv_table",
+      "name": "episode_summary.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\episode_summary.csv",
+      "rows": 50
+    },
+    {
+      "kind": "markdown_table",
+      "name": "episode_summary.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\episode_summary.md",
+      "rows": 50
+    },
+    {
+      "kind": "csv_table",
+      "name": "objective_kpis.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\objective_kpis.csv",
+      "rows": 54
+    },
+    {
+      "kind": "markdown_table",
+      "name": "objective_kpis.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\objective_kpis.md",
+      "rows": 54
+    },
+    {
+      "kind": "csv_table",
+      "name": "axis_baseline_comparison.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\axis_baseline_comparison.csv",
+      "rows": 3
+    },
+    {
+      "kind": "markdown_table",
+      "name": "axis_baseline_comparison.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\axis_baseline_comparison.md",
+      "rows": 3
+    },
+    {
+      "kind": "csv_table",
+      "name": "core_kpis.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\core_kpis.csv",
+      "rows": 14
+    },
+    {
+      "kind": "markdown_table",
+      "name": "core_kpis.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\core_kpis.md",
+      "rows": 14
+    },
+    {
+      "kind": "csv_table",
+      "name": "training_efficiency.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\training_efficiency.csv",
+      "rows": 50
+    },
+    {
+      "kind": "markdown_table",
+      "name": "training_efficiency.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\training_efficiency.md",
+      "rows": 50
+    },
+    {
+      "kind": "csv_table",
+      "name": "exploration_summary.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\exploration_summary.csv",
+      "rows": 0
+    },
+    {
+      "kind": "markdown_table",
+      "name": "exploration_summary.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\exploration_summary.md",
+      "rows": 0
+    },
+    {
+      "kind": "csv_table",
+      "name": "agent_reward_summary.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\agent_reward_summary.csv",
+      "rows": 0
+    },
+    {
+      "kind": "markdown_table",
+      "name": "agent_reward_summary.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\agent_reward_summary.md",
+      "rows": 0
+    },
+    {
+      "kind": "csv_table",
+      "name": "checkpoint_inventory.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\checkpoint_inventory.csv",
+      "rows": 0
+    },
+    {
+      "kind": "markdown_table",
+      "name": "checkpoint_inventory.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\checkpoint_inventory.md",
+      "rows": 0
+    },
+    {
+      "kind": "csv_table",
+      "name": "drive_core_kpis.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\drive_core_kpis.csv",
+      "rows": 14
+    },
+    {
+      "kind": "markdown_table",
+      "name": "drive_core_kpis.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\drive_core_kpis.md",
+      "rows": 14
+    },
+    {
+      "kind": "csv_table",
+      "name": "drive_episode_summary.csv",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\drive_episode_summary.csv",
+      "rows": 50
+    },
+    {
+      "kind": "markdown_table",
+      "name": "drive_episode_summary.md",
+      "path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables\\drive_episode_summary.md",
+      "rows": 50
+    }
+  ],
+  "tables_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\tables"
+}

@@ -1,0 +1,94 @@
+{
+  "run_id": "madrl_v3_20260627_164047",
+  "output_root": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047",
+  "generated": [
+    {
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E1",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    },
+    {
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    },
+    {
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E3",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E2",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E3",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E1",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E2",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "status": "ok",
+      "run_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E3",
+      "figure_count": 10,
+      "table_count": 20,
+      "figure_errors": []
+    }
+  ],
+  "skipped": [
+    {
+      "algorithm": "HAPPO",
+      "status": "skipped_completed_with_salvage_without_kpis",
+      "reason": "HAPPO has 49/50 episodes and no objective KPI report in Drive results."
+    }
+  ]
+}

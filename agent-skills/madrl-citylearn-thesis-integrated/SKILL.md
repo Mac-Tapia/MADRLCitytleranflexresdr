@@ -93,13 +93,78 @@ Use the exact PG/PE/OG/OE/HG/HE wording from [module-b-thesis-report.md](referen
    - `README.md`, `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md`
    - Corrida canónica Colab/Drive: `outputs/madrl_v3_20260627_164047/` (`best_madrl_report.json`, `resumen_comparativo/`)
    - Análisis multiobjetivo distrito/edificio: `outputs/madrl_v3_20260627_164047/resumen_comparativo/multiobjetivo/`
-   - KPIs auditados: `outputs/_drive_madrl/kpis/`, CSVs por edificio en `outputs/_drive_madrl/full_data/`
+   - **Figuras de entrenamiento (timeseries/trace reales Drive):** `outputs/madrl_v3_20260627_164047/resumen_comparativo/figuras_drive_reales/`
+   - Espejo CSV Drive: `outputs/_drive_madrl/full_data/{ALGO}/{E1|E2|E3}/data/`
+   - KPIs auditados: `outputs/_drive_madrl/kpis/`
    - Generadores Word finales:
      - `scripts/generate_tesis_doctoral_final_docx.py` → `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
      - `tools/build_multiobjective_thesis_docx.py` → anexo multiobjetivo `.docx`
-     - `scripts/thesis_doctoral_sections.py` + `scripts/verify_tesis_doctoral_docx` (verificación)
+     - `scripts/thesis_doctoral_sections.py` + `scripts/verify_tesis_doctoral_docx.py` (verificación)
 
-> **Vigencia técnica (2026-07-05):** Corrida canónica **`madrl_v3_20260627_164047`** (Colab, 50 ep MATD3/MAAC/MASAC). Mejor MADRL: **MATD3** (score 0,6667). Análisis multiobjetivo: 17 edificios, 185 EV, 153 filas KPI edificio. HAPPO: 49/50 ep, sin KPIs. Perfil `unified_comparable_v4`, γ = 0,9999, estado global 1 856 dims.
+## Pipeline Drive → figuras → tesis (obligatorio para Cap. 5)
+
+Carpeta Drive canónica: `https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX` (`madrl_v3_20260627_164047`).
+
+**Paso 0 — OAuth (una vez por máquina):**
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\setup_google_drive_oauth.ps1
+```
+
+Requiere `tools/skills/google-drive-mcp/data/credentials.json`.
+
+**Paso 1 — Descarga selectiva vía conector OAuth** (no usar `gdown` ni `regenerate_drive_training_figures.py`):
+
+```powershell
+tools\skills\google-drive-mcp\.venv\Scripts\python.exe tools\fetch_drive_training_artifacts.py
+```
+
+Descarga: `timeseries.csv`, `trace.csv`, `checkpoint_manifest.json`, `results.json`, `building_kpis.csv` → `outputs/_drive_madrl/full_data/`.
+
+**Paso 2 — Análisis multiobjetivo distrito/edificio:**
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe tools\analyze_colab_drive_multiobjective_buildings.py
+```
+
+**Paso 3 — Figuras de entrenamiento (solo CSV reales, sin síntesis):**
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe tools\generate_drive_thesis_figures.py
+```
+
+O pipeline completo:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\fetch_and_generate_drive_figures.ps1
+```
+
+**Paso 4 — Word doctoral integrado:**
+
+```powershell
+.\.venv39-citylearn-v3\Scripts\python.exe scripts\generate_tesis_doctoral_final_docx.py
+.\.venv39-citylearn-v3\Scripts\python.exe scripts\verify_tesis_doctoral_docx.py
+```
+
+### Salidas integradas en la tesis
+
+| Artefacto | Ruta |
+|-----------|------|
+| Figuras comparativas (convergencia, OE, control, ranking) | `outputs/madrl_v3_.../resumen_comparativo/figuras_drive_reales/comparativo/` |
+| Figuras por job (12 tratamientos) | `outputs/madrl_v3_.../{ALGO}/{E1\|E2\|E3}/figures/` |
+| Multiobjetivo (17 edificios) | `outputs/madrl_v3_.../resumen_comparativo/multiobjetivo/` |
+| Word final | `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` |
+| Anexo multiobjetivo | `outputs/.../multiobjetivo/RESUMEN_MULTIOBJETIVO_TESIS.docx` |
+
+### Pendientes honestos (no inventar)
+
+- OAuth Drive: `credentials.json` en máquina local si aún no está configurado.
+- Inferencia estadística Colab 50 ep: celda 9.1 notebook (`[Pendiente]` en Tabla 5.5).
+- HAPPO: 49/50 ep, sin KPIs finales; re-evaluación tras corregir `VecEnvWrapper`.
+- Asesor en carátula: `[por definir]`.
+- Índice Word: actualizar con F9 tras abrir el `.docx`.
+
+> **Vigencia técnica (2026-07-06):** Corrida canónica **`madrl_v3_20260627_164047`** (Colab, 50 ep MATD3/MAAC/MASAC). Mejor MADRL: **MATD3** (score 0,6667). Análisis multiobjetivo: 17 edificios, 185 EV, 153 filas KPI edificio. Figuras Drive reales: 17 comparativas + 138 por job. HAPPO: 49/50 ep, sin KPIs. Perfil `unified_comparable_v4`, γ = 0,9999, estado global 1 856 dims.
 
 ## Required Final Products
 

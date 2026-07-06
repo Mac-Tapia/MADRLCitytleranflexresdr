@@ -243,7 +243,8 @@ Organize in two levels: **descriptive effect** then **inferential hypothesis tes
 
 - Tabla 5.1: estadística descriptiva D-VD.1 por tratamiento (media, desv., mín., máx., CV %)
 - Hallazgo clave preliminar: **MATD3 CV < 1,1 %** vs HAPPO **> 9 %**
-- Figuras 5.0 (convergencia), 5.2 (flexibilidad E1), 5.4 (éxito partida EV), 5.5 (matriz KPI E1)
+- Figuras 5.0 (convergencia desde `timeseries.csv` Drive), 5.2 (flexibilidad E1), 5.4 (éxito partida EV), 5.5 (matriz KPI E1)
+- Figuras comparativas Drive reales: `figuras_drive_reales/comparativo/comparativo_*_convergence_reward_mean.png`, `comparativo_global_ranking_oe.png`, `comparativo_*_control_trace.png`, KPIs OE1/OE2/OE3
 
 **5.3 Efecto coordinado: ranking ponderado por escenario**
 
@@ -333,7 +334,18 @@ Training outputs (use latest completed v4 session):
 - `outputs/citylearn_v3_madrl_full_20260615_074011_v4/` (corrida local referencia 5 ep)
 - **Corrida canónica Colab/Drive:** `outputs/madrl_v3_20260627_164047/` (`best_madrl_report.json`, `resumen_comparativo/`)
 - **Multiobjetivo distrito/edificio:** `outputs/madrl_v3_20260627_164047/resumen_comparativo/multiobjetivo/` (153 filas edificio, 17 figuras B01–B17)
+- **Figuras entrenamiento (timeseries/trace reales):** `outputs/madrl_v3_20260627_164047/resumen_comparativo/figuras_drive_reales/` (17 comparativas + figuras por job en `{ALGO}/{ESC}/figures/`)
+- Espejo CSV Drive: `outputs/_drive_madrl/full_data/{ALGO}/{E1|E2|E3}/data/` (`timeseries.csv`, `trace.csv`, `checkpoint_manifest.json`)
 - KPIs auditados: `outputs/_drive_madrl/kpis/`, CSVs edificio: `outputs/_drive_madrl/full_data/{MASAC,MATD3,MAAC}/`
+
+Pipeline Drive OAuth (no gdown, no síntesis):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\setup_google_drive_oauth.ps1
+tools\skills\google-drive-mcp\.venv\Scripts\python.exe tools\fetch_drive_training_artifacts.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\analyze_colab_drive_multiobjective_buildings.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\generate_drive_thesis_figures.py
+```
 
 Word final (doctorado):
 

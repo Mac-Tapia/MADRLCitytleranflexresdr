@@ -12,6 +12,7 @@ from docx.shared import Cm, Pt, RGBColor
 REPO = Path(__file__).resolve().parents[1]
 RUN_ID = "madrl_v3_20260627_164047"
 MO_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "multiobjetivo"
+FD_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "figuras_drive_reales" / "comparativo"
 BEST_REPORT = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "best_madrl_report.json"
 DISTRICT_CSV = MO_DIR / "district_objectives_by_algorithm.csv"
 INVENTORY_CSV = MO_DIR / "building_inventory_multiobjective.csv"
@@ -62,10 +63,11 @@ def add_resumen_doctoral(doc, p, heading) -> None:
         "v3 propuesto (17 edificios reales, 26 304 h, 185 cargadores EV). La corrida canónica "
         f"Colab/Drive ({RUN_ID}) completó 50 episodios por escenario en MATD3, MAAC y MASAC; "
         "MATD3 obtiene el mejor score global (0,6667) y lidera flexibilidad (OE1) y emisiones (OE2); "
-        "MAAC lidera costos (OE3). El análisis multiobjetivo desagrega KPIs por distrito y por "
-        "edificio (153 registros). HAPPO alcanzó 49/50 episodios sin KPIs finales por error de "
-        "evaluación. La evidencia inferencial preliminar local (5 ep, Kruskal-Wallis p = 0,0459) "
-        "anticipa la dirección del ranking Colab.",
+        "MAAC lidera costos (OE3). Las figuras de convergencia, control MADRL y ranking provienen de "
+        "timeseries.csv y trace.csv auditados en Drive (sin datos sinteticos). El analisis multiobjetivo "
+        "desagrega KPIs por distrito y por edificio (153 registros). HAPPO alcanzo 49/50 episodios sin "
+        "KPIs finales por error de evaluacion (VecEnvWrapper). La evidencia inferencial preliminar local "
+        "(5 ep, Kruskal-Wallis p = 0,0459) anticipa la direccion del ranking Colab.",
     )
     p(
         doc,
@@ -82,6 +84,7 @@ def add_resumen_doctoral(doc, p, heading) -> None:
         "Iquitos, Peru. A canonical 50-episode Colab run shows MATD3 as the best overall performer "
         "(global score 0.6667), leading flexibility and CO₂ objectives, while MAAC leads energy cost. "
         "Multi-objective KPIs are reported at district and building levels (185 EV chargers). "
+        "Training figures use audited Drive timeseries and trace CSVs (no synthetic data). "
         "Results are grounded in audited Drive artifacts; inferential tests on the canonical run "
         "remain pending.",
         italic=True,
@@ -172,7 +175,29 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         col_widths=[2.5, 1.5, 2.5, 3.0, 3.0, 2.5],
     )
 
-    heading(doc, "5.4 Analisis multiobjetivo por edificio", 2)
+    heading(doc, "5.5 Figuras de entrenamiento (artefactos Drive reales)", 2)
+    p(
+        doc,
+        "Las siguientes figuras se generan exclusivamente desde timeseries.csv, trace.csv y "
+        "results.json descargados de la corrida Colab/Drive (carpeta 1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX). "
+        "No se utilizan datos sinteticos ni regeneracion desde episode_summaries.",
+    )
+    drive_figs = [
+        (FD_DIR / "comparativo_E1_convergence_reward_mean.png", "Figura 5.1. Convergencia E1 (reward_mean) — datos reales Drive."),
+        (FD_DIR / "comparativo_E2_convergence_reward_mean.png", "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive."),
+        (FD_DIR / "comparativo_E3_convergence_reward_mean.png", "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive."),
+        (FD_DIR / "comparativo_global_ranking_oe.png", "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive)."),
+        (FD_DIR / "comparativo_best_worst_por_escenario.png", "Figura 5.5. Mejor y peor MADRL por escenario."),
+        (FD_DIR / "comparativo_E1_OE1_kpi.png", "Figura 5.6. KPI OE1 flexibilidad — comparativa E1."),
+        (FD_DIR / "comparativo_E2_OE2_kpi.png", "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2."),
+        (FD_DIR / "comparativo_E3_OE3_kpi.png", "Figura 5.8. KPI OE3 costo energetico — comparativa E3."),
+        (FD_DIR / "comparativo_E2_control_trace.png", "Figura 5.9. Control MADRL por edificio (trace.csv) — E2."),
+    ]
+    for path, caption in drive_figs:
+        doc.add_page_break()
+        add_figure(doc, path, caption)
+
+    heading(doc, "5.6 Analisis multiobjetivo por edificio", 2)
     p(
         doc,
         "Se analizan 17 edificios institucionales/comerciales con inventario de 185 cargadores EV "
@@ -197,20 +222,20 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         col_widths=[1.5, 5.5, 1.5, 6.5],
     )
 
-    heading(doc, "5.5 Figuras comparativas", 2)
+    heading(doc, "5.7 Figuras multiobjetivo (distrito y edificio)", 2)
     figs = [
-        (MO_DIR / "drive_district_objectives.png", "Figura 5.1. KPIs multiobjetivo — distrito."),
-        (MO_DIR / "drive_building_E1_flex_composite_proxy.png", "Figura 5.2. OE1 flexibilidad por edificio."),
-        (MO_DIR / "drive_building_E2_carbon_emissions_delta_kgco2.png", "Figura 5.3. OE2 delta CO2 por edificio."),
-        (MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png", "Figura 5.4. OE3 delta costo por edificio."),
-        (MO_DIR / "drive_building_ev_inventory.png", "Figura 5.5. Inventario EV por edificio."),
-        (MO_DIR / "drive_building_ev_success_matd3_e2.png", "Figura 5.6. Desempeno EV — MATD3/E2."),
+        (MO_DIR / "drive_district_objectives.png", "Figura 5.10. KPIs multiobjetivo — distrito."),
+        (MO_DIR / "drive_building_E1_flex_composite_proxy.png", "Figura 5.11. OE1 flexibilidad por edificio."),
+        (MO_DIR / "drive_building_E2_carbon_emissions_delta_kgco2.png", "Figura 5.12. OE2 delta CO2 por edificio."),
+        (MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png", "Figura 5.13. OE3 delta costo por edificio."),
+        (MO_DIR / "drive_building_ev_inventory.png", "Figura 5.14. Inventario EV por edificio."),
+        (MO_DIR / "drive_building_ev_success_matd3_e2.png", "Figura 5.15. Desempeno EV — MATD3/E2."),
     ]
     for path, caption in figs:
         doc.add_page_break()
         add_figure(doc, path, caption)
 
-    heading(doc, "5.6 Pruebas estadisticas", 2)
+    heading(doc, "5.8 Pruebas estadisticas", 2)
     add_table(
         doc,
         ["Fuente", "Prueba", "p-valor", "Estado"],
@@ -223,7 +248,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         col_widths=[4.0, 4.5, 2.5, 4.0],
     )
 
-    heading(doc, "5.7 Discusion", 2)
+    heading(doc, "5.9 Discusion", 2)
     p(
         doc,
         "MATD3 domina flexibilidad y emisiones en la corrida canonica, con mayor tasa de exito EV "
@@ -263,7 +288,7 @@ def verify_doctoral_docx(path: Path) -> dict:
         "Referencias bibliograficas",
     ]
     required_tables_min = 15
-    required_figures_min = 4
+    required_figures_min = 12
 
     doc = Document(str(path))
     text = "\n".join(p.text for p in doc.paragraphs if p.text)
@@ -282,6 +307,7 @@ def verify_doctoral_docx(path: Path) -> dict:
         "images_ok": n_images >= required_figures_min,
         "has_matd3_selection": "MATD3" in text and "0.6667" in text or "0,6667" in text,
         "has_multiobjetivo": "multiobjetivo" in text.lower() or "185" in text,
+        "has_drive_figures": "timeseries.csv" in text.lower() or "artefactos drive" in text.lower(),
         "complete": all(section_ok.values()) and n_tables >= required_tables_min and n_images >= required_figures_min,
     }
     return checks

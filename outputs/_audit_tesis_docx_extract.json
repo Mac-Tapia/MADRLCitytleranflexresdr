@@ -1,0 +1,449 @@
+{
+  "file": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+  "word_count": 6603,
+  "n_paragraphs": 275,
+  "n_images": 15,
+  "n_tables": 18,
+  "n_fig_captions": 15,
+  "fig_captions": [
+    "Figura 5.1. Convergencia E1 (reward_mean) — datos reales Drive.",
+    "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive.",
+    "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive.",
+    "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive).",
+    "Figura 5.5. Mejor y peor MADRL por escenario.",
+    "Figura 5.6. KPI OE1 flexibilidad — comparativa E1.",
+    "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2.",
+    "Figura 5.8. KPI OE3 costo energetico — comparativa E3.",
+    "Figura 5.9. Control MADRL por edificio (trace.csv) — E2.",
+    "Figura 5.10. KPIs multiobjetivo — distrito.",
+    "Figura 5.11. OE1 flexibilidad por edificio.",
+    "Figura 5.12. OE2 delta CO2 por edificio.",
+    "Figura 5.13. OE3 delta costo por edificio.",
+    "Figura 5.14. Inventario EV por edificio.",
+    "Figura 5.15. Desempeno EV — MATD3/E2."
+  ],
+  "n_table_captions": 18,
+  "table_captions": [
+    "Tabla 5.1. Cobertura de episodios auditada (episodes_recorded).",
+    "Tabla 5.2. Ranking global Colab/Drive (best_madrl_report.json).",
+    "Tabla 5.3. KPIs fisicos agregados de distrito.",
+    "Tabla 5.4. Inventario multiobjetivo (extracto B01–B08; completo en anexo CSV).",
+    "Tabla 5.5. Contrastacion inferencial Colab vs referencia local v4.",
+    "Tabla 2.1. Conceptos del marco tecnico MADRL.",
+    "Tabla 2.2. Sintesis de trabajos relacionados.",
+    "Tabla 3.1. Escenarios de entrenamiento y pesos de recompensa por eje.",
+    "Tabla 3.2. Caracteristicas del dataset citylearn_iquitos_2023_2025.",
+    "Tabla 3.3. Edificios reales del SEAI Iquitos y dimensionamiento DER (auditado).",
+    "Tabla 3.4. Operacionalizacion de la variable dependiente por eje.",
+    "Tabla 4.1. Capas de software del sistema MADRL CityLearn v3.",
+    "Tabla 4.2. Los cuatro algoritmos MADRL y sus backends.",
+    "Tabla 4.3. Hiperparametros del entrenamiento MADRL.",
+    "Tabla 4.3b. Hiperparametros canonicos de 50 episodios (Colab A100, notebook celda 6.1).",
+    "Tabla 4.4. Parametros de la funcion de recompensa multiobjetivo (perfil unificado v4).",
+    "Tabla 4.5. Aportes originales al motor de simulacion CityLearn.",
+    "Tabla 4.6. Matriz experimental de 12 corridas oficiales."
+  ],
+  "all_headings": [
+    "Dedicatoria",
+    "Agradecimientos",
+    "Resumen",
+    "Abstract",
+    "Indice",
+    "Capitulo 5. Resultados y contrastacion de hipotesis",
+    "5.1 Experimentos realizados",
+    "5.2 Seleccion del mejor MADRL (distrito)",
+    "5.3 KPIs fisicos por objetivo (distrito)",
+    "5.5 Figuras de entrenamiento (artefactos Drive reales)",
+    "5.6 Analisis multiobjetivo por edificio",
+    "5.7 Figuras multiobjetivo (distrito y edificio)",
+    "5.8 Pruebas estadisticas",
+    "5.9 Discusion",
+    "Capitulo 6. Conclusiones y trabajo futuro",
+    "6.1 Conclusiones",
+    "6.2 Limitaciones",
+    "6.3 Trabajo futuro",
+    "Capitulo 1. Introduccion",
+    "1.1 Problema de investigacion",
+    "1.2 Objetivos",
+    "1.3 Hipotesis",
+    "1.4 Justificacion",
+    "1.5 Alcances y limitaciones",
+    "Capitulo 2. Marco teorico",
+    "2.1 Estado del arte actualizado",
+    "2.2 Bases teoricas",
+    "2.2.1 Flexibilidad energetica en comunidades inteligentes",
+    "2.2.2 Emisiones de carbono en comunidades inteligentes",
+    "2.2.3 Costos energeticos en comunidades inteligentes",
+    "2.2.4 Marco tecnico MADRL",
+    "2.3 Trabajos relacionados",
+    "Capitulo 3. Metodologia",
+    "3.1 Tipo de investigacion",
+    "3.2 Diseno metodologico",
+    "3.3 Datos utilizados — Dataset citylearn_iquitos_2023_2025",
+    "3.4 Variables",
+    "3.5 Tecnicas e instrumentos",
+    "3.6 Procedimiento experimental",
+    "Capitulo 4. Desarrollo de la propuesta",
+    "4.1 Desarrollo del sistema y arquitectura de software",
+    "4.2 Modelo de IA: formulacion Dec-POMDP",
+    "4.3 Esquema CTDE",
+    "4.4 Algoritmos",
+    "4.5 Funcion de recompensa multiobjetivo",
+    "4.6 Aportes originales al motor de simulacion",
+    "4.7 Diseno experimental: matriz de 12 corridas",
+    "4.8 Implementacion",
+    "Referencias bibliograficas"
+  ],
+  "cap5_headings": [
+    "Capitulo 5. Resultados y contrastacion de hipotesis",
+    "5.1 Experimentos realizados",
+    "5.2 Seleccion del mejor MADRL (distrito)",
+    "5.3 KPIs fisicos por objetivo (distrito)",
+    "5.5 Figuras de entrenamiento (artefactos Drive reales)",
+    "5.6 Analisis multiobjetivo por edificio",
+    "5.7 Figuras multiobjetivo (distrito y edificio)",
+    "5.8 Pruebas estadisticas",
+    "5.9 Discusion"
+  ],
+  "fig_refs_in_text": [
+    "Figura 5.1",
+    "Figura 5.2",
+    "Figura 5.3",
+    "Figura 5.4",
+    "Figura 5.5",
+    "Figura 5.6",
+    "Figura 5.7",
+    "Figura 5.8",
+    "Figura 5.9",
+    "Figura 5.10",
+    "Figura 5.11",
+    "Figura 5.12",
+    "Figura 5.13",
+    "Figura 5.14",
+    "Figura 5.15"
+  ],
+  "fig_analysis": [
+    {
+      "num": "5.1",
+      "caption": "Figura 5.1. Convergencia E1 (reward_mean) — datos reales Drive.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Tabla 5.3. KPIs fisicos agregados de distrito.",
+        "5.5 Figuras de entrenamiento (artefactos Drive reales)",
+        "Las siguientes figuras se generan exclusivamente desde timeseries.csv, trace.csv y results.json descargados de la corrida Colab/Drive (carpeta 1ihH6Rq",
+        "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive.",
+        "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive.",
+        "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive)."
+      ]
+    },
+    {
+      "num": "5.2",
+      "caption": "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "5.5 Figuras de entrenamiento (artefactos Drive reales)",
+        "Las siguientes figuras se generan exclusivamente desde timeseries.csv, trace.csv y results.json descargados de la corrida Colab/Drive (carpeta 1ihH6Rq",
+        "Figura 5.1. Convergencia E1 (reward_mean) — datos reales Drive.",
+        "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive.",
+        "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive).",
+        "Figura 5.5. Mejor y peor MADRL por escenario."
+      ]
+    },
+    {
+      "num": "5.3",
+      "caption": "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Las siguientes figuras se generan exclusivamente desde timeseries.csv, trace.csv y results.json descargados de la corrida Colab/Drive (carpeta 1ihH6Rq",
+        "Figura 5.1. Convergencia E1 (reward_mean) — datos reales Drive.",
+        "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive.",
+        "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive).",
+        "Figura 5.5. Mejor y peor MADRL por escenario.",
+        "Figura 5.6. KPI OE1 flexibilidad — comparativa E1."
+      ]
+    },
+    {
+      "num": "5.4",
+      "caption": "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive).",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.1. Convergencia E1 (reward_mean) — datos reales Drive.",
+        "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive.",
+        "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive.",
+        "Figura 5.5. Mejor y peor MADRL por escenario.",
+        "Figura 5.6. KPI OE1 flexibilidad — comparativa E1.",
+        "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2."
+      ]
+    },
+    {
+      "num": "5.5",
+      "caption": "Figura 5.5. Mejor y peor MADRL por escenario.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive.",
+        "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive.",
+        "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive).",
+        "Figura 5.6. KPI OE1 flexibilidad — comparativa E1.",
+        "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2.",
+        "Figura 5.8. KPI OE3 costo energetico — comparativa E3."
+      ]
+    },
+    {
+      "num": "5.6",
+      "caption": "Figura 5.6. KPI OE1 flexibilidad — comparativa E1.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive.",
+        "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive).",
+        "Figura 5.5. Mejor y peor MADRL por escenario.",
+        "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2.",
+        "Figura 5.8. KPI OE3 costo energetico — comparativa E3.",
+        "Figura 5.9. Control MADRL por edificio (trace.csv) — E2."
+      ]
+    },
+    {
+      "num": "5.7",
+      "caption": "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive).",
+        "Figura 5.5. Mejor y peor MADRL por escenario.",
+        "Figura 5.6. KPI OE1 flexibilidad — comparativa E1.",
+        "Figura 5.8. KPI OE3 costo energetico — comparativa E3.",
+        "Figura 5.9. Control MADRL por edificio (trace.csv) — E2.",
+        "5.6 Analisis multiobjetivo por edificio"
+      ]
+    },
+    {
+      "num": "5.8",
+      "caption": "Figura 5.8. KPI OE3 costo energetico — comparativa E3.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.5. Mejor y peor MADRL por escenario.",
+        "Figura 5.6. KPI OE1 flexibilidad — comparativa E1.",
+        "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2.",
+        "Figura 5.9. Control MADRL por edificio (trace.csv) — E2.",
+        "5.6 Analisis multiobjetivo por edificio",
+        "Se analizan 17 edificios institucionales/comerciales con inventario de 185 cargadores EV controlables (96 equipos Modo 3 doble toma). Elementos contro"
+      ]
+    },
+    {
+      "num": "5.9",
+      "caption": "Figura 5.9. Control MADRL por edificio (trace.csv) — E2.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.6. KPI OE1 flexibilidad — comparativa E1.",
+        "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2.",
+        "Figura 5.8. KPI OE3 costo energetico — comparativa E3.",
+        "5.6 Analisis multiobjetivo por edificio",
+        "Se analizan 17 edificios institucionales/comerciales con inventario de 185 cargadores EV controlables (96 equipos Modo 3 doble toma). Elementos contro",
+        "Tabla 5.4. Inventario multiobjetivo (extracto B01–B08; completo en anexo CSV)."
+      ]
+    },
+    {
+      "num": "5.10",
+      "caption": "Figura 5.10. KPIs multiobjetivo — distrito.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Se analizan 17 edificios institucionales/comerciales con inventario de 185 cargadores EV controlables (96 equipos Modo 3 doble toma). Elementos contro",
+        "Tabla 5.4. Inventario multiobjetivo (extracto B01–B08; completo en anexo CSV).",
+        "5.7 Figuras multiobjetivo (distrito y edificio)",
+        "Figura 5.11. OE1 flexibilidad por edificio.",
+        "Figura 5.12. OE2 delta CO2 por edificio.",
+        "Figura 5.13. OE3 delta costo por edificio."
+      ]
+    },
+    {
+      "num": "5.11",
+      "caption": "Figura 5.11. OE1 flexibilidad por edificio.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Tabla 5.4. Inventario multiobjetivo (extracto B01–B08; completo en anexo CSV).",
+        "5.7 Figuras multiobjetivo (distrito y edificio)",
+        "Figura 5.10. KPIs multiobjetivo — distrito.",
+        "Figura 5.12. OE2 delta CO2 por edificio.",
+        "Figura 5.13. OE3 delta costo por edificio.",
+        "Figura 5.14. Inventario EV por edificio."
+      ]
+    },
+    {
+      "num": "5.12",
+      "caption": "Figura 5.12. OE2 delta CO2 por edificio.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "5.7 Figuras multiobjetivo (distrito y edificio)",
+        "Figura 5.10. KPIs multiobjetivo — distrito.",
+        "Figura 5.11. OE1 flexibilidad por edificio.",
+        "Figura 5.13. OE3 delta costo por edificio.",
+        "Figura 5.14. Inventario EV por edificio.",
+        "Figura 5.15. Desempeno EV — MATD3/E2."
+      ]
+    },
+    {
+      "num": "5.13",
+      "caption": "Figura 5.13. OE3 delta costo por edificio.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.10. KPIs multiobjetivo — distrito.",
+        "Figura 5.11. OE1 flexibilidad por edificio.",
+        "Figura 5.12. OE2 delta CO2 por edificio.",
+        "Figura 5.14. Inventario EV por edificio.",
+        "Figura 5.15. Desempeno EV — MATD3/E2.",
+        "5.8 Pruebas estadisticas"
+      ]
+    },
+    {
+      "num": "5.14",
+      "caption": "Figura 5.14. Inventario EV por edificio.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.11. OE1 flexibilidad por edificio.",
+        "Figura 5.12. OE2 delta CO2 por edificio.",
+        "Figura 5.13. OE3 delta costo por edificio.",
+        "Figura 5.15. Desempeno EV — MATD3/E2.",
+        "5.8 Pruebas estadisticas",
+        "La bateria inferencial se ejecuto localmente sobre KPIs auditados de la corrida Colab/Drive (madrl_v3_20260627_164047) con tools/run_colab_drive_stati"
+      ]
+    },
+    {
+      "num": "5.15",
+      "caption": "Figura 5.15. Desempeno EV — MATD3/E2.",
+      "text_refs_count": 0,
+      "sample_refs": [],
+      "nearby_context": [
+        "Figura 5.12. OE2 delta CO2 por edificio.",
+        "Figura 5.13. OE3 delta costo por edificio.",
+        "Figura 5.14. Inventario EV por edificio.",
+        "5.8 Pruebas estadisticas",
+        "La bateria inferencial se ejecuto localmente sobre KPIs auditados de la corrida Colab/Drive (madrl_v3_20260627_164047) con tools/run_colab_drive_stati",
+        "Tabla 5.5. Contrastacion inferencial Colab vs referencia local v4."
+      ]
+    }
+  ],
+  "stats_kw": {
+    "kruskal": 4,
+    "mann_whitney": 7,
+    "shapiro": 1,
+    "p_valor": 4,
+    "descriptivo": 17
+  },
+  "oe_mentions": {
+    "OE.1": 6,
+    "OE.2": 7,
+    "OE.3": 6
+  },
+  "key_nums": {
+    "score_global": 4,
+    "co2_matd3": 0,
+    "cost_matd3": 1,
+    "cost_maac": 1,
+    "happo_mentions": 23,
+    "section_54": 2,
+    "baseline_mentions": 3,
+    "kruskal_text": 4,
+    "p_values_canonical": 2
+  },
+  "first_person_hits": [],
+  "n_unique_citations": 24,
+  "sample_citations": [
+    [
+      "Akiba et al.",
+      "2019"
+    ],
+    [
+      "Amato",
+      "2016"
+    ],
+    [
+      "Canteli et al.",
+      "2020"
+    ],
+    [
+      "Gao et al.",
+      "2023"
+    ],
+    [
+      "Haarnoja et al.",
+      "2018"
+    ],
+    [
+      "Hribar et al.",
+      "2025"
+    ],
+    [
+      "Hu et al.",
+      "2023"
+    ],
+    [
+      "Kim et al.",
+      "2025"
+    ],
+    [
+      "Kuba et al.",
+      "2021"
+    ],
+    [
+      "Liu et al.",
+      "2022"
+    ],
+    [
+      "Lowe et al.",
+      "2017"
+    ],
+    [
+      "Ma et al.",
+      "2025"
+    ],
+    [
+      "Nagy",
+      "2019a"
+    ],
+    [
+      "Nweye et al.",
+      "2024"
+    ],
+    [
+      "Nweye et al.",
+      "2023b"
+    ],
+    [
+      "Nweye et al.",
+      "2022"
+    ],
+    [
+      "Nweye et al.",
+      "2023a"
+    ],
+    [
+      "Sarkar et al.",
+      "2024"
+    ],
+    [
+      "Sha",
+      "2019"
+    ],
+    [
+      "Shojaeighadikolaei et al.",
+      "2022"
+    ]
+  ],
+  "resumen_has_matd3": true,
+  "resumen_has_06667": true,
+  "abstract_has_matd3": true,
+  "resumen_excerpt": "Esta tesis doctoral determina, mediante simulación computacional bajo diseño experimental factorial 4×3, el efecto de cuatro algoritmos Multi-Agente de Aprendizaje por Refuerzo Profundo (MADRL) —HAPPO, MASAC, MATD3 y MAAC— sobre la gestión coordinada de flexibilidad energética, emisiones de CO₂ y costos en una comunidad inteligente del Sistema Eléctrico Aislado de Iquitos (SEAI). La formulación Dec-POMDP con CTDE se implementa sobre CityLearn v3 propuesto (17 edificios reales, 26 304 h, 185 cargadores EV). La corrida canónica Colab/Drive (madrl_v3_20260627_164047) completó 50 episodios por escenario en MATD3, MAAC y MASAC; MATD3 obtiene el mejor score global (0,6667) y lidera flexibilidad (OE1) y emisiones (OE2); MAAC lidera costos (OE3). Las figuras de convergencia, control MADRL y rankin",
+  "abstract_excerpt": "This doctoral thesis evaluates four cooperative Multi-Agent Deep Reinforcement Learning (MADRL) algorithms under a Dec-POMDP/CTDE framework on a real 17-building dataset from Iquitos, Peru. A canonical 50-episode Colab run shows MATD3 as the best overall performer (global score 0.6667), leading flexibility and CO₂ objectives, while MAAC leads energy cost. Multi-objective KPIs are reported at district and building levels (185 EV chargers). Training figures use audited Drive timeseries and trace CSVs (no synthetic data). Results are grounded in audited Drive artifacts; inferential tests on the canonical run remain pending. Indice Actualice este indice con clic derecho > Actualizar campos (o F9). "
+}

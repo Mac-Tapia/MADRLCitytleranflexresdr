@@ -1,0 +1,230 @@
+{
+  "per_job_complete_13_13": 9,
+  "per_job_total": 12,
+  "per_job_7_only_happo": 3,
+  "comparative": {
+    "expected": 17,
+    "present": 17,
+    "missing": []
+  },
+  "multiobjetivo": {
+    "expected": 6,
+    "present": 6,
+    "missing": []
+  },
+  "per_job": [
+    {
+      "job": "MASAC/E1",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "MASAC/E2",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "MASAC/E3",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "MATD3/E1",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "MATD3/E2",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "MATD3/E3",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "MAAC/E1",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "MAAC/E2",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "MAAC/E3",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": true
+      },
+      "drive_ok": true,
+      "expected_figs": 13,
+      "present_figs": 13,
+      "missing_figs": [],
+      "manifest_count": 13,
+      "figure_errors": [],
+      "objective_kpi_rows": 54
+    },
+    {
+      "job": "HAPPO/E1",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": false
+      },
+      "drive_ok": false,
+      "expected_figs": 13,
+      "present_figs": 7,
+      "missing_figs": [
+        "axis_baseline_comparison.png",
+        "baseline_gain_by_kpi.png",
+        "core_kpis.png",
+        "OE1_flexibility_kpis.png",
+        "OE2_co2_kpis.png",
+        "OE3_cost_kpis.png"
+      ],
+      "manifest_count": 7,
+      "figure_errors": [],
+      "objective_kpi_rows": 0
+    },
+    {
+      "job": "HAPPO/E2",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": false
+      },
+      "drive_ok": false,
+      "expected_figs": 13,
+      "present_figs": 7,
+      "missing_figs": [
+        "axis_baseline_comparison.png",
+        "baseline_gain_by_kpi.png",
+        "core_kpis.png",
+        "OE1_flexibility_kpis.png",
+        "OE2_co2_kpis.png",
+        "OE3_cost_kpis.png"
+      ],
+      "manifest_count": 7,
+      "figure_errors": [],
+      "objective_kpi_rows": 0
+    },
+    {
+      "job": "HAPPO/E3",
+      "drive": {
+        "timeseries": true,
+        "trace": true,
+        "results": true,
+        "checkpoint_manifest": false
+      },
+      "drive_ok": false,
+      "expected_figs": 13,
+      "present_figs": 7,
+      "missing_figs": [
+        "axis_baseline_comparison.png",
+        "baseline_gain_by_kpi.png",
+        "core_kpis.png",
+        "OE1_flexibility_kpis.png",
+        "OE2_co2_kpis.png",
+        "OE3_cost_kpis.png"
+      ],
+      "manifest_count": 7,
+      "figure_errors": [],
+      "objective_kpi_rows": 0
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "n_tables": 18,
+  "table55": null,
+  "table52_sample": [
+    [
+      "Rango",
+      "Algoritmo",
+      "Score global",
+      "OE1",
+      "OE2",
+      "OE3",
+      "Seleccionado"
+    ],
+    [
+      "1",
+      "MATD3",
+      "0.6667",
+      "1.0000",
+      "1.0000",
+      "0.0000",
+      "Si"
+    ],
+    [
+      "2",
+      "MAAC",
+      "0.5706",
+      "0.5837",
+      "0.1282",
+      "1.0000",
+      "No"
+    ],
+    [
+      "3",
+      "MASAC",
+      "0.2351",
+      "0.0000",
+      "0.0000",
+      "0.7054",
+      "No"
+    ]
+  ],
+  "cap5_stats_paras": [
+    "5.8 Pruebas estadisticas",
+    "La bateria inferencial se ejecuto localmente sobre KPIs auditados de la corrida Colab/Drive (madrl_v3_20260627_164047) con tools/run_colab_drive_statistical_analysis.py (231 filas signed_relative_gain; MATD3, MAAC, MASAC; HAPPO excluido sin KPIs). La corrida local v4 (5 ep, 4 algoritmos) se conserva solo como referencia historica.",
+    "Tabla 5.5. Contrastacion inferencial Colab vs referencia local v4.",
+    "Interpretacion: el ranking descriptivo Colab (MATD3 score global 0.6667) se sostiene por KPIs de distrito y edificio; la significancia global KW sobre KPI-gains no alcanza alpha=0.05 con una semilla y sin HAPPO. Wilcoxon pareado detecta diferencia MASAC-MATD3 en el agregado ALL. Se requiere multi-semilla para elevar conclusiones causales (Colas et al., 2019)."
+  ],
+  "cap2_national": {
+    "peru": 7,
+    "dominguez": 0,
+    "uni": 0
+  },
+  "cap2_sample": [
+    "Capitulo 2. Marco teorico",
+    "2.1 Estado del arte actualizado",
+    "La revision sistematica (Modulo A) comprende 50 investigaciones verificadas, organizadas en cuatro ejes alineados con los objetivos de la tesis: (1) flexibilidad energetica con MADRL, (2) reduccion de emisiones de CO2 con MADRL, (3) optimizacion de costos energeticos con MADRL y (4) marco tecnico MADRL transversal.",
+    "Eje 1 — Flexibilidad energetica con MADRL:",
+    "Vazquez-Canteli y Nagy (2019a) introducen CityLearn como entorno OpenAI Gym para respuesta a la demanda multiedificio; Vazquez-Canteli et al. (2020) estandarizan KPIs comparables (peak_average, ramping_average, one_minus_load_factor_average). Nweye et al. (2024) desarrollan CityLearn v2 con EV/V2G, intensidad de carbono dinamica, BESS, PV y KPIs de flexibilidad, CO2 y costos. Nweye et al. (2022) identifican nueve desafios reales del MARL en edificios grid-interactive; Nweye et al. (2023a) presentan MERLIN para comunidades de 17 edificios reales, escala equivalente al SEAI Iquitos. Yao et al. (2023) y Xie et al. (2023) demuestran mejoras de coordinacion con MARL cooperativo y mecanismos de atencion; Hribar et al. (2025) reportan +20% de autonomia energetica en distritos de energia positiva.",
+    "Eje 2 — Reduccion de emisiones de CO2 con MADRL:",
+    "Liu et al. (2022) proponen MADDPG multiobjetivo con reducciones de ~15% de CO2 y ~20% de costo; Ye et al. (2025) y Ma et al. (2025) introducen MARL seguro con restricciones de carbono en redes de distribucion y multi-microgrids; Sarkar et al. (2024) aplican desplazamiento temporal de carga hacia periodos de baja intensidad de carbono, directamente transferible al OE.2.",
+    "Eje 3 — Optimizacion de costos energeticos con MADRL:",
+    "Yao et al. (2023) logran ~18% de reduccion de costo con LSD-MADDPG; Shojaeighadikolaei et al. (2022) ~22% frente a configuraciones no cooperativas; Gao et al. (2023) validan MASAC para programacion colaborativa multi-microgrid con respuesta a precios; Xiong et al. (2024) y Kim et al. (2025) abordan tarifas TOU y control de BESS en tiempo real.",
+    "Eje transversal — Marco tecnico MADRL:",
+    "Lowe et al. (2017) establecen el paradigma CTDE (MADDPG); Oliehoek y Amato (2016) formalizan el Dec-POMDP; Kuba et al. (2021) presentan HAPPO con garantias de mejora monotona para agentes heterogeneos; Iqbal y Sha (2019) introducen MAAC con atencion multi-cabeza; Hu et al. (2023) presentan MARLlib; Akiba et al. (2019) presentan Optuna; Haarnoja et al. (2018) presentan SAC, base de MASAC y MAAC.",
+    "2.2 Bases teoricas",
+    "2.2.1 Flexibilidad energetica en comunidades inteligentes",
+    "La flexibilidad energetica es la capacidad del sistema para modificar su curva de demanda mediante desplazamiento de cargas, almacenamiento en BESS, autoconsumo solar y carga/descarga de EV. KPIs relevantes: peak_average (reduccion de pico), ramping_average (suavizado), one_minus_load_factor_average (factor de carga), autoconsumo, autosuficiencia, reduccion de importacion de red y utilizacion de renovables.",
+    "2.2.2 Emisiones de carbono en comunidades inteligentes"
+  ],
+  "n_refs_in_docx": 66,
+  "refs_sample": [
+    "Abels, A., Roijers, D., Lenaerts, T., Nowe, A., & Steckelmacher, D. (2019). Dynamic weights in multi-objective deep reinforcement learning. En Proceedings of the 36th International Conference on Machi",
+    "Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A., & Bellemare, M. G. (2021). Deep reinforcement learning at the edge of the statistical precipice. En Advances in Neural Information Processing ",
+    "Ahmed, A., et al. (2025). Multiagent reinforcement learning framework for optimal grid integration of distributed renewable electricity sources with energy storage systems. International Journal of Lo",
+    "Akiba, T., Sano, S., Yanase, T., Ohta, T., & Koyama, M. (2019). Optuna: A next-generation hyperparameter optimization framework. En Proceedings of the 25th ACM SIGKDD International Conference on Knowl",
+    "Antonanzas, J., Osorio, N., Escobar, R., Urraca, R., Martinez-de-Pison, F. J., & Antonanzas-Torres, F. (2021). Review of photovoltaic power forecasting. Solar Energy, 136, 78–111. https://doi.org/10.1"
+  ]
+}

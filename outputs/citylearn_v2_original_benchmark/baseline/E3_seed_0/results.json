@@ -2,7 +2,7 @@
   "algorithm": "baseline",
   "backend": "citylearn.agents",
   "checkpoint_count": 0,
-  "checkpoint_manifest": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\data\\checkpoint_manifest.json",
+  "checkpoint_manifest": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\data\\checkpoint_manifest.json",
   "citylearn_v3_report": {
     "all_values": {
       "battery_capacity_fade_ratio": 0.0,
@@ -3033,163 +3033,163 @@
       {
         "kind": "line_plot",
         "name": "reward_timeseries.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\reward_timeseries.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\reward_timeseries.png"
       },
       {
         "kind": "convergence_plot",
         "name": "convergence_returns.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\convergence_returns.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\convergence_returns.png"
       },
       {
         "kind": "efficiency_plot",
         "name": "learning_efficiency.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\learning_efficiency.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\learning_efficiency.png"
       },
       {
         "kind": "citylearn_v2_timeseries_plot",
         "name": "citylearn_v2_district_timeseries.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\citylearn_v2_district_timeseries.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\citylearn_v2_district_timeseries.png"
       },
       {
         "kind": "agent_reward_plot",
         "name": "agent_reward_contribution.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\agent_reward_contribution.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\agent_reward_contribution.png"
       },
       {
         "kind": "bar_plot",
         "name": "axis_baseline_comparison.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\axis_baseline_comparison.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\axis_baseline_comparison.png"
       },
       {
         "kind": "baseline_gain_plot",
         "name": "baseline_gain_by_kpi.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\baseline_gain_by_kpi.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\baseline_gain_by_kpi.png"
       },
       {
         "kind": "horizontal_bar_plot",
         "name": "core_kpis.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\core_kpis.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\core_kpis.png"
       },
       {
         "kind": "axis_kpi_plot",
         "name": "OE1_flexibility_kpis.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\OE1_flexibility_kpis.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\OE1_flexibility_kpis.png"
       },
       {
         "kind": "axis_kpi_plot",
         "name": "OE2_co2_kpis.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\OE2_co2_kpis.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\OE2_co2_kpis.png"
       },
       {
         "kind": "axis_kpi_plot",
         "name": "OE3_cost_kpis.png",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\OE3_cost_kpis.png"
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\OE3_cost_kpis.png"
       }
     ],
-    "figures_dir": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures",
+    "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures",
     "table_count": 16,
     "tables": [
       {
         "kind": "csv_table",
         "name": "episode_summary.csv",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\episode_summary.csv",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\episode_summary.csv",
         "rows": 0
       },
       {
         "kind": "markdown_table",
         "name": "episode_summary.md",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\episode_summary.md",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\episode_summary.md",
         "rows": 0
       },
       {
         "kind": "csv_table",
         "name": "objective_kpis.csv",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\objective_kpis.csv",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\objective_kpis.csv",
         "rows": 54
       },
       {
         "kind": "markdown_table",
         "name": "objective_kpis.md",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\objective_kpis.md",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\objective_kpis.md",
         "rows": 54
       },
       {
         "kind": "csv_table",
         "name": "axis_baseline_comparison.csv",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\axis_baseline_comparison.csv",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\axis_baseline_comparison.csv",
         "rows": 3
       },
       {
         "kind": "markdown_table",
         "name": "axis_baseline_comparison.md",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\axis_baseline_comparison.md",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\axis_baseline_comparison.md",
         "rows": 3
       },
       {
         "kind": "csv_table",
         "name": "core_kpis.csv",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\core_kpis.csv",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\core_kpis.csv",
         "rows": 14
       },
       {
         "kind": "markdown_table",
         "name": "core_kpis.md",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\core_kpis.md",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\core_kpis.md",
         "rows": 14
       },
       {
         "kind": "csv_table",
         "name": "training_efficiency.csv",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\training_efficiency.csv",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\training_efficiency.csv",
         "rows": 1
       },
       {
         "kind": "markdown_table",
         "name": "training_efficiency.md",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\training_efficiency.md",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\training_efficiency.md",
         "rows": 1
       },
       {
         "kind": "csv_table",
         "name": "exploration_summary.csv",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\exploration_summary.csv",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\exploration_summary.csv",
         "rows": 1
       },
       {
         "kind": "markdown_table",
         "name": "exploration_summary.md",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\exploration_summary.md",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\exploration_summary.md",
         "rows": 1
       },
       {
         "kind": "csv_table",
         "name": "agent_reward_summary.csv",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\agent_reward_summary.csv",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\agent_reward_summary.csv",
         "rows": 17
       },
       {
         "kind": "markdown_table",
         "name": "agent_reward_summary.md",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\agent_reward_summary.md",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\agent_reward_summary.md",
         "rows": 17
       },
       {
         "kind": "csv_table",
         "name": "checkpoint_inventory.csv",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\checkpoint_inventory.csv",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\checkpoint_inventory.csv",
         "rows": 0
       },
       {
         "kind": "markdown_table",
         "name": "checkpoint_inventory.md",
-        "path": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables\\checkpoint_inventory.md",
+        "path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables\\checkpoint_inventory.md",
         "rows": 0
       }
     ],
-    "tables_dir": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\tables"
+    "tables_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\tables"
   },
-  "figures_manifest": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\figures\\figures_manifest.json",
-  "output_dir": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0",
+  "figures_manifest": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\figures\\figures_manifest.json",
+  "output_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0",
   "project_axis_metrics": {
     "OE1": {
       "axis_scenario": "E1",
@@ -4274,9 +4274,9 @@
   },
   "scenario": "E3",
   "seed": 0,
-  "timeseries_csv": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\data\\timeseries.csv",
+  "timeseries_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\data\\timeseries.csv",
   "timeseries_rows": 8759,
-  "trace_csv": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\data\\trace.csv",
+  "trace_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\data\\trace.csv",
   "trace_rows": 148903,
   "train_episodes": 0
 }

@@ -1,8 +1,8 @@
 {
   "algorithm": "baseline",
-  "backend": "citylearn_v2_original",
+  "backend": "citylearn.agents",
   "checkpoint_count": 0,
-  "checkpoint_dir": "outputs\\benchmark_v2_baseline\\baseline\\E3_seed_0\\checkpoints",
+  "checkpoint_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E3_seed_0\\checkpoints",
   "checkpoints": [],
   "hyperparameters": {
     "train_episodes": 0

@@ -1,0 +1,7 @@
+{
+  "algorithm": "optimized_rbc",
+  "error": "Unknown action name: washing_machine_1",
+  "error_type": "ValueError",
+  "family": "citylearn_v2_original",
+  "status": "failed"
+}

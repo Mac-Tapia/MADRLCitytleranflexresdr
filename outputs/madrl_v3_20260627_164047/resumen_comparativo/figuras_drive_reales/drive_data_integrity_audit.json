@@ -1,0 +1,455 @@
+{
+  "validation_rule": "Figuras generadas solo desde outputs/_drive_madrl/full_data (espejo Drive); sin sintesis",
+  "expected_episodes_evaluable": 50,
+  "expected_steps_per_episode": 8760,
+  "jobs_validated": 12,
+  "issues_count": 0,
+  "issues": [],
+  "verdict": "PASS",
+  "per_job": [
+    {
+      "algo": "MASAC",
+      "scen": "E1",
+      "drive_timeseries_bytes": 106300979,
+      "drive_timeseries_md5_head": "58c8fa4ed5e62403",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437950,
+      "steps_per_episode": {
+        "min": 8737,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1700,
+      "trace_episodes": 50,
+      "trace_md5_head": "3c69a2fbbe31ba56",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 12,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 57,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MASAC\\E1\\data\\timeseries.csv",
+        "timeseries_rows": 437950,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MASAC\\E1\\data\\trace.csv",
+        "trace_rows": 1700
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "MASAC",
+      "scen": "E2",
+      "drive_timeseries_bytes": 106302228,
+      "drive_timeseries_md5_head": "75b570fd6c0a8f37",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437950,
+      "steps_per_episode": {
+        "min": 8737,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1700,
+      "trace_episodes": 50,
+      "trace_md5_head": "82e0d091a24c1b85",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 12,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 53,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MASAC\\E2\\data\\timeseries.csv",
+        "timeseries_rows": 437950,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MASAC\\E2\\data\\trace.csv",
+        "trace_rows": 1700
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "MASAC",
+      "scen": "E3",
+      "drive_timeseries_bytes": 106032848,
+      "drive_timeseries_md5_head": "c2b18fc2fe639763",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437950,
+      "steps_per_episode": {
+        "min": 8737,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1700,
+      "trace_episodes": 50,
+      "trace_md5_head": "3b8ad2df8b5684e6",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 12,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 57,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MASAC\\E3\\data\\timeseries.csv",
+        "timeseries_rows": 437950,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MASAC\\E3\\data\\trace.csv",
+        "trace_rows": 1700
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "MATD3",
+      "scen": "E1",
+      "drive_timeseries_bytes": 106331742,
+      "drive_timeseries_md5_head": "449e49b5bbd5e844",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437988,
+      "steps_per_episode": {
+        "min": 8752,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1768,
+      "trace_episodes": 50,
+      "trace_md5_head": "8d106053dde86baf",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 40,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 57,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MATD3\\E1\\data\\timeseries.csv",
+        "timeseries_rows": 437988,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MATD3\\E1\\data\\trace.csv",
+        "trace_rows": 1768
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "MATD3",
+      "scen": "E2",
+      "drive_timeseries_bytes": 106296818,
+      "drive_timeseries_md5_head": "9ca864d408debf15",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437988,
+      "steps_per_episode": {
+        "min": 8752,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1768,
+      "trace_episodes": 50,
+      "trace_md5_head": "fef915e7c7bb285c",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 40,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 53,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MATD3\\E2\\data\\timeseries.csv",
+        "timeseries_rows": 437988,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MATD3\\E2\\data\\trace.csv",
+        "trace_rows": 1768
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "MATD3",
+      "scen": "E3",
+      "drive_timeseries_bytes": 106077423,
+      "drive_timeseries_md5_head": "46d5d4d921352d07",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437988,
+      "steps_per_episode": {
+        "min": 8752,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1768,
+      "trace_episodes": 50,
+      "trace_md5_head": "182b6119a8373812",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 40,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 57,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MATD3\\E3\\data\\timeseries.csv",
+        "timeseries_rows": 437988,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MATD3\\E3\\data\\trace.csv",
+        "trace_rows": 1768
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "MAAC",
+      "scen": "E1",
+      "drive_timeseries_bytes": 105408510,
+      "drive_timeseries_md5_head": "01537a9fd740fa45",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437950,
+      "steps_per_episode": {
+        "min": 8745,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1700,
+      "trace_episodes": 50,
+      "trace_md5_head": "81a4fa5ecce9276d",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 11,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 57,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MAAC\\E1\\data\\timeseries.csv",
+        "timeseries_rows": 437950,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MAAC\\E1\\data\\trace.csv",
+        "trace_rows": 1700
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "MAAC",
+      "scen": "E2",
+      "drive_timeseries_bytes": 105417067,
+      "drive_timeseries_md5_head": "25060b300685d797",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437950,
+      "steps_per_episode": {
+        "min": 8745,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1700,
+      "trace_episodes": 50,
+      "trace_md5_head": "ed10725db39546f3",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 11,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 53,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MAAC\\E2\\data\\timeseries.csv",
+        "timeseries_rows": 437950,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MAAC\\E2\\data\\trace.csv",
+        "trace_rows": 1700
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "MAAC",
+      "scen": "E3",
+      "drive_timeseries_bytes": 105177625,
+      "drive_timeseries_md5_head": "1771b2eff1ca75e2",
+      "episodes_in_timeseries": 50,
+      "episode_range": [
+        0,
+        49
+      ],
+      "rows_timeseries": 437950,
+      "steps_per_episode": {
+        "min": 8745,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1700,
+      "trace_episodes": 50,
+      "trace_md5_head": "f36c6c03fec2c125",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": 11,
+      "results_episodes_recorded": 50,
+      "has_citylearn_v3_report": true,
+      "kpi_count": 57,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MAAC\\E3\\data\\timeseries.csv",
+        "timeseries_rows": 437950,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\MAAC\\E3\\data\\trace.csv",
+        "trace_rows": 1700
+      },
+      "episode_summary_rows": 50,
+      "training_figs_present": 7,
+      "kpi_figs_present": 6
+    },
+    {
+      "algo": "HAPPO",
+      "scen": "E1",
+      "drive_timeseries_bytes": 104205571,
+      "drive_timeseries_md5_head": "2f22b2348efcbe24",
+      "episodes_in_timeseries": 49,
+      "episode_range": [
+        0,
+        48
+      ],
+      "rows_timeseries": 429212,
+      "steps_per_episode": {
+        "min": 8747,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1666,
+      "trace_episodes": 49,
+      "trace_md5_head": "43409fb3896c15f9",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": null,
+      "results_episodes_recorded": null,
+      "has_citylearn_v3_report": false,
+      "kpi_count": 0,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\HAPPO\\E1\\data\\timeseries.csv",
+        "timeseries_rows": 429212,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\HAPPO\\E1\\data\\trace.csv",
+        "trace_rows": 1666
+      },
+      "episode_summary_rows": 49,
+      "training_figs_present": 7,
+      "kpi_figs_present": 0
+    },
+    {
+      "algo": "HAPPO",
+      "scen": "E2",
+      "drive_timeseries_bytes": 104140594,
+      "drive_timeseries_md5_head": "62030dbc36fe3376",
+      "episodes_in_timeseries": 49,
+      "episode_range": [
+        0,
+        48
+      ],
+      "rows_timeseries": 429212,
+      "steps_per_episode": {
+        "min": 8747,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1666,
+      "trace_episodes": 49,
+      "trace_md5_head": "2498ecbc4024d8e1",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": null,
+      "results_episodes_recorded": null,
+      "has_citylearn_v3_report": false,
+      "kpi_count": 0,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\HAPPO\\E2\\data\\timeseries.csv",
+        "timeseries_rows": 429212,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\HAPPO\\E2\\data\\trace.csv",
+        "trace_rows": 1666
+      },
+      "episode_summary_rows": 49,
+      "training_figs_present": 7,
+      "kpi_figs_present": 0
+    },
+    {
+      "algo": "HAPPO",
+      "scen": "E3",
+      "drive_timeseries_bytes": 103933962,
+      "drive_timeseries_md5_head": "89d3beba4f695e2d",
+      "episodes_in_timeseries": 49,
+      "episode_range": [
+        0,
+        48
+      ],
+      "rows_timeseries": 429212,
+      "steps_per_episode": {
+        "min": 8747,
+        "max": 8760,
+        "median": 8760.0
+      },
+      "trace_rows": 1666,
+      "trace_episodes": 49,
+      "trace_md5_head": "646a92e472d0a79e",
+      "trace_note": "submuestra Drive (no 8760*17 filas/ep); figuras de exploracion usan datos reales parciales",
+      "results_episodes": null,
+      "results_episodes_recorded": null,
+      "has_citylearn_v3_report": false,
+      "kpi_count": 0,
+      "provenance": {
+        "folder_id": "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+        "note": "Figuras desde CSV reales; trace parcial si < pasos totales.",
+        "source": "google_drive",
+        "timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\HAPPO\\E3\\data\\timeseries.csv",
+        "timeseries_rows": 429212,
+        "trace": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\HAPPO\\E3\\data\\trace.csv",
+        "trace_rows": 1666
+      },
+      "episode_summary_rows": 49,
+      "training_figs_present": 7,
+      "kpi_figs_present": 0
+    }
+  ]
+}

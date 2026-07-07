@@ -1,0 +1,27 @@
+{
+  "family": "citylearn_v2_original",
+  "schema_path": "D:\\MADRLCitytleranflexresdr\\CityLearn\\data\\datasets\\citylearn_challenge_2022_phase_all_plus_evs\\schema.json",
+  "scenario": "E2",
+  "seed": 0,
+  "episode_time_steps": 8760,
+  "train_episodes": 0,
+  "agents": [
+    "baseline",
+    "hour_rbc",
+    "optimized_rbc"
+  ],
+  "runs": [
+    {
+      "algorithm": "baseline",
+      "output_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\baseline\\E2_seed_0",
+      "timeseries_rows": 8759,
+      "trace_rows": 148903
+    },
+    {
+      "algorithm": "hour_rbc",
+      "output_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\hour_rbc\\E2_seed_0",
+      "timeseries_rows": 8759,
+      "trace_rows": 148903
+    }
+  ]
+}

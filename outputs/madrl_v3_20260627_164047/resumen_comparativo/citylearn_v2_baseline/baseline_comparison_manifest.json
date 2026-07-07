@@ -1,0 +1,32 @@
+{
+  "run_id": "madrl_v3_20260627_164047",
+  "v2_root": "outputs/citylearn_v2_original_benchmark",
+  "v3_root": "outputs/madrl_v3_20260627_164047",
+  "v2_agents": ["baseline", "hour_rbc"],
+  "v3_selected_algorithms": ["MATD3", "MAAC", "MASAC"],
+  "scenarios": ["E1", "E2", "E3"],
+  "outputs": {
+    "E1": "outputs/madrl_v3_20260627_164047/resumen_comparativo/citylearn_v2_baseline/E1",
+    "E2": "outputs/madrl_v3_20260627_164047/resumen_comparativo/citylearn_v2_baseline/E2",
+    "E3": "outputs/madrl_v3_20260627_164047/resumen_comparativo/citylearn_v2_baseline/E3"
+  },
+  "v2_benchmark_provenance": {
+    "E1": {
+      "baseline": "fresh_run",
+      "hour_rbc": "archive_copy_outputs/_archive/citylearn_v2_original_benchmark"
+    },
+    "E2": {
+      "baseline": "fresh_run",
+      "hour_rbc": "fresh_run (background job completed)"
+    },
+    "E3": {
+      "baseline": "archive_copy_outputs/_archive/benchmark_v2_baseline",
+      "hour_rbc": "archive_copy_outputs/_archive/benchmark_v2_baseline"
+    }
+  },
+  "notes": [
+    "Comparador: CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py (notebook 7.6)",
+    "HAPPO excluido (sin KPIs finales en corrida canónica)",
+    "Re-ejecutar hour_rbc E2 y volver a comparar E2 cuando el benchmark termine"
+  ]
+}

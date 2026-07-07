@@ -1,0 +1,66 @@
+flowchart TD
+    subgraph L1["Capa 1: Simulador base (CityLearn v2)"]
+        direction LR
+        CL2["CityLearn/citylearn/*.py\nFisica edificios + BESS + PV + EV\nKPIs oficiales del challenge"]
+    end
+
+    subgraph L2["Capa 2: Extension experimental (CityLearn v3 propuesto)"]
+        direction LR
+        ENV3["CityLearn/citylearn/v3/\nDec-POMDP environment\nObjectives + Config + Reward"]
+        COMM["CityLearn/scripts/\ncitylearn_v3_training_common.py\nresolve_output_dir() + ensure_artifact_layout()"]
+        ENV3 --- COMM
+    end
+
+    subgraph L3["Capa 3: Framework UC3M (wrapper universal)"]
+        direction LR
+        UC3M_E["uc3m/env/uc3m_env.py\nUC3MEnv: Dec-POMDP 11-aria\nCompatible HARL + MARLlib + RLlib"]
+        UC3M_B["uc3m/env/bact.py\nBACTTensor 29D\nClima(7)+Geo(8)+Fisico(14)"]
+        UC3M_R["uc3m/reward/axes.py\nRewardAxes 7 ejes\nflex+co2+cost+ev+bess+resil+acs"]
+        UC3M_H["uc3m/reward/hphi.py\nHPHI: Holistic Pareto\nHypervolume Index 7D"]
+        UC3M_K["uc3m/kpis/evaluator.py\nKPIEvaluator\nnormalizados contra RBC"]
+        UC3M_E --- UC3M_B --- UC3M_R --- UC3M_H --- UC3M_K
+    end
+
+    subgraph L4["Capa 4: Backends MADRL externos"]
+        direction LR
+        HARL["external/HARL/\nHAPPO: on-policy\nsequential trust region"]
+        MARL["external/MARL/src/\nMASAC: Q-mix + SAC discreto"]
+        OFFP["external/off-policy/\nMATD3: doble critico TD3"]
+        MAAC_B["external/MAAC/\nMAC: attention critic SAC"]
+        HARL --- MARL --- OFFP --- MAAC_B
+    end
+
+    subgraph L5["Capa 5: Launchers y orquestacion"]
+        direction LR
+        TRAIN_S["CityLearn/scripts/train_citylearn_v3_*.py\n4 scripts de entrenamiento\nuno por algoritmo"]
+        COLAB_L["CityLearn/scripts/colab_a100_official_launcher.py\ncolab_a100_live_monitor.py\ncolab_protocol_guard.py · two_phase_happo_masac_v3"]
+        LAUNCH["scripts/ + deploy/aws/training/\nLaunchers locales PS + AWS bash\nMonitoreo + checkpointing"]
+        TRAIN_S --- COLAB_L --- LAUNCH
+    end
+
+    subgraph L6["Capa 6: Evaluacion y evidencia"]
+        direction LR
+        GEN["CityLearn/scripts/generate_thesis_objective_evidence.py\nKPIs + estadisticas + figuras"]
+        BENCH["CityLearn/scripts/benchmark_citylearn_v2_agents.py\nLinea base RBC + SAC v2"]
+        COMP["CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py\nDelta + ranking + HPHI"]
+        GEN --- BENCH --- COMP
+    end
+
+    L1 -->|"extiende"| L2
+    L2 -->|"wrap universal"| L3
+    L3 -->|"conecta"| L4
+    L4 -->|"invocado por"| L5
+    L5 -->|"genera artefactos para"| L6
+
+    classDef l1 fill:#f1f5f9,stroke:#64748b,color:#1c1917
+    classDef l2 fill:#e0e7ff,stroke:#4f46e5,color:#1c1917
+    classDef l3 fill:#dbeafe,stroke:#2563eb,color:#1c1917
+    classDef l4 fill:#fae8ff,stroke:#a21caf,color:#1c1917
+    classDef l5 fill:#fef3c7,stroke:#d97706,color:#1c1917
+    classDef l6 fill:#dcfce7,stroke:#16a34a,color:#1c1917
+    class L1 l1
+    class L2 l2
+    class L3 l3
+    class L4 l4
+    class L5 l5
+    class L6 l6

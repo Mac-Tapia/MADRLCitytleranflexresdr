@@ -1,0 +1,55 @@
+family,method,axis,axis_name,kpi,value,baseline,delta_vs_baseline,improved_vs_baseline,lower_is_better,source
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,grid_import,1.74844328019094,1.0,0.74844328019094,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,grid_import_control,139271.2432436705,88668.89653593302,50602.34670773748,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,grid_import_baseline,88668.89653593302,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,grid_import_delta,25370.499550979468,0.0,25370.499550979468,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,zero_net_energy,-0.14191727854530778,1.0,-1.1419172785453078,True,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,net_exchange_control,52556.631453564754,24198.209682926536,28358.42177063822,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,net_exchange_baseline,24198.209682926536,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,net_exchange_delta,14218.062473542384,0.0,14218.062473542384,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,grid_export_ratio,1.3450238553812146,1.0,0.3450238553812146,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,grid_export_control,86714.61179010576,64470.68685300648,22243.924937099277,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,grid_export_baseline,64470.68685300648,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,grid_export_delta,11152.437077437091,0.0,11152.437077437091,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,peak_average,1.3597728858801228,1.0,0.3597728858801228,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ramping_average,1.35418040338124,1.0,0.3541804033812399,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,one_minus_load_factor_average,0.926851847931137,1.0,-0.07314815206886305,True,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,pv_generation_total,145422.30107788809,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,pv_generation_daily_average,398.4627498423695,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,pv_export_total,94096.45106094019,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,pv_export_daily_average,257.8279284692961,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,pv_self_consumption_ratio,0.3529434594041928,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,community_local_traded_total,,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,community_local_traded_daily_average,,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,community_import_share,,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,battery_charge_total,31048.290894806385,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,battery_discharge_total,24750.353607565165,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,battery_throughput_total,55798.64450237155,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,battery_equivalent_full_cycles,256.4275942204574,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,battery_capacity_fade_ratio,0.0005795900344428201,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ev_departure_count,2787.0,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ev_departure_met_count,188.0,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ev_departure_within_tolerance_count,300.0,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ev_departure_success_rate,0.06745604592752064,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ev_departure_within_tolerance_rate,0.10764262648008611,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ev_departure_soc_deficit_mean,0.2644211790564455,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ev_charge_total,37497.81816992164,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE1,Flexibilidad energetica,ev_v2g_export_total,15437.333896301334,,,,False,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE2,Emisiones de CO2,carbon_emissions,1.6200938460460665,1.0,0.6200938460460665,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE2,Emisiones de CO2,carbon_emissions_control,23669.99993178268,16636.379674343843,7033.620257438837,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE2,Emisiones de CO2,carbon_emissions_baseline,16636.379674343843,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE2,Emisiones de CO2,carbon_emissions_delta,3526.44632498489,0.0,3526.44632498489,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE2,Emisiones de CO2,carbon_emissions_daily_average_control,64.85671861659829,45.584326085655015,19.27239253094327,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE2,Emisiones de CO2,carbon_emissions_daily_average_baseline,45.584326085655015,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE2,Emisiones de CO2,carbon_emissions_daily_average_delta,19.27239253094327,0.0,19.27239253094327,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,electricity_cost,-4.277738864009093,1.0,-5.277738864009093,True,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,electricity_cost_control,3967.702709098182,-927.5233564350056,4895.2260655331875,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,electricity_cost_baseline,-927.5233564350056,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,electricity_cost_delta,2454.3195874858993,0.0,2454.3195874858993,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,electricity_cost_daily_average_control,10.871659438104393,-2.5414500005069227,13.413109438611315,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,electricity_cost_daily_average_baseline,-2.5414500005069227,,,,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,electricity_cost_daily_average_delta,13.413109438611315,0.0,13.413109438611315,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,cost_peak_average,1.3597728858801228,1.0,0.3597728858801228,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,cost_ramping_average,1.35418040338124,1.0,0.3541804033812399,False,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,cost_one_minus_load_factor_average,0.926851847931137,1.0,-0.07314815206886305,True,True,citylearn_v2.evaluate_v2
+citylearn_v2_original,hour_rbc,OE3,Costos energeticos,price_signal_deviation,0.5437440948980701,0.6008859295206851,-0.05714183462261502,True,True,derived_from_citylearn_v2_timeseries

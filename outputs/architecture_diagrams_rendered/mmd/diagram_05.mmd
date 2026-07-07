@@ -1,0 +1,62 @@
+flowchart TD
+    START(["Colab A100-SXM4-80GB · protocolo two_phase_happo_masac_v3\ncolab_a100_official_launcher.py --execution-mode two_phase_happo_masac\n--scenario ALL --episodes 50 --episode-time-steps 8760\n438 000 steps/corrida · --skip-completed · OOM retry"])
+
+    subgraph PHASE1["FASE 1 — HAPPO + MASAC (6 jobs en paralelo, sin stagger) · ~10 h"]
+        direction LR
+        subgraph P1_H["HAPPO x3 (on-policy)"]
+            H_E1["E1 flex\nw: 0.70/0.15/0.15"]
+            H_E2["E2 CO2\nw: 0.15/0.70/0.15"]
+            H_E3["E3 costo\nw: 0.25/0.15/0.60"]
+        end
+        subgraph P1_M["MASAC x3 (off-policy, buffer GPU)"]
+            M_E1["E1\nbuf 8 ep · 11 GiB"]
+            M_E2["E2\ncuda_frac 0.26"]
+            M_E3["E3\npreload cuda"]
+        end
+    end
+
+    subgraph PHASE2["FASE 2 — MATD3 + MAAC (6 jobs en paralelo, tras Fase 1) · ~10 h"]
+        direction LR
+        subgraph P2_T["MATD3 x3"]
+            T_E1["E1\nbatch 1024"]
+            T_E2["E2\nbuf 2M"]
+            T_E3["E3\nhidden 1024"]
+        end
+        subgraph P2_A["MAAC x3"]
+            A_E1["E1\nbatch 1024"]
+            A_E2["E2\nbuf 1M"]
+            A_E3["E3\nupdates 16"]
+        end
+    end
+
+    subgraph ARTEFACTOS["Artefactos por corrida (algorithm-first layout)"]
+        direction LR
+        PATH["outputs/<ts>/<algo>/<Escenario>_seed_0/"]
+        CHK["checkpoints/\nmodelos .pt"]
+        DATA["data/\nresults.json · timeseries.csv\ntrace.csv · training_summary.json"]
+        FIG["figures/\n13 graficas PNG"]
+        LOG["logs/\nE?_algo.log · stderr"]
+        PATH --- CHK --- DATA --- FIG --- LOG
+    end
+
+    subgraph STATUS["Protocolo, estado y monitoreo"]
+        G1["colab_protocol_guard.py\nbloquea layout legacy 9+3"]
+        S1["official_full_status.json\nofficial_full_manifest.json"]
+        S2["live_progress.json\nepisodio · paso · reward · GPU"]
+        MON["colab_a100_live_monitor.py\nprotocol=two_phase_happo_masac_v3"]
+        G1 --- S1 --- S2 --- MON
+    end
+
+    START --> PHASE1
+    PHASE1 -->|"6/6 completados"| PHASE2
+    PHASE2 --> ARTEFACTOS
+    PHASE1 & PHASE2 -->|"escribe en tiempo real"| STATUS
+
+    classDef p1 fill:#dbeafe,stroke:#2563eb,color:#1c1917
+    classDef p2 fill:#dcfce7,stroke:#16a34a,color:#1c1917
+    classDef art fill:#f8fafc,stroke:#64748b,color:#1c1917
+    classDef stat fill:#fff7ed,stroke:#ea580c,color:#1c1917
+    class PHASE1,P1_H,P1_M p1
+    class PHASE2,P2_T,P2_A p2
+    class ARTEFACTOS art
+    class STATUS stat

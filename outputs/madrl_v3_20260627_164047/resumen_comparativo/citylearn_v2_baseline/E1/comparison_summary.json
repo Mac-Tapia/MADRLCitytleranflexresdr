@@ -1,0 +1,47 @@
+{
+  "weights": {
+    "OE1": 0.34,
+    "OE2": 0.33,
+    "OE3": 0.33
+  },
+  "rows": 270,
+  "families": [
+    "citylearn_v2_original",
+    "citylearn_v3_madrl"
+  ],
+  "methods": [
+    "MAAC",
+    "MASAC",
+    "MATD3",
+    "baseline",
+    "hour_rbc"
+  ],
+  "best_by_axis": {
+    "OE1": {
+      "family": "citylearn_v3_madrl",
+      "method": "MATD3",
+      "score": 0.4956024094803467
+    },
+    "OE2": {
+      "family": "citylearn_v2_original",
+      "method": "baseline",
+      "score": 0.9999999999960859
+    },
+    "OE3": {
+      "family": "citylearn_v2_original",
+      "method": "hour_rbc",
+      "score": 0.7371829663243424
+    }
+  },
+  "best_global": {
+    "family": "citylearn_v2_original",
+    "method": "baseline",
+    "score": 0.7288658278455777
+  },
+  "figures": [
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline\\E1\\OE1_comparison.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline\\E1\\OE2_comparison.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline\\E1\\OE3_comparison.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline\\E1\\baseline_gain_heatmap.png"
+  ]
+}

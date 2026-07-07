@@ -1,0 +1,10 @@
+{
+  "algorithm": "hour_rbc",
+  "backend": "citylearn.agents",
+  "checkpoint_count": 0,
+  "checkpoint_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v2_original_benchmark\\hour_rbc\\E2_seed_0\\checkpoints",
+  "checkpoints": [],
+  "hyperparameters": {
+    "train_episodes": 0
+  }
+}

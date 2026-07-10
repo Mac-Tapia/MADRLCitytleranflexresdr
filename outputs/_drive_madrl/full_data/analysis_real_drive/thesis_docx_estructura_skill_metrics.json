@@ -1,0 +1,26 @@
+{
+  "output": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_estructura_skill_objetivos_operacionalizacion.docx",
+  "size_bytes": 3547171,
+  "paragraphs_non_empty": 266,
+  "word_count_estimated": 6212,
+  "tables": 16,
+  "inline_images": 33,
+  "has_pg_exact": true,
+  "has_tabla_1_1": true,
+  "has_tabla_1_2": true,
+  "has_dvi": true,
+  "has_dvd": true,
+  "has_wrong_redaccion_blocks": false,
+  "has_wrong_marl": false,
+  "has_required_madrl": true,
+  "figures_a_1_a_9": true,
+  "figures_b_1_a_9": true,
+  "chapter_order": [
+    "Capitulo 1. Introduccion",
+    "Capitulo 2. Marco teorico",
+    "Capitulo 3. Metodologia",
+    "Capitulo 4. Desarrollo de la propuesta",
+    "Capitulo 5. Resultados y contrastacion de hipotesis",
+    "Capitulo 6. Conclusiones y trabajo futuro"
+  ]
+}

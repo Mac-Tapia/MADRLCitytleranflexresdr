@@ -17,6 +17,48 @@ BEST_REPORT = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "best_madrl_re
 DISTRICT_CSV = MO_DIR / "district_objectives_by_algorithm.csv"
 INVENTORY_CSV = MO_DIR / "building_inventory_multiobjective.csv"
 
+BL_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "citylearn_v2_baseline"
+
+FIGURE_INTERPRETATIONS = {
+    "5.1": "La Figura 5.1 muestra la evolucion de reward_mean en E1. MATD3 y MAAC convergen "
+    "hacia valores estables tras ~20 episodios; MASAC presenta mayor varianza inter-episodio. "
+    "El patron respalda OE.1 al evidenciar aprendizaje de flexibilidad bajo pesos [0,70; 0,15; 0,15].",
+    "5.2": "En E2 (Figura 5.2), las curvas de reward_mean reflejan el eje de emisiones. MATD3 "
+    "mantiene la trayectoria mas alta al cierre (50 ep), coherente con su liderazgo en delta CO2 "
+    "de distrito (Tabla 5.3).",
+    "5.3": "La Figura 5.3 (E3) exhibe convergencia mas lenta en costos; MAAC alcanza reward "
+    "competitivo, alineado con su menor delta de costo energetico (9 515 EUR).",
+    "5.4": "La Figura 5.4 sintetiza el ranking global por eje OE1/OE2/OE3. MATD3 lidera dos ejes "
+    "y obtiene score global 0,6667 (Tabla 5.2); la dispersion entre algoritmos es visible pero "
+    "no alcanza significancia inferencial global (KW p=0,155).",
+    "5.5": "La Figura 5.5 contrasta el mejor y peor MADRL por escenario. En E2 y E3 MATD3 "
+    "aparece como mejor; en E1 MAAC supera a MASAC, evidenciando sensibilidad al vector de pesos.",
+    "5.6": "La Figura 5.6 detalla KPI de flexibilidad en E1. MATD3 presenta flex_composite "
+    "superior en la corrida canonica, aunque el baseline CityLearn v2 conserva ventaja global "
+    "(seccion 5.4).",
+    "5.7": "La Figura 5.7 muestra emisiones CO2 en E2. MATD3 reduce delta de carbono a "
+    "23 070 kg en distrito, el mejor valor MADRL auditado en Drive.",
+    "5.8": "La Figura 5.8 reporta costos en E3. MAAC minimiza delta de costo frente a MATD3 "
+    "(9 515 vs 44 399 EUR), matizando la seleccion global hacia MATD3.",
+    "5.9": "La Figura 5.9 presenta trazas de control MADRL por edificio (trace.csv, E2). "
+    "Se observa heterogeneidad entre B06 (32 EV) y edificios con menor flota, coherente con "
+    "la variabilidad estructural del SEAI.",
+    "5.10": "La Figura 5.10 agrega objetivos multiobjetivo a nivel distrito. MATD3 domina "
+    "flexibilidad y CO2; MAAC destaca en costo, confirmando trade-offs entre ejes.",
+    "5.11": "La Figura 5.11 desagrega flexibilidad por edificio (E1). Edificios con mayor "
+    "capacidad BESS/PV muestran mayor margen de mejora relativa.",
+    "5.12": "La Figura 5.12 muestra delta CO2 por edificio (E2). La reduccion no es uniforme: "
+    "hospitales y malls concentran mayor impacto absoluto.",
+    "5.13": "La Figura 5.13 presenta delta de costo por edificio (E3). MAAC obtiene valores "
+    "inferiores en varios edificios institucionales con perfil diurno estable.",
+    "5.14": "La Figura 5.14 inventaria 185 cargadores EV. B07 (UNAP, 42) y B06 (Mall, 32) "
+    "concentran la complejidad de accion del entorno multiagente.",
+    "5.15": "La Figura 5.15 reporta exito de carga EV con MATD3/E2. Las tasas varian entre "
+    "3,9% y 48,2% segun edificio (descriptivo_distrito_colab.csv), indicando margen de mejora "
+    "en cumplimiento de restricciones de salida.",
+}
+
+
 GREY = RGBColor(0x59, 0x59, 0x59)
 
 
@@ -86,14 +128,15 @@ def add_resumen_doctoral(doc, p, heading) -> None:
         "(global score 0.6667), leading flexibility and CO₂ objectives, while MAAC leads energy cost. "
         "Multi-objective KPIs are reported at district and building levels (185 EV chargers). "
         "Training figures use audited Drive timeseries and trace CSVs (no synthetic data). "
-        "Results are grounded in audited Drive artifacts; inferential tests on the canonical run "
-        "remain pending.",
+        "Inferential tests on the canonical run were executed: Kruskal-Wallis ALL p=0.155 "
+        "(not significant at alpha=0.05); Wilcoxon MASAC vs MATD3 p=0.0049. MATD3 leads "
+        "descriptively but CityLearn v2 baseline outperforms MADRL on global HPHI score.",
         italic=True,
     )
     doc.add_page_break()
 
 
-def add_figure(doc, path: Path, caption: str, width_cm: float = 15.5) -> None:
+def add_figure(doc, path: Path, caption: str, width_cm: float = 15.5, interpretation: str | None = None) -> None:
     if not path.is_file():
         raise FileNotFoundError(path)
     doc.add_picture(str(path), width=Cm(width_cm))
@@ -103,6 +146,10 @@ def add_figure(doc, path: Path, caption: str, width_cm: float = 15.5) -> None:
     run.italic = True
     run.font.size = Pt(9)
     run.font.color.rgb = GREY
+    if interpretation:
+        p_fn = doc.add_paragraph()
+        p_fn.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        p_fn.add_run(interpretation)
     doc.add_paragraph()
 
 
@@ -176,6 +223,46 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         col_widths=[2.5, 1.5, 2.5, 3.0, 3.0, 2.5],
     )
 
+    heading(doc, "5.4 Comparacion con linea base CityLearn v2", 2)
+    p(
+        doc,
+        "Se contrastan los MADRL seleccionados (MATD3, MAAC, MASAC) frente a los agentes "
+        "baseline y hour_rbc de CityLearn v2 original, con los 54 KPI normalizados y score "
+        "global HPHI ponderado (pesos 0,34/0,33/0,33 por eje). Fuente: "
+        f"outputs/{RUN_ID}/resumen_comparativo/citylearn_v2_baseline/. "
+        "Hallazgo central: el baseline RBC supera a todos los MADRL en score global en E1, E2 "
+        "y E3; esto no invalida el benchmark metodologico, pero matiza las conclusiones causales.",
+    )
+    add_table(
+        doc,
+        ["Escenario", "1.o global", "Score", "2.o", "Score", "Mejor MADRL", "Score MADRL"],
+        [
+            ["E1", "baseline v2", "0,7289", "hour_rbc", "0,6821", "MAAC", "0,4481"],
+            ["E2", "baseline v2", "0,7866", "hour_rbc", "0,6551", "MATD3", "0,3813"],
+            ["E3", "baseline v2", "0,7293", "hour_rbc", "0,6823", "MAAC", "0,4085"],
+        ],
+        caption="Tabla 5.4. Ranking global HPHI: CityLearn v2 vs MADRL (ranking_global_weighted.csv).",
+        col_widths=[1.5, 2.5, 2.0, 2.5, 2.0, 2.5, 2.5],
+    )
+    p(
+        doc,
+        "En los tres escenarios, baseline y hour_rbc ocupan los dos primeros puestos. "
+        "Entre MADRL, MATD3 lidera en E2 y MAAC en E1/E3 segun score global, coherente con "
+        "Tabla 5.2 pero por debajo de controles basados en reglas. Nweye et al. (2024) reportan "
+        "que politicas RBC bien calibradas son competidoras fuertes con presupuestos de "
+        "entrenamiento limitados.",
+    )
+    for scenario in ("E1", "E2", "E3"):
+        heatmap = BL_DIR / scenario / "baseline_gain_heatmap.png"
+        if heatmap.is_file():
+            add_figure(
+                doc,
+                heatmap,
+                f"Mapa de ganancia vs baseline — escenario {scenario} "
+                f"(citylearn_v2_baseline/{scenario}/baseline_gain_heatmap.png).",
+                width_cm=14.0,
+            )
+
     heading(doc, "5.5 Figuras de entrenamiento (artefactos Drive reales)", 2)
     p(
         doc,
@@ -184,19 +271,19 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         "No se utilizan datos sinteticos ni regeneracion desde episode_summaries.",
     )
     drive_figs = [
-        (FD_DIR / "comparativo_E1_convergence_reward_mean.png", "Figura 5.1. Convergencia E1 (reward_mean) — datos reales Drive."),
-        (FD_DIR / "comparativo_E2_convergence_reward_mean.png", "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive."),
-        (FD_DIR / "comparativo_E3_convergence_reward_mean.png", "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive."),
-        (FD_DIR / "comparativo_global_ranking_oe.png", "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive)."),
-        (FD_DIR / "comparativo_best_worst_por_escenario.png", "Figura 5.5. Mejor y peor MADRL por escenario."),
-        (FD_DIR / "comparativo_E1_OE1_kpi.png", "Figura 5.6. KPI OE1 flexibilidad — comparativa E1."),
-        (FD_DIR / "comparativo_E2_OE2_kpi.png", "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2."),
-        (FD_DIR / "comparativo_E3_OE3_kpi.png", "Figura 5.8. KPI OE3 costo energetico — comparativa E3."),
-        (FD_DIR / "comparativo_E2_control_trace.png", "Figura 5.9. Control MADRL por edificio (trace.csv) — E2."),
+        (FD_DIR / "comparativo_E1_convergence_reward_mean.png", "Figura 5.1. Convergencia E1 (reward_mean) — datos reales Drive.", "5.1"),
+        (FD_DIR / "comparativo_E2_convergence_reward_mean.png", "Figura 5.2. Convergencia E2 (reward_mean) — datos reales Drive.", "5.2"),
+        (FD_DIR / "comparativo_E3_convergence_reward_mean.png", "Figura 5.3. Convergencia E3 (reward_mean) — datos reales Drive.", "5.3"),
+        (FD_DIR / "comparativo_global_ranking_oe.png", "Figura 5.4. Ranking global OE1/OE2/OE3 (KPIs Drive).", "5.4"),
+        (FD_DIR / "comparativo_best_worst_por_escenario.png", "Figura 5.5. Mejor y peor MADRL por escenario.", "5.5"),
+        (FD_DIR / "comparativo_E1_OE1_kpi.png", "Figura 5.6. KPI OE1 flexibilidad — comparativa E1.", "5.6"),
+        (FD_DIR / "comparativo_E2_OE2_kpi.png", "Figura 5.7. KPI OE2 emisiones CO2 — comparativa E2.", "5.7"),
+        (FD_DIR / "comparativo_E3_OE3_kpi.png", "Figura 5.8. KPI OE3 costo energetico — comparativa E3.", "5.8"),
+        (FD_DIR / "comparativo_E2_control_trace.png", "Figura 5.9. Control MADRL por edificio (trace.csv) — E2.", "5.9"),
     ]
-    for path, caption in drive_figs:
+    for path, caption, fig_id in drive_figs:
         doc.add_page_break()
-        add_figure(doc, path, caption)
+        add_figure(doc, path, caption, interpretation=FIGURE_INTERPRETATIONS.get(fig_id))
 
     heading(doc, "5.6 Analisis multiobjetivo por edificio", 2)
     p(
@@ -219,22 +306,22 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         doc,
         ["ID", "Edificio", "EV", "Controlados"],
         inv_rows,
-        caption="Tabla 5.4. Inventario multiobjetivo (extracto B01–B08; completo en anexo CSV).",
+        caption="Tabla 5.5. Inventario multiobjetivo (extracto B01–B08; completo en anexo CSV).",
         col_widths=[1.5, 5.5, 1.5, 6.5],
     )
 
     heading(doc, "5.7 Figuras multiobjetivo (distrito y edificio)", 2)
     figs = [
-        (MO_DIR / "drive_district_objectives.png", "Figura 5.10. KPIs multiobjetivo — distrito."),
-        (MO_DIR / "drive_building_E1_flex_composite_proxy.png", "Figura 5.11. OE1 flexibilidad por edificio."),
-        (MO_DIR / "drive_building_E2_carbon_emissions_delta_kgco2.png", "Figura 5.12. OE2 delta CO2 por edificio."),
-        (MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png", "Figura 5.13. OE3 delta costo por edificio."),
-        (MO_DIR / "drive_building_ev_inventory.png", "Figura 5.14. Inventario EV por edificio."),
-        (MO_DIR / "drive_building_ev_success_matd3_e2.png", "Figura 5.15. Desempeno EV — MATD3/E2."),
+        (MO_DIR / "drive_district_objectives.png", "Figura 5.10. KPIs multiobjetivo — distrito.", "5.10"),
+        (MO_DIR / "drive_building_E1_flex_composite_proxy.png", "Figura 5.11. OE1 flexibilidad por edificio.", "5.11"),
+        (MO_DIR / "drive_building_E2_carbon_emissions_delta_kgco2.png", "Figura 5.12. OE2 delta CO2 por edificio.", "5.12"),
+        (MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png", "Figura 5.13. OE3 delta costo por edificio.", "5.13"),
+        (MO_DIR / "drive_building_ev_inventory.png", "Figura 5.14. Inventario EV por edificio.", "5.14"),
+        (MO_DIR / "drive_building_ev_success_matd3_e2.png", "Figura 5.15. Desempeno EV — MATD3/E2.", "5.15"),
     ]
-    for path, caption in figs:
+    for path, caption, fig_id in figs:
         doc.add_page_break()
-        add_figure(doc, path, caption)
+        add_figure(doc, path, caption, interpretation=FIGURE_INTERPRETATIONS.get(fig_id))
 
     heading(doc, "5.8 Pruebas estadisticas", 2)
     p(
@@ -258,7 +345,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
             ["Score escenario (3x3)", "Kruskal-Wallis", "H=4.36, p=0.113", "No significativo"],
             ["Local v4 (referencia)", "Kruskal-Wallis", "p=0.0459", "Significativo (5 ep, exploratorio)"],
         ],
-        caption="Tabla 5.5. Contrastacion inferencial Colab vs referencia local v4.",
+        caption="Tabla 5.6. Contrastacion inferencial Colab vs referencia local v4.",
         col_widths=[3.5, 3.0, 3.5, 4.0],
     )
     p(
@@ -272,27 +359,66 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
     heading(doc, "5.9 Discusion", 2)
     p(
         doc,
-        "MATD3 domina flexibilidad y emisiones en la corrida canonica, con mayor tasa de exito EV "
-        "que MASAC/MAAC. MAAC es competitivo en costo energetico del distrito. El analisis por "
-        "edificio revela heterogeneidad estructural (B06 Mall: 32 EV; B07 UNAP: 42 EV). La "
-        "interpretacion exige frontera de Pareto por eje, no solo score global. HAPPO requiere "
-        "re-evaluacion tras corregir VecEnvWrapper.",
+        "La evidencia descriptiva de la corrida canonica identifica a MATD3 como el MADRL de "
+        "mayor efecto coordinado (score 0,6667), con liderazgo en flexibilidad y CO2 y MAAC "
+        "competitivo en costos. Sin embargo, tres matices condicionan la lectura doctoral. "
+        "Primero, Kruskal-Wallis global no alcanza significancia (p=0,155), por lo que HG no "
+        "se confirma inferencialmente con una semilla; Wilcoxon MASAC vs MATD3 (p=0,0049) es "
+        "exploratorio y no sustituye el contraste factorial completo. Segundo, la seccion 5.4 "
+        "demuestra que baseline y hour_rbc de CityLearn v2 superan a los MADRL en score global "
+        "HPHI en los tres escenarios, coherente con Nweye et al. (2024) sobre la competitividad "
+        "de controles basados en reglas. Tercero, HAPPO queda excluido de inferencia por ausencia "
+        "de KPIs finales (49/50 ep, error VecEnvWrapper). El aporte vigente es metodologico: "
+        "benchmark unificado, trazable y reproducible sobre datos reales del SEAI, con protocolo "
+        "estadistico documentado para extension multi-semilla (Colas et al., 2019).",
     )
 
 
 def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
     heading(doc, "Capitulo 6. Conclusiones y trabajo futuro", 1)
     heading(doc, "6.1 Conclusiones", 2)
-    bullet(doc, "El OG se responde identificando a MATD3 como el MADRL de mayor efecto coordinado en Colab (score 0,6667).")
-    bullet(doc, "OE.1 y OE.2: MATD3 lidera flexibilidad compuesta y delta de CO2 en la corrida canonica.")
-    bullet(doc, "OE.3: MAAC presenta el menor delta de costo energetico (9 515 EUR vs 44 399 EUR de MATD3-E3).")
-    bullet(doc, "El benchmark unificado Dec-POMDP/CTDE sobre 17 edificios reales es reproducible y auditado.")
+    p(
+        doc,
+        "En respuesta al objetivo general, la tesis determina que el algoritmo MADRL produce "
+        "efectos diferenciados sobre flexibilidad, emisiones y costos en la simulacion del SEAI "
+        "Iquitos, identificando descriptivamente a MATD3 como el de mayor efecto coordinado "
+        "(score global 0,6667, corrida madrl_v3_20260627_164047). El objetivo OE.1 se atiende "
+        "con MATD3 liderando flexibilidad compuesta; OE.2 con menor delta de CO2 (23 070 kg); "
+        "y OE.3 con MAAC presentando el menor delta de costo (9 515 EUR frente a 44 399 EUR "
+        "de MATD3-E3). La hipotesis general no se confirma inferencialmente (KW p=0,155), aunque "
+        "la evidencia descriptiva respalda la seleccion de MATD3 dentro de la familia MADRL.",
+    )
+    p(
+        doc,
+        "La contrastacion con baseline CityLearn v2 (seccion 5.4) revela que los agentes RBC "
+        "baseline y hour_rbc superan globalmente a los MADRL entrenados, lo cual constituye un "
+        "hallazgo honesto y relevante: el marco experimental es valido para comparacion "
+        "inter-algoritmica, pero las politicas aprendidas requieren mayor presupuesto de "
+        "entrenamiento, hiperparametrizacion u operacionalizacion multi-semilla para superar "
+        "controles clasicos. Los cuatro aportes al motor CityLearn (BESS Arrhenius, PV tropical, "
+        "KPI pico OSINERGMIN, CarbonIntensityModel SEAI) y el dataset auditado de 17 edificios "
+        "constituyen contribuciones metodologicas transferibles a otros sistemas aislados peruanos.",
+    )
     heading(doc, "6.2 Limitaciones", 2)
-    bullet(doc, "Semilla unica (seed 0); inferencia Colab pendiente; HAPPO sin KPIs finales.")
-    bullet(doc, "Simulacion sin validacion en red fisica; CityLearn v3 propuesto es extension experimental.")
+    p(
+        doc,
+        "Las limitaciones principales son: (i) semilla unica (seed 0), insuficiente para "
+        "conclusiones causales robustas segun Colas et al. (2019); (ii) HAPPO sin KPIs finales "
+        "(49/50 episodios, error VecEnvWrapper), lo que reduce el diseno factorial efectivo a "
+        "3×3 en inferencia; (iii) simulacion sin validacion en red fisica; (iv) CityLearn v3 "
+        "propuesto como extension experimental de tesis; (v) MADRL por debajo del baseline RBC "
+        "en score global HPHI. La inferencia Colab ya fue ejecutada (Tabla 5.6); no permanece "
+        "pendiente.",
+    )
     heading(doc, "6.3 Trabajo futuro", 2)
-    bullet(doc, "Multi-semilla, re-evaluacion HAPPO, pruebas Dunn/Wilcoxon con correccion Bonferroni.")
-    bullet(doc, "HPO Optuna y transferencia a otros sistemas aislados peruanos.")
+    p(
+        doc,
+        "Se propone: re-evaluacion de HAPPO tras corregir VecEnvWrapper; corrida multi-semilla "
+        "(≥5, ideal ≥20) con post-hoc Dunn y correccion Bonferroni; optimizacion con Optuna; "
+        "analisis de frontera de Pareto por eje; y transferencia del benchmark a otros sistemas "
+        "aislados de la Amazonia peruana. La comparacion con SB3 (PPO/SAC/A2C) y el benchmark "
+        "hour_rbc E2 completado en segundo plano enriqueceran el contraste con literatura.",
+    )
 
 
 def verify_doctoral_docx(path: Path) -> dict:

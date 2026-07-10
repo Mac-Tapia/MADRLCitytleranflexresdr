@@ -16,6 +16,10 @@ SUPPLEMENTAL_CITED_IN_TEXT = [
     "Fujimoto, S., van Hoof, H., & Meger, D. (2018). Addressing function approximation error in actor-critic methods (TD3). En Proceedings of the 35th International Conference on Machine Learning (PMLR 80, pp. 1587-1596). https://arxiv.org/abs/1802.09477",
     "Roijers, D. M., Vamplew, P., Whiteson, S., & Dazeley, R. (2013). A survey of multi-objective sequential decision-making. Journal of Artificial Intelligence Research, 47, 67-113.",
     "Zhou, M., Wan, J., Wang, H., et al. (2021). MALib: A parallel framework for population-based multi-agent reinforcement learning. Journal of Machine Learning Research, 24(1). https://arxiv.org/abs/2106.07551",
+    "Chevarria Moscoso, M. (2024). Analisis de la generacion hidroelectrica en la central hidroelectrica de Machupicchu aplicando metodos estocasticos y modelo de optimizacion (Tesis doctoral). Universidad Nacional de Ingenieria. http://hdl.handle.net/20.500.14076/28894",
+    "Dominguez-Barbero, C. (2026). Modeling and optimizing isolated microgrids using Reinforcement Learning techniques (Tesis doctoral). Universidad Pontificia Comillas.",
+    "Peñalva Sanchez, J. J. (2024). Optimizacion de un sistema fotovoltaico hibrido y la prediccion de la demanda energetica y variables climaticas utilizando la inteligencia artificial (Tesis doctoral). Universidad Nacional de Ingenieria. http://hdl.handle.net/20.500.14076/27731",
+    "Rosero Bernal, D. G. (2024). Modelo de un sistema de administracion de energia autonomo operado desde la nube para optimizar la gestion de un grupo de microredes (Tesis doctoral). Universidad Distrital Francisco Jose de Caldas. [PV]",
     "Electro Oriente S.A. (2023-2025). Facturas mensuales de edificios institucionales del SEAI Iquitos. Loreto, Peru.",
 ]
 

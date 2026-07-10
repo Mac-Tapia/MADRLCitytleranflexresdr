@@ -173,7 +173,7 @@ def status_note(document, text: str):
 # ---------------------------------------------------------------------------
 # Construccion del documento
 # ---------------------------------------------------------------------------
-def build():
+def build(*, max_chapter: int | None = None):
     doc = Document()
     style_base(doc)
 
@@ -273,47 +273,102 @@ def build():
       "dimensiones unicas. No existe un marco comparativo unificado que cubra HAPPO, MASAC, "
       "MATD3 y MAAC bajo formulacion Dec-POMDP y esquema CTDE para determinar el mejor "
       "agente MADRL en la gestion coordinada y simultanea de las tres dimensiones.")
-    p(doc, "Problema general:", bold=True)
+    p(doc, "Problema general (PG):", bold=True)
     p(doc,
-      "¿Cual es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de "
-      "manera coordinada la flexibilidad energetica, las emisiones de CO2 y los costos "
-      "energeticos en comunidades inteligentes?", italic=True)
+      "¿En que medida el algoritmo Multi-Agente de Aprendizaje por Refuerzo Profundo aplicado "
+      "a una comunidad inteligente (variable independiente) produce un efecto diferenciado "
+      "sobre la gestion coordinada de la flexibilidad energetica, las emisiones de CO2 y los "
+      "costos energeticos (variable dependiente), y cual de los algoritmos comparados genera "
+      "el mayor efecto?", italic=True)
     p(doc, "Problemas especificos:", bold=True)
-    bullet(doc, "PE.1: ¿Cual es el mejor MADRL que optimiza la flexibilidad energetica en comunidades inteligentes?")
-    bullet(doc, "PE.2: ¿Cual es el mejor MADRL que reduce las emisiones de CO2 en comunidades inteligentes?")
-    bullet(doc, "PE.3: ¿Cual es el mejor MADRL que optimiza los costos energeticos en comunidades inteligentes?")
+    bullet(doc,
+           "PE.1: ¿En que medida el algoritmo MADRL (VI) produce un efecto sobre la dimension "
+           "de flexibilidad energetica de la comunidad (D-VD.1), y cual algoritmo genera el mayor efecto?")
+    bullet(doc,
+           "PE.2: ¿En que medida el algoritmo MADRL (VI) produce un efecto sobre la dimension "
+           "de emisiones de CO2 de la comunidad (D-VD.2), y cual algoritmo genera el mayor efecto?")
+    bullet(doc,
+           "PE.3: ¿En que medida el algoritmo MADRL (VI) produce un efecto sobre la dimension "
+           "de costos energeticos de la comunidad (D-VD.3), y cual algoritmo genera el mayor efecto?")
 
     heading(doc, "1.2 Objetivos", 2)
-    p(doc, "Objetivo general (O.G.):", bold=True)
+    p(doc, "Objetivo general (OG):", bold=True)
     p(doc,
-      "Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona "
-      "de manera coordinada la flexibilidad energetica, las emisiones de CO2 y los costos "
-      "energeticos en comunidades inteligentes.", italic=True)
+      "Determinar el efecto del algoritmo MADRL aplicado a una comunidad inteligente (VI) "
+      "sobre la gestion coordinada de la flexibilidad energetica, las emisiones de CO2 y los "
+      "costos energeticos (VD), e identificar el algoritmo que produce el mayor efecto "
+      "coordinado.", italic=True)
     p(doc, "Objetivos especificos:", bold=True)
-    bullet(doc, "OE.1: Determinar el mejor MADRL que optimiza la flexibilidad energetica en comunidades inteligentes.")
-    bullet(doc, "OE.2: Determinar el mejor MADRL que reduce las emisiones de CO2 en comunidades inteligentes.")
-    bullet(doc, "OE.3: Determinar el mejor MADRL que optimiza los costos energeticos en comunidades inteligentes.")
+    bullet(doc,
+           "OE.1: Determinar el efecto del algoritmo MADRL (VI) sobre la flexibilidad energetica "
+           "(D-VD.1) e identificar el algoritmo de mayor efecto en esta dimension.")
+    bullet(doc,
+           "OE.2: Determinar el efecto del algoritmo MADRL (VI) sobre las emisiones de CO2 "
+           "(D-VD.2) e identificar el algoritmo de mayor efecto en esta dimension.")
+    bullet(doc,
+           "OE.3: Determinar el efecto del algoritmo MADRL (VI) sobre los costos energeticos "
+           "(D-VD.3) e identificar el algoritmo de mayor efecto en esta dimension.")
     p(doc,
-      "Coherencia vertical: cada objetivo especifico responde a su problema especifico, se "
-      "operacionaliza mediante su eje de KPIs y se evalua con la metodologia comparativa de "
-      "CityLearn v3 propuesto con los cuatro algoritmos bajo Dec-POMDP y CTDE.")
+      "La coherencia vertical PG→OG→HG y PE.i→OE.i→HE.i se operacionaliza mediante el diseño "
+      "factorial 4×3 (12 tratamientos), los 54 KPI oficiales de CityLearn v2 y la corrida "
+      "canonica Colab/Drive madrl_v3_20260627_164047 (50 episodios).")
 
     heading(doc, "1.3 Hipotesis", 2)
     p(doc,
-      "Por tratarse de un estudio cuantitativo, comparativo y no experimental basado en "
-      "simulacion, las hipotesis se formulan en terminos de diferencias de desempeno entre "
-      "algoritmos:")
-    bullet(doc, "H.G.: Existe al menos un algoritmo MADRL cuyo desempeno coordinado en flexibilidad, "
-                "CO2 y costos es significativamente superior al de los demas algoritmos comparados.")
-    bullet(doc, "H.1/H.2/H.3: En cada eje (flexibilidad, CO2 y costos) existen diferencias "
-                "estadisticamente significativas entre HAPPO, MASAC, MATD3 y MAAC, verificables "
-                "mediante pruebas no parametricas (Kruskal-Wallis, Mann-Whitney U, Wilcoxon).")
+      "El estudio es cuantitativo, aplicado y explicativo, basado en simulacion experimental. "
+      "Las hipotesis se plantean en terminos de efecto del factor algoritmo (VI) sobre las "
+      "dimensiones de la VD, contrastadas con pruebas no parametricas (alpha = 0,05) segun "
+      "Colas et al. (2019) y Agarwal et al. (2021):")
+    bullet(doc,
+           "HG: La aplicacion del algoritmo MADRL a la comunidad inteligente (VI) produce un "
+           "efecto diferenciado sobre la gestion coordinada de flexibilidad, CO2 y costos (VD); "
+           "se espera que MATD3 genere el mayor efecto coordinado en la evidencia descriptiva.")
+    bullet(doc,
+           "HE.1: El algoritmo MADRL (VI) produce un efecto sobre la flexibilidad energetica "
+           "(D-VD.1); el mayor efecto descriptivo corresponde al algoritmo con mejor desempeno "
+           "en KPI de pico y rampa.")
+    bullet(doc,
+           "HE.2: El algoritmo MADRL (VI) produce un efecto sobre las emisiones de CO2 (D-VD.2); "
+           "el mayor efecto descriptivo corresponde a MATD3 en la corrida canonica.")
+    bullet(doc,
+           "HE.3: El algoritmo MADRL (VI) produce un efecto sobre los costos energeticos "
+           "(D-VD.3); MAAC presenta el menor delta de costo en distrito (Tabla 5.3).")
     p(doc,
-      "La evidencia preliminar de la corrida v4 respalda H.G.: la prueba de Kruskal-Wallis "
-      "sobre el score global arroja p = 0.0459 (significativo a alpha = 0.05), identificando "
-      "a MATD3 como el mejor algoritmo global.")
+      "La contrastacion inferencial de la corrida canonica (Tabla 5.6) muestra que Kruskal-Wallis "
+      "global sobre KPI-gains no alcanza significancia (p = 0,155); por tanto, HG no se confirma "
+      "inferencialmente con una semilla. La referencia local v4 (5 episodios, KW p = 0,0459) "
+      "queda como evidencia exploratoria historica. Wilcoxon pareado MASAC vs MATD3 (p = 0,0049) "
+      "detecta diferencia exploratoria que no sustituye el contraste global.")
 
-    heading(doc, "1.4 Justificacion", 2)
+    heading(doc, "1.4 Matriz de consistencia y operacionalizacion", 2)
+    add_table(
+        doc,
+        ["Elemento", "PG / PE", "OG / OE", "Hipotesis", "Dimension VD"],
+        [
+            ["General", "PG: efecto MADRL coordinado", "OG: determinar efecto e identificar mayor efecto", "HG", "Flexibilidad + CO2 + costos"],
+            ["Flexibilidad", "PE.1", "OE.1", "HE.1", "D-VD.1: peak, ramp, load factor"],
+            ["Emisiones", "PE.2", "OE.2", "HE.2", "D-VD.2: carbon_emissions, delta CO2"],
+            ["Costos", "PE.3", "OE.3", "HE.3", "D-VD.3: electricity_cost, delta costo"],
+        ],
+        caption="Tabla 1.1. Matriz de consistencia problema-objetivo-hipotesis.",
+        col_widths=[2.5, 4.5, 5.0, 2.0, 4.0],
+    )
+    add_table(
+        doc,
+        ["Variable", "Codigo", "Niveles / medicion", "Control"],
+        [
+            ["VI tipo algoritmo", "D-VI.1", "HAPPO, MASAC, MATD3, MAAC", "Misma recompensa unified_comparable_v4"],
+            ["VI escenario", "D-VI.2", "E1, E2, E3 (pesos multiobjetivo)", "Mismo dataset y semilla"],
+            ["VD flexibilidad", "D-VD.1", "18 KPI OE1 (peak, ramp, etc.)", "Baseline CityLearn v2"],
+            ["VD emisiones", "D-VD.2", "18 KPI OE2 (carbon_emissions, etc.)", "CI SEAI 0,672-0,790"],
+            ["VD costos", "D-VD.3", "18 KPI OE3 (electricity_cost, etc.)", "TOU 0,26/0,38 USD/kWh"],
+            ["Control", "-", "Dataset, clima, DER, hiperparametros", "seed=0; 50 ep Colab canonico"],
+        ],
+        caption="Tabla 1.2. Operacionalizacion de variables independientes y dependientes.",
+        col_widths=[3.5, 2.0, 5.5, 5.0],
+    )
+
+    heading(doc, "1.5 Justificacion", 2)
     bullet(doc, "Tecnica: aporta una evaluacion unificada de HAPPO, MASAC, MATD3 y MAAC bajo "
                 "Dec-POMDP y CTDE, avanzando el estado del arte en control energetico cooperativo.")
     bullet(doc, "Ambiental: identificar el mejor MADRL para reduccion de CO2 contribuye a la "
@@ -326,7 +381,7 @@ def build():
     bullet(doc, "Cientifica y social: llena una laguna en la literatura comparativa de MADRL y "
                 "beneficia a usuarios institucionales y a la transicion energetica comunitaria.")
 
-    heading(doc, "1.5 Alcances y limitaciones", 2)
+    heading(doc, "1.6 Alcances y limitaciones", 2)
     p(doc, "Alcances:", bold=True)
     bullet(doc, "Tematico: comparacion de HAPPO, MASAC, MATD3 y MAAC en KPIs de flexibilidad, CO2 y costos.")
     bullet(doc, "Espacial: comunidades inteligentes simuladas en CityLearn v2 / CityLearn v3 propuesto, "
@@ -384,6 +439,17 @@ def build():
       "monotona para agentes heterogeneos; Iqbal y Sha (2019) introducen MAAC con atencion "
       "multi-cabeza; Hu et al. (2023) presentan MARLlib; Akiba et al. (2019) presentan "
       "Optuna; Haarnoja et al. (2018) presentan SAC, base de MASAC y MAAC.")
+    p(doc, "Antecedentes nacionales y de sistemas aislados:", bold=True)
+    p(doc,
+      "En el contexto peruano, el SEAI Iquitos concentra desafios de redes aisladas diesel-PV "
+      "con intensidad de carbono y tarifas reguladas (MINAM, 2019; OSINERGMIN, 2024). "
+      "Chevarria Moscoso (2024), en tesis doctoral de la UNI, aborda optimizacion de generacion "
+      "hidroelectrica con metodos estocasticos; Peñalva Sanchez (2024), tambien en la UNI, "
+      "combina sistemas fotovoltaicos hibridos con inteligencia artificial para prediccion de "
+      "demanda. En el ambito latinoamericano, Rosero Bernal (2024) propone administracion de "
+      "energia autonoma en microredes desde la nube. A nivel internacional, Domínguez Barbero "
+      "(2026) demuestra DRL para microrredes aisladas con TD3, antecedente directo para el "
+      "control de DER bajo incertidumbre operativa sin depender de pronosticos perfectos.")
 
     heading(doc, "2.2 Bases teoricas", 2)
     heading(doc, "2.2.1 Flexibilidad energetica en comunidades inteligentes", 3)
@@ -487,6 +553,18 @@ def build():
         ],
         caption="Tabla 3.1. Escenarios de entrenamiento y pesos de recompensa por eje.",
         col_widths=[2.5, 4.5, 5.0, 4.0],
+    )
+    add_table(
+        doc,
+        ["Tratamiento", "D-VI.1", "D-VI.2", "D-VD medida", "Corrida canonica"],
+        [
+            ["T01-T03", "HAPPO", "E1/E2/E3", "54 KPI por eje", "49 ep (sin KPI finales)"],
+            ["T04-T06", "MASAC", "E1/E2/E3", "54 KPI por eje", "50/50/50 ep"],
+            ["T07-T09", "MATD3", "E1/E2/E3", "54 KPI por eje", "50/50/50 ep"],
+            ["T10-T12", "MAAC", "E1/E2/E3", "54 KPI por eje", "50/50/50 ep"],
+        ],
+        caption="Tabla 3.1b. Diseño factorial 4×3: 12 tratamientos (algoritmo × escenario).",
+        col_widths=[2.5, 2.5, 2.5, 4.0, 4.5],
     )
 
     heading(doc, "3.3 Datos utilizados — Dataset citylearn_iquitos_2023_2025", 2)
@@ -678,51 +756,26 @@ def build():
         caption="Tabla 4.2. Los cuatro algoritmos MADRL y sus backends.",
         col_widths=[2.0, 2.0, 6.0, 6.0],
     )
-    p(doc, "Hiperparametros comunes (CityLearn/configs/ y v3/config.py):", bold=True)
+    p(doc, "Hiperparametros: corrida canonica Colab vs referencia local v4:", bold=True)
     add_table(
         doc,
-        ["Hiperparametro", "Valor", "Aplicabilidad"],
+        ["Parametro", "Colab canonico (50 ep)", "Local v4 (5 ep)", "Notas"],
         [
-            ["hidden_sizes", "[256, 256]", "Todos"],
-            ["actor_lr", "3e-4", "Todos"],
-            ["critic_lr", "1e-3", "Todos"],
-            ["gamma", "0.9999 (canonico y corrida v4)", "Todos"],
-            ["batch_size", "256", "Todos"],
-            ["replay_buffer_size", "1 000 000 (4 096 en MATD3 local 8 GB)", "MASAC, MATD3, MAAC"],
-            ["tau", "0.005", "MASAC, MATD3, MAAC"],
-            ["ppo_clip", "0.2", "Solo HAPPO"],
-            ["matd3_policy_delay", "2", "Solo MATD3"],
-            ["maac_attention_heads", "4", "Solo MAAC"],
-            ["masac_alpha", "auto", "Solo MASAC"],
+            ["Episodios × pasos", "50 × 8 760", "5 × 8 760", "438 000 vs 43 800 pasos/corrida"],
+            ["gamma", "0.9999", "0.9999", "Identico"],
+            ["hidden / actor", "[512,512] HAPPO; 768 MATD3/MAAC", "[256,256] todos", "Mayor capacidad en Colab"],
+            ["replay_buffer MATD3", "2 000 000", "4 096", "Restriccion VRAM 8 GB local"],
+            ["batch MATD3", "1 024", "256", "Colab A100"],
+            ["MASAC replay", "2 ep CPU", "on-GPU reducido", "Protocolo two_phase_happo_masac"],
+            ["Semillas", "seed 0", "seed 0", "Limitacion inferencial"],
+            ["GPU", "A100-SXM4-80GB", "RTX 4060 8 GB", "madrl_v3_20260627_164047"],
         ],
-        caption="Tabla 4.3. Hiperparametros del entrenamiento MADRL.",
-        col_widths=[4.5, 6.0, 5.5],
+        caption="Tabla 4.3. Hiperparametros canonicos Colab vs referencia local v4.",
+        col_widths=[4.0, 4.5, 4.0, 3.5],
     )
     p(doc,
       "La optimizacion automatica de hiperparametros con Optuna (TPE) queda como mejora "
-      "experimental posterior; la evidencia cuantitativa se toma de la corrida vigente.")
-    p(doc,
-      "Configuracion canonica de 50 episodios (Colab A100). La corrida definitiva se ejecuta "
-      "en Google Colab sobre una NVIDIA A100-SXM4-80GB en modo two_phase_happo_masac (Fase 1 "
-      "HAPPO+MASAC, Fase 2 MATD3+MAAC, seis trabajos por fase). Conforme a la celda 6.1 del "
-      "notebook CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb (fuente unica de verdad), "
-      "los hiperparametros canonicos son los siguientes:")
-    add_table(
-        doc,
-        ["Parametro", "HAPPO", "MASAC", "MATD3", "MAAC"],
-        [
-            ["Episodios x pasos", "50 x 8 760", "50 x 8 760", "50 x 8 760", "50 x 8 760"],
-            ["gamma", "0.9999", "0.9999", "0.9999", "0.9999"],
-            ["hidden_size", "[512, 512]", "rnn 64 / qmix 32 / hyper 64", "768", "768"],
-            ["Buffer", "on-policy", "2 ep (replay CPU)", "2 000 000", "1 000 000"],
-            ["Batch", "rollout", "512 (critic_batch 1 ep)", "1 024 (GPU 1 280)", "512 (GPU 768)"],
-            ["LR actor / critico", "1e-4 / 5e-4", "3e-4 / 5e-4", "3e-4 / 3e-4", "3e-4 / 1e-3"],
-            ["Especificos", "clip 0.2, GAE 0.95, epochs 5", "action_bins 3, 89 acc.", "policy_delay 2, train_int 50", "attend_heads 4, num_updates 12"],
-        ],
-        caption="Tabla 4.3b. Hiperparametros canonicos de 50 episodios (Colab A100, notebook celda 6.1).",
-        col_widths=[3.6, 3.0, 3.6, 3.0, 3.0],
-        font_size=8,
-    )
+      "experimental posterior; la evidencia cuantitativa se toma de la corrida canonica Colab.")
 
     heading(doc, "4.5 Funcion de recompensa multiobjetivo", 2)
     p(doc,
@@ -810,6 +863,31 @@ def build():
       "live_progress.json y --skip-completed. Los artefactos de esa corrida se integraran desde "
       "outputs/colab_50ep/ o desde la carpeta de Google Drive del entrenamiento. Fuente: "
       "notebook CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb.")
+
+    if max_chapter is not None and max_chapter < 5:
+        doc.add_page_break()
+        heading(doc, "Referencias bibliograficas", 1)
+        stats = reference_stats()
+        p(
+            doc,
+            f"Formato APA (7.a ed.). Fuente consolidada del skill: docs/tesis_capitulos/Referencias_APA.md "
+            f"({stats['from_apa_md']} entradas) + citas en texto y protocolo estadistico RL "
+            f"({stats['total_unique']} referencias unicas; {stats['pv_marked']} marcadas [PV]).",
+            italic=True,
+            size=10,
+            color=GREY,
+        )
+        for ref in load_all_thesis_references():
+            para = doc.add_paragraph()
+            para.paragraph_format.left_indent = Cm(1.0)
+            para.paragraph_format.first_line_indent = Cm(-1.0)
+            para.paragraph_format.space_after = Pt(6)
+            para.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            para.add_run(ref).font.size = Pt(10)
+        OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+        doc.save(str(OUT_PATH))
+        print(f"OK -> {OUT_PATH}")
+        return OUT_PATH
 
     # ===================== CAP 5 =====================
     doc.add_page_break()

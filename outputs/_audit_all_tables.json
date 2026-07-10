@@ -1,0 +1,1014 @@
+[
+  {
+    "index": 0,
+    "rows": [
+      [
+        "Algoritmo",
+        "E1 ep.",
+        "E2 ep.",
+        "E3 ep.",
+        "KPIs finales"
+      ],
+      [
+        "MATD3",
+        "50",
+        "50",
+        "50",
+        "Si"
+      ],
+      [
+        "MAAC",
+        "50",
+        "50",
+        "50",
+        "Si"
+      ],
+      [
+        "MASAC",
+        "50",
+        "50",
+        "50",
+        "Si"
+      ],
+      [
+        "HAPPO",
+        "49",
+        "49",
+        "49",
+        "No (error VecEnvWrapper)"
+      ]
+    ]
+  },
+  {
+    "index": 1,
+    "rows": [
+      [
+        "Rango",
+        "Algoritmo",
+        "Score global",
+        "OE1",
+        "OE2",
+        "OE3",
+        "Seleccionado"
+      ],
+      [
+        "1",
+        "MATD3",
+        "0.6667",
+        "1.0000",
+        "1.0000",
+        "0.0000",
+        "Si"
+      ],
+      [
+        "2",
+        "MAAC",
+        "0.5706",
+        "0.5837",
+        "0.1282",
+        "1.0000",
+        "No"
+      ],
+      [
+        "3",
+        "MASAC",
+        "0.2351",
+        "0.0000",
+        "0.0000",
+        "0.7054",
+        "No"
+      ]
+    ]
+  },
+  {
+    "index": 2,
+    "rows": [
+      [
+        "Algoritmo",
+        "Esc.",
+        "Flex comp.",
+        "Delta CO2 (kg)",
+        "Delta costo (EUR)",
+        "EV exito"
+      ],
+      [
+        "MASAC",
+        "E1",
+        "1.0286",
+        "81,227",
+        "14,672",
+        "3.9%"
+      ],
+      [
+        "MASAC",
+        "E2",
+        "1.0318",
+        "77,649",
+        "15,020",
+        "4.1%"
+      ],
+      [
+        "MASAC",
+        "E3",
+        "1.0297",
+        "90,900",
+        "19,793",
+        "4.1%"
+      ],
+      [
+        "MATD3",
+        "E1",
+        "1.0009",
+        "36,723",
+        "33,075",
+        "43.9%"
+      ],
+      [
+        "MATD3",
+        "E2",
+        "1.0007",
+        "23,070",
+        "13,935",
+        "36.4%"
+      ],
+      [
+        "MATD3",
+        "E3",
+        "1.0006",
+        "41,293",
+        "44,399",
+        "48.2%"
+      ],
+      [
+        "MAAC",
+        "E1",
+        "1.0124",
+        "38,566",
+        "3,628",
+        "4.2%"
+      ],
+      [
+        "MAAC",
+        "E2",
+        "1.0172",
+        "70,654",
+        "13,275",
+        "4.1%"
+      ],
+      [
+        "MAAC",
+        "E3",
+        "1.0138",
+        "73,411",
+        "9,515",
+        "4.1%"
+      ]
+    ]
+  },
+  {
+    "index": 3,
+    "rows": [
+      [
+        "ID",
+        "Edificio",
+        "EV",
+        "Controlados"
+      ],
+      [
+        "B01",
+        "ELECTRO ORIENTE S.A.",
+        "4",
+        "BESS (electrical_storage) x1, Carga desplazab…"
+      ],
+      [
+        "B02",
+        "MUNICIPALIDAD DISTRITAL DE SAN JUAN",
+        "6",
+        "BESS (electrical_storage) x1, Carga desplazab…"
+      ],
+      [
+        "B03",
+        "AEROPUERTO INTERNACIONAL",
+        "8",
+        "BESS (electrical_storage) x1, Carga desplazab…"
+      ],
+      [
+        "B04",
+        "HIPERMERCADOS TOTTUS ORIENTE SAC",
+        "6",
+        "BESS (electrical_storage) x1, Carga desplazab…"
+      ],
+      [
+        "B05",
+        "HOTEL PLAZA S.A.",
+        "3",
+        "BESS (electrical_storage) x1, Carga desplazab…"
+      ],
+      [
+        "B06",
+        "MALL AVENTURA S.A.",
+        "32",
+        "BESS (electrical_storage) x1, Carga desplazab…"
+      ],
+      [
+        "B07",
+        "UNAP-FACULTAD DE BIOLOGIA-AULAS",
+        "42",
+        "BESS (electrical_storage) x1, Carga desplazab…"
+      ],
+      [
+        "B08",
+        "PNP- ESCUELA TECNICA SUPERIOR-IQUIT",
+        "17",
+        "BESS (electrical_storage) x1, Carga desplazab…"
+      ]
+    ]
+  },
+  {
+    "index": 4,
+    "rows": [
+      [
+        "Alcance",
+        "Prueba",
+        "Estadistico / p",
+        "Decision alpha=0.05"
+      ],
+      [
+        "Colab ALL (KPI-level)",
+        "Shapiro-Wilk",
+        "MASAC/MATD3/MAAC: p<1e-11",
+        "No normal → no parametricos"
+      ],
+      [
+        "Colab ALL (KPI-level)",
+        "Kruskal-Wallis",
+        "H=3.72, p=0.155",
+        "No rechaza H0 global"
+      ],
+      [
+        "Colab ALL (KPI-level)",
+        "Wilcoxon SR",
+        "MASAC vs MATD3: p=0.0049",
+        "Significativo (pareado)"
+      ],
+      [
+        "Colab ALL (KPI-level)",
+        "Mann-Whitney U",
+        "MASAC vs MATD3: p=0.070",
+        "No significativo (0.05)"
+      ],
+      [
+        "Colab OE1",
+        "Kruskal-Wallis",
+        "p=0.281",
+        "No significativo"
+      ],
+      [
+        "Colab OE2",
+        "Kruskal-Wallis",
+        "p=0.546",
+        "No significativo"
+      ],
+      [
+        "Colab OE3",
+        "Kruskal-Wallis",
+        "p=0.388",
+        "No significativo"
+      ],
+      [
+        "Score escenario (3x3)",
+        "Kruskal-Wallis",
+        "H=4.36, p=0.113",
+        "No significativo"
+      ],
+      [
+        "Local v4 (referencia)",
+        "Kruskal-Wallis",
+        "p=0.0459",
+        "Significativo (5 ep, exploratorio)"
+      ]
+    ]
+  },
+  {
+    "index": 5,
+    "rows": [
+      [
+        "Concepto",
+        "Definicion sintetica"
+      ],
+      [
+        "Dec-POMDP",
+        "Tupla <S, {Ai}, T, R, {Oi}, Z, gamma, T> para decision cooperativa bajo observabilidad parcial (Oliehoek y Amato, 2016)."
+      ],
+      [
+        "CTDE",
+        "Entrenamiento centralizado (critico accede al estado global) con ejecucion descentralizada (politica usa solo la observacion local) (Lowe et al., 2017)."
+      ],
+      [
+        "HAPPO",
+        "On-policy basado en PPO, actualizacion secuencial por agente, critico centralizado; mejora monotona para agentes heterogeneos (Kuba et al., 2021)."
+      ],
+      [
+        "MASAC",
+        "Off-policy SAC + mezcla cooperativa tipo QMIX con redes RNN para observaciones parciales (Haarnoja et al., 2018; Gao et al., 2023)."
+      ],
+      [
+        "MATD3",
+        "Off-policy con doble critico centralizado (anti sobreestimacion), policy delay y target noise (Fujimoto et al., 2018)."
+      ],
+      [
+        "MAAC",
+        "Off-policy con critico de atencion multi-cabeza para coordinacion selectiva entre agentes (Iqbal y Sha, 2019)."
+      ],
+      [
+        "MARLlib",
+        "Biblioteca unificada de algoritmos MADRL compatible con Ray/RLlib, Gymnasium y PettingZoo (Hu et al., 2023)."
+      ],
+      [
+        "CityLearn v2",
+        "Entorno de simulacion multiagente para comunidades grid-interactive con DER, EV, CI y precios (Nweye et al., 2024)."
+      ],
+      [
+        "Optuna",
+        "Framework de optimizacion automatica de hiperparametros basado en TPE (Akiba et al., 2019)."
+      ]
+    ]
+  },
+  {
+    "index": 6,
+    "rows": [
+      [
+        "Trabajo",
+        "Enfoque",
+        "Resultado / aporte"
+      ],
+      [
+        "Lowe et al. (2017)",
+        "MADDPG, CTDE",
+        "Paradigma base de critico centralizado y politica descentralizada."
+      ],
+      [
+        "Kuba et al. (2021)",
+        "HAPPO (HARL)",
+        "Mejora monotona para agentes heterogeneos; supera a MAPPO/IPPO."
+      ],
+      [
+        "Iqbal y Sha (2019)",
+        "MAAC (atencion)",
+        "Coordinacion selectiva; mejoras de ~15-30% sobre MADDPG/COMA."
+      ],
+      [
+        "Nweye et al. (2024)",
+        "CityLearn v2",
+        "Entorno base con EV/V2G, CI dinamica y KPIs multiobjetivo."
+      ],
+      [
+        "Nweye et al. (2023a)",
+        "MERLIN",
+        "MARL en comunidad real de 17 edificios (escala SEAI Iquitos)."
+      ],
+      [
+        "Yao et al. (2023)",
+        "LSD-MADDPG",
+        "~15% pico y ~18% costo frente a agentes no cooperativos."
+      ],
+      [
+        "Liu et al. (2022)",
+        "MADDPG multiobjetivo",
+        "~15% CO2 y ~20% costo; recompensa con termino de exportacion."
+      ],
+      [
+        "Gao et al. (2023)",
+        "MASAC multi-microgrid",
+        "Arbitraje BESS en mercados TOU con respuesta a precios."
+      ]
+    ]
+  },
+  {
+    "index": 7,
+    "rows": [
+      [
+        "Escenario",
+        "Objetivo",
+        "Pesos [flex, CO2, costo]",
+        "Eje dominante"
+      ],
+      [
+        "E1",
+        "OE.1 Flexibilidad",
+        "[0.70, 0.15, 0.15]",
+        "Flexibilidad"
+      ],
+      [
+        "E2",
+        "OE.2 Emisiones CO2",
+        "[0.15, 0.70, 0.15]",
+        "Carbono"
+      ],
+      [
+        "E3",
+        "OE.3 Costos",
+        "[0.25, 0.15, 0.60]",
+        "Costos"
+      ],
+      [
+        "Global",
+        "O.G. Coordinado",
+        "[0.50, 0.25, 0.25]",
+        "Coordinado"
+      ]
+    ]
+  },
+  {
+    "index": 8,
+    "rows": [
+      [
+        "Componente",
+        "Valor"
+      ],
+      [
+        "Edificios (agentes MADRL)",
+        "17 (institucionales/comerciales reales)"
+      ],
+      [
+        "Periodo / pasos horarios",
+        "2023-2025 / 26 304 h (episodio = 8 760 h)"
+      ],
+      [
+        "Archivos CSV auditados",
+        "222 (0 NaN, 0 Inf)"
+      ],
+      [
+        "Cargadores EV controlables",
+        "185 tomas Mode 3 / 96 unidades fisicas / 192 sockets"
+      ],
+      [
+        "Potencia EV nominal",
+        "749.4 kW (31 con V2G; pool de 1 850 EV)"
+      ],
+      [
+        "BESS total",
+        "26 266 kWh / 6 648 kW"
+      ],
+      [
+        "PV total",
+        "48 790.9 kWp"
+      ],
+      [
+        "Maquinas controladas",
+        "17 lavadoras (~876.6 MWh/ano)"
+      ],
+      [
+        "Intensidad de carbono",
+        "0.672-0.790 kgCO2/kWh (MINAM RAGEI 2019 + modulacion PV)"
+      ],
+      [
+        "Precios TOU",
+        "0.26 USD/kWh fuera punta; 0.38 USD/kWh punta (18-22 h)"
+      ],
+      [
+        "Ubicacion",
+        "lat -3.7491, lon -73.2538, alt 106 m, tz America/Lima"
+      ],
+      [
+        "State dim global (cargado)",
+        "1856 (E1/E2/E3); 17 agentes con EV en obs/accion"
+      ]
+    ]
+  },
+  {
+    "index": 9,
+    "rows": [
+      [
+        "ID",
+        "Edificio",
+        "Tipo",
+        "Area m2",
+        "PV kWp",
+        "BESS kWh",
+        "EV kW",
+        "Cargadores"
+      ],
+      [
+        "B01",
+        "Electro Oriente S.A.",
+        "Office",
+        "14 000",
+        "3 360.2",
+        "6 747",
+        "21.8",
+        "4"
+      ],
+      [
+        "B02",
+        "Municipalidad San Juan Bautista",
+        "Office",
+        "8 000",
+        "1 920.0",
+        "244",
+        "24.4",
+        "6"
+      ],
+      [
+        "B03",
+        "Aeropuerto Internacional",
+        "Assembly",
+        "6 000",
+        "1 440.2",
+        "2 363",
+        "37.8",
+        "8"
+      ],
+      [
+        "B04",
+        "Hipermercados Tottus Oriente",
+        "Retail",
+        "2 500",
+        "600.2",
+        "454",
+        "24.4",
+        "6"
+      ],
+      [
+        "B05",
+        "Hotel Plaza S.A.",
+        "Hotel",
+        "1 142",
+        "274.1",
+        "234",
+        "14.4",
+        "3"
+      ],
+      [
+        "B06",
+        "Mall Aventura S.A.",
+        "Mall",
+        "20 637",
+        "4 952.9",
+        "2 541",
+        "119.6",
+        "32"
+      ],
+      [
+        "B07",
+        "UNAP Facultad de Biologia",
+        "Education",
+        "8 103",
+        "1 944.9",
+        "984",
+        "153.2",
+        "42"
+      ],
+      [
+        "B08",
+        "PNP Escuela Tecnica Superior",
+        "Military",
+        "21 000",
+        "5 040.2",
+        "601",
+        "73.6",
+        "17"
+      ],
+      [
+        "B09",
+        "GORE Loreto - COER",
+        "Office_Critical",
+        "4 480",
+        "1 075.3",
+        "138",
+        "37.4",
+        "10"
+      ],
+      [
+        "B10",
+        "Gobierno Regional de Loreto",
+        "Office",
+        "14 296",
+        "3 431.1",
+        "2 353",
+        "36.6",
+        "6"
+      ],
+      [
+        "B11",
+        "Hospital Regional de Loreto",
+        "Hospital",
+        "42 649",
+        "10 236.1",
+        "1 901",
+        "14.4",
+        "3"
+      ],
+      [
+        "B12",
+        "EsSalud",
+        "Healthcare",
+        "18 197",
+        "4 367.5",
+        "4 346",
+        "14.4",
+        "3"
+      ],
+      [
+        "B13",
+        "UNAP Ciencias Economicas",
+        "Education",
+        "2 723",
+        "653.8",
+        "272",
+        "41.4",
+        "11"
+      ],
+      [
+        "B14",
+        "Autoridad Portuaria Nacional",
+        "Port",
+        "17 761",
+        "4 262.9",
+        "229",
+        "21.8",
+        "4"
+      ],
+      [
+        "B15",
+        "DREL Colegio Nacional",
+        "Education",
+        "9 890",
+        "2 373.8",
+        "500",
+        "31.4",
+        "8"
+      ],
+      [
+        "B16",
+        "SIMA Iquitos S.R.Ltda",
+        "Industrial",
+        "10 294",
+        "2 470.8",
+        "1 622",
+        "41.4",
+        "11"
+      ],
+      [
+        "B17",
+        "Asociacion Civil Selva Amazonica",
+        "Laboratory",
+        "1 611",
+        "386.9",
+        "737",
+        "41.4",
+        "11"
+      ],
+      [
+        "Tot",
+        "17 edificios",
+        "-",
+        "-",
+        "48 790.9",
+        "26 266",
+        "749.4",
+        "185"
+      ]
+    ]
+  },
+  {
+    "index": 10,
+    "rows": [
+      [
+        "Eje (OE)",
+        "KPIs principales"
+      ],
+      [
+        "OE.1 Flexibilidad",
+        "peak_average, ramping_average, one_minus_load_factor_average, autoconsumo, autosuficiencia."
+      ],
+      [
+        "OE.2 CO2",
+        "carbon_emissions, carbon_emissions_delta, consumo ponderado por CI, emisiones evitadas."
+      ],
+      [
+        "OE.3 Costos",
+        "electricity_cost, electricity_cost_delta, reduccion de cargo por demanda, price_signal_deviation."
+      ]
+    ]
+  },
+  {
+    "index": 11,
+    "rows": [
+      [
+        "Capa",
+        "Componente",
+        "Funcion"
+      ],
+      [
+        "1",
+        "CityLearn v2 (CityLearn/citylearn/*.py)",
+        "Fisica de edificios, BESS, PV, EV y KPIs oficiales."
+      ],
+      [
+        "2",
+        "CityLearn v3 propuesto (CityLearn/citylearn/v3/)",
+        "Entorno Dec-POMDP, objetivos, configuracion y recompensa multiobjetivo."
+      ],
+      [
+        "3",
+        "Framework UC3M (uc3m/)",
+        "Wrapper universal (UC3MEnv), 7 ejes de recompensa, KPIEvaluator, AlgorithmFactory; capa auxiliar/generica."
+      ],
+      [
+        "4",
+        "Backends MADRL (external/)",
+        "HARL (HAPPO), MARL/src (MASAC), off-policy (MATD3 activo), MAAC."
+      ],
+      [
+        "5",
+        "Launchers y orquestacion",
+        "train_citylearn_v3_*.py, launchers PowerShell y Colab A100, monitoreo y checkpointing."
+      ],
+      [
+        "6",
+        "Evaluacion y evidencia",
+        "benchmark_citylearn_v2_agents.py, compare_citylearn_v2_vs_v3_madrl.py, generate_thesis_objective_evidence.py."
+      ]
+    ]
+  },
+  {
+    "index": 12,
+    "rows": [
+      [
+        "Algoritmo",
+        "Tipo",
+        "Backend / wrapper",
+        "Caracteristica clave"
+      ],
+      [
+        "HAPPO",
+        "On-policy",
+        "external/HARL · CityLearnHARLEnv",
+        "Actualizacion secuencial con trust region; mejora monotona."
+      ],
+      [
+        "MASAC",
+        "Off-policy",
+        "external/MARL/src · CityLearnSMACDiscreteEnv",
+        "SAC + QMIX, acciones discretizadas por eje, RNN."
+      ],
+      [
+        "MATD3",
+        "Off-policy",
+        "external/off-policy · CityLearnOffPolicyVecEnv",
+        "Doble critico TD3, policy delay, target noise (backend activo)."
+      ],
+      [
+        "MAAC",
+        "Off-policy",
+        "external/MAAC · CityLearnMAACVecEnv",
+        "Critico de atencion multi-cabeza (4 heads)."
+      ]
+    ]
+  },
+  {
+    "index": 13,
+    "rows": [
+      [
+        "Hiperparametro",
+        "Valor",
+        "Aplicabilidad"
+      ],
+      [
+        "hidden_sizes",
+        "[256, 256]",
+        "Todos"
+      ],
+      [
+        "actor_lr",
+        "3e-4",
+        "Todos"
+      ],
+      [
+        "critic_lr",
+        "1e-3",
+        "Todos"
+      ],
+      [
+        "gamma",
+        "0.9999 (canonico y corrida v4)",
+        "Todos"
+      ],
+      [
+        "batch_size",
+        "256",
+        "Todos"
+      ],
+      [
+        "replay_buffer_size",
+        "1 000 000 (4 096 en MATD3 local 8 GB)",
+        "MASAC, MATD3, MAAC"
+      ],
+      [
+        "tau",
+        "0.005",
+        "MASAC, MATD3, MAAC"
+      ],
+      [
+        "ppo_clip",
+        "0.2",
+        "Solo HAPPO"
+      ],
+      [
+        "matd3_policy_delay",
+        "2",
+        "Solo MATD3"
+      ],
+      [
+        "maac_attention_heads",
+        "4",
+        "Solo MAAC"
+      ],
+      [
+        "masac_alpha",
+        "auto",
+        "Solo MASAC"
+      ]
+    ]
+  },
+  {
+    "index": 14,
+    "rows": [
+      [
+        "Parametro",
+        "HAPPO",
+        "MASAC",
+        "MATD3",
+        "MAAC"
+      ],
+      [
+        "Episodios x pasos",
+        "50 x 8 760",
+        "50 x 8 760",
+        "50 x 8 760",
+        "50 x 8 760"
+      ],
+      [
+        "gamma",
+        "0.9999",
+        "0.9999",
+        "0.9999",
+        "0.9999"
+      ],
+      [
+        "hidden_size",
+        "[512, 512]",
+        "rnn 64 / qmix 32 / hyper 64",
+        "768",
+        "768"
+      ],
+      [
+        "Buffer",
+        "on-policy",
+        "2 ep (replay CPU)",
+        "2 000 000",
+        "1 000 000"
+      ],
+      [
+        "Batch",
+        "rollout",
+        "512 (critic_batch 1 ep)",
+        "1 024 (GPU 1 280)",
+        "512 (GPU 768)"
+      ],
+      [
+        "LR actor / critico",
+        "1e-4 / 5e-4",
+        "3e-4 / 5e-4",
+        "3e-4 / 3e-4",
+        "3e-4 / 1e-3"
+      ],
+      [
+        "Especificos",
+        "clip 0.2, GAE 0.95, epochs 5",
+        "action_bins 3, 89 acc.",
+        "policy_delay 2, train_int 50",
+        "attend_heads 4, num_updates 12"
+      ]
+    ]
+  },
+  {
+    "index": 15,
+    "rows": [
+      [
+        "Parametro",
+        "Valor",
+        "Justificacion sintetica"
+      ],
+      [
+        "w_flex / w_carbon / w_cost (E1)",
+        "0.70 / 0.15 / 0.15",
+        "Escenario lexicografico de flexibilidad."
+      ],
+      [
+        "w_flex / w_carbon / w_cost (E2)",
+        "0.15 / 0.70 / 0.15",
+        "Escenario lexicografico de CO2."
+      ],
+      [
+        "w_flex / w_carbon / w_cost (E3)",
+        "0.25 / 0.15 / 0.60",
+        "Costo-pico correlacionados en TOU."
+      ],
+      [
+        "team_reward_ratio (r)",
+        "0.70",
+        "Coordinacion cooperativa Dec-POMDP (media de perfiles del plan)."
+      ],
+      [
+        "peak_weight / ramp_weight",
+        "0.45 / 0.35",
+        "KPI primario y secundario de flexibilidad CityLearn."
+      ],
+      [
+        "ev_weight",
+        "0.25",
+        "Termino EV/SOC reforzado para evitar dejar EV sin cargar."
+      ],
+      [
+        "reward_scale",
+        "1.00",
+        "Escala uniforme para gradientes comparables."
+      ],
+      [
+        "carbon_reference / price_reference",
+        "0.35 / 0.20",
+        "Referencia global IEA y spot competitivo."
+      ]
+    ]
+  },
+  {
+    "index": 16,
+    "rows": [
+      [
+        "#",
+        "Aporte",
+        "Clase/Metodo",
+        "Modelo incorporado"
+      ],
+      [
+        "A1",
+        "Degradacion BESS C-rate + Arrhenius",
+        "Battery.degrade(temperature_celsius)",
+        "ΔC = base·(C_rate)^0.55·exp[Ea/R·(1/T_ref - 1/T)], Ea=24500 J/mol."
+      ],
+      [
+        "A2",
+        "Correccion PV tropical (IEC 61215)",
+        "PV.get_generation(dry_bulb_temperature, ghi)",
+        "T_cell = T_amb + (NOCT-20)/800·G; P(T)=P_STC·[1+γ(T_cell-25)], γ=-0.0035/°C."
+      ],
+      [
+        "A3",
+        "KPI pico con ventana de facturacion",
+        "CostFunction.peak(billing_window_steps)",
+        "Maximo rodante sub-horario (OSINERGMIN MT-3/MT-4, 15 min)."
+      ],
+      [
+        "A4",
+        "Modelo CI dinamico diesel+PV",
+        "CarbonIntensityModel(base_ci, pv_displacement_factor)",
+        "CI(t)=0.790·(1-0.15·min(GHI/1000,1))."
+      ]
+    ]
+  },
+  {
+    "index": 17,
+    "rows": [
+      [
+        "Escenario",
+        "HAPPO",
+        "MASAC",
+        "MATD3",
+        "MAAC"
+      ],
+      [
+        "E1 Flexibilidad",
+        "happo/E1_s0",
+        "masac/E1_s0",
+        "matd3/E1_s0",
+        "maac/E1_s0"
+      ],
+      [
+        "E2 CO2",
+        "happo/E2_s0",
+        "masac/E2_s0",
+        "matd3/E2_s0",
+        "maac/E2_s0"
+      ],
+      [
+        "E3 Costos",
+        "happo/E3_s0",
+        "masac/E3_s0",
+        "matd3/E3_s0",
+        "maac/E3_s0"
+      ]
+    ]
+  }
+]

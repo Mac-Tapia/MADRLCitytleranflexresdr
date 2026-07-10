@@ -215,7 +215,7 @@ def plot_convergence_by_scenario(out_dir: Path) -> list[str]:
         ax.legend()
         fig.tight_layout()
         path = out_dir / f"comparativo_{scen}_convergence_reward_mean.png"
-        fig.savefig(path, dpi=180)
+        fig.savefig(path, dpi=300)
         plt.close(fig)
         paths.append(str(path))
     return paths
@@ -263,7 +263,7 @@ def plot_objective_kpis_by_scenario(out_dir: Path) -> list[str]:
             )
         fig.tight_layout()
         path = out_dir / f"comparativo_{scen}_{oe}_kpi.png"
-        fig.savefig(path, dpi=180)
+        fig.savefig(path, dpi=300)
         plt.close(fig)
         paths.append(str(path))
     return paths
@@ -321,7 +321,7 @@ def plot_global_ranking(df: pd.DataFrame, out_dir: Path) -> str:
     fig.suptitle("Ranking MADRL — datos reales Drive (sin HAPPO: sin KPIs finales)")
     fig.tight_layout()
     path = out_dir / "comparativo_global_ranking_oe.png"
-    fig.savefig(path, dpi=180)
+    fig.savefig(path, dpi=300)
     plt.close(fig)
     return str(path)
 
@@ -354,7 +354,7 @@ def plot_best_worst(df: pd.DataFrame, out_dir: Path) -> str:
     ax.legend(loc="lower right")
     fig.tight_layout()
     path = out_dir / "comparativo_best_worst_por_escenario.png"
-    fig.savefig(path, dpi=180)
+    fig.savefig(path, dpi=300)
     plt.close(fig)
     return str(path)
 
@@ -382,7 +382,7 @@ def plot_district_metrics_compare(out_dir: Path) -> list[str]:
             ax.grid(True, alpha=0.25)
             fig.tight_layout()
             fname = f"comparativo_{scen}_{col}.png"
-            fig.savefig(out_dir / fname, dpi=180)
+            fig.savefig(out_dir / fname, dpi=300)
             plt.close(fig)
             paths.append(str(out_dir / fname))
     return paths
@@ -414,7 +414,7 @@ def plot_control_trace_compare(out_dir: Path) -> list[str]:
         fig.suptitle(f"Control MADRL — trace.csv Drive ({scen})")
         fig.tight_layout()
         path = out_dir / f"comparativo_{scen}_control_trace.png"
-        fig.savefig(path, dpi=180)
+        fig.savefig(path, dpi=300)
         plt.close(fig)
         paths.append(str(path))
     return paths

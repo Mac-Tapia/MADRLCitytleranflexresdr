@@ -1,9 +1,9 @@
 {
   "output": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
-  "size_bytes": 3558467,
-  "paragraphs_non_empty": 333,
-  "word_count_estimated": 10489,
-  "tables": 19,
+  "size_bytes": 3558079,
+  "paragraphs_non_empty": 343,
+  "word_count_estimated": 11229,
+  "tables": 25,
   "inline_images": 33,
   "chapter_order": [
     "Capitulo 1. Introduccion",
@@ -13,7 +13,7 @@
     "Capitulo 5. Resultados y contrastacion de hipotesis",
     "Capitulo 6. Conclusiones y trabajo futuro"
   ],
-  "has_cap5_baseline_v2": true,
+  "has_cap5_baseline_v2": false,
   "has_cap5_stats_colab": true,
   "has_anexo_a": true,
   "has_anexo_b": true,
@@ -31,7 +31,7 @@
       "Capitulo 6": true,
       "Referencias bibliograficas": true
     },
-    "tables_count": 19,
+    "tables_count": 25,
     "tables_ok": true,
     "images_count": 33,
     "images_ok": true,

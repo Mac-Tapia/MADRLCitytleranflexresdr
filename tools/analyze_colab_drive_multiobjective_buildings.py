@@ -364,7 +364,7 @@ def plot_district_heatmap(district_rows: list[dict]) -> Path:
 
     plt.tight_layout()
     out = OUT / "drive_district_objectives.png"
-    plt.savefig(out, dpi=180)
+    plt.savefig(out, dpi=300)
     plt.close()
     return out
 
@@ -403,7 +403,7 @@ def plot_building_heatmap(building_rows: list[dict], scen: str, metric: str, tit
     plt.colorbar(im, ax=ax, fraction=0.025, pad=0.02)
     plt.tight_layout()
     out = OUT / f"drive_building_{scen}_{metric}.png"
-    plt.savefig(out, dpi=180)
+    plt.savefig(out, dpi=300)
     plt.close()
     return out
 
@@ -428,7 +428,7 @@ def plot_ev_inventory(inventory: list[BuildingInventoryRow]) -> Path:
     ax.legend()
     plt.tight_layout()
     out = OUT / "drive_building_ev_inventory.png"
-    plt.savefig(out, dpi=180)
+    plt.savefig(out, dpi=300)
     plt.close()
     return out
 
@@ -451,7 +451,7 @@ def plot_ev_success(building_rows: list[dict], inventory: list[BuildingInventory
     ax1.tick_params(axis="x", rotation=90)
     plt.tight_layout()
     out = OUT / "drive_building_ev_success_matd3_e2.png"
-    plt.savefig(out, dpi=180)
+    plt.savefig(out, dpi=300)
     plt.close()
     return out
 
@@ -512,7 +512,7 @@ def plot_building_objectives_card(
     per_dir = OUT / "por_edificio"
     per_dir.mkdir(parents=True, exist_ok=True)
     out = per_dir / f"drive_building_{label}_objectives.png"
-    plt.savefig(out, dpi=180)
+    plt.savefig(out, dpi=300)
     plt.close()
     return out
 

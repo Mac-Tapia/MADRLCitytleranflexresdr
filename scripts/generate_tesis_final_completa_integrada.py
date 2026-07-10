@@ -91,6 +91,7 @@ def _replace_body_range(
     new_elements: list,
     *,
     start_alt_prefixes: list[str] | None = None,
+    end_alt_prefixes: list[str] | None = None,
 ) -> None:
     from docx.oxml.ns import qn
 
@@ -98,7 +99,7 @@ def _replace_body_range(
     children = [c for c in body if c.tag != qn("w:sectPr")]
     sect_pr = body.find(qn("w:sectPr"))
     start = _find_marker_index(children, start_prefix, alt_prefixes=start_alt_prefixes)
-    end = _find_marker_index(children, end_prefix)
+    end = _find_marker_index(children, end_prefix, alt_prefixes=end_alt_prefixes)
     rebuilt = children[:start] + new_elements + children[end:]
 
     for child in children:
@@ -108,6 +109,25 @@ def _replace_body_range(
             body.insert(body.index(sect_pr), child)
         else:
             body.append(child)
+
+
+def _merge_canonical_preserving_cap2(doc, canonical_path: Path) -> None:
+    """Integra Cap. 1, 3 y 4 desde canonical; conserva Cap. 2 (marco teorico con antecedentes)."""
+    doc_can = Document(str(canonical_path))
+    segments = [
+        ("Capitulo 4", CAP5_MARKER, [CAP5_MARKER_LEGACY]),
+        ("Capitulo 3", "Capitulo 4", None),
+        ("Capitulo 1", "Capitulo 2", None),
+    ]
+    for start, end, end_alt in segments:
+        chunk = _extract_doc_elements(doc_can, start, end)
+        _replace_body_range(
+            doc,
+            start,
+            end,
+            chunk,
+            end_alt_prefixes=end_alt,
+        )
 
 
 def _build_results_chapters() -> list:
@@ -169,51 +189,15 @@ def build_complete() -> Path:
 
     canonical = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx"
     if canonical.is_file():
-        doc_can = Document(str(canonical))
-        cap14 = _extract_doc_elements(doc_can, "Capitulo 1", "Capitulo 5")
-        _replace_body_range(
-            doc,
-            "Capitulo 1",
-            CAP5_MARKER,
-            cap14,
-            start_alt_prefixes=[CAP5_MARKER_LEGACY],
-        )
+        _merge_canonical_preserving_cap2(doc, canonical)
 
     OUT_COMPLETE.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(OUT_COMPLETE))
 
     OUT_CANONICAL.write_bytes(OUT_COMPLETE.read_bytes())
     OUT_SKILL.write_bytes(OUT_COMPLETE.read_bytes())
-
-    if OUT_ANTECEDENTES.is_file():
-        doc_ant = Document(str(OUT_ANTECEDENTES))
-        _replace_body_range(
-            doc_ant,
-            CAP5_MARKER,
-            "Referencias bibliograficas",
-            _build_results_chapters(),
-            start_alt_prefixes=[CAP5_MARKER_LEGACY],
-        )
-        _replace_body_range(doc_ant, "Resumen", "Indice", _build_resumen_abstract())
-        if canonical.is_file():
-            doc_can_ant = Document(str(canonical))
-            cap14 = _extract_doc_elements(doc_can_ant, "Capitulo 1", "Capitulo 5")
-            _replace_body_range(
-                doc_ant,
-                "Capitulo 1",
-                CAP5_MARKER,
-                cap14,
-                start_alt_prefixes=[CAP5_MARKER_LEGACY],
-            )
-        try:
-            doc_ant.save(str(OUT_ANTECEDENTES))
-            print(f"OK -> {OUT_ANTECEDENTES} (Cap. 5-6 y Resumen actualizados)")
-        except OSError as exc:
-            out_alt = OUT_ANTECEDENTES.with_name(
-                OUT_ANTECEDENTES.stem + "_CAP56_UPDATE" + OUT_ANTECEDENTES.suffix
-            )
-            doc_ant.save(str(out_alt))
-            print(f"AVISO: {OUT_ANTECEDENTES} bloqueado ({exc}); guardado en {out_alt}")
+    OUT_ANTECEDENTES.write_bytes(OUT_COMPLETE.read_bytes())
+    print(f"OK -> {OUT_ANTECEDENTES} (copia integral desde FINAL_COMPLETA)")
 
     checks = verify_doctoral_docx(OUT_COMPLETE)
     metrics = _doc_metrics(OUT_COMPLETE)

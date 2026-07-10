@@ -194,8 +194,9 @@ def episode_reward_series(algo: str, scen: str) -> pd.DataFrame | None:
 
 def plot_convergence_by_scenario(out_dir: Path) -> list[str]:
     paths: list[str] = []
+    # 17.5 cm @ 300 dpi ~ 2067 px; figsize width 14 in -> 4200 px for crisp Word embed
     for scen in SCENARIOS:
-        fig, ax = plt.subplots(figsize=(11, 5))
+        fig, ax = plt.subplots(figsize=(14.0, 6.0))
         for algo in ALGOS_TS:
             ep = episode_reward_series(algo, scen)
             if ep is None:
@@ -205,17 +206,23 @@ def plot_convergence_by_scenario(out_dir: Path) -> list[str]:
                 ep["reward_mean"],
                 label=f"{algo} (n={len(ep)})",
                 color=COLORS.get(algo, None),
-                linewidth=1.6,
+                linewidth=2.0,
+                alpha=0.92,
             )
         oe, name, _ = SCENARIO_OBJECTIVE[scen]
-        ax.set_title(f"Convergencia real — {scen} ({oe} {name}) [timeseries.csv Drive]")
-        ax.set_xlabel("Episodio")
-        ax.set_ylabel("reward_mean (distrito)")
+        ax.set_title(
+            f"Convergencia real — {scen} ({oe} {name}) [timeseries.csv Drive]",
+            fontsize=13,
+            fontweight="bold",
+        )
+        ax.set_xlabel("Episodio", fontsize=11)
+        ax.set_ylabel("reward_mean (distrito)", fontsize=11)
+        ax.tick_params(labelsize=10)
         ax.grid(True, alpha=0.25)
-        ax.legend()
-        fig.tight_layout()
+        ax.legend(fontsize=10, loc="best")
+        fig.tight_layout(pad=0.6)
         path = out_dir / f"comparativo_{scen}_convergence_reward_mean.png"
-        fig.savefig(path, dpi=300)
+        fig.savefig(path, dpi=300, bbox_inches="tight", pad_inches=0.08)
         plt.close(fig)
         paths.append(str(path))
     return paths

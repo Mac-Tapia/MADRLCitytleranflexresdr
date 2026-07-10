@@ -1,0 +1,613 @@
+algorithm,scenario,agent,equipment_class,count
+HAPPO,E1,Building_1,BESS controlado,1
+HAPPO,E1,Building_1,EV controlado,4
+HAPPO,E1,Building_1,carga flexible controlada,1
+HAPPO,E1,Building_10,BESS controlado,1
+HAPPO,E1,Building_10,EV controlado,6
+HAPPO,E1,Building_10,carga flexible controlada,1
+HAPPO,E1,Building_11,BESS controlado,1
+HAPPO,E1,Building_11,EV controlado,3
+HAPPO,E1,Building_11,carga flexible controlada,1
+HAPPO,E1,Building_12,BESS controlado,1
+HAPPO,E1,Building_12,EV controlado,3
+HAPPO,E1,Building_12,carga flexible controlada,1
+HAPPO,E1,Building_13,BESS controlado,1
+HAPPO,E1,Building_13,EV controlado,11
+HAPPO,E1,Building_13,carga flexible controlada,1
+HAPPO,E1,Building_14,BESS controlado,1
+HAPPO,E1,Building_14,EV controlado,4
+HAPPO,E1,Building_14,carga flexible controlada,1
+HAPPO,E1,Building_15,BESS controlado,1
+HAPPO,E1,Building_15,EV controlado,8
+HAPPO,E1,Building_15,carga flexible controlada,1
+HAPPO,E1,Building_16,BESS controlado,1
+HAPPO,E1,Building_16,EV controlado,11
+HAPPO,E1,Building_16,carga flexible controlada,1
+HAPPO,E1,Building_17,BESS controlado,1
+HAPPO,E1,Building_17,EV controlado,11
+HAPPO,E1,Building_17,carga flexible controlada,1
+HAPPO,E1,Building_2,BESS controlado,1
+HAPPO,E1,Building_2,EV controlado,6
+HAPPO,E1,Building_2,carga flexible controlada,1
+HAPPO,E1,Building_3,BESS controlado,1
+HAPPO,E1,Building_3,EV controlado,8
+HAPPO,E1,Building_3,carga flexible controlada,1
+HAPPO,E1,Building_4,BESS controlado,1
+HAPPO,E1,Building_4,EV controlado,6
+HAPPO,E1,Building_4,carga flexible controlada,1
+HAPPO,E1,Building_5,BESS controlado,1
+HAPPO,E1,Building_5,EV controlado,3
+HAPPO,E1,Building_5,carga flexible controlada,1
+HAPPO,E1,Building_6,BESS controlado,1
+HAPPO,E1,Building_6,EV controlado,32
+HAPPO,E1,Building_6,carga flexible controlada,1
+HAPPO,E1,Building_7,BESS controlado,1
+HAPPO,E1,Building_7,EV controlado,42
+HAPPO,E1,Building_7,carga flexible controlada,1
+HAPPO,E1,Building_8,BESS controlado,1
+HAPPO,E1,Building_8,EV controlado,17
+HAPPO,E1,Building_8,carga flexible controlada,1
+HAPPO,E1,Building_9,BESS controlado,1
+HAPPO,E1,Building_9,EV controlado,10
+HAPPO,E1,Building_9,carga flexible controlada,1
+HAPPO,E2,Building_1,BESS controlado,1
+HAPPO,E2,Building_1,EV controlado,4
+HAPPO,E2,Building_1,carga flexible controlada,1
+HAPPO,E2,Building_10,BESS controlado,1
+HAPPO,E2,Building_10,EV controlado,6
+HAPPO,E2,Building_10,carga flexible controlada,1
+HAPPO,E2,Building_11,BESS controlado,1
+HAPPO,E2,Building_11,EV controlado,3
+HAPPO,E2,Building_11,carga flexible controlada,1
+HAPPO,E2,Building_12,BESS controlado,1
+HAPPO,E2,Building_12,EV controlado,3
+HAPPO,E2,Building_12,carga flexible controlada,1
+HAPPO,E2,Building_13,BESS controlado,1
+HAPPO,E2,Building_13,EV controlado,11
+HAPPO,E2,Building_13,carga flexible controlada,1
+HAPPO,E2,Building_14,BESS controlado,1
+HAPPO,E2,Building_14,EV controlado,4
+HAPPO,E2,Building_14,carga flexible controlada,1
+HAPPO,E2,Building_15,BESS controlado,1
+HAPPO,E2,Building_15,EV controlado,8
+HAPPO,E2,Building_15,carga flexible controlada,1
+HAPPO,E2,Building_16,BESS controlado,1
+HAPPO,E2,Building_16,EV controlado,11
+HAPPO,E2,Building_16,carga flexible controlada,1
+HAPPO,E2,Building_17,BESS controlado,1
+HAPPO,E2,Building_17,EV controlado,11
+HAPPO,E2,Building_17,carga flexible controlada,1
+HAPPO,E2,Building_2,BESS controlado,1
+HAPPO,E2,Building_2,EV controlado,6
+HAPPO,E2,Building_2,carga flexible controlada,1
+HAPPO,E2,Building_3,BESS controlado,1
+HAPPO,E2,Building_3,EV controlado,8
+HAPPO,E2,Building_3,carga flexible controlada,1
+HAPPO,E2,Building_4,BESS controlado,1
+HAPPO,E2,Building_4,EV controlado,6
+HAPPO,E2,Building_4,carga flexible controlada,1
+HAPPO,E2,Building_5,BESS controlado,1
+HAPPO,E2,Building_5,EV controlado,3
+HAPPO,E2,Building_5,carga flexible controlada,1
+HAPPO,E2,Building_6,BESS controlado,1
+HAPPO,E2,Building_6,EV controlado,32
+HAPPO,E2,Building_6,carga flexible controlada,1
+HAPPO,E2,Building_7,BESS controlado,1
+HAPPO,E2,Building_7,EV controlado,42
+HAPPO,E2,Building_7,carga flexible controlada,1
+HAPPO,E2,Building_8,BESS controlado,1
+HAPPO,E2,Building_8,EV controlado,17
+HAPPO,E2,Building_8,carga flexible controlada,1
+HAPPO,E2,Building_9,BESS controlado,1
+HAPPO,E2,Building_9,EV controlado,10
+HAPPO,E2,Building_9,carga flexible controlada,1
+HAPPO,E3,Building_1,BESS controlado,1
+HAPPO,E3,Building_1,EV controlado,4
+HAPPO,E3,Building_1,carga flexible controlada,1
+HAPPO,E3,Building_10,BESS controlado,1
+HAPPO,E3,Building_10,EV controlado,6
+HAPPO,E3,Building_10,carga flexible controlada,1
+HAPPO,E3,Building_11,BESS controlado,1
+HAPPO,E3,Building_11,EV controlado,3
+HAPPO,E3,Building_11,carga flexible controlada,1
+HAPPO,E3,Building_12,BESS controlado,1
+HAPPO,E3,Building_12,EV controlado,3
+HAPPO,E3,Building_12,carga flexible controlada,1
+HAPPO,E3,Building_13,BESS controlado,1
+HAPPO,E3,Building_13,EV controlado,11
+HAPPO,E3,Building_13,carga flexible controlada,1
+HAPPO,E3,Building_14,BESS controlado,1
+HAPPO,E3,Building_14,EV controlado,4
+HAPPO,E3,Building_14,carga flexible controlada,1
+HAPPO,E3,Building_15,BESS controlado,1
+HAPPO,E3,Building_15,EV controlado,8
+HAPPO,E3,Building_15,carga flexible controlada,1
+HAPPO,E3,Building_16,BESS controlado,1
+HAPPO,E3,Building_16,EV controlado,11
+HAPPO,E3,Building_16,carga flexible controlada,1
+HAPPO,E3,Building_17,BESS controlado,1
+HAPPO,E3,Building_17,EV controlado,11
+HAPPO,E3,Building_17,carga flexible controlada,1
+HAPPO,E3,Building_2,BESS controlado,1
+HAPPO,E3,Building_2,EV controlado,6
+HAPPO,E3,Building_2,carga flexible controlada,1
+HAPPO,E3,Building_3,BESS controlado,1
+HAPPO,E3,Building_3,EV controlado,8
+HAPPO,E3,Building_3,carga flexible controlada,1
+HAPPO,E3,Building_4,BESS controlado,1
+HAPPO,E3,Building_4,EV controlado,6
+HAPPO,E3,Building_4,carga flexible controlada,1
+HAPPO,E3,Building_5,BESS controlado,1
+HAPPO,E3,Building_5,EV controlado,3
+HAPPO,E3,Building_5,carga flexible controlada,1
+HAPPO,E3,Building_6,BESS controlado,1
+HAPPO,E3,Building_6,EV controlado,32
+HAPPO,E3,Building_6,carga flexible controlada,1
+HAPPO,E3,Building_7,BESS controlado,1
+HAPPO,E3,Building_7,EV controlado,42
+HAPPO,E3,Building_7,carga flexible controlada,1
+HAPPO,E3,Building_8,BESS controlado,1
+HAPPO,E3,Building_8,EV controlado,17
+HAPPO,E3,Building_8,carga flexible controlada,1
+HAPPO,E3,Building_9,BESS controlado,1
+HAPPO,E3,Building_9,EV controlado,10
+HAPPO,E3,Building_9,carga flexible controlada,1
+MAAC,E1,Building_1,BESS controlado,1
+MAAC,E1,Building_1,EV controlado,4
+MAAC,E1,Building_1,carga flexible controlada,1
+MAAC,E1,Building_10,BESS controlado,1
+MAAC,E1,Building_10,EV controlado,6
+MAAC,E1,Building_10,carga flexible controlada,1
+MAAC,E1,Building_11,BESS controlado,1
+MAAC,E1,Building_11,EV controlado,3
+MAAC,E1,Building_11,carga flexible controlada,1
+MAAC,E1,Building_12,BESS controlado,1
+MAAC,E1,Building_12,EV controlado,3
+MAAC,E1,Building_12,carga flexible controlada,1
+MAAC,E1,Building_13,BESS controlado,1
+MAAC,E1,Building_13,EV controlado,11
+MAAC,E1,Building_13,carga flexible controlada,1
+MAAC,E1,Building_14,BESS controlado,1
+MAAC,E1,Building_14,EV controlado,4
+MAAC,E1,Building_14,carga flexible controlada,1
+MAAC,E1,Building_15,BESS controlado,1
+MAAC,E1,Building_15,EV controlado,8
+MAAC,E1,Building_15,carga flexible controlada,1
+MAAC,E1,Building_16,BESS controlado,1
+MAAC,E1,Building_16,EV controlado,11
+MAAC,E1,Building_16,carga flexible controlada,1
+MAAC,E1,Building_17,BESS controlado,1
+MAAC,E1,Building_17,EV controlado,11
+MAAC,E1,Building_17,carga flexible controlada,1
+MAAC,E1,Building_2,BESS controlado,1
+MAAC,E1,Building_2,EV controlado,6
+MAAC,E1,Building_2,carga flexible controlada,1
+MAAC,E1,Building_3,BESS controlado,1
+MAAC,E1,Building_3,EV controlado,8
+MAAC,E1,Building_3,carga flexible controlada,1
+MAAC,E1,Building_4,BESS controlado,1
+MAAC,E1,Building_4,EV controlado,6
+MAAC,E1,Building_4,carga flexible controlada,1
+MAAC,E1,Building_5,BESS controlado,1
+MAAC,E1,Building_5,EV controlado,3
+MAAC,E1,Building_5,carga flexible controlada,1
+MAAC,E1,Building_6,BESS controlado,1
+MAAC,E1,Building_6,EV controlado,32
+MAAC,E1,Building_6,carga flexible controlada,1
+MAAC,E1,Building_7,BESS controlado,1
+MAAC,E1,Building_7,EV controlado,42
+MAAC,E1,Building_7,carga flexible controlada,1
+MAAC,E1,Building_8,BESS controlado,1
+MAAC,E1,Building_8,EV controlado,17
+MAAC,E1,Building_8,carga flexible controlada,1
+MAAC,E1,Building_9,BESS controlado,1
+MAAC,E1,Building_9,EV controlado,10
+MAAC,E1,Building_9,carga flexible controlada,1
+MAAC,E2,Building_1,BESS controlado,1
+MAAC,E2,Building_1,EV controlado,4
+MAAC,E2,Building_1,carga flexible controlada,1
+MAAC,E2,Building_10,BESS controlado,1
+MAAC,E2,Building_10,EV controlado,6
+MAAC,E2,Building_10,carga flexible controlada,1
+MAAC,E2,Building_11,BESS controlado,1
+MAAC,E2,Building_11,EV controlado,3
+MAAC,E2,Building_11,carga flexible controlada,1
+MAAC,E2,Building_12,BESS controlado,1
+MAAC,E2,Building_12,EV controlado,3
+MAAC,E2,Building_12,carga flexible controlada,1
+MAAC,E2,Building_13,BESS controlado,1
+MAAC,E2,Building_13,EV controlado,11
+MAAC,E2,Building_13,carga flexible controlada,1
+MAAC,E2,Building_14,BESS controlado,1
+MAAC,E2,Building_14,EV controlado,4
+MAAC,E2,Building_14,carga flexible controlada,1
+MAAC,E2,Building_15,BESS controlado,1
+MAAC,E2,Building_15,EV controlado,8
+MAAC,E2,Building_15,carga flexible controlada,1
+MAAC,E2,Building_16,BESS controlado,1
+MAAC,E2,Building_16,EV controlado,11
+MAAC,E2,Building_16,carga flexible controlada,1
+MAAC,E2,Building_17,BESS controlado,1
+MAAC,E2,Building_17,EV controlado,11
+MAAC,E2,Building_17,carga flexible controlada,1
+MAAC,E2,Building_2,BESS controlado,1
+MAAC,E2,Building_2,EV controlado,6
+MAAC,E2,Building_2,carga flexible controlada,1
+MAAC,E2,Building_3,BESS controlado,1
+MAAC,E2,Building_3,EV controlado,8
+MAAC,E2,Building_3,carga flexible controlada,1
+MAAC,E2,Building_4,BESS controlado,1
+MAAC,E2,Building_4,EV controlado,6
+MAAC,E2,Building_4,carga flexible controlada,1
+MAAC,E2,Building_5,BESS controlado,1
+MAAC,E2,Building_5,EV controlado,3
+MAAC,E2,Building_5,carga flexible controlada,1
+MAAC,E2,Building_6,BESS controlado,1
+MAAC,E2,Building_6,EV controlado,32
+MAAC,E2,Building_6,carga flexible controlada,1
+MAAC,E2,Building_7,BESS controlado,1
+MAAC,E2,Building_7,EV controlado,42
+MAAC,E2,Building_7,carga flexible controlada,1
+MAAC,E2,Building_8,BESS controlado,1
+MAAC,E2,Building_8,EV controlado,17
+MAAC,E2,Building_8,carga flexible controlada,1
+MAAC,E2,Building_9,BESS controlado,1
+MAAC,E2,Building_9,EV controlado,10
+MAAC,E2,Building_9,carga flexible controlada,1
+MAAC,E3,Building_1,BESS controlado,1
+MAAC,E3,Building_1,EV controlado,4
+MAAC,E3,Building_1,carga flexible controlada,1
+MAAC,E3,Building_10,BESS controlado,1
+MAAC,E3,Building_10,EV controlado,6
+MAAC,E3,Building_10,carga flexible controlada,1
+MAAC,E3,Building_11,BESS controlado,1
+MAAC,E3,Building_11,EV controlado,3
+MAAC,E3,Building_11,carga flexible controlada,1
+MAAC,E3,Building_12,BESS controlado,1
+MAAC,E3,Building_12,EV controlado,3
+MAAC,E3,Building_12,carga flexible controlada,1
+MAAC,E3,Building_13,BESS controlado,1
+MAAC,E3,Building_13,EV controlado,11
+MAAC,E3,Building_13,carga flexible controlada,1
+MAAC,E3,Building_14,BESS controlado,1
+MAAC,E3,Building_14,EV controlado,4
+MAAC,E3,Building_14,carga flexible controlada,1
+MAAC,E3,Building_15,BESS controlado,1
+MAAC,E3,Building_15,EV controlado,8
+MAAC,E3,Building_15,carga flexible controlada,1
+MAAC,E3,Building_16,BESS controlado,1
+MAAC,E3,Building_16,EV controlado,11
+MAAC,E3,Building_16,carga flexible controlada,1
+MAAC,E3,Building_17,BESS controlado,1
+MAAC,E3,Building_17,EV controlado,11
+MAAC,E3,Building_17,carga flexible controlada,1
+MAAC,E3,Building_2,BESS controlado,1
+MAAC,E3,Building_2,EV controlado,6
+MAAC,E3,Building_2,carga flexible controlada,1
+MAAC,E3,Building_3,BESS controlado,1
+MAAC,E3,Building_3,EV controlado,8
+MAAC,E3,Building_3,carga flexible controlada,1
+MAAC,E3,Building_4,BESS controlado,1
+MAAC,E3,Building_4,EV controlado,6
+MAAC,E3,Building_4,carga flexible controlada,1
+MAAC,E3,Building_5,BESS controlado,1
+MAAC,E3,Building_5,EV controlado,3
+MAAC,E3,Building_5,carga flexible controlada,1
+MAAC,E3,Building_6,BESS controlado,1
+MAAC,E3,Building_6,EV controlado,32
+MAAC,E3,Building_6,carga flexible controlada,1
+MAAC,E3,Building_7,BESS controlado,1
+MAAC,E3,Building_7,EV controlado,42
+MAAC,E3,Building_7,carga flexible controlada,1
+MAAC,E3,Building_8,BESS controlado,1
+MAAC,E3,Building_8,EV controlado,17
+MAAC,E3,Building_8,carga flexible controlada,1
+MAAC,E3,Building_9,BESS controlado,1
+MAAC,E3,Building_9,EV controlado,10
+MAAC,E3,Building_9,carga flexible controlada,1
+MASAC,E1,Building_1,BESS controlado,1
+MASAC,E1,Building_1,EV controlado,4
+MASAC,E1,Building_1,carga flexible controlada,1
+MASAC,E1,Building_10,BESS controlado,1
+MASAC,E1,Building_10,EV controlado,6
+MASAC,E1,Building_10,carga flexible controlada,1
+MASAC,E1,Building_11,BESS controlado,1
+MASAC,E1,Building_11,EV controlado,3
+MASAC,E1,Building_11,carga flexible controlada,1
+MASAC,E1,Building_12,BESS controlado,1
+MASAC,E1,Building_12,EV controlado,3
+MASAC,E1,Building_12,carga flexible controlada,1
+MASAC,E1,Building_13,BESS controlado,1
+MASAC,E1,Building_13,EV controlado,11
+MASAC,E1,Building_13,carga flexible controlada,1
+MASAC,E1,Building_14,BESS controlado,1
+MASAC,E1,Building_14,EV controlado,4
+MASAC,E1,Building_14,carga flexible controlada,1
+MASAC,E1,Building_15,BESS controlado,1
+MASAC,E1,Building_15,EV controlado,8
+MASAC,E1,Building_15,carga flexible controlada,1
+MASAC,E1,Building_16,BESS controlado,1
+MASAC,E1,Building_16,EV controlado,11
+MASAC,E1,Building_16,carga flexible controlada,1
+MASAC,E1,Building_17,BESS controlado,1
+MASAC,E1,Building_17,EV controlado,11
+MASAC,E1,Building_17,carga flexible controlada,1
+MASAC,E1,Building_2,BESS controlado,1
+MASAC,E1,Building_2,EV controlado,6
+MASAC,E1,Building_2,carga flexible controlada,1
+MASAC,E1,Building_3,BESS controlado,1
+MASAC,E1,Building_3,EV controlado,8
+MASAC,E1,Building_3,carga flexible controlada,1
+MASAC,E1,Building_4,BESS controlado,1
+MASAC,E1,Building_4,EV controlado,6
+MASAC,E1,Building_4,carga flexible controlada,1
+MASAC,E1,Building_5,BESS controlado,1
+MASAC,E1,Building_5,EV controlado,3
+MASAC,E1,Building_5,carga flexible controlada,1
+MASAC,E1,Building_6,BESS controlado,1
+MASAC,E1,Building_6,EV controlado,32
+MASAC,E1,Building_6,carga flexible controlada,1
+MASAC,E1,Building_7,BESS controlado,1
+MASAC,E1,Building_7,EV controlado,42
+MASAC,E1,Building_7,carga flexible controlada,1
+MASAC,E1,Building_8,BESS controlado,1
+MASAC,E1,Building_8,EV controlado,17
+MASAC,E1,Building_8,carga flexible controlada,1
+MASAC,E1,Building_9,BESS controlado,1
+MASAC,E1,Building_9,EV controlado,10
+MASAC,E1,Building_9,carga flexible controlada,1
+MASAC,E2,Building_1,BESS controlado,1
+MASAC,E2,Building_1,EV controlado,4
+MASAC,E2,Building_1,carga flexible controlada,1
+MASAC,E2,Building_10,BESS controlado,1
+MASAC,E2,Building_10,EV controlado,6
+MASAC,E2,Building_10,carga flexible controlada,1
+MASAC,E2,Building_11,BESS controlado,1
+MASAC,E2,Building_11,EV controlado,3
+MASAC,E2,Building_11,carga flexible controlada,1
+MASAC,E2,Building_12,BESS controlado,1
+MASAC,E2,Building_12,EV controlado,3
+MASAC,E2,Building_12,carga flexible controlada,1
+MASAC,E2,Building_13,BESS controlado,1
+MASAC,E2,Building_13,EV controlado,11
+MASAC,E2,Building_13,carga flexible controlada,1
+MASAC,E2,Building_14,BESS controlado,1
+MASAC,E2,Building_14,EV controlado,4
+MASAC,E2,Building_14,carga flexible controlada,1
+MASAC,E2,Building_15,BESS controlado,1
+MASAC,E2,Building_15,EV controlado,8
+MASAC,E2,Building_15,carga flexible controlada,1
+MASAC,E2,Building_16,BESS controlado,1
+MASAC,E2,Building_16,EV controlado,11
+MASAC,E2,Building_16,carga flexible controlada,1
+MASAC,E2,Building_17,BESS controlado,1
+MASAC,E2,Building_17,EV controlado,11
+MASAC,E2,Building_17,carga flexible controlada,1
+MASAC,E2,Building_2,BESS controlado,1
+MASAC,E2,Building_2,EV controlado,6
+MASAC,E2,Building_2,carga flexible controlada,1
+MASAC,E2,Building_3,BESS controlado,1
+MASAC,E2,Building_3,EV controlado,8
+MASAC,E2,Building_3,carga flexible controlada,1
+MASAC,E2,Building_4,BESS controlado,1
+MASAC,E2,Building_4,EV controlado,6
+MASAC,E2,Building_4,carga flexible controlada,1
+MASAC,E2,Building_5,BESS controlado,1
+MASAC,E2,Building_5,EV controlado,3
+MASAC,E2,Building_5,carga flexible controlada,1
+MASAC,E2,Building_6,BESS controlado,1
+MASAC,E2,Building_6,EV controlado,32
+MASAC,E2,Building_6,carga flexible controlada,1
+MASAC,E2,Building_7,BESS controlado,1
+MASAC,E2,Building_7,EV controlado,42
+MASAC,E2,Building_7,carga flexible controlada,1
+MASAC,E2,Building_8,BESS controlado,1
+MASAC,E2,Building_8,EV controlado,17
+MASAC,E2,Building_8,carga flexible controlada,1
+MASAC,E2,Building_9,BESS controlado,1
+MASAC,E2,Building_9,EV controlado,10
+MASAC,E2,Building_9,carga flexible controlada,1
+MASAC,E3,Building_1,BESS controlado,1
+MASAC,E3,Building_1,EV controlado,4
+MASAC,E3,Building_1,carga flexible controlada,1
+MASAC,E3,Building_10,BESS controlado,1
+MASAC,E3,Building_10,EV controlado,6
+MASAC,E3,Building_10,carga flexible controlada,1
+MASAC,E3,Building_11,BESS controlado,1
+MASAC,E3,Building_11,EV controlado,3
+MASAC,E3,Building_11,carga flexible controlada,1
+MASAC,E3,Building_12,BESS controlado,1
+MASAC,E3,Building_12,EV controlado,3
+MASAC,E3,Building_12,carga flexible controlada,1
+MASAC,E3,Building_13,BESS controlado,1
+MASAC,E3,Building_13,EV controlado,11
+MASAC,E3,Building_13,carga flexible controlada,1
+MASAC,E3,Building_14,BESS controlado,1
+MASAC,E3,Building_14,EV controlado,4
+MASAC,E3,Building_14,carga flexible controlada,1
+MASAC,E3,Building_15,BESS controlado,1
+MASAC,E3,Building_15,EV controlado,8
+MASAC,E3,Building_15,carga flexible controlada,1
+MASAC,E3,Building_16,BESS controlado,1
+MASAC,E3,Building_16,EV controlado,11
+MASAC,E3,Building_16,carga flexible controlada,1
+MASAC,E3,Building_17,BESS controlado,1
+MASAC,E3,Building_17,EV controlado,11
+MASAC,E3,Building_17,carga flexible controlada,1
+MASAC,E3,Building_2,BESS controlado,1
+MASAC,E3,Building_2,EV controlado,6
+MASAC,E3,Building_2,carga flexible controlada,1
+MASAC,E3,Building_3,BESS controlado,1
+MASAC,E3,Building_3,EV controlado,8
+MASAC,E3,Building_3,carga flexible controlada,1
+MASAC,E3,Building_4,BESS controlado,1
+MASAC,E3,Building_4,EV controlado,6
+MASAC,E3,Building_4,carga flexible controlada,1
+MASAC,E3,Building_5,BESS controlado,1
+MASAC,E3,Building_5,EV controlado,3
+MASAC,E3,Building_5,carga flexible controlada,1
+MASAC,E3,Building_6,BESS controlado,1
+MASAC,E3,Building_6,EV controlado,32
+MASAC,E3,Building_6,carga flexible controlada,1
+MASAC,E3,Building_7,BESS controlado,1
+MASAC,E3,Building_7,EV controlado,42
+MASAC,E3,Building_7,carga flexible controlada,1
+MASAC,E3,Building_8,BESS controlado,1
+MASAC,E3,Building_8,EV controlado,17
+MASAC,E3,Building_8,carga flexible controlada,1
+MASAC,E3,Building_9,BESS controlado,1
+MASAC,E3,Building_9,EV controlado,10
+MASAC,E3,Building_9,carga flexible controlada,1
+MATD3,E1,Building_1,BESS controlado,1
+MATD3,E1,Building_1,EV controlado,4
+MATD3,E1,Building_1,carga flexible controlada,1
+MATD3,E1,Building_10,BESS controlado,1
+MATD3,E1,Building_10,EV controlado,6
+MATD3,E1,Building_10,carga flexible controlada,1
+MATD3,E1,Building_11,BESS controlado,1
+MATD3,E1,Building_11,EV controlado,3
+MATD3,E1,Building_11,carga flexible controlada,1
+MATD3,E1,Building_12,BESS controlado,1
+MATD3,E1,Building_12,EV controlado,3
+MATD3,E1,Building_12,carga flexible controlada,1
+MATD3,E1,Building_13,BESS controlado,1
+MATD3,E1,Building_13,EV controlado,11
+MATD3,E1,Building_13,carga flexible controlada,1
+MATD3,E1,Building_14,BESS controlado,1
+MATD3,E1,Building_14,EV controlado,4
+MATD3,E1,Building_14,carga flexible controlada,1
+MATD3,E1,Building_15,BESS controlado,1
+MATD3,E1,Building_15,EV controlado,8
+MATD3,E1,Building_15,carga flexible controlada,1
+MATD3,E1,Building_16,BESS controlado,1
+MATD3,E1,Building_16,EV controlado,11
+MATD3,E1,Building_16,carga flexible controlada,1
+MATD3,E1,Building_17,BESS controlado,1
+MATD3,E1,Building_17,EV controlado,11
+MATD3,E1,Building_17,carga flexible controlada,1
+MATD3,E1,Building_2,BESS controlado,1
+MATD3,E1,Building_2,EV controlado,6
+MATD3,E1,Building_2,carga flexible controlada,1
+MATD3,E1,Building_3,BESS controlado,1
+MATD3,E1,Building_3,EV controlado,8
+MATD3,E1,Building_3,carga flexible controlada,1
+MATD3,E1,Building_4,BESS controlado,1
+MATD3,E1,Building_4,EV controlado,6
+MATD3,E1,Building_4,carga flexible controlada,1
+MATD3,E1,Building_5,BESS controlado,1
+MATD3,E1,Building_5,EV controlado,3
+MATD3,E1,Building_5,carga flexible controlada,1
+MATD3,E1,Building_6,BESS controlado,1
+MATD3,E1,Building_6,EV controlado,32
+MATD3,E1,Building_6,carga flexible controlada,1
+MATD3,E1,Building_7,BESS controlado,1
+MATD3,E1,Building_7,EV controlado,42
+MATD3,E1,Building_7,carga flexible controlada,1
+MATD3,E1,Building_8,BESS controlado,1
+MATD3,E1,Building_8,EV controlado,17
+MATD3,E1,Building_8,carga flexible controlada,1
+MATD3,E1,Building_9,BESS controlado,1
+MATD3,E1,Building_9,EV controlado,10
+MATD3,E1,Building_9,carga flexible controlada,1
+MATD3,E2,Building_1,BESS controlado,1
+MATD3,E2,Building_1,EV controlado,4
+MATD3,E2,Building_1,carga flexible controlada,1
+MATD3,E2,Building_10,BESS controlado,1
+MATD3,E2,Building_10,EV controlado,6
+MATD3,E2,Building_10,carga flexible controlada,1
+MATD3,E2,Building_11,BESS controlado,1
+MATD3,E2,Building_11,EV controlado,3
+MATD3,E2,Building_11,carga flexible controlada,1
+MATD3,E2,Building_12,BESS controlado,1
+MATD3,E2,Building_12,EV controlado,3
+MATD3,E2,Building_12,carga flexible controlada,1
+MATD3,E2,Building_13,BESS controlado,1
+MATD3,E2,Building_13,EV controlado,11
+MATD3,E2,Building_13,carga flexible controlada,1
+MATD3,E2,Building_14,BESS controlado,1
+MATD3,E2,Building_14,EV controlado,4
+MATD3,E2,Building_14,carga flexible controlada,1
+MATD3,E2,Building_15,BESS controlado,1
+MATD3,E2,Building_15,EV controlado,8
+MATD3,E2,Building_15,carga flexible controlada,1
+MATD3,E2,Building_16,BESS controlado,1
+MATD3,E2,Building_16,EV controlado,11
+MATD3,E2,Building_16,carga flexible controlada,1
+MATD3,E2,Building_17,BESS controlado,1
+MATD3,E2,Building_17,EV controlado,11
+MATD3,E2,Building_17,carga flexible controlada,1
+MATD3,E2,Building_2,BESS controlado,1
+MATD3,E2,Building_2,EV controlado,6
+MATD3,E2,Building_2,carga flexible controlada,1
+MATD3,E2,Building_3,BESS controlado,1
+MATD3,E2,Building_3,EV controlado,8
+MATD3,E2,Building_3,carga flexible controlada,1
+MATD3,E2,Building_4,BESS controlado,1
+MATD3,E2,Building_4,EV controlado,6
+MATD3,E2,Building_4,carga flexible controlada,1
+MATD3,E2,Building_5,BESS controlado,1
+MATD3,E2,Building_5,EV controlado,3
+MATD3,E2,Building_5,carga flexible controlada,1
+MATD3,E2,Building_6,BESS controlado,1
+MATD3,E2,Building_6,EV controlado,32
+MATD3,E2,Building_6,carga flexible controlada,1
+MATD3,E2,Building_7,BESS controlado,1
+MATD3,E2,Building_7,EV controlado,42
+MATD3,E2,Building_7,carga flexible controlada,1
+MATD3,E2,Building_8,BESS controlado,1
+MATD3,E2,Building_8,EV controlado,17
+MATD3,E2,Building_8,carga flexible controlada,1
+MATD3,E2,Building_9,BESS controlado,1
+MATD3,E2,Building_9,EV controlado,10
+MATD3,E2,Building_9,carga flexible controlada,1
+MATD3,E3,Building_1,BESS controlado,1
+MATD3,E3,Building_1,EV controlado,4
+MATD3,E3,Building_1,carga flexible controlada,1
+MATD3,E3,Building_10,BESS controlado,1
+MATD3,E3,Building_10,EV controlado,6
+MATD3,E3,Building_10,carga flexible controlada,1
+MATD3,E3,Building_11,BESS controlado,1
+MATD3,E3,Building_11,EV controlado,3
+MATD3,E3,Building_11,carga flexible controlada,1
+MATD3,E3,Building_12,BESS controlado,1
+MATD3,E3,Building_12,EV controlado,3
+MATD3,E3,Building_12,carga flexible controlada,1
+MATD3,E3,Building_13,BESS controlado,1
+MATD3,E3,Building_13,EV controlado,11
+MATD3,E3,Building_13,carga flexible controlada,1
+MATD3,E3,Building_14,BESS controlado,1
+MATD3,E3,Building_14,EV controlado,4
+MATD3,E3,Building_14,carga flexible controlada,1
+MATD3,E3,Building_15,BESS controlado,1
+MATD3,E3,Building_15,EV controlado,8
+MATD3,E3,Building_15,carga flexible controlada,1
+MATD3,E3,Building_16,BESS controlado,1
+MATD3,E3,Building_16,EV controlado,11
+MATD3,E3,Building_16,carga flexible controlada,1
+MATD3,E3,Building_17,BESS controlado,1
+MATD3,E3,Building_17,EV controlado,11
+MATD3,E3,Building_17,carga flexible controlada,1
+MATD3,E3,Building_2,BESS controlado,1
+MATD3,E3,Building_2,EV controlado,6
+MATD3,E3,Building_2,carga flexible controlada,1
+MATD3,E3,Building_3,BESS controlado,1
+MATD3,E3,Building_3,EV controlado,8
+MATD3,E3,Building_3,carga flexible controlada,1
+MATD3,E3,Building_4,BESS controlado,1
+MATD3,E3,Building_4,EV controlado,6
+MATD3,E3,Building_4,carga flexible controlada,1
+MATD3,E3,Building_5,BESS controlado,1
+MATD3,E3,Building_5,EV controlado,3
+MATD3,E3,Building_5,carga flexible controlada,1
+MATD3,E3,Building_6,BESS controlado,1
+MATD3,E3,Building_6,EV controlado,32
+MATD3,E3,Building_6,carga flexible controlada,1
+MATD3,E3,Building_7,BESS controlado,1
+MATD3,E3,Building_7,EV controlado,42
+MATD3,E3,Building_7,carga flexible controlada,1
+MATD3,E3,Building_8,BESS controlado,1
+MATD3,E3,Building_8,EV controlado,17
+MATD3,E3,Building_8,carga flexible controlada,1
+MATD3,E3,Building_9,BESS controlado,1
+MATD3,E3,Building_9,EV controlado,10
+MATD3,E3,Building_9,carga flexible controlada,1

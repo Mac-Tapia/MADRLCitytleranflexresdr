@@ -24,6 +24,14 @@ RUN_ROOT = REPO / "outputs" / RUN_ID
 OUT_DIR = RUN_ROOT / "resumen_comparativo" / "estadistica"
 COMP_CSV = RUN_ROOT / "resumen_comparativo" / "comparison_metrics_colab.csv"
 DISTRICT_CSV = RUN_ROOT / "resumen_comparativo" / "multiobjetivo" / "district_objectives_by_algorithm.csv"
+EPISODE_CSV = (
+    REPO / "outputs" / "_drive_madrl" / "full_data" / "analysis_real_drive" / "tables" / "district_episode_kpis.csv"
+)
+OE_EPISODE_METRICS = {
+    "OE1": {"scenario": "E1", "metric": "reward_mean", "dimension": "Flexibilidad energetica"},
+    "OE2": {"scenario": "E2", "metric": "district_emission", "dimension": "Emisiones de CO2"},
+    "OE3": {"scenario": "E3", "metric": "district_cost", "dimension": "Costos energeticos"},
+}
 VENV_PY = REPO / ".venv39-citylearn-v3" / "Scripts" / "python.exe"
 EVIDENCE_SCRIPT = REPO / "CityLearn" / "scripts" / "generate_thesis_objective_evidence.py"
 
@@ -107,25 +115,64 @@ def scenario_inferential(scores: dict[str, list[float]]) -> dict:
 
 
 def write_descriptive_district() -> list[dict]:
-    if not DISTRICT_CSV.is_file():
-        return []
+    """Estadistica descriptiva por OE desde episodios reales (mean, median, std, min, max)."""
     rows_out: list[dict] = []
-    with DISTRICT_CSV.open(encoding="utf-8", newline="") as f:
-        for row in csv.DictReader(f):
-            rows_out.append(
-                {
-                    "algorithm": row["algorithm"],
-                    "scenario": row["scenario"],
-                    "flex_composite": float(row["flex_composite"]),
-                    "carbon_emissions_delta_kg": float(row["carbon_emissions_delta_kg"]),
-                    "electricity_cost_delta_eur": float(row["electricity_cost_delta_eur"]),
-                    "ev_departure_success_rate": float(row["ev_departure_success_rate"]),
+    if EPISODE_CSV.is_file():
+        df = pd.read_csv(EPISODE_CSV)
+        for axis, spec in OE_EPISODE_METRICS.items():
+            scen = spec["scenario"]
+            metric = spec["metric"]
+            sub = df[df["scenario"] == scen]
+            for algo, grp in sub.groupby("algorithm"):
+                vals = grp[metric].dropna().astype(float)
+                if vals.empty:
+                    continue
+                rows_out.append(
+                    {
+                        "axis": axis,
+                        "scenario": scen,
+                        "dimension": spec["dimension"],
+                        "metric": metric,
+                        "algorithm": algo,
+                        "n_episodes": int(len(vals)),
+                        "mean": float(vals.mean()),
+                        "median": float(vals.median()),
+                        "std": float(vals.std(ddof=1)) if len(vals) > 1 else 0.0,
+                        "min": float(vals.min()),
+                        "max": float(vals.max()),
+                    }
+                )
+    elif DISTRICT_CSV.is_file():
+        with DISTRICT_CSV.open(encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f):
+                scen = row["scenario"]
+                axis = {"E1": "OE1", "E2": "OE2", "E3": "OE3"}.get(scen, scen)
+                metric_map = {
+                    "E1": ("flex_composite", float(row["flex_composite"])),
+                    "E2": ("carbon_emissions_delta_kg", float(row["carbon_emissions_delta_kg"])),
+                    "E3": ("electricity_cost_delta_eur", float(row["electricity_cost_delta_eur"])),
                 }
-            )
+                metric, val = metric_map[scen]
+                rows_out.append(
+                    {
+                        "axis": axis,
+                        "scenario": scen,
+                        "dimension": OE_EPISODE_METRICS.get(axis, {}).get("dimension", ""),
+                        "metric": metric,
+                        "algorithm": row["algorithm"],
+                        "n_episodes": 1,
+                        "mean": val,
+                        "median": val,
+                        "std": 0.0,
+                        "min": val,
+                        "max": val,
+                    }
+                )
     path = OUT_DIR / "descriptivo_distrito_colab.csv"
     if rows_out:
+        fieldnames = list(rows_out[0].keys())
         with path.open("w", encoding="utf-8", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=list(rows_out[0].keys()))
+            w = csv.DictWriter(f, fieldnames=fieldnames)
             w.writeheader()
             w.writerows(rows_out)
     return rows_out
@@ -143,20 +190,20 @@ def write_summary_md(scenario_stats: dict, district_rows: list[dict]) -> None:
     lines = [
         f"# Estadistica Colab/Drive — {RUN_ID}",
         "",
-        "Fuente: KPIs auditados (MATD3, MAAC, MASAC; HAPPO sin KPIs finales).",
+        "Fuente: episodios reales timeseries.csv + KPI-gains auditados (MATD3, MAAC, MASAC; HAPPO sin KPIs finales).",
         "",
-        "## Descriptivo — distrito (9 tratamientos con KPI)",
+        "## Descriptivo — episodios por OE (mean, median, std, min, max)",
         "",
-        "| Algoritmo | Esc. | Flex | Delta CO2 (kg) | Delta costo (EUR) | EV exito |",
-        "|-----------|------|------|----------------|-------------------|----------|",
+        "| OE | Algoritmo | n ep. | Media | Mediana | Desv. | Min | Max |",
+        "|----|-----------|-------|-------|---------|-------|-----|-----|",
     ]
     for r in district_rows:
         lines.append(
-            f"| {r['algorithm']} | {r['scenario']} | {r['flex_composite']:.4f} | "
-            f"{r['carbon_emissions_delta_kg']:,.0f} | {r['electricity_cost_delta_eur']:,.0f} | "
-            f"{r['ev_departure_success_rate']*100:.1f}% |"
+            f"| {r.get('axis', '-')} | {r['algorithm']} | {r.get('n_episodes', '-')} | "
+            f"{float(r['mean']):.4f} | {float(r['median']):.4f} | {float(r['std']):.4f} | "
+            f"{float(r['min']):.4f} | {float(r['max']):.4f} |"
         )
-    lines += ["", "## Inferencial — KPI-level (231 scores, signed_relative_gain)", ""]
+    lines += ["", "## Inferencial — protocolo KPI-gains (Shapiro → KW → MWU → Wilcoxon)", ""]
     if kw_all:
         lines.append(
             f"- Kruskal-Wallis ALL: H={kw_all['kruskal_h_statistic']}, "

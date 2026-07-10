@@ -1,0 +1,439 @@
+{
+  "run_id": "madrl_v3_20260627_164047",
+  "algorithms": {
+    "MATD3": {
+      "algorithm": "MATD3",
+      "has_final_kpis": true,
+      "convergence": {
+        "E1": {
+          "n_episodes": 50,
+          "reward_mean": -0.6330435627356474,
+          "reward_median": -0.6208251460013352,
+          "reward_std": 0.04657586973124911,
+          "reward_min": -0.7408485589329936,
+          "reward_max": -0.5917727467841729,
+          "first10_mean": -0.7092168252881781,
+          "last10_mean": -0.6150335870026178,
+          "improvement_first_to_last": 0.0941832382855603,
+          "plateau_episode": 13,
+          "coefficient_of_variation": 0.0735745096750928
+        },
+        "E2": {
+          "n_episodes": 50,
+          "reward_mean": -0.5336253446673433,
+          "reward_median": -0.5361115322477781,
+          "reward_std": 0.010017661117418527,
+          "reward_min": -0.546346867690215,
+          "reward_max": -0.5162682233948295,
+          "first10_mean": -0.5393430191933514,
+          "last10_mean": -0.5315343342986669,
+          "improvement_first_to_last": 0.007808684894684448,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.018772836068465668
+        },
+        "E3": {
+          "n_episodes": 50,
+          "reward_mean": -0.5503890034083293,
+          "reward_median": -0.5495237712477443,
+          "reward_std": 0.014284086263059367,
+          "reward_min": -0.57691164288679,
+          "reward_max": -0.5290481534341094,
+          "first10_mean": -0.5657138530453548,
+          "last10_mean": -0.5487559311424,
+          "improvement_first_to_last": 0.016957921902954864,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.02595271012793494
+        }
+      },
+      "figures": {
+        "E1": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E1\\figures\\agent_reward_contribution.png"
+        },
+        "E2": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E2\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E2\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E2\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E2\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E2\\figures\\agent_reward_contribution.png"
+        },
+        "E3": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E3\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E3\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E3\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E3\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MATD3\\E3\\figures\\agent_reward_contribution.png"
+        }
+      },
+      "district_kpis": {
+        "E1": {
+          "flex_composite": 1.0009229901555254,
+          "carbon_emissions_delta_kg": 36723.33566290968,
+          "electricity_cost_delta_eur": 33074.53857720466,
+          "ev_departure_success_rate": 0.4393679754044655,
+          "grid_import_delta": 44795.15356419106,
+          "peak_average": 1.0081243650776304,
+          "ramping_average": 1.0011755487359968
+        },
+        "E2": {
+          "flex_composite": 1.0006689541887155,
+          "carbon_emissions_delta_kg": 23070.418478806503,
+          "electricity_cost_delta_eur": 13934.67084307495,
+          "ev_departure_success_rate": 0.36414495237135225,
+          "grid_import_delta": 26168.61346272645,
+          "peak_average": 1.0054542490487863,
+          "ramping_average": 1.0007704484747517
+        },
+        "E3": {
+          "flex_composite": 1.0006144030419286,
+          "carbon_emissions_delta_kg": 41293.40711950582,
+          "electricity_cost_delta_eur": 44399.364069434494,
+          "ev_departure_success_rate": 0.48243536112091123,
+          "grid_import_delta": 52174.01730863507,
+          "peak_average": 1.0071128697365774,
+          "ramping_average": 1.0011383857310043
+        }
+      },
+      "building_heterogeneity": {
+        "E1": {
+          "n_buildings": 17,
+          "mean": 95.60189701713689,
+          "std": 129.90813947379678,
+          "cv": 1.358844787886483,
+          "min": 3.732406982449431,
+          "max": 502.73604394064637
+        },
+        "E2": {
+          "n_buildings": 17,
+          "mean": 2706.750279026508,
+          "std": 4289.081002434286,
+          "cv": 1.5845868884427967,
+          "min": -2163.488812311087,
+          "max": 10147.588059800866
+        },
+        "E3": {
+          "n_buildings": 17,
+          "mean": 5209.1812376072285,
+          "std": 5085.776680965492,
+          "cv": 0.9763101817708265,
+          "min": -2672.0535701428307,
+          "max": 19286.639444799344
+        }
+      }
+    },
+    "MAAC": {
+      "algorithm": "MAAC",
+      "has_final_kpis": true,
+      "convergence": {
+        "E1": {
+          "n_episodes": 50,
+          "reward_mean": -0.6051573274768176,
+          "reward_median": -0.6126499299083629,
+          "reward_std": 0.014547528617223299,
+          "reward_min": -0.6214699934294116,
+          "reward_max": -0.5844288248600668,
+          "first10_mean": -0.6052128273109911,
+          "last10_mean": -0.6070559667323399,
+          "improvement_first_to_last": -0.0018431394213487273,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.02403925054973508
+        },
+        "E2": {
+          "n_episodes": 50,
+          "reward_mean": -0.5237155915828978,
+          "reward_median": -0.5274159891083237,
+          "reward_std": 0.009244528634012693,
+          "reward_min": -0.5339684196918764,
+          "reward_max": -0.5113138028926756,
+          "first10_mean": -0.5225636601149951,
+          "last10_mean": -0.5246406665517268,
+          "improvement_first_to_last": -0.0020770064367316987,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.017651810987852547
+        },
+        "E3": {
+          "n_episodes": 50,
+          "reward_mean": -0.5386707870532432,
+          "reward_median": -0.541934065159168,
+          "reward_std": 0.010356585408150602,
+          "reward_min": -0.5510442571089145,
+          "reward_max": -0.5248192921266143,
+          "first10_mean": -0.5374386242271214,
+          "last10_mean": -0.5395172510324426,
+          "improvement_first_to_last": -0.0020786268053212265,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.019226187231732948
+        }
+      },
+      "figures": {
+        "E1": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E1\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E1\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E1\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E1\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E1\\figures\\agent_reward_contribution.png"
+        },
+        "E2": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E2\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E2\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E2\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E2\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E2\\figures\\agent_reward_contribution.png"
+        },
+        "E3": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E3\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E3\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E3\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E3\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MAAC\\E3\\figures\\agent_reward_contribution.png"
+        }
+      },
+      "district_kpis": {
+        "E1": {
+          "flex_composite": 1.0124257995412176,
+          "carbon_emissions_delta_kg": 38565.84588019649,
+          "electricity_cost_delta_eur": 3628.0400708369775,
+          "ev_departure_success_rate": 0.04226097474925659,
+          "grid_import_delta": 8025.073128036143,
+          "peak_average": 1.0307016374943516,
+          "ramping_average": 1.010993644889474
+        },
+        "E2": {
+          "flex_composite": 1.0171790556280067,
+          "carbon_emissions_delta_kg": 70654.19071758597,
+          "electricity_cost_delta_eur": 13275.329877851962,
+          "ev_departure_success_rate": 0.04082455521395091,
+          "grid_import_delta": 24930.40753471335,
+          "peak_average": 1.0402106617728162,
+          "ramping_average": 1.0186301738338828
+        },
+        "E3": {
+          "flex_composite": 1.0137827049181145,
+          "carbon_emissions_delta_kg": 73411.2486337313,
+          "electricity_cost_delta_eur": 9515.151784724349,
+          "ev_departure_success_rate": 0.0405725517867043,
+          "grid_import_delta": 20799.799706357382,
+          "peak_average": 1.0309261417946909,
+          "ramping_average": 1.0189549701035028
+        }
+      },
+      "building_heterogeneity": {
+        "E1": {
+          "n_buildings": 17,
+          "mean": 56.24721657999001,
+          "std": 80.56069215815903,
+          "cv": 1.432260955412655,
+          "min": 1.145330285650683,
+          "max": 311.65010647167907
+        },
+        "E2": {
+          "n_buildings": 17,
+          "mean": 8289.544058982141,
+          "std": 7114.702116381841,
+          "cv": 0.8582742386986533,
+          "min": 714.7335240736975,
+          "max": 23634.60108895274
+        },
+        "E3": {
+          "n_buildings": 17,
+          "mean": 1116.3707226178801,
+          "std": 2409.8212917578635,
+          "cv": 2.158621005490768,
+          "min": -683.7813220831522,
+          "max": 8866.628043056466
+        }
+      }
+    },
+    "MASAC": {
+      "algorithm": "MASAC",
+      "has_final_kpis": true,
+      "convergence": {
+        "E1": {
+          "n_episodes": 50,
+          "reward_mean": -0.6133306039931886,
+          "reward_median": -0.6198266866174633,
+          "reward_std": 0.0139822094520048,
+          "reward_min": -0.627759154809035,
+          "reward_max": -0.5895927763098163,
+          "first10_mean": -0.6149267793676793,
+          "last10_mean": -0.608351188920244,
+          "improvement_first_to_last": 0.0065755904474352755,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.02279718207598211
+        },
+        "E2": {
+          "n_episodes": 50,
+          "reward_mean": -0.525538344918139,
+          "reward_median": -0.5282275066808146,
+          "reward_std": 0.008906655105132938,
+          "reward_min": -0.5344791460117901,
+          "reward_max": -0.5122386797760721,
+          "first10_mean": -0.5253226819269162,
+          "last10_mean": -0.523659797958372,
+          "improvement_first_to_last": 0.0016628839685441932,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.01694767887302361
+        },
+        "E3": {
+          "n_episodes": 50,
+          "reward_mean": -0.540932982848212,
+          "reward_median": -0.5431901089086011,
+          "reward_std": 0.01000610068476036,
+          "reward_min": -0.5519228590949066,
+          "reward_max": -0.5263098821800003,
+          "first10_mean": -0.5408942672862842,
+          "last10_mean": -0.5386201354123615,
+          "improvement_first_to_last": 0.002274131873922669,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.01849785648505762
+        }
+      },
+      "figures": {
+        "E1": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E1\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E1\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E1\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E1\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E1\\figures\\agent_reward_contribution.png"
+        },
+        "E2": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E2\\figures\\agent_reward_contribution.png"
+        },
+        "E3": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E3\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E3\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E3\\figures\\reward_timeseries.png",
+          "axis_baseline_comparison": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E3\\figures\\axis_baseline_comparison.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\MASAC\\E3\\figures\\agent_reward_contribution.png"
+        }
+      },
+      "district_kpis": {
+        "E1": {
+          "flex_composite": 1.028552547361268,
+          "carbon_emissions_delta_kg": 81226.6231709392,
+          "electricity_cost_delta_eur": 14672.49268599316,
+          "ev_departure_success_rate": 0.03938813567864523,
+          "grid_import_delta": 29498.57696435126,
+          "peak_average": 1.0850627613699078,
+          "ramping_average": 1.0219691691061643
+        },
+        "E2": {
+          "flex_composite": 1.0317819840161462,
+          "carbon_emissions_delta_kg": 77648.98780810599,
+          "electricity_cost_delta_eur": 15020.275212663882,
+          "ev_departure_success_rate": 0.04062295247215362,
+          "grid_import_delta": 28207.32397326982,
+          "peak_average": 1.0956074399714257,
+          "ramping_average": 1.0208812307447095
+        },
+        "E3": {
+          "flex_composite": 1.0297032332352678,
+          "carbon_emissions_delta_kg": 90899.7612329599,
+          "electricity_cost_delta_eur": 19792.792564499217,
+          "ev_departure_success_rate": 0.04140416309661812,
+          "grid_import_delta": 32186.08999340884,
+          "peak_average": 1.0863807148533065,
+          "ramping_average": 1.024945867130649
+        }
+      },
+      "building_heterogeneity": {
+        "E1": {
+          "n_buildings": 17,
+          "mean": 64.54048813896627,
+          "std": 112.10523994636418,
+          "cv": 1.7369753960488057,
+          "min": 1.2042000442866956,
+          "max": 450.7710804876461
+        },
+        "E2": {
+          "n_buildings": 17,
+          "mean": 9110.21269981717,
+          "std": 9205.707152531915,
+          "cv": 1.0104821320710395,
+          "min": 847.4506514802306,
+          "max": 29797.659929604735
+        },
+        "E3": {
+          "n_buildings": 17,
+          "mean": 2322.2009104814056,
+          "std": 5349.0912778062875,
+          "cv": 2.303457574950907,
+          "min": -2304.438581703289,
+          "max": 21075.457346742507
+        }
+      }
+    },
+    "HAPPO": {
+      "algorithm": "HAPPO",
+      "has_final_kpis": false,
+      "convergence": {
+        "E1": {
+          "n_episodes": 49,
+          "reward_mean": -0.6302595084115007,
+          "reward_median": -0.6303079866851847,
+          "reward_std": 0.021075767405944308,
+          "reward_min": -0.7062119254468171,
+          "reward_max": -0.5952638351180066,
+          "first10_mean": -0.6383202246328927,
+          "last10_mean": -0.6330888115925758,
+          "improvement_first_to_last": 0.0052314130403169345,
+          "plateau_episode": 5,
+          "coefficient_of_variation": 0.03343982458759479
+        },
+        "E2": {
+          "n_episodes": 49,
+          "reward_mean": -0.48419581147869617,
+          "reward_median": -0.48178331713513084,
+          "reward_std": 0.01819991040487118,
+          "reward_min": -0.5430863981455699,
+          "reward_max": -0.4607559602209014,
+          "first10_mean": -0.4952973042127206,
+          "last10_mean": -0.48663057141505706,
+          "improvement_first_to_last": 0.008666732797663557,
+          "plateau_episode": 5,
+          "coefficient_of_variation": 0.037587913760117164
+        },
+        "E3": {
+          "n_episodes": 49,
+          "reward_mean": -0.5208137955889048,
+          "reward_median": -0.5186502075397844,
+          "reward_std": 0.016499054736603787,
+          "reward_min": -0.569580484648387,
+          "reward_max": -0.49464724627111395,
+          "first10_mean": -0.5273485921220983,
+          "last10_mean": -0.524259244418658,
+          "improvement_first_to_last": 0.0030893477034402705,
+          "plateau_episode": 4,
+          "coefficient_of_variation": 0.031679373465803934
+        }
+      },
+      "figures": {
+        "E1": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E1\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E1\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E1\\figures\\reward_timeseries.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E1\\figures\\agent_reward_contribution.png"
+        },
+        "E2": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E2\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E2\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E2\\figures\\reward_timeseries.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E2\\figures\\agent_reward_contribution.png"
+        },
+        "E3": {
+          "convergence_returns": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E3\\figures\\convergence_returns.png",
+          "exploration_action_l2": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E3\\figures\\exploration_action_l2.png",
+          "reward_timeseries": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E3\\figures\\reward_timeseries.png",
+          "agent_reward_contribution": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E3\\figures\\agent_reward_contribution.png"
+        }
+      }
+    }
+  }
+}

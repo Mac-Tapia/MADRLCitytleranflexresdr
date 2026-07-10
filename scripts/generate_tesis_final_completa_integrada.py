@@ -39,6 +39,7 @@ BASE_INTEGRATED = REPO / "docs" / (
 OUT_COMPLETE = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx"
 OUT_CANONICAL = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx"
 OUT_SKILL = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.docx"
+OUT_ANTECEDENTES = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES.docx"
 METRICS = (
     REPO
     / "outputs"
@@ -160,6 +161,18 @@ def build_complete() -> Path:
 
     OUT_CANONICAL.write_bytes(OUT_COMPLETE.read_bytes())
     OUT_SKILL.write_bytes(OUT_COMPLETE.read_bytes())
+
+    if OUT_ANTECEDENTES.is_file():
+        doc_ant = Document(str(OUT_ANTECEDENTES))
+        _replace_body_range(
+            doc_ant,
+            "Capitulo 5. Resultados y contrastacion de hipotesis",
+            "Referencias bibliograficas",
+            _build_results_chapters(),
+        )
+        _replace_body_range(doc_ant, "Resumen", "Indice", _build_resumen_abstract())
+        doc_ant.save(str(OUT_ANTECEDENTES))
+        print(f"OK -> {OUT_ANTECEDENTES} (Cap. 5-6 y Resumen actualizados)")
 
     checks = verify_doctoral_docx(OUT_COMPLETE)
     metrics = _doc_metrics(OUT_COMPLETE)

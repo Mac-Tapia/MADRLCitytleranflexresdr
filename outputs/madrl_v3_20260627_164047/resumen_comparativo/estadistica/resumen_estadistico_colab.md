@@ -1,22 +1,25 @@
 # Estadistica Colab/Drive — madrl_v3_20260627_164047
 
-Fuente: KPIs auditados (MATD3, MAAC, MASAC; HAPPO sin KPIs finales).
+Fuente: episodios reales timeseries.csv + KPI-gains auditados (MATD3, MAAC, MASAC; HAPPO sin KPIs finales).
 
-## Descriptivo — distrito (9 tratamientos con KPI)
+## Descriptivo — episodios por OE (mean, median, std, min, max)
 
-| Algoritmo | Esc. | Flex | Delta CO2 (kg) | Delta costo (EUR) | EV exito |
-|-----------|------|------|----------------|-------------------|----------|
-| MASAC | E1 | 1.0286 | 81,227 | 14,672 | 3.9% |
-| MASAC | E2 | 1.0318 | 77,649 | 15,020 | 4.1% |
-| MASAC | E3 | 1.0297 | 90,900 | 19,793 | 4.1% |
-| MATD3 | E1 | 1.0009 | 36,723 | 33,075 | 43.9% |
-| MATD3 | E2 | 1.0007 | 23,070 | 13,935 | 36.4% |
-| MATD3 | E3 | 1.0006 | 41,293 | 44,399 | 48.2% |
-| MAAC | E1 | 1.0124 | 38,566 | 3,628 | 4.2% |
-| MAAC | E2 | 1.0172 | 70,654 | 13,275 | 4.1% |
-| MAAC | E3 | 1.0138 | 73,411 | 9,515 | 4.1% |
+| OE | Algoritmo | n ep. | Media | Mediana | Desv. | Min | Max |
+|----|-----------|-------|-------|---------|-------|-----|-----|
+| OE1 | HAPPO | 49 | -0.6303 | -0.6303 | 0.0213 | -0.7062 | -0.5953 |
+| OE1 | MAAC | 50 | -0.6052 | -0.6126 | 0.0147 | -0.6215 | -0.5844 |
+| OE1 | MASAC | 50 | -0.6133 | -0.6198 | 0.0141 | -0.6278 | -0.5896 |
+| OE1 | MATD3 | 50 | -0.6330 | -0.6208 | 0.0470 | -0.7408 | -0.5918 |
+| OE2 | HAPPO | 49 | 883.0026 | 804.8169 | 287.0341 | 468.0088 | 1524.4027 |
+| OE2 | MAAC | 50 | 1056.3904 | 1132.6331 | 99.3812 | 873.2478 | 1139.5708 |
+| OE2 | MASAC | 50 | 1078.3685 | 1132.6354 | 121.1007 | 925.7449 | 1638.7394 |
+| OE2 | MATD3 | 50 | 1132.1936 | 1137.4044 | 236.7845 | 925.7449 | 1864.8390 |
+| OE3 | HAPPO | 49 | 352.5741 | 232.4868 | 381.7126 | -0.0000 | 1415.9391 |
+| OE3 | MAAC | 50 | 795.3938 | 689.5406 | 211.9561 | 643.3720 | 1138.8164 |
+| OE3 | MASAC | 50 | 812.1613 | 689.5406 | 206.3762 | 643.3720 | 1192.3210 |
+| OE3 | MATD3 | 50 | 759.2886 | 690.9834 | 303.8794 | 13.4390 | 1143.6113 |
 
-## Inferencial — KPI-level (231 scores, signed_relative_gain)
+## Inferencial — protocolo KPI-gains (Shapiro → KW → MWU → Wilcoxon)
 
 - Kruskal-Wallis ALL: H=3.7230956751395587, p=0.1554 (no significativo α=0.05)
 - Shapiro-Wilk: normalidad rechazada en MASAC, MATD3, MAAC → tests no parametricos justificados.

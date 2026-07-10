@@ -1,0 +1,10 @@
+objective,scenario,metric,pair,p_raw,p_holm,decision
+OE.1,E1,reward_mean_average,MAAC vs MASAC,6.007299315935526e-06,1.2014598631871052e-05,significativo
+OE.1,E1,reward_mean_average,MAAC vs MATD3,6.359730925268813e-08,1.907919277580644e-07,significativo
+OE.1,E1,reward_mean_average,MASAC vs MATD3,0.023947535611024435,0.023947535611024435,significativo
+OE.2,E2,district_emission,MAAC vs MASAC,0.37102611614008796,0.37102611614008796,no significativo
+OE.2,E2,district_emission,MAAC vs MATD3,0.010258518836237485,0.030775556508712457,significativo
+OE.2,E2,district_emission,MASAC vs MATD3,0.16414144252068807,0.32828288504137615,no significativo
+OE.3,E3,district_cost,MAAC vs MASAC,0.08245937682821187,0.24737813048463564,no significativo
+OE.3,E3,district_cost,MAAC vs MATD3,0.5776768124297585,0.7054980628283325,no significativo
+OE.3,E3,district_cost,MASAC vs MATD3,0.35274903141416625,0.7054980628283325,no significativo

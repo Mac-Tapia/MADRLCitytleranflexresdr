@@ -1,9 +1,9 @@
 {
   "output": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
-  "size_bytes": 3558079,
-  "paragraphs_non_empty": 343,
-  "word_count_estimated": 11229,
-  "tables": 25,
+  "size_bytes": 3566109,
+  "paragraphs_non_empty": 409,
+  "word_count_estimated": 12874,
+  "tables": 43,
   "inline_images": 33,
   "chapter_order": [
     "Capitulo 1. Introduccion",
@@ -31,7 +31,7 @@
       "Capitulo 6": true,
       "Referencias bibliograficas": true
     },
-    "tables_count": 25,
+    "tables_count": 43,
     "tables_ok": true,
     "images_count": 33,
     "images_ok": true,

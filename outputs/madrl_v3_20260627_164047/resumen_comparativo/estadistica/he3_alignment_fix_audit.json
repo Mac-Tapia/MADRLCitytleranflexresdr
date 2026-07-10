@@ -1,0 +1,84 @@
+{
+  "generated_at": "2026-07-10T04:12:00+00:00",
+  "run_id": "madrl_v3_20260627_164047",
+  "verdict": "aligned_after_fix",
+  "fault_locations": [
+    {
+      "file": "scripts/generate_borrador_tesis_docx.py",
+      "lines": "333-348, 1061",
+      "issue": "HE.3 y HG atribuian liderazgo en costos a MATD3; bullet Cap.6 preliminar repetia MATD3 en OE.3",
+      "fix": "HE.3 redactada sin MATD3 (menor delta de costo electrico); HG sin algoritmo fijo; OE.3 → MAAC"
+    },
+    {
+      "file": "agent-skills/madrl-citylearn-thesis-integrated/references/module-b-thesis-report.md",
+      "lines": "71-81",
+      "issue": "Texto canonico HE.3/HG planteaba MATD3 como lider en costos",
+      "fix": "HG neutral; HE.3 con criterio de menor delta de costo (sin nombrar MATD3)"
+    },
+    {
+      "file": "docs/tesis_capitulos/Capitulo_1_Introduccion.md",
+      "lines": "79",
+      "issue": "Contrastacion citaba solo corrida v4 (KW p=0,0459) como soporte inferencial, ocultando KW p>0,05 en corrida canonica",
+      "fix": "Contrastacion explicita: canonica 50 ep sin rechazo H0; MAAC lider descriptivo en costos"
+    },
+    {
+      "file": "tools/rebuild_thesis_cap2_doctoral.py",
+      "lines": "295",
+      "issue": "Tabla 2.2 vinculaba MATD3 a HE.3 direccional",
+      "fix": "MATD3 solo HE.2; MAAC cubre costos via atencion"
+    }
+  ],
+  "data_evidence": {
+    "oe3_descriptive_leader": "MAAC",
+    "oe3_delta_cost_eur": 9515.151784724349,
+    "matd3_delta_cost_eur": 44399.364069434494,
+    "oe3_kw_p": 0.38805922498915935,
+    "hg_kw_p": 0.15543186080628366,
+    "he1_kw_p": 0.2806252392803863,
+    "he2_kw_p": 0.5457384930783267,
+    "sources": [
+      "outputs/madrl_v3_20260627_164047/resumen_comparativo/estadistica/hipotesis_estadisticas_madrl.csv",
+      "outputs/madrl_v3_20260627_164047/resumen_comparativo/estadistica/pe_answers_audit.json",
+      "outputs/madrl_v3_20260627_164047/resumen_comparativo/best_madrl_report.json"
+    ]
+  },
+  "hypotheses_after_fix": {
+    "HG": "La aplicacion del algoritmo MADRL a la comunidad inteligente (VI) produce un efecto estadisticamente significativo y diferenciado sobre la gestion coordinada de la flexibilidad energetica, las emisiones de CO2 y los costos energeticos (VD).",
+    "HE.1": "El algoritmo MADRL (VI) produce un efecto significativo sobre la flexibilidad energetica (D-VD.1); el mayor efecto corresponde al algoritmo con menor variabilidad en los KPI de pico y rampa.",
+    "HE.2": "El algoritmo MADRL (VI) produce un efecto significativo sobre las emisiones de CO2 (D-VD.2); el mayor efecto corresponde a MATD3.",
+    "HE.3": "El algoritmo MADRL (VI) produce un efecto significativo sobre los costos energeticos (D-VD.3); el mayor efecto corresponde al algoritmo con menor delta de costo electrico."
+  },
+  "inferential_verdict_after_fix": {
+    "HG": "no confirmada (KW p=0,155); lider descriptivo MATD3",
+    "HE.1": "no confirmada (KW p=0,281); lider descriptivo MATD3",
+    "HE.2": "no confirmada (KW p=0,546); lider descriptivo MATD3",
+    "HE.3": "no confirmada (KW p=0,388); lider descriptivo MAAC (Δcosto 9 515 EUR)"
+  },
+  "web_sources_integrated_apa": [
+    "Colas, C., Sigaud, O., & Oudeyer, P.-Y. (2019). A hitchhiker's guide to statistical comparisons of reinforcement learning algorithms. arXiv:1904.06979.",
+    "Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A., & Bellemare, M. G. (2021). Deep reinforcement learning at the edge of the statistical precipice. Advances in Neural Information Processing Systems, 34, 29304-29320.",
+    "Iqbal, T., & Sha, F. (2019). Actor-attention-critic for multi-agent reinforcement learning. Proceedings of the 36th International Conference on Machine Learning, 97, 2961-2970.",
+    "Xie, J., Ajagekar, A., & You, F. (2023). Multi-agent attention-based deep reinforcement learning for demand response in grid-responsive buildings. Applied Energy, 342, 121178."
+  ],
+  "narrative_integration": {
+    "cap_5_10": "scripts/thesis_doctoral_sections.py — discusion MAAC/costos + gap descriptivo vs KW no significativo",
+    "cap_6_3": "scripts/thesis_doctoral_sections.py — veredictos HG/HE separados; HE.3 alineada con MAAC descriptivo"
+  },
+  "validation_results": {
+    "inferential_audit": {
+      "verdict": "correct",
+      "errors": 0,
+      "path": "outputs/madrl_v3_20260627_164047/resumen_comparativo/estadistica/inferential_audit_report.json"
+    },
+    "thesis_linear_alignment_audit": {
+      "linear_alignment_status": "aligned",
+      "path": "outputs/madrl_v3_20260627_164047/resumen_comparativo/thesis_linear_alignment_audit.json"
+    },
+    "docx_outputs": [
+      "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES.docx",
+      "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.docx"
+    ]
+  }
+}

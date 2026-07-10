@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-10T04:02:17.506156+00:00",
+  "generated_at": "2026-07-10T04:11:32.984894+00:00",
   "run_id": "madrl_v3_20260627_164047",
-  "docx_path": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+  "docx_path": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
   "linear_alignment_status": "aligned",
   "chapters": {
     "cap_1": {
@@ -15,8 +15,8 @@
       },
       "hypotheses_separate_from_objectives": true,
       "issues_fixed": [
-        "Tablas 1.1–1.2 presentes",
-        "OG/OE verbatim y distincion OE vs HE en 1.2–1.3"
+        "Tablas 1.1-1.2 presentes",
+        "OG/OE verbatim y distincion OE vs HE en 1.2-1.3"
       ]
     },
     "cap_2": {

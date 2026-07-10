@@ -65,6 +65,47 @@ HYPOTHESIS_LABELS = {
     "ALL": ("HG", "Global (ALL)"),
 }
 
+PE_SPECS = {
+    "PE.1": {
+        "oe_key": "OE1",
+        "oe": "OE.1",
+        "he": "HE.1",
+        "vd": "D-VD.1",
+        "section": "5.3.1",
+        "dimension": "flexibilidad energetica",
+        "problem": (
+            "¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de "
+            "flexibilidad energética de la comunidad (D-VD.1), y cuál algoritmo genera el mayor efecto?"
+        ),
+    },
+    "PE.2": {
+        "oe_key": "OE2",
+        "oe": "OE.2",
+        "he": "HE.2",
+        "vd": "D-VD.2",
+        "section": "5.4.1",
+        "dimension": "emisiones de CO2",
+        "problem": (
+            "¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de "
+            "emisiones de CO2 de la comunidad (D-VD.2), y cuál algoritmo genera el mayor efecto?"
+        ),
+    },
+    "PE.3": {
+        "oe_key": "OE3",
+        "oe": "OE.3",
+        "he": "HE.3",
+        "vd": "D-VD.3",
+        "section": "5.5.1",
+        "dimension": "costos energéticos",
+        "problem": (
+            "¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de "
+            "costos energéticos de la comunidad (D-VD.3), y cuál algoritmo genera el mayor efecto?"
+        ),
+    },
+}
+
+PE_ANSWERS_AUDIT_JSON = STAT_DIR / "pe_answers_audit.json"
+
 FIG_WIDTH_LANDSCAPE = 17.5
 FIG_WIDTH_PORTRAIT = 16.5
 FIG_WIDTH_HEATMAP = 17.0
@@ -191,14 +232,16 @@ def add_resumen_doctoral(doc, p, heading) -> None:
         "energética, emisiones de CO₂ y costos en una comunidad inteligente del Sistema Eléctrico "
         "Aislado de Iquitos (SEAI). La formulación Dec-POMDP con CTDE se implementa sobre CityLearn "
         "v3 propuesto (17 edificios reales, 26 304 h, 185 cargadores EV). La corrida canónica "
-        f"Colab/Drive ({RUN_ID}) completó 50 episodios por escenario en MATD3, MAAC y MASAC; "
-        "MATD3 obtiene el mejor score global (0,6667) y lidera flexibilidad (OE1) y emisiones (OE2); "
-        "MAAC lidera costos (OE3). Las figuras de convergencia, control MADRL y ranking provienen de "
-        "timeseries.csv y trace.csv auditados en Drive (sin datos sinteticos). El analisis multiobjetivo "
-        "desagrega KPIs por distrito y por edificio (153 registros). HAPPO alcanzo 49/50 episodios sin "
-        "KPIs finales por error de evaluacion (VecEnvWrapper). La evidencia inferencial Colab "
-        f"{inf_es} complementa el ranking "
-        "descriptivo; la referencia local v4 (KW p=0.0459) es exploratoria con 5 episodios.",
+        f"Colab/Drive ({RUN_ID}) completó 50 episodios por escenario en MATD3, MAAC y MASAC. "
+        "En respuesta a PE.1–PE.3 y OE.1–OE.3 (evidencia descriptiva), MATD3 lidera flexibilidad "
+        "(PE.1/OE.1) y emisiones (PE.2/OE.2); MAAC lidera costos (PE.3/OE.3); MATD3 obtiene el "
+        "mejor score global (0,6667). Las figuras de convergencia, control MADRL y ranking provienen de "
+        "timeseries.csv y trace.csv auditados en Drive (sin datos sinteticos). El analisis "
+        "multiobjetivo desagrega KPIs por distrito y por edificio (153 registros). HAPPO "
+        "alcanzo 49/50 episodios sin KPIs finales por error de evaluacion (VecEnvWrapper). "
+        "La contrastacion inferencial de HG y HE.1–HE.3 (seccion 5.9) "
+        f"{inf_es} no confirma diferencias omnibus con una semilla; la referencia local v4 "
+        "(KW p=0,0459) es exploratoria con 5 episodios.",
     )
     p(
         doc,
@@ -210,15 +253,17 @@ def add_resumen_doctoral(doc, p, heading) -> None:
     heading(doc, "Abstract", 1)
     p(
         doc,
-        "This doctoral thesis evaluates four cooperative Multi-Agent Deep Reinforcement Learning "
-        "(MADRL) algorithms under a Dec-POMDP/CTDE framework on a real 17-building dataset from "
-        "Iquitos, Peru. A canonical 50-episode Colab run shows MATD3 as the best overall performer "
-        "(global score 0.6667), leading flexibility and CO₂ objectives, while MAAC leads energy cost. "
-        "Multi-objective KPIs are reported at district and building levels (185 EV chargers). "
-        "Training figures use audited Drive timeseries and trace CSVs (no synthetic data). "
-        "Inferential tests on the canonical run were executed: "
-        f"{inf_en} MATD3 leads "
-        "descriptively but CityLearn v2 baseline outperforms MADRL on global HPHI score.",
+        "This doctoral thesis determines the effect of four cooperative Multi-Agent Deep "
+        "Reinforcement Learning (MADRL) algorithms under a Dec-POMDP/CTDE framework on a "
+        "real 17-building dataset from Iquitos, Peru (factorial design 4×3). PE.1–PE.3 answers "
+        "(descriptive + inferential): MATD3 leads flexibility and CO₂; MAAC leads energy cost; "
+        "Kruskal-Wallis omnibus tests do not reject H0 (OE.1 p=0.281; OE.2 p=0.546; OE.3 p=0.388). "
+        "Objective-level evidence (OG, OE.1–OE.3): MATD3 leads overall (global score 0.6667), "
+        "flexibility and CO₂; MAAC leads energy cost. Hypothesis-level inference (HG, HE.1–HE.3) on the "
+        "canonical 50-episode run: "
+        f"{inf_en} Multi-objective KPIs are reported at district and building levels "
+        "(185 EV chargers). Training figures use audited Drive timeseries and trace CSVs "
+        "(no synthetic data).",
         italic=True,
     )
     doc.add_page_break()
@@ -519,6 +564,12 @@ def _hypothesis_decision_table_rows() -> list[list[str]]:
         kw_p = float(hyp_row.get("KW_p_value", 1)) if hyp_row else 1.0
         kw_sig = kw_p < 0.05
         wc_n = len([r for r in _significant_wilcoxon_rows() if r.get("scope") == ("ALL" if axis == "OG" else axis)])
+        if kw_sig:
+            decision = "H0 rechazada (KW significativo)"
+        elif wc_n:
+            decision = "H0 no rechazada (KW); Wilcoxon exploratorio significativo"
+        else:
+            decision = "H0 no rechazada (KW omnibus)"
         rows_out.append(
             [
                 hyp_code,
@@ -526,7 +577,7 @@ def _hypothesis_decision_table_rows() -> list[list[str]]:
                 "Kruskal-Wallis + Wilcoxon exploratorio",
                 "Si" if kw_sig else "No (omnibus)",
                 hyp_row.get("statistical_best_algorithm_by_median_gain", "-"),
-                f"Descriptivo distrito + {wc_n} par(es) Wilcoxon significativo(s)",
+                decision,
             ]
         )
     return rows_out
@@ -534,49 +585,51 @@ def _hypothesis_decision_table_rows() -> list[list[str]]:
 
 def _verdict_table_rows(report: dict) -> list[list[str]]:
     oe_map = {
-        "OE1": ("OE.1", "D-VD.1 / E1", "HE.1", "score_oe1_flex", "flex_composite", ".4f"),
-        "OE2": ("OE.2", "D-VD.2 / E2", "HE.2", "score_oe2_co2", "carbon_emissions_delta_kg", ",.0f"),
-        "OE3": ("OE.3", "D-VD.3 / E3", "HE.3", "score_oe3_cost", "electricity_cost_delta_eur", ",.0f"),
+        "OE1": ("OE.1", "D-VD.1 / E1", "score_oe1_flex", "flex_composite", ".4f"),
+        "OE2": ("OE.2", "D-VD.2 / E2", "score_oe2_co2", "carbon_emissions_delta_kg", ",.0f"),
+        "OE3": ("OE.3", "D-VD.3 / E3", "score_oe3_cost", "electricity_cost_delta_eur", ",.0f"),
     }
     district = _read_csv(DISTRICT_CSV)
     rows_out: list[list[str]] = []
-    for oe_key, (oe_label, vd, hyp_code, score_key, kpi, fmt) in oe_map.items():
-        axis = oe_key
+    for oe_key, (oe_label, vd, score_key, kpi, fmt) in oe_map.items():
         scen = OE_DEFINITIONS[oe_key]["scenario"]
         scen_rows = _rows_for_scenario(district, scen)
         best_algo, best_val = _best_algo_by_kpi(scen_rows, kpi, lower_better=True)
         score = next(item.get(score_key, 0) for item in report["ranking_with_kpis"] if item["algorithm"] == best_algo)
-        hyp_row = _hyp_row_by_axis(axis)
-        kw_p = float(hyp_row.get("KW_p_value", 1)) if hyp_row else 1.0
         rows_out.append(
             [
                 oe_label,
                 vd,
-                hyp_code,
                 best_algo,
                 f"{OE_DEFINITIONS[oe_key]['primary_kpis'][0][1]} = {_fmt_kpi(str(best_val), fmt, True)}; score = {score:.4f}",
-                "Si (descriptivo)",
-                f"No (KW p = {_fmt_p_es(kw_p)})",
-                "Cumplido parcialmente: lider descriptivo identificado; inferencia omnibus no confirmatoria",
+                "Cumplido descriptivamente; inferencia causal limitada (1 semilla)",
             ]
         )
-    og = _hyp_row_by_axis("OG")
-    kw_all = float(og.get("KW_p_value", 1)) if og else 1.0
     best_global = report["ranking_with_kpis"][0]["algorithm"]
     score_global = report["ranking_with_kpis"][0].get("score_global", 0)
     rows_out.append(
         [
             "OG",
-            "ALL",
-            "HG",
+            "VD integrada (ALL)",
             best_global,
             f"score global = {score_global:.4f}",
-            "Si (descriptivo)",
-            f"No (KW p = {_fmt_p_es(kw_all)})",
-            "Cumplido parcialmente: mejor integracion MADRL; sin dominancia universal",
+            "Cumplido descriptivamente; sin dominancia universal en los tres ejes",
         ]
     )
     return rows_out
+
+
+def _og_oe_verdict_text() -> str:
+    return (
+        "Veredicto OG/OE (evidencia descriptiva, corrida canonica 50 ep): OG cumplido en el "
+        "sentido de determinar el efecto coordinado del MADRL e identificar a MATD3 como mayor "
+        "efecto integrado (score 0,6667), con trade-offs entre ejes. OE.1 cumplido: MATD3 "
+        "(flex_composite = 1,0009). OE.2 cumplido: MATD3 (delta CO2 = 23 070 kg). OE.3 cumplido: "
+        "MAAC (delta costo = 9 515 EUR). Ningun objetivo exige por si mismo significancia "
+        "estadistica omnibus; los limites de inferencia causal (semilla unica, HAPPO excluido) "
+        "se declaran explicitamente. Las hipotesis HG y HE.1–HE.3 se resuelven solo en la "
+        "seccion 5.9.5."
+    )
 
 
 def _inferential_conclusion_text() -> str:
@@ -592,12 +645,430 @@ def _inferential_conclusion_text() -> str:
     )
     wc_p = _fmt_p_es(wc_all.get("wilcoxon_p_value", "0.0049"))
     return (
-        "Conclusion operativa: los tres objetivos especificos se cumplen en el sentido descriptivo "
-        "exigido por la tesis (identificacion del algoritmo de mayor efecto por eje en KPI distrital), "
-        f"pero ninguno alcanza significancia inferencial omnibus con una semilla (KW ALL p = {_fmt_p_es(kw_all)}). "
-        "La hipotesis global HG se sustenta descriptivamente en MATD3; Wilcoxon ALL (MASAC vs MATD3, "
-        f"p = {wc_p}) sugiere diferencias exploratorias en KPI-gains pareados que requieren replicacion multi-semilla."
+        "Decision inferencial (HG, HE.1–HE.3): en la corrida canonica de 50 episodios y una "
+        "semilla, ningun Kruskal-Wallis omnibus rechaza H0 (alpha = 0,05): HE.1 p = 0,281; "
+        "HE.2 p = 0,546; HE.3 p = 0,388; HG p = 0,155. Por tanto, las hipotesis de efecto "
+        "estadisticamente significativo no se confirman inferencialmente con el diseno actual. "
+        f"Wilcoxon exploratorio ALL (MASAC vs MATD3, p = {wc_p}) y otros pares por eje sugieren "
+        "diferencias en KPI-gains pareados que requieren replicacion multi-semilla antes de "
+        "sustentar conclusiones causales robustas (Colas et al., 2019)."
     )
+
+
+def _pe_key_for_oe(oe_key: str) -> str:
+    return {"OE1": "PE.1", "OE2": "PE.2", "OE3": "PE.3"}[oe_key]
+
+
+def _district_kpi_values(district: list[dict[str, str]], scenario: str, kpi: str) -> dict[str, float]:
+    return {
+        row["algorithm"]: float(row[kpi])
+        for row in _rows_for_scenario(district, scenario)
+    }
+
+
+def _pct_delta_vs_best(value: float, best: float) -> float:
+    if best == 0:
+        return 0.0
+    return (value - best) / abs(best) * 100.0
+
+
+def _shapiro_rows_for_scope(scope: str) -> list[list[str]]:
+    row = _analysis_row(scope)
+    if not row:
+        return []
+    hyp, label = HYPOTHESIS_LABELS.get(scope, (scope, scope))
+    out: list[list[str]] = []
+    for algo in ("MASAC", "MATD3", "MAAC"):
+        p_key = f"shapiro_wilk_p_value_{algo}"
+        if row.get(f"shapiro_wilk_status_{algo}") == "no_data":
+            continue
+        rejected = str(row.get(f"shapiro_wilk_normality_rejected_{algo}", "")).lower() == "true"
+        out.append(
+            [
+                label,
+                algo,
+                _fmt_stat_num(row.get(p_key), ".3e"),
+                "Si" if rejected else "No",
+            ]
+        )
+    return out
+
+
+def _mwu_pairs_for_scope(scope: str) -> list[dict[str, str]]:
+    if not MWU_CSV.is_file():
+        return []
+    return [
+        row
+        for row in _read_csv(MWU_CSV)
+        if row.get("scope") == scope and row.get("mann_whitney_status") == "ok"
+    ]
+
+
+def _wilcoxon_pairs_for_scope(scope: str) -> list[dict[str, str]]:
+    if not WC_CSV.is_file():
+        return []
+    return [
+        row
+        for row in _read_csv(WC_CSV)
+        if row.get("scope") == scope and str(row.get("wilcoxon_status", "")).startswith("ok")
+    ]
+
+
+def build_pe_answer(pe_id: str, *, district: list[dict[str, str]] | None = None, report: dict | None = None) -> dict:
+    """Construye respuesta estructurada PE.x desde CSV auditados (50 ep Drive)."""
+    import datetime as dt
+
+    spec = PE_SPECS[pe_id]
+    oe_key = spec["oe_key"]
+    cfg = OE_DEFINITIONS[oe_key]
+    scenario = cfg["scenario"]
+    primary_kpi, primary_label, primary_fmt, lower_better = cfg["primary_kpis"][0]
+    district = district or _read_csv(DISTRICT_CSV)
+    report = report or _read_json(BEST_REPORT)
+    hyp_row = _hypothesis_row(oe_key)
+    analysis_row = _analysis_row(oe_key)
+
+    scen_rows = _rows_for_scenario(district, scenario)
+    best_algo, best_val = _best_algo_by_kpi(scen_rows, primary_kpi, lower_better=True)
+    kpi_by_algo = _district_kpi_values(district, scenario, primary_kpi)
+    score_key = cfg["score_key"]
+    best_score = next(
+        item.get(score_key, 0) for item in report["ranking_with_kpis"] if item["algorithm"] == best_algo
+    )
+
+    desc_episode = _descriptive_episode_rows(oe_key)
+    episode_metric = OE_EPISODE_SPECS[oe_key]["metric"]
+    episode_label = OE_EPISODE_SPECS[oe_key]["label"]
+
+    deltas = []
+    for algo, val in sorted(kpi_by_algo.items(), key=lambda x: x[1]):
+        if algo == best_algo:
+            continue
+        delta = val - best_val
+        pct = _pct_delta_vs_best(val, best_val)
+        deltas.append(
+            {
+                "algorithm": algo,
+                "value": val,
+                "delta_vs_best": delta,
+                "pct_vs_best": pct,
+                "formatted_value": _fmt_kpi(str(val), primary_fmt, True),
+                "formatted_delta": _fmt_kpi(str(delta), primary_fmt, True),
+                "formatted_pct": f"{pct:+.1f}%",
+            }
+        )
+
+    kw_p = float(hyp_row.get("KW_p_value", "nan")) if hyp_row else float("nan")
+    kw_h0_rejected = kw_p < 0.05
+    best_median_gain = hyp_row.get("statistical_best_algorithm_by_median_gain", "-")
+    sw_rows = _shapiro_rows_for_scope(oe_key)
+    mwu_pairs = _mwu_pairs_for_scope(oe_key)
+    wc_pairs = _wilcoxon_pairs_for_scope(oe_key)
+    wc_sig = [r for r in wc_pairs if r.get("wilcoxon_significant_alpha_0_05") == "True"]
+    mwu_sig = [r for r in mwu_pairs if r.get("mann_whitney_significant_alpha_0_05") == "True"]
+
+    delta_text = "; ".join(
+        f"{d['algorithm']} {d['formatted_delta']} ({d['formatted_pct']} vs {best_algo})"
+        for d in deltas
+    )
+    desc_explicit = (
+        f"En qué medida: el MADRL (VI) modifica {spec['vd']} con magnitudes distinguibles entre "
+        f"algoritmos ({primary_label} {best_algo} = "
+        f"{_fmt_kpi(str(best_val), primary_fmt, True)}; score {spec['oe']} = {best_score:.4f}); "
+        f"deltas frente al lider: {delta_text}. "
+        f"Mayor efecto: {best_algo} porque registra el mejor {primary_label} en {scenario} "
+        f"({_fmt_kpi(str(best_val), primary_fmt, True)}) y el score normalizado {spec['oe']} = "
+        f"{best_score:.4f}."
+    )
+
+    wc_sig_text = (
+        ", ".join(
+            f"{r['algorithm_a']} vs {r['algorithm_b']} (p = {_fmt_p_es(r.get('wilcoxon_p_value'))}, "
+            f"mejor {r.get('better_by_median_difference', '-')})"
+            for r in wc_sig
+        )
+        if wc_sig
+        else "ningún par significativo"
+    )
+    mwu_sig_text = (
+        ", ".join(
+            f"{r['algorithm_a']} vs {r['algorithm_b']} (p = {_fmt_p_es(r.get('mann_whitney_p_value'))})"
+            for r in mwu_sig
+        )
+        if mwu_sig
+        else "ningún par significativo"
+    )
+    inf_explicit = (
+        f"En qué medida inferencial: H0 de igualdad global entre algoritmos "
+        f"{'rechazada' if kw_h0_rejected else 'no rechazada'} "
+        f"(Kruskal-Wallis {spec['he']}, p = {_fmt_p_es(kw_p)}); el efecto entre algoritmos "
+        f"{'es' if kw_h0_rejected else 'no es'} estadísticamente distinguible al nivel omnibus "
+        f"(alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo "
+        f"({spec['he']}). Mann-Whitney U: {mwu_sig_text}. Wilcoxon pareado (exploratorio): "
+        f"{wc_sig_text}. Mayor efecto por mediana KPI-gain: {best_median_gain}."
+    )
+
+    return {
+        "pe_id": pe_id,
+        "problem": spec["problem"],
+        "oe": spec["oe"],
+        "he": spec["he"],
+        "vd": spec["vd"],
+        "dimension": spec["dimension"],
+        "section": spec["section"],
+        "run_id": RUN_ID,
+        "descriptive": {
+            "best_algorithm": best_algo,
+            "primary_kpi": primary_kpi,
+            "primary_label": primary_label,
+            "primary_value": best_val,
+            "primary_value_formatted": _fmt_kpi(str(best_val), primary_fmt, True),
+            "score_normalized": float(best_score),
+            "kpis_by_algorithm": {algo: float(val) for algo, val in kpi_by_algo.items()},
+            "deltas_vs_best": deltas,
+            "episode_metric": episode_metric,
+            "episode_label": episode_label,
+            "episode_stats": [
+                {
+                    "algorithm": str(r["algorithm"]),
+                    "n_episodes": int(r.get("n_episodes", 0)),
+                    "mean": float(r["mean"]),
+                    "median": float(r["median"]),
+                    "std": float(r["std"]),
+                }
+                for r in desc_episode
+            ],
+            "explicit_answer": desc_explicit,
+        },
+        "inferential": {
+            "shapiro_wilk": [
+                {
+                    "algorithm": row[1],
+                    "p_value": row[2],
+                    "normality_rejected": row[3] == "Si",
+                }
+                for row in sw_rows
+            ],
+            "kruskal_wallis": {
+                "H": float(hyp_row.get("KW_H_statistic", "nan")) if hyp_row else None,
+                "p_value": kw_p,
+                "h0_rejected": kw_h0_rejected,
+            },
+            "best_median_kpi_gain": best_median_gain,
+            "mann_whitney_significant": [
+                {
+                    "pair": f"{r['algorithm_a']} vs {r['algorithm_b']}",
+                    "p_value": float(r.get("mann_whitney_p_value", "nan")),
+                    "better_by_median": r.get("better_by_median", "-"),
+                    "cliffs_delta": r.get("cliffs_delta", ""),
+                    "cohen_d": r.get("cohen_d", ""),
+                }
+                for r in mwu_sig
+            ],
+            "wilcoxon_significant": [
+                {
+                    "pair": f"{r['algorithm_a']} vs {r['algorithm_b']}",
+                    "p_value": float(r.get("wilcoxon_p_value", "nan")),
+                    "better_by_median": r.get("better_by_median_difference", "-"),
+                }
+                for r in wc_sig
+            ],
+            "explicit_answer": inf_explicit,
+        },
+        "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+    }
+
+
+def build_all_pe_answers(*, district: list[dict[str, str]] | None = None, report: dict | None = None) -> dict:
+    district = district or _read_csv(DISTRICT_CSV)
+    report = report or _read_json(BEST_REPORT)
+    answers = {pe_id: build_pe_answer(pe_id, district=district, report=report) for pe_id in PE_SPECS}
+    return {
+        "generated_at": answers["PE.1"]["generated_at"],
+        "run_id": RUN_ID,
+        "verdict": "structured_from_csv",
+        "sources": {
+            "descriptivo_distrito_colab": str(DESCRIPTIVE_CSV),
+            "district_episode_kpis": str(EPISODE_CSV),
+            "hipotesis_estadisticas_madrl": str(HYP_CSV),
+            "comparaciones_mwu_madrl": str(MWU_CSV),
+            "comparaciones_wilcoxon_madrl": str(WC_CSV),
+            "best_madrl_report": str(BEST_REPORT),
+            "inferential_audit_report": str(STAT_DIR / "inferential_audit_report.json"),
+        },
+        "answers": answers,
+    }
+
+
+def write_pe_answers_audit(path: Path | None = None) -> Path:
+    path = path or PE_ANSWERS_AUDIT_JSON
+    payload = build_all_pe_answers()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
+
+
+def _add_pe_answer_section(
+    doc,
+    p,
+    heading,
+    add_table,
+    *,
+    oe_key: str,
+    district: list[dict[str, str]],
+    report: dict,
+    desc_table_base: int,
+) -> None:
+    pe_id = _pe_key_for_oe(oe_key)
+    answer = build_pe_answer(pe_id, district=district, report=report)
+    cfg = OE_DEFINITIONS[oe_key]
+    spec = PE_SPECS[pe_id]
+    desc = answer["descriptive"]
+    inf = answer["inferential"]
+
+    heading(doc, f"{spec['section']} Respuesta a {pe_id} ({spec['oe']} / {spec['he']} / {spec['vd']})", 3)
+    p(doc, spec["problem"], italic=True)
+
+    p(doc, f"Análisis descriptivo — {pe_id}:", bold=True)
+    kpi_headers = ["Algoritmo", desc["primary_label"], f"Score {spec['oe']}"]
+    kpi_rows = []
+    for algo in sorted(desc["kpis_by_algorithm"], key=lambda a: desc["kpis_by_algorithm"][a]):
+        val = desc["kpis_by_algorithm"][algo]
+        score = next(
+            item.get(cfg["score_key"], 0) for item in report["ranking_with_kpis"] if item["algorithm"] == algo
+        )
+        kpi_rows.append(
+            [
+                algo,
+                _fmt_kpi(str(val), cfg["primary_kpis"][0][2], True),
+                f"{float(score):.4f}",
+            ]
+        )
+    add_table(
+        doc,
+        kpi_headers,
+        kpi_rows,
+        caption=f"Tabla 5.{desc_table_base}. KPIs {spec['vd']} por algoritmo ({cfg['scenario']}, distrito 50 ep).",
+        col_widths=[2.5, 3.5, 2.5],
+    )
+
+    ep_spec = OE_EPISODE_SPECS[oe_key]
+    ep_rows = []
+    for row in sorted(desc["episode_stats"], key=lambda r: r["median"], reverse=ep_spec["higher_better"]):
+        ep_rows.append(
+            [
+                row["algorithm"],
+                str(row["n_episodes"]),
+                _fmt_stat_num(row["mean"], ep_spec["fmt"]),
+                _fmt_stat_num(row["median"], ep_spec["fmt"]),
+                _fmt_stat_num(row["std"], ep_spec["fmt"]),
+            ]
+        )
+    if ep_rows:
+        add_table(
+            doc,
+            ["Algoritmo", "n ep.", "Media", "Mediana", "Desv. est."],
+            ep_rows,
+            caption=(
+                f"Tabla 5.{desc_table_base + 1}. Estadística descriptiva episódica {spec['oe']} — "
+                f"{desc['episode_label']} ({cfg['scenario']})."
+            ),
+            col_widths=[2.0, 1.2, 2.2, 2.2, 2.2],
+        )
+
+    delta_bits = [
+        f"{d['algorithm']}: {d['formatted_delta']} ({d['formatted_pct']} vs {desc['best_algorithm']})"
+        for d in desc["deltas_vs_best"]
+    ]
+    p(
+        doc,
+        f"Magnitud del efecto: {desc['primary_label']} del líder {desc['best_algorithm']} = "
+        f"{desc['primary_value_formatted']}; diferencias respecto al mejor: "
+        f"{'; '.join(delta_bits) if delta_bits else 'sin contraste adicional'}.",
+    )
+    p(doc, f"Respuesta explícita: {desc['explicit_answer']}")
+
+    p(doc, f"Análisis inferencial — {pe_id}:", bold=True)
+    sw_rows = [
+        [row["algorithm"], row["p_value"], "Si" if row["normality_rejected"] else "No"]
+        for row in inf["shapiro_wilk"]
+    ]
+    if sw_rows:
+        add_table(
+            doc,
+            ["Algoritmo", "p (Shapiro-Wilk)", "Normalidad rechazada"],
+            sw_rows,
+            caption=f"Tabla 5.{desc_table_base + 2}. Shapiro-Wilk por grupo ({spec['he']}, KPI-gains).",
+            col_widths=[2.5, 3.0, 3.0],
+        )
+
+    kw = inf["kruskal_wallis"]
+    p(
+        doc,
+        f"Kruskal-Wallis ({spec['he']}): H = {_fmt_stat_num(kw.get('H'), '.3f')}, "
+        f"p = {_fmt_p_es(kw.get('p_value'))}; H0 "
+        f"{'rechazada' if kw.get('h0_rejected') else 'no rechazada'} (alpha = 0,05).",
+    )
+
+    mwu_rows = []
+    for row in _mwu_pairs_for_scope(oe_key):
+        p_val = float(row.get("mann_whitney_p_value", "nan"))
+        mwu_rows.append(
+            [
+                f"{row.get('algorithm_a')} vs {row.get('algorithm_b')}",
+                _fmt_stat_num(row.get("mann_whitney_u"), ".1f"),
+                _fmt_p_es(p_val),
+                "Si" if p_val < 0.05 else "No",
+                row.get("better_by_median", "-"),
+                row.get("cliffs_delta", "-"),
+            ]
+        )
+    if mwu_rows:
+        add_table(
+            doc,
+            ["Par", "U", "p", "Signif.", "Mejor (mediana)", "Cliff's δ"],
+            mwu_rows,
+            caption=f"Tabla 5.{desc_table_base + 3}. Mann-Whitney U ({spec['he']}).",
+            col_widths=[2.8, 1.3, 1.5, 1.2, 2.0, 1.5],
+        )
+
+    wc_rows = []
+    for row in _wilcoxon_pairs_for_scope(oe_key):
+        p_val = float(row.get("wilcoxon_p_value", "nan"))
+        wc_rows.append(
+            [
+                f"{row.get('algorithm_a')} vs {row.get('algorithm_b')}",
+                _fmt_stat_num(row.get("wilcoxon_T_statistic"), ".1f"),
+                _fmt_p_es(p_val),
+                "Si" if p_val < 0.05 else "No",
+                row.get("better_by_median_difference", "-"),
+            ]
+        )
+    if wc_rows:
+        add_table(
+            doc,
+            ["Par (pareado)", "T", "p", "Signif.", "Mejor (mediana diff.)"],
+            wc_rows,
+            caption=f"Tabla 5.{desc_table_base + 4}. Wilcoxon signed-rank ({spec['he']}).",
+            col_widths=[2.8, 1.3, 1.5, 1.2, 2.5],
+        )
+
+    p(doc, f"Respuesta explícita: {inf['explicit_answer']}")
+
+
+def _pe_conclusions_paragraph() -> str:
+    answers = build_all_pe_answers()
+    chunks = []
+    for pe_id in ("PE.1", "PE.2", "PE.3"):
+        ans = answers["answers"][pe_id]
+        chunks.append(
+            f"{pe_id} ({ans['vd']}): descriptivamente, mayor efecto {ans['descriptive']['best_algorithm']} "
+            f"({ans['descriptive']['primary_value_formatted']}); inferencialmente, Kruskal-Wallis "
+            f"p = {_fmt_p_es(ans['inferential']['kruskal_wallis']['p_value'])} "
+            f"(H0 {'rechazada' if ans['inferential']['kruskal_wallis']['h0_rejected'] else 'no rechazada'}); "
+            f"mejor mediana KPI-gain: {ans['inferential']['best_median_kpi_gain']}."
+        )
+    return " ".join(chunks)
 
 
 def _load_algo_profiles() -> dict:
@@ -931,16 +1402,27 @@ def _add_oe_results_section(
         col_widths=[3.0, 4.0, 4.5],
     )
 
+    hyp_code = HYPOTHESIS_LABELS[oe_key][0]
     p(
         doc,
-        f"Respuesta a {oe_display}: el algoritmo MADRL de mayor efecto sobre {cfg['vd']} "
-        f"en {scenario} es {best_algo} "
-        f"({cfg['primary_kpis'][0][1]} = {_fmt_kpi(str(best_val), cfg['primary_kpis'][0][2], True)}). "
-        f"El contraste inferencial Kruskal-Wallis sobre KPI-gains en {scenario} arroja "
-        f"p = {kw_p:.3f} (alpha = 0,05), por lo que la diferencia global entre algoritmos "
-        f"{'no alcanza significancia inferencial con una semilla' if kw_p >= 0.05 else 'alcanza significancia inferencial'}. "
-        "La evidencia descriptiva de distrito respalda la identificacion del lider por objetivo; "
-        "la inferencia confirmatoria requiere replicacion multi-semilla (Colas et al., 2019).",
+        f"Respuesta a {oe_display}: (a) efecto del MADRL (VI) sobre {cfg['vd']}: los KPIs de la "
+        f"Tabla 5.{3 + oe_num} muestran diferencias entre algoritmos en {scenario}; "
+        f"(b) algoritmo de mayor efecto: {best_algo} "
+        f"({cfg['primary_kpis'][0][1]} = {_fmt_kpi(str(best_val), cfg['primary_kpis'][0][2], True)}); "
+        f"(c) enlace a {hyp_code}: Kruskal-Wallis p = {kw_p:.3f} (seccion 5.9.5). "
+        f"La identificacion del lider responde al objetivo {oe_display}; la significancia "
+        f"estadistica de {hyp_code} se decide en 5.9.5, no en esta seccion.",
+    )
+
+    _add_pe_answer_section(
+        doc,
+        p,
+        heading,
+        add_table,
+        oe_key=oe_key,
+        district=district,
+        report=report,
+        desc_table_base=22 + (oe_num - 1) * 6,
     )
 
     fig_specs = [
@@ -972,12 +1454,13 @@ def _add_oe_results_section(
 
 
 def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
+    write_pe_answers_audit()
     report = _read_json(BEST_REPORT)
     district = _read_csv(DISTRICT_CSV)
     profiles = _load_algo_profiles()
     fig_counter = [0]
 
-    heading(doc, "Capitulo 5. Resultados y contrastacion de hipotesis", 1)
+    heading(doc, "Capitulo 5. Resultados por objetivo y contrastacion inferencial", 1)
     p(
         doc,
         f"Este capitulo organiza la evidencia experimental de la corrida canonica Colab/Drive "
@@ -1086,7 +1569,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         doc,
         ["Rango", "Algoritmo", "Global", "OE.1", "OE.2", "OE.3"],
         ranking_rows,
-        caption="Tabla 5.11. Ranking integrado por score normalizado (best_madrl_report.json).",
+        caption="Tabla 5.12. Ranking integrado por score normalizado (best_madrl_report.json).",
         col_widths=[1.5, 2.5, 2.2, 2.0, 2.0, 2.0],
     )
 
@@ -1283,6 +1766,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         caption="Tabla 5.20. Sintesis de contrastacion HG / HE.1–HE.3 (corrida canonica 50 ep).",
         col_widths=[1.5, 2.0, 2.5, 2.0, 2.5, 3.0],
     )
+    p(doc, _inferential_conclusion_text())
 
     heading(doc, "5.10 Discusion integrada alineada a objetivos", 2)
     p(
@@ -1291,7 +1775,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         "de mayor efecto en OE.1 (flexibilidad, E1) y OE.2 (CO2, E2); MAAC en OE.3 (costos, E3). "
         "Nivel 2 (integracion): MATD3 obtiene score global 0,6667 por liderar dos ejes, pero "
         "no domina costos. Nivel 3 (contraste externo): baseline RBC de CityLearn v2 supera "
-        "globalmente a MADRL (seccion 5.6), coherente con Nweye et al. (2024). La coherencia "
+        "globalmente a MADRL (seccion 5.7), coherente con Nweye et al. (2024). La coherencia "
         "vertical PG→OE→VD se cumple en estructura y evidencia descriptiva; la inferencia causal "
         "robusta requiere multi-semilla. HAPPO (49/50 ep) reduce el diseno factorial efectivo "
         "a 3×3 en inferencia. Los hallazgos convergen con benchmarks CityLearn que reportan "
@@ -1299,29 +1783,40 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         "controles RBC como referencia superior en algunos KPIs (Vazquez-Canteli et al., 2024).",
     )
 
-    heading(doc, "5.11 Veredicto de cumplimiento por objetivo especifico", 2)
+    heading(doc, "5.11 Veredicto de cumplimiento OG y OE.1–OE.3", 2)
     p(
         doc,
-        "Tabla 5.21 sintetiza el cumplimiento de cada OE en dos planos: descriptivo (KPI distrital "
-        "y ranking normalizado) e inferencial (Kruskal-Wallis sobre KPI-gains, alpha = 0,05). "
-        "Un OE se considera cumplido descriptivamente cuando se identifica el algoritmo de mayor "
-        "efecto con datos auditados; inferencialmente cuando KW rechaza H0 (ninguno alcanza con "
-        "una semilla). HE.1–HE.3 y HG se vinculan explicitamente.",
+        "Esta seccion responde exclusivamente a los objetivos OG y OE.1–OE.3 (determinar efecto "
+        "e identificar algoritmo de mayor efecto), con evidencia descriptiva auditada. No debe "
+        "confundirse con la decision sobre hipotesis (HG, HE.1–HE.3), resuelta en la seccion 5.9.5.",
     )
     verdict_rows = _verdict_table_rows(report)
     add_table(
         doc,
-        ["OE", "VD / Esc.", "Hip.", "Mejor VI", "Evidencia KPI", "Desc.", "Infer.", "Veredicto"],
+        ["Objetivo", "VD / Esc.", "Mayor efecto (VI)", "Evidencia KPI", "Cumplimiento OE"],
         verdict_rows,
-        caption="Tabla 5.21. Veredicto de cumplimiento OE.1–OE.3 y HG (corrida canonica 50 ep).",
-        col_widths=[1.2, 1.8, 1.0, 1.5, 2.8, 1.5, 1.8, 2.5],
+        caption="Tabla 5.21. Veredicto de cumplimiento OG y OE.1–OE.3 (corrida canonica 50 ep).",
+        col_widths=[1.5, 2.2, 2.0, 4.5, 4.8],
     )
-    p(doc, _inferential_conclusion_text())
+    p(doc, _og_oe_verdict_text())
 
 
 def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
     heading(doc, "Capitulo 6. Conclusiones y trabajo futuro", 1)
-    heading(doc, "6.1 Conclusiones por objetivo especifico", 2)
+
+    heading(doc, "6.1 Conclusion general (OG) y respuesta a PE.1–PE.3", 2)
+    p(doc, _pe_conclusions_paragraph())
+    p(
+        doc,
+        "OG: el algoritmo MADRL aplicado a la comunidad inteligente (VI) produce efectos "
+        "diferenciados sobre la gestion coordinada de flexibilidad, emisiones de CO2 y costos "
+        "(VD). El algoritmo de mayor efecto coordinado en la corrida canonica de 50 episodios "
+        "es MATD3 (score global 0,6667), que lidera OE.1 y OE.2 pero no OE.3 (MAAC). La "
+        "respuesta al OG es descriptivamente afirmativa con limites de inferencia causal "
+        "(semilla unica, HAPPO excluido de KPIs finales).",
+    )
+
+    heading(doc, "6.2 Conclusiones por objetivo especifico (OE.1–OE.3)", 2)
     p(
         doc,
         "OE.1 (flexibilidad, D-VD.1, escenario E1): el algoritmo MADRL de mayor efecto es MATD3 "
@@ -1344,13 +1839,26 @@ def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
     )
     p(
         doc,
-        "Integracion: MATD3 obtiene score global 0,6667 por liderar OE.1 y OE.2, pero no OE.3. "
-        "Ningun Kruskal-Wallis por eje alcanza alpha=0,05 (Tabla 5.17); las respuestas OE se "
-        "sustentan en evidencia descriptiva trazable. La comparacion con baseline CityLearn v2 "
-        "(seccion 5.6) muestra que controles RBC superan globalmente a MADRL, matizando la "
-        "generalizacion causal pero no invalidando el benchmark inter-algoritmico.",
+        "Integracion OE: MATD3 obtiene score global 0,6667 por liderar OE.1 y OE.2, pero no OE.3. "
+        "La comparacion con baseline CityLearn v2 (seccion 5.7) muestra que controles RBC superan "
+        "globalmente a MADRL en score HPHI, matizando la generalizacion causal pero no invalidando "
+        "el benchmark inter-algoritmico exigido por los objetivos.",
     )
-    heading(doc, "6.2 Limitaciones", 2)
+
+    heading(doc, "6.3 Conclusiones sobre hipotesis (HG, HE.1–HE.3)", 2)
+    p(
+        doc,
+        "HG: no confirmada inferencialmente (Kruskal-Wallis ALL p = 0,155; H0 no rechazada). "
+        "Descriptivamente, MATD3 presenta el mayor efecto coordinado. HE.1: no confirmada "
+        "inferencialmente (KW p = 0,281); descriptivamente MATD3 lidera flexibilidad en E1. "
+        "HE.2: no confirmada inferencialmente (KW p = 0,546); descriptivamente MATD3 lidera "
+        "emisiones en E2. HE.3: no confirmada inferencialmente (KW p = 0,388); descriptivamente "
+        "MAAC lidera costos en E3 (no MATD3 como plantea la hipotesis). Wilcoxon exploratorio "
+        "detecta pares significativos que no sustituyen el contraste omnibus ni la replicacion "
+        "multi-semilla (Tabla 5.20, seccion 5.9.5).",
+    )
+
+    heading(doc, "6.4 Limitaciones", 2)
     p(
         doc,
         "Las limitaciones principales son: (i) semilla unica (seed 0), insuficiente para "
@@ -1358,9 +1866,10 @@ def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
         "(49/50 episodios, error VecEnvWrapper), lo que reduce el diseno factorial efectivo a "
         "3×3 en inferencia; (iii) simulacion sin validacion en red fisica; (iv) CityLearn v3 "
         "propuesto como extension experimental de tesis; (v) MADRL por debajo del baseline RBC "
-        "en score global HPHI. La inferencia Colab por OE se reporta en seccion 5.9 y Tabla 5.21.",
+        "en score global HPHI. Las hipotesis HG/HE se contrastan en seccion 5.9; los objetivos "
+        "OG/OE en seccion 5.11.",
     )
-    heading(doc, "6.3 Trabajo futuro", 2)
+    heading(doc, "6.5 Trabajo futuro", 2)
     p(
         doc,
         "Se propone: re-evaluacion de HAPPO tras corregir VecEnvWrapper; corrida multi-semilla "
@@ -1421,6 +1930,7 @@ def verify_doctoral_docx(path: Path) -> dict:
         "references_expected": ref_stats["total_unique"],
         "references_ok": n_ref_paras >= required_refs_min,
         "has_matd3_selection": "MATD3" in text and ("0.6667" in text or "0,6667" in text),
+        "has_pe_answers": "Respuesta a PE.1" in text and "Respuesta a PE.2" in text and "Respuesta a PE.3" in text,
         "has_multiobjetivo": "multiobjetivo" in text.lower() or "185" in text,
         "has_drive_figures": "timeseries.csv" in text.lower() or "artefactos drive" in text.lower(),
         "has_referencias_apa": "Referencias_APA.md" in text or "referencias bibliograficas" in text.lower(),
@@ -1429,6 +1939,7 @@ def verify_doctoral_docx(path: Path) -> dict:
             and n_tables >= required_tables_min
             and n_images >= required_figures_min
             and n_ref_paras >= required_refs_min
+            and "Respuesta a PE.1" in text
         ),
     }
     return checks

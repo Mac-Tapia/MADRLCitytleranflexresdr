@@ -290,6 +290,11 @@ def build(*, max_chapter: int | None = None):
     bullet(doc,
            "PE.3: ¿En que medida el algoritmo MADRL (VI) produce un efecto sobre la dimension "
            "de costos energeticos de la comunidad (D-VD.3), y cual algoritmo genera el mayor efecto?")
+    p(doc,
+      "Cada problema especifico PE.i se responde en el Capitulo 5 (secciones 5.3.1, 5.4.1 y 5.5.1) "
+      "mediante analisis descriptivo e inferencial sobre la corrida canonica de 50 episodios, y se "
+      "alinea uno a uno con OE.i y HE.i segun la Tabla 1.1 (PE.1→OE.1→HE.1; PE.2→OE.2→HE.2; "
+      "PE.3→OE.3→HE.3).")
 
     heading(doc, "1.2 Objetivos", 2)
     p(doc, "Objetivo general (OG):", bold=True)
@@ -309,36 +314,42 @@ def build(*, max_chapter: int | None = None):
            "OE.3: Determinar el efecto del algoritmo MADRL (VI) sobre los costos energeticos "
            "(D-VD.3) e identificar el algoritmo de mayor efecto en esta dimension.")
     p(doc,
-      "La coherencia vertical PG→OG→HG y PE.i→OE.i→HE.i se operacionaliza mediante el diseño "
-      "factorial 4×3 (12 tratamientos), los 54 KPI oficiales de CityLearn v2 y la corrida "
-      "canonica Colab/Drive madrl_v3_20260627_164047 (50 episodios).")
+      "Los objetivos (OG, OE.1–OE.3) determinan el efecto del MADRL (VI) sobre cada dimension "
+      "de la VD e identifican el algoritmo de mayor efecto mediante KPIs y ranking descriptivo "
+      "(Capitulos 5 y 6). Las hipotesis (HG, HE.1–HE.3) son enunciados de contraste estadistico "
+      "evaluados en la seccion 5.9; no deben confundirse con la redaccion de los objetivos. "
+      "La cadena PG→OG→OE y PE.i→OE.i→HE.i se operacionaliza con el diseño factorial 4×3 "
+      "(12 tratamientos), los 54 KPI oficiales de CityLearn v2 y la corrida canonica "
+      "Colab/Drive madrl_v3_20260627_164047 (50 episodios).")
 
     heading(doc, "1.3 Hipotesis", 2)
     p(doc,
       "El estudio es cuantitativo, aplicado y explicativo, basado en simulacion experimental. "
-      "Las hipotesis se plantean en terminos de efecto del factor algoritmo (VI) sobre las "
-      "dimensiones de la VD, contrastadas con pruebas no parametricas (alpha = 0,05) segun "
-      "Colas et al. (2019) y Agarwal et al. (2021):")
-    bullet(doc,
-           "HG: La aplicacion del algoritmo MADRL a la comunidad inteligente (VI) produce un "
-           "efecto diferenciado sobre la gestion coordinada de flexibilidad, CO2 y costos (VD); "
-           "se espera que MATD3 genere el mayor efecto coordinado en la evidencia descriptiva.")
-    bullet(doc,
-           "HE.1: El algoritmo MADRL (VI) produce un efecto sobre la flexibilidad energetica "
-           "(D-VD.1); el mayor efecto descriptivo corresponde al algoritmo con mejor desempeno "
-           "en KPI de pico y rampa.")
-    bullet(doc,
-           "HE.2: El algoritmo MADRL (VI) produce un efecto sobre las emisiones de CO2 (D-VD.2); "
-           "el mayor efecto descriptivo corresponde a MATD3 en la corrida canonica.")
-    bullet(doc,
-           "HE.3: El algoritmo MADRL (VI) produce un efecto sobre los costos energeticos "
-           "(D-VD.3); MAAC presenta el menor delta de costo en distrito (Tabla 5.3).")
+      "A diferencia de los objetivos, las hipotesis formulan contrastes estadisticos sobre el "
+      "factor algoritmo (VI) frente a la hipotesis nula de igualdad de distribuciones de "
+      "KPI-gains. El protocolo inferencial (alpha = 0,05) se detalla en el Capitulo 3 y se "
+      "resuelve en la seccion 5.9 (Colas et al., 2019; Agarwal et al., 2021):")
+    p(doc, "Hipotesis general (HG):", bold=True)
     p(doc,
-      "La contrastacion inferencial de la corrida canonica (Tabla 5.6) muestra que Kruskal-Wallis "
-      "global sobre KPI-gains no alcanza significancia (p = 0,155); por tanto, HG no se confirma "
-      "inferencialmente con una semilla. La referencia local v4 (5 episodios, KW p = 0,0459) "
-      "queda como evidencia exploratoria historica. Wilcoxon pareado MASAC vs MATD3 (p = 0,0049) "
-      "detecta diferencia exploratoria que no sustituye el contraste global.")
+      "La aplicacion del algoritmo MADRL a la comunidad inteligente (VI) produce un efecto "
+      "estadisticamente significativo y diferenciado sobre la gestion coordinada de la "
+      "flexibilidad energetica, las emisiones de CO2 y los costos energeticos (VD), siendo "
+      "MATD3 el algoritmo que genera el mayor efecto coordinado.", italic=True)
+    p(doc, "Hipotesis especificas:", bold=True)
+    bullet(doc,
+           "HE.1: El algoritmo MADRL (VI) produce un efecto significativo sobre la flexibilidad "
+           "energetica (D-VD.1); el mayor efecto corresponde al algoritmo con menor variabilidad "
+           "en los KPI de pico y rampa.")
+    bullet(doc,
+           "HE.2: El algoritmo MADRL (VI) produce un efecto significativo sobre las emisiones "
+           "de CO2 (D-VD.2); el mayor efecto corresponde a MATD3.")
+    bullet(doc,
+           "HE.3: El algoritmo MADRL (VI) produce un efecto significativo sobre los costos "
+           "energeticos (D-VD.3); el mayor efecto corresponde a MATD3.")
+    p(doc,
+      "Cada hipotesis especifica tiene una hipotesis nula asociada (sin diferencias significativas "
+      "entre niveles del factor algoritmo). La decision inferencial se reporta en la seccion 5.9.5; "
+      "el cumplimiento de OG y OE.1–OE.3 se reporta por separado en la seccion 5.11.")
 
     heading(doc, "1.4 Matriz de consistencia y operacionalizacion", 2)
     add_table(
@@ -533,13 +544,16 @@ def build(*, max_chapter: int | None = None):
       "propositivo radica en que CityLearn v3 propuesto es una extension arquitectonica "
       "original sobre CityLearn v2.")
 
-    heading(doc, "3.2 Diseno metodologico", 2)
+    heading(doc, "3.2 Diseno experimental factorial 4×3", 2)
     p(doc,
-      "El experimento se organiza en una matriz de 12 corridas (4 algoritmos x 3 escenarios) "
-      "ejecutadas con la misma funcion de recompensa multiobjetivo y los mismos KPIs "
-      "oficiales de CityLearn v2. Cada escenario condiciona la politica hacia un objetivo "
-      "dominante mediante un vector de pesos distinto, respondiendo a cada objetivo "
-      "especifico por separado. La escalarizacion lineal de objetivos (Roijers et al., 2013) "
+      "El experimento manipula la variable independiente en dos dimensiones: D-VI.1 (tipo de "
+      "algoritmo: HAPPO, MASAC, MATD3, MAAC) y D-VI.2 (escenario de ponderacion: E1, E2, E3). "
+      "La variable dependiente se observa en tres dimensiones: D-VD.1 flexibilidad, D-VD.2 "
+      "emisiones de CO2 y D-VD.3 costos energeticos (54 KPI oficiales CityLearn v2). El "
+      "diseno factorial completo comprende 12 tratamientos (4×3), ejecutados con la misma "
+      "funcion de recompensa multiobjetivo. Cada escenario condiciona la politica hacia un "
+      "objetivo dominante mediante un vector de pesos distinto, respondiendo a OE.1, OE.2 "
+      "y OE.3 por separado. La escalarizacion lineal de objetivos (Roijers et al., 2013) "
       "y el entrenamiento de politicas separadas por vector de pesos (Abels et al., 2019; "
       "Felten et al., 2024) sustentan este diseno.")
     add_table(

@@ -32,6 +32,8 @@ from thesis_doctoral_sections import (  # noqa: E402
     verify_doctoral_docx,
 )
 
+CAP5_MARKER = "Capitulo 5. Resultados por objetivo y contrastacion inferencial"
+CAP5_MARKER_LEGACY = "Capitulo 5. Resultados y contrastacion de hipotesis"
 BASE_INTEGRATED = REPO / "docs" / (
     "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_"
     "marco_teorico_doctoral_sustentado.docx"
@@ -65,11 +67,12 @@ def _body_children(doc) -> list:
     return [c for c in doc.element.body if c.tag != qn("w:sectPr")]
 
 
-def _find_marker_index(children: list, prefix: str) -> int:
-    for i, child in enumerate(children):
-        if _element_text(child).startswith(prefix):
-            return i
-    raise RuntimeError(f"No se encontro marcador de seccion: {prefix!r}")
+def _find_marker_index(children: list, prefix: str, *, alt_prefixes: list[str] | None = None) -> int:
+    for candidate in [prefix] + (alt_prefixes or []):
+        for i, child in enumerate(children):
+            if _element_text(child).startswith(candidate):
+                return i
+    raise RuntimeError(f"No se encontro marcador de seccion: {[prefix] + (alt_prefixes or [])!r}")
 
 
 def _extract_doc_elements(doc, start_prefix: str, end_prefix: str | None = None) -> list:
@@ -77,17 +80,24 @@ def _extract_doc_elements(doc, start_prefix: str, end_prefix: str | None = None)
     start = _find_marker_index(children, start_prefix)
     end = len(children)
     if end_prefix:
-        end = _find_marker_index(children, end_prefix)
+        end = _find_marker_index(children, end_prefix, alt_prefixes=[CAP5_MARKER_LEGACY])
     return [deepcopy(c) for c in children[start:end]]
 
 
-def _replace_body_range(doc, start_prefix: str, end_prefix: str, new_elements: list) -> None:
+def _replace_body_range(
+    doc,
+    start_prefix: str,
+    end_prefix: str,
+    new_elements: list,
+    *,
+    start_alt_prefixes: list[str] | None = None,
+) -> None:
     from docx.oxml.ns import qn
 
     body = doc.element.body
     children = [c for c in body if c.tag != qn("w:sectPr")]
     sect_pr = body.find(qn("w:sectPr"))
-    start = _find_marker_index(children, start_prefix)
+    start = _find_marker_index(children, start_prefix, alt_prefixes=start_alt_prefixes)
     end = _find_marker_index(children, end_prefix)
     rebuilt = children[:start] + new_elements + children[end:]
 
@@ -150,11 +160,24 @@ def build_complete() -> Path:
 
     _replace_body_range(
         doc,
-        "Capitulo 5. Resultados y contrastacion de hipotesis",
+        CAP5_MARKER,
         "Referencias bibliograficas",
         _build_results_chapters(),
+        start_alt_prefixes=[CAP5_MARKER_LEGACY],
     )
     _replace_body_range(doc, "Resumen", "Indice", _build_resumen_abstract())
+
+    canonical = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx"
+    if canonical.is_file():
+        doc_can = Document(str(canonical))
+        cap14 = _extract_doc_elements(doc_can, "Capitulo 1", "Capitulo 5")
+        _replace_body_range(
+            doc,
+            "Capitulo 1",
+            CAP5_MARKER,
+            cap14,
+            start_alt_prefixes=[CAP5_MARKER_LEGACY],
+        )
 
     OUT_COMPLETE.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(OUT_COMPLETE))
@@ -166,11 +189,22 @@ def build_complete() -> Path:
         doc_ant = Document(str(OUT_ANTECEDENTES))
         _replace_body_range(
             doc_ant,
-            "Capitulo 5. Resultados y contrastacion de hipotesis",
+            CAP5_MARKER,
             "Referencias bibliograficas",
             _build_results_chapters(),
+            start_alt_prefixes=[CAP5_MARKER_LEGACY],
         )
         _replace_body_range(doc_ant, "Resumen", "Indice", _build_resumen_abstract())
+        if canonical.is_file():
+            doc_can_ant = Document(str(canonical))
+            cap14 = _extract_doc_elements(doc_can_ant, "Capitulo 1", "Capitulo 5")
+            _replace_body_range(
+                doc_ant,
+                "Capitulo 1",
+                CAP5_MARKER,
+                cap14,
+                start_alt_prefixes=[CAP5_MARKER_LEGACY],
+            )
         try:
             doc_ant.save(str(OUT_ANTECEDENTES))
             print(f"OK -> {OUT_ANTECEDENTES} (Cap. 5-6 y Resumen actualizados)")

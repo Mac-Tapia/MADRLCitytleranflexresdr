@@ -1,0 +1,47 @@
+{
+  "output": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+  "size_bytes": 3558467,
+  "paragraphs_non_empty": 333,
+  "word_count_estimated": 10489,
+  "tables": 19,
+  "inline_images": 33,
+  "chapter_order": [
+    "Capitulo 1. Introduccion",
+    "Capitulo 2. Marco teorico",
+    "Capitulo 3. Metodologia",
+    "Capitulo 4. Desarrollo de la propuesta",
+    "Capitulo 5. Resultados y contrastacion de hipotesis",
+    "Capitulo 6. Conclusiones y trabajo futuro"
+  ],
+  "has_cap5_baseline_v2": true,
+  "has_cap5_stats_colab": true,
+  "has_anexo_a": true,
+  "has_anexo_b": true,
+  "figures_a_1_a_9": true,
+  "figures_b_1_a_9": true,
+  "run_id": "madrl_v3_20260627_164047",
+  "verification": {
+    "sections": {
+      "Dedicatoria": true,
+      "Agradecimientos": true,
+      "Resumen": true,
+      "Abstract": true,
+      "Introduccion": true,
+      "Capitulo 5": true,
+      "Capitulo 6": true,
+      "Referencias bibliograficas": true
+    },
+    "tables_count": 19,
+    "tables_ok": true,
+    "images_count": 33,
+    "images_ok": true,
+    "references_count": 67,
+    "references_expected": 70,
+    "references_ok": true,
+    "has_matd3_selection": true,
+    "has_multiobjetivo": true,
+    "has_drive_figures": true,
+    "has_referencias_apa": true,
+    "complete": true
+  }
+}

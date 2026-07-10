@@ -70,7 +70,7 @@ The thesis is framed as a **simulation-based cause-and-effect experiment**:
 
 **Hipótesis general (HG):**
 
-> La aplicación del algoritmo MADRL a la comunidad inteligente (VI) produce un efecto estadísticamente significativo y diferenciado sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (VD), siendo MATD3 el algoritmo que genera el mayor efecto coordinado.
+> La aplicación del algoritmo MADRL a la comunidad inteligente (VI) produce un efecto estadísticamente significativo y diferenciado sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (VD).
 
 **Hipótesis específicas:**
 
@@ -78,7 +78,7 @@ The thesis is framed as a **simulation-based cause-and-effect experiment**:
 >
 > **HE.2:** El algoritmo MADRL (VI) produce un efecto significativo sobre las emisiones de CO₂ (D-VD.2); el mayor efecto corresponde a MATD3.
 >
-> **HE.3:** El algoritmo MADRL (VI) produce un efecto significativo sobre los costos energéticos (D-VD.3); el mayor efecto corresponde a MATD3.
+> **HE.3:** El algoritmo MADRL (VI) produce un efecto significativo sobre los costos energéticos (D-VD.3); el mayor efecto corresponde al algoritmo con menor delta de costo eléctrico.
 
 Each specific hypothesis has a corresponding null hypothesis (no significant differences between algorithm levels), tested with Kruskal-Wallis and pair-wise Mann-Whitney U / Wilcoxon (Colas et al., 2019; Agarwal et al., 2021).
 

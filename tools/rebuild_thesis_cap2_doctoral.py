@@ -292,7 +292,7 @@ def add_chapter_2(doc: Document) -> None:
         [
             ["HAPPO", "Trust-region y agentes heterogeneos (Kuba et al., 2021; Zhong et al., 2023).", "Estabilidad on-policy y tratamiento de heterogeneidad entre edificios.", "Costo de muestreo y cobertura parcial de artefactos finales.", "Nivel D-VI.1 del factor algoritmo."],
             ["MASAC", "SAC y regularizacion de entropia (Haarnoja et al., 2018; Gao et al., 2023).", "Exploracion robusta y aprendizaje off-policy.", "Adaptacion de acciones continuas/discretas y sensibilidad a hiperparametros.", "Nivel D-VI.1 del factor algoritmo."],
-            ["MATD3", "Criticos dobles, retardo de politica y control continuo off-policy.", "Reduccion de sobreestimacion y estabilidad en acciones continuas.", "Puede optimizar algunos ejes mejor que otros; requiere lectura por escenario.", "Nivel D-VI.1 e hipotesis direccional HG/HE.2/HE.3."],
+            ["MATD3", "Criticos dobles, retardo de politica y control continuo off-policy.", "Reduccion de sobreestimacion y estabilidad en acciones continuas.", "Puede optimizar algunos ejes mejor que otros; requiere lectura por escenario.", "Nivel D-VI.1 e hipotesis direccional HE.2."],
             ["MAAC", "Critico con atencion multiagente (Iqbal & Sha, 2019).", "Coordinacion selectiva entre edificios heterogeneos.", "Complejidad computacional y sensibilidad a estructura de interacciones.", "Nivel D-VI.1 del factor algoritmo."],
         ],
     )

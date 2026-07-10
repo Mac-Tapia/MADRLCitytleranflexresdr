@@ -333,8 +333,7 @@ def build(*, max_chapter: int | None = None):
     p(doc,
       "La aplicacion del algoritmo MADRL a la comunidad inteligente (VI) produce un efecto "
       "estadisticamente significativo y diferenciado sobre la gestion coordinada de la "
-      "flexibilidad energetica, las emisiones de CO2 y los costos energeticos (VD), siendo "
-      "MATD3 el algoritmo que genera el mayor efecto coordinado.", italic=True)
+      "flexibilidad energetica, las emisiones de CO2 y los costos energeticos (VD).", italic=True)
     p(doc, "Hipotesis especificas:", bold=True)
     bullet(doc,
            "HE.1: El algoritmo MADRL (VI) produce un efecto significativo sobre la flexibilidad "
@@ -345,7 +344,8 @@ def build(*, max_chapter: int | None = None):
            "de CO2 (D-VD.2); el mayor efecto corresponde a MATD3.")
     bullet(doc,
            "HE.3: El algoritmo MADRL (VI) produce un efecto significativo sobre los costos "
-           "energeticos (D-VD.3); el mayor efecto corresponde a MATD3.")
+           "energeticos (D-VD.3); el mayor efecto corresponde al algoritmo con menor delta "
+           "de costo electrico.")
     p(doc,
       "Cada hipotesis especifica tiene una hipotesis nula asociada (sin diferencias significativas "
       "entre niveles del factor algoritmo). La decision inferencial se reporta en la seccion 5.9.5; "
@@ -1058,8 +1058,8 @@ def build(*, max_chapter: int | None = None):
     bullet(doc, "En la corrida de referencia v4, MATD3 es el mejor MADRL global (score 0.7445) con "
                 "diferencias significativas (Kruskal-Wallis p = 0.0459; Mann-Whitney MATD3 vs HAPPO "
                 "p = 0.0182; Wilcoxon p = 2.62e-6).")
-    bullet(doc, "Por eje, HAPPO destaca en flexibilidad (OE.1) y MATD3 en CO2 (OE.2) y costos (OE.3) "
-                "dentro de la familia MADRL, segun la comparacion v2 vs v3.")
+    bullet(doc, "Por eje, HAPPO destaca en flexibilidad (OE.1) y MATD3 en CO2 (OE.2); MAAC lidera "
+                "costos (OE.3) en la corrida canonica Colab/Drive, segun la comparacion v2 vs v3.")
     bullet(doc, "Se aportaron cuatro extensiones originales y retrocompatibles al motor CityLearn "
                 "(degradacion BESS C-rate+Arrhenius, correccion PV tropical IEC 61215, KPI de pico "
                 "con ventana de facturacion OSINERGMIN y clase CarbonIntensityModel).")

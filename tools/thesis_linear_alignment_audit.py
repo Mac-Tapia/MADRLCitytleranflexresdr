@@ -75,8 +75,8 @@ def audit_docx(path: Path) -> dict:
                 "no deben confundirse" in _norm(cap1) or "seccion 5.9.5" in _norm(cap1)
             ),
             "issues_fixed": [
-                "Tablas 1.1–1.2 presentes",
-                "OG/OE verbatim y distincion OE vs HE en 1.2–1.3",
+                "Tablas 1.1-1.2 presentes",
+                "OG/OE verbatim y distincion OE vs HE en 1.2-1.3",
             ],
         },
         "cap_2": {
@@ -146,9 +146,9 @@ def audit_docx(path: Path) -> dict:
         "hg_he_inferential_verdict": hg_he_verdict,
         "section_numbering_changes": {
             "cap_5_title": "Capitulo 5. Resultados por objetivo y contrastacion inferencial",
-            "ranking_table": "Tabla 5.11 → Tabla 5.12",
-            "oe_verdict": "§5.11 Veredicto OG/OE (separado de §5.9.5 hipotesis)",
-            "cap_6": "6.1 OG → 6.2 OE → 6.3 HG/HE → 6.4 Limitaciones → 6.5 Futuro",
+            "ranking_table": "Tabla 5.11 -> Tabla 5.12",
+            "oe_verdict": "5.11 Veredicto OG/OE (separado de 5.9.5 hipotesis)",
+            "cap_6": "6.1 OG -> 6.2 OE -> 6.3 HG/HE -> 6.4 Limitaciones -> 6.5 Futuro",
         },
     }
 

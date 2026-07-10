@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-07-10T04:02:17.506156+00:00",
+  "run_id": "madrl_v3_20260627_164047",
+  "docx_path": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+  "linear_alignment_status": "aligned",
+  "chapters": {
+    "cap_1": {
+      "has_tabla_1_1": true,
+      "has_tabla_1_2": true,
+      "objectives_verbatim": {
+        "OG": true,
+        "OE.1": true,
+        "OE.2": true,
+        "OE.3": true
+      },
+      "hypotheses_separate_from_objectives": true,
+      "issues_fixed": [
+        "Tablas 1.1–1.2 presentes",
+        "OG/OE verbatim y distincion OE vs HE en 1.2–1.3"
+      ]
+    },
+    "cap_2": {
+      "supports_vi_vd": true,
+      "oe_references": true
+    },
+    "cap_3": {
+      "factorial_4x3": true,
+      "d_vi_d_vd": true
+    },
+    "cap_4": {
+      "dec_pomdp_reference": true,
+      "no_duplicate_theory": true
+    },
+    "cap_5": {
+      "structured_by_objective": true,
+      "section_5_9_inferential": true,
+      "section_5_9_5_hypothesis_only": true,
+      "section_5_11_oe_only": true,
+      "tabla_5_21_oe_verdict": true,
+      "ranking_table_renumbered": true
+    },
+    "cap_6": {
+      "og_first": true,
+      "oe_section": true,
+      "hypotheses_separate": true,
+      "limitations_after": true
+    },
+    "resumen_abstract": {
+      "oe_language_not_hypothesis": true,
+      "inferential_separate": true
+    }
+  },
+  "og_oe_fulfillment_verdict": {
+    "OG": {
+      "best_algorithm": "MATD3",
+      "score_global": 0.6667,
+      "fulfillment": "cumplido_descriptivamente",
+      "limits": "semilla_unica; happo_excluido; no_dominancia_universal"
+    },
+    "OE.1": {
+      "best": "MATD3",
+      "fulfillment": "cumplido_descriptivamente"
+    },
+    "OE.2": {
+      "best": "MATD3",
+      "fulfillment": "cumplido_descriptivamente"
+    },
+    "OE.3": {
+      "best": "MAAC",
+      "fulfillment": "cumplido_descriptivamente"
+    }
+  },
+  "hg_he_inferential_verdict": {
+    "HG": {
+      "kw_p": 0.15543186080628366,
+      "kw_h0_rejected": false,
+      "best_median_kpi_gain": "MATD3",
+      "wilcoxon_significant_pairs": 2,
+      "decision_omnibus": "no_rechaza_H0",
+      "decision_support": "evidencia_descriptiva_primaria; inferencia_omnibus_no_confirmatoria; Wilcoxon_exploratorio=2_pares_significativos"
+    },
+    "HE.1": {
+      "kw_p": 0.2806252392803863,
+      "kw_h0_rejected": false,
+      "best_median_kpi_gain": "MAAC",
+      "wilcoxon_significant_pairs": 2,
+      "decision_omnibus": "no_rechaza_H0",
+      "decision_support": "evidencia_descriptiva_primaria; inferencia_omnibus_no_confirmatoria; Wilcoxon_exploratorio=2_pares_significativos"
+    },
+    "HE.2": {
+      "kw_p": 0.5457384930783267,
+      "kw_h0_rejected": false,
+      "best_median_kpi_gain": "MATD3",
+      "wilcoxon_significant_pairs": 1,
+      "decision_omnibus": "no_rechaza_H0",
+      "decision_support": "evidencia_descriptiva_primaria; inferencia_omnibus_no_confirmatoria; Wilcoxon_exploratorio=1_pares_significativos"
+    },
+    "HE.3": {
+      "kw_p": 0.38805922498915935,
+      "kw_h0_rejected": false,
+      "best_median_kpi_gain": "MAAC",
+      "wilcoxon_significant_pairs": 1,
+      "decision_omnibus": "no_rechaza_H0",
+      "decision_support": "evidencia_descriptiva_primaria; inferencia_omnibus_no_confirmatoria; Wilcoxon_exploratorio=1_pares_significativos"
+    }
+  },
+  "section_numbering_changes": {
+    "cap_5_title": "Capitulo 5. Resultados por objetivo y contrastacion inferencial",
+    "ranking_table": "Tabla 5.11 -> Tabla 5.12",
+    "oe_verdict": "5.11 Veredicto OG/OE (separado de 5.9.5 hipotesis)",
+    "cap_6": "6.1 OG -> 6.2 OE -> 6.3 HG/HE -> 6.4 Limitaciones -> 6.5 Futuro"
+  }
+}

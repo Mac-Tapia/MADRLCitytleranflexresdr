@@ -76,7 +76,7 @@ La literatura reporta evaluaciones aisladas de algoritmos individuales sobre dim
 - **HE.2:** existe un MADRL con menores emisiones de CO₂ de forma estadísticamente significativa.
 - **HE.3:** existe un MADRL con menor costo energético de forma estadísticamente significativa.
 
-**Contrastación:** mediante pruebas no paramétricas (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U con tamaños de efecto, Wilcoxon signed-rank). La evidencia de la corrida v4 sustenta el rechazo de la hipótesis nula de igualdad de medianas (**Kruskal-Wallis p = 0.0459**, α = 0.05; **MATD3 vs HAPPO**: Mann-Whitney U p = 0.0182; Wilcoxon p = 2.62×10⁻⁶). Ver Capítulo 5.
+**Contrastación:** mediante pruebas no paramétricas (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U con tamaños de efecto, Wilcoxon signed-rank; α = 0,05). En la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`, 50 episodios), **ningún Kruskal-Wallis omnibus rechaza H₀** (HG p = 0,155; HE.1 p = 0,281; HE.2 p = 0,546; HE.3 p = 0,388). Descriptivamente, MATD3 lidera flexibilidad y CO₂; **MAAC lidera costos** (Δcosto 9 515 EUR en E3). La corrida local v4 (5 ep) reportó KW p = 0,0459 de forma exploratoria. Ver Capítulo 5, sección 5.9.5.
 
 `[Pendiente: confirmar con el asesor si la norma UNI exige H0/H1 explícitas por objetivo.]`
 

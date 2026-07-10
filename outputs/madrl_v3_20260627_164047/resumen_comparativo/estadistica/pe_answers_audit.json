@@ -1,0 +1,354 @@
+{
+  "generated_at": "2026-07-10T04:00:45.553640+00:00",
+  "run_id": "madrl_v3_20260627_164047",
+  "verdict": "structured_from_csv",
+  "sources": {
+    "descriptivo_distrito_colab": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\descriptivo_distrito_colab.csv",
+    "district_episode_kpis": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\analysis_real_drive\\tables\\district_episode_kpis.csv",
+    "hipotesis_estadisticas_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\hipotesis_estadisticas_madrl.csv",
+    "comparaciones_mwu_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\comparaciones_mwu_madrl.csv",
+    "comparaciones_wilcoxon_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\comparaciones_wilcoxon_madrl.csv",
+    "best_madrl_report": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\best_madrl_report.json",
+    "inferential_audit_report": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\inferential_audit_report.json"
+  },
+  "answers": {
+    "PE.1": {
+      "pe_id": "PE.1",
+      "problem": "¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de flexibilidad energética de la comunidad (D-VD.1), y cuál algoritmo genera el mayor efecto?",
+      "oe": "OE.1",
+      "he": "HE.1",
+      "vd": "D-VD.1",
+      "dimension": "flexibilidad energetica",
+      "section": "5.3.1",
+      "run_id": "madrl_v3_20260627_164047",
+      "descriptive": {
+        "best_algorithm": "MATD3",
+        "primary_kpi": "flex_composite",
+        "primary_label": "Flexibilidad compuesta",
+        "primary_value": 1.0009229901555254,
+        "primary_value_formatted": "1.0009",
+        "score_normalized": 1.0,
+        "kpis_by_algorithm": {
+          "MASAC": 1.028552547361268,
+          "MATD3": 1.0009229901555254,
+          "MAAC": 1.0124257995412176
+        },
+        "deltas_vs_best": [
+          {
+            "algorithm": "MAAC",
+            "value": 1.0124257995412176,
+            "delta_vs_best": 0.011502809385692148,
+            "pct_vs_best": 1.1492202196199748,
+            "formatted_value": "1.0124",
+            "formatted_delta": "0.0115",
+            "formatted_pct": "+1.1%"
+          },
+          {
+            "algorithm": "MASAC",
+            "value": 1.028552547361268,
+            "delta_vs_best": 0.02762955720574256,
+            "pct_vs_best": 2.7604078912653836,
+            "formatted_value": "1.0286",
+            "formatted_delta": "0.0276",
+            "formatted_pct": "+2.8%"
+          }
+        ],
+        "episode_metric": "reward_mean",
+        "episode_label": "reward_mean por episodio",
+        "episode_stats": [
+          {
+            "algorithm": "HAPPO",
+            "n_episodes": 49,
+            "mean": -0.6302595084115008,
+            "median": -0.6303079866851847,
+            "std": 0.0212941749740998
+          },
+          {
+            "algorithm": "MAAC",
+            "n_episodes": 50,
+            "mean": -0.6051573274768176,
+            "median": -0.6126499299083629,
+            "std": 0.01469522304963422
+          },
+          {
+            "algorithm": "MASAC",
+            "n_episodes": 50,
+            "mean": -0.6133306039931886,
+            "median": -0.6198266866174633,
+            "std": 0.014124164456404622
+          },
+          {
+            "algorithm": "MATD3",
+            "n_episodes": 50,
+            "mean": -0.6330435627356475,
+            "median": -0.6208251460013352,
+            "std": 0.04704873332375358
+          }
+        ],
+        "explicit_answer": "En qué medida: el MADRL (VI) modifica D-VD.1 con magnitudes distinguibles entre algoritmos (Flexibilidad compuesta MATD3 = 1.0009; score OE.1 = 1.0000); deltas frente al lider: MAAC 0.0115 (+1.1% vs MATD3); MASAC 0.0276 (+2.8% vs MATD3). Mayor efecto: MATD3 porque registra el mejor Flexibilidad compuesta en E1 (1.0009) y el score normalizado OE.1 = 1.0000."
+      },
+      "inferential": {
+        "shapiro_wilk": [
+          {
+            "algorithm": "MASAC",
+            "p_value": "9.508e-08",
+            "normality_rejected": true
+          },
+          {
+            "algorithm": "MATD3",
+            "p_value": "2.230e-07",
+            "normality_rejected": true
+          },
+          {
+            "algorithm": "MAAC",
+            "p_value": "2.363e-07",
+            "normality_rejected": true
+          }
+        ],
+        "kruskal_wallis": {
+          "H": 2.5414703356329076,
+          "p_value": 0.2806252392803863,
+          "h0_rejected": false
+        },
+        "best_median_kpi_gain": "MAAC",
+        "mann_whitney_significant": [],
+        "wilcoxon_significant": [
+          {
+            "pair": "MASAC vs MATD3",
+            "p_value": 0.04100769198114653,
+            "better_by_median": "MATD3"
+          },
+          {
+            "pair": "MASAC vs MAAC",
+            "p_value": 0.0013220986971835887,
+            "better_by_median": "MAAC"
+          }
+        ],
+        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.1, p = 0,281); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.1). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MATD3 (p = 0,041, mejor MATD3), MASAC vs MAAC (p = 0,001, mejor MAAC). Mayor efecto por mediana KPI-gain: MAAC."
+      },
+      "generated_at": "2026-07-10T04:00:45.553640+00:00"
+    },
+    "PE.2": {
+      "pe_id": "PE.2",
+      "problem": "¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de emisiones de CO2 de la comunidad (D-VD.2), y cuál algoritmo genera el mayor efecto?",
+      "oe": "OE.2",
+      "he": "HE.2",
+      "vd": "D-VD.2",
+      "dimension": "emisiones de CO2",
+      "section": "5.4.1",
+      "run_id": "madrl_v3_20260627_164047",
+      "descriptive": {
+        "best_algorithm": "MATD3",
+        "primary_kpi": "carbon_emissions_delta_kg",
+        "primary_label": "Delta CO2 (kg)",
+        "primary_value": 23070.418478806503,
+        "primary_value_formatted": "23,070",
+        "score_normalized": 1.0,
+        "kpis_by_algorithm": {
+          "MASAC": 77648.98780810599,
+          "MATD3": 23070.418478806503,
+          "MAAC": 70654.19071758597
+        },
+        "deltas_vs_best": [
+          {
+            "algorithm": "MAAC",
+            "value": 70654.19071758597,
+            "delta_vs_best": 47583.772238779464,
+            "pct_vs_best": 206.25448247716878,
+            "formatted_value": "70,654",
+            "formatted_delta": "47,584",
+            "formatted_pct": "+206.3%"
+          },
+          {
+            "algorithm": "MASAC",
+            "value": 77648.98780810599,
+            "delta_vs_best": 54578.569329299484,
+            "pct_vs_best": 236.5738158561699,
+            "formatted_value": "77,649",
+            "formatted_delta": "54,579",
+            "formatted_pct": "+236.6%"
+          }
+        ],
+        "episode_metric": "district_emission",
+        "episode_label": "emision distrital por episodio (kgCO2 eq.)",
+        "episode_stats": [
+          {
+            "algorithm": "HAPPO",
+            "n_episodes": 49,
+            "mean": 883.002641347598,
+            "median": 804.8168544769287,
+            "std": 287.03414493768634
+          },
+          {
+            "algorithm": "MAAC",
+            "n_episodes": 50,
+            "mean": 1056.3903547742964,
+            "median": 1132.6330785155296,
+            "std": 99.38122954609372
+          },
+          {
+            "algorithm": "MASAC",
+            "n_episodes": 50,
+            "mean": 1078.3684531803428,
+            "median": 1132.6354122161863,
+            "std": 121.10072678518512
+          },
+          {
+            "algorithm": "MATD3",
+            "n_episodes": 50,
+            "mean": 1132.1936166521907,
+            "median": 1137.4043860435486,
+            "std": 236.78448667789124
+          }
+        ],
+        "explicit_answer": "En qué medida: el MADRL (VI) modifica D-VD.2 con magnitudes distinguibles entre algoritmos (Delta CO2 (kg) MATD3 = 23,070; score OE.2 = 1.0000); deltas frente al lider: MAAC 47,584 (+206.3% vs MATD3); MASAC 54,579 (+236.6% vs MATD3). Mayor efecto: MATD3 porque registra el mejor Delta CO2 (kg) en E2 (23,070) y el score normalizado OE.2 = 1.0000."
+      },
+      "inferential": {
+        "shapiro_wilk": [
+          {
+            "algorithm": "MASAC",
+            "p_value": "7.112e-05",
+            "normality_rejected": true
+          },
+          {
+            "algorithm": "MATD3",
+            "p_value": "7.862e-05",
+            "normality_rejected": true
+          },
+          {
+            "algorithm": "MAAC",
+            "p_value": "6.759e-05",
+            "normality_rejected": true
+          }
+        ],
+        "kruskal_wallis": {
+          "H": 1.2112307367532171,
+          "p_value": 0.5457384930783267,
+          "h0_rejected": false
+        },
+        "best_median_kpi_gain": "MATD3",
+        "mann_whitney_significant": [],
+        "wilcoxon_significant": [
+          {
+            "pair": "MASAC vs MAAC",
+            "p_value": 0.007685794055213263,
+            "better_by_median": "MAAC"
+          }
+        ],
+        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.2, p = 0,546); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.2). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MAAC (p = 0,008, mejor MAAC). Mayor efecto por mediana KPI-gain: MATD3."
+      },
+      "generated_at": "2026-07-10T04:00:45.561206+00:00"
+    },
+    "PE.3": {
+      "pe_id": "PE.3",
+      "problem": "¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de costos energéticos de la comunidad (D-VD.3), y cuál algoritmo genera el mayor efecto?",
+      "oe": "OE.3",
+      "he": "HE.3",
+      "vd": "D-VD.3",
+      "dimension": "costos energéticos",
+      "section": "5.5.1",
+      "run_id": "madrl_v3_20260627_164047",
+      "descriptive": {
+        "best_algorithm": "MAAC",
+        "primary_kpi": "electricity_cost_delta_eur",
+        "primary_label": "Delta costo electrico (EUR)",
+        "primary_value": 9515.151784724349,
+        "primary_value_formatted": "9,515",
+        "score_normalized": 1.0,
+        "kpis_by_algorithm": {
+          "MASAC": 19792.792564499217,
+          "MATD3": 44399.364069434494,
+          "MAAC": 9515.151784724349
+        },
+        "deltas_vs_best": [
+          {
+            "algorithm": "MASAC",
+            "value": 19792.792564499217,
+            "delta_vs_best": 10277.640779774869,
+            "pct_vs_best": 108.01341914770737,
+            "formatted_value": "19,793",
+            "formatted_delta": "10,278",
+            "formatted_pct": "+108.0%"
+          },
+          {
+            "algorithm": "MATD3",
+            "value": 44399.364069434494,
+            "delta_vs_best": 34884.21228471014,
+            "pct_vs_best": 366.6175072552532,
+            "formatted_value": "44,399",
+            "formatted_delta": "34,884",
+            "formatted_pct": "+366.6%"
+          }
+        ],
+        "episode_metric": "district_cost",
+        "episode_label": "costo distrital por episodio (EUR)",
+        "episode_stats": [
+          {
+            "algorithm": "HAPPO",
+            "n_episodes": 49,
+            "mean": 352.5740728388179,
+            "median": 232.48682975769043,
+            "std": 381.71262806025305
+          },
+          {
+            "algorithm": "MAAC",
+            "n_episodes": 50,
+            "mean": 795.3938091005385,
+            "median": 689.5406326055527,
+            "std": 211.95614407345911
+          },
+          {
+            "algorithm": "MASAC",
+            "n_episodes": 50,
+            "mean": 812.1612727615982,
+            "median": 689.5406340360641,
+            "std": 206.37617819223814
+          },
+          {
+            "algorithm": "MATD3",
+            "n_episodes": 50,
+            "mean": 759.2885912102461,
+            "median": 690.9834417104721,
+            "std": 303.87941031021427
+          }
+        ],
+        "explicit_answer": "En qué medida: el MADRL (VI) modifica D-VD.3 con magnitudes distinguibles entre algoritmos (Delta costo electrico (EUR) MAAC = 9,515; score OE.3 = 1.0000); deltas frente al lider: MASAC 10,278 (+108.0% vs MAAC); MATD3 34,884 (+366.6% vs MAAC). Mayor efecto: MAAC porque registra el mejor Delta costo electrico (EUR) en E3 (9,515) y el score normalizado OE.3 = 1.0000."
+      },
+      "inferential": {
+        "shapiro_wilk": [
+          {
+            "algorithm": "MASAC",
+            "p_value": "1.539e-07",
+            "normality_rejected": true
+          },
+          {
+            "algorithm": "MATD3",
+            "p_value": "5.512e-08",
+            "normality_rejected": true
+          },
+          {
+            "algorithm": "MAAC",
+            "p_value": "7.369e-08",
+            "normality_rejected": true
+          }
+        ],
+        "kruskal_wallis": {
+          "H": 1.8931946185655777,
+          "p_value": 0.38805922498915935,
+          "h0_rejected": false
+        },
+        "best_median_kpi_gain": "MAAC",
+        "mann_whitney_significant": [],
+        "wilcoxon_significant": [
+          {
+            "pair": "MASAC vs MAAC",
+            "p_value": 0.03334022025101753,
+            "better_by_median": "MAAC"
+          }
+        ],
+        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.3, p = 0,388); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.3). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MAAC (p = 0,033, mejor MAAC). Mayor efecto por mediana KPI-gain: MAAC."
+      },
+      "generated_at": "2026-07-10T04:00:45.563669+00:00"
+    }
+  }
+}

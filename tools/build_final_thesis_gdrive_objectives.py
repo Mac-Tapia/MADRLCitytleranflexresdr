@@ -418,7 +418,7 @@ def analyze_objectives(treatment: pd.DataFrame, episodes: pd.DataFrame) -> tuple
 def analyze_convergence(episodes: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for (algo, scenario), sub in episodes.groupby(["algorithm", "scenario"]):
-        sub = sub.sort_values("episode").copy()
+        sub = sub.sort_values("episode").reset_index(drop=True).copy()
         rewards = pd.to_numeric(sub["reward_mean_average"], errors="coerce")
         rolling = rewards.rolling(window=5, min_periods=1).mean()
         n = len(sub)

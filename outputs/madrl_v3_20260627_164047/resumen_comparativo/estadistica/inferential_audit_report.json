@@ -1,0 +1,186 @@
+{
+  "generated_at": "2026-07-10T03:35:26.595471+00:00",
+  "run_id": "madrl_v3_20260627_164047",
+  "verdict": "correct",
+  "errors": [],
+  "checks": [
+    {
+      "id": "population_50ep_kpi_gains",
+      "status": "pass",
+      "detail": "231 KPI-gain rows; algorithms=['MAAC', 'MASAC', 'MATD3']"
+    },
+    {
+      "id": "sample_sizes_OE1",
+      "status": "pass",
+      "detail": {
+        "MAAC": 36,
+        "MASAC": 36,
+        "MATD3": 36
+      }
+    },
+    {
+      "id": "sample_sizes_OE2",
+      "status": "pass",
+      "detail": {
+        "MAAC": 15,
+        "MASAC": 15,
+        "MATD3": 15
+      }
+    },
+    {
+      "id": "sample_sizes_OE3",
+      "status": "pass",
+      "detail": {
+        "MAAC": 26,
+        "MASAC": 26,
+        "MATD3": 26
+      }
+    },
+    {
+      "id": "sample_sizes_ALL",
+      "status": "pass",
+      "detail": {
+        "MAAC": 77,
+        "MASAC": 77,
+        "MATD3": 77
+      }
+    },
+    {
+      "id": "happo_excluded_inferential",
+      "status": "pass",
+      "detail": "HAPPO has 0 KPI-gains; MWU ok-rows exclude HAPPO"
+    },
+    {
+      "id": "descriptive_episode_timeseries",
+      "status": "pass",
+      "detail": "episode_csv=True; n_rows=12"
+    },
+    {
+      "id": "not_v4_canonical_kw",
+      "status": "pass",
+      "detail": "canonical ALL p=0.1554 vs v4 p=0.0459"
+    }
+  ],
+  "kruskal_wallis": {
+    "OE1": {
+      "p": 0.2806252392803863,
+      "significant": false
+    },
+    "OE2": {
+      "p": 0.5457384930783267,
+      "significant": false
+    },
+    "OE3": {
+      "p": 0.38805922498915935,
+      "significant": false
+    },
+    "ALL": {
+      "p": 0.15543186080628366,
+      "significant": false
+    }
+  },
+  "mann_whitney_significant_count": 0,
+  "wilcoxon_significant": [
+    {
+      "scope": "OE1",
+      "pair": "MASAC vs MATD3",
+      "p": 0.04100769198114653,
+      "better": "MATD3"
+    },
+    {
+      "scope": "OE1",
+      "pair": "MASAC vs MAAC",
+      "p": 0.0013220986971835887,
+      "better": "MAAC"
+    },
+    {
+      "scope": "OE2",
+      "pair": "MASAC vs MAAC",
+      "p": 0.007685794055213263,
+      "better": "MAAC"
+    },
+    {
+      "scope": "OE3",
+      "pair": "MASAC vs MAAC",
+      "p": 0.03334022025101753,
+      "better": "MAAC"
+    },
+    {
+      "scope": "ALL",
+      "pair": "MASAC vs MATD3",
+      "p": 0.004886093909148584,
+      "better": "MATD3"
+    },
+    {
+      "scope": "ALL",
+      "pair": "MASAC vs MAAC",
+      "p": 5.806523516526106e-06,
+      "better": "MAAC"
+    }
+  ],
+  "hypothesis_decisions": {
+    "HG": {
+      "kw_p": 0.15543186080628366,
+      "kw_h0_rejected": false,
+      "best_median_kpi_gain": "MATD3",
+      "wilcoxon_significant_pairs": 2,
+      "decision_omnibus": "no_rechaza_H0",
+      "decision_support": "evidencia_descriptiva_primaria; inferencia_omnibus_no_confirmatoria; Wilcoxon_exploratorio=2_pares_significativos"
+    },
+    "HE.1": {
+      "kw_p": 0.2806252392803863,
+      "kw_h0_rejected": false,
+      "best_median_kpi_gain": "MAAC",
+      "wilcoxon_significant_pairs": 2,
+      "decision_omnibus": "no_rechaza_H0",
+      "decision_support": "evidencia_descriptiva_primaria; inferencia_omnibus_no_confirmatoria; Wilcoxon_exploratorio=2_pares_significativos"
+    },
+    "HE.2": {
+      "kw_p": 0.5457384930783267,
+      "kw_h0_rejected": false,
+      "best_median_kpi_gain": "MATD3",
+      "wilcoxon_significant_pairs": 1,
+      "decision_omnibus": "no_rechaza_H0",
+      "decision_support": "evidencia_descriptiva_primaria; inferencia_omnibus_no_confirmatoria; Wilcoxon_exploratorio=1_pares_significativos"
+    },
+    "HE.3": {
+      "kw_p": 0.38805922498915935,
+      "kw_h0_rejected": false,
+      "best_median_kpi_gain": "MAAC",
+      "wilcoxon_significant_pairs": 1,
+      "decision_omnibus": "no_rechaza_H0",
+      "decision_support": "evidencia_descriptiva_primaria; inferencia_omnibus_no_confirmatoria; Wilcoxon_exploratorio=1_pares_significativos"
+    }
+  },
+  "episode_counts_drive": {
+    "HAPPO": {
+      "E1": 49,
+      "E2": 49,
+      "E3": 49
+    },
+    "MASAC": {
+      "E1": 50,
+      "E2": 50,
+      "E3": 50
+    },
+    "MATD3": {
+      "E1": 50,
+      "E2": 50,
+      "E3": 50
+    },
+    "MAAC": {
+      "E1": 50,
+      "E2": 50,
+      "E3": 50
+    }
+  },
+  "reproduce_command": "powershell -ExecutionPolicy Bypass -File scripts\\verify_project_context.ps1; .venv39-citylearn-v3\\Scripts\\python.exe tools\\run_colab_drive_statistical_analysis.py; .venv39-citylearn-v3\\Scripts\\python.exe tools\\inferential_audit_report.py",
+  "sources": {
+    "analisis_estadistico_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\analisis_estadistico_madrl.csv",
+    "hipotesis_estadisticas_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\hipotesis_estadisticas_madrl.csv",
+    "comparaciones_wilcoxon_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\comparaciones_wilcoxon_madrl.csv",
+    "comparaciones_mwu_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\comparaciones_mwu_madrl.csv",
+    "descriptivo_distrito_colab": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\descriptivo_distrito_colab.csv",
+    "district_episode_kpis": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\analysis_real_drive\\tables\\district_episode_kpis.csv"
+  }
+}

@@ -180,12 +180,27 @@ def write_descriptive_district() -> list[dict]:
 
 def write_summary_md(scenario_stats: dict, district_rows: list[dict]) -> None:
     kw_all = None
+    kw_by_scope: dict[str, dict] = {}
     omnibus = OUT_DIR / "analisis_estadistico_madrl.csv"
     if omnibus.is_file():
         with omnibus.open(encoding="utf-8", newline="") as f:
             for row in csv.DictReader(f):
+                kw_by_scope[row.get("scope", "")] = row
                 if row.get("scope") == "ALL":
                     kw_all = row
+
+    wc_sig: list[str] = []
+    wc_path = OUT_DIR / "comparaciones_wilcoxon_madrl.csv"
+    if wc_path.is_file():
+        with wc_path.open(encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f):
+                if row.get("wilcoxon_significant_alpha_0_05") == "True" and str(
+                    row.get("wilcoxon_status", "")
+                ).startswith("ok"):
+                    wc_sig.append(
+                        f"{row.get('scope')}: {row.get('algorithm_a')} vs {row.get('algorithm_b')} "
+                        f"p={float(row.get('wilcoxon_p_value', 0)):.4f}"
+                    )
 
     lines = [
         f"# Estadistica Colab/Drive — {RUN_ID}",
@@ -210,9 +225,18 @@ def write_summary_md(scenario_stats: dict, district_rows: list[dict]) -> None:
             f"p={float(kw_all['kruskal_p_value']):.4f} "
             f"({'significativo' if kw_all['kruskal_significant_alpha_0_05']=='True' else 'no significativo'} α=0.05)"
         )
+    for scope, label in [("OE1", "OE.1"), ("OE2", "OE.2"), ("OE3", "OE.3")]:
+        row = kw_by_scope.get(scope)
+        if row:
+            lines.append(
+                f"- Kruskal-Wallis {label}: p={float(row['kruskal_p_value']):.4f}"
+            )
+    lines.append(
+        "- Shapiro-Wilk: normalidad rechazada en MASAC, MATD3, MAAC → tests no parametricos justificados."
+    )
+    if wc_sig:
+        lines.append("- Wilcoxon significativos (α=0.05): " + "; ".join(wc_sig))
     lines += [
-        "- Shapiro-Wilk: normalidad rechazada en MASAC, MATD3, MAAC → tests no parametricos justificados.",
-        "- Wilcoxon ALL: MASAC vs MATD3 p=0.0049 (significativo); demas pares no significativos en MWU.",
         "",
         "## Inferencial — score por escenario (notebook 9.1, 3 algos)",
         "",
@@ -253,9 +277,13 @@ def main() -> int:
             json.dumps(scenario_stats, indent=2), encoding="utf-8"
         )
 
-    print("[3/3] Resumen markdown...")
+    print("[3/3] Resumen markdown y auditoria...")
     district = write_descriptive_district()
     write_summary_md(scenario_stats, district)
+
+    audit_script = REPO / "tools" / "inferential_audit_report.py"
+    if audit_script.is_file():
+        subprocess.run([str(VENV_PY), "-B", str(audit_script)], cwd=str(REPO), check=True)
 
     manifest = {
         "run_id": RUN_ID,

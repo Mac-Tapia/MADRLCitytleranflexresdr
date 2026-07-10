@@ -158,7 +158,30 @@ def add_dedicatoria_agradecimientos(doc, p, heading) -> None:
     doc.add_page_break()
 
 
+def _resumen_inferential_snippet() -> tuple[str, str]:
+    og = _hyp_row_by_axis("OG")
+    kw_all = float(og.get("KW_p_value", 0.155)) if og else 0.155
+    wc = next(
+        (
+            r
+            for r in _significant_wilcoxon_rows()
+            if r.get("scope") == "ALL" and r.get("algorithm_a") == "MASAC" and r.get("algorithm_b") == "MATD3"
+        ),
+        {},
+    )
+    wc_p = float(wc.get("wilcoxon_p_value", 0.0049)) if wc else 0.0049
+    es = (
+        f"(Kruskal-Wallis ALL p={kw_all:.3f}; Wilcoxon MASAC vs MATD3 p={wc_p:.4f})"
+    )
+    en = (
+        f"Kruskal-Wallis ALL p={kw_all:.3f} (not significant at alpha=0.05); "
+        f"Wilcoxon MASAC vs MATD3 p={wc_p:.4f}."
+    )
+    return es, en
+
+
 def add_resumen_doctoral(doc, p, heading) -> None:
+    inf_es, inf_en = _resumen_inferential_snippet()
     heading(doc, "Resumen", 1)
     p(
         doc,
@@ -174,7 +197,7 @@ def add_resumen_doctoral(doc, p, heading) -> None:
         "timeseries.csv y trace.csv auditados en Drive (sin datos sinteticos). El analisis multiobjetivo "
         "desagrega KPIs por distrito y por edificio (153 registros). HAPPO alcanzo 49/50 episodios sin "
         "KPIs finales por error de evaluacion (VecEnvWrapper). La evidencia inferencial Colab "
-        "(Kruskal-Wallis ALL p=0.155; Wilcoxon MASAC vs MATD3 p=0.0049) complementa el ranking "
+        f"{inf_es} complementa el ranking "
         "descriptivo; la referencia local v4 (KW p=0.0459) es exploratoria con 5 episodios.",
     )
     p(
@@ -193,8 +216,8 @@ def add_resumen_doctoral(doc, p, heading) -> None:
         "(global score 0.6667), leading flexibility and CO₂ objectives, while MAAC leads energy cost. "
         "Multi-objective KPIs are reported at district and building levels (185 EV chargers). "
         "Training figures use audited Drive timeseries and trace CSVs (no synthetic data). "
-        "Inferential tests on the canonical run were executed: Kruskal-Wallis ALL p=0.155 "
-        "(not significant at alpha=0.05); Wilcoxon MASAC vs MATD3 p=0.0049. MATD3 leads "
+        "Inferential tests on the canonical run were executed: "
+        f"{inf_en} MATD3 leads "
         "descriptively but CityLearn v2 baseline outperforms MADRL on global HPHI score.",
         italic=True,
     )
@@ -396,6 +419,185 @@ def _wilcoxon_table_rows(scope_filter: str | None = None) -> list[list[str]]:
             ]
         )
     return rows
+
+
+def _fmt_p_es(value: float | str | None, digits: int = 3) -> str:
+    if value is None or value == "":
+        return "-"
+    x = float(value)
+    if x < 0.001:
+        return f"{x:.2e}".replace(".", ",")
+    return f"{x:.{digits}f}".replace(".", ",")
+
+
+def _hyp_row_by_axis(axis: str) -> dict[str, str]:
+    for row in _read_csv(HYP_CSV):
+        if row.get("axis") == axis:
+            return row
+    return {}
+
+
+def _significant_wilcoxon_rows() -> list[dict[str, str]]:
+    if not WC_CSV.is_file():
+        return []
+    return [
+        row
+        for row in _read_csv(WC_CSV)
+        if row.get("wilcoxon_significant_alpha_0_05") == "True"
+        and str(row.get("wilcoxon_status", "")).startswith("ok")
+    ]
+
+
+def _kw_narrative_text() -> str:
+    parts: list[str] = []
+    for axis, label in (("OE1", "OE.1"), ("OE2", "OE.2"), ("OE3", "OE.3"), ("OG", "ALL")):
+        row = _hyp_row_by_axis(axis)
+        if row:
+            parts.append(f"{label} p={_fmt_p_es(row.get('KW_p_value'))}")
+    joined = "; ".join(parts)
+    return (
+        f"Ningun Kruskal-Wallis por eje alcanza alpha = 0,05 con una semilla ({joined}). "
+        "Por tanto, no se rechaza H0 de igualdad global entre algoritmos en los contrastes omnibus; "
+        "las respuestas a HE.1–HE.3 y HG se sustentan principalmente en evidencia descriptiva "
+        "(seccion 5.8 y Tablas 5.4–5.6). La columna «Mejor (mediana KPI-gain)» de la Tabla 5.17 "
+        "refiere al lider inferencial por mediana de signed_relative_gain, que puede diferir del "
+        "lider descriptivo de distrito (Tablas 5.4–5.6)."
+    )
+
+
+def _mwu_narrative_text() -> str:
+    mwu_sig = [
+        row
+        for row in _read_csv(MWU_CSV)
+        if row.get("mann_whitney_significant_alpha_0_05") == "True" and row.get("mann_whitney_status") == "ok"
+    ] if MWU_CSV.is_file() else []
+    all_row = next((r for r in _read_csv(MWU_CSV) if r.get("scope") == "ALL" and r.get("mann_whitney_status") == "ok"
+                    and r.get("algorithm_a") == "MASAC" and r.get("algorithm_b") == "MATD3"), {}) if MWU_CSV.is_file() else {}
+    all_p = _fmt_p_es(all_row.get("mann_whitney_p_value", "0.0701"))
+    if mwu_sig:
+        pairs = ", ".join(f"{r['algorithm_a']} vs {r['algorithm_b']} (p={_fmt_p_es(r['mann_whitney_p_value'])})" for r in mwu_sig)
+        tail = f"Pares significativos: {pairs}."
+    else:
+        tail = (
+            f"Ningun par Mann-Whitney U alcanza significancia global a alpha = 0,05 en los ejes "
+            f"OE.1–OE.3; en ALL, MASAC vs MATD3 (p = {all_p}) tampoco alcanza el umbral."
+        )
+    return f"{tail} Estas pruebas complementan el Kruskal-Wallis sin sustituir la evidencia descriptiva."
+
+
+def _wilcoxon_narrative_text() -> str:
+    sig = _significant_wilcoxon_rows()
+    if not sig:
+        return (
+            "Wilcoxon pareado no detecta diferencias sistematicas a alpha = 0,05 en ningun par "
+            "auditado sobre KPI-gains."
+        )
+    by_scope: dict[str, list[str]] = {}
+    for row in sig:
+        scope = row.get("scope", "ALL")
+        pair = f"{row.get('algorithm_a')} vs {row.get('algorithm_b')} (p = {_fmt_p_es(row.get('wilcoxon_p_value'))})"
+        by_scope.setdefault(scope, []).append(pair)
+    scope_labels = {"OE1": "OE.1", "OE2": "OE.2", "OE3": "OE.3", "ALL": "ALL"}
+    chunks = [f"{scope_labels.get(scope, scope)}: {', '.join(pairs)}" for scope, pairs in by_scope.items()]
+    return (
+        "Wilcoxon pareado detecta diferencias sistematicas en pares especificos (KPI-gains pareados): "
+        + "; ".join(chunks)
+        + ". Estos contrastes son exploratorios y no reemplazan replicacion multi-semilla ni el "
+        "diseno factorial 4×3 completo."
+    )
+
+
+def _hypothesis_decision_table_rows() -> list[list[str]]:
+    rows_out: list[list[str]] = []
+    for axis, (hyp_code, label) in (
+        ("OE1", ("HE.1", "OE.1 / E1")),
+        ("OE2", ("HE.2", "OE.2 / E2")),
+        ("OE3", ("HE.3", "OE.3 / E3")),
+        ("OG", ("HG", "Global (ALL)")),
+    ):
+        hyp_row = _hyp_row_by_axis(axis)
+        kw_p = float(hyp_row.get("KW_p_value", 1)) if hyp_row else 1.0
+        kw_sig = kw_p < 0.05
+        wc_n = len([r for r in _significant_wilcoxon_rows() if r.get("scope") == ("ALL" if axis == "OG" else axis)])
+        rows_out.append(
+            [
+                hyp_code,
+                label,
+                "Kruskal-Wallis + Wilcoxon exploratorio",
+                "Si" if kw_sig else "No (omnibus)",
+                hyp_row.get("statistical_best_algorithm_by_median_gain", "-"),
+                f"Descriptivo distrito + {wc_n} par(es) Wilcoxon significativo(s)",
+            ]
+        )
+    return rows_out
+
+
+def _verdict_table_rows(report: dict) -> list[list[str]]:
+    oe_map = {
+        "OE1": ("OE.1", "D-VD.1 / E1", "HE.1", "score_oe1_flex", "flex_composite", ".4f"),
+        "OE2": ("OE.2", "D-VD.2 / E2", "HE.2", "score_oe2_co2", "carbon_emissions_delta_kg", ",.0f"),
+        "OE3": ("OE.3", "D-VD.3 / E3", "HE.3", "score_oe3_cost", "electricity_cost_delta_eur", ",.0f"),
+    }
+    district = _read_csv(DISTRICT_CSV)
+    rows_out: list[list[str]] = []
+    for oe_key, (oe_label, vd, hyp_code, score_key, kpi, fmt) in oe_map.items():
+        axis = oe_key
+        scen = OE_DEFINITIONS[oe_key]["scenario"]
+        scen_rows = _rows_for_scenario(district, scen)
+        best_algo, best_val = _best_algo_by_kpi(scen_rows, kpi, lower_better=True)
+        score = next(item.get(score_key, 0) for item in report["ranking_with_kpis"] if item["algorithm"] == best_algo)
+        hyp_row = _hyp_row_by_axis(axis)
+        kw_p = float(hyp_row.get("KW_p_value", 1)) if hyp_row else 1.0
+        rows_out.append(
+            [
+                oe_label,
+                vd,
+                hyp_code,
+                best_algo,
+                f"{OE_DEFINITIONS[oe_key]['primary_kpis'][0][1]} = {_fmt_kpi(str(best_val), fmt, True)}; score = {score:.4f}",
+                "Si (descriptivo)",
+                f"No (KW p = {_fmt_p_es(kw_p)})",
+                "Cumplido parcialmente: lider descriptivo identificado; inferencia omnibus no confirmatoria",
+            ]
+        )
+    og = _hyp_row_by_axis("OG")
+    kw_all = float(og.get("KW_p_value", 1)) if og else 1.0
+    best_global = report["ranking_with_kpis"][0]["algorithm"]
+    score_global = report["ranking_with_kpis"][0].get("score_global", 0)
+    rows_out.append(
+        [
+            "OG",
+            "ALL",
+            "HG",
+            best_global,
+            f"score global = {score_global:.4f}",
+            "Si (descriptivo)",
+            f"No (KW p = {_fmt_p_es(kw_all)})",
+            "Cumplido parcialmente: mejor integracion MADRL; sin dominancia universal",
+        ]
+    )
+    return rows_out
+
+
+def _inferential_conclusion_text() -> str:
+    og = _hyp_row_by_axis("OG")
+    kw_all = float(og.get("KW_p_value", 1)) if og else 1.0
+    wc_all = next(
+        (
+            r
+            for r in _significant_wilcoxon_rows()
+            if r.get("scope") == "ALL" and r.get("algorithm_a") == "MASAC" and r.get("algorithm_b") == "MATD3"
+        ),
+        {},
+    )
+    wc_p = _fmt_p_es(wc_all.get("wilcoxon_p_value", "0.0049"))
+    return (
+        "Conclusion operativa: los tres objetivos especificos se cumplen en el sentido descriptivo "
+        "exigido por la tesis (identificacion del algoritmo de mayor efecto por eje en KPI distrital), "
+        f"pero ninguno alcanza significancia inferencial omnibus con una semilla (KW ALL p = {_fmt_p_es(kw_all)}). "
+        "La hipotesis global HG se sustenta descriptivamente en MATD3; Wilcoxon ALL (MASAC vs MATD3, "
+        f"p = {wc_p}) sugiere diferencias exploratorias en KPI-gains pareados que requieren replicacion multi-semilla."
+    )
 
 
 def _load_algo_profiles() -> dict:
@@ -1046,13 +1248,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         caption="Tabla 5.17. Kruskal-Wallis por eje OE y agregado OG/HG (hipotesis_estadisticas_madrl.csv).",
         col_widths=[2.3, 1.3, 1.3, 1.5, 2.0, 2.6],
     )
-    p(
-        doc,
-        "Ningun Kruskal-Wallis por eje alcanza alpha = 0,05 con una semilla (OE.1 p=0,281; "
-        "OE.2 p=0,546; OE.3 p=0,388; ALL p=0,155). Por tanto, no se rechaza H0 de igualdad "
-        "global entre algoritmos en los contrastes omnibus; las respuestas a HE.1–HE.3 y HG "
-        "se sustentan principalmente en evidencia descriptiva (seccion 5.8 y Tablas 5.4–5.6).",
-    )
+    p(doc, _kw_narrative_text())
 
     heading(doc, "5.9.3 Comparaciones por pares independientes (Mann-Whitney U)", 3)
     mwu_rows = _mwu_table_rows()
@@ -1064,12 +1260,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
             caption="Tabla 5.18. Mann-Whitney U por par de algoritmos (comparaciones_mwu_madrl.csv).",
             col_widths=[2.2, 1.2, 2.8, 1.5, 1.5, 1.3],
         )
-    p(
-        doc,
-        "Ningun par Mann-Whitney U alcanza significancia global a alpha = 0,05 en los ejes "
-        "OE.1–OE.3; en ALL, MASAC vs MATD3 (p = 0,070) tampoco alcanza el umbral. "
-        "Estas pruebas complementan el Kruskal-Wallis sin sustituir la evidencia descriptiva.",
-    )
+    p(doc, _mwu_narrative_text())
 
     heading(doc, "5.9.4 Comparaciones pareadas (Wilcoxon signed-rank)", 3)
     wc_rows = _wilcoxon_table_rows()
@@ -1081,34 +1272,10 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
             caption="Tabla 5.19. Wilcoxon signed-rank por KPI pareado (comparaciones_wilcoxon_madrl.csv).",
             col_widths=[2.2, 1.2, 2.8, 1.5, 1.5, 1.3],
         )
-    p(
-        doc,
-        "Wilcoxon pareado detecta diferencias sistematicas en pares especificos: ALL "
-        "MASAC vs MATD3 (p = 0,0049) y MASAC vs MAAC (p < 0,001); en OE.1, MASAC vs MAAC "
-        "(p = 0,0013). Estos contrastes son exploratorios sobre KPI-gains pareados y no "
-        "reemplazan replicacion multi-semilla ni el diseno factorial 4×3 completo.",
-    )
+    p(doc, _wilcoxon_narrative_text())
 
     heading(doc, "5.9.5 Decision por hipotesis (Capitulo 1)", 3)
-    hyp_decision_rows = []
-    for axis, (hyp_code, label) in (
-        ("OE1", ("HE.1", "OE.1 / E1")),
-        ("OE2", ("HE.2", "OE.2 / E2")),
-        ("OE3", ("HE.3", "OE.3 / E3")),
-        ("OG", ("HG", "Global (ALL)")),
-    ):
-        hyp_row = next((r for r in _read_csv(HYP_CSV) if r.get("axis") == axis), {})
-        kw_sig = float(hyp_row.get("KW_p_value", 1)) < 0.05 if hyp_row else False
-        hyp_decision_rows.append(
-            [
-                hyp_code,
-                label,
-                "Kruskal-Wallis + descriptivo",
-                "Si" if kw_sig else "No (omnibus)",
-                hyp_row.get("statistical_best_algorithm_by_median_gain", "-"),
-                "Evidencia descriptiva + exploratoria KPI-gain",
-            ]
-        )
+    hyp_decision_rows = _hypothesis_decision_table_rows()
     add_table(
         doc,
         ["Hipotesis", "Alcance", "Prueba principal", "H0 rechazada (KW)", "Mejor (mediana gain)", "Decision"],
@@ -1141,48 +1308,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         "efecto con datos auditados; inferencialmente cuando KW rechaza H0 (ninguno alcanza con "
         "una semilla). HE.1–HE.3 y HG se vinculan explicitamente.",
     )
-    verdict_rows = [
-        [
-            "OE.1",
-            "D-VD.1 / E1",
-            "HE.1",
-            "MATD3",
-            "flex_composite = 1,0009; score = 1,0000",
-            "Si (descriptivo)",
-            "No (KW p = 0,281)",
-            "Cumplido parcialmente: lider identificado; inferencia no confirmatoria",
-        ],
-        [
-            "OE.2",
-            "D-VD.2 / E2",
-            "HE.2",
-            "MATD3",
-            "delta CO2 = 23 070 kg; score = 1,0000",
-            "Si (descriptivo)",
-            "No (KW p = 0,546)",
-            "Cumplido parcialmente: menor emision entre MADRL; RBC supera globalmente",
-        ],
-        [
-            "OE.3",
-            "D-VD.3 / E3",
-            "HE.3",
-            "MAAC",
-            "delta costo = 9 515 EUR; score = 1,0000",
-            "Si (descriptivo)",
-            "No (KW p = 0,388)",
-            "Cumplido parcialmente: lider costos identificado; hour_rbc supera en score eje",
-        ],
-        [
-            "OG",
-            "ALL",
-            "HG",
-            "MATD3",
-            "score global = 0,6667 (2/3 ejes)",
-            "Si (descriptivo)",
-            "No (KW p = 0,155)",
-            "Cumplido parcialmente: mejor integracion MADRL; sin dominancia universal",
-        ],
-    ]
+    verdict_rows = _verdict_table_rows(report)
     add_table(
         doc,
         ["OE", "VD / Esc.", "Hip.", "Mejor VI", "Evidencia KPI", "Desc.", "Infer.", "Veredicto"],
@@ -1190,14 +1316,7 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
         caption="Tabla 5.21. Veredicto de cumplimiento OE.1–OE.3 y HG (corrida canonica 50 ep).",
         col_widths=[1.2, 1.8, 1.0, 1.5, 2.8, 1.5, 1.8, 2.5],
     )
-    p(
-        doc,
-        "Conclusion operativa: los tres objetivos especificos se cumplen en el sentido descriptivo "
-        "exigido por la tesis (identificacion del algoritmo de mayor efecto por eje), pero ninguno "
-        "alcanza significancia inferencial omnibus con una semilla. La hipotesis global HG se "
-        "sustenta descriptivamente en MATD3; Wilcoxon ALL (MASAC vs MATD3, p = 0,0049) sugiere "
-        "diferencias exploratorias en KPI-gains pareados que requieren replicacion multi-semilla.",
-    )
+    p(doc, _inferential_conclusion_text())
 
 
 def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:

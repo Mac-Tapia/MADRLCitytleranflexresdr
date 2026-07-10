@@ -22,8 +22,11 @@ Fuente: episodios reales timeseries.csv + KPI-gains auditados (MATD3, MAAC, MASA
 ## Inferencial — protocolo KPI-gains (Shapiro → KW → MWU → Wilcoxon)
 
 - Kruskal-Wallis ALL: H=3.7230956751395587, p=0.1554 (no significativo α=0.05)
+- Kruskal-Wallis OE.1: p=0.2806
+- Kruskal-Wallis OE.2: p=0.5457
+- Kruskal-Wallis OE.3: p=0.3881
 - Shapiro-Wilk: normalidad rechazada en MASAC, MATD3, MAAC → tests no parametricos justificados.
-- Wilcoxon ALL: MASAC vs MATD3 p=0.0049 (significativo); demas pares no significativos en MWU.
+- Wilcoxon significativos (α=0.05): OE1: MASAC vs MATD3 p=0.0410; OE1: MASAC vs MAAC p=0.0013; OE2: MASAC vs MAAC p=0.0077; OE3: MASAC vs MAAC p=0.0333; ALL: MASAC vs MATD3 p=0.0049; ALL: MASAC vs MAAC p=0.0000
 
 ## Inferencial — score por escenario (notebook 9.1, 3 algos)
 

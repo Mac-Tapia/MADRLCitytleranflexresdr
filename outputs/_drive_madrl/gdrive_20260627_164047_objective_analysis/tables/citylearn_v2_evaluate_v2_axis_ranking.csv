@@ -1,0 +1,16 @@
+scenario,axis,family,method,normalized_score,available_kpis,improved_kpis,total_kpis,axis_rank
+E1,OE1,citylearn_v3_madrl,MATD3,0.4956024094803467,36,5,36,1.0
+E1,OE1,citylearn_v3_madrl,MAAC,0.4954631528852385,36,5,36,2.0
+E1,OE1,citylearn_v2_original,hour_rbc,0.4709615548963242,33,2,36,3.0
+E1,OE1,citylearn_v2_original,baseline,0.4671178779005605,33,5,36,4.0
+E1,OE1,citylearn_v3_madrl,MASAC,0.4214174518250242,36,2,36,5.0
+E2,OE2,citylearn_v2_original,baseline,0.9999999999960812,7,0,7,1.0
+E2,OE2,citylearn_v2_original,hour_rbc,0.8439844382893023,7,0,7,2.0
+E2,OE2,citylearn_v3_madrl,MATD3,0.3339735173461174,7,0,7,3.0
+E2,OE2,citylearn_v3_madrl,MASAC,0.226255663757891,7,0,7,4.0
+E2,OE2,citylearn_v3_madrl,MAAC,0.1842331966652703,7,0,7,5.0
+E3,OE3,citylearn_v2_original,hour_rbc,0.7370251241359423,11,3,11,1.0
+E3,OE3,citylearn_v2_original,baseline,0.7274303579737503,11,4,11,2.0
+E3,OE3,citylearn_v3_madrl,MAAC,0.5022314559515855,11,1,11,3.0
+E3,OE3,citylearn_v3_madrl,MASAC,0.4567264901630735,11,1,11,4.0
+E3,OE3,citylearn_v3_madrl,MATD3,0.2786017320263212,11,1,11,5.0

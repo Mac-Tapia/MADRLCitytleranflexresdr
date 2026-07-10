@@ -84,6 +84,15 @@ def add_chapter_2(doc: Document) -> None:
         para.paragraph_format.line_spacing = 1.15
         return para
 
+    def eq(text: str):
+        para = doc.add_paragraph()
+        run = para.add_run(text)
+        run.italic = True
+        para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        para.paragraph_format.space_before = Pt(4)
+        para.paragraph_format.space_after = Pt(4)
+        return para
+
     def table(caption: str, headers: list[str], rows: list[list[str]], font_size: float = 7.4):
         cap = doc.add_paragraph()
         run = cap.add_run(caption)
@@ -163,8 +172,108 @@ def add_chapter_2(doc: Document) -> None:
     p("La cooperacion se implementa mediante una recompensa mixta que combina recompensa individual y recompensa de equipo. Esto evita dos extremos: politicas totalmente egoistas que reducen el costo de un edificio desplazando problemas al distrito, y politicas totalmente globales que ignoran la heterogeneidad operativa de cada edificio. La formulacion cooperativa se alinea con los desafios descritos por Nweye et al. (2022) y con la necesidad de coordinacion observada en demanda respuesta multiagente (Yao et al., 2023; Xie et al., 2023).")
 
     h("2.2.3 Dec-POMDP como formalizacion del problema doctoral", 3)
-    p("El Decentralized Partially Observable Markov Decision Process permite formalizar decision cooperativa con informacion local incompleta. Oliehoek y Amato (2016) lo definen como una estructura donde multiples agentes comparten una recompensa o criterio cooperativo, pero cada uno recibe observaciones parciales. Esta tesis adopta esa formulacion porque ningun edificio observa completamente el estado interno de los otros edificios durante la ejecucion. Cada agente observa su demanda, PV, BESS, EV, precio, intensidad de carbono y variables locales, pero no controla ni observa directamente las acciones internas de los demas.")
-    p("La tupla teorica usada es M = <S, {A_i}, T, R, {O_i}, Omega, gamma, T>. S representa el estado global concatenado de las observaciones; A_i es el espacio de accion local de cada edificio; T describe la transicion energetica; R es la recompensa cooperativa; O_i son observaciones locales; Omega es la funcion de observacion; gamma es el factor de descuento; y T el horizonte temporal. Esta formalizacion conecta el marco teorico con la arquitectura del Capitulo 4, donde los 17 edificios del SEAI Iquitos se convierten en agentes.")
+    p(
+        "El Decentralized Partially Observable Markov Decision Process (Dec-POMDP) permite "
+        "formalizar decision cooperativa con informacion local incompleta. Oliehoek y Amato (2016) "
+        "lo definen como una estructura donde N agentes comparten un criterio cooperativo comun, "
+        "pero cada uno recibe observaciones parciales del estado global. Esta tesis adopta esa "
+        "formulacion porque ningun edificio del SEAI Iquitos observa completamente el estado "
+        "interno de los demas durante la ejecucion: cada agente ve su demanda, PV, BESS, EV, "
+        "precio, intensidad de carbono y variables locales, pero no accede a temperatura, SOC, "
+        "demanda ni perfiles EV de los otros edificios."
+    )
+    p(
+        "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla "
+        "siguiente (Oliehoek y Amato, 2016; Sutton y Barto, 2018):"
+    )
+    eq("M = <S, {A_i}_{i=1}^N, T, R, {O_i}_{i=1}^N, Omega, gamma, T_hor>")
+    p(
+        "donde N = 17 edificios institucionales/comerciales del dataset citylearn_iquitos_2023_2025, "
+        "gamma = 0.9999 (factor de descuento para episodios de 8 760 pasos horarios) y "
+        "T_hor = 8 760 (un ano simulado). El objetivo cooperativo es maximizar el retorno "
+        "esperado J(pi) = E[ sum_{t=0}^{T_hor-1} gamma^t R_t ], donde pi = (pi_1, ..., pi_N) "
+        "denota el conjunto de politicas locales. La Tabla 2.2b resume la notacion formal; "
+        "la operacionalizacion computacional se desarrolla en el Capitulo 4 sin alterar esta "
+        "definicion teorica."
+    )
+    table(
+        "Tabla 2.2b. Notacion formal del Dec-POMDP cooperativo (SEAI Iquitos, N = 17).",
+        ["Simbolo", "Definicion teorica", "Valor / rango en esta tesis"],
+        [
+            ["N", "Numero de agentes cooperativos (edificios)", "17"],
+            ["S", "Espacio de estado global", "Concatenacion s = [o_1, ..., o_17]; dim global = 1 856"],
+            ["O_i", "Espacio de observacion local del agente i", "Heterogeneo: 57-330 dimensiones segun flota EV"],
+            ["A_i", "Espacio de accion local del agente i", "Heterogeneo: 5-44 acciones (BESS, EV, carga desplazable)"],
+            ["T", "Funcion de transicion estocastica S x A -> Delta(S)", "Balance energetico, modelo RC, BESS eta_RT = 0.9025, EV estocastico"],
+            ["Omega", "Funcion de observacion O_i = Omega_i(s, a)", "Proyeccion parcial del estado global a informacion local"],
+            ["R", "Recompensa cooperativa escalar o vector mixto", "CityLearnV3MADRLRewardFunction; agregacion team_mean"],
+            ["gamma", "Factor de descuento", "0.9999"],
+            ["T_hor", "Horizonte temporal del episodio", "8 760 pasos (1 h/paso)"],
+            ["pi_i", "Politica descentralizada del edificio i", "pi_i(a_i | o_i); sin comunicacion inter-edificio"],
+        ],
+        font_size=7.0,
+    )
+    p(
+        "Estado global y observaciones locales. El estado global S se construye como la "
+        "concatenacion de observaciones locales (ctde_state = concatenated_local_observations). "
+        "Cada observacion o_i combina variables temporales (mes, hora, day_type), fisica del "
+        "edificio (non_shiftable_load, dhw_demand, cooling_demand, solar_generation), estado del "
+        "BESS (SOC, potencia nominal, acciones previas), estado de cada cargador EV (SOC_k, hora "
+        "de salida_k, SOC requerido_k, llegada estimada_k, estado_k) y senales globales "
+        "(carbon_intensity, electricity_pricing, outdoor_dry_bulb_temperature, "
+        "diffuse_solar_irradiance, direct_solar_irradiance). La heterogeneidad dimensional "
+        "refleja la diversidad operativa del distrito: edificios con flotas EV extensas "
+        "(p. ej. B06 con 32 cargadores, B07 con 42) concentran observaciones y acciones de "
+        "mayor dimension."
+    )
+    p(
+        "Espacios de accion. Cada accion a_i controla recursos flexibles del edificio i: "
+        "potencia de carga/descarga del BESS (electrical_storage), potencia de carga de cada "
+        "cargador EV (electric_vehicle_storage_charger_k) y control de carga desplazable "
+        "(washing_machine). Las cargas no controlables permanecen como referencia de demanda "
+        "base. La transicion T incorpora el balance energetico del distrito, el modelo RC de "
+        "temperatura, la dinamica del almacenamiento con eficiencia round-trip 0.9025 y los "
+        "perfiles estocasticos de llegada/salida de vehiculos electricos."
+    )
+    p(
+        "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes "
+        "doctorales (flexibilidad, CO2, costos) mediante una recompensa escalar por edificio "
+        "y paso, con agregacion cooperativa tipo media de equipo. A nivel teorico:"
+    )
+    eq(
+        "reward_i(t) = reward_scale * [ w_flex * flex_i(t) + w_carbon * carbon_i(t) "
+        "+ w_cost * cost_i(t) + w_ev * ev_i(t) ]"
+    )
+    p(
+        "El componente flex_i(t) penaliza, a nivel distrital compartido, el pico y la rampa "
+        "mediante peak_share(t) = district_import(t) / N y ramp_share(t) = "
+        "|district_import(t) - district_import(t-1)| / N, con funciones de suavizado tanh; "
+        "carbon_i(t) pondera la importacion por la intensidad de carbono CI(t); cost_i(t) "
+        "refleja la tarifa TOU mediante price_norm(t); y ev_i(t) incorpora urgencia de SOC y "
+        "salida de vehiculos. Los pesos w_flex, w_carbon y w_cost se condicionan por escenario "
+        "experimental (E1/E2/E3) segun la Tabla 3.1 del Capitulo 3."
+    )
+    eq("team_reward(t) = (1/N) * sum_{i=1}^N reward_i(t)")
+    eq("mixed_reward_i(t) = (1 - r) * reward_i(t) + r * team_reward(t),   con r = 0.70")
+    p(
+        "La mezcla cooperativa con team_reward_ratio r = 0.70 evita politicas puramente "
+        "egoistas (que desplazan picos o costos al distrito) y politicas puramente globales "
+        "(que ignoran heterogeneidad operativa). Este esquema se alinea con la literatura de "
+        "recompensa hibrida en MADRL energetico (Yao et al., 2023; Liu et al., 2022) y con "
+        "los desafios de coordinacion identificados por Nweye et al. (2022). Los valores "
+        "numericos del perfil unificado comparable v4 (peak_weight = 0.45, ramp_weight = 0.35, "
+        "ev_weight = 0.25, reward_scale = 1.00) y la implementacion exacta de cada termino "
+        "se documentan en las Secciones 4.2-4.5, evitando duplicar aqui el detalle de codigo."
+    )
+    p(
+        "Condicion de observabilidad parcial estricta. Durante la ejecucion descentralizada, "
+        "cada politica pi_i(a_i | o_i) actua solo con o_i; el estado global s solo es accesible "
+        "durante el entrenamiento bajo CTDE (Seccion 2.2.4). Esta separacion es coherente con "
+        "el paradigma Dec-POMDP: la informacion completa del distrito no esta disponible en "
+        "operacion, pero puede usarse para aprender coordinacion. El Capitulo 4 desarrolla "
+        "wrappers PettingZoo, espacios de estado/accion y la clase CityLearnV3MADRLRewardFunction "
+        "que instancian esta formalizacion sobre CityLearn v2 extendido (CityLearn v3 propuesto)."
+    )
 
     h("2.2.4 CTDE: entrenamiento centralizado y ejecucion descentralizada", 3)
     p("El paradigma Centralized Training, Decentralized Execution separa dos fases: durante el entrenamiento, los criticos o funciones de valor pueden acceder al estado global y a informacion conjunta; durante la ejecucion, las politicas actuan solo con observaciones locales. Lowe et al. (2017) muestran este principio en multi-agent actor-critic, e Iqbal y Sha (2019) lo extienden con mecanismos de atencion para seleccionar interacciones relevantes entre agentes. En la tesis, CTDE permite que los agentes aprendan coordinacion distrital sin requerir comunicacion completa en operacion.")
@@ -270,8 +379,11 @@ def main() -> None:
         "cap2_word_count_estimated": len(re.findall(r"\b[\wáéíóúÁÉÍÓÚñÑüÜ-]+\b", cap2_text, re.UNICODE)),
         "tables": len(v.tables),
         "inline_images": len(v.inline_shapes),
-        "cap2_tables_expected": all(x in cap2_text for x in ["Tabla 2.1", "Tabla 2.2", "Tabla 2.3"]),
+        "cap2_tables_expected": all(x in cap2_text for x in ["Tabla 2.1", "Tabla 2.2", "Tabla 2.2b", "Tabla 2.3"]),
         "cap2_has_dec_pomdp_ctde": "Dec-POMDP" in cap2_text and "CTDE" in cap2_text,
+        "cap2_has_dec_pomdp_tuple": "M = <S, {A_i}_{i=1}^N" in cap2_text,
+        "cap2_has_reward_equations": "reward_i(t)" in cap2_text and "team_reward(t)" in cap2_text,
+        "cap2_has_n17_agents": "N = 17" in cap2_text,
         "cap2_has_citylearn_v3_propuesto": "CityLearn v3 propuesto" in cap2_text,
         "cap2_citation_year_markers": len(re.findall(r"\(\d{4}[a-z]?\)", cap2_text)),
         "wrong_redaccion_blocks": "Redaccion doctoral ampliada" in full,

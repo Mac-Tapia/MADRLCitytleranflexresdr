@@ -171,8 +171,15 @@ def build_complete() -> Path:
             _build_results_chapters(),
         )
         _replace_body_range(doc_ant, "Resumen", "Indice", _build_resumen_abstract())
-        doc_ant.save(str(OUT_ANTECEDENTES))
-        print(f"OK -> {OUT_ANTECEDENTES} (Cap. 5-6 y Resumen actualizados)")
+        try:
+            doc_ant.save(str(OUT_ANTECEDENTES))
+            print(f"OK -> {OUT_ANTECEDENTES} (Cap. 5-6 y Resumen actualizados)")
+        except OSError as exc:
+            out_alt = OUT_ANTECEDENTES.with_name(
+                OUT_ANTECEDENTES.stem + "_CAP56_UPDATE" + OUT_ANTECEDENTES.suffix
+            )
+            doc_ant.save(str(out_alt))
+            print(f"AVISO: {OUT_ANTECEDENTES} bloqueado ({exc}); guardado en {out_alt}")
 
     checks = verify_doctoral_docx(OUT_COMPLETE)
     metrics = _doc_metrics(OUT_COMPLETE)

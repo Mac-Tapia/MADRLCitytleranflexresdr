@@ -154,6 +154,15 @@ def p(doc: Document, text: str):
     return para
 
 
+def set_paragraph_text(para, text: str) -> None:
+    for run in para.runs:
+        run.text = ""
+    if para.runs:
+        para.runs[0].text = text
+    else:
+        para.add_run(text)
+
+
 def table(doc: Document, caption: str, headers: list[str], rows: list[list[str]], font_size: float = 7.0):
     cap = doc.add_paragraph()
     run = cap.add_run(caption)
@@ -315,7 +324,7 @@ def analyze_objectives(treatment: pd.DataFrame, episodes: pd.DataFrame) -> tuple
         direction = spec["direction"]
         ascending = direction == "min"
         desc = sub.groupby("algorithm")[metric].agg(["count", "mean", "median", "std", "min", "max"]).reset_index()
-        desc["statistical_coverage"] = desc["count"].map(lambda n: "50 episodios por artefacto" if n >= 50 else f"{int(n)} episodio(s) conservado(s)")
+        desc["statistical_coverage"] = desc["count"].map(lambda n: "cobertura completa por artefacto" if n >= 50 else f"{int(n)} fila(s) conservada(s)")
         final = treatment[treatment["scenario"] == spec["scenario"]].copy()
         if spec["objective"] == "OE.1":
             final["final_metric"] = final["final_reward_mean"]
@@ -406,6 +415,115 @@ def analyze_objectives(treatment: pd.DataFrame, episodes: pd.DataFrame) -> tuple
     return stats_df, pairs_df, detail
 
 
+def analyze_convergence(episodes: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for (algo, scenario), sub in episodes.groupby(["algorithm", "scenario"]):
+        sub = sub.sort_values("episode").copy()
+        rewards = pd.to_numeric(sub["reward_mean_average"], errors="coerce")
+        rolling = rewards.rolling(window=5, min_periods=1).mean()
+        n = len(sub)
+        if n == 0:
+            continue
+        initial = float(rolling.iloc[: min(5, n)].mean())
+        final = float(rolling.iloc[max(0, n - 5) :].mean())
+        improvement = final - initial
+        threshold = initial + 0.20 * improvement
+        learning_start_idx = 0
+        if improvement > 0:
+            found = rolling[rolling >= threshold]
+            learning_start_idx = int(found.index[0]) if not found.empty else int(rolling.index[-1])
+        tolerance = max(abs(final) * 0.05, 1e-9)
+        stable_idx = int(rolling.index[-1])
+        for idx in rolling.index:
+            tail = rolling.loc[idx:]
+            if ((tail - final).abs() <= tolerance).all():
+                stable_idx = int(idx)
+                break
+        best_pos = int(rewards.idxmax())
+        learn_row = sub.loc[learning_start_idx]
+        stable_row = sub.loc[stable_idx]
+        best_row = sub.loc[best_pos]
+        rows.append(
+            {
+                "algorithm": algo,
+                "scenario": scenario,
+                "n_episode_artifacts": n,
+                "initial_rolling_reward": initial,
+                "final_rolling_reward": final,
+                "reward_improvement": improvement,
+                "learning_start_episode_index": int(learn_row["episode"]),
+                "learning_start_episode_ordinal": int(learn_row["episode"]) + 1,
+                "stabilization_episode_index": int(stable_row["episode"]),
+                "stabilization_episode_ordinal": int(stable_row["episode"]) + 1,
+                "best_episode_index": int(best_row["episode"]),
+                "best_episode_ordinal": int(best_row["episode"]) + 1,
+                "best_reward_mean": float(best_row["reward_mean_average"]),
+                "stabilization_tolerance": tolerance,
+            }
+        )
+    df = pd.DataFrame(rows).sort_values(["scenario", "algorithm"]).reset_index(drop=True)
+    df.to_csv(TABLE_DIR / "gdrive_reward_convergence_episodes.csv", index=False, encoding="utf-8")
+    return df
+
+
+def load_citylearn_v2_kpi_summary() -> tuple[pd.DataFrame, pd.DataFrame]:
+    base = REPO / "outputs" / "madrl_v3_20260627_164047" / "resumen_comparativo" / "citylearn_v2_baseline"
+    rank_frames = []
+    catalog_frames = []
+    axis_for_scenario = {"E1": "OE1", "E2": "OE2", "E3": "OE3"}
+    for scenario in SCENARIOS:
+        scenario_dir = base / scenario
+        rank_path = scenario_dir / "ranking_by_axis.csv"
+        master_path = scenario_dir / "master_kpi_comparison.csv"
+        if rank_path.exists():
+            r = pd.read_csv(rank_path)
+            r["scenario"] = scenario
+            r = r[r["axis"] == axis_for_scenario[scenario]].copy()
+            rank_frames.append(r)
+        if master_path.exists():
+            m = pd.read_csv(master_path)
+            m["scenario"] = scenario
+            catalog_frames.append(m)
+    if not rank_frames:
+        return pd.DataFrame(), pd.DataFrame()
+    ranking = pd.concat(rank_frames, ignore_index=True)
+    ranking = ranking[
+        [
+            "scenario",
+            "axis",
+            "family",
+            "method",
+            "normalized_score",
+            "available_kpis",
+            "improved_kpis",
+            "total_kpis",
+            "axis_rank",
+        ]
+    ].sort_values(["scenario", "axis_rank", "family", "method"])
+    ranking.to_csv(TABLE_DIR / "citylearn_v2_evaluate_v2_axis_ranking.csv", index=False, encoding="utf-8")
+    if catalog_frames:
+        catalog = pd.concat(catalog_frames, ignore_index=True)
+        catalog = catalog[catalog["available"].astype(str).str.lower().isin(["true", "1"])]
+        rows = []
+        for (scenario, axis, axis_name), sub in catalog.groupby(["scenario", "axis", "axis_name"], dropna=False):
+            names = sorted(sub["kpi"].dropna().astype(str).unique().tolist())
+            rows.append(
+                {
+                    "scenario": scenario,
+                    "axis": axis,
+                    "axis_name": axis_name,
+                    "available_unique_kpis": len(names),
+                    "source": ", ".join(sorted(sub["source"].dropna().astype(str).unique().tolist())[:3]),
+                    "example_kpis": ", ".join(names[:8]),
+                }
+            )
+        kpi_catalog = pd.DataFrame(rows).sort_values(["scenario", "axis"])
+    else:
+        kpi_catalog = pd.DataFrame()
+    kpi_catalog.to_csv(TABLE_DIR / "citylearn_v2_evaluate_v2_kpi_catalog.csv", index=False, encoding="utf-8")
+    return ranking, kpi_catalog
+
+
 def analyze_buildings(buildings: pd.DataFrame, equipment: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     cols = [
         "algorithm",
@@ -446,7 +564,7 @@ def classify_equipment(name: str) -> str:
     return "otro actuador controlado"
 
 
-def make_figures(detail: dict, buildings: pd.DataFrame) -> dict[str, Path]:
+def make_figures(detail: dict, buildings: pd.DataFrame, episodes: pd.DataFrame, convergence: pd.DataFrame) -> dict[str, Path]:
     paths: dict[str, Path] = {}
     for oe, d in detail.items():
         spec = d["spec"]
@@ -474,6 +592,30 @@ def make_figures(detail: dict, buildings: pd.DataFrame) -> dict[str, Path]:
     fig.savefig(out, dpi=180)
     plt.close(fig)
     paths["equipment"] = out
+    for scenario in SCENARIOS:
+        fig, ax = plt.subplots(figsize=(7.2, 4.2))
+        sub = episodes[episodes["scenario"] == scenario].copy()
+        for algo in ALGOS:
+            alg = sub[sub["algorithm"] == algo].sort_values("episode").copy()
+            if alg.empty:
+                continue
+            alg["rolling_reward"] = pd.to_numeric(alg["reward_mean_average"], errors="coerce").rolling(window=5, min_periods=1).mean()
+            ax.plot(alg["episode"] + 1, alg["rolling_reward"], linewidth=1.8, label=algo)
+            conv = convergence[(convergence["scenario"] == scenario) & (convergence["algorithm"] == algo)]
+            if not conv.empty:
+                c = conv.iloc[0]
+                ax.axvline(c["learning_start_episode_ordinal"], color="gray", alpha=0.10, linewidth=0.8)
+                ax.scatter([c["stabilization_episode_ordinal"]], [c["final_rolling_reward"]], s=28, zorder=5)
+        ax.set_title(f"Convergencia MADRL por recompensa media movil - {scenario}")
+        ax.set_xlabel("episodio ordinal en artefacto")
+        ax.set_ylabel("recompensa media movil")
+        ax.grid(alpha=0.25)
+        ax.legend(ncol=2, fontsize=8)
+        fig.tight_layout()
+        out = FIG_DIR / f"convergence_{scenario.lower()}_learning_stabilization.png"
+        fig.savefig(out, dpi=180)
+        plt.close(fig)
+        paths[f"convergence_{scenario}"] = out
     return paths
 
 
@@ -488,9 +630,88 @@ def add_picture(doc: Document, caption: str, path: Path, width: float = 5.8) -> 
     doc.add_paragraph()
 
 
-def add_cap5(doc: Document, detail: dict, treatment: pd.DataFrame, building_compact: pd.DataFrame, eq_summary: pd.DataFrame, figures: dict[str, Path]) -> None:
+def clean_front_matter_50ep(doc: Document) -> None:
+    replacement = (
+        "Esta tesis doctoral determina, mediante simulacion computacional bajo diseno experimental factorial 4x3, "
+        "el efecto de cuatro algoritmos Multi-Agente de Aprendizaje por Refuerzo Profundo (MADRL) -HAPPO, MASAC, "
+        "MATD3 y MAAC- sobre la flexibilidad energetica, las emisiones de CO2 y los costos energeticos en una "
+        "comunidad inteligente del Sistema Electrico Aislado de Iquitos. La evidencia corresponde a la corrida "
+        "canonica Drive madrl_v3_20260627_164047, con 50 episodios registrados por tratamiento, 17 edificios, "
+        "185 cargadores EV, BESS/PV, checkpoints y trazas auditables. La contrastacion se organiza estrictamente "
+        "por OE.1 flexibilidad, OE.2 emisiones de CO2 y OE.3 costos, usando resultados distritales, resultados por "
+        "edificio, equipamiento controlado/no controlado, curvas de convergencia y KPIs compatibles con la lectura "
+        "CityLearn v2 evaluate_v2. No se incorporan valores externos ni resultados exploratorios ajenos a esa "
+        "corrida Drive."
+    )
+    forbidden = ["5 episodios", "referencia local", "KW p=0.0459", "Colab (Kruskal-Wallis ALL", "VecEnvWrapper"]
+    for para in doc.paragraphs:
+        text = para.text
+        if any(token in text for token in forbidden):
+            set_paragraph_text(para, replacement)
+
+
+def replace_section(document: Document, start_prefix: str, end_prefix: str, writer) -> None:
+    body = document.element.body
+    children = list(body)
+    start = end = None
+    for i, el in enumerate(children):
+        txt = text_of(el)
+        if start is None and txt.startswith(start_prefix):
+            start = i
+            continue
+        if start is not None and txt.startswith(end_prefix):
+            end = i
+            break
+    if start is None or end is None or end <= start:
+        raise RuntimeError(f"No se pudo reemplazar seccion: {start_prefix} -> {end_prefix}")
+    tmp = Document()
+    clear_body_keep_sectpr(tmp)
+    writer(tmp)
+    new_children = [deepcopy(el) for el in tmp.element.body if el.tag != qn("w:sectPr")]
+    for el in children[start:end]:
+        body.remove(el)
+    for offset, el in enumerate(new_children):
+        body.insert(start + offset, el)
+
+
+def add_expanded_decpomdp_section(doc: Document, building_compact: pd.DataFrame) -> None:
+    dims = building_compact.groupby("agent")[["observation_dim", "action_dim"]].max().reset_index()
+    n_agents = int(dims["agent"].nunique())
+    obs_min, obs_max = int(dims["observation_dim"].min()), int(dims["observation_dim"].max())
+    act_min, act_max = int(dims["action_dim"].min()), int(dims["action_dim"].max())
+    obs_total = int(dims["observation_dim"].sum())
+    act_total = int(dims["action_dim"].sum())
+    doc.add_heading("2.2.3 Dec-POMDP como formalizacion del problema doctoral", level=2)
+    p(doc, "La gestion energetica estudiada no es un problema de control centralizado simple, porque la decision de cada edificio modifica la demanda agregada, el costo, las emisiones y las condiciones de flexibilidad que observan los demas agentes. Tampoco es un MDP plenamente observable por agente individual: cada edificio observa su propio estado operativo, disponibilidad de equipos, senales temporales y variables exogenas, pero no controla directamente la demanda base ni las restricciones internas de los otros edificios. Por ello, la formalizacion doctoral adecuada es un Proceso de Decision de Markov Parcialmente Observable Descentralizado (Dec-POMDP), que permite representar ejecucion descentralizada, observabilidad parcial, transiciones estocasticas y recompensa cooperativa.")
+    p(doc, "La formulacion utilizada en la tesis se expresa como M = <S, {A_i}_{i=1}^{17}, T, R, {O_i}_{i=1}^{17}, Omega, gamma, H>. El estado global S contiene la concatenacion de observaciones locales s_t=[o_1,t,...,o_17,t]; las acciones A_i son heterogeneas por edificio; T representa la dinamica horaria de CityLearn, incluyendo clima, PV, BESS, llegada/salida de vehiculos electricos, demanda base, precio y senal de carbono; R es una recompensa cooperativa con mezcla local-equipo; O_i y Omega modelan la observabilidad parcial; gamma=0.9999 preserva dependencia de largo horizonte; y H=8760 pasos representa un ano horario de evaluacion por episodio.")
+    p(doc, "La operacionalizacion empirieca no queda en una abstraccion generica. En los artefactos Drive, el Dec-POMDP tiene 17 agentes-edificio, dimensiones locales de observacion entre " + str(obs_min) + " y " + str(obs_max) + ", dimension global agregada " + str(obs_total) + ", acciones locales entre " + str(act_min) + " y " + str(act_max) + " y " + str(act_total) + " dimensiones de accion por tratamiento. Las acciones controlan BESS, cargadores EV y cargas flexibles declaradas en building_observation_action_schema.csv; la demanda no controlada permanece como perturbacion/observacion dentro de la demanda base, no como actuador directo.")
+    p(doc, "Esta formalizacion enlaza directamente el problema general y los objetivos especificos. OE.1 evalua la respuesta del Dec-POMDP cuando la recompensa prioriza flexibilidad; OE.2 cuando prioriza emisiones de CO2; y OE.3 cuando prioriza costos energeticos. La variable independiente no es solo el nombre del algoritmo, sino la politica MADRL aprendida bajo CTDE y bajo pesos de recompensa comparables. La variable dependiente se observa mediante KPIs distritales y por edificio, por lo que el Dec-POMDP justifica simultaneamente el entrenamiento multiagente y la lectura de resultados por distrito, edificio, escenario y KPI.")
+    rows = [
+        ["Agentes", "Edificios institucionales/comerciales de la comunidad", f"{n_agents} agentes en building_behavior_summary.csv"],
+        ["Estado global S", "Concatenacion de observaciones locales para critic/entrenamiento CTDE", f"suma observation_dim={obs_total}"],
+        ["Observacion local O_i", "Informacion parcial disponible para cada actor", f"rango observado {obs_min}-{obs_max} variables"],
+        ["Accion A_i", "Control descentralizado de equipos flexibles", f"rango observado {act_min}-{act_max}; total={act_total}"],
+        ["Transicion T", "Dinamica horaria de CityLearn: clima, PV, BESS, EV, precio, carbono y demanda", "timeseries.csv y traces por tratamiento"],
+        ["Recompensa R", "Funcion multiobjetivo comparable por escenario E1/E2/E3", "pesos flex/CO2/costo y agregacion team_mean"],
+        ["Horizonte H", "Evaluacion anual horaria por episodio", "8760 pasos horarios"],
+        ["Descuento gamma", "Persistencia de efectos diferidos de almacenamiento y carga EV", "gamma=0.9999"],
+    ]
+    table(doc, "Tabla 2.3. Mapeo del Dec-POMDP doctoral a artefactos reales del proyecto.", ["Elemento", "Operacion en la tesis", "Evidencia local"], rows, 7.0)
+
+
+def add_cap5(
+    doc: Document,
+    detail: dict,
+    treatment: pd.DataFrame,
+    building_compact: pd.DataFrame,
+    eq_summary: pd.DataFrame,
+    figures: dict[str, Path],
+    convergence: pd.DataFrame,
+    kpi_ranking: pd.DataFrame,
+    kpi_catalog: pd.DataFrame,
+) -> None:
     doc.add_heading("Capitulo 5. Resultados y contrastacion de hipotesis", level=1)
-    p(doc, "Este capitulo se reconstruye con evidencia directa de la carpeta G:\\Mi unidad\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047. La lectura incluye results.json, training_summary.json, timeseries.csv, building_kpis.csv, building_behavior_summary.csv, building_observation_action_schema.csv y checkpoint_manifest.json para los 12 tratamientos algoritmo x escenario. La regla de interpretacion es estricta: no se incorporan valores que no existan en los artefactos; cuando un archivo conserva solo el episodio final, se declara como limitacion de trazabilidad y no se transforma artificialmente en 50 observaciones.")
+    p(doc, "Este capitulo se reconstruye con evidencia directa de la carpeta G:\\Mi unidad\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047. La lectura incluye results.json, training_summary.json, timeseries.csv, building_kpis.csv, building_behavior_summary.csv, building_observation_action_schema.csv y checkpoint_manifest.json para los 12 tratamientos algoritmo x escenario. La regla de interpretacion es estricta: no se incorporan valores que no existan en los artefactos; cuando una tabla conserva menor granularidad episodica, se declara como limitacion de trazabilidad y no se inventan observaciones.")
     p(doc, "El vinculo metodologico queda organizado por objetivo especifico: OE.1 se contrasta en E1 porque la recompensa asigna 0,70 a flexibilidad; OE.2 se contrasta en E2 porque la recompensa asigna 0,70 a emisiones; OE.3 se contrasta en E3 porque la recompensa asigna 0,60 a costos. Por tanto, el desarrollo de la propuesta del Capitulo 4 no queda separado de los resultados: los pesos de la funcion de recompensa son la manipulacion experimental de D-VI.2 y las metricas de este capitulo son los indicadores observados de D-VD.1, D-VD.2 y D-VD.3.")
     p(doc, "Los 12 tratamientos registran culminacion operativa de entrenamiento. En particular, HAPPO registra completed_episode_count=50 en live_progress.json y episodes_recorded=50 en results.json; sin embargo, por el modo de reanudacion ligera de HAPPO, la carpeta actual de G: conserva en timeseries.csv y episode_summary.csv solo el episodio 49, es decir, la trayectoria anual final. Para no perder la evidencia previa ya extraida del mismo flujo Drive, la estadistica episodica usa el CSV materializado district_episode_kpis.csv, donde HAPPO conserva 49 episodios por escenario y MAAC, MASAC y MATD3 conservan 50. En consecuencia, HAPPO se usa para evidencia descriptiva, final anual y por edificio, pero no se declara como grupo inferencial de 50 observaciones.")
 
@@ -510,7 +731,44 @@ def add_cap5(doc: Document, detail: dict, treatment: pd.DataFrame, building_comp
     link_rows = [[d["spec"]["objective"], d["spec"]["hypothesis"], d["spec"]["scenario"], d["spec"]["dimension"], d["spec"]["indicator"], "maximizar" if d["spec"]["direction"] == "max" else "minimizar"] for d in detail.values()]
     table(doc, "Tabla 5.2. Trazabilidad objetivo-hipotesis-escenario-indicador.", ["Objetivo", "Hipotesis", "Escenario", "Dimension VD", "Indicador usado", "Criterio"], link_rows, 6.8)
 
-    for idx, oe in enumerate(["OE.1", "OE.2", "OE.3"], start=3):
+    doc.add_heading("5.3 Curvas de convergencia y episodios de aprendizaje", level=2)
+    p(doc, "La convergencia se estima desde reward_mean_average por algoritmo y escenario. Para evitar lectura visual subjetiva, se usa una media movil de longitud cinco: se considera inicio de aprendizaje el primer episodio ordinal en que la media movil supera el 20% de la mejora entre el tramo inicial y el tramo final; se considera estabilizacion el primer episodio desde el cual la media movil permanece dentro del 5% relativo respecto del tramo final. La recompensa es mejor cuando es menos negativa, por lo que el maximo observado indica el mejor episodio conservado en el artefacto.")
+    conv_rows = []
+    for _, r in convergence.sort_values(["scenario", "algorithm"]).iterrows():
+        conv_rows.append(
+            [
+                r["algorithm"],
+                r["scenario"],
+                int(r["n_episode_artifacts"]),
+                fmt(r["initial_rolling_reward"], 6),
+                fmt(r["final_rolling_reward"], 6),
+                int(r["learning_start_episode_ordinal"]),
+                int(r["stabilization_episode_ordinal"]),
+                int(r["best_episode_ordinal"]),
+                fmt(r["best_reward_mean"], 6),
+            ]
+        )
+    table(doc, "Tabla 5.3. Episodios de inicio de aprendizaje, estabilizacion y mejor recompensa media.", ["Algoritmo", "Esc.", "n", "media inicial", "media final", "inicio aprendizaje", "estabilizacion", "mejor episodio", "mejor reward"], conv_rows, 6.6)
+    for scenario in SCENARIOS:
+        add_picture(doc, f"Figura 5.3-{scenario}. Curva de convergencia por recompensa media movil en {scenario}.", figures[f"convergence_{scenario}"])
+    p(doc, "La lectura de convergencia muestra aprendizaje temprano en la mayoria de tratamientos, pero no implica dominancia automatica. MATD3 presenta una mejora marcada en E1 antes de estabilizarse; MAAC y MASAC muestran variaciones mas compactas; HAPPO se interpreta descriptivamente con las filas episodicas materializadas disponibles y con el registro Drive de entrenamiento completado.")
+
+    doc.add_heading("5.4 KPIs bajo nomenclatura CityLearn v2 evaluate_v2", level=2)
+    p(doc, "Para que los resultados sean comparables con CityLearn v2, la tesis no reduce la evaluacion a una metrica ad hoc. Los CSV de resumen comparativo usan la nomenclatura de evaluate_v2 y agrupan KPIs por eje: OE1 flexibilidad energetica, OE2 emisiones de CO2 y OE3 costos energeticos. Esta lectura complementa la recompensa de entrenamiento con KPIs finales de evaluacion, incluyendo baseline y RBC horario cuando estan disponibles.")
+    if not kpi_catalog.empty:
+        catalog_rows = []
+        for _, r in kpi_catalog.iterrows():
+            if r["axis"] in {"OE1", "OE2", "OE3"}:
+                catalog_rows.append([r["scenario"], r["axis"], r["axis_name"], int(r["available_unique_kpis"]), r["source"], r["example_kpis"]])
+        table(doc, "Tabla 5.4. Catalogo de KPIs evaluate_v2 usados para interpretar resultados.", ["Esc.", "Eje", "Dimension", "KPIs", "Fuente", "Ejemplos"], catalog_rows, 6.2)
+    if not kpi_ranking.empty:
+        rank_rows = []
+        for _, r in kpi_ranking.iterrows():
+            rank_rows.append([r["scenario"], r["axis"], r["family"], r["method"], fmt(r["normalized_score"], 4), int(r["available_kpis"]), int(r["improved_kpis"]), fmt(r["axis_rank"], 1)])
+        table(doc, "Tabla 5.5. Ranking por eje con KPIs compatibles con CityLearn v2.", ["Esc.", "Eje", "Familia", "Metodo", "score", "KPIs disp.", "KPIs mejora", "rank"], rank_rows, 6.5)
+    p(doc, "La lectura evaluate_v2 evita una conclusion sesgada por la recompensa de entrenamiento: un algoritmo puede maximizar reward_mean_average en un escenario y, al mismo tiempo, no liderar todos los KPIs oficiales de flexibilidad, carbono o costo. Por ello, la decision doctoral se reporta en tres niveles: media episodica, prueba estadistica intra-corrida y KPI anual final compatible con CityLearn v2.")
+
+    for idx, oe in enumerate(["OE.1", "OE.2", "OE.3"], start=5):
         d = detail[oe]
         spec = d["spec"]
         doc.add_heading(f"5.{idx} {oe}: efecto del MADRL sobre {spec['dimension']}", level=2)
@@ -525,7 +783,7 @@ def add_cap5(doc: Document, detail: dict, treatment: pd.DataFrame, building_comp
                 fmt(r["std"], 6 if spec["metric"] == "reward_mean_average" else 2),
                 fmt(r["min"], 6 if spec["metric"] == "reward_mean_average" else 2),
                 fmt(r["max"], 6 if spec["metric"] == "reward_mean_average" else 2),
-                "50 ep" if int(r["count"]) >= 50 else f"{int(r['count'])} ep conservado",
+                "cobertura completa" if int(r["count"]) >= 50 else f"{int(r['count'])} filas conservadas",
             ])
         table(doc, f"Tabla 5.{idx}. Estadistica descriptiva por episodio para {oe}.", ["Algoritmo", "n", "Media", "Mediana", "Desv. est.", "Min", "Max", "Cobertura"], rows, 7.0)
         final_rows = []
@@ -542,23 +800,23 @@ def add_cap5(doc: Document, detail: dict, treatment: pd.DataFrame, building_comp
         add_picture(doc, f"Figura 5.{idx}. Comparacion grafica de la media por episodio para {oe}.", figures[oe])
         kw = d["kw"]
         if kw is not None:
-            p(doc, f"Contrastacion inferencial: para {oe} se aplica Kruskal-Wallis solo a los grupos con 50 observaciones conservadas ({', '.join(d['inferential_algos'])}). El resultado es H={kw.statistic:.4f}, p={kw.pvalue:.6g}, epsilon2={d['epsilon2']:.4f}. Con alpha=0,05, {'se rechaza H0 y se identifica efecto diferenciado del algoritmo' if kw.pvalue < 0.05 else 'no se rechaza H0 en la muestra inferencial conservada'}. HAPPO no se incluye en esta prueba porque solo conserva una observacion anual final, aunque registra 50 episodios completados.")
+            p(doc, f"Contrastacion inferencial: para {oe} se aplica Kruskal-Wallis solo a los grupos con cobertura completa conservada ({', '.join(d['inferential_algos'])}). El resultado es H={kw.statistic:.4f}, p={kw.pvalue:.6g}, epsilon2={d['epsilon2']:.4f}. Con alpha=0,05, {'se rechaza H0 y se identifica efecto diferenciado del algoritmo' if kw.pvalue < 0.05 else 'no se rechaza H0 en la muestra inferencial conservada'}. HAPPO registra entrenamiento completado en Drive, pero no entra al contraste inferencial porque el CSV materializado conserva 49 filas episodicas por escenario.")
             pair_rows = [[name, fmt(pv, 6), fmt(adj, 6), "significativo" if adj < 0.05 else "no significativo"] for name, pv, adj in d["pair_adj"]]
             table(doc, f"Tabla 5.{idx}b. Mann-Whitney U por pares con ajuste Holm para {oe}.", ["Par", "p", "p Holm", "Decision"], pair_rows, 7.2)
             sh_rows = [[algo, fmt(pv, 6), "normalidad no rechazada" if pv >= 0.05 else "normalidad rechazada"] for algo, pv in d["shapiro"].items()]
             table(doc, f"Tabla 5.{idx}c. Shapiro-Wilk por algoritmo para {oe}.", ["Algoritmo", "p", "Lectura"], sh_rows, 7.2)
-        p(doc, f"Interpretacion de {oe}: el mejor algoritmo por media episodica conservada es {d['best_stat']}; al restringir la decision inferencial a algoritmos con 50 observaciones completas, el mejor es {d['best_stat_complete']}; el mejor KPI anual final observado es {d['best_final']}. Esta triple lectura evita confundir culminacion de entrenamiento con disponibilidad de series estadisticas completas. HAPPO puede aparecer como mejor descriptivo en algunas dimensiones, pero no se eleva a conclusion inferencial de 50 episodios porque el artefacto materializado conserva 49 observaciones y la carpeta actual de G: conserva solo la trayectoria anual final.")
+        p(doc, f"Interpretacion de {oe}: el mejor algoritmo por media episodica conservada es {d['best_stat']}; al restringir la decision inferencial a algoritmos con cobertura completa, el mejor es {d['best_stat_complete']}; el mejor KPI anual final observado es {d['best_final']}. Esta triple lectura evita confundir culminacion de entrenamiento con disponibilidad de series estadisticas completas. HAPPO puede aparecer como mejor descriptivo en algunas dimensiones, pero no se eleva a conclusion inferencial completa porque el artefacto materializado conserva 49 observaciones y la carpeta actual de G: conserva la trayectoria anual final.")
 
-    doc.add_heading("5.6 Resultados por edificio y equipamiento controlado", level=2)
+    doc.add_heading("5.8 Resultados por edificio y equipamiento controlado", level=2)
     p(doc, "El analisis por edificio usa building_behavior_summary.csv y building_kpis.csv de los 12 tratamientos. Cada edificio actua como agente de la comunidad y posee dimensiones heterogeneas de observacion y accion; por ello, la cantidad de equipos controlados no es uniforme. La accion controlada agrupa BESS, cargadores EV, cargas flexibles y otros actuadores declarados en building_observation_action_schema.csv. Las cargas no controladas permanecen dentro de la demanda base y de las variables observadas, no como acciones directas del agente.")
-    add_picture(doc, "Figura 5.6. Dimensiones de accion controlable por edificio.", figures["equipment"])
+    add_picture(doc, "Figura 5.8. Dimensiones de accion controlable por edificio.", figures["equipment"])
     b_top = building_compact.sort_values("action_dim", ascending=False).head(10)
     table(doc, "Tabla 5.11. Edificios con mayor cantidad de acciones controlables.", ["Algoritmo", "Esc.", "Edificio", "rol red", "acciones", "obs.", "BESS kWh", "EV kWh", "CO2 kg", "costo"], [[r["algorithm"], r["scenario"], r["agent"], r.get("grid_role_control", ""), int(r["action_dim"]), int(r["observation_dim"]), fmt(r.get("battery_throughput_total_kwh"), 1), fmt(r.get("ev_charge_total_kwh"), 1), fmt(r.get("carbon_emissions_control_kgco2"), 1), fmt(r.get("electricity_cost_control_eur"), 1)] for _, r in b_top.iterrows()], 6.6)
     eq_pivot = eq_summary.groupby("equipment_class")["count"].sum().reset_index().sort_values("count", ascending=False)
     table(doc, "Tabla 5.12. Equipamiento controlado identificado en los esquemas de accion.", ["Clase de equipo controlado", "conteo en 12 tratamientos"], [[r["equipment_class"], int(r["count"])] for _, r in eq_pivot.iterrows()], 7.2)
     p(doc, "Las tablas completas se guardan como CSV en outputs/_drive_madrl/gdrive_20260627_164047_objective_analysis/tables. Esto evita saturar el cuerpo de la tesis con 12 x 17 filas por edificio, pero mantiene la trazabilidad para auditoria, anexos y reproduccion.")
 
-    doc.add_heading("5.7 Sintesis de contrastacion de OE.1, OE.2 y OE.3", level=2)
+    doc.add_heading("5.9 Sintesis de contrastacion de OE.1, OE.2 y OE.3", level=2)
     synth_rows = []
     for oe in ["OE.1", "OE.2", "OE.3"]:
         d = detail[oe]
@@ -573,15 +831,31 @@ def add_cap5(doc: Document, detail: dict, treatment: pd.DataFrame, building_comp
             f"H={kw.statistic:.3f}; p={kw.pvalue:.3g}" if kw else "NA",
             "se rechaza H0" if kw and kw.pvalue < 0.05 else "no se rechaza H0",
         ])
-    table(doc, "Tabla 5.13. Respuesta directa a objetivos especificos.", ["Objetivo", "Dimension", "Escenario", "mejor media episodica", "mejor muestra 50 ep", "mejor KPI anual final", "Kruskal-Wallis", "Decision"], synth_rows, 6.8)
-    p(doc, "La interpretacion doctoral no debe afirmar dominancia unica sin matices. Los resultados muestran efectos diferenciados por dimension: flexibilidad, CO2 y costo responden a escenarios de recompensa distintos y a artefactos con distinta granularidad. La conclusion valida es que el algoritmo MADRL si modifica significativamente los indicadores cuando existen series de 50 episodios conservadas, pero la identificacion del 'mayor efecto' debe reportarse por objetivo y segun el nivel de evidencia: episodico, inferencial o KPI anual final.")
+    table(doc, "Tabla 5.13. Respuesta directa a objetivos especificos.", ["Objetivo", "Dimension", "Escenario", "mejor media episodica", "mejor muestra completa", "mejor KPI anual final", "Kruskal-Wallis", "Decision"], synth_rows, 6.8)
+    p(doc, "La interpretacion doctoral no debe afirmar dominancia unica sin matices. Los resultados muestran efectos diferenciados por dimension: flexibilidad, CO2 y costo responden a escenarios de recompensa distintos y a artefactos con distinta granularidad. La conclusion valida es que el algoritmo MADRL si modifica significativamente los indicadores cuando existen series completas conservadas, pero la identificacion del 'mayor efecto' debe reportarse por objetivo y segun el nivel de evidencia: episodico, inferencial o KPI anual final.")
     p(doc, "Metodologicamente, esta decision sigue las advertencias de evaluacion rigurosa en aprendizaje por refuerzo: los episodios de una corrida no reemplazan multiples semillas independientes, y los p-valores deben interpretarse junto con cobertura, tamano de efecto y trazabilidad de artefactos (Henderson et al., 2018; Colas et al., 2019; Agarwal et al., 2021; Patterson et al., 2024). Por ello, se retiene Shapiro-Wilk, Kruskal-Wallis y Mann-Whitney U con Holm como contrastacion intra-corrida, y se declara la necesidad de multi-semilla para robustez externa.")
 
 
-def rebuild_doc(detail: dict, treatment: pd.DataFrame, building_compact: pd.DataFrame, eq_summary: pd.DataFrame, figures: dict[str, Path]) -> None:
+def rebuild_doc(
+    detail: dict,
+    treatment: pd.DataFrame,
+    building_compact: pd.DataFrame,
+    eq_summary: pd.DataFrame,
+    figures: dict[str, Path],
+    convergence: pd.DataFrame,
+    kpi_ranking: pd.DataFrame,
+    kpi_catalog: pd.DataFrame,
+) -> None:
     shutil.copyfile(SRC, OUT)
     doc = Document(OUT)
     style_doc(doc)
+    clean_front_matter_50ep(doc)
+    replace_section(
+        doc,
+        "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+        "2.2.4 CTDE",
+        lambda tmp: add_expanded_decpomdp_section(tmp, building_compact),
+    )
     children = list(doc.element.body)
     idx_cap5 = idx_cap6 = None
     for i, el in enumerate(children):
@@ -597,7 +871,7 @@ def rebuild_doc(detail: dict, treatment: pd.DataFrame, building_compact: pd.Data
     clear_body_keep_sectpr(doc)
     for el in before:
         append_before_sectpr(doc, el)
-    add_cap5(doc, detail, treatment, building_compact, eq_summary, figures)
+    add_cap5(doc, detail, treatment, building_compact, eq_summary, figures, convergence, kpi_ranking, kpi_catalog)
     for el in after:
         append_before_sectpr(doc, el)
     doc.save(OUT)
@@ -609,9 +883,11 @@ def main() -> None:
         raise FileNotFoundError(G_BASE)
     treatment, episodes, buildings, equipment = load_evidence()
     stats_df, pairs_df, detail = analyze_objectives(treatment, episodes)
+    convergence = analyze_convergence(episodes)
+    kpi_ranking, kpi_catalog = load_citylearn_v2_kpi_summary()
     building_compact, eq_summary = analyze_buildings(buildings, equipment)
-    figures = make_figures(detail, building_compact)
-    rebuild_doc(detail, treatment, building_compact, eq_summary, figures)
+    figures = make_figures(detail, building_compact, episodes, convergence)
+    rebuild_doc(detail, treatment, building_compact, eq_summary, figures, convergence, kpi_ranking, kpi_catalog)
     v = Document(OUT)
     paras = [p.text.strip() for p in v.paragraphs if p.text.strip()]
     full = "\n".join(paras)
@@ -627,13 +903,21 @@ def main() -> None:
         "episode_rows": len(episodes),
         "building_rows": len(building_compact),
         "equipment_rows": len(eq_summary),
+        "convergence_rows": len(convergence),
+        "citylearn_v2_ranking_rows": len(kpi_ranking),
+        "citylearn_v2_kpi_catalog_rows": len(kpi_catalog),
         "stats_csv": str(TABLE_DIR / "gdrive_objective_aligned_statistics.csv"),
         "pairs_csv": str(TABLE_DIR / "gdrive_objective_pairwise_mannwhitney_holm.csv"),
         "has_oe1": "OE.1: efecto del MADRL sobre flexibilidad energetica" in full,
         "has_oe2": "OE.2: efecto del MADRL sobre emisiones de CO2" in full,
         "has_oe3": "OE.3: efecto del MADRL sobre costos energeticos" in full,
-        "declares_happo_artifact_limit": "HAPPO no se incluye en esta prueba porque solo conserva una observacion anual final" in full,
+        "has_decpomdp_expanded": "dimension global agregada 1856" in full and "gamma=0.9999" in full,
+        "has_convergence_section": "Curvas de convergencia y episodios de aprendizaje" in full,
+        "has_citylearn_v2_evaluate_v2_section": "KPIs bajo nomenclatura CityLearn v2 evaluate_v2" in full,
+        "declares_happo_artifact_limit": "CSV materializado conserva 49 filas episodicas" in full,
         "has_no_old_global_kw": "p = 0,0459" not in full and "p=0,0459" not in full,
+        "has_no_local_reference": "referencia local" not in full.lower(),
+        "has_no_short_run_phrase": "5 episodios" not in full.lower(),
     }
     METRICS.write_text(json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(metrics, ensure_ascii=False, indent=2))

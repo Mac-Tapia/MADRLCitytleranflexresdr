@@ -17,7 +17,8 @@ from docx.shared import Pt, RGBColor
 
 REPO = Path(__file__).resolve().parents[1]
 SRC = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_marco_teorico_doctoral_sustentado.docx"
-OUT = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES.docx"
+OUT = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES_REGEN.docx"
+OUT_LOCKED_TARGET = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES.docx"
 CSV = REPO / "outputs" / "_drive_madrl" / "full_data" / "analysis_real_drive" / "tables" / "district_summary_by_algorithm_scenario.csv"
 METRICS = REPO / "outputs" / "_drive_madrl" / "full_data" / "analysis_real_drive" / "thesis_docx_version_final_50ep_antecedentes_metrics.json"
 
@@ -195,6 +196,13 @@ def main() -> None:
     insert_before_heading(doc, "Capitulo 3. Metodologia", add_antecedents_block)
     insert_before_heading(doc, "Capitulo 6. Conclusiones", add_50ep_results_block)
     doc.save(OUT)
+    if OUT_LOCKED_TARGET.is_file():
+        try:
+            shutil.copyfile(OUT, OUT_LOCKED_TARGET)
+            print(f"OK -> {OUT_LOCKED_TARGET} (sobrescrito desde regen)")
+        except OSError as exc:
+            print(f"AVISO: no se pudo sobrescribir {OUT_LOCKED_TARGET}: {exc}")
+            print(f"      Cierre el archivo en Word y copie manualmente desde {OUT}")
 
     v = Document(OUT)
     paras = [p.text.strip() for p in v.paragraphs if p.text.strip()]

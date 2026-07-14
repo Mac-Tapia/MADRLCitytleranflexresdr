@@ -1,0 +1,158 @@
+{
+  "1.4 Matriz": [
+    {
+      "style": "Heading 2",
+      "text": "1.4 Matriz de consistencia y operacionalizacion"
+    },
+    {
+      "style": "Normal",
+      "text": "Tabla 1.1. Matriz de consistencia problema-objetivo-hipotesis."
+    },
+    {
+      "style": "Normal",
+      "text": "Tabla 1.2. Operacionalizacion de variables independientes y dependientes."
+    }
+  ],
+  "3.1 Tipo": [
+    {
+      "style": "Heading 2",
+      "text": "3.1 Tipo de investigacion"
+    },
+    {
+      "style": "List Bullet",
+      "text": "Enfoque: cuantitativo."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Tipo: aplicada."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Nivel: descriptivo, comparativo y propositivo."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Diseno: no experimental, transversal, basado en simulacion computacional y comparacion de algoritmos."
+    },
+    {
+      "style": "Normal",
+      "text": "El nivel comparativo es esencial: el estudio determina el mejor MADRL comparando HAPPO, MASAC, MATD3 y MAAC en tres ejes (flexibilidad, CO2, costos). El nivel propositivo radica en que CityLearn v3 propuesto es una extension arquitectonica original sobre CityLearn v2."
+    }
+  ],
+  "3.5 Tecnicas": [
+    {
+      "style": "Heading 2",
+      "text": "3.5 Tecnicas, herramientas e instrumentos"
+    },
+    {
+      "style": "Normal",
+      "text": "Herramientas e instrumentos (operativos):"
+    },
+    {
+      "style": "List Bullet",
+      "text": "Simulacion CityLearn v2 / CityLearn v3 propuesto; backends HAPPO, MASAC, MATD3 y MAAC; Optuna; Python 3.9 + PyTorch/CUDA."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Dataset citylearn_iquitos_2023_2025 y artefactos de la corrida canonica madrl_v3_20260627_164047 (KPIs, figuras Drive, pruebas no parametricas)."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Revision bibliografica sistematica (matriz de 50 antecedentes, Modulo A)."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Extraccion y preprocesamiento del dataset; registro de metricas de entrenamiento (reward acumulada y media, pesos por eje, CI, precio, carga neta)."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Evaluacion de KPIs por eje mediante env.evaluate_v2() de CityLearn v2."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Comparacion de algoritmos: tablas por KPI y eje, ranking integrado y score global."
+    },
+    {
+      "style": "List Bullet",
+      "text": "Pruebas estadisticas no parametricas: Shapiro-Wilk (normalidad), Kruskal-Wallis (diferencias globales), Mann-Whitney U (pares, con tamanos de efecto Cliff's delta, Vargha-Delaney A12, Cohen d, Hedges g) y Wilcoxon signed-rank (pares)."
+    },
+    {
+      "style": "Normal",
+      "text": "Instrumentos: CityLearn v2, CityLearn v3 propuesto, backends HAPPO/MASAC/MATD3/MAAC, MARLlib (referencia tecnica), Optuna, Python/PyTorch y el dataset citylearn_iquitos_2023_2025."
+    }
+  ],
+  "3.6 Procedimiento": [
+    {
+      "style": "Heading 2",
+      "text": "3.6 Procedimiento experimental"
+    },
+    {
+      "style": "List Number",
+      "text": "Verificacion de contexto del proyecto (scripts/verify_project_context.ps1)."
+    },
+    {
+      "style": "List Number",
+      "text": "Construccion y auditoria del dataset (orchestrate_citylearn_dataset.py) y gates de validacion."
+    },
+    {
+      "style": "List Number",
+      "text": "Verificacion de integridad del flujo (verify_workflow_integrity.py)."
+    },
+    {
+      "style": "List Number",
+      "text": "Entrenamiento de las 12 corridas (4 algoritmos x 3 escenarios) con monitor visible y concurrencia controlada (HAPPO/MATD3 hasta 2; MASAC/MAAC 1)."
+    },
+    {
+      "style": "List Number",
+      "text": "Benchmark de la linea base CityLearn v2 (baseline, hour_rbc) y comparaciones SB3 (PPO/SAC/A2C) sobre el mismo schema de Iquitos."
+    },
+    {
+      "style": "List Number",
+      "text": "Comparacion v2 vs v3 (compare_citylearn_v2_vs_v3_madrl.py) y generacion de evidencia de tesis (generate_thesis_objective_evidence.py): KPIs, pruebas estadisticas, figuras y tablas."
+    },
+    {
+      "style": "Heading 1",
+      "text": "Capitulo 4. Desarrollo de la propuesta"
+    }
+  ],
+  "4.1 Desarrollo": [
+    {
+      "style": "Heading 2",
+      "text": "4.1 Desarrollo del sistema y arquitectura de software"
+    },
+    {
+      "style": "Normal",
+      "text": "El sistema se organiza en seis capas de software, desde el simulador base hasta la generacion de evidencia para la tesis:"
+    },
+    {
+      "style": "Normal",
+      "text": "Tabla 4.1. Capas de software del sistema MADRL CityLearn v3."
+    },
+    {
+      "style": "Normal",
+      "text": "Nota de implementacion: las 12 corridas oficiales y los resultados reportados se ejecutan mediante los scripts CityLearn/scripts/train_citylearn_v3_<algoritmo>.py con la funcion de recompensa CityLearnV3MADRLRewardFunction (tres ejes flex/CO2/costo mas termino EV). El framework UC3M (capa 3, con 7 ejes de recompensa) es una infraestructura generica/auxiliar del proyecto y no es el canal de las corridas oficiales reportadas en el Capitulo 5."
+    }
+  ],
+  "4.4 Algoritmos": [
+    {
+      "style": "Heading 2",
+      "text": "4.4 Algoritmos"
+    },
+    {
+      "style": "Normal",
+      "text": "Tabla 4.2. Los cuatro algoritmos MADRL y sus backends."
+    },
+    {
+      "style": "Normal",
+      "text": "Hiperparametros: corrida canonica Colab vs referencia local v4:"
+    },
+    {
+      "style": "Normal",
+      "text": "Tabla 4.3. Hiperparametros canonicos Colab vs referencia local v4."
+    },
+    {
+      "style": "Normal",
+      "text": "La optimizacion automatica de hiperparametros con Optuna (TPE) queda como mejora experimental posterior; la evidencia cuantitativa se toma de la corrida canonica Colab."
+    }
+  ]
+}

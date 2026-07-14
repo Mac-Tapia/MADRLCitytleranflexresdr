@@ -692,6 +692,17 @@ def insert_section_before(document: Document, target_prefix: str, writer) -> Non
         body.insert(target + offset, el)
 
 
+def insert_section_before_any(document: Document, target_prefixes: list[str], writer) -> None:
+    last_error = None
+    for prefix in target_prefixes:
+        try:
+            insert_section_before(document, prefix, writer)
+            return
+        except RuntimeError as exc:
+            last_error = exc
+    raise RuntimeError(f"No se encontro punto de insercion entre: {target_prefixes}") from last_error
+
+
 def add_expanded_decpomdp_section(doc: Document, building_compact: pd.DataFrame) -> None:
     dims = building_compact.groupby("agent")[["observation_dim", "action_dim"]].max().reset_index()
     n_agents = int(dims["agent"].nunique())
@@ -715,6 +726,61 @@ def add_expanded_decpomdp_section(doc: Document, building_compact: pd.DataFrame)
         ["Descuento gamma", "Persistencia de efectos diferidos de almacenamiento y carga EV", "gamma=0.9999"],
     ]
     table(doc, "Tabla 2.3. Mapeo del Dec-POMDP doctoral a artefactos reales del proyecto.", ["Elemento", "Operacion en la tesis", "Evidencia local"], rows, 7.0)
+
+
+def add_cap1_validation(doc: Document) -> None:
+    doc.add_heading("1.7 Validacion estructural y triangulacion del planteamiento", level=2)
+    p(doc, "El Capitulo 1 cumple la estructura minima exigida para una tesis aplicada: formula el problema de investigacion, declara objetivos, hipotesis, justificacion, alcances y limitaciones. La coherencia interna se sostiene porque el problema no se define como una deficiencia algoritmica aislada, sino como una tension entre gestion descentralizada, flexibilidad energetica, emisiones de CO2 y costos en una comunidad electrica aislada. Este encuadre es consistente con la literatura de CityLearn, que plantea la necesidad de entornos reproducibles para comparar controladores de respuesta a la demanda, con CityLearn v2, que amplia la evaluacion hacia comunidades grid-interactive, resilientes y carbon-aware, y con EVLearn, que subraya que la integracion de vehiculos electricos requiere simulacion especifica de flexibilidad de carga y descarga (Vazquez-Canteli et al., 2020; Nweye et al., 2024; Fonseca et al., 2024).")
+    p(doc, "La pregunta general y las preguntas especificas quedan operacionalizadas en tres dimensiones dependientes. PE.1 se vincula con flexibilidad energetica, PE.2 con emisiones de CO2 y PE.3 con costos energeticos. Esta separacion evita que el desempeno del algoritmo se reduzca a una recompensa unica sin interpretabilidad; por el contrario, permite contrastar la variable independiente MADRL contra indicadores observables por distrito, edificio y escenario. La triangulacion entre CityLearn, MARL energetico y evaluacion estadistica de RL justifica que el estudio reporte resultados descriptivos e inferenciales, y que declare como limitacion la ausencia de multiples semillas independientes en lugar de sobregeneralizar una unica corrida experimental (Henderson et al., 2018; Agarwal et al., 2021; Nweye et al., 2024).")
+    table(
+        doc,
+        "Tabla 1.7. Validacion del Capitulo 1 frente a la estructura minima.",
+        ["Elemento requerido", "Estado", "Refuerzo incorporado"],
+        [
+            ["Problema de investigacion", "Cumple", "Se alinea con flexibilidad, carbono y costo en comunidad aislada."],
+            ["Objetivos", "Cumple", "OG y OE.1-OE.3 mantienen correspondencia con PE.1-PE.3."],
+            ["Hipotesis", "Cumple", "Se conservan por tratarse de diseno experimental comparativo."],
+            ["Justificacion", "Cumple", "Se refuerza con reproducibilidad CityLearn y necesidad de evaluacion estadistica."],
+            ["Alcances y limitaciones", "Cumple", "Se explicita la lectura intra-corrida y la no extrapolacion multi-semilla."],
+        ],
+        7.0,
+    )
+
+
+def add_cap2_validation(doc: Document) -> None:
+    doc.add_heading("2.6 Sintesis critica y triangulacion del marco teorico", level=2)
+    p(doc, "El marco teorico contiene estado del arte, bases teoricas, trabajos relacionados, definicion de variables y posicion teorica. La triangulacion central se organiza en tres capas. Primero, CityLearn aporta el marco de evaluacion reproducible para comunidades de edificios y demanda flexible; CityLearn v2 agrega objetivos de flexibilidad, resiliencia, ocupacion y carbono; EVLearn extiende el mismo ecosistema a vehiculos electricos y estrategias V1G/V2G (Vazquez-Canteli et al., 2020; Nweye et al., 2024; Fonseca et al., 2024). Segundo, la teoria MADRL fundamenta la ejecucion descentralizada con entrenamiento centralizado: MAAC introduce criticos con atencion para seleccionar interacciones relevantes entre agentes, HAPPO extiende optimizacion de region de confianza a agentes heterogeneos, SAC/MASAC aporta exploracion por maxima entropia y TD3/MATD3 controla sesgo de sobreestimacion con criticos dobles y actualizaciones retrasadas (Iqbal & Sha, 2019; Kuba et al., 2021; Haarnoja et al., 2018; Fujimoto et al., 2018). Tercero, la literatura de evaluacion de RL advierte que una comparacion algoritmica debe acompanar los promedios con dispersion, pruebas estadisticas y trazabilidad experimental (Henderson et al., 2018; Agarwal et al., 2021).")
+    p(doc, "La principal mejora incorporada al Capitulo 2 consiste en separar el soporte teorico de cada decision metodologica. El Dec-POMDP no se presenta como formalismo decorativo, sino como condicion necesaria para representar 17 agentes con observacion parcial, acciones heterogeneas, recompensa cooperativa y horizonte anual. La funcion de recompensa multiobjetivo se sustenta en la literatura de control de comunidades energeticas, pero se interpreta dentro de CityLearn v2 para evitar que flexibilidad, emisiones y costos sean confundidos como una unica variable latente. Esta posicion teorica permite que el Capitulo 5 lea resultados por escenario y no solo por algoritmo.")
+    table(
+        doc,
+        "Tabla 2.6. Triangulacion teorica por eje de la tesis.",
+        ["Eje", "Fuentes trianguladas", "Uso en la tesis"],
+        [
+            ["Entorno y KPIs", "CityLearn v1/v2; CityLearn Challenge; EVLearn", "Justifica benchmark, KPIs evaluate_v2 y control de EV/BESS."],
+            ["MADRL", "MAAC; HAPPO; SAC; TD3", "Justifica comparacion de familias actor-critic multiagente."],
+            ["Evaluacion rigurosa", "Henderson et al.; Agarwal et al.", "Justifica pruebas no parametricas y cautela ante una sola corrida."],
+            ["Variables", "Flexibilidad, CO2 y costo en comunidades grid-interactive", "Sostiene D-VD.1, D-VD.2 y D-VD.3."],
+        ],
+        6.8,
+    )
+
+
+def add_cap3_validation(doc: Document) -> None:
+    doc.add_heading("3.7 Validez metodologica, trazabilidad y control de sesgos", level=2)
+    p(doc, "El Capitulo 3 cumple con el tipo de investigacion, diseno metodologico, datos utilizados, variables, tecnicas, herramientas y procedimiento experimental. La tesis corresponde a una investigacion aplicada, cuantitativa y explicativa bajo simulacion computacional, porque manipula la variable independiente MADRL mediante cuatro algoritmos y tres escenarios de recompensa, y observa sus efectos sobre indicadores cuantitativos de flexibilidad, emisiones y costos. Esta estrategia es compatible con la estandarizacion buscada por CityLearn para comparar controladores en comunidades energeticas, pero requiere trazabilidad estricta de artefactos para evitar sesgos de seleccion o interpretacion (Vazquez-Canteli et al., 2020; Nweye et al., 2024).")
+    p(doc, "La validez interna se protege mediante un diseno factorial 4x3, mismo dataset, mismos escenarios E1-E3 y mismas reglas de extraccion de KPIs. La validez estadistica se aborda con estadistica descriptiva, Shapiro-Wilk, Kruskal-Wallis y Mann-Whitney con ajuste Holm, debido a que las distribuciones episodicas no deben asumirse normales por defecto. La validez externa se declara limitada: Henderson et al. (2018) y Agarwal et al. (2021) advierten que las conclusiones de RL con pocas corridas pueden variar si no se reporta incertidumbre, por lo que la tesis interpreta los resultados como evidencia intra-corrida y recomienda una extension multi-semilla.")
+    table(
+        doc,
+        "Tabla 3.7. Control metodologico de validez y trazabilidad.",
+        ["Riesgo", "Control aplicado", "Evidencia"],
+        [
+            ["Comparacion no equivalente", "Mismo dataset, mismos escenarios y misma funcion de evaluacion", "12 tratamientos algoritmo x escenario."],
+            ["Normalidad no garantizada", "Pruebas no parametricas y Shapiro-Wilk", "CSV estadisticos generados desde episodios Drive."],
+            ["Sobregeneralizacion", "Declaracion de inferencia intra-corrida", "Limitacion multi-semilla en Capitulo 6."],
+            ["Datos inventados", "Uso exclusivo de results, timeseries, traces, checkpoints y CSV materializados", "Validacion de cobertura en Capitulo 5."],
+        ],
+        6.8,
+    )
 
 
 def add_cap5(
@@ -852,6 +918,30 @@ def add_cap5(
     table(doc, "Tabla 5.13. Respuesta directa a objetivos especificos.", ["Objetivo", "Dimension", "Escenario", "mejor media episodica", "mejor muestra completa", "mejor KPI anual final", "Kruskal-Wallis", "Decision"], synth_rows, 6.8)
     p(doc, "La interpretacion doctoral no debe afirmar dominancia unica sin matices. Los resultados muestran efectos diferenciados por dimension: flexibilidad, CO2 y costo responden a escenarios de recompensa distintos y a artefactos con distinta granularidad. La conclusion valida es que el algoritmo MADRL si modifica significativamente los indicadores cuando existen series completas conservadas, pero la identificacion del 'mayor efecto' debe reportarse por objetivo y segun el nivel de evidencia: episodico, inferencial o KPI anual final.")
     p(doc, "Metodologicamente, esta decision sigue las advertencias de evaluacion rigurosa en aprendizaje por refuerzo: los episodios de una corrida no reemplazan multiples semillas independientes, y los p-valores deben interpretarse junto con cobertura, tamano de efecto y trazabilidad de artefactos (Henderson et al., 2018; Colas et al., 2019; Agarwal et al., 2021; Patterson et al., 2024). Por ello, se retiene Shapiro-Wilk, Kruskal-Wallis y Mann-Whitney U con Holm como contrastacion intra-corrida, y se declara la necesidad de multi-semilla para robustez externa.")
+    add_cap5_triangulated_discussion(doc, detail, kpi_ranking)
+
+
+def add_cap5_triangulated_discussion(doc: Document, detail: dict, kpi_ranking: pd.DataFrame) -> None:
+    doc.add_heading("5.10 Discusion triangulada de resultados, baseline y trabajos relacionados", level=2)
+    p(doc, "El Capitulo 5 tiene el mayor peso empirico del documento porque integra experimentos realizados, metricas, resultados, comparacion con baseline, tablas, figuras y discusion. La triangulacion de resultados se realiza en tres niveles: recompensa episodica, KPIs evaluate_v2 y contraste estadistico. Esta estrategia evita que una unica grafica de convergencia se interprete como evidencia suficiente, y responde a las recomendaciones de evaluacion rigurosa en RL, donde se exige reportar variabilidad, tamano de efecto y robustez de la comparacion (Henderson et al., 2018; Agarwal et al., 2021).")
+    rows = []
+    for oe in ["OE.1", "OE.2", "OE.3"]:
+        d = detail[oe]
+        kw = d["kw"]
+        rows.append([oe, d["spec"]["scenario"], d["spec"]["dimension"], d["best_stat"], d["best_stat_complete"], d["best_final"], f"H={kw.statistic:.4f}; p={kw.pvalue:.6g}; epsilon2={d['epsilon2']:.4f}" if kw else "NA", effect_label(d["epsilon2"])])
+    table(doc, "Tabla 5.14. Discusion sintetica por objetivo, efecto y algoritmo dominante.", ["Objetivo", "Esc.", "Dimension", "mejor descriptivo", "mejor inferencial", "mejor KPI final", "Prueba", "Tamano"], rows, 6.5)
+    if not kpi_ranking.empty:
+        best_rows = []
+        for scenario in SCENARIOS:
+            sub = kpi_ranking[kpi_ranking["scenario"] == scenario].sort_values("axis_rank")
+            if not sub.empty:
+                r = sub.iloc[0]
+                best_rows.append([scenario, r["axis"], r["family"], r["method"], fmt(r["normalized_score"], 4), fmt(r["axis_rank"], 1)])
+        table(doc, "Tabla 5.15. Mejor metodo por eje segun ranking CityLearn v2 evaluate_v2.", ["Esc.", "Eje", "Familia", "Metodo", "score normalizado", "rank"], best_rows, 7.0)
+    p(doc, "En flexibilidad energetica (PE.1/OE.1), la evidencia es la mas fuerte: MAAC obtiene la mejor media episodica conservada y lidera la muestra inferencial completa, mientras que Kruskal-Wallis rechaza H0 con epsilon2=0,2334, interpretado como efecto alto. Este resultado es compatible con la teoria de MAAC, porque el critico con atencion puede priorizar interacciones relevantes entre edificios cuando la dimension dominante es la coordinacion de flexibilidad; tambien se relaciona con CityLearn v2, donde los KPIs de flexibilidad incluyen pico, ramping, factor de carga y uso de almacenamiento (Iqbal & Sha, 2019; Nweye et al., 2024; Vazquez-Canteli et al., 2020).")
+    p(doc, "En emisiones de CO2 (PE.2/OE.2), la evidencia muestra efecto inferencial significativo pero de tamano bajo. HAPPO presenta el mejor promedio descriptivo conservado, pero al restringir la decision a la muestra inferencial completa el mejor algoritmo es MAAC; en KPI anual final aparece MASAC. Esta divergencia no debe ocultarse, porque indica que el comportamiento carbono-dependiente no se reduce a un unico criterio. La literatura sobre SAC/MASAC sugiere que la regularizacion por entropia puede estabilizar exploracion en problemas continuos, mientras que CityLearn v2 y EVLearn muestran que carbono y carga EV dependen de senales temporales y restricciones de disponibilidad que pueden modificar el ranking final (Haarnoja et al., 2018; Fonseca et al., 2024; Nweye et al., 2024).")
+    p(doc, "En costos energeticos (PE.3/OE.3), la prueba inferencial no rechaza H0 y el tamano de efecto es muy bajo. Por ello, la tesis no afirma una superioridad estadistica concluyente. Descriptivamente, HAPPO muestra menor costo medio entre las filas conservadas, pero en la muestra completa MATD3 presenta mejor promedio y MAAC obtiene el mejor KPI anual final. Esta lectura matizada es coherente con la literatura de TD3/MATD3, donde los criticos dobles reducen sesgos de estimacion, pero no garantizan dominancia en todos los objetivos multiobjetivo; tambien coincide con las advertencias de reproducibilidad en RL sobre no convertir diferencias numericas en conclusiones robustas sin replicas independientes (Fujimoto et al., 2018; Henderson et al., 2018; Agarwal et al., 2021).")
+    p(doc, "La comparacion con baseline y trabajos relacionados se interpreta como evidencia contextual, no como sustituto de la contrastacion principal. Cuando el ranking evaluate_v2 ubica a un baseline o RBC por encima de MADRL en algun eje, el resultado se reporta porque forma parte de la evidencia real y muestra que el aprendizaje multiagente no domina automaticamente a politicas simples en todos los indicadores. Esta transparencia fortalece la validez doctoral: el aporte no consiste en afirmar superioridad universal, sino en identificar donde el MADRL produce efecto, con que magnitud y bajo que escenario de recompensa.")
 
 
 def effect_label(epsilon2: float) -> str:
@@ -920,6 +1010,45 @@ def add_cap4_problem_question_response(doc: Document, detail: dict) -> None:
     p(doc, "Por tanto, el Capitulo 4 deja definido el mecanismo de respuesta: PE.1 se responde con flexibilidad en E1, PE.2 con emisiones de CO2 en E2 y PE.3 con costos en E3. El Capitulo 5 desarrolla la contrastacion, figuras, tablas por edificio y ranking CityLearn v2, pero la relacion pregunta-variable-indicador-decision queda fijada aqui para mantener continuidad entre problema, propuesta y resultados.")
 
 
+def add_cap6_completion_plan(doc: Document) -> None:
+    doc.add_heading("6.6 Plan para culminar la tesis y consolidar la version final", level=2)
+    p(doc, "Las conclusiones del estudio se consideran suficientemente sustentadas para responder las preguntas especificas desde la corrida Drive analizada. Sin embargo, para una version doctoral cerrada se recomienda culminar cuatro actividades: validar numeracion y formato APA del documento completo, ejecutar una extension multi-semilla si se requiere robustez externa, revisar visualmente todas las figuras en Word/PDF y completar una lectura cruzada entre objetivos, hipotesis, resultados y conclusiones. Esta planificacion no agrega datos nuevos; delimita el trabajo pendiente para elevar la trazabilidad formal del manuscrito.")
+    table(
+        doc,
+        "Tabla 6.1. Trabajo pendiente para culminacion formal de la tesis.",
+        ["Actividad", "Proposito", "Criterio de cierre"],
+        [
+            ["Revision APA integral", "Alinear citas, tablas, figuras y referencias", "Todas las citas tienen entrada bibliografica y viceversa."],
+            ["Revision multi-semilla opcional", "Mejorar validez externa de la comparacion MADRL", "Replicas documentadas o limitacion explicitada."],
+            ["Auditoria de figuras y tablas", "Confirmar legibilidad y correspondencia con CSV/Drive", "Cada figura/tabla apunta a fuente de datos verificable."],
+            ["Revision de coherencia vertical", "Asegurar que PE, OE, hipotesis y conclusiones respondan lo mismo", "Matriz problema-objetivo-resultado-conclusion sin vacios."],
+        ],
+        6.8,
+    )
+
+
+def append_apa_references(doc: Document) -> None:
+    doc.add_paragraph()
+    cap = doc.add_paragraph()
+    run = cap.add_run("Referencias complementarias incorporadas en la revision")
+    run.bold = True
+    refs = [
+        "Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A. C., & Bellemare, M. G. (2021). Deep reinforcement learning at the edge of the statistical precipice. Advances in Neural Information Processing Systems, 34, 29304-29320.",
+        "Fonseca, N., Nweye, K., & Nagy, Z. (2024). EVLearn: A mixed-autonomy multi-agent reinforcement learning environment for electric vehicle charging management. arXiv. https://arxiv.org/abs/2403.07612",
+        "Fujimoto, S., van Hoof, H., & Meger, D. (2018). Addressing function approximation error in actor-critic methods. Proceedings of the 35th International Conference on Machine Learning, 80, 1587-1596.",
+        "Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. Proceedings of the 35th International Conference on Machine Learning, 80, 1861-1870.",
+        "Henderson, P., Islam, R., Bachman, P., Pineau, J., Precup, D., & Meger, D. (2018). Deep reinforcement learning that matters. Proceedings of the AAAI Conference on Artificial Intelligence, 32(1).",
+        "Iqbal, S., & Sha, F. (2019). Actor-attention-critic for multi-agent reinforcement learning. Proceedings of the 36th International Conference on Machine Learning, 97, 2961-2970.",
+        "Kuba, J. G., Chen, R., Wen, M., Wen, Y., Sun, F., Wang, J., & Yang, Y. (2021). Trust region policy optimisation in multi-agent reinforcement learning. arXiv. https://arxiv.org/abs/2109.11251",
+        "Nweye, K., Sankur, M. D., Wu, C., & Nagy, Z. (2024). CityLearn v2: Energy-flexible, resilient, occupant-centric, and carbon-aware management of grid-interactive communities. Journal of Building Performance Simulation, 17(1), 1-20.",
+        "Vazquez-Canteli, J. R., Dey, S., Henze, G., & Nagy, Z. (2020). CityLearn: Standardizing research in multi-agent reinforcement learning for demand response and urban energy management. arXiv. https://arxiv.org/abs/2012.10504",
+    ]
+    for ref in refs:
+        para = doc.add_paragraph(ref)
+        para.paragraph_format.left_indent = Inches(0.3)
+        para.paragraph_format.first_line_indent = Inches(-0.3)
+
+
 def rebuild_doc(
     detail: dict,
     treatment: pd.DataFrame,
@@ -943,7 +1072,11 @@ def rebuild_doc(
             lambda tmp: add_expanded_decpomdp_section(tmp, building_compact),
         )
     else:
-        insert_section_before(doc, "2.3 Bases teoricas", lambda tmp: add_expanded_decpomdp_section(tmp, building_compact))
+        insert_section_before_any(doc, ["2.3 Bases teoricas", "2.4 Bases teoricas"], lambda tmp: add_expanded_decpomdp_section(tmp, building_compact))
+    insert_section_before(doc, "Capitulo 2.", add_cap1_validation)
+    insert_section_before(doc, "Capitulo 3.", add_cap2_validation)
+    insert_section_before(doc, "Capitulo 4.", add_cap3_validation)
+    insert_section_before(doc, "Referencias bibliograficas", add_cap6_completion_plan)
     children = list(doc.element.body)
     idx_cap5 = idx_cap6 = None
     for i, el in enumerate(children):
@@ -963,6 +1096,7 @@ def rebuild_doc(
     add_cap5(doc, detail, treatment, building_compact, eq_summary, figures, convergence, kpi_ranking, kpi_catalog)
     for el in after:
         append_before_sectpr(doc, el)
+    append_apa_references(doc)
     doc.save(OUT)
 
 

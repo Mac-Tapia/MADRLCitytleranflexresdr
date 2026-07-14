@@ -685,7 +685,8 @@ def build(*, max_chapter: int | None = None):
       "destilado de mediciones reales, CI (0.672-0.790 kgCO2/kWh), precios TOU (0.26/0.38 "
       "USD/kWh), capacidad BESS, penetracion PV, escenario de carga EV e hiperparametros.")
 
-    heading(doc, "3.5 Tecnicas e instrumentos", 2)
+    heading(doc, "3.5 Tecnicas, herramientas e instrumentos", 2)
+    p(doc, "Tecnicas:", bold=True)
     bullet(doc, "Revision bibliografica sistematica (matriz de 50 antecedentes, Modulo A).")
     bullet(doc, "Extraccion y preprocesamiento del dataset; registro de metricas de entrenamiento "
                 "(reward acumulada y media, pesos por eje, CI, precio, carga neta).")
@@ -694,9 +695,15 @@ def build(*, max_chapter: int | None = None):
     bullet(doc, "Pruebas estadisticas no parametricas: Shapiro-Wilk (normalidad), Kruskal-Wallis "
                 "(diferencias globales), Mann-Whitney U (pares, con tamanos de efecto Cliff's delta, "
                 "Vargha-Delaney A12, Cohen d, Hedges g) y Wilcoxon signed-rank (pares).")
+    p(doc, "Herramientas e instrumentos:", bold=True)
+    bullet(doc, "Simulacion: CityLearn v2 y CityLearn v3 propuesto (schema Iquitos).")
+    bullet(doc, "Backends MADRL: HAPPO (HARL), MASAC, MATD3 y MAAC; MARLlib como referencia tecnica.")
+    bullet(doc, "Stack computacional: Python 3.9, PyTorch/CUDA, Optuna (TPE), Gymnasium/PettingZoo.")
+    bullet(doc, "Dataset e infra: citylearn_iquitos_2023_2025; ejecucion local (RTX 4060) y Colab "
+                "(corrida canonica madrl_v3_20260627_164047).")
     p(doc,
-      "Instrumentos: CityLearn v2, CityLearn v3 propuesto, backends HAPPO/MASAC/MATD3/MAAC, "
-      "MARLlib (referencia tecnica), Optuna, Python/PyTorch y el dataset citylearn_iquitos_2023_2025.")
+      "Instrumentos de evidencia: scripts de entrenamiento/evaluacion del repositorio, "
+      "best_madrl_report.json, pruebas no parametricas y figuras Drive auditadas.")
 
     heading(doc, "3.6 Procedimiento experimental", 2)
     numbered(doc, "Verificacion de contexto del proyecto (scripts/verify_project_context.ps1).")

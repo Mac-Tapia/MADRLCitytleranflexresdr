@@ -674,6 +674,24 @@ def replace_section(document: Document, start_prefix: str, end_prefix: str, writ
         body.insert(start + offset, el)
 
 
+def insert_section_before(document: Document, target_prefix: str, writer) -> None:
+    body = document.element.body
+    children = list(body)
+    target = None
+    for i, el in enumerate(children):
+        if text_of(el).startswith(target_prefix):
+            target = i
+            break
+    if target is None:
+        raise RuntimeError(f"No se encontro punto de insercion: {target_prefix}")
+    tmp = Document()
+    clear_body_keep_sectpr(tmp)
+    writer(tmp)
+    new_children = [deepcopy(el) for el in tmp.element.body if el.tag != qn("w:sectPr")]
+    for offset, el in enumerate(new_children):
+        body.insert(target + offset, el)
+
+
 def add_expanded_decpomdp_section(doc: Document, building_compact: pd.DataFrame) -> None:
     dims = building_compact.groupby("agent")[["observation_dim", "action_dim"]].max().reset_index()
     n_agents = int(dims["agent"].nunique())
@@ -836,6 +854,72 @@ def add_cap5(
     p(doc, "Metodologicamente, esta decision sigue las advertencias de evaluacion rigurosa en aprendizaje por refuerzo: los episodios de una corrida no reemplazan multiples semillas independientes, y los p-valores deben interpretarse junto con cobertura, tamano de efecto y trazabilidad de artefactos (Henderson et al., 2018; Colas et al., 2019; Agarwal et al., 2021; Patterson et al., 2024). Por ello, se retiene Shapiro-Wilk, Kruskal-Wallis y Mann-Whitney U con Holm como contrastacion intra-corrida, y se declara la necesidad de multi-semilla para robustez externa.")
 
 
+def effect_label(epsilon2: float) -> str:
+    if pd.isna(epsilon2):
+        return "no estimado"
+    if epsilon2 >= 0.14:
+        return "efecto alto"
+    if epsilon2 >= 0.06:
+        return "efecto medio"
+    if epsilon2 >= 0.01:
+        return "efecto bajo"
+    return "efecto muy bajo"
+
+
+def add_cap4_problem_question_response(doc: Document, detail: dict) -> None:
+    doc.add_heading("4.9 Respuesta operacional a las preguntas especificas PE.1, PE.2 y PE.3", level=2)
+    p(doc, "La propuesta no se limita a describir una arquitectura MADRL; tambien define como se responde cada pregunta especifica mediante la salida empirica de la corrida Drive madrl_v3_20260627_164047. La respuesta se apoya en dos planos: analisis descriptivo de los episodios y KPIs anuales finales, y analisis inferencial intra-corrida con Kruskal-Wallis sobre los algoritmos que conservan cobertura episodica completa. Esta regla evita mezclar una diferencia numerica descriptiva con una afirmacion causal o inferencial no sustentada.")
+    question_map = {
+        "OE.1": ("PE.1", "¿En que medida el algoritmo MADRL (VI) produce un efecto sobre la dimension de flexibilidad energetica de la comunidad (D-VD.1), y cual algoritmo genera el mayor efecto?"),
+        "OE.2": ("PE.2", "¿En que medida el algoritmo MADRL (VI) produce un efecto sobre la dimension de emisiones de CO2 de la comunidad (D-VD.2), y cual algoritmo genera el mayor efecto?"),
+        "OE.3": ("PE.3", "¿En que medida el algoritmo MADRL (VI) produce un efecto sobre la dimension de costos energeticos de la comunidad (D-VD.3), y cual algoritmo genera el mayor efecto?"),
+    }
+    rows = []
+    for oe in ["OE.1", "OE.2", "OE.3"]:
+        d = detail[oe]
+        spec = d["spec"]
+        kw = d["kw"]
+        epsilon2 = d["epsilon2"]
+        decision = "se rechaza H0" if kw and kw.pvalue < 0.05 else "no se rechaza H0"
+        measure = f"H={kw.statistic:.4f}; p={kw.pvalue:.6g}; epsilon2={epsilon2:.4f} ({effect_label(epsilon2)})" if kw else "sin prueba inferencial"
+        rows.append(
+            [
+                question_map[oe][0],
+                spec["dimension"],
+                spec["scenario"],
+                spec["metric"],
+                measure,
+                decision,
+                d["best_stat"],
+                d["best_stat_complete"],
+                d["best_final"],
+            ]
+        )
+    table(
+        doc,
+        "Tabla 4.10. Respuesta directa a PE.1, PE.2 y PE.3 desde la evidencia descriptiva e inferencial.",
+        ["Pregunta", "Dimension", "Esc.", "Indicador", "Medida del efecto", "Decision", "mejor descriptivo", "mejor inferencial", "mejor KPI final"],
+        rows,
+        6.2,
+    )
+    for oe in ["OE.1", "OE.2", "OE.3"]:
+        d = detail[oe]
+        pe, question = question_map[oe]
+        spec = d["spec"]
+        kw = d["kw"]
+        desc = d["desc"].copy()
+        values = []
+        for _, r in desc.iterrows():
+            nd = 6 if spec["metric"] == "reward_mean_average" else 2
+            values.append(f"{r['algorithm']}={fmt(r['mean'], nd)} (n={int(r['count'])})")
+        if kw and kw.pvalue < 0.05:
+            inferential_text = f"El efecto inferencial existe porque Kruskal-Wallis rechaza H0 (H={kw.statistic:.4f}; p={kw.pvalue:.6g}; epsilon2={d['epsilon2']:.4f}, {effect_label(d['epsilon2'])})."
+        else:
+            inferential_text = f"No se demuestra efecto inferencial suficiente en la muestra conservada porque Kruskal-Wallis no rechaza H0 (H={kw.statistic:.4f}; p={kw.pvalue:.6g}; epsilon2={d['epsilon2']:.4f}, {effect_label(d['epsilon2'])})."
+        p(doc, f"{pe}. {question} Respuesta: en {spec['scenario']}, el indicador {spec['metric']} muestra los siguientes promedios episodicos conservados: " + "; ".join(values) + f". {inferential_text} El mayor efecto descriptivo corresponde a {d['best_stat']}; al exigir cobertura inferencial completa, corresponde a {d['best_stat_complete']}; y por KPI anual final corresponde a {d['best_final']}.")
+    p(doc, "Por tanto, el Capitulo 4 deja definido el mecanismo de respuesta: PE.1 se responde con flexibilidad en E1, PE.2 con emisiones de CO2 en E2 y PE.3 con costos en E3. El Capitulo 5 desarrolla la contrastacion, figuras, tablas por edificio y ranking CityLearn v2, pero la relacion pregunta-variable-indicador-decision queda fijada aqui para mantener continuidad entre problema, propuesta y resultados.")
+
+
 def rebuild_doc(
     detail: dict,
     treatment: pd.DataFrame,
@@ -850,12 +934,16 @@ def rebuild_doc(
     doc = Document(OUT)
     style_doc(doc)
     clean_front_matter_50ep(doc)
-    replace_section(
-        doc,
-        "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
-        "2.2.4 CTDE",
-        lambda tmp: add_expanded_decpomdp_section(tmp, building_compact),
-    )
+    body_text = "\n".join(text_of(el) for el in doc.element.body)
+    if "2.2.3 Dec-POMDP" in body_text:
+        replace_section(
+            doc,
+            "2.2.3 Dec-POMDP",
+            "2.2.4 CTDE",
+            lambda tmp: add_expanded_decpomdp_section(tmp, building_compact),
+        )
+    else:
+        insert_section_before(doc, "2.3 Bases teoricas", lambda tmp: add_expanded_decpomdp_section(tmp, building_compact))
     children = list(doc.element.body)
     idx_cap5 = idx_cap6 = None
     for i, el in enumerate(children):
@@ -871,6 +959,7 @@ def rebuild_doc(
     clear_body_keep_sectpr(doc)
     for el in before:
         append_before_sectpr(doc, el)
+    add_cap4_problem_question_response(doc, detail)
     add_cap5(doc, detail, treatment, building_compact, eq_summary, figures, convergence, kpi_ranking, kpi_catalog)
     for el in after:
         append_before_sectpr(doc, el)

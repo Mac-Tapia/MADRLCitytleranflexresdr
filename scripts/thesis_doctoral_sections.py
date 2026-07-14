@@ -1912,9 +1912,10 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
 
 
 def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
-    heading(doc, "Capitulo 6. Conclusiones y trabajo futuro", 1)
+    """Cap. 6 alineado a docs/informedetesis.txt (conclusiones preliminares)."""
+    heading(doc, "Capitulo 6. Conclusiones preliminares", 1)
 
-    heading(doc, "6.1 Conclusion general (OG) y respuesta a PE.1–PE.3", 2)
+    heading(doc, "6.1 Principales hallazgos", 2)
     p(doc, _pe_conclusions_paragraph())
     p(
         doc,
@@ -1925,8 +1926,6 @@ def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
         "respuesta al OG es descriptivamente afirmativa con limites de inferencia causal "
         "(semilla unica, HAPPO excluido de KPIs finales).",
     )
-
-    heading(doc, "6.2 Conclusiones por objetivo especifico (OE.1–OE.3)", 2)
     p(
         doc,
         "OE.1 (flexibilidad, D-VD.1, escenario E1): el algoritmo MADRL de mayor efecto es MATD3 "
@@ -1954,37 +1953,17 @@ def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
         "globalmente a MADRL en score HPHI, matizando la generalizacion causal pero no invalidando "
         "el benchmark inter-algoritmico exigido por los objetivos.",
     )
-
-    heading(doc, "6.3 Conclusiones sobre hipotesis (HG, HE.1–HE.3)", 2)
     p(
         doc,
-        "HG: no confirmada inferencialmente (Kruskal-Wallis ALL p = 0,155; H0 no rechazada). "
-        "Descriptivamente, MATD3 presenta el mayor efecto coordinado (score global 0,6667), "
-        "pero sin respaldo omnibus al alpha = 0,05.",
-    )
-    p(
-        doc,
-        "HE.1: no confirmada inferencialmente (KW p = 0,281); descriptivamente MATD3 lidera "
-        "flexibilidad en E1 (flex_composite = 1,0009).",
-    )
-    p(
-        doc,
-        "HE.2: no confirmada inferencialmente (KW p = 0,546); descriptivamente MATD3 lidera "
-        "emisiones en E2 (delta CO2 = 23 070 kg).",
-    )
-    p(
-        doc,
-        "HE.3: no confirmada inferencialmente (KW p = 0,388); descriptivamente MAAC lidera "
-        "costos en E3 (delta costo = 9 515 EUR), alineado con la redaccion direccional de la "
-        "hipotesis (menor delta de costo electrico) pero sin significancia omnibus. La literatura "
-        "de atencion multiagente reporta ventajas en minimizacion de costos tarifarios frente a "
-        "politicas deterministicas sin atencion (Iqbal y Sha, 2019; Xie et al., 2023). Wilcoxon "
-        "exploratorio detecta pares significativos (p. ej. MASAC vs MAAC en OE.3) que no "
-        "sustituyen el contraste omnibus ni la replicacion multi-semilla (Tabla 5.20, seccion "
-        "5.9.5; Agarwal et al., 2021; Colas et al., 2019).",
+        "Respecto de las hipotesis: HG no se confirma inferencialmente (Kruskal-Wallis ALL "
+        "p = 0,155; H0 no rechazada). HE.1 (KW p = 0,281), HE.2 (KW p = 0,546) y HE.3 "
+        "(KW p = 0,388) tampoco alcanzan significancia omnibus; descriptivamente MATD3 lidera "
+        "OE.1/OE.2 y MAAC lidera OE.3. Wilcoxon exploratorio detecta pares significativos que no "
+        "sustituyen el contraste omnibus ni la replicacion multi-semilla (Agarwal et al., 2021; "
+        "Colas et al., 2019; Iqbal y Sha, 2019; Xie et al., 2023).",
     )
 
-    heading(doc, "6.4 Limitaciones", 2)
+    heading(doc, "6.2 Limitaciones encontradas", 2)
     p(
         doc,
         "Las limitaciones principales son: (i) semilla unica (seed 0), insuficiente para "
@@ -1995,14 +1974,88 @@ def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
         "en score global HPHI. Las hipotesis HG/HE se contrastan en seccion 5.9; los objetivos "
         "OG/OE en seccion 5.11.",
     )
-    heading(doc, "6.5 Trabajo futuro", 2)
+
+    heading(doc, "6.3 Trabajo pendiente", 2)
+    bullet(
+        doc,
+        "Re-evaluar HAPPO tras corregir el fallo VecEnvWrapper y recuperar KPIs finales "
+        "comparables en los tres escenarios.",
+    )
+    bullet(
+        doc,
+        "Ejecutar corrida multi-semilla (>=5, ideal >=20) con post-hoc Dunn y correccion "
+        "Bonferroni para intervalos de confianza robustos.",
+    )
+    bullet(
+        doc,
+        "Completar analisis de frontera de Pareto por eje y cuantificar porcentajes de mejora "
+        "frente a baseline CityLearn v2/RBC por KPI.",
+    )
+    bullet(
+        doc,
+        "Optimizar hiperparametros con Optuna (TPE) por backend y enriquecer el contraste con "
+        "SB3 (PPO/SAC/A2C) bajo el mismo schema de Iquitos.",
+    )
+    bullet(
+        doc,
+        "Cerrar redaccion doctoral (extension narrativa Cap. 2–4), verificar referencias "
+        "marcadas [PV] y actualizar el indice Word (F9).",
+    )
+
+    heading(doc, "6.4 Plan para culminar la tesis", 2)
     p(
         doc,
-        "Se propone: re-evaluacion de HAPPO tras corregir VecEnvWrapper; corrida multi-semilla "
-        "(≥5, ideal ≥20) con post-hoc Dunn y correccion Bonferroni; optimizacion con Optuna; "
-        "analisis de frontera de Pareto por eje; y transferencia del benchmark a otros sistemas "
-        "aislados de la Amazonia peruana. La comparacion con SB3 (PPO/SAC/A2C) y el benchmark "
-        "hour_rbc E2 completado en segundo plano enriqueceran el contraste con literatura.",
+        "El plan de cierre prioriza hitos verificables alineados con la corrida canonica "
+        f"{RUN_ID} y con los pendientes del Capitulo 5:",
+    )
+    add_table(
+        doc,
+        ["Hito", "Entregable verificable", "Estado"],
+        [
+            [
+                "H1. Consolidar 50 ep / HAPPO",
+                "KPIs finales 4 algoritmos x 3 escenarios; re-eval HAPPO",
+                "Parcial (MATD3/MAAC/MASAC con KPIs; HAPPO pendiente)",
+            ],
+            [
+                "H2. Robustez multi-semilla",
+                ">=3 semillas + IC / post-hoc Dunn",
+                "Pendiente",
+            ],
+            [
+                "H3. Inferencia Colab cerrada",
+                "Tablas KW/MW/Wilcoxon auditadas y redaccion Cap. 5–6 sincronizada",
+                "Parcial (ejecutada; HG no confirmada)",
+            ],
+            [
+                "H4. Pareto y % vs baseline",
+                "Tablas/figuras OE.1–OE.3 vs RBC/CityLearn v2",
+                "Parcial (baseline integrada; % KPI pendientes)",
+            ],
+            [
+                "H5. HPO Optuna",
+                "Estudio TPE por algoritmo",
+                "Pendiente",
+            ],
+            [
+                "H6. Redaccion final APA",
+                "Informe final Cap. 1–6 + referencias verificadas",
+                "En curso",
+            ],
+            [
+                "H7. Sustentacion",
+                "Documento oficial + defensa",
+                "Pendiente",
+            ],
+        ],
+        caption="Tabla 6.1. Plan para culminar la tesis (hitos H1–H7).",
+        col_widths=[4.2, 7.5, 4.0],
+    )
+    p(
+        doc,
+        "La culminacion academica queda condicionada a completar H1–H2 (cobertura factorial "
+        "completa y replicacion) antes de afirmar efecto causal diferenciado del algoritmo "
+        "MADRL sobre la VD multiobjetivo en el SEAI Iquitos.",
     )
 
 

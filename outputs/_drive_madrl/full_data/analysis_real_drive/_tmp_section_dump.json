@@ -1,0 +1,265 @@
+[
+  {
+    "i": 63,
+    "style": "Heading 2",
+    "text": "1.4 Matriz de consistencia y operacionalizacion"
+  },
+  {
+    "i": 94,
+    "style": "Heading 2",
+    "text": "2.2 Fundamentos teoricos y matematicos"
+  },
+  {
+    "i": 95,
+    "style": "Heading 3",
+    "text": "2.1.1 Aprendizaje por refuerzo y MADRL"
+  },
+  {
+    "i": 119,
+    "style": "Heading 3",
+    "text": "2.2.1 Variable independiente (VI)"
+  },
+  {
+    "i": 132,
+    "style": "Heading 3",
+    "text": "2.3.1 Flexibilidad energetica"
+  },
+  {
+    "i": 162,
+    "style": "Heading 3",
+    "text": "2.4.1 Antecedentes internacionales"
+  },
+  {
+    "i": 204,
+    "style": "Heading 3",
+    "text": "2.5.1 Definicion de terminos y delimitaciones conceptuales"
+  },
+  {
+    "i": 213,
+    "style": "Heading 2",
+    "text": "3.1 Tipo de investigacion"
+  },
+  {
+    "i": 219,
+    "style": "Heading 2",
+    "text": "3.2 Diseno experimental factorial 4×3"
+  },
+  {
+    "i": 220,
+    "style": "Normal",
+    "text": "El experimento manipula la variable independiente definida en el Capitulo 2, Seccion 2.2.1: D-VI.1 (tipo de algoritmo: HAPPO, MASAC, MATD3, MAAC), D-VI.2 (escenario de ponderacion: E1, E2, E3) y D-VI.3 (controles metodologicos). La variable dependiente, definida en el Capitulo 2, Seccion 2.2.2 (Tabla 2.1), se observa en tres ejes con tres dimensiones cada uno: D-VD.1 flexibilidad, D-VD.2 emisiones de CO2 y D-VD.3 costos energeticos (54 KPI oficiales CityLearn v2). El diseno factorial completo co"
+  },
+  {
+    "i": 225,
+    "style": "Heading 2",
+    "text": "3.3 Datos utilizados — Dataset citylearn_iquitos_2023_2025"
+  },
+  {
+    "i": 233,
+    "style": "Heading 2",
+    "text": "3.4 Variables"
+  },
+  {
+    "i": 236,
+    "style": "Normal",
+    "text": "Capa MADRL cooperativa implementada sobre CityLearn v2 (CityLearn v3 propuesto), manipulada en tres dimensiones: D-VI.1 algoritmo (HAPPO, MASAC, MATD3, MAAC), D-VI.2 escenario (E1/E2/E3) y D-VI.3 control experimental (dataset comun, recompensa unified_comparable_v4, semilla y protocolo CTDE). Ver definicion teorica en Capitulo 2, Secciones 2.2.1 y 2.1.2."
+  },
+  {
+    "i": 242,
+    "style": "Heading 2",
+    "text": "3.5 Tecnicas, herramientas e instrumentos"
+  },
+  {
+    "i": 252,
+    "style": "Heading 2",
+    "text": "3.6 Procedimiento experimental"
+  },
+  {
+    "i": 261,
+    "style": "Heading 2",
+    "text": "4.1 Desarrollo del sistema y arquitectura de software"
+  },
+  {
+    "i": 266,
+    "style": "Heading 2",
+    "text": "4.2 Modelo de IA: formulacion Dec-POMDP"
+  },
+  {
+    "i": 276,
+    "style": "Heading 2",
+    "text": "4.3 Esquema CTDE"
+  },
+  {
+    "i": 278,
+    "style": "Heading 2",
+    "text": "4.4 Algoritmos"
+  },
+  {
+    "i": 285,
+    "style": "Heading 2",
+    "text": "4.5 Funcion de recompensa multiobjetivo"
+  },
+  {
+    "i": 291,
+    "style": "Heading 2",
+    "text": "4.6 Aportes originales al motor de simulacion"
+  },
+  {
+    "i": 295,
+    "style": "Heading 2",
+    "text": "4.7 Diseno experimental: matriz de 12 corridas"
+  },
+  {
+    "i": 299,
+    "style": "Heading 2",
+    "text": "4.8 Implementacion"
+  },
+  {
+    "i": 306,
+    "style": "Heading 2",
+    "text": "5.1 Experimentos realizados y cobertura experimental"
+  },
+  {
+    "i": 307,
+    "style": "Heading 3",
+    "text": "5.1.1 Metricas utilizadas"
+  },
+  {
+    "i": 581,
+    "style": "Heading 2",
+    "text": "5.10 Discusion integrada alineada a objetivos"
+  },
+  {
+    "i": 583,
+    "style": "Heading 3",
+    "text": "5.10.1 Contrastacion con antecedentes del Capitulo 2"
+  },
+  {
+    "i": 593,
+    "style": "Heading 2",
+    "text": "5.11 Veredicto de cumplimiento OG y OE.1–OE.3"
+  },
+  {
+    "i": 600,
+    "style": "Heading 2",
+    "text": "6.1 Principales hallazgos"
+  },
+  {
+    "i": 608,
+    "style": "Heading 2",
+    "text": "6.2 Limitaciones encontradas"
+  },
+  {
+    "i": 610,
+    "style": "Heading 2",
+    "text": "6.3 Trabajo pendiente"
+  },
+  {
+    "i": 616,
+    "style": "Heading 2",
+    "text": "6.4 Plan para culminar la tesis"
+  },
+  {
+    "chunk_5_1": [
+      {
+        "i": 306,
+        "style": "Heading 2",
+        "text": "5.1 Experimentos realizados y cobertura experimental"
+      },
+      {
+        "i": 307,
+        "style": "Heading 3",
+        "text": "5.1.1 Metricas utilizadas"
+      },
+      {
+        "i": 308,
+        "style": "Normal",
+        "text": "Las metricas utilizadas provienen de CityLearn v2 (evaluate_v2) y del agregado doctoral: flex_composite / peak / ramping (OE.1), carbon_emissions_delta_kgco2 (OE.2), electricity_cost_delta_eur (OE.3), scores normalizados por eje, score global min-max, tasas de exito EV y pruebas no parametricas (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon). La fuente canonica es best_madrl_report.json y"
+      },
+      {
+        "i": 309,
+        "style": "Normal",
+        "text": "Tabla 5.1. Operacionalizacion objetivo→escenario→KPI (corrida 50 ep)."
+      },
+      {
+        "i": 311,
+        "style": "Normal",
+        "text": "Tabla 5.2. Cobertura de episodios auditada (episodes_recorded)."
+      },
+      {
+        "i": 313,
+        "style": "Heading 2",
+        "text": "5.2 Analisis de convergencia, aprendizaje y desempeno por algoritmo MADRL"
+      }
+    ]
+  },
+  {
+    "chunk_cap6": [
+      {
+        "i": 608,
+        "style": "Heading 2",
+        "text": "6.2 Limitaciones encontradas"
+      },
+      {
+        "i": 609,
+        "style": "Normal",
+        "text": "Las limitaciones principales son: (i) semilla unica (seed 0), insuficiente para conclusiones causales robustas segun Colas et al. (2019); (ii) HAPPO sin KPIs finales (49/50 episodios, error VecEnvWrapper), lo que reduce el diseno factorial efectivo a 3×3 en inferencia; (iii) simulacion sin validacion en red fisica; (iv) CityLearn v3 propuesto como extension experimental de tesis; (v) MADRL por debajo del baseline RBC en score global HPHI. Las hipotesis HG/HE se contrastan en seccion 5.9; los obj"
+      },
+      {
+        "i": 610,
+        "style": "Heading 2",
+        "text": "6.3 Trabajo pendiente"
+      },
+      {
+        "i": 611,
+        "style": "List Bullet",
+        "text": "Re-evaluar HAPPO tras corregir el fallo VecEnvWrapper y recuperar KPIs finales comparables en los tres escenarios."
+      },
+      {
+        "i": 612,
+        "style": "List Bullet",
+        "text": "Ejecutar corrida multi-semilla (>=5, ideal >=20) con post-hoc Dunn y correccion Bonferroni para intervalos de confianza robustos."
+      },
+      {
+        "i": 613,
+        "style": "List Bullet",
+        "text": "Completar analisis de frontera de Pareto por eje y cuantificar porcentajes de mejora frente a baseline CityLearn v2/RBC por KPI."
+      },
+      {
+        "i": 614,
+        "style": "List Bullet",
+        "text": "Optimizar hiperparametros con Optuna (TPE) por backend y enriquecer el contraste con SB3 (PPO/SAC/A2C) bajo el mismo schema de Iquitos."
+      },
+      {
+        "i": 615,
+        "style": "List Bullet",
+        "text": "Cerrar redaccion doctoral (extension narrativa Cap. 2–4), verificar referencias marcadas [PV] y actualizar el indice Word (F9)."
+      },
+      {
+        "i": 616,
+        "style": "Heading 2",
+        "text": "6.4 Plan para culminar la tesis"
+      },
+      {
+        "i": 617,
+        "style": "Normal",
+        "text": "El plan de cierre prioriza hitos verificables alineados con la corrida canonica madrl_v3_20260627_164047 y con los pendientes del Capitulo 5:"
+      },
+      {
+        "i": 618,
+        "style": "Normal",
+        "text": "Tabla 6.1. Plan para culminar la tesis (hitos H1–H7)."
+      },
+      {
+        "i": 620,
+        "style": "Normal",
+        "text": "La culminacion academica queda condicionada a completar H1–H2 (cobertura factorial completa y replicacion) antes de afirmar efecto causal diferenciado del algoritmo MADRL sobre la VD multiobjetivo en el SEAI Iquitos."
+      },
+      {
+        "i": 621,
+        "style": "Heading 1",
+        "text": "Referencias bibliograficas"
+      }
+    ]
+  }
+]

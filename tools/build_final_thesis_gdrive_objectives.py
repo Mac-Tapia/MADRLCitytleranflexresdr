@@ -703,6 +703,31 @@ def insert_section_before_any(document: Document, target_prefixes: list[str], wr
     raise RuntimeError(f"No se encontro punto de insercion entre: {target_prefixes}") from last_error
 
 
+def normalize_chapter2_numbering(doc: Document) -> None:
+    replacements = {
+        "2.1.1 Aprendizaje por refuerzo y MADRL": "2.2.1 Aprendizaje por refuerzo y MADRL",
+        "2.1.2 Formalizacion matematica Dec-POMDP": "2.2.2 Formalizacion matematica Dec-POMDP",
+        "2.1.3 CityLearn y simulacion multiobjetivo": "2.2.4 CityLearn y simulacion multiobjetivo",
+        "2.2.1 Variable independiente (VI)": "2.3.1 Variable independiente (VI)",
+        "2.2.2 Variable dependiente (VD)": "2.3.2 Variable dependiente (VD)",
+        "2.3.1 Flexibilidad energetica": "2.4.1 Flexibilidad energetica",
+        "2.3.2 Emisiones de carbono y control consciente de intensidad de carbono": "2.4.2 Emisiones de carbono y control consciente de intensidad de carbono",
+        "2.3.3 Costos energeticos, precios dinamicos y respuesta economica": "2.4.3 Costos energeticos, precios dinamicos y respuesta economica",
+        "2.3.4 Algoritmos MADRL evaluados": "2.4.4 Algoritmos MADRL evaluados",
+        "2.3.5 Aportes fisicos al motor como base teorica de CityLearn v3 propuesto": "2.4.5 Aportes fisicos al motor como base teorica de CityLearn v3 propuesto",
+        "2.4.1 Antecedentes internacionales": "2.5.1 Antecedentes internacionales",
+        "2.4.2 Antecedentes nacionales y peruanos": "2.5.2 Antecedentes nacionales y peruanos",
+        "2.4.3 Sintesis critica de antecedentes y brecha cientifica": "2.5.3 Sintesis critica de antecedentes y brecha cientifica",
+        "2.5.1 Definicion de terminos y delimitaciones conceptuales": "2.6.1 Definicion de terminos y delimitaciones conceptuales",
+        "2.5.2 Posicion teorica de la tesis": "2.6.2 Posicion teorica de la tesis",
+        "2.6 Sintesis critica y triangulacion del marco teorico": "2.7 Sintesis critica y triangulacion del marco teorico",
+    }
+    for para in doc.paragraphs:
+        text = para.text.strip()
+        if text in replacements:
+            set_paragraph_text(para, replacements[text])
+
+
 def add_expanded_decpomdp_section(doc: Document, building_compact: pd.DataFrame) -> None:
     dims = building_compact.groupby("agent")[["observation_dim", "action_dim"]].max().reset_index()
     n_agents = int(dims["agent"].nunique())
@@ -799,6 +824,7 @@ def add_cap5(
     p(doc, "El vinculo metodologico queda organizado por objetivo especifico: OE.1 se contrasta en E1 porque la recompensa asigna 0,70 a flexibilidad; OE.2 se contrasta en E2 porque la recompensa asigna 0,70 a emisiones; OE.3 se contrasta en E3 porque la recompensa asigna 0,60 a costos. Por tanto, el desarrollo de la propuesta del Capitulo 4 no queda separado de los resultados: los pesos de la funcion de recompensa son la manipulacion experimental de D-VI.2 y las metricas de este capitulo son los indicadores observados de D-VD.1, D-VD.2 y D-VD.3.")
     p(doc, "Los 12 tratamientos registran culminacion operativa de entrenamiento. En particular, HAPPO registra completed_episode_count=50 en live_progress.json y episodes_recorded=50 en results.json; sin embargo, por el modo de reanudacion ligera de HAPPO, la carpeta actual de G: conserva en timeseries.csv y episode_summary.csv solo el episodio 49, es decir, la trayectoria anual final. Para no perder la evidencia previa ya extraida del mismo flujo Drive, la estadistica episodica usa el CSV materializado district_episode_kpis.csv, donde HAPPO conserva 49 episodios por escenario y MAAC, MASAC y MATD3 conservan 50. En consecuencia, HAPPO se usa para evidencia descriptiva, final anual y por edificio, pero no se declara como grupo inferencial de 50 observaciones.")
 
+    doc.add_heading("5.1 Cobertura de artefactos experimentales", level=2)
     coverage_rows = []
     for _, r in treatment.sort_values(["algorithm", "scenario"]).iterrows():
         coverage_rows.append([
@@ -812,6 +838,7 @@ def add_cap5(
         ])
     table(doc, "Tabla 5.1. Cobertura real de artefactos por tratamiento en Google Drive.", ["Algoritmo", "Escenario", "episodios registrados", "resumenes G:", "episodios KPI usados", "edificios", "checkpoints"], coverage_rows, 6.8)
 
+    doc.add_heading("5.2 Trazabilidad entre objetivos, hipotesis e indicadores", level=2)
     link_rows = [[d["spec"]["objective"], d["spec"]["hypothesis"], d["spec"]["scenario"], d["spec"]["dimension"], d["spec"]["indicator"], "maximizar" if d["spec"]["direction"] == "max" else "minimizar"] for d in detail.values()]
     table(doc, "Tabla 5.2. Trazabilidad objetivo-hipotesis-escenario-indicador.", ["Objetivo", "Hipotesis", "Escenario", "Dimension VD", "Indicador usado", "Criterio"], link_rows, 6.8)
 
@@ -1011,11 +1038,11 @@ def add_cap4_problem_question_response(doc: Document, detail: dict) -> None:
 
 
 def add_cap6_completion_plan(doc: Document) -> None:
-    doc.add_heading("6.6 Plan para culminar la tesis y consolidar la version final", level=2)
-    p(doc, "Las conclusiones del estudio se consideran suficientemente sustentadas para responder las preguntas especificas desde la corrida Drive analizada. Sin embargo, para una version doctoral cerrada se recomienda culminar cuatro actividades: validar numeracion y formato APA del documento completo, ejecutar una extension multi-semilla si se requiere robustez externa, revisar visualmente todas las figuras en Word/PDF y completar una lectura cruzada entre objetivos, hipotesis, resultados y conclusiones. Esta planificacion no agrega datos nuevos; delimita el trabajo pendiente para elevar la trazabilidad formal del manuscrito.")
+    doc.add_heading("6.5 Criterios de cierre doctoral y control de calidad final", level=2)
+    p(doc, "Las conclusiones del estudio se consideran suficientemente sustentadas para responder las preguntas especificas desde la corrida Drive analizada. Dado que el Capitulo 6 ya contiene trabajo pendiente y plan de culminacion, esta seccion define criterios de cierre doctoral: validar numeracion y formato APA del documento completo, ejecutar una extension multi-semilla si se requiere robustez externa, revisar visualmente todas las figuras en Word/PDF y completar una lectura cruzada entre objetivos, hipotesis, resultados y conclusiones. Esta planificacion no agrega datos nuevos; delimita el control de calidad requerido para elevar la trazabilidad formal del manuscrito.")
     table(
         doc,
-        "Tabla 6.1. Trabajo pendiente para culminacion formal de la tesis.",
+        "Tabla 6.2. Criterios de cierre y control de calidad final.",
         ["Actividad", "Proposito", "Criterio de cierre"],
         [
             ["Revision APA integral", "Alinear citas, tablas, figuras y referencias", "Todas las citas tienen entrada bibliografica y viceversa."],
@@ -1077,6 +1104,7 @@ def rebuild_doc(
     insert_section_before(doc, "Capitulo 3.", add_cap2_validation)
     insert_section_before(doc, "Capitulo 4.", add_cap3_validation)
     insert_section_before(doc, "Referencias bibliograficas", add_cap6_completion_plan)
+    normalize_chapter2_numbering(doc)
     children = list(doc.element.body)
     idx_cap5 = idx_cap6 = None
     for i, el in enumerate(children):

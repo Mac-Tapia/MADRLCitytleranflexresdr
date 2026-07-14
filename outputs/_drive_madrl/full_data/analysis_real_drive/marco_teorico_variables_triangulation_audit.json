@@ -1,0 +1,196 @@
+{
+  "capitulo": 2,
+  "seccion_variables": "2.2",
+  "tabla_triangulacion": "Tabla 2.1",
+  "vi_dimensiones": {
+    "D-VI.1": [
+      "HAPPO",
+      "MASAC",
+      "MATD3",
+      "MAAC"
+    ],
+    "D-VI.2": [
+      "E1",
+      "E2",
+      "E3"
+    ],
+    "D-VI.3": [
+      "dataset comun",
+      "protocolo experimental"
+    ]
+  },
+  "vd_dimensiones": {
+    "D-VD.1": [
+      "peak_average",
+      "ramping_average",
+      "one_minus_load_factor_average / flex_composite"
+    ],
+    "D-VD.2": [
+      "carbon_emissions_total",
+      "carbon_emissions_delta",
+      "CI-weighted consumption"
+    ],
+    "D-VD.3": [
+      "electricity_cost_total",
+      "electricity_cost_delta",
+      "peak_billing / price_signal_deviation"
+    ]
+  },
+  "triangulation_rows": [
+    {
+      "variable": "VI",
+      "dimension": "D-VI.1 — Algoritmo MADRL",
+      "definicion": "Capa cooperativa multiagente bajo Dec-POMDP/CTDE (HAPPO, MASAC, MATD3, MAAC).",
+      "autores_apa": "Sutton y Barto (2018); Oliehoek y Amato (2016)",
+      "kpi_tesis": "Factor experimental (4 niveles)"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.1 — HAPPO",
+      "definicion": "On-policy con region de confianza para agentes heterogeneos.",
+      "autores_apa": "Kuba et al. (2021); Zhong et al. (2023)",
+      "kpi_tesis": "T01-T03"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.1 — MASAC",
+      "definicion": "Off-policy de maxima entropia con exploracion robusta.",
+      "autores_apa": "Haarnoja et al. (2018); Gao et al. (2023)",
+      "kpi_tesis": "T04-T06"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.1 — MATD3",
+      "definicion": "Off-policy con doble critico centralizado y retardo de politica.",
+      "autores_apa": "Lowe et al. (2017); Hu et al. (2023)",
+      "kpi_tesis": "T07-T09"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.1 — MAAC",
+      "definicion": "Critico con atencion selectiva entre agentes.",
+      "autores_apa": "Iqbal y Sha (2019)",
+      "kpi_tesis": "T10-T12"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.2 — Escenario E1",
+      "definicion": "Ponderacion dominante flexibilidad [0,70; 0,15; 0,15].",
+      "autores_apa": "Vazquez-Canteli et al. (2020); Yao et al. (2023)",
+      "kpi_tesis": "OE.1 / D-VD.1"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.2 — Escenario E2",
+      "definicion": "Ponderacion dominante CO2 [0,15; 0,70; 0,15].",
+      "autores_apa": "Liu et al. (2022); Tranberg et al. (2020)",
+      "kpi_tesis": "OE.2 / D-VD.2"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.2 — Escenario E3",
+      "definicion": "Ponderacion dominante costos [0,25; 0,15; 0,60].",
+      "autores_apa": "Dang et al. (2023); OSINERGMIN (2024)",
+      "kpi_tesis": "OE.3 / D-VD.3"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.3 — Control dataset",
+      "definicion": "Dataset comun citylearn_iquitos_2023_2025 (17 edificios, 8 760 h).",
+      "autores_apa": "Nweye et al. (2024); Nweye et al. (2023a)",
+      "kpi_tesis": "Mismo schema y semilla"
+    },
+    {
+      "variable": "VI",
+      "dimension": "D-VI.3 — Control protocolo",
+      "definicion": "Funcion de recompensa unified_comparable_v4 y protocolo CTDE.",
+      "autores_apa": "Nweye et al. (2022); Hu et al. (2023)",
+      "kpi_tesis": "12 tratamientos 4x3"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.1 — Dim.1 pico",
+      "definicion": "Reduccion de demanda/importacion maxima distrital.",
+      "autores_apa": "Vazquez-Canteli et al. (2020); Lund et al. (2017)",
+      "kpi_tesis": "peak_average"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.1 — Dim.2 rampa",
+      "definicion": "Suavizado de variaciones horarias de importacion.",
+      "autores_apa": "Nweye et al. (2024); Yao et al. (2023)",
+      "kpi_tesis": "ramping_average"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.1 — Dim.3 factor de carga",
+      "definicion": "Equilibrio entre pico y demanda media (load factor).",
+      "autores_apa": "Vazquez-Canteli y Nagy (2019b); Xie et al. (2023)",
+      "kpi_tesis": "one_minus_load_factor_average; flex_composite"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.2 — Dim.1 emisiones totales",
+      "definicion": "Emisiones anuales agregadas del distrito.",
+      "autores_apa": "Liu et al. (2022); MINAM (2019)",
+      "kpi_tesis": "carbon_emissions_total"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.2 — Dim.2 delta CO2",
+      "definicion": "Reduccion frente a baseline CityLearn v2.",
+      "autores_apa": "Tranberg et al. (2020); Sarkar et al. (2024)",
+      "kpi_tesis": "carbon_emissions_delta"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.2 — Dim.3 consumo ponderado CI",
+      "definicion": "Importacion ponderada por intensidad de carbono horaria.",
+      "autores_apa": "Cao et al. (2023); Ye et al. (2025)",
+      "kpi_tesis": "CI-weighted consumption"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.3 — Dim.1 costo total",
+      "definicion": "Costo electrico anual agregado del distrito.",
+      "autores_apa": "Fang et al. (2021); Gao et al. (2023)",
+      "kpi_tesis": "electricity_cost_total"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.3 — Dim.2 delta costo",
+      "definicion": "Reduccion de costo frente a baseline.",
+      "autores_apa": "Dang et al. (2023); Xiong et al. (2024)",
+      "kpi_tesis": "electricity_cost_delta"
+    },
+    {
+      "variable": "VD",
+      "dimension": "D-VD.3 — Dim.3 pico facturable",
+      "definicion": "Reduccion de demanda maxima en ventana de facturacion.",
+      "autores_apa": "OSINERGMIN (2024); Shojaeighadikolaei et al. (2022)",
+      "kpi_tesis": "peak_billing; price_signal_deviation"
+    }
+  ],
+  "min_autores_por_dimension": 2,
+  "estructura_cap2": [
+    "2.1 Fundamentos teoricos y matematicos",
+    "2.1.1 Aprendizaje por refuerzo y MADRL",
+    "2.1.2 Formalizacion matematica Dec-POMDP",
+    "2.1.3 CityLearn y simulacion multiobjetivo",
+    "2.2 Variables de la investigacion",
+    "2.2.1 Variable independiente (VI)",
+    "2.2.2 Variable dependiente (VD)",
+    "2.3 Bases teoricas por eje",
+    "2.4 Antecedentes",
+    "2.5 Definicion de terminos y posicion teorica"
+  ],
+  "tablas": [
+    "Tabla 2.1 Triangulacion VI/VD",
+    "Tabla 2.2 Notacion Dec-POMDP",
+    "Tabla 2.3 Algoritmos MADRL",
+    "Tabla 2.4",
+    "Tabla 2.5",
+    "Tabla 2.6 Constructos teoricos",
+    "Tabla 2.7 Antecedentes por eje teorico"
+  ]
+}

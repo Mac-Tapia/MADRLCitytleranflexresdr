@@ -546,10 +546,12 @@ def build(*, max_chapter: int | None = None):
 
     heading(doc, "3.2 Diseno experimental factorial 4×3", 2)
     p(doc,
-      "El experimento manipula la variable independiente en dos dimensiones: D-VI.1 (tipo de "
-      "algoritmo: HAPPO, MASAC, MATD3, MAAC) y D-VI.2 (escenario de ponderacion: E1, E2, E3). "
-      "La variable dependiente se observa en tres dimensiones: D-VD.1 flexibilidad, D-VD.2 "
-      "emisiones de CO2 y D-VD.3 costos energeticos (54 KPI oficiales CityLearn v2). El "
+      "El experimento manipula la variable independiente definida en el Capitulo 2, Seccion 2.2.1: "
+      "D-VI.1 (tipo de algoritmo: HAPPO, MASAC, MATD3, MAAC), D-VI.2 (escenario de ponderacion: "
+      "E1, E2, E3) y D-VI.3 (controles metodologicos). La variable dependiente, definida en "
+      "el Capitulo 2, Seccion 2.2.2 (Tabla 2.1), se observa en tres ejes con tres dimensiones "
+      "cada uno: D-VD.1 flexibilidad, D-VD.2 emisiones de CO2 y D-VD.3 costos energeticos "
+      "(54 KPI oficiales CityLearn v2). El "
       "diseno factorial completo comprende 12 tratamientos (4×3), ejecutados con la misma "
       "funcion de recompensa multiobjetivo. Cada escenario condiciona la politica hacia un "
       "objetivo dominante mediante un vector de pesos distinto, respondiendo a OE.1, OE.2 "
@@ -648,14 +650,25 @@ def build(*, max_chapter: int | None = None):
     )
 
     heading(doc, "3.4 Variables", 2)
-    p(doc, "Variable independiente:", bold=True)
     p(doc,
-      "Capa MADRL cooperativa implementada sobre CityLearn v2 (CityLearn v3 propuesto): "
-      "algoritmos HAPPO, MASAC, MATD3 y MAAC bajo Dec-POMDP y CTDE.")
-    p(doc, "Variable dependiente:", bold=True)
+      "La definicion conceptual, la triangulacion bibliografica y las tres dimensiones de cada "
+      "variable se establecen en el Capitulo 2, Seccion 2.2 (Tabla 2.1). Esta seccion "
+      "operacionaliza computacionalmente esa definicion para el diseno experimental factorial "
+      "4x3 descrito en la Seccion 3.2.")
+    p(doc, "Variable independiente (VI):", bold=True)
     p(doc,
-      "Desempeno coordinado en flexibilidad energetica, emisiones de CO2 y costos "
-      "energeticos, medido con los KPIs oficiales de CityLearn v2.")
+      "Capa MADRL cooperativa implementada sobre CityLearn v2 (CityLearn v3 propuesto), "
+      "manipulada en tres dimensiones: D-VI.1 algoritmo (HAPPO, MASAC, MATD3, MAAC), "
+      "D-VI.2 escenario (E1/E2/E3) y D-VI.3 control experimental (dataset comun, recompensa "
+      "unified_comparable_v4, semilla y protocolo CTDE). Ver definicion teorica en "
+      "Capitulo 2, Secciones 2.2.1 y 2.1.2.")
+    p(doc, "Variable dependiente (VD):", bold=True)
+    p(doc,
+      "Desempeno coordinado en tres ejes con tres dimensiones cada uno: D-VD.1 flexibilidad "
+      "(pico, rampa, factor de carga/flex_composite), D-VD.2 emisiones de CO2 (totales, "
+      "delta, consumo ponderado por CI) y D-VD.3 costos energeticos (total, delta, pico "
+      "facturable/price_signal_deviation), medidos con los KPIs oficiales de CityLearn v2. "
+      "Ver triangulacion en Capitulo 2, Seccion 2.2.2 y Tabla 2.1.")
     add_table(
         doc,
         ["Eje (OE)", "KPIs principales"],

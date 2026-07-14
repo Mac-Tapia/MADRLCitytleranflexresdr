@@ -1,0 +1,29 @@
+| axis | axis_name | comparable_kpis | improved_kpis | not_improved_kpis | output_profile | algorithm | scenario | seed | run_path |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| OE1 | Flexibilidad energetica | 12 | 2 | 10 | canonical_50ep | MASAC | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E1 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MASAC | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E1 |
+| OE3 | Costos energeticos | 9 | 1 | 8 | canonical_50ep | MASAC | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E1 |
+| OE1 | Flexibilidad energetica | 12 | 5 | 7 | canonical_50ep | MASAC | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E2 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MASAC | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E2 |
+| OE3 | Costos energeticos | 8 | 1 | 7 | canonical_50ep | MASAC | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E2 |
+| OE1 | Flexibilidad energetica | 12 | 2 | 10 | canonical_50ep | MASAC | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E3 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MASAC | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E3 |
+| OE3 | Costos energeticos | 9 | 1 | 8 | canonical_50ep | MASAC | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MASAC\E3 |
+| OE1 | Flexibilidad energetica | 12 | 5 | 7 | canonical_50ep | MATD3 | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E1 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MATD3 | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E1 |
+| OE3 | Costos energeticos | 9 | 1 | 8 | canonical_50ep | MATD3 | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E1 |
+| OE1 | Flexibilidad energetica | 12 | 5 | 7 | canonical_50ep | MATD3 | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E2 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MATD3 | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E2 |
+| OE3 | Costos energeticos | 8 | 1 | 7 | canonical_50ep | MATD3 | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E2 |
+| OE1 | Flexibilidad energetica | 12 | 5 | 7 | canonical_50ep | MATD3 | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E3 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MATD3 | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E3 |
+| OE3 | Costos energeticos | 9 | 1 | 8 | canonical_50ep | MATD3 | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MATD3\E3 |
+| OE1 | Flexibilidad energetica | 12 | 5 | 7 | canonical_50ep | MAAC | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E1 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MAAC | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E1 |
+| OE3 | Costos energeticos | 9 | 1 | 8 | canonical_50ep | MAAC | E1 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E1 |
+| OE1 | Flexibilidad energetica | 12 | 5 | 7 | canonical_50ep | MAAC | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E2 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MAAC | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E2 |
+| OE3 | Costos energeticos | 8 | 1 | 7 | canonical_50ep | MAAC | E2 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E2 |
+| OE1 | Flexibilidad energetica | 12 | 5 | 7 | canonical_50ep | MAAC | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E3 |
+| OE2 | Emisiones de CO2 | 5 | 0 | 5 | canonical_50ep | MAAC | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E3 |
+| OE3 | Costos energeticos | 9 | 1 | 8 | canonical_50ep | MAAC | E3 | 0 | D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E3 |

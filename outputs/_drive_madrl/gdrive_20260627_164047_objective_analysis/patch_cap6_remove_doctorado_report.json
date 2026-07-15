@@ -1,0 +1,2440 @@
+{
+  "run_id": "madrl_v3_20260627_164047",
+  "files": [
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_ANTECEDENTES_1_2_1_UNIFICADO.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_CAPITULO_1_PLAN_TESIS_ACTUALIZADO.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_FIGURA_5_5A_ACTUALIZADA.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_FIGURAS_APA_INTERPRETADAS.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_FORMATO_APA_7.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx",
+      "size_before": 4107352,
+      "replacements": {
+        "paragraphs": 45,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 69,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral\t34",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis\t34"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": false,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": null,
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": false,
+        "banned_hits": [
+          "p65:2.2.3 Dec-POMDP como formalizacion del problema doctoral\t342.2.3 Dec-POMDP como formalizacion del pr"
+        ],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "replacements_second_pass": {
+        "paragraphs": 1,
+        "table_cells": 0,
+        "headers_footers": 0,
+        "total": 1,
+        "samples": [
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral\t342.2.3 Dec-POMDP como formalizacion del problema de tesis\t34",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis\t342.2.3 Dec-POMDP como formalizacion del problema de tesis\t34"
+          }
+        ]
+      },
+      "saved": true,
+      "size_after": 3729625
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_JUSTIFICACION_1_2_2_1_LETRAS.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_NOTAS_TABLAS_JUSTIFICADAS.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_PALABRAS_CLAVE_LIBRERIAS_DATASET.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_PROPUESTA_DETALLADA_ACTUALIZADA.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_RESUMEN_CORREGIDO_SIN_DUPLICADOS.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_RESUMEN_PALABRAS_CLAVE_ACTUALIZADO.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SALTOS_EXPLICITOS_VERIFICADOS.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SALTOS_PAGINA_CAPITULOS.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SALTOS_VISIBLES_EXPLICITOS.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SHAPIRO_ACTUALIZADO.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SIN_ANTECEDENTES_CAPITULO_1.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TABLAS_CON_NOTAS_APA.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TABLAS_FORMATO_APA.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TABLAS_NOTAS_APA_SIN_TEXTO_LETRA.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TEXTO_JUSTIFICADO.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_estructura_skill_objetivos_operacionalizacion.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_marco_teorico_doctoral_sustentado.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_redaccion_doctoral_completa.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_ACTUALIZADA_METODOLOGIA_MADRL.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES_REGEN.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_GDRIVE_50EP_OBJETIVOS_DOCTORAL.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_UNIFICADA_WORDS_DOCTORAL.docx",
+      "size_before": 5158892,
+      "replacements": {
+        "paragraphs": 43,
+        "table_cells": 24,
+        "headers_footers": 0,
+        "total": 67,
+        "samples": [
+          {
+            "before": "Escuela de Posgrado — Doctorado en Ingenieria",
+            "after": "Escuela de Posgrado — Posgrado en Ingenieria"
+          },
+          {
+            "before": "A mi familia, por el apoyo incondicional durante este camino de formación doctoral; a los docentes y colegas de la Unive",
+            "after": "A mi familia, por el apoyo incondicional durante este camino de formación de tesis; a los docentes y colegas de la Unive"
+          },
+          {
+            "before": "El presente estudio doctoral determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s",
+            "after": "El presente estudio de tesis determina el efecto de cuatro algoritmos de aprendizaje por refuerzo profundo multiagente s"
+          },
+          {
+            "before": "This doctoral study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibili",
+            "after": "This study determines the effect of four multi-agent deep reinforcement learning algorithms on energy flexibility, CO2 e"
+          },
+          {
+            "before": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc",
+            "after": "e) Justificacion tecnologica. La investigacion se justifica tecnologicamente porque desarrolla una arquitectura reproduc"
+          },
+          {
+            "before": "El problema doctoral se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;",
+            "after": "El problema de tesis se modela como el Dec-POMDP cooperativo M, definido por la tupla siguiente (Oliehoek y Amato, 2016;"
+          },
+          {
+            "before": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes doctorales (flexibilidad, CO2, costos) medi",
+            "after": "Recompensa cooperativa multiobjetivo. La funcion R materializa los tres ejes de tesises (flexibilidad, CO2, costos) medi"
+          },
+          {
+            "before": "2.2.3 Dec-POMDP como formalizacion del problema doctoral",
+            "after": "2.2.3 Dec-POMDP como formalizacion del problema de tesis"
+          }
+        ]
+      },
+      "cap6_actions": [
+        "6.4:replaced",
+        "6.5:replaced",
+        "WARN_missing:H1. Cobertura HAPPO",
+        "WARN_banned_still_in_cap6"
+      ],
+      "validation": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "heading_6_4": "6.4 Plan para culminar la tesis",
+        "heading_6_5": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "words_6_4": 212,
+        "words_6_5": 145,
+        "filled_6_4": true,
+        "filled_6_5": true,
+        "no_doctorado": true,
+        "banned_hits": [],
+        "has_run_id": true,
+        "placeholder_por_definir_present": true
+      },
+      "saved": true,
+      "size_after": 5161381
+    }
+  ],
+  "summary": {
+    "files_targeted": 36,
+    "files_saved": 36,
+    "total_replacements": 2414,
+    "zero_doctorado_files": [
+      "ABRIR_ESTE_WORD_FINAL_ANTECEDENTES_1_2_1_UNIFICADO.docx",
+      "ABRIR_ESTE_WORD_FINAL_CAPITULO_1_PLAN_TESIS_ACTUALIZADO.docx",
+      "ABRIR_ESTE_WORD_FINAL_FIGURA_5_5A_ACTUALIZADA.docx",
+      "ABRIR_ESTE_WORD_FINAL_FIGURAS_APA_INTERPRETADAS.docx",
+      "ABRIR_ESTE_WORD_FINAL_FORMATO_APA_7.docx",
+      "ABRIR_ESTE_WORD_FINAL_JUSTIFICACION_1_2_2_1_LETRAS.docx",
+      "ABRIR_ESTE_WORD_FINAL_NOTAS_TABLAS_JUSTIFICADAS.docx",
+      "ABRIR_ESTE_WORD_FINAL_PALABRAS_CLAVE_LIBRERIAS_DATASET.docx",
+      "ABRIR_ESTE_WORD_FINAL_PROPUESTA_DETALLADA_ACTUALIZADA.docx",
+      "ABRIR_ESTE_WORD_FINAL_RESUMEN_CORREGIDO_SIN_DUPLICADOS.docx",
+      "ABRIR_ESTE_WORD_FINAL_RESUMEN_PALABRAS_CLAVE_ACTUALIZADO.docx",
+      "ABRIR_ESTE_WORD_FINAL_SALTOS_EXPLICITOS_VERIFICADOS.docx",
+      "ABRIR_ESTE_WORD_FINAL_SALTOS_PAGINA_CAPITULOS.docx",
+      "ABRIR_ESTE_WORD_FINAL_SALTOS_VISIBLES_EXPLICITOS.docx",
+      "ABRIR_ESTE_WORD_FINAL_SHAPIRO_ACTUALIZADO.docx",
+      "ABRIR_ESTE_WORD_FINAL_SIN_ANTECEDENTES_CAPITULO_1.docx",
+      "ABRIR_ESTE_WORD_FINAL_TABLAS_CON_NOTAS_APA.docx",
+      "ABRIR_ESTE_WORD_FINAL_TABLAS_FORMATO_APA.docx",
+      "ABRIR_ESTE_WORD_FINAL_TABLAS_NOTAS_APA_SIN_TEXTO_LETRA.docx",
+      "ABRIR_ESTE_WORD_FINAL_TEXTO_JUSTIFICADO.docx",
+      "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_estructura_skill_objetivos_operacionalizacion.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_marco_teorico_doctoral_sustentado.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_redaccion_doctoral_completa.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_ACTUALIZADA_METODOLOGIA_MADRL.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES_REGEN.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_GDRIVE_50EP_OBJETIVOS_DOCTORAL.docx",
+      "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_UNIFICADA_WORDS_DOCTORAL.docx"
+    ],
+    "still_has_doctorado": [
+      "ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx"
+    ]
+  }
+}

@@ -1099,7 +1099,7 @@ def rebuild_doc(
             lambda tmp: add_expanded_decpomdp_section(tmp, building_compact),
         )
     else:
-        insert_section_before_any(doc, ["2.3 Bases teoricas", "2.4 Bases teoricas"], lambda tmp: add_expanded_decpomdp_section(tmp, building_compact))
+        insert_section_before_any(doc, ["2.1.3 CityLearn", "2.2.4 CityLearn", "2.3 Variables de la investigacion"], lambda tmp: add_expanded_decpomdp_section(tmp, building_compact))
     insert_section_before(doc, "Capitulo 2.", add_cap1_validation)
     insert_section_before(doc, "Capitulo 3.", add_cap2_validation)
     insert_section_before(doc, "Capitulo 4.", add_cap3_validation)

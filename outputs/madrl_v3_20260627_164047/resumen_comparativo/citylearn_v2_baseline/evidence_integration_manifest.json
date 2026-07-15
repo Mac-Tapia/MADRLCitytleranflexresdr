@@ -1,0 +1,8 @@
+{
+  "baseline_dest": "outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline",
+  "estadistica_dest": "outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica",
+  "note": "Integrated Evaluation outputs into canonical resumen_comparativo for FINAL_COMPLETA rebuild",
+  "evidence_source": "outputs\\thesis_objective_evidence",
+  "synced_at": "2026-07-14T20:54:32.1096540-05:00",
+  "comparison_source": "outputs\\comparison_citylearn_v2_vs_v3_madrl"
+}

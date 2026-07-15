@@ -5,6 +5,8 @@
 **Fork:** github.com/Mac-Tapia/CityLearn.git  
 **Fecha:** 2026-06-13  
 
+> **Bibliografía:** las citas de este documento técnico están consolidadas en la lista única `docs/tesis_capitulos/Referencias_APA.md` y en la sección «Referencias bibliográficas» del informe final Word. No se mantienen listas bibliográficas locales por aporte.
+
 ---
 
 ## Resumen
@@ -50,13 +52,7 @@ Las políticas HAPPO/MASAC/MATD3/MAAC aprenden implícitamente a evitar sobrecar
 
 ### Referencias
 
-1. Naumann, M., Schimpe, M., Keil, P., Hesse, H. C., & Jossen, A. (2021). Analysis and modeling of calendar aging of a commercial LiFePO4/graphite cell. *Journal of Energy Storage*, **36**, 102160. https://doi.org/10.1016/j.est.2021.102160
-
-2. Rajagopalan, A., Dhiman, G., Soni, B., Alzahrani, A., & Almutairi, K. (2024). Capacity fade modeling of LiFePO4 battery for grid storage applications. *Applied Energy*, **358**, 122547. https://doi.org/10.1016/j.apenergy.2023.122547
-
-3. Reniers, J. M., Mulder, G., & Howey, D. A. (2022). Improving optimal control of grid-connected lithium-ion batteries through more accurate battery and degradation modelling. *Journal of Power Sources*, **542**, 231776. https://doi.org/10.1016/j.jpowsour.2022.231776
-
-4. Xu, B., Oudalov, A., Ulbig, A., Andersson, G., & Kirschen, D. S. (2021). Modeling of lithium-ion battery degradation for cell life assessment. *IEEE Transactions on Smart Grid*, **12**(3), 2192–2202. https://doi.org/10.1109/TSG.2017.2701083
+Ver lista unificada en `docs/tesis_capitulos/Referencias_APA.md` (sección F — modelado físico y fuentes regulatorias).
 
 ---
 
@@ -99,15 +95,7 @@ El entorno de simulación modela fielmente la caída de generación PV durante l
 
 ### Referencias
 
-5. Tamoor, M., Bhatti, A. R., Butt, A. D., Bhatti, K. L., Miran, S., Hussain, M. I., Abubakar, M., & Imran, M. (2022). Temperature-dependent performance analysis of PV systems in tropical climates. *Energy Reports*, **8**, 5447–5458. https://doi.org/10.1016/j.egyr.2022.04.015
-
-6. Ding, Y., Wang, Y., & Song, Y. (2022). Multi-objective optimization of photovoltaic-battery systems for tropical buildings. *Applied Energy*, **308**, 118323. https://doi.org/10.1016/j.apenergy.2021.118323
-
-7. Wai, R. J., Lin, C. Y., & Jhung, D. W. (2023). Deep reinforcement learning for PV-BESS dispatch in tropical microgrids. *IEEE Access*, **11**, 23451–23467. https://doi.org/10.1109/ACCESS.2023.3254872
-
-8. Antonanzas, J., Osorio, N., Escobar, R., Urraca, R., Martinez-de-Pison, F. J., & Antonanzas-Torres, F. (2021). Review of photovoltaic power forecasting. *Solar Energy*, **136**, 78–111. https://doi.org/10.1016/j.solener.2016.06.069
-
-9. **IEC 61215-1:2021** — Terrestrial photovoltaic (PV) modules — Design qualification and type approval. International Electrotechnical Commission, Geneva.
+Ver lista unificada en `docs/tesis_capitulos/Referencias_APA.md` (sección F — PV, IEC 61215 y clima tropical).
 
 ---
 
@@ -151,13 +139,7 @@ El escenario E3 (optimización de costos) puede configurarse con `billing_window
 
 ### Referencias
 
-10. Dang, T., Zheng, Y., Yao, L., Li, Z., Gong, D., & Zhu, F. (2023). Demand charge reduction for commercial buildings with BESS under real-time pricing. *Applied Energy*, **330**, 120318. https://doi.org/10.1016/j.apenergy.2022.120318
-
-11. Shi, D., Chen, X., Wang, Z., Zhang, X., Lv, Y., Sun, H., & Dinavahi, V. (2022). Multi-agent reinforcement learning for peak demand management in microgrids. *IEEE Transactions on Industrial Electronics*, **69**(12), 13548–13558. https://doi.org/10.1109/TIE.2022.3142389
-
-12. Nweye, K., Sanner, B., & Nagy, Z. (2024). CityLearn: A multi-agent reinforcement learning environment for building energy coordination. *NeurIPS Datasets and Benchmarks*. https://doi.org/10.48550/arXiv.2012.10504
-
-13. **OSINERGMIN (2024)**. Resolución de Consejo Directivo N° 0024-2024-OS/CD. Tarifas de Distribución Eléctrica — MT-3/MT-4 Electro Oriente S.A. Lima: Organismo Supervisor de la Inversión en Energía y Minería.
+Ver lista unificada en `docs/tesis_capitulos/Referencias_APA.md` (sección F — pico de demanda y OSINERGMIN).
 
 ---
 
@@ -208,13 +190,7 @@ El escenario E2 (reducción de emisiones) puede integrar `CarbonIntensityModel` 
 
 ### Referencias
 
-14. Liu, Y., Zhang, Y., & Cheng, Y. (2022). Carbon-aware multi-agent reinforcement learning for building energy management. *Applied Energy*, **321**, 119343. https://doi.org/10.1016/j.apenergy.2022.119343
-
-15. Tranberg, B., Corradi, O., Lajoie, B., Gibon, T., Staffell, I., & Andresen, G. B. (2020). Real-time carbon accounting method for the European electricity markets. *Energy Strategy Reviews*, **26**, 100399. https://doi.org/10.1016/j.esr.2019.100399
-
-16. Cao, J., Yu, T., Guo, H., & Cao, H. (2023). Grid carbon intensity forecasting for building energy management. *IEEE Transactions on Smart Grid*, **14**(4), 2891–2903. https://doi.org/10.1109/TSG.2022.3228223
-
-17. **MINAM (2019)**. Factor de Emisión de la Red Eléctrica Peruana — RAGEI: Redes Eléctricas Aisladas. Ministerio del Ambiente, Dirección General de Cambio Climático, Lima, Perú.
+Ver lista unificada en `docs/tesis_capitulos/Referencias_APA.md` (sección F — intensidad de carbono y MINAM RAGEI).
 
 ---
 

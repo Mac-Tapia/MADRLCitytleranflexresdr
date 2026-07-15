@@ -99,4 +99,4 @@
 ---
 
 ### Estado
-**Lista consolidada (~55 referencias).** Pendiente: completar entradas `[PV]` (≈10) y verificar primeros autores arXiv; cotejar cita en-texto ↔ referencia en Capítulos 1-5.
+**Lista unificada (~80 referencias, APA 7).** Fuente canónica para el informe final Word y los capítulos Markdown. No mantener listas «complementarias» ni bibliografías por anexo: toda cita en-texto debe resolverse en esta sección única. Pendiente: completar entradas `[PV]` y cotejar cita en-texto ↔ referencia en Capítulos 1–6.

@@ -5,6 +5,7 @@ import json
 import math
 import re
 import shutil
+import sys
 import unicodedata
 from copy import deepcopy
 from pathlib import Path
@@ -339,8 +340,6 @@ def infer_heading_level(text: str) -> int | None:
     stripped = text.strip()
     if stripped in {"Resumen", "Abstract", "Indice", "Referencias bibliograficas"}:
         return 1
-    if stripped.startswith("Referencias complementarias"):
-        return 2
     if stripped.startswith(("Capitulo ", "Anexo ")):
         return 1
     match = re.match(r"^\d+(?:\.\d+)+\s+", stripped)
@@ -3107,7 +3106,11 @@ def add_docx_unification_audit(doc: Document) -> None:
     p(doc, "Criterio de no alucinacion documental: no se importaron cifras ni afirmaciones de versiones antiguas cuando contradicen los CSV, timeseries, traces, checkpoints o KPIs de la corrida Drive de 50 episodios. Todo resultado numerico vigente se conserva desde los artefactos auditables del proyecto local y del Drive indicado por el autor.")
 
 
-def append_apa_references(doc: Document) -> None:
+def merge_missing_refs_into_main_section(doc: Document) -> None:
+    """Insert missing APA entries into the single Referencias bibliograficas section."""
+    sys.path.insert(0, str(REPO / "scripts"))
+    from thesis_references_apa import load_all_thesis_references
+
     def ref_key(text: str) -> tuple[str, str] | None:
         match = re.search(r"\(((?:19|20)\d{2}[a-z]?)\)", text)
         if not match:
@@ -3118,40 +3121,27 @@ def append_apa_references(doc: Document) -> None:
         return norm_key(author), year
 
     existing = {key for para in iter_document_paragraphs(doc) if (key := ref_key(para.text))}
-    doc.add_paragraph()
-    cap = doc.add_paragraph()
-    run = cap.add_run("Referencias complementarias verificadas e incorporadas en la revision")
-    run.bold = True
-    refs = [
-        "Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A. C., & Bellemare, M. G. (2021). Deep reinforcement learning at the edge of the statistical precipice. Advances in Neural Information Processing Systems, 34, 29304-29320.",
-        "Chevarria Moscoso, M. (2024). Analisis de la generacion hidroelectrica en la central hidroelectrica de Machupicchu aplicando metodos estocasticos y modelo de optimizacion [Tesis doctoral, Universidad Nacional de Ingenieria]. Repositorio Institucional UNI. http://hdl.handle.net/20.500.14076/28894",
-        "Creswell, J. W., & Creswell, J. D. (2023). Research design: Qualitative, quantitative, and mixed methods approaches (6th ed.). SAGE Publications.",
-        "Fonseca, N., Nweye, K., & Nagy, Z. (2024). EVLearn: A mixed-autonomy multi-agent reinforcement learning environment for electric vehicle charging management. arXiv. https://arxiv.org/abs/2403.07612",
-        "Fujimoto, S., van Hoof, H., & Meger, D. (2018). Addressing function approximation error in actor-critic methods. Proceedings of the 35th International Conference on Machine Learning, 80, 1587-1596.",
-        "Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. Proceedings of the 35th International Conference on Machine Learning, 80, 1861-1870.",
-        "Henderson, P., Islam, R., Bachman, P., Pineau, J., Precup, D., & Meger, D. (2018). Deep reinforcement learning that matters. Proceedings of the AAAI Conference on Artificial Intelligence, 32(1).",
-        "Hernandez-Sampieri, R., & Mendoza, C. P. (2018). Metodologia de la investigacion: Las rutas cuantitativa, cualitativa y mixta. McGraw-Hill Education.",
-        "Iqbal, S., & Sha, F. (2019). Actor-attention-critic for multi-agent reinforcement learning. Proceedings of the 36th International Conference on Machine Learning, 97, 2961-2970.",
-        "Kuba, J. G., Chen, R., Wen, M., Wen, Y., Sun, F., Wang, J., & Yang, Y. (2021). Trust region policy optimisation in multi-agent reinforcement learning. arXiv. https://arxiv.org/abs/2109.11251",
-        "Montgomery, D. C. (2019). Design and analysis of experiments (10th ed.). Wiley.",
-        "Nweye, K., Sankur, M. D., Wu, C., & Nagy, Z. (2024). CityLearn v2: Energy-flexible, resilient, occupant-centric, and carbon-aware management of grid-interactive communities. Journal of Building Performance Simulation, 17(1), 1-20.",
-        "Penalva Sanchez, J. J. (2024). Optimizacion de un sistema fotovoltaico hibrido y la prediccion de la demanda energetica y variables climaticas utilizando la inteligencia artificial [Tesis doctoral, Universidad Nacional de Ingenieria]. Repositorio Institucional UNI. http://hdl.handle.net/20.500.14076/27731",
-        "Rosero Bernal, D. G. (2022). Modelo de un sistema de administracion de energia autonomo operado desde la nube para optimizar la gestion de un grupo de microrredes [Tesis doctoral, Universidad Distrital Francisco Jose de Caldas]. Dialnet. https://dialnet.unirioja.es/servlet/tesis?codigo=347742",
-        "Shadish, W. R., Cook, T. D., & Campbell, D. T. (2002). Experimental and quasi-experimental designs for generalized causal inference. Houghton Mifflin.",
-        "Vazquez-Canteli, J. R., Dey, S., Henze, G., & Nagy, Z. (2020). CityLearn: Standardizing research in multi-agent reinforcement learning for demand response and urban energy management. arXiv. https://arxiv.org/abs/2012.10504",
-    ]
-    added = 0
-    for ref in refs:
+    anchor = None
+    for para in iter_document_paragraphs(doc):
+        if (para.text or "").strip() == "Referencias bibliograficas":
+            anchor = para
+            break
+    if anchor is None:
+        return
+
+    for ref in load_all_thesis_references():
         key = ref_key(ref)
-        if key in existing:
+        if key is None or key in existing:
             continue
-        para = doc.add_paragraph(ref)
-        para.paragraph_format.left_indent = Inches(0.3)
-        para.paragraph_format.first_line_indent = Inches(-0.3)
+        para = anchor.insert_paragraph_after(ref)
+        para.paragraph_format.left_indent = Inches(0.5)
+        para.paragraph_format.first_line_indent = Inches(-0.5)
         existing.add(key)
-        added += 1
-    if added == 0:
-        cap._element.getparent().remove(cap._element)
+        anchor = para
+
+
+# Legacy name kept for grep compatibility; no secondary bibliography is created.
+append_apa_references = merge_missing_refs_into_main_section
 
 
 def rebuild_doc(
@@ -3232,7 +3222,7 @@ def rebuild_doc(
     add_cap5(doc, detail, treatment, building_compact, eq_summary, figures, convergence, kpi_ranking, kpi_catalog)
     for el in after:
         append_before_sectpr(doc, el)
-    insert_section_before_any(doc, ["Anexo A.", "Anexo A"], append_apa_references)
+    insert_section_before_any(doc, ["Anexo A.", "Anexo A"], merge_missing_refs_into_main_section)
     normalize_apa_citation_text(doc)
     remove_section_to_end_if_exists(doc, "Anexo C.")
     add_docx_unification_audit(doc)

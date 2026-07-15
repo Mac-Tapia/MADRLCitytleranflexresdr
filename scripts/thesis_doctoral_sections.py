@@ -2165,11 +2165,19 @@ def verify_doctoral_docx(path: Path) -> dict:
 
     in_refs = False
     n_ref_paras = 0
+    ref_heading_count = 0
+    complementaria_headings = 0
     for para in doc.paragraphs:
         t = (para.text or "").strip()
-        if "Referencias bibliograficas" in t:
+        style = para.style.name if para.style else ""
+        if "referencias bibliograficas" in t.lower() and (
+            style.startswith("Heading") or t.lower() == "referencias bibliograficas"
+        ):
             in_refs = True
+            ref_heading_count += 1
             continue
+        if in_refs and "referencias complementarias" in t.lower():
+            complementaria_headings += 1
         if in_refs and re.match(r"^[A-Za-z]", t) and re.search(r"\(\d{4}", t):
             n_ref_paras += 1
 
@@ -2182,6 +2190,7 @@ def verify_doctoral_docx(path: Path) -> dict:
         "references_count": n_ref_paras,
         "references_expected": ref_stats["total_unique"],
         "references_ok": n_ref_paras >= required_refs_min,
+        "references_single_list": ref_heading_count == 1 and complementaria_headings == 0,
         "has_matd3_selection": "MATD3" in text and ("0.6667" in text or "0,6667" in text),
         "has_pe_answers": "Respuesta a PE.1" in text and "Respuesta a PE.2" in text and "Respuesta a PE.3" in text,
         "has_multiobjetivo": "multiobjetivo" in text.lower() or "185" in text,
@@ -2192,6 +2201,8 @@ def verify_doctoral_docx(path: Path) -> dict:
             and n_tables >= required_tables_min
             and n_images >= required_figures_min
             and n_ref_paras >= required_refs_min
+            and ref_heading_count == 1
+            and complementaria_headings == 0
             and "Respuesta a PE.1" in text
         ),
     }

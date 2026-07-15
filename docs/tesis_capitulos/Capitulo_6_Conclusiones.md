@@ -1,7 +1,7 @@
 # Capítulo 6. Conclusiones
 
 > **Documento de tesis — alineado a la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`).**  
-> Validación 2026-07-15: `docs/VALIDACION_SECCIONES_6_4_6_5_2026-07-15.md`. No inventar hallazgos no soportados por artefactos.
+> Validación 2026-07-15: `docs/VALIDACION_SECCIONES_6_3_6_4_6_5_2026-07-15.md`. No inventar hallazgos no soportados por artefactos.
 
 ---
 
@@ -31,12 +31,17 @@
 
 ---
 
-## 6.3 Trabajo futuro (no bloqueante para cierre del manuscrito)
+## 6.3 Trabajo pendiente
 
-- Campaña **multi-semilla** (≥3 seeds) con intervalos de confianza.
-- **HPO con Optuna** y contrastes **PPO / SAC / A2C** (fuera de evidencia canónica).
-- Sensibilidad de **pesos multiobjetivo** y frontera de Pareto ampliada.
-- Re-evaluación técnica HAPPO si se corrige el error de evaluación post-entrenamiento.
+El trabajo pendiente se declara con honestidad metodologica respecto de la corrida canonica madrl_v3_20260627_164047 (factorial 4×3: HAPPO, MAAC, MASAC y MATD3 × E1–E3). No se imputan episodios ni KPIs inexistentes; lo que sigue son huecos reales del pipeline y del manuscrito que deben cerrarse antes de la version de sustentacion.
+
+Pendientes de evidencia empirica (bloqueantes Cap. 5 / Anexo A): (1) homogeneizar HAPPO a evaluate_v2/core_kpis y artefactos building_* comparables con MAAC/MASAC/MATD3 (hoy HAPPO aporta trazas y series distritales —49 episodios reales por escenario— pero queda incompleto en KPIs de edificio cuando faltan CSV locales); (2) cerrar checkpoint_manifest.json de HAPPO en la corrida canonica (conteo = 0 en Figura 5.1 / Anexo A.4 frente a MAAC 52, MASAC 12 y MATD3 34 archivos listados); (3) mantener la Figura 5.8e con fuentes mixtas auditadas (action_l2 desde full_data/trace.csv; EV/BESS desde building_behavior_summary), sin reutilizar columnas muertas ev_charge_kwh / electrical_storage_soc (=0 en trace.csv); (4) auditar celdas cero en Anexo A.4 y demas tablas/figuras para distinguir cero legitimo vs fallo de lectura.
+
+Pendientes de analisis y robustez (no bloquean la lectura descriptiva 50 ep, pero si afirmaciones de generalizacion): corrida multi-semilla (≥3, ideal ≥5) con post-hoc alineado a la Tabla 3.4; frontera de Pareto por eje OE.1–OE.3 frente a baseline CityLearn/RBC; Optuna (TPE) por backend solo si se declara optimizacion hiperrametricas; contraste SB3 (PPO/SAC/A2C) bajo el mismo schema de Iquitos como extension opcional.
+
+Pendientes editoriales e institucionales: pasada ortografica RAE (tildes, tipografia, concordancia) en Cap. 1–6; verificar citas marcadas [PV] y actualizar indices Word (F9); completar metadatos de asesor / [por definir] unicamente con dato real del programa (no inventar nombres); sincronizar ABRIR_ESTE y FINAL_COMPLETA sin regenerar masivamente el cuerpo; PDF final y paquete de reproducibilidad (scripts + CSV + manifiestos).
+
+**Estado de cierre documental (2026-07-15).** (3) Figura 5.8e cerrada con fuentes mixtas auditadas; (4) ceros de Anexo A.4 auditados (HAPPO = 0 legítimo por manifiesto ausente, sin inventar checkpoints). (1)–(2) quedan declarados sin inventar CSV/KPIs/manifiestos inexistentes: HAPPO no aporta `building_behavior_summary`/`core_kpis` ni `.pt` reales en `madrl_v3_20260627_164047`. Multi-semilla, Optuna y SB3 → trabajo futuro (H2/H5). Editoriales F9/PDF/asesor → H7 institucional.
 
 ---
 
@@ -48,15 +53,15 @@ El plan de culminación fue ejecutado diferenciando los hitos indispensables par
 
 | Hito | Implementación realizada | Estado y evidencia de cierre |
 |------|--------------------------|------------------------------|
-| **H1. Cobertura HAPPO** | Corpus definitivo de **49 episodios por escenario** para HAPPO; no se imputó el episodio ausente. Sincronizado en metodología, resultados, discusión, conclusiones y limitaciones. MAAC, MASAC y MATD3 conservan 50 episodios por escenario (**597 filas episódicas**). | **Ejecutado.** Evidencia: `gdrive_episode_kpis_used_for_statistics.csv` (597 filas; HAPPO n=49; MAAC/MASAC/MATD3 n=50). |
-| **H2. Robustez multi-semilla** | Inferencia delimitada a **una sola semilla** de la corrida canónica. No se afirma generalización universal. | **Implementado como delimitación metodológica.** No ejecutado experimentalmente; no bloquea el cierre del manuscrito. |
-| **H3. Inferencia estadística** | Shapiro–Wilk, Kruskal–Wallis, Mann–Whitney con **corrección Holm**, tamaños de efecto; Capítulos 5 y 6 sincronizados. | **Ejecutado.** OE.1: p = 1,305×10⁻⁸; OE.2: p = 0,043866; OE.3: p = 0,251421 (`gdrive_objective_aligned_statistics.csv`; pares Holm: `gdrive_objective_pairwise_mannwhitney_holm.csv`). |
-| **H4. Pareto y baseline** | Lectura multiobjetivo sin ganador universal; contraste CityLearn v2 / RBC / baseline. Discusión diferencia medias episódicas, muestra inferencial completa y KPI anual final. | **Ejecutado en Cap. 5.** Sensibilidad de pesos como trabajo futuro. |
-| **H5. HPO y algoritmos adicionales** | Optuna y contrastes PPO/SAC/A2C **no** forman parte de la evidencia canónica. | **Delimitado → trabajo futuro.** |
-| **H6. Cierre documental** | Caps. 2, 4, 5 y 6 reforzados; discusión 5.10; referencias depuradas; tablas APA 7; campos e índices Word al abrir (F9). | **Ejecutado.** Manuscrito integrado listo para revisión institucional. |
-| **H7. Entrega y sustentación** | Secuencia: índices F9, revisión visual PDF, validación del asesor, registro institucional, preparación de defensa. | **Pendiente de gestión institucional.** |
+| **H1. Cobertura HAPPO** | Se adoptó como corpus definitivo la cobertura materializada de 49 episodios por escenario para HAPPO. No se imputó el episodio ausente y se sincronizó esta condición en metodología, resultados, discusión, conclusiones y limitaciones. MAAC, MASAC y MATD3 conservan 50 episodios por escenario (597 filas episódicas en total). | **Ejecutado.** Evidencia: `gdrive_episode_kpis_used_for_statistics.csv` (597 filas; HAPPO n=49; MAAC/MASAC/MATD3 n=50). |
+| **H2. Robustez multi-semilla** | La inferencia se delimitó a una sola semilla de la corrida canónica. No se afirma generalización universal; la validación multi-semilla queda como trabajo futuro. | **Implementado como delimitación metodológica.** No ejecutado experimentalmente; no bloquea el cierre del manuscrito. |
+| **H3. Inferencia estadística** | Se consolidaron Shapiro–Wilk, Kruskal–Wallis, Mann–Whitney con Holm y tamaños de efecto; Capítulos 5 y 6 sincronizados. | **Ejecutado.** OE.1: p = 1,305×10⁻⁸; OE.2: p = 0,043866; OE.3: p = 0,251421 (`gdrive_objective_aligned_statistics.csv`). |
+| **H4. Pareto y baseline** | Se consolidó la lectura multiobjetivo sin ganador universal, con contraste CityLearn v2/RBC/baseline. La discusión diferencia medias episódicas, muestra inferencial completa y KPI anual final. | **Ejecutado en Cap. 5.** Sensibilidad de pesos como trabajo futuro. |
+| **H5. HPO y algoritmos adicionales** | Optuna y contrastes PPO/SAC/A2C no forman parte de la evidencia canónica; se evita sesgo retrospectivo. | **Delimitado → trabajo futuro.** No requerido para los objetivos actuales. |
+| **H6. Cierre documental** | Se reforzaron Cap. 2, 4, 5 y 6; discusión 5.10; referencias depuradas; tablas APA 7; campos e índices Word al abrir. | **Ejecutado.** |
+| **H7. Entrega y sustentación** | Secuencia final: índices F9, revisión visual PDF, validación del asesor, registro institucional y preparación de defensa. | **Pendiente de gestión institucional.** |
 
-*Nota.* «Ejecutado» abarca cierre documental, analítico o de delimitación metodológica sobre `madrl_v3_20260627_164047`. Multi-semilla, Optuna y algoritmos adicionales quedan como trabajo futuro.
+*Nota.* Estado al 15 de julio de 2026. «Ejecutado» abarca cierre documental, analítico o de delimitación metodológica sobre `madrl_v3_20260627_164047`. Multi-semilla, Optuna y algoritmos adicionales quedan como trabajo futuro y no sustituyen la evidencia canónica.
 
 Con **H1, H3, H4 y H6 ejecutados**, y con **H2 y H5 delimitados** como trabajo futuro, el manuscrito queda **culminado para presentación académica** bajo las restricciones declaradas (semilla única; HAPPO con 49 episodios por escenario). Solo **H7** permanece pendiente para el cierre formal institucional.
 
@@ -64,18 +69,18 @@ Con **H1, H3, H4 y H6 ejecutados**, y con **H2 y H5 delimitados** como trabajo f
 
 ## 6.5 Criterios de cierre de la tesis y control de calidad final
 
-Las conclusiones se consideran suficientemente sustentadas para responder las preguntas específicas desde la corrida Drive analizada. Tras el plan de la sección 6.4, el control de calidad final se centra en campos e índices Word, legibilidad PDF, correspondencia vertical entre PE–OE–hipótesis–resultados–conclusiones y aprobación del asesor.
+Las conclusiones se consideran suficientemente sustentadas para responder las preguntas específicas desde la corrida Drive analizada. Tras el plan de la sección 6.4, el control de calidad final se centra en campos e índices Word, legibilidad PDF, correspondencia vertical entre PE–OE–hipótesis–resultados–conclusiones y aprobación del asesor. La extensión multi-semilla se mantiene como recomendación de trabajo futuro, no como resultado de esta tesis.
 
 **Tabla 6.2. Criterios de cierre y control de calidad final.**
 
 | Actividad | Propósito | Criterio de cierre |
 |-----------|-----------|-------------------|
 | **Revisión APA integral** | Alinear citas, tablas, figuras y referencias al formato APA 7. | Todas las citas tienen entrada bibliográfica y viceversa; captions coherentes. |
-| **Revisión multi-semilla opcional** | Mejorar validez externa de la comparación MADRL. | Réplicas documentadas **o** limitación de semilla única explicitada (**opción adoptada**). |
+| **Revisión multi-semilla opcional** | Mejorar la validez externa de la comparación MADRL. | Réplicas documentadas o limitación de semilla única explicitada (opción adoptada). |
 | **Auditoría de figuras y tablas** | Confirmar legibilidad y correspondencia con CSV/Drive canónicos. | Cada figura/tabla apunta a fuente verificable de `madrl_v3_20260627_164047`. |
 | **Revisión de coherencia vertical** | Asegurar que PE, OE, hipótesis, resultados y conclusiones respondan lo mismo. | Matriz problema–objetivo–resultado–conclusión sin vacíos. |
 
-*Nota.* Los criterios de calidad documental no sustituyen la evidencia experimental ya auditada. El cierre formal institucional (registro y sustentación) corresponde al hito **H7**.
+*Nota.* Los criterios C de calidad documental no sustituyen la evidencia experimental ya auditada. El cierre formal institucional (registro y sustentación) corresponde al hito **H7**.
 
 ---
 

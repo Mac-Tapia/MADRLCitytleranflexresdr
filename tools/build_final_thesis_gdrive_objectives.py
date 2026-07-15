@@ -10,6 +10,7 @@ from copy import deepcopy
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from scipy import stats
 from docx import Document
@@ -1626,19 +1627,27 @@ def build_figure_interpretations(
                 "Los paneles muestran valores normalizados para comparar forma temporal, pero las anotaciones conservan totales reales extraidos de timeseries.csv."
             )
 
-    if not traces.empty:
-        cols = [c for c in ["action_l2", "ev_charge_kwh", "electrical_storage_soc"] if c in traces.columns]
-        if cols:
-            agg = traces.groupby("algorithm")[cols].mean(numeric_only=True)
-            parts = []
-            for col in cols:
-                best = agg[col].sort_values(ascending=False).iloc[0]
-                parts.append(f"{col}: {agg[col].idxmax()}={fmt(best, 3)}")
-            FIGURE_INTERPRETATIONS["trace_policy_heatmaps"] = (
-                f"La figura sintetiza {len(traces)} registros de trace.csv mediante promedios por algoritmo y escenario. "
-                f"Los mayores valores medios observados son {', '.join(parts)}. "
-                "Esta lectura aproxima la politica ejecutada por los agentes y permite relacionar acciones con KPIs, sin inferir decisiones no registradas."
-            )
+    if not traces.empty and "action_l2" in traces.columns:
+        agg = traces.groupby("algorithm")[["action_l2"]].mean(numeric_only=True)
+        best_a = agg["action_l2"].sort_values(ascending=False).iloc[0]
+        best_algo = agg["action_l2"].idxmax()
+        behav_path = TABLE_DIR / "gdrive_building_behavior_summary_all.csv"
+        extra = ""
+        if behav_path.exists():
+            behav = pd.read_csv(behav_path)
+            ev_cols = [c for c in ("ev_charge_total_kwh", "battery_throughput_total_kwh") if c in behav.columns]
+            if ev_cols:
+                g = behav.groupby("algorithm")[ev_cols].mean(numeric_only=True)
+                bits = []
+                for c in ev_cols:
+                    bits.append(f"{c}: {g[c].idxmax()}={fmt(g[c].max(), 1)}")
+                extra = " EV/BESS desde building_behavior_summary (" + "; ".join(bits) + ")."
+        FIGURE_INTERPRETATIONS["trace_policy_heatmaps"] = (
+            f"La figura usa action_l2 de trace.csv ({len(traces)} registros; p. ej. {best_algo}={fmt(best_a, 3)}) "
+            "y paneles EV/BESS desde building_behavior_summary, no desde columnas muertas "
+            f"ev_charge_kwh/electrical_storage_soc de trace.{extra} "
+            "Cada panel tiene escala propia (colorbar independiente)."
+        )
 
     if not episodes.empty:
         reward_best = episodes.groupby(["algorithm", "scenario"])["reward_mean_average"].mean(numeric_only=True).sort_values(ascending=False).iloc[0]
@@ -1977,19 +1986,43 @@ def make_figures(
             plt.close(fig)
             paths[f"final_timeseries_{scenario}"] = out
 
-    if not traces.empty:
-        agg = traces.groupby(["algorithm", "scenario"])[["action_l2", "action_mean", "ev_charge_kwh", "ev_v2g_export_kwh", "electrical_storage_soc"]].mean(numeric_only=True).reset_index()
-        fig, axes = plt.subplots(1, 3, figsize=(13, 4))
-        for ax, col, title in zip(axes, ["action_l2", "ev_charge_kwh", "electrical_storage_soc"], ["Intensidad de accion", "Carga EV media", "SOC BESS medio"]):
-            pivot = agg.pivot(index="algorithm", columns="scenario", values=col).reindex(index=ALGOS, columns=SCENARIOS)
-            img = ax.imshow(pivot.values, cmap="plasma")
+    # Figura 5.8e: action_l2 desde trace; EV/BESS desde building_behavior_summary.
+    # No usar ev_charge_kwh / electrical_storage_soc de trace.csv (columnas muertas=0).
+    # Colorbar independiente por panel.
+    if not traces.empty and "action_l2" in traces.columns:
+        agg = traces.groupby(["algorithm", "scenario"])[["action_l2"]].mean(numeric_only=True).reset_index()
+        behav_path = TABLE_DIR / "gdrive_building_behavior_summary_all.csv"
+        behav = pd.read_csv(behav_path) if behav_path.exists() else pd.DataFrame()
+        fig, axes = plt.subplots(1, 3, figsize=(13.4, 4.3))
+        panels = [("action_l2", agg, "Intensidad de accion (mean action_l2)")]
+        if not behav.empty:
+            metric_cols = [c for c in ("ev_charge_total_kwh", "battery_throughput_total_kwh") if c in behav.columns]
+            g = behav.groupby(["algorithm", "scenario"], as_index=False)[metric_cols].mean(numeric_only=True)
+            if "ev_charge_total_kwh" in g.columns:
+                panels.append(("ev_charge_total_kwh", g, "Carga EV media (behavior summary, kWh)"))
+            if "battery_throughput_total_kwh" in g.columns:
+                panels.append(("battery_throughput_total_kwh", g, "Throughput BESS (behavior summary, kWh)"))
+        while len(panels) < 3:
+            panels.append(panels[0])
+        for ax, (col, dfp, title) in zip(axes, panels[:3]):
+            pivot = dfp.pivot(index="algorithm", columns="scenario", values=col).reindex(index=ALGOS, columns=SCENARIOS)
+            vals = pivot.values.astype(float)
+            finite = vals[np.isfinite(vals)]
+            vmin, vmax = (float(np.nanmin(finite)), float(np.nanmax(finite))) if finite.size else (0.0, 1.0)
+            if abs(vmax - vmin) < 1e-12:
+                vmax = vmin + 1e-6
+            img = ax.imshow(vals, cmap="plasma", vmin=vmin, vmax=vmax, aspect="auto")
             ax.set_xticks(range(len(SCENARIOS)), SCENARIOS)
             ax.set_yticks(range(len(ALGOS)), ALGOS)
-            ax.set_title(title)
+            ax.set_title(title, fontsize=9)
             for i in range(pivot.shape[0]):
                 for j in range(pivot.shape[1]):
-                    ax.text(j, i, f"{pivot.iloc[i,j]:.2f}", ha="center", va="center", color="white", fontsize=8)
-        fig.colorbar(img, ax=axes.ravel().tolist(), shrink=0.75)
+                    v = vals[i, j]
+                    lab = "NA" if not np.isfinite(v) else (f"{v:.2f}" if abs(v) < 100 else f"{v:.0f}")
+                    ax.text(j, i, lab, ha="center", va="center", color="white", fontsize=7)
+            fig.colorbar(img, ax=ax, fraction=0.046, pad=0.04)
+        fig.suptitle("Figura 5.8e — politicas/acciones (fuentes mixtas auditadas)", fontsize=11)
+        fig.tight_layout()
         out = FIG_DIR / "trace_policy_action_heatmaps.png"
         fig.savefig(out, dpi=180, bbox_inches="tight")
         plt.close(fig)
@@ -2770,7 +2803,7 @@ def add_cap5(
         ("building_carbon_heatmap", "Figura 5.8b. CO2 control por edificio y algoritmo."),
         ("building_cost_heatmap", "Figura 5.8c. Costo control por edificio y algoritmo."),
         ("equipment_class_heatmap", "Figura 5.8d. Equipamiento controlado por edificio y clase."),
-        ("trace_policy_heatmaps", "Figura 5.8e. Politicas y acciones medias desde trace.csv."),
+        ("trace_policy_heatmaps", "Figura 5.8e. Politicas y acciones medias (action_l2 desde trace.csv; EV/BESS desde building_behavior_summary)."),
     ]:
         if key in figures:
             add_picture(doc, caption, figures[key])

@@ -103,87 +103,85 @@ def find_behavior_sources() -> list[Path]:
 
 
 def load_building_cost_universe() -> tuple[pd.DataFrame, dict]:
-    """Load electricity_cost_delta for complete buildings from canonical mirrors."""
-    meta = {"sources": [], "definition": "electricity_cost_delta_eur = control - baseline; lower (more negative) = greater reduction"}
-    frames = []
+    """Load electricity_cost_delta for COMPLETE buildings from canonical Drive mirror.
 
-    # 1) Consolidated files first
-    cons = TABLE_DIR / "gdrive_building_behavior_summary_all.csv"
-    if cons.exists():
-        df = pd.read_csv(cons)
-        meta["sources"].append(str(cons.relative_to(REPO)).replace("\\", "/"))
-        frames.append(("consolidated", cons, df))
-
-    compact = TABLE_DIR / "gdrive_building_kpi_compact.csv"
-    if compact.exists():
-        df = pd.read_csv(compact)
-        meta["sources"].append(str(compact.relative_to(REPO)).replace("\\", "/"))
-        frames.append(("compact", compact, df))
-
-    # 2) Per-treatment from full_data (Drive mirror of canonical)
+    Definition of «edificios completos»: treatments with a real
+    building_behavior_summary.csv under outputs/_drive_madrl/full_data
+    (madrl_v3_20260627_164047). HAPPO has no such file → excluded from A.2.
+    Do NOT use gdrive_building_behavior_summary_all.csv HAPPO rows (not backed
+    by per-treatment full_data files).
+    """
+    meta = {
+        "sources": [],
+        "definition": (
+            "electricity_cost_delta_eur = control - baseline; lower (more negative) = greater reduction; "
+            "universe = MAAC/MASAC/MATD3 × E1/E2/E3 with real building_behavior_summary.csv"
+        ),
+        "excluded": [],
+    }
+    parts = []
     for algo in ALGOS:
         for scen in SCENARIOS:
-            for rel in [
-                Path(algo) / scen / "data" / "building_behavior_summary.csv",
-                Path(algo) / scen / "building_behavior_summary.csv",
-            ]:
-                p = FULL / rel
-                if p.exists():
-                    df = pd.read_csv(p)
-                    df["algorithm"] = algo
-                    df["scenario"] = scen
-                    frames.append((f"{algo}-{scen}", p, df))
-                    meta["sources"].append(str(p.relative_to(REPO)).replace("\\", "/"))
-                    break
+            p = FULL / algo / scen / "data" / "building_behavior_summary.csv"
+            if not p.exists():
+                meta["excluded"].append(f"{algo}-{scen}: missing {p.as_posix()}")
+                continue
+            d = pd.read_csv(p)
+            d["algorithm"] = algo
+            d["scenario"] = scen
+            keep = [
+                c
+                for c in [
+                    "algorithm",
+                    "scenario",
+                    "agent",
+                    "electricity_cost_delta_eur",
+                    "electricity_cost_control_eur",
+                    "electricity_cost_baseline_eur",
+                    "carbon_emissions_delta_kgco2",
+                    "grid_import_delta_kwh",
+                    "ev_charge_total_kwh",
+                ]
+                if c in d.columns or c in ("algorithm", "scenario")
+            ]
+            # ensure required
+            for req in ("electricity_cost_delta_eur", "agent"):
+                if req not in d.columns:
+                    raise ValueError(f"{p} missing column {req}")
+            out = d.copy()
+            out["algorithm"] = algo
+            out["scenario"] = scen
+            cols = [
+                c
+                for c in [
+                    "algorithm",
+                    "scenario",
+                    "agent",
+                    "electricity_cost_delta_eur",
+                    "electricity_cost_control_eur",
+                    "electricity_cost_baseline_eur",
+                    "carbon_emissions_delta_kgco2",
+                    "grid_import_delta_kwh",
+                    "ev_charge_total_kwh",
+                ]
+                if c in out.columns
+            ]
+            out = out[cols].copy()
+            out["source_file"] = str(p.relative_to(REPO)).replace("\\", "/")
+            parts.append(out)
+            meta["sources"].append(str(p.relative_to(REPO)).replace("\\", "/"))
 
-    if not frames:
-        raise FileNotFoundError("No building_behavior_summary sources found for Tabla A.2")
-
-    # Prefer per-treatment full_data if available; else consolidated
-    treatment_frames = [f for f in frames if f[0] not in ("consolidated", "compact")]
-    use = treatment_frames if treatment_frames else frames[:1]
-    parts = []
-    for tag, path, df in use:
-        d = df.copy()
-        # normalize columns
-        colmap = {}
-        for c in d.columns:
-            cl = c.lower()
-            if cl in ("algorithm", "algo"):
-                colmap[c] = "algorithm"
-            elif cl in ("scenario", "scen", "reward_scenario"):
-                colmap[c] = "scenario"
-            elif cl in ("agent", "building", "building_id", "building_name"):
-                colmap[c] = "agent"
-            elif "electricity_cost_delta" in cl:
-                colmap[c] = "electricity_cost_delta_eur"
-            elif cl in ("electricity_cost_control_eur", "electricity_cost_control"):
-                colmap[c] = "electricity_cost_control_eur"
-            elif cl in ("electricity_cost_baseline_eur", "electricity_cost_baseline"):
-                colmap[c] = "electricity_cost_baseline_eur"
-        d = d.rename(columns=colmap)
-        if "algorithm" not in d.columns or "scenario" not in d.columns:
-            # try from path tag
-            if "-" in tag and tag not in ("consolidated", "compact"):
-                d["algorithm"] = tag.split("-")[0]
-                d["scenario"] = tag.split("-")[1]
-        keep = [c for c in ["algorithm", "scenario", "agent", "electricity_cost_delta_eur",
-                            "electricity_cost_control_eur", "electricity_cost_baseline_eur"] if c in d.columns]
-        d = d[keep].copy()
-        d["source_file"] = str(path.relative_to(REPO)).replace("\\", "/")
-        parts.append(d)
+    if not parts:
+        raise FileNotFoundError("No complete-building building_behavior_summary.csv under full_data")
 
     all_df = pd.concat(parts, ignore_index=True)
-    # Project MADRL only
-    all_df = all_df[all_df["algorithm"].isin(ALGOS) & all_df["scenario"].isin(SCENARIOS)].copy()
     all_df["electricity_cost_delta_eur"] = pd.to_numeric(all_df["electricity_cost_delta_eur"], errors="coerce")
-    # Complete buildings: non-null delta and identified agent
     all_df = all_df.dropna(subset=["electricity_cost_delta_eur", "agent"])
     all_df["agent"] = all_df["agent"].astype(str)
-    # Deduplicate by treatment-building keeping first (prefer full_data order)
     all_df = all_df.drop_duplicates(subset=["algorithm", "scenario", "agent"], keep="first")
     meta["n_complete_rows"] = int(len(all_df))
     meta["n_treatments"] = int(all_df.groupby(["algorithm", "scenario"]).ngroups)
+    meta["algorithms_in_ranking"] = sorted(all_df["algorithm"].unique().tolist())
     return all_df, meta
 
 
@@ -247,10 +245,29 @@ def extract_word_table_a2(doc_path: Path) -> tuple[list[list[str]], int | None]:
     return rows, found_ti
 
 
+def _parse_num(s: str) -> float:
+    gd = re.sub(r"[^0-9,.\-eE+]", "", (s or "").strip())
+    if not gd or gd in ("-", ".", ","):
+        return float("nan")
+    # scientific
+    if "e" in gd.lower():
+        try:
+            return float(gd.replace(",", "."))
+        except ValueError:
+            return float("nan")
+    if gd.count(",") == 1 and gd.count(".") >= 1:
+        gd = gd.replace(".", "").replace(",", ".")
+    elif gd.count(",") == 1 and gd.count(".") == 0:
+        gd = gd.replace(",", ".")
+    try:
+        return float(gd)
+    except ValueError:
+        return float("nan")
+
+
 def compare_tables(word_rows: list[list[str]], top: pd.DataFrame) -> dict:
-    # Heuristic: identify columns
     if not word_rows:
-        return {"verdict": "NO TRAZABLE", "reason": "Tabla A.2 no encontrada en Word", "matches": 0, "rows": []}
+        return {"verdict_preliminary": "NO TRAZABLE", "reason": "Tabla A.2 no encontrada", "matches": 0, "rows": []}
 
     header = [h.lower() for h in word_rows[0]]
     data = word_rows[1:]
@@ -264,7 +281,13 @@ def compare_tables(word_rows: list[list[str]], top: pd.DataFrame) -> dict:
     c_algo = find_col(["algoritmo", "algorithm", "algo"])
     c_scen = find_col(["escenario", "scenario", "esc."])
     c_bldg = find_col(["edificio", "building", "agent", "agente"])
-    c_delta = find_col(["delta", "reduc", "electricity_cost_delta", "costo"])
+    c_delta = find_col(["electricity_cost_delta", "delta costo"])
+    if c_delta is None:
+        # fall back: first column containing delta
+        c_delta = find_col(["delta"])
+    c_co2 = find_col(["carbon_emissions_delta", "carbon"])
+    c_grid = find_col(["grid_import_delta", "grid_import"])
+    c_ev = find_col(["ev_charge"])
 
     comparisons = []
     n_match = 0
@@ -283,22 +306,28 @@ def compare_tables(word_rows: list[list[str]], top: pd.DataFrame) -> dict:
         got_scen = wrow[c_scen] if c_scen is not None and c_scen < len(wrow) else ""
         got_agent = wrow[c_bldg] if c_bldg is not None and c_bldg < len(wrow) else ""
         got_delta_s = wrow[c_delta] if c_delta is not None and c_delta < len(wrow) else ""
-        # parse delta with european/US formats
-        gd = re.sub(r"[^0-9,.\-]", "", got_delta_s)
-        if gd.count(",") == 1 and gd.count(".") >= 1:
-            gd = gd.replace(".", "").replace(",", ".")
-        elif gd.count(",") == 1 and gd.count(".") == 0:
-            gd = gd.replace(",", ".")
-        try:
-            got_delta = float(gd) if gd not in ("", "-", ".") else float("nan")
-        except ValueError:
-            got_delta = float("nan")
+        got_delta = _parse_num(got_delta_s)
 
-        algo_ok = exp_algo.lower() in got_algo.lower() or got_algo.lower() in exp_algo.lower()
-        scen_ok = exp_scen.lower() in got_scen.lower() or got_scen.upper() == exp_scen
-        agent_ok = exp_agent.lower() in got_agent.lower() or got_agent.lower() in exp_agent.lower()
-        delta_ok = (not math.isnan(got_delta)) and abs(got_delta - exp_delta) <= max(1.0, abs(exp_delta) * 0.01)
-        ok = algo_ok and scen_ok and agent_ok and delta_ok
+        algo_ok = exp_algo.lower() == got_algo.strip().lower()
+        scen_ok = exp_scen.lower() == got_scen.strip().lower()
+        agent_ok = exp_agent.lower() == got_agent.strip().lower()
+        # Word stores rounded values (e.g. -3532); tolerate 1% or 5 absolute
+        delta_ok = (not math.isnan(got_delta)) and abs(got_delta - exp_delta) <= max(5.0, abs(exp_delta) * 0.02)
+
+        extras = {}
+        for key, col_i, exp_key in [
+            ("carbon", c_co2, "carbon_emissions_delta_kgco2"),
+            ("grid", c_grid, "grid_import_delta_kwh"),
+            ("ev", c_ev, "ev_charge_total_kwh"),
+        ]:
+            if col_i is None or exp_key not in expected:
+                continue
+            got_v = _parse_num(wrow[col_i] if col_i < len(wrow) else "")
+            exp_v = float(expected[exp_key]) if pd.notna(expected[exp_key]) else float("nan")
+            ok_extra = (not math.isnan(got_v)) and (not math.isnan(exp_v)) and abs(got_v - exp_v) <= max(5.0, abs(exp_v) * 0.02)
+            extras[key] = {"ok": ok_extra, "got": got_v, "exp": exp_v}
+
+        ok = algo_ok and scen_ok and agent_ok and delta_ok and all(v["ok"] for v in extras.values())
         if ok:
             n_match += 1
         entry.update(
@@ -312,16 +341,19 @@ def compare_tables(word_rows: list[list[str]], top: pd.DataFrame) -> dict:
                     "source": expected.get("source_file", ""),
                 },
                 "got": {"algorithm": got_algo, "scenario": got_scen, "agent": got_agent, "delta": got_delta_s},
-                "checks": {"algo": algo_ok, "scenario": scen_ok, "agent": agent_ok, "delta": delta_ok},
+                "checks": {"algo": algo_ok, "scenario": scen_ok, "agent": agent_ok, "delta": delta_ok, **{k: v["ok"] for k, v in extras.items()}},
             }
         )
         comparisons.append(entry)
 
-    verdict = "VALIDADA" if n_match == min(20, len(data), len(top)) and n_match >= 15 else (
-        "CORREGIDA" if n_match < min(20, len(top)) else "NO TRAZABLE"
-    )
+    if n_match == min(20, len(data), len(top)) and n_match >= 18:
+        prelim = "VALIDADA"
+    elif n_match == 0:
+        prelim = "NO TRAZABLE"
+    else:
+        prelim = "MISMATCH"
     return {
-        "verdict_preliminary": verdict if n_match >= 15 else "MISMATCH",
+        "verdict_preliminary": prelim,
         "matches": n_match,
         "word_rows": len(data),
         "header": word_rows[0],
@@ -465,41 +497,10 @@ def scan_checkpoint_bytes() -> pd.DataFrame:
 
 
 def plot_a9(df: pd.DataFrame) -> Path:
-    FIG_DIR.mkdir(parents=True, exist_ok=True)
-    d = df.copy()
-    d["algorithm"] = pd.Categorical(d["algorithm"], ALGOS, ordered=True)
-    d["scenario"] = pd.Categorical(d["scenario"], SCENARIOS, ordered=True)
-    d = d.sort_values(["algorithm", "scenario"])
-    labels = d["treatment"].tolist()
-    values = d["total_gb"].astype(float).tolist()
-    fig, ax = plt.subplots(figsize=(9.5, 4.4))
-    palette = {"HAPPO": "#7A7A7A", "MAAC": "#406A9F", "MASAC": "#2E8B57", "MATD3": "#C45C26"}
-    colors = [palette.get(lab.split("-")[0], "#406A9F") for lab in labels]
-    bars = ax.bar(labels, values, color=colors)
-    ax.set_title("Tamaño total listado en manifiestos de checkpoint (MADRL del proyecto)")
-    ax.set_ylabel("GB listados en checkpoint_manifest.json")
-    ax.tick_params(axis="x", rotation=65)
-    ax.grid(axis="y", alpha=0.25)
-    ymax = max(values) if values else 1
-    ax.set_ylim(0, max(0.5, ymax * 1.18))
-    for b, v, n in zip(bars, values, d["n_files_listed"].tolist()):
-        ax.text(b.get_x() + b.get_width() / 2, v + ymax * 0.02, f"{v:.2f}\n(n={n})", ha="center", va="bottom", fontsize=7)
-    if any(d.loc[d["algorithm"] == "HAPPO", "n_files_listed"] == 0):
-        ax.text(
-            0.01,
-            0.98,
-            "HAPPO: sin checkpoint_manifest.json en madrl_v3_20260627_164047 (tamaño listado = 0)",
-            transform=ax.transAxes,
-            va="top",
-            fontsize=7.5,
-            color="#444444",
-        )
-    fig.tight_layout()
-    out = FIG_DIR / "checkpoint_manifest_total_size_by_treatment.png"
-    fig.savefig(out, dpi=180, bbox_inches="tight")
-    plt.close(fig)
-    d.to_csv(TABLE_DIR / "figura_a9_checkpoint_manifest_sizes.csv", index=False)
-    return out
+    """Delegate to dedicated A.9 fixer (log scale, HAPPO=0, Spanish labels)."""
+    from fix_figura_a9_checkpoint_size import plot_a9 as _plot_a9
+
+    return _plot_a9(df)
 
 
 def replace_image_after_caption(docx_path: Path, caption_regex: str, png_path: Path, alt_suffix: str) -> dict:
@@ -609,7 +610,7 @@ def rebuild_section_64_65(doc: Document) -> list[str]:
         ],
         [
             "H3. Inferencia estadística",
-            "Se consolidaron Shapiro–Wilk, Kruskal–Wallis, Mann–Whitney con Holmz y tamaños de efecto; Capítulos 5 y 6 sincronizados.",
+            "Se consolidaron Shapiro–Wilk, Kruskal–Wallis, Mann–Whitney con Holm y tamaños de efecto; Capítulos 5 y 6 sincronizados.",
             "Ejecutado. OE.1: p = 1,305×10⁻⁸; OE.2: p = 0,043866; OE.3: p = 0,251421 "
             "(gdrive_objective_aligned_statistics.csv).",
         ],
@@ -738,30 +739,41 @@ def rebuild_section_64_65(doc: Document) -> list[str]:
     return actions
 
 
+def _short_num(x, nd: int = 4) -> str:
+    """Compact numeric like Word (keep scientific for large abs)."""
+    if x is None or (isinstance(x, float) and (math.isnan(x) or math.isinf(x))):
+        return "N/D"
+    v = float(x)
+    if abs(v) >= 10000:
+        return f"{v:.4g}"
+    if abs(v) >= 100:
+        return f"{v:.4g}"
+    return f"{v:.4g}"
+
+
 def patch_table_a2_in_doc(doc: Document, top: pd.DataFrame, table_index: int | None) -> list[str]:
     actions = []
+    # Preserve existing 7-column schema used in ABRIR_ESTE
     headers = [
-        "Posición",
-        "Algoritmo",
-        "Escenario",
-        "Edificio",
-        "Costo control",
-        "Costo baseline",
-        "Delta costo (control−baseline)",
-        "Fuente",
+        "algorithm",
+        "scenario",
+        "agent",
+        "electricity_cost_delta_eur",
+        "carbon_emissions_delta_kgco2",
+        "grid_import_delta_kwh",
+        "ev_charge_total_kwh",
     ]
     rows = []
     for _, r in top.iterrows():
         rows.append(
             [
-                str(int(r["rank"])),
                 str(r["algorithm"]),
                 str(r["scenario"]),
                 str(r["agent"]),
-                fmt_num(r.get("electricity_cost_control_eur"), 2) if "electricity_cost_control_eur" in r and pd.notna(r.get("electricity_cost_control_eur")) else "N/D",
-                fmt_num(r.get("electricity_cost_baseline_eur"), 2) if "electricity_cost_baseline_eur" in r and pd.notna(r.get("electricity_cost_baseline_eur")) else "N/D",
-                fmt_num(r["electricity_cost_delta_eur"], 2),
-                Path(str(r.get("source_file", ""))).name or "building_behavior_summary",
+                _short_num(r["electricity_cost_delta_eur"]),
+                _short_num(r.get("carbon_emissions_delta_kgco2")),
+                _short_num(r.get("grid_import_delta_kwh")),
+                _short_num(r.get("ev_charge_total_kwh")),
             ]
         )
 
@@ -832,19 +844,21 @@ def patch_table_a2_in_doc(doc: Document, top: pd.DataFrame, table_index: int | N
                         replace_paragraph_text(
                             doc.paragraphs[j],
                             "Nota. Ranking por electricity_cost_delta_eur más negativo (mayor reducción) en "
-                            "building_behavior_summary de edificios completos; MADRL del proyecto únicamente "
-                            "(HAPPO, MAAC, MASAC, MATD3 × E1–E3). Fuente: outputs/_drive_madrl/full_data/.../"
-                            "building_behavior_summary.csv y tablas materializadas en gdrive_20260627_164047_objective_analysis.",
+                            "building_behavior_summary.csv de edificios completos (MAAC, MASAC y MATD3 × E1–E3). "
+                            "HAPPO se excluye porque no aporta building_behavior_summary en la corrida canónica. "
+                            "Fuente: outputs/_drive_madrl/full_data/{ALGO}/{E}/data/building_behavior_summary.csv "
+                            "(espejo de madrl_v3_20260627_164047).",
                         )
+                        actions.append("Nota A.2 actualizada")
                     if tj.startswith("Interpretacion") or tj.startswith("Interpretación"):
                         best = top.iloc[0]
                         replace_paragraph_text(
                             doc.paragraphs[j],
-                            "Interpretación de la tabla. Las veinte mayores reducciones de costo eléctrico por edificio "
-                            f"se ordenan por delta control−baseline. La mayor reducción corresponde a {best['algorithm']}-{best['scenario']} "
-                            f"en {best['agent']} con delta = {fmt_num(best['electricity_cost_delta_eur'], 2)}. "
-                            "HAPPO entra en el ranking solo cuando aporta building_behavior_summary completo; "
-                            "MAAC/MASAC/MATD3 provienen del corpus de 50 episodios de la corrida canónica.",
+                            "Interpretación por edificio. El cambio de costo eléctrico más negativo se observa en "
+                            f"{best['algorithm']}-{best['scenario']} {best['agent']}, con electricity_cost_delta_eur="
+                            f"{float(best['electricity_cost_delta_eur']):.2f}. Esta lectura se basa en "
+                            "building_behavior_summary.csv de edificios completos (MAAC/MASAC/MATD3, 50 episodios), "
+                            "no en estimaciones externas.",
                         )
                         actions.append("Interpretación A.2 actualizada")
                         break
@@ -939,13 +953,14 @@ def main() -> int:
             continue
         doc = Document(str(doc_path))
         actions = []
-        # A.2
-        if cmp.get("verdict_preliminary") != "VALIDADA" or cmp["matches"] < 15:
-            actions += patch_table_a2_in_doc(doc, top, table_idx)
-            final_verdict = "CORREGIDA"
-        else:
+        # A.2 — rewrite with recomputed top-20 (idempotent if already correct)
+        actions += patch_table_a2_in_doc(doc, top, table_idx)
+        if cmp.get("verdict_preliminary") == "VALIDADA":
             final_verdict = "VALIDADA"
-            actions.append("Tabla A.2 VALIDADA sin cambios de celdas")
+            actions.append("Tabla A.2 VALIDADA frente a full_data (reescritura idempotente)")
+        else:
+            final_verdict = "CORREGIDA"
+            actions.append(f"Tabla A.2 CORREGIDA (matches previos={cmp['matches']}/20)")
         # interpretations
         actions.append(f"fig51_interp={patch_interpretation_by_prefix(doc, 'Figura 5.1', fig51_interp)}")
         actions.append(

@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-10T04:11:32.984894+00:00",
+  "generated_at": "2026-07-15T13:37:43.903355+00:00",
   "run_id": "madrl_v3_20260627_164047",
   "docx_path": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
-  "linear_alignment_status": "aligned",
+  "linear_alignment_status": "needs_review",
   "chapters": {
     "cap_1": {
       "has_tabla_1_1": true,
@@ -32,22 +32,22 @@
       "no_duplicate_theory": true
     },
     "cap_5": {
-      "structured_by_objective": true,
-      "section_5_9_inferential": true,
-      "section_5_9_5_hypothesis_only": true,
-      "section_5_11_oe_only": true,
-      "tabla_5_21_oe_verdict": true,
+      "structured_by_objective": false,
+      "section_5_9_inferential": false,
+      "section_5_9_5_hypothesis_only": false,
+      "section_5_11_oe_only": false,
+      "tabla_5_21_oe_verdict": false,
       "ranking_table_renumbered": true
     },
     "cap_6": {
-      "og_first": true,
-      "oe_section": true,
-      "hypotheses_separate": true,
-      "limitations_after": true
+      "og_first": false,
+      "oe_section": false,
+      "hypotheses_separate": false,
+      "limitations_after": false
     },
     "resumen_abstract": {
       "oe_language_not_hypothesis": true,
-      "inferential_separate": true
+      "inferential_separate": false
     }
   },
   "og_oe_fulfillment_verdict": {

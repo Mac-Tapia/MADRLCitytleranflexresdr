@@ -1,0 +1,128 @@
+{
+  "png": "outputs/_drive_madrl/gdrive_20260627_164047_objective_analysis/figures/checkpoint_manifest_total_size_by_treatment.png",
+  "legacy_png": "outputs/_drive_madrl/full_data/analysis_real_drive/figures/checkpoint_manifest_bytes.png",
+  "total_files": 294,
+  "total_gb": 116.71868079341948,
+  "total_mb": 119519.92913246155,
+  "per_treatment": [
+    {
+      "treatment": "HAPPO-E1",
+      "n_files_listed": 0,
+      "total_gb": 0.0,
+      "total_mb": 0.0,
+      "source": "missing"
+    },
+    {
+      "treatment": "HAPPO-E2",
+      "n_files_listed": 0,
+      "total_gb": 0.0,
+      "total_mb": 0.0,
+      "source": "missing"
+    },
+    {
+      "treatment": "HAPPO-E3",
+      "n_files_listed": 0,
+      "total_gb": 0.0,
+      "total_mb": 0.0,
+      "source": "missing"
+    },
+    {
+      "treatment": "MAAC-E1",
+      "n_files_listed": 52,
+      "total_gb": 38.7644000928849,
+      "total_mb": 39694.745695114136,
+      "source": "outputs/_drive_madrl/full_data/MAAC/E1/data/checkpoint_manifest.json"
+    },
+    {
+      "treatment": "MAAC-E2",
+      "n_files_listed": 52,
+      "total_gb": 38.7644000928849,
+      "total_mb": 39694.745695114136,
+      "source": "outputs/_drive_madrl/full_data/MAAC/E2/data/checkpoint_manifest.json"
+    },
+    {
+      "treatment": "MAAC-E3",
+      "n_files_listed": 52,
+      "total_gb": 38.7644000928849,
+      "total_mb": 39694.745695114136,
+      "source": "outputs/_drive_madrl/full_data/MAAC/E3/data/checkpoint_manifest.json"
+    },
+    {
+      "treatment": "MASAC-E1",
+      "n_files_listed": 12,
+      "total_gb": 0.002378944307565689,
+      "total_mb": 2.4360389709472656,
+      "source": "outputs/_drive_madrl/full_data/MASAC/E1/data/checkpoint_manifest.json"
+    },
+    {
+      "treatment": "MASAC-E2",
+      "n_files_listed": 12,
+      "total_gb": 0.002378944307565689,
+      "total_mb": 2.4360389709472656,
+      "source": "outputs/_drive_madrl/full_data/MASAC/E2/data/checkpoint_manifest.json"
+    },
+    {
+      "treatment": "MASAC-E3",
+      "n_files_listed": 12,
+      "total_gb": 0.002378944307565689,
+      "total_mb": 2.4360389709472656,
+      "source": "outputs/_drive_madrl/full_data/MASAC/E3/data/checkpoint_manifest.json"
+    },
+    {
+      "treatment": "MATD3-E1",
+      "n_files_listed": 34,
+      "total_gb": 0.1394478939473629,
+      "total_mb": 142.7946434020996,
+      "source": "outputs/_drive_madrl/full_data/MATD3/E1/data/checkpoint_manifest.json"
+    },
+    {
+      "treatment": "MATD3-E2",
+      "n_files_listed": 34,
+      "total_gb": 0.1394478939473629,
+      "total_mb": 142.7946434020996,
+      "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/checkpoint_manifest.json"
+    },
+    {
+      "treatment": "MATD3-E3",
+      "n_files_listed": 34,
+      "total_gb": 0.1394478939473629,
+      "total_mb": 142.7946434020996,
+      "source": "outputs/_drive_madrl/full_data/MATD3/E3/data/checkpoint_manifest.json"
+    }
+  ],
+  "problems_fixed": [
+    "Eje Y en bytes crudos (4e10) sustituido por GB con escala log",
+    "MASAC/MATD3 visibles frente a MAAC (~38 GB)",
+    "HAPPO incluido con tamaño 0 (manifiesto ausente)",
+    "Etiquetas y título en español",
+    "Interpretación alineada al agregado real del manifiesto canónico"
+  ],
+  "doc_patches": [
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "interp_patched": 2,
+      "ok": true
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "interp_patched": 2,
+      "ok": true
+    }
+  ],
+  "embeds": [
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "replaced": true,
+      "rId": "rId32",
+      "media": "word/media/image24.png"
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "replaced": true,
+      "rId": "rId32",
+      "media": "word/media/image24.png"
+    }
+  ],
+  "interpretation": "Interpretación de la figura. La figura resume el tamaño total listado en checkpoint_manifest.json para los 12 tratamientos MADRL del proyecto (HAPPO, MAAC, MASAC, MATD3 × E1–E3). Se listan 294 archivos con un total de 116,72 GB (119.519,93 MB). HAPPO aparece en 0 GB porque no hay checkpoint_manifest.json en la corrida canónica. MAAC concentra el mayor volumen (~38,76 GB por escenario); MATD3 ≈ 142,8 MB y MASAC ≈ 2,44 MB por escenario (por eso la figura usa escala logarítmica). El archivo individual más grande listado corresponde a MAAC-E1 (763,36 MB). No se inventan bytes: solo se agregan los campos bytes del manifiesto.",
+  "note": "Nota. La figura representa el tamaño total listado en los manifiestos de checkpoint por algoritmo y escenario. Fuente: elaboración propia a partir de outputs/_drive_madrl/full_data/{ALGO}/{E}/data/checkpoint_manifest.json de la corrida canónica madrl_v3_20260627_164047."
+}

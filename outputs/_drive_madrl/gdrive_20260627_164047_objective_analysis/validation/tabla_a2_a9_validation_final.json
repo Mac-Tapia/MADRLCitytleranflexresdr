@@ -1,0 +1,331 @@
+{
+  "a2_verdict": "VALIDADA",
+  "a2_proof": {
+    "definition": "top-20 electricity_cost_delta_eur más negativo en edificios completos (MAAC/MASAC/MATD3)",
+    "sources": [
+      "outputs/_drive_madrl/full_data/MAAC/E1/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MAAC/E2/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MAAC/E3/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MASAC/E1/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MASAC/E2/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MATD3/E3/data/building_behavior_summary.csv"
+    ],
+    "top20": [
+      {
+        "rank": 1,
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_14",
+        "electricity_cost_delta_eur": -3532.4155618258374,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 2,
+        "algorithm": "MATD3",
+        "scenario": "E3",
+        "agent": "Building_12",
+        "electricity_cost_delta_eur": -2672.0535701428307,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E3/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 3,
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_12",
+        "electricity_cost_delta_eur": -2322.773223772878,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 4,
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_11",
+        "electricity_cost_delta_eur": -2304.438581703289,
+        "source_file": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 5,
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_11",
+        "electricity_cost_delta_eur": -2279.042941080581,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 6,
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_12",
+        "electricity_cost_delta_eur": -2053.6084617908346,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 7,
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_8",
+        "electricity_cost_delta_eur": -1950.974042386908,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 8,
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "electricity_cost_delta_eur": -1824.6310089519247,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 9,
+        "algorithm": "MASAC",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "electricity_cost_delta_eur": -1367.6378789224543,
+        "source_file": "outputs/_drive_madrl/full_data/MASAC/E1/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 10,
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_3",
+        "electricity_cost_delta_eur": -958.8966749461832,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 11,
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_5",
+        "electricity_cost_delta_eur": -950.0458268172516,
+        "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 12,
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_8",
+        "electricity_cost_delta_eur": -899.2025018301028,
+        "source_file": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 13,
+        "algorithm": "MAAC",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "electricity_cost_delta_eur": -888.9321198133257,
+        "source_file": "outputs/_drive_madrl/full_data/MAAC/E1/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 14,
+        "algorithm": "MASAC",
+        "scenario": "E2",
+        "agent": "Building_8",
+        "electricity_cost_delta_eur": -853.7371509218392,
+        "source_file": "outputs/_drive_madrl/full_data/MASAC/E2/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 15,
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_14",
+        "electricity_cost_delta_eur": -845.4150263144693,
+        "source_file": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 16,
+        "algorithm": "MASAC",
+        "scenario": "E2",
+        "agent": "Building_11",
+        "electricity_cost_delta_eur": -717.3080218275427,
+        "source_file": "outputs/_drive_madrl/full_data/MASAC/E2/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 17,
+        "algorithm": "MAAC",
+        "scenario": "E2",
+        "agent": "Building_14",
+        "electricity_cost_delta_eur": -701.8555300273947,
+        "source_file": "outputs/_drive_madrl/full_data/MAAC/E2/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 18,
+        "algorithm": "MAAC",
+        "scenario": "E3",
+        "agent": "Building_14",
+        "electricity_cost_delta_eur": -683.7813220831522,
+        "source_file": "outputs/_drive_madrl/full_data/MAAC/E3/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 19,
+        "algorithm": "MAAC",
+        "scenario": "E3",
+        "agent": "Building_5",
+        "electricity_cost_delta_eur": -610.0458629335917,
+        "source_file": "outputs/_drive_madrl/full_data/MAAC/E3/data/building_behavior_summary.csv"
+      },
+      {
+        "rank": 20,
+        "algorithm": "MASAC",
+        "scenario": "E1",
+        "agent": "Building_14",
+        "electricity_cost_delta_eur": -609.4339546957053,
+        "source_file": "outputs/_drive_madrl/full_data/MASAC/E1/data/building_behavior_summary.csv"
+      }
+    ],
+    "happo_excluded": "Sin building_behavior_summary.csv en full_data/HAPPO/{E}",
+    "row_match": "20/20 vs ABRIR_ESTE (redondeo presentado)"
+  },
+  "a9_old_vs_new": {
+    "old": "Interpretación previa: 351 checkpoints, ~119627.66 MB, max MAAC-E1 763.36 MB",
+    "new_files": 294,
+    "new_total_gb": 116.71868079341948,
+    "new_total_mb": 119519.92913246155,
+    "per_treatment": [
+      {
+        "treatment": "HAPPO-E1",
+        "n_files_listed": 0,
+        "total_gb": 0.0,
+        "source": "missing"
+      },
+      {
+        "treatment": "HAPPO-E2",
+        "n_files_listed": 0,
+        "total_gb": 0.0,
+        "source": "missing"
+      },
+      {
+        "treatment": "HAPPO-E3",
+        "n_files_listed": 0,
+        "total_gb": 0.0,
+        "source": "missing"
+      },
+      {
+        "treatment": "MAAC-E1",
+        "n_files_listed": 52,
+        "total_gb": 38.7644000928849,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E1/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MAAC-E2",
+        "n_files_listed": 52,
+        "total_gb": 38.7644000928849,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E2/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MAAC-E3",
+        "n_files_listed": 52,
+        "total_gb": 38.7644000928849,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E3/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MASAC-E1",
+        "n_files_listed": 12,
+        "total_gb": 0.002378944307565689,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E1/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MASAC-E2",
+        "n_files_listed": 12,
+        "total_gb": 0.002378944307565689,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E2/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MASAC-E3",
+        "n_files_listed": 12,
+        "total_gb": 0.002378944307565689,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E3/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MATD3-E1",
+        "n_files_listed": 34,
+        "total_gb": 0.1394478939473629,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E1/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MATD3-E2",
+        "n_files_listed": 34,
+        "total_gb": 0.1394478939473629,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MATD3-E3",
+        "n_files_listed": 34,
+        "total_gb": 0.1394478939473629,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E3/data/checkpoint_manifest.json"
+      }
+    ],
+    "cause": "Agregado previo no coincidía con bytes de checkpoint_manifest.json del espejo full_data restringido a HAPPO/MAAC/MASAC/MATD3; HAPPO debe ser 0 si falta manifiesto."
+  },
+  "docs": {
+    "primary": {
+      "actions": [
+        "Figura 5.1 interpretacion",
+        "Figura 5.8e nota",
+        "Figura 5.8e interpretacion",
+        "Figura 5.1 interpretacion",
+        "Tabla A.2 nota",
+        "Tabla A.2 interpretacion",
+        "Figura A.9 nota",
+        "Figura A.9 interpretacion"
+      ],
+      "cap6": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "has_tabla_6_1": true,
+        "has_tabla_6_2": true,
+        "6_4_title": "6.4 Plan para culminar la tesis",
+        "6_5_title": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "tabla_6_1_caption": "Tabla 6.1. Ejecución e implementación del plan para culminar la tesis.",
+        "tabla_6_2_caption": "Tabla 6.2. Criterios de cierre y control de calidad final.",
+        "mentions_executed_plan": true,
+        "no_doctorado_in_65": true
+      },
+      "save": {
+        "ok": true,
+        "saved": "D:\\MADRLCitytleranflexresdr\\docs\\ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx"
+      },
+      "a9_embed": {
+        "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+        "replaced": true,
+        "saved": "D:\\MADRLCitytleranflexresdr\\docs\\ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx"
+      }
+    },
+    "mirror": {
+      "actions": [
+        "Figura 5.1 interpretacion",
+        "Figura 5.8e nota",
+        "Figura 5.8e interpretacion",
+        "Figura 5.1 interpretacion",
+        "Tabla A.2 nota",
+        "Tabla A.2 interpretacion",
+        "Figura A.9 nota",
+        "Figura A.9 interpretacion"
+      ],
+      "cap6": {
+        "has_6_4": true,
+        "has_6_5": true,
+        "has_tabla_6_1": true,
+        "has_tabla_6_2": true,
+        "6_4_title": "6.4 Plan para culminar la tesis",
+        "6_5_title": "6.5 Criterios de cierre de la tesis y control de calidad final",
+        "tabla_6_1_caption": "Tabla 6.1. Ejecución e implementación del plan para culminar la tesis.",
+        "tabla_6_2_caption": "Tabla 6.2. Criterios de cierre y control de calidad final.",
+        "mentions_executed_plan": true,
+        "no_doctorado_in_65": true
+      },
+      "save": {
+        "ok": true,
+        "saved": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx"
+      },
+      "a9_embed": {
+        "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+        "replaced": true,
+        "saved": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx"
+      }
+    }
+  },
+  "png": "outputs/_drive_madrl/gdrive_20260627_164047_objective_analysis/figures/checkpoint_manifest_total_size_by_treatment.png"
+}

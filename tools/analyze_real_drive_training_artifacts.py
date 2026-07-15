@@ -432,14 +432,29 @@ def plot_outputs(
         plt.savefig(OUT / "figures" / "controlled_vs_uncontrolled_load_mwh.png", dpi=180)
         plt.close()
 
-    pivot = checkpoint_summary.pivot(index="algorithm", columns="scenario", values="checkpoint_bytes_total")
-    ax = pivot.plot(kind="bar", figsize=(9, 5))
-    ax.set_title("Checkpoint bytes listed in manifest")
-    ax.set_ylabel("Bytes")
-    ax.grid(axis="y", alpha=0.25)
-    plt.tight_layout()
-    plt.savefig(OUT / "figures" / "checkpoint_manifest_bytes.png", dpi=180)
-    plt.close()
+    # Figura A.9: tamaño total por tratamiento en GB (escala log). Incluye HAPPO=0.
+    # Evita el gráfico legado en bytes crudos (4e10) que ocultaba MASAC/MATD3.
+    try:
+        import sys
+
+        tools_dir = Path(__file__).resolve().parent
+        if str(tools_dir) not in sys.path:
+            sys.path.insert(0, str(tools_dir))
+        from fix_figura_a9_checkpoint_size import plot_a9, scan_checkpoint_bytes
+
+        plot_a9(scan_checkpoint_bytes())
+    except Exception:
+        # Fallback mínimo si el módulo dedicado no está disponible.
+        cs = checkpoint_summary.copy()
+        cs["total_gb"] = cs["checkpoint_bytes_total"].astype(float) / (1024**3)
+        pivot = cs.pivot(index="algorithm", columns="scenario", values="total_gb")
+        ax = pivot.plot(kind="bar", figsize=(9, 5), logy=True)
+        ax.set_title("Tamaño total listado en manifiestos de checkpoint")
+        ax.set_ylabel("GB (escala log)")
+        ax.grid(axis="y", alpha=0.25, which="both")
+        plt.tight_layout()
+        plt.savefig(OUT / "figures" / "checkpoint_manifest_bytes.png", dpi=180)
+        plt.close()
 
 
 def write_report(

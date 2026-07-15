@@ -1,0 +1,55 @@
+P419|FiguraIndice|Figura 5.1
+Cobertura de checkpoints por tratamiento
+P422|Normal|Interpretación de la figura. Conteo de archivos listados en checkpoint_manifest.json de la corrida canónica madrl_v3_20260627_164047 (espejo outputs/_drive_madrl/full_data). HAPPO-E1/E2/E3 = 0 (manifiesto ausente); MAAC = 52 por escenario; MASAC = 12; MATD3 = 34. La lectura corrige el falso cero previo de MASAC/MATD3 c
+P574|FiguraIndice|Figura 5.8e
+Politicas y acciones medias (action_l2 desde trace.csv; EV/BESS desde building_behavior_summary)
+P576|Normal|Nota. Panel action_l2 desde trace.csv (full_data); paneles EV/BESS desde building_behavior_summary (ev_charge_total_kwh, battery_throughput_total_kwh). Fuente: elaboración propia a partir de la corrida canónica madrl_v3_20260627_164047.
+P577|Normal|Interpretación de la figura. Fuentes mixtas auditadas: action_l2 desde full_data/trace.csv (incluye HAPPO ≈ 2,25/2,23/2,22 en E1/E2/E3); EV y BESS desde building_behavior_summary (ev_charge_total_kwh y battery_throughput_total_kwh), no desde columnas muertas ev_charge_kwh/electrical_storage_soc (=0 en trace). Medias or
+P640|Normal|Pendientes editoriales e institucionales: pasada ortografica RAE (tildes, tipografia, concordancia) en Cap. 1–6; verificar citas marcadas [PV] y actualizar indices Word (F9); completar metadatos de asesor / [por definir] unicamente con dato real del programa (no inventar nombres); sincronizar ABRIR_ESTE y FINAL_COMPLET
+P641|Heading 2|6.4 Plan para culminar la tesis
+P642|Normal|El plan de culminación fue ejecutado diferenciando los hitos indispensables para cerrar el manuscrito de las ampliaciones experimentales que corresponden a trabajo futuro. La implementación se realizó sobre la corrida canónica madrl_v3_20260627_164047, sin inventar episodios, semillas, resultados ni artefactos no dispo
+P643|Normal|Tabla 6.1. Ejecución e implementación del plan para culminar la tesis.
+P644|Normal|Nota. Estado al 15 de julio de 2026. «Ejecutado» abarca cierre documental, analítico o de delimitación metodológica sobre madrl_v3_20260627_164047. Multi-semilla, Optuna y algoritmos adicionales quedan como trabajo futuro y no sustituyen la evidencia canónica.
+P645|Normal|Con H1, H3, H4 y H6 ejecutados, y con H2 y H5 delimitados como trabajo futuro, el manuscrito queda culminado para presentación académica bajo las restricciones declaradas (semilla única; HAPPO con 49 episodios por escenario). Solo H7 permanece pendiente para el cierre formal institucional.
+P646|Heading 2|6.5 Criterios de cierre de la tesis y control de calidad final
+P647|Normal|Las conclusiones se consideran suficientemente sustentadas para responder las preguntas específicas desde la corrida Drive analizada. Tras el plan de la sección 6.4, el control de calidad final se centra en campos e índices Word, legibilidad PDF, correspondencia vertical entre PE–OE–hipótesis–resultados–conclusiones y 
+P648|Normal|Tabla 6.2. Criterios de cierre y control de calidad final.
+P649|Normal|Nota. Los criterios C de calidad documental no sustituyen la evidencia experimental ya auditada. El cierre formal institucional (registro y sustentación) corresponde al hito H7.
+P650|Heading 1|Referencias bibliograficas
+P651|Normal|Formato APA (7.a ed.). Fuente consolidada del skill: docs/tesis_capitulos/Referencias_APA.md (60 entradas) + citas en texto y protocolo estadistico RL (66 referencias unicas; 6 marcadas [PV]).
+P652|Normal|Abels, A., Roijers, D., Lenaerts, T., Nowe, A., & Steckelmacher, D. (2019). Dynamic weights in multi-objective deep reinforcement learning. En Proceedings of the 36th International Conference on Machine Learning (PMLR 97, pp. 11-20). https://arxiv.org/abs/1809.07803
+P653|Normal|Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A., & Bellemare, M. G. (2021). Deep reinforcement learning at the edge of the statistical precipice. En Advances in Neural Information Processing Systems, 34, 29304-29320. https://arxiv.org/abs/2108.13264
+P654|Normal|Ahmed, A., et al. (2025). Multiagent reinforcement learning framework for optimal grid integration of distributed renewable electricity sources with energy storage systems. International Journal of Low-Carbon Technologies. https://doi.org/10.1093/ijlct/ctaf142 [PV — verificar primer autor]
+P655|Normal|Akiba, T., Sano, S., Yanase, T., Ohta, T., & Koyama, M. (2019). Optuna: A next-generation hyperparameter optimization framework. En Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (pp. 2623–2631). ACM. https://doi.org/10.1145/3292500.3330701
+P788|Normal|Nota. Ranking por electricity_cost_delta_eur más negativo (mayor reducción) en building_behavior_summary.csv de edificios completos (MAAC, MASAC y MATD3 × E1–E3). HAPPO se excluye porque no aporta building_behavior_summary en la corrida canónica. Fuente: outputs/_drive_madrl/full_data/{ALGO}/{E}/data/building_behavior_
+P789|Normal|Interpretación por edificio. El cambio de costo eléctrico más negativo se observa en MATD3-E1 Building_14, con electricity_cost_delta_eur=-3532.42. Esta lectura se basa en building_behavior_summary.csv de edificios completos (MAAC/MASAC/MATD3, 50 episodios), no en estimaciones externas.
+P790|FiguraIndice|Figura A.5
+Delta de costo electrico por edificio y corrida completa
+P815|Normal|
+P817|Normal|Interpretación de la figura. La figura resume el tamaño total listado en checkpoint_manifest.json para los 12 tratamientos MADRL del proyecto (HAPPO, MAAC, MASAC, MATD3 × E1–E3). Se listan 294 archivos con un total de 116,72 GB (119.519,93 MB). HAPPO aparece en 0 GB porque no hay checkpoint_manifest.json en la corrida 
+P818|Heading 2|A.5 Archivos reproducibles
+TABLE|Tabla 6.1. Ejecución e implementación del plan para culminar la tesis.Tabla 6.1. Ejecución e impleme|rows=8|cols=3
+  R0|Hito || Implementación realizada || Estado y evidencia de cierre
+  R1|H1. Cobertura HAPPO || Se adoptó como corpus definitivo la cobertura materializada  || Ejecutado. Evidencia: gdrive_episode_kpis_used_for_statistic
+  R2|H2. Robustez multi-semilla || La inferencia se delimitó a una sola semilla de la corrida c || Implementado como delimitación metodológica. No ejecutado ex
+  R3|H3. Inferencia estadística || Se consolidaron Shapiro–Wilk, Kruskal–Wallis, Mann–Whitney c || Ejecutado. OE.1: p = 1,305×10⁻⁸; OE.2: p = 0,043866; OE.3: p
+  R4|H4. Pareto y baseline || Se consolidó la lectura multiobjetivo sin ganador universal, || Ejecutado en Cap. 5. Sensibilidad de pesos como trabajo futu
+  R5|H5. HPO y algoritmos adicionales || Optuna y contrastes PPO/SAC/A2C no forman parte de la eviden || Delimitado → trabajo futuro. No requerido para los objetivos
+  R6|H6. Cierre documental || Se reforzaron Cap. 2, 4, 5 y 6; discusión 5.10; referencias  || Ejecutado.
+  R7|H7. Entrega y sustentación || Secuencia final: índices F9, revisión visual PDF, validación || Pendiente de gestión institucional.
+TABLE|Tabla 6.2. Criterios de cierre y control de calidad final.Tabla 6.2. Criterios de cierre y control d|rows=5|cols=3
+  R0|Actividad || Propósito || Criterio de cierre
+  R1|Revisión APA integral || Alinear citas, tablas, figuras y referencias al formato APA  || Todas las citas tienen entrada bibliográfica y viceversa; ca
+  R2|Revisión multi-semilla opcional || Mejorar la validez externa de la comparación MADRL. || Réplicas documentadas o limitación de semilla única explicit
+  R3|Auditoría de figuras y tablas || Confirmar legibilidad y correspondencia con CSV/Drive canóni || Cada figura/tabla apunta a fuente verificable de madrl_v3_20
+  R4|Revisión de coherencia vertical || Asegurar que PE, OE, hipótesis, resultados y conclusiones re || Matriz problema–objetivo–resultado–conclusión sin vacíos.
+TABLE|Tabla A.2. Mejores 20 filas por reducción de costo eléctrico en edificios completos (corrida canónic|rows=21|cols=7
+  R0|algorithm || scenario || agent || electricity_cost_delta_eur || carbon_emissions_delta_kgco2 || grid_import_delta_kwh || ev_charge_total_kwh
+  R1|MATD3 || E1 || Building_14 || -3532 || -2071 || -2680 || 0
+  R2|MATD3 || E3 || Building_12 || -2672 || -2163 || -2795 || 0
+  R3|MATD3 || E1 || Building_12 || -2323 || -2153 || -2781 || 0
+  R4|MASAC || E3 || Building_11 || -2304 || 7086 || 8960 || 493.9
+  R5|MATD3 || E2 || Building_11 || -2279 || -1848 || -2386 || 0
+  R6|MATD3 || E2 || Building_12 || -2054 || -2163 || -2795 || 0
+  R7|MATD3 || E2 || Building_8 || -1951 || -1904 || -2490 || 3839
+  R8|MATD3 || E1 || Building_11 || -1825 || -801.1 || -996.6 || 1455

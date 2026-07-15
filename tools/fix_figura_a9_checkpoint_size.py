@@ -110,47 +110,60 @@ def plot_a9(df: pd.DataFrame) -> Path:
 
     # Escala log: HAPPO=0 se representa en el piso visual sin inventar bytes.
     floor_gb = 1e-4
-    plot_vals = [max(v, floor_gb) if n > 0 else floor_gb for v, n in zip(values, ns)]
 
-    fig, ax = plt.subplots(figsize=(10.2, 4.8))
+    fig, ax = plt.subplots(figsize=(10.5, 5.2))
     palette = {"HAPPO": "#7A7A7A", "MAAC": "#406A9F", "MASAC": "#2E8B57", "MATD3": "#C45C26"}
     colors = [palette.get(lab.split("-")[0], "#406A9F") for lab in labels]
-    bars = ax.bar(labels, plot_vals, color=colors, edgecolor="white", linewidth=0.4)
+    # HAPPO (n=0): stub hatched at floor; algo con bytes: altura real.
+    heights = []
+    for v, n in zip(values, ns):
+        if n <= 0 or v <= 0:
+            heights.append(floor_gb)
+        else:
+            heights.append(v)
+    bars = ax.bar(labels, heights, color=colors, edgecolor="white", linewidth=0.4)
     ax.set_yscale("log")
     ax.set_title("Tamaño total listado en manifiestos de checkpoint por algoritmo y escenario")
     ax.set_ylabel("GB listados en checkpoint_manifest.json (escala log)")
     ax.set_xlabel("Tratamiento (algoritmo × escenario)")
     ax.tick_params(axis="x", rotation=55)
     ax.grid(axis="y", alpha=0.28, which="both")
-    ax.set_ylim(floor_gb, max(plot_vals) * 3.5)
+    ax.set_ylim(floor_gb * 0.7, max(h for h in heights if h > 0) * 6.0)
 
-    ymax = max(plot_vals)
     for bar, gb, n in zip(bars, values, ns):
-        y_text = max(bar.get_height(), floor_gb)
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            y_text * 1.35,
-            _label_for_bar(gb, n),
-            ha="center",
-            va="bottom",
-            fontsize=6.8,
-        )
         if n <= 0 or gb <= 0:
-            bar.set_hatch("///")
-            bar.set_alpha(0.55)
+            bar.set_hatch("////")
+            bar.set_alpha(0.65)
+            bar.set_edgecolor("#555555")
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                floor_gb * 1.6,
+                "0\n(n=0)",
+                ha="center",
+                va="bottom",
+                fontsize=6.8,
+            )
+        else:
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                gb * 1.45,
+                _label_for_bar(gb, n),
+                ha="center",
+                va="bottom",
+                fontsize=6.8,
+            )
 
-    ax.text(
-        0.01,
-        0.98,
+    fig.tight_layout(rect=[0, 0.08, 1, 1])
+    fig.text(
+        0.5,
+        0.015,
         "HAPPO: sin checkpoint_manifest.json en madrl_v3_20260627_164047 (tamaño listado = 0). "
         "Escala logarítmica para hacer visibles MASAC (~MB) frente a MAAC (~38 GB).",
-        transform=ax.transAxes,
-        va="top",
+        ha="center",
+        va="bottom",
         fontsize=7.2,
         color="#333333",
-        wrap=True,
     )
-    fig.tight_layout()
     fig.savefig(PNG, dpi=180, bbox_inches="tight")
     plt.close(fig)
 

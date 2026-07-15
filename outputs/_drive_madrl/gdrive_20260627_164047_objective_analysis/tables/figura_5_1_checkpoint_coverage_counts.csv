@@ -1,0 +1,13 @@
+algorithm,scenario,treatment,checkpoint_files_listed,checkpoint_count_declared,source
+HAPPO,E1,HAPPO-E1,0,0,missing
+HAPPO,E2,HAPPO-E2,0,0,missing
+HAPPO,E3,HAPPO-E3,0,0,missing
+MAAC,E1,MAAC-E1,52,52,outputs/_drive_madrl/full_data/MAAC/E1/data/checkpoint_manifest.json
+MAAC,E2,MAAC-E2,52,52,outputs/_drive_madrl/full_data/MAAC/E2/data/checkpoint_manifest.json
+MAAC,E3,MAAC-E3,52,52,outputs/_drive_madrl/full_data/MAAC/E3/data/checkpoint_manifest.json
+MASAC,E1,MASAC-E1,12,12,outputs/_drive_madrl/full_data/MASAC/E1/data/checkpoint_manifest.json
+MASAC,E2,MASAC-E2,12,12,outputs/_drive_madrl/full_data/MASAC/E2/data/checkpoint_manifest.json
+MASAC,E3,MASAC-E3,12,12,outputs/_drive_madrl/full_data/MASAC/E3/data/checkpoint_manifest.json
+MATD3,E1,MATD3-E1,34,34,outputs/_drive_madrl/full_data/MATD3/E1/data/checkpoint_manifest.json
+MATD3,E2,MATD3-E2,34,34,outputs/_drive_madrl/full_data/MATD3/E2/data/checkpoint_manifest.json
+MATD3,E3,MATD3-E3,34,34,outputs/_drive_madrl/full_data/MATD3/E3/data/checkpoint_manifest.json

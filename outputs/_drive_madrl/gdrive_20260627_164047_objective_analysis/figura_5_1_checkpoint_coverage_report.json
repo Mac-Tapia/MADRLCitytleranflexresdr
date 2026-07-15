@@ -1,0 +1,367 @@
+{
+  "counts": [
+    {
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "treatment": "HAPPO-E1",
+      "checkpoint_files_listed": 0,
+      "checkpoint_count_declared": 0,
+      "source": "missing"
+    },
+    {
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "treatment": "HAPPO-E2",
+      "checkpoint_files_listed": 0,
+      "checkpoint_count_declared": 0,
+      "source": "missing"
+    },
+    {
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "treatment": "HAPPO-E3",
+      "checkpoint_files_listed": 0,
+      "checkpoint_count_declared": 0,
+      "source": "missing"
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "treatment": "MAAC-E1",
+      "checkpoint_files_listed": 52,
+      "checkpoint_count_declared": 52,
+      "source": "outputs/_drive_madrl/full_data/MAAC/E1/data/checkpoint_manifest.json"
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "treatment": "MAAC-E2",
+      "checkpoint_files_listed": 52,
+      "checkpoint_count_declared": 52,
+      "source": "outputs/_drive_madrl/full_data/MAAC/E2/data/checkpoint_manifest.json"
+    },
+    {
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "treatment": "MAAC-E3",
+      "checkpoint_files_listed": 52,
+      "checkpoint_count_declared": 52,
+      "source": "outputs/_drive_madrl/full_data/MAAC/E3/data/checkpoint_manifest.json"
+    },
+    {
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "treatment": "MASAC-E1",
+      "checkpoint_files_listed": 12,
+      "checkpoint_count_declared": 12,
+      "source": "outputs/_drive_madrl/full_data/MASAC/E1/data/checkpoint_manifest.json"
+    },
+    {
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "treatment": "MASAC-E2",
+      "checkpoint_files_listed": 12,
+      "checkpoint_count_declared": 12,
+      "source": "outputs/_drive_madrl/full_data/MASAC/E2/data/checkpoint_manifest.json"
+    },
+    {
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "treatment": "MASAC-E3",
+      "checkpoint_files_listed": 12,
+      "checkpoint_count_declared": 12,
+      "source": "outputs/_drive_madrl/full_data/MASAC/E3/data/checkpoint_manifest.json"
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "treatment": "MATD3-E1",
+      "checkpoint_files_listed": 34,
+      "checkpoint_count_declared": 34,
+      "source": "outputs/_drive_madrl/full_data/MATD3/E1/data/checkpoint_manifest.json"
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "treatment": "MATD3-E2",
+      "checkpoint_files_listed": 34,
+      "checkpoint_count_declared": 34,
+      "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/checkpoint_manifest.json"
+    },
+    {
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "treatment": "MATD3-E3",
+      "checkpoint_files_listed": 34,
+      "checkpoint_count_declared": 34,
+      "source": "outputs/_drive_madrl/full_data/MATD3/E3/data/checkpoint_manifest.json"
+    }
+  ],
+  "png": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\gdrive_20260627_164047_objective_analysis\\figures\\checkpoint_coverage_by_treatment.png",
+  "png_bytes": 73820,
+  "wrong_previous_logic": "El generador contaba solo filas cuyo relative_path coincidia con episode_(\\d+); eso dejaba MASAC/MATD3 en 0 pese a tener 12/34 archivos en el manifiesto, e ignoraba HAPPO (sin manifiesto en la corrida canonica). No se usan manifiestos HAPPO de la corrida antigua citylearn_v3_madrl_full_20260615_074011_v4.",
+  "algorithms_included": [
+    "HAPPO",
+    "MAAC",
+    "MASAC",
+    "MATD3"
+  ],
+  "scenarios_included": [
+    "E1",
+    "E2",
+    "E3"
+  ],
+  "embeds": [
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_estructura_skill_objetivos_operacionalizacion.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_marco_teorico_doctoral_sustentado.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas_redaccion_doctoral_completa.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_ACTUALIZADA_METODOLOGIA_MADRL.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES_REGEN.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_GDRIVE_50EP_OBJETIVOS_DOCTORAL.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_UNIFICADA_WORDS_DOCTORAL.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_ANTECEDENTES_1_2_1_UNIFICADO.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_CAPITULO_1_PLAN_TESIS_ACTUALIZADO.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_FIGURA_5_5A_ACTUALIZADA.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_FIGURAS_APA_INTERPRETADAS.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_FORMATO_APA_7.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx",
+      "replaced": true,
+      "rId": "rId6",
+      "media": "word/media/image1.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_JUSTIFICACION_1_2_2_1_LETRAS.docx",
+      "replaced": false,
+      "saved_alt": "ABRIR_ESTE_WORD_FINAL_JUSTIFICACION_1_2_2_1_LETRAS_FIG51_PATCHED.docx",
+      "note": "archivo bloqueado (abierto en Word)"
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_NOTAS_TABLAS_JUSTIFICADAS.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_PALABRAS_CLAVE_LIBRERIAS_DATASET.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_PROPUESTA_DETALLADA_ACTUALIZADA.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_RESUMEN_CORREGIDO_SIN_DUPLICADOS.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_RESUMEN_PALABRAS_CLAVE_ACTUALIZADO.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SALTOS_EXPLICITOS_VERIFICADOS.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SALTOS_PAGINA_CAPITULOS.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SALTOS_VISIBLES_EXPLICITOS.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SHAPIRO_ACTUALIZADO.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_SIN_ANTECEDENTES_CAPITULO_1.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TABLAS_CON_NOTAS_APA.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TABLAS_FORMATO_APA.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TABLAS_NOTAS_APA_SIN_TEXTO_LETRA.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TEXTO_JUSTIFICADO.docx",
+      "replaced": true,
+      "rId": "rId42",
+      "media": "word/media/image34.png",
+      "bytes": 73820
+    }
+  ]
+}

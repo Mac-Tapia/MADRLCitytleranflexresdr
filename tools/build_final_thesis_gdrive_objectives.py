@@ -1385,24 +1385,37 @@ def load_trace_samples() -> pd.DataFrame:
 
 
 def load_checkpoint_summary() -> pd.DataFrame:
+    """Load checkpoint rows for project MADRL only (HAPPO/MAAC/MASAC/MATD3 × E1/E2/E3).
+
+    Prefer the local Drive mirror under outputs/_drive_madrl/full_data when present,
+    because G_BASE may be unavailable offline. Count every listed checkpoint file;
+    do not require episode_(\\d+) in the path (that wrongly zeroed MASAC/MATD3).
+    """
+    local_base = REPO / "outputs" / "_drive_madrl" / "full_data"
     rows = []
     for algo in ALGOS:
         for scenario in SCENARIOS:
-            path = G_BASE / algo / scenario / "data" / "checkpoint_manifest.json"
-            if not path.exists():
+            candidates = [
+                local_base / algo / scenario / "data" / "checkpoint_manifest.json",
+                G_BASE / algo / scenario / "data" / "checkpoint_manifest.json",
+            ]
+            path = next((p for p in candidates if p.exists()), None)
+            if path is None:
                 continue
             data = read_json(path)
-            for ckpt in data.get("checkpoints", []):
+            checkpoints = data.get("checkpoints") or []
+            for idx, ckpt in enumerate(checkpoints):
                 rel = ckpt.get("relative_path", "")
                 match = re.search(r"episode_(\d+)", rel)
                 rows.append(
                     {
                         "algorithm": algo,
                         "scenario": scenario,
-                        "checkpoint_count": data.get("checkpoint_count"),
-                        "checkpoint_episode": int(match.group(1)) if match else math.nan,
+                        "checkpoint_count": data.get("checkpoint_count", len(checkpoints)),
+                        "checkpoint_episode": int(match.group(1)) if match else idx,
                         "bytes": ckpt.get("bytes", math.nan),
                         "relative_path": rel,
+                        "manifest_source": str(path),
                     }
                 )
     df = pd.DataFrame(rows)
@@ -1982,20 +1995,46 @@ def make_figures(
         plt.close(fig)
         paths["trace_policy_heatmaps"] = out
 
-    if not checkpoints.empty:
-        counts = checkpoints.groupby(["algorithm", "scenario"])["checkpoint_episode"].count().reset_index(name="count")
-        fig, ax = plt.subplots(figsize=(7, 4))
-        x = range(len(counts))
-        ax.bar([f"{r.algorithm}-{r.scenario}" for r in counts.itertuples()], counts["count"], color="#406A9F")
-        ax.set_title("Cobertura de checkpoints por tratamiento")
-        ax.set_ylabel("checkpoints en manifest")
-        ax.tick_params(axis="x", rotation=70)
-        ax.grid(axis="y", alpha=0.25)
-        fig.tight_layout()
-        out = FIG_DIR / "checkpoint_coverage_by_treatment.png"
-        fig.savefig(out, dpi=180)
-        plt.close(fig)
-        paths["checkpoint_coverage"] = out
+    # Figura 5.1: always plot the 12 project treatments (missing manifest => 0, not omitted).
+    cov_rows = []
+    for algo in ALGOS:
+        for scenario in SCENARIOS:
+            if checkpoints.empty:
+                n = 0
+            else:
+                sub = checkpoints[(checkpoints["algorithm"] == algo) & (checkpoints["scenario"] == scenario)]
+                n = int(len(sub))
+            cov_rows.append({"algorithm": algo, "scenario": scenario, "count": n})
+    counts = pd.DataFrame(cov_rows)
+    fig, ax = plt.subplots(figsize=(9.5, 4.4))
+    labels = [f"{r.algorithm}-{r.scenario}" for r in counts.itertuples()]
+    values = [int(r.count) for r in counts.itertuples()]
+    palette = {"HAPPO": "#7A7A7A", "MAAC": "#406A9F", "MASAC": "#2E8B57", "MATD3": "#C45C26"}
+    colors = [palette.get(lab.split("-")[0], "#406A9F") for lab in labels]
+    bars = ax.bar(labels, values, color=colors)
+    ax.set_title("Cobertura de checkpoints por tratamiento (MADRL del proyecto)")
+    ax.set_ylabel("archivos listados en checkpoint_manifest.json")
+    ax.tick_params(axis="x", rotation=65)
+    ax.grid(axis="y", alpha=0.25)
+    ymax = max(values) if values else 1
+    ax.set_ylim(0, max(10, ymax * 1.15))
+    for b, v in zip(bars, values):
+        ax.text(b.get_x() + b.get_width() / 2, v + ymax * 0.02, str(v), ha="center", va="bottom", fontsize=8)
+    if any(a == "HAPPO" and c == 0 for a, c in zip(counts["algorithm"], counts["count"])):
+        ax.text(
+            0.01,
+            0.98,
+            "HAPPO: sin checkpoint_manifest.json en la corrida canonica",
+            transform=ax.transAxes,
+            va="top",
+            fontsize=7.5,
+            color="#444444",
+        )
+    fig.tight_layout()
+    out = FIG_DIR / "checkpoint_coverage_by_treatment.png"
+    fig.savefig(out, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+    paths["checkpoint_coverage"] = out
     return paths
 
 

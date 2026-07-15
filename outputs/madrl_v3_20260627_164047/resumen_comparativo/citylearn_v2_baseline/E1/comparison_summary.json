@@ -39,9 +39,9 @@
     "score": 0.7288658278455777
   },
   "figures": [
-    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline\\E1\\OE1_comparison.png",
-    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline\\E1\\OE2_comparison.png",
-    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline\\E1\\OE3_comparison.png",
-    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\citylearn_v2_baseline\\E1\\baseline_gain_heatmap.png"
+    "outputs\\comparison_citylearn_v2_vs_v3_madrl\\E1\\OE1_comparison.png",
+    "outputs\\comparison_citylearn_v2_vs_v3_madrl\\E1\\OE2_comparison.png",
+    "outputs\\comparison_citylearn_v2_vs_v3_madrl\\E1\\OE3_comparison.png",
+    "outputs\\comparison_citylearn_v2_vs_v3_madrl\\E1\\baseline_gain_heatmap.png"
   ]
 }

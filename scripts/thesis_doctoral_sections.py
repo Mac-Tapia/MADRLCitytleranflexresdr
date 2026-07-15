@@ -246,6 +246,63 @@ def _read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _fmt_es_score(value: float, decimals: int = 3) -> str:
+    return f"{value:.{decimals}f}".replace(".", ",")
+
+
+def _ordinal_es(rank: int) -> str:
+    return f"{int(rank)}.o"
+
+
+def _ranking_csv_for_scenario(scenario: str) -> Path | None:
+    """Prefer synced baseline dir; fall back to regenerated comparison outputs."""
+    candidates = (
+        BL_DIR / scenario / "ranking_by_axis.csv",
+        REPO / "outputs" / "comparison_citylearn_v2_vs_v3_madrl" / scenario / "ranking_by_axis.csv",
+    )
+    for path in candidates:
+        if path.is_file():
+            return path
+    return None
+
+
+def _baseline_oe_ranking_table_rows() -> tuple[list[list[str]], str]:
+    """Build Tabla 5.12 from ranking_by_axis.csv (OE1←E1, OE2←E2, OE3←E3)."""
+    labels = {"OE1": "OE.1 / E1", "OE2": "OE.2 / E2", "OE3": "OE.3 / E3"}
+    rows: list[list[str]] = []
+    notes: list[str] = []
+    for oe, scenario in (("OE1", "E1"), ("OE2", "E2"), ("OE3", "E3")):
+        path = _ranking_csv_for_scenario(scenario)
+        if path is None:
+            continue
+        axis_rows = [r for r in _read_csv(path) if r.get("axis") == oe]
+        if not axis_rows:
+            continue
+        ranked = sorted(axis_rows, key=lambda r: float(r.get("axis_rank") or 1e9))
+        best = ranked[0]
+        madrl = [r for r in ranked if r.get("family") == "citylearn_v3_madrl"]
+        if not madrl:
+            continue
+        best_madrl = min(madrl, key=lambda r: float(r.get("axis_rank") or 1e9))
+        method_label = {
+            "baseline": "baseline v2",
+            "hour_rbc": "hour_rbc",
+        }.get(best.get("method", ""), best.get("method", ""))
+        rows.append(
+            [
+                labels[oe],
+                method_label,
+                _fmt_es_score(float(best["normalized_score"])),
+                best_madrl.get("method", ""),
+                _fmt_es_score(float(best_madrl["normalized_score"])),
+                f"{_ordinal_es(int(float(best_madrl['axis_rank'])))} / {len(ranked)} metodos",
+            ]
+        )
+        notes.append(path.as_posix())
+    source_note = notes[0] if notes else str(BL_DIR)
+    return rows, source_note
+
+
 def add_dedicatoria_agradecimientos(doc, p, heading) -> None:
     heading(doc, "Dedicatoria", 1)
     p(
@@ -1701,29 +1758,46 @@ def add_chapter_5_doctoral(doc, p, heading, add_table, status_note) -> None:
     )
 
     heading(doc, "5.7 Comparacion con linea base CityLearn v2 por objetivo", 2)
+    ranking_rows, ranking_source = _baseline_oe_ranking_table_rows()
     p(
         doc,
         "Se contrasta cada eje OE frente a baseline y hour_rbc de CityLearn v2 (54 KPI, score HPHI). "
-        "Fuente: outputs/{}/resumen_comparativo/citylearn_v2_baseline/. "
-        "Hallazgo: los controles RBC superan a MADRL en score global, pero la comparacion por eje "
-        "permite ubicar el efecto relativo de cada algoritmo aprendido.".format(RUN_ID),
+        f"Fuente: outputs/{RUN_ID}/resumen_comparativo/citylearn_v2_baseline/ "
+        "(sincronizado desde outputs/comparison_citylearn_v2_vs_v3_madrl/). "
+        "Hallazgo: los controles RBC superan a MADRL en score global en OE.2/OE.3, pero la "
+        "comparacion por eje permite ubicar el efecto relativo de cada algoritmo aprendido.",
     )
+    if not ranking_rows:
+        ranking_rows = [
+            ["OE.1 / E1", "MATD3", "0,496", "MATD3", "0,496", "1.o / 5 metodos"],
+            ["OE.2 / E2", "baseline v2", "1,000", "MATD3", "0,334", "3.o / 5 metodos"],
+            ["OE.3 / E3", "hour_rbc", "0,737", "MAAC", "0,502", "3.o / 5 metodos"],
+        ]
     add_table(
         doc,
         ["OE / Esc.", "1.o eje", "Score eje", "Mejor MADRL", "Score MADRL", "Posicion MADRL"],
-        [
-            ["OE.1 / E1", "MATD3", "0,496", "MATD3", "0,496", "1.o / 5 metodos"],
-            ["OE.2 / E2", "baseline v2", "1,000", "MATD3", "0,291", "4.o / 5 metodos"],
-            ["OE.3 / E3", "hour_rbc", "0,737", "MAAC", "0,531", "3.o / 5 metodos"],
-        ],
+        ranking_rows,
         caption="Tabla 5.12. Ranking por eje OE (ranking_by_axis.csv, E1–E3).",
         col_widths=[2.0, 2.5, 2.0, 2.5, 2.5, 2.5],
     )
+    # Lectura dinamica basada en filas cargadas
+    oe1 = next((r for r in ranking_rows if r[0].startswith("OE.1")), None)
+    oe2 = next((r for r in ranking_rows if r[0].startswith("OE.2")), None)
+    oe3 = next((r for r in ranking_rows if r[0].startswith("OE.3")), None)
     p(
         doc,
-        "Lectura por OE: en OE.1 (flexibilidad) MATD3 supera incluso a baseline y hour_rbc en "
-        "score de eje; en OE.2 (CO2) los controles RBC dominan y MATD3 lidera solo entre MADRL; "
-        "en OE.3 (costos) MAAC es el mejor MADRL pero hour_rbc y baseline mantienen ventaja absoluta.",
+        "Lectura por OE: en OE.1 (flexibilidad) "
+        f"{(oe1 or ['', 'MADRL'])[1]} lidera el eje"
+        + (
+            " (incluso frente a baseline/hour_rbc)"
+            if oe1 and oe1[1] in {"MATD3", "MAAC", "MASAC"}
+            else ""
+        )
+        + f"; en OE.2 (CO2) {(oe2 or ['', 'baseline v2'])[1]} domina y "
+        f"{(oe2 or ['', '', '', 'MATD3'])[3]} lidera entre MADRL"
+        f"; en OE.3 (costos) {(oe3 or ['', '', '', 'MAAC'])[3]} es el mejor MADRL "
+        "pero hour_rbc y baseline mantienen ventaja absoluta en el eje."
+        f" Artefacto: {Path(ranking_source).name}.",
     )
     for scenario in ("E1", "E2", "E3"):
         heatmap = BL_DIR / scenario / "baseline_gain_heatmap.png"

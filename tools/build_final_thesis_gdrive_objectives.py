@@ -524,6 +524,98 @@ def load_citylearn_v2_kpi_summary() -> tuple[pd.DataFrame, pd.DataFrame]:
     return ranking, kpi_catalog
 
 
+def load_final_episode_timeseries(treatment: pd.DataFrame) -> pd.DataFrame:
+    out_path = TABLE_DIR / "gdrive_final_episode_timeseries_compact.csv"
+    frames = []
+    cols = [
+        "algorithm",
+        "scenario",
+        "episode",
+        "episode_step",
+        "time_step",
+        "district_net_electricity_consumption",
+        "district_net_electricity_consumption_without_storage",
+        "district_net_electricity_consumption_cost",
+        "district_net_electricity_consumption_emission",
+        "electricity_price_mean",
+        "carbon_intensity_mean",
+        "reward_mean",
+    ]
+    for _, r in treatment.iterrows():
+        algo = r["algorithm"]
+        scenario = r["scenario"]
+        final_episode = int(r["final_episode_in_artifacts"]) if not pd.isna(r["final_episode_in_artifacts"]) else 49
+        path = G_BASE / algo / scenario / "data" / "timeseries.csv"
+        if not path.exists():
+            continue
+        parts = []
+        for chunk in pd.read_csv(path, usecols=lambda c: c in cols, chunksize=100_000):
+            if "episode" not in chunk.columns:
+                continue
+            sub = chunk[pd.to_numeric(chunk["episode"], errors="coerce") == final_episode].copy()
+            if not sub.empty:
+                parts.append(sub)
+        if parts:
+            df = pd.concat(parts, ignore_index=True)
+            frames.append(df)
+    if not frames:
+        return pd.DataFrame()
+    ts = pd.concat(frames, ignore_index=True)
+    ts.to_csv(out_path, index=False, encoding="utf-8")
+    return ts
+
+
+def load_trace_samples() -> pd.DataFrame:
+    out_path = TABLE_DIR / "gdrive_trace_samples_all.csv"
+    frames = []
+    for algo in ALGOS:
+        for scenario in SCENARIOS:
+            path = G_BASE / algo / scenario / "data" / "trace.csv"
+            if not path.exists():
+                continue
+            try:
+                df = pd.read_csv(path)
+            except pd.errors.EmptyDataError:
+                continue
+            if df.empty:
+                continue
+            df["algorithm"] = algo
+            df["scenario"] = scenario
+            frames.append(df)
+    if not frames:
+        return pd.DataFrame()
+    traces = pd.concat(frames, ignore_index=True)
+    traces.to_csv(out_path, index=False, encoding="utf-8")
+    return traces
+
+
+def load_checkpoint_summary() -> pd.DataFrame:
+    rows = []
+    for algo in ALGOS:
+        for scenario in SCENARIOS:
+            path = G_BASE / algo / scenario / "data" / "checkpoint_manifest.json"
+            if not path.exists():
+                continue
+            data = read_json(path)
+            for ckpt in data.get("checkpoints", []):
+                rel = ckpt.get("relative_path", "")
+                match = re.search(r"episode_(\d+)", rel)
+                rows.append(
+                    {
+                        "algorithm": algo,
+                        "scenario": scenario,
+                        "checkpoint_count": data.get("checkpoint_count"),
+                        "checkpoint_episode": int(match.group(1)) if match else math.nan,
+                        "bytes": ckpt.get("bytes", math.nan),
+                        "relative_path": rel,
+                    }
+                )
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df.to_csv(TABLE_DIR / "gdrive_checkpoint_manifest_compact.csv", index=False, encoding="utf-8")
+    return df
+
+
 def analyze_buildings(buildings: pd.DataFrame, equipment: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     cols = [
         "algorithm",
@@ -564,7 +656,18 @@ def classify_equipment(name: str) -> str:
     return "otro actuador controlado"
 
 
-def make_figures(detail: dict, buildings: pd.DataFrame, episodes: pd.DataFrame, convergence: pd.DataFrame) -> dict[str, Path]:
+def make_figures(
+    detail: dict,
+    treatment: pd.DataFrame,
+    buildings: pd.DataFrame,
+    eq_summary: pd.DataFrame,
+    episodes: pd.DataFrame,
+    convergence: pd.DataFrame,
+    kpi_ranking: pd.DataFrame,
+    final_ts: pd.DataFrame,
+    traces: pd.DataFrame,
+    checkpoints: pd.DataFrame,
+) -> dict[str, Path]:
     paths: dict[str, Path] = {}
     for oe, d in detail.items():
         spec = d["spec"]
@@ -616,6 +719,194 @@ def make_figures(detail: dict, buildings: pd.DataFrame, episodes: pd.DataFrame, 
         fig.savefig(out, dpi=180)
         plt.close(fig)
         paths[f"convergence_{scenario}"] = out
+
+    # Distribucion episodica por objetivo: permite ver dispersion, mediana y atipicos.
+    fig, axes = plt.subplots(1, 3, figsize=(14, 4.3))
+    for ax, oe in zip(axes, ["OE.1", "OE.2", "OE.3"]):
+        spec = detail[oe]["spec"]
+        metric = spec["metric"]
+        sub = episodes[episodes["scenario"] == spec["scenario"]].copy()
+        data = [sub[sub["algorithm"] == algo][metric].dropna().values for algo in ALGOS]
+        ax.boxplot(data, labels=ALGOS, showmeans=True)
+        ax.set_title(f"{oe} - {spec['dimension']}")
+        ax.set_ylabel(metric)
+        ax.grid(axis="y", alpha=0.25)
+        ax.tick_params(axis="x", rotation=25)
+    fig.tight_layout()
+    out = FIG_DIR / "episode_objective_distributions_boxplot.png"
+    fig.savefig(out, dpi=180)
+    plt.close(fig)
+    paths["episode_boxplots"] = out
+
+    fig, ax = plt.subplots(figsize=(7, 4))
+    oes = ["OE.1", "OE.2", "OE.3"]
+    vals = [detail[oe]["epsilon2"] for oe in oes]
+    ax.bar(oes, vals, color=["#2F6B52", "#406A9F", "#C77D2A"])
+    for i, oe in enumerate(oes):
+        kw = detail[oe]["kw"]
+        ax.text(i, vals[i] + 0.005, f"p={kw.pvalue:.3g}", ha="center", fontsize=8)
+    ax.axhline(0.01, color="gray", linestyle="--", linewidth=0.8)
+    ax.axhline(0.06, color="gray", linestyle=":", linewidth=0.8)
+    ax.axhline(0.14, color="gray", linestyle="-.", linewidth=0.8)
+    ax.set_title("Tamano de efecto inferencial por objetivo (epsilon2)")
+    ax.set_ylabel("epsilon2 Kruskal-Wallis")
+    ax.grid(axis="y", alpha=0.25)
+    fig.tight_layout()
+    out = FIG_DIR / "objective_effect_size_epsilon2.png"
+    fig.savefig(out, dpi=180)
+    plt.close(fig)
+    paths["effect_size"] = out
+
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4))
+    for ax, oe in zip(axes, ["OE.1", "OE.2", "OE.3"]):
+        labels = ALGOS
+        mat = pd.DataFrame(1.0, index=labels, columns=labels)
+        for name, _pv, adj in detail[oe]["pair_adj"]:
+            a, b = name.split(" vs ")
+            mat.loc[a, b] = adj
+            mat.loc[b, a] = adj
+        img = ax.imshow(-mat.applymap(lambda x: math.log10(max(float(x), 1e-12))).values, cmap="YlOrRd", vmin=0, vmax=8)
+        ax.set_xticks(range(len(labels)), labels, rotation=45, ha="right")
+        ax.set_yticks(range(len(labels)), labels)
+        ax.set_title(f"{oe}: -log10(p Holm)")
+    fig.colorbar(img, ax=axes.ravel().tolist(), shrink=0.8)
+    out = FIG_DIR / "pairwise_holm_pvalue_heatmaps.png"
+    fig.savefig(out, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+    paths["pairwise_heatmaps"] = out
+
+    if not kpi_ranking.empty:
+        pivot = kpi_ranking.pivot_table(index="method", columns="scenario", values="normalized_score", aggfunc="mean")
+        fig, ax = plt.subplots(figsize=(6.5, 4.2))
+        img = ax.imshow(pivot.values, cmap="viridis")
+        ax.set_xticks(range(len(pivot.columns)), pivot.columns)
+        ax.set_yticks(range(len(pivot.index)), pivot.index)
+        ax.set_title("Ranking KPI CityLearn v2 evaluate_v2 (score normalizado)")
+        for i in range(pivot.shape[0]):
+            for j in range(pivot.shape[1]):
+                ax.text(j, i, f"{pivot.iloc[i, j]:.3f}", ha="center", va="center", color="white", fontsize=8)
+        fig.colorbar(img, ax=ax, shrink=0.85)
+        fig.tight_layout()
+        out = FIG_DIR / "citylearn_v2_kpi_ranking_heatmap.png"
+        fig.savefig(out, dpi=180)
+        plt.close(fig)
+        paths["kpi_ranking_heatmap"] = out
+
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+    colors = {"HAPPO": "#9AA7B2", "MAAC": "#2F6B52", "MASAC": "#C77D2A", "MATD3": "#406A9F"}
+    markers = {"E1": "o", "E2": "s", "E3": "^"}
+    for _, r in treatment.iterrows():
+        size = 40 + 120 * (float(r.get("pv_self_consumption_ratio", 0) or 0))
+        ax.scatter(r["electricity_cost_control"], r["carbon_emissions_control"], s=size, c=colors.get(r["algorithm"], "gray"), marker=markers.get(r["scenario"], "o"), edgecolor="black", linewidth=0.4)
+        ax.text(r["electricity_cost_control"], r["carbon_emissions_control"], f"{r['algorithm']}-{r['scenario']}", fontsize=7)
+    ax.set_title("Trade-off multiobjetivo: costo vs CO2 vs autoconsumo PV")
+    ax.set_xlabel("electricity_cost_control")
+    ax.set_ylabel("carbon_emissions_control")
+    ax.grid(alpha=0.25)
+    fig.tight_layout()
+    out = FIG_DIR / "multiobjective_tradeoff_cost_co2_pv.png"
+    fig.savefig(out, dpi=180)
+    plt.close(fig)
+    paths["tradeoff"] = out
+
+    def building_heatmap(value_col: str, key: str, title: str, log_scale: bool = False) -> None:
+        if value_col not in buildings.columns:
+            return
+        pivot = buildings.pivot_table(index="agent", columns="algorithm", values=value_col, aggfunc="mean").reindex(columns=ALGOS)
+        values = pivot.astype(float).values
+        if log_scale:
+            values = pd.DataFrame(values).applymap(lambda x: math.copysign(math.log10(1.0 + abs(float(x))), float(x))).values
+        fig, ax = plt.subplots(figsize=(7.2, 6.2))
+        img = ax.imshow(values, aspect="auto", cmap="mako" if False else "viridis")
+        ax.set_xticks(range(len(pivot.columns)), pivot.columns)
+        ax.set_yticks(range(len(pivot.index)), pivot.index)
+        ax.set_title(title)
+        fig.colorbar(img, ax=ax, shrink=0.75)
+        fig.tight_layout()
+        out = FIG_DIR / f"{key}.png"
+        fig.savefig(out, dpi=180)
+        plt.close(fig)
+        paths[key] = out
+
+    building_heatmap("ev_departure_success_rate", "building_ev_success_heatmap", "EV departure success rate por edificio y algoritmo")
+    building_heatmap("carbon_emissions_control_kgco2", "building_carbon_heatmap", "CO2 control por edificio y algoritmo (log10)", True)
+    building_heatmap("electricity_cost_control_eur", "building_cost_heatmap", "Costo control por edificio y algoritmo (log10)", True)
+
+    if not eq_summary.empty:
+        pivot = eq_summary.pivot_table(index="agent", columns="equipment_class", values="count", aggfunc="sum", fill_value=0)
+        fig, ax = plt.subplots(figsize=(8, 6))
+        img = ax.imshow(pivot.values, aspect="auto", cmap="Blues")
+        ax.set_xticks(range(len(pivot.columns)), pivot.columns, rotation=35, ha="right")
+        ax.set_yticks(range(len(pivot.index)), pivot.index)
+        ax.set_title("Equipamiento controlado por edificio y clase")
+        fig.colorbar(img, ax=ax, shrink=0.75)
+        fig.tight_layout()
+        out = FIG_DIR / "controlled_equipment_class_heatmap.png"
+        fig.savefig(out, dpi=180)
+        plt.close(fig)
+        paths["equipment_class_heatmap"] = out
+
+    if not final_ts.empty:
+        for scenario in SCENARIOS:
+            sub = final_ts[final_ts["scenario"] == scenario].copy()
+            if sub.empty:
+                continue
+            sub["hour"] = pd.to_numeric(sub.get("episode_step", sub.get("time_step")), errors="coerce")
+            fig, axes = plt.subplots(3, 1, figsize=(8, 7), sharex=True)
+            for algo in ALGOS:
+                alg = sub[sub["algorithm"] == algo].sort_values("hour")
+                if alg.empty:
+                    continue
+                roll = alg["district_net_electricity_consumption"].rolling(24, min_periods=1).mean()
+                axes[0].plot(alg["hour"], roll, label=algo, linewidth=1.2)
+                axes[1].plot(alg["hour"], alg["district_net_electricity_consumption_cost"].rolling(24, min_periods=1).mean(), linewidth=1.0)
+                axes[2].plot(alg["hour"], alg["district_net_electricity_consumption_emission"].rolling(24, min_periods=1).mean(), linewidth=1.0)
+            axes[0].set_title(f"Serie temporal distrital final - {scenario} (media movil 24h)")
+            axes[0].set_ylabel("energia neta")
+            axes[1].set_ylabel("costo")
+            axes[2].set_ylabel("CO2")
+            axes[2].set_xlabel("hora del episodio final")
+            axes[0].legend(ncol=4, fontsize=8)
+            for ax in axes:
+                ax.grid(alpha=0.25)
+            fig.tight_layout()
+            out = FIG_DIR / f"final_episode_district_timeseries_{scenario.lower()}.png"
+            fig.savefig(out, dpi=180)
+            plt.close(fig)
+            paths[f"final_timeseries_{scenario}"] = out
+
+    if not traces.empty:
+        agg = traces.groupby(["algorithm", "scenario"])[["action_l2", "action_mean", "ev_charge_kwh", "ev_v2g_export_kwh", "electrical_storage_soc"]].mean(numeric_only=True).reset_index()
+        fig, axes = plt.subplots(1, 3, figsize=(13, 4))
+        for ax, col, title in zip(axes, ["action_l2", "ev_charge_kwh", "electrical_storage_soc"], ["Intensidad de accion", "Carga EV media", "SOC BESS medio"]):
+            pivot = agg.pivot(index="algorithm", columns="scenario", values=col).reindex(index=ALGOS, columns=SCENARIOS)
+            img = ax.imshow(pivot.values, cmap="plasma")
+            ax.set_xticks(range(len(SCENARIOS)), SCENARIOS)
+            ax.set_yticks(range(len(ALGOS)), ALGOS)
+            ax.set_title(title)
+            for i in range(pivot.shape[0]):
+                for j in range(pivot.shape[1]):
+                    ax.text(j, i, f"{pivot.iloc[i,j]:.2f}", ha="center", va="center", color="white", fontsize=8)
+        fig.colorbar(img, ax=axes.ravel().tolist(), shrink=0.75)
+        out = FIG_DIR / "trace_policy_action_heatmaps.png"
+        fig.savefig(out, dpi=180, bbox_inches="tight")
+        plt.close(fig)
+        paths["trace_policy_heatmaps"] = out
+
+    if not checkpoints.empty:
+        counts = checkpoints.groupby(["algorithm", "scenario"])["checkpoint_episode"].count().reset_index(name="count")
+        fig, ax = plt.subplots(figsize=(7, 4))
+        x = range(len(counts))
+        ax.bar([f"{r.algorithm}-{r.scenario}" for r in counts.itertuples()], counts["count"], color="#406A9F")
+        ax.set_title("Cobertura de checkpoints por tratamiento")
+        ax.set_ylabel("checkpoints en manifest")
+        ax.tick_params(axis="x", rotation=70)
+        ax.grid(axis="y", alpha=0.25)
+        fig.tight_layout()
+        out = FIG_DIR / "checkpoint_coverage_by_treatment.png"
+        fig.savefig(out, dpi=180)
+        plt.close(fig)
+        paths["checkpoint_coverage"] = out
     return paths
 
 
@@ -808,6 +1099,132 @@ def add_cap3_validation(doc: Document) -> None:
     )
 
 
+def add_cap3_methodology(doc: Document) -> None:
+    doc.add_heading("Capitulo 3. Metodologia", level=1)
+    p(doc, "El presente estudio adopta una metodologia cuantitativa, aplicada y explicativa-comparativa, sustentada en simulacion computacional controlada. Esta decision responde a la naturaleza del problema doctoral: evaluar en que medida distintos algoritmos MADRL modifican indicadores cuantificables de flexibilidad energetica, emisiones de CO2 y costos energeticos en una comunidad electrica modelada bajo CityLearn. De acuerdo con Hernandez-Sampieri y Mendoza (2018), la ruta cuantitativa se caracteriza por la medicion de variables, el uso de procedimientos sistematicos y la contrastacion de hipotesis; Creswell y Creswell (2023) enfatizan que los disenos cuantitativos permiten examinar relaciones entre variables mediante mediciones numericas y analisis estadistico. En esta tesis, la variable independiente se manipula computacionalmente mediante el algoritmo MADRL y el escenario de recompensa, mientras que la variable dependiente se observa mediante KPIs oficiales y resultados episodicos.")
+
+    doc.add_heading("3.1 Enfoque, tipo, nivel y diseno de investigacion", level=2)
+    p(doc, "La investigacion es aplicada porque desarrolla y evalua una solucion computacional para gestion energetica multiagente en una comunidad del SEAI Iquitos. Es cuantitativa porque los resultados se expresan en metricas numericas: recompensa, costo, emisiones, pico, rampa, factor de carga, energia de almacenamiento, exito EV y KPIs evaluate_v2. Es explicativa-comparativa porque no se limita a describir los algoritmos; contrasta si la variacion de la variable independiente produce efectos diferenciados sobre las dimensiones D-VD.1, D-VD.2 y D-VD.3. Esta clasificacion es coherente con los criterios de alcance y diseno propuestos por Hernandez-Sampieri y Mendoza (2018), con la logica de diseno cuantitativo de Creswell y Creswell (2023), y con la tradicion de diseno experimental orientado a factores, tratamientos y respuestas descrita por Montgomery (2019).")
+    p(doc, "El diseno no se considera no experimental en sentido estricto, porque si existe manipulacion controlada de factores dentro del entorno de simulacion: algoritmo MADRL y escenario de recompensa. Tampoco corresponde a un experimento de campo con sujetos humanos, sino a un experimento computacional in silico. Por ello, se define como diseno experimental-computacional factorial 4x3, con control de dataset, entorno, recompensa, horizonte temporal, agentes y protocolo de evaluacion. La inferencia es intra-corrida y se interpreta con cautela, porque Shadish, Cook y Campbell (2002) advierten que la validez interna, estadistica, de constructo y externa deben declararse de forma diferenciada; en este caso, la validez externa queda limitada por la ausencia de multiples semillas independientes.")
+    table(
+        doc,
+        "Tabla 3.1. Clasificacion metodologica de la investigacion.",
+        ["Criterio", "Decision metodologica", "Sustento"],
+        [
+            ["Enfoque", "Cuantitativo", "Medicion numerica de KPIs y contrastacion estadistica."],
+            ["Tipo", "Aplicada", "Desarrollo y evaluacion de una propuesta MADRL para gestion energetica."],
+            ["Nivel", "Explicativo-comparativo", "Evalua efecto de algoritmos y escenarios sobre dimensiones VD."],
+            ["Diseno", "Experimental-computacional factorial 4x3", "Manipulacion controlada de algoritmo y escenario en simulacion."],
+            ["Temporalidad", "Longitudinal por episodios y horizonte anual horario", "Cada episodio recorre una trayectoria anual de 8760 pasos."],
+            ["Inferencia", "Intra-corrida con limitacion multi-semilla", "No se generaliza mas alla de los artefactos auditados."],
+        ],
+        6.8,
+    )
+
+    doc.add_heading("3.2 Diseno experimental-computacional factorial 4x3", level=2)
+    p(doc, "El diseno factorial se compone de dos factores principales. El primer factor es el algoritmo MADRL, con cuatro niveles: HAPPO, MAAC, MASAC y MATD3. El segundo factor es el escenario de recompensa, con tres niveles: E1 orientado a flexibilidad, E2 orientado a emisiones de CO2 y E3 orientado a costos energeticos. La combinacion genera 12 tratamientos algoritmo x escenario. Montgomery (2019) sostiene que los disenos factoriales permiten estudiar efectos de factores bajo condiciones controladas; en esta tesis, el control se materializa en el mismo dataset, el mismo entorno CityLearn, la misma comunidad de 17 edificios, el mismo horizonte de evaluacion y la misma familia de KPIs.")
+    p(doc, "La unidad experimental principal es el tratamiento algoritmo-escenario. La unidad de observacion episodica es el episodio conservado en los artefactos de Drive, y la unidad de observacion espacial es el edificio-agente. Esta doble lectura permite responder los objetivos en tres escalas: distrito, edificio y politica multiagente. Para la inferencia estadistica se usan los episodios materializados: MAAC, MASAC y MATD3 conservan cobertura completa en los tres escenarios; HAPPO registra entrenamiento completado, pero conserva 49 filas episodicas por escenario en el CSV materializado, por lo que se reporta como evidencia descriptiva y no como grupo inferencial completo.")
+    table(
+        doc,
+        "Tabla 3.2. Matriz factorial 4x3 de tratamientos experimentales.",
+        ["Factor", "Niveles", "Funcion metodologica"],
+        [
+            ["Algoritmo MADRL", "HAPPO, MAAC, MASAC, MATD3", "Variable independiente principal; compara familias actor-critic multiagente."],
+            ["Escenario de recompensa", "E1, E2, E3", "Manipulacion de prioridad multiobjetivo: flexibilidad, CO2 y costo."],
+            ["Tratamientos", "12 combinaciones", "Base de comparacion para resultados por objetivo especifico."],
+            ["Horizonte", "50 episodios registrados por tratamiento", "Evidencia de entrenamiento Drive; se declara cobertura materializada por algoritmo."],
+        ],
+        6.8,
+    )
+
+    doc.add_heading("3.3 Datos utilizados y fuente empirica", level=2)
+    p(doc, "Los datos utilizados corresponden al dataset citylearn_iquitos_2023_2025 y a la corrida canonica Drive madrl_v3_20260627_164047. La tesis no incorpora datos simulados manualmente fuera del pipeline; usa artefactos generados por scripts del proyecto y resultados auditables: results.json, training_summary.json, timeseries.csv, trace.csv, building_kpis.csv, building_behavior_summary.csv, building_observation_action_schema.csv y checkpoint_manifest.json. La fuente empirica combina meteorologia, demanda, PV, BESS, EV, precios, intensidad de carbono y KPIs CityLearn. Esta trazabilidad responde a la exigencia metodologica de reproducibilidad y control de medicion que Hernandez-Sampieri y Mendoza (2018) y Creswell y Creswell (2023) asocian con la ruta cuantitativa.")
+    p(doc, "El dataset representa 17 edificios de una comunidad energetica de Iquitos, con equipos controlables heterogeneos y variables de observacion locales. La representacion por edificio permite modelar el problema como Dec-POMDP y evaluar la ejecucion descentralizada de politicas MADRL. Para evitar alucinacion o sobreinterpretacion, los resultados del Capitulo 5 se derivan exclusivamente de los archivos existentes y de tablas materializadas en outputs/_drive_madrl/gdrive_20260627_164047_objective_analysis.")
+    table(
+        doc,
+        "Tabla 3.3. Fuentes de datos y artefactos de analisis.",
+        ["Artefacto", "Contenido", "Uso metodologico"],
+        [
+            ["timeseries.csv", "Serie temporal distrital por episodio", "Energia, costo, CO2, recompensa y senales horarias."],
+            ["trace.csv", "Trazas por agente", "Acciones, SOC, EV, PV, importacion/exportacion y recompensa individual."],
+            ["building_kpis.csv / building_behavior_summary.csv", "KPIs por edificio", "Analisis espacial por agente y equipamiento."],
+            ["checkpoint_manifest.json", "Registro de checkpoints", "Trazabilidad de entrenamiento y cobertura por tratamiento."],
+            ["district_episode_kpis.csv", "KPIs episodicos materializados", "Base de estadistica descriptiva e inferencial."],
+        ],
+        6.7,
+    )
+
+    doc.add_heading("3.4 Variables, dimensiones e indicadores", level=2)
+    p(doc, "La variable independiente (VI) es el algoritmo MADRL implementado bajo un esquema CTDE y condicionado por escenario de recompensa. Sus dimensiones operacionales son: D-VI.1 tipo de algoritmo, D-VI.2 ponderacion multiobjetivo del escenario y D-VI.3 controles experimentales. La variable dependiente (VD) es el desempeno energetico coordinado de la comunidad, desagregado en tres dimensiones: D-VD.1 flexibilidad energetica, D-VD.2 emisiones de CO2 y D-VD.3 costos energeticos. Esta definicion mantiene correspondencia vertical con PE.1, PE.2, PE.3, OE.1, OE.2 y OE.3.")
+    p(doc, "La operacionalizacion sigue la logica de medicion cuantitativa: cada dimension debe tener indicadores observables, fuente de datos y criterio de interpretacion. En D-VD.1 se consideran recompensa en E1 y KPIs de flexibilidad como peak, ramping, load factor, autoconsumo PV y uso de almacenamiento. En D-VD.2 se consideran emisiones distritales, carbon_emissions_control, carbon_emissions_delta y consumo ponderado por intensidad de carbono. En D-VD.3 se consideran district_cost, electricity_cost_control, electricity_cost_delta y senales de precio. Esta estructura evita confundir recompensa de entrenamiento con resultado final de evaluacion.")
+    table(
+        doc,
+        "Tabla 3.4. Operacionalizacion metodologica de variables.",
+        ["Variable", "Dimension", "Indicadores principales", "Fuente"],
+        [
+            ["VI", "D-VI.1 Algoritmo", "HAPPO, MAAC, MASAC, MATD3", "Configuracion de tratamiento."],
+            ["VI", "D-VI.2 Escenario", "E1, E2, E3; pesos flex/CO2/costo", "reward_axis_weights y protocolo experimental."],
+            ["VD", "D-VD.1 Flexibilidad", "reward_mean E1, peak, ramping, load factor, BESS/PV", "episodes, results, evaluate_v2."],
+            ["VD", "D-VD.2 CO2", "district_emission, carbon_emissions_control/delta", "timeseries, results, building KPIs."],
+            ["VD", "D-VD.3 Costos", "district_cost, electricity_cost_control/delta", "timeseries, results, building KPIs."],
+        ],
+        6.6,
+    )
+
+    doc.add_heading("3.5 Tecnicas, herramientas e instrumentos", level=2)
+    p(doc, "Las tecnicas utilizadas son simulacion computacional, entrenamiento MADRL, evaluacion por KPIs, estadistica descriptiva, contrastacion no parametrica y visualizacion analitica. Las herramientas principales son Python, PyTorch, CityLearn v2, la extension CityLearn v3 propuesta, backends HAPPO/MAAC/MASAC/MATD3, scripts de orquestacion del proyecto y artefactos Drive. En terminos metodologicos, el instrumento de medicion no es un cuestionario ni una entrevista, sino el entorno computacional validado y sus archivos de salida.")
+    p(doc, "La decision de usar estadistica no parametrica se debe a que las recompensas y KPIs episodicos de RL pueden presentar no normalidad, dependencia temporal, asimetria o valores atipicos. Por ello se aplica Shapiro-Wilk para normalidad, Kruskal-Wallis para diferencias globales entre algoritmos con cobertura completa y Mann-Whitney U con ajuste Holm para comparaciones por pares. Esta eleccion es coherente con la recomendacion metodologica de no asumir supuestos estadisticos no verificados y con las advertencias de evaluacion robusta en aprendizaje por refuerzo reportadas por Henderson et al. (2018) y Agarwal et al. (2021).")
+    table(
+        doc,
+        "Tabla 3.5. Tecnicas, herramientas e instrumentos.",
+        ["Componente", "Aplicacion en la tesis", "Resultado esperado"],
+        [
+            ["Simulacion CityLearn", "Recrear comunidad energetica multiagente", "Series, KPIs y trazas auditables."],
+            ["MADRL", "Entrenar politicas bajo CTDE", "Politicas por algoritmo y escenario."],
+            ["evaluate_v2 / KPIs", "Evaluar flexibilidad, CO2 y costo", "Ranking comparable con baseline."],
+            ["Estadistica no parametrica", "Contrastar diferencias entre algoritmos", "p-valores, epsilon2 y decisiones HE."],
+            ["Visualizacion", "Interpretar convergencia, trade-offs, edificios y acciones", "Figuras del Capitulo 5."],
+        ],
+        6.8,
+    )
+
+    doc.add_heading("3.6 Procedimiento experimental", level=2)
+    p(doc, "El procedimiento experimental se estructura en siete fases reproducibles. Primero, se verifica el contexto del repositorio y la disponibilidad de artefactos. Segundo, se valida el dataset citylearn_iquitos_2023_2025 y el esquema de edificios/equipos. Tercero, se ejecutan o recuperan las 12 corridas algoritmo x escenario desde Drive. Cuarto, se consolidan episodios, timeseries, traces, building KPIs y checkpoints. Quinto, se calculan KPIs distritales, por edificio y por objetivo. Sexto, se aplican pruebas estadisticas y rankings evaluate_v2. Septimo, se generan tablas, figuras y redaccion interpretativa en el documento final.")
+    p(doc, "Cada fase se documenta mediante archivos de salida. La decision de no completar manualmente valores ausentes es parte del control metodologico: si un artefacto no conserva una granularidad determinada, se declara como limitacion y no se sintetiza. Esta regla es consistente con la validez de medicion y la transparencia experimental recomendadas por Shadish et al. (2002) y Montgomery (2019).")
+    table(
+        doc,
+        "Tabla 3.6. Procedimiento experimental reproducible.",
+        ["Fase", "Actividad", "Evidencia"],
+        [
+            ["1", "Verificacion de contexto y rutas", "scripts/verify_project_context.ps1."],
+            ["2", "Validacion de dataset y esquema CityLearn", "schema, building files y auditorias."],
+            ["3", "Entrenamiento/recuperacion de 12 tratamientos", "Drive madrl_v3_20260627_164047."],
+            ["4", "Consolidacion de resultados", "timeseries, traces, checkpoints y KPIs."],
+            ["5", "Analisis descriptivo e inferencial", "CSV de estadisticas y comparaciones Holm."],
+            ["6", "Visualizacion doctoral", "Figuras por convergencia, KPIs, edificios y trade-offs."],
+            ["7", "Integracion en Word", "Documento final reproducible desde el generador."],
+        ],
+        6.8,
+    )
+
+    doc.add_heading("3.7 Validez metodologica, trazabilidad y control de sesgos", level=2)
+    p(doc, "La validez interna se fortalece por el control del entorno: todos los algoritmos se evaluan sobre el mismo dataset, la misma comunidad, los mismos escenarios y los mismos criterios de extraccion de KPIs. La validez de constructo se protege mediante la correspondencia entre preguntas, objetivos, variables e indicadores. La validez estadistica se aborda con pruebas no parametricas y tamanos de efecto, evitando asumir normalidad sin evidencia. La validez externa se declara limitada porque la corrida canonica no sustituye una campana multi-semilla; por tanto, las conclusiones se formulan como evidencia doctoral intra-corrida y no como generalizacion universal.")
+    p(doc, "El control de sesgos se apoya en cinco reglas: no mezclar resultados de otros proyectos, no usar artefactos ajenos a Drive/local autorizado, no inventar datos faltantes, distinguir evidencia descriptiva de evidencia inferencial y reportar limitaciones de cobertura. Este criterio es central para una tesis doctoral basada en RL, donde diferencias aparentemente favorables pueden depender de semillas, hiperparametros, entorno y criterio de evaluacion.")
+    table(
+        doc,
+        "Tabla 3.7. Control metodologico de validez y trazabilidad.",
+        ["Dimension de validez", "Riesgo", "Control aplicado"],
+        [
+            ["Interna", "Comparacion desigual entre algoritmos", "Mismo dataset, mismo entorno y escenarios controlados."],
+            ["Constructo", "Indicadores no alineados con objetivos", "PE/OE/VD/KPI vinculados por tabla de operacionalizacion."],
+            ["Estadistica", "Normalidad o significancia asumida", "Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney-Holm y epsilon2."],
+            ["Externa", "Generalizacion indebida", "Declaracion de inferencia intra-corrida y recomendacion multi-semilla."],
+            ["Trazabilidad", "Datos inventados o mezclados", "Uso exclusivo de artefactos Drive y CSV materializados."],
+        ],
+        6.8,
+    )
+
+
 def add_cap5(
     doc: Document,
     detail: dict,
@@ -837,6 +1254,8 @@ def add_cap5(
             int(r["checkpoint_count"]),
         ])
     table(doc, "Tabla 5.1. Cobertura real de artefactos por tratamiento en Google Drive.", ["Algoritmo", "Escenario", "episodios registrados", "resumenes G:", "episodios KPI usados", "edificios", "checkpoints"], coverage_rows, 6.8)
+    if "checkpoint_coverage" in figures:
+        add_picture(doc, "Figura 5.1. Cobertura de checkpoints por tratamiento.", figures["checkpoint_coverage"])
 
     doc.add_heading("5.2 Trazabilidad entre objetivos, hipotesis e indicadores", level=2)
     link_rows = [[d["spec"]["objective"], d["spec"]["hypothesis"], d["spec"]["scenario"], d["spec"]["dimension"], d["spec"]["indicator"], "maximizar" if d["spec"]["direction"] == "max" else "minimizar"] for d in detail.values()]
@@ -877,6 +1296,8 @@ def add_cap5(
         for _, r in kpi_ranking.iterrows():
             rank_rows.append([r["scenario"], r["axis"], r["family"], r["method"], fmt(r["normalized_score"], 4), int(r["available_kpis"]), int(r["improved_kpis"]), fmt(r["axis_rank"], 1)])
         table(doc, "Tabla 5.5. Ranking por eje con KPIs compatibles con CityLearn v2.", ["Esc.", "Eje", "Familia", "Metodo", "score", "KPIs disp.", "KPIs mejora", "rank"], rank_rows, 6.5)
+        if "kpi_ranking_heatmap" in figures:
+            add_picture(doc, "Figura 5.4. Mapa de calor del ranking KPI CityLearn v2 evaluate_v2.", figures["kpi_ranking_heatmap"])
     p(doc, "La lectura evaluate_v2 evita una conclusion sesgada por la recompensa de entrenamiento: un algoritmo puede maximizar reward_mean_average en un escenario y, al mismo tiempo, no liderar todos los KPIs oficiales de flexibilidad, carbono o costo. Por ello, la decision doctoral se reporta en tres niveles: media episodica, prueba estadistica intra-corrida y KPI anual final compatible con CityLearn v2.")
 
     for idx, oe in enumerate(["OE.1", "OE.2", "OE.3"], start=5):
@@ -909,6 +1330,9 @@ def add_cap5(
             ])
         table(doc, f"Tabla 5.{idx}a. KPI anual final del tratamiento asociado a {oe}.", ["Algoritmo", "Indicador final OE", "peak", "ramping", "CO2 control", "costo control"], final_rows, 7.0)
         add_picture(doc, f"Figura 5.{idx}. Comparacion grafica de la media por episodio para {oe}.", figures[oe])
+        ts_key = f"final_timeseries_{spec['scenario']}"
+        if ts_key in figures:
+            add_picture(doc, f"Figura 5.{idx}a. Serie temporal distrital del episodio final para {spec['scenario']}.", figures[ts_key])
         kw = d["kw"]
         if kw is not None:
             p(doc, f"Contrastacion inferencial: para {oe} se aplica Kruskal-Wallis solo a los grupos con cobertura completa conservada ({', '.join(d['inferential_algos'])}). El resultado es H={kw.statistic:.4f}, p={kw.pvalue:.6g}, epsilon2={d['epsilon2']:.4f}. Con alpha=0,05, {'se rechaza H0 y se identifica efecto diferenciado del algoritmo' if kw.pvalue < 0.05 else 'no se rechaza H0 en la muestra inferencial conservada'}. HAPPO registra entrenamiento completado en Drive, pero no entra al contraste inferencial porque el CSV materializado conserva 49 filas episodicas por escenario.")
@@ -921,6 +1345,15 @@ def add_cap5(
     doc.add_heading("5.8 Resultados por edificio y equipamiento controlado", level=2)
     p(doc, "El analisis por edificio usa building_behavior_summary.csv y building_kpis.csv de los 12 tratamientos. Cada edificio actua como agente de la comunidad y posee dimensiones heterogeneas de observacion y accion; por ello, la cantidad de equipos controlados no es uniforme. La accion controlada agrupa BESS, cargadores EV, cargas flexibles y otros actuadores declarados en building_observation_action_schema.csv. Las cargas no controladas permanecen dentro de la demanda base y de las variables observadas, no como acciones directas del agente.")
     add_picture(doc, "Figura 5.8. Dimensiones de accion controlable por edificio.", figures["equipment"])
+    for key, caption in [
+        ("building_ev_success_heatmap", "Figura 5.8a. Exito de salida EV por edificio y algoritmo."),
+        ("building_carbon_heatmap", "Figura 5.8b. CO2 control por edificio y algoritmo."),
+        ("building_cost_heatmap", "Figura 5.8c. Costo control por edificio y algoritmo."),
+        ("equipment_class_heatmap", "Figura 5.8d. Equipamiento controlado por edificio y clase."),
+        ("trace_policy_heatmaps", "Figura 5.8e. Politicas y acciones medias desde trace.csv."),
+    ]:
+        if key in figures:
+            add_picture(doc, caption, figures[key])
     b_top = building_compact.sort_values("action_dim", ascending=False).head(10)
     table(doc, "Tabla 5.11. Edificios con mayor cantidad de acciones controlables.", ["Algoritmo", "Esc.", "Edificio", "rol red", "acciones", "obs.", "BESS kWh", "EV kWh", "CO2 kg", "costo"], [[r["algorithm"], r["scenario"], r["agent"], r.get("grid_role_control", ""), int(r["action_dim"]), int(r["observation_dim"]), fmt(r.get("battery_throughput_total_kwh"), 1), fmt(r.get("ev_charge_total_kwh"), 1), fmt(r.get("carbon_emissions_control_kgco2"), 1), fmt(r.get("electricity_cost_control_eur"), 1)] for _, r in b_top.iterrows()], 6.6)
     eq_pivot = eq_summary.groupby("equipment_class")["count"].sum().reset_index().sort_values("count", ascending=False)
@@ -943,12 +1376,19 @@ def add_cap5(
             "se rechaza H0" if kw and kw.pvalue < 0.05 else "no se rechaza H0",
         ])
     table(doc, "Tabla 5.13. Respuesta directa a objetivos especificos.", ["Objetivo", "Dimension", "Escenario", "mejor media episodica", "mejor muestra completa", "mejor KPI anual final", "Kruskal-Wallis", "Decision"], synth_rows, 6.8)
+    for key, caption in [
+        ("episode_boxplots", "Figura 5.9a. Distribucion episodica por objetivo y algoritmo."),
+        ("effect_size", "Figura 5.9b. Tamano de efecto inferencial por objetivo."),
+        ("pairwise_heatmaps", "Figura 5.9c. Matriz de p-valores Holm por objetivo."),
+    ]:
+        if key in figures:
+            add_picture(doc, caption, figures[key])
     p(doc, "La interpretacion doctoral no debe afirmar dominancia unica sin matices. Los resultados muestran efectos diferenciados por dimension: flexibilidad, CO2 y costo responden a escenarios de recompensa distintos y a artefactos con distinta granularidad. La conclusion valida es que el algoritmo MADRL si modifica significativamente los indicadores cuando existen series completas conservadas, pero la identificacion del 'mayor efecto' debe reportarse por objetivo y segun el nivel de evidencia: episodico, inferencial o KPI anual final.")
     p(doc, "Metodologicamente, esta decision sigue las advertencias de evaluacion rigurosa en aprendizaje por refuerzo: los episodios de una corrida no reemplazan multiples semillas independientes, y los p-valores deben interpretarse junto con cobertura, tamano de efecto y trazabilidad de artefactos (Henderson et al., 2018; Colas et al., 2019; Agarwal et al., 2021; Patterson et al., 2024). Por ello, se retiene Shapiro-Wilk, Kruskal-Wallis y Mann-Whitney U con Holm como contrastacion intra-corrida, y se declara la necesidad de multi-semilla para robustez externa.")
-    add_cap5_triangulated_discussion(doc, detail, kpi_ranking)
+    add_cap5_triangulated_discussion(doc, detail, kpi_ranking, figures)
 
 
-def add_cap5_triangulated_discussion(doc: Document, detail: dict, kpi_ranking: pd.DataFrame) -> None:
+def add_cap5_triangulated_discussion(doc: Document, detail: dict, kpi_ranking: pd.DataFrame, figures: dict[str, Path]) -> None:
     doc.add_heading("5.10 Discusion triangulada de resultados, baseline y trabajos relacionados", level=2)
     p(doc, "El Capitulo 5 tiene el mayor peso empirico del documento porque integra experimentos realizados, metricas, resultados, comparacion con baseline, tablas, figuras y discusion. La triangulacion de resultados se realiza en tres niveles: recompensa episodica, KPIs evaluate_v2 y contraste estadistico. Esta estrategia evita que una unica grafica de convergencia se interprete como evidencia suficiente, y responde a las recomendaciones de evaluacion rigurosa en RL, donde se exige reportar variabilidad, tamano de efecto y robustez de la comparacion (Henderson et al., 2018; Agarwal et al., 2021).")
     rows = []
@@ -965,10 +1405,37 @@ def add_cap5_triangulated_discussion(doc: Document, detail: dict, kpi_ranking: p
                 r = sub.iloc[0]
                 best_rows.append([scenario, r["axis"], r["family"], r["method"], fmt(r["normalized_score"], 4), fmt(r["axis_rank"], 1)])
         table(doc, "Tabla 5.15. Mejor metodo por eje segun ranking CityLearn v2 evaluate_v2.", ["Esc.", "Eje", "Familia", "Metodo", "score normalizado", "rank"], best_rows, 7.0)
+    if "tradeoff" in figures:
+        add_picture(doc, "Figura 5.10. Trade-off multiobjetivo costo-CO2-autoconsumo PV.", figures["tradeoff"])
     p(doc, "En flexibilidad energetica (PE.1/OE.1), la evidencia es la mas fuerte: MAAC obtiene la mejor media episodica conservada y lidera la muestra inferencial completa, mientras que Kruskal-Wallis rechaza H0 con epsilon2=0,2334, interpretado como efecto alto. Este resultado es compatible con la teoria de MAAC, porque el critico con atencion puede priorizar interacciones relevantes entre edificios cuando la dimension dominante es la coordinacion de flexibilidad; tambien se relaciona con CityLearn v2, donde los KPIs de flexibilidad incluyen pico, ramping, factor de carga y uso de almacenamiento (Iqbal & Sha, 2019; Nweye et al., 2024; Vazquez-Canteli et al., 2020).")
     p(doc, "En emisiones de CO2 (PE.2/OE.2), la evidencia muestra efecto inferencial significativo pero de tamano bajo. HAPPO presenta el mejor promedio descriptivo conservado, pero al restringir la decision a la muestra inferencial completa el mejor algoritmo es MAAC; en KPI anual final aparece MASAC. Esta divergencia no debe ocultarse, porque indica que el comportamiento carbono-dependiente no se reduce a un unico criterio. La literatura sobre SAC/MASAC sugiere que la regularizacion por entropia puede estabilizar exploracion en problemas continuos, mientras que CityLearn v2 y EVLearn muestran que carbono y carga EV dependen de senales temporales y restricciones de disponibilidad que pueden modificar el ranking final (Haarnoja et al., 2018; Fonseca et al., 2024; Nweye et al., 2024).")
     p(doc, "En costos energeticos (PE.3/OE.3), la prueba inferencial no rechaza H0 y el tamano de efecto es muy bajo. Por ello, la tesis no afirma una superioridad estadistica concluyente. Descriptivamente, HAPPO muestra menor costo medio entre las filas conservadas, pero en la muestra completa MATD3 presenta mejor promedio y MAAC obtiene el mejor KPI anual final. Esta lectura matizada es coherente con la literatura de TD3/MATD3, donde los criticos dobles reducen sesgos de estimacion, pero no garantizan dominancia en todos los objetivos multiobjetivo; tambien coincide con las advertencias de reproducibilidad en RL sobre no convertir diferencias numericas en conclusiones robustas sin replicas independientes (Fujimoto et al., 2018; Henderson et al., 2018; Agarwal et al., 2021).")
     p(doc, "La comparacion con baseline y trabajos relacionados se interpreta como evidencia contextual, no como sustituto de la contrastacion principal. Cuando el ranking evaluate_v2 ubica a un baseline o RBC por encima de MADRL en algun eje, el resultado se reporta porque forma parte de la evidencia real y muestra que el aprendizaje multiagente no domina automaticamente a politicas simples en todos los indicadores. Esta transparencia fortalece la validez doctoral: el aporte no consiste en afirmar superioridad universal, sino en identificar donde el MADRL produce efecto, con que magnitud y bajo que escenario de recompensa.")
+
+
+def add_cap5_madrl_nature_figures(doc: Document, figures: dict[str, Path]) -> None:
+    doc.add_heading("5.11 Figuras complementarias para evaluar la naturaleza MADRL", level=2)
+    p(doc, "La curva de convergencia por recompensa media movil es necesaria para verificar aprendizaje, pero no es suficiente para evaluar la naturaleza de cada MADRL. Por ello se incorporan figuras complementarias basadas en episodios, KPIs oficiales, trazas, series temporales finales, edificios, equipamiento y checkpoints. Estas visualizaciones permiten distinguir aprendizaje, efecto estadistico, trade-off multiobjetivo, comportamiento fisico y cobertura de entrenamiento.")
+    figure_plan = [
+        ("episode_boxplots", "Figura 5.11a. Distribucion episodica por objetivo y algoritmo."),
+        ("effect_size", "Figura 5.11b. Tamano de efecto inferencial por objetivo."),
+        ("pairwise_heatmaps", "Figura 5.11c. Matriz visual de p-valores Holm por objetivo."),
+        ("kpi_ranking_heatmap", "Figura 5.11d. Ranking de KPIs CityLearn v2 evaluate_v2."),
+        ("tradeoff", "Figura 5.11e. Trade-off multiobjetivo costo-CO2-autoconsumo PV."),
+        ("building_ev_success_heatmap", "Figura 5.11f. Exito de salida EV por edificio y algoritmo."),
+        ("building_carbon_heatmap", "Figura 5.11g. CO2 por edificio y algoritmo."),
+        ("building_cost_heatmap", "Figura 5.11h. Costo por edificio y algoritmo."),
+        ("equipment_class_heatmap", "Figura 5.11i. Equipamiento controlado por edificio y clase."),
+        ("final_timeseries_E1", "Figura 5.11j. Serie temporal distrital final en E1."),
+        ("final_timeseries_E2", "Figura 5.11k. Serie temporal distrital final en E2."),
+        ("final_timeseries_E3", "Figura 5.11l. Serie temporal distrital final en E3."),
+        ("trace_policy_heatmaps", "Figura 5.11m. Politicas/acciones desde trace.csv."),
+        ("checkpoint_coverage", "Figura 5.11n. Cobertura de checkpoints por tratamiento."),
+    ]
+    for key, caption in figure_plan:
+        if key in figures and Path(figures[key]).exists():
+            add_picture(doc, caption, figures[key], width=5.9)
+    p(doc, "Estas figuras no reemplazan las pruebas estadisticas; las complementan. La distribucion episodica muestra variabilidad, el tamano de efecto cuantifica magnitud, los p-valores Holm ubican diferencias por pares, el trade-off evidencia tensiones entre costo y CO2, los mapas por edificio muestran heterogeneidad multiagente, las series temporales finales explican el comportamiento fisico y la cobertura de checkpoints documenta trazabilidad de entrenamiento.")
 
 
 def effect_label(epsilon2: float) -> str:
@@ -1061,13 +1528,17 @@ def append_apa_references(doc: Document) -> None:
     run.bold = True
     refs = [
         "Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A. C., & Bellemare, M. G. (2021). Deep reinforcement learning at the edge of the statistical precipice. Advances in Neural Information Processing Systems, 34, 29304-29320.",
+        "Creswell, J. W., & Creswell, J. D. (2023). Research design: Qualitative, quantitative, and mixed methods approaches (6th ed.). SAGE Publications.",
         "Fonseca, N., Nweye, K., & Nagy, Z. (2024). EVLearn: A mixed-autonomy multi-agent reinforcement learning environment for electric vehicle charging management. arXiv. https://arxiv.org/abs/2403.07612",
         "Fujimoto, S., van Hoof, H., & Meger, D. (2018). Addressing function approximation error in actor-critic methods. Proceedings of the 35th International Conference on Machine Learning, 80, 1587-1596.",
         "Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. Proceedings of the 35th International Conference on Machine Learning, 80, 1861-1870.",
         "Henderson, P., Islam, R., Bachman, P., Pineau, J., Precup, D., & Meger, D. (2018). Deep reinforcement learning that matters. Proceedings of the AAAI Conference on Artificial Intelligence, 32(1).",
+        "Hernandez-Sampieri, R., & Mendoza, C. P. (2018). Metodologia de la investigacion: Las rutas cuantitativa, cualitativa y mixta. McGraw-Hill Education.",
         "Iqbal, S., & Sha, F. (2019). Actor-attention-critic for multi-agent reinforcement learning. Proceedings of the 36th International Conference on Machine Learning, 97, 2961-2970.",
         "Kuba, J. G., Chen, R., Wen, M., Wen, Y., Sun, F., Wang, J., & Yang, Y. (2021). Trust region policy optimisation in multi-agent reinforcement learning. arXiv. https://arxiv.org/abs/2109.11251",
+        "Montgomery, D. C. (2019). Design and analysis of experiments (10th ed.). Wiley.",
         "Nweye, K., Sankur, M. D., Wu, C., & Nagy, Z. (2024). CityLearn v2: Energy-flexible, resilient, occupant-centric, and carbon-aware management of grid-interactive communities. Journal of Building Performance Simulation, 17(1), 1-20.",
+        "Shadish, W. R., Cook, T. D., & Campbell, D. T. (2002). Experimental and quasi-experimental designs for generalized causal inference. Houghton Mifflin.",
         "Vazquez-Canteli, J. R., Dey, S., Henze, G., & Nagy, Z. (2020). CityLearn: Standardizing research in multi-agent reinforcement learning for demand response and urban energy management. arXiv. https://arxiv.org/abs/2012.10504",
     ]
     for ref in refs:
@@ -1102,7 +1573,7 @@ def rebuild_doc(
         insert_section_before_any(doc, ["2.1.3 CityLearn", "2.2.4 CityLearn", "2.3 Variables de la investigacion"], lambda tmp: add_expanded_decpomdp_section(tmp, building_compact))
     insert_section_before(doc, "Capitulo 2.", add_cap1_validation)
     insert_section_before(doc, "Capitulo 3.", add_cap2_validation)
-    insert_section_before(doc, "Capitulo 4.", add_cap3_validation)
+    replace_section(doc, "Capitulo 3. Metodologia", "Capitulo 4.", add_cap3_methodology)
     insert_section_before(doc, "Referencias bibliograficas", add_cap6_completion_plan)
     normalize_chapter2_numbering(doc)
     children = list(doc.element.body)
@@ -1137,7 +1608,10 @@ def main() -> None:
     convergence = analyze_convergence(episodes)
     kpi_ranking, kpi_catalog = load_citylearn_v2_kpi_summary()
     building_compact, eq_summary = analyze_buildings(buildings, equipment)
-    figures = make_figures(detail, building_compact, episodes, convergence)
+    final_ts = load_final_episode_timeseries(treatment)
+    traces = load_trace_samples()
+    checkpoints = load_checkpoint_summary()
+    figures = make_figures(detail, treatment, building_compact, eq_summary, episodes, convergence, kpi_ranking, final_ts, traces, checkpoints)
     rebuild_doc(detail, treatment, building_compact, eq_summary, figures, convergence, kpi_ranking, kpi_catalog)
     v = Document(OUT)
     paras = [p.text.strip() for p in v.paragraphs if p.text.strip()]
@@ -1157,6 +1631,10 @@ def main() -> None:
         "convergence_rows": len(convergence),
         "citylearn_v2_ranking_rows": len(kpi_ranking),
         "citylearn_v2_kpi_catalog_rows": len(kpi_catalog),
+        "final_timeseries_rows": len(final_ts),
+        "trace_rows": len(traces),
+        "checkpoint_rows": len(checkpoints),
+        "figure_count_generated": len(figures),
         "stats_csv": str(TABLE_DIR / "gdrive_objective_aligned_statistics.csv"),
         "pairs_csv": str(TABLE_DIR / "gdrive_objective_pairwise_mannwhitney_holm.csv"),
         "has_oe1": "OE.1: efecto del MADRL sobre flexibilidad energetica" in full,
@@ -1165,6 +1643,8 @@ def main() -> None:
         "has_decpomdp_expanded": "dimension global agregada 1856" in full and "gamma=0.9999" in full,
         "has_convergence_section": "Curvas de convergencia y episodios de aprendizaje" in full,
         "has_citylearn_v2_evaluate_v2_section": "KPIs bajo nomenclatura CityLearn v2 evaluate_v2" in full,
+        "has_distributed_madrl_figures": "Figura 5.9a. Distribucion episodica" in full and "Figura 5.10. Trade-off multiobjetivo" in full,
+        "has_no_aggregate_figure_section": "5.11 Figuras complementarias" not in full,
         "declares_happo_artifact_limit": "CSV materializado conserva 49 filas episodicas" in full,
         "has_no_old_global_kw": "p = 0,0459" not in full and "p=0,0459" not in full,
         "has_no_local_reference": "referencia local" not in full.lower(),

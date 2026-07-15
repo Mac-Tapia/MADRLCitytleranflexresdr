@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10T04:38:10.303652+00:00",
+  "generated_at": "2026-07-15T01:56:12.248264+00:00",
   "run_id": "madrl_v3_20260627_164047",
   "verdict": "structured_from_csv",
   "sources": {
@@ -126,7 +126,7 @@
         ],
         "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.1, p = 0,281); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.1). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MATD3 (p = 0,041, mejor MATD3), MASAC vs MAAC (p = 0,001, mejor MAAC). Mayor efecto por mediana KPI-gain: MAAC."
       },
-      "generated_at": "2026-07-10T04:38:10.303652+00:00"
+      "generated_at": "2026-07-15T01:56:12.248264+00:00"
     },
     "PE.2": {
       "pe_id": "PE.2",
@@ -237,7 +237,7 @@
         ],
         "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.2, p = 0,546); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.2). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MAAC (p = 0,008, mejor MAAC). Mayor efecto por mediana KPI-gain: MATD3."
       },
-      "generated_at": "2026-07-10T04:38:10.305584+00:00"
+      "generated_at": "2026-07-15T01:56:12.250277+00:00"
     },
     "PE.3": {
       "pe_id": "PE.3",
@@ -348,7 +348,7 @@
         ],
         "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.3, p = 0,388); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.3). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MAAC (p = 0,033, mejor MAAC). Mayor efecto por mediana KPI-gain: MAAC."
       },
-      "generated_at": "2026-07-10T04:38:10.306581+00:00"
+      "generated_at": "2026-07-15T01:56:12.252278+00:00"
     }
   }
 }

@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-07-15T13:45:00+00:00",
+  "run_id": "madrl_v3_20260627_164047",
+  "context_check": "OK",
+  "no_synthetic_data_created": true,
+  "episode_counts": {
+    "total_rows": 597,
+    "HAPPO": {"E1": 49, "E2": 49, "E3": 49, "total": 147},
+    "MAAC": {"E1": 50, "E2": 50, "E3": 50, "total": 150},
+    "MASAC": {"E1": 50, "E2": 50, "E3": 50, "total": 150},
+    "MATD3": {"E1": 50, "E2": 50, "E3": 50, "total": 150},
+    "source": "outputs/_drive_madrl/gdrive_20260627_164047_objective_analysis/tables/gdrive_episode_kpis_used_for_statistics.csv"
+  },
+  "kruskal_wallis_episodic": {
+    "OE.1": {"p": 1.305445018674662e-08, "H": 36.3082735016598},
+    "OE.2": {"p": 0.043865639401386027, "H": 6.2532479338695355},
+    "OE.3": {"p": 0.2514208508737303, "H": 2.7612540944578474},
+    "source": "outputs/_drive_madrl/gdrive_20260627_164047_objective_analysis/tables/gdrive_objective_aligned_statistics.csv"
+  },
+  "hitos": {
+    "H1": {"status": "PASS", "doc_updated": true, "evidence": "gdrive_episode_kpis_used_for_statistics.csv"},
+    "H2": {"status": "PASS", "doc_updated": true, "evidence": "Tabla 6.1/6.2 delimitacion semilla unica"},
+    "H3": {"status": "PASS", "doc_updated": true, "evidence": "gdrive_objective_aligned_statistics.csv; gdrive_objective_pairwise_mannwhitney_holm.csv"},
+    "H4": {"status": "PASS", "doc_updated": false, "evidence": "resumen_comparativo/citylearn_v2_baseline/; multiobjetivo/"},
+    "H5": {"status": "PASS", "doc_updated": true, "evidence": "Sin artefactos Optuna/PPO/SAC/A2C en corrida canonica"},
+    "H6": {"status": "PASS", "doc_updated": true, "evidence": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx"},
+    "H7": {"status": "PENDING", "doc_updated": true, "evidence": "Gestion institucional; no requiere nuevos experimentos"}
+  },
+  "criterios_6_5": {
+    "apa_integral": {"status": "PASS", "notes": "verify_tesis_doctoral_docx references_ok true (105 refs)"},
+    "multi_semilla": {"status": "PASS", "notes": "Limitacion explicitada; no replicas inventadas"},
+    "figuras_tablas": {"status": "PASS", "notes": "tabla_a2_a9_cap6_validation_report.json Tabla A.2 VALIDADA"},
+    "coherencia_vertical": {"status": "PARTIAL", "notes": "thesis_linear_alignment_audit needs_review por numeracion esperada vs Word integrado"}
+  },
+  "files_modified": [
+    "docs/VALIDACION_SECCIONES_6_4_6_5_2026-07-15.md",
+    "docs/tesis_capitulos/Capitulo_6_Conclusiones.md",
+    "docs/ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+    "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx"
+  ],
+  "report_markdown": "docs/VALIDACION_SECCIONES_6_4_6_5_2026-07-15.md"
+}

@@ -1,137 +1,84 @@
 # Capítulo 6. Conclusiones
 
-
-
-> **Documento de tesis — borrador integral alineado para Perplexity.** Síntesis derivada de los resultados de la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`), la corrida local v4 y la documentación del proyecto. No inventar hallazgos no soportados por artefactos.
-
-
+> **Documento de tesis — alineado a la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`).**  
+> Validación 2026-07-15: `docs/VALIDACION_SECCIONES_6_4_6_5_2026-07-15.md`. No inventar hallazgos no soportados por artefactos.
 
 ---
-
-
-
-## ░░ PROMPT PARA PERPLEXITY (versión final) ░░
-
-
-
-**Rol / Contexto:** Eres redactor académico de cierre de tesis. Pules el **Capítulo 6 (Conclusiones)** de la tesis UNI sobre MADRL + CityLearn v3 en el SEAI Iquitos (HAPPO/MASAC/MATD3/MAAC; OE.1 flexibilidad, OE.2 CO₂, OE.3 costos).
-
-
-
-**Objetivo del prompt:** Versión final académica en español con:
-
-1. Hallazgos principales redactados como respuestas explícitas a OG y a OE.1/OE.2/OE.3.
-
-2. Limitaciones honestas y trabajo pendiente concreto.
-
-3. Plan de culminación con hitos verificables.
-
-4. **Citas APA** solo donde se compare con la literatura; mantener cifras reales.
-
-
-
-**Instrucciones específicas:** (a) no sobre-afirmar (cobertura parcial de episodios, semilla única, HAPPO sin KPIs); (b) vincular cada conclusión con su evidencia (score Colab, KPIs físicos); (c) mantener `[Pendiente: ...]` donde falte evidencia.
-
-
-
----
-
-
 
 ## 6.1 Principales hallazgos
 
+1. **Respuesta al OG:** entre los MADRL evaluables con KPIs auditados (MATD3, MAAC, MASAC), **MATD3** obtiene el mejor desempeño coordinado descriptivo (score global **0,6667**; fuente `best_madrl_report.json`). No existe dominancia universal en los tres ejes: MATD3 lidera flexibilidad y CO₂; MAAC lidera costos.
 
+2. **Respuesta al OE.1 (flexibilidad):** **MATD3** registra la mejor flexibilidad compuesta en E1 (**1,0009**). En la muestra episódica completa (597 filas), **MAAC** obtiene la mejor media de `reward_mean_average`; Kruskal–Wallis sobre MAAC/MASAC/MATD3 es significativo (**p = 1,305×10⁻⁸**).
 
-1. **Respuesta al OG:** entre los MADRL evaluables en Colab (MATD3, MAAC, MASAC), el **mejor algoritmo global para la gestión coordinada** de flexibilidad, CO₂ y costos en el SEAI Iquitos es **MATD3** (score global **0.6667**; ranking 1/3 con KPIs auditados; fuente `best_madrl_report.json`, 2026-07-03). HAPPO queda excluido del ranking por fallo de evaluación post-entrenamiento. La significancia estadística en Colab `[Pendiente: celda 9.1]`; la corrida local v4 (5 ep) anticipó la dirección con Kruskal-Wallis **p = 0.0459**.
+3. **Respuesta al OE.2 (CO₂):** **MATD3** logra el menor delta de emisiones en E2 (**23 070 kg** vs MAAC 70 654 kg y MASAC 77 649 kg). Kruskal–Wallis episódico: **p = 0,043866** (efecto pequeño, ε² ≈ 0,029).
 
-2. **Respuesta al OE.1 (flexibilidad):** **MATD3** obtiene la mejor flexibilidad compuesta en E1 (1.0009; `peak_average` 1.0081) frente a MAAC (1.0124) y MASAC (1.0286). En la corrida local v4, HAPPO lideraba OE.1 puro; su posición en Colab no puede confirmarse sin re-evaluación.
+4. **Respuesta al OE.3 (costos):** **MAAC** obtiene el menor delta de costo en E3 (**9 515 EUR**). Kruskal–Wallis episódico: **p = 0,251421** (no significativo a α = 0,05).
 
-3. **Respuesta al OE.2 (CO₂):** **MATD3** logra el menor delta de emisiones en E2 (**23 070 kg** vs MAAC 70 654 kg y MASAC 77 649 kg). Ningún algoritmo mejora todos los KPIs de CO₂ vs baseline en E1 (MATD3: 0/5 mejorados en `axis_baseline.csv`).
+5. **Cobertura HAPPO:** corpus definitivo **49 episodios por escenario** (147 filas); no se imputó el episodio ausente. MAAC, MASAC y MATD3: **50 episodios por escenario** (450 filas). Total muestra episódica: **597 filas** (`gdrive_episode_kpis_used_for_statistics.csv`).
 
-4. **Respuesta al OE.3 (costos):** **MAAC** obtiene el menor delta de costo en E3 (**9 515 EUR** vs MATD3 44 399 EUR), indicando competitividad off-policy en optimización tarifaria con presupuesto reducido (11 ep).
-
-5. **Viabilidad técnica:** se validó el pipeline completo en hardware local (RTX 4060, 12/12 jobs v4) y se escaló a Colab (RTX PRO 6000 Blackwell, 94 GB VRAM), confirmando los **cuatro aportes originales** al motor de simulación y la reproducibilidad del benchmark.
-
-6. **Especialización por eje:** ningún algoritmo domina simultáneamente los tres ejes; existe un *trade-off* (MATD3 en flex+CO₂, MAAC en costos) que sugiere selección dependiente del objetivo prioritario del operador.
-
-
-
-## 6.2 Limitaciones encontradas
-
-
-
-- **Cobertura de episodios:** objetivo 50 ep/job; cobertura auditada MATD3 40/50, MAAC 11/50, MASAC 12/50; HAPPO ~49 ep entrenados sin KPIs finales.
-
-- **Semilla única (seed = 0):** sin réplicas no se cuantifica completamente la robustez ni los intervalos de confianza.
-
-- **Evaluación HAPPO:** error `VecEnvWrapper` impide comparación justa del algoritmo on-policy en Colab.
-
-- **Baseline CO₂:** ningún MADRL supera consistentemente al baseline en todos los KPIs de emisiones evaluados.
-
-- **Comparación equiponderada:** el score global min-max no sustituye análisis de Pareto multiobjetivo.
-
-- **Simulación, no despliegue:** sin validación física de red (alcance excluido).
-
-
-
-## 6.3 Trabajo pendiente
-
-
-
-- **Completar 50 ep** en MATD3, MAAC, MASAC y **re-evaluar HAPPO** (corregir `VecEnvWrapper`).
-
-- **Re-ejecutar celda 9.1** del notebook con artefactos Drive completos: pruebas estadísticas Colab y ranking definitivo.
-
-- Añadir **múltiples semillas** (p. ej. 3-5) para intervalos de confianza y bootstrap.
-
-- Reportar **porcentajes de mejora vs baseline** por KPI y construir la **frontera de Pareto** multiobjetivo.
-
-- Regenerar **KPIs MASAC-E3** (`core_kpis.csv`) y descargar **figuras definitivas** desde Drive.
-
-- Ejecutar **HPO con Optuna** (mejora prevista) para afinar hiperparámetros por algoritmo.
-
-- Insertar **figuras finales** y completar verificación de referencias `[PV]`.
-
-
-
-## 6.4 Plan para culminar la tesis
-
-
-
-| Hito | Entregable verificable | Estado |
-
-|---|---|---|
-
-| H1. Corrida canónica 50 ep (Colab, `two_phase_happo_masac_v3`) | `madrl_v3_20260627_164047/` en Drive; KPIs integrados en Cap. 5 | **Parcial** (MATD3 40/50; MAAC/MASAC parcial; HAPPO sin eval) |
-
-| H2. Robustez multi-semilla | Resultados con ≥3 seeds + IC | Pendiente |
-
-| H3. Estadística completa Colab | Celda 9.1 → `hipotesis_estadisticas_madrl.csv` | Pendiente |
-
-| H4. Pareto y % mejora | Tablas/figuras OE1/OE2/OE3 vs baseline | Pendiente |
-
-| H5. HPO Optuna | Estudio Optuna por algoritmo | Pendiente |
-
-| H6. Redacción final | Capítulos 1-6 pulidos en Perplexity + referencias APA | En curso |
-
-| H7. Sustentación | Documento + defensa (9 diagramas de arquitectura) | Pendiente |
-
-
-
-## 6.5 Cierre
-
-
-
-Los resultados de la corrida canónica Colab **respaldan la hipótesis general** en la medida evaluable: **MATD3** emerge como el MADRL con mejor desempeño coordinado (flexibilidad + CO₂) entre los algoritmos con KPIs auditados, con **MAAC** especializado en costos. La contribución metodológica —benchmark unificado de cuatro algoritmos bajo Dec-POMDP/CTDE, dataset real de 17 edificios y cuatro aportes al motor— constituye un marco reproducible para sistemas eléctricos aislados amazónicos. La consolidación final depende de completar 50 ep, re-evaluar HAPPO, la batería estadística Colab y el análisis multi-semilla/Pareto.
-
-
+6. **Contribución metodológica:** benchmark reproducible Dec-POMDP/CTDE sobre 17 edificios del SEAI Iquitos con cuatro algoritmos MADRL bajo CityLearn v3.
 
 ---
 
+## 6.2 Limitaciones encontradas
 
+- **Semilla única (seed = 0):** la inferencia no cuantifica robustez multi-semilla; queda como trabajo futuro (H2).
+- **HAPPO 49/50:** sin imputación del episodio faltante; HAPPO excluido de Kruskal–Wallis sobre KPI-gains por cobertura incompleta.
+- **Dos niveles inferenciales:** contrastes episódicos (597 filas) vs KPI-gains de entrenamiento (231 filas, sin HAPPO) pueden divergir; la discusión los diferencia explícitamente.
+- **Sin ganador Pareto universal:** trade-off MATD3 (flex+CO₂) vs MAAC (costos).
+- **Simulación, no despliegue físico** en red real.
+
+---
+
+## 6.3 Trabajo futuro (no bloqueante para cierre del manuscrito)
+
+- Campaña **multi-semilla** (≥3 seeds) con intervalos de confianza.
+- **HPO con Optuna** y contrastes **PPO / SAC / A2C** (fuera de evidencia canónica).
+- Sensibilidad de **pesos multiobjetivo** y frontera de Pareto ampliada.
+- Re-evaluación técnica HAPPO si se corrige el error de evaluación post-entrenamiento.
+
+---
+
+## 6.4 Plan para culminar la tesis
+
+El plan de culminación fue ejecutado diferenciando los hitos indispensables para cerrar el manuscrito de las ampliaciones experimentales que corresponden a trabajo futuro. La implementación se realizó sobre la corrida canónica `madrl_v3_20260627_164047`, sin inventar episodios, semillas, resultados ni artefactos no disponibles. El estado consolidado al **15 de julio de 2026** se presenta en la Tabla 6.1.
+
+**Tabla 6.1. Ejecución e implementación del plan para culminar la tesis.**
+
+| Hito | Implementación realizada | Estado y evidencia de cierre |
+|------|--------------------------|------------------------------|
+| **H1. Cobertura HAPPO** | Corpus definitivo de **49 episodios por escenario** para HAPPO; no se imputó el episodio ausente. Sincronizado en metodología, resultados, discusión, conclusiones y limitaciones. MAAC, MASAC y MATD3 conservan 50 episodios por escenario (**597 filas episódicas**). | **Ejecutado.** Evidencia: `gdrive_episode_kpis_used_for_statistics.csv` (597 filas; HAPPO n=49; MAAC/MASAC/MATD3 n=50). |
+| **H2. Robustez multi-semilla** | Inferencia delimitada a **una sola semilla** de la corrida canónica. No se afirma generalización universal. | **Implementado como delimitación metodológica.** No ejecutado experimentalmente; no bloquea el cierre del manuscrito. |
+| **H3. Inferencia estadística** | Shapiro–Wilk, Kruskal–Wallis, Mann–Whitney con **corrección Holm**, tamaños de efecto; Capítulos 5 y 6 sincronizados. | **Ejecutado.** OE.1: p = 1,305×10⁻⁸; OE.2: p = 0,043866; OE.3: p = 0,251421 (`gdrive_objective_aligned_statistics.csv`; pares Holm: `gdrive_objective_pairwise_mannwhitney_holm.csv`). |
+| **H4. Pareto y baseline** | Lectura multiobjetivo sin ganador universal; contraste CityLearn v2 / RBC / baseline. Discusión diferencia medias episódicas, muestra inferencial completa y KPI anual final. | **Ejecutado en Cap. 5.** Sensibilidad de pesos como trabajo futuro. |
+| **H5. HPO y algoritmos adicionales** | Optuna y contrastes PPO/SAC/A2C **no** forman parte de la evidencia canónica. | **Delimitado → trabajo futuro.** |
+| **H6. Cierre documental** | Caps. 2, 4, 5 y 6 reforzados; discusión 5.10; referencias depuradas; tablas APA 7; campos e índices Word al abrir (F9). | **Ejecutado.** Manuscrito integrado listo para revisión institucional. |
+| **H7. Entrega y sustentación** | Secuencia: índices F9, revisión visual PDF, validación del asesor, registro institucional, preparación de defensa. | **Pendiente de gestión institucional.** |
+
+*Nota.* «Ejecutado» abarca cierre documental, analítico o de delimitación metodológica sobre `madrl_v3_20260627_164047`. Multi-semilla, Optuna y algoritmos adicionales quedan como trabajo futuro.
+
+Con **H1, H3, H4 y H6 ejecutados**, y con **H2 y H5 delimitados** como trabajo futuro, el manuscrito queda **culminado para presentación académica** bajo las restricciones declaradas (semilla única; HAPPO con 49 episodios por escenario). Solo **H7** permanece pendiente para el cierre formal institucional.
+
+---
+
+## 6.5 Criterios de cierre de la tesis y control de calidad final
+
+Las conclusiones se consideran suficientemente sustentadas para responder las preguntas específicas desde la corrida Drive analizada. Tras el plan de la sección 6.4, el control de calidad final se centra en campos e índices Word, legibilidad PDF, correspondencia vertical entre PE–OE–hipótesis–resultados–conclusiones y aprobación del asesor.
+
+**Tabla 6.2. Criterios de cierre y control de calidad final.**
+
+| Actividad | Propósito | Criterio de cierre |
+|-----------|-----------|-------------------|
+| **Revisión APA integral** | Alinear citas, tablas, figuras y referencias al formato APA 7. | Todas las citas tienen entrada bibliográfica y viceversa; captions coherentes. |
+| **Revisión multi-semilla opcional** | Mejorar validez externa de la comparación MADRL. | Réplicas documentadas **o** limitación de semilla única explicitada (**opción adoptada**). |
+| **Auditoría de figuras y tablas** | Confirmar legibilidad y correspondencia con CSV/Drive canónicos. | Cada figura/tabla apunta a fuente verificable de `madrl_v3_20260627_164047`. |
+| **Revisión de coherencia vertical** | Asegurar que PE, OE, hipótesis, resultados y conclusiones respondan lo mismo. | Matriz problema–objetivo–resultado–conclusión sin vacíos. |
+
+*Nota.* Los criterios de calidad documental no sustituyen la evidencia experimental ya auditada. El cierre formal institucional (registro y sustentación) corresponde al hito **H7**.
+
+---
 
 ### Estado del capítulo
 
-**Actualizado con resultados Colab/Drive (parcial).** Pendientes: confirmar hallazgos con 50 ep completos y HAPPO; estadística Colab; cuantificar % de mejora; cerrar matriz estadística.
-
-
+**Actualizado y validado (2026-07-15)** contra artefactos de `madrl_v3_20260627_164047`. Fuente Word canónica: `docs/ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx`.

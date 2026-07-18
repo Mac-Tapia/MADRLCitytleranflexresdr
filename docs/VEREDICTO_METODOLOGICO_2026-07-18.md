@@ -35,4 +35,16 @@
 - `docs/tesis_capitulos/Capitulo_3_Metodologia.md` — §3.1, 3.2, 3.3, 3.5.2
 - `docs/tesis_capitulos/Capitulo_6_Conclusiones.md` — §6.1.1 Veredicto de hipótesis
 
-**Pendiente (si se requiere):** portar el mismo bloque al Word `*_PATCHED.docx` / `FINAL_COMPLETA`.
+**Pendiente (si se requiere):** —  
+**Hecho (2026-07-18):** portado a Word vía `tools/patch_veredicto_metodologico_docx.py`.
+
+### Word actualizados
+
+- `docs/ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS_PATCHED.docx`
+- `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA_PATCHED.docx`
+- `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA_SYNCED.docx`
+
+Informe: `docs/VEREDICTO_WORD_PATCH_REPORT_2026-07-18.json`  
+Verificación: cuasiexperimental ✓ · §6.1.1 ✓ · ranking/Pareto ✓ · dos capas ✓ · línea antigua solo capa B eliminada ✓
+
+Si los `.docx` originales están abiertos en Word, cerrarlos y copiar desde `*_PATCHED.docx` / `*_SYNCED.docx`.

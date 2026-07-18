@@ -19,6 +19,19 @@
 
 6. **Contribución metodológica:** benchmark reproducible Dec-POMDP/CTDE sobre 17 edificios del SEAI Iquitos con cuatro algoritmos MADRL bajo CityLearn v3.
 
+### 6.1.1 Veredicto de hipótesis (aceptación / rechazo)
+
+Diseño adoptado: **cuasiexperimental factorial 4×3**; formulación PG/OG tipo ranking–Pareto; contraste H₀/H₁ por eje con **dos capas** (A = episódica OE-alineada; B = KPI-gains). α = 0,05.
+
+| Hipótesis | Decisión | Fundamento |
+|-----------|----------|------------|
+| **HG (ranking / Pareto)** | **Aceptada** como ranking multiobjetivo sin dominador universal (MATD3 score 0,6667; MAAC lidera costos). Superioridad omnibus en KPI-gains: **H₀ no rechazada** (p = 0,155). | Cap. 1 §1.3; `best_madrl_report.json`; capa B |
+| **HE.1 (flexibilidad)** | **H₀ rechazada en capa A** (p = 1,305×10⁻⁸); **H₀ no rechazada en capa B** (p = 0,281). Cumplimiento de OE.1: **sí** (comparativo). | `gdrive_objective_aligned_statistics.csv`; `hipotesis_estadisticas_madrl.csv` |
+| **HE.2 (CO₂)** | **H₀ rechazada en capa A** (p = 0,0439, ε² ≈ 0,029); **H₀ no rechazada en capa B** (p = 0,546). Cumplimiento de OE.2: **sí** (descriptivo + inferencia episódica débil). | Idem |
+| **HE.3 (costos)** | **H₀ no rechazada** en capas A (p = 0,251) ni B (p = 0,388). Liderazgo MAAC: **descriptivo**. Cumplimiento de OE.3: **sí** a nivel identificación comparativa; **no** a nivel superioridad omnibus. | Idem |
+
+*Nota.* No se fusionan capas A y B. Accuracy/precision/recall/F1 no intervienen en este veredicto (métricas no primarias del control continuo MADRL).
+
 ---
 
 ## 6.2 Limitaciones encontradas

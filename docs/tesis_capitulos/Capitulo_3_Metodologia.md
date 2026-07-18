@@ -20,26 +20,27 @@
 
 ## 3.1 Tipo y nivel de investigación
 
-- **Enfoque:** cuantitativo.
-- **Tipo:** aplicada.
-- **Nivel:** descriptivo, comparativo y propositivo.
-- **Diseño:** no experimental, transversal, basado en simulación computacional y comparación de algoritmos.
-- **Método:** modelamiento computacional, simulación de entornos energéticos, comparación de algoritmos MADRL y análisis de KPIs.
+- **Enfoque:** cuantitativo (Hernández-Sampieri et al.).
+- **Tipo:** aplicada (Tamayo y Tamayo; Arias).
+- **Nivel:** comparativo y propositivo (con componente descriptivo de KPIs).
+- **Diseño:** **cuasiexperimental**, factorial **4×3** (algoritmo MADRL × escenario E1/E2/E3), basado en simulación computacional. Se manipula deliberadamente la variable independiente (algoritmo y pesos de recompensa por escenario) bajo protocolo fijo; **no** hay aleatorización de unidades naturales ni sujetos humanos, por lo que no constituye experimento puro (Campbell & Stanley vía Hernández-Sampieri; Bunge sobre experimentación/simulación controlada).
+- **Método:** modelamiento computacional Dec-POMDP/CTDE, simulación CityLearn v2/v3, comparación de algoritmos MADRL y análisis no paramétrico de KPIs y recompensa.
 
-El nivel **comparativo** es esencial (determinar el *mejor* MADRL); el nivel **propositivo** se justifica porque CityLearn v3 es una extensión arquitectónica original sobre CityLearn v2.
+El nivel **comparativo** es esencial (identificar el MADRL líder por eje y el ranking integrado); el nivel **propositivo** se justifica porque CityLearn v3 es una extensión arquitectónica original sobre CityLearn v2. Se descarta el rótulo “no experimental” porque la VI se manipula sistemáticamente.
 
 ## 3.2 Variables
 
-- **Variable independiente:** la capa MADRL cooperativa sobre CityLearn v2 (CityLearn v3 propuesto) — algoritmos HAPPO, MASAC, MATD3 y MAAC bajo Dec-POMDP y CTDE, con escenarios E1/E2/E3.
-- **Variable dependiente:** el desempeño coordinado en flexibilidad energética, emisiones de CO₂ y costos energéticos, medido por los KPIs de CityLearn v2.
+- **Variable independiente (tratamiento):** algoritmo MADRL — HAPPO, MASAC, MATD3 y MAAC — bajo Dec-POMDP y CTDE, con escenarios E1/E2/E3 (pesos de recompensa por eje). La capa CityLearn v3 es el **entorno común** del cuasiexperimento, no la VI primaria.
+- **Variable dependiente:** desempeño coordinado en flexibilidad energética, emisiones de CO₂ y costos energéticos, medido por KPIs de CityLearn v2 y por recompensa episódica (`reward_mean_average`, `district_emission`, `district_cost`, etc.).
 - **Variables de control:** dataset (`citylearn_iquitos_2023_2025`), semilla (seed = 0), horizonte (8 760 pasos/episodio), función de recompensa (`CityLearnV3MADRLRewardFunction`) y hardware.
+- **Métricas primarias:** KPIs energéticos/ambientales/económicos y recompensa MADRL. Accuracy, precision, recall y F1 **no** son métricas centrales de este diseño (control continuo, no clasificación); solo se reportarían como auxiliares si se dicotomizara “mejora vs baseline”.
 
 ## 3.3 Unidad de análisis, población y muestra
 
 - **Unidad de análisis:** comunidad inteligente simulada (17 edificios SEAI) y agentes MADRL cooperativos.
 - **Población:** escenarios simulados con múltiples edificios y DER; series temporales de demanda, precio e intensidad de carbono (2023-2025).
 - **Muestreo:** no probabilístico, intencional y técnicamente conveniente, justificado por la disponibilidad del dataset real de Iquitos y la pertinencia de los cuatro algoritmos.
-- **Tamaño de muestra:** 4 algoritmos MADRL + líneas base (CityLearn v2 `baseline`, `hour_rbc`) + comparadores SB3 (PPO/SAC/A2C). Corrida vigente: **5 episodios × 8 760 = 43 800 pasos** por job; configuración canónica objetivo: **50 episodios = 438 000 pasos**. `[Pendiente: número de semillas para robustez > 1.]`
+- **Tamaño de muestra:** 4 algoritmos MADRL + líneas base (CityLearn v2 `baseline`, `hour_rbc`) + comparadores SB3 (PPO/SAC/A2C). Corrida canónica: **≈50 episodios × 8 760 = 438 000 pasos** por job (HAPPO 49/50; MAAC/MASAC/MATD3 50). Semilla única (seed = 0); multi-semilla (≥3) = trabajo futuro. Los episodios **no** son réplicas i.i.d.; constituyen la unidad de contraste episódico bajo dependencia serial.
 
 ## 3.4 Datos utilizados — Dataset `citylearn_iquitos_2023_2025`
 
@@ -109,7 +110,12 @@ Revisión bibliográfica sistemática (50 antecedentes), extracción/preprocesam
 ### 3.5.2 Técnicas de análisis
 - KPIs por eje vía `env.evaluate_v2()` de CityLearn v2.
 - Comparación inter-algoritmo por KPI y ranking integrado (`compare_citylearn_v2_vs_v3_madrl.py`, `generate_thesis_objective_evidence.py`).
-- **Pruebas estadísticas no paramétricas:** Shapiro-Wilk (normalidad), Kruskal-Wallis (diferencia global entre 4 algoritmos), Mann-Whitney U (pares, con tamaños de efecto Cliff's δ, Vargha-Delaney A12, Cohen d, Hedges g) y Wilcoxon signed-rank (pares pareados por KPI). Esta suite se materializa en el notebook `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`, que carga los `results.json` de las 12 corridas en un *DataFrame* de KPIs (celda 8.1) y ejecuta la batería estadística (Kruskal-Wallis, Mann-Whitney U y ranking global) en la celda 9.1.
+- **Pruebas estadísticas no paramétricas** (justificadas por rechazo de normalidad Shapiro–Wilk; α = 0,05):
+  - **Kruskal–Wallis:** diferencia global entre algoritmos (omnibus).
+  - **Mann–Whitney U** con Holm: pares independientes; tamaños de efecto Cliff's δ, Vargha–Delaney A12, Cohen d, Hedges g.
+  - **Wilcoxon signed-rank:** pares pareados por KPI (exploratorio).
+  - **Friedman:** solo si hubiera ≥3 semillas (bloques); **no aplicable** con seed única.
+- **Dos capas de evidencia (no fusionar):** (A) series episódicas OE-alineadas (`gdrive_objective_aligned_statistics.csv`); (B) KPI-gains de entrenamiento (`hipotesis_estadisticas_madrl.csv`). Suite materializada también en `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` (celdas 8.1 y 9.1).
 
 ### 3.5.3 Instrumentos (software)
 Python 3.9 (`.venv39-citylearn-v3`), PyTorch 2.8.0+cu126, CUDA 12.6, CityLearn v2/v3, backends `external/HARL`, `external/MARL/src`, `external/off-policy`, `external/MAAC`; Gymnasium, PettingZoo; MARLlib (referencia) y Optuna (HPO previsto).
@@ -134,4 +140,4 @@ Python 3.9 (`.venv39-citylearn-v3`), PyTorch 2.8.0+cu126, CUDA 12.6, CityLearn v
 ---
 
 ### Estado del capítulo
-**Completo con placeholders menores.** Pendientes: número de semillas para robustez; consolidación de episodios objetivo (5 vigentes vs 50 canónicos).
+**Veredicto metodológico aplicado (2026-07-18):** §3.1–3.2 y 3.5.2 alineados a diseño cuasiexperimental 4×3, VI = algoritmo MADRL, dos capas inferenciales y exclusión de accuracy/F1 como métricas primarias. Multi-semilla experimental permanece como H2.

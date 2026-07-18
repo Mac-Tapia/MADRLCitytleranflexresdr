@@ -39,46 +39,54 @@ La literatura reporta evaluaciones aisladas de algoritmos individuales sobre dim
 ### 1.1.3 Formulación del problema
 
 **Problema general (PG):**
-> ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes?
+> ¿Qué algoritmo MADRL ofrece el mejor compromiso (ranking / frontera de Pareto) de gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes simuladas bajo CityLearn v3 en el SEAI Iquitos?
 
 **Problemas específicos:**
-- **PE.1:** ¿Cuál es el mejor MADRL que optimiza la flexibilidad energética en comunidades inteligentes?
-- **PE.2:** ¿Cuál es el mejor MADRL que reduce las emisiones de CO₂ en comunidades inteligentes?
-- **PE.3:** ¿Cuál es el mejor MADRL que optimiza los costos energéticos en comunidades inteligentes?
+- **PE.1:** ¿Qué MADRL lidera la flexibilidad energética (escenario E1) y con qué evidencia descriptiva e inferencial?
+- **PE.2:** ¿Qué MADRL lidera la reducción de emisiones de CO₂ (escenario E2) y con qué evidencia descriptiva e inferencial?
+- **PE.3:** ¿Qué MADRL lidera la optimización de costos energéticos (escenario E3) y con qué evidencia descriptiva e inferencial?
 
 ---
 
 ## 1.2 Objetivos
 
 ### 1.2.1 Objetivo general
-> **OG.** Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes.
+> **OG.** Identificar el(los) MADRL recomendable(s) por eje y el ranking integrado de gestión coordinada de flexibilidad, CO₂ y costos en el SEAI Iquitos, **sin asumir dominancia Pareto universal**.
 
 ### 1.2.2 Objetivos específicos
-> **OE.1.** Determinar el mejor MADRL que optimiza la flexibilidad energética.
+> **OE.1.** Identificar el MADRL líder en flexibilidad energética (E1) y contrastar si la diferencia entre algoritmos es estadísticamente sustentable.
 >
-> **OE.2.** Determinar el mejor MADRL que reduce las emisiones de CO₂.
+> **OE.2.** Identificar el MADRL líder en reducción de emisiones de CO₂ (E2) y contrastar si la diferencia entre algoritmos es estadísticamente sustentable.
 >
-> **OE.3.** Determinar el mejor MADRL que optimiza los costos energéticos.
+> **OE.3.** Identificar el MADRL líder en costos energéticos (E3) y contrastar si la diferencia entre algoritmos es estadísticamente sustentable.
 
-**Coherencia vertical:** cada OE responde a su PE, se operacionaliza con un escenario de entrenamiento (E1, E2, E3) cuyos pesos de recompensa priorizan el eje correspondiente, y se evalúa con los KPIs de CityLearn v2 (`peak_average`, `ramping_average`, `carbon_emissions`, `electricity_cost`, etc.).
+**Coherencia vertical:** cada OE responde a su PE, se operacionaliza con un escenario de entrenamiento (E1, E2, E3) cuyos pesos de recompensa priorizan el eje correspondiente, y se evalúa con los KPIs de CityLearn v2 (`peak_average`, `ramping_average`, `carbon_emissions`, `electricity_cost`, etc.) más la recompensa episódica. Las métricas primarias son KPIs energéticos y recompensa MADRL; accuracy/precision/recall/F1 no se usan como métricas centrales (solo serían auxiliares si se dicotomizara éxito vs baseline).
 
 ---
 
 ## 1.3 Hipótesis
 
-> **Nota metodológica:** el estudio es *cuantitativo, aplicado, comparativo y no experimental basado en simulación*. Las hipótesis se plantean como diferencias de desempeño entre algoritmos.
+> **Nota metodológica:** el estudio es *cuantitativo, aplicado y cuasiexperimental factorial 4×3 (algoritmo × escenario), basado en simulación*. Se formula H₀/H₁ por eje y se contrastan **dos capas de evidencia** que no deben fusionarse: (A) series episódicas alineadas a OE; (B) KPI-gains de entrenamiento.
 
-**Hipótesis general (HG):**
-> Existe al menos un algoritmo MADRL (entre HAPPO, MASAC, MATD3 y MAAC) cuyo desempeño coordinado en flexibilidad, CO₂ y costos es estadísticamente superior al de los demás en la simulación del SEAI Iquitos.
+**Hipótesis general (HG) — ranking multiobjetivo:**
+> **H₁(G):** no existe un único MADRL que domine simultáneamente los tres ejes; el ranking integrado y los líderes por eje pueden diferir (trade-off Pareto).  
+> **H₀(G):** las distribuciones de desempeño entre algoritmos son idénticas en el agregado de ejes (omnibus).
 
-**Hipótesis específicas:**
-- **HE.1:** existe un MADRL con desempeño de flexibilidad (peak/ramping/load factor) significativamente mejor.
-- **HE.2:** existe un MADRL con menores emisiones de CO₂ de forma estadísticamente significativa.
-- **HE.3:** existe un MADRL con menor costo energético de forma estadísticamente significativa.
+**Hipótesis específicas (contraste de efecto del algoritmo):**
+- **HE.1:** H₁₁ = las distribuciones de desempeño de flexibilidad difieren entre algoritmos; H₀₁ = son idénticas.
+- **HE.2:** H₁₂ = las distribuciones de emisiones de CO₂ difieren entre algoritmos; H₀₂ = son idénticas.
+- **HE.3:** H₁₃ = las distribuciones de costo energético difieren entre algoritmos; H₀₃ = son idénticas.
 
-**Contrastación:** mediante pruebas no paramétricas (Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U con tamaños de efecto, Wilcoxon signed-rank; α = 0,05). En la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`, 50 episodios), **ningún Kruskal-Wallis omnibus rechaza H₀** (HG p = 0,155; HE.1 p = 0,281; HE.2 p = 0,546; HE.3 p = 0,388). Descriptivamente, MATD3 lidera flexibilidad y CO₂; **MAAC lidera costos** (Δcosto 9 515 EUR en E3). La corrida local v4 (5 ep) reportó KW p = 0,0459 de forma exploratoria. Ver Capítulo 5, sección 5.9.5.
+**Contrastación (α = 0,05):** Shapiro–Wilk (normalidad) → Kruskal–Wallis (omnibus) → Mann–Whitney U con corrección Holm (pares) y Wilcoxon signed-rank (pareado por KPI, exploratorio). Corrida canónica `madrl_v3_20260627_164047` (seed = 0; ≈50 episodios; HAPPO n = 49).
 
-`[Pendiente: confirmar con el asesor si la norma UNI exige H0/H1 explícitas por objetivo.]`
+| Hipótesis | Capa A (episódica, OE-alineada) | Capa B (KPI-gains) | Veredicto |
+|-----------|----------------------------------|--------------------|-----------|
+| **HG** | — (se decide por ejes + ranking) | KW p = 0,155 → **no se rechaza H₀** omnibus | Ranking descriptivo: **MATD3** (score 0,6667); **sin dominador Pareto**; HG de ranking/Pareto **aceptada**; superioridad omnibus KPI-gains **no confirmada** |
+| **HE.1** | KW H = 36,31; p = 1,305×10⁻⁸; ε² = 0,233 → **rechazar H₀** | KW p = 0,281 → no rechazar H₀ | Diferencia episódica **sí**; KPI-gains **no**. Líder compuesto E1: **MATD3**; media episódica `reward_mean_average`: **MAAC** |
+| **HE.2** | KW H = 6,25; p = 0,0439; ε² = 0,029 → **rechazar H₀** (efecto pequeño) | KW p = 0,546 → no rechazar H₀ | Diferencia episódica débil **sí**; KPI-gains **no**. Líder descriptivo CO₂: **MATD3** |
+| **HE.3** | KW H = 2,76; p = 0,251 → **no rechazar H₀** | KW p = 0,388 → no rechazar H₀ | Liderazgo de **MAAC** (Δcosto 9 515 EUR en E3) es **descriptivo**, no inferencial omnibus |
+
+Fuentes: `gdrive_objective_aligned_statistics.csv` (capa A); `hipotesis_estadisticas_madrl.csv` (capa B). Ver Capítulos 5 y 6.
 
 ---
 
@@ -99,14 +107,14 @@ La literatura reporta evaluaciones aisladas de algoritmos individuales sobre dim
 - **Temático:** comparación de HAPPO, MASAC, MATD3 y MAAC en KPIs de flexibilidad, CO₂ y costos, frente a líneas base CityLearn v2 (`baseline`, `hour_rbc`) y comparadores SB3 (PPO/SAC/A2C de agente central).
 - **Espacial:** comunidades inteligentes simuladas en CityLearn v2 / v3; aplicabilidad al SEAI Iquitos (17 edificios reales de Loreto).
 - **Temporal:** dataset 2023-2025 (**26 304 pasos horarios**); literatura MADRL 2015-2026.
-- **Metodológico:** cuantitativo, aplicado, comparativo, no experimental, basado en simulación.
+- **Metodológico:** cuantitativo, aplicado, comparativo, **cuasiexperimental factorial 4×3** (algoritmo × escenario E1/E2/E3), basado en simulación.
 - **Computacional:** Python 3.9, PyTorch 2.8.0+cu126, CUDA 12.6; entrenamiento local en NVIDIA RTX 4060 Laptop 8 GB (perfil `local4060_fast`) y corridas en Colab A100.
 
 ### 1.5.2 Limitaciones y supuestos
 - No se modela ninguna red eléctrica física; los resultados **no constituyen validación de despliegue real**.
 - **CityLearn v3 es una extensión experimental de tesis, no una versión oficial de CityLearn.**
 - El dataset de Iquitos se construye por **destilación** de facturación mensual real a perfiles horarios sintéticos que preservan la magnitud energética (Capítulo 3).
-- Las corridas locales reportadas usan **5 episodios × 8 760 pasos = 43 800 pasos** por job (presupuesto de cómputo en 8 GB VRAM); la configuración canónica vigente apunta a **50 episodios = 438 000 pasos**. El número de semillas para robustez es **seed = 0** en la corrida vigente. `[Pendiente: ampliar a múltiples semillas para robustez estadística completa.]`
+- Las corridas locales reportadas usan **5 episodios × 8 760 pasos = 43 800 pasos** por job (presupuesto de cómputo en 8 GB VRAM); la configuración canónica vigente apunta a **50 episodios = 438 000 pasos**. La corrida canónica usa **seed = 0** (semilla única); la robustez multi-semilla (≥3) queda como **trabajo futuro (H2)**, no como resultado de esta tesis.
 - **Exclusiones:** despliegue en campo, sujetos humanos, despacho económico de generación física y análisis de estabilidad de red.
 
 ---
@@ -125,4 +133,4 @@ La literatura reporta evaluaciones aisladas de algoritmos individuales sobre dim
 ---
 
 ### Estado del capítulo
-**Completo con placeholders menores.** Pendientes: formato H0/H1 según norma UNI; ampliación a múltiples semillas; confirmación de unidad de posgrado (FIEE/FISI) y nombre completo del autor.
+**Veredicto metodológico aplicado (2026-07-18):** diseño cuasiexperimental; PG/OG/HG tipo ranking–Pareto (Semilla C); H₀/H₁ por eje; dos capas de evidencia sincronizadas con Caps. 5–6. Pendientes institucionales: unidad de posgrado (FIEE/FISI), nombre completo del autor, multi-semilla experimental (H2).

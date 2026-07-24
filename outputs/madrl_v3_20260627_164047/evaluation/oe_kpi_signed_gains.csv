@@ -1,0 +1,88 @@
+algorithm,scenario,oe,objetivo,kpi,value,baseline,signed_relative_gain,lower_is_better
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,grid_export_control,39628757.33693227,39642401.10018158,0.0003441709601501756,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,grid_export_delta,-6840.573845111944,0.0,1.0,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,grid_export_ratio,0.9996558290398498,1.0,0.0003441709601501586,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,grid_import,1.027697229384953,1.0,-0.027697229384952893,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,grid_import_control,12487915.029436173,12471908.741031649,-0.0012833872294033737,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,grid_import_delta,8025.073128036143,0.0,-1.0,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,net_exchange_control,-27140842.307496104,-27170492.359149933,-0.0010912592698690468,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,net_exchange_delta,14865.646973146218,0.0,-1.0,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,one_minus_load_factor_average,0.9955821162398272,1.0,0.004417883760172825,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,peak_average,1.0307016374943516,1.0,-0.03070163749435162,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,ramping_average,1.010993644889474,1.0,-0.010993644889474075,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,zero_net_energy,0.9986756010334868,1.0,0.0013243989665131517,True
+MAAC,E1,OE1,OE.1 Flexibilidad energetica,__AXIS_SCORE__,-0.08877804446842204,,-0.08877804446842204,False
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,grid_export_control,40666473.210258365,40655093.25299454,-0.0002799146762008499,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,grid_export_delta,5705.569394234239,0.0,-1.0,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,grid_export_ratio,1.000279914676201,1.0,-0.0002799146762009208,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,grid_import,1.0526600476938446,1.0,-0.05266004769384458,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,grid_import_control,11166713.320297375,11107877.379131315,-0.005296776256874855,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,grid_import_delta,29498.57696435126,0.0,-1.0,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,net_exchange_control,-29499759.88996099,-29547215.87386322,-0.001606106785316762,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,net_exchange_delta,23793.00757011609,0.0,-1.0,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,one_minus_load_factor_average,0.9786257116077314,1.0,0.021374288392268626,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,peak_average,1.0850627613699078,1.0,-0.08506276136990776,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,ramping_average,1.0219691691061643,1.0,-0.02196916910616431,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,zero_net_energy,0.9992642225192476,1.0,0.0007357774807523754,True
+MASAC,E1,OE1,OE.1 Flexibilidad energetica,__AXIS_SCORE__,-0.2620870520576241,,-0.2620870520576241,False
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,grid_export_control,39321485.62116025,39352684.03644943,0.00079279002317324,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,grid_export_delta,-15641.950079056976,0.0,1.0,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,grid_export_ratio,0.9992072099768268,1.0,0.0007927900231732288,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,grid_import,1.0395562335067712,1.0,-0.03955623350677118,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,grid_import_control,13294323.972622547,13204978.475624084,-0.006766046394046867,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,grid_import_delta,44795.15356419106,0.0,-1.0,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,net_exchange_control,-26027161.6485377,-26147705.560825348,-0.004610114337077758,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,net_exchange_delta,60437.10364324804,0.0,-1.0,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,one_minus_load_factor_average,0.9934690566529492,1.0,0.006530943347050844,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,peak_average,1.0081243650776304,1.0,-0.008124365077630369,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,ramping_average,1.0011755487359968,1.0,-0.0011755487359967898,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,zero_net_energy,0.9899596948084112,1.0,0.010040305191588828,True
+MATD3,E1,OE1,OE.1 Flexibilidad energetica,__AXIS_SCORE__,-0.08683962328887807,,-0.08683962328887807,False
+MAAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions,1.0469962875520018,1.0,-0.0469962875520018,True
+MAAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_control,10558754.019475916,10417831.77047322,-0.013527022907214376,True
+MAAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_daily_average_control,28931.395874805567,28545.263442328724,-0.013527022907214139,True
+MAAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_daily_average_delta,386.1324324768447,0.0,-1.0,True
+MAAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_delta,70654.19071758597,0.0,-1.0,True
+MAAC,E2,OE2,OE.2 Emisiones de CO2,__AXIS_SCORE__,-0.414810066673286,,-0.414810066673286,False
+MASAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions,1.051639591972696,1.0,-0.051639591972695964,True
+MASAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_control,9243171.298157984,9088297.682261093,-0.01704099285823135,True
+MASAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_daily_average_control,25326.64815113502,24902.288431814846,-0.01704099285823139,True
+MASAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_daily_average_delta,424.359719320174,0.0,-1.0,True
+MASAC,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_delta,77648.98780810599,0.0,-1.0,True
+MASAC,E2,OE2,OE.2 Emisiones de CO2,__AXIS_SCORE__,-0.4171443155378317,,-0.4171443155378317,False
+MATD3,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions,1.0421428734111502,1.0,-0.042142873411150195,True
+MATD3,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_control,11019732.720185794,10973717.965442345,-0.004193178181574904,True
+MATD3,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_daily_average_control,30194.4954086607,30068.413194498946,-0.004193178181574961,True
+MATD3,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_daily_average_delta,126.08221416175708,0.0,-1.0,True
+MATD3,E2,OE2,OE.2 Emisiones de CO2,carbon_emissions_delta,23070.418478806503,0.0,-1.0,True
+MATD3,E2,OE2,OE.2 Emisiones de CO2,__AXIS_SCORE__,-0.41010584595486,,-0.41010584595486,False
+MAAC,E3,OE3,OE.3 Costos energeticos,cost_one_minus_load_factor_average,0.9914670028561496,1.0,0.008532997143850363,True
+MAAC,E3,OE3,OE.3 Costos energeticos,cost_peak_average,1.0309261417946909,1.0,-0.030926141794690887,True
+MAAC,E3,OE3,OE.3 Costos energeticos,cost_ramping_average,1.0189549701035028,1.0,-0.018954970103502777,True
+MAAC,E3,OE3,OE.3 Costos energeticos,electricity_cost,1.002675335325078,1.0,-0.00267533532507791,True
+MAAC,E3,OE3,OE.3 Costos energeticos,electricity_cost_control,7112781.500188709,7093803.197904205,-0.0026753353250779837,True
+MAAC,E3,OE3,OE.3 Costos energeticos,electricity_cost_daily_average_control,19489.297408897022,19437.29612395261,-0.0026753353250780865,True
+MAAC,E3,OE3,OE.3 Costos energeticos,electricity_cost_daily_average_delta,52.00128494441179,0.0,-1.0,True
+MAAC,E3,OE3,OE.3 Costos energeticos,electricity_cost_delta,9515.151784724349,0.0,-1.0,True
+MAAC,E3,OE3,OE.3 Costos energeticos,price_signal_deviation,0.379623524784308,0.3793153256301461,-0.0008125143734962771,True
+MAAC,E3,OE3,OE.3 Costos energeticos,__AXIS_SCORE__,-0.22779851501145268,,-0.22779851501145268,False
+MASAC,E3,OE3,OE.3 Costos energeticos,cost_one_minus_load_factor_average,0.9777831177218484,1.0,0.02221688227815155,True
+MASAC,E3,OE3,OE.3 Costos energeticos,cost_peak_average,1.0863807148533065,1.0,-0.08638071485330645,True
+MASAC,E3,OE3,OE.3 Costos energeticos,cost_ramping_average,1.024945867130649,1.0,-0.024945867130649058,True
+MASAC,E3,OE3,OE.3 Costos energeticos,electricity_cost,1.0055554410308447,1.0,-0.00555544103084471,True
+MASAC,E3,OE3,OE.3 Costos energeticos,electricity_cost_control,7145558.689493987,7106081.274015802,-0.005555441030844736,True
+MASAC,E3,OE3,OE.3 Costos energeticos,electricity_cost_daily_average_control,19579.10817991274,19470.938529099127,-0.005555441030844685,True
+MASAC,E3,OE3,OE.3 Costos energeticos,electricity_cost_daily_average_delta,108.16965081361292,0.0,-1.0,True
+MASAC,E3,OE3,OE.3 Costos energeticos,electricity_cost_delta,19792.792564499217,0.0,-1.0,True
+MASAC,E3,OE3,OE.3 Costos energeticos,price_signal_deviation,0.3899742202101317,0.3845799501022525,-0.014026394528484781,True
+MASAC,E3,OE3,OE.3 Costos energeticos,__AXIS_SCORE__,-0.23553360192520253,,-0.23553360192520253,False
+MATD3,E3,OE3,OE.3 Costos energeticos,cost_one_minus_load_factor_average,0.9935919536582044,1.0,0.006408046341795592,True
+MATD3,E3,OE3,OE.3 Costos energeticos,cost_peak_average,1.0071128697365774,1.0,-0.007112869736577432,True
+MATD3,E3,OE3,OE.3 Costos energeticos,cost_ramping_average,1.0011383857310043,1.0,-0.0011383857310043322,True
+MATD3,E3,OE3,OE.3 Costos energeticos,electricity_cost,1.0091805161969924,1.0,-0.00918051619699245,True
+MATD3,E3,OE3,OE.3 Costos energeticos,electricity_cost_control,9734645.59704402,9646089.516004698,-0.009180516196992693,True
+MATD3,E3,OE3,OE.3 Costos energeticos,electricity_cost_daily_average_control,26673.306807747056,26430.659708198746,-0.009180516196992306,True
+MATD3,E3,OE3,OE.3 Costos energeticos,electricity_cost_daily_average_delta,242.6470995483156,0.0,-1.0,True
+MATD3,E3,OE3,OE.3 Costos energeticos,electricity_cost_delta,44399.364069434494,0.0,-1.0,True
+MATD3,E3,OE3,OE.3 Costos energeticos,price_signal_deviation,0.3576461190979214,0.3563017643367849,-0.003773079158445489,True
+MATD3,E3,OE3,OE.3 Costos energeticos,__AXIS_SCORE__,-0.22590642631946764,,-0.22590642631946764,False

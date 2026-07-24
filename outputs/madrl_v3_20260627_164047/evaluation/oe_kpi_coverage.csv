@@ -1,0 +1,10 @@
+algorithm,scenario,oe,kpis_definidos,kpis_presentes,kpis_con_valor
+MAAC,E1,OE1,36,36,36
+MAAC,E2,OE2,7,7,7
+MAAC,E3,OE3,11,11,11
+MASAC,E1,OE1,36,36,36
+MASAC,E2,OE2,7,7,7
+MASAC,E3,OE3,11,11,11
+MATD3,E1,OE1,36,36,36
+MATD3,E2,OE2,7,7,7
+MATD3,E3,OE3,11,11,11

@@ -1,0 +1,22 @@
+objetivo,oe,scenario,algorithm,kpi,value,baseline,delta_vs_baseline,improved_vs_baseline,lower_is_better,available,source
+OE.2 Emisiones CO2,OE2,E2,MAAC,carbon_emissions,1.0469962875520018,1.0,0.0469962875520018,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MAAC,carbon_emissions_baseline,10417831.77047322,,,,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MAAC,carbon_emissions_control,10558754.019475916,10417831.77047322,140922.24900269508,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MAAC,carbon_emissions_daily_average_baseline,28545.263442328724,,,,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MAAC,carbon_emissions_daily_average_control,28931.395874805567,28545.263442328724,386.13243247684295,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MAAC,carbon_emissions_daily_average_delta,386.1324324768447,0.0,386.1324324768447,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MAAC,carbon_emissions_delta,70654.19071758597,0.0,70654.19071758597,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MASAC,carbon_emissions,1.051639591972696,1.0,0.0516395919726959,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MASAC,carbon_emissions_baseline,9088297.682261093,,,,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MASAC,carbon_emissions_control,9243171.298157984,9088297.682261093,154873.6158968918,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MASAC,carbon_emissions_daily_average_baseline,24902.288431814846,,,,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MASAC,carbon_emissions_daily_average_control,25326.64815113502,24902.288431814846,424.3597193201749,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MASAC,carbon_emissions_daily_average_delta,424.359719320174,0.0,424.359719320174,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MASAC,carbon_emissions_delta,77648.98780810599,0.0,77648.98780810599,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MATD3,carbon_emissions,1.0421428734111502,1.0,0.0421428734111501,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MATD3,carbon_emissions_baseline,10973717.965442345,,,,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MATD3,carbon_emissions_control,11019732.720185794,10973717.965442345,46014.75474345125,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MATD3,carbon_emissions_daily_average_baseline,30068.413194498946,,,,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MATD3,carbon_emissions_daily_average_control,30194.4954086607,30068.413194498946,126.08221416175728,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MATD3,carbon_emissions_daily_average_delta,126.08221416175708,0.0,126.08221416175708,False,True,True,objective_kpis.csv
+OE.2 Emisiones CO2,OE2,E2,MATD3,carbon_emissions_delta,23070.418478806503,0.0,23070.418478806503,False,True,True,objective_kpis.csv

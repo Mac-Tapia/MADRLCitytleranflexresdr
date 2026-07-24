@@ -1,27 +1,5 @@
 {
-  "mejor_algoritmo_madrl_OG": "MATD3",
-  "ganadores_por_objetivo": {
-    "OE1": {
-      "objetivo": "OE.1 Flexibilidad energetica",
-      "scenario": "E1",
-      "winner": "MATD3",
-      "n_kpis_definidos": 36
-    },
-    "OE2": {
-      "objetivo": "OE.2 Emisiones de CO2",
-      "scenario": "E2",
-      "winner": "MATD3",
-      "n_kpis_definidos": 7
-    },
-    "OE3": {
-      "objetivo": "OE.3 Costos energeticos",
-      "scenario": "E3",
-      "winner": "MATD3",
-      "n_kpis_definidos": 11
-    }
-  },
-  "fecha_seleccion": "2026-07-23T21:44:53.192530",
-  "ranking_OG": [
+  "ranking": [
     {
       "algorithm": "MATD3",
       "mean_score": -0.2409506318544019,
@@ -44,6 +22,7 @@
       "score_E3_OE3": -0.23553360192520253
     }
   ],
+  "best_madrl": "MATD3",
   "oe_winners": {
     "OE1": {
       "scenario": "E1",
@@ -106,47 +85,7 @@
       "n_kpis_definidos": 11
     }
   },
-  "kruskal_wallis": {
-    "H": 1.8666666666666671,
-    "p": 0.393240720868598,
-    "significant": false
-  },
-  "mann_whitney_u": {
-    "MAAC_vs_MASAC": {
-      "p": 0.4,
-      "cliff_delta": 0.5555555555555556,
-      "winner": "MAAC"
-    },
-    "MAAC_vs_MATD3": {
-      "p": 0.7,
-      "cliff_delta": -0.3333333333333333,
-      "winner": "MATD3"
-    },
-    "MASAC_vs_MATD3": {
-      "p": 0.4,
-      "cliff_delta": -0.5555555555555556,
-      "winner": "MATD3"
-    }
-  },
-  "metodologia": "Por escenario Ek se promedia el signed relative gain vs baseline de TODOS los KPIs del eje OEk definidos en citylearn.v3.objectives (E1→OE1, E2→OE2, E3→OE3). OG = media de scores E1/E2/E3. Pruebas: Shapiro-Wilk + Kruskal-Wallis + Mann-Whitney U.",
   "score_rule": "signed_relative_gain_vs_baseline_mean_over_all_matching_OE_kpis; positive_is_better; OG=mean(E1,E2,E3)",
-  "escenarios_evaluados": [
-    "E1",
-    "E2",
-    "E3"
-  ],
-  "objetivos": [
-    "OG",
-    "OE.1",
-    "OE.2",
-    "OE.3"
-  ],
-  "algoritmos_evaluados": [
-    "HAPPO",
-    "MASAC",
-    "MATD3",
-    "MAAC"
-  ],
   "kpis_por_oe": {
     "OE1": [
       "grid_import",
@@ -209,5 +148,26 @@
       "price_signal_deviation"
     ]
   },
-  "output_root": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047"
+  "kruskal_wallis": {
+    "H": 1.8666666666666671,
+    "p": 0.393240720868598,
+    "significant": false
+  },
+  "mann_whitney_u": {
+    "MAAC_vs_MASAC": {
+      "p": 0.4,
+      "cliff_delta": 0.5555555555555556,
+      "winner": "MAAC"
+    },
+    "MAAC_vs_MATD3": {
+      "p": 0.7,
+      "cliff_delta": -0.3333333333333333,
+      "winner": "MATD3"
+    },
+    "MASAC_vs_MATD3": {
+      "p": 0.4,
+      "cliff_delta": -0.5555555555555556,
+      "winner": "MATD3"
+    }
+  }
 }

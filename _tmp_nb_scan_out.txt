@@ -1,0 +1,2988 @@
+
+================================================================================
+CELL 0 [markdown] lines=32
+FIRST: # MADRL CityLearn v3 — Tutorial Completo (Google Colab · A100)
+================================================================================
+# MADRL CityLearn v3 — Tutorial Completo (Google Colab · A100)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/codex/iquitos-distillation-madrl-docs/examples/madrl_citylearn_v3_tutorial.ipynb)
+
+**Proyecto:** Multi-Agente de Aprendizaje por Refuerzo Profundo para gestion coordinada
+de flexibilidad energetica, emisiones de CO2 y eficiencia economica en comunidades inteligentes.
+
+**Caso de estudio:** 17 edificios reales de Iquitos, Peru · Dataset 2023-2025 · 26 304 pasos horarios.
+
+| Parametro | Valor |
+|---|---|
+| Algoritmos | HAPPO · MASAC · MATD3 · MAAC |
+| Escenarios | E1 (Flexibilidad) · E2 (CO2) · E3 (Costos) |
+| Episodios | 50 por corrida (reanudable con --skip-completed) · 8 760 pasos/episodio |
+| Total steps | 438 000 por corrida · 5 256 000 en los 12 jobs |
+| GPU objetivo | NVIDIA H100 (~26 vCPU) primario · A100-SXM4-80GB compatible · 167 GiB RAM (Colab Pro+ High-RAM) |
+| Ejecucion | two_phase_happo_masac (6+6 paralelo), recuperable, monitor y reintento OOM |
+
+> **Requisito:** Seleccionar A100 en *Runtime -> Change runtime type -> A100 GPU*. El notebook falla temprano si Colab entrega otra GPU.
+
+### Fuentes cientificas y de tesis usadas para el diseno
+
+- CityLearn estandariza la evaluacion RL/MARL para demanda respuesta urbana: https://arxiv.org/abs/2012.10504
+- CityLearn v2 y CityLearn Challenge documentan KPIs de flexibilidad, carbono y costo: https://escholarship.org/content/qt5t48x8xk/qt5t48x8xk.pdf y https://proceedings.mlr.press/v220/nweye23a.html
+- HAPPO/HATRPO justifica actualizacion secuencial y trust region en MARL: https://openreview.net/forum?id=EcGGFkNTxdJ
+- MAAC usa criticos centralizados con atencion para escalar agentes: https://proceedings.mlr.press/v97/iqbal19a.html
+- MATD3 reduce sobreestimacion mediante doble critico centralizado: https://arxiv.org/abs/1910.01465
+- MASAC se apoya en SAC y mezcla QMIX/CTDE: https://arxiv.org/abs/1812.05905 y https://arxiv.org/abs/1803.11485
+- PyTorch CUDA y reproducibilidad: https://docs.pytorch.org/docs/stable/notes/cuda.html y https://docs.pytorch.org/docs/stable/notes/randomness.html
+- Colab no garantiza tipo de GPU ni duracion; por eso se requiere checkpoint/estado recuperable: https://research.google.com/colaboratory/faq.html
+- A100 40/80 GB, HBM y TF32: https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf
+- Tesis consultadas sobre RL/MARL energetico: Ross May PhD Dalarna 2023, Oxford residential flexibility thesis, Politecnico di Torino MARL building-energy thesis.
+
+
+================================================================================
+CELL 1 [markdown] lines=141
+FIRST: ## Guia Rapida de Lanzamiento en Colab A100 / H100
+================================================================================
+## Guia Rapida de Lanzamiento en Colab A100 / H100
+
+> **Tiempo estimado:** entrenamiento de 50 episodios por corrida en **H100 (~26 vCPU, objetivo primario)**; ~2x más lento en A100 (12 vCPU, compatible). Reanudable con `--skip-completed` si Colab se desconecta. two_phase: Fase1 HAPPO+MASAC + Fase2 MATD3+MAAC; 6 jobs/fase; cuello = CPU de CityLearn.
+> **Prerequisito:** Runtime A100 o H100 activado antes de ejecutar celda 1.1. La Seccion 6 auto-ajusta los hilos a las vCPU del runtime.
+
+### Mapa de navegacion (orden obligatorio)
+
+| Bloque | Celdas | Funcion |
+|--------|--------|---------|
+| Setup | **0.verify** → **1.1–1.5** | GPU A100/H100, clone/sync, venv 3.9, Drive |
+| Rutas | **2.1** → **2.1b** [→ **2.1c** limpieza] | `OUTPUT_ROOT` auto (nuevo o resume). **2.2/2.3** solo recuperacion |
+| Validacion | **3.1** → **4.1** → **5.1** | Dataset, env, pesos recompensa |
+| Config | **6.1** [→ **6.2** si `QUICK_TEST`] | Fuente unica de HPs + `EXECUTION_MODE=two_phase_happo_masac` |
+| Lanzamiento | **7.0** → **7.1** → **7.2** | Helpers, dry-run 12 jobs, entrenamiento |
+| Post | **7.3–7.7**, **8.x**, **9.x** | Monitor, auditoria, KPIs, estadistica |
+
+**Sync git (celda 1.2):** padre `codex/fix-madrl-traceability-docs` · CityLearn `codex/iquitos-distillation-madrl-docs` · external/MAAC `codex/integrar-limpieza-diagnosticos` (fix cuda/cpu Adam) · protocolo `two_phase_happo_masac_v3` only. La celda **1.2** verifica los 3 parches (MAAC cuda-sync, validacion de corrida completa, ImportError del launcher) y aborta el setup si falta alguno.
+
+**Flujo unico (desde cero o reanudar):** `1.1–1.5` → `2.1` → `2.1b` → `6.1` → `7.0` → `7.1` → `7.2`. La celda **2.1** decide sola si crea run nuevo o reanuda el ultimo; **2.1b** solo verifica el plan.
+
+**Garantias de persistencia al reanudar (Drive):**
+- **No se crea carpeta nueva** al reconectar: `2.1` reutiliza el ultimo `madrl_v3_*`.
+- **Jobs completos** (`results.json`) se **omiten** (`--skip-completed`); sus archivos no se tocan.
+- **Jobs interrumpidos** reanudan desde checkpoint `.pt` y continuan los episodios restantes.
+- **`timeseries.csv` / `trace.csv`**: cada episodio terminado se guarda en Drive al instante; al reanudar se **precargan** y se **continua appendeando** (no se pierden episodios ya entrenados).
+- **Al completar los 50 episodios**: `write_training_artifacts` genera el archivo **integra y completo** (`results.json`, CSV finales, figuras) y `artifact_audit.json` valida filas/episodios esperados.
+- **Escritura atomica** (tmp+replace): un corte de Colab no deja CSV a medias en Drive.
+- **Checkpoints `.pt`**, `live_progress.json` y `results.json` de jobs completos permanecen intactos en Drive.
+
+**Outputs en Drive:** carpeta canónica compartida (`1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX`) y workspace escribible `MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_<timestamp>/` (dentro del run: `{MADRL}/E{1,2,3}/`).
+
+---
+
+## Flujo A — Lanzamiento DESDE CERO (Colab, primera vez)
+
+**Cuando usarlo:** Drive vacio (sin carpetas `madrl_v3_*`) o quieres un run completamente nuevo.
+
+**No toques banderas** — deja los defaults de `2.1` (`AUTO_RESUME_LATEST=True`, `FORCE_NEW_RUN=False`).
+
+| Paso | Celda | Que hace | Que debes ver |
+|------|-------|----------|---------------|
+| 1 | **Runtime Colab** | Entorno > A100 o H100 | GPU detectada |
+| 2 | **0.verify** | Verifica conexion al runtime | OK |
+| 3 | **1.1** | GPU, CUDA, Python | `NVIDIA A100` o `H100` |
+| 4 | **1.2** | Clone repo + submodulos | codigo en `/content/MADRLCitytleranflexresdr` |
+| 5 | **1.2b** | Valida ramas git | OK |
+| 6 | **1.3** | Instala deps en `.venv39-citylearn-v3` | pip OK |
+| 7 | **1.4** | sys.path + smoke imports | imports OK |
+| 8 | **1.5** | Monta Google Drive | Drive montado |
+| 9 | **2.1** | Crea `OUTPUT_ROOT` nuevo | `MODO RUN : NUEVO run (no habia runs previos)` |
+| 10 | **2.1b** | Verifica plan 12 jobs | 12 x `PENDIENTE (fresh)` |
+| 11 | **3.1** → **4.1** → **5.1** | Dataset, env, pesos (recomendado 1ra vez) | OK |
+| 12 | **6.1** | Hiperparametros (`N_EPISODES=50`) | config impresa |
+| 13 | **7.0** | Helpers launcher/monitor | OK |
+| 14 | **7.1** | Preflight + dry-run 12 jobs | `dry-run OK` / `PASSED` |
+| 15 | **7.2** | Entrenamiento oficial (two_phase) | monitor por MADRL activo |
+| 16 | **7.3** (auto si `AUTO_RUN_POST_TRAINING`) | Monitor + auditoria post-train | progreso individual |
+| 17 | **8.x / 9.x** | Analisis KPIs (al terminar jobs) | `results.json` x 12 |
+
+**Secuencia minima (copiar/pegar orden):**
+```
+0.verify -> 1.1 -> 1.2 -> 1.2b -> 1.3 -> 1.4 -> 1.5
+-> 2.1 -> 2.1b -> 6.1 -> 7.0 -> 7.1 -> 7.2
+```
+
+**Que se crea en Drive:**
+```
+outputs/madrl_v3_<timestamp>/
+  HAPPO/E1/data/timeseries.csv   (crece episodio a episodio)
+  HAPPO/E1/checkpoints/*.pt
+  MASAC/E1/ ... MATD3/ ... MAAC/ ...
+  official_full_status.json
+```
+
+---
+
+## Flujo B — REINICIO y REANUDACION (Colab se desconecto)
+
+**Cuando usarlo:** Colab cerro sesion, perdiste runtime, o quieres continuar un entrenamiento ya iniciado.
+
+**No toques banderas** — `2.1` hace AUTO-RESUME del ultimo `madrl_v3_*` en Drive.
+
+| Paso | Celda | Que hace | Que debes ver |
+|------|-------|----------|---------------|
+| 1 | **Runtime Colab** | Nuevo runtime A100/H100 | GPU detectada |
+| 2 | **1.1 → 1.5** | Re-sync codigo + remontar Drive | mismo setup que Flujo A |
+| 3 | **2.1** | Reutiliza ultimo run | `MODO RUN : AUTO-RESUME por checkpoints en Drive` |
+| 4 | **2.1b** | Reporte por job (12 corridas) | ver tabla abajo |
+| 5 | **2.3** *(opcional: solo si HAPPO salvage 49/50 sin KPIs)* | `skip` por defecto; `execute` solo si aplica | KPIs HAPPO |
+| 6 | **7.2** sola | Bootstrap integral + entrenamiento | mismo `OUTPUT_ROOT` Drive |
+| 7 | **8.x** *(tras 2.3 execute)* | Agregador KPIs / ranking | HAPPO incluido en 4/4 MADRL |
+
+**Secuencia minima (copiar/pegar orden):**
+```
+1.1 -> 1.2 -> 1.2b -> 1.3 -> 1.4 -> 1.5
+-> 2.1 -> 2.1b -> 6.1 -> 7.0 -> 7.1 -> 7.2
+# (opcional) 2.3 solo si HAPPO salvage 49/50 sin KPIs
+
+**Reconexion / resume:** solo **7.2** (incluye git sync + Drive + mismo OUTPUT_ROOT).
+-> 8.x (o aggregate_colab_drive_kpis.py tras 2.3)
+```
+
+> **HAPPO salvage 49/50 (opcional):** en reanudacion, **7.2** cubre tails KPI. Celda **2.3** es atajo solo-KPI (`HAPPO_KPI_MODE='skip'` por defecto; no forma parte del flujo desde cero).
+
+**Que significa el reporte de 2.1b (por cada MADRL/E1..E3):**
+
+| Estado en 2.1b | Que hace 7.2 | Archivos en Drive |
+|----------------|--------------|-------------------|
+| `OK COMPLETO 50/50 ep` | **OMITE** (`--skip-completed`) | Intactos (`results.json`, CSV, figuras) |
+| `REANUDA ep X/50` | Carga `.pt`, continua ep X+1..50 | CSV se **continua appendeando** |
+| `REANUDA 49/50` HAPPO salvage sin KPIs | **EJECUTA vía 2.3** (no 7.2 solo) | Checkpoints intactos; falta KPI en `results.json` |
+| `PENDIENTE (fresh)` | Arranca de cero ese job | Crea archivos nuevos en su carpeta |
+
+**Garantias al reanudar:**
+- **No se crea carpeta nueva** (`madrl_v3_*` duplicada) — mismo `OUTPUT_ROOT`.
+- **No se pierden episodios ya entrenados** — CSV incremental + preload.
+- **Jobs completos no se repiten** — `--skip-completed`.
+- **Al llegar a 50 ep** — `results.json` + `artifact_audit.json` (`status: ok`) listos para analisis OE1/OE2/OE3.
+
+**Opcional tras reconectar:** **2.1c** reporta runs duplicados en Drive (borrar con `DELETE_DUPLICATE_RUNS=True`).
+
+**Casos especiales (solo si los necesitas):**
+
+Reanudar un run **concreto** (no el ultimo) — antes de **2.1**:
+```python
+RESUME_OUTPUT_ROOT = '/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260626_004846'
+```
+
+Empezar de cero **ignorando** runs viejos en Drive — antes de **2.1**:
+```python
+FORCE_NEW_RUN = True
+```
+
+---
+
+### Recordatorio (sin duplicar el flujo)
+
+- Runtime: **H100** (primario) o **A100** · High-RAM.
+- Fuente unica de HPs: celda **6.1** (`N_EPISODES=50`, `EXECUTION_MODE=two_phase_happo_masac`).
+- Entrenamiento oficial: **7.0 → 7.1 → 7.2**. Analisis: **8.x / 9.x**.
+- Artefactos: `{OUTPUT_ROOT}/{HAPPO|MASAC|MATD3|MAAC}/E{1,2,3}/` + `official_full_status.json`.
+
+
+================================================================================
+CELL 2 [markdown] lines=56
+FIRST: ## Paso 0: Conectar VS Code al runtime A100 de Google Colab
+================================================================================
+## Paso 0: Conectar VS Code al runtime A100 de Google Colab
+
+> Haz este paso **UNA SOLA VEZ** antes de ejecutar cualquier celda.
+> No se necesita ngrok ni tunnels: la extension `google.colab` de VS Code
+> maneja la conexion directamente con tu cuenta de Google.
+
+---
+
+### 0.1  Seleccionar el kernel Colab en VS Code
+
+1. Abre este notebook en VS Code
+   (`CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`)
+2. Haz clic en **"Select Kernel"** (esquina superior derecha del notebook)
+3. En el menu emergente elige **"Google Colab"**
+   (aparece gracias a la extension `google.colab` ya instalada)
+4. Si pide autenticacion → inicia sesion con **cualquier cuenta Google** que tenga Colab Pro+ y espacio en Drive (ej. **mactapiacc@gmail.com**)
+5. En la lista de runtimes elige **"New Colab Server"** → acelerador **A100** → forma **High-RAM**
+   *(NO elijas "Standard": 40 GiB VRAM + ~83 GiB RAM no alcanza; necesitas ~80 GiB VRAM + ~167 GiB RAM)*
+   *(Colab Pro+ debe estar activo en la cuenta que elijas; no hay restriccion de correo en el notebook)*
+
+> Si no ves "Google Colab" en el selector: abre la paleta de comandos
+> (`Ctrl+Shift+P`) y escribe **"Colab: Sign In"**, autentica, luego repite.
+
+---
+
+### 0.2  Verificar la conexion
+
+Ejecuta la celda de codigo siguiente. Debe mostrar:
+```
+GPU: NVIDIA A100-SXM4-80GB  RAM: ~167 GiB  Tipo: Colab
+```
+Si muestra otra GPU, menos VRAM o error → vuelve al paso 0.1 y verifica el tipo de runtime (A100 High-RAM).
+
+---
+
+### 0.3  Flujo de trabajo diario
+
+```
+VS Code (editor local)
+       │
+       │  google.colab extension
+       ▼
+Colab A100 runtime (servidor Google)
+  /content/MADRLCitytleranflexresdr/   ← repo clonado en celda 1.2
+  /content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/  ← checkpoints en Drive
+```
+
+- El **codigo se ejecuta en el A100** de Google.
+- Los **outputs y graficas** aparecen directamente en VS Code.
+- Si Colab desconecta: repetir 0.1, luego reanudar desde celda 1.2.
+
+> **Apertura directa en Colab (sin VS Code):**
+> Haz clic en el badge del titulo o accede directamente:
+> [`https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/codex/iquitos-distillation-madrl-docs/examples/madrl_citylearn_v3_tutorial.ipynb`](https://colab.research.google.com/github/Mac-Tapia/CityLearn/blob/codex/iquitos-distillation-madrl-docs/examples/madrl_citylearn_v3_tutorial.ipynb)
+>
+> Rama GitHub del notebook: `Mac-Tapia/CityLearn` → `codex/iquitos-distillation-madrl-docs`. Tras cada push, el badge abre esa version.
+
+
+================================================================================
+CELL 3 [code] lines=131
+FIRST: # ── 0.verify  Verificar conexion al runtime (A100 en Colab; local con advertencias) ────
+================================================================================
+--- COMMENTS ---
+# ── 0.verify  Verificar conexion al runtime (A100 en Colab; local con advertencias) ────
+# GPUs datacenter conocidas que soportan TF32 + expandable_segments (perfil 'aws').
+# La validacion real es por VRAM suficiente; el nombre solo informa.
+    # 1. GPU — hard fail en Colab si no A100; advertencia local
+    # 2. RAM — hard fail en Colab si < 64 GiB (buffers conservadores); advertencia local
+    # 3. Python y plataforma
+    # 4. Google Drive (solo Colab)
+    # 5. CUDA y PyTorch
+    # ── Resultado final ──────────────────────────────────────────────────────
+        # Diagnóstico: Pro+ puede entregar A100 Standard (~40 GiB VRAM, ~83 GiB RAM)
+--- HEADER (first 40 lines) ---
+# ── 0.verify  Verificar conexion al runtime (A100 en Colab; local con advertencias) ────
+import subprocess
+import os
+import sys
+import platform
+
+MIN_VRAM_GIB = 38.0   # config conservadora 6-jobs corre desde ~40 GiB (A100-40/80, H100, RTX PRO 6000)
+MIN_RAM_GIB  = 64.0   # buffers conservadores: MASAC 3x12 + MATD3 3x14 GiB en RAM (replay CPU)
+# GPUs datacenter conocidas que soportan TF32 + expandable_segments (perfil 'aws').
+# La validacion real es por VRAM suficiente; el nombre solo informa.
+_KNOWN_GPUS = ('A100', 'H100', 'H200', 'RTX PRO 6000', 'BLACKWELL', 'A40', 'L40', 'L4')
+
+import importlib.util
+IN_COLAB = importlib.util.find_spec('google.colab') is not None
+
+def check_connection():
+    _errors = []
+    _warnings = []
+    gpu_mem_gib = None
+    mem_gib = None
+
+    # 1. GPU — hard fail en Colab si no A100; advertencia local
+    try:
+        result = subprocess.check_output(
+            ['nvidia-smi', '--query-gpu=name,memory.total', '--format=csv,noheader,nounits'],
+            text=True, stderr=subprocess.DEVNULL
+        ).strip()
+        gpu_name, gpu_mem = result.split(',')
+        gpu_mem_gib = int(gpu_mem.strip()) / 1024.0
+        vram_ok = gpu_mem_gib >= MIN_VRAM_GIB
+        _name_known = any(k in gpu_name.upper() for k in _KNOWN_GPUS)
+        gpu_ok = vram_ok  # requisito real = VRAM suficiente (cualquier GPU datacenter capaz)
+        status = '[OK]' if gpu_ok else ('[WARN]' if not IN_COLAB else '[FAIL]')
+        print(f"{status} GPU    : {gpu_name.strip()}  ({gpu_mem_gib:.1f} GiB VRAM)")
+        if gpu_ok and not _name_known:
+            print(f"     (GPU no listada pero {gpu_mem_gib:.0f} GiB VRAM >= {MIN_VRAM_GIB:.0f} -> apta; TF32 perfil 'aws')")
+        if gpu_ok and any(k in gpu_name.upper() for k in ('BLACKWELL', 'RTX PRO 6000')):
+            print('     [!] Blackwell sm_120: celda 1.3 instalara PyTorch cu128 (cu126 falla con no kernel image)')
+        if not vram_ok:
+            msg = f"VRAM insuficiente: {gpu_mem_gib:.1f} GiB < {MIN_VRAM_GIB:.0f} GiB minimos."
+
+================================================================================
+CELL 4 [markdown] lines=17
+FIRST: ## Sección 0: Arquitectura del Proyecto — 9 Diagramas de Defensa
+================================================================================
+## Sección 0: Arquitectura del Proyecto — 9 Diagramas de Defensa
+
+> Fuente canónica:   
+> Renderizado via **Mermaid@10 CDN** (). Ejecutar la celda  primero.
+
+| Celda | Diagrama |
+|-------|----------|
+| 0.0 | Helper  + carga CDN |
+| 0.1 | Visión General del Proyecto (inicio → resultado) |
+| 0.2 | Pipeline del Dataset Iquitos 2023–2025 |
+| 0.3 | Arquitectura Dec-POMDP y CTDE — 17 Agentes |
+| 0.4 | Los 4 Algoritmos MADRL: Taxonomía y Diferencias |
+| 0.5 | Flujo de Entrenamiento: 12 Corridas (4 Algos × 3 Escenarios) |
+| 0.6 | Recompensa Multiobjetivo por Escenario |
+| 0.7 | Pipeline de Evaluación y Selección de Mejor Algoritmo |
+| 0.8 | Infraestructura de Cómputo: Local → Colab A100 → AWS |
+| 0.9 | Estructura de Capas del Repositorio |
+
+
+================================================================================
+CELL 5 [code] lines=63
+FIRST: # ── 0.0  Helper Mermaid — renderiza los 9 diagramas de arquitectura ──────────
+================================================================================
+--- COMMENTS ---
+# ── 0.0  Helper Mermaid — renderiza los 9 diagramas de arquitectura ──────────
+# Estrategia: mermaid.ink API (SVG estatico guardado en notebook) con fallback CDN
+    # ── Intento 1: mermaid.ink API → SVG embebido en el output (offline despues) ──
+    # ── Intento 2: CDN Mermaid@10 (requiere JS habilitado en el navegador) ──────
+--- HEADER (first 40 lines) ---
+# ── 0.0  Helper Mermaid — renderiza los 9 diagramas de arquitectura ──────────
+# Estrategia: mermaid.ink API (SVG estatico guardado en notebook) con fallback CDN
+import json
+import base64
+import urllib.request
+from IPython.display import display, HTML
+
+_diagram_idx = [0]
+
+def render_mermaid(title, code, height=520):
+    """Renderiza diagrama Mermaid via mermaid.ink (estatico) o CDN (fallback)."""
+    _diagram_idx[0] += 1
+    uid = f"mmd_{_diagram_idx[0]}"
+
+    # ── Intento 1: mermaid.ink API → SVG embebido en el output (offline despues) ──
+    try:
+        encoded = base64.urlsafe_b64encode(code.strip().encode("utf-8")).decode("utf-8")
+        url = f"https://mermaid.ink/svg/{encoded}"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            svg = resp.read().decode("utf-8")
+        html = f"""<div style="margin:16px 0;border:1px solid #e2e8f0;border-radius:10px;
+padding:20px;background:#f8fafc;font-family:sans-serif;">
+  <h4 style="margin:0 0 14px 0;color:#0f172a;font-size:14px;">{title}</h4>
+  <div style="overflow:auto;max-height:{height + 80}px;">{svg}</div>
+</div>"""
+        display(HTML(html))
+        return
+    except Exception as _e:
+        pass  # fallback below
+
+    # ── Intento 2: CDN Mermaid@10 (requiere JS habilitado en el navegador) ──────
+    code_js = json.dumps(code, ensure_ascii=False)
+    html = f"""<div style="margin:16px 0;border:1px solid #e2e8f0;border-radius:10px;
+padding:20px;background:#f8fafc;font-family:sans-serif;">
+  <h4 style="margin:0 0 14px 0;color:#0f172a;font-size:14px;">{title}</h4>
+  <div id="{uid}" style="min-height:{height}px;"></div>
+  <script>
+  (function(){{
+    var el=document.getElementById("{uid}");
+
+================================================================================
+CELL 6 [code] lines=68
+FIRST: # ── 0.1  Diagrama 1 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.1  Diagrama 1 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.1  Diagrama 1 ────────────────────────────────────────
+render_mermaid("Diagrama 1 — Vision General del Proyecto (inicio a fin)", r"""
+flowchart LR
+    subgraph ORIGEN["① Origen del proyecto"]
+        direction TB
+        PROB(["Problema de investigacion\n¿Que MADRL optimiza mejor\nflexibilidad + CO2 + costos\nen comunidades inteligentes?"])
+        OBJ["Objetivos especificos\nOE1 Flexibilidad\nOE2 Emisiones CO2\nOE3 Costos energeticos"]
+        PROB --> OBJ
+    end
+
+    subgraph DATOS["② Dataset Iquitos"]
+        direction TB
+        RAW["Facturas electricas reales\nCityLearn/data/buildingcsv/\n17 edificios B01-B17"]
+        PIPE["Pipeline destilacion\nNSL residual + EV + BESS\ngenerate_iquitos_dataset.py"]
+        DS[("citylearn_iquitos_2023_2025\nschema.json\n26 304 pasos horarios\n222 CSV activos")]
+        RAW --> PIPE --> DS
+    end
+
+    subgraph SIM["③ Simulador"]
+        direction TB
+        V2["CityLearn v2 base\nFisica edificios\nBESS + PV + EV\nKPIs oficiales"]
+        V3["CityLearn v3 propuesto\nDec-POMDP 17 agentes\nCTDE: critic centralizado\nRecompensa multiobjetivo"]
+        V2 -->|"se extiende con\ncapa experimental"| V3
+    end
+
+    subgraph MADRL_BLOQUE["④ Entrenamiento MADRL"]
+        direction TB
+        ALGS["4 algoritmos\nHAPPO · MASAC\nMATD3 · MAAC"]
+        EJES["3 escenarios\nE1 Flex · E2 CO2 · E3 Costo"]
+        GPU["Colab A100 oficial (two_phase_happo_masac_v3)\n50 ep x 8 760 pasos = 438 000 steps/corrida\n12 jobs: Fase1 HAPPO+MASAC · Fase2 MATD3+MAAC\n~20 h wall (6 paralelos/fase, sin stagger)"]
+        ALGS --> EJES --> GPU
+    end
+
+    subgraph EVAL["⑤ Evaluacion y seleccion"]
+        direction TB
+        KPIS["KPIs CityLearn v3\nOE1+OE2+OE3\nobjectives.py"]
+        STAT["Pruebas estadisticas\nShapiro-Wilk\nKruskal-Wallis\nMann-Whitney U\nWilcoxon SR"]
+        RANK["Ranking inter-algoritmo\nScore ponderado global\nEfect size: Cliff delta\nHedges g · Bootstrap CI"]
+        KPIS --> STAT --> RANK
+    end
+
+================================================================================
+CELL 7 [code] lines=49
+FIRST: # ── 0.2  Diagrama 2 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.2  Diagrama 2 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.2  Diagrama 2 ────────────────────────────────────────
+render_mermaid("Diagrama 2 — Pipeline del Dataset Iquitos 2023-2025", r"""
+flowchart TD
+    subgraph INSUMOS["Insumos primarios (reales)"]
+        FAC["Facturas electricas\nB02-B17.csv\nkWh punta / fuera punta\nGastos reales 2023-2025"]
+        MET["Datos meteorologicos\nOpen-Meteo API\nGHI, T_amb, HR\nIquitos -3.74 lat"]
+        AUD["Auditoria tecnica\nAreas techadas\nTipos HVAC\nFlota EV por edificio"]
+    end
+
+    subgraph PIPELINE["Pipeline de generacion (tools/)"]
+        DEST["distill_building_loads.py\nNSL residual = E_medido - cooling/COP - DHW/COP\nBalance mensual < 0.1 percent error"]
+        GEN["generate_iquitos_dataset.py\nInterpolacion horaria\nPronostico meses faltantes\ncalendar_month_mean_overlap_scaled"]
+        SCHEMA["fix_schema_cooling.py\nAutosize safety factor\nchiller agua / multi-chiller\nprecision AC / ultra-freezers -80C"]
+        VALID["orchestrate_citylearn_dataset.py\nIntegridad 222 CSV\n26 304 filas x edificio\ncharger NaN check"]
+    end
+
+    subgraph DATASET["Dataset final (CityLearn/data/datasets/)"]
+        direction LR
+        BUILD["Building_X.csv x17\nNSL + cooling + DHW\n26 304 pasos horarios"]
+        WEATH["weather.csv\nGHI, T, HR, presion\nIquitos tropical"]
+        CARBON["carbon_intensity.csv\n0.671-0.790 kgCO2/kWh\nMINAM RAGEI 2019"]
+        PRICE["pricing.csv\nPunta 18-22h: 0.38 USD/kWh\nFuera punta: 0.26 USD/kWh"]
+        EV["charger_X_Y.csv x185\n96 equipos Modo 3\n1 850 EV en pool"]
+        SC["schema.json\n17 edificios registrados\nBESS + PV + EV por edificio"]
+        BUILD --- WEATH --- CARBON --- PRICE --- EV --- SC
+    end
+
+    subgraph EDIFICIOS["17 edificios reales de Iquitos"]
+        B["B01 ELECTRO ORIENTE 6747 kWh BESS\nB03 AEROPUERTO 2363 kWh BESS\nB06 MALL AVENTURA 2541 kWh BESS\nB07 UNAP BIOLOGIA 984 kWh BESS\nB11 HOSPITAL REGIONAL 1901 kWh BESS\n... 12 edificios mas"]
+    end
+
+    FAC --> DEST
+    MET --> GEN
+    AUD --> SCHEMA
+    DEST --> VALID
+    GEN --> VALID
+    SCHEMA --> VALID
+    VALID --> DATASET
+    DATASET --> EDIFICIOS
+
+
+================================================================================
+CELL 8 [code] lines=62
+FIRST: # ── 0.3  Diagrama 3 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.3  Diagrama 3 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.3  Diagrama 3 ────────────────────────────────────────
+render_mermaid("Diagrama 3 — Arquitectura Dec-POMDP y CTDE de los 17 Agentes", r"""
+flowchart TD
+    subgraph ENV["Entorno CityLearn v3 (simulacion horaria)"]
+        direction LR
+        B1["Edificio 1\nBESS + PV + EV"]
+        B2["Edificio 2\nBESS + PV + EV"]
+        BN["... Edificio 17\nBESS + PV + EV"]
+        GRID(["Red electrica\nElectro Oriente\nSistema aislado diesel"])
+        B1 --- B2 --- BN
+        B1 & B2 & BN --> GRID
+    end
+
+    subgraph OBS["Observaciones locales oᵢ(t) — 19 dimensiones"]
+        direction LR
+        TIME["Tiempo\nmes hora tipo_dia"]
+        PHYS["Fisica edificio\nT_interior DHW\ncarga_no_desplazable\ngeneracion_solar"]
+        BESS_OBS["Estado BESS\nSOC accion_previa"]
+        EV_OBS["Estado EV\nSOC_k salida_k\nSOC_req_k llegada_k"]
+        SIG["Senales globales\ncarbono precio\nGHI T_amb HR"]
+    end
+
+    subgraph POLICY["Politicas descentralizadas (ejecucion)"]
+        P1["π₁(a₁|o₁)\nred neuronal\nedificio 1"]
+        P2["π₂(a₂|o₂)\nred neuronal\nedificio 2"]
+        PN["π₁₇(a₁₇|o₁₇)\nred neuronal\nedificio 17"]
+    end
+
+    subgraph ACTIONS["Acciones locales aᵢ(t)"]
+        A1["a₁: BESS carga/descarga\nEV carga\nLavadora on/off"]
+        A2["a₂: BESS · EV · Lavadora"]
+        AN["a₁₇: BESS · EV · Lavadora"]
+    end
+
+    subgraph CRITIC["Critico centralizado (solo en entrenamiento CTDE)"]
+        STATE["Estado global s = concat(o₁,...,o₁₇)\nV(s) o Q(s,a) centralizado"]
+        REWARD["Recompensa mixta por agente\nr_i_mix = 0.30 * r_i + 0.70 * team_reward\nteam_reward = mean(r₁,...,r₁₇)"]
+        STATE --> REWARD
+    end
+
+
+================================================================================
+CELL 9 [code] lines=49
+FIRST: # ── 0.4  Diagrama 4 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.4  Diagrama 4 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.4  Diagrama 4 ────────────────────────────────────────
+render_mermaid("Diagrama 4 — Los 4 Algoritmos MADRL: Taxonomia y Diferencias", r"""
+flowchart LR
+    subgraph HAPPO_BOX["HAPPO — Heterogeneous-Agent PPO"]
+        direction TB
+        HAPPO_T["Tipo: On-policy\nActualizacion secuencial\nTrust region por agente"]
+        HAPPO_C["Critico: Centralizado V(s)\nActor: π(a|o) local\nBackend: HARL/external/HARL"]
+        HAPPO_P["Parametros A100/H100 Colab\nhidden_size=512\nn_rollout_threads=auto (2 A100, 4 H100)\nlog_interval=1"]
+    end
+
+    subgraph MASAC_BOX["MASAC — Multi-Agent SAC Discreto"]
+        direction TB
+        MASAC_T["Tipo: Off-policy\nEntropy regularization\nAcciones discretas por eje"]
+        MASAC_C["Critico: Q-mix centralizado\nActor: π(a|o) + temperatura\nBackend: MARL/external/MARL/src"]
+        MASAC_P["Parametros A100/H100/Blackwell\naction_bins=3 axis mode\nbuffer_size=2 ep · max 8 GiB\ncritic_batch=1 ep · rnn/qmix/hyper 64/32/64\nreplay CPU · cuda_frac=0.22"]
+    end
+
+    subgraph MATD3_BOX["MATD3 — Multi-Agent TD3"]
+        direction TB
+        MATD3_T["Tipo: Off-policy\nDoble critico (anti-overest)\nPolicy delay + target noise"]
+        MATD3_C["Critico: Par Q₁ Q₂ centralizado\nActor: μ(o) deterministico\nBackend: off-policy/external"]
+        MATD3_P["Parametros A100/H100/Blackwell\nbatch_size=1280\nbuffer_size=2M\nhidden_size=768\ntrain_interval=50"]
+    end
+
+    subgraph MAAC_BOX["MAAC — Multi-Agent Attention Critic"]
+        direction TB
+        MAAC_T["Tipo: Off-policy\nAtencion sobre agentes\nSAC con Q de atencion"]
+        MAAC_C["Critico: Attention SAC Q(s,a)\nActor: π(a|o) estocastico\nBackend: MAAC/external/MAAC"]
+        MAAC_P["Parametros A100/H100/Blackwell\nbatch_size=768\nbuffer_length=1M\nhidden_size=768\nnum_updates=12"]
+    end
+
+    HAPPO_BOX -->|"12/12 corridas\nv3+v4"| COMP(["Comparacion\nKPIs CityLearn\npor escenario"])
+    MASAC_BOX --> COMP
+    MATD3_BOX --> COMP
+    MAAC_BOX --> COMP
+
+    COMP -->|"ranking global"| WINNER(["Mejor: MATD3\nScore E1=0.75 E2=0.75 E3=0.73\nKW p=0.0459"])
+
+    classDef happo fill:#dbeafe,stroke:#2563eb,color:#1c1917,stroke-width:2px
+    classDef masac fill:#fae8ff,stroke:#a21caf,color:#1c1917,stroke-width:2px
+
+================================================================================
+CELL 10 [code] lines=65
+FIRST: # ── 0.5  Diagrama 5 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.5  Diagrama 5 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.5  Diagrama 5 ────────────────────────────────────────
+render_mermaid("Diagrama 5 — Flujo de Entrenamiento: 12 Corridas (two_phase_happo_masac_v3)", r"""
+flowchart TD
+    START(["Colab A100-SXM4-80GB · protocolo two_phase_happo_masac_v3\ncolab_a100_official_launcher.py --execution-mode two_phase_happo_masac\n--scenario ALL --episodes 50 --episode-time-steps 8760\n438 000 steps/corrida · --skip-completed · OOM retry"])
+
+    subgraph PHASE1["FASE 1 — HAPPO + MASAC (6 jobs en paralelo, sin stagger) · ~10 h"]
+        direction LR
+        subgraph P1_H["HAPPO x3 (on-policy)"]
+            H_E1["E1 flex\nw: 0.70/0.15/0.15"]
+            H_E2["E2 CO2\nw: 0.15/0.70/0.15"]
+            H_E3["E3 costo\nw: 0.25/0.15/0.60"]
+        end
+        subgraph P1_M["MASAC x3 (off-policy, replay CPU)"]
+            M_E1["E1\nbuf 8 ep · 12 GiB cap"]
+            M_E2["E2\ncuda_frac 0.12"]
+            M_E3["E3\npreload auto (CPU+GPU)"]
+        end
+    end
+
+    subgraph PHASE2["FASE 2 — MATD3 + MAAC (backfill dinámico: cada job entra al terminar uno de Fase 1, lightest-first) · ~10 h"]
+        direction LR
+        subgraph P2_T["MATD3 x3"]
+            T_E1["E1\nbatch 1024"]
+            T_E2["E2\nbuf 2M"]
+            T_E3["E3\nhidden 768"]
+        end
+        subgraph P2_A["MAAC x3"]
+            A_E1["E1\nbatch 512"]
+            A_E2["E2\nbuf 1M"]
+            A_E3["E3\nupdates 12"]
+        end
+    end
+
+    subgraph ARTEFACTOS["Artefactos por corrida (algorithm-first layout)"]
+        direction LR
+        PATH["outputs/<ts>/<MADRL>/<Escenario>/"]
+        CHK["checkpoints/\nmodelos .pt"]
+        DATA["data/\nresults.json · timeseries.csv\ntrace.csv · training_summary.json"]
+        FIG["figures/\n13 graficas PNG"]
+        LOG["logs/\nE?_algo.log · stderr"]
+
+================================================================================
+CELL 11 [code] lines=47
+FIRST: # ── 0.6  Diagrama 6 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.6  Diagrama 6 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.6  Diagrama 6 ────────────────────────────────────────
+render_mermaid("Diagrama 6 — Recompensa Multiobjetivo por Escenario", r"""
+flowchart LR
+    subgraph REW_FUNC["CityLearnV3MADRLRewardFunction"]
+        direction TB
+        COMP1["Componente FLEX\npeak_penalty + ramping_penalty\n+ load_factor + ev_service"]
+        COMP2["Componente CO2\ncarbon_emissions\n* carbon_intensity_signal"]
+        COMP3["Componente COSTO\nelectricity_cost\n* price_signal"]
+        COMP4["Componente EV\nEV SOC deficit\n* urgencia_salida\n1 / horas_restantes"]
+        COMP5["Componente BESS v4\nC-rate penalty\nArrhenius LiFePO4\ndegradacion ciclica"]
+    end
+
+    subgraph PESOS["Pesos por escenario (w_eje)"]
+        direction TB
+        PE1["E1 Flexibilidad\nflex=0.70 co2=0.15 cost=0.15"]
+        PE2["E2 CO2\nflex=0.15 co2=0.70 cost=0.15"]
+        PE3["E3 Costos\nflex=0.25 co2=0.15 cost=0.60"]
+    end
+
+    subgraph MIX["Recompensa mixta (CTDE)"]
+        TEAM["team_reward = mean(r₁...r₁₇)\ncooperacion distrital"]
+        MIXED["r_i_mix = 0.30 * r_i + 0.70 * team_reward\nteam_ratio=0.70"]
+        TEAM --> MIXED
+    end
+
+    subgraph PERFILES["Perfiles por algoritmo (v4)"]
+        PH["happo_unified_comparable_v4\npeak_weight=0.45 ramp_weight=0.35\nev_weight=0.25 reward_scale=1.00"]
+        PM["masac_unified_comparable_v4"]
+        PT["matd3_unified_comparable_v4"]
+        PA["maac_unified_comparable_v4"]
+    end
+
+    REW_FUNC --> PESOS
+    PESOS --> MIX
+    MIX --> PERFILES
+
+    PERFILES -->|"mismos pesos base\ndiferente backend"| TRAIN(["Entrenamiento\nuniforme y comparable\npara todos los algoritmos"])
+
+    classDef rw fill:#fef3c7,stroke:#d97706,color:#1c1917
+    classDef pe fill:#e0e7ff,stroke:#4f46e5,color:#1c1917
+
+================================================================================
+CELL 12 [code] lines=86
+FIRST: # ── 0.7  Diagrama 7 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.7  Diagrama 7 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.7  Diagrama 7 ────────────────────────────────────────
+render_mermaid("Diagrama 7 — Pipeline de Evaluacion y Seleccion del Mejor MADRL", r"""
+flowchart TD
+    subgraph ARTIFACTS_IN["Entrada: artefactos de 12 corridas (50 ep · two_phase)"]
+        direction LR
+        R_J["results.json\npor cada algo/escenario"]
+        TS["timeseries.csv\npor cada algo/escenario"]
+        TR["trace.csv\npor cada algo/escenario"]
+    end
+
+    subgraph BENCHMARK["Benchmark CityLearn v2 (linea base)"]
+        direction TB
+        RBC["Agente RBC\nRule-Based Control\noriginal CityLearn v2"]
+        SAC_V2["SAC v2\noriginal CityLearn v2"]
+        BENCH_OUT["baseline_kpis.csv\npor escenario"]
+        RBC & SAC_V2 --> BENCH_OUT
+    end
+
+    subgraph KPIS_CALC["Calculo de KPIs por escenario"]
+        direction TB
+        E1_KPI["E1 KPIs (OE1)\nOE1_FLEXIBILITY_KPIS\n(todos objectives.py)"]
+        E2_KPI["E2 KPIs (OE2)\nOE2_EMISSIONS_KPIS\n(todos objectives.py)"]
+        E3_KPI["E3 KPIs (OE3)\nOE3_COST_KPIS\n(todos objectives.py)"]
+    end
+
+    subgraph DELTA["Gain relativo vs baseline"]
+        GAIN["gain_i = (KPI_v2 - KPI_v3) / abs(KPI_v2)\nvalor positivo = mejora\npor cada KPI, escenario y algoritmo"]
+    end
+
+    subgraph STAT_TEST["Suite de pruebas estadisticas (4 tests)"]
+        direction LR
+        SW["Shapiro-Wilk\n¿Distribucion normal?\npor algoritmo y eje"]
+        KW["Kruskal-Wallis\n¿Diferencia global?\n4 grupos simultaneos"]
+        MWU["Mann-Whitney U\n¿Cual par difiere?\nmuestras independientes\n+ Cliff delta + Hedges g"]
+        WC["Wilcoxon SR\n¿Diferencia sistematica?\nmuestras pareadas"]
+        SW --> KW --> MWU --> WC
+    end
+
+    subgraph RANKING["Ranking inter-algoritmo"]
+        direction TB
+
+================================================================================
+CELL 13 [code] lines=50
+FIRST: # ── 0.8  Diagrama 8 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.8  Diagrama 8 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.8  Diagrama 8 ────────────────────────────────────────
+render_mermaid("Diagrama 8 — Infraestructura de Despliegue: Local, Colab A100 y AWS EC2", r"""
+flowchart LR
+    subgraph COLAB["Colab A100 Pro+ (canal oficial de entrenamiento)"]
+        direction TB
+        BADGE["Open in Colab\nMac-Tapia/CityLearn\ncodex/iquitos-distillation-madrl-docs"]
+        SYNC["Celda 1.2 hard sync\n/content/MADRLCitytleranflexresdr"]
+        LAUNCH_C["colab_a100_official_launcher.py\ntwo_phase_happo_masac_v3\n50 ep · 12 jobs"]
+        DRIVE["Google Drive outputs\nMADRLCitytleranflexresdr/outputs"]
+        MON_C["colab_a100_live_monitor.py\ncolab_protocol_guard.py"]
+        BADGE --> SYNC --> LAUNCH_C --> DRIVE
+        LAUNCH_C --> MON_C
+    end
+
+    subgraph DEV["Desarrollo local (Windows — RTX 4060)"]
+        direction TB
+        CODE["Codigo fuente\nCityLearn/ + uc3m/\nscripts/ + tools/"]
+        VENV["Entorno .venv39-citylearn-v3\nPyTorch cu126 (A100/H100)\ncu128 auto en Blackwell"]
+        PS["Launcher local PS1\nsmoke test rapido"]
+        MON_L["monitor_citylearn_v3_official_training.ps1"]
+        CODE --> VENV --> PS --> MON_L
+    end
+
+    subgraph GIT["Repositorio GitHub"]
+        REPO_P["Mac-Tapia/MADRLCitytleranflexresdr\ncodex/fix-madrl-traceability-docs"]
+        REPO_CL["Mac-Tapia/CityLearn\ncodex/iquitos-distillation-madrl-docs"]
+        REPO_P --- REPO_CL
+    end
+
+    subgraph AWS["Produccion AWS EC2 (opcional)"]
+        direction TB
+        DOCKER["Docker madrl-training\nrun_aws_training.sh"]
+        VOL["bind mount outputs/"]
+        DOCKER --> VOL
+    end
+
+    DEV -->|"git push"| GIT
+    GIT -->|"clone + submodule"| COLAB
+    GIT -->|"clone --recurse-submodules"| AWS
+    COLAB -->|"artefactos Drive"| DEV
+
+================================================================================
+CELL 14 [code] lines=69
+FIRST: # ── 0.9  Diagrama 9 ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 0.9  Diagrama 9 ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 0.9  Diagrama 9 ────────────────────────────────────────
+render_mermaid("Diagrama 9 — Estructura de Capas del Software", r"""
+flowchart TD
+    subgraph L1["Capa 1: Simulador base (CityLearn v2)"]
+        direction LR
+        CL2["CityLearn/citylearn/*.py\nFisica edificios + BESS + PV + EV\nKPIs oficiales del challenge"]
+    end
+
+    subgraph L2["Capa 2: Extension experimental (CityLearn v3 propuesto)"]
+        direction LR
+        ENV3["CityLearn/citylearn/v3/\nDec-POMDP environment\nObjectives + Config + Reward"]
+        COMM["CityLearn/scripts/\ncitylearn_v3_training_common.py\nresolve_output_dir() + ensure_artifact_layout()"]
+        ENV3 --- COMM
+    end
+
+    subgraph L3["Capa 3: Framework UC3M (wrapper universal)"]
+        direction LR
+        UC3M_E["uc3m/env/uc3m_env.py\nUC3MEnv: Dec-POMDP 11-aria\nCompatible HARL + MARLlib + RLlib"]
+        UC3M_B["uc3m/env/bact.py\nBACTTensor 29D\nClima(7)+Geo(8)+Fisico(14)"]
+        UC3M_R["uc3m/reward/axes.py\nRewardAxes 7 ejes\nflex+co2+cost+ev+bess+resil+acs"]
+        UC3M_H["uc3m/reward/hphi.py\nHPHI: Holistic Pareto\nHypervolume Index 7D"]
+        UC3M_K["uc3m/kpis/evaluator.py\nKPIEvaluator\nnormalizados contra RBC"]
+        UC3M_E --- UC3M_B --- UC3M_R --- UC3M_H --- UC3M_K
+    end
+
+    subgraph L4["Capa 4: Backends MADRL externos"]
+        direction LR
+        HARL["external/HARL/\nHAPPO: on-policy\nsequential trust region"]
+        MARL["external/MARL/src/\nMASAC: Q-mix + SAC discreto"]
+        OFFP["external/off-policy/\nMATD3: doble critico TD3"]
+        MAAC_B["external/MAAC/\nMAC: attention critic SAC"]
+        HARL --- MARL --- OFFP --- MAAC_B
+    end
+
+    subgraph L5["Capa 5: Launchers y orquestacion"]
+        direction LR
+        TRAIN_S["CityLearn/scripts/train_citylearn_v3_*.py\n4 scripts de entrenamiento\nuno por algoritmo"]
+        COLAB_L["CityLearn/scripts/colab_a100_official_launcher.py\ncolab_a100_live_monitor.py\ncolab_protocol_guard.py · two_phase_happo_masac_v3"]
+        LAUNCH["scripts/ + deploy/aws/training/\nLaunchers locales PS + AWS bash\nMonitoreo + checkpointing"]
+        TRAIN_S --- COLAB_L --- LAUNCH
+
+================================================================================
+CELL 15 [markdown] lines=1
+FIRST: ## Sección 1: Configuración inicial
+================================================================================
+## Sección 1: Configuración inicial
+
+================================================================================
+CELL 16 [code] lines=75
+FIRST: # ── 1.1  Verificar entorno: IN_COLAB, GPU, CUDA, Python 3.9 ─────────────────
+================================================================================
+--- COMMENTS ---
+# ── 1.1  Verificar entorno: IN_COLAB, GPU, CUDA, Python 3.9 ─────────────────
+# ── Deteccion automatica de entorno ──────────────────────────────────────────
+# ── GPU via nvidia-smi ───────────────────────────────────────────────────────
+# ── Verificacion PyTorch + CUDA ───────────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 1.1  Verificar entorno: IN_COLAB, GPU, CUDA, Python 3.9 ─────────────────
+import sys
+import subprocess
+import importlib.util
+
+# ── Deteccion automatica de entorno ──────────────────────────────────────────
+IN_COLAB = importlib.util.find_spec('google.colab') is not None
+
+print(f"Ejecutando en Google Colab : {IN_COLAB}")
+print(f"Python version             : {sys.version.split()[0]}")
+print(f"Plataforma                 : {sys.platform}")
+
+if not sys.version_info[:2] == (3, 9):
+    msg = (
+        f"Python {sys.version.split()[0]} detectado; el proyecto usa Python 3.9.25. "
+        "El venv .venv39-citylearn-v3 garantiza la version correcta."
+    )
+    if IN_COLAB:
+        print(f"[WARN] {msg}")
+    else:
+        print(f"[INFO] {msg} (normal si el kernel de VS Code usa otra version)")
+
+# ── GPU via nvidia-smi ───────────────────────────────────────────────────────
+res = subprocess.run(
+    ["nvidia-smi", "--query-gpu=name,memory.total,driver_version",
+     "--format=csv,noheader"],
+    capture_output=True, text=True,
+)
+if res.returncode == 0:
+    print(f"GPU                        : {res.stdout.strip()}")
+else:
+    if IN_COLAB:
+        raise RuntimeError(
+            "nvidia-smi fallo. Habilita el runtime GPU A100 antes de ejecutar esta celda."
+        )
+    else:
+        print("GPU                        : nvidia-smi no disponible — ejecuta en Colab A100-SXM4-80GB")
+
+# ── Verificacion PyTorch + CUDA ───────────────────────────────────────────────
+try:
+
+================================================================================
+CELL 17 [code] lines=97
+FIRST: # ── 1.1b  Diagnóstico de recursos: vCPU / RAM / GPU + recomendación de hilos ──────
+================================================================================
+--- COMMENTS ---
+# ── 1.1b  Diagnóstico de recursos: vCPU / RAM / GPU + recomendación de hilos ──────
+# El cuello de botella de MADRL+CityLearn es la CPU (env.step de 17 edificios),
+# NO la GPU (las redes son pequeñas para un A100). Esta celda mide los recursos
+# reales del runtime y recomienda torch_threads / n_rollout_threads para el
+# esquema de 6 jobs en paralelo por fase. Es de solo lectura: puedes correrla
+# mientras el entrenamiento avanza sin afectarlo.
+# ── vCPUs realmente utilizables ──────────────────────────────────────────────
+# ── RAM total / disponible ────────────────────────────────────────────────────
+# ── GPU en vivo (nombre, VRAM usada/total, utilización) ───────────────────────
+# ── Demanda de CPU del esquema actual y recomendación ─────────────────────────
+# HAPPO (on-policy): torch_threads + n_rollout_threads (cada worker SubprocVecEnv ~1 core)
+# MASAC (off-policy): torch_threads (+ replay en RAM)  → fase 1 = 3 HAPPO + 3 MASAC
+# Recomendación por fase: la demanda total de cada fase debe caber en las vCPUs.
+# Fase 1 (HAPPO+MASAC): HAPPO gasta torch+rollout, MASAC solo torch ->
+#   3*(p1_torch + rollout) + 3*p1_torch <= vCPUs.  Con rollout fijo=2 buscamos p1_torch.
+# Fase 2 (MATD3+MAAC): single-env sin rollout -> 6*p2_torch <= vCPUs.
+--- HEADER (first 40 lines) ---
+# ── 1.1b  Diagnóstico de recursos: vCPU / RAM / GPU + recomendación de hilos ──────
+# El cuello de botella de MADRL+CityLearn es la CPU (env.step de 17 edificios),
+# NO la GPU (las redes son pequeñas para un A100). Esta celda mide los recursos
+# reales del runtime y recomienda torch_threads / n_rollout_threads para el
+# esquema de 6 jobs en paralelo por fase. Es de solo lectura: puedes correrla
+# mientras el entrenamiento avanza sin afectarlo.
+import os
+import subprocess
+import shutil
+
+PHASE_JOBS      = 6   # Fase 1 = 3 HAPPO + 3 MASAC ; Fase 2 = 3 MATD3 + 3 MAAC
+CUR_TORCH       = 2   # --torch-threads / --two-phase-torch-threads (default actual)
+CUR_HAPPO_ROLL  = 2   # --happo-n-rollout-threads (SubprocVecEnv, default actual)
+
+# ── vCPUs realmente utilizables ──────────────────────────────────────────────
+try:
+    _sched_affinity = getattr(os, 'sched_getaffinity', None)
+    if _sched_affinity is not None:
+        usable_cpus = len(_sched_affinity(0))
+    else:
+        usable_cpus = os.cpu_count() or 1
+except Exception:
+    usable_cpus = os.cpu_count() or 1
+total_cpus = os.cpu_count() or usable_cpus
+print(f"vCPUs utilizables          : {usable_cpus}  (os.cpu_count={total_cpus})")
+
+# ── RAM total / disponible ────────────────────────────────────────────────────
+ram_total = ram_avail = None
+try:
+    import psutil
+    vm = psutil.virtual_memory()
+    ram_total, ram_avail = vm.total / 1024**3, vm.available / 1024**3
+except Exception:
+    try:
+        with open("/proc/meminfo") as fh:
+            info = {line.split(":")[0]: line.split()[1] for line in fh if ":" in line}
+        ram_total = int(info["MemTotal"]) / 1024**2
+        ram_avail = int(info.get("MemAvailable", info["MemFree"])) / 1024**2
+    except Exception:
+        pass
+
+================================================================================
+CELL 18 [code] lines=183
+FIRST: # ── 1.2  Clonar repositorio completo + todos los submódulos ─────────────────
+================================================================================
+--- COMMENTS ---
+# ── 1.2  Clonar repositorio completo + todos los submódulos ─────────────────
+# Repo padre: scripts/, tools/, uc3m/, docs/, outputs/, deploy/
+# Submódulos fijados (pinned commits en .gitmodules):
+#   CityLearn        → Mac-Tapia/CityLearn (Colab rama viva: codex/iquitos-distillation-madrl-docs; .gitmodules pin: citylearn-v3-madrl)
+#   external/HARL    → github.com/Mac-Tapia/HARL
+#   external/MAAC    → github.com/Mac-Tapia/MAAC (rama viva codex/integrar-limpieza-diagnosticos: fix cuda/cpu Adam)
+#   external/MARL    → github.com/Mac-Tapia/MARL
+#   external/MARLlib → github.com/Mac-Tapia/MARLlib
+#   external/MATD3implementation → github.com/Mac-Tapia/MATD3implementation
+#   external/MicroGrids  → github.com/Mac-Tapia/MicroGrids
+#   external/evcc        → github.com/evcc-io/evcc
+#   external/prosumpy    → github.com/Mac-Tapia/prosumpy
+# CityLearn se lleva a su rama viva (sale del detached HEAD del clone).
+# external/MAAC vive en su propia rama viva (fix cuda/cpu del optimizador Adam al
+# reanudar desde checkpoint). Igual que CityLearn, se saca del commit fijado por el
+# padre y se lleva a la punta de su rama para garantizar el parche en Colab.
+# ── A: Clonar repo padre con submódulos (si no existe) ───────────────────────
+# ── B: Repo padre ya existe — refrescar ──────────────────────────────────────
+    # Actualizar submódulos fijados (todo excepto CityLearn que se trata aparte)
+# ── C: Hacer que CityLearn viva en su rama propia (no detached HEAD) ─────────
+# Después de --recurse-submodules CityLearn queda en el commit fijado por el
+# padre (detached HEAD). Lo llevamos a la punta de codex/iquitos-distillation-madrl-docs
+# para que el notebook, badge Open in Colab y scripts esten actualizados.
+# Asegurar que el remote mac-tapia apunte al fork correcto
+# Fetch la rama y checkout (rama viva, no detached HEAD)
+    # Fallback: algunos runtimes dejan detached HEAD tras fetch; forzar rama local
+# ── C2: Hacer que external/MAAC viva en su rama propia (no detached HEAD) ─────
+# El backend MAAC necesita el parche _sync_optimizer_state (estado Adam a GPU al
+# reanudar). Lo llevamos a la punta de MAAC_BRANCH igual que CityLearn.
+# ── D: Verificar submódulos restantes (excluir CityLearn/MAAC que están adelante) ─
+    # '+' para CityLearn es ESPERADO (está adelante del commit fijado)
+# ── E: Bloqueo protocolo en disco (no continuar con scripts legacy) ───────────
+# ── F: Verificación de parches (script en disco — inmune a notebook/kernel en caché)
+# El hard sync de 1.2 actualiza este .py; no depende del texto de la celda en Colab.
+--- HEADER (first 40 lines) ---
+# ── 1.2  Clonar repositorio completo + todos los submódulos ─────────────────
+# Repo padre: scripts/, tools/, uc3m/, docs/, outputs/, deploy/
+# Submódulos fijados (pinned commits en .gitmodules):
+#   CityLearn        → Mac-Tapia/CityLearn (Colab rama viva: codex/iquitos-distillation-madrl-docs; .gitmodules pin: citylearn-v3-madrl)
+#   external/HARL    → github.com/Mac-Tapia/HARL
+#   external/MAAC    → github.com/Mac-Tapia/MAAC (rama viva codex/integrar-limpieza-diagnosticos: fix cuda/cpu Adam)
+#   external/MARL    → github.com/Mac-Tapia/MARL
+#   external/MARLlib → github.com/Mac-Tapia/MARLlib
+#   external/MATD3implementation → github.com/Mac-Tapia/MATD3implementation
+#   external/MicroGrids  → github.com/Mac-Tapia/MicroGrids
+#   external/evcc        → github.com/evcc-io/evcc
+#   external/prosumpy    → github.com/Mac-Tapia/prosumpy
+# CityLearn se lleva a su rama viva (sale del detached HEAD del clone).
+import os
+import subprocess
+from pathlib import Path
+
+REPO_URL         = 'https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git'
+REPO_BRANCH      = 'codex/fix-madrl-traceability-docs'  # rama de trabajo Colab
+REPO             = '/content/MADRLCitytleranflexresdr'
+
+CITYLEARN_URL    = 'https://github.com/Mac-Tapia/CityLearn.git'
+CITYLEARN_BRANCH = 'codex/iquitos-distillation-madrl-docs'  # two_phase_happo_masac
+CITYLEARN_DIR    = f'{REPO}/CityLearn'
+
+# external/MAAC vive en su propia rama viva (fix cuda/cpu del optimizador Adam al
+# reanudar desde checkpoint). Igual que CityLearn, se saca del commit fijado por el
+# padre y se lleva a la punta de su rama para garantizar el parche en Colab.
+MAAC_URL         = 'https://github.com/Mac-Tapia/MAAC.git'
+MAAC_BRANCH      = 'codex/integrar-limpieza-diagnosticos'
+MAAC_DIR         = f'{REPO}/external/MAAC'
+
+
+def git_check(args, cwd=None):
+    cmd = ['git'] + [str(a) for a in args]
+    print('+', ' '.join(cmd))
+    kw = {'cwd': cwd} if cwd else {}
+    subprocess.check_call(cmd, **kw)
+
+
+
+================================================================================
+CELL 19 [code] lines=214
+FIRST: # ── 1.2b  Validar repo Colab: padre + CityLearn en rama viva ───────────────
+================================================================================
+--- COMMENTS ---
+# ── 1.2b  Validar repo Colab: padre + CityLearn en rama viva ───────────────
+# ── Detección automática de REPO (Colab o local; independiente de celda 1.2) ─
+# 1. Repo padre en la rama correcta
+# 2. CityLearn en su rama viva (NO detached HEAD, NO commit fijado antiguo)
+# 2b. external/MAAC en su rama viva (parche cuda/cpu del optimizador Adam)
+# 3. Submódulos dependencia en estado correcto (sin '-' ni 'U')
+# 4. Rutas críticas del proyecto
+# 5. Dataset Iquitos 2023-2025
+# Protocolo y parches ya verificados en celda 1.2 (sections E/F).
+# 5c. Badge Open in Colab alineado con CITYLEARN_BRANCH (push en Mac-Tapia/CityLearn)
+# 6. Guardar contexto del proyecto para celdas siguientes
+--- HEADER (first 40 lines) ---
+# ── 1.2b  Validar repo Colab: padre + CityLearn en rama viva ───────────────
+import glob
+import os
+import subprocess
+
+PROJECT_NAME = 'MADRLCitytleranflexresdr'
+REPO_URL     = globals().get('REPO_URL', 'https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git')
+REPO_BRANCH  = globals().get('REPO_BRANCH', 'codex/fix-madrl-traceability-docs')
+
+# ── Detección automática de REPO (Colab o local; independiente de celda 1.2) ─
+import importlib.util
+_in_colab_12b = importlib.util.find_spec('google.colab') is not None
+
+_repo_from_ctx = globals().get('REPO', None)
+if _repo_from_ctx and Path(_repo_from_ctx).exists() and (Path(_repo_from_ctx) / 'CityLearn').exists():
+    REPO = _repo_from_ctx
+elif _in_colab_12b:
+    REPO = '/content/MADRLCitytleranflexresdr'
+    if not Path(REPO).exists():
+        raise RuntimeError(
+            f'{REPO} no existe. Ejecuta celda 1.2 (clone + hard sync) antes de 1.2b.'
+        )
+else:
+    _start = Path.cwd()
+    _candidates = [
+        _start,
+        _start.parent,
+        _start.parent.parent,
+        Path('d:/MADRLCitytleranflexresdr'),
+        Path.home() / 'MADRLCitytleranflexresdr',
+    ]
+    REPO = next(
+        (
+            str(p)
+            for p in _candidates
+            if (p / 'CityLearn').exists() and (p / '.git').exists()
+        ),
+        None,
+    )
+    if REPO is None:
+
+================================================================================
+CELL 20 [code] lines=459
+FIRST: # 1.3 Instalar dependencias del proyecto de forma reproducible
+================================================================================
+--- COMMENTS ---
+# 1.3 Instalar dependencias del proyecto de forma reproducible
+# Usa Python 3.9 del proyecto. Si Colab entrega kernel 3.11, crea/usa .venv39-citylearn-v3.
+# Pip compatible con gym/ray legacy del proyecto.
+# Reinstalacion final: evita ruedas pandas/scipy compiladas para numpy 2.x.
+--- HEADER (first 40 lines) ---
+# 1.3 Instalar dependencias del proyecto de forma reproducible
+# Usa Python 3.9 del proyecto. Si Colab entrega kernel 3.11, crea/usa .venv39-citylearn-v3.
+import importlib
+import json
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+PROJECT_DIR = '/content/MADRLCitytleranflexresdr'
+PROJECT_ROOT = Path(PROJECT_DIR)
+if not PROJECT_ROOT.exists() and Path.cwd().name == 'MADRLCitytleranflexresdr':
+    PROJECT_ROOT = Path.cwd()
+    PROJECT_DIR = str(PROJECT_ROOT)
+
+VENV_DIR = PROJECT_ROOT / '.venv39-citylearn-v3'
+SETUP_LOG = Path('/tmp/madrl_py39_setup.log')
+CONSTRAINTS = Path('/tmp/madrl_compat.txt')
+PYTHON_REQUIRED = (3, 9)
+PYTHON_MIN = PYTHON_REQUIRED
+PYTHON_MAX_EXCLUSIVE = (3, 10)
+PYTORCH_INDEX_CU126 = 'https://download.pytorch.org/whl/cu126'
+PYTORCH_INDEX_CU128 = 'https://download.pytorch.org/whl/cu128'
+TORCH_PACKAGES = ('torch', 'torchvision')
+
+def detect_pytorch_cuda_wheel():
+    """Blackwell (sm_120, RTX PRO 6000) requiere wheels cu128; A100/H100 usan cu126."""
+    try:
+        name = subprocess.check_output(
+            ['nvidia-smi', '--query-gpu=name', '--format=csv,noheader'],
+            text=True, stderr=subprocess.DEVNULL,
+        ).strip().splitlines()[0].strip()
+    except Exception:
+        return PYTORCH_INDEX_CU126, None
+    upper = name.upper()
+    blackwell = any(k in upper for k in ('BLACKWELL', 'RTX PRO 6000', 'RTX 50'))
+    index = PYTORCH_INDEX_CU128 if blackwell else PYTORCH_INDEX_CU126
+    return index, name
+
+
+================================================================================
+CELL 21 [code] lines=181
+FIRST: # 1.4 Configurar sys.path, CUDA y smoke imports
+================================================================================
+--- COMMENTS ---
+# 1.4 Configurar sys.path, CUDA y smoke imports
+# Vinculada con 1.3: usa PROJECT_PYTHON aunque el kernel Colab sea Python 3.11.
+--- HEADER (first 40 lines) ---
+# 1.4 Configurar sys.path, CUDA y smoke imports
+# Vinculada con 1.3: usa PROJECT_PYTHON aunque el kernel Colab sea Python 3.11.
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(globals().get('PROJECT_DIR', '/content/MADRLCitytleranflexresdr'))
+if not PROJECT_ROOT.exists() and Path.cwd().name == 'MADRLCitytleranflexresdr':
+    PROJECT_ROOT = Path.cwd()
+PROJECT_ROOT = PROJECT_ROOT.resolve()
+REPO = str(PROJECT_ROOT)
+
+PYTHON_MIN = globals().get('PYTHON_MIN', (3, 9))
+PYTHON_MAX_EXCLUSIVE = globals().get('PYTHON_MAX_EXCLUSIVE', (3, 10))
+PROJECT_PYTHON = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+PYTHON = PROJECT_PYTHON
+EDITABLES = globals().get('EDITABLES', [
+    'CityLearn/',
+    'external/HARL/',
+    'external/off-policy/',
+    'external/MAAC/',
+    'external/MARL/src/',
+])
+
+
+def repo_path(path):
+    path = Path(path)
+    return path if path.is_absolute() else PROJECT_ROOT / path
+
+
+def _python_info_strict(python):
+    code = """
+import json
+import sys
+print(json.dumps({
+    'executable': sys.executable,
+    'version': sys.version.split()[0],
+    'version_info': list(sys.version_info[:3]),
+
+================================================================================
+CELL 22 [markdown] lines=3
+FIRST: ### Persistencia obligatoria en Google Drive
+================================================================================
+### Persistencia obligatoria en Google Drive
+
+Para entrenar 50 episodios por corrida (reanudable con `--skip-completed`) en Colab, los artefactos deben persistir fuera de `/content`. La siguiente celda monta Drive por defecto. Si no estas en Colab, usa el fallback local dentro del repo.
+
+
+================================================================================
+CELL 23 [code] lines=130
+FIRST: # ── 1.5  Montar Google Drive (workspace canonico; verificacion en 2.1) ─────
+================================================================================
+--- COMMENTS ---
+# ── 1.5  Montar Google Drive (workspace canonico; verificacion en 2.1) ─────
+    # No llamar auth.authenticate_user(): dispara un segundo OAuth efimero y rompe
+    # credentials-propagation de drive.mount (400 Bad Request, authuser=0).
+        # ── Verificar espacio libre en Drive ────────────────────────────────
+        # ── Cuarentena clone legacy en Drive (scripts 9+3 no deben ejecutarse) ──
+--- HEADER (first 40 lines) ---
+# ── 1.5  Montar Google Drive (workspace canonico; verificacion en 2.1) ─────
+import os
+import sys
+import shutil
+import subprocess
+import time
+from pathlib import Path
+
+USE_GOOGLE_DRIVE = True
+REQUIRE_GOOGLE_DRIVE = True
+DRIVE_MOUNT_POINT = '/content/drive'
+PROJECT_NAME = globals().get('PROJECT_NAME', 'MADRLCitytleranflexresdr')
+GDRIVE_ROOT = None
+GDRIVE_OUTPUT_PARENT = None
+CANONICAL_DRIVE_URL = 'https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX'
+
+MIN_DRIVE_FREE_GIB = 30.0  # A100-80GB HAPPO hidden=512: checkpoints + timeseries persistentes
+DRIVE_MOUNT_MAX_ATTEMPTS = 3
+
+def _drive_mydrive_ready(mount_point=DRIVE_MOUNT_POINT):
+    mydrive = f'{mount_point}/MyDrive'
+    return os.path.isdir(mydrive) and os.access(mydrive, os.R_OK | os.W_OK)
+
+def _mount_google_drive_colab(mount_point=DRIVE_MOUNT_POINT, max_attempts=DRIVE_MOUNT_MAX_ATTEMPTS):
+    """Monta Drive con un solo popup OAuth (drive.mount). Cualquier cuenta Google sirve."""
+    from google.colab import drive  # type: ignore[import-not-found,import-untyped]
+
+    if _drive_mydrive_ready(mount_point):
+        print(f'[OK] Google Drive ya montado en {mount_point}')
+        return
+
+    # No llamar auth.authenticate_user(): dispara un segundo OAuth efimero y rompe
+    # credentials-propagation de drive.mount (400 Bad Request, authuser=0).
+    last_exc = None
+    for attempt in range(1, max_attempts + 1):
+        force = attempt > 1 and os.path.isdir(mount_point)
+        try:
+            print(f'Montando Google Drive (intento {attempt}/{max_attempts}, force_remount={force})...')
+            drive.mount(mount_point, force_remount=force)
+            if not _drive_mydrive_ready(mount_point):
+
+================================================================================
+CELL 24 [markdown] lines=14
+FIRST: ## Sección 2: Configuración del proyecto
+================================================================================
+## Sección 2: Configuración del proyecto
+
+### 2.1 `OUTPUT_ROOT` en Drive (MyDrive + carpeta compartida, sin mirror)
+
+La celda **2.1** audita `outputs/` en MyDrive y en la carpeta compartida canónica ([`1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX`](https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX)) en **solo lectura** y elige `OUTPUT_ROOT` sin copiar ni mirror.
+
+| Flag (opcional) | Default | Efecto |
+|---|---|---|
+| `AUTO_RESUME_LATEST` | `True` | Reanuda el run más completo por artefactos |
+| `FORCE_NEW_RUN` | `False` | Ignora runs previos y crea `madrl_v3_<timestamp>` |
+| `RESUME_OUTPUT_ROOT` | `None` | Ruta exacta de un run concreto (override manual) |
+| `ENABLE_FUSE_MIRROR` | `False` | Solo si MyDrive está vacío: bootstrap opcional desde carpeta compartida (1ª vez) |
+
+Flujo mínimo: **1.5** (montar Drive) → **2.1** → **2.1b** (preview SKIP/REANUDA).
+
+================================================================================
+CELL 25 [code] lines=160
+FIRST: # ── 2.1  Rutas, timestamp y directorio de salida recuperable ────────────────
+================================================================================
+--- COMMENTS ---
+# ── 2.1  Rutas, timestamp y directorio de salida recuperable ────────────────
+# ── Deteccion automatica de REPO (Colab o local) ─────────────────────────────
+    # Codigo SIEMPRE en /content (hard sync celda 1.2). Outputs van a Drive.
+    # Buscar repo root desde el directorio del notebook hacia arriba
+# Outputs en Drive: SOLO ruta canonica (nunca MADRL_CityLearn_v3 legacy)
+# 2.1: audita outputs/ en Drive (MyDrive + carpeta compartida); reanuda o run nuevo.
+# Solo en Colab: OUTPUT_ROOT debe estar bajo MyDrive/outputs/madrl_v3_*
+# Punteros + monitor (fuente unica; lo reusan 7.2/7.3 via latest_colab_output_root.txt)
+--- HEADER (first 40 lines) ---
+# ── 2.1  Rutas, timestamp y directorio de salida recuperable ────────────────
+import json
+import os
+import sys
+from datetime import datetime
+from pathlib import Path
+
+# ── Deteccion automatica de REPO (Colab o local) ─────────────────────────────
+import importlib.util
+IN_COLAB = importlib.util.find_spec('google.colab') is not None
+
+if IN_COLAB:
+    # Codigo SIEMPRE en /content (hard sync celda 1.2). Outputs van a Drive.
+    REPO = '/content/MADRLCitytleranflexresdr'
+    CODE_ROOT = REPO
+else:
+    # Buscar repo root desde el directorio del notebook hacia arriba
+    _start = Path(__file__).resolve().parent if '__file__' in dir() else Path.cwd()
+    _candidates = [
+        _start,
+        _start.parent,
+        _start.parent.parent,
+        Path('d:/MADRLCitytleranflexresdr'),
+        Path.home() / 'MADRLCitytleranflexresdr',
+    ]
+    REPO = next(
+        (str(p) for p in _candidates if (p / 'CityLearn').exists()),
+        str(_start)
+    )
+    CODE_ROOT = REPO
+
+PROJECT_NAME = globals().get('PROJECT_NAME', 'MADRLCitytleranflexresdr')
+TIMESTAMP    = datetime.now().strftime('%Y%m%d_%H%M%S')
+RUN_LABEL    = f'madrl_v3_{TIMESTAMP}'
+SCHEMA_PATH  = str(Path(REPO) / 'CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json')
+PYTHON       = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+
+GDRIVE_OUTPUT_PARENT = globals().get('GDRIVE_OUTPUT_PARENT', None)
+GDRIVE_ROOT          = globals().get('GDRIVE_ROOT', None)
+REQUIRE_GOOGLE_DRIVE = globals().get('REQUIRE_GOOGLE_DRIVE', False)
+
+================================================================================
+CELL 26 [markdown] lines=11
+FIRST: ### 2.1b Verificación de reanudación (ejecutar después de 2.1)
+================================================================================
+### 2.1b Verificación de reanudación (ejecutar después de 2.1)
+
+Lista, para los **12 jobs**, si 7.2 hará **SKIP** (completo), **REANUDA** desde checkpoint o **fresh** — usando `preview_job_launcher_decision()`, la **misma función** que `--skip-completed` del launcher. **Nunca** marca COMPLETO si el launcher imprimiría `RUN ... not skipping`.
+
+**Vuelve a ejecutar esta celda después de 7.1** (cuando `HAPPO_ROLLOUT_THREADS` ya está fijado). La celda 7.1 también imprime el mismo preview antes de 7.2.
+
+**Flujo tras desconexión de Colab:** `1.1 → 1.2 → 1.2b → 1.3 → 1.4 → 1.5 → 2.1 → 2.1b → [2.3 si HAPPO salvage 49/50] → 6.1 → 7.0 → 7.1 → [2.1b otra vez] → 7.2`
+
+| Estado en reporte | Acción recomendada |
+|-------------------|-------------------|
+| HAPPO `REANUDA 49/50` salvage sin KPIs | **EJECUTA vía 2.3** (`dry_run` → `execute`); no basta **7.2** solo |
+
+================================================================================
+CELL 27 [code] lines=27
+FIRST: # ── 2.1b  Verificación de reanudación (ejecutar DESPUÉS de la celda 2.1) ─────
+================================================================================
+--- COMMENTS ---
+# ── 2.1b  Verificación de reanudación (ejecutar DESPUÉS de la celda 2.1) ─────
+# Fuente unica: notebook_jobs_resume_preview() en citylearn_v3_training_common.
+--- HEADER (first 40 lines) ---
+# ── 2.1b  Verificación de reanudación (ejecutar DESPUÉS de la celda 2.1) ─────
+# Fuente unica: notebook_jobs_resume_preview() en citylearn_v3_training_common.
+from pathlib import Path
+
+assert 'OUTPUT_ROOT' in globals(), 'Ejecuta la celda 2.1 primero.'
+root = Path(str(OUTPUT_ROOT))
+assert root.exists(), f'NO EXISTE OUTPUT_ROOT: {OUTPUT_ROOT}'
+
+if globals().get('_created_new_run'):
+    print('AVISO: run NUEVO — los 12 jobs empezaran fresh en 7.2 (salvo rescates en 2.2/2.3).\n')
+elif not bool(globals().get('RESUME_OUTPUT_ROOT')):
+    print('AVISO: sin RESUME_OUTPUT_ROOT — revisa la auditoria de 2.1.\n')
+
+_repo21b = Path(globals().get('CODE_ROOT', globals().get('REPO', '.')))
+_common21b = _common21 if '_common21' in globals() else None
+if _common21b is None:
+    _common21b = __import__('importlib').import_module('citylearn_v3_training_common')
+
+_report = _common21b.notebook_jobs_resume_preview(
+    root,
+    target_episodes=int(globals().get('N_EPISODES', globals().get('EPISODES', 50))),
+    episode_time_steps=int(globals().get('EPISODE_STEPS', 8760)),
+    happo_rollout_threads=int(globals().get('HAPPO_ROLLOUT_THREADS', 0)) or None,
+    label='2.1b',
+    show_footer_hint=True,
+    require_canonical_plan=not bool(globals().get('_created_new_run')),
+)
+
+================================================================================
+CELL 28 [markdown] lines=8
+FIRST: ### 2.1c Limpieza de runs `madrl_v3_*` duplicados (Drive)
+================================================================================
+### 2.1c Limpieza de runs `madrl_v3_*` duplicados (Drive)
+
+Detecta y elimina carpetas `madrl_v3_*` redundantes en `outputs/` (creadas por reinicios de Colab). **Conserva siempre el run activo (`OUTPUT_ROOT`) y el más completo**; nunca borra el que tiene más jobs terminados.
+
+- Por defecto **solo reporta** (`DELETE_DUPLICATE_RUNS = False`): muestra tamaño, `results.json` y checkpoints por run.
+- Para borrar de verdad, pon `DELETE_DUPLICATE_RUNS = True` y re-ejecuta.
+
+Es seguro ejecutarla siempre tras 2.1; si no hay duplicados, no hace nada.
+
+================================================================================
+CELL 29 [code] lines=48
+FIRST: # ── 2.1c  Limpieza de runs madrl_v3_* duplicados ───────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 2.1c  Limpieza de runs madrl_v3_* duplicados ───────────────────────────
+# Usa plan_madrl_duplicate_run_cleanup() (misma puntuacion por artefactos que 2.1).
+--- HEADER (first 40 lines) ---
+# ── 2.1c  Limpieza de runs madrl_v3_* duplicados ───────────────────────────
+# Usa plan_madrl_duplicate_run_cleanup() (misma puntuacion por artefactos que 2.1).
+import shutil
+from pathlib import Path as _Path
+
+DELETE_DUPLICATE_RUNS = globals().get('DELETE_DUPLICATE_RUNS', False)
+
+_parent = _Path(globals().get('BASE_OUTPUT_PARENT', '') or '.')
+_active = _Path(globals().get('OUTPUT_ROOT', '')).resolve() if globals().get('OUTPUT_ROOT') else None
+_common21c = _common21 if '_common21' in globals() else None
+if _common21c is None:
+    import importlib
+    _common21c = importlib.import_module('citylearn_v3_training_common')
+
+_plan = _common21c.plan_madrl_duplicate_run_cleanup(
+    _parent,
+    active_output_root=_active,
+    target_episodes=int(globals().get('N_EPISODES', globals().get('EPISODES', 50))),
+    episode_time_steps=int(globals().get('EPISODE_STEPS', 8760)),
+    happo_rollout_threads=int(globals().get('HAPPO_ROLLOUT_THREADS', 0)) or None,
+)
+
+if not _plan.get('summaries'):
+    print(f'[2.1c] No hay carpetas madrl_v3_* en {_parent} -> nada que limpiar.')
+else:
+    print(f'[2.1c] Runs madrl_v3_* en {_parent} (score por artefactos MADRL):')
+    for s in _plan['summaries']:
+        r = _Path(str(s['output_root']))
+        _flag = '  <- ACTIVO' if _active and r.resolve() == _active else ''
+        _keep = '  [CONSERVAR]' if str(r) in _plan['keep'] else ''
+        print(
+            f"   {r.name:30s} completos={s.get('completed_jobs', 0)}/12  "
+            f"reanudables={s.get('resumable_jobs', 0)}  "
+            f"~{float(s.get('progress_pct') or 0.0):.1f}% ep{_flag}{_keep}"
+        )
+    print(f"\n[2.1c] CONSERVAR: {', '.join(_Path(p).name for p in _plan['keep'])}")
+    if not _plan['delete']:
+        print('[2.1c] No hay duplicados para borrar.')
+    else:
+        for p in _plan['delete']:
+
+================================================================================
+CELL 30 [markdown] lines=11
+FIRST: ### 2.2 (Opcional) Rescatar HAPPO de un run fallido
+================================================================================
+### 2.2 (Opcional) Rescatar HAPPO de un run fallido
+
+> **Fuera del flujo desde cero.** `RESCUE_MODE='skip'` por defecto.
+
+Ejecutar **solo si** un run previo murió (p. ej. MASAC OOM) y quieres conservar checkpoints HAPPO parciales antes de borrarlo o relanzar con un `OUTPUT_ROOT` nuevo.
+
+1. Define `FAILED_OUTPUT_ROOT` (run roto) y opcionalmente `HAPPO_RESCUE_ARCHIVE`.
+2. Ejecuta la celda → copia checkpoints + `live_progress.json` a `outputs/rescued_happo_*`.
+3. Para **retomar HAPPO** en un run nuevo: ejecuta `2.1` (nuevo timestamp), luego esta celda en modo `inject` antes de `7.2`.
+
+> El rescate no completa el experimento 12/12; solo preserva progreso HAPPO intra-job.
+
+
+================================================================================
+CELL 31 [code] lines=44
+FIRST: # ── 2.2  Rescate HAPPO (opcional) ───────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 2.2  Rescate HAPPO (opcional) ───────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 2.2  Rescate HAPPO (opcional) ───────────────────────────────────────────
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+RESCUE_MODE = 'skip'  # 'skip' | 'rescue' | 'inject'
+FAILED_OUTPUT_ROOT = None  # ej. '/content/drive/.../outputs/madrl_v3_20260624_175429'
+HAPPO_RESCUE_ARCHIVE = None  # default: outputs/rescued_happo_<run_name>
+
+if 'OUTPUT_ROOT' not in globals():
+    raise RuntimeError('Ejecuta celda 2.1 antes de 2.2.')
+
+_repo = Path(globals().get('REPO', Path.cwd()))
+_script = _repo / 'CityLearn' / 'scripts' / 'colab_rescue_happo_checkpoints.py'
+if not _script.is_file():
+    raise FileNotFoundError(f'No se encuentra {_script}. Ejecuta celda 1.2 (git sync).')
+
+_py = globals().get('PYTHON', sys.executable)
+
+if RESCUE_MODE == 'skip':
+    print('[2.2] RESCUE_MODE=skip — sin rescate HAPPO.')
+elif RESCUE_MODE == 'rescue':
+    if not FAILED_OUTPUT_ROOT:
+        raise ValueError('Define FAILED_OUTPUT_ROOT con el OUTPUT_ROOT del run fallido.')
+    cmd = [_py, '-B', str(_script), 'rescue', '--source-run', str(FAILED_OUTPUT_ROOT)]
+    if HAPPO_RESCUE_ARCHIVE:
+        cmd.extend(['--dest', str(HAPPO_RESCUE_ARCHIVE)])
+    print('[2.2] rescue:', ' '.join(cmd))
+    subprocess.run(cmd, check=True, cwd=str(_repo))
+    _archive = Path(HAPPO_RESCUE_ARCHIVE) if HAPPO_RESCUE_ARCHIVE else _repo / 'outputs' / f"rescued_happo_{Path(FAILED_OUTPUT_ROOT).name.replace('madrl_v3_', '')}"
+    _manifest = _archive / 'rescue_manifest.json'
+    if _manifest.is_file():
+        print(json.dumps(json.loads(_manifest.read_text(encoding='utf-8')), indent=2)[:2000])
+    print(f'[2.2] Archive: {_archive}')
+elif RESCUE_MODE == 'inject':
+    if not HAPPO_RESCUE_ARCHIVE:
+        raise ValueError('Define HAPPO_RESCUE_ARCHIVE (directorio del rescate).')
+    cmd = [_py, '-B', str(_script), 'inject', '--archive', str(HAPPO_RESCUE_ARCHIVE), '--target-run', str(OUTPUT_ROOT)]
+    print('[2.2] inject:', ' '.join(cmd))
+
+================================================================================
+CELL 32 [markdown] lines=11
+FIRST: ### 2.3 (Opcional) Completar HAPPO salvage (49→50) + KPIs
+================================================================================
+### 2.3 (Opcional) Completar HAPPO salvage (49→50) + KPIs
+
+> **Fuera del flujo desde cero.** Por defecto `HAPPO_KPI_MODE='skip'`.
+> Usar solo al **reanudar** un run donde HAPPO tiene checkpoints pero `results.json` salvage sin KPIs.
+
+1. Ejecuta **2.1** (mismo `OUTPUT_ROOT` del run a reparar).
+2. `HAPPO_KPI_MODE = 'dry_run'` → preflight checkpoints + comando resume.
+3. `HAPPO_KPI_MODE = 'execute'` → 1 episodio restante × escenario + KPIs.
+4. Continua con **7.2** (si faltan otros jobs) o **8.x** (si ya estan los 12).
+
+> El entrenamiento oficial desde cero no requiere esta celda: **7.2** + `--skip-completed` cubre tails HAPPO.
+
+
+================================================================================
+CELL 33 [code] lines=73
+FIRST: # ── 2.3  (Opcional) Completar HAPPO salvage (49→50) + KPIs ───────────────────
+================================================================================
+--- COMMENTS ---
+# ── 2.3  (Opcional) Completar HAPPO salvage (49→50) + KPIs ───────────────────
+# Default skip: el flujo desde cero / two_phase usa 7.2. Activa dry_run/execute solo
+# si reanudas un run con HAPPO salvage sin KPIs.
+# A100 Colab: 2 rollouts (igual que 7.2). None = leer de hyperparameters del job.
+--- HEADER (first 40 lines) ---
+# ── 2.3  (Opcional) Completar HAPPO salvage (49→50) + KPIs ───────────────────
+# Default skip: el flujo desde cero / two_phase usa 7.2. Activa dry_run/execute solo
+# si reanudas un run con HAPPO salvage sin KPIs.
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+HAPPO_KPI_MODE = 'skip'  # 'skip' | 'dry_run' | 'execute'  (skip = flujo desde cero)
+HAPPO_KPI_SCENARIOS = ('E1', 'E2', 'E3')
+# A100 Colab: 2 rollouts (igual que 7.2). None = leer de hyperparameters del job.
+HAPPO_KPI_ROLLOUT_THREADS = globals().get('HAPPO_ROLLOUT_THREADS', 2)
+
+if 'OUTPUT_ROOT' not in globals():
+    raise RuntimeError('Ejecuta celda 2.1 antes de 2.3.')
+
+_repo = Path(globals().get('REPO', Path.cwd()))
+_regen = _repo / 'CityLearn' / 'scripts' / 'regenerate_happo_kpis.py'
+_prepare = _repo / 'CityLearn' / 'scripts' / 'prepare_happo_colab_resume.py'
+_verify = _repo / 'CityLearn' / 'scripts' / 'colab_verify_critical_patches.py'
+_py = globals().get('PYTHON', sys.executable)
+
+for _p in (_regen, _prepare, _verify):
+    if not _p.is_file():
+        raise FileNotFoundError(f'No se encuentra {_p}. Ejecuta celda 1.2 (git sync).')
+
+subprocess.run([_py, '-B', str(_verify), '--repo', str(_repo)], check=True, cwd=str(_repo))
+
+_prep = [_py, '-B', str(_prepare), '--output-root', str(OUTPUT_ROOT), '--sync-salvage']
+if HAPPO_KPI_ROLLOUT_THREADS is not None:
+    _prep.extend(['--happo-rollout-threads', str(int(HAPPO_KPI_ROLLOUT_THREADS))])
+print('[2.3] preflight:', ' '.join(_prep))
+_prep_rc = subprocess.run(_prep, cwd=str(_repo)).returncode
+if _prep_rc != 0 and HAPPO_KPI_MODE == 'execute':
+    raise RuntimeError(
+        '[2.3] Preflight falló: monta OUTPUT_ROOT en Drive con checkpoints HAPPO '
+        'o ejecuta primero dry_run.'
+    )
+
+if HAPPO_KPI_MODE == 'skip':
+
+================================================================================
+CELL 34 [markdown] lines=13
+FIRST: ## Sección 3: Dataset Iquitos 2023-2025
+================================================================================
+## Sección 3: Dataset Iquitos 2023-2025
+
+**17 edificios reales** · 26 304 pasos horarios · 222 CSV sin NaN/Inf
+
+| Recurso | Detalle |
+|---|---|
+| Período | 2023-2025 · año horario completo |
+| BESS total | 26 266 kWh / 6 648 kW |
+| PV total | 48 790 kWp (PVGIS TMY/pvlib) |
+| EV chargers | 185 tomas · 96 equipos · 1 850 EVs en pool |
+| V2G | 31 tomas de camiones (B01 Electro Oriente) |
+| Intensidad carbono | 0.671-0.790 kgCO₂/kWh (MINAM RAGEI 2019) |
+| Tarifa punta (18-22h) | 0.38 USD/kWh · fuera punta: 0.26 USD/kWh |
+
+
+================================================================================
+CELL 35 [code] lines=158
+FIRST: # ── 3.1  Verificar estructura del dataset Iquitos 2023-2025 ──────────────────
+================================================================================
+--- COMMENTS ---
+# ── 3.1  Verificar estructura del dataset Iquitos 2023-2025 ──────────────────
+# Valida dataset LOCAL real del proyecto. NO modifica ningún archivo.
+# Columnas verificadas son las del dataset real (snake_case CityLearn v2).
+# ── Columnas reales del Building CSV (snake_case CityLearn v2) ─────────────────
+# Fuente: Building_1.csv — mismo esquema en los 17 edificios
+# ── Columnas reales del weather CSV (compartido por todos los edificios) ───────
+# ── Validar weather.csv (compartido) ──────────────────────────────────────────
+# ── Validar carbon_intensity.csv (compartido) ─────────────────────────────────
+# ── Validar pricing.csv (tarifas eléctricas Iquitos) ─────────────────────────
+# ── Validar Building CSVs + PV + BESS + EV ───────────────────────────────────
+    # CSV de energía del edificio
+    # Columnas obligatorias del Building CSV
+    # PV — campo 'pv' -> 'attributes' -> 'nominal_power'
+    # BESS — campo 'electrical_storage' -> 'attributes' -> 'capacity'
+    # EV chargers — campo 'chargers' es un dict con un entry por punto de carga
+    # Verificar que los CSV de chargers existen
+# ── Conteo final de archivos ───────────────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 3.1  Verificar estructura del dataset Iquitos 2023-2025 ──────────────────
+# Valida dataset LOCAL real del proyecto. NO modifica ningún archivo.
+# Columnas verificadas son las del dataset real (snake_case CityLearn v2).
+import json
+import os
+import pandas as pd
+from pathlib import Path
+
+DATASET_DIR = Path(REPO) / "CityLearn/data/datasets/citylearn_iquitos_2023_2025"
+
+with open(SCHEMA_PATH) as f:
+    schema = json.load(f)
+
+buildings = schema.get("buildings", {})
+n_blds = len(buildings)
+assert n_blds == 17, f"Se esperaban 17 edificios, encontrados: {n_blds}"
+print("Dataset         : citylearn_iquitos_2023_2025")
+print(f"Schema          : {SCHEMA_PATH}")
+print(f"Edificios       : {n_blds} / 17  OK")
+print(f"Pasos simulacion: {schema.get('simulation_end_time_step', 0) + 1}  (26304 = 3 años)")
+print(f"Agente central  : {schema.get('central_agent', False)}")
+print()
+
+# ── Columnas reales del Building CSV (snake_case CityLearn v2) ─────────────────
+# Fuente: Building_1.csv — mismo esquema en los 17 edificios
+BUILDING_REQUIRED_COLS = [
+    "month",
+    "hour",
+    "day_type",
+    "non_shiftable_load",       # carga electrica no desplazable [kWh]
+    "solar_generation",         # generacion FV del edificio [W/kW]
+    "cooling_demand",           # demanda de enfriamiento [kWh]
+    "dhw_demand",               # agua caliente sanitaria [kWh]
+    "heating_demand",           # calefaccion [kWh]
+]
+
+# ── Columnas reales del weather CSV (compartido por todos los edificios) ───────
+WEATHER_REQUIRED_COLS = [
+    "outdoor_dry_bulb_temperature",
+    "outdoor_relative_humidity",
+
+================================================================================
+CELL 36 [markdown] lines=31
+FIRST: ## Sección 4: Entorno Dec-POMDP — 17 agentes
+================================================================================
+## Sección 4: Entorno Dec-POMDP — 17 agentes
+
+**Dec-POMDP:** cada edificio es un agente con observación parcial local.
+**CTDE:** el crítico usa el estado global durante entrenamiento; la ejecución es completamente local.
+
+```
+Dataset: citylearn_iquitos_2023_2025 (17 edificios reales, Iquitos 2023-2025)
+
+Observación local oᵢ(t): HETEROGÉNEA por edificio (varía según nº de chargers EV)
+  ├── Building_1:  64 dimensiones (3 chargers EV Modo 3 AC)
+  ├── Building_2:  78 dimensiones (5 chargers EV)
+  ├── Building_3:  92 dimensiones (7 chargers EV)
+  └── ... (rango: 57–330 dims según chargers EV del edificio)
+
+  Componentes por agente:
+  ├── Tiempo (mes, hora, day_type)
+  ├── Física edificio (non_shiftable_load, dhw_demand, cooling_demand, solar_generation)
+  ├── BESS (SOC, nominal_power, acciones previas)
+  ├── EV por charger (SOC_k, departure_time_k, required_soc_k, estimated_arrival_k, state_k)
+  └── Señales globales (carbon_intensity, electricity_pricing, outdoor_dry_bulb_temp,
+                        diffuse_solar_irradiance, direct_solar_irradiance)
+
+Acción local aᵢ(t): HETEROGÉNEA por edificio
+  ├── Building_1: 6 acciones  (BESS_charge + 3 EV_charger_power + 2 adicionales)
+  ├── Building_2: 8 acciones
+  └── ... (rango: 5–44 acciones según nº de EV chargers)
+
+Nota HAPPO: share_param=False — cada edificio tiene política INDEPENDIENTE.
+            Permite aprender patrones locales distintos (edificio industrial vs residencial).
+Nota histórica MAPPO: no es baseline oficial ni algoritmo principal de este flujo; se mantiene solo como antecedente metodológico de políticas compartidas.
+```
+
+
+================================================================================
+CELL 37 [code] lines=96
+FIRST: # ── 4.1  Smoke test del entorno Dec-POMDP con dataset Iquitos 2023-2025 ──────
+================================================================================
+--- COMMENTS ---
+# ── 4.1  Smoke test del entorno Dec-POMDP con dataset Iquitos 2023-2025 ──────
+# IMPORTANTE: se pasa SCHEMA_PATH explícitamente para garantizar que el entorno
+# usa citylearn_iquitos_2023_2025 y no el DEFAULT (citylearn_challenge_2022).
+        # Verificar que el dataset cargado es Iquitos (no challenge_2022)
+    # Filtrar mensajes INFO normales de CityLearn
+--- HEADER (first 40 lines) ---
+# ── 4.1  Smoke test del entorno Dec-POMDP con dataset Iquitos 2023-2025 ──────
+# IMPORTANTE: se pasa SCHEMA_PATH explícitamente para garantizar que el entorno
+# usa citylearn_iquitos_2023_2025 y no el DEFAULT (citylearn_challenge_2022).
+import json
+import os
+import subprocess
+import sys
+
+PYTHON = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+REPO   = globals().get('REPO', '/content/MADRLCitytleranflexresdr')
+
+smoke_code = r'''
+import json, sys, os
+sys.path.insert(0, os.path.join(os.getcwd(), "CityLearn"))
+from citylearn.v3.environment import make_citylearn_v3_env, describe_environment
+from citylearn.v3.config import CityLearnV3ExperimentConfig
+IQUITOS_SCHEMA = os.path.join(
+    os.getcwd(),
+    "CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json"
+)
+assert os.path.exists(IQUITOS_SCHEMA), f"Schema Iquitos no encontrado: {IQUITOS_SCHEMA}"
+cfg = CityLearnV3ExperimentConfig()
+results = {}
+for scenario in ("E1", "E2", "E3"):
+    env = make_citylearn_v3_env(
+        cfg,
+        schema_path=IQUITOS_SCHEMA,
+        scenario=scenario,
+        seed=0,
+        episode_time_steps=4,
+        reward_aggregation="team_mean",
+        normalize_observations=True,
+        madrl_algorithm="MATD3",
+        use_citylearn_v3_reward=True,
+    )
+    try:
+        desc = describe_environment(env)
+        # Verificar que el dataset cargado es Iquitos (no challenge_2022)
+        inner = env.env
+        while hasattr(inner, "env"):
+
+================================================================================
+CELL 38 [markdown] lines=24
+FIRST: ## Sección 5: Función de recompensa multiobjetivo
+================================================================================
+## Sección 5: Función de recompensa multiobjetivo
+
+### Componentes (v4)
+
+| Componente | Descripción |
+|---|---|
+| **Flexibilidad** | peak_penalty + ramping_penalty + load_factor + ev_service |
+| **CO₂** | carbon_emissions × carbon_intensity |
+| **Costo** | electricity_cost × price_signal |
+| **EV urgency** | SOC_deficit × 1/horas_hasta_salida |
+| **BESS degradación** | C-rate penalty Arrhenius LiFePO₄ (v4) |
+
+### Pesos por escenario
+
+| Escenario | flex | carbon | cost |
+|:---:|:---:|:---:|:---:|
+| **E1** | **0.70** | 0.15 | 0.15 |
+| **E2** | 0.15 | **0.70** | 0.15 |
+| **E3** | 0.25 | 0.15 | **0.60** |
+
+### Recompensa mixta CTDE (team_ratio = 0.70)
+```
+r_i_mix = 0.30 × r_i_local  +  0.70 × mean(r₁,...,r₁₇)
+```
+
+
+================================================================================
+CELL 39 [code] lines=69
+FIRST: # ── 5.1  Visualizar pesos de recompensa por escenario ────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 5.1  Visualizar pesos de recompensa por escenario ────────────────────
+# Formula annotation using Unicode (no LaTeX needed)
+# ── Imprimir recompensa mixta CTDE ────────────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 5.1  Visualizar pesos de recompensa por escenario ────────────────────
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+
+WEIGHTS = {
+    "E1": {"Flexibilidad": 0.70, "CO₂": 0.15, "Costo": 0.15},
+    "E2": {"Flexibilidad": 0.15, "CO₂": 0.70, "Costo": 0.15},
+    "E3": {"Flexibilidad": 0.25, "CO₂": 0.15, "Costo": 0.60},
+}
+TEAM_RATIO  = 0.70
+LOCAL_RATIO = 0.30
+N_AGENTS    = 17
+
+COLORS = ["#3b82f6", "#22c55e", "#f59e0b"]
+LABELS = list(WEIGHTS["E1"].keys())
+
+fig, axes = plt.subplots(1, 3, figsize=(13, 6.0), sharey=True)
+fig.suptitle("Pesos de recompensa por escenario (CityLearnV3MADRLRewardFunction v4)",
+             fontsize=13, fontweight="bold")
+for ax, (sc, wts), in zip(axes, WEIGHTS.items()):
+    vals = list(wts.values())
+    bars = ax.bar(LABELS, vals, color=COLORS, edgecolor="white", linewidth=1.5, width=0.55)
+    ax.set_title(f"Escenario {sc}", fontsize=12, fontweight="bold")
+    ax.set_ylim(0, 0.85)
+    ax.tick_params(axis="x", rotation=15)
+    ax.grid(axis="y", alpha=0.25)
+    ax.set_facecolor("#f8fafc")
+    for bar, v in zip(bars, vals):
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02,
+                f"{v:.2f}", ha="center", fontsize=11, fontweight="bold")
+
+plt.tight_layout()
+plt.subplots_adjust(bottom=0.20)
+# Formula annotation using Unicode (no LaTeX needed)
+_local  = LOCAL_RATIO
+_team   = TEAM_RATIO
+_n      = N_AGENTS
+
+================================================================================
+CELL 40 [markdown] lines=10
+FIRST: ## Sección 6: Hiperparámetros y estrategia two_phase
+================================================================================
+## Sección 6: Hiperparámetros y estrategia two_phase
+
+### Estrategia de entrenamiento en dos fases (Colab A100 / H100)
+
+| Fase | Algoritmos | Jobs paralelos | Notas |
+|:---:|:---|:---:|:---|
+| **1** | HAPPO + MASAC | 6 (E1/E2/E3) | MASAC buffer en GPU VRAM; arrancan los 6 a la vez |
+| **2** | MATD3 + MAAC | 6 (E1/E2/E3) | Backfill dinámico: cada job de Fase 2 (más liviano primero: MAAC, luego MATD3) entra **solo al terminar un job de Fase 1** |
+
+Regla (`run_dynamic_backfill_jobs`): la Fase 2 **nunca** arranca antes de que termine un job de Fase 1. Modo launcher: `--execution-mode two_phase_happo_masac` (backfill dinámico por defecto; `--no-dynamic-backfill` = barrera estricta). Reanudación: `--skip-completed`.
+
+
+================================================================================
+CELL 41 [markdown] lines=20
+FIRST: ### 6.1 Fuente única de hiperparámetros (A100 estable · 50 episodios/corrida)
+================================================================================
+### 6.1 Fuente única de hiperparámetros (A100 estable · 50 episodios/corrida)
+
+Perfil `two_phase_happo_masac`: 6 jobs/fase (sin stagger). La celda **6.1** es la **fuente única de verdad** (`N_EPISODES`, fracciones CUDA, buffers); el launcher aplica overrides de fase. Los hilos de CPU se **auto-ajustan** a las vCPU del runtime.
+
+| Algoritmo | Parametro clave | Valor two_phase (celda 6.1) | OOM retry |
+|---|---|---|---|
+| **HAPPO** | hidden / n_rollout_threads | 512 / **auto (vCPU)** | hidden 256 |
+| **MASAC** | buffer ep / max GiB / critic_batch | **4 / 8.0 / 1** | 2 / 6.0 / 1 (+ CPU replay) |
+| **MASAC** | rnn / qmix / hyper hidden | **64 / 32 / 64** | 64 / 32 / 64 |
+| **MATD3** | batch / buffer / hidden | **256 / 4096 / 256** | 768 / 1M / 512 |
+| **MAAC** | batch / buffer / hidden / num_updates | **768 / 450K / 768 / 12** | 512 / 500K / 512 / 8 |
+
+| Global | Valor |
+|---|:---:|
+| Episodios × pasos | 50 × 8 760 (por corrida, reanudable con `--skip-completed`) |
+| Torch threads | auto por fase (celda 6.1) |
+| CUDA fraction HAPPO/MATD3/MAAC | **0.14–0.15** |
+| CUDA fraction MASAC | **0.16–0.22** |
+| MASAC replay device | **cpu** |
+| Reanudacion | `--skip-completed` |
+
+
+================================================================================
+CELL 42 [code] lines=290
+FIRST: # ── 6.1  Configuracion central de entrenamiento A100 ───────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 6.1  Configuracion central de entrenamiento A100 ───────────────────────
+# ── REPO: reusa el global fijado por 1.2 / 2.1 (fuente unica de deteccion) ──
+# ── QUICK_TEST ────────────────────────────────────────────────────────────
+# False → entrenamiento oficial: N_EPISODES=50 via two_phase (celda 7.2).
+# True  → (a) celda 6.2: smoke 1 ep/algo; (b) si lanzas 7.2, EPISODES=3 (infra).
+# No uses QUICK_TEST=True para resultados de tesis.
+# ── Parametros de rendimiento (auto-ajuste H100 ~26 vCPU primario / A100 12 vCPU) ──
+# Detecta las vCPU reales del runtime y reparte hilos por fase SIN sobre-suscribir.
+# Funciona igual en A100 (12), H100 Pro+ (~26) o cualquier maquina, sin editar a mano.
+    # Fase 1 = 3 HAPPO (torch+rollout) + 3 MASAC (torch). Maximiza rollout (paraleliza
+    # env.step de HAPPO = el cuello CPU) manteniendo demanda total <= vcpus.
+    # max_rollout=16: maquinas H100/Blackwell con muchas vCPU y RAM holgada (177 GiB).
+# Referencia GPU: num_mini_batch auto = ceil(rollout/ref) mantiene VRAM HAPPO ~constante
+# al subir rollouts (mas buffer numpy en RAM de sistema, mismo minibatch GPU).
+# Cap de concurrencia del backfill dinamico. 0 = auto (= ancho de fase = 6).
+# En maquinas con mas vCPU que Colab (H100 ~26), subirlo solapa fase 1 y fase 2
+# para usar nucleos ociosos. LIMITADO POR RAM: cada job de fase 2 (MATD3/MAAC) ocupa
+# ~18 GiB; mantener total < RAM del sistema (8 jobs ~144 GiB en 177 GiB). NO sube el
+# FPS por job (env.step de CityLearn es single-thread); solo acorta el makespan global.
+# VRAM detectada UNA sola vez; la reusan el cap de concurrencia y las fracciones CUDA.
+# Auto-recomendacion: solapa fase 2 hasta donde la RAM lo permita (~18 GiB/job, margen 90%).
+# Acotar TAMBIEN por VRAM (no solo RAM): la fase 1 (HAPPO+MASAC x3) debe caber en la GPU;
+# solo se admiten jobs EXTRA de fase 2 en el headroom de VRAM. Sin esto, un cap por-RAM
+# (177 GiB -> 8) rellena los slots libres con fase 2 (MAAC, lightest-first) en t=0 y sobre-
+# suscribe una GPU de 96 GiB (3xHAPPO+3xMASAC+2xMAAC ~133 GiB). Mismo metodo y fracciones
+# que _detect_vram_gib / SIX_JOB_*_CUDA_FRAC de abajo, y que el clamp del launcher.
+# Cap final = min(RAM, VRAM, 12). Solo sube de 6 si hay vCPU ociosas (>12) Y cabe en VRAM.
+# GPU 95.6 GiB (RTX PRO 6000 Blackwell / A100-80 / H100): batches GPU mas grandes
+# (mejor gradiente, absorbido en tiempo ocioso de GPU -> sin costo de velocidad).
+# Buffers en RAM y nº de updates se mantienen conservadores: subirlos no acelera
+# (cuello = CPU env.step) y arriesga el OOM/contencion que ya corregimos.
+# Cap POR PROCESO (torch.cuda.set_per_process_memory_fraction), NO es el total de GPU.
+# MASAC critic_batch_size = episodios por update QMIX (Rashid et al. 2018: 32 ep x 60-120 pasos SMAC).
+# CityLearn = 8760 pasos/ep -> critic_batch=1 (ver launch_citylearn_v3_iquitos_training.ps1).
+# Fase 2 (MATD3+MAAC x3): buffers RAM conservadores; batches GPU aprovechan los 96 GiB
+# MATD3 alineado a la corrida v4 (ganadora, 3/3 exit_code=0): config conservadora y estable.
+# GPU_PROFILE: 'aws' aplica TF32 + expandable_segments en A100/H100/RTX PRO 6000.
+# En two_phase, el cap por job lo fija SIX_JOB_CUDA_FRAC; este 0.92 es para runs
+# de 1 sola GPU (no 6-parallel). Sirve para A100-80, H100-80 y Blackwell-96.
+# ── Validar que OUTPUT_ROOT ya esta configurado (celda 2.1) ─────────────
+# Budget A100 80GB / 167 GiB RAM (2 fases × 6 jobs — modo agresivo VRAM/RAM)
+# ─────────────────────────────────────────────────────────────────────────────
+# HIPERPARAMETROS CENTRALIZADOS — A100 80GB · 50 episodios/corrida · gamma=0.9999
+# Referencia: training_summary.json de corrida v4 + launcher defaults A100
+# ─────────────────────────────────────────────────────────────────────────────
+        # On-policy heterogeneous PPO (HARL) — 17 politicas independientes
+        # Off-policy multi-agent SAC + QMIX — acciones discretizadas (axis 89)
+        # Buffers alineados a SIX_JOB_MASAC_* (fuente de verdad del launcher 6-parallel).
+        # Off-policy Multi-Agent Twin Delayed DDPG — acciones continuas
+        # Alineado a SIX_JOB_MATD3_* (config estable 6-parallel fase 2).
+        # Off-policy SAC con critic de atencion multiagente — acciones discretas
+        # Alineado a SIX_JOB_MAAC_* (6-parallel fase 2).
+--- HEADER (first 40 lines) ---
+# ── 6.1  Configuracion central de entrenamiento A100 ───────────────────────
+import os
+import sys
+import subprocess
+import json
+from pathlib import Path
+
+# ── REPO: reusa el global fijado por 1.2 / 2.1 (fuente unica de deteccion) ──
+import importlib.util
+_in_colab_61 = importlib.util.find_spec('google.colab') is not None
+
+REPO = globals().get('REPO', None)
+if not REPO or not Path(REPO).exists():
+    raise RuntimeError(
+        'REPO no definido o inexistente. Ejecuta las celdas 1.2 y 2.1 (definen REPO) antes de 6.1.'
+    )
+if _in_colab_61 and 'MADRL_CityLearn_v3' in str(Path.cwd()):
+    raise RuntimeError(
+        f'CWD en clone legacy Drive: {Path.cwd()}. '
+        'Abre el notebook desde GitHub o /content; ejecuta 1.2.'
+    )
+PYTHON      = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+SCHEMA_PATH = globals().get(
+    'SCHEMA_PATH',
+    f'{REPO}/CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json',
+)
+LAUNCHER    = f'{REPO}/CityLearn/scripts/colab_a100_official_launcher.py'
+MONITOR     = f'{REPO}/CityLearn/scripts/colab_a100_live_monitor.py'
+PROTOCOL_GUARD = f'{REPO}/CityLearn/scripts/colab_protocol_guard.py'
+if _in_colab_61:
+    for _p in (LAUNCHER, MONITOR, PROTOCOL_GUARD):
+        assert _p.startswith('/content/MADRLCitytleranflexresdr/'), (
+            f'Ruta de codigo invalida en Colab: {_p}'
+        )
+        assert 'MADRL_CityLearn_v3' not in _p, f'Ruta legacy prohibida: {_p}'
+
+# ── QUICK_TEST ────────────────────────────────────────────────────────────
+# False → entrenamiento oficial: N_EPISODES=50 via two_phase (celda 7.2).
+# True  → (a) celda 6.2: smoke 1 ep/algo; (b) si lanzas 7.2, EPISODES=3 (infra).
+# No uses QUICK_TEST=True para resultados de tesis.
+
+================================================================================
+CELL 43 [markdown] lines=10
+FIRST: ### 6.2 Prueba rápida de validación — 1 episodio por algoritmo
+================================================================================
+### 6.2 Prueba rápida de validación — 1 episodio por algoritmo
+
+> **SOLO PARA VERIFICAR QUE EL PIPELINE FUNCIONA.** No usar como resultado de entrenamiento.
+> El entrenamiento oficial usa **N_EPISODES = 50** por corrida (celda **7.2**), reanudable con `--skip-completed`.
+
+Activa con `QUICK_TEST = True` en la celda **6.1**, luego ejecuta esta celda. Comprueba:
+- que el launcher, los scripts y los módulos cargan correctamente;
+- que cada algoritmo arranca 1 episodio corto (168 pasos) sin error.
+
+Si `QUICK_TEST = False` (default), la celda solo imprime instrucciones y no entrena.
+
+
+================================================================================
+CELL 44 [code] lines=77
+FIRST: # ── 6.2  Prueba rapida de validacion — 1 episodio (NO es entrenamiento oficial) ──
+================================================================================
+--- COMMENTS ---
+# ── 6.2  Prueba rapida de validacion — 1 episodio (NO es entrenamiento oficial) ──
+# Solo verifica que el pipeline funciona. El entrenamiento oficial usa N_EPISODES=50 por corrida.
+# Controla con QUICK_TEST: si True, ejecuta; si False, imprime instrucciones y sale.
+--- HEADER (first 40 lines) ---
+# ── 6.2  Prueba rapida de validacion — 1 episodio (NO es entrenamiento oficial) ──
+# Solo verifica que el pipeline funciona. El entrenamiento oficial usa N_EPISODES=50 por corrida.
+# Controla con QUICK_TEST: si True, ejecuta; si False, imprime instrucciones y sale.
+
+_N_EPISODES_TEST = 1   # Prueba rapida: 1 episodio por corrida
+_EPISODE_STEPS   = 168 # 1 semana en pasos horarios (rapido para validar)
+
+print("=" * 70)
+print("  PRUEBA RAPIDA DE VALIDACION — 1 episodio x algoritmo x escenario")
+print("  Este bloque NO genera resultados de tesis.")
+print("  Para entrenamiento oficial: ejecuta la Seccion 7 (N_EPISODES=50 por corrida).")
+print("=" * 70)
+
+if not globals().get('QUICK_TEST', False):
+    print()
+    print("  QUICK_TEST = False → prueba desactivada.")
+    print("  Para activar: cambia QUICK_TEST = True en la celda 6.1.")
+    print("  Para entrenamiento oficial: ejecuta directamente la celda 7.2.")
+else:
+    import subprocess
+    import sys
+    import os
+    import json
+    from pathlib import Path
+
+    _REPO    = globals().get('REPO', '/content/MADRLCitytleranflexresdr')
+    _PYTHON  = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+    _SCHEMA  = globals().get('SCHEMA_PATH', f'{_REPO}/CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json')
+    _LAUNCHER = f'{_REPO}/CityLearn/scripts/colab_a100_official_launcher.py'
+    _OUT_ROOT = str(Path(globals().get('OUTPUT_ROOT', f'{_REPO}/outputs')) / 'quick_test')
+    Path(_OUT_ROOT).mkdir(parents=True, exist_ok=True)
+
+    _test_algos = ['happo', 'masac', 'matd3', 'maac']
+    _test_scenarios = ['E1', 'E2', 'E3']
+    _results_quick = {}
+
+    for algo in _test_algos:
+        for scenario in _test_scenarios:
+            script = f'{_REPO}/CityLearn/scripts/train_citylearn_v3_{algo}.py'
+            if not Path(script).exists():
+
+================================================================================
+CELL 45 [markdown] lines=3
+FIRST: ## Sección 7: Lanzamiento oficial recuperable
+================================================================================
+## Sección 7: Lanzamiento oficial recuperable
+
+El entrenamiento ya no se lanza con cuatro bloques manuales. Se usa un orquestador unico que genera `official_full_status.json`, `official_full_manifest.json`, logs por job, checkpoint/resume y monitor visible.
+
+
+================================================================================
+CELL 46 [code] lines=410
+FIRST: # ── 7.0  Helpers de ejecucion y monitor ─────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 7.0  Helpers de ejecucion y monitor ─────────────────────────────────────────
+# IMPORTANTE: tras git pull, re-ejecuta celdas 1.2 → 6.1 → 7.0 → 7.1 antes de 7.2.
+    # Todos los hiperparametros A100-SXM4-80GB explicitamente para maxima visibilidad.
+        # El panel del notebook (celda 7.2) ya renderiza el dashboard global con
+        # componentes/kpis; --no-live-monitor evita duplicar la salida del launcher.
+        # ── HAPPO ─────────────────────────────────────────────────────────────
+        # num_mini_batch=0 -> auto: mas rollouts usan RAM; minibatch GPU ~constante (VRAM).
+        # ppo_epoch/critic_epoch 5->10: mas pasadas GPU/update (aprovecha GPU ociosa on-policy)
+        # ── MASAC (6-parallel: replay CPU, critic_batch=1 ep QMIX) ────────────
+        # ── MATD3 (6-parallel fase 2: buffers RAM conservadores) ────────────────
+        # ── MAAC (6-parallel fase 2: buffers RAM conservadores) ────────────────
+        # Auto-escala a las vCPU del runtime (sin sobre-suscribir): H100 ~26 vCPU
+        # (primario) -> Fase1 torch=2/rollout=4; A100 12 vCPU -> torch=1/rollout=2.
+--- HEADER (first 40 lines) ---
+# ── 7.0  Helpers de ejecucion y monitor ─────────────────────────────────────────
+# IMPORTANTE: tras git pull, re-ejecuta celdas 1.2 → 6.1 → 7.0 → 7.1 antes de 7.2.
+import subprocess
+import sys
+import os
+import json
+import re
+from pathlib import Path
+
+
+def run_cmd(cmd, *, cwd=REPO, check=True):
+    print('\n' + '=' * 80)
+    print(' '.join(str(c) for c in cmd))
+    print('=' * 80)
+    sys.stdout.flush()
+    proc = subprocess.run(cmd, cwd=cwd, text=True, stderr=subprocess.PIPE)
+    if proc.stderr:
+        print(proc.stderr, end='', file=sys.stderr, flush=True)
+    if check and proc.returncode != 0:
+        stderr_snippet = (proc.stderr or '').strip()[-1500:]
+        msg = f'Comando fallo con exit={proc.returncode}'
+        if stderr_snippet:
+            msg += f'\n--- stderr (ultimas 1500 chars) ---\n{stderr_snippet}'
+        raise RuntimeError(msg)
+    return proc.returncode
+
+
+def _launcher_flags():
+    """Devuelve el conjunto de flags --foo registrados en el launcher."""
+    try:
+        src = Path(LAUNCHER).read_text(encoding='utf-8')
+        return set(re.findall(r'add_argument\(["\'](-{1,2}[\w-]+)["\']', src))
+    except Exception:
+        return set()
+
+
+def _launcher_has_two_phase():
+    """True si el launcher implementa two_phase_happo_masac (no el layout antiguo 9+3)."""
+    try:
+        src = Path(LAUNCHER).read_text(encoding='utf-8')
+
+================================================================================
+CELL 47 [markdown] lines=5
+FIRST: ### 7.1 Preflight y dry-run obligatorio
+================================================================================
+### 7.1 Preflight y dry-run obligatorio
+
+Esta celda valida A100, CUDA, imports, rutas, manifest y los 12 comandos planificados sin entrenar. Si falla aqui, no ejecutes el entrenamiento completo.
+
+**Tras `git pull`:** re-ejecuta celdas **1.2 → 6.1 → 7.0 → 7.1** antes de **7.2**.
+
+
+================================================================================
+CELL 48 [code] lines=84
+FIRST: # ── 7.1  Preflight A100 + dry-run oficial ─────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 7.1  Preflight A100 + dry-run oficial ─────────────────────────────────────
+# 0. Verificar existencia de launcher y schema
+# 0b. Verificar protocolo two_phase_happo_masac_v3 (bloquea layout antiguo 9+3)
+# 1. Dry-run oficial: valida CUDA/A100, imports, rutas y 12 comandos planificados
+# 2. Leer y validar status.json (desde colab_protocol_guard.py sincronizado en 1.2)
+# 3. Verificar que cada output_dir es unico y esta dentro de OUTPUT_ROOT
+# Marca el dry-run como validado: 7.2 omitira su dry-run interno si la config no cambia.
+# 4. Preview skip/resume con HAPPO_ROLLOUT_THREADS ya fijado (misma fuente que 2.1b).
+--- HEADER (first 40 lines) ---
+# ── 7.1  Preflight A100 + dry-run oficial ─────────────────────────────────────
+# 0. Verificar existencia de launcher y schema
+_launcher_path = Path(LAUNCHER)
+_schema_path   = Path(SCHEMA_PATH)
+if not _launcher_path.exists():
+    raise FileNotFoundError(
+        f'Launcher no encontrado: {LAUNCHER}\n'
+        f'  → Vuelve a ejecutar la celda de clonado (1.2) para restaurar el submodulo CityLearn.'
+    )
+if not _schema_path.exists():
+    raise FileNotFoundError(
+        f'Schema no encontrado: {SCHEMA_PATH}\n'
+        f'  → Genera el dataset Iquitos primero (celdas 3.x).'
+    )
+
+# 0b. Verificar protocolo two_phase_happo_masac_v3 (bloquea layout antiguo 9+3)
+verify_two_phase_protocol()
+_parallel_ok = _ensure_launcher_parallel()
+if _parallel_ok:
+    print(f'Launcher : {LAUNCHER}  [two_phase_happo_masac ✓]')
+    print(f'Monitor  : {MONITOR}  [two_phase ✓]')
+else:
+    raise RuntimeError(
+        'Launcher/monitor sin two_phase_happo_masac. Ejecuta celda 1.2 y vuelve a 7.0/7.1.'
+    )
+print(f'Schema   : {SCHEMA_PATH}')
+
+# 1. Dry-run oficial: valida CUDA/A100, imports, rutas y 12 comandos planificados
+dry_run_cmd = launcher_base_args() + ['--dry-run', '--skip-completed']
+run_cmd(dry_run_cmd)
+monitor_once()
+
+# 2. Leer y validar status.json (desde colab_protocol_guard.py sincronizado en 1.2)
+import importlib.util
+
+_guard_path = Path(REPO) / 'CityLearn/scripts/colab_protocol_guard.py'
+_spec = importlib.util.spec_from_file_location('_colab_protocol_guard', _guard_path)
+if _spec is None or _spec.loader is None:
+    raise ImportError(f'No se pudo cargar colab_protocol_guard desde {_guard_path}')
+_pg = importlib.util.module_from_spec(_spec)
+
+================================================================================
+CELL 49 [markdown] lines=14
+FIRST: ### 7.2 Entrenamiento de 50 episodios por corrida (reanudable con --skip-completed)
+================================================================================
+### 7.2 Entrenamiento de 50 episodios por corrida (reanudable con --skip-completed)
+
+Ejecuta **12 corridas desde cero o reanudadas** en **dos fases** (`two_phase_happo_masac`):
+- **Fase 1** HAPPO×3 + MASAC×3 (6 paralelos) → **Fase 2** MATD3×3 + MAAC×3 (6 paralelos)
+
+Prior de tiempo: ~12 min/ep por fase → **~20 h** wall con 50 ep (ETA dinámico con FPS en `live_progress.json`).
+
+**Desde cero:** deja `LAUNCH_FULL_TRAINING = True` y ejecuta tras **6.1 → 7.0 → 7.1**. Se crean/usan las 12 carpetas bajo `OUTPUT_ROOT`.
+
+**Reanudación:** si Colab se desconecta, **re-ejecuta solo esta celda 7.2**. El bootstrap integrado hace: git hard sync, montar Drive, detectar el mismo `OUTPUT_ROOT`, dry-run interno y lanzamiento con `--skip-completed` (omite jobs con `results.json` completo; reanuda checkpoints `.pt`).
+
+> **Opcional (salvage HAPPO 49/50):** si el plan es solo tails KPI, **7.2** también los cubre; celda **2.3** es atajo solo-KPI (`skip` por defecto).
+
+Al terminar con exit=0: verifica artefactos (12/12) y, si `AUTO_RUN_POST_TRAINING=True`, ejecuta **7.3→9.x** (`AUTO_DISCONNECT_COLAB=False` por defecto).
+
+
+================================================================================
+CELL 50 [code] lines=693
+FIRST: # ── 7.2  Lanzar entrenamiento + monitor en paralelo ─────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 7.2  Lanzar entrenamiento + monitor en paralelo ─────────────────────────
+# SOLO en VM Colab (A100). No ejecutar con kernel Python local en VS Code.
+# Bootstrap integral en Colab: git 1.2 + Drive 1.5 + OUTPUT_ROOT 2.1 + config 6.1/7.0.
+    # ── helpers ───────────────────────────────────────────────────────────────
+    # ── panel principal de estado ─────────────────────────────────────────────
+        # ── 1. Estado global (artefactos en disco = misma verdad que launcher) ──
+        # ── 2. Live progress (solo jobs NO completos por artefacto) ─────────────
+        # ── 3. Pesos multiobjetivo ────────────────────────────────────
+        # ── 4. Ganancias de jobs completados ──────────────────────────
+                # Carpeta canonica del launcher = MAYUSCULA (HAPPO/E1); respaldo minuscula/legacy.
+                # Identico para los 4 MADRL (sin preferencia) y robusto en Colab (case-sensitive).
+                        # Buscar claves de ganancia/improvement
+        # ── 5. Tabla 4x3 (artefactos en disco, no solo status.json) ───
+    # ── arrancar proceso ──────────────────────────────────────────────────────
+    # Omite el dry-run interno si 7.1 ya lo valido para esta misma config (no duplicar).
+    # Hilo que imprime cada linea del launcher en tiempo real
+    # ── stop gracioso ─────────────────────────────────────────────────────────
+    # ── bucle de monitoreo ────────────────────────────────────────────────────
+    # Panel final
+        # Diagnostico de fallo
+--- HEADER (first 40 lines) ---
+# ── 7.2  Lanzar entrenamiento + monitor en paralelo ─────────────────────────
+# SOLO en VM Colab (A100). No ejecutar con kernel Python local en VS Code.
+LAUNCH_FULL_TRAINING = True
+
+import importlib.util
+_IN_COLAB_72 = importlib.util.find_spec('google.colab') is not None
+
+# Bootstrap integral en Colab: git 1.2 + Drive 1.5 + OUTPUT_ROOT 2.1 + config 6.1/7.0.
+if _IN_COLAB_72:
+    import sys as _sys72
+    import subprocess as _sp72
+    from pathlib import Path as _Path72
+    _repo72 = _Path72(globals().get('REPO', '/content/MADRLCitytleranflexresdr'))
+    _helpers72 = _repo72 / 'CityLearn/scripts/colab_notebook_launch_helpers.py'
+    if not _helpers72.is_file() and not (_repo72 / '.git').is_dir():
+        print('[7.2] Runtime nuevo: clonando repo para bootstrap...')
+        _sp72.check_call([
+            'git', 'clone', '--branch', 'codex/fix-madrl-traceability-docs',
+            '--depth', '1', '--recurse-submodules', '--shallow-submodules',
+            'https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git', str(_repo72),
+        ])
+    if not _helpers72.is_file():
+        raise RuntimeError(
+            f'Falta {_helpers72}. Ejecuta celda 1.2 una vez o reinicia con REPO vacio.'
+        )
+    _spec72 = importlib.util.spec_from_file_location('_nb72_helpers', _helpers72)
+    _mod72 = importlib.util.module_from_spec(_spec72)
+    _spec72.loader.exec_module(_mod72)
+    _mod72.prepare_colab_cell_72_standalone(
+        globals(),
+        repo=_repo72,
+        resume_output_root=globals().get('RESUME_OUTPUT_ROOT'),
+        skip_git_sync=bool(globals().get('CELL_72_SKIP_GIT_SYNC', False)),
+    )
+
+if LAUNCH_FULL_TRAINING and not _IN_COLAB_72:
+    raise RuntimeError(
+        'Entrenamiento oficial bloqueado en maquina local.\n'
+        '  En VS Code: Select Kernel -> Google Colab -> A100 High-RAM (no .venv local).\n'
+        '  O abre el notebook en colab.research.google.com y ejecuta 1.2 -> 7.2.\n'
+
+================================================================================
+CELL 51 [markdown] lines=3
+FIRST: ### 7.3 Monitor visible manual
+================================================================================
+### 7.3 Monitor visible manual
+
+Puedes ejecutar esta celda despues del entrenamiento, o tras reabrir el notebook, para ver el ultimo estado guardado. Muestra fase activa, jobs en paralelo, ~12 min/ep y ETA. Durante el entrenamiento, el panel 7.2 imprime snapshots cada MONITOR_INTERVAL s. **Si `AUTO_RUN_POST_TRAINING=True` (celda 6.1), 7.2 ejecuta esta celda automaticamente al completar 12/12 jobs.**
+
+
+================================================================================
+CELL 52 [code] lines=48
+FIRST: # ── 7.3  Monitor visible en notebook ────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 7.3  Monitor visible en notebook ────────────────────────────────────────
+# Autosuficiente: funciona aunque el kernel haya sido reiniciado.
+# OUTPUT_ROOT del scope o del archivo de referencia del launcher.
+# Usa el helper de 7.0 si existe; si no (kernel reiniciado), fallback autosuficiente.
+--- HEADER (first 40 lines) ---
+# ── 7.3  Monitor visible en notebook ────────────────────────────────────────
+# Autosuficiente: funciona aunque el kernel haya sido reiniciado.
+import subprocess
+import sys
+import os
+from pathlib import Path
+
+_repo   = globals().get('REPO', '/content/MADRLCitytleranflexresdr')
+_mon    = f'{_repo}/CityLearn/scripts/colab_a100_live_monitor.py'
+_python = globals().get('PROJECT_PYTHON', globals().get('PYTHON', sys.executable))
+
+# OUTPUT_ROOT del scope o del archivo de referencia del launcher.
+# Usa el helper de 7.0 si existe; si no (kernel reiniciado), fallback autosuficiente.
+if 'resolve_output_root_or_latest' in globals():
+    _output_root = resolve_output_root_or_latest()
+else:
+    _output_root = globals().get('OUTPUT_ROOT', '')
+    _ref = Path(_repo) / 'outputs' / 'latest_colab_output_root.txt'
+    if not _output_root and _ref.exists():
+        _output_root = _ref.read_text(encoding='utf-8').strip()
+
+if not _output_root:
+    print('[7.3] OUTPUT_ROOT no disponible. Ejecuta la celda 6.1 o espera a que el launcher escriba outputs/latest_colab_output_root.txt.')
+else:
+    if 'MADRL_CityLearn_v3' in _output_root:
+        raise RuntimeError(
+            f'OUTPUT_ROOT legacy prohibido: {_output_root}. Re-ejecuta 1.5 y 2.1.'
+        )
+    _guard = f'{_repo}/CityLearn/scripts/colab_protocol_guard.py'
+    if Path(_guard).is_file():
+        subprocess.check_call([_python, _guard, 'verify-repo', '--repo', _repo])
+    result = subprocess.run(
+        [_python, '-B', _mon, '--output-root', _output_root, '--once', '--log-tail', str(globals().get('LOG_TAIL', 4))],
+        capture_output=True,
+        text=True,
+    )
+    print(result.stdout)
+    if result.stderr:
+        print(result.stderr, file=sys.stderr)
+    if 'protocol=two_phase_happo_masac_v3' not in (result.stdout or ''):
+
+================================================================================
+CELL 53 [markdown] lines=3
+FIRST: ### 7.4 Auditoría y reorganización de artefactos
+================================================================================
+### 7.4 Auditoría y reorganización de artefactos
+
+Tras el entrenamiento (o al reabrir el notebook), la celda **7.4** verifica que cada uno de los 12 jobs tenga `results.json`, `timeseries.csv` y checkpoints. La celda **7.4b** (opcional) exporta al formato canónico de tesis bajo `outputs/{MADRL}/{escenario}/`.
+
+
+================================================================================
+CELL 54 [code] lines=239
+FIRST: # ── 7.4  Auditoría de artefactos — estructura y archivos por job ────────────
+================================================================================
+--- COMMENTS ---
+# ── 7.4  Auditoría de artefactos — estructura y archivos por job ────────────
+# Verifica que cada uno de los 12 jobs (4 algos x 3 escenarios) tiene:
+#   data/results.json · data/timeseries.csv · data/trace.csv
+#   checkpoints/*.pt  · data/artifact_audit.json
+# Muestra tamaño, episodios registrados y si el job esta completo.
+# Auto-descubrir OUTPUT_ROOT aunque se haya reiniciado el kernel.
+# ── Estado global del manifest ───────────────────────────────────────────────
+# ── Checkpoints ──────────────────────────────────────────────────────────────
+        # fallback: buscar en el dir raiz del job
+# ── Imprimir cabecera ─────────────────────────────────────────────────────────
+# ── Espacio en disco ─────────────────────────────────────────────────────────
+# ── Por algoritmo y escenario ─────────────────────────────────────────────────
+        # Archivos requeridos
+        # Archivos opcionales
+        # Checkpoints
+        # Figuras
+        # live_progress (si activo)
+# ── Resumen final ─────────────────────────────────────────────────────────────
+# Mostrar estructura esperada
+--- HEADER (first 40 lines) ---
+# ── 7.4  Auditoría de artefactos — estructura y archivos por job ────────────
+# Verifica que cada uno de los 12 jobs (4 algos x 3 escenarios) tiene:
+#   data/results.json · data/timeseries.csv · data/trace.csv
+#   checkpoints/*.pt  · data/artifact_audit.json
+# Muestra tamaño, episodios registrados y si el job esta completo.
+import json
+import os
+from pathlib import Path
+
+ALGOS = ['happo', 'masac', 'matd3', 'maac']
+SCENS = ['E1', 'E2', 'E3']
+REQUIRED = {
+    'data/results.json'       : 'results',
+    'data/timeseries.csv'     : 'timeseries',
+    'data/trace.csv'          : 'trace',
+    'data/checkpoint_manifest.json': 'ckpt_manifest',
+    'data/artifact_audit.json': 'audit',
+}
+OPTIONAL = {
+    'data/training_summary.json'       : 'train_summary',
+    'data/building_behavior_summary.csv': 'bldg_summary',
+    'data/building_kpis.csv'           : 'bldg_kpis',
+}
+
+_repo = globals().get('REPO', '/content/MADRLCitytleranflexresdr')
+
+# Auto-descubrir OUTPUT_ROOT aunque se haya reiniciado el kernel.
+if 'resolve_output_root_or_latest' in globals():
+    _output_root = resolve_output_root_or_latest()
+else:
+    _output_root = globals().get('OUTPUT_ROOT', '')
+    _ref = Path(_repo) / 'outputs' / 'latest_colab_output_root.txt'
+    if not _output_root and _ref.exists():
+        _output_root = _ref.read_text(encoding='utf-8').strip()
+
+if not _output_root:
+    raise RuntimeError(
+        '[7.4] OUTPUT_ROOT no disponible. Ejecuta celda 2.1 o espera a que '
+        'el launcher escriba outputs/latest_colab_output_root.txt.'
+    )
+
+================================================================================
+CELL 55 [code] lines=198
+FIRST: # ── 7.4b  Reorganizar outputs al formato canónico: outputs/{MADRL}/{escenario}/ ──
+================================================================================
+--- COMMENTS ---
+# ── 7.4b  Reorganizar outputs al formato canónico: outputs/{MADRL}/{escenario}/ ──
+# El launcher escribe: {OUTPUT_ROOT}/HAPPO/E1/data/results.json
+# Export opcional:     {OUTPUT_ROOT}/HAPPO/E1/metrics.csv  etc.
+# Este paso genera la estructura canónica junto a los artefactos del launcher.
+        # 1. metrics.csv — desde results.json[citylearn_v3_report.all_values]
+        # 2. rewards.csv — desde timeseries.csv, agregado por episodio
+        # 3. training_monitor.csv — desde training_summary.json
+        # 4. resource_usage.csv
+        # 5. config.json
+        # 6. checkpoint.pt — tomar el checkpoint real mas reciente del arbol del launcher
+        # 7. Copiar figuras relevantes
+# 8. resumen_comparativo/ — estructura para comparacion global final
+# Reporte final
+--- HEADER (first 40 lines) ---
+# ── 7.4b  Reorganizar outputs al formato canónico: outputs/{MADRL}/{escenario}/ ──
+# El launcher escribe: {OUTPUT_ROOT}/HAPPO/E1/data/results.json
+# Export opcional:     {OUTPUT_ROOT}/HAPPO/E1/metrics.csv  etc.
+# Este paso genera la estructura canónica junto a los artefactos del launcher.
+import csv
+import json
+import shutil
+import os
+import pandas as pd
+from pathlib import Path
+from datetime import datetime
+
+_out  = Path(globals().get('OUTPUT_ROOT', '/tmp/madrl_output'))
+_repo = Path(globals().get('REPO', '/content/MADRLCitytleranflexresdr'))
+_hp   = globals().get('HYPERPARAMS', {})
+_seed = globals().get('SEED', 0)
+
+SCENARIO_MAP = {'E1': 'E1', 'E2': 'E2', 'E3': 'E3'}
+ALGO_UPPER   = {'happo': 'HAPPO', 'masac': 'MASAC', 'matd3': 'MATD3', 'maac': 'MAAC'}
+
+print('Reorganizando artefactos al formato outputs/{MADRL}/{escenario}/ ...')
+_reorganized = []
+_missing = []
+
+for algo_lower, algo_upper in ALGO_UPPER.items():
+    for sc_short, sc_long in SCENARIO_MAP.items():
+        src_data = _out / algo_lower / f'{sc_short}' / 'data'
+        dst_dir  = _out / algo_upper / sc_long
+        dst_dir.mkdir(parents=True, exist_ok=True)
+        (dst_dir / 'figures').mkdir(exist_ok=True)
+        ok_files = []
+
+        # 1. metrics.csv — desde results.json[citylearn_v3_report.all_values]
+        results_json = src_data / 'results.json'
+        if results_json.exists():
+            with open(results_json, encoding='utf-8') as _f:
+                _r = json.load(_f)
+            _all_v = _r.get('citylearn_v3_report', {}).get('all_values', {})
+            with open(dst_dir / 'metrics.csv', 'w', newline='', encoding='utf-8') as _cf:
+                _w = csv.writer(_cf)
+
+================================================================================
+CELL 56 [markdown] lines=3
+FIRST: ### 7.5 Diagnostico de Drive — ejecutar en cualquier momento
+================================================================================
+### 7.5 Diagnostico de Drive — ejecutar en cualquier momento
+
+Celda autocontenida: funciona aunque el kernel haya reiniciado. Verifica las 4 senales de problema y muestra instrucciones de relaunch. **Tambien se ejecuta automaticamente dentro de la celda 7.2 si el entrenamiento falla.**
+
+================================================================================
+CELL 57 [code] lines=136
+FIRST: # ── 7.5  Diagnostico de Drive + senales de problema + relaunch ──────────────
+================================================================================
+--- COMMENTS ---
+# ── 7.5  Diagnostico de Drive + senales de problema + relaunch ──────────────
+# Auto-descubrir OUTPUT_ROOT aunque se haya reiniciado el kernel.
+# Usa el helper de 7.0 si existe; si no, fallback autocontenido.
+    # ── SENAL 1: official_full_status.json existe? ───────────────────────────
+        # ── SENAL 2: live_progress.json reciente? ────────────────────────────
+        # ── SENAL 3: stderr con errores? ─────────────────────────────────────
+        # ── SENAL 4: artefactos generados ────────────────────────────────────
+        # ── Instrucciones de relaunch si hay problemas ────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 7.5  Diagnostico de Drive + senales de problema + relaunch ──────────────
+import json
+import sys
+import os
+from pathlib import Path
+from datetime import datetime, timezone
+
+_repo = globals().get('REPO', '/content/MADRLCitytleranflexresdr')
+
+# Auto-descubrir OUTPUT_ROOT aunque se haya reiniciado el kernel.
+# Usa el helper de 7.0 si existe; si no, fallback autocontenido.
+if 'resolve_output_root_or_latest' in globals():
+    _out = resolve_output_root_or_latest()
+else:
+    _ref = Path(_repo) / 'outputs' / 'latest_colab_output_root.txt'
+    _out = globals().get('OUTPUT_ROOT', '') or (
+        _ref.read_text(encoding='utf-8').strip() if _ref.exists() else ''
+    )
+if not _out:
+    print('[DIAG] ERROR: OUTPUT_ROOT desconocido.')
+    print('  Opcion A: ejecuta celda 2.1 primero.')
+    print('  Opcion B: define manualmente:')
+    print('    _out = "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_YYYYMMDD_HHMMSS"')
+    _out = None
+
+if _out:
+    print(f'OUTPUT_ROOT = {_out}')
+    print()
+
+    # ── SENAL 1: official_full_status.json existe? ───────────────────────────
+    status_path = Path(_out) / 'official_full_status.json'
+    if not status_path.exists():
+        print('[SENAL 1] FAIL  official_full_status.json NO EXISTE')
+        print('         El launcher no arranco o Drive no esta montado.')
+        print(f'         Ruta esperada: {status_path}')
+    else:
+        with open(status_path) as _f:
+            _s = json.load(_f)
+        _jobs   = _s.get('jobs', [])
+        _failed = [j for j in _jobs
+
+================================================================================
+CELL 58 [markdown] lines=22
+FIRST: ### 7.6 Benchmarks comparativos CityLearn v2
+================================================================================
+### 7.6 Benchmarks comparativos CityLearn v2
+
+#### Baseline principal integrado en `evaluate_v2`
+
+El sistema de evaluacion de CityLearn v2 calcula la linea base RBC local en cada corrida y los artefactos MADRL guardan `objective_kpis`, `axis_baseline_comparison` y `baseline_gain_by_kpi` contra esa referencia.
+
+#### PPO/SAC/A2C como benchmarks comparativos CityLearn v2
+
+PPO, SAC y A2C se ejecutan solo como **benchmarks CityLearn v2 de agente central** con Stable-Baselines3 sobre el mismo schema local:
+
+`CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json`
+
+| Agente | Script CityLearn v2 | Salida comparable |
+|---|---|---|
+| PPO | `CityLearn/scripts/benchmark_citylearn_v2_ppo.py` | `outputs/citylearn_v2_original_benchmark/ppo/<scenario>_seed_<seed>/` |
+| SAC | `CityLearn/scripts/benchmark_citylearn_v2_sac.py` | `outputs/citylearn_v2_original_benchmark/sac/<scenario>_seed_<seed>/` |
+| A2C | `CityLearn/scripts/benchmark_citylearn_v2_a2c.py` | `outputs/citylearn_v2_original_benchmark/a2c/<scenario>_seed_<seed>/` |
+
+Estos scripts no crean agentes MADRL v3. Entrenan/evaluan un agente central CityLearn v2 (`central_agent=True`) y escriben el mismo layout de tablas/figuras que consume `compare_citylearn_v2_vs_v3_madrl.py`.
+
+> Separacion clara: HAPPO/MASAC/MATD3/MAAC son los 4 algoritmos MADRL principales. PPO/SAC/A2C son benchmarks comparativos CityLearn v2 con el mismo dataset local Iquitos.
+
+
+
+================================================================================
+CELL 59 [code] lines=35
+FIRST: #  7.6  Benchmarks CityLearn v2 PPO/SAC/A2C (SB3 central-agent)
+================================================================================
+--- COMMENTS ---
+#  7.6  Benchmarks CityLearn v2 PPO/SAC/A2C (SB3 central-agent)
+# Ejecutar solo despues de validar dataset y entorno. Estos scripts NO son MADRL v3:
+# usan CityLearn v2 central_agent=True + StableBaselines3Wrapper sobre el mismo schema Iquitos.
+--- HEADER (first 40 lines) ---
+#  7.6  Benchmarks CityLearn v2 PPO/SAC/A2C (SB3 central-agent)
+#
+# Ejecutar solo despues de validar dataset y entorno. Estos scripts NO son MADRL v3:
+# usan CityLearn v2 central_agent=True + StableBaselines3Wrapper sobre el mismo schema Iquitos.
+
+CITYLEARN_V2_BENCHMARKS = ["PPO", "SAC", "A2C"]
+RUN_CITYLEARN_V2_SB3_BENCHMARKS = False
+SB3_BASELINE_SCENARIO = 'ALL'
+SB3_BASELINE_TRAIN_EPISODES = 50
+SB3_BASELINE_OUTPUT = str(Path(REPO) / 'outputs/citylearn_v2_original_benchmark')
+
+if RUN_CITYLEARN_V2_SB3_BENCHMARKS:
+    import subprocess
+    sb3_scripts = {
+        'ppo': 'CityLearn/scripts/benchmark_citylearn_v2_ppo.py',
+        'sac': 'CityLearn/scripts/benchmark_citylearn_v2_sac.py',
+        'a2c': 'CityLearn/scripts/benchmark_citylearn_v2_a2c.py',
+    }
+    for agent_name, script_rel in sb3_scripts.items():
+        cmd = [
+            PROJECT_PYTHON, '-B', str(Path(REPO) / script_rel),
+            '--schema-path', SCHEMA_PATH,
+            '--scenario', SB3_BASELINE_SCENARIO,
+            '--seed', str(SEED),
+            '--episode-time-steps', str(EPISODE_STEPS),
+            '--train-episodes', str(SB3_BASELINE_TRAIN_EPISODES),
+            '--output-dir', SB3_BASELINE_OUTPUT,
+        ]
+        print(f'[7.6] CityLearn v2 SB3 benchmark {agent_name.upper()}:')
+        print(' '.join(map(str, cmd)))
+        subprocess.check_call(cmd, cwd=REPO)
+else:
+    print('[7.6] PPO/SAC/A2C CityLearn v2 SB3 benchmarks desactivados por defecto.')
+    print('      Activar RUN_CITYLEARN_V2_SB3_BENCHMARKS=True para generar artefactos comparables.')
+
+
+================================================================================
+CELL 60 [markdown] lines=4
+FIRST: ### 7.7 Monitor de recursos del sistema — RAM / VRAM / GPU / CPU
+================================================================================
+### 7.7 Monitor de recursos del sistema — RAM / VRAM / GPU / CPU
+
+Ejecuta esta celda **durante o despues del entrenamiento** para obtener una
+instantanea del uso de recursos. Genera `resource_usage_snapshot.csv` en `OUTPUT_ROOT`.
+
+
+================================================================================
+CELL 61 [code] lines=77
+FIRST: # ── 7.7  Monitor de recursos: RAM / VRAM / CPU / GPU ────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 7.7  Monitor de recursos: RAM / VRAM / CPU / GPU ────────────────────────
+# psutil para RAM y CPU
+# GPU via nvidia-smi
+# Guardar snapshot CSV
+--- HEADER (first 40 lines) ---
+# ── 7.7  Monitor de recursos: RAM / VRAM / CPU / GPU ────────────────────────
+import subprocess
+import json
+import os
+import csv
+import time
+from pathlib import Path
+from datetime import datetime
+
+# psutil para RAM y CPU
+try:
+    import psutil
+    ram = psutil.virtual_memory()
+    cpu_pct = psutil.cpu_percent(interval=1)
+    ram_used_gib  = ram.used / 1024**3
+    ram_total_gib = ram.total / 1024**3
+    ram_pct = ram.percent
+except ImportError:
+    ram_used_gib = ram_total_gib = ram_pct = cpu_pct = None
+    print("[INFO] psutil no disponible. Instala con: pip install psutil")
+
+# GPU via nvidia-smi
+gpu_info = {}
+try:
+    res = subprocess.run(
+        ["nvidia-smi",
+         "--query-gpu=index,name,utilization.gpu,memory.used,memory.total,temperature.gpu",
+         "--format=csv,noheader,nounits"],
+        capture_output=True, text=True, timeout=10,
+    )
+    if res.returncode == 0:
+        parts = [p.strip() for p in res.stdout.strip().split(",")]
+        if len(parts) >= 6:
+            gpu_info = {
+                "gpu_index"      : parts[0],
+                "gpu_name"       : parts[1],
+                "gpu_util_pct"   : float(parts[2]),
+                "vram_used_mib"  : float(parts[3]),
+                "vram_total_mib" : float(parts[4]),
+                "gpu_temp_c"     : float(parts[5]),
+
+================================================================================
+CELL 62 [markdown] lines=22
+FIRST: ## Sección 8: Análisis de resultados y KPIs CityLearn v3
+================================================================================
+## Sección 8: Análisis de resultados y KPIs CityLearn v3
+
+Fuente de verdad: `citylearn.v3.objectives` (`OE1_FLEXIBILITY_KPIS`, `OE2_EMISSIONS_KPIS`, `OE3_COST_KPIS`).
+
+| Escenario | Objetivo | KPIs |
+|-----------|----------|------|
+| **E1** | **OE.1** Flexibilidad | todos los de `OE1_FLEXIBILITY_KPIS` |
+| **E2** | **OE.2** Emisiones CO2 | todos los de `OE2_EMISSIONS_KPIS` |
+| **E3** | **OE.3** Costos | todos los de `OE3_COST_KPIS` |
+
+### Artefactos (formato canónico `outputs/{MADRL}/{escenario}/`)
+```
+{OUTPUT_ROOT}/
+  HAPPO|MASAC|MATD3|MAAC/
+    E1|E2|E3/
+      data/results.json          # citylearn_v3_report.objective_axis_kpis + all_values
+      figures/tables/objective_kpis.csv
+  evaluation/                    # 8.x
+  resumen_comparativo/           # 9.x
+```
+
+> Carga canónica: `objective_kpis.csv` → fallback `results.json` (`objective_axis_kpis` / `all_values`).
+
+
+================================================================================
+CELL 63 [code] lines=396
+FIRST: # ── 8.1  Cargar KPIs CityLearn v3 (OE1/OE2/OE3 completos) ────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 8.1  Cargar KPIs CityLearn v3 (OE1/OE2/OE3 completos) ────────────────────
+# Constantes oficiales CityLearn v3 (con fallback si el import falla en Colab)
+    # Fallback mínimo: all_values con lista OE completa
+    # Tablas por escenario = OE emparejado (cumplimiento OE.1 / OE.2 / OE.3)
+            # Vista pivote valor por algoritmo
+            # Asegurar filas en orden oficial aunque falten valores
+    # Resumen cobertura: cuántos KPIs oficiales aparecen por corrida/eje
+# ── 8.1b  Exportar artefactos auxiliares de tesis ────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 8.1  Cargar KPIs CityLearn v3 (OE1/OE2/OE3 completos) ────────────────────
+import json
+import os
+import glob
+from pathlib import Path
+import numpy as np
+import pandas as pd
+
+# Constantes oficiales CityLearn v3 (con fallback si el import falla en Colab)
+try:
+    from citylearn.v3.objectives import (
+        OBJECTIVE_AXES,
+        OE1_FLEXIBILITY_KPIS,
+        OE2_EMISSIONS_KPIS,
+        OE3_COST_KPIS,
+        HIGHER_IS_BETTER,
+        RATIO_TO_BASELINE_KPIS,
+    )
+except ImportError:
+    OE1_FLEXIBILITY_KPIS = (
+        "grid_import", "grid_import_control", "grid_import_baseline", "grid_import_delta",
+        "zero_net_energy", "net_exchange_control", "net_exchange_baseline", "net_exchange_delta",
+        "grid_export_ratio", "grid_export_control", "grid_export_baseline", "grid_export_delta",
+        "peak_average", "ramping_average", "one_minus_load_factor_average",
+        "pv_generation_total", "pv_generation_daily_average", "pv_export_total", "pv_export_daily_average",
+        "pv_self_consumption_ratio",
+        "community_local_traded_total", "community_local_traded_daily_average", "community_import_share",
+        "battery_charge_total", "battery_discharge_total", "battery_throughput_total",
+        "battery_equivalent_full_cycles", "battery_capacity_fade_ratio",
+        "ev_departure_count", "ev_departure_met_count", "ev_departure_within_tolerance_count",
+        "ev_departure_success_rate", "ev_departure_within_tolerance_rate", "ev_departure_soc_deficit_mean",
+        "ev_charge_total", "ev_v2g_export_total",
+    )
+    OE2_EMISSIONS_KPIS = (
+        "carbon_emissions", "carbon_emissions_control", "carbon_emissions_baseline", "carbon_emissions_delta",
+        "carbon_emissions_daily_average_control", "carbon_emissions_daily_average_baseline",
+        "carbon_emissions_daily_average_delta",
+    )
+    OE3_COST_KPIS = (
+        "electricity_cost", "electricity_cost_control", "electricity_cost_baseline", "electricity_cost_delta",
+
+================================================================================
+CELL 64 [code] lines=44
+FIRST: # ── 8.2  Curvas de convergencia (timeseries.csv, por episodio) ───────────────
+================================================================================
+--- COMMENTS ---
+# ── 8.2  Curvas de convergencia (timeseries.csv, por episodio) ───────────────
+                    # Aggregate step-level timeseries to episode-level mean reward
+--- HEADER (first 40 lines) ---
+# ── 8.2  Curvas de convergencia (timeseries.csv, por episodio) ───────────────
+import matplotlib.pyplot as plt
+import glob
+import pandas as pd
+from pathlib import Path
+
+ts_data = {}
+for fp in sorted(glob.glob(f"{OUTPUT_ROOT}/*/*/data/timeseries.csv")):
+    parts = Path(fp).parts
+    root_idx = next(i for i,p in enumerate(parts) if p == Path(OUTPUT_ROOT).name)
+    algo     = parts[root_idx + 1].upper()
+    sc_seed  = parts[root_idx + 2]
+    sc       = sc_seed.split("_seed_")[0] if "_seed_" in sc_seed else sc_seed
+    try:
+        ts_data[f"{algo}_{sc}"] = pd.read_csv(fp)
+    except Exception:
+        pass
+
+if ts_data:
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    CLR = {"HAPPO":"#3b82f6","MASAC":"#a21caf","MATD3":"#16a34a","MAAC":"#d97706"}
+    for ax, sc in zip(axes, ["E1", "E2", "E3"]):
+        for key, df in ts_data.items():
+            if f"_{sc}" in key:
+                alg = key.replace(f"_{sc}", "")
+                if "episode" in df.columns and "reward_mean" in df.columns:
+                    # Aggregate step-level timeseries to episode-level mean reward
+                    ep_df = df.groupby("episode")["reward_mean"].mean().reset_index()
+                    smoothed = ep_df["reward_mean"].rolling(2, min_periods=1).mean()
+                    ax.plot(ep_df["episode"], smoothed,
+                            label=alg, color=CLR.get(alg, "gray"), lw=2, alpha=0.85)
+        ax.set_title(f"Escenario {sc}", fontweight="bold")
+        ax.set_xlabel("Episodio")
+        ax.set_ylabel("Reward medio por episodio (smoothed)")
+        ax.legend(fontsize=9)
+        ax.grid(alpha=0.3)
+        ax.set_facecolor("#f8fafc")
+    fig.suptitle("Convergencia — 4 Algoritmos × 3 Escenarios", fontsize=14, fontweight="bold")
+    plt.tight_layout()
+    plt.savefig(f"{OUTPUT_ROOT}/evaluation/convergencia.png", dpi=150, bbox_inches="tight")
+
+================================================================================
+CELL 65 [markdown] lines=7
+FIRST: ## Sección 9: Evaluación estadística — Selección OG / OE.1 / OE.2 / OE.3
+================================================================================
+## Sección 9: Evaluación estadística — Selección OG / OE.1 / OE.2 / OE.3
+
+Protocolo alineado a CityLearn v3 (`objectives.py`):
+1. **Score por escenario** — media de *signed relative gain* vs baseline sobre **todos** los KPIs del OE emparejado (E1→OE1, E2→OE2, E3→OE3); positivo = mejor.
+2. **Ganador OE.k** — mejor algoritmo en el escenario Ek.
+3. **Ganador OG** — media de los 3 scores de escenario (mejor MADRL global).
+4. **Shapiro-Wilk / Kruskal-Wallis / Mann-Whitney U** — sobre los scores de escenario.
+
+
+================================================================================
+CELL 66 [code] lines=353
+FIRST: # ── 9.1  Ranking OE-completo + pruebas estadísticas ─────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 9.1  Ranking OE-completo + pruebas estadísticas ─────────────────────────
+# Requiere celda 8.1 (df_objective_long, OE_KPI_SETS, SCENARIO_TO_OE, HIGHER_IS_BETTER, ...)
+    # Cumplimiento / selección por OE
+    # OG = media de scores E1/E2/E3
+    # 1. Shapiro-Wilk
+    # 2. Kruskal-Wallis
+    # 3. Mann-Whitney U
+# ── 9.2  resumen_comparativo/ (una sola ruta de artefactos) ─────────────────
+    # comparison_metrics: forma larga completa + wide
+    # Panel OG
+    # Panel por OE
+--- HEADER (first 40 lines) ---
+# ── 9.1  Ranking OE-completo + pruebas estadísticas ─────────────────────────
+from scipy import stats
+import itertools
+import json
+import os
+from datetime import datetime
+from pathlib import Path
+import numpy as np
+import pandas as pd
+
+# Requiere celda 8.1 (df_objective_long, OE_KPI_SETS, SCENARIO_TO_OE, HIGHER_IS_BETTER, ...)
+assert "df_objective_long" in globals(), "Ejecuta la celda 8.1 primero."
+
+SCENARIO_OE_LABEL = {
+    "E1": ("OE1", "OE.1 Flexibilidad energetica"),
+    "E2": ("OE2", "OE.2 Emisiones de CO2"),
+    "E3": ("OE3", "OE.3 Costos energeticos"),
+}
+
+
+def _as_bool(v):
+    if isinstance(v, (bool, np.bool_)):
+        return bool(v)
+    if v is None or (isinstance(v, float) and not np.isfinite(v)):
+        return None
+    s = str(v).strip().lower()
+    if s in {"true", "1", "yes", "si", "sí"}:
+        return True
+    if s in {"false", "0", "no"}:
+        return False
+    return None
+
+
+def signed_relative_gain(value, baseline, lower_is_better: bool):
+    if value is None or baseline is None:
+        return None
+    try:
+        v = float(value)
+        b = float(baseline)
+    except (TypeError, ValueError):
+
+================================================================================
+CELL 67 [markdown] lines=3
+FIRST: ## Sección 10: Resumen final de la sesión
+================================================================================
+## Sección 10: Resumen final de la sesión
+
+Imprime un resumen ejecutivo del run (`OUTPUT_ROOT`, jobs completos, rutas clave). Ejecutar al cierre de la sesión Colab o tras reanudar.
+
+
+================================================================================
+CELL 68 [code] lines=78
+FIRST: # ── 10.  Resumen final de la sesión Colab ───────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── 10.  Resumen final de la sesión Colab ───────────────────────────────────
+--- HEADER (first 40 lines) ---
+# ── 10.  Resumen final de la sesión Colab ───────────────────────────────────
+import json
+import glob
+import os
+from datetime import datetime
+
+print("=" * 65)
+print("  RESUMEN FINAL — MADRL CityLearn v3 · Colab A100")
+print("=" * 65)
+print(f"  Output root : {OUTPUT_ROOT}")
+print(f"  Timestamp   : {TIMESTAMP}")
+print(f"  Modo        : {'QUICK_TEST' if QUICK_TEST else 'FULL TRAINING (50 ep)'}")
+
+n_json = len(glob.glob(f"{OUTPUT_ROOT}/**/*.json",  recursive=True))
+n_csv  = len(glob.glob(f"{OUTPUT_ROOT}/**/*.csv",   recursive=True))
+n_png  = len(glob.glob(f"{OUTPUT_ROOT}/**/*.png",   recursive=True))
+n_ckpt = len(glob.glob(f"{OUTPUT_ROOT}/**/*.pt",    recursive=True))
+print(f"\n  Artefactos : {n_json} JSON · {n_csv} CSV · {n_png} PNG · {n_ckpt} .pt")
+
+if stat_results and "ranking" in stat_results:
+    _best = stat_results.get("best_madrl", stat_results["ranking"][0]["algorithm"] if stat_results["ranking"] else "N/A")
+    print("\n  ═══════════════════════════════════════════════════════════════")
+    print(f"  MEJOR ALGORITMO MADRL SELECCIONADO: {_best}")
+    print("  ═══════════════════════════════════════════════════════════════")
+    print("\n  RANKING FINAL:")
+    for i, r in enumerate(stat_results["ranking"], 1):
+        mark = " ★" if i == 1 else ""
+        print(f"    {i}. {r['algorithm']:<6} {r['mean_score']:.4f}{mark}")
+    kw = stat_results.get("kruskal_wallis", {})
+    if kw:
+        print(f"  KW: p={kw.get('p','?')} ({'✅' if kw.get('significant') else ''})")
+else:
+    print("\n  Referencia oficial v4:")
+    print("    1. MATD3  0.7445 ★")
+    print("    2. MASAC  ~0.73")
+    print("    3. MAAC   ~0.72")
+    print("    4. HAPPO  ~0.70")
+    print("    KW p=0.0459 ✅")
+
+summary = {
+
+================================================================================
+CELL 69 [markdown] lines=4
+FIRST: ## Informe Técnico de Supervisión — MADRL CityLearn v3
+================================================================================
+## Informe Técnico de Supervisión — MADRL CityLearn v3
+
+> Generado automáticamente al ejecutar la celda siguiente.
+> Documenta el estado de todos los módulos, validaciones y resultados.
+
+
+================================================================================
+CELL 70 [code] lines=255
+FIRST: # ── INFORME TÉCNICO DE SUPERVISIÓN ──────────────────────────────────────────
+================================================================================
+--- COMMENTS ---
+# ── INFORME TÉCNICO DE SUPERVISIÓN ──────────────────────────────────────────
+# Auditoría integral del notebook y módulos vinculados.
+# Genera informe_tecnico_supervision.json + imprime resumen ejecutivo.
+# ── 1. Módulos externos ───────────────────────────────────────────────────────
+# ── 2. Dataset Iquitos 2023-2025 ─────────────────────────────────────────────
+# ── 3. Algoritmos MADRL configurados ─────────────────────────────────────────
+# ── 4. Configuración de entrenamiento ────────────────────────────────────────
+# ── 5. Benchmarks CityLearn v2 ────────────────────────────────────────────────
+# ── 6. Deficiencias corregidas en este audit ─────────────────────────────────
+# ── 7. Resultado de selección de la mejor MADRL ──────────────────────────────
+# ── 7b. Validación estructura outputs/{MADRL}/{escenario}/ ─────────────────────
+# ── 8. Veredicto de aprobación ────────────────────────────────────────────────
+# Guardar informe JSON
+--- HEADER (first 40 lines) ---
+# ── INFORME TÉCNICO DE SUPERVISIÓN ──────────────────────────────────────────
+# Auditoría integral del notebook y módulos vinculados.
+# Genera informe_tecnico_supervision.json + imprime resumen ejecutivo.
+import json
+import os
+import sys
+import subprocess
+from pathlib import Path
+from datetime import datetime
+
+_REPO = globals().get('REPO', str(Path(__file__).resolve().parent.parent if '__file__' in dir() else Path.cwd()))
+_OUT  = globals().get('OUTPUT_ROOT', str(Path(_REPO) / 'outputs' / 'supervision'))
+Path(_OUT).mkdir(parents=True, exist_ok=True)
+
+import importlib.util
+_in_colab = importlib.util.find_spec('google.colab') is not None
+
+print("=" * 72)
+print("  INFORME TÉCNICO DE SUPERVISIÓN — MADRL CityLearn v3 · Iquitos 2026")
+print("=" * 72)
+print(f"  Fecha       : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+try:
+    _gpu_hw = subprocess.check_output(['nvidia-smi', '--query-gpu=name,memory.total', '--format=csv,noheader,nounits'], text=True, stderr=subprocess.DEVNULL).strip().splitlines()[0]
+    _gn, _gm = _gpu_hw.split(',')
+    _gpu_hw = f'{_gn.strip()} {int(_gm)/1024:.0f} GiB'
+except Exception:
+    _gpu_hw = 'GPU no detectada'
+print(f"  Entorno     : {('Google Colab (' + _gpu_hw + ')') if _in_colab else 'Local / otro (' + _gpu_hw + ')'}")
+print(f"  Python      : {sys.version.split()[0]}")
+print(f"  Plataforma  : {platform.system()} {platform.machine()}")
+print(f"  Repo        : {_REPO}")
+print()
+
+informe = {
+    "meta": {
+        "fecha": datetime.now().isoformat(),
+        "entorno": "colab_a100" if _in_colab else "local",
+        "python": sys.version.split()[0],
+        "plataforma": f"{platform.system()} {platform.machine()}",
+        "repo": _REPO,
+
+================================================================================
+CELL 71 [markdown] lines=29
+FIRST: ## Próximos pasos y referencias
+================================================================================
+## Próximos pasos y referencias
+
+### Para el entrenamiento de 50 episodios por corrida (reanudable)
+1. Si Colab se desconecta, vuelve a ejecutar la celda **7.2** (bootstrap + `--skip-completed`).
+2. Para revisar estado sin entrenar: `CityLearn/scripts/colab_a100_live_monitor.py --output-root <OUTPUT_ROOT> --once`.
+
+### Artefactos generados por corrida (12 jobs principales)
+```
+{OUTPUT_ROOT}/
+  HAPPO/  MASAC/  MATD3/  MAAC/
+    E1 / E2 / E3 /
+      data/
+        results.json           — artefactos + KPIs finales
+        timeseries.csv         — metricas por episodio
+        training_summary.json  — hiperparametros + resumen
+      checkpoints/             — modelos .pt por agente
+      figures/                 — graficos de KPIs vs baseline
+  official_full_status.json
+  live_progress.json
+```
+
+### Para validez estadistica fuerte
+- Repetir con seeds adicionales (`--seed 1, 2, ...`) cuando haya presupuesto GPU.
+- Benchmarks CityLearn v2 (PPO/SAC/A2C): celda **7.6** (no forman parte de los 12 jobs MADRL).
+
+### Repositorio
+[Mac-Tapia/CityLearn](https://github.com/Mac-Tapia/CityLearn) · [MADRLCitytleranflexresdr](https://github.com/Mac-Tapia/MADRLCitytleranflexresdr)
+Tesis: *Diseño y validación de un sistema eléctrico inteligente con control multiagente MADRL, Iquitos 2026*
+Contacto: mac.tapia@unmsm.edu.pe

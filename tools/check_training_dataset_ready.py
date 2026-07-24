@@ -4,6 +4,9 @@ This check runs before MADRL backends normalize observations. It verifies that
 the real/supplied raw layers, generated CityLearn files, DER audits and
 CityLearnEnv loading all agree on the same dataset.
 """
+# Each independent validation stage converts unexpected dependency/data errors
+# into actionable gate findings instead of aborting the entire report.
+# pylint: disable=broad-exception-caught
 
 from __future__ import annotations
 

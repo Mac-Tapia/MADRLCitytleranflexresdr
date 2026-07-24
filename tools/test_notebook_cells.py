@@ -1,5 +1,9 @@
 """Validate notebook cell logic: params, layout, imports, env, stats."""
-import sys, os, json, datetime, subprocess, shlex
+import glob
+import json
+import os
+import sys
+import tempfile
 from pathlib import Path
 
 REPO = "D:/MADRLCitytleranflexresdr"
@@ -19,7 +23,7 @@ PYTHON = sys.executable
 # ────────────────────────────────────────────────────────────────────────────
 # Test 1 — Dataset schema
 # ────────────────────────────────────────────────────────────────────────────
-with open(SCHEMA) as f:
+with open(SCHEMA, encoding="utf-8") as f:
     schema = json.load(f)
 buildings = schema.get("buildings", {})
 assert len(buildings) == 17, f"Expected 17 buildings, got {len(buildings)}"
@@ -196,12 +200,11 @@ assert "maac"  in code_src, "maac ausente en notebook"
 
 # Verificar que resolve_output_dir producirá la ruta correcta
 from citylearn_v3_training_common import resolve_output_dir
-import tempfile
 with tempfile.TemporaryDirectory() as tmp:
     odir = resolve_output_dir(f"{tmp}/HAPPO", "happo", "E1", 0)
     expected = Path(tmp) / "HAPPO" / "E1"
     assert odir == expected, f"resolve_output_dir={odir} expected={expected}"
-print(f"[PASS] Layout simple: {{OUTPUT_ROOT}}/HAPPO/E1/ OK")
+print("[PASS] Layout simple: {OUTPUT_ROOT}/HAPPO/E1/ OK")
 
 # ────────────────────────────────────────────────────────────────────────────
 # Test 4b — Colab output isolation and resumability guardrails
@@ -233,7 +236,6 @@ assert common_src.index("audit_runs=False") < common_src.index("def pick_colab_o
 
 # Check launcher job construction directly without running GPU code.
 import importlib.util
-import tempfile
 
 spec = importlib.util.spec_from_file_location("colab_a100_official_launcher", LAUNCHER_PATH)
 launcher = importlib.util.module_from_spec(spec)
@@ -330,7 +332,7 @@ print("[PASS] Reward weights plot OK")
 # Test 7 — Funciones estadísticas
 # ────────────────────────────────────────────────────────────────────────────
 from scipy import stats
-import pandas as pd, numpy as np, itertools
+import pandas as pd, numpy as np
 
 # Datos dummy que simulan scores de 4 algoritmos en 3 escenarios
 df = pd.DataFrame({
@@ -376,7 +378,6 @@ print(f"[PASS] Ranking: {[a for a,_ in ranking]} — Mejor: {best}")
 # ────────────────────────────────────────────────────────────────────────────
 # Test 8 — Glob pattern para results con layout algorithm-first
 # ────────────────────────────────────────────────────────────────────────────
-import tempfile, glob
 with tempfile.TemporaryDirectory() as tmp:
     # Simular estructura simple <MADRL>/<Escenario>
     for algo in ["HAPPO","MASAC","MATD3","MAAC"]:

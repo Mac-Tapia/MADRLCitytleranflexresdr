@@ -10,8 +10,8 @@ out = Path(r"D:\MADRLCitytleranflexresdr\outputs\_nb_postcheck.txt")
 lines = []
 lines.append(f"cells={len(cells)}")
 
-def src(i):
-    return "".join(cells[i].get("source", []))
+def src(cell_index):
+    return "".join(cells[cell_index].get("source", []))
 
 # Critical invariants
 checks = []
@@ -48,8 +48,6 @@ for i, c in enumerate(cells):
         if ln.startswith("## "):
             headers.append((i, ln.strip()))
             break
-# count duplicates
-from collections import Counter
 # normalize accents for duplicate detect
 norm = [re.sub(r"[áéíóúñ]", lambda m: {"á":"a","é":"e","í":"i","ó":"o","ú":"u","ñ":"n"}[m.group()], h[1].lower()) for h in headers]
 # check Paso 1-7 gone
@@ -95,7 +93,7 @@ for i, h in headers:
 
 # Extract key snippets
 lines.append("")
-lines.append(f"--- cell 033 HAPPO_KPI head ---")
+lines.append("--- cell 033 HAPPO_KPI head ---")
 lines.append("\n".join(src(idx23).splitlines()[:12]))
 lines.append(f"--- cell {idx61} SCHEMA/EXEC ---")
 for ln in s61.splitlines():

@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import json
 import shutil
-from copy import deepcopy
 from pathlib import Path
 
 NB_PATH = Path(r"D:\MADRLCitytleranflexresdr\CityLearn\examples\madrl_citylearn_v3_tutorial.ipynb")
@@ -541,7 +540,7 @@ Contacto: mac.tapia@unmsm.edu.pe
         "CLEANUP REPORT",
         "=" * 60,
         f"Backup: {BACKUP}",
-        f"Cells before: 70",
+        "Cells before: 70",
         f"Cells after: {len(cells)}",
         "",
         "Changes:",

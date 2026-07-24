@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """Portar veredicto metodologico a Word PATCHED/SYNCED (estructura real Cap. 1/3/6)."""
+# python-docx exposes its OOXML editing primitives through underscored
+# attributes; this script intentionally uses that supported low-level pattern.
+# pylint: disable=import-error,protected-access
 from __future__ import annotations
 
 import json

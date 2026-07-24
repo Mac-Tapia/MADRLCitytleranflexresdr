@@ -14,6 +14,8 @@ Complementary catalog (sections 1–4), behind ``complementary=True`` / flags:
   Mood's median, Quade, Scheirer-Ray-Hare, Conover-Iman, Wilcoxon, Mann-Whitney,
   Brunner-Munzel, rank-biserial, Spearman ρ, Kendall τ, Page's trend, Cochran's Q.
 """
+# Optional SciPy/scikit-posthocs calls use guarded fallbacks across versions.
+# pylint: disable=broad-exception-caught
 
 from __future__ import annotations
 
@@ -975,7 +977,7 @@ def quade_test(
     """Quade test (weighted Friedman alternative for block designs)."""
 
     _require_scipy()
-    block_names, algos, mat = _block_matrix(blocks, higher_is_better=higher_is_better)
+    _block_names, algos, mat = _block_matrix(blocks, higher_is_better=higher_is_better)
     complete = np.all(np.isfinite(mat), axis=1)
     mat = mat[complete]
     n, k = mat.shape
@@ -1188,7 +1190,7 @@ def pages_trend_test(
     """
 
     _require_scipy()
-    block_names, algos, mat = _block_matrix(blocks, higher_is_better=higher_is_better)
+    _block_names, algos, mat = _block_matrix(blocks, higher_is_better=higher_is_better)
     complete = np.all(np.isfinite(mat), axis=1)
     mat = mat[complete]
     n, k = mat.shape

@@ -6,8 +6,6 @@ import json
 from pathlib import Path
 from typing import Dict, Mapping, Optional, Sequence
 
-import pandas as pd
-
 from uc3m.multicriteria.ahp import (
     DEFAULT_AHP_PAIRWISE,
     ahp_priority_weights,

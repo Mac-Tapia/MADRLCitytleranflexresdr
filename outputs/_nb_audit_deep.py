@@ -10,8 +10,8 @@ out_path = Path(r"D:\MADRLCitytleranflexresdr\outputs\_nb_audit_deep.txt")
 nb = json.loads(nb_path.read_text(encoding="utf-8"))
 cells = nb["cells"]
 
-def src(i):
-    return "".join(cells[i].get("source", []))
+def src(cell_index):
+    return "".join(cells[cell_index].get("source", []))
 
 report = []
 report.append("=" * 72)

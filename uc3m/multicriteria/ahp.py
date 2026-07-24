@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Mapping, Optional, Sequence, Tuple
+from typing import Any, Dict, Mapping, Optional, Sequence, Tuple, cast
 
 import numpy as np
 
@@ -120,16 +120,19 @@ def ahp_rank_alternatives(
     alternatives = list(decision_matrix.keys())
     criteria = list(next(iter(decision_matrix.values())).keys())
     crit_weights = ahp_priority_weights(criteria_pairwise, labels=criteria)
-    w = crit_weights["weights"]
+    w = cast(Dict[str, float], crit_weights["weights"])
 
     local_priority: Dict[str, Dict[str, float]] = {}
     for cid in criteria:
         if alternative_pairwise and cid in alternative_pairwise:
-            local = ahp_priority_weights(
-                alternative_pairwise[cid],
-                labels=alternatives,
-                require_consistent=False,
-            )["weights"]
+            local = cast(
+                Dict[str, float],
+                ahp_priority_weights(
+                    alternative_pairwise[cid],
+                    labels=alternatives,
+                    require_consistent=False,
+                )["weights"],
+            )
         else:
             values = np.asarray(
                 [float(decision_matrix[a][cid]) for a in alternatives],
@@ -140,11 +143,14 @@ def ahp_rank_alternatives(
             scores = values if kind == "benefit" else 1.0 / np.clip(values, 1e-12, None)
             # Build consistent ratio pairwise from scores.
             pairwise = np.outer(scores, 1.0 / np.clip(scores, 1e-12, None))
-            local = ahp_priority_weights(
-                pairwise,
-                labels=alternatives,
-                require_consistent=False,
-            )["weights"]
+            local = cast(
+                Dict[str, float],
+                ahp_priority_weights(
+                    pairwise,
+                    labels=alternatives,
+                    require_consistent=False,
+                )["weights"],
+            )
         local_priority[cid] = {a: float(local[a]) for a in alternatives}
 
     global_scores = {
@@ -176,6 +182,7 @@ def default_weights_or_ahp(
         return dict(DEFAULT_CRITERION_WEIGHTS)
     try:
         result = ahp_priority_weights(pairwise, require_consistent=True)
-        return {k: float(v) for k, v in result["weights"].items()}
+        weights = cast(Dict[str, float], result["weights"])
+        return {k: float(v) for k, v in weights.items()}
     except ValueError:
         return dict(DEFAULT_CRITERION_WEIGHTS)

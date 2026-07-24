@@ -1,24 +1,28 @@
 {
   "include": [
     "uc3m",
-    "tests"
+    "tests",
+    "tools",
+    "scripts",
+    "outputs"
   ],
   "exclude": [
     "**/__pycache__",
     ".venv*",
     "CityLearn",
     "external",
-    "outputs",
     "build",
     "dist",
     "agent-skills",
-    "deploy",
-    "tools"
+    "deploy"
   ],
   "extraPaths": [
     "tools",
     "CityLearn",
-    "CityLearn/scripts"
+    "CityLearn/scripts",
+    "uc3m",
+    "scripts",
+    "outputs"
   ],
   "stubPath": "CityLearn/examples/typings",
   "venvPath": ".",

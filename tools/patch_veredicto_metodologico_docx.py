@@ -12,11 +12,13 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from docx import Document
+from docx import Document as DocumentFactory
+from docx.document import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt
 from docx.text.paragraph import Paragraph
+from typing import Any, Callable, Optional, cast
 
 REPO = Path(__file__).resolve().parents[1]
 DOCS = REPO / "docs"
@@ -67,7 +69,7 @@ def insert_paragraph_after(paragraph: Paragraph, text: str = "", *, bold: bool =
 
 
 def insert_table_after(paragraph: Paragraph, headers: list[str], rows: list[list[str]]) -> None:
-    doc = paragraph.part.document
+    doc: Document = cast(Any, paragraph.part).document
     table = doc.add_table(rows=1 + len(rows), cols=len(headers))
     table.style = "Table Grid"
     for j, h in enumerate(headers):
@@ -88,14 +90,14 @@ def norm(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip().lower())
 
 
-def find_idx(doc: Document, pred) -> int | None:
+def find_idx(doc: Document, pred: Callable[[str], bool]) -> Optional[int]:
     for i, p in enumerate(doc.paragraphs):
         if pred(p.text or ""):
             return i
     return None
 
 
-def find_after_label(doc: Document, label_rx: str) -> int | None:
+def find_after_label(doc: Document, label_rx: str) -> Optional[int]:
     """Return index of first non-empty paragraph after a label paragraph."""
     lab = find_idx(doc, lambda t: re.search(label_rx, t, re.I) is not None)
     if lab is None:
@@ -399,7 +401,7 @@ def ensure_source(path: Path) -> Path | None:
 def verify(path: Path) -> dict:
     if not path.exists():
         return {"file": path.name, "checks": {}}
-    doc = Document(str(path))
+    doc = DocumentFactory(str(path))
     text = "\n".join(p.text or "" for p in doc.paragraphs)
     low = text.lower()
     return {
@@ -421,7 +423,7 @@ def patch_one(path: Path) -> dict:
     src = ensure_source(path)
     if src is None:
         return {"file": str(path), "ok": False, "error": "missing"}
-    doc = Document(str(src))
+    doc = DocumentFactory(str(src))
     r1 = patch_cap1(doc)
     r3 = patch_cap3(doc)
     r6 = patch_cap6(doc)

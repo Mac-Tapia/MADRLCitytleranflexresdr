@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, Mapping, Optional, Sequence
+from typing import Any, Dict, Mapping, Optional, Sequence, cast
 
 import numpy as np
 import pandas as pd
@@ -41,7 +41,7 @@ def master_table_from_seed_metrics(
 def decision_matrix_frame(
     decision_matrix: Mapping[str, Mapping[str, float]],
 ) -> pd.DataFrame:
-    frame = pd.DataFrame.from_dict(decision_matrix, orient="index")
+    frame = pd.DataFrame.from_dict(dict(decision_matrix), orient="index")
     frame.index.name = "algorithm"
     # Attach kind annotations as a secondary header-friendly table.
     kinds = {cid: CRITERION_SPECS[cid].kind for cid in frame.columns if cid in CRITERION_SPECS}
@@ -204,6 +204,6 @@ def save_consolidation_bundle(
         fig_dir.mkdir(exist_ok=True)
         for name, fig in figures.items():
             target = fig_dir / f"{name}.png"
-            fig.savefig(target, dpi=140, bbox_inches="tight")
+            cast(Any, fig).savefig(target, dpi=140, bbox_inches="tight")
             paths[f"figure_{name}"] = str(target)
     return paths

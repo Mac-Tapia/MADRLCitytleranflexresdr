@@ -238,8 +238,8 @@ assert common_src.index("audit_runs=False") < common_src.index("def pick_colab_o
 import importlib.util
 
 spec = importlib.util.spec_from_file_location("colab_a100_official_launcher", LAUNCHER_PATH)
+assert spec is not None and spec.loader is not None
 launcher = importlib.util.module_from_spec(spec)
-assert spec.loader is not None
 spec.loader.exec_module(launcher)
 
 with tempfile.TemporaryDirectory() as tmp:
@@ -354,16 +354,19 @@ scores = {"HAPPO":[], "MASAC":[], "MATD3":[], "MAAC":[]}
 for sc, wts in WEIGHTS.items():
     sub = df[df["scenario"]==sc].copy()
     for kpi, w in wts.items():
-        vals = sub[kpi].astype(float)
-        rng  = vals.max() - vals.min()
-        nrm  = (vals - vals.min()) / rng if rng > 0 else pd.Series(0.5, index=vals.index)
+        vals = pd.Series(pd.to_numeric(sub[kpi], errors="coerce"), dtype="float64")
+        vmax = float(np.asarray(vals.max(), dtype=float).reshape(-1)[0])
+        vmin = float(np.asarray(vals.min(), dtype=float).reshape(-1)[0])
+        rng = vmax - vmin
+        nrm = (vals - vmin) / rng if rng > 0 else pd.Series(0.5, index=vals.index, dtype="float64")
         sub[f"{kpi}_n"] = 1 - nrm if kpi in INVERT else nrm
     norm_cols = [f"{k}_n" for k in wts]
-    w_arr = np.array(list(wts.values())); w_arr /= w_arr.sum()
-    sub["score"] = sum(sub[nc]*wt for nc, wt in zip(norm_cols, w_arr))
+    w_arr = np.array(list(wts.values()), dtype=float); w_arr /= w_arr.sum()
+    sub["score"] = sum(sub[nc] * wt for nc, wt in zip(norm_cols, w_arr))
     for a in scores:
-        v = sub[sub["algorithm"]==a]["score"].values
-        if len(v): scores[a].append(float(v[0]))
+        score_series = pd.Series(sub.loc[sub["algorithm"] == a, "score"], dtype="float64")
+        if len(score_series):
+            scores[a].append(float(score_series.iloc[0]))
 
 arrs = {a: np.array(v) for a, v in scores.items() if v}
 groups = list(arrs.values())

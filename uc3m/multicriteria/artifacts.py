@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, Mapping, MutableMapping, Optional, Sequence, Tuple
+from typing import Dict, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
@@ -109,7 +109,7 @@ def merge_with_illustrative(
     partial: Mapping[str, Mapping[str, float]],
     *,
     illustrative: Optional[Mapping[str, Mapping[str, float]]] = None,
-    provenance: Optional[MutableMapping[str, MutableMapping[str, str]]] = None,
+    provenance: Optional[Mapping[str, Mapping[str, str]]] = None,
     algorithms: Optional[Sequence[str]] = None,
     require_real_technical: bool = False,
 ) -> Tuple[Dict[str, Dict[str, float]], Dict[str, Dict[str, str]]]:

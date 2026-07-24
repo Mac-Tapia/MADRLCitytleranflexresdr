@@ -173,11 +173,14 @@ def _check_support_files(dataset_dir: Path, issues: list[str]) -> dict[str, Any]
             if df.columns.tolist() != PRICING_COLUMNS:
                 issues.append(f"{_rel(path)} no tiene columnas de costo CityLearn esperadas")
             if "electricity_pricing" in df.columns:
-                price = pd.to_numeric(df["electricity_pricing"], errors="coerce")
-                entry["min"] = float(price.min())
-                entry["max"] = float(price.max())
-                entry["mean"] = float(price.mean())
-                if bool(price.isna().any()) or float(price.min()) < 0.0 or float(price.max()) <= 0.0:
+                price = pd.Series(pd.to_numeric(df["electricity_pricing"], errors="coerce"), dtype="float64")
+                price_min = float(np.asarray(price.min(), dtype=float).reshape(-1)[0])
+                price_max = float(np.asarray(price.max(), dtype=float).reshape(-1)[0])
+                price_mean = float(np.asarray(price.mean(), dtype=float).reshape(-1)[0])
+                entry["min"] = price_min
+                entry["max"] = price_max
+                entry["mean"] = price_mean
+                if bool(price.isna().any()) or price_min < 0.0 or price_max <= 0.0:
                     issues.append(f"{_rel(path)} no contiene una senal de costo positiva valida")
 
         if filename == "carbon_intensity.csv":
@@ -185,11 +188,14 @@ def _check_support_files(dataset_dir: Path, issues: list[str]) -> dict[str, Any]
             if df.columns.tolist() != CARBON_COLUMNS:
                 issues.append(f"{_rel(path)} no tiene columna carbon_intensity esperada")
             if "carbon_intensity" in df.columns:
-                carbon = pd.to_numeric(df["carbon_intensity"], errors="coerce")
-                entry["min"] = float(carbon.min())
-                entry["max"] = float(carbon.max())
-                entry["mean"] = float(carbon.mean())
-                if bool(carbon.isna().any()) or float(carbon.min()) <= 0.0:
+                carbon = pd.Series(pd.to_numeric(df["carbon_intensity"], errors="coerce"), dtype="float64")
+                carbon_min = float(np.asarray(carbon.min(), dtype=float).reshape(-1)[0])
+                carbon_max = float(np.asarray(carbon.max(), dtype=float).reshape(-1)[0])
+                carbon_mean = float(np.asarray(carbon.mean(), dtype=float).reshape(-1)[0])
+                entry["min"] = carbon_min
+                entry["max"] = carbon_max
+                entry["mean"] = carbon_mean
+                if bool(carbon.isna().any()) or carbon_min <= 0.0:
                     issues.append(f"{_rel(path)} no contiene una senal de emisiones positiva valida")
 
         if filename == "weather.csv":
@@ -214,7 +220,8 @@ def _check_support_files(dataset_dir: Path, issues: list[str]) -> dict[str, Any]
         if bool(df.isna().any().any()):
             issues.append(f"{_rel(washing_path)} contiene NaN")
         if "wm_start_time_step" in df.columns:
-            active_cycles = int((pd.to_numeric(df["wm_start_time_step"], errors="coerce") >= 0).sum())
+            starts = pd.Series(pd.to_numeric(df["wm_start_time_step"], errors="coerce"), dtype="float64")
+            active_cycles = int((starts >= 0).sum())
             washing_entry["active_cycle_rows"] = active_cycles
             if active_cycles <= 0:
                 issues.append(f"{_rel(washing_path)} no contiene ventanas activas de maquina controlada")
@@ -272,10 +279,10 @@ def _check_citylearn_files(dataset_dir: Path, schema: dict[str, Any], issues: li
                 issues.append(f"{_rel(csv_path)} tiene {len(df)} filas; esperado {EXPECTED_ROWS}")
             if df.columns.tolist() != BUILDING_COLUMNS:
                 issues.append(f"{_rel(csv_path)} no conserva las 12 columnas CityLearn esperadas")
-            if bool(df[BUILDING_COLUMNS].isna().any().any()):
+            if bool(np.asarray(df[BUILDING_COLUMNS].isna()).any()):
                 issues.append(f"{_rel(csv_path)} contiene NaN")
             nonnegative_cols = ["non_shiftable_load", "dhw_demand", "cooling_demand", "heating_demand", "solar_generation"]
-            if bool((df[nonnegative_cols] < 0.0).any().any()):
+            if bool(np.asarray(df[nonnegative_cols] < 0.0).any()):
                 issues.append(f"{_rel(csv_path)} contiene valores energeticos negativos")
 
         pv_kw = float((bdata.get("pv", {}).get("attributes", {}) or {}).get("nominal_power", 0.0) or 0.0)
@@ -456,7 +463,7 @@ def _check_der_audit(audit_dir: Path, issues: list[str]) -> dict[str, Any]:
         return status
 
     numeric_cols = [c for c in required if c != "ID"]
-    if bool(df[numeric_cols].isna().any().any()):
+    if bool(np.asarray(df[numeric_cols].isna()).any()):
         issues.append("der_sizing_audit.csv contiene NaN en columnas DER criticas")
 
     for _, row in df.iterrows():
@@ -493,7 +500,7 @@ def _check_auxiliary_audit_files(dataset_dir: Path, audit_dir: Path, issues: lis
     ]
     status: dict[str, Any] = {}
     for path in files:
-        entry = {"exists": path.exists()}
+        entry: dict[str, Any] = {"exists": path.exists()}
         if path.exists():
             entry["sha256"] = _sha256(path)
             if path.name == "csv_integrity_manifest.json":

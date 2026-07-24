@@ -20,19 +20,23 @@ Complementary catalog (sections 1–4), behind ``complementary=True`` / flags:
 from __future__ import annotations
 
 from itertools import combinations
-from typing import Dict, List, Mapping, Optional, Sequence, Tuple
+from typing import Dict, List, Mapping, Optional, Sequence, Tuple, Any, cast
 
 import numpy as np
 
 try:
-    from scipy import stats
+    from scipy import stats as _scipy_stats
 except ImportError:  # pragma: no cover
-    stats = None
+    _scipy_stats = None
+
+stats: Any = _scipy_stats
 
 try:
-    import scikit_posthocs as sp  # type: ignore
+    import scikit_posthocs as _scikit_posthocs
 except ImportError:  # pragma: no cover
-    sp = None
+    _scikit_posthocs = None
+
+sp: Any = _scikit_posthocs
 
 # Romano et al. thresholds for |Cliff's δ|
 _CLIFF_THRESHOLDS = (
@@ -47,7 +51,7 @@ def _require_scipy() -> None:
         raise ImportError("scipy is required for non-parametric statistical tests")
 
 
-def _finite(values: Sequence[float]) -> np.ndarray:
+def _finite(values: Sequence[float] | np.ndarray) -> np.ndarray:
     arr = np.asarray(values, dtype=float)
     return arr[np.isfinite(arr)]
 
@@ -96,7 +100,7 @@ def holm_correction(p_values: Sequence[float]) -> List[float]:
 # ---------------------------------------------------------------------------
 
 
-def cliffs_delta(x: Sequence[float], y: Sequence[float]) -> Optional[float]:
+def cliffs_delta(x: Sequence[float] | np.ndarray, y: Sequence[float] | np.ndarray) -> Optional[float]:
     """Cliff's δ: P(X>Y) − P(X<Y). Positive favours ``x`` (larger values)."""
 
     a = _finite(x)
@@ -168,11 +172,11 @@ def shapiro_wilk_per_group(
     groups: Mapping[str, Sequence[float]],
     *,
     alpha: float = 0.05,
-) -> Dict[str, Dict[str, object]]:
+) -> Dict[str, Dict[str, Any]]:
     """Shapiro-Wilk normality check per algorithm (raw values, not reoriented)."""
 
     _require_scipy()
-    out: Dict[str, Dict[str, object]] = {}
+    out: Dict[str, Dict[str, Any]] = {}
     for name, values in groups.items():
         arr = _finite(values)
         if arr.size < 3:
@@ -213,7 +217,7 @@ def fligner_killeen(
     groups: Mapping[str, Sequence[float]],
     *,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Fligner-Killeen test for homogeneity of variances."""
 
     _require_scipy()
@@ -254,7 +258,7 @@ def kruskal_wallis(
     *,
     alpha: float = 0.05,
     higher_is_better: bool = True,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Kruskal-Wallis H omnibus with mean ranks (higher rank = better)."""
 
     _require_scipy()
@@ -318,7 +322,7 @@ def moods_median_test(
     groups: Mapping[str, Sequence[float]],
     *,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Mood's median test (complementary omnibus)."""
 
     _require_scipy()
@@ -335,10 +339,10 @@ def moods_median_test(
     try:
         stat, p, med, table = stats.median_test(*samples)
         return {
-            "statistic": float(stat),
-            "p_value": float(p),
-            "significant": bool(float(p) < alpha),
-            "grand_median": float(med),
+            "statistic": float(cast(Any, stat)),
+            "p_value": float(cast(Any, p)),
+            "significant": bool(float(cast(Any, p)) < alpha),
+            "grand_median": float(cast(Any, med)),
             "contingency_table": np.asarray(table).tolist(),
             "groups": labels,
             "status": "ok",
@@ -402,7 +406,7 @@ def dunns_posthoc_holm(
     *,
     alpha: float = 0.05,
     higher_is_better: bool = True,
-) -> List[Dict[str, object]]:
+) -> List[Dict[str, Any]]:
     """Dunn's pairwise post-hoc with Holm correction on pooled ranks."""
 
     _require_scipy()
@@ -421,14 +425,14 @@ def dunns_posthoc_holm(
         df = pd.DataFrame(frame_rows)
         try:
             p_mat = sp.posthoc_dunn(df, val_col="value", group_col="algorithm", p_adjust="holm")
-            rows: List[Dict[str, object]] = []
+            rows: List[Dict[str, Any]] = []
             for a, b in combinations(labels, 2):
                 p_adj = float(p_mat.loc[a, b])
                 # Recompute z/delta on oriented samples for reporting.
                 pooled = np.concatenate(samples)
                 ranks = stats.rankdata(pooled)
-                sizes = [s.size for s in samples]
-                mean_r = {}
+                size_list = [int(s.size) for s in samples]
+                mean_r: Dict[str, float] = {}
                 offset = 0
                 for lab, samp in zip(labels, samples):
                     mean_r[lab] = float(np.mean(ranks[offset : offset + samp.size]))
@@ -437,8 +441,8 @@ def dunns_posthoc_holm(
                 z, p_raw = _dunn_z_p(
                     mean_r[a],
                     mean_r[b],
-                    sizes[idx[a]],
-                    sizes[idx[b]],
+                    size_list[idx[a]],
+                    size_list[idx[b]],
                     int(pooled.size),
                     _tie_correction_factor(ranks),
                 )
@@ -476,7 +480,7 @@ def dunns_posthoc_holm(
         sizes[lab] = int(samp.size)
         offset += samp.size
 
-    raw_rows: List[Dict[str, object]] = []
+    raw_rows: List[Dict[str, Any]] = []
     p_raws: List[float] = []
     gdict = _groups_dict(labels, samples)
     for a, b in combinations(labels, 2):
@@ -497,7 +501,7 @@ def dunns_posthoc_holm(
         p_raws.append(p_raw)
 
     adjusted = holm_correction(p_raws)
-    out: List[Dict[str, object]] = []
+    out: List[Dict[str, Any]] = []
     for row, p_adj in zip(raw_rows, adjusted):
         out.append(
             {
@@ -516,7 +520,7 @@ def conover_iman_posthoc(
     *,
     alpha: float = 0.05,
     higher_is_better: bool = True,
-) -> List[Dict[str, object]]:
+) -> List[Dict[str, Any]]:
     """Conover-Iman post-hoc after Kruskal-Wallis (t-approximation, Holm)."""
 
     _require_scipy()
@@ -571,7 +575,7 @@ def conover_iman_posthoc(
         sizes[lab] = int(samp.size)
         offset += samp.size
 
-    raw: List[Dict[str, object]] = []
+    raw: List[Dict[str, Any]] = []
     p_raws: List[float] = []
     df = n - k
     for a, b in combinations(labels, 2):
@@ -611,7 +615,7 @@ def mann_whitney_u(
     *,
     alpha: float = 0.05,
     alternative: str = "two-sided",
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Mann-Whitney U with Glass rank-biserial effect size."""
 
     _require_scipy()
@@ -661,7 +665,7 @@ def brunner_munzel(
     y: Sequence[float],
     *,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Brunner-Munzel test (robust to heteroscedasticity)."""
 
     _require_scipy()
@@ -702,12 +706,12 @@ def brunner_munzel(
 
 
 def wilcoxon_signed_rank(
-    x: Sequence[float],
-    y: Sequence[float],
+    x: Sequence[float] | np.ndarray,
+    y: Sequence[float] | np.ndarray,
     *,
     alpha: float = 0.05,
     alternative: str = "two-sided",
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Wilcoxon signed-rank test for paired algorithm comparisons."""
 
     _require_scipy()
@@ -768,10 +772,10 @@ def pairwise_wilcoxon(
     groups: Mapping[str, Sequence[float]],
     *,
     alpha: float = 0.05,
-) -> List[Dict[str, object]]:
+) -> List[Dict[str, Any]]:
     """All pairwise Wilcoxon signed-rank comparisons."""
 
-    rows: List[Dict[str, object]] = []
+    rows: List[Dict[str, Any]] = []
     for a, b in combinations(list(groups.keys()), 2):
         xa = np.asarray(groups[a], dtype=float)
         xb = np.asarray(groups[b], dtype=float)
@@ -785,8 +789,8 @@ def pairwise_mann_whitney(
     groups: Mapping[str, Sequence[float]],
     *,
     alpha: float = 0.05,
-) -> List[Dict[str, object]]:
-    rows: List[Dict[str, object]] = []
+) -> List[Dict[str, Any]]:
+    rows: List[Dict[str, Any]] = []
     for a, b in combinations(list(groups.keys()), 2):
         result = mann_whitney_u(groups[a], groups[b], alpha=alpha)
         delta = cliffs_delta(groups[a], groups[b])
@@ -806,8 +810,8 @@ def pairwise_brunner_munzel(
     groups: Mapping[str, Sequence[float]],
     *,
     alpha: float = 0.05,
-) -> List[Dict[str, object]]:
-    rows: List[Dict[str, object]] = []
+) -> List[Dict[str, Any]]:
+    rows: List[Dict[str, Any]] = []
     for a, b in combinations(list(groups.keys()), 2):
         result = brunner_munzel(groups[a], groups[b], alpha=alpha)
         rows.append({"algorithm_a": a, "algorithm_b": b, **result})
@@ -850,7 +854,7 @@ def friedman_test(
     *,
     alpha: float = 0.05,
     higher_is_better: Mapping[str, bool] | bool = True,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Friedman omnibus across algorithms with scenarios/seeds as blocks."""
 
     _require_scipy()
@@ -918,7 +922,7 @@ def nemenyi_posthoc(
     *,
     alpha: float = 0.05,
     higher_is_better: Mapping[str, bool] | bool = True,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Nemenyi post-hoc via critical difference on Friedman mean ranks."""
 
     fr = friedman_test(blocks, alpha=alpha, higher_is_better=higher_is_better)
@@ -941,7 +945,7 @@ def nemenyi_posthoc(
         q_alpha = float(_Q05.get(k, 2.569))
 
     cd = float(q_alpha * np.sqrt(k * (k + 1) / (6.0 * n)))
-    pairs: List[Dict[str, object]] = []
+    pairs: List[Dict[str, Any]] = []
     for a, b in combinations(algos, 2):
         diff = abs(mean_ranks[a] - mean_ranks[b])
         pairs.append(
@@ -973,7 +977,7 @@ def quade_test(
     *,
     alpha: float = 0.05,
     higher_is_better: Mapping[str, bool] | bool = True,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Quade test (weighted Friedman alternative for block designs)."""
 
     _require_scipy()
@@ -1044,7 +1048,7 @@ def scheirer_ray_hare(
     factor_b: Sequence[str],
     *,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Scheirer-Ray-Hare: rank transform + two-way ANOVA SS decomposition.
 
     ``factor_a`` typically algorithm; ``factor_b`` typically scenario.
@@ -1094,7 +1098,7 @@ def scheirer_ray_hare(
     if ms_denom <= 0:
         return {"status": "degenerate", "alpha": float(alpha)}
 
-    def chi_row(ss: float, df: int) -> Dict[str, object]:
+    def chi_row(ss: float, df: int) -> Dict[str, Any]:
         H = ss / ms_denom
         p = float(stats.chi2.sf(H, df)) if df > 0 else None
         return {
@@ -1133,7 +1137,7 @@ def spearman_rho(
     y: Sequence[float],
     *,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     _require_scipy()
     a = np.asarray(x, dtype=float)
     b = np.asarray(y, dtype=float)
@@ -1157,7 +1161,7 @@ def kendall_tau(
     y: Sequence[float],
     *,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     _require_scipy()
     a = np.asarray(x, dtype=float)
     b = np.asarray(y, dtype=float)
@@ -1182,7 +1186,7 @@ def pages_trend_test(
     *,
     alpha: float = 0.05,
     higher_is_better: Mapping[str, bool] | bool = True,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Page's L trend test for ordered alternative (L larger → trend present).
 
     ``ordered_algorithms`` is the hypothesized increasing performance order
@@ -1234,7 +1238,7 @@ def cochran_q(
     binary_blocks: Mapping[str, Mapping[str, int]],
     *,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Cochran's Q for binary success/fail across algorithms (paired blocks).
 
     ``binary_blocks`` maps block_id → {algorithm: 0|1}. Skipped unless binary
@@ -1309,7 +1313,7 @@ def decide_oe_winner(
     *,
     higher_is_better: bool = True,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """KW mean-rank winner + Dunn-Holm validation; Cliff/median tie-break."""
 
     if not mean_ranks:
@@ -1392,7 +1396,7 @@ def validate_topsis_vs_friedman(
     topsis_ranking: Sequence[Mapping[str, object]],
     friedman_mean_ranks: Mapping[str, float],
     nemenyi_pairs: Sequence[Mapping[str, object]],
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Compare official TOPSIS winner against Friedman-Nemenyi ranking."""
 
     if not topsis_ranking or not friedman_mean_ranks:
@@ -1453,7 +1457,7 @@ def sample_coverage(
     *,
     expected_n_seeds: int = 12,
     unit: str = "seed",
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Report how many independent samples (seeds) each algorithm contributed."""
 
     n_by_algo = {str(a): int(_finite(v).size) for a, v in groups.items()}
@@ -1484,7 +1488,7 @@ def run_oe_battery(
     complementary: bool = False,
     expected_n_seeds: int = 12,
     sample_unit: str = "seed",
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Full per-objective non-parametric battery (sections 5–6 / 8).
 
     ``groups`` must map algorithm → independent seed scores (canonical n=12).
@@ -1501,7 +1505,7 @@ def run_oe_battery(
     # Cliff δ for every pair on oriented values
     labels, samples = _clean_groups(groups, higher_is_better=higher_is_better)
     oriented = _groups_dict(labels, samples)
-    cliff_pairs: List[Dict[str, object]] = []
+    cliff_pairs: List[Dict[str, Any]] = []
     for a, b in combinations(labels, 2):
         delta = cliffs_delta(oriented[a], oriented[b])
         cliff_pairs.append(
@@ -1522,7 +1526,7 @@ def run_oe_battery(
         alpha=alpha,
     )
 
-    result: Dict[str, object] = {
+    result: Dict[str, Any] = {
         "objective": objective,
         "higher_is_better": higher_is_better,
         "alpha": float(alpha),
@@ -1560,14 +1564,14 @@ def run_og_battery(
     complementary: bool = False,
     binary_blocks: Optional[Mapping[str, Mapping[str, int]]] = None,
     page_order: Optional[Sequence[str]] = None,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Global OG battery: Friedman → W → Nemenyi → TOPSIS (+ validation)."""
 
     fr = friedman_test(blocks, alpha=alpha, higher_is_better=higher_is_better)
     nem = nemenyi_posthoc(blocks, alpha=alpha, higher_is_better=higher_is_better)
 
-    topsis_result: Optional[Dict[str, object]] = None
-    validation: Optional[Dict[str, object]] = None
+    topsis_result: Optional[Dict[str, Any]] = None
+    validation: Optional[Dict[str, Any]] = None
     if topsis_means is not None:
         from uc3m.multicriteria.topsis import topsis_rank
 
@@ -1598,7 +1602,7 @@ def run_og_battery(
             nem.get("pairs") or [],
         )
 
-    result: Dict[str, object] = {
+    result: Dict[str, Any] = {
         "scope": "OG",
         "alpha": float(alpha),
         "friedman": fr,
@@ -1610,7 +1614,7 @@ def run_og_battery(
     }
 
     if complementary:
-        comp: Dict[str, object] = {
+        comp: Dict[str, Any] = {
             "quade": quade_test(blocks, alpha=alpha, higher_is_better=higher_is_better),
         }
         # Scheirer-Ray-Hare from long-format of block means
@@ -1668,7 +1672,7 @@ def run_full_methodology_battery(
     page_order: Optional[Sequence[str]] = None,
     expected_n_seeds: int = 12,
     sample_unit: str = "seed",
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Run OE.1/OE.2/OE.3 batteries then OG synthesis (section 8 flow).
 
     Each OE group must be algorithm → seed scores (canonical ``expected_n_seeds=12``).
@@ -1679,7 +1683,7 @@ def run_full_methodology_battery(
     if oe_higher_is_better:
         hib.update(oe_higher_is_better)
 
-    oe_results: Dict[str, object] = {}
+    oe_results: Dict[str, Any] = {}
     block_means: Dict[str, Dict[str, float]] = {}
     for name, groups in oe_groups.items():
         higher = bool(hib.get(name, True))
@@ -1740,12 +1744,12 @@ def run_full_methodology_battery(
 # ---------------------------------------------------------------------------
 
 
-def format_oe_report(result: Mapping[str, object]) -> str:
+def format_oe_report(result: Mapping[str, Any]) -> str:
     """Human-readable OE narrative (H, p, epsilon^2, Dunn pairs, Cliff delta)."""
 
     obj = result.get("objective", "OE")
-    kw = result.get("kruskal_wallis") or {}
-    cov = result.get("sample_coverage") or {}
+    kw = cast(Mapping[str, Any], result.get("kruskal_wallis") or {})
+    cov = cast(Mapping[str, Any], result.get("sample_coverage") or {})
     lines = [
         f"### {obj} — bateria no parametrica",
         "",
@@ -1761,12 +1765,13 @@ def format_oe_report(result: Mapping[str, object]) -> str:
         "",
         "**Shapiro-Wilk (por algoritmo)**",
     ]
-    for algo, sw in (result.get("shapiro_wilk") or {}).items():
+    for algo, sw_raw in cast(Mapping[str, Any], result.get("shapiro_wilk") or {}).items():
+        sw = cast(Mapping[str, Any], sw_raw)
         lines.append(
             f"- {algo}: W={sw.get('statistic')}, p={sw.get('p_value')}, "
             f"normalidad_rechazada={sw.get('normality_rejected')} [{sw.get('status')}]"
         )
-    fl = result.get("fligner_killeen") or {}
+    fl = cast(Mapping[str, Any], result.get("fligner_killeen") or {})
     lines += [
         "",
         f"**Fligner-Killeen**: estadistico={fl.get('statistic')}, p={fl.get('p_value')}, "
@@ -1778,7 +1783,8 @@ def format_oe_report(result: Mapping[str, object]) -> str:
         "",
         "**Dunn post-hoc (Holm)**",
     ]
-    for row in result.get("dunn_holm") or []:
+    for row_raw in cast(Sequence[Any], result.get("dunn_holm") or []):
+        row = cast(Mapping[str, Any], row_raw)
         lines.append(
             f"- {row.get('algorithm_a')} vs {row.get('algorithm_b')}: "
             f"z={row.get('z')}, p_raw={row.get('p_raw')}, p_holm={row.get('p_holm')}, "
@@ -1786,27 +1792,28 @@ def format_oe_report(result: Mapping[str, object]) -> str:
             f"({row.get('cliffs_delta_magnitude')})"
         )
     lines += ["", "**Cliff's delta (todos los pares, metrica orientada)**"]
-    for row in result.get("cliffs_delta_pairs") or []:
+    for row_raw in cast(Sequence[Any], result.get("cliffs_delta_pairs") or []):
+        row = cast(Mapping[str, Any], row_raw)
         lines.append(
             f"- {row.get('algorithm_a')} vs {row.get('algorithm_b')}: "
             f"d={row.get('cliffs_delta')} ({row.get('cliffs_delta_magnitude')})"
         )
-    win = result.get("winner") or {}
+    win = cast(Mapping[str, Any], result.get("winner") or {})
     lines += [
         "",
         f"**Ganador(es)**: {win.get('winners')} "
         f"(primary={win.get('primary_among_cowinners')}, status={win.get('status')})",
     ]
-    for note in win.get("rationale") or []:
+    for note in cast(Sequence[Any], win.get("rationale") or []):
         lines.append(f"- {note}")
     return "\n".join(lines)
 
 
-def format_og_report(result: Mapping[str, object]) -> str:
-    fr = result.get("friedman") or {}
-    nem = result.get("nemenyi") or {}
-    topsis = result.get("topsis") or {}
-    val = result.get("topsis_vs_friedman") or {}
+def format_og_report(result: Mapping[str, Any]) -> str:
+    fr = cast(Mapping[str, Any], result.get("friedman") or {})
+    nem = cast(Mapping[str, Any], result.get("nemenyi") or {})
+    topsis = cast(Mapping[str, Any], result.get("topsis") or {})
+    val = cast(Mapping[str, Any], result.get("topsis_vs_friedman") or {})
     lines = [
         "### OG — sintesis global (E1+E2+E3 como bloques)",
         "",
@@ -1816,25 +1823,27 @@ def format_og_report(result: Mapping[str, object]) -> str:
         "",
         f"**Nemenyi**: CD={nem.get('critical_difference')} (alpha={nem.get('alpha')})",
     ]
-    for row in nem.get("pairs") or []:
+    for row_raw in cast(Sequence[Any], nem.get("pairs") or []):
+        row = cast(Mapping[str, Any], row_raw)
         lines.append(
             f"- {row.get('algorithm_a')} vs {row.get('algorithm_b')}: "
             f"|dR|={row.get('rank_diff')}, sig={row.get('significant')}"
         )
     lines += ["", "**TOPSIS (declaracion oficial de ganador)**"]
-    for row in topsis.get("ranking") or []:
+    for row_raw in cast(Sequence[Any], topsis.get("ranking") or []):
+        row = cast(Mapping[str, Any], row_raw)
         lines.append(
             f"- #{row.get('rank')} {row.get('algorithm')}: C*={row.get('closeness')}"
         )
     lines += ["", "**Validacion TOPSIS vs Friedman-Nemenyi**"]
-    for note in val.get("notes") or []:
+    for note in cast(Sequence[Any], val.get("notes") or []):
         lines.append(f"- {note}")
     if val.get("discrepancy"):
         lines.append("- [!] Discrepancia reportada entre TOPSIS y Friedman.")
     return "\n".join(lines)
 
 
-def format_full_report(battery: Mapping[str, object]) -> str:
+def format_full_report(battery: Mapping[str, Any]) -> str:
     parts = [
         "# Bateria no parametrica MADRL (HAPPO, MAAC, MASAC, MATD3)",
         "",
@@ -1845,11 +1854,11 @@ def format_full_report(battery: Mapping[str, object]) -> str:
         f"TOPSIS criteria kinds: {battery.get('topsis_criteria_kind')}",
         "",
     ]
-    for _name, oe in (battery.get("oe") or {}).items():
-        parts.append(format_oe_report(oe))
+    for _name, oe in cast(Mapping[str, Any], battery.get("oe") or {}).items():
+        parts.append(format_oe_report(cast(Mapping[str, Any], oe)))
         parts.append("")
     if battery.get("og"):
-        parts.append(format_og_report(battery["og"]))
+        parts.append(format_og_report(cast(Mapping[str, Any], battery["og"])))
     return "\n".join(parts)
 
 
@@ -1860,14 +1869,14 @@ def significance_gate_top_metrics(
     first: str,
     second: str,
     alpha: float = 0.05,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Check whether 1st vs 2nd differ significantly on the heaviest criteria.
 
     ``per_seed_metrics`` maps criterion -> algorithm -> seed values.
     For cost criteria, lower is better; tests remain two-sided on raw values.
     """
 
-    details: Dict[str, object] = {}
+    details: Dict[str, Any] = {}
     any_significant = False
     for cid in top_criteria:
         if cid not in per_seed_metrics:

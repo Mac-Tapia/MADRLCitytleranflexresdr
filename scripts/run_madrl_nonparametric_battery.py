@@ -28,7 +28,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Mapping, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
@@ -46,7 +46,7 @@ N_SEEDS = int(DEFAULT_PROTOCOL.n_seeds)
 # E1 flexibility → reward_mean (higher better)
 # E2 CO2 → district_emission (lower better)
 # E3 cost → district_cost (lower better)
-DEFAULT_OE_SPECS: Dict[str, Dict[str, object]] = {
+DEFAULT_OE_SPECS: Dict[str, Dict[str, Any]] = {
     "OE.1": {
         "scenario": "E1",
         "metric": "reward_mean",
@@ -174,7 +174,7 @@ def load_oe_groups_from_episodes(
         )
 
     groups: Dict[str, Dict[str, List[float]]] = {}
-    meta: Dict[str, object] = {
+    meta: Dict[str, Any] = {
         "source_csv": str(csv_path),
         "algorithms": list(algorithms),
         "unit": "seed" if has_seed else "episode",
@@ -218,7 +218,7 @@ def load_oe_groups_from_episodes(
     return groups, meta
 
 
-def _metric_from_results_json(payload: Mapping[str, object], metric: str) -> Optional[float]:
+def _metric_from_results_json(payload: Mapping[str, Any], metric: str) -> Optional[float]:
     """Best-effort extract of a district metric from results.json."""
 
     # Flat / summary fields
@@ -274,7 +274,7 @@ def load_oe_groups_from_run_root(
     specs: Optional[Mapping[str, Mapping[str, object]]] = None,
     expected_n_seeds: int = N_SEEDS,
     seeds: Optional[Sequence[int]] = None,
-) -> Tuple[Dict[str, Dict[str, List[float]]], Dict[str, object]]:
+) -> Tuple[Dict[str, Dict[str, List[float]]], Dict[str, Any]]:
     """Load one KPI value per ``{algo}/{E*}_seed_{k}/data/results.json`` job."""
 
     specs = specs or DEFAULT_OE_SPECS
@@ -285,7 +285,7 @@ def load_oe_groups_from_run_root(
         algorithms = [str(a).upper() for a in algorithms]
 
     groups: Dict[str, Dict[str, List[float]]] = {name: {} for name in specs}
-    meta: Dict[str, object] = {
+    meta: Dict[str, Any] = {
         "source_run_root": str(run_root),
         "unit": "seed",
         "expected_n_seeds": int(expected_n_seeds),

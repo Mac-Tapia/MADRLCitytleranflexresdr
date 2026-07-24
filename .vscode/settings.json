@@ -3,12 +3,26 @@
   "python.analysis.extraPaths": [
     "${workspaceFolder}/CityLearn",
     "${workspaceFolder}/CityLearn/scripts",
-    "${workspaceFolder}/tools"
+    "${workspaceFolder}/tools",
+    "${workspaceFolder}/uc3m",
+    "${workspaceFolder}/scripts",
+    "${workspaceFolder}/outputs"
   ],
   "python.analysis.stubPath": "${workspaceFolder}/CityLearn/examples/typings",
   "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.diagnosticMode": "workspace",
   "python.analysis.diagnosticSeverityOverrides": {
     "reportMissingModuleSource": "none",
-    "reportMissingImports": "none"
-  }
+    "reportMissingImports": "none",
+    "reportUnknownMemberType": "none",
+    "reportUnknownArgumentType": "none",
+    "reportUnknownVariableType": "none",
+    "reportUnknownParameterType": "none",
+    "reportMissingParameterType": "none",
+    "reportMissingTypeArgument": "none",
+    "reportUnknownLambdaType": "none",
+    "reportUnusedExpression": "none"
+  },
+  "python.languageServer": "None",
+  "jupyter.notebookFileRoot": "${workspaceFolder}"
 }

@@ -22,7 +22,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATASET_DIR = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
 DEFAULT_BUILDINGCSV_DIR = ROOT / "CityLearn" / "data" / "buildingcsv"
-DEFAULT_AUDIT_DIR = ROOT / "outputs" / "dataset_audit"
+DEFAULT_AUDIT_DIR = ROOT / "data" / "dataset_audit"
 DEFAULT_MANIFEST = DEFAULT_AUDIT_DIR / "training_dataset_ready_manifest.json"
 
 EXPECTED_ROWS = 26304

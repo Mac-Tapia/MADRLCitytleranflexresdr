@@ -18,7 +18,7 @@ Complementary catalog (sections 1–4), behind ``complementary=True`` / flags:
 from __future__ import annotations
 
 from itertools import combinations
-from typing import Dict, Iterable, List, Mapping, MutableMapping, Optional, Sequence, Tuple
+from typing import Dict, List, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 

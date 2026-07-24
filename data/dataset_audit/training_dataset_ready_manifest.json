@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-20T17:05:36.750092+00:00",
+  "generated_at": "2026-07-24T04:16:41.085653+00:00",
   "dataset_dir": "CityLearn\\data\\datasets\\citylearn_iquitos_2023_2025",
   "buildingcsv_dir": "CityLearn\\data\\buildingcsv",
-  "audit_dir": "outputs\\dataset_audit",
+  "audit_dir": "data\\dataset_audit",
   "schema_sha256": "37b8999ee1d00c241cc807b9b3d259c2f00d30a6113a2b2a492a127ad5287eb8",
   "status": "ready",
   "raw_dataset_loaded_before_normalization": true,
@@ -241,7 +241,7 @@
       "missing_machine_files": []
     },
     "training_audit": {
-      "path": "outputs\\dataset_audit\\training_dataset_validation.json",
+      "path": "data\\dataset_audit\\training_dataset_validation.json",
       "all_valid": true,
       "rows": 17,
       "max_abs_base_delta_pct_B02_B17": 1.45e-07,
@@ -249,7 +249,7 @@
       "total_forecast_months": 8
     },
     "der_audit": {
-      "path": "outputs\\dataset_audit\\der_sizing_audit.csv",
+      "path": "data\\dataset_audit\\der_sizing_audit.csv",
       "rows": 17,
       "sha256": "1a87166f6d9275b8acffd0753ba20c702e62568dc2ffe6ddae2480691e6fbe39"
     },
@@ -274,27 +274,27 @@
         "exists": true,
         "sha256": "8c50a53c64a36f6033dc86af8d3c163d3aef50995b581fe76dc8e05b7f822534"
       },
-      "outputs\\dataset_audit\\ev_charger_sizing_audit.csv": {
+      "data\\dataset_audit\\ev_charger_sizing_audit.csv": {
         "exists": true,
         "sha256": "18ae8772242112ca21ecf5fa911b8d8351efc39276584460abdce05cfd00e3fd"
       },
-      "outputs\\dataset_audit\\ev_charger_sizing_audit.json": {
+      "data\\dataset_audit\\ev_charger_sizing_audit.json": {
         "exists": true,
         "sha256": "b8b38fdbdb5658d324e7d8b50c4ad0f9000afaab211fdc2ca8d26ccfece04224"
       },
-      "outputs\\dataset_audit\\training_dataset_validation.csv": {
+      "data\\dataset_audit\\training_dataset_validation.csv": {
         "exists": true,
         "sha256": "40d45110ea8c856eab1457ae30bcde3ee0e81da67f91f3389e352fa4c6c40d83"
       },
-      "outputs\\dataset_audit\\der_sizing_audit.json": {
+      "data\\dataset_audit\\der_sizing_audit.json": {
         "exists": true,
         "sha256": "bdc8b7781f423f3112d7ec8ddb014a95bff7be43aecb703e8d6a0b049162ee04"
       },
-      "outputs\\dataset_audit\\orphaned_dataset_files_manifest.json": {
+      "data\\dataset_audit\\orphaned_dataset_files_manifest.json": {
         "exists": true,
         "sha256": "a409c9d10acb7907ebbee3deb096dff8ad83458a047e3942c5245608fb1f0f1b"
       },
-      "outputs\\dataset_audit\\csv_integrity_manifest.json": {
+      "data\\dataset_audit\\csv_integrity_manifest.json": {
         "exists": true,
         "sha256": "ab1f093293b22c445b5348883324b06f16e0ae912f6086c6fd444ac0cb736bcd",
         "status": "ok",

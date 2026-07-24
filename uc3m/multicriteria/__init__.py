@@ -27,6 +27,11 @@ from uc3m.multicriteria.pipeline import (
     ILLUSTRATIVE_DECISION_MATRIX,
     run_selection_pipeline,
 )
+from uc3m.multicriteria.stats_tests import (
+    run_full_methodology_battery,
+    run_oe_battery,
+    run_og_battery,
+)
 from uc3m.multicriteria.topsis import topsis_rank
 
 __all__ = [
@@ -43,6 +48,9 @@ __all__ = [
     "compute_dimension_metrics",
     "consistency_ratio",
     "mean_std_report",
+    "run_full_methodology_battery",
+    "run_oe_battery",
+    "run_og_battery",
     "run_selection_pipeline",
     "topsis_rank",
 ]

@@ -29,7 +29,13 @@ from uc3m.multicriteria.criteria import (
 from uc3m.multicriteria.pipeline import run_selection_pipeline
 from uc3m.multicriteria.reward import multiobjective_reward
 from uc3m.multicriteria.stats_tests import (
+    cliffs_delta,
+    cliffs_delta_magnitude,
+    dunns_posthoc_holm,
+    friedman_test,
     kruskal_wallis,
+    run_full_methodology_battery,
+    run_oe_battery,
     significance_gate_top_metrics,
     wilcoxon_signed_rank,
 )
@@ -199,3 +205,76 @@ def test_merge_skips_algorithms_without_real_technical_kpis():
     assert set(matrix) == {"MASAC", "MATD3"}
     assert matrix["MASAC"]["C1"] == 100.0
     assert prov["MASAC"]["C4"].startswith("illustrative")
+
+
+def test_oe_battery_minimum_keys_and_cost_orientation():
+    rng = np.random.default_rng(0)
+    groups = {
+        "HAPPO": list(rng.normal(400, 10, 10)),
+        "MAAC": list(rng.normal(320, 10, 10)),
+        "MASAC": list(rng.normal(480, 10, 10)),
+        "MATD3": list(rng.normal(360, 10, 10)),
+    }
+    result = run_oe_battery(
+        groups,
+        objective="OE.3",
+        higher_is_better=False,
+        complementary=False,
+    )
+    assert result["kruskal_wallis"]["status"] == "ok"
+    assert result["epsilon_squared"] is not None
+    assert len(result["dunn_holm"]) == 6
+    assert result["winner"]["winners"]
+    # Lower cost → better after orientation: MAAC should have highest mean rank.
+    ranks = result["kruskal_wallis"]["mean_ranks"]
+    assert ranks["MAAC"] == max(ranks.values())
+    delta = cliffs_delta(groups["MAAC"], groups["MASAC"])
+    assert cliffs_delta_magnitude(delta) in {"negligible", "small", "medium", "large"}
+
+
+def test_full_methodology_battery_smoke():
+    rng = np.random.default_rng(1)
+    oe = {
+        "OE.1": {
+            "HAPPO": list(rng.normal(-0.5, 0.05, 8)),
+            "MAAC": list(rng.normal(-0.6, 0.05, 8)),
+            "MASAC": list(rng.normal(-0.7, 0.05, 8)),
+            "MATD3": list(rng.normal(-0.65, 0.05, 8)),
+        },
+        "OE.2": {
+            "HAPPO": list(rng.normal(900, 30, 8)),
+            "MAAC": list(rng.normal(850, 30, 8)),
+            "MASAC": list(rng.normal(980, 30, 8)),
+            "MATD3": list(rng.normal(820, 30, 8)),
+        },
+        "OE.3": {
+            "HAPPO": list(rng.normal(400, 20, 8)),
+            "MAAC": list(rng.normal(320, 20, 8)),
+            "MASAC": list(rng.normal(480, 20, 8)),
+            "MATD3": list(rng.normal(360, 20, 8)),
+        },
+    }
+    battery = run_full_methodology_battery(
+        oe,
+        oe_higher_is_better={"OE.1": True, "OE.2": False, "OE.3": False},
+        complementary=True,
+        page_order=["MASAC", "HAPPO", "MATD3", "MAAC"],
+    )
+    assert set(battery["oe"]) == {"OE.1", "OE.2", "OE.3"}
+    assert battery["og"]["friedman"]["status"] == "ok"
+    assert battery["og"]["kendalls_w"] is not None
+    assert battery["og"]["nemenyi"]["pairs"]
+    assert battery["og"]["topsis"]["ranking"]
+    assert "topsis_vs_friedman" in battery["og"]
+    assert "quade" in battery["og"]["complementary"]
+    dunn = dunns_posthoc_holm(oe["OE.1"], higher_is_better=True)
+    assert dunn
+    fr = friedman_test(
+        {
+            "OE.1": {a: float(np.mean(v)) for a, v in oe["OE.1"].items()},
+            "OE.2": {a: float(np.mean(v)) for a, v in oe["OE.2"].items()},
+            "OE.3": {a: float(np.mean(v)) for a, v in oe["OE.3"].items()},
+        },
+        higher_is_better={"OE.1": True, "OE.2": False, "OE.3": False},
+    )
+    assert fr["status"] == "ok"

@@ -1,0 +1,931 @@
+{
+  "oe": {
+    "OE.1": {
+      "objective": "OE.1",
+      "higher_is_better": true,
+      "alpha": 0.05,
+      "shapiro_wilk": {
+        "HAPPO": {
+          "statistic": 0.8819757103919983,
+          "p_value": 0.01920420490205288,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MAAC": {
+          "statistic": 0.7605104446411133,
+          "p_value": 0.00023565547598991543,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MASAC": {
+          "statistic": 0.7239064574241638,
+          "p_value": 7.741466833977029e-05,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MATD3": {
+          "statistic": 0.7720008492469788,
+          "p_value": 0.00034006821806542575,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        }
+      },
+      "fligner_killeen": {
+        "statistic": 16.848141701158802,
+        "p_value": 0.000759426223739126,
+        "significant": true,
+        "groups": [
+          "HAPPO",
+          "MAAC",
+          "MASAC",
+          "MATD3"
+        ],
+        "status": "ok",
+        "alpha": 0.05,
+        "note": "significant \u2192 variances heterogeneous (non-parametric path preferred)"
+      },
+      "kruskal_wallis": {
+        "H": 21.667423132377607,
+        "p_value": 7.649502904148951e-05,
+        "significant": true,
+        "n_groups": 4,
+        "groups": [
+          "HAPPO",
+          "MAAC",
+          "MASAC",
+          "MATD3"
+        ],
+        "mean_ranks": {
+          "HAPPO": 31.5,
+          "MAAC": 59.35,
+          "MASAC": 42.65,
+          "MATD3": 28.5
+        },
+        "epsilon_squared": 0.2742711788908558,
+        "n_total": 80,
+        "status": "ok",
+        "alpha": 0.05,
+        "higher_is_better": true
+      },
+      "epsilon_squared": 0.2742711788908558,
+      "dunn_holm": [
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MAAC",
+          "z": -3.7901492961571837,
+          "p_raw": 0.00015055676546665083,
+          "mean_rank_a": 31.5,
+          "mean_rank_b": 59.35,
+          "cliffs_delta": -0.6,
+          "cliffs_delta_magnitude": "large",
+          "p_holm": 0.0007527838273332541,
+          "significant": true,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MASAC",
+          "z": -1.5174206338295364,
+          "p_raw": 0.12916051762124447,
+          "mean_rank_a": 31.5,
+          "mean_rank_b": 42.65,
+          "cliffs_delta": -0.43,
+          "cliffs_delta_magnitude": "medium",
+          "p_holm": 0.25832103524248895,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MATD3",
+          "z": 0.40827460999897847,
+          "p_raw": 0.6830720775260473,
+          "mean_rank_a": 31.5,
+          "mean_rank_b": 28.5,
+          "cliffs_delta": 0.13,
+          "cliffs_delta_magnitude": "negligible",
+          "p_holm": 0.6830720775260473,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MASAC",
+          "z": 2.2727286623276473,
+          "p_raw": 0.023042536296064575,
+          "mean_rank_a": 59.35,
+          "mean_rank_b": 42.65,
+          "cliffs_delta": 0.57,
+          "cliffs_delta_magnitude": "large",
+          "p_holm": 0.0921701451842583,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MATD3",
+          "z": 4.198423906156162,
+          "p_raw": 2.6877913885150712e-05,
+          "mean_rank_a": 59.35,
+          "mean_rank_b": 28.5,
+          "cliffs_delta": 0.715,
+          "cliffs_delta_magnitude": "large",
+          "p_holm": 0.00016126748331090428,
+          "significant": true,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MASAC",
+          "algorithm_b": "MATD3",
+          "z": 1.9256952438285149,
+          "p_raw": 0.05414243811897638,
+          "mean_rank_a": 42.65,
+          "mean_rank_b": 28.5,
+          "cliffs_delta": 0.355,
+          "cliffs_delta_magnitude": "medium",
+          "p_holm": 0.16242731435692914,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        }
+      ],
+      "cliffs_delta_pairs": [
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MAAC",
+          "cliffs_delta": -0.6,
+          "cliffs_delta_magnitude": "large",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MASAC",
+          "cliffs_delta": -0.43,
+          "cliffs_delta_magnitude": "medium",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": 0.13,
+          "cliffs_delta_magnitude": "negligible",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MASAC",
+          "cliffs_delta": 0.57,
+          "cliffs_delta_magnitude": "large",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": 0.715,
+          "cliffs_delta_magnitude": "large",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MASAC",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": 0.355,
+          "cliffs_delta_magnitude": "medium",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        }
+      ],
+      "winner": {
+        "winners": [
+          "MAAC",
+          "MASAC"
+        ],
+        "primary_among_cowinners": "MAAC",
+        "mean_ranks": {
+          "HAPPO": 31.5,
+          "MAAC": 59.35,
+          "MASAC": 42.65,
+          "MATD3": 28.5
+        },
+        "rationale": [
+          "Highest KW mean rank: MAAC (Rmean=59.350).",
+          "Dunn-Holm vs 2nd (MASAC, Rmean=42.650) not significant (p_holm=0.0921701451842583) -> co-winners.",
+          "Tie-break Cliff's delta(MAAC,MASAC)=0.57 (large); oriented medians MAAC=-0.6136, MASAC=-0.6211.",
+          "Cliff's delta prefers MAAC (report as primary among co-winners)."
+        ],
+        "status": "cowinners_cliff_tiebreak",
+        "alpha": 0.05
+      }
+    },
+    "OE.2": {
+      "objective": "OE.2",
+      "higher_is_better": false,
+      "alpha": 0.05,
+      "shapiro_wilk": {
+        "HAPPO": {
+          "statistic": 0.9515063166618347,
+          "p_value": 0.3905356228351593,
+          "normality_rejected": false,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MAAC": {
+          "statistic": 0.6611056327819824,
+          "p_value": 1.356965094601037e-05,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MASAC": {
+          "statistic": 0.7578094005584717,
+          "p_value": 0.0002164616307709366,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MATD3": {
+          "statistic": 0.688618004322052,
+          "p_value": 2.8415404813131317e-05,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        }
+      },
+      "fligner_killeen": {
+        "statistic": 11.498363718067175,
+        "p_value": 0.009314845433479624,
+        "significant": true,
+        "groups": [
+          "HAPPO",
+          "MAAC",
+          "MASAC",
+          "MATD3"
+        ],
+        "status": "ok",
+        "alpha": 0.05,
+        "note": "significant \u2192 variances heterogeneous (non-parametric path preferred)"
+      },
+      "kruskal_wallis": {
+        "H": 13.371835297719254,
+        "p_value": 0.0038977540506232727,
+        "significant": true,
+        "n_groups": 4,
+        "groups": [
+          "HAPPO",
+          "MAAC",
+          "MASAC",
+          "MATD3"
+        ],
+        "mean_ranks": {
+          "HAPPO": 54.85,
+          "MAAC": 40.5,
+          "MASAC": 38.35,
+          "MATD3": 28.3
+        },
+        "epsilon_squared": 0.16926373794581334,
+        "n_total": 80,
+        "status": "ok",
+        "alpha": 0.05,
+        "higher_is_better": false
+      },
+      "epsilon_squared": 0.16926373794581334,
+      "dunn_holm": [
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MAAC",
+          "z": 1.9572776605595887,
+          "p_raw": 0.050314832491662076,
+          "mean_rank_a": 54.85,
+          "mean_rank_b": 40.5,
+          "cliffs_delta": 0.44,
+          "cliffs_delta_magnitude": "medium",
+          "p_holm": 0.2012593299666483,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MASAC",
+          "z": 2.2505283205040563,
+          "p_raw": 0.024415427819357974,
+          "mean_rank_a": 54.85,
+          "mean_rank_b": 38.35,
+          "cliffs_delta": 0.435,
+          "cliffs_delta_magnitude": "medium",
+          "p_holm": 0.12207713909678987,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MATD3",
+          "z": 3.621304661174709,
+          "p_raw": 0.00029312108401560174,
+          "mean_rank_a": 54.85,
+          "mean_rank_b": 28.3,
+          "cliffs_delta": 0.56,
+          "cliffs_delta_magnitude": "large",
+          "p_holm": 0.0017587265040936106,
+          "significant": true,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MASAC",
+          "z": 0.29325065994446775,
+          "p_raw": 0.7693305641903496,
+          "mean_rank_a": 40.5,
+          "mean_rank_b": 38.35,
+          "cliffs_delta": 0.08,
+          "cliffs_delta_magnitude": "negligible",
+          "p_holm": 0.7693305641903496,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MATD3",
+          "z": 1.6640270006151203,
+          "p_raw": 0.0961070337161986,
+          "mean_rank_a": 40.5,
+          "mean_rank_b": 28.3,
+          "cliffs_delta": 0.36,
+          "cliffs_delta_magnitude": "medium",
+          "p_holm": 0.28832110114859577,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MASAC",
+          "algorithm_b": "MATD3",
+          "z": 1.3707763406706526,
+          "p_raw": 0.17044468846740946,
+          "mean_rank_a": 38.35,
+          "mean_rank_b": 28.3,
+          "cliffs_delta": 0.3,
+          "cliffs_delta_magnitude": "small",
+          "p_holm": 0.3408893769348189,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        }
+      ],
+      "cliffs_delta_pairs": [
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MAAC",
+          "cliffs_delta": 0.44,
+          "cliffs_delta_magnitude": "medium",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MASAC",
+          "cliffs_delta": 0.435,
+          "cliffs_delta_magnitude": "medium",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": 0.56,
+          "cliffs_delta_magnitude": "large",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MASAC",
+          "cliffs_delta": 0.08,
+          "cliffs_delta_magnitude": "negligible",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": 0.36,
+          "cliffs_delta_magnitude": "medium",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MASAC",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": 0.3,
+          "cliffs_delta_magnitude": "small",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        }
+      ],
+      "winner": {
+        "winners": [
+          "HAPPO",
+          "MAAC"
+        ],
+        "primary_among_cowinners": "HAPPO",
+        "mean_ranks": {
+          "HAPPO": 54.85,
+          "MAAC": 40.5,
+          "MASAC": 38.35,
+          "MATD3": 28.3
+        },
+        "rationale": [
+          "Highest KW mean rank: HAPPO (Rmean=54.850).",
+          "Dunn-Holm vs 2nd (MAAC, Rmean=40.500) not significant (p_holm=0.2012593299666483) -> co-winners.",
+          "Tie-break Cliff's delta(HAPPO,MAAC)=0.44 (medium); oriented medians HAPPO=-823.7833, MAAC=-1132.6354.",
+          "Cliff's delta prefers HAPPO (report as primary among co-winners)."
+        ],
+        "status": "cowinners_cliff_tiebreak",
+        "alpha": 0.05
+      }
+    },
+    "OE.3": {
+      "objective": "OE.3",
+      "higher_is_better": false,
+      "alpha": 0.05,
+      "shapiro_wilk": {
+        "HAPPO": {
+          "statistic": 0.789676308631897,
+          "p_value": 0.0006085577770136297,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MAAC": {
+          "statistic": 0.634101390838623,
+          "p_value": 6.783870503568323e-06,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MASAC": {
+          "statistic": 0.6930649876594543,
+          "p_value": 3.2128220482263714e-05,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        },
+        "MATD3": {
+          "statistic": 0.8345080614089966,
+          "p_value": 0.0029642092995345592,
+          "normality_rejected": true,
+          "n": 20,
+          "status": "ok",
+          "alpha": 0.05
+        }
+      },
+      "fligner_killeen": {
+        "statistic": 10.968289262608756,
+        "p_value": 0.011898589168029721,
+        "significant": true,
+        "groups": [
+          "HAPPO",
+          "MAAC",
+          "MASAC",
+          "MATD3"
+        ],
+        "status": "ok",
+        "alpha": 0.05,
+        "note": "significant \u2192 variances heterogeneous (non-parametric path preferred)"
+      },
+      "kruskal_wallis": {
+        "H": 15.809115849709771,
+        "p_value": 0.0012408782852464052,
+        "significant": true,
+        "n_groups": 4,
+        "groups": [
+          "HAPPO",
+          "MAAC",
+          "MASAC",
+          "MATD3"
+        ],
+        "mean_ranks": {
+          "HAPPO": 57.95,
+          "MAAC": 34.25,
+          "MASAC": 31.85,
+          "MATD3": 37.95
+        },
+        "epsilon_squared": 0.20011539050265534,
+        "n_total": 80,
+        "status": "ok",
+        "alpha": 0.05,
+        "higher_is_better": false
+      },
+      "epsilon_squared": 0.20011539050265534,
+      "dunn_holm": [
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MAAC",
+          "z": 3.232577042178554,
+          "p_raw": 0.0012267905088062944,
+          "mean_rank_a": 57.95,
+          "mean_rank_b": 34.25,
+          "cliffs_delta": 0.62,
+          "cliffs_delta_magnitude": "large",
+          "p_holm": 0.006133952544031472,
+          "significant": true,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MASAC",
+          "z": 3.559926616070053,
+          "p_raw": 0.0003709584417610716,
+          "mean_rank_a": 57.95,
+          "mean_rank_b": 31.85,
+          "cliffs_delta": 0.62,
+          "cliffs_delta_magnitude": "large",
+          "p_holm": 0.0022257506505664296,
+          "significant": true,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MATD3",
+          "z": 2.7279131157624925,
+          "p_raw": 0.006373639321403983,
+          "mean_rank_a": 57.95,
+          "mean_rank_b": 37.95,
+          "cliffs_delta": 0.505,
+          "cliffs_delta_magnitude": "large",
+          "p_holm": 0.02549455728561593,
+          "significant": true,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MASAC",
+          "z": 0.32734957389149894,
+          "p_raw": 0.7434035013879343,
+          "mean_rank_a": 34.25,
+          "mean_rank_b": 31.85,
+          "cliffs_delta": 0.1,
+          "cliffs_delta_magnitude": "negligible",
+          "p_holm": 1.0,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MATD3",
+          "z": -0.5046639264160615,
+          "p_raw": 0.6137949019062272,
+          "mean_rank_a": 34.25,
+          "mean_rank_b": 37.95,
+          "cliffs_delta": -0.105,
+          "cliffs_delta_magnitude": "negligible",
+          "p_holm": 1.0,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        },
+        {
+          "algorithm_a": "MASAC",
+          "algorithm_b": "MATD3",
+          "z": -0.8320135003075605,
+          "p_raw": 0.405401324300674,
+          "mean_rank_a": 31.85,
+          "mean_rank_b": 37.95,
+          "cliffs_delta": -0.145,
+          "cliffs_delta_magnitude": "negligible",
+          "p_holm": 1.0,
+          "significant": false,
+          "method": "dunn_holm_manual",
+          "alpha": 0.05
+        }
+      ],
+      "cliffs_delta_pairs": [
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MAAC",
+          "cliffs_delta": 0.62,
+          "cliffs_delta_magnitude": "large",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MASAC",
+          "cliffs_delta": 0.62,
+          "cliffs_delta_magnitude": "large",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": 0.505,
+          "cliffs_delta_magnitude": "large",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MASAC",
+          "cliffs_delta": 0.1,
+          "cliffs_delta_magnitude": "negligible",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": -0.105,
+          "cliffs_delta_magnitude": "negligible",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        },
+        {
+          "algorithm_a": "MASAC",
+          "algorithm_b": "MATD3",
+          "cliffs_delta": -0.145,
+          "cliffs_delta_magnitude": "negligible",
+          "note": "positive delta favours algorithm_a on oriented metric (higher=better)"
+        }
+      ],
+      "winner": {
+        "winners": [
+          "HAPPO"
+        ],
+        "primary_among_cowinners": "HAPPO",
+        "mean_ranks": {
+          "HAPPO": 57.95,
+          "MAAC": 34.25,
+          "MASAC": 31.85,
+          "MATD3": 37.95
+        },
+        "rationale": [
+          "Highest KW mean rank: HAPPO (Rmean=57.950).",
+          "Dunn-Holm confirms HAPPO > MATD3 (p_holm=0.02549455728561593, alpha=0.05)."
+        ],
+        "status": "ok",
+        "alpha": 0.05
+      }
+    }
+  },
+  "og": {
+    "scope": "OG",
+    "alpha": 0.05,
+    "friedman": {
+      "chi2": 2.6000000000000014,
+      "p_value": 0.45748954687818333,
+      "significant": false,
+      "n_blocks": 3,
+      "n_algorithms": 4,
+      "algorithms": [
+        "HAPPO",
+        "MAAC",
+        "MASAC",
+        "MATD3"
+      ],
+      "blocks": [
+        "OE.1",
+        "OE.2",
+        "OE.3"
+      ],
+      "mean_ranks": {
+        "HAPPO": 3.3333333333333335,
+        "MAAC": 2.6666666666666665,
+        "MASAC": 2.3333333333333335,
+        "MATD3": 1.6666666666666667
+      },
+      "rank_matrix": [
+        [
+          2.0,
+          4.0,
+          3.0,
+          1.0
+        ],
+        [
+          4.0,
+          2.0,
+          3.0,
+          1.0
+        ],
+        [
+          4.0,
+          2.0,
+          1.0,
+          3.0
+        ]
+      ],
+      "kendalls_w": 0.28888888888888903,
+      "status": "ok",
+      "alpha": 0.05
+    },
+    "kendalls_w": 0.28888888888888903,
+    "nemenyi": {
+      "critical_difference": 2.707997260862172,
+      "q_alpha": 2.5690317725464826,
+      "alpha": 0.05,
+      "n_blocks": 3,
+      "n_algorithms": 4,
+      "mean_ranks": {
+        "HAPPO": 3.3333333333333335,
+        "MAAC": 2.6666666666666665,
+        "MASAC": 2.3333333333333335,
+        "MATD3": 1.6666666666666667
+      },
+      "pairs": [
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MAAC",
+          "rank_diff": 0.666666666666667,
+          "critical_difference": 2.707997260862172,
+          "significant": false,
+          "mean_rank_a": 3.3333333333333335,
+          "mean_rank_b": 2.6666666666666665
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MASAC",
+          "rank_diff": 1.0,
+          "critical_difference": 2.707997260862172,
+          "significant": false,
+          "mean_rank_a": 3.3333333333333335,
+          "mean_rank_b": 2.3333333333333335
+        },
+        {
+          "algorithm_a": "HAPPO",
+          "algorithm_b": "MATD3",
+          "rank_diff": 1.6666666666666667,
+          "critical_difference": 2.707997260862172,
+          "significant": false,
+          "mean_rank_a": 3.3333333333333335,
+          "mean_rank_b": 1.6666666666666667
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MASAC",
+          "rank_diff": 0.33333333333333304,
+          "critical_difference": 2.707997260862172,
+          "significant": false,
+          "mean_rank_a": 2.6666666666666665,
+          "mean_rank_b": 2.3333333333333335
+        },
+        {
+          "algorithm_a": "MAAC",
+          "algorithm_b": "MATD3",
+          "rank_diff": 0.9999999999999998,
+          "critical_difference": 2.707997260862172,
+          "significant": false,
+          "mean_rank_a": 2.6666666666666665,
+          "mean_rank_b": 1.6666666666666667
+        },
+        {
+          "algorithm_a": "MASAC",
+          "algorithm_b": "MATD3",
+          "rank_diff": 0.6666666666666667,
+          "critical_difference": 2.707997260862172,
+          "significant": false,
+          "mean_rank_a": 2.3333333333333335,
+          "mean_rank_b": 1.6666666666666667
+        }
+      ],
+      "status": "ok",
+      "method": "nemenyi_critical_difference"
+    },
+    "topsis": {
+      "ranking": [
+        {
+          "rank": 1,
+          "algorithm": "HAPPO",
+          "closeness": 0.9491414056780454,
+          "distance_positive": 0.006931982463838832,
+          "distance_negative": 0.12936715352794062
+        },
+        {
+          "rank": 2,
+          "algorithm": "MATD3",
+          "closeness": 0.27537217635916017,
+          "distance_positive": 0.09785588855974958,
+          "distance_negative": 0.037187074692861644
+        },
+        {
+          "rank": 3,
+          "algorithm": "MAAC",
+          "closeness": 0.19711358231799558,
+          "distance_positive": 0.11910625863468563,
+          "distance_negative": 0.02924132330418272
+        },
+        {
+          "rank": 4,
+          "algorithm": "MASAC",
+          "closeness": 0.1896383276349491,
+          "distance_positive": 0.12063030315935837,
+          "distance_negative": 0.028229529768446924
+        }
+      ],
+      "weights": {
+        "OE.1": 0.3333333333333333,
+        "OE.2": 0.3333333333333333,
+        "OE.3": 0.3333333333333333
+      },
+      "criteria_kind": {
+        "OE.1": "benefit",
+        "OE.2": "cost",
+        "OE.3": "cost"
+      },
+      "ideal_positive": {
+        "OE.1": -0.1605238143428623,
+        "OE.2": 0.13716702113964951,
+        "OE.3": 0.08172495443662067
+      },
+      "ideal_negative": {
+        "OE.1": -0.17538077309329048,
+        "OE.2": 0.19181907783684432,
+        "OE.3": 0.1987130216124885
+      },
+      "closeness": {
+        "HAPPO": 0.9491414056780454,
+        "MAAC": 0.19711358231799558,
+        "MASAC": 0.1896383276349491,
+        "MATD3": 0.27537217635916017
+      },
+      "method": "topsis"
+    },
+    "topsis_vs_friedman": {
+      "topsis_winner": "HAPPO",
+      "friedman_winner": "HAPPO",
+      "agreement": true,
+      "discrepancy": false,
+      "notes": [
+        "TOPSIS and Friedman agree on winner: HAPPO."
+      ],
+      "status": "ok"
+    },
+    "official_winner_rule": "TOPSIS (validated by Friedman mean ranks + Nemenyi)"
+  },
+  "topsis_weights": {
+    "OE.1": 0.3333333333333333,
+    "OE.2": 0.3333333333333333,
+    "OE.3": 0.3333333333333333
+  },
+  "topsis_criteria_kind": {
+    "OE.1": "benefit",
+    "OE.2": "cost",
+    "OE.3": "cost"
+  },
+  "alpha": 0.05,
+  "complementary": false,
+  "meta": {
+    "source_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\analysis_real_drive\\tables\\district_episode_kpis.csv",
+    "algorithms": [
+      "HAPPO",
+      "MAAC",
+      "MASAC",
+      "MATD3"
+    ],
+    "n": {
+      "OE.1:HAPPO": 20,
+      "OE.1:MAAC": 20,
+      "OE.1:MASAC": 20,
+      "OE.1:MATD3": 20,
+      "OE.2:HAPPO": 20,
+      "OE.2:MAAC": 20,
+      "OE.2:MASAC": 20,
+      "OE.2:MATD3": 20,
+      "OE.3:HAPPO": 20,
+      "OE.3:MAAC": 20,
+      "OE.3:MASAC": 20,
+      "OE.3:MATD3": 20
+    },
+    "source": "episodes_csv"
+  },
+  "oe_specs": {
+    "OE.1": {
+      "scenario": "E1",
+      "metric": "reward_mean",
+      "higher_is_better": true
+    },
+    "OE.2": {
+      "scenario": "E2",
+      "metric": "district_emission",
+      "higher_is_better": false
+    },
+    "OE.3": {
+      "scenario": "E3",
+      "metric": "district_cost",
+      "higher_is_better": false
+    }
+  }
+}

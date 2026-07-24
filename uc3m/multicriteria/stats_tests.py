@@ -1446,6 +1446,33 @@ def validate_topsis_vs_friedman(
 # ---------------------------------------------------------------------------
 
 
+def sample_coverage(
+    groups: Mapping[str, Sequence[float]],
+    *,
+    expected_n_seeds: int = 12,
+    unit: str = "seed",
+) -> Dict[str, object]:
+    """Report how many independent samples (seeds) each algorithm contributed."""
+
+    n_by_algo = {str(a): int(_finite(v).size) for a, v in groups.items()}
+    ns = list(n_by_algo.values())
+    complete = bool(ns) and all(n >= int(expected_n_seeds) for n in ns)
+    return {
+        "unit": unit,
+        "expected_n_seeds": int(expected_n_seeds),
+        "n_by_algorithm": n_by_algo,
+        "min_n": int(min(ns)) if ns else 0,
+        "max_n": int(max(ns)) if ns else 0,
+        "complete": complete,
+        "warning": None
+        if complete
+        else (
+            f"Incomplete seed coverage vs expected_n_seeds={expected_n_seeds}; "
+            "interpret significance cautiously."
+        ),
+    }
+
+
 def run_oe_battery(
     groups: Mapping[str, Sequence[float]],
     *,
@@ -1453,9 +1480,17 @@ def run_oe_battery(
     higher_is_better: bool = True,
     alpha: float = 0.05,
     complementary: bool = False,
+    expected_n_seeds: int = 12,
+    sample_unit: str = "seed",
 ) -> Dict[str, object]:
-    """Full per-objective non-parametric battery (sections 5–6 / 8)."""
+    """Full per-objective non-parametric battery (sections 5–6 / 8).
 
+    ``groups`` must map algorithm → independent seed scores (canonical n=12).
+    """
+
+    coverage = sample_coverage(
+        groups, expected_n_seeds=expected_n_seeds, unit=sample_unit
+    )
     shapiro = shapiro_wilk_per_group(groups, alpha=alpha)
     fligner = fligner_killeen(groups, alpha=alpha)
     kw = kruskal_wallis(groups, alpha=alpha, higher_is_better=higher_is_better)
@@ -1489,6 +1524,7 @@ def run_oe_battery(
         "objective": objective,
         "higher_is_better": higher_is_better,
         "alpha": float(alpha),
+        "sample_coverage": coverage,
         "shapiro_wilk": shapiro,
         "fligner_killeen": fligner,
         "kruskal_wallis": kw,
@@ -1628,8 +1664,13 @@ def run_full_methodology_battery(
     complementary: bool = False,
     binary_blocks: Optional[Mapping[str, Mapping[str, int]]] = None,
     page_order: Optional[Sequence[str]] = None,
+    expected_n_seeds: int = 12,
+    sample_unit: str = "seed",
 ) -> Dict[str, object]:
-    """Run OE.1/OE.2/OE.3 batteries then OG synthesis (section 8 flow)."""
+    """Run OE.1/OE.2/OE.3 batteries then OG synthesis (section 8 flow).
+
+    Each OE group must be algorithm → seed scores (canonical ``expected_n_seeds=12``).
+    """
 
     hib_default = {"OE.1": True, "OE.2": False, "OE.3": False, "E1": True, "E2": False, "E3": False}
     hib = dict(hib_default)
@@ -1646,6 +1687,8 @@ def run_full_methodology_battery(
             higher_is_better=higher,
             alpha=alpha,
             complementary=complementary,
+            expected_n_seeds=expected_n_seeds,
+            sample_unit=sample_unit,
         )
         block_means[name] = {
             algo: float(np.mean(_finite(vals)))
@@ -1685,6 +1728,8 @@ def run_full_methodology_battery(
         "topsis_criteria_kind": kinds,
         "alpha": float(alpha),
         "complementary": bool(complementary),
+        "expected_n_seeds": int(expected_n_seeds),
+        "sample_unit": sample_unit,
     }
 
 
@@ -1698,10 +1743,19 @@ def format_oe_report(result: Mapping[str, object]) -> str:
 
     obj = result.get("objective", "OE")
     kw = result.get("kruskal_wallis") or {}
+    cov = result.get("sample_coverage") or {}
     lines = [
         f"### {obj} — bateria no parametrica",
         "",
         f"Orientacion: {'mayor es mejor' if result.get('higher_is_better') else 'menor es mejor (coste/emision)'}.",
+        f"Unidad de analisis: {cov.get('unit', 'seed')} | "
+        f"n_esperado={cov.get('expected_n_seeds')} | "
+        f"n_por_algoritmo={cov.get('n_by_algorithm')} | "
+        f"cobertura_completa={cov.get('complete')}.",
+    ]
+    if cov.get("warning"):
+        lines.append(f"AVISO: {cov.get('warning')}")
+    lines += [
         "",
         "**Shapiro-Wilk (por algoritmo)**",
     ]
@@ -1783,6 +1837,8 @@ def format_full_report(battery: Mapping[str, object]) -> str:
         "# Bateria no parametrica MADRL (HAPPO, MAAC, MASAC, MATD3)",
         "",
         f"alpha={battery.get('alpha')}, complementary={battery.get('complementary')}",
+        f"expected_n_seeds={battery.get('expected_n_seeds', 12)}, "
+        f"sample_unit={battery.get('sample_unit', 'seed')}",
         f"TOPSIS weights: {battery.get('topsis_weights')}",
         f"TOPSIS criteria kinds: {battery.get('topsis_criteria_kind')}",
         "",

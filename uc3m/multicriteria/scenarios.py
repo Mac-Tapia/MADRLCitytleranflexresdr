@@ -81,7 +81,7 @@ class EmpiricalProtocol:
     """Shared experimental budget for fair algorithm comparison."""
 
     algorithms: Tuple[str, ...] = ("HAPPO", "MAAC", "MASAC", "MATD3")
-    n_seeds: int = 10
+    n_seeds: int = 12
     equal_step_budget: bool = True
     step_budget: int | None = None
     optimizer: str = "Adam"

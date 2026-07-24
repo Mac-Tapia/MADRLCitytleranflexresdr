@@ -1,0 +1,364 @@
+{
+  "source": "hybrid_real_c1c3_plus_illustrative",
+  "scenario": "E1",
+  "weights": {
+    "C1": 0.2698072751105374,
+    "C2": 0.2698072751105373,
+    "C3": 0.14848066560624873,
+    "C4": 0.08171205928321394,
+    "C5": 0.08171205928321394,
+    "C6": 0.14848066560624873
+  },
+  "ahp": {
+    "consistency_ratio": 0.002968617004606084,
+    "consistent": true,
+    "weights": {
+      "C1": 0.2698072751105374,
+      "C2": 0.2698072751105373,
+      "C3": 0.14848066560624873,
+      "C4": 0.08171205928321394,
+      "C5": 0.08171205928321394,
+      "C6": 0.14848066560624873
+    }
+  },
+  "topsis_ranking": [
+    {
+      "rank": 1,
+      "algorithm": "MAAC",
+      "closeness": 0.7827797262140223,
+      "distance_positive": 0.06897279006722096,
+      "distance_negative": 0.24855185376587866
+    },
+    {
+      "rank": 2,
+      "algorithm": "MASAC",
+      "closeness": 0.5041849474823519,
+      "distance_positive": 0.14887264779716392,
+      "distance_negative": 0.15138577929418567
+    },
+    {
+      "rank": 3,
+      "algorithm": "MATD3",
+      "closeness": 0.3641119420881727,
+      "distance_positive": 0.22313160827574613,
+      "distance_negative": 0.12776601513375926
+    }
+  ],
+  "ahp_ranking": [
+    {
+      "algorithm": "MAAC",
+      "score": 1551030820845885.0,
+      "rank": 1
+    },
+    {
+      "algorithm": "MATD3",
+      "score": -482908396243507.8,
+      "rank": 2
+    },
+    {
+      "algorithm": "MASAC",
+      "score": -1068122424602376.4,
+      "rank": 3
+    }
+  ],
+  "pareto_front": [
+    "MAAC",
+    "MASAC",
+    "MATD3"
+  ],
+  "ranking_consistency": {
+    "topsis_winner": "MAAC",
+    "ahp_winner": "MAAC",
+    "topsis_ahp_agree": true,
+    "topsis_on_pareto_front": true,
+    "sensitivity_majority_winner": "MAAC",
+    "sensitivity_stability_ratio": 1.0
+  },
+  "sensitivity": {
+    "majority_winner": "MAAC",
+    "stability_ratio": 1.0,
+    "winner_counts": {
+      "MAAC": 48
+    }
+  },
+  "stats": {
+    "kruskal_C2": {
+      "H": 12.5,
+      "p_value": 0.0019304541362277095,
+      "significant": true,
+      "n_groups": 3,
+      "groups": [
+        "MAAC",
+        "MASAC",
+        "MATD3"
+      ],
+      "status": "ok",
+      "alpha": 0.05
+    },
+    "pairwise_wilcoxon_C2": [
+      {
+        "algorithm_a": "MAAC",
+        "algorithm_b": "MASAC",
+        "statistic": 0.0,
+        "p_value": 0.0625,
+        "significant": false,
+        "n": 5,
+        "status": "ok",
+        "alpha": 0.05,
+        "alternative": "two-sided"
+      },
+      {
+        "algorithm_a": "MAAC",
+        "algorithm_b": "MATD3",
+        "statistic": 0.0,
+        "p_value": 0.0625,
+        "significant": false,
+        "n": 5,
+        "status": "ok",
+        "alpha": 0.05,
+        "alternative": "two-sided"
+      },
+      {
+        "algorithm_a": "MASAC",
+        "algorithm_b": "MATD3",
+        "statistic": 0.0,
+        "p_value": 0.0625,
+        "significant": false,
+        "n": 5,
+        "status": "ok",
+        "alpha": 0.05,
+        "alternative": "two-sided"
+      }
+    ],
+    "significance_gate": {
+      "first": "MAAC",
+      "second": "MASAC",
+      "top_criteria": [
+        "C1",
+        "C2"
+      ],
+      "any_significant": false,
+      "defensible": false,
+      "details": {
+        "C1": {
+          "statistic": 0.0,
+          "p_value": 0.0625,
+          "significant": false,
+          "n": 5,
+          "status": "ok",
+          "alpha": 0.05,
+          "alternative": "two-sided"
+        },
+        "C2": {
+          "statistic": 0.0,
+          "p_value": 0.0625,
+          "significant": false,
+          "n": 5,
+          "status": "ok",
+          "alpha": 0.05,
+          "alternative": "two-sided"
+        }
+      },
+      "alpha": 0.05
+    }
+  },
+  "provenance": {
+    "MAAC": {
+      "C1": "district_objectives.electricity_cost_delta_eur",
+      "C2": "district_objectives.-carbon_emissions_delta_kg",
+      "C3": "district_objectives.flex_composite_or_|grid_import_delta|",
+      "C4": "illustrative_methodology_section_3_2",
+      "C5": "illustrative_methodology_section_3_2",
+      "C6": "illustrative_methodology_section_3_2"
+    },
+    "MASAC": {
+      "C1": "district_objectives.electricity_cost_delta_eur",
+      "C2": "district_objectives.-carbon_emissions_delta_kg",
+      "C3": "district_objectives.flex_composite_or_|grid_import_delta|",
+      "C4": "illustrative_methodology_section_3_2",
+      "C5": "illustrative_methodology_section_3_2",
+      "C6": "illustrative_methodology_section_3_2"
+    },
+    "MATD3": {
+      "C1": "district_objectives.electricity_cost_delta_eur",
+      "C2": "district_objectives.-carbon_emissions_delta_kg",
+      "C3": "district_objectives.flex_composite_or_|grid_import_delta|",
+      "C4": "illustrative_methodology_section_3_2",
+      "C5": "illustrative_methodology_section_3_2",
+      "C6": "illustrative_methodology_section_3_2"
+    }
+  },
+  "protocol": {
+    "algorithms": [
+      "HAPPO",
+      "MAAC",
+      "MASAC",
+      "MATD3"
+    ],
+    "n_seeds": 10,
+    "equal_step_budget": true,
+    "step_budget": null,
+    "optimizer": "Adam",
+    "hidden_sizes": [
+      256,
+      256
+    ],
+    "scenarios": [
+      "base",
+      "scalability",
+      "robustness",
+      "generalization"
+    ],
+    "significance_alpha": 0.05,
+    "extras": {}
+  },
+  "scenarios": [
+    {
+      "name": "base",
+      "description": "Nominal conditions for technical performance and constraint compliance.",
+      "n_agents": [
+        10
+      ],
+      "forecast_noise_pct": [
+        0.0
+      ],
+      "train_year": "year1",
+      "test_year": "year1",
+      "measures": [
+        "total_operating_cost",
+        "co2_avoided",
+        "flexibility_activated",
+        "mean_cumulative_reward",
+        "violation_rate_pct",
+        "mean_violation_severity"
+      ],
+      "notes": "CityLearn Iquitos district uses 17 buildings in production runs; methodology example uses N=10 as the nominal reference."
+    },
+    {
+      "name": "scalability",
+      "description": "Reward degradation and training-time growth vs agent count.",
+      "n_agents": [
+        5,
+        20,
+        50
+      ],
+      "forecast_noise_pct": [
+        0.0
+      ],
+      "train_year": "year1",
+      "test_year": "year1",
+      "measures": [
+        "reward_degradation_N50_minus_N5",
+        "training_time_growth_slope"
+      ],
+      "notes": "N=50 requires a synthetic/upsampled district schema; not runnable on the default 17-building Iquitos dataset without data expansion."
+    },
+    {
+      "name": "robustness",
+      "description": "Degradation under demand/price/CO2 forecast noise.",
+      "n_agents": [
+        10
+      ],
+      "forecast_noise_pct": [
+        0.0,
+        10.0,
+        20.0
+      ],
+      "train_year": "year1",
+      "test_year": "year1",
+      "measures": [
+        "forecast_noise_degradation_0_vs_20"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "generalization",
+      "description": "Train on year 1, evaluate on year 2 (unseen).",
+      "n_agents": [
+        10
+      ],
+      "forecast_noise_pct": [
+        0.0
+      ],
+      "train_year": "year1",
+      "test_year": "year2",
+      "measures": [
+        "train_test_gap"
+      ],
+      "notes": "Requires multi-year schema coverage (Iquitos 2023-2025 supports year splits)."
+    }
+  ],
+  "criteria_manifest": {
+    "algorithms": [
+      "HAPPO",
+      "MAAC",
+      "MASAC",
+      "MATD3"
+    ],
+    "criteria": {
+      "C1": {
+        "id": "C1",
+        "name": "total_operating_cost",
+        "dimension": "technical_performance",
+        "kind": "cost",
+        "unit": "EUR",
+        "default_weight": 0.25,
+        "higher_is_better": false
+      },
+      "C2": {
+        "id": "C2",
+        "name": "co2_avoided",
+        "dimension": "technical_performance",
+        "kind": "benefit",
+        "unit": "kgCO2",
+        "default_weight": 0.25,
+        "higher_is_better": true
+      },
+      "C3": {
+        "id": "C3",
+        "name": "flexibility_activated",
+        "dimension": "technical_performance",
+        "kind": "benefit",
+        "unit": "kWh",
+        "default_weight": 0.15,
+        "higher_is_better": true
+      },
+      "C4": {
+        "id": "C4",
+        "name": "inter_seed_variance",
+        "dimension": "training_stability",
+        "kind": "cost",
+        "unit": "reward^2",
+        "default_weight": 0.1,
+        "higher_is_better": false
+      },
+      "C5": {
+        "id": "C5",
+        "name": "steps_to_90pct_asymptotic",
+        "dimension": "sample_compute_efficiency",
+        "kind": "cost",
+        "unit": "steps",
+        "default_weight": 0.1,
+        "higher_is_better": false
+      },
+      "C6": {
+        "id": "C6",
+        "name": "train_test_gap",
+        "dimension": "robustness_generalization",
+        "kind": "cost",
+        "unit": "reward",
+        "default_weight": 0.15,
+        "higher_is_better": false
+      }
+    },
+    "default_weights": {
+      "C1": 0.25,
+      "C2": 0.25,
+      "C3": 0.15,
+      "C4": 0.1,
+      "C5": 0.1,
+      "C6": 0.15
+    },
+    "reporting": "Always report mean ± std over >=10 seeds when available."
+  }
+}

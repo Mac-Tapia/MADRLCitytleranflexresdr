@@ -1,0 +1,478 @@
+{
+    "version": "1.1.411",
+    "time": "1784928634266",
+    "generalDiagnostics": [
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Argument of type \"object\" cannot be assigned to parameter \"iterable\" of type \"Iterable[_T@set]\" in function \"__init__\"\n┬á┬á\"object\" is incompatible with protocol \"Iterable[_T@set]\"\n┬á┬á┬á┬á\"__iter__\" is not present",
+            "range": {
+                "start": {
+                    "line": 30,
+                    "character": 15
+                },
+                "end": {
+                    "line": 30,
+                    "character": 31
+                }
+            },
+            "rule": "reportArgumentType"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 32,
+                    "character": 15
+                },
+                "end": {
+                    "line": 32,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 40,
+                    "character": 11
+                },
+                "end": {
+                    "line": 40,
+                    "character": 27
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 41,
+                    "character": 15
+                },
+                "end": {
+                    "line": 41,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 47,
+                    "character": 15
+                },
+                "end": {
+                    "line": 47,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 54,
+                    "character": 11
+                },
+                "end": {
+                    "line": 54,
+                    "character": 32
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 55,
+                    "character": 11
+                },
+                "end": {
+                    "line": 55,
+                    "character": 32
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "No overloads for \"zeros\" match the provided arguments",
+            "range": {
+                "start": {
+                    "line": 88,
+                    "character": 23
+                },
+                "end": {
+                    "line": 88,
+                    "character": 80
+                }
+            },
+            "rule": "reportCallIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Argument of type \"tuple[int, ...] | None\" cannot be assigned to parameter \"shape\" of type \"_ShapeLike\" in function \"zeros\"\n┬á┬áType \"tuple[int, ...] | None\" is not assignable to type \"_ShapeLike\"\n┬á┬á┬á┬áType \"None\" is not assignable to type \"_ShapeLike\"\n┬á┬á┬á┬á┬á┬á\"None\" is incompatible with protocol \"SupportsIndex\"\n┬á┬á┬á┬á┬á┬á┬á┬á\"__index__\" is not present\n┬á┬á┬á┬á┬á┬á\"None\" is not assignable to \"Sequence[SupportsIndex]\"",
+            "range": {
+                "start": {
+                    "line": 88,
+                    "character": 32
+                },
+                "end": {
+                    "line": 88,
+                    "character": 61
+                }
+            },
+            "rule": "reportArgumentType"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Argument of type \"object\" cannot be assigned to parameter \"iterable\" of type \"Iterable[_T@set]\" in function \"__init__\"\n┬á┬á\"object\" is incompatible with protocol \"Iterable[_T@set]\"\n┬á┬á┬á┬á\"__iter__\" is not present",
+            "range": {
+                "start": {
+                    "line": 95,
+                    "character": 19
+                },
+                "end": {
+                    "line": 95,
+                    "character": 33
+                }
+            },
+            "rule": "reportArgumentType"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 96,
+                    "character": 15
+                },
+                "end": {
+                    "line": 96,
+                    "character": 29
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 97,
+                    "character": 15
+                },
+                "end": {
+                    "line": 97,
+                    "character": 29
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 98,
+                    "character": 15
+                },
+                "end": {
+                    "line": 98,
+                    "character": 29
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 99,
+                    "character": 12
+                },
+                "end": {
+                    "line": 99,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 101,
+                    "character": 15
+                },
+                "end": {
+                    "line": 101,
+                    "character": 45
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Operator \"in\" not supported for types \"Literal['carbon_emissions']\" and \"object\"",
+            "range": {
+                "start": {
+                    "line": 102,
+                    "character": 15
+                },
+                "end": {
+                    "line": 102,
+                    "character": 56
+                }
+            },
+            "rule": "reportOperatorIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Operator \"in\" not supported for types \"Literal['carbon_emissions_control']\" and \"object\"",
+            "range": {
+                "start": {
+                    "line": 103,
+                    "character": 15
+                },
+                "end": {
+                    "line": 103,
+                    "character": 64
+                }
+            },
+            "rule": "reportOperatorIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Operator \"in\" not supported for types \"Literal['price_signal_deviation']\" and \"object\"",
+            "range": {
+                "start": {
+                    "line": 104,
+                    "character": 15
+                },
+                "end": {
+                    "line": 104,
+                    "character": 62
+                }
+            },
+            "rule": "reportOperatorIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "No overloads for \"zeros\" match the provided arguments",
+            "range": {
+                "start": {
+                    "line": 120,
+                    "character": 19
+                },
+                "end": {
+                    "line": 120,
+                    "character": 76
+                }
+            },
+            "rule": "reportCallIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Argument of type \"tuple[int, ...] | None\" cannot be assigned to parameter \"shape\" of type \"_ShapeLike\" in function \"zeros\"\n┬á┬áType \"tuple[int, ...] | None\" is not assignable to type \"_ShapeLike\"\n┬á┬á┬á┬áType \"None\" is not assignable to type \"_ShapeLike\"\n┬á┬á┬á┬á┬á┬á\"None\" is incompatible with protocol \"SupportsIndex\"\n┬á┬á┬á┬á┬á┬á┬á┬á\"__index__\" is not present\n┬á┬á┬á┬á┬á┬á\"None\" is not assignable to \"Sequence[SupportsIndex]\"",
+            "range": {
+                "start": {
+                    "line": 120,
+                    "character": 28
+                },
+                "end": {
+                    "line": 120,
+                    "character": 57
+                }
+            },
+            "rule": "reportArgumentType"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Cannot access attribute \"low\" for class \"Space[Unknown]\"\n┬á┬áAttribute \"low\" is unknown",
+            "range": {
+                "start": {
+                    "line": 153,
+                    "character": 54
+                },
+                "end": {
+                    "line": 153,
+                    "character": 57
+                }
+            },
+            "rule": "reportAttributeAccessIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "Cannot access attribute \"high\" for class \"Space[Unknown]\"\n┬á┬áAttribute \"high\" is unknown",
+            "range": {
+                "start": {
+                    "line": 154,
+                    "character": 54
+                },
+                "end": {
+                    "line": 154,
+                    "character": 58
+                }
+            },
+            "rule": "reportAttributeAccessIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 168,
+                    "character": 15
+                },
+                "end": {
+                    "line": 168,
+                    "character": 47
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 190,
+                    "character": 11
+                },
+                "end": {
+                    "line": 190,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 191,
+                    "character": 11
+                },
+                "end": {
+                    "line": 191,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 192,
+                    "character": 11
+                },
+                "end": {
+                    "line": 192,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 193,
+                    "character": 11
+                },
+                "end": {
+                    "line": 193,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 194,
+                    "character": 11
+                },
+                "end": {
+                    "line": 194,
+                    "character": 31
+                }
+            },
+            "rule": "reportIndexIssue"
+        },
+        {
+            "file": "d:\\MADRLCitytleranflexresdr\\CityLearn\\tests\\test_citylearn_v3.py",
+            "severity": "error",
+            "message": "\"__getitem__\" method not defined on type \"object\"",
+            "range": {
+                "start": {
+                    "line": 195,
+                    "character": 11
+                },
+                "end": {
+                    "line": 195,
+                    "character": 37
+                }
+            },
+            "rule": "reportIndexIssue"
+        }
+    ],
+    "summary": {
+        "filesAnalyzed": 34,
+        "errorCount": 29,
+        "warningCount": 0,
+        "informationCount": 0,
+        "timeInSec": 12.31
+    }
+}
+

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Iterable, List, Mapping, MutableMapping, Optional, Sequence
+from typing import Any, Dict, Iterable, List, Mapping, MutableMapping, Optional, Sequence
 
 import numpy as np
 import pandas as pd
@@ -37,7 +37,7 @@ def topsis_rank(
     *,
     weights: Optional[Mapping[str, float]] = None,
     criteria_kind: Optional[Mapping[str, str]] = None,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Full TOPSIS pipeline → relative closeness C_i* and ranking."""
 
     frame = decision_matrix_to_frame(decision_matrix)
@@ -113,7 +113,7 @@ def weight_sweep_sensitivity(
     n_samples: int = 64,
     seed: int = 0,
     criteria_kind: Optional[Mapping[str, str]] = None,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Resample weights ±``relative_delta`` and track winner stability."""
 
     rng = np.random.default_rng(seed)

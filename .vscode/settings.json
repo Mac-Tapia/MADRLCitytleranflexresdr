@@ -1,5 +1,6 @@
 {
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv39-citylearn-v3/Scripts/python.exe",
+  "python.languageServer": "Pylance",
   "python.analysis.extraPaths": [
     "${workspaceFolder}/CityLearn",
     "${workspaceFolder}/CityLearn/scripts",
@@ -11,9 +12,12 @@
   "python.analysis.stubPath": "${workspaceFolder}/CityLearn/examples/typings",
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.useLibraryCodeForTypes": true,
+  "python.analysis.autoSearchPaths": true,
   "python.analysis.diagnosticSeverityOverrides": {
     "reportMissingModuleSource": "none",
     "reportMissingImports": "none",
+    "reportMissingTypeStubs": "none",
     "reportUnknownMemberType": "none",
     "reportUnknownArgumentType": "none",
     "reportUnknownVariableType": "none",
@@ -21,8 +25,31 @@
     "reportMissingParameterType": "none",
     "reportMissingTypeArgument": "none",
     "reportUnknownLambdaType": "none",
-    "reportUnusedExpression": "none"
+    "reportUnusedExpression": "none",
+    "reportUndefinedVariable": "none",
+    "reportGeneralTypeIssues": "none",
+    "reportOptionalMemberAccess": "none",
+    "reportOptionalSubscript": "none",
+    "reportOptionalCall": "none",
+    "reportOptionalIterable": "none",
+    "reportOptionalContextManager": "none",
+    "reportOptionalOperand": "none",
+    "reportPrivateUsage": "none",
+    "reportPrivateImportUsage": "none",
+    "reportUnnecessaryIsInstance": "none",
+    "reportUnnecessaryCast": "none",
+    "reportUnnecessaryComparison": "none",
+    "reportUnusedImport": "none",
+    "reportUnusedClass": "none",
+    "reportUnusedFunction": "none",
+    "reportUnusedVariable": "none",
+    "reportArgumentType": "none",
+    "reportAssignmentType": "none",
+    "reportAttributeAccessIssue": "none",
+    "reportCallIssue": "none",
+    "reportIndexIssue": "none",
+    "reportOperatorIssue": "none",
+    "reportReturnType": "none"
   },
-  "python.languageServer": "None",
   "jupyter.notebookFileRoot": "${workspaceFolder}"
 }

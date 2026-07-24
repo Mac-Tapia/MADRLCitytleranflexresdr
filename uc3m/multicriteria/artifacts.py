@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, Mapping, Optional, Sequence, Tuple
+from typing import Any, Dict, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
@@ -158,7 +158,7 @@ def load_decision_matrix(
     run_dir: Optional[Path] = None,
     scenario: str = "E1",
     prefer_real: bool = True,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Load a decision matrix from run artefacts when present, else illustrative."""
 
     resolved = resolve_run_dir(repo=repo, run_dir=run_dir) if prefer_real else None

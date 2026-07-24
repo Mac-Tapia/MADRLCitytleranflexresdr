@@ -82,7 +82,7 @@ def ahp_priority_weights(
     *,
     labels: Sequence[str] = CRITERION_IDS,
     require_consistent: bool = True,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Derive normalized priority weights from an AHP pairwise matrix."""
 
     matrix = np.asarray(pairwise if pairwise is not None else DEFAULT_AHP_PAIRWISE, dtype=float)
@@ -109,7 +109,7 @@ def ahp_rank_alternatives(
     criteria_kind: Mapping[str, str],
     criteria_pairwise: Optional[np.ndarray] = None,
     alternative_pairwise: Optional[Mapping[str, np.ndarray]] = None,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """AHP-only ranking (without TOPSIS).
 
     If ``alternative_pairwise`` is omitted, builds per-criterion pairwise

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, Mapping, Optional, Sequence
+from typing import Any, Dict, Mapping, Optional, Sequence
 
 from uc3m.multicriteria.ahp import (
     DEFAULT_AHP_PAIRWISE,
@@ -60,7 +60,7 @@ def run_selection_pipeline(
     sensitivity_samples: int = 48,
     seed_curves: Optional[Mapping[str, Sequence[Sequence[float]]]] = None,
     degradation: Optional[Mapping[str, float]] = None,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Run metrics load → AHP weights → TOPSIS → sensitivity → stats gates."""
 
     loaded = load_decision_matrix(

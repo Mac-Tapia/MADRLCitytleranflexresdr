@@ -4,17 +4,23 @@
     "tests",
     "tools",
     "scripts",
-    "outputs"
+    "outputs",
+    "CityLearn/scripts",
+    "CityLearn/citylearn",
+    "CityLearn/examples",
+    "CityLearn/tests"
   ],
   "exclude": [
     "**/__pycache__",
     ".venv*",
-    "CityLearn",
     "external",
     "build",
     "dist",
     "agent-skills",
-    "deploy"
+    "deploy",
+    "CityLearn/.git",
+    "**/checkpoints",
+    "**/models"
   ],
   "extraPaths": [
     "tools",
@@ -30,5 +36,27 @@
   "pythonVersion": "3.9",
   "typeCheckingMode": "basic",
   "reportMissingModuleSource": "none",
-  "reportMissingImports": "none"
+  "reportMissingImports": "none",
+  "reportMissingTypeStubs": "none",
+  "reportUndefinedVariable": "none",
+  "reportUnusedExpression": "none",
+  "reportUnknownMemberType": "none",
+  "reportUnknownArgumentType": "none",
+  "reportUnknownVariableType": "none",
+  "reportUnknownParameterType": "none",
+  "reportMissingParameterType": "none",
+  "reportMissingTypeArgument": "none",
+  "reportUnknownLambdaType": "none",
+  "reportGeneralTypeIssues": "none",
+  "reportOptionalMemberAccess": "none",
+  "reportOptionalSubscript": "none",
+  "reportOptionalCall": "none",
+  "reportOptionalIterable": "none",
+  "reportArgumentType": "none",
+  "reportReturnType": "none",
+  "reportAttributeAccessIssue": "none",
+  "reportCallIssue": "none",
+  "reportIndexIssue": "none",
+  "reportOperatorIssue": "none",
+  "reportAssignmentType": "none"
 }

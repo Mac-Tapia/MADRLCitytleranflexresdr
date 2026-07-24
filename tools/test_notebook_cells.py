@@ -5,6 +5,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
+from typing import Mapping
 
 REPO = "D:/MADRLCitytleranflexresdr"
 paths = [
@@ -41,7 +42,9 @@ env = make_citylearn_v3_project_env(
 )
 desc = describe_environment(env)
 n_agents = desc["num_agents"]
-obs_dim  = list(desc.get("observation_dims", {}).values())[0]
+observation_dims = desc.get("observation_dims", {})
+assert isinstance(observation_dims, Mapping) and observation_dims
+obs_dim = list(observation_dims.values())[0]
 env.close()
 assert n_agents == 17,  f"Expected 17 agents, got {n_agents}"
 assert obs_dim  >= 19,  f"obs_dim too small: {obs_dim}"

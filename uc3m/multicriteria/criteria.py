@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from typing import Dict, Mapping, Optional, Sequence, Tuple
+from typing import Any, Dict, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -319,7 +319,7 @@ def compute_dimension_metrics(
     reward_noise_0: Optional[float] = None,
     reward_noise_20: Optional[float] = None,
     drop_fraction: float = 0.10,
-) -> Dict[str, object]:
+) -> Dict[str, Any]:
     """Compute all six methodology dimensions from available run traces."""
 
     out: Dict[str, object] = {
@@ -388,7 +388,7 @@ def compute_dimension_metrics(
     return out
 
 
-def criteria_manifest() -> Dict[str, object]:
+def criteria_manifest() -> Dict[str, Any]:
     """Serializable description of C1–C6 for reports / notebooks."""
 
     return {

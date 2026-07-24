@@ -1,0 +1,20 @@
+### 6.1 Fuente unica de hiperparametros (A100 estable · 50 episodios/corrida)
+
+Perfil `two_phase_happo_masac`: 6 jobs/fase (sin stagger). La celda **6.1** es la **fuente unica de verdad** (`N_EPISODES`, fracciones CUDA, buffers); el launcher aplica overrides de fase. Los hilos de CPU se **auto-ajustan** a las vCPU del runtime.
+
+| Algoritmo | Parametro clave | Valor two_phase (celda 6.1) | OOM retry |
+|---|---|---|---|
+| **HAPPO** | hidden / n_rollout_threads | 512 / **auto (vCPU)** | hidden 256 |
+| **MASAC** | buffer ep / max GiB / critic_batch | **4 / 8.0 / 1** | 2 / 6.0 / 1 (+ CPU replay) |
+| **MASAC** | rnn / qmix / hyper hidden | **64 / 32 / 64** | 64 / 32 / 64 |
+| **MATD3** | batch / buffer / hidden | **256 / 4096 / 256** | 768 / 1M / 512 |
+| **MAAC** | batch / buffer / hidden / num_updates | **768 / 450K / 768 / 12** | 512 / 500K / 512 / 8 |
+
+| Global | Valor |
+|---|:---:|
+| Episodios × pasos | 50 × 8 760 (por corrida, reanudable con `--skip-completed`) |
+| Torch threads | auto por fase (celda 6.1) |
+| CUDA fraction HAPPO/MATD3/MAAC | **0.14–0.15** |
+| CUDA fraction MASAC | **0.16–0.22** |
+| MASAC replay device | **cpu** |
+| Reanudacion | `--skip-completed` |

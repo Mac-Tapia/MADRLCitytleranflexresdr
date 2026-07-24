@@ -1,0 +1,97 @@
+# ── 1.1b  Diagnóstico de recursos: vCPU / RAM / GPU + recomendación de hilos ──────
+# El cuello de botella de MADRL+CityLearn es la CPU (env.step de 17 edificios),
+# NO la GPU (las redes son pequeñas para un A100). Esta celda mide los recursos
+# reales del runtime y recomienda torch_threads / n_rollout_threads para el
+# esquema de 6 jobs en paralelo por fase. Es de solo lectura: puedes correrla
+# mientras el entrenamiento avanza sin afectarlo.
+import os
+import subprocess
+import shutil
+
+PHASE_JOBS      = 6   # Fase 1 = 3 HAPPO + 3 MASAC ; Fase 2 = 3 MATD3 + 3 MAAC
+CUR_TORCH       = 2   # --torch-threads / --two-phase-torch-threads (default actual)
+CUR_HAPPO_ROLL  = 2   # --happo-n-rollout-threads (SubprocVecEnv, default actual)
+
+# ── vCPUs realmente utilizables ──────────────────────────────────────────────
+try:
+    _sched_affinity = getattr(os, 'sched_getaffinity', None)
+    if _sched_affinity is not None:
+        usable_cpus = len(_sched_affinity(0))
+    else:
+        usable_cpus = os.cpu_count() or 1
+except Exception:
+    usable_cpus = os.cpu_count() or 1
+total_cpus = os.cpu_count() or usable_cpus
+print(f"vCPUs utilizables          : {usable_cpus}  (os.cpu_count={total_cpus})")
+
+# ── RAM total / disponible ────────────────────────────────────────────────────
+ram_total = ram_avail = None
+try:
+    import psutil
+    vm = psutil.virtual_memory()
+    ram_total, ram_avail = vm.total / 1024**3, vm.available / 1024**3
+except Exception:
+    try:
+        with open("/proc/meminfo") as fh:
+            info = {line.split(":")[0]: line.split()[1] for line in fh if ":" in line}
+        ram_total = int(info["MemTotal"]) / 1024**2
+        ram_avail = int(info.get("MemAvailable", info["MemFree"])) / 1024**2
+    except Exception:
+        pass
+if ram_total is not None:
+    print(f"RAM total / disponible     : {ram_total:.0f} GiB / {ram_avail:.0f} GiB")
+else:
+    print("RAM total / disponible     : (psutil/proc no disponibles)")
+
+# ── GPU en vivo (nombre, VRAM usada/total, utilización) ───────────────────────
+if shutil.which("nvidia-smi"):
+    res = subprocess.run(
+        ["nvidia-smi",
+         "--query-gpu=name,memory.used,memory.total,utilization.gpu",
+         "--format=csv,noheader,nounits"],
+        capture_output=True, text=True,
+    )
+    if res.returncode == 0:
+        for line in res.stdout.strip().splitlines():
+            name, used, tot, util = [x.strip() for x in line.split(",")]
+            frac = 100 * float(used) / float(tot) if float(tot) else 0
+            print(f"GPU                        : {name}")
+            print(f"VRAM usada / total         : {used} / {tot} MiB ({frac:.1f}%)")
+            print(f"Utilización GPU            : {util}%")
+else:
+    print("GPU                        : nvidia-smi no disponible")
+
+# ── Demanda de CPU del esquema actual y recomendación ─────────────────────────
+# HAPPO (on-policy): torch_threads + n_rollout_threads (cada worker SubprocVecEnv ~1 core)
+# MASAC (off-policy): torch_threads (+ replay en RAM)  → fase 1 = 3 HAPPO + 3 MASAC
+demand_now = 3 * (CUR_TORCH + CUR_HAPPO_ROLL) + 3 * CUR_TORCH
+ratio = demand_now / usable_cpus if usable_cpus else float("inf")
+print("\n── Análisis de paralelismo (Fase 1: 3 HAPPO + 3 MASAC) ──")
+print(f"Demanda de hilos actual    : {demand_now}  "
+      f"(HAPPO 3×{CUR_TORCH + CUR_HAPPO_ROLL} + MASAC 3×{CUR_TORCH})")
+print(f"vCPUs utilizables          : {usable_cpus}")
+print(f"Ratio demanda/CPU          : {ratio:.2f}×  "
+      + ("→ SOBRE-SUSCRITO (la CPU es el cuello)" if ratio > 1.15
+         else "→ equilibrado" if ratio >= 0.85
+         else "→ CPU OCIOSA (puedes subir hilos)"))
+
+# Recomendación por fase: la demanda total de cada fase debe caber en las vCPUs.
+# Fase 1 (HAPPO+MASAC): HAPPO gasta torch+rollout, MASAC solo torch ->
+#   3*(p1_torch + rollout) + 3*p1_torch <= vCPUs.  Con rollout fijo=2 buscamos p1_torch.
+# Fase 2 (MATD3+MAAC): single-env sin rollout -> 6*p2_torch <= vCPUs.
+ROLLOUT_FIXED = CUR_HAPPO_ROLL
+p1 = 1
+while 3 * ((p1 + 1) + ROLLOUT_FIXED) + 3 * (p1 + 1) <= usable_cpus:
+    p1 += 1
+p2 = max(1, usable_cpus // PHASE_JOBS)
+d1 = 3 * (p1 + ROLLOUT_FIXED) + 3 * p1
+d2 = PHASE_JOBS * p2
+print("\n── Recomendación robusta por fase (sin riesgo de OOM) ──")
+print(f"Fase 1  --two-phase-p1-torch-threads : {p1}  "
+      f"(rollout={ROLLOUT_FIXED}) -> demanda {d1}/{usable_cpus} vCPU")
+print(f"Fase 2  --two-phase-p2-torch-threads : {p2}  "
+      f"(sin rollout)  -> demanda {d2}/{usable_cpus} vCPU")
+print(f"HAPPO   --happo-n-rollout-threads    : {ROLLOUT_FIXED}")
+print("RAM holgada → buffers off-policy actuales son seguros; "
+      "GPU subutilizada es NORMAL en MADRL (redes pequeñas).")
+print("\nEstos son los defaults ya fijados en Sección 6 (TWO_PHASE_P1/P2_TORCH).")

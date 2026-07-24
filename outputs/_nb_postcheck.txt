@@ -1,0 +1,72 @@
+cells=72
+CHECKS:
+  [OK] N_EPISODES=50
+  [OK] two_phase mode
+  [OK] QUICK_TEST False
+  [OK] SCHEMA reuse
+  [OK] MASAC SIX_JOB align
+  [OK] MASAC SIX_JOB buf ref
+  [OK] MATD3 SIX_JOB
+  [OK] MAAC SIX_JOB
+  [OK] HAPPO rollout auto
+  [OK] 7.2 launch true
+  [OK] 7.2 phase1
+  [OK] 7.2 phase2
+  [OK] 2.3 default skip
+  [OK] 2.3 not dry_run default
+  [OK] no Paso 1-7 dup
+  [OK] Flujo A present
+  [OK] Flujo B present
+  [OK] one Seccion 6 header
+  [OK] 1.1 has sys
+  [OK] 1.1b has os
+  [OK] no empty cells
+  [OK] no hard-coded run in 2.3
+  [OK] 7.4 md present
+  [OK] Seccion 10 md
+  [OK] no escenario_2
+
+SECTION HEADERS:
+  001: ## Guia Rapida de Lanzamiento en Colab A100 / H100
+  002: ## Paso 0: Conectar VS Code al runtime A100 de Google Colab
+  004: ## Sección 0: Arquitectura del Proyecto — 9 Diagramas de Defensa
+  015: ## Sección 1: Configuración inicial
+  024: ## Sección 2: Configuración del proyecto
+  034: ## Sección 3: Dataset Iquitos 2023-2025
+  036: ## Sección 4: Entorno Dec-POMDP — 17 agentes
+  038: ## Sección 5: Función de recompensa multiobjetivo
+  040: ## Sección 6: Hiperparámetros y estrategia two_phase
+  045: ## Seccion 7: Lanzamiento oficial recuperable
+  062: ## Sección 8: Análisis de resultados y KPIs
+  065: ## Sección 9: Evaluación estadística — Selección del mejor MADRL
+  067: ## Sección 10: Resumen final de la sesión
+  069: ## Informe Técnico de Supervisión — MADRL CityLearn v3
+  071: ## Próximos pasos y referencias
+
+--- cell 033 HAPPO_KPI head ---
+# ── 2.3  (Opcional) Completar HAPPO salvage (49→50) + KPIs ───────────────────
+# Default skip: el flujo desde cero / two_phase usa 7.2. Activa dry_run/execute solo
+# si reanudas un run con HAPPO salvage sin KPIs.
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+HAPPO_KPI_MODE = 'skip'  # 'skip' | 'dry_run' | 'execute'  (skip = flujo desde cero)
+HAPPO_KPI_SCENARIOS = ('E1', 'E2', 'E3')
+# A100 Colab: 2 rollouts (igual que 7.2). None = leer de hyperparameters del job.
+HAPPO_KPI_ROLLOUT_THREADS = globals().get('HAPPO_ROLLOUT_THREADS', 2)
+--- cell 42 SCHEMA/EXEC ---
+SCHEMA_PATH = globals().get(
+    'SCHEMA_PATH',
+# ── QUICK_TEST ────────────────────────────────────────────────────────────
+# False → entrenamiento oficial: N_EPISODES=50 via two_phase (celda 7.2).
+# No uses QUICK_TEST=True para resultados de tesis.
+QUICK_TEST      = False
+N_EPISODES      = 50           # Entrenamiento oficial: 50 episodios por corrida.
+EPISODES        = 3 if QUICK_TEST else N_EPISODES
+mode = 'QUICK_TEST (3 ep)' if QUICK_TEST else (
+    f'PRUEBA ({N_EPISODES} ep)' if N_EPISODES < 10 else f'FULL TRAINING ({N_EPISODES} ep)'
+EXECUTION_MODE = 'two_phase_happo_masac'
+print(f'Ejecucion     : {EXECUTION_MODE} (2 fases: HAPPO+MASAC×3 → MATD3+MAAC×3; 6 paralelos/fase)')
+ALL_OK=True

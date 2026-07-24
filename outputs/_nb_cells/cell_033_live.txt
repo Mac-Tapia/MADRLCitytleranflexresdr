@@ -1,0 +1,73 @@
+# ── 2.3  (Opcional) Completar HAPPO salvage (49→50) + KPIs ───────────────────
+# Default skip: el flujo desde cero / two_phase usa 7.2. Activa dry_run/execute solo
+# si reanudas un run con HAPPO salvage sin KPIs.
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+HAPPO_KPI_MODE = 'skip'  # 'skip' | 'dry_run' | 'execute'  (skip = flujo desde cero)
+HAPPO_KPI_SCENARIOS = ('E1', 'E2', 'E3')
+# A100 Colab: 2 rollouts (igual que 7.2). None = leer de hyperparameters del job.
+HAPPO_KPI_ROLLOUT_THREADS = globals().get('HAPPO_ROLLOUT_THREADS', 2)
+
+if 'OUTPUT_ROOT' not in globals():
+    raise RuntimeError('Ejecuta celda 2.1 antes de 2.3.')
+
+_repo = Path(globals().get('REPO', Path.cwd()))
+_regen = _repo / 'CityLearn' / 'scripts' / 'regenerate_happo_kpis.py'
+_prepare = _repo / 'CityLearn' / 'scripts' / 'prepare_happo_colab_resume.py'
+_verify = _repo / 'CityLearn' / 'scripts' / 'colab_verify_critical_patches.py'
+_py = globals().get('PYTHON', sys.executable)
+
+for _p in (_regen, _prepare, _verify):
+    if not _p.is_file():
+        raise FileNotFoundError(f'No se encuentra {_p}. Ejecuta celda 1.2 (git sync).')
+
+subprocess.run([_py, '-B', str(_verify), '--repo', str(_repo)], check=True, cwd=str(_repo))
+
+_prep = [_py, '-B', str(_prepare), '--output-root', str(OUTPUT_ROOT), '--sync-salvage']
+if HAPPO_KPI_ROLLOUT_THREADS is not None:
+    _prep.extend(['--happo-rollout-threads', str(int(HAPPO_KPI_ROLLOUT_THREADS))])
+print('[2.3] preflight:', ' '.join(_prep))
+_prep_rc = subprocess.run(_prep, cwd=str(_repo)).returncode
+if _prep_rc != 0 and HAPPO_KPI_MODE == 'execute':
+    raise RuntimeError(
+        '[2.3] Preflight falló: monta OUTPUT_ROOT en Drive con checkpoints HAPPO '
+        'o ejecuta primero dry_run.'
+    )
+
+if HAPPO_KPI_MODE == 'skip':
+    print('[2.3] HAPPO_KPI_MODE=skip — sin resume.')
+else:
+    for _scen in HAPPO_KPI_SCENARIOS:
+        cmd = [
+            _py, '-B', str(_regen),
+            '--output-root', str(OUTPUT_ROOT),
+            '--scenario', _scen,
+            '--sync-salvage',
+        ]
+        if HAPPO_KPI_ROLLOUT_THREADS is not None:
+            cmd.extend(['--n-rollout-threads', str(int(HAPPO_KPI_ROLLOUT_THREADS))])
+        if HAPPO_KPI_MODE == 'execute':
+            cmd.append('--execute')
+        else:
+            cmd.append('--dry-run')
+        print('[2.3]', ' '.join(cmd))
+        subprocess.run(cmd, check=True, cwd=str(_repo))
+        _job = Path(OUTPUT_ROOT) / 'HAPPO' / _scen
+        _results = _job / 'data' / 'results.json'
+        if not _results.is_file():
+            _results = _job / 'results.json'
+        if _results.is_file():
+            _payload = json.loads(_results.read_text(encoding='utf-8'))
+            _axis = _payload.get('project_axis_metrics') or {}
+            print(
+                f'[2.3] {_scen}: status={_payload.get("status")!r} '
+                f'KPIs={bool(_axis)} recorded={_payload.get("episodes_recorded")} '
+                f'checkpoints={_payload.get("checkpoint_count")}'
+            )
+        else:
+            print(f'[2.3] {_scen}: sin results.json en {_job}')
+    if HAPPO_KPI_MODE == 'execute':
+        print('[2.3] Re-ejecuta agregador: python tools/aggregate_colab_drive_kpis.py')

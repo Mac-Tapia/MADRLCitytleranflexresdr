@@ -1,0 +1,13 @@
+### 2.3 (Opcional) Completar HAPPO salvage (49→50) + KPIs
+
+> **Fuera del flujo desde cero.** Por defecto `HAPPO_KPI_MODE='skip'`.
+> Usar solo al **reanudar** un run donde HAPPO tiene checkpoints pero `results.json` salvage sin KPIs.
+
+HAPPO E1/E2/E3 puede tener checkpoints en Drive con `results.json` salvage sin KPIs (`VecEnvWrapper`). No forma parte del flujo desde cero.
+
+1. **1.2 → 1.2b → 1.3** — git sync, verificar parches (`colab_verify_critical_patches.py`) e instalar HARL.
+2. `HAPPO_KPI_MODE = 'dry_run'` → preflight checkpoints + comando resume.
+3. `HAPPO_KPI_MODE = 'execute'` → 1 episodio restante × escenario + KPIs + `checkpoint_count` en `results.json`.
+4. Tras completar: continúa con **Sección 8.x** (agregador KPIs) o ejecuta `python tools/aggregate_colab_drive_kpis.py` para incluir HAPPO en el ranking 4/4 MADRL.
+
+> Checkpoints HAPPO viven en `{OUTPUT_ROOT}/HAPPO/E*/checkpoints/` en Drive — no borrar.

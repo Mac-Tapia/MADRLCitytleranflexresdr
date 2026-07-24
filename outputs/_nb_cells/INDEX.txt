@@ -1,0 +1,70 @@
+000 [markdown] # MADRL CityLearn v3 — Tutorial Completo (Google Colab · A100)
+001 [markdown] ## Guia Rapida de Lanzamiento en Colab A100 / H100
+002 [markdown] ## Paso 0: Conectar VS Code al runtime A100 de Google Colab
+003 [code] # ── 0.verify  Verificar conexion al runtime (A100 en Colab; local con advertenc
+004 [markdown] ## Sección 0: Arquitectura del Proyecto — 9 Diagramas de Defensa
+005 [code] # ── 0.0  Helper Mermaid — renderiza los 9 diagramas de arquitectura ──────────
+006 [code] # ── 0.1  Diagrama 1 ────────────────────────────────────────
+007 [code] # ── 0.2  Diagrama 2 ────────────────────────────────────────
+008 [code] # ── 0.3  Diagrama 3 ────────────────────────────────────────
+009 [code] # ── 0.4  Diagrama 4 ────────────────────────────────────────
+010 [code] # ── 0.5  Diagrama 5 ────────────────────────────────────────
+011 [code] # ── 0.6  Diagrama 6 ────────────────────────────────────────
+012 [code] # ── 0.7  Diagrama 7 ────────────────────────────────────────
+013 [code] # ── 0.8  Diagrama 8 ────────────────────────────────────────
+014 [code] # ── 0.9  Diagrama 9 ────────────────────────────────────────
+015 [markdown] ## Sección 1: Configuración inicial
+016 [code] # ── 1.1  Verificar entorno: IN_COLAB, GPU, CUDA, Python 3.9 ─────────────────
+017 [code] # ── 1.1b  Diagnóstico de recursos: vCPU / RAM / GPU + recomendación de hilos ──
+018 [code] # ── 1.2  Clonar repositorio completo + todos los submódulos ─────────────────
+019 [code] # ── 1.2b  Validar repo Colab: padre + CityLearn en rama viva ───────────────
+020 [code] # 1.3 Instalar dependencias del proyecto de forma reproducible
+021 [code] # 1.4 Configurar sys.path, CUDA y smoke imports
+022 [markdown] ### Persistencia obligatoria en Google Drive
+023 [code] # ── 1.5  Montar Google Drive (workspace canonico; verificacion en 2.1) ─────
+024 [markdown] ## Sección 2: Configuración del proyecto
+025 [code] # ── 2.1  Rutas, timestamp y directorio de salida recuperable ────────────────
+026 [markdown] ### 2.1b Verificación de reanudación (ejecutar después de 2.1)
+027 [code] # ── 2.1b  Verificación de reanudación (ejecutar DESPUÉS de la celda 2.1) ─────
+028 [markdown] ### 2.1c Limpieza de runs `madrl_v3_*` duplicados (Drive)
+029 [code] # ── 2.1c  Limpieza de runs madrl_v3_* duplicados ───────────────────────────
+030 [markdown] ### 2.2 (Opcional) Rescatar HAPPO de un run fallido
+031 [code] # ── 2.2  Rescate HAPPO (opcional) ───────────────────────────────────────────
+032 [markdown] ### 2.3 Completar HAPPO (49→50 ep) — **no excluido** del estudio MADRL
+033 [code] # ── 2.3  Completar HAPPO (49→50) + KPIs — obligatorio para 4/4 MADRL ──────────
+034 [markdown] ## Sección 3: Dataset Iquitos 2023-2025
+035 [code] # ── 3.1  Verificar estructura del dataset Iquitos 2023-2025 ──────────────────
+036 [markdown] ## Sección 4: Entorno Dec-POMDP — 17 agentes
+037 [code] # ── 4.1  Smoke test del entorno Dec-POMDP con dataset Iquitos 2023-2025 ──────
+038 [markdown] ## Sección 5: Función de recompensa multiobjetivo
+039 [code] # ── 5.1  Visualizar pesos de recompensa por escenario ────────────────────
+040 [markdown] ### Estrategia de entrenamiento en dos fases (Colab A100)
+041 [markdown] ## Seccion 6: Hiperparametros (A100 estable · 50 episodios/corrida · two_phase)
+042 [code] # ── 6.1  Configuracion central de entrenamiento A100 ───────────────────────
+043 [markdown] ### 6.2 Prueba rápida de validación — 1 episodio por algoritmo
+044 [code] # ── 6.2  Prueba rapida de validacion — 1 episodio (NO es entrenamiento oficial)
+045 [markdown] ## Seccion 7: Lanzamiento oficial recuperable
+046 [code] # ── 7.0  Helpers de ejecucion y monitor ───────────────────────────────────────
+047 [markdown] ### 7.1 Preflight y dry-run obligatorio
+048 [code] # ── 7.1  Preflight A100 + dry-run oficial ─────────────────────────────────────
+049 [markdown] ### 7.2 Entrenamiento de 50 episodios por corrida (reanudable con --skip-complet
+050 [code] # ── 7.2  Lanzar entrenamiento + monitor en paralelo ─────────────────────────
+051 [markdown] ### 7.3 Monitor visible manual
+052 [code] # ── 7.3  Monitor visible en notebook ────────────────────────────────────────
+053 [code] # ── 7.4  Auditoría de artefactos — estructura y archivos por job ────────────
+054 [code] # ── 7.4b  Reorganizar outputs al formato canónico: outputs/{MADRL}/{escenario}/
+055 [markdown] ### 7.5 Diagnostico de Drive — ejecutar en cualquier momento
+056 [code] # ── 7.5  Diagnostico de Drive + senales de problema + relaunch ──────────────
+057 [markdown] ### 7.6 Benchmarks comparativos CityLearn v2
+058 [code] #  7.6  Benchmarks CityLearn v2 PPO/SAC/A2C (SB3 central-agent)
+059 [markdown] ### 7.7 Monitor de recursos del sistema — RAM / VRAM / GPU / CPU
+060 [code] # ── 7.7  Monitor de recursos: RAM / VRAM / CPU / GPU ────────────────────────
+061 [markdown] ## Sección 8: Análisis de resultados y KPIs
+062 [code] # ── 8.1  Cargar todos los results.json ──────────────────────────────────────
+063 [code] # ── 8.2  Curvas de convergencia (timeseries.csv, por episodio) ───────────────
+064 [markdown] ## Sección 9: Evaluación estadística — Selección del mejor MADRL
+065 [code] # ── 9.1  Suite de pruebas estadísticas ──────────────────────────────────────
+066 [code] # ── 10.  Resumen final de la sesión Colab ───────────────────────────────────
+067 [markdown] ## Informe Técnico de Supervisión — MADRL CityLearn v3
+068 [code] # ── INFORME TÉCNICO DE SUPERVISIÓN ──────────────────────────────────────────
+069 [markdown] ## Proximos pasos y referencias

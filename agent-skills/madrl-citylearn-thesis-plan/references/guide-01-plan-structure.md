@@ -72,19 +72,19 @@ Formulate the problem from the diagnosis and the identified gap: **no comparativ
 
 ### 1.2.2.1 Formulación del problema general
 
-Use a question that integrates coordinated MADRL performance across the three dimensions in smart communities:
+Use **exactly** (author-validated; do not paraphrase):
 
-> ¿En qué medida el algoritmo Multi-Agente de Aprendizaje por Refuerzo Profundo aplicado a una comunidad inteligente (variable independiente) produce un efecto diferenciado sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (variable dependiente), y cuál de los algoritmos comparados genera el mayor efecto?
+> ¿En qué medida el algoritmo MADRL (aprendizaje por refuerzo profundo multiagente) impacta en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño a nivel global?
 
 ### 1.2.2.2 Formulación de los problemas específicos
 
-Formulate three specific problems, each aligned to one specific objective, one performance dimension, and one evaluation axis:
+Use **exactly**:
 
-> **PE.1:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de flexibilidad energética de la comunidad (D-VD.1), y cuál algoritmo genera el mayor efecto?
+> **PE.1:** ¿En qué medida el algoritmo MADRL impacta en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E1?
 >
-> **PE.2:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de emisiones de CO₂ de la comunidad (D-VD.2), y cuál algoritmo genera el mayor efecto?
+> **PE.2:** ¿En qué medida el algoritmo MADRL impacta en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E2?
 >
-> **PE.3:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto sobre la dimensión de costos energéticos de la comunidad (D-VD.3), y cuál algoritmo genera el mayor efecto?
+> **PE.3:** ¿En qué medida el algoritmo MADRL impacta en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E3?
 
 Each specific problem must be traceable to: (a) the corresponding dimension of the diagnosis, (b) its specific objective, (c) its KPI set, and (d) its comparative evaluation methodology.
 
@@ -117,31 +117,39 @@ Specify:
 
 ### 2.1 Objetivo general
 
-Use (canonical doctoral thesis wording):
+Use **exactly** (author-validated; do not paraphrase):
 
-> **O.G.** — Determinar el efecto del algoritmo MADRL aplicado a una comunidad inteligente (VI) sobre la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos (VD), e identificar el algoritmo que produce el mayor efecto coordinado.
+> OG. - Determinar el impacto de los algoritmos aprendizaje por refuerzo profundo multiagente (MADRLs) en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, e identificar cuál de los algoritmos presenta el mejor desempeño a nivel global.
 
 ### 2.2 Objetivos específicos
 
-Include exactly three specific objectives:
+Use **exactly**:
 
-> **OE.1** — Determinar el efecto del algoritmo MADRL (VI) sobre la flexibilidad energética (D-VD.1) e identificar el algoritmo de mayor efecto en esta dimensión.
+> **OE.1:** Determinar el impacto de los algoritmos MADRLs en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E1.
 >
-> **OE.2** — Determinar el efecto del algoritmo MADRL (VI) sobre las emisiones de CO₂ (D-VD.2) e identificar el algoritmo de mayor efecto en esta dimensión.
+> **OE.2:** Determinar el impacto de los algoritmos MADRLs en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E2.
 >
-> **OE.3** — Determinar el efecto del algoritmo MADRL (VI) sobre los costos energéticos (D-VD.3) e identificar el algoritmo de mayor efecto en esta dimensión.
+> **OE.3:** Determinar el impacto de los algoritmos MADRLs en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E3.
 
 ### 2.3 Hipótesis (add to Chapter II or cross-reference Chapter I)
 
-Include directional hypotheses aligned with `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`:
+Use **exactly** H0G/H1G and HE10–HE31:
 
-> **HG** — La aplicación del algoritmo MADRL (VI) produce un efecto estadísticamente significativo sobre la gestión coordinada (VD); MATD3 genera el mayor efecto coordinado.
+> **H0G.-** El algoritmo MADRL no impacta de manera estadísticamente significativa y diferenciada en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas en el desempeño global de los algoritmos.
 >
-> **HE.1** — Efecto significativo sobre flexibilidad (D-VD.1); mayor efecto = menor variabilidad en KPI pico/rampa.
+> **H1G.-** El algoritmo MADRL impacta de manera estadísticamente significativa y diferenciada en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y el desempeño global difiere entre los algoritmos.
 >
-> **HE.2** — Efecto significativo sobre CO₂ (D-VD.2); mayor efecto = MATD3.
+> **HE10.-** El algoritmo MADRL no impacta de manera estadísticamente significativa en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E1.
 >
-> **HE.3** — Efecto significativo sobre costos (D-VD.3); mayor efecto = MATD3.
+> **HE11.-** El algoritmo MADRL impacta de manera estadísticamente significativa en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E1.
+>
+> **HE20.-** El algoritmo MADRL no impacta de manera estadísticamente significativa en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E2.
+>
+> **HE21.-** El algoritmo MADRL impacta de manera estadísticamente significativa en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E2.
+>
+> **HE30.-** El algoritmo MADRL no impacta de manera estadísticamente significativa en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E3.
+>
+> **HE31.-** El algoritmo MADRL impacta de manera estadísticamente significativa en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E3.
 
 Contrast with Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon (α = 0,05). Reference Colas et al. (2019) and Agarwal et al. (2021).
 

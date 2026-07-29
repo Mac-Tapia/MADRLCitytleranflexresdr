@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-07-29T12:59:48",
+  "decision": "RETAIN_AND_INTEGRATE",
+  "source_md": "docs/tesis_capitulos/Capitulo_3_Metodologia.md §3.4.6",
+  "integration_report": "docs/INTEGRACION_CITYLEARN_THESIS_2026-07-29.md",
+  "results": [
+    {
+      "path": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "actions": [
+        "already_present"
+      ],
+      "saved": false,
+      "manual_insertion": null,
+      "ok": true,
+      "note": "Texto de integración ya presente; sin cambios."
+    },
+    {
+      "path": "docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "actions": [
+        "already_present"
+      ],
+      "saved": false,
+      "manual_insertion": null,
+      "ok": true,
+      "note": "Texto de integración ya presente; sin cambios."
+    }
+  ],
+  "claim_boundary": "No KPIs / no Cap.5 results for Quebec/Alameda/Travis/Chittenden/challenges; empirical case remains Iquitos 2023-2025 + MADRL v3."
+}

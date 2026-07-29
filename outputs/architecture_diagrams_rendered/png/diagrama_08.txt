@@ -1,1 +1,0 @@
-Diagrama 8 — Infraestructura de Despliegue: Local, Colab A100 y AWS EC2

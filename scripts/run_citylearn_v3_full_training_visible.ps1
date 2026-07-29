@@ -5,7 +5,7 @@ param(
     [string]$Scenario = "ALL",
     [int]$Seed = 0,
     [int]$EpisodeTimeSteps = 8760,
-    [int]$Episodes = 75,
+    [int]$Episodes = 50,
     [int]$TorchThreads = 12,
     [int]$LiveProgressInterval = 250,
     [ValidateSet("full", "efficient", "minimal")]

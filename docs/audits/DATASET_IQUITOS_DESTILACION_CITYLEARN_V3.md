@@ -34,12 +34,12 @@ reporte de destilacion.
 
 | Archivo | Funcion |
 |---|---|
-| `tools/buildingcsv_inputs.py` | Parser comun de `buildingcsv`, normalizacion de nombres, areas y columnas reales. |
-| `tools/distill_building_loads.py` | Destila mediciones mensuales a cargas horarias CityLearn. |
-| `tools/dataset_docs/distillation_report.csv` | Reporte de balance y meses pronosticados. |
-| `tools/generate_iquitos_dataset.py` | Sincroniza schema, metadata, nombres, oficinas, equipos y areas. |
-| `tools/fix_solar_pvlib.py` | Recalcula/sincroniza generacion solar de B_02 a B_17. |
-| `tools/verify_solar.py` | Verifica areas techadas, PV nominal y consistencia solar. |
+| `tools/dataset/buildingcsv_inputs.py` | Parser comun de `buildingcsv`, normalizacion de nombres, areas y columnas reales. |
+| `tools/dataset/distill_building_loads.py` | Destila mediciones mensuales a cargas horarias CityLearn. |
+| `tools/dataset/dataset_docs/distillation_report.csv` | Reporte de balance y meses pronosticados. |
+| `tools/dataset/generate_iquitos_dataset.py` | Sincroniza schema, metadata, nombres, oficinas, equipos y areas. |
+| `tools/dataset/fix_solar_pvlib.py` | Recalcula/sincroniza generacion solar de B_02 a B_17. |
+| `tools/dataset/verify_solar.py` | Verifica areas techadas, PV nominal y consistencia solar. |
 | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/building_metadata.json` | Metadata consolidada por edificio. |
 
 ## Comandos de regeneracion
@@ -49,10 +49,10 @@ Ejecutar desde la raiz del repositorio:
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
 
-.\.venv39-citylearn-v3\Scripts\python.exe tools\distill_building_loads.py
-.\.venv39-citylearn-v3\Scripts\python.exe tools\generate_iquitos_dataset.py
-.\.venv39-citylearn-v3\Scripts\python.exe tools\fix_solar_pvlib.py
-.\.venv39-citylearn-v3\Scripts\python.exe tools\verify_solar.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\distill_building_loads.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\generate_iquitos_dataset.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\fix_solar_pvlib.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\verify_solar.py
 ```
 
 ## Validacion sin entrenamiento

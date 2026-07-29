@@ -54,4 +54,4 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & $VenvPython $AuthScript check
 Write-Host ""
 Write-Host "Listo. Recarga MCP en Cursor (Settings -> MCP) y prueba:"
-Write-Host "  python tools/analyze_drive_folder_sizes.py --scan-outputs"
+Write-Host "  python tools/drive/analyze_drive_folder_sizes.py --scan-outputs"

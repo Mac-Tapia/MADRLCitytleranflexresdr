@@ -39,6 +39,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Ignore real artefacts and use the methodology illustrative matrix",
     )
     parser.add_argument(
+        "--real-only",
+        action="store_true",
+        help="Closure mode: C1–C6 + curves only from Drive 50 ep (no illustrative fill)",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=REPO / "outputs" / "madrl_multicriteria_selection",
@@ -56,6 +61,8 @@ def main(argv: list[str] | None = None) -> int:
         help="Weight-sweep samples for ±20%% sensitivity",
     )
     args = parser.parse_args(argv)
+    if args.illustrative_only and args.real_only:
+        parser.error("--illustrative-only and --real-only are mutually exclusive")
 
     from uc3m.multicriteria.pipeline import run_selection_pipeline
 
@@ -64,6 +71,7 @@ def main(argv: list[str] | None = None) -> int:
         run_dir=args.run_dir,
         scenario=args.scenario,
         prefer_real=not args.illustrative_only,
+        allow_illustrative_fill=not args.real_only,
         output_dir=args.output_dir,
         make_plots=args.plots,
         sensitivity_samples=args.sensitivity_samples,

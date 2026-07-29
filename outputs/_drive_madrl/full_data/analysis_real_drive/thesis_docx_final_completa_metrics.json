@@ -1,10 +1,10 @@
 {
   "output": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
-  "size_bytes": 3588354,
-  "paragraphs_non_empty": 576,
-  "word_count_estimated": 16972,
-  "tables": 81,
-  "inline_images": 33,
+  "size_bytes": 5153155,
+  "paragraphs_non_empty": 687,
+  "word_count_estimated": 21176,
+  "tables": 84,
+  "inline_images": 57,
   "chapter_order": [
     "Capitulo 1. Introduccion",
     "Capitulo 2. Marco teorico",
@@ -31,18 +31,19 @@
       "Capitulo 6": true,
       "Referencias bibliograficas": true
     },
-    "tables_count": 81,
+    "tables_count": 84,
     "tables_ok": true,
-    "images_count": 33,
+    "images_count": 57,
     "images_ok": true,
-    "references_count": 67,
+    "references_count": 105,
     "references_expected": 70,
     "references_ok": true,
+    "references_single_list": false,
     "has_matd3_selection": true,
     "has_pe_answers": true,
     "has_multiobjetivo": true,
     "has_drive_figures": true,
     "has_referencias_apa": true,
-    "complete": true
+    "complete": false
   }
 }

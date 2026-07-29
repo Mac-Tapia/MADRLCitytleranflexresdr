@@ -59,7 +59,7 @@ canónico (`outputs/latest_visible_training_output_root.txt` ->
 `data/checkpoint_manifest.json`). Una vez que las 12 corridas
 (4 algoritmos x 3 escenarios E1/E2/E3) terminen y se seleccione el mejor
 agente vía `KPIEvaluator`/HPHI, exportar su checkpoint con
-`tools/export_winning_model_onnx.py` (pendiente de implementar — ver
+`tools/training/export_winning_model_onnx.py` (pendiente de implementar — ver
 `deploy/inference/model_loader.py` para el contrato esperado del export).
 
 ## Entrenamiento en AWS

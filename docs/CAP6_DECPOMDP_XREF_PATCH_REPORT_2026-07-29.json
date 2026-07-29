@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-07-29T17:28:25",
+  "marker": "Caps. 2 y 4 (Tabla 2.A",
+  "results": [
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "ok": true,
+      "skipped": true,
+      "reason": "already xref"
+    },
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "skipped": true,
+      "reason": "already xref"
+    }
+  ]
+}

@@ -27,7 +27,7 @@ La corrida oficial produce artefactos reproducibles por algoritmo, escenario y s
 flowchart TD
     A["Inicio: verificar repo<br/>scripts/verify_project_context.ps1"]
     B["Dataset oficial<br/>CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json"]
-    C["Validacion dataset<br/>tools/check_training_dataset_ready.py"]
+    C["Validacion dataset<br/>tools/dataset/check_training_dataset_ready.py"]
     D["CityLearn v2 base<br/>simulador, fisica, KPIs"]
     E["Capa CityLearn v3<br/>Dec-POMDP, CTDE, objetivos, escenarios"]
     F["Reward multiobjetivo<br/>CityLearnV3MADRLRewardFunction"]
@@ -49,7 +49,7 @@ flowchart TD
 |---|---|---|
 | Verificacion del proyecto | `scripts/verify_project_context.ps1` | Evita ejecutar desde un repo equivocado o mezclar con `D:\madrl_lima`. |
 | Dataset oficial | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` | Contiene el `schema.json`, series horarias, edificios, PV, baterias, EV, precios y CO2. |
-| Gate de dataset | `tools/check_training_dataset_ready.py` | Valida que el dataset crudo este listo antes de normalizar y entrenar. |
+| Gate de dataset | `tools/dataset/check_training_dataset_ready.py` | Valida que el dataset crudo este listo antes de normalizar y entrenar. |
 | Simulador base | `CityLearn/` | Mantiene CityLearn v2 como base fisica, energetica y de KPIs. |
 | Capa v3 | `CityLearn/citylearn/v3/` | Agrega objetivos, entorno v3, configuracion y compatibilidad multiagente. |
 | Escenarios | `CityLearn/citylearn/scenario_manager.py` | Aplica E1, E2 y E3 al entorno. |

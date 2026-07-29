@@ -1,0 +1,40 @@
+{
+  "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+    "size_mb": 18.5,
+    "media": 212,
+    "matched_unique_sources": 150,
+    "expected_sources": 150,
+    "missing_count": 0,
+    "missing_sample": [],
+    "checks": {
+      "marker": true,
+      "MC.1": true,
+      "MC.2": true,
+      "MC.3": true,
+      "PC all": true,
+      "JOB.001": true,
+      "JOB.150": true,
+      "n_JOB": 150,
+      "TOPSIS table": true
+    }
+  },
+  "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+    "size_mb": 17.87,
+    "media": 195,
+    "matched_unique_sources": 150,
+    "expected_sources": 150,
+    "missing_count": 0,
+    "missing_sample": [],
+    "checks": {
+      "marker": true,
+      "MC.1": true,
+      "MC.2": true,
+      "MC.3": true,
+      "PC all": true,
+      "JOB.001": true,
+      "JOB.150": true,
+      "n_JOB": 150,
+      "TOPSIS table": true
+    }
+  }
+}

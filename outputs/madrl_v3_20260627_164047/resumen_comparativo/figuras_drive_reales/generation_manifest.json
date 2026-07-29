@@ -68,23 +68,17 @@
     {
       "algo": "HAPPO",
       "scen": "E1",
-      "status": "ok",
-      "figure_count": 7,
-      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E1\\figures"
+      "status": "skip_missing_ts_trace"
     },
     {
       "algo": "HAPPO",
       "scen": "E2",
-      "status": "ok",
-      "figure_count": 7,
-      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E2\\figures"
+      "status": "skip_missing_ts_trace"
     },
     {
       "algo": "HAPPO",
       "scen": "E3",
-      "status": "ok",
-      "figure_count": 7,
-      "figures_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\HAPPO\\E3\\figures"
+      "status": "skip_missing_ts_trace"
     }
   ],
   "comparative_figures": [

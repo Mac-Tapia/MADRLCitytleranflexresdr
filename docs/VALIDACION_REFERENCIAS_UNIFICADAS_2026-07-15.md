@@ -1,5 +1,7 @@
 # Validación — Referencias bibliográficas unificadas (2026-07-15)
 
+> **Nota 2026-07-29:** registro histórico de la sesión del 15-jul. `merge_thesis_references.py` fue eliminado; pipeline vivo: `tools/thesis/thesis_references_apa.py` y `run_thesis_word_pipeline.py` (ver `tools/thesis/README.md`).
+
 ## Contexto
 - `scripts/verify_project_context.ps1`: **OK** (`D:/MADRLCitytleranflexresdr`)
 
@@ -26,10 +28,10 @@ Documento espejo unificado:
 
 ## Archivos modificados
 - `docs/ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS_REFERENCIAS_UNIFICADAS.docx` — **documento con merge aplicado** (copiar a los dos primarios al cerrar Word)
-- `scripts/merge_thesis_references.py` — script de merge y deduplicación
-- `scripts/_audit_ref_sections.py` — auditoría de listas
-- `scripts/thesis_doctoral_sections.py` — `references_single_list` en verificación
-- `tools/build_final_thesis_gdrive_objectives.py` — ya no crea listas complementarias
+- `tools/thesis/merge_thesis_references.py` — script de merge y deduplicación
+- `tools/thesis/_audit_ref_sections.py` — auditoría de listas
+- `tools/thesis/thesis_doctoral_sections.py` — `references_single_list` en verificación
+- `tools/thesis/build_final_thesis_gdrive_objectives.py` — ya no crea listas complementarias
 - `docs/tesis_capitulos/Referencias_APA.md` — nota de lista única
 - `docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md` — punteros a lista única
 - `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md` — sección REFERENCIAS sustituida por puntero

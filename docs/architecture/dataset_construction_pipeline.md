@@ -3,7 +3,7 @@
 **Proyecto:** `MADRLCitytleranflexresdr`
 **Dataset activo:** `citylearn_iquitos_2023_2025`
 **Ultima actualizacion:** 2026-06-15
-**Fuente canonica dataset:** `python tools/orchestrate_citylearn_dataset.py`
+**Fuente canonica dataset:** `python tools/dataset/orchestrate_citylearn_dataset.py`
 **Fuente canonica flujo completo:** `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md`
 
 Este documento reemplaza las tablas historicas del pipeline. La fuente valida del dataset es la orquestacion actual y sus auditorias en `outputs/dataset_audit/`; no se deben usar resultados, conteos ni salidas de corridas antiguas.
@@ -38,8 +38,8 @@ Auditorias vigentes:
 ## Orden Correcto de Ejecucion
 
 1. `powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1`
-2. `python tools/orchestrate_citylearn_dataset.py`
-3. `python tools/audit_citylearn_csv_integrity.py`
+2. `python tools/dataset/orchestrate_citylearn_dataset.py`
+3. `python tools/dataset/audit_citylearn_csv_integrity.py`
 4. `python CityLearn\scripts\check_citylearn_v3_training_ready.py --strict --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json --scenario E1`
 5. `python CityLearn\scripts\run_citylearn_v3_env_smoke.py --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json --scenario E1 --episode-time-steps 4 --steps 3`
 

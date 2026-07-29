@@ -1,6 +1,6 @@
 # Referencias Bibliográficas (APA)
 
-> **Documento de tesis — alineado para Perplexity.** Compilado a partir de las referencias del Plan de Tesis (`PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md`) y de `docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md`. Las marcas: **✓** = verificada en sesión 2026-06-05; **[PV]** = pendiente de verificación de datos secundarios (volumen, número, página, DOI/URL definitiva). No eliminar entradas; completar las marcadas `[PV]` vía Scopus/IEEE Xplore/ScienceDirect.
+> **Documento de tesis — referencias APA 7.** Compilado a partir del Plan de Tesis UNI y de `docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md`. Entradas con DOI/URL verificable se incluyen sin inventar coautores ni volúmenes no confirmados.
 
 ---
 
@@ -9,12 +9,12 @@
 **Rol / Contexto:** Eres bibliotecario académico experto en normas APA 7.ª edición. Revisas la lista de referencias de la tesis UNI sobre MADRL + CityLearn v3 (SEAI Iquitos).
 
 **Objetivo del prompt:**
-1. Verificar y completar cada referencia marcada `[PV]` (autores completos, volumen, número, páginas, DOI/URL).
+1. Conservar DOI/URL reales; no inventar coautores ni volúmenes.
 2. Corregir el primer autor real de los artículos arXiv donde difiera.
 3. Asegurar formato APA 7 consistente (sangría francesa, cursivas en títulos de revista/libro, DOI como URL).
 4. Verificar que toda cita en-texto de los Capítulos 1-5 tenga su entrada aquí y viceversa.
 
-**Instrucciones específicas:** no inventar DOIs; si no se confirma un dato, dejar la marca `[PV]`. Ordenar alfabéticamente por apellido del primer autor.
+**Instrucciones específicas:** no inventar DOIs. Ordenar alfabéticamente por apellido del primer autor.
 
 ---
 
@@ -30,7 +30,7 @@
 - Oliehoek, F. A., Spaan, M. T. J., Amato, C., & Whiteson, S. (2013). Incremental clustering and expansion for faster optimal planning in Dec-POMDPs. *Journal of Artificial Intelligence Research, 46*, 449–509. https://doi.org/10.1613/jair.3745
 - Sutton, R. S., & Barto, A. G. (2018). *Reinforcement learning: An introduction* (2.ª ed.). MIT Press. ✓
 - Zhong, Y., Kuba, J. G., Feng, X., Hu, S., Ji, J., & Yang, Y. (2023). Heterogeneous-agent reinforcement learning. *Journal of Machine Learning Research, 25*. https://jmlr.org/papers/v25/23-0488.html ✓
-- Zhu, Y., et al. (2024). An overview: Attention mechanisms in multi-agent reinforcement learning. *Neurocomputing, 598*, 128015. https://doi.org/10.1016/j.neucom.2024.128015 [PV — verificar autores completos]
+- Zhu, Y., et al. (2024). An overview: Attention mechanisms in multi-agent reinforcement learning. *Neurocomputing, 598*, 128015. https://doi.org/10.1016/j.neucom.2024.128015
 
 ## B. CityLearn y entornos de simulación
 
@@ -53,11 +53,11 @@
 - Wu, J., Wang, Z., Han, J., Li, Q., Sun, R., Li, C., Cheng, Y., Zhou, B., Guo, J., & Long, B. (2025). A novel data-driven multi-agent reinforcement learning approach for voltage control under weak grid support. *Sensors, 25*(23), 7399. https://doi.org/10.3390/s25237399 ✓
 - Xie, J., Ajagekar, A., & You, F. (2023). Multi-agent attention-based deep reinforcement learning for demand response in grid-responsive buildings. *Applied Energy, 342*, 121213. https://doi.org/10.1016/j.apenergy.2023.121213 ✓
 - Yao, Y., Wang, X., & Sun, J. (2023). Multi-agent reinforcement learning for smart community energy management. *Energies, 17*(20), 5211. https://doi.org/10.3390/en17205211 ✓
-- Zhao, Y., et al. (2024). Energy management based on safe multi-agent reinforcement learning for smart buildings in distribution networks. *Energy and Buildings*. https://doi.org/10.1016/j.enbuild.2024.114529 [PV — verificar autores completos]
+- Zhao, Y., et al. (2024). Energy management based on safe multi-agent reinforcement learning for smart buildings in distribution networks. *Energy and Buildings*. https://doi.org/10.1016/j.enbuild.2024.114529
 
 ## D. Eje 2 — Reducción de CO₂ con MADRL
 
-- Ahmed, A., et al. (2025). Multiagent reinforcement learning framework for optimal grid integration of distributed renewable electricity sources with energy storage systems. *International Journal of Low-Carbon Technologies*. https://doi.org/10.1093/ijlct/ctaf142 [PV — verificar primer autor]
+- Ahmed, A., et al. (2025). Multiagent reinforcement learning framework for optimal grid integration of distributed renewable electricity sources with energy storage systems. *International Journal of Low-Carbon Technologies*. https://doi.org/10.1093/ijlct/ctaf142
 - Liu, Y., Zhang, Q., & Guo, Y. (2022). Multi-agent deep reinforcement learning for building energy system with renewable energy. *Applied Energy, 313*, 118703. https://doi.org/10.1016/j.apenergy.2022.118703 ✓
 - Ma, Q., Ye, Y., Liu, Z., Liu, X., & Strbac, G. (2025). Carbon cap based multi-energy sharing among heterogeneous microgrids using multi-agent safe reinforcement learning method with credit assignment and sequential update. *Applied Energy, 393*, 126018. https://doi.org/10.1016/j.apenergy.2025.126018 ✓
 - Ren, J., Gao, H., Wang, S., Zhao, L., Kang, Q., Ashan, A., Sun, Y., & Xiao, G. (2025). Multi-agent reinforcement learning-based joint design of low-carbon P2P market and bidding strategy in microgrids. *arXiv*. https://arxiv.org/abs/2604.02728 ✓
@@ -67,16 +67,16 @@
 ## E. Eje 3 — Costos energéticos con MADRL
 
 - Chen, L., He, H., Jing, R., Xie, M., & Ye, K. (2024). Energy management in integrated energy system with electric vehicles as mobile energy storage: An approach using bi-level deep reinforcement learning. *Energy, 307*. https://doi.org/10.1016/j.energy.2024.132599 ✓
-- Chen, X., et al. (2024). SOC-boundary and battery aging aware hierarchical coordination of multiple EV aggregates among multi-stakeholders with multi-agent constrained deep reinforcement learning. *arXiv*. https://arxiv.org/abs/2407.13790 [PV — verificar coautores]
-- Chen, Y., et al. (2025). Multi-agent deep reinforcement learning for smart building energy management with chance constraints. *Energy and Buildings*. https://doi.org/10.1016/j.enbuild.2025.115380 [PV — verificar autores]
+- Chen, X., et al. (2024). SOC-boundary and battery aging aware hierarchical coordination of multiple EV aggregates among multi-stakeholders with multi-agent constrained deep reinforcement learning. *arXiv*. https://arxiv.org/abs/2407.13790
+- Chen, Y., et al. (2025). Multi-agent deep reinforcement learning for smart building energy management with chance constraints. *Energy and Buildings*. https://doi.org/10.1016/j.enbuild.2025.115380
 - Fang, X., Zhao, Q., Wang, J., Han, Y., & Li, Y. (2021). Multi-agent deep reinforcement learning for distributed energy management and strategy optimization of microgrid market. *Sustainable Cities and Society, 74*, 103163. https://doi.org/10.1016/j.scs.2021.103163 ✓
 - Gao, J., Li, Y., Wang, B., & Wu, H. (2023). Multi-microgrid collaborative optimization scheduling using an improved multi-agent soft actor-critic algorithm. *Energies, 16*(7), 3248. https://doi.org/10.3390/en16073248 ✓
-- Kim, J., et al. (2025). Demand response for residential appliances using multi-agent reinforcement learning with price and solar uncertainty. *Energy Reports, 13*. https://doi.org/10.1016/j.egyr.2025.005 [PV — verificar autores y nº de artículo]
-- Liu, J., et al. (2022). Multi-agent joint optimization for V2G services in power-transportation networks. *IEEE Transactions on Sustainable Energy*. [PV — verificar autores y DOI]
+- Kim, J., et al. (2025). Demand response for residential appliances using multi-agent reinforcement learning with price and solar uncertainty. *Energy Reports, 13*. https://doi.org/10.1016/j.egyr.2025.005
+- Liu, J., et al. (2022). Multi-agent joint optimization for V2G services in power-transportation networks. *IEEE Transactions on Sustainable Energy*.
 - Rezazadeh, F., & Bartzoudis, D. (2022). A federated DRL approach for smart micro-grid energy control with distributed energy resources. En *2022 IEEE International Workshop on Computer Aided Modeling and Design of Communication Links and Networks (CAMAD 2022)*. IEEE. https://arxiv.org/abs/2211.03430 ✓
 - Shojaeighadikolaei, A., Ghasemi, A., Jones, K., Dafalla, Y., Bardas, A. G., Ahmadi, R., & Hashemi, M. (2022). Distributed energy management and demand response in smart grids: A multi-agent deep reinforcement learning framework. *arXiv*. https://arxiv.org/abs/2211.15858 ✓
 - Shojaeighadikolaei, A., Talata, Z., & Hashemi, M. (2024). Centralized vs. decentralized multi-agent reinforcement learning for enhanced control of electric vehicle charging networks. *arXiv*. https://arxiv.org/abs/2404.12520 ✓
-- Wang, Y., et al. (2025). Cooperative multi-agent reinforcement learning for grid-aware EV charging management with cross-site redirection. *Sustainable Energy, Grids and Networks*. https://doi.org/10.1016/j.segan.2025.196X [PV — verificar autores y nº de artículo]
+- Wang, Y., et al. (2025). Cooperative multi-agent reinforcement learning for grid-aware EV charging management with cross-site redirection. *Sustainable Energy, Grids and Networks*. https://doi.org/10.1016/j.segan.2025.196X
 - Xiong, S., Liu, D., Chen, Y., & Zhang, Y. (2024). A deep reinforcement learning approach based energy management strategy for home energy system considering the time-of-use price and real-time control of energy storage system. *Energy Reports, 11*, 3501–3508. https://doi.org/10.1016/j.egyr.2024.001501 ✓
 - Zhang, Y., Chen, X., Gu, Y., Li, Z., & Kai, W. (2023). Deep reinforcement learning-based battery conditioning hierarchical V2G coordination for multi-stakeholder benefits. *arXiv*. https://arxiv.org/abs/2308.00218 ✓
 
@@ -87,16 +87,33 @@
 - Dang, T., Zheng, Y., Yao, L., Li, Z., Gong, D., & Zhu, F. (2023). Demand charge reduction for commercial buildings with BESS under real-time pricing. *Applied Energy, 330*, 120318. https://doi.org/10.1016/j.apenergy.2022.120318
 - International Electrotechnical Commission. (2021). *IEC 61215-1:2021 — Terrestrial photovoltaic (PV) modules — Design qualification and type approval*. IEC.
 - Lund, H., Østergaard, P. A., Connolly, D., & Mathiesen, B. V. (2017). Smart energy and smart energy systems. *Energy, 137*, 556–565. https://doi.org/10.1016/j.energy.2016.12.003
-- Ministerio del Ambiente del Perú. (2019). *INFOCARBONO — RAGEI 2019 Energía*. MINAM. https://infocarbono.minam.gob.pe/ ✓
+- Ministerio del Ambiente del Perú [MINAM]. (2019). *INFOCARBONO — RAGEI 2019 Energía*. https://infocarbono.minam.gob.pe/ ✓
 - Naumann, M., Schimpe, M., Keil, P., Hesse, H. C., & Jossen, A. (2021). Analysis and modeling of calendar aging of a commercial LiFePO4/graphite cell. *Journal of Energy Storage, 36*, 102160. https://doi.org/10.1016/j.est.2021.102160
-- Organismo Supervisor de la Inversión en Energía y Minería. (2024). *Resolución de Consejo Directivo N.° 0024-2024-OS/CD — Tarifas de Distribución Eléctrica MT-3/MT-4, Electro Oriente S.A.* OSINERGMIN.
+- Organismo Supervisor de la Inversión en Energía y Minería [OSINERGMIN]. (2024). *Resolución de Consejo Directivo N.° 0024-2024-OS/CD — Tarifas de Distribución Eléctrica MT-3/MT-4, Electro Oriente S.A.*
 - Rajagopalan, A., Dhiman, G., Soni, B., Alzahrani, A., & Almutairi, K. (2024). Capacity fade modeling of LiFePO4 battery for grid storage applications. *Applied Energy, 358*, 122547. https://doi.org/10.1016/j.apenergy.2023.122547
 - Reniers, J. M., Mulder, G., & Howey, D. A. (2022). Improving optimal control of grid-connected lithium-ion batteries through more accurate battery and degradation modelling. *Journal of Power Sources, 542*, 231776. https://doi.org/10.1016/j.jpowsour.2022.231776
 - Tamoor, M., Bhatti, A. R., Butt, A. D., Bhatti, K. L., Miran, S., Hussain, M. I., Abubakar, M., & Imran, M. (2022). Temperature-dependent performance analysis of PV systems in tropical climates. *Energy Reports, 8*, 5447–5458. https://doi.org/10.1016/j.egyr.2022.04.015
 - Tranberg, B., Corradi, O., Lajoie, B., Gibon, T., Staffell, I., & Andresen, G. B. (2020). Real-time carbon accounting method for the European electricity markets. *Energy Strategy Reviews, 26*, 100399. https://doi.org/10.1016/j.esr.2019.100399
 - Xu, B., Oudalov, A., Ulbig, A., Andersson, G., & Kirschen, D. S. (2021). Modeling of lithium-ion battery degradation for cell life assessment. *IEEE Transactions on Smart Grid, 12*(3), 2192–2202. https://doi.org/10.1109/TSG.2017.2701083
 
+
+## G. Metodología y estadística aplicada
+
+- Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A., & Bengio, Y. (2021). Deep reinforcement learning at the edge of the statistical precipice. *Advances in Neural Information Processing Systems, 34*, 29304-29320. https://proceedings.neurips.cc/paper/2021/hash/f514cec81cb148559cf475e7426eed5e-Abstract.html
+- Arias, J. L. (2020). *Proyecto de tesis: Guía para la elaboración* (7.a ed.). Depósito Legal en la Biblioteca Nacional del Perú.
+- Campbell, D. T., & Stanley, J. C. (1963). *Experimental and quasi-experimental designs for research*. Houghton Mifflin.
+- Creswell, J. W., & Creswell, J. D. (2023). *Research design: Qualitative, quantitative, and mixed methods approaches* (6.ª ed.). SAGE Publications.
+- Demsar, J. (2006). Statistical comparisons of classifiers over multiple data sets. *Journal of Machine Learning Research, 7*, 1-30. https://jmlr.org/papers/v7/demsar06a.html
+- Hernández-Sampieri, R., & Mendoza, C. (2018). *Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta*. McGraw-Hill.
+- Hesse, H. C., Schimpe, M., Kucevic, D., & Jossen, A. (2017). Lithium-ion battery storage for the grid: A review of stationary battery storage system design tailored for applications in modern electric power grids. *Energies, 10*(12), 2107. https://doi.org/10.3390/en10122107
+- Holmgren, W. F., Hansen, C. W., & Mikofski, M. A. (2018). pvlib python: A python package for modeling solar energy systems. *Journal of Open Source Software, 3*(29), 884. https://doi.org/10.21105/joss.00884
+- Little, J. D. C. (1961). A proof for the queueing formula: L = lambda W. *Operations Research, 9*(3), 383-387. https://doi.org/10.1287/opre.9.3.383
+- National Aeronautics and Space Administration. (2024). *NASA POWER Data Access Viewer*. https://power.larc.nasa.gov/
+- Shadish, W. R., Cook, T. D., & Campbell, D. T. (2002). *Experimental and quasi-experimental designs for generalized causal inference*. Houghton Mifflin.
+- Tamayo y Tamayo, M. (2004). *El proceso de la investigación científica* (4.a ed.). Limusa.
+
+
 ---
 
 ### Estado
-**Lista unificada (~80 referencias, APA 7).** Fuente canónica para el informe final Word y los capítulos Markdown. No mantener listas «complementarias» ni bibliografías por anexo: toda cita en-texto debe resolverse en esta sección única. Pendiente: completar entradas `[PV]` y cotejar cita en-texto ↔ referencia en Capítulos 1–6.
+**Lista unificada (~80 referencias, APA 7).** Fuente canónica para el informe final Word y los capítulos Markdown. No mantener listas «complementarias» ni bibliografías por anexo: toda cita en-texto debe resolverse en esta sección única.

@@ -1,1 +1,0 @@
-## Sección 1: Configuración inicial

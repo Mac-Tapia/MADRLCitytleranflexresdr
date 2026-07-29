@@ -156,7 +156,7 @@ Componentes principales:
 | Benchmark v2 | `CityLearn/scripts/benchmark_citylearn_v2_agents.py` |
 | Comparador v2 vs v3 | `CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py` |
 | Dataset Iquitos | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` |
-| Herramientas de dataset | `tools/` |
+| Herramientas (dataset/eval/ops/…) | `tools/` (ver `tools/README.md`) |
 | Suite de tests | `tests/uc3m/` |
 
 ## Framework UC3M (Universal CityLearn v3 Modified)
@@ -239,19 +239,24 @@ Documentacion completa del pipeline: `docs/architecture/dataset_construction_pip
 Regenerar el dataset desde los insumos:
 
 ```powershell
+# Entrada canónica (pipeline completo; ver tools/dataset/README.md)
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/orchestrate_citylearn_dataset.py `
+    --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
+
+# Pasos manuales (subset del orquestador):
 # 1. Generar CSV (usa cache meteorologico, no re-descarga)
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/generate_iquitos_dataset.py --verbose
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/generate_iquitos_dataset.py --verbose
 
 # 2. Destilar cargas reales B02-B17
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/distill_building_loads.py `
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/distill_building_loads.py `
     --buildingcsv-dir CityLearn/data/buildingcsv `
     --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
 
 # 3. Fix safety factor cooling autosize
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/fix_schema_cooling.py
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/fix_schema_cooling.py
 
 # 4. Diagnostico de integridad
-.\.venv39-citylearn-v3\Scripts\python.exe -B diagnostico_dataset.py
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/evaluate_dataset.py
 ```
 
 ## MADRL integrados
@@ -382,7 +387,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
   --episode-time-steps 4 `
   --steps 3
 
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\verify_workflow_integrity.py `
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\ops\verify_workflow_integrity.py `
   --manifest-out outputs\dataset_audit\workflow_integrity_manifest.json
 ```
 
@@ -399,20 +404,24 @@ Opcion rapida — doble clic o desde PowerShell:
 
 ```powershell
 # Genera timestamp automatico, registra outputs\latest_visible_training_output_root.txt
-# y lanza cadena completa
-.\relanzar_entrenamiento_madrl.bat
+# y lanza cadena completa HAPPO→MASAC→MATD3→MAAC (50 episodios, canónico thesis)
+.\LANZAR_ENTRENAMIENTO_V4.bat
 ```
 
 Comando completo manual (requiere PowerShell 7 — `pwsh.exe`):
 
 ```powershell
+$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+$root = "outputs\citylearn_v3_madrl_full_$ts"
+Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
+
 pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_citylearn_v3_full_training_visible.ps1 `
   -OutputRoot $root `
   -Scenario ALL `
   -Seed 0 `
   -EpisodeTimeSteps 8760 `
-  -Episodes 75 `
+  -Episodes 50 `
   -TorchThreads 8 `
   -LiveProgressInterval 1000 `
   -ArtifactProfile efficient `
@@ -428,20 +437,13 @@ Para continuar una corrida interrumpida sin reejecutar lo ya completado:
 pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_citylearn_v3_full_training_visible.ps1 `
   -OutputRoot $root -Scenario ALL -Seed 0 `
-  -EpisodeTimeSteps 8760 -Episodes 75 -TorchThreads 8 `
+  -EpisodeTimeSteps 8760 -Episodes 50 -TorchThreads 8 `
   -LiveProgressInterval 1000 -ArtifactProfile efficient `
   -TraceRecordInterval 10 -TraceDetail compact `
   -GpuProfile local4060_fast -Cuda -SkipCompleted
 ```
 
-Antes del comando manual:
-
-```powershell
-$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
-$root = "outputs\citylearn_v3_madrl_full_$ts"
-Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
-```
-
+Antes del comando manual el bloque `$ts`/`$root`/`Set-Content` de arriba ya prepara el puntero.
 Esto genera 12 corridas (4 algoritmos x 3 ejes) con etapas por algoritmo. En 8 GB, HAPPO y MATD3 pueden ejecutar hasta 2 escenarios en paralelo; MASAC y MAAC conservan concurrencia 1 por memoria de replay/critic.
 
 ```text
@@ -461,7 +463,7 @@ Fixes aplicados al launcher:
 pwsh.exe -NoProfile -ExecutionPolicy Bypass `
   -File scripts\run_3madrl_parallel.ps1 `
   -Algorithms happo,matd3,maac `
-  -Episodes 75 `
+  -Episodes 50 `
   -GpuProfile aws
 ```
 
@@ -480,16 +482,16 @@ Requiere una GPU con VRAM suficiente para varios algoritmos+escenarios a la vez 
 
 ```powershell
 # Verificar integridad del dataset (17 edificios, filas, columnas, chargers)
-.\.venv39-citylearn-v3\Scripts\python.exe -B diagnostico_dataset.py
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/evaluate_dataset.py
 
 # Ver metricas del ultimo entrenamiento completado
-.\.venv39-citylearn-v3\Scripts\python.exe -B ver_metricas_madrl.py
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/training/ver_metricas_madrl.py
 
 # Ver todos los runs disponibles
-.\.venv39-citylearn-v3\Scripts\python.exe -B ver_metricas_madrl.py --todos
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/training/ver_metricas_madrl.py --todos
 
 # Ver run especifico
-.\.venv39-citylearn-v3\Scripts\python.exe -B ver_metricas_madrl.py --run <nombre_run>
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/training/ver_metricas_madrl.py --run <nombre_run>
 ```
 
 ## Monitor de entrenamiento
@@ -714,8 +716,8 @@ Comparar CityLearn v2 contra CityLearn v3 MADRL. Si faltan artefactos v2, el com
 | Infografias PNG (arquitectura + flujo) | `docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png`, `FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png` |
 | Destilacion dataset Iquitos | `docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md` |
 | Auditoria tecnica skill MADRL | `docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md` |
-| Tutorial notebook | `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb` |
-| Quickstart notebook | `CityLearn/examples/madrl_citylearn_v3_quickstart.ipynb` |
+| Tutorial notebook | `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb` |
+| Quickstart notebook | `examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb` |
 | Informe de tesis | `docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx` |
 | Plan de tesis | `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3.docx` |
 
@@ -750,11 +752,11 @@ La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Krusk
 - **2026-06-20 15:50**: README.md, tools/fix_colab_cell2.py, tools/generate_informe_final.py, tools/patch_notebook_final.py
 - **2026-06-20 15:47**: tools/generate_informe_final.py, tools/patch_notebook_final.py
 - **2026-06-20 11:47**: docs/workflow_manifest.json, scripts/restart_happo_masac_v3.ps1, scripts/restart_masac_matd3_maac.ps1, scripts/run_3madrl_parallel.ps1 (+3 mas)
-- **2026-06-20 11:27**: tools/verify_notebook.py
-- **2026-06-20 11:11**: tools/verify_notebook.py
-- **2026-06-20 11:02**: tools/verify_notebook.py
-- **2026-06-20 10:41**: nb_gpu_cells.txt, tools/patch_notebook_a100.py, tools/verify_notebook.py
-- **2026-06-20 10:30**: nb_cells.txt, nb_cells2.txt, nb_keycells.txt, tools/verify_notebook.py
+- **2026-06-20 11:27**: tools/colab/verify_notebook.py
+- **2026-06-20 11:11**: tools/colab/verify_notebook.py
+- **2026-06-20 11:02**: tools/colab/verify_notebook.py
+- **2026-06-20 10:41**: nb_gpu_cells.txt, tools/colab/patch_notebook_a100.py, tools/colab/verify_notebook.py
+- **2026-06-20 10:30**: nb_cells.txt, nb_cells2.txt, nb_keycells.txt, tools/colab/verify_notebook.py
 
 <!-- auto_save.sh inserta entradas nuevas justo debajo de este encabezado -->
 

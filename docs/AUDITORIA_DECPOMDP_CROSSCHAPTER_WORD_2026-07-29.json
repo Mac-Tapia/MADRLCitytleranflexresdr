@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-07-29T17:15:00",
+  "scope": "Auditoria profunda cross-chapter Dec-POMDP dims/formulas en 2 Word canonicos + markdown",
+  "canons": [
+    "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx"
+  ],
+  "canonical_values": {
+    "d_s": 1856,
+    "d_oi": [54, 327],
+    "d_ai": [5, 44],
+    "d_ai_formula": "2 + n_ch",
+    "action_sum": 219,
+    "r_team": 0.7,
+    "N": 17
+  },
+  "obsolete_dims_57_330": 0,
+  "false_positives": [
+    "Cap.2 'rango aproximado 0,672-0,790 kgCO2/kWh' (CI, no obs Dec-POMDP)"
+  ],
+  "by_chapter": {
+    "1": {
+      "verdict": "NO_INTEGRAR_TABLA",
+      "reason": "Menciones conceptuales Dec-POMDP/CTDE; sobrecargar con dims diluye introduccion",
+      "action": "none"
+    },
+    "2": {
+      "verdict": "YA_CERRADO",
+      "reason": "Jerarquia distrito/edificio + Tabla 2.A + notacion O_i/A_i corregida",
+      "action": "none"
+    },
+    "3": {
+      "verdict": "INTEGRAR_REMISION_LIGERA",
+      "reason": "Define dataset/agentes sin dims; debe apuntar a Tabla 2.A",
+      "action": "DONE_md_and_word",
+      "done": [
+        "Capitulo_3_Metodologia.md §3.3 y nota post-tabla DER",
+        "Word Tesis p332 + Informe p384 remision Tabla 2.A / Cap.4"
+      ]
+    },
+    "4": {
+      "verdict": "YA_CERRADO",
+      "reason": "Alineado a implementacion (ctde_state, r_team, d_ai formula, 219)",
+      "action": "none"
+    },
+    "5": {
+      "verdict": "NO_REAXIOMATIZAR",
+      "reason": "Resultados/KPIs; sin dims erróneas detectadas; no repetir tupla",
+      "action": "none"
+    },
+    "6": {
+      "verdict": "REMISION_APLICADA",
+      "reason": "Frase con d_s/d_oi/d_ai/r_team + Caps. 2/4 en Cap. VI de ambos Word; MD bullet 7 actualizado",
+      "action": "DONE",
+      "done": [
+        "Capitulo_6_Conclusiones.md bullet 7 con dims",
+        "Tesis Word og_p1140",
+        "Informe Word pe1_p1169",
+        "Informe fig B.3 interpretacion + xref Cap.2/4 (previo)"
+      ],
+      "pending_optional": null
+    }
+  },
+  "other_findings": [
+    "dec_pomdp.py reward_aggregation=mixed usa 0.7 individual + 0.3 team (fallback); canal canonico es CityLearnV3MADRLRewardFunction r_team=0.70 — ya aclarado en Cap.4 MD/Word",
+    "Tablas inventario Edif|EV|Acciones en Cap.4/5 tienen d_ai pero no d_oi; no bloqueante porque Tabla 2.A cubre Cap.2"
+  ]
+}

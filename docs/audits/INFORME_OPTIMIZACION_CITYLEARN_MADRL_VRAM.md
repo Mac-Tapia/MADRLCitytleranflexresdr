@@ -48,8 +48,8 @@ La campana oficial tiene 12 jobs: 4 algoritmos MADRL por 3 escenarios. No debe c
 - `docs/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md`
 - `docs/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md`
 - `docs/workflow_manifest.json`
-- `tools/verify_workflow_integrity.py`
-- `tools/verify_training_optimization.py`
+- `tools/ops/verify_workflow_integrity.py`
+- `tools/training/verify_training_optimization.py`
 
 ## Politica vigente
 

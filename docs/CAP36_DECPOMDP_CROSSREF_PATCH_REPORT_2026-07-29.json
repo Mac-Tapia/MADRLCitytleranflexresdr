@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-07-29T17:12:32",
+  "policy": "Cap.3/6 remision ligera; Cap.1/5 sin re-axiomatizar; Cap.2/4 ya cerrados",
+  "results": [
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "ok": true,
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_before_cap36_xref_20260729_171231.docx",
+      "changes": [
+        "cap3_p332"
+      ]
+    },
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_before_cap36_xref_20260729_171232.docx",
+      "changes": [
+        "cap3_p384",
+        "fig_p1387"
+      ]
+    }
+  ]
+}

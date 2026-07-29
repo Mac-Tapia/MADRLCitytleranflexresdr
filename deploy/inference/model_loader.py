@@ -1,6 +1,6 @@
 """Carga del modelo MADRL ganador exportado a ONNX para el servicio de inferencia.
 
-Contrato esperado (producido por un futuro `tools/export_winning_model_onnx.py`
+Contrato esperado (producido por un futuro `tools/training/export_winning_model_onnx.py`
 una vez seleccionado el mejor agente vía KPIEvaluator/HPHI sobre las 12
 corridas oficiales — 4 algoritmos x 3 escenarios E1/E2/E3):
 

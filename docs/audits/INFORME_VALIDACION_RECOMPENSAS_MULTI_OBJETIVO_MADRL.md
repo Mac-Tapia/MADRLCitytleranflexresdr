@@ -194,8 +194,8 @@ Edificios:
 Validadores vinculados:
 
 - `CityLearn/scripts/validate_citylearn_v3_reward_profiles.py`
-- `tools/verify_training_optimization.py`
-- `tools/verify_workflow_integrity.py`
+- `tools/training/verify_training_optimization.py`
+- `tools/ops/verify_workflow_integrity.py`
 - `CityLearn/scripts/check_citylearn_v3_training_ready.py`
 
 El criterio de aceptacion es:

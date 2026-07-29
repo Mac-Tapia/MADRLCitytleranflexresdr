@@ -1,136 +1,136 @@
 # Bateria no parametrica MADRL (HAPPO, MAAC, MASAC, MATD3)
 
-alpha=0.05, complementary=False
+alpha=0.05, complementary=True
+expected_n_seeds=12, sample_unit=seed
 TOPSIS weights: {'OE.1': 0.3333333333333333, 'OE.2': 0.3333333333333333, 'OE.3': 0.3333333333333333}
 TOPSIS criteria kinds: {'OE.1': 'benefit', 'OE.2': 'cost', 'OE.3': 'cost'}
 
 ### OE.1 — bateria no parametrica
 
 Orientacion: mayor es mejor.
+Unidad de analisis: seed | n_esperado=12 | n_por_algoritmo={'HAPPO': 49, 'MAAC': 50, 'MASAC': 50, 'MATD3': 50} | cobertura_completa=True.
 
 **Shapiro-Wilk (por algoritmo)**
-- HAPPO: W=0.8819757103919983, p=0.01920420490205288, normalidad_rechazada=True [ok]
-- MAAC: W=0.7605104446411133, p=0.00023565547598991543, normalidad_rechazada=True [ok]
-- MASAC: W=0.7239064574241638, p=7.741466833977029e-05, normalidad_rechazada=True [ok]
-- MATD3: W=0.7720008492469788, p=0.00034006821806542575, normalidad_rechazada=True [ok]
+- HAPPO: W=0.8942834734916687, p=0.00035935695632360876, normalidad_rechazada=True [ok]
+- MAAC: W=0.7530270218849182, p=8.482652447128203e-08, normalidad_rechazada=True [ok]
+- MASAC: W=0.7621653079986572, p=1.3063412040992262e-07, normalidad_rechazada=True [ok]
+- MATD3: W=0.6874924898147583, p=4.9697614912247445e-09, normalidad_rechazada=True [ok]
 
-**Fligner-Killeen**: estadistico=16.848141701158802, p=0.000759426223739126, heterocedasticidad=True.
+**Fligner-Killeen**: estadistico=8.958477138459248, p=0.029848080213775673, heterocedasticidad=True.
 
-**Kruskal-Wallis**: H=21.667423132377607, p=7.649502904148951e-05, epsilon^2=0.2742711788908558, significativo=True.
-Rangos medios: {'HAPPO': 31.5, 'MAAC': 59.35, 'MASAC': 42.65, 'MATD3': 28.5}
+**Kruskal-Wallis**: H=52.86463058906723, p=1.959331223860867e-11, epsilon^2=0.26699308378316783, significativo=True.
+Rangos medios: {'HAPPO': 65.36734693877551, 'MAAC': 145.12, 'MASAC': 105.2, 'MATD3': 83.62}
 
 **Dunn post-hoc (Holm)**
-- HAPPO vs MAAC: z=-3.7901492961571837, p_raw=0.00015055676546665083, p_holm=0.0007527838273332541, sig=True, Cliff d=-0.6 (large)
-- HAPPO vs MASAC: z=-1.5174206338295364, p_raw=0.12916051762124447, p_holm=0.25832103524248895, sig=False, Cliff d=-0.43 (medium)
-- HAPPO vs MATD3: z=0.40827460999897847, p_raw=0.6830720775260473, p_holm=0.6830720775260473, sig=False, Cliff d=0.13 (negligible)
-- MAAC vs MASAC: z=2.2727286623276473, p_raw=0.023042536296064575, p_holm=0.0921701451842583, sig=False, Cliff d=0.57 (large)
-- MAAC vs MATD3: z=4.198423906156162, p_raw=2.6877913885150712e-05, p_holm=0.00016126748331090428, sig=True, Cliff d=0.715 (large)
-- MASAC vs MATD3: z=1.9256952438285149, p_raw=0.05414243811897638, p_holm=0.16242731435692914, sig=False, Cliff d=0.355 (medium)
+- HAPPO vs MAAC: z=-6.889149718622038, p_raw=5.612684466008719e-12, p_holm=3.3676106796052315e-11, sig=True, Cliff d=-0.6644897959183673 (large)
+- HAPPO vs MASAC: z=-3.4408022817503334, p_raw=0.0005799921824784429, p_holm=0.0021138675361909824, sig=True, Cliff d=-0.48081632653061224 (large)
+- HAPPO vs MATD3: z=-1.5766906162270027, p_raw=0.11486673061368713, p_holm=0.12197162503595116, sig=False, Cliff d=-0.24 (small)
+- MAAC vs MASAC: z=3.4658963921249506, p_raw=0.0005284668840477456, p_holm=0.0021138675361909824, sig=True, Cliff d=0.5256 (large)
+- MAAC vs MATD3: z=5.339494692276665, p_raw=9.320599835875012e-08, p_holm=4.660299917937506e-07, sig=True, Cliff d=0.628 (large)
+- MASAC vs MATD3: z=1.873598300151714, p_raw=0.06098581251797558, p_holm=0.12197162503595116, sig=False, Cliff d=0.2624 (small)
 
 **Cliff's delta (todos los pares, metrica orientada)**
-- HAPPO vs MAAC: d=-0.6 (large)
-- HAPPO vs MASAC: d=-0.43 (medium)
-- HAPPO vs MATD3: d=0.13 (negligible)
-- MAAC vs MASAC: d=0.57 (large)
-- MAAC vs MATD3: d=0.715 (large)
-- MASAC vs MATD3: d=0.355 (medium)
+- HAPPO vs MAAC: d=-0.6644897959183673 (large)
+- HAPPO vs MASAC: d=-0.48081632653061224 (large)
+- HAPPO vs MATD3: d=-0.24 (small)
+- MAAC vs MASAC: d=0.5256 (large)
+- MAAC vs MATD3: d=0.628 (large)
+- MASAC vs MATD3: d=0.2624 (small)
 
-**Ganador(es)**: ['MAAC', 'MASAC'] (primary=MAAC, status=cowinners_cliff_tiebreak)
-- Highest KW mean rank: MAAC (Rmean=59.350).
-- Dunn-Holm vs 2nd (MASAC, Rmean=42.650) not significant (p_holm=0.0921701451842583) -> co-winners.
-- Tie-break Cliff's delta(MAAC,MASAC)=0.57 (large); oriented medians MAAC=-0.6136, MASAC=-0.6211.
-- Cliff's delta prefers MAAC (report as primary among co-winners).
+**Ganador(es)**: ['MAAC'] (primary=MAAC, status=ok)
+- Highest KW mean rank: MAAC (Rmean=145.120).
+- Dunn-Holm confirms MAAC > MASAC (p_holm=0.0021138675361909824, alpha=0.05).
 
 ### OE.2 — bateria no parametrica
 
 Orientacion: menor es mejor (coste/emision).
+Unidad de analisis: seed | n_esperado=12 | n_por_algoritmo={'HAPPO': 49, 'MAAC': 50, 'MASAC': 50, 'MATD3': 50} | cobertura_completa=True.
 
 **Shapiro-Wilk (por algoritmo)**
-- HAPPO: W=0.9515063166618347, p=0.3905356228351593, normalidad_rechazada=False [ok]
-- MAAC: W=0.6611056327819824, p=1.356965094601037e-05, normalidad_rechazada=True [ok]
-- MASAC: W=0.7578094005584717, p=0.0002164616307709366, normalidad_rechazada=True [ok]
-- MATD3: W=0.688618004322052, p=2.8415404813131317e-05, normalidad_rechazada=True [ok]
+- HAPPO: W=0.9332813620567322, p=0.008154917508363724, normalidad_rechazada=True [ok]
+- MAAC: W=0.7056064605712891, p=1.0447892329068509e-08, normalidad_rechazada=True [ok]
+- MASAC: W=0.7643879652023315, p=1.4532379566389864e-07, normalidad_rechazada=True [ok]
+- MATD3: W=0.611748456954956, p=2.921810016154325e-10, normalidad_rechazada=True [ok]
 
-**Fligner-Killeen**: estadistico=11.498363718067175, p=0.009314845433479624, heterocedasticidad=True.
+**Fligner-Killeen**: estadistico=33.50414943186012, p=2.5210538218983065e-07, heterocedasticidad=True.
 
-**Kruskal-Wallis**: H=13.371835297719254, p=0.0038977540506232727, epsilon^2=0.16926373794581334, significativo=True.
-Rangos medios: {'HAPPO': 54.85, 'MAAC': 40.5, 'MASAC': 38.35, 'MATD3': 28.3}
+**Kruskal-Wallis**: H=23.806380047521955, p=2.7416281510917326e-05, epsilon^2=0.1202342426642523, significativo=True.
+Rangos medios: {'HAPPO': 131.6734693877551, 'MAAC': 100.45, 'MASAC': 91.13, 'MATD3': 77.38}
 
 **Dunn post-hoc (Holm)**
-- HAPPO vs MAAC: z=1.9572776605595887, p_raw=0.050314832491662076, p_holm=0.2012593299666483, sig=False, Cliff d=0.44 (medium)
-- HAPPO vs MASAC: z=2.2505283205040563, p_raw=0.024415427819357974, p_holm=0.12207713909678987, sig=False, Cliff d=0.435 (medium)
-- HAPPO vs MATD3: z=3.621304661174709, p_raw=0.00029312108401560174, p_holm=0.0017587265040936106, sig=True, Cliff d=0.56 (large)
-- MAAC vs MASAC: z=0.29325065994446775, p_raw=0.7693305641903496, p_holm=0.7693305641903496, sig=False, Cliff d=0.08 (negligible)
-- MAAC vs MATD3: z=1.6640270006151203, p_raw=0.0961070337161986, p_holm=0.28832110114859577, sig=False, Cliff d=0.36 (medium)
-- MASAC vs MATD3: z=1.3707763406706526, p_raw=0.17044468846740946, p_holm=0.3408893769348189, sig=False, Cliff d=0.3 (small)
+- HAPPO vs MAAC: z=2.7017734231531807, p_raw=0.006897074520365125, p_holm=0.0275882980814605, sig=True, Cliff d=0.3902040816326531 (medium)
+- HAPPO vs MASAC: z=3.508234998293281, p_raw=0.000451090394279833, p_holm=0.002255451971399165, sig=True, Cliff d=0.4220408163265306 (medium)
+- HAPPO vs MATD3: z=4.698025412260702, p_raw=2.6268875395750553e-06, p_holm=1.576132523745033e-05, sig=True, Cliff d=0.4546938775510204 (medium)
+- MAAC vs MASAC: z=0.8105657317991041, p_raw=0.4176151028011883, p_holm=0.46351381722702123, sig=False, Cliff d=0.1028 (negligible)
+- MAAC vs MATD3: z=2.006411097919026, p_raw=0.04481240523080026, p_holm=0.13443721569240077, sig=False, Cliff d=0.2976 (small)
+- MASAC vs MATD3: z=1.195845366119922, p_raw=0.23175690861351061, p_holm=0.46351381722702123, sig=False, Cliff d=0.1616 (small)
 
 **Cliff's delta (todos los pares, metrica orientada)**
-- HAPPO vs MAAC: d=0.44 (medium)
-- HAPPO vs MASAC: d=0.435 (medium)
-- HAPPO vs MATD3: d=0.56 (large)
-- MAAC vs MASAC: d=0.08 (negligible)
-- MAAC vs MATD3: d=0.36 (medium)
-- MASAC vs MATD3: d=0.3 (small)
+- HAPPO vs MAAC: d=0.3902040816326531 (medium)
+- HAPPO vs MASAC: d=0.4220408163265306 (medium)
+- HAPPO vs MATD3: d=0.4546938775510204 (medium)
+- MAAC vs MASAC: d=0.1028 (negligible)
+- MAAC vs MATD3: d=0.2976 (small)
+- MASAC vs MATD3: d=0.1616 (small)
 
-**Ganador(es)**: ['HAPPO', 'MAAC'] (primary=HAPPO, status=cowinners_cliff_tiebreak)
-- Highest KW mean rank: HAPPO (Rmean=54.850).
-- Dunn-Holm vs 2nd (MAAC, Rmean=40.500) not significant (p_holm=0.2012593299666483) -> co-winners.
-- Tie-break Cliff's delta(HAPPO,MAAC)=0.44 (medium); oriented medians HAPPO=-823.7833, MAAC=-1132.6354.
-- Cliff's delta prefers HAPPO (report as primary among co-winners).
+**Ganador(es)**: ['HAPPO'] (primary=HAPPO, status=ok)
+- Highest KW mean rank: HAPPO (Rmean=131.673).
+- Dunn-Holm confirms HAPPO > MAAC (p_holm=0.0275882980814605, alpha=0.05).
 
 ### OE.3 — bateria no parametrica
 
 Orientacion: menor es mejor (coste/emision).
+Unidad de analisis: seed | n_esperado=12 | n_por_algoritmo={'HAPPO': 49, 'MAAC': 50, 'MASAC': 50, 'MATD3': 50} | cobertura_completa=True.
 
 **Shapiro-Wilk (por algoritmo)**
-- HAPPO: W=0.789676308631897, p=0.0006085577770136297, normalidad_rechazada=True [ok]
-- MAAC: W=0.634101390838623, p=6.783870503568323e-06, normalidad_rechazada=True [ok]
-- MASAC: W=0.6930649876594543, p=3.2128220482263714e-05, normalidad_rechazada=True [ok]
-- MATD3: W=0.8345080614089966, p=0.0029642092995345592, normalidad_rechazada=True [ok]
+- HAPPO: W=0.8576273918151855, p=2.9542197808041237e-05, normalidad_rechazada=True [ok]
+- MAAC: W=0.6491007804870605, p=1.1234708718887987e-09, normalidad_rechazada=True [ok]
+- MASAC: W=0.689295768737793, p=5.34453548084457e-09, normalidad_rechazada=True [ok]
+- MATD3: W=0.792750895023346, p=5.992915248498321e-07, normalidad_rechazada=True [ok]
 
-**Fligner-Killeen**: estadistico=10.968289262608756, p=0.011898589168029721, heterocedasticidad=True.
+**Fligner-Killeen**: estadistico=24.352454674776503, p=2.1085753579708033e-05, heterocedasticidad=True.
 
-**Kruskal-Wallis**: H=15.809115849709771, p=0.0012408782852464052, epsilon^2=0.20011539050265534, significativo=True.
-Rangos medios: {'HAPPO': 57.95, 'MAAC': 34.25, 'MASAC': 31.85, 'MATD3': 37.95}
+**Kruskal-Wallis**: H=48.52985296268235, p=1.6425113687237728e-10, epsilon^2=0.2451002674882947, significativo=True.
+Rangos medios: {'HAPPO': 148.79591836734693, 'MAAC': 90.22, 'MASAC': 75.88, 'MATD3': 86.08}
 
 **Dunn post-hoc (Holm)**
-- HAPPO vs MAAC: z=3.232577042178554, p_raw=0.0012267905088062944, p_holm=0.006133952544031472, sig=True, Cliff d=0.62 (large)
-- HAPPO vs MASAC: z=3.559926616070053, p_raw=0.0003709584417610716, p_holm=0.0022257506505664296, sig=True, Cliff d=0.62 (large)
-- HAPPO vs MATD3: z=2.7279131157624925, p_raw=0.006373639321403983, p_holm=0.02549455728561593, sig=True, Cliff d=0.505 (large)
-- MAAC vs MASAC: z=0.32734957389149894, p_raw=0.7434035013879343, p_holm=1.0, sig=False, Cliff d=0.1 (negligible)
-- MAAC vs MATD3: z=-0.5046639264160615, p_raw=0.6137949019062272, p_holm=1.0, sig=False, Cliff d=-0.105 (negligible)
-- MASAC vs MATD3: z=-0.8320135003075605, p_raw=0.405401324300674, p_holm=1.0, sig=False, Cliff d=-0.145 (negligible)
+- HAPPO vs MAAC: z=5.071266618070802, p_raw=3.951766754623681e-07, p_holm=1.5807067018494724e-06, sig=True, Cliff d=0.6677551020408163 (large)
+- HAPPO vs MASAC: z=6.312765946294294, p_raw=2.7409187623179886e-10, p_holm=1.644551257390793e-09, sig=True, Cliff d=0.6718367346938775 (large)
+- HAPPO vs MATD3: z=5.429691110319426, p_raw=5.645167290329435e-08, p_holm=2.8225836451647176e-07, sig=True, Cliff d=0.6122448979591837 (large)
+- MAAC vs MASAC: z=1.2478174317663575, p_raw=0.2120979234574102, p_holm=0.6362937703722306, sig=False, Cliff d=0.1984 (small)
+- MAAC vs MATD3: z=0.36024854724635424, p_raw=0.7186612729784835, p_holm=0.7495453943637778, sig=False, Cliff d=0.0648 (negligible)
+- MASAC vs MATD3: z=-0.8875688845200033, p_raw=0.3747726971818889, p_holm=0.7495453943637778, sig=False, Cliff d=-0.108 (negligible)
 
 **Cliff's delta (todos los pares, metrica orientada)**
-- HAPPO vs MAAC: d=0.62 (large)
-- HAPPO vs MASAC: d=0.62 (large)
-- HAPPO vs MATD3: d=0.505 (large)
-- MAAC vs MASAC: d=0.1 (negligible)
-- MAAC vs MATD3: d=-0.105 (negligible)
-- MASAC vs MATD3: d=-0.145 (negligible)
+- HAPPO vs MAAC: d=0.6677551020408163 (large)
+- HAPPO vs MASAC: d=0.6718367346938775 (large)
+- HAPPO vs MATD3: d=0.6122448979591837 (large)
+- MAAC vs MASAC: d=0.1984 (small)
+- MAAC vs MATD3: d=0.0648 (negligible)
+- MASAC vs MATD3: d=-0.108 (negligible)
 
 **Ganador(es)**: ['HAPPO'] (primary=HAPPO, status=ok)
-- Highest KW mean rank: HAPPO (Rmean=57.950).
-- Dunn-Holm confirms HAPPO > MATD3 (p_holm=0.02549455728561593, alpha=0.05).
+- Highest KW mean rank: HAPPO (Rmean=148.796).
+- Dunn-Holm confirms HAPPO > MAAC (p_holm=1.5807067018494724e-06, alpha=0.05).
 
 ### OG — sintesis global (E1+E2+E3 como bloques)
 
-**Friedman**: chi2=2.6000000000000014, p=0.45748954687818333, W=0.28888888888888903, significativo=False.
-Rangos medios Friedman: {'HAPPO': 3.3333333333333335, 'MAAC': 2.6666666666666665, 'MASAC': 2.3333333333333335, 'MATD3': 1.6666666666666667}
+**Friedman**: chi2=3.4000000000000057, p=0.33396524909015995, W=0.37777777777777843, significativo=False.
+Rangos medios Friedman: {'HAPPO': 3.3333333333333335, 'MAAC': 3.0, 'MASAC': 2.0, 'MATD3': 1.6666666666666667}
 
 **Nemenyi**: CD=2.707997260862172 (alpha=0.05)
-- HAPPO vs MAAC: |dR|=0.666666666666667, sig=False
-- HAPPO vs MASAC: |dR|=1.0, sig=False
+- HAPPO vs MAAC: |dR|=0.3333333333333335, sig=False
+- HAPPO vs MASAC: |dR|=1.3333333333333335, sig=False
 - HAPPO vs MATD3: |dR|=1.6666666666666667, sig=False
-- MAAC vs MASAC: |dR|=0.33333333333333304, sig=False
-- MAAC vs MATD3: |dR|=0.9999999999999998, sig=False
-- MASAC vs MATD3: |dR|=0.6666666666666667, sig=False
+- MAAC vs MASAC: |dR|=1.0, sig=False
+- MAAC vs MATD3: |dR|=1.3333333333333333, sig=False
+- MASAC vs MATD3: |dR|=0.33333333333333326, sig=False
 
 **TOPSIS (declaracion oficial de ganador)**
-- #1 HAPPO: C*=0.9491414056780454
-- #2 MATD3: C*=0.27537217635916017
-- #3 MAAC: C*=0.19711358231799558
-- #4 MASAC: C*=0.1896383276349491
+- #1 HAPPO: C*=0.9448972536659926
+- #2 MAAC: C*=0.12030984787647217
+- #3 MATD3: C*=0.10694539923062162
+- #4 MASAC: C*=0.08215097939316716
 
 **Validacion TOPSIS vs Friedman-Nemenyi**
 - TOPSIS and Friedman agree on winner: HAPPO.

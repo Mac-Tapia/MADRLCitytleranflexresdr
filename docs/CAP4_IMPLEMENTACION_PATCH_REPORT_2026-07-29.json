@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-07-29T13:09:49",
+  "source_md": "docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md",
+  "pytest_summary": {
+    "command": ".\\.venv39-citylearn-v3\\Scripts\\python.exe -B -m pytest tests/uc3m/ tests/citylearn_v3/ -v --tb=line",
+    "passed": 184,
+    "failed": 0,
+    "warnings": 1,
+    "duration_s": 91.09,
+    "date": "2026-07-29"
+  },
+  "files": [
+    {
+      "path": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "backup": "docs\\_backup_Tesis_Doctoral_before_cap4_20260729_130949.docx",
+      "actions": [
+        "insert_4_11_heading",
+        "insert_4_11_table",
+        "insert_4_12_heading",
+        "insert_4_12_body",
+        "insert_4_13_body"
+      ],
+      "checks": {
+        "has_4_11_folders": true,
+        "has_4_12_validation": true,
+        "has_4_13_repro": true,
+        "has_uc3m": true,
+        "heading_4_7_ok": true,
+        "ok": true
+      },
+      "ok": true
+    }
+  ],
+  "ok": true
+}

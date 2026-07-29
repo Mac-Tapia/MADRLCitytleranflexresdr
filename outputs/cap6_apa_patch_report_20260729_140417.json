@@ -1,0 +1,26 @@
+{
+  "stamp": "20260729_140417",
+  "files": {
+    "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_20260729_140417.docx",
+      "actions": [
+        "fixed Cap.6 hypothesis table to KPI-gains verdict",
+        "inserted Cap.6 hallazgos HE paragraph",
+        "aligned Cap.6 limitaciones with Tesis KPI-gains framing",
+        "refs:ERROR: no se encontró sección Referencias"
+      ]
+    },
+    "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_20260729_140417.docx",
+      "actions": [
+        "normalized Vazquez→Vázquez in 14 paragraphs/cells",
+        "refs:updated MINAM entry",
+        "refs:updated OSINERGMIN entry",
+        "refs:added Creswell, J. W., & Creswell, J. D. (2023...",
+        "refs:added Nweye, K., Sankaranarayanan, S., & Nagy,...",
+        "refs:added Nweye, K., et al. (2023b). Heterogeneous...",
+        "refs:added Shadish, W. R., Cook, T. D., & Campbell,..."
+      ]
+    }
+  }
+}

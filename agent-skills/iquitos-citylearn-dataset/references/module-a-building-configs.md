@@ -404,7 +404,7 @@ Fuente: Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx
 
 ## Asignacion de Cargadores EV por Edificio (185 archivos charger)
 
-Dimensionamiento vigente: `tools/dimension_ev_chargers.py`, auditado en `outputs/dataset_audit/ev_charger_sizing_audit.csv`. El schema activo contiene 185 tomas EV controlables, 96 equipos fisicos modo 3, 192 sockets y 749.4 kW instalados.
+Dimensionamiento vigente: `tools/dataset/dimension_ev_chargers.py`, auditado en `outputs/dataset_audit/ev_charger_sizing_audit.csv`. El schema activo contiene 185 tomas EV controlables, 96 equipos fisicos modo 3, 192 sockets y 749.4 kW instalados.
 
 | B# | Edificio | Tomas EV | Equipos fisicos modo 3 | Sockets modo 3 | kW |
 |---|---|---:|---:|---:|---:|

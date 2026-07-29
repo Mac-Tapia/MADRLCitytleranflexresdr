@@ -54,6 +54,7 @@ def run_selection_pipeline(
     run_dir: Optional[Path] = None,
     scenario: str = "E1",
     prefer_real: bool = True,
+    allow_illustrative_fill: bool = True,
     use_ahp_weights: bool = True,
     output_dir: Optional[Path] = None,
     make_plots: bool = False,
@@ -68,6 +69,7 @@ def run_selection_pipeline(
         run_dir=run_dir,
         scenario=scenario,
         prefer_real=prefer_real,
+        allow_illustrative_fill=allow_illustrative_fill,
     )
     decision_matrix = loaded["decision_matrix"]
     criteria_kind = _criteria_kind()
@@ -129,14 +131,27 @@ def run_selection_pipeline(
         "sensitivity_stability_ratio": sensitivity.get("stability_ratio"),
     }
 
-    # Optional illustrative learning curves when none provided.
+    # Prefer real Drive episodic curves; synthetic only when illustrative fill allowed.
     if seed_curves is None:
-        seed_curves = _synthetic_learning_curves(decision_matrix)
+        real_curves = loaded.get("learning_curves") or {}
+        if real_curves:
+            seed_curves = real_curves
+        elif allow_illustrative_fill:
+            seed_curves = _synthetic_learning_curves(decision_matrix)
+        else:
+            raise RuntimeError(
+                "real_only multicriteria: missing Drive episode learning curves"
+            )
 
     figures = {}
     fig_axes = []
     if make_plots:
-        ax = plot_learning_curves(seed_curves)
+        lc_title = (
+            "Learning curves (Drive 50 ep, reward_mean)"
+            if str(loaded.get("source", "")).startswith("real_drive")
+            else "Learning curves (mean ± std over seeds)"
+        )
+        ax = plot_learning_curves(seed_curves, title=lc_title)
         figures["learning_curves"] = ax.figure
         fig_axes.append(ax)
         ax2, _front = plot_pareto_cost_co2_flex(decision_matrix)
@@ -145,7 +160,12 @@ def run_selection_pipeline(
         deg = degradation or {
             algo: float(decision_matrix[algo]["C6"]) for algo in decision_matrix
         }
-        ax3 = plot_degradation_bars(deg, title="Train-test gap (C6)", ylabel="Gap")
+        deg_title = (
+            "Early–late episode reward gap (C6, Drive 50 ep)"
+            if str(loaded.get("source", "")).startswith("real_drive")
+            else "Train-test gap (C6)"
+        )
+        ax3 = plot_degradation_bars(deg, title=deg_title, ylabel="Gap")
         figures["degradation_bars"] = ax3.figure
         fig_axes.append(ax3)
 

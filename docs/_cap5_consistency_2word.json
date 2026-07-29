@@ -1,0 +1,26 @@
+{
+  "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+    "Shapiro": 14,
+    "Kruskal": 22,
+    "Wilcoxon": 13,
+    "MannWhitney": 7,
+    "normalidad": 13,
+    "no_parametric": 8,
+    "score_06667": 11,
+    "evaluate_v2": 17,
+    "flex_composite": 13,
+    "run_id": 30
+  },
+  "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+    "Shapiro": 9,
+    "Kruskal": 9,
+    "Wilcoxon": 17,
+    "MannWhitney": 2,
+    "normalidad": 11,
+    "no_parametric": 7,
+    "score_06667": 5,
+    "evaluate_v2": 9,
+    "flex_composite": 14,
+    "run_id": 33
+  }
+}

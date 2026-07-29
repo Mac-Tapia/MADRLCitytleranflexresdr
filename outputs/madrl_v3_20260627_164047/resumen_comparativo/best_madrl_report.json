@@ -1,213 +1,135 @@
 {
-  "mejor_algoritmo_madrl_OG": "MATD3",
-  "ganadores_por_objetivo": {
-    "OE1": {
-      "objetivo": "OE.1 Flexibilidad energetica",
-      "scenario": "E1",
-      "winner": "MATD3",
-      "n_kpis_definidos": 36
-    },
-    "OE2": {
-      "objetivo": "OE.2 Emisiones de CO2",
-      "scenario": "E2",
-      "winner": "MATD3",
-      "n_kpis_definidos": 7
-    },
-    "OE3": {
-      "objetivo": "OE.3 Costos energeticos",
-      "scenario": "E3",
-      "winner": "MATD3",
-      "n_kpis_definidos": 11
-    }
-  },
-  "fecha_seleccion": "2026-07-23T21:44:53.192530",
-  "ranking_OG": [
-    {
-      "algorithm": "MATD3",
-      "mean_score": -0.2409506318544019,
-      "score_E1_OE1": -0.08683962328887807,
-      "score_E2_OE2": -0.41010584595486,
-      "score_E3_OE3": -0.22590642631946764
-    },
-    {
-      "algorithm": "MAAC",
-      "mean_score": -0.24379554205105358,
-      "score_E1_OE1": -0.08877804446842204,
-      "score_E2_OE2": -0.414810066673286,
-      "score_E3_OE3": -0.22779851501145268
-    },
-    {
-      "algorithm": "MASAC",
-      "mean_score": -0.30492165650688613,
-      "score_E1_OE1": -0.2620870520576241,
-      "score_E2_OE2": -0.4171443155378317,
-      "score_E3_OE3": -0.23553360192520253
-    }
-  ],
-  "oe_winners": {
-    "OE1": {
-      "scenario": "E1",
-      "objetivo": "OE.1 Flexibilidad energetica",
-      "winner": "MATD3",
-      "ranking": [
-        {
-          "algorithm": "MATD3",
-          "score": -0.08683962328887807
-        },
-        {
-          "algorithm": "MAAC",
-          "score": -0.08877804446842204
-        },
-        {
-          "algorithm": "MASAC",
-          "score": -0.2620870520576241
-        }
-      ],
-      "n_kpis_definidos": 36
-    },
-    "OE2": {
-      "scenario": "E2",
-      "objetivo": "OE.2 Emisiones de CO2",
-      "winner": "MATD3",
-      "ranking": [
-        {
-          "algorithm": "MATD3",
-          "score": -0.41010584595486
-        },
-        {
-          "algorithm": "MAAC",
-          "score": -0.414810066673286
-        },
-        {
-          "algorithm": "MASAC",
-          "score": -0.4171443155378317
-        }
-      ],
-      "n_kpis_definidos": 7
-    },
-    "OE3": {
-      "scenario": "E3",
-      "objetivo": "OE.3 Costos energeticos",
-      "winner": "MATD3",
-      "ranking": [
-        {
-          "algorithm": "MATD3",
-          "score": -0.22590642631946764
-        },
-        {
-          "algorithm": "MAAC",
-          "score": -0.22779851501145268
-        },
-        {
-          "algorithm": "MASAC",
-          "score": -0.23553360192520253
-        }
-      ],
-      "n_kpis_definidos": 11
-    }
-  },
-  "kruskal_wallis": {
-    "H": 1.8666666666666671,
-    "p": 0.393240720868598,
-    "significant": false
-  },
-  "mann_whitney_u": {
-    "MAAC_vs_MASAC": {
-      "p": 0.4,
-      "cliff_delta": 0.5555555555555556,
-      "winner": "MAAC"
-    },
-    "MAAC_vs_MATD3": {
-      "p": 0.7,
-      "cliff_delta": -0.3333333333333333,
-      "winner": "MATD3"
-    },
-    "MASAC_vs_MATD3": {
-      "p": 0.4,
-      "cliff_delta": -0.5555555555555556,
-      "winner": "MATD3"
-    }
-  },
-  "metodologia": "Por escenario Ek se promedia el signed relative gain vs baseline de TODOS los KPIs del eje OEk definidos en citylearn.v3.objectives (E1→OE1, E2→OE2, E3→OE3). OG = media de scores E1/E2/E3. Pruebas: Shapiro-Wilk + Kruskal-Wallis + Mann-Whitney U.",
-  "score_rule": "signed_relative_gain_vs_baseline_mean_over_all_matching_OE_kpis; positive_is_better; OG=mean(E1,E2,E3)",
-  "escenarios_evaluados": [
-    "E1",
-    "E2",
-    "E3"
-  ],
-  "objetivos": [
-    "OG",
-    "OE.1",
-    "OE.2",
-    "OE.3"
-  ],
-  "algoritmos_evaluados": [
+  "mejor_madrl": "MATD3",
+  "fuente": "colab_drive",
+  "run_id": "madrl_v3_20260627_164047",
+  "drive_folder": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+  "target_episodes": 50,
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition (Colab)",
+  "algorithms_in_study": [
     "HAPPO",
     "MASAC",
     "MATD3",
     "MAAC"
   ],
-  "kpis_por_oe": {
-    "OE1": [
-      "grid_import",
-      "grid_import_control",
-      "grid_import_baseline",
-      "grid_import_delta",
-      "zero_net_energy",
-      "net_exchange_control",
-      "net_exchange_baseline",
-      "net_exchange_delta",
-      "grid_export_ratio",
-      "grid_export_control",
-      "grid_export_baseline",
-      "grid_export_delta",
-      "peak_average",
-      "ramping_average",
-      "one_minus_load_factor_average",
-      "pv_generation_total",
-      "pv_generation_daily_average",
-      "pv_export_total",
-      "pv_export_daily_average",
-      "pv_self_consumption_ratio",
-      "community_local_traded_total",
-      "community_local_traded_daily_average",
-      "community_import_share",
-      "battery_charge_total",
-      "battery_discharge_total",
-      "battery_throughput_total",
-      "battery_equivalent_full_cycles",
-      "battery_capacity_fade_ratio",
-      "ev_departure_count",
-      "ev_departure_met_count",
-      "ev_departure_within_tolerance_count",
-      "ev_departure_success_rate",
-      "ev_departure_within_tolerance_rate",
-      "ev_departure_soc_deficit_mean",
-      "ev_charge_total",
-      "ev_v2g_export_total"
-    ],
-    "OE2": [
-      "carbon_emissions",
-      "carbon_emissions_control",
-      "carbon_emissions_baseline",
-      "carbon_emissions_delta",
-      "carbon_emissions_daily_average_control",
-      "carbon_emissions_daily_average_baseline",
-      "carbon_emissions_daily_average_delta"
-    ],
-    "OE3": [
-      "electricity_cost",
-      "electricity_cost_control",
-      "electricity_cost_baseline",
-      "electricity_cost_delta",
-      "electricity_cost_daily_average_control",
-      "electricity_cost_daily_average_baseline",
-      "electricity_cost_daily_average_delta",
-      "cost_peak_average",
-      "cost_ramping_average",
-      "cost_one_minus_load_factor_average",
-      "price_signal_deviation"
-    ]
+  "nota_episodios": "Episodios = episodes_recorded (o job_resume.completed_episodes si salvage). MATD3/MAAC/MASAC: 50/50 con KPIs. HAPPO: 49/50 — pendiente resume celda 2.3 (NO excluido del estudio; checkpoints en Drive).",
+  "happo_pending": [
+    {
+      "scenario": "E1",
+      "episodes_recorded": 49,
+      "target_episodes": 50,
+      "has_kpis": false,
+      "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined",
+      "action": "celda_2.3_resume_execute"
+    },
+    {
+      "scenario": "E2",
+      "episodes_recorded": 49,
+      "target_episodes": 50,
+      "has_kpis": false,
+      "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined",
+      "action": "celda_2.3_resume_execute"
+    },
+    {
+      "scenario": "E3",
+      "episodes_recorded": 49,
+      "target_episodes": 50,
+      "has_kpis": false,
+      "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined",
+      "action": "celda_2.3_resume_execute"
+    }
+  ],
+  "ranking_with_kpis": [
+    {
+      "algorithm": "MATD3",
+      "score_oe1_flex": 1.0,
+      "score_oe2_co2": 1.0,
+      "score_oe3_cost": 0.0,
+      "score_global": 0.6667,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 1,
+      "selected": true
+    },
+    {
+      "algorithm": "MAAC",
+      "score_oe1_flex": 0.5837,
+      "score_oe2_co2": 0.1282,
+      "score_oe3_cost": 1.0,
+      "score_global": 0.5706,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 2,
+      "selected": false
+    },
+    {
+      "algorithm": "MASAC",
+      "score_oe1_flex": 0.0,
+      "score_oe2_co2": 0.0,
+      "score_oe3_cost": 0.7054,
+      "score_global": 0.2351,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 3,
+      "selected": false
+    }
+  ],
+  "ranking": [
+    {
+      "algorithm": "MATD3",
+      "score_oe1_flex": 1.0,
+      "score_oe2_co2": 1.0,
+      "score_oe3_cost": 0.0,
+      "score_global": 0.6667,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 1,
+      "selected": true
+    },
+    {
+      "algorithm": "MAAC",
+      "score_oe1_flex": 0.5837,
+      "score_oe2_co2": 0.1282,
+      "score_oe3_cost": 1.0,
+      "score_global": 0.5706,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 2,
+      "selected": false
+    },
+    {
+      "algorithm": "MASAC",
+      "score_oe1_flex": 0.0,
+      "score_oe2_co2": 0.0,
+      "score_oe3_cost": 0.7054,
+      "score_global": 0.2351,
+      "episodes_e1": 50,
+      "episodes_e2": 50,
+      "episodes_e3": 50,
+      "rank": 3,
+      "selected": false
+    }
+  ],
+  "kpis_primarios": {
+    "flex_composite_e1": {
+      "MASAC": 1.028552547361268,
+      "MATD3": 1.0009229901555254,
+      "MAAC": 1.0124257995412176
+    },
+    "co2_delta_kg_e2": {
+      "MASAC": 77648.98780810599,
+      "MATD3": 23070.418478806503,
+      "MAAC": 70654.19071758597
+    },
+    "cost_delta_eur_e3": {
+      "MASAC": 19792.792564499217,
+      "MATD3": 44399.364069434494,
+      "MAAC": 9515.151784724349
+    }
   },
-  "output_root": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047"
+  "generated_at": "2026-07-28T23:39:58.833879+00:00"
 }

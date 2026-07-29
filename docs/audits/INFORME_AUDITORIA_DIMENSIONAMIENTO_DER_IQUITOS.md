@@ -1,6 +1,6 @@
 # Informe de auditoria de dimensionamiento DER - Iquitos CityLearn
 
-Este informe se genera con `tools/audit_der_sizing.py` y no modifica el dataset.
+Este informe se genera con `tools/dataset/audit_der_sizing.py` y no modifica el dataset.
 
 ## Hallazgos
 
@@ -99,17 +99,17 @@ Este auditor no sobrescribe `schema.json` ni los CSV, pero documenta el estado a
 
 ```powershell
 # PV aplicado al entrenamiento: Iquitos TMY via PVGIS/pvlib + area techada suministrada * 0.24 kWp/m2
-.\.venv39-citylearn-v3\Scripts\python.exe tools\fix_solar_pvlib.py --weather-source tmy --capacity-method power-density --power-density-kwp-m2 0.24 --parking-factor 0.0 --dry-run
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\fix_solar_pvlib.py --weather-source tmy --capacity-method power-density --power-density-kwp-m2 0.24 --parking-factor 0.0 --dry-run
 
 # Aplicar PV al dataset si se necesita regenerar los CSV solares
-.\.venv39-citylearn-v3\Scripts\python.exe tools\fix_solar_pvlib.py --weather-source tmy --capacity-method power-density --power-density-kwp-m2 0.24 --parking-factor 0.0
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\fix_solar_pvlib.py --weather-source tmy --capacity-method power-density --power-density-kwp-m2 0.24 --parking-factor 0.0
 
 # EV v3 aplica cargadores y escribe schema/charger CSV
-.\.venv39-citylearn-v3\Scripts\python.exe tools\dimension_ev_chargers.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\dimension_ev_chargers.py
 
 # BESS con PV->EV y BESS->EV prioritario por ventana operativa, solo verificar
-.\.venv39-citylearn-v3\Scripts\python.exe tools\size_bess_optimal.py --dry-run
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\size_bess_optimal.py --dry-run
 
 # Aplicar BESS corregido al schema.json despues de EV
-.\.venv39-citylearn-v3\Scripts\python.exe tools\size_bess_optimal.py --write
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\size_bess_optimal.py --write
 ```

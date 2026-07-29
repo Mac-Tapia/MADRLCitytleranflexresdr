@@ -1,5 +1,5 @@
 """
-Tests unitarios para tools/distill_building_loads.py — calibración de cargas.
+Tests unitarios para tools/dataset/distill_building_loads.py — calibración de cargas.
 """
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 # Importar las funciones de calibración directamente
-sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT / "tools" / "dataset"))
 from distill_building_loads import (  # noqa: E402
     compute_cop_array,
     compute_managed_energy,

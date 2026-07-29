@@ -51,7 +51,7 @@ outputs/citylearn_v3_madrl_full_<yyyyMMdd_HHmmss>
 
 ```text
 verify_project_context.ps1
-  -> tools/orchestrate_citylearn_dataset.py
+  -> tools/dataset/orchestrate_citylearn_dataset.py
   -> outputs/dataset_audit/*
   -> check_training_dataset_ready.py
   -> run_citylearn_v3_env_smoke.py
@@ -93,10 +93,10 @@ Comandos:
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
 
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\orchestrate_citylearn_dataset.py `
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\orchestrate_citylearn_dataset.py `
   --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
 
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\check_training_dataset_ready.py `
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\check_training_dataset_ready.py `
   --manifest-out outputs\dataset_audit\training_dataset_ready_manifest.json
 ```
 
@@ -116,7 +116,7 @@ Antes de entrenar se debe comprobar que CityLearn carga el dataset crudo:
   --episode-time-steps 8760 `
   --steps 3
 
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\verify_workflow_integrity.py `
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\ops\verify_workflow_integrity.py `
   --manifest-out outputs\dataset_audit\workflow_integrity_manifest.json
 ```
 

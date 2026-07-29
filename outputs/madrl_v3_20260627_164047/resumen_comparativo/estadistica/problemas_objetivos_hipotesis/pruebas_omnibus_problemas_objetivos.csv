@@ -1,0 +1,9 @@
+scope,scenario,method,algorithms,n_total,group_n,statistic,p_value,effect_size,effect_name,significant,decision
+OE1,E1,Kruskal-Wallis,"MAAC, MASAC, MATD3",36,"{""MAAC"": 12, ""MASAC"": 12, ""MATD3"": 12}",1.5163943284485366,0.46851031324120784,0.0,epsilon_squared,False,no se rechaza igualdad global
+OE1,E1,Friedman pareado por KPI,"MAAC, MASAC, MATD3",36,"{""MAAC"": 12, ""MASAC"": 12, ""MATD3"": 12}",5.589743589743578,0.061122710075168216,0.2329059829059824,Kendall_W,False,no se rechaza igualdad global pareada
+OE2,E2,Kruskal-Wallis,"MAAC, MASAC, MATD3",15,"{""MAAC"": 5, ""MASAC"": 5, ""MATD3"": 5}",0.5363984674329502,0.764755400863019,0.0,epsilon_squared,False,no se rechaza igualdad global
+OE2,E2,Friedman pareado por KPI,"MAAC, MASAC, MATD3",15,"{""MAAC"": 5, ""MASAC"": 5, ""MATD3"": 5}",6.000000000000003,0.04978706836786389,0.6000000000000003,Kendall_W,True,se rechaza igualdad global pareada
+OE3,E3,Kruskal-Wallis,"MAAC, MASAC, MATD3",27,"{""MAAC"": 9, ""MASAC"": 9, ""MATD3"": 9}",0.6138219751561378,0.7357160858633792,0.0,epsilon_squared,False,no se rechaza igualdad global
+OE3,E3,Friedman pareado por KPI,"MAAC, MASAC, MATD3",27,"{""MAAC"": 9, ""MASAC"": 9, ""MATD3"": 9}",3.4285714285714164,0.18009231214795343,0.1904761904761898,Kendall_W,False,no se rechaza igualdad global pareada
+GLOBAL,E1+E2+E3,Kruskal-Wallis,"MAAC, MASAC, MATD3",78,"{""MAAC"": 26, ""MASAC"": 26, ""MATD3"": 26}",1.8107833460008875,0.4043834679949526,0.0,epsilon_squared,False,no se rechaza igualdad global
+GLOBAL,E1+E2+E3,Friedman pareado por KPI,"MAAC, MASAC, MATD3",78,"{""MAAC"": 26, ""MASAC"": 26, ""MATD3"": 26}",9.291139240506347,0.009604057435644813,0.17867575462512206,Kendall_W,True,se rechaza igualdad global pareada

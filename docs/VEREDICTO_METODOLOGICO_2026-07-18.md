@@ -36,7 +36,7 @@
 - `docs/tesis_capitulos/Capitulo_6_Conclusiones.md` — §6.1.1 Veredicto de hipótesis
 
 **Pendiente (si se requiere):** —  
-**Hecho (2026-07-18):** portado a Word vía `tools/patch_veredicto_metodologico_docx.py`.
+**Hecho (2026-07-18):** portado a Word (parche histórico `patch_veredicto_metodologico_docx.py`; consolidado bajo `tools/thesis/`, ver `docs/analisis_scripts_vs_tools_tesis.md`).
 
 ### Word actualizados
 

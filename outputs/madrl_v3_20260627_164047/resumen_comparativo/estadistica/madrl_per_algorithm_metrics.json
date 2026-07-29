@@ -132,14 +132,14 @@
           "n_episodes": 50,
           "reward_mean": -0.6051573274768176,
           "reward_median": -0.6126499299083629,
-          "reward_std": 0.014547528617223299,
+          "reward_std": 0.0145475286172233,
           "reward_min": -0.6214699934294116,
           "reward_max": -0.5844288248600668,
           "first10_mean": -0.6052128273109911,
           "last10_mean": -0.6070559667323399,
           "improvement_first_to_last": -0.0018431394213487273,
           "plateau_episode": 4,
-          "coefficient_of_variation": 0.02403925054973508
+          "coefficient_of_variation": 0.024039250549735082
         },
         "E2": {
           "n_episodes": 50,
@@ -232,8 +232,8 @@
         "E2": {
           "n_buildings": 17,
           "mean": 8289.544058982141,
-          "std": 7114.702116381841,
-          "cv": 0.8582742386986533,
+          "std": 7114.702116381842,
+          "cv": 0.8582742386986534,
           "min": 714.7335240736975,
           "max": 23634.60108895274
         },
@@ -255,14 +255,14 @@
           "n_episodes": 50,
           "reward_mean": -0.6133306039931886,
           "reward_median": -0.6198266866174633,
-          "reward_std": 0.0139822094520048,
+          "reward_std": 0.013982209452004799,
           "reward_min": -0.627759154809035,
           "reward_max": -0.5895927763098163,
           "first10_mean": -0.6149267793676793,
           "last10_mean": -0.608351188920244,
           "improvement_first_to_last": 0.0065755904474352755,
           "plateau_episode": 4,
-          "coefficient_of_variation": 0.02279718207598211
+          "coefficient_of_variation": 0.022797182075982105
         },
         "E2": {
           "n_episodes": 50,
@@ -404,14 +404,14 @@
           "n_episodes": 49,
           "reward_mean": -0.5208137955889048,
           "reward_median": -0.5186502075397844,
-          "reward_std": 0.016499054736603787,
+          "reward_std": 0.01649905473660379,
           "reward_min": -0.569580484648387,
           "reward_max": -0.49464724627111395,
           "first10_mean": -0.5273485921220983,
           "last10_mean": -0.524259244418658,
           "improvement_first_to_last": 0.0030893477034402705,
           "plateau_episode": 4,
-          "coefficient_of_variation": 0.031679373465803934
+          "coefficient_of_variation": 0.03167937346580394
         }
       },
       "figures": {

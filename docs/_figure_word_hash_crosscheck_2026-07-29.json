@@ -1,0 +1,206 @@
+{
+  "source_unique_sha": 163,
+  "missing_sources": [
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\performance_comparison\\MATD3\\performance_comparison.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\performance_comparison\\MAAC\\performance_comparison.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\performance_comparison\\MASAC\\performance_comparison.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\performance_comparison\\HAPPO\\performance_comparison.png"
+  ],
+  "docs": {
+    "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+      "exists": true,
+      "media_count": 212,
+      "matched_to_known_sources": 146,
+      "unmatched_media": 66,
+      "match_ratio": 0.6887,
+      "has_catalog_marker": true,
+      "has_mc_keywords": true,
+      "unmatched_samples": [
+        {
+          "name": "word/media/image1.png",
+          "sha256": "5b7b5bff987cf5694b63acb544b42547c25a770e06ec9d7361d68198ed03397f",
+          "bytes": 243515
+        },
+        {
+          "name": "word/media/image2.png",
+          "sha256": "814f816084410529cea0828f679611024f5eb44ca5d1a3e5725f7c3bbf1ed37b",
+          "bytes": 260039
+        },
+        {
+          "name": "word/media/image3.png",
+          "sha256": "65af33c3da81b66f1c97375ca0661cf532f26c13622df2a60a45cc990c42376e",
+          "bytes": 270831
+        },
+        {
+          "name": "word/media/image4.png",
+          "sha256": "3660cb24e6f075653eb87f0839b2e72bd884800992797bf41b0a310d6b73589f",
+          "bytes": 82973
+        },
+        {
+          "name": "word/media/image5.png",
+          "sha256": "7b0a0e8caef0c43f79eb2573c10baff866b962748da8b93a0021acd0c845fde8",
+          "bytes": 39855
+        },
+        {
+          "name": "word/media/image6.png",
+          "sha256": "b357fa01956da9a77742d218717b01e2acf455bfee8de8166d2a23248be57336",
+          "bytes": 36837
+        },
+        {
+          "name": "word/media/image7.png",
+          "sha256": "8bfe7d22b54ee7a36a5156cf26d042ba5338cd8081123793904c4a789f45a943",
+          "bytes": 52375
+        },
+        {
+          "name": "word/media/image8.png",
+          "sha256": "f7f6919ec3ee953c69f4305d34e7b3390500096f5de54b79d27b4721906ad2a0",
+          "bytes": 41666
+        },
+        {
+          "name": "word/media/image9.png",
+          "sha256": "aa9fb463a4367728e24e7d1c8f2ae59863642d6187d51232c45593b5253d75df",
+          "bytes": 114180
+        },
+        {
+          "name": "word/media/image10.png",
+          "sha256": "f18531c473d039c03676eaf11ecbc830ec6afce24d00e7d040a923bab6ed308a",
+          "bytes": 75968
+        },
+        {
+          "name": "word/media/image11.png",
+          "sha256": "fecb6e90ffbd8fbb6d212d7b342a29fbf543a9f9e18fe8f8e54152f2b3bdfcd8",
+          "bytes": 52864
+        },
+        {
+          "name": "word/media/image12.png",
+          "sha256": "91b2a595d14592f209f295854cc48f5ce0190618edfb118929671f206f605b39",
+          "bytes": 54671
+        },
+        {
+          "name": "word/media/image13.png",
+          "sha256": "0e5a002628908ce3c559b4c86931424d23cc5a745ee80d4c652af564cf96b8a9",
+          "bytes": 52803
+        },
+        {
+          "name": "word/media/image14.png",
+          "sha256": "d88fa0fa004b5fe4fa5f7ecc4ae28a3ab44914d36190b481a15c25bfe1202308",
+          "bytes": 50106
+        },
+        {
+          "name": "word/media/image15.png",
+          "sha256": "0ac935644294747b30821f1a16c501a1ef1f8fec37ac3ac6a594c35e8461166d",
+          "bytes": 110884
+        }
+      ],
+      "media_total_bytes": 20793197
+    },
+    "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+      "exists": true,
+      "media_count": 195,
+      "matched_to_known_sources": 146,
+      "unmatched_media": 49,
+      "match_ratio": 0.7487,
+      "has_catalog_marker": true,
+      "has_mc_keywords": true,
+      "unmatched_samples": [
+        {
+          "name": "word/media/image11.png",
+          "sha256": "bf271a2eaed124ea07cc3c79de63c0a2df27f7ff2dd118fbc675f96ca0420f81",
+          "bytes": 34040
+        },
+        {
+          "name": "word/media/image6.png",
+          "sha256": "99bd0db7fa41e34993d04585499a820ca2a56f88a45b73fac57fdc74e726f812",
+          "bytes": 56888
+        },
+        {
+          "name": "word/media/image36.png",
+          "sha256": "8daa2b8382ff57319fdd9126343f099e2e9bfc2175f15ccd3a4f30c78814e9dd",
+          "bytes": 105784
+        },
+        {
+          "name": "word/media/image31.png",
+          "sha256": "d6c4715345e4b693892bd4ed25013db2429649b36bf115465af6de997b7819c2",
+          "bytes": 104738
+        },
+        {
+          "name": "word/media/image17.png",
+          "sha256": "9cbeeb47d22c2d18af993617af6f640cc6899635155f538d0e7054bf0dfd2eb9",
+          "bytes": 88153
+        },
+        {
+          "name": "word/media/image22.png",
+          "sha256": "87f8d3ba0f3f684f215cff8dbb67616e08cf51b5a2d8c4392378164f7123a5c6",
+          "bytes": 58498
+        },
+        {
+          "name": "word/media/image26.png",
+          "sha256": "bd284a8621735f372f5aaa0ccf815d7749e6612a3f2967989951bac8bde8d79b",
+          "bytes": 49191
+        },
+        {
+          "name": "word/media/image7.png",
+          "sha256": "13ad35440235beee4d1ffa701a0173570fabb67929ea8d8bbeb9aba5bc662938",
+          "bytes": 32593
+        },
+        {
+          "name": "word/media/image12.png",
+          "sha256": "bd901b2bafaf8d749d1a4777f5aa626a7155d01d29f79ede60f2e2e2580bbb9a",
+          "bytes": 122270
+        },
+        {
+          "name": "word/media/image37.png",
+          "sha256": "008ec9ab68c5c5a97739ce34d933b550d4b1a46af12a88a02433272d661dbfe4",
+          "bytes": 69502
+        },
+        {
+          "name": "word/media/image2.png",
+          "sha256": "47457c40bbdde9edf8039d312c4cb7730f71dd2ddf34371e8fc8a464612f422b",
+          "bytes": 73820
+        },
+        {
+          "name": "word/media/image18.png",
+          "sha256": "a11369b4c4a3aec34944918d599e18a3040b64cf3b24a3eb2b1f790f7d91423e",
+          "bytes": 410619
+        },
+        {
+          "name": "word/media/image27.png",
+          "sha256": "277a499694b90c341f34da07feec94d9ad53523cd744b51e43e54363f9b86534",
+          "bytes": 94687
+        },
+        {
+          "name": "word/media/image32.png",
+          "sha256": "72aef093c6c546d55513e1911c5fc44b6214a51b30ff5c3a3589d1f1682a89dd",
+          "bytes": 133999
+        },
+        {
+          "name": "word/media/image8.png",
+          "sha256": "66ca82c35b569a5f35817b0775c236c5be7d81fcef73757ed11886e1a5b10cd5",
+          "bytes": 121867
+        }
+      ],
+      "media_total_bytes": 19720849
+    }
+  },
+  "happo_data": {
+    "E1": {
+      "trace_exists": true,
+      "trace_bytes": 2,
+      "ts_exists": true,
+      "ts_bytes": 2132743
+    },
+    "E2": {
+      "trace_exists": true,
+      "trace_bytes": 2,
+      "ts_exists": true,
+      "ts_bytes": 2131429
+    },
+    "E3": {
+      "trace_exists": true,
+      "trace_bytes": 2,
+      "ts_exists": true,
+      "ts_bytes": 2131747
+    }
+  },
+  "verdict": "REVIEW"
+}

@@ -2,14 +2,16 @@
 
 Borrador Guia N.02 generado con informacion disponible.
 
-## Evidencia disponible (actualizada — Colab/Drive)
+## Evidencia disponible (actualizada — Colab/Drive, 50 episodios)
 
 - **Dataset:** `citylearn_iquitos_2023_2025` (17 edificios institucionales/comerciales reales).
-- **Corrida canónica:** `madrl_v3_20260627_164047` (Google Drive Colab).
-- **Algoritmos evaluados:** MASAC, MATD3, MAAC (3 escenarios multiobjetivo cada uno).
+- **Corrida canónica:** `madrl_v3_20260627_164047` (Drive: https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX).
+- **Espejo local:** `outputs/madrl_v3_20260627_164047/` + KPI recalc `outputs/_drive_madrl/kpi_recalc_20260728/`.
+- **Algoritmos:** HAPPO, MASAC, MATD3, MAAC × E1–E3 (factorial 4×3).
 - **Artefactos por job:** `results.json`, `timeseries.csv`, `trace.csv`, `building_kpis.csv`, `building_behavior_summary.csv`.
 - **Inventario EV:** 185 cargadores controlables (96 equipos Modo 3 doble toma).
-- **HAPPO:** 49/50 episodios; excluido del ranking por KPIs incompletos.
+- **HAPPO:** 49/50 episodios; KPI-gains evaluate_v2 **incluidos** en ranking 4/4 (score 0,0000). El veredicto canónico `best_madrl` 3×3 sigue siendo **MATD3 0,6667**.
+- **Word canónicos (solo 3):** `Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`, `Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx`, `ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx`. Ver `CANON_WORD_Y_VALIDEZ_50EP_DRIVE_2026-07-29.md`.
 
 ## Capítulo — Resultados multiobjetivo (Colab/Drive)
 
@@ -37,11 +39,11 @@ El análisis desagrega KPIs en dos niveles:
 
 | Objetivo | Escenario | Mejor | Valor principal |
 |----------|-----------|-------|-----------------|
-| OE1 Flexibilidad | E1 | **MATD3** | flex_composite = 1.001 |
+| OE1 Flexibilidad | E1 | **MATD3** | flex_composite = 1,0009 |
 | OE2 Emisiones CO₂ | E2 | **MATD3** | ΔCO₂ = 23,070 kg |
 | OE3 Costo energético | E3 | **MAAC** | Δcosto = 9,515 EUR |
 
-MATD3 obtiene el mejor desempeño global (score 0.667) y domina flexibilidad y emisiones. MAAC es competitivo en costo energético del distrito.
+MATD3 obtiene el mejor desempeño global (`best_madrl` **0,6667**) y domina flexibilidad y emisiones. MAAC es competitivo en costo. Protocolo Cap. 5: Shapiro → solo no paramétrico.
 
 ### Tabla distrito — todos los algoritmos
 

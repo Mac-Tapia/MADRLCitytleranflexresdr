@@ -1,7 +1,0 @@
-{
-  "timestamp": "20260618_210509",
-  "output_root": "D:/MADRLCitytleranflexresdr/outputs/colab_madrl_20260618_210509",
-  "test": "smoke_test_notebook_cells",
-  "n_agents": 17,
-  "obs_dim": 40
-}

@@ -47,7 +47,7 @@ Write-Host ""
     -Scenario ALL `
     -Seed 0 `
     -EpisodeTimeSteps 8760 `
-    -Episodes 75 `
+    -Episodes 50 `
     -SchemaPath "CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json" `
     -OutputRoot $OutputRoot `
     -ArtifactProfile efficient `

@@ -1,4 +1,0 @@
-all_done,carbon_intensity_mean,district_net_electricity_consumption,district_net_electricity_consumption_cost,district_net_electricity_consumption_emission,district_net_electricity_consumption_without_storage,electricity_price_mean,episode,episode_step,global_step,reset_count,reward_mean,reward_sum,scenario,time_step
-False,0.7900000214576721,1082.0183575022966,428.99514923174866,854.8013130594045,0.0,0.43466824293136597,0,0,0,1,0.0,0.0,E1,1
-False,0.7900000214576721,1008.1768066538498,438.2224315960775,796.4601808004081,0.0,0.4791431427001953,0,1,1,1,0.0,0.0,E1,2
-True,0.7900000214576721,967.4712785929441,463.5572321485961,764.3059006929398,968.2650756835938,0.526870608329773,0,2,2,1,0.0,0.0,E1,3

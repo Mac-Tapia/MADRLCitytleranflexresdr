@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "size": 5272893,
+      "sha256": "F391E402F94ABC02B7BB7180C1DE5BA764EC29361733AF49AD49948CCD7246D5",
+      "name": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "role": "tesis_doctoral_canonica_kpi_drive_50ep"
+    },
+    {
+      "size": 4655651,
+      "sha256": "3EB719E7CFC853E1B6A7D202684C29BB3723F22878EBBC741CD5D2CA45591FBB",
+      "name": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "role": "informe_final_50_episodios_cap5_sync"
+    }
+  ],
+  "policy": "exactly_2_docx_in_docs_root",
+  "updated_at": "2026-07-29T10:24:50.9471640-05:00"
+}

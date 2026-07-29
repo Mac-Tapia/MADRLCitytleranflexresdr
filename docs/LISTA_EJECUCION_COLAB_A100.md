@@ -3,7 +3,7 @@
 Usar este listado como checklist rapido para ejecutar el notebook:
 
 ```text
-CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb
 ```
 
 ## 0. Antes de ejecutar

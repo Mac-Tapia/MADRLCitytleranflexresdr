@@ -1,5 +1,7 @@
 # Diagnóstico y propuesta de organización del proyecto
 
+> **Nota 2026-07-29:** propuesta histórica (jun-2026). `tools/reports/` ya no existe; equivalentes actuales en `tools/dataset/` y `tools/training/` (ver `AUDITORIA_TOOLS_2026-07-29.md`).
+
 Fecha: 2026-06-13
 Alcance: `D:\MADRLCitytleranflexresdr` (repo principal `uc3m` + submódulo `CityLearn` + dependencias en `external/`)
 
@@ -15,7 +17,7 @@ La propuesta fue ejecutada en esta misma fecha, con la corrida oficial `outputs/
 
 - **Fase 0** — completada (verificación de contexto previa).
 - **Fase 1** — completada: `build/`, `dist/`, `__pycache__/`, `.pytest_cache/`, `uc3m.egg-info/` quedaron marcados para borrado pero **no pudieron eliminarse** por una restricción de permisos del montaje cross-OS ("Operation not permitted"); requieren borrado manual desde Windows. `diagnostico_dataset.py`/`ver_metricas_madrl.py` → `tools/reports/`. `tools/skills/*` → `agent-skills/` (el directorio `tools/skills/` quedó vacío, no se pudo `rmdir` por la misma razón).
-- **Fase 2** — completada: `docs/` reorganizado en `architecture/`, `audits/`, `decisions/`, `thesis/`, `contributions/`; `docs/00_INDEX.md` creado; referencias actualizadas en `README.md`, `ESTRATEGIA_3PILARES_MADRL.md`, `tools/verify_workflow_integrity.py` y `docs/workflow_manifest.json`. Los 4 `PLAN_TESIS_*.docx` quedaron documentados en `00_INDEX.md` como pendientes de consolidación (no se fusionaron, por ser binarios).
+- **Fase 2** — completada: `docs/` reorganizado en `architecture/`, `audits/`, `decisions/`, `thesis/`, `contributions/`; `docs/00_INDEX.md` creado; referencias actualizadas en `README.md`, `ESTRATEGIA_3PILARES_MADRL.md`, `tools/ops/verify_workflow_integrity.py` y `docs/workflow_manifest.json`. Los 4 `PLAN_TESIS_*.docx` quedaron documentados en `00_INDEX.md` como pendientes de consolidación (no se fusionaron, por ser binarios).
 - **Fase 3** — completada: se creó `outputs/runs/` (vacío, para corridas futuras) y `outputs/_archive/` con las corridas obsoletas/fallidas/stale. La corrida activa se dejó **en `outputs/` raíz** (no en `runs/`) para no perturbar sus file handles abiertos mientras `status=running`; `docs/workflow_manifest.json` documenta esta decisión en `archive_layout_note`. `outputs/dataset_cache/` (962 MB) → `data/cache/`, añadido a `.gitignore`.
 - **Fase 4** — **diferida**: no se reorganizó `scripts/` físicamente por el riesgo de romper los `.ps1` que la corrida activa pudiera invocar (todos resuelven `$ProjectRoot` vía `..` desde `$PSScriptRoot`). Se documentó el plan completo de migración en `scripts/README.md`.
 - **Fase 5** — completada: `tests/citylearn_v3/` creado con `conftest.py` + `test_schema_smoke.py` (4 tests, todos pasan).
@@ -236,7 +238,7 @@ Ejecutar `scripts/verify_project_context.ps1` antes de cualquier cambio, y hacer
 - Esperar a que la corrida activa (`outputs/latest_visible_training_output_root.txt`) termine o esté en un punto seguro.
 - Crear `outputs/runs/` y mover ahí los `citylearn_v3_madrl_*` y `*_oficial_v*`.
 - Mover los obsoletos listados en `obsolete_reference_policy` a `outputs/_archive/`.
-- Mover `outputs/dataset_cache/` → `data/cache/` (962 MB; actualizar cualquier ruta hardcodeada en `tools/orchestrate_citylearn_dataset.py` y similares).
+- Mover `outputs/dataset_cache/` → `data/cache/` (962 MB; actualizar cualquier ruta hardcodeada en `tools/dataset/orchestrate_citylearn_dataset.py` y similares).
 - Actualizar `outputs/latest_visible_training_output_root.txt` y `docs/workflow_manifest.json` con las nuevas rutas (`outputs/runs/...`).
 
 **Fase 4 — `scripts/` y raíz (requiere actualizar launchers):**

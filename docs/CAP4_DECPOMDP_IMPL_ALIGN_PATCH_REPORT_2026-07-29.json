@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-07-29T16:57:36",
+  "policy": "solo actualizar datos Cap.4 Dec-POMDP; sin reescritura amplia",
+  "results": [
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "ok": true,
+      "skipped": true,
+      "reason": "already aligned"
+    },
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "skipped": true,
+      "reason": "already aligned"
+    }
+  ]
+}

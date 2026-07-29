@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-07-29T16:16:49",
+  "cap5_extract": {
+    "source": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "range": [
+      502,
+      873
+    ],
+    "blocks": 371,
+    "checks": {
+      "Shapiro": 9,
+      "Kruskal": 9,
+      "Wilcoxon": 7,
+      "0,6667": 4,
+      "normalidad": 10,
+      "Mann": 3,
+      "no_param": 2
+    }
+  },
+  "cap5_sync": {
+    "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+    "ok": true,
+    "toc_safe": false,
+    "old_range": [
+      512,
+      800
+    ],
+    "dry_run": false,
+    "backup": null,
+    "new_range": [
+      512,
+      883
+    ],
+    "checks": {
+      "Shapiro": 9,
+      "Kruskal": 9,
+      "Wilcoxon": 7,
+      "0,6667": 4,
+      "normalidad": 10,
+      "Mann": 3,
+      "no_param": 2
+    }
+  },
+  "removed_misplaced": 1,
+  "criteria_placement": "inserted_after:donde S es el espacio de estados; A, el espacio de acciones;",
+  "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx.pre_informe_fix_20260729_161650.bak",
+  "checks": {
+    "control_de_recursos": true,
+    "tabla_1_3": true,
+    "criterios_cap1": true,
+    "5_1_1_criterios": true,
+    "5_4_5_control": true,
+    "inventario_ev": true,
+    "c5": true,
+    "misplaced_in_cap5": false,
+    "criteria_before_cap5": true
+  },
+  "ok": true
+}

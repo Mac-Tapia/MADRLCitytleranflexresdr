@@ -1,17 +1,16 @@
 {
-  "action_bins": 3,
-  "algorithm": "MASAC",
+  "algorithm": "MATD3",
   "algorithm_family": "MADRL",
   "artifact_layout": {
-    "checkpoints": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/checkpoints",
-    "data": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data",
-    "figures": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures",
-    "run": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2",
-    "tables": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables"
+    "checkpoints": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/checkpoints",
+    "data": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data",
+    "figures": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/figures",
+    "run": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3",
+    "tables": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/figures/tables"
   },
   "artifacts": {
     "artifact_audit": {
-      "completed_episode_count_from_timeseries": 332854,
+      "completed_episode_count_from_timeseries": 87628,
       "episode_summaries": [
         {
           "episode": 0,
@@ -20,8 +19,8 @@
           "last_episode_step": "8759",
           "last_global_step": "8759",
           "last_time_step": "1",
-          "reward_mean_average": -0.528240462095925,
-          "reward_sum_total": -78665.56961532516,
+          "reward_mean_average": -0.5684158445302419,
+          "reward_sum_total": -84648.48756744362,
           "steps": 8760
         },
         {
@@ -30,9 +29,9 @@
           "last_all_done": "False",
           "last_episode_step": "8759",
           "last_global_step": "17519",
-          "last_time_step": "2",
-          "reward_mean_average": -0.5342859520192066,
-          "reward_sum_total": -79565.86397470025,
+          "last_time_step": "4",
+          "reward_mean_average": -0.57691164288679,
+          "reward_sum_total": -85913.68185870076,
           "steps": 8760
         },
         {
@@ -41,9 +40,9 @@
           "last_all_done": "False",
           "last_episode_step": "8759",
           "last_global_step": "26279",
-          "last_time_step": "3",
-          "reward_mean_average": -0.51241294757989,
-          "reward_sum_total": -76308.53615359722,
+          "last_time_step": "1",
+          "reward_mean_average": -0.5684158445302419,
+          "reward_sum_total": -84648.48756744362,
           "steps": 8760
         },
         {
@@ -52,9 +51,9 @@
           "last_all_done": "False",
           "last_episode_step": "8759",
           "last_global_step": "35039",
-          "last_time_step": "4",
-          "reward_mean_average": -0.5284359870146329,
-          "reward_sum_total": -78694.68718621913,
+          "last_time_step": "6",
+          "reward_mean_average": -0.5768798621596843,
+          "reward_sum_total": -85908.94907282019,
           "steps": 8760
         },
         {
@@ -63,21 +62,21 @@
           "last_all_done": "False",
           "last_episode_step": "8759",
           "last_global_step": "43799",
-          "last_time_step": "5",
-          "reward_mean_average": -0.5342089289762134,
-          "reward_sum_total": -79554.39370313771,
+          "last_time_step": "7",
+          "reward_mean_average": -0.5296572948608507,
+          "reward_sum_total": -78876.56435067789,
           "steps": 8760
         },
         {
           "episode": 5,
           "first_global_step": "43800",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "52559",
-          "last_time_step": "6",
-          "reward_mean_average": -0.5124602174516978,
-          "reward_sum_total": -76315.57558290684,
-          "steps": 8760
+          "last_all_done": "True",
+          "last_episode_step": "8751",
+          "last_global_step": "52551",
+          "last_time_step": "8759",
+          "reward_mean_average": -0.5462371260239373,
+          "reward_sum_total": -81271.34455834546,
+          "steps": 8752
         },
         {
           "episode": 6,
@@ -85,21 +84,21 @@
           "last_all_done": "False",
           "last_episode_step": "8759",
           "last_global_step": "61319",
-          "last_time_step": "7",
-          "reward_mean_average": -0.5278329040124459,
-          "reward_sum_total": -78604.87606553343,
+          "last_time_step": "1",
+          "reward_mean_average": -0.5684158445302419,
+          "reward_sum_total": -84648.48756744362,
           "steps": 8760
         },
         {
           "episode": 7,
           "first_global_step": "61320",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "70079",
-          "last_time_step": "8",
-          "reward_mean_average": -0.5341600304390212,
-          "reward_sum_total": -79547.11173297903,
-          "steps": 8760
+          "last_all_done": "True",
+          "last_episode_step": "8757",
+          "last_global_step": "70077",
+          "last_time_step": "8759",
+          "reward_mean_average": -0.5768946132006594,
+          "reward_sum_total": -85891.53138099337,
+          "steps": 8758
         },
         {
           "episode": 8,
@@ -107,329 +106,329 @@
           "last_all_done": "False",
           "last_episode_step": "8759",
           "last_global_step": "78839",
-          "last_time_step": "9",
-          "reward_mean_average": -0.5127932614670209,
-          "reward_sum_total": -76365.17249766874,
+          "last_time_step": "1",
+          "reward_mean_average": -0.5684158445302419,
+          "reward_sum_total": -84648.48756744362,
           "steps": 8760
         },
         {
           "episode": 9,
           "first_global_step": "78840",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "87599",
-          "last_time_step": "10",
-          "reward_mean_average": -0.528396128213109,
-          "reward_sum_total": -78688.7514134962,
-          "steps": 8760
+          "last_all_done": "True",
+          "last_episode_step": "8757",
+          "last_global_step": "87597",
+          "last_time_step": "8759",
+          "reward_mean_average": -0.5768946132006594,
+          "reward_sum_total": -85891.53138099337,
+          "steps": 8758
         },
         {
           "episode": 10,
-          "first_global_step": "87600",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "96359",
-          "last_time_step": "11",
-          "reward_mean_average": -0.5344206644554094,
-          "reward_sum_total": -79585.92535069956,
+          "first_global_step": 87600,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 96359,
+          "last_time_step": 3,
+          "reward_mean_average": -0.5560367784337301,
+          "reward_sum_total": -82804.99704435108,
           "steps": 8760
         },
         {
           "episode": 11,
-          "first_global_step": "96360",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "105119",
-          "last_time_step": "12",
-          "reward_mean_average": -0.5128660689783334,
-          "reward_sum_total": -76376.01499225342,
+          "first_global_step": 96360,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 105119,
+          "last_time_step": 4,
+          "reward_mean_average": -0.5290481534341094,
+          "reward_sum_total": -78785.85100940758,
           "steps": 8760
         },
         {
           "episode": 12,
-          "first_global_step": "105120",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "113879",
-          "last_time_step": "13",
-          "reward_mean_average": -0.5280416566818644,
-          "reward_sum_total": -78635.96351306327,
+          "first_global_step": 105120,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 113879,
+          "last_time_step": 5,
+          "reward_mean_average": -0.5465653053425684,
+          "reward_sum_total": -81394.50527161527,
           "steps": 8760
         },
         {
           "episode": 13,
-          "first_global_step": "113880",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "122639",
-          "last_time_step": "14",
-          "reward_mean_average": -0.5341204026896166,
-          "reward_sum_total": -79541.2103685377,
+          "first_global_step": 113880,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 122639,
+          "last_time_step": 6,
+          "reward_mean_average": -0.5570915828035414,
+          "reward_sum_total": -82962.07851110339,
           "steps": 8760
         },
         {
           "episode": 14,
-          "first_global_step": "122640",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "131399",
-          "last_time_step": "15",
-          "reward_mean_average": -0.5124616506653793,
-          "reward_sum_total": -76315.78901708829,
+          "first_global_step": 122640,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 131399,
+          "last_time_step": 7,
+          "reward_mean_average": -0.5294059028282437,
+          "reward_sum_total": -78839.12704918205,
           "steps": 8760
         },
         {
           "episode": 15,
-          "first_global_step": "131400",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "140159",
-          "last_time_step": "16",
-          "reward_mean_average": -0.5282891881860986,
-          "reward_sum_total": -78672.82590467381,
+          "first_global_step": 131400,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 140159,
+          "last_time_step": 8,
+          "reward_mean_average": -0.5461359378768078,
+          "reward_sum_total": -81330.56386861422,
           "steps": 8760
         },
         {
           "episode": 16,
-          "first_global_step": "140160",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "148919",
-          "last_time_step": "17",
-          "reward_mean_average": -0.5344664911717443,
-          "reward_sum_total": -79592.74986529615,
+          "first_global_step": 140160,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 148919,
+          "last_time_step": 9,
+          "reward_mean_average": -0.5573036510462676,
+          "reward_sum_total": -82993.65971381016,
           "steps": 8760
         },
         {
           "episode": 17,
-          "first_global_step": "148920",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "157679",
-          "last_time_step": "18",
-          "reward_mean_average": -0.512841510416361,
-          "reward_sum_total": -76372.35773120447,
+          "first_global_step": 148920,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 157679,
+          "last_time_step": 10,
+          "reward_mean_average": -0.5306691975196048,
+          "reward_sum_total": -79027.25689461955,
           "steps": 8760
         },
         {
           "episode": 18,
-          "first_global_step": "157680",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "166439",
-          "last_time_step": "19",
-          "reward_mean_average": -0.5282145512657044,
-          "reward_sum_total": -78661.7109744887,
+          "first_global_step": 157680,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 166439,
+          "last_time_step": 11,
+          "reward_mean_average": -0.5478043395531886,
+          "reward_sum_total": -81579.02224626085,
           "steps": 8760
         },
         {
           "episode": 19,
-          "first_global_step": "166440",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "175199",
-          "last_time_step": "20",
-          "reward_mean_average": -0.5344791460117901,
-          "reward_sum_total": -79594.63442407579,
+          "first_global_step": 166440,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 175199,
+          "last_time_step": 12,
+          "reward_mean_average": -0.5573450207988863,
+          "reward_sum_total": -82999.82049737014,
           "steps": 8760
         },
         {
           "episode": 20,
-          "first_global_step": "175200",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "183959",
-          "last_time_step": "21",
-          "reward_mean_average": -0.5124952866072731,
-          "reward_sum_total": -76320.7980815551,
+          "first_global_step": 175200,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 183959,
+          "last_time_step": 13,
+          "reward_mean_average": -0.5314246043958997,
+          "reward_sum_total": -79139.75208663738,
           "steps": 8760
         },
         {
           "episode": 21,
-          "first_global_step": "183960",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "192719",
-          "last_time_step": "22",
-          "reward_mean_average": -0.5284842861702306,
-          "reward_sum_total": -78701.87989647072,
+          "first_global_step": 183960,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 192719,
+          "last_time_step": 14,
+          "reward_mean_average": -0.5477750204600343,
+          "reward_sum_total": -81574.6560469083,
           "steps": 8760
         },
         {
           "episode": 22,
-          "first_global_step": "192720",
-          "last_all_done": "True",
-          "last_episode_step": "8736",
-          "last_global_step": "201456",
-          "last_time_step": "8759",
-          "reward_mean_average": -0.5342170296540485,
-          "reward_sum_total": -79346.72119748619,
-          "steps": 8737
+          "first_global_step": 192720,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 201479,
+          "last_time_step": 15,
+          "reward_mean_average": -0.5571922573500272,
+          "reward_sum_total": -82977.07096456605,
+          "steps": 8760
         },
         {
           "episode": 23,
-          "first_global_step": "201480",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "210239",
-          "last_time_step": "1",
-          "reward_mean_average": -0.528316323448379,
-          "reward_sum_total": -78676.8668879326,
+          "first_global_step": 201480,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 210239,
+          "last_time_step": 16,
+          "reward_mean_average": -0.5310539928085858,
+          "reward_sum_total": -79084.56060905459,
           "steps": 8760
         },
         {
           "episode": 24,
-          "first_global_step": "210240",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "218999",
-          "last_time_step": "2",
-          "reward_mean_average": -0.5342200265674227,
-          "reward_sum_total": -79556.04635642059,
+          "first_global_step": 210240,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 218999,
+          "last_time_step": 17,
+          "reward_mean_average": -0.5488046468150503,
+          "reward_sum_total": -81727.98800369729,
           "steps": 8760
         },
         {
           "episode": 25,
-          "first_global_step": "219000",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "227759",
-          "last_time_step": "3",
-          "reward_mean_average": -0.5122386797760721,
-          "reward_sum_total": -76282.58419225266,
+          "first_global_step": 219000,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 227759,
+          "last_time_step": 18,
+          "reward_mean_average": -0.5592074796612345,
+          "reward_sum_total": -83277.17787115104,
           "steps": 8760
         },
         {
           "episode": 26,
-          "first_global_step": "227760",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "236519",
-          "last_time_step": "4",
-          "reward_mean_average": -0.5281246595625226,
-          "reward_sum_total": -78648.32430205088,
+          "first_global_step": 227760,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 236519,
+          "last_time_step": 19,
+          "reward_mean_average": -0.532613615070585,
+          "reward_sum_total": -79316.81955631153,
           "steps": 8760
         },
         {
           "episode": 27,
-          "first_global_step": "236520",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "245279",
-          "last_time_step": "5",
-          "reward_mean_average": -0.5341713049896714,
-          "reward_sum_total": -79548.79073906186,
+          "first_global_step": 236520,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 245279,
+          "last_time_step": 20,
+          "reward_mean_average": -0.5496729222899496,
+          "reward_sum_total": -81857.2915874193,
           "steps": 8760
         },
         {
           "episode": 28,
-          "first_global_step": "245280",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "254039",
-          "last_time_step": "6",
-          "reward_mean_average": -0.5124019091372712,
-          "reward_sum_total": -76306.89230872242,
+          "first_global_step": 245280,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 254039,
+          "last_time_step": 21,
+          "reward_mean_average": -0.5590967239198357,
+          "reward_sum_total": -83260.68412614193,
           "steps": 8760
         },
         {
           "episode": 29,
-          "first_global_step": "254040",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "262799",
-          "last_time_step": "7",
-          "reward_mean_average": -0.5280629675781271,
-          "reward_sum_total": -78639.13713173468,
+          "first_global_step": 254040,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 262799,
+          "last_time_step": 22,
+          "reward_mean_average": -0.5322197004957441,
+          "reward_sum_total": -79258.15779782619,
           "steps": 8760
         },
         {
           "episode": 30,
-          "first_global_step": "262800",
-          "last_all_done": "True",
-          "last_episode_step": "8751",
-          "last_global_step": "271551",
-          "last_time_step": "8759",
-          "reward_mean_average": -0.5341520103821658,
-          "reward_sum_total": -79473.27271270016,
-          "steps": 8752
+          "first_global_step": 262800,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 271559,
+          "last_time_step": 23,
+          "reward_mean_average": -0.5490741829018809,
+          "reward_sum_total": -81768.1273177481,
+          "steps": 8760
         },
         {
           "episode": 31,
-          "first_global_step": "271560",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "280319",
-          "last_time_step": "1",
-          "reward_mean_average": -0.528316323448379,
-          "reward_sum_total": -78676.8668879326,
+          "first_global_step": 271560,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 280319,
+          "last_time_step": 24,
+          "reward_mean_average": -0.5585123883529018,
+          "reward_sum_total": -83173.66487351415,
           "steps": 8760
         },
         {
           "episode": 32,
-          "first_global_step": "280320",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "289079",
-          "last_time_step": "2",
-          "reward_mean_average": -0.5342200265674227,
-          "reward_sum_total": -79556.04635642059,
+          "first_global_step": 280320,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 289079,
+          "last_time_step": 25,
+          "reward_mean_average": -0.531245422769196,
+          "reward_sum_total": -79113.06835878865,
           "steps": 8760
         },
         {
           "episode": 33,
-          "first_global_step": "289080",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "297839",
-          "last_time_step": "3",
-          "reward_mean_average": -0.5122386797760721,
-          "reward_sum_total": -76282.58419225266,
+          "first_global_step": 289080,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 297839,
+          "last_time_step": 26,
+          "reward_mean_average": -0.5490237537694356,
+          "reward_sum_total": -81760.61741134436,
           "steps": 8760
         },
         {
           "episode": 34,
-          "first_global_step": "297840",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "306599",
-          "last_time_step": "4",
-          "reward_mean_average": -0.5281246595625226,
-          "reward_sum_total": -78648.32430205088,
+          "first_global_step": 297840,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 306599,
+          "last_time_step": 27,
+          "reward_mean_average": -0.5590613648918028,
+          "reward_sum_total": -83255.41845968728,
           "steps": 8760
         },
         {
           "episode": 35,
-          "first_global_step": "306600",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "315359",
-          "last_time_step": "5",
-          "reward_mean_average": -0.5341713049896714,
-          "reward_sum_total": -79548.79073906186,
+          "first_global_step": 306600,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 315359,
+          "last_time_step": 28,
+          "reward_mean_average": -0.5322138703365309,
+          "reward_sum_total": -79257.28957051618,
           "steps": 8760
         },
         {
           "episode": 36,
-          "first_global_step": "315360",
-          "last_all_done": "False",
-          "last_episode_step": "8759",
-          "last_global_step": "324119",
-          "last_time_step": "6",
-          "reward_mean_average": -0.5124019091372712,
-          "reward_sum_total": -76306.89230872242,
+          "first_global_step": 315360,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 324119,
+          "last_time_step": 29,
+          "reward_mean_average": -0.5493746202055392,
+          "reward_sum_total": -81812.8684410089,
           "steps": 8760
         },
         {
           "episode": 37,
-          "first_global_step": "324120",
-          "last_all_done": "True",
-          "last_episode_step": "8752",
-          "last_global_step": "332872",
-          "last_time_step": "8759",
-          "reward_mean_average": -0.5279973791614397,
-          "reward_sum_total": -78566.5380166014,
-          "steps": 8753
+          "first_global_step": 324120,
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 332879,
+          "last_time_step": 30,
+          "reward_mean_average": -0.5589779915173627,
+          "reward_sum_total": -83243.00249676566,
+          "steps": 8760
         },
         {
           "episode": 38,
@@ -437,9 +436,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 341639,
-          "last_time_step": 1,
-          "reward_mean_average": -0.528316323448379,
-          "reward_sum_total": -78676.8668879326,
+          "last_time_step": 31,
+          "reward_mean_average": -0.5317935634108971,
+          "reward_sum_total": -79194.6974631508,
           "steps": 8760
         },
         {
@@ -448,9 +447,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 350399,
-          "last_time_step": 2,
-          "reward_mean_average": -0.5342200265674227,
-          "reward_sum_total": -79556.04635642059,
+          "last_time_step": 32,
+          "reward_mean_average": -0.5490083374794791,
+          "reward_sum_total": -81758.32161744402,
           "steps": 8760
         },
         {
@@ -459,9 +458,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 359159,
-          "last_time_step": 3,
-          "reward_mean_average": -0.5122386797760721,
-          "reward_sum_total": -76282.58419225266,
+          "last_time_step": 33,
+          "reward_mean_average": -0.5589212199068986,
+          "reward_sum_total": -83234.54806853534,
           "steps": 8760
         },
         {
@@ -470,9 +469,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 367919,
-          "last_time_step": 4,
-          "reward_mean_average": -0.5281246595625226,
-          "reward_sum_total": -78648.32430205088,
+          "last_time_step": 34,
+          "reward_mean_average": -0.5318280955072872,
+          "reward_sum_total": -79199.83998294521,
           "steps": 8760
         },
         {
@@ -481,9 +480,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 376679,
-          "last_time_step": 5,
-          "reward_mean_average": -0.5341713049896714,
-          "reward_sum_total": -79548.79073906186,
+          "last_time_step": 35,
+          "reward_mean_average": -0.549230301955724,
+          "reward_sum_total": -81791.3765672464,
           "steps": 8760
         },
         {
@@ -492,9 +491,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 385439,
-          "last_time_step": 6,
-          "reward_mean_average": -0.5124019091372712,
-          "reward_sum_total": -76306.89230872242,
+          "last_time_step": 36,
+          "reward_mean_average": -0.5593175702688571,
+          "reward_sum_total": -83293.5725644382,
           "steps": 8760
         },
         {
@@ -503,9 +502,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 394199,
-          "last_time_step": 7,
-          "reward_mean_average": -0.5280629675781271,
-          "reward_sum_total": -78639.13713173468,
+          "last_time_step": 37,
+          "reward_mean_average": -0.5331477726212497,
+          "reward_sum_total": -79396.3662987565,
           "steps": 8760
         },
         {
@@ -514,9 +513,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 402959,
-          "last_time_step": 8,
-          "reward_mean_average": -0.5341292031088826,
-          "reward_sum_total": -79542.5209269748,
+          "last_time_step": 38,
+          "reward_mean_average": -0.5503917691234074,
+          "reward_sum_total": -81964.34225785782,
           "steps": 8760
         },
         {
@@ -525,9 +524,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 411719,
-          "last_time_step": 9,
-          "reward_mean_average": -0.5126333496593685,
-          "reward_sum_total": -76341.35843127315,
+          "last_time_step": 39,
+          "reward_mean_average": -0.5601154123894135,
+          "reward_sum_total": -83412.38721303146,
           "steps": 8760
         },
         {
@@ -536,9 +535,9 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 420479,
-          "last_time_step": 10,
-          "reward_mean_average": -0.5281921079341843,
-          "reward_sum_total": -78658.36871355871,
+          "last_time_step": 40,
+          "reward_mean_average": -0.5331268724667073,
+          "reward_sum_total": -79393.25384774205,
           "steps": 8760
         },
         {
@@ -547,114 +546,119 @@
           "last_all_done": false,
           "last_episode_step": 8759,
           "last_global_step": 429239,
-          "last_time_step": 11,
-          "reward_mean_average": -0.5341373025630299,
-          "reward_sum_total": -79543.72709768642,
+          "last_time_step": 41,
+          "reward_mean_average": -0.550808564915432,
+          "reward_sum_total": -82026.41148720612,
           "steps": 8760
         },
         {
           "episode": 49,
           "first_global_step": 429240,
-          "last_all_done": true,
-          "last_episode_step": 8747,
-          "last_global_step": 437987,
-          "last_time_step": 8759,
-          "reward_mean_average": -0.5125064952745902,
-          "reward_sum_total": -76217.91595125597,
-          "steps": 8748
+          "last_all_done": false,
+          "last_episode_step": 8759,
+          "last_global_step": 437999,
+          "last_time_step": 42,
+          "reward_mean_average": -0.5606717322690229,
+          "reward_sum_total": -83495.23436950288,
+          "steps": 8760
         }
       ],
       "expected_episode_time_steps": 8760,
-      "expected_episodes": 12,
+      "expected_episodes": 40,
       "expected_timeseries_row_options": [
-        105108,
-        105120
+        350360,
+        350400
       ],
-      "expected_timeseries_rows": 105120,
+      "expected_timeseries_rows": 350400,
       "last_timeseries_row": {
-        "algorithm": "MASAC",
-        "all_done": true,
+        "algorithm": "MATD3",
+        "all_done": false,
         "carbon_intensity_mean": 0.7900000214576721,
-        "district_net_electricity_consumption": 1171.828942976892,
-        "district_net_electricity_consumption_cost": 623.9936952479184,
-        "district_net_electricity_consumption_emission": 925.7448929771781,
-        "district_net_electricity_consumption_without_storage": 1171.828942976892,
-        "electricity_price_mean": 0.5324955582618713,
+        "district_net_electricity_consumption": 0.0,
+        "district_net_electricity_consumption_cost": 0.0,
+        "district_net_electricity_consumption_emission": 0.0,
+        "district_net_electricity_consumption_without_storage": 0.0,
+        "electricity_price_mean": 0.6953592896461487,
         "episode": 49,
-        "episode_step": 8747,
-        "global_step": 437987,
-        "reset_count": 51,
+        "episode_step": 8759,
+        "global_step": 437999,
+        "reset_count": 50,
         "reward_axis_weights": {
-          "carbon": 0.7,
-          "cost": 0.15,
-          "flex": 0.15
+          "carbon": 0.15,
+          "cost": 0.6,
+          "flex": 0.25
         },
         "reward_function": "CityLearnV3MADRLRewardFunction",
-        "reward_mean": -0.6310113668441772,
-        "reward_profile": "masac_unified_comparable_v4",
-        "reward_sum": -10.727193236351013,
-        "scenario": "E2",
-        "time_step": 8759
+        "reward_mean": -0.2501169741153717,
+        "reward_profile": "matd3_unified_comparable_v4",
+        "reward_sum": -4.251988559961319,
+        "scenario": "E3",
+        "time_step": 42
       },
       "objective_report_values": {
-        "carbon_emissions": 1.051639591972696,
-        "electricity_cost": 1.0050652080032747,
-        "ev_charge_total": 11514.183938987553,
+        "carbon_emissions": 1.0741932384067436,
+        "electricity_cost": 1.0091805161969924,
+        "ev_charge_total": 162807.5272996761,
         "ev_departure_count": 39682.0,
-        "ev_departure_success_rate": 0.04062295247215362,
-        "grid_import_baseline": 11107242.547481537,
-        "grid_import_control": 11163503.039496081,
-        "pv_export_total": 41399732.63071702,
-        "pv_generation_total": 49538029.867697105,
-        "ramping_average": 1.0208812307447095
+        "ev_departure_success_rate": 0.48243536112091123,
+        "grid_import_baseline": 13174025.587869644,
+        "grid_import_control": 13278088.486106314,
+        "pv_export_total": 40476522.38687993,
+        "pv_generation_total": 49536465.346037395,
+        "ramping_average": 1.0011383857310043
       },
       "report_source": {
-        "adapter_algorithm": "MASAC",
+        "adapter_algorithm": "MATD3",
         "adapter_class": "CityLearnV3BackendAdapter",
-        "candidate_class": "CityLearnSMACDiscreteEnv",
+        "candidate_class": "CityLearnOffPolicyVecEnv",
         "completed_episode_count": 50,
         "episode_time_steps": 8760,
         "last_completed_episode": 49,
-        "last_completed_global_step": 437987,
+        "last_completed_global_step": 437957,
         "last_completed_time_step": 8759,
-        "last_recorded_all_done": true,
+        "last_recorded_all_done": false,
         "last_recorded_episode": 49,
-        "last_recorded_episode_step": 8747,
-        "last_recorded_global_step": 437987,
-        "last_recorded_time_step": 8759,
+        "last_recorded_episode_step": 8759,
+        "last_recorded_global_step": 437999,
+        "last_recorded_time_step": 42,
         "objective_env_class": "CityLearnDecPOMDPEnv",
         "snapshot_error": null,
-        "timeseries_rows": 437950,
-        "trace_rows": 1700,
+        "timeseries_rows": 437988,
+        "trace_rows": 1768,
         "type": "last_completed_episode_snapshot"
       },
       "status": "warning",
-      "timeseries_rows": 437950,
-      "trace_rows": 1700,
+      "timeseries_rows": 437988,
+      "trace_rows": 1768,
       "training_trace_totals": {
         "ev_charge_kwh": 0.0,
         "ev_v2g_export_kwh": 0.0,
-        "grid_export_kwh": 2357.3492279052734,
-        "grid_import_kwh": 68251.16583553702,
+        "grid_export_kwh": 8797.470345497131,
+        "grid_import_kwh": 77073.1737511903,
         "pv_export_kwh": 0.0,
-        "pv_generation_kwh": 85228.06218535842
+        "pv_generation_kwh": 169964.43457123835
       },
       "warnings": [
         {
+          "code": "using_completed_snapshot_after_backend_reset",
+          "message": "The backend current environment is incomplete; KPIs come from the last completed episode snapshot.",
+          "severity": "info"
+        },
+        {
           "code": "unexpected_timeseries_rows",
-          "message": "Recorded 437950 timeseries rows; expected one of [105108, 105120].",
+          "message": "Recorded 437988 timeseries rows; expected one of [350360, 350400].",
           "severity": "warning"
         }
       ]
     },
-    "artifact_audit_json": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/artifact_audit.json",
-    "artifact_audit_json_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/artifact_audit.json",
+    "artifact_audit_json": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/artifact_audit.json",
+    "artifact_audit_json_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/artifact_audit.json",
     "artifact_layout": {
-      "checkpoints": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/checkpoints",
-      "data": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data",
-      "figures": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures",
-      "run": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2",
-      "tables": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables"
+      "checkpoints": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/checkpoints",
+      "data": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data",
+      "figures": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/figures",
+      "run": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3",
+      "tables": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/figures/tables"
     },
     "artifact_profile": "efficient",
     "artifact_write_policy": {
@@ -669,153 +673,156 @@
     },
     "building_detail": {
       "building_behavior_summary": {
-        "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/building_behavior_summary.csv",
+        "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/building_behavior_summary.csv",
         "rows": 17
       },
       "building_kpis": {
-        "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/building_kpis.csv",
+        "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/building_kpis.csv",
         "rows": 1275
       },
       "building_observation_action_schema": {
-        "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/building_observation_action_schema.csv",
+        "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/building_observation_action_schema.csv",
         "rows": 2075
       },
       "building_trace_sample": {
-        "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/building_trace_sample.csv",
+        "csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/building_trace_sample.csv",
         "rows": 120
       }
     },
-    "checkpoint_count": 12,
-    "checkpoint_manifest": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/checkpoint_manifest.json",
-    "checkpoint_manifest_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/checkpoint_manifest.json",
+    "checkpoint_count": 34,
+    "checkpoint_manifest": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/checkpoint_manifest.json",
+    "checkpoint_manifest_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/checkpoint_manifest.json",
     "figure_count": 13,
-    "figures_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures",
-    "figures_manifest": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/figures_manifest.json",
-    "results_json": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/results.json",
-    "results_json_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/results.json",
+    "figures_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/figures",
+    "figures_manifest": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/figures/figures_manifest.json",
+    "results_json": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/results.json",
+    "results_json_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/results.json",
     "statistical_comparison_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/statistical_comparison",
     "table_count": 24,
-    "tables_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/figures/tables",
-    "timeseries_csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/timeseries.csv",
-    "timeseries_csv_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/timeseries.csv",
-    "timeseries_rows": 437950,
-    "trace_csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/trace.csv",
+    "tables_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/figures/tables",
+    "timeseries_csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/timeseries.csv",
+    "timeseries_csv_root": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/timeseries.csv",
+    "timeseries_rows": 437988,
+    "trace_csv": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/trace.csv",
     "trace_csv_root": null,
-    "trace_rows": 1700
+    "trace_rows": 1768
   },
-  "backend": "external/MADRL-MASAC",
-  "backend_repository": "external/MARL/src",
+  "backend": "external/off-policy",
   "citylearn_v3_report": {
     "all_values": {
-      "battery_capacity_fade_ratio": 4.9553800053448544e-05,
-      "battery_charge_total": 345132.82154580933,
-      "battery_discharge_total": 292814.6935327461,
-      "battery_equivalent_full_cycles": 12.143979195129742,
-      "battery_throughput_total": 637947.5150785556,
-      "carbon_emissions": 1.051639591972696,
-      "carbon_emissions_baseline": 9088297.682261093,
-      "carbon_emissions_control": 9243171.298157984,
-      "carbon_emissions_daily_average_baseline": 24902.288431814846,
-      "carbon_emissions_daily_average_control": 25326.64815113502,
-      "carbon_emissions_daily_average_delta": 424.35971932017395,
-      "carbon_emissions_delta": 77648.98780810599,
-      "community_import_share": 0.08180134800760319,
-      "community_local_traded_daily_average": 2502.1749435810157,
-      "community_local_traded_total": 913189.5971177549,
-      "cost_one_minus_load_factor_average": 0.9788572813323027,
-      "cost_peak_average": 1.0956074399714257,
-      "cost_ramping_average": 1.0208812307447095,
-      "electricity_cost": 1.0050652080032747,
-      "electricity_cost_baseline": 5914557.320100955,
-      "electricity_cost_control": 5944515.783174557,
-      "electricity_cost_daily_average_baseline": 16206.11664372907,
-      "electricity_cost_daily_average_control": 16288.203995454889,
-      "electricity_cost_daily_average_delta": 82.08735172581879,
-      "electricity_cost_delta": 15020.275212663882,
-      "ev_charge_total": 11514.183938987553,
+      "battery_capacity_fade_ratio": 6.97173786666607e-07,
+      "battery_charge_total": 3423.3160599650046,
+      "battery_discharge_total": 5587.96765206045,
+      "battery_equivalent_full_cycles": 0.17153894220713953,
+      "battery_throughput_total": 9011.283712025453,
+      "carbon_emissions": 1.0741932384067436,
+      "carbon_emissions_baseline": 10962469.364197543,
+      "carbon_emissions_control": 11044830.505711775,
+      "carbon_emissions_daily_average_baseline": 30037.5915904488,
+      "carbon_emissions_daily_average_control": 30263.264315228065,
+      "carbon_emissions_daily_average_delta": 225.67272477926446,
+      "carbon_emissions_delta": 41293.40711950582,
+      "community_import_share": 0.0869858368039575,
+      "community_local_traded_daily_average": 3164.7602825554086,
+      "community_local_traded_total": 1155005.638120951,
+      "cost_one_minus_load_factor_average": 0.9935919536582044,
+      "cost_peak_average": 1.0071128697365774,
+      "cost_ramping_average": 1.0011383857310043,
+      "electricity_cost": 1.0091805161969924,
+      "electricity_cost_baseline": 9646089.516004698,
+      "electricity_cost_control": 9734645.597044019,
+      "electricity_cost_daily_average_baseline": 26430.659708198742,
+      "electricity_cost_daily_average_control": 26673.306807747056,
+      "electricity_cost_daily_average_delta": 242.6470995483156,
+      "electricity_cost_delta": 44399.364069434494,
+      "ev_charge_total": 162807.5272996761,
       "ev_departure_count": 39682.0,
-      "ev_departure_met_count": 1612.0,
-      "ev_departure_soc_deficit_mean": 0.5010665009797093,
-      "ev_departure_success_rate": 0.04062295247215362,
-      "ev_departure_within_tolerance_count": 507.0,
-      "ev_departure_within_tolerance_rate": 0.012776573761403155,
-      "ev_v2g_export_total": 3494.122005420897,
-      "grid_export_baseline": 40654819.36426163,
-      "grid_export_control": 40650741.652760245,
-      "grid_export_delta": -2044.4422945907447,
-      "grid_export_ratio": 0.9998996991853574,
-      "grid_import": 1.0508408423700657,
-      "grid_import_baseline": 11107242.547481537,
-      "grid_import_control": 11163503.039496081,
-      "grid_import_delta": 28207.32397326982,
-      "net_exchange_baseline": -29547576.81678009,
-      "net_exchange_control": -29487238.613264162,
-      "net_exchange_delta": 30251.766267861498,
-      "one_minus_load_factor_average": 0.9788572813323027,
-      "peak_average": 1.0956074399714257,
-      "pv_export_daily_average": 113436.8744305524,
-      "pv_export_total": 41399732.63071702,
-      "pv_generation_daily_average": 135736.12476592427,
-      "pv_generation_total": 49538029.867697105,
-      "pv_self_consumption_ratio": 0.1642838291856845,
-      "ramping_average": 1.0208812307447095,
-      "zero_net_energy": 0.9988687270130299
+      "ev_departure_met_count": 19144.0,
+      "ev_departure_soc_deficit_mean": 0.2920805822038773,
+      "ev_departure_success_rate": 0.48243536112091123,
+      "ev_departure_within_tolerance_count": 700.0,
+      "ev_departure_within_tolerance_rate": 0.01764023990726274,
+      "ev_v2g_export_total": 29731.144519319758,
+      "grid_export_baseline": 39352683.96653366,
+      "grid_export_control": 39325835.1259214,
+      "grid_export_delta": -13461.203738868673,
+      "grid_export_ratio": 0.9993177380065081,
+      "grid_import": 1.075911468511894,
+      "grid_import_baseline": 13174025.587869644,
+      "grid_import_control": 13278088.486106314,
+      "grid_import_delta": 52174.01730863507,
+      "net_exchange_baseline": -26178658.378664017,
+      "net_exchange_control": -26047746.639815085,
+      "net_exchange_delta": 65635.22104750374,
+      "one_minus_load_factor_average": 0.9935919536582044,
+      "peak_average": 1.0071128697365774,
+      "price_signal_deviation": 0.3576461190979214,
+      "price_signal_deviation_baseline": 0.35630176433678495,
+      "price_signal_deviation_delta": 0.0013443547611364237,
+      "price_signal_deviation_ratio": 1.0037730791584454,
+      "pv_export_daily_average": 110907.24252598679,
+      "pv_export_total": 40476522.38687993,
+      "pv_generation_daily_average": 135731.8379158463,
+      "pv_generation_total": 49536465.346037395,
+      "pv_self_consumption_ratio": 0.18289441719083424,
+      "ramping_average": 1.0011383857310043,
+      "zero_net_energy": 0.9911313266696662
     },
     "axis_kpis": {
-      "battery_capacity_fade_ratio": 4.9553800053448544e-05,
-      "battery_charge_total": 345132.82154580933,
-      "battery_discharge_total": 292814.6935327461,
-      "battery_equivalent_full_cycles": 12.143979195129742,
-      "battery_throughput_total": 637947.5150785556,
-      "carbon_emissions": 1.051639591972696,
-      "carbon_emissions_baseline": 9088297.682261093,
-      "carbon_emissions_control": 9243171.298157984,
-      "carbon_emissions_daily_average_baseline": 24902.288431814846,
-      "carbon_emissions_daily_average_control": 25326.64815113502,
-      "carbon_emissions_daily_average_delta": 424.35971932017395,
-      "carbon_emissions_delta": 77648.98780810599,
-      "community_import_share": 0.08180134800760319,
-      "community_local_traded_daily_average": 2502.1749435810157,
-      "community_local_traded_total": 913189.5971177549,
-      "cost_one_minus_load_factor_average": 0.9788572813323027,
-      "cost_peak_average": 1.0956074399714257,
-      "cost_ramping_average": 1.0208812307447095,
-      "electricity_cost": 1.0050652080032747,
-      "electricity_cost_baseline": 5914557.320100955,
-      "electricity_cost_control": 5944515.783174557,
-      "electricity_cost_daily_average_baseline": 16206.11664372907,
-      "electricity_cost_daily_average_control": 16288.203995454889,
-      "electricity_cost_daily_average_delta": 82.08735172581879,
-      "electricity_cost_delta": 15020.275212663882,
-      "ev_charge_total": 11514.183938987553,
+      "battery_capacity_fade_ratio": 6.97173786666607e-07,
+      "battery_charge_total": 3423.3160599650046,
+      "battery_discharge_total": 5587.96765206045,
+      "battery_equivalent_full_cycles": 0.17153894220713953,
+      "battery_throughput_total": 9011.283712025453,
+      "carbon_emissions": 1.0741932384067436,
+      "carbon_emissions_baseline": 10962469.364197543,
+      "carbon_emissions_control": 11044830.505711775,
+      "carbon_emissions_daily_average_baseline": 30037.5915904488,
+      "carbon_emissions_daily_average_control": 30263.264315228065,
+      "carbon_emissions_daily_average_delta": 225.67272477926446,
+      "carbon_emissions_delta": 41293.40711950582,
+      "community_import_share": 0.0869858368039575,
+      "community_local_traded_daily_average": 3164.7602825554086,
+      "community_local_traded_total": 1155005.638120951,
+      "cost_one_minus_load_factor_average": 0.9935919536582044,
+      "cost_peak_average": 1.0071128697365774,
+      "cost_ramping_average": 1.0011383857310043,
+      "electricity_cost": 1.0091805161969924,
+      "electricity_cost_baseline": 9646089.516004698,
+      "electricity_cost_control": 9734645.597044019,
+      "electricity_cost_daily_average_baseline": 26430.659708198742,
+      "electricity_cost_daily_average_control": 26673.306807747056,
+      "electricity_cost_daily_average_delta": 242.6470995483156,
+      "electricity_cost_delta": 44399.364069434494,
+      "ev_charge_total": 162807.5272996761,
       "ev_departure_count": 39682.0,
-      "ev_departure_met_count": 1612.0,
-      "ev_departure_soc_deficit_mean": 0.5010665009797093,
-      "ev_departure_success_rate": 0.04062295247215362,
-      "ev_departure_within_tolerance_count": 507.0,
-      "ev_departure_within_tolerance_rate": 0.012776573761403155,
-      "ev_v2g_export_total": 3494.122005420897,
-      "grid_export_baseline": 40654819.36426163,
-      "grid_export_control": 40650741.652760245,
-      "grid_export_delta": -2044.4422945907447,
-      "grid_export_ratio": 0.9998996991853574,
-      "grid_import": 1.0508408423700657,
-      "grid_import_baseline": 11107242.547481537,
-      "grid_import_control": 11163503.039496081,
-      "grid_import_delta": 28207.32397326982,
-      "net_exchange_baseline": -29547576.81678009,
-      "net_exchange_control": -29487238.613264162,
-      "net_exchange_delta": 30251.766267861498,
-      "one_minus_load_factor_average": 0.9788572813323027,
-      "peak_average": 1.0956074399714257,
-      "price_signal_deviation": null,
-      "pv_export_daily_average": 113436.8744305524,
-      "pv_export_total": 41399732.63071702,
-      "pv_generation_daily_average": 135736.12476592427,
-      "pv_generation_total": 49538029.867697105,
-      "pv_self_consumption_ratio": 0.1642838291856845,
-      "ramping_average": 1.0208812307447095,
-      "zero_net_energy": 0.9988687270130299
+      "ev_departure_met_count": 19144.0,
+      "ev_departure_soc_deficit_mean": 0.2920805822038773,
+      "ev_departure_success_rate": 0.48243536112091123,
+      "ev_departure_within_tolerance_count": 700.0,
+      "ev_departure_within_tolerance_rate": 0.01764023990726274,
+      "ev_v2g_export_total": 29731.144519319758,
+      "grid_export_baseline": 39352683.96653366,
+      "grid_export_control": 39325835.1259214,
+      "grid_export_delta": -13461.203738868673,
+      "grid_export_ratio": 0.9993177380065081,
+      "grid_import": 1.075911468511894,
+      "grid_import_baseline": 13174025.587869644,
+      "grid_import_control": 13278088.486106314,
+      "grid_import_delta": 52174.01730863507,
+      "net_exchange_baseline": -26178658.378664017,
+      "net_exchange_control": -26047746.639815085,
+      "net_exchange_delta": 65635.22104750374,
+      "one_minus_load_factor_average": 0.9935919536582044,
+      "peak_average": 1.0071128697365774,
+      "price_signal_deviation": 0.3576461190979214,
+      "pv_export_daily_average": 110907.24252598679,
+      "pv_export_total": 40476522.38687993,
+      "pv_generation_daily_average": 135731.8379158463,
+      "pv_generation_total": 49536465.346037395,
+      "pv_self_consumption_ratio": 0.18289441719083424,
+      "ramping_average": 1.0011383857310043,
+      "zero_net_energy": 0.9911313266696662
     },
     "kpi_frame_rows": 1361,
     "objective_axis_kpis": {
@@ -845,7 +852,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 4.9553800053448544e-05
+            "value": 6.97173786666607e-07
           },
           "battery_charge_total": {
             "comparison": {
@@ -864,7 +871,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 345132.82154580933
+            "value": 3423.3160599650046
           },
           "battery_discharge_total": {
             "comparison": {
@@ -883,7 +890,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 292814.6935327461
+            "value": 5587.96765206045
           },
           "battery_equivalent_full_cycles": {
             "comparison": {
@@ -902,7 +909,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 12.143979195129742
+            "value": 0.17153894220713953
           },
           "battery_throughput_total": {
             "comparison": {
@@ -921,7 +928,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 637947.5150785556
+            "value": 9011.283712025453
           },
           "community_import_share": {
             "comparison": {
@@ -940,7 +947,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.08180134800760319
+            "value": 0.0869858368039575
           },
           "community_local_traded_daily_average": {
             "comparison": {
@@ -959,7 +966,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 2502.1749435810157
+            "value": 3164.7602825554086
           },
           "community_local_traded_total": {
             "comparison": {
@@ -978,7 +985,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 913189.5971177549
+            "value": 1155005.638120951
           },
           "ev_charge_total": {
             "comparison": {
@@ -997,7 +1004,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11514.183938987553
+            "value": 162807.5272996761
           },
           "ev_departure_count": {
             "comparison": {
@@ -1035,7 +1042,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1612.0
+            "value": 19144.0
           },
           "ev_departure_soc_deficit_mean": {
             "comparison": {
@@ -1054,7 +1061,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.5010665009797093
+            "value": 0.2920805822038773
           },
           "ev_departure_success_rate": {
             "comparison": {
@@ -1073,7 +1080,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.04062295247215362
+            "value": 0.48243536112091123
           },
           "ev_departure_within_tolerance_count": {
             "comparison": {
@@ -1092,7 +1099,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 507.0
+            "value": 700.0
           },
           "ev_departure_within_tolerance_rate": {
             "comparison": {
@@ -1111,7 +1118,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.012776573761403155
+            "value": 0.01764023990726274
           },
           "ev_v2g_export_total": {
             "comparison": {
@@ -1130,7 +1137,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 3494.122005420897
+            "value": 29731.144519319758
           },
           "grid_export_baseline": {
             "comparison": {
@@ -1149,13 +1156,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 40654819.36426163
+            "value": 39352683.96653366
           },
           "grid_export_control": {
             "comparison": {
               "available": true,
-              "baseline": 40654819.36426163,
-              "delta_vs_baseline": -4077.7115013822913,
+              "baseline": 39352683.96653366,
+              "delta_vs_baseline": -26848.840612262487,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1168,13 +1175,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 40650741.652760245
+            "value": 39325835.1259214
           },
           "grid_export_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": -2044.4422945907447,
+              "delta_vs_baseline": -13461.203738868673,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1188,13 +1195,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -2044.4422945907447
+            "value": -13461.203738868673
           },
           "grid_export_ratio": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.00010030081464262874,
+              "delta_vs_baseline": -0.0006822619934918617,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1207,13 +1214,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9998996991853574
+            "value": 0.9993177380065081
           },
           "grid_import": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.0508408423700657,
+              "delta_vs_baseline": 0.07591146851189401,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1226,7 +1233,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0508408423700657
+            "value": 1.075911468511894
           },
           "grid_import_baseline": {
             "comparison": {
@@ -1245,13 +1252,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11107242.547481537
+            "value": 13174025.587869644
           },
           "grid_import_control": {
             "comparison": {
               "available": true,
-              "baseline": 11107242.547481537,
-              "delta_vs_baseline": 56260.492014544085,
+              "baseline": 13174025.587869644,
+              "delta_vs_baseline": 104062.8982366696,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1264,13 +1271,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11163503.039496081
+            "value": 13278088.486106314
           },
           "grid_import_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 28207.32397326982,
+              "delta_vs_baseline": 52174.01730863507,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1284,7 +1291,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 28207.32397326982
+            "value": 52174.01730863507
           },
           "net_exchange_baseline": {
             "comparison": {
@@ -1303,13 +1310,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -29547576.81678009
+            "value": -26178658.378664017
           },
           "net_exchange_control": {
             "comparison": {
               "available": true,
-              "baseline": -29547576.81678009,
-              "delta_vs_baseline": 60338.20351592824,
+              "baseline": -26178658.378664017,
+              "delta_vs_baseline": 130911.73884893209,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1322,13 +1329,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -29487238.613264162
+            "value": -26047746.639815085
           },
           "net_exchange_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 30251.766267861498,
+              "delta_vs_baseline": 65635.22104750374,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1342,13 +1349,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 30251.766267861498
+            "value": 65635.22104750374
           },
           "one_minus_load_factor_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.021142718667697347,
+              "delta_vs_baseline": -0.006408046341795592,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1362,13 +1369,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9788572813323027
+            "value": 0.9935919536582044
           },
           "peak_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.09560743997142573,
+              "delta_vs_baseline": 0.007112869736577432,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1382,7 +1389,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0956074399714257
+            "value": 1.0071128697365774
           },
           "pv_export_daily_average": {
             "comparison": {
@@ -1401,7 +1408,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 113436.8744305524
+            "value": 110907.24252598679
           },
           "pv_export_total": {
             "comparison": {
@@ -1420,7 +1427,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 41399732.63071702
+            "value": 40476522.38687993
           },
           "pv_generation_daily_average": {
             "comparison": {
@@ -1439,7 +1446,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 135736.12476592427
+            "value": 135731.8379158463
           },
           "pv_generation_total": {
             "comparison": {
@@ -1458,7 +1465,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 49538029.867697105
+            "value": 49536465.346037395
           },
           "pv_self_consumption_ratio": {
             "comparison": {
@@ -1477,13 +1484,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.1642838291856845
+            "value": 0.18289441719083424
           },
           "ramping_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.02088123074470949,
+              "delta_vs_baseline": 0.0011383857310043322,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1496,13 +1503,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0208812307447095
+            "value": 1.0011383857310043
           },
           "zero_net_energy": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.0011312729869701332,
+              "delta_vs_baseline": -0.00886867333033381,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1515,7 +1522,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9988687270130299
+            "value": 0.9911313266696662
           }
         },
         "name": "Flexibilidad energetica",
@@ -1536,7 +1543,7 @@
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.051639591972695964,
+              "delta_vs_baseline": 0.07419323840674363,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1549,7 +1556,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.051639591972696
+            "value": 1.0741932384067436
           },
           "carbon_emissions_baseline": {
             "comparison": {
@@ -1568,13 +1575,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 9088297.682261093
+            "value": 10962469.364197543
           },
           "carbon_emissions_control": {
             "comparison": {
               "available": true,
-              "baseline": 9088297.682261093,
-              "delta_vs_baseline": 154873.6158968918,
+              "baseline": 10962469.364197543,
+              "delta_vs_baseline": 82361.14151423238,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1587,7 +1594,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 9243171.298157984
+            "value": 11044830.505711775
           },
           "carbon_emissions_daily_average_baseline": {
             "comparison": {
@@ -1606,13 +1613,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 24902.288431814846
+            "value": 30037.5915904488
           },
           "carbon_emissions_daily_average_control": {
             "comparison": {
               "available": true,
-              "baseline": 24902.288431814846,
-              "delta_vs_baseline": 424.3597193201749,
+              "baseline": 30037.5915904488,
+              "delta_vs_baseline": 225.672724779266,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1625,13 +1632,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 25326.64815113502
+            "value": 30263.264315228065
           },
           "carbon_emissions_daily_average_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 424.35971932017395,
+              "delta_vs_baseline": 225.67272477926446,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1644,13 +1651,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 424.35971932017395
+            "value": 225.67272477926446
           },
           "carbon_emissions_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 77648.98780810599,
+              "delta_vs_baseline": 41293.40711950582,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1664,7 +1671,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 77648.98780810599
+            "value": 41293.40711950582
           }
         },
         "name": "Emisiones de CO2",
@@ -1675,9 +1682,9 @@
       "OE3": {
         "axis_scenario": "E3",
         "baseline_comparison": {
-          "comparable_kpis": 8,
+          "comparable_kpis": 9,
           "improved_kpis": 1,
-          "not_improved_kpis": 7
+          "not_improved_kpis": 8
         },
         "code": "OE3",
         "kpis": {
@@ -1685,7 +1692,7 @@
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.021142718667697347,
+              "delta_vs_baseline": -0.006408046341795592,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -1699,13 +1706,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9788572813323027
+            "value": 0.9935919536582044
           },
           "cost_peak_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.09560743997142573,
+              "delta_vs_baseline": 0.007112869736577432,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1719,13 +1726,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0956074399714257
+            "value": 1.0071128697365774
           },
           "cost_ramping_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.02088123074470949,
+              "delta_vs_baseline": 0.0011383857310043322,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1738,13 +1745,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0208812307447095
+            "value": 1.0011383857310043
           },
           "electricity_cost": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.0050652080032747016,
+              "delta_vs_baseline": 0.00918051619699245,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1757,7 +1764,7 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0050652080032747
+            "value": 1.0091805161969924
           },
           "electricity_cost_baseline": {
             "comparison": {
@@ -1776,13 +1783,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 5914557.320100955
+            "value": 9646089.516004698
           },
           "electricity_cost_control": {
             "comparison": {
               "available": true,
-              "baseline": 5914557.320100955,
-              "delta_vs_baseline": 29958.463073601946,
+              "baseline": 9646089.516004698,
+              "delta_vs_baseline": 88556.08103932068,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1795,7 +1802,7 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 5944515.783174557
+            "value": 9734645.597044019
           },
           "electricity_cost_daily_average_baseline": {
             "comparison": {
@@ -1814,13 +1821,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 16206.11664372907
+            "value": 26430.659708198742
           },
           "electricity_cost_daily_average_control": {
             "comparison": {
               "available": true,
-              "baseline": 16206.11664372907,
-              "delta_vs_baseline": 82.08735172581873,
+              "baseline": 26430.659708198742,
+              "delta_vs_baseline": 242.64709954831415,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1833,13 +1840,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 16288.203995454889
+            "value": 26673.306807747056
           },
           "electricity_cost_daily_average_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 82.08735172581879,
+              "delta_vs_baseline": 242.6470995483156,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1852,13 +1859,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 82.08735172581879
+            "value": 242.6470995483156
           },
           "electricity_cost_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 15020.275212663882,
+              "delta_vs_baseline": 44399.364069434494,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -1872,14 +1879,14 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 15020.275212663882
+            "value": 44399.364069434494
           },
           "price_signal_deviation": {
             "comparison": {
-              "available": false,
-              "baseline": null,
-              "delta_vs_baseline": null,
-              "improved_vs_baseline": null
+              "available": true,
+              "baseline": 0.35630176433678495,
+              "delta_vs_baseline": 0.0013443547611364237,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -1891,7 +1898,7 @@
               "objective": "OE3",
               "source": "derived_from_citylearn_v2_timeseries"
             },
-            "value": null
+            "value": 0.3576461190979214
           }
         },
         "name": "Costos energeticos",
@@ -2643,7 +2650,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 4.9553800053448544e-05
+            "value": 6.97173786666607e-07
           },
           "battery_charge_total": {
             "comparison": {
@@ -2662,7 +2669,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 345132.82154580933
+            "value": 3423.3160599650046
           },
           "battery_discharge_total": {
             "comparison": {
@@ -2681,7 +2688,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 292814.6935327461
+            "value": 5587.96765206045
           },
           "battery_equivalent_full_cycles": {
             "comparison": {
@@ -2700,7 +2707,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 12.143979195129742
+            "value": 0.17153894220713953
           },
           "battery_throughput_total": {
             "comparison": {
@@ -2719,7 +2726,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 637947.5150785556
+            "value": 9011.283712025453
           },
           "community_import_share": {
             "comparison": {
@@ -2738,7 +2745,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.08180134800760319
+            "value": 0.0869858368039575
           },
           "community_local_traded_daily_average": {
             "comparison": {
@@ -2757,7 +2764,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 2502.1749435810157
+            "value": 3164.7602825554086
           },
           "community_local_traded_total": {
             "comparison": {
@@ -2776,7 +2783,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 913189.5971177549
+            "value": 1155005.638120951
           },
           "ev_charge_total": {
             "comparison": {
@@ -2795,7 +2802,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11514.183938987553
+            "value": 162807.5272996761
           },
           "ev_departure_count": {
             "comparison": {
@@ -2833,7 +2840,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1612.0
+            "value": 19144.0
           },
           "ev_departure_soc_deficit_mean": {
             "comparison": {
@@ -2852,7 +2859,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.5010665009797093
+            "value": 0.2920805822038773
           },
           "ev_departure_success_rate": {
             "comparison": {
@@ -2871,7 +2878,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.04062295247215362
+            "value": 0.48243536112091123
           },
           "ev_departure_within_tolerance_count": {
             "comparison": {
@@ -2890,7 +2897,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 507.0
+            "value": 700.0
           },
           "ev_departure_within_tolerance_rate": {
             "comparison": {
@@ -2909,7 +2916,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.012776573761403155
+            "value": 0.01764023990726274
           },
           "ev_v2g_export_total": {
             "comparison": {
@@ -2928,7 +2935,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 3494.122005420897
+            "value": 29731.144519319758
           },
           "grid_export_baseline": {
             "comparison": {
@@ -2947,13 +2954,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 40654819.36426163
+            "value": 39352683.96653366
           },
           "grid_export_control": {
             "comparison": {
               "available": true,
-              "baseline": 40654819.36426163,
-              "delta_vs_baseline": -4077.7115013822913,
+              "baseline": 39352683.96653366,
+              "delta_vs_baseline": -26848.840612262487,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -2966,13 +2973,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 40650741.652760245
+            "value": 39325835.1259214
           },
           "grid_export_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": -2044.4422945907447,
+              "delta_vs_baseline": -13461.203738868673,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -2986,13 +2993,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -2044.4422945907447
+            "value": -13461.203738868673
           },
           "grid_export_ratio": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.00010030081464262874,
+              "delta_vs_baseline": -0.0006822619934918617,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -3005,13 +3012,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9998996991853574
+            "value": 0.9993177380065081
           },
           "grid_import": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.0508408423700657,
+              "delta_vs_baseline": 0.07591146851189401,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3024,7 +3031,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0508408423700657
+            "value": 1.075911468511894
           },
           "grid_import_baseline": {
             "comparison": {
@@ -3043,13 +3050,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11107242.547481537
+            "value": 13174025.587869644
           },
           "grid_import_control": {
             "comparison": {
               "available": true,
-              "baseline": 11107242.547481537,
-              "delta_vs_baseline": 56260.492014544085,
+              "baseline": 13174025.587869644,
+              "delta_vs_baseline": 104062.8982366696,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3062,13 +3069,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 11163503.039496081
+            "value": 13278088.486106314
           },
           "grid_import_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 28207.32397326982,
+              "delta_vs_baseline": 52174.01730863507,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3082,7 +3089,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 28207.32397326982
+            "value": 52174.01730863507
           },
           "net_exchange_baseline": {
             "comparison": {
@@ -3101,13 +3108,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -29547576.81678009
+            "value": -26178658.378664017
           },
           "net_exchange_control": {
             "comparison": {
               "available": true,
-              "baseline": -29547576.81678009,
-              "delta_vs_baseline": 60338.20351592824,
+              "baseline": -26178658.378664017,
+              "delta_vs_baseline": 130911.73884893209,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3120,13 +3127,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": -29487238.613264162
+            "value": -26047746.639815085
           },
           "net_exchange_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 30251.766267861498,
+              "delta_vs_baseline": 65635.22104750374,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3140,13 +3147,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 30251.766267861498
+            "value": 65635.22104750374
           },
           "one_minus_load_factor_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.021142718667697347,
+              "delta_vs_baseline": -0.006408046341795592,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -3160,13 +3167,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9788572813323027
+            "value": 0.9935919536582044
           },
           "peak_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.09560743997142573,
+              "delta_vs_baseline": 0.007112869736577432,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3180,7 +3187,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0956074399714257
+            "value": 1.0071128697365774
           },
           "pv_export_daily_average": {
             "comparison": {
@@ -3199,7 +3206,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 113436.8744305524
+            "value": 110907.24252598679
           },
           "pv_export_total": {
             "comparison": {
@@ -3218,7 +3225,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 41399732.63071702
+            "value": 40476522.38687993
           },
           "pv_generation_daily_average": {
             "comparison": {
@@ -3237,7 +3244,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 135736.12476592427
+            "value": 135731.8379158463
           },
           "pv_generation_total": {
             "comparison": {
@@ -3256,7 +3263,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 49538029.867697105
+            "value": 49536465.346037395
           },
           "pv_self_consumption_ratio": {
             "comparison": {
@@ -3275,13 +3282,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.1642838291856845
+            "value": 0.18289441719083424
           },
           "ramping_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.02088123074470949,
+              "delta_vs_baseline": 0.0011383857310043322,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3294,13 +3301,13 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0208812307447095
+            "value": 1.0011383857310043
           },
           "zero_net_energy": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.0011312729869701332,
+              "delta_vs_baseline": -0.00886867333033381,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -3313,7 +3320,7 @@
               "objective": "OE1",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9988687270130299
+            "value": 0.9911313266696662
           }
         },
         "name": "Flexibilidad energetica",
@@ -3334,7 +3341,7 @@
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.051639591972695964,
+              "delta_vs_baseline": 0.07419323840674363,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3347,7 +3354,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.051639591972696
+            "value": 1.0741932384067436
           },
           "carbon_emissions_baseline": {
             "comparison": {
@@ -3366,13 +3373,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 9088297.682261093
+            "value": 10962469.364197543
           },
           "carbon_emissions_control": {
             "comparison": {
               "available": true,
-              "baseline": 9088297.682261093,
-              "delta_vs_baseline": 154873.6158968918,
+              "baseline": 10962469.364197543,
+              "delta_vs_baseline": 82361.14151423238,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3385,7 +3392,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 9243171.298157984
+            "value": 11044830.505711775
           },
           "carbon_emissions_daily_average_baseline": {
             "comparison": {
@@ -3404,13 +3411,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 24902.288431814846
+            "value": 30037.5915904488
           },
           "carbon_emissions_daily_average_control": {
             "comparison": {
               "available": true,
-              "baseline": 24902.288431814846,
-              "delta_vs_baseline": 424.3597193201749,
+              "baseline": 30037.5915904488,
+              "delta_vs_baseline": 225.672724779266,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3423,13 +3430,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 25326.64815113502
+            "value": 30263.264315228065
           },
           "carbon_emissions_daily_average_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 424.35971932017395,
+              "delta_vs_baseline": 225.67272477926446,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3442,13 +3449,13 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 424.35971932017395
+            "value": 225.67272477926446
           },
           "carbon_emissions_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 77648.98780810599,
+              "delta_vs_baseline": 41293.40711950582,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3462,7 +3469,7 @@
               "objective": "OE2",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 77648.98780810599
+            "value": 41293.40711950582
           }
         },
         "name": "Emisiones de CO2",
@@ -3473,9 +3480,9 @@
       "OE3": {
         "axis_scenario": "E3",
         "baseline_comparison": {
-          "comparable_kpis": 8,
+          "comparable_kpis": 9,
           "improved_kpis": 1,
-          "not_improved_kpis": 7
+          "not_improved_kpis": 8
         },
         "code": "OE3",
         "kpis": {
@@ -3483,7 +3490,7 @@
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": -0.021142718667697347,
+              "delta_vs_baseline": -0.006408046341795592,
               "improved_vs_baseline": true
             },
             "trace": {
@@ -3497,13 +3504,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 0.9788572813323027
+            "value": 0.9935919536582044
           },
           "cost_peak_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.09560743997142573,
+              "delta_vs_baseline": 0.007112869736577432,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3517,13 +3524,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0956074399714257
+            "value": 1.0071128697365774
           },
           "cost_ramping_average": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.02088123074470949,
+              "delta_vs_baseline": 0.0011383857310043322,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3536,13 +3543,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0208812307447095
+            "value": 1.0011383857310043
           },
           "electricity_cost": {
             "comparison": {
               "available": true,
               "baseline": 1.0,
-              "delta_vs_baseline": 0.0050652080032747016,
+              "delta_vs_baseline": 0.00918051619699245,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3555,7 +3562,7 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 1.0050652080032747
+            "value": 1.0091805161969924
           },
           "electricity_cost_baseline": {
             "comparison": {
@@ -3574,13 +3581,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 5914557.320100955
+            "value": 9646089.516004698
           },
           "electricity_cost_control": {
             "comparison": {
               "available": true,
-              "baseline": 5914557.320100955,
-              "delta_vs_baseline": 29958.463073601946,
+              "baseline": 9646089.516004698,
+              "delta_vs_baseline": 88556.08103932068,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3593,7 +3600,7 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 5944515.783174557
+            "value": 9734645.597044019
           },
           "electricity_cost_daily_average_baseline": {
             "comparison": {
@@ -3612,13 +3619,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 16206.11664372907
+            "value": 26430.659708198742
           },
           "electricity_cost_daily_average_control": {
             "comparison": {
               "available": true,
-              "baseline": 16206.11664372907,
-              "delta_vs_baseline": 82.08735172581873,
+              "baseline": 26430.659708198742,
+              "delta_vs_baseline": 242.64709954831415,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3631,13 +3638,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 16288.203995454889
+            "value": 26673.306807747056
           },
           "electricity_cost_daily_average_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 82.08735172581879,
+              "delta_vs_baseline": 242.6470995483156,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3650,13 +3657,13 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 82.08735172581879
+            "value": 242.6470995483156
           },
           "electricity_cost_delta": {
             "comparison": {
               "available": true,
               "baseline": 0.0,
-              "delta_vs_baseline": 15020.275212663882,
+              "delta_vs_baseline": 44399.364069434494,
               "improved_vs_baseline": false
             },
             "trace": {
@@ -3670,14 +3677,14 @@
               "objective": "OE3",
               "source": "citylearn_v2.evaluate_v2"
             },
-            "value": 15020.275212663882
+            "value": 44399.364069434494
           },
           "price_signal_deviation": {
             "comparison": {
-              "available": false,
-              "baseline": null,
-              "delta_vs_baseline": null,
-              "improved_vs_baseline": null
+              "available": true,
+              "baseline": 0.35630176433678495,
+              "delta_vs_baseline": 0.0013443547611364237,
+              "improved_vs_baseline": false
             },
             "trace": {
               "citylearn_v2_names": [
@@ -3689,7 +3696,7 @@
               "objective": "OE3",
               "source": "derived_from_citylearn_v2_timeseries"
             },
-            "value": null
+            "value": 0.3576461190979214
           }
         },
         "name": "Costos energeticos",
@@ -3699,89 +3706,70 @@
       }
     },
     "report_source": {
-      "adapter_algorithm": "MASAC",
+      "adapter_algorithm": "MATD3",
       "adapter_class": "CityLearnV3BackendAdapter",
-      "candidate_class": "CityLearnSMACDiscreteEnv",
+      "candidate_class": "CityLearnOffPolicyVecEnv",
       "completed_episode_count": 50,
       "episode_time_steps": 8760,
       "last_completed_episode": 49,
-      "last_completed_global_step": 437987,
+      "last_completed_global_step": 437957,
       "last_completed_time_step": 8759,
-      "last_recorded_all_done": true,
+      "last_recorded_all_done": false,
       "last_recorded_episode": 49,
-      "last_recorded_episode_step": 8747,
-      "last_recorded_global_step": 437987,
-      "last_recorded_time_step": 8759,
+      "last_recorded_episode_step": 8759,
+      "last_recorded_global_step": 437999,
+      "last_recorded_time_step": 42,
       "objective_env_class": "CityLearnDecPOMDPEnv",
       "snapshot_error": null,
-      "timeseries_rows": 437950,
-      "trace_rows": 1700,
+      "timeseries_rows": 437988,
+      "trace_rows": 1768,
       "type": "last_completed_episode_snapshot"
     },
-    "report_warnings": [],
-    "supporting_values": {}
+    "report_warnings": [
+      {
+        "code": "using_completed_snapshot_after_backend_reset",
+        "message": "The backend current environment is incomplete; KPIs come from the last completed episode snapshot.",
+        "severity": "info"
+      }
+    ],
+    "supporting_values": {
+      "price_signal_deviation_baseline": 0.35630176433678495,
+      "price_signal_deviation_delta": 0.0013443547611364237,
+      "price_signal_deviation_ratio": 1.0037730791584454
+    }
   },
-  "discrete_action_metadata": {
-    "action_bins": 3,
-    "cartesian_action_count": 984770902183611232881,
-    "growth": "linear",
-    "max_action_dim": 44,
-    "mode": "axis",
-    "n_discrete_actions": 89,
-    "note": "Axis mode avoids the cartesian explosion from MultiDiscrete-style joint actuator combinations while preserving a single Discrete action id required by the external MASAC/MAAC backends."
-  },
-  "discrete_action_mode": "axis",
   "episode_time_steps": 8760,
-  "episodes": 12,
-  "epochs": 12,
-  "estimated_replay_buffer_gib": 2.743958830833435,
+  "episodes": 40,
   "gpu_runtime": {
     "cuda_available": true,
     "cuda_device": "cuda:0",
     "cuda_device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
     "cuda_device_total_memory_gib": 94.97076416015625,
     "cuda_enabled": true,
-    "cuda_memory_fraction_applied": 0.22,
+    "cuda_memory_fraction_applied": 0.15,
     "cuda_memory_fraction_error": null,
-    "cuda_memory_fraction_requested": 0.22,
+    "cuda_memory_fraction_requested": 0.15,
     "cuda_requested": true,
     "cudnn_benchmark": true,
     "matmul_precision": "high",
     "profile": "aws",
     "pytorch_cuda_alloc_conf": "expandable_segments:True,max_split_size_mb:128",
     "tf32_allowed": true,
-    "torch_threads": 2
+    "torch_threads": 8
   },
   "hyperparameters": {
-    "action_bins": 3,
-    "actor_lr": 0.0003,
-    "actor_sample_times": 1,
     "algorithm_family": "MADRL",
-    "alpha_lr": 0.0003,
-    "backend_repository": "external/MARL/src",
-    "buffer_size": 2,
-    "critic_batch_size": 1,
-    "critic_lr": 0.0005,
-    "critic_train_steps": 1,
-    "ctde_state_shape": 1907,
+    "batch_size": 256,
+    "buffer_size": 4096,
+    "buffer_size_cli": 4096,
+    "checkpoint_interval_steps": 4380,
+    "ctde_share_observation": "padded_joint_observation",
     "cuda": true,
-    "discrete_action_metadata": {
-      "action_bins": 3,
-      "cartesian_action_count": 984770902183611232881,
-      "growth": "linear",
-      "max_action_dim": 44,
-      "mode": "axis",
-      "n_discrete_actions": 89,
-      "note": "Axis mode avoids the cartesian explosion from MultiDiscrete-style joint actuator combinations while preserving a single Discrete action id required by the external MASAC/MAAC backends."
-    },
-    "discrete_action_mode": "axis",
-    "episode_limit": 8760,
-    "episodes": 12,
-    "estimated_replay_buffer_gib": 2.743958830833435,
-    "final_checkpoint_save_step": 12,
+    "episode_length": 8760,
+    "episodes": 40,
     "finite_optimizer_step_guard": {
-      "audit_path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/data/masac_finite_gradient_guard.jsonl",
-      "installed_optimizers": 4
+      "audit_path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/data/matd3_finite_gradient_guard.jsonl",
+      "installed_optimizers": 34
     },
     "gamma": 0.9999,
     "gpu_runtime": {
@@ -3790,62 +3778,47 @@
       "cuda_device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
       "cuda_device_total_memory_gib": 94.97076416015625,
       "cuda_enabled": true,
-      "cuda_memory_fraction_applied": 0.22,
+      "cuda_memory_fraction_applied": 0.15,
       "cuda_memory_fraction_error": null,
-      "cuda_memory_fraction_requested": 0.22,
+      "cuda_memory_fraction_requested": 0.15,
       "cuda_requested": true,
       "cudnn_benchmark": true,
       "matmul_precision": "high",
       "profile": "aws",
       "pytorch_cuda_alloc_conf": "expandable_segments:True,max_split_size_mb:128",
       "tf32_allowed": true,
-      "torch_threads": 2
+      "torch_threads": 8
     },
-    "grad_norm_clip": 1.0,
-    "hyper_hidden_dim": 64,
+    "hidden_size": 256,
     "job_resume": {
       "active": true,
-      "algorithm": "MASAC",
-      "completed_episodes": 38,
-      "completed_episodes_csv": 38,
-      "completed_episodes_live": 38,
-      "live_progress_episode": 38,
-      "live_progress_global_step": 333600,
+      "algorithm": "MATD3",
+      "completed_episodes": 10,
+      "completed_episodes_csv": 10,
+      "completed_episodes_global_step": 9,
+      "live_progress_episode": 0,
+      "live_progress_global_step": 8100,
       "maac_checkpoint": null,
       "maac_start_episode": 0,
-      "model_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2/checkpoints/models",
+      "model_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3/checkpoints/offpolicy_run/models",
       "note": "resume_from_checkpoint",
-      "remaining_episodes": 12,
-      "remaining_num_env_steps": 105120,
+      "remaining_episodes": 40,
+      "remaining_num_env_steps": 350400,
       "target_episodes": 50
     },
     "live_heartbeat_seconds": 120,
     "live_progress_interval": 300,
-    "masac_backend_optimization": {
-      "already_installed": false,
-      "changes": [
-        "sampled replay batches are tensorized once per update",
-        "CUDA batch preload uses auto fallback to CPU after OOM",
-        "agent identity matrix is cached per device/dtype/batch",
-        "hidden-state allocation is created directly on target device",
-        "per-timestep .cuda() calls are removed when batch preload succeeds"
-      ],
-      "enabled": true,
-      "patch_version": "citylearn_masac_runtime_v1"
-    },
-    "masac_preload_batch_device": "auto",
-    "max_replay_buffer_gib": 8.0,
-    "n_discrete_actions": 89,
-    "n_episodes_per_epoch": 1,
-    "n_epoch": 12,
-    "qmix_hidden_dim": 32,
+    "lr": 0.0003,
+    "max_grad_norm": 1.0,
+    "num_env_steps": 350400,
+    "num_random_episodes": 1,
     "reward_function": "CityLearnV3MADRLRewardFunction",
     "reward_metadata": {
-      "algorithm": "MASAC",
+      "algorithm": "MATD3",
       "axis_weights": {
-        "carbon": 0.7,
-        "cost": 0.15,
-        "flex": 0.15
+        "carbon": 0.15,
+        "cost": 0.6,
+        "flex": 0.25
       },
       "base_reward": "CityLearnV3MADRLRewardFunction",
       "function": "CityLearnV3MADRLRewardFunction",
@@ -3866,20 +3839,21 @@
         "ev_urgency_hours": 8.0,
         "ev_weight": 0.25,
         "peak_weight": 0.45,
-        "profile_name": "masac_unified_comparable_v4",
+        "profile_name": "matd3_unified_comparable_v4",
         "ramp_weight": 0.35,
         "reward_scale": 1.0,
         "team_reward_ratio": 0.7
       },
-      "scenario": "E2"
+      "scenario": "E3"
     },
-    "reward_profile": "MASAC",
-    "rnn_hidden_dim": 64,
-    "torch_threads": 2,
-    "use_recurrent_policy": false
+    "reward_profile": "MATD3",
+    "share_policy": false,
+    "torch_threads": 8,
+    "train_interval": 100,
+    "use_same_share_obs": true
   },
-  "n_discrete_actions": 89,
-  "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MASAC/E2",
+  "num_env_steps": 350400,
+  "output_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E3",
   "project_axis_metrics": {
     "OE1": {
       "axis_scenario": "E1",
@@ -3907,7 +3881,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 4.9553800053448544e-05
+          "value": 6.97173786666607e-07
         },
         "battery_charge_total": {
           "comparison": {
@@ -3926,7 +3900,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 345132.82154580933
+          "value": 3423.3160599650046
         },
         "battery_discharge_total": {
           "comparison": {
@@ -3945,7 +3919,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 292814.6935327461
+          "value": 5587.96765206045
         },
         "battery_equivalent_full_cycles": {
           "comparison": {
@@ -3964,7 +3938,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 12.143979195129742
+          "value": 0.17153894220713953
         },
         "battery_throughput_total": {
           "comparison": {
@@ -3983,7 +3957,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 637947.5150785556
+          "value": 9011.283712025453
         },
         "community_import_share": {
           "comparison": {
@@ -4002,7 +3976,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.08180134800760319
+          "value": 0.0869858368039575
         },
         "community_local_traded_daily_average": {
           "comparison": {
@@ -4021,7 +3995,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 2502.1749435810157
+          "value": 3164.7602825554086
         },
         "community_local_traded_total": {
           "comparison": {
@@ -4040,7 +4014,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 913189.5971177549
+          "value": 1155005.638120951
         },
         "ev_charge_total": {
           "comparison": {
@@ -4059,7 +4033,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 11514.183938987553
+          "value": 162807.5272996761
         },
         "ev_departure_count": {
           "comparison": {
@@ -4097,7 +4071,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1612.0
+          "value": 19144.0
         },
         "ev_departure_soc_deficit_mean": {
           "comparison": {
@@ -4116,7 +4090,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.5010665009797093
+          "value": 0.2920805822038773
         },
         "ev_departure_success_rate": {
           "comparison": {
@@ -4135,7 +4109,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.04062295247215362
+          "value": 0.48243536112091123
         },
         "ev_departure_within_tolerance_count": {
           "comparison": {
@@ -4154,7 +4128,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 507.0
+          "value": 700.0
         },
         "ev_departure_within_tolerance_rate": {
           "comparison": {
@@ -4173,7 +4147,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.012776573761403155
+          "value": 0.01764023990726274
         },
         "ev_v2g_export_total": {
           "comparison": {
@@ -4192,7 +4166,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 3494.122005420897
+          "value": 29731.144519319758
         },
         "grid_export_baseline": {
           "comparison": {
@@ -4211,13 +4185,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 40654819.36426163
+          "value": 39352683.96653366
         },
         "grid_export_control": {
           "comparison": {
             "available": true,
-            "baseline": 40654819.36426163,
-            "delta_vs_baseline": -4077.7115013822913,
+            "baseline": 39352683.96653366,
+            "delta_vs_baseline": -26848.840612262487,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -4230,13 +4204,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 40650741.652760245
+          "value": 39325835.1259214
         },
         "grid_export_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": -2044.4422945907447,
+            "delta_vs_baseline": -13461.203738868673,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -4250,13 +4224,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": -2044.4422945907447
+          "value": -13461.203738868673
         },
         "grid_export_ratio": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": -0.00010030081464262874,
+            "delta_vs_baseline": -0.0006822619934918617,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -4269,13 +4243,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.9998996991853574
+          "value": 0.9993177380065081
         },
         "grid_import": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.0508408423700657,
+            "delta_vs_baseline": 0.07591146851189401,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4288,7 +4262,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0508408423700657
+          "value": 1.075911468511894
         },
         "grid_import_baseline": {
           "comparison": {
@@ -4307,13 +4281,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 11107242.547481537
+          "value": 13174025.587869644
         },
         "grid_import_control": {
           "comparison": {
             "available": true,
-            "baseline": 11107242.547481537,
-            "delta_vs_baseline": 56260.492014544085,
+            "baseline": 13174025.587869644,
+            "delta_vs_baseline": 104062.8982366696,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4326,13 +4300,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 11163503.039496081
+          "value": 13278088.486106314
         },
         "grid_import_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 28207.32397326982,
+            "delta_vs_baseline": 52174.01730863507,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4346,7 +4320,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 28207.32397326982
+          "value": 52174.01730863507
         },
         "net_exchange_baseline": {
           "comparison": {
@@ -4365,13 +4339,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": -29547576.81678009
+          "value": -26178658.378664017
         },
         "net_exchange_control": {
           "comparison": {
             "available": true,
-            "baseline": -29547576.81678009,
-            "delta_vs_baseline": 60338.20351592824,
+            "baseline": -26178658.378664017,
+            "delta_vs_baseline": 130911.73884893209,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4384,13 +4358,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": -29487238.613264162
+          "value": -26047746.639815085
         },
         "net_exchange_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 30251.766267861498,
+            "delta_vs_baseline": 65635.22104750374,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4404,13 +4378,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 30251.766267861498
+          "value": 65635.22104750374
         },
         "one_minus_load_factor_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": -0.021142718667697347,
+            "delta_vs_baseline": -0.006408046341795592,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -4424,13 +4398,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.9788572813323027
+          "value": 0.9935919536582044
         },
         "peak_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.09560743997142573,
+            "delta_vs_baseline": 0.007112869736577432,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4444,7 +4418,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0956074399714257
+          "value": 1.0071128697365774
         },
         "pv_export_daily_average": {
           "comparison": {
@@ -4463,7 +4437,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 113436.8744305524
+          "value": 110907.24252598679
         },
         "pv_export_total": {
           "comparison": {
@@ -4482,7 +4456,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 41399732.63071702
+          "value": 40476522.38687993
         },
         "pv_generation_daily_average": {
           "comparison": {
@@ -4501,7 +4475,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 135736.12476592427
+          "value": 135731.8379158463
         },
         "pv_generation_total": {
           "comparison": {
@@ -4520,7 +4494,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 49538029.867697105
+          "value": 49536465.346037395
         },
         "pv_self_consumption_ratio": {
           "comparison": {
@@ -4539,13 +4513,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.1642838291856845
+          "value": 0.18289441719083424
         },
         "ramping_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.02088123074470949,
+            "delta_vs_baseline": 0.0011383857310043322,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4558,13 +4532,13 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0208812307447095
+          "value": 1.0011383857310043
         },
         "zero_net_energy": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": -0.0011312729869701332,
+            "delta_vs_baseline": -0.00886867333033381,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -4577,7 +4551,7 @@
             "objective": "OE1",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.9988687270130299
+          "value": 0.9911313266696662
         }
       },
       "name": "Flexibilidad energetica",
@@ -4598,7 +4572,7 @@
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.051639591972695964,
+            "delta_vs_baseline": 0.07419323840674363,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4611,7 +4585,7 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.051639591972696
+          "value": 1.0741932384067436
         },
         "carbon_emissions_baseline": {
           "comparison": {
@@ -4630,13 +4604,13 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 9088297.682261093
+          "value": 10962469.364197543
         },
         "carbon_emissions_control": {
           "comparison": {
             "available": true,
-            "baseline": 9088297.682261093,
-            "delta_vs_baseline": 154873.6158968918,
+            "baseline": 10962469.364197543,
+            "delta_vs_baseline": 82361.14151423238,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4649,7 +4623,7 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 9243171.298157984
+          "value": 11044830.505711775
         },
         "carbon_emissions_daily_average_baseline": {
           "comparison": {
@@ -4668,13 +4642,13 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 24902.288431814846
+          "value": 30037.5915904488
         },
         "carbon_emissions_daily_average_control": {
           "comparison": {
             "available": true,
-            "baseline": 24902.288431814846,
-            "delta_vs_baseline": 424.3597193201749,
+            "baseline": 30037.5915904488,
+            "delta_vs_baseline": 225.672724779266,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4687,13 +4661,13 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 25326.64815113502
+          "value": 30263.264315228065
         },
         "carbon_emissions_daily_average_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 424.35971932017395,
+            "delta_vs_baseline": 225.67272477926446,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4706,13 +4680,13 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 424.35971932017395
+          "value": 225.67272477926446
         },
         "carbon_emissions_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 77648.98780810599,
+            "delta_vs_baseline": 41293.40711950582,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4726,7 +4700,7 @@
             "objective": "OE2",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 77648.98780810599
+          "value": 41293.40711950582
         }
       },
       "name": "Emisiones de CO2",
@@ -4737,9 +4711,9 @@
     "OE3": {
       "axis_scenario": "E3",
       "baseline_comparison": {
-        "comparable_kpis": 8,
+        "comparable_kpis": 9,
         "improved_kpis": 1,
-        "not_improved_kpis": 7
+        "not_improved_kpis": 8
       },
       "code": "OE3",
       "kpis": {
@@ -4747,7 +4721,7 @@
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": -0.021142718667697347,
+            "delta_vs_baseline": -0.006408046341795592,
             "improved_vs_baseline": true
           },
           "trace": {
@@ -4761,13 +4735,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 0.9788572813323027
+          "value": 0.9935919536582044
         },
         "cost_peak_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.09560743997142573,
+            "delta_vs_baseline": 0.007112869736577432,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4781,13 +4755,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0956074399714257
+          "value": 1.0071128697365774
         },
         "cost_ramping_average": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.02088123074470949,
+            "delta_vs_baseline": 0.0011383857310043322,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4800,13 +4774,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0208812307447095
+          "value": 1.0011383857310043
         },
         "electricity_cost": {
           "comparison": {
             "available": true,
             "baseline": 1.0,
-            "delta_vs_baseline": 0.0050652080032747016,
+            "delta_vs_baseline": 0.00918051619699245,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4819,7 +4793,7 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 1.0050652080032747
+          "value": 1.0091805161969924
         },
         "electricity_cost_baseline": {
           "comparison": {
@@ -4838,13 +4812,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 5914557.320100955
+          "value": 9646089.516004698
         },
         "electricity_cost_control": {
           "comparison": {
             "available": true,
-            "baseline": 5914557.320100955,
-            "delta_vs_baseline": 29958.463073601946,
+            "baseline": 9646089.516004698,
+            "delta_vs_baseline": 88556.08103932068,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4857,7 +4831,7 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 5944515.783174557
+          "value": 9734645.597044019
         },
         "electricity_cost_daily_average_baseline": {
           "comparison": {
@@ -4876,13 +4850,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 16206.11664372907
+          "value": 26430.659708198742
         },
         "electricity_cost_daily_average_control": {
           "comparison": {
             "available": true,
-            "baseline": 16206.11664372907,
-            "delta_vs_baseline": 82.08735172581873,
+            "baseline": 26430.659708198742,
+            "delta_vs_baseline": 242.64709954831415,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4895,13 +4869,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 16288.203995454889
+          "value": 26673.306807747056
         },
         "electricity_cost_daily_average_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 82.08735172581879,
+            "delta_vs_baseline": 242.6470995483156,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4914,13 +4888,13 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 82.08735172581879
+          "value": 242.6470995483156
         },
         "electricity_cost_delta": {
           "comparison": {
             "available": true,
             "baseline": 0.0,
-            "delta_vs_baseline": 15020.275212663882,
+            "delta_vs_baseline": 44399.364069434494,
             "improved_vs_baseline": false
           },
           "trace": {
@@ -4934,14 +4908,14 @@
             "objective": "OE3",
             "source": "citylearn_v2.evaluate_v2"
           },
-          "value": 15020.275212663882
+          "value": 44399.364069434494
         },
         "price_signal_deviation": {
           "comparison": {
-            "available": false,
-            "baseline": null,
-            "delta_vs_baseline": null,
-            "improved_vs_baseline": null
+            "available": true,
+            "baseline": 0.35630176433678495,
+            "delta_vs_baseline": 0.0013443547611364237,
+            "improved_vs_baseline": false
           },
           "trace": {
             "citylearn_v2_names": [
@@ -4953,7 +4927,7 @@
             "objective": "OE3",
             "source": "derived_from_citylearn_v2_timeseries"
           },
-          "value": null
+          "value": 0.3576461190979214
         }
       },
       "name": "Costos energeticos",
@@ -4963,11 +4937,11 @@
     }
   },
   "reward_metadata": {
-    "algorithm": "MASAC",
+    "algorithm": "MATD3",
     "axis_weights": {
-      "carbon": 0.7,
-      "cost": 0.15,
-      "flex": 0.15
+      "carbon": 0.15,
+      "cost": 0.6,
+      "flex": 0.25
     },
     "base_reward": "CityLearnV3MADRLRewardFunction",
     "function": "CityLearnV3MADRLRewardFunction",
@@ -4988,13 +4962,13 @@
       "ev_urgency_hours": 8.0,
       "ev_weight": 0.25,
       "peak_weight": 0.45,
-      "profile_name": "masac_unified_comparable_v4",
+      "profile_name": "matd3_unified_comparable_v4",
       "ramp_weight": 0.35,
       "reward_scale": 1.0,
       "team_reward_ratio": 0.7
     },
-    "scenario": "E2"
+    "scenario": "E3"
   },
-  "scenario": "E2",
+  "scenario": "E3",
   "seed": 0
 }

@@ -1,0 +1,52 @@
+{
+  "stamp": "20260729_162753",
+  "run_id": "madrl_v3_20260627_164047",
+  "files": {
+    "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "ok": true,
+      "skipped": false,
+      "backup": "outputs/_word_backups/Tesis_Doctoral_MADRL_CityLearn_Iquitos_antes_catalogo_completo_20260729_162753.docx",
+      "counts": {
+        "multicriteria": 3,
+        "perf_summaries": 4,
+        "job_figures": 150
+      },
+      "required_pngs": 157,
+      "checks": {
+        "marker": true,
+        "mc1": true,
+        "mc2": true,
+        "mc3": true,
+        "pc_matd3": true,
+        "pc_happo": true,
+        "job_001": true,
+        "job_last": true,
+        "n_job_captions": 150
+      }
+    },
+    "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "skipped": false,
+      "backup": "outputs/_word_backups/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_antes_catalogo_completo_20260729_162753.docx",
+      "counts": {
+        "multicriteria": 3,
+        "perf_summaries": 4,
+        "job_figures": 150
+      },
+      "required_pngs": 157,
+      "checks": {
+        "marker": true,
+        "mc1": true,
+        "mc2": true,
+        "mc3": true,
+        "pc_matd3": true,
+        "pc_happo": true,
+        "job_001": true,
+        "job_last": true,
+        "n_job_captions": 150
+      }
+    }
+  }
+}

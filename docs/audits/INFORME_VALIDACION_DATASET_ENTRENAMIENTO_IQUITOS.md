@@ -62,5 +62,5 @@ Este informe valida trazabilidad y cierre energetico del dataset `citylearn_iqui
 ## Reproduccion
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe tools\audit_training_dataset_provenance.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\dataset\audit_training_dataset_provenance.py
 ```

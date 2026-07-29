@@ -1,8 +1,30 @@
 {
   "schema_version": 2,
   "project": "MADRLCitytleranflexresdr",
-  "updated_at": "2026-06-25",
+  "updated_at": "2026-07-29",
   "purpose": "Manifest canonico del flujo dataset -> carga -> entrenamiento -> comparacion -> resultados finales.",
+  "canonical_50ep_drive": {
+    "drive_folder": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+    "run_id": "madrl_v3_20260627_164047",
+    "local_pointer": "outputs/latest_colab_output_root.txt",
+    "local_mirror": "outputs/madrl_v3_20260627_164047",
+    "local_drive_cache": "outputs/_drive_madrl",
+    "kpi_recalc": "outputs/_drive_madrl/kpi_recalc_20260728",
+    "best_madrl_report": "outputs/madrl_v3_20260627_164047/resumen_comparativo/best_madrl_report.json",
+    "stats_dir": "outputs/madrl_v3_20260627_164047/resumen_comparativo/estadistica",
+    "nonparametric_battery": "outputs/madrl_nonparametric_battery",
+    "target_episodes": 50,
+    "word_canons": [
+      "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx"
+    ],
+    "validity_note": "KPIs/Cap.V/Shapiro/no-parametricos deben citarse desde este run de 50 ep (espejo local). No inventar numeros.",
+    "word_canon_roles": {
+      "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": "fuente_de_verdad_tesis",
+      "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": "informe_final_50ep_con_TOC"
+    },
+    "word_policy": "Exactamente 2 Word canonicos en docs/ raiz. NO crear nuevos .docx; toda mejora solo en estos dos. Terceros/obsoletos/duplicados no vinculados se ELIMINAN (sin retención docs/_archive)."
+  },
   "technical_reports": [
     "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
     "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md",
@@ -46,7 +68,7 @@
     },
     {
       "stage": "dataset_build",
-      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/orchestrate_citylearn_dataset.py --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025",
+      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/dataset/orchestrate_citylearn_dataset.py --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025",
       "outputs": [
         "CityLearn/data/datasets/citylearn_iquitos_2023_2025",
         "data/dataset_audit"
@@ -54,7 +76,7 @@
     },
     {
       "stage": "dataset_gate",
-      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/check_training_dataset_ready.py --manifest-out data/dataset_audit/training_dataset_ready_manifest.json",
+      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/dataset/check_training_dataset_ready.py --manifest-out data/dataset_audit/training_dataset_ready_manifest.json",
       "acceptance": [
         "status=ready",
         "normalization_allowed_for_training=true"
@@ -62,7 +84,7 @@
     },
     {
       "stage": "workflow_integrity",
-      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/verify_workflow_integrity.py --manifest-out data/dataset_audit/workflow_integrity_manifest.json",
+      "command": ".venv39-citylearn-v3/Scripts/python.exe -B tools/ops/verify_workflow_integrity.py --manifest-out data/dataset_audit/workflow_integrity_manifest.json",
       "acceptance": [
         "ok=true",
         "no stale active defaults",
@@ -178,18 +200,11 @@
       "outputs/citylearn_v3_madrl_oficial_v4",
       "outputs/citylearn_v3_madrl_oficial_v5",
       "outputs/citylearn_v3_madrl_official_full_cuda_v2",
-      "outputs/citylearn_v3_madrl_iquitos_official_full_cuda_visible_relaunch_20260602_222217",
-      "outputs/_archive/citylearn_v3_madrl_full_20260612_223320",
-      "outputs/_archive/citylearn_v3_madrl_full_20260613_004247",
-      "outputs/_archive/citylearn_v3_madrl_oficial_v6",
-      "outputs/_archive/citylearn_v3_madrl_oficial_v7",
-      "outputs/_archive/bottleneck_dryrun_20260612_052842",
-      "outputs/_archive/bottleneck_probe_20260612_052703",
-      "outputs/_archive/concurrency_policy_dryrun"
+      "outputs/citylearn_v3_madrl_iquitos_official_full_cuda_visible_relaunch_20260602_222217"
     ],
-    "canonical_current_run_rule": "Use outputs/latest_visible_training_output_root.txt when present; otherwise use the newest output directory with official_full_status.json.",
+    "canonical_current_run_rule": "Use outputs/latest_visible_training_output_root.txt when present (must point to madrl_v3_20260627_164047 for Cap. V); otherwise use the newest output directory with official_full_status.json.",
     "final_results_rule": "Do not report final KPIs/rankings until all 12 primary MADRL jobs have exit_code=0, all required_job_artifacts exist, and CityLearn v2 baseline/hour_rbc plus SB3 PPO/SAC/A2C comparison scripts use the same Iquitos schema.",
-    "archive_layout_note": "Corridas vigentes directamente en outputs/<run>/. Historico plano en outputs/_archive/. Auditorias en data/dataset_audit/."
+    "retention_policy": "No outputs/_archive retention. Unlinked legacy/dry-run/tmp/duplicates are DELETED. Keep only thesis-linked evidence (madrl_v3_20260627_164047, _drive_madrl, nonparametric battery, multicriteria, cited baselines/comparison)."
   },
   "modified_submodules": {
     "policy": "All git submodules (CityLearn + the 8 under external/, including the 4 MADRL backends HARL/HAPPO, MAAC, MATD3implementation, and any MASAC implementation) may be modified as MADRL-Iquitos research contributions. Every modification must be: (1) documented in docs/contributions/<module>/CHANGES.md with date, files, description, motivation and bibliographic reference; (2) backed by docs/contributions/<module>/bibliografia.bib entries from PhD/master's theses or peer-reviewed articles published 2021-2026; (3) traceable from code via '# MADRL-IQUITOS-MOD: ver docs/contributions/<module>/CHANGES.md#<entry>' comments.",

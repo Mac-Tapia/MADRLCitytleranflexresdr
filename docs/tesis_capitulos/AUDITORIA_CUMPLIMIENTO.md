@@ -1,7 +1,7 @@
 # Auditoría de Cumplimiento — Borrador de Tesis MADRL CityLearn Iquitos
 
 **Fecha de auditoría:** 2026-06-25  
-**Alcance:** `docs/Borrador_Tesis_MADRL_CityLearn_Iquitos.docx`, `scripts/generate_borrador_tesis_docx.py`, `docs/tesis_capitulos/*.md`  
+**Alcance:** `docs/Borrador_Tesis_MADRL_CityLearn_Iquitos.docx`, `tools/thesis/generate_borrador_tesis_docx.py`, `docs/tesis_capitulos/*.md`  
 **Referencia estructural:** `docs/informedetesis.txt`  
 **Verificación de contexto:** `git rev-parse` → `D:/MADRLCitytleranflexresdr`; `git remote` → `https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git` (conforme a AGENTS.md)
 
@@ -276,7 +276,7 @@ El borrador es **entregable como avance de tesis** con evidencia experimental re
 
 ## 8. Metodología de esta auditoría
 
-- Lectura integral de `docs/informedetesis.txt`, `docs/tesis_capitulos/*.md`, `scripts/generate_borrador_tesis_docx.py`
+- Lectura integral de `docs/informedetesis.txt`, `docs/tesis_capitulos/*.md`, `tools/thesis/generate_borrador_tesis_docx.py`
 - Extracción de estructura del `.docx` con `python-docx` (48 encabezados, 18 tablas, 290 párrafos)
 - Contrastación de cifras contra: `official_full_status.json`, `best_madrl_report.json`, `training_summary.json`, `comparison_summary.json` (E1–E3), `iquitos_citylearn_v3_dataset_evaluation.json`, `der_sizing_audit.json`, `citylearn_v3_madrl_training.yaml`, `reward_function.py`, `comparaciones_mwu_madrl.csv`, `comparaciones_wilcoxon_madrl.csv`, notebook `madrl_citylearn_v3_tutorial.ipynb` (celda 6.1, solo lectura)
 - **No se modificó** contenido de capítulos ni .docx (solo se creó este informe)
@@ -284,3 +284,20 @@ El borrador es **entregable como avance de tesis** con evidencia experimental re
 ---
 
 *Auditoría generada automáticamente como parte del cumplimiento del plan de tesis MADRL CityLearn Iquitos.*
+
+---
+
+## Addendum 2026-07-29 — Integración activos CityLearn (no purga)
+
+**Decisión:** retener barrios upstream, challenges 2020–2023 y launchers `*_iquitos_training.ps1`; integrarlos en Caps. 2–4 como reproducibilidad/contexto. **No** claim de resultados Cap. 5 fuera de Iquitos.
+
+| Ítem | Estado |
+|---|---|
+| Cap. 3 §3.4.6 (md) | PRESENTE |
+| Cap. 4 §4.2.2 + launchers (md) | PRESENTE |
+| Cap. 2 nota ecosistema challenges/barrios (md) | PRESENTE |
+| Informe `docs/INTEGRACION_CITYLEARN_THESIS_2026-07-29.md` | PRESENTE |
+| Auditoría limpieza §5.3 RETENER | PRESENTE |
+| Word canónico | Parche mínimo si `tools/thesis/patch_citylearn_assets_integration_docx.py` aplica |
+
+Fuente: `docs/INTEGRACION_CITYLEARN_THESIS_2026-07-29.md`.

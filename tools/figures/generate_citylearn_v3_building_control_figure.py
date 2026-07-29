@@ -1,0 +1,449 @@
+#!/usr/bin/env python3
+"""
+Figura de control CityLearn v3 propuesto con la MISMA simbología que CityLearn v2.
+
+Referencia oficial (descargada en docs/architecture/_refs/):
+  https://github.com/intelligent-environments-lab/CityLearn/blob/master/assets/images/environment.jpg
+  Documentación: https://www.citylearn.net/overview/environment.html
+  Paper Fig. 1: Nweye et al. (2024), CityLearn v2.
+
+Simbología CityLearn v2 (conservada):
+  - Energía eléctrica ........ línea verde punteada
+  - Energía térmica .......... línea azul discontinua
+  - Señal de control ......... línea rojo dash-dot (acciones)
+  - P ........................ Power control (dispositivos)
+  - C/D ...................... Charge/discharge (almacenamientos)
+  - Interacción ocupante ..... línea morada punteada
+  - Observaciones ............ línea / borde naranja long-dash
+  - Bandas ENVIRONMENT / CONTROL
+
+Adaptación proyecto (Iquitos / capa v3):
+  - Acciones MADRL activas: electrical_storage, EV/V2G, washing_machine
+  - Actor π_i + Crítico V/Q (CTDE) en CONTROL
+  - Comunidad N=17; Dec-POMDP con dims reales (d_s=1856, etc.)
+  - Térmico v2 se mantiene en simbología; acciones cooling/heating/DHW
+    inactivas en schema Iquitos (etiqueta "v2 physics / inactive action")
+
+Salidas:
+  docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.svg
+  docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png
+"""
+
+from __future__ import annotations
+
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+ARCH_DIR = Path(__file__).resolve().parents[2] / "docs" / "architecture"
+
+# SVG mirrors CityLearn v2 paper layout: ENVIRONMENT (building + grid + community)
+# over CONTROL (actor-critic), with electric/thermal/action/observation connectors.
+SVG = r"""<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980">
+  <defs>
+    <marker id="arrR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#9a3412"/>
+    </marker>
+    <marker id="arrO" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#c2410c"/>
+    </marker>
+    <marker id="arrG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#15803d"/>
+    </marker>
+    <style>
+      .t { font-family: 'Segoe UI', Arial, sans-serif; }
+      .math { font-family: 'Cambria Math', 'Times New Roman', serif; }
+      .title { font-size: 22px; font-weight: 700; fill: #0f172a; }
+      .sec { font-size: 13px; font-weight: 700; fill: #334155; letter-spacing: 1px; }
+      .lab { font-size: 11px; fill: #0f172a; }
+      .lab2 { font-size: 10px; fill: #334155; }
+      .tiny { font-size: 9px; fill: #475569; }
+      .eq { font-size: 12px; fill: #1e1b4b; }
+      .eq2 { font-size: 11px; fill: #312e81; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="980" fill="#ffffff"/>
+  <text x="800" y="28" text-anchor="middle" class="t title">CityLearn v3 propuesto</text>
+  <text x="800" y="46" text-anchor="middle" class="t tiny">
+    Control por edificio · comunidad inteligente Iquitos (N=17) · Dec-POMDP + CTDE Actor–Crítico · física CityLearn v2
+  </text>
+
+  <!-- ENVIRONMENT frame -->
+  <rect x="20" y="58" width="1560" height="560" fill="#f8fafc" stroke="#64748b" stroke-width="1.5" rx="4"/>
+  <text x="36" y="78" class="t sec">ENVIRONMENT</text>
+
+  <!-- Legend -->
+  <g transform="translate(1180,68)">
+    <rect x="0" y="0" width="380" height="78" fill="#fff" stroke="#cbd5e1" rx="4"/>
+    <text x="10" y="16" class="t lab" font-weight="700">Conectores</text>
+    <line x1="10" y1="28" x2="70" y2="28" stroke="#15803d" stroke-width="2" stroke-dasharray="2 3"/>
+    <text x="78" y="32" class="t tiny">Energía eléctrica</text>
+    <line x1="190" y1="28" x2="250" y2="28" stroke="#2563eb" stroke-width="2" stroke-dasharray="5 3"/>
+    <text x="258" y="32" class="t tiny">Energía térmica</text>
+    <line x1="10" y1="46" x2="70" y2="46" stroke="#9a3412" stroke-width="2" stroke-dasharray="6 2 2 2"/>
+    <text x="78" y="50" class="t tiny">Señal de control (acciones aᵢ)</text>
+    <line x1="10" y1="64" x2="70" y2="64" stroke="#c2410c" stroke-width="2" stroke-dasharray="8 4"/>
+    <text x="78" y="68" class="t tiny">Observaciones oᵢ</text>
+    <line x1="220" y1="64" x2="280" y2="64" stroke="#7c3aed" stroke-width="2" stroke-dasharray="2 2"/>
+    <text x="288" y="68" class="t tiny">Ocupante</text>
+  </g>
+
+  <!-- Building 0 -->
+  <rect x="40" y="100" width="760" height="490" fill="#ffffff" stroke="#ea580c" stroke-width="2.5" stroke-dasharray="10 5" rx="6"/>
+  <text x="56" y="122" class="t lab" font-weight="700" fill="#c2410c">Building 0  ·  edificio i = B01 Iquitos  ·  Observations oᵢ</text>
+
+  <!-- Actions region (active MADRL) -->
+  <rect x="56" y="138" width="430" height="150" fill="#fff7ed" stroke="#9a3412" stroke-width="2" stroke-dasharray="7 3" rx="5"/>
+  <text x="68" y="156" class="t lab" font-weight="700" fill="#9a3412">Actions aᵢ (MADRL activas)  ·  C/D = carga/descarga  ·  P = potencia</text>
+
+  <!-- BESS -->
+  <g transform="translate(76,170)">
+    <rect x="0" y="0" width="110" height="90" fill="#fff" stroke="#0f172a" rx="4"/>
+    <rect x="30" y="18" width="50" height="36" fill="#fef3c7" stroke="#0f172a"/>
+    <rect x="48" y="10" width="14" height="8" fill="#0f172a"/>
+    <text x="55" y="72" text-anchor="middle" class="t lab2" font-weight="700">Electrical</text>
+    <text x="55" y="84" text-anchor="middle" class="t tiny">storage (BESS)</text>
+    <text x="55" y="-6" text-anchor="middle" class="t tiny" fill="#9a3412" font-weight="700">C/D</text>
+  </g>
+  <!-- EV -->
+  <g transform="translate(216,170)">
+    <rect x="0" y="0" width="120" height="90" fill="#fff" stroke="#0f172a" rx="4"/>
+    <rect x="18" y="28" width="55" height="22" rx="6" fill="#e2e8f0" stroke="#0f172a"/>
+    <circle cx="30" cy="52" r="6" fill="#fff" stroke="#0f172a"/>
+    <circle cx="58" cy="52" r="6" fill="#fff" stroke="#0f172a"/>
+    <rect x="82" y="22" width="22" height="30" fill="#fef3c7" stroke="#0f172a"/>
+    <text x="60" y="72" text-anchor="middle" class="t lab2" font-weight="700">EV &amp; charger</text>
+    <text x="60" y="84" text-anchor="middle" class="t tiny">V2G · nᵢᶜʰ tomas</text>
+    <text x="60" y="-6" text-anchor="middle" class="t tiny" fill="#9a3412" font-weight="700">C/D</text>
+  </g>
+  <!-- Washing machine -->
+  <g transform="translate(360,170)">
+    <rect x="0" y="0" width="110" height="90" fill="#fff" stroke="#0f172a" rx="4"/>
+    <rect x="30" y="16" width="50" height="48" fill="#e0f2fe" stroke="#0f172a" rx="3"/>
+    <circle cx="55" cy="40" r="14" fill="#fff" stroke="#0f172a"/>
+    <text x="55" y="78" text-anchor="middle" class="t lab2" font-weight="700">Washing</text>
+    <text x="55" y="88" text-anchor="middle" class="t tiny">machine (WM)</text>
+    <text x="55" y="-6" text-anchor="middle" class="t tiny" fill="#9a3412" font-weight="700">P</text>
+  </g>
+
+  <!-- Thermal devices (environment / v2 physics) -->
+  <g transform="translate(510,138)">
+    <rect x="0" y="0" width="270" height="150" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3" rx="5"/>
+    <text x="10" y="16" class="t lab2" font-weight="700" fill="#1d4ed8">Térmico CityLearn v2 (física)</text>
+    <!-- cooling -->
+    <rect x="12" y="28" width="75" height="50" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="50" y="48" text-anchor="middle" class="t tiny">Cooling</text>
+    <text x="50" y="60" text-anchor="middle" class="t tiny">device</text>
+    <rect x="12" y="88" width="75" height="40" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="50" y="112" text-anchor="middle" class="t tiny">Cooling stor.</text>
+    <!-- heating -->
+    <rect x="98" y="28" width="75" height="50" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="136" y="48" text-anchor="middle" class="t tiny">Heating</text>
+    <text x="136" y="60" text-anchor="middle" class="t tiny">device</text>
+    <rect x="98" y="88" width="75" height="40" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="136" y="112" text-anchor="middle" class="t tiny">Heating stor.</text>
+    <!-- DHW -->
+    <rect x="184" y="28" width="70" height="50" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="219" y="48" text-anchor="middle" class="t tiny">DHW</text>
+    <text x="219" y="60" text-anchor="middle" class="t tiny">device</text>
+    <rect x="184" y="88" width="70" height="40" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="219" y="112" text-anchor="middle" class="t tiny">DHW stor.</text>
+    <!-- thermal connectors -->
+    <line x1="50" y1="78" x2="50" y2="88" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4 2"/>
+    <line x1="136" y1="78" x2="136" y2="88" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4 2"/>
+    <line x1="219" y1="78" x2="219" y2="88" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4 2"/>
+  </g>
+
+  <!-- PV -->
+  <g transform="translate(70,310)">
+    <rect x="0" y="0" width="100" height="70" fill="#fef9c3" stroke="#0f172a" rx="4"/>
+    <rect x="14" y="14" width="72" height="28" fill="#86efac" stroke="#0f172a"/>
+    <line x1="14" y1="28" x2="86" y2="28" stroke="#0f172a"/>
+    <line x1="38" y1="14" x2="38" y2="42" stroke="#0f172a"/>
+    <line x1="62" y1="14" x2="62" y2="42" stroke="#0f172a"/>
+    <text x="50" y="58" text-anchor="middle" class="t lab2" font-weight="700">PV</text>
+  </g>
+
+  <!-- Non-shiftable -->
+  <g transform="translate(190,310)">
+    <rect x="0" y="0" width="120" height="70" fill="#f1f5f9" stroke="#0f172a" rx="4"/>
+    <text x="60" y="32" text-anchor="middle" class="t lab2" font-weight="700">Non-shiftable</text>
+    <text x="60" y="48" text-anchor="middle" class="t tiny">load (plug / baseload)</text>
+  </g>
+
+  <!-- Demands -->
+  <g transform="translate(330,310)">
+    <rect x="0" y="0" width="200" height="70" fill="#fff" stroke="#0f172a" rx="4"/>
+    <text x="100" y="24" text-anchor="middle" class="t lab2" font-weight="700">Demandas</text>
+    <text x="100" y="42" text-anchor="middle" class="t tiny">DHW · Space cooling/heating</text>
+    <text x="100" y="56" text-anchor="middle" class="t tiny">EV demand</text>
+  </g>
+
+  <!-- Thermostat / occupant -->
+  <g transform="translate(550,310)">
+    <rect x="0" y="0" width="200" height="70" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3 2" rx="4"/>
+    <text x="100" y="24" text-anchor="middle" class="t lab2" font-weight="700" fill="#6d28d9">Occupant thermostat</text>
+    <text x="100" y="42" text-anchor="middle" class="t tiny">override model</text>
+    <text x="100" y="58" text-anchor="middle" class="t tiny" fill="#7c3aed">Occupant Interaction</text>
+  </g>
+
+  <!-- Net meter -->
+  <g transform="translate(620,410)">
+    <rect x="0" y="0" width="130" height="80" fill="#fff" stroke="#0f172a" stroke-width="2" rx="4"/>
+    <circle cx="65" cy="34" r="18" fill="#ecfdf5" stroke="#0f172a"/>
+    <text x="65" y="38" text-anchor="middle" class="t tiny" font-weight="700">kWh</text>
+    <text x="65" y="68" text-anchor="middle" class="t lab2" font-weight="700">Net meter</text>
+  </g>
+
+  <!-- Electric bus inside building -->
+  <line x1="120" y1="400" x2="620" y2="400" stroke="#15803d" stroke-width="2" stroke-dasharray="2 3"/>
+  <line x1="120" y1="260" x2="120" y2="400" stroke="#15803d" stroke-width="1.5" stroke-dasharray="2 3"/>
+  <line x1="276" y1="260" x2="276" y2="400" stroke="#15803d" stroke-width="1.5" stroke-dasharray="2 3"/>
+  <line x1="415" y1="260" x2="415" y2="400" stroke="#15803d" stroke-width="1.5" stroke-dasharray="2 3"/>
+  <line x1="120" y1="380" x2="120" y2="400" stroke="#15803d" stroke-width="1.5" stroke-dasharray="2 3"/>
+  <line x1="685" y1="400" x2="685" y2="410" stroke="#15803d" stroke-width="2" stroke-dasharray="2 3"/>
+
+  <!-- Observation annotation -->
+  <text x="56" y="560" class="t tiny" fill="#c2410c">
+    oᵢ,ₜ = (cal, met, ld, th, gen, stor, ev(nᵢᶜʰ), tar, emi)  →  Actor πᵢ
+  </text>
+  <text x="56" y="576" class="t tiny" fill="#9a3412">
+    aᵢ,ₜ = (aᵢᴮᴱˢˢ, aᵢ,₁…ₙᴱⱽ, aᵢᵂᴹ) ∈ [-1,1]^{dₐᵢ}  ·  dₐᵢ = 2 + nᵢᶜʰ ∈ [5, 44]
+  </text>
+
+  <!-- GRID -->
+  <g transform="translate(830,140)">
+    <rect x="0" y="0" width="200" height="280" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2" rx="6"/>
+    <text x="100" y="28" text-anchor="middle" class="t lab" font-weight="700" fill="#1d4ed8">Grid / SEAI</text>
+    <!-- towers -->
+    <polygon points="50,50 70,50 60,110" fill="none" stroke="#0f172a" stroke-width="2"/>
+    <line x1="40" y1="70" x2="80" y2="70" stroke="#0f172a" stroke-width="2"/>
+    <polygon points="130,50 150,50 140,110" fill="none" stroke="#0f172a" stroke-width="2"/>
+    <line x1="120" y1="70" x2="160" y2="70" stroke="#0f172a" stroke-width="2"/>
+    <line x1="70" y1="70" x2="130" y2="70" stroke="#0f172a"/>
+    <rect x="20" y="130" width="160" height="42" fill="#fff" stroke="#64748b" rx="3"/>
+    <text x="100" y="148" text-anchor="middle" class="t tiny" font-weight="700">Power outage model</text>
+    <text x="100" y="162" text-anchor="middle" class="t tiny">(CityLearn v2)</text>
+    <text x="100" y="200" text-anchor="middle" class="t lab2" font-weight="700">Price ($/kWh)</text>
+    <text x="100" y="218" text-anchor="middle" class="t lab2" font-weight="700">Emissions (kgCO₂e/kWh)</text>
+    <text x="100" y="250" text-anchor="middle" class="t tiny">→ señales OE.3 / OE.2</text>
+    <text x="100" y="268" text-anchor="middle" class="t tiny">P_net distrito → OE.1</text>
+  </g>
+
+  <!-- electric building <-> grid -->
+  <line x1="750" y1="450" x2="830" y2="280" stroke="#15803d" stroke-width="2.5" stroke-dasharray="2 3" marker-end="url(#arrG)"/>
+  <text x="780" y="350" class="t tiny" fill="#15803d" font-weight="700">P_grid</text>
+
+  <!-- Community buildings -->
+  <g transform="translate(1060,140)">
+    <rect x="0" y="0" width="200" height="340" fill="#f0fdf4" stroke="#15803d" stroke-width="2" rx="6"/>
+    <text x="100" y="22" text-anchor="middle" class="t lab" font-weight="700" fill="#166534">Comunidad</text>
+    <text x="100" y="38" text-anchor="middle" class="t tiny">inteligente Iquitos</text>
+    <text x="100" y="52" text-anchor="middle" class="t tiny">N = 17 edificios</text>
+    <rect x="20" y="64" width="160" height="28" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="100" y="82" text-anchor="middle" class="t lab2">Building 1</text>
+    <rect x="20" y="100" width="160" height="28" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="100" y="118" text-anchor="middle" class="t lab2">Building 2</text>
+    <rect x="20" y="136" width="160" height="28" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="100" y="154" text-anchor="middle" class="t lab2">Building 3</text>
+    <text x="100" y="190" text-anchor="middle" class="t lab" font-weight="700">⋮</text>
+    <rect x="20" y="210" width="160" height="28" fill="#fff" stroke="#0f172a" rx="3"/>
+    <text x="100" y="228" text-anchor="middle" class="t lab2">Building 16</text>
+    <text x="100" y="270" text-anchor="middle" class="t tiny">cada uno con agente i</text>
+    <text x="100" y="286" text-anchor="middle" class="t tiny">πᵢ(aᵢ | oᵢ) local</text>
+    <text x="100" y="310" text-anchor="middle" class="t tiny" fill="#166534" font-weight="700">sin agente-distrito</text>
+    <text x="100" y="326" text-anchor="middle" class="t tiny">control emergente CTDE</text>
+  </g>
+  <!-- grid to community -->
+  <line x1="1030" y1="250" x2="1060" y2="250" stroke="#15803d" stroke-width="2" stroke-dasharray="2 3"/>
+  <line x1="1030" y1="280" x2="1060" y2="300" stroke="#15803d" stroke-width="1.5" stroke-dasharray="2 3"/>
+  <line x1="1030" y1="220" x2="1060" y2="200" stroke="#15803d" stroke-width="1.5" stroke-dasharray="2 3"/>
+
+  <!-- Dec-POMDP box -->
+  <g transform="translate(1280,160)">
+    <rect x="0" y="0" width="280" height="420" fill="#faf5ff" stroke="#7c3aed" stroke-width="2" rx="6"/>
+    <text x="140" y="22" text-anchor="middle" class="t lab" font-weight="700" fill="#6d28d9">Formulación Dec-POMDP</text>
+    <text x="140" y="40" text-anchor="middle" class="t tiny">(Oliehoek &amp; Amato, 2016)</text>
+    <text x="14" y="66" class="math eq" font-weight="700">ℳ = ⟨𝒮, {𝒜ᵢ}ᵢ₌₁¹⁷, 𝒯, R,</text>
+    <text x="14" y="84" class="math eq" font-weight="700">  {𝒪ᵢ}ᵢ₌₁¹⁷, Ω, γ, T⟩</text>
+    <line x1="14" y1="96" x2="266" y2="96" stroke="#ddd6fe"/>
+    <text x="14" y="118" class="math eq2">s = [o₁,…,o₁₇] ∈ ℝ¹⁸⁵⁶</text>
+    <text x="14" y="140" class="math eq2">oᵢ ∈ ℝ^{dₒᵢ}, dₒᵢ ∈ [54,327]</text>
+    <text x="14" y="162" class="math eq2">aᵢ ∈ [-1,1]^{dₐᵢ}</text>
+    <text x="14" y="180" class="math eq2">dₐᵢ = 2+nᵢᶜʰ ∈ [5,44]</text>
+    <text x="14" y="206" class="math eq2">s′ ∼ 𝒯(· | s, a)</text>
+    <text x="14" y="224" class="math eq2">o′ ∼ Ω(· | s′, a)</text>
+    <text x="14" y="250" class="math eq2">Rᵢᵐⁱˣ = (1−ρ)rᵢ + ρ meanⱼ(rⱼ)</text>
+    <text x="14" y="268" class="math eq2">ρ = r_team = 0,70</text>
+    <text x="14" y="294" class="math eq2">J(π) = 𝔼[ Σₜ γᵗ Rₜ ]</text>
+    <text x="14" y="312" class="math eq2">γ = 0,9999 · T = 8760</text>
+    <line x1="14" y1="326" x2="266" y2="326" stroke="#ddd6fe"/>
+    <text x="14" y="348" class="t tiny" font-weight="700" fill="#6d28d9">Algoritmos MADRL</text>
+    <text x="14" y="366" class="t lab2">HAPPO · MASAC</text>
+    <text x="14" y="384" class="t lab2">MATD3 · MAAC</text>
+    <text x="14" y="406" class="t tiny">E1/E2/E3 · unified_comparable_v4</text>
+  </g>
+
+  <!-- CONTROL band -->
+  <rect x="20" y="638" width="1560" height="320" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" rx="4"/>
+  <text x="36" y="660" class="t sec" fill="#c2410c">CONTROL  ·  CTDE Actor–Crítico MADRL</text>
+
+  <!-- Actor -->
+  <g transform="translate(80,680)">
+    <rect x="0" y="0" width="320" height="200" fill="#ffffff" stroke="#ea580c" stroke-width="2.5" rx="6"/>
+    <text x="160" y="28" text-anchor="middle" class="t lab" font-weight="700" fill="#c2410c">ACTOR  πᵢ(aᵢ | oᵢ)</text>
+    <rect x="90" y="44" width="140" height="90" fill="#ffedd5" stroke="#0f172a" rx="4"/>
+    <!-- simple NN icon -->
+    <circle cx="115" cy="70" r="7" fill="#fff" stroke="#0f172a"/>
+    <circle cx="115" cy="100" r="7" fill="#fff" stroke="#0f172a"/>
+    <circle cx="160" cy="85" r="8" fill="#fff" stroke="#0f172a"/>
+    <circle cx="205" cy="70" r="7" fill="#fff" stroke="#0f172a"/>
+    <circle cx="205" cy="100" r="7" fill="#fff" stroke="#0f172a"/>
+    <line x1="122" y1="70" x2="152" y2="85" stroke="#0f172a"/>
+    <line x1="122" y1="100" x2="152" y2="85" stroke="#0f172a"/>
+    <line x1="168" y1="85" x2="198" y2="70" stroke="#0f172a"/>
+    <line x1="168" y1="85" x2="198" y2="100" stroke="#0f172a"/>
+    <text x="160" y="156" text-anchor="middle" class="math eq2">aᵢ,ₜ ∼ πᵢ(· | oᵢ,ₜ ; θᵢ)</text>
+    <text x="160" y="176" text-anchor="middle" class="t tiny">ejecución descentralizada (solo oᵢ)</text>
+    <text x="160" y="192" text-anchor="middle" class="t tiny">Control agent i · Building 0</text>
+  </g>
+
+  <!-- Critic -->
+  <g transform="translate(440,680)">
+    <rect x="0" y="0" width="340" height="200" fill="#ffffff" stroke="#7c3aed" stroke-width="2.5" rx="6"/>
+    <text x="170" y="28" text-anchor="middle" class="t lab" font-weight="700" fill="#6d28d9">CRÍTICO  Vᵩ(s) / Qᵩ(s,a)</text>
+    <rect x="100" y="44" width="140" height="90" fill="#ede9fe" stroke="#0f172a" rx="4"/>
+    <circle cx="125" cy="70" r="7" fill="#fff" stroke="#0f172a"/>
+    <circle cx="125" cy="100" r="7" fill="#fff" stroke="#0f172a"/>
+    <circle cx="170" cy="85" r="8" fill="#fff" stroke="#0f172a"/>
+    <circle cx="215" cy="70" r="7" fill="#fff" stroke="#0f172a"/>
+    <circle cx="215" cy="100" r="7" fill="#fff" stroke="#0f172a"/>
+    <line x1="132" y1="70" x2="162" y2="85" stroke="#0f172a"/>
+    <line x1="132" y1="100" x2="162" y2="85" stroke="#0f172a"/>
+    <line x1="178" y1="85" x2="208" y2="70" stroke="#0f172a"/>
+    <line x1="178" y1="85" x2="208" y2="100" stroke="#0f172a"/>
+    <text x="170" y="156" text-anchor="middle" class="t tiny" font-weight="700" fill="#6d28d9">solo en entrenamiento CTDE</text>
+    <text x="170" y="174" text-anchor="middle" class="math eq2">s = [o₁,…,o₁₇] ∈ ℝ¹⁸⁵⁶</text>
+    <text x="170" y="192" text-anchor="middle" class="t tiny">HAPPO:V · MASAC/MATD3:Q · MAAC:attn</text>
+  </g>
+
+  <!-- Other agents -->
+  <g transform="translate(820,700)">
+    <rect x="0" y="0" width="280" height="160" fill="#fff" stroke="#94a3b8" stroke-width="1.5" rx="6"/>
+    <text x="140" y="24" text-anchor="middle" class="t lab2" font-weight="700">Otros agentes 1…16</text>
+    <rect x="20" y="40" width="50" height="36" fill="#f1f5f9" stroke="#0f172a" rx="3"/>
+    <rect x="80" y="40" width="50" height="36" fill="#f1f5f9" stroke="#0f172a" rx="3"/>
+    <rect x="140" y="40" width="50" height="36" fill="#f1f5f9" stroke="#0f172a" rx="3"/>
+    <rect x="200" y="40" width="50" height="36" fill="#f1f5f9" stroke="#0f172a" rx="3"/>
+    <text x="45" y="62" text-anchor="middle" class="t tiny">π₁</text>
+    <text x="105" y="62" text-anchor="middle" class="t tiny">π₂</text>
+    <text x="165" y="62" text-anchor="middle" class="t tiny">π₃</text>
+    <text x="225" y="62" text-anchor="middle" class="t tiny">π₁₆</text>
+    <text x="140" y="100" text-anchor="middle" class="t tiny">misma recompensa cooperativa R</text>
+    <text x="140" y="120" text-anchor="middle" class="math eq2">Rᵢᵐⁱˣ , ρ=0,70</text>
+    <text x="140" y="144" text-anchor="middle" class="t tiny">coordinación internalizada en θᵢ</text>
+  </g>
+
+  <!-- Reward / objective -->
+  <g transform="translate(1130,700)">
+    <rect x="0" y="0" width="420" height="160" fill="#fff" stroke="#0f766e" stroke-width="2" rx="6"/>
+    <text x="210" y="24" text-anchor="middle" class="t lab" font-weight="700" fill="#0f766e">Objetivo cooperativo</text>
+    <text x="20" y="52" class="math eq2">rᵢ = α [w_f flexᵢ + w_c CO2ᵢ + w_$ costᵢ + w_e EVᵢ]</text>
+    <text x="20" y="76" class="math eq2">max_π  J(π) = 𝔼_π [ Σ_{t=0}^{T-1} γᵗ Rₜ ]</text>
+    <text x="20" y="100" class="t tiny">E1 (flex 0,70) · E2 (CO₂ 0,70) · E3 (cost 0,60)</text>
+    <text x="20" y="122" class="t tiny">Tras entrenamiento: se descarta el crítico; persisten π₁…π₁₇</text>
+    <text x="20" y="144" class="t tiny">Dataset: citylearn_iquitos_2023_2025 · KPIs evaluate_v2</text>
+  </g>
+
+  <!-- Action connector CONTROL -> ENVIRONMENT -->
+  <path d="M240,680 L240,600 L300,600 L300,288"
+        fill="none" stroke="#9a3412" stroke-width="2.5" stroke-dasharray="7 2 2 2" marker-end="url(#arrR)"/>
+  <text x="250" y="590" class="t tiny" fill="#9a3412" font-weight="700">Actions aᵢ</text>
+
+  <!-- Observation connector ENVIRONMENT -> CONTROL -->
+  <path d="M500,590 L500,650 L200,650 L200,680"
+        fill="none" stroke="#c2410c" stroke-width="2.5" stroke-dasharray="8 4" marker-end="url(#arrO)"/>
+  <text x="360" y="642" class="t tiny" fill="#c2410c" font-weight="700">Observations oᵢ</text>
+
+  <!-- Global state to critic -->
+  <path d="M1100,480 L900,480 L900,680 L780,680"
+        fill="none" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="4 3"/>
+  <text x="910" y="472" class="t tiny" fill="#6d28d9" font-weight="700">s (CTDE train)</text>
+
+  <text x="800" y="970" text-anchor="middle" class="t tiny">
+    Adaptado del esquema CityLearn v2 (Nweye et al., 2024, Fig. 1) · capa CityLearn v3 propuesto · Dec-POMDP/CTDE · SEAI Iquitos
+  </text>
+</svg>
+"""
+
+HTML_WRAP = """<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+  html, body {{ margin:0; padding:0; background:#fff; }}
+  body {{ width:1600px; }}
+</style>
+</head><body>{svg}</body></html>
+"""
+
+
+def write_svg(path: Path) -> None:
+    path.write_text(SVG, encoding="utf-8")
+    print(f"OK SVG -> {path}")
+
+
+def screenshot_png(svg_path: Path, png_path: Path, width: int = 1600, height: int = 980) -> bool:
+    html = HTML_WRAP.format(svg=SVG)
+    fd, html_tmp = tempfile.mkstemp(suffix=".html")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(html)
+        url = f"file:///{html_tmp.replace(os.sep, '/')}"
+        cmd = [
+            CHROME,
+            "--headless=new",
+            "--disable-gpu",
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+            f"--window-size={width},{height}",
+            "--hide-scrollbars",
+            "--force-device-scale-factor=2",
+            f"--screenshot={str(png_path.resolve())}",
+            url,
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+        if png_path.exists() and png_path.stat().st_size > 5000:
+            print(f"OK PNG -> {png_path} ({png_path.stat().st_size // 1024} KB)")
+            return True
+        print("ERROR: PNG no generado")
+        if result.stderr:
+            print(result.stderr[:400])
+        return False
+    finally:
+        try:
+            os.unlink(html_tmp)
+        except OSError:
+            pass
+
+
+def main() -> None:
+    ARCH_DIR.mkdir(parents=True, exist_ok=True)
+    svg_path = ARCH_DIR / "CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.svg"
+    png_path = ARCH_DIR / "CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png"
+    write_svg(svg_path)
+
+    # Prefer schematic SVG→PNG (crisp equations). Keep AI reference copy as alt if Chrome fails.
+    if not os.path.exists(CHROME):
+        print(f"WARN: Chrome no encontrado; se conserva PNG previo si existe: {png_path}")
+        sys.exit(0 if png_path.exists() else 1)
+
+    ok = screenshot_png(svg_path, png_path)
+    sys.exit(0 if ok else 1)
+
+
+if __name__ == "__main__":
+    main()

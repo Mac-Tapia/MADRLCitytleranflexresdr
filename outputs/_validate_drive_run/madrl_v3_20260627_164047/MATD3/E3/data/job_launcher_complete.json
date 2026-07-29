@@ -1,8 +1,0 @@
-{
-  "algorithm": "MATD3",
-  "episodes_completed": 50,
-  "marked_at": "2026-07-05T12:19:41.230670+00:00",
-  "scenario": "E3",
-  "source": "kpi_audited_complete",
-  "target_episodes": 50
-}

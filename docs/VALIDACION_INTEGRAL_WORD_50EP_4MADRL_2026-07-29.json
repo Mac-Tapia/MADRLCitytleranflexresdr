@@ -1,0 +1,842 @@
+{
+  "generated_at": "2026-07-29T22:08:14.499121+00:00",
+  "date_tag": "2026-07-29",
+  "script": "tools/thesis/validate_integral_word_50ep_4madrl.py",
+  "canon_policy": "docs/CANON_WORD_Y_VALIDEZ_50EP_DRIVE_2026-07-29.md",
+  "ground_truth": {
+    "run_id": "madrl_v3_20260627_164047",
+    "drive_folder": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+    "target_episodes": 50,
+    "algorithms": [
+      "HAPPO",
+      "MASAC",
+      "MATD3",
+      "MAAC"
+    ],
+    "sources": {
+      "pointer": "outputs/latest_colab_output_root.txt",
+      "best_madrl": "outputs/madrl_v3_20260627_164047/resumen_comparativo/best_madrl_report.json",
+      "ranking_all": "outputs/_drive_madrl/kpi_recalc_20260728/tables/ranking_oe_scores_all_values.csv",
+      "he_csv": "outputs/madrl_v3_20260627_164047/resumen_comparativo/estadistica/hipotesis_estadisticas_madrl.csv",
+      "multicriteria": "outputs/madrl_multicriteria_selection/selection_report.json",
+      "multicriteria_source": "real_drive_50ep_c1c6",
+      "canon_md": "docs/CANON_WORD_Y_VALIDEZ_50EP_DRIVE_2026-07-29.md"
+    },
+    "anchors": {
+      "score_global_3x3_matd3": 0.6667,
+      "mejor_madrl_3x3": "MATD3",
+      "flex_composite_e1": {
+        "HAPPO": 1.1105,
+        "MASAC": 1.0286,
+        "MATD3": 1.0009,
+        "MAAC": 1.0124
+      },
+      "co2_delta_kg_e2": {
+        "HAPPO": 1431341,
+        "MASAC": 77649,
+        "MATD3": 23070,
+        "MAAC": 70654
+      },
+      "cost_delta_eur_e3": {
+        "HAPPO": 106828,
+        "MASAC": 19793,
+        "MATD3": 44399,
+        "MAAC": 9515
+      },
+      "eval_v2_scores": {
+        "HAPPO": 0.0,
+        "MASAC": 0.8679,
+        "MATD3": 0.8805,
+        "MAAC": 0.9538
+      },
+      "episodes": {
+        "MATD3": "50/50",
+        "MAAC": "50/50",
+        "MASAC": "50/50",
+        "HAPPO": "49/50"
+      }
+    },
+    "objectives": {
+      "OG": "Determinar impacto de MADRLs en flexibilidad, CO₂ y costos en Iquitos e identificar mejor algoritmo global",
+      "OE.1": "Flexibilidad energética / escenario E1",
+      "OE.2": "Emisiones CO₂ / escenario E2",
+      "OE.3": "Costos energéticos / escenario E3",
+      "source": "agent-skills/madrl-citylearn-thesis-integrated/references/module-b-thesis-report.md"
+    },
+    "gaps": [],
+    "multicriteria_note": {
+      "source_field": "real_drive_50ep_c1c6",
+      "role": "TOPSIS = medida multicriterio formal adicional para OG/OE/HE (complementa evaluate_v2 y KPI-gains; no los sustituye).",
+      "warning": "Capa multicriterio real_drive_50ep_c1c6: medida formal adicional en Caps. V–VII para objetivos/hipótesis; complementa best_madrl 3×3 y evaluate_v2 4/4."
+    },
+    "best_madrl_summary": {
+      "mejor_madrl": "MATD3",
+      "target_episodes": 50,
+      "nota_episodios": "Episodios = episodes_recorded (o job_resume.completed_episodes si salvage). MATD3/MAAC/MASAC: 50/50 con KPIs. HAPPO: 49/50 — pendiente resume celda 2.3 (NO excluido del estudio; checkpoints en Drive)."
+    }
+  },
+  "words": {
+    "tesis": {
+      "name": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "chars": 227879,
+      "paragraphs": 1274,
+      "tables": 83,
+      "algo_counts": {
+        "HAPPO": 113,
+        "MASAC": 142,
+        "MATD3": 185,
+        "MAAC": 185
+      },
+      "episode_50_mentions": 31,
+      "episode_other_mentions": {
+        "5": 0,
+        "10": 0,
+        "20": 0,
+        "49": 0,
+        "100": 0
+      }
+    },
+    "informe": {
+      "name": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "chars": 263978,
+      "paragraphs": 1418,
+      "tables": 72,
+      "algo_counts": {
+        "HAPPO": 126,
+        "MASAC": 148,
+        "MATD3": 181,
+        "MAAC": 193
+      },
+      "episode_50_mentions": 28,
+      "episode_other_mentions": {
+        "5": 0,
+        "10": 0,
+        "20": 0,
+        "49": 2,
+        "100": 0
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "canon_exactly_2",
+      "category": "inventory",
+      "status": "PASS",
+      "message": "Exactamente 2 Word en docs/: ['Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx', 'Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx']",
+      "word": null,
+      "expected": null,
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "exists_Tesis_Doctoral_MADRL_Cit",
+      "category": "inventory",
+      "status": "PASS",
+      "message": "Existe Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx (18707476 bytes)",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": null,
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "exists_Inforne_tesisV4_FINAL_RE",
+      "category": "inventory",
+      "status": "PASS",
+      "message": "Existe Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx (18072041 bytes)",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": null,
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "gt_target_50",
+      "category": "ground_truth",
+      "status": "PASS",
+      "message": "best_madrl.target_episodes=50",
+      "word": null,
+      "expected": null,
+      "found": null,
+      "source": "outputs/madrl_v3_20260627_164047/resumen_comparativo/best_madrl_report.json"
+    },
+    {
+      "id": "gt_4_madrl",
+      "category": "ground_truth",
+      "status": "PASS",
+      "message": "4 MADRL en estudio: ['HAPPO', 'MAAC', 'MASAC', 'MATD3']",
+      "word": null,
+      "expected": null,
+      "found": null,
+      "source": "outputs/madrl_v3_20260627_164047/resumen_comparativo/best_madrl_report.json"
+    },
+    {
+      "id": "ep50_tesis",
+      "category": "episodes",
+      "status": "PASS",
+      "message": "31 menciones de '50 episodios'",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "≥3 menciones de 50 episodios",
+      "found": "31",
+      "source": null
+    },
+    {
+      "id": "happo_49_tesis",
+      "category": "episodes",
+      "status": "PASS",
+      "message": "Documenta HAPPO 49/50 (trazable a best_madrl)",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": null,
+      "found": "v3_20260627_164047) completó 50 episodios por escenario en MATD3, MAAC y MASAC (HAPPO: 49/50). En respuesta descriptiva a PE.1–PE.3 / OE.1–OE.3, MATD3 lidera flexibilida",
+      "source": "outputs/madrl_v3_20260627_164047/resumen_comparativo/best_madrl_report.json"
+    },
+    {
+      "id": "algos_tesis",
+      "category": "algorithms",
+      "status": "PASS",
+      "message": "4 MADRL presentes: {'HAPPO': 113, 'MASAC': 142, 'MATD3': 185, 'MAAC': 185}",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": null,
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "anchor_score_global_3x3_matd3_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: MATD3 score global 3×3=0.6667",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "0.6667",
+      "found": "tos (Δcosto E3 = 9 515 EUR); el score global canónico best_madrl 3×3 es MATD3 = 0,6667 (sin dominador Pareto único; ranking evaluate_v2 4/4: MAAC 0,9538 > MATD3 0,880",
+      "source": "best_madrl_report.json / ranking canonical3_no_happo"
+    },
+    {
+      "id": "anchor_flex_matd3_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: flex_composite E1 MATD3=1.0009",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "1.0009",
+      "found": "riptiva a PE.1–PE.3 / OE.1–OE.3, MATD3 lidera flexibilidad (flex_composite E1 = 1,0009) y emisiones (ΔCO₂ E2 = 23 070 kg); MAAC lidera costos (Δcosto E3 = 9 515 EUR);",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_flex_maac_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: flex_composite E1 MAAC=1.0124",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "1.0124",
+      "found": "l mejor flex_composite de distrito en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. In",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_flex_masac_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: flex_composite E1 MASAC=1.0286",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "1.0286",
+      "found": "posite de distrito en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. Inferencialmente (",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_flex_happo_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: flex_composite E1 HAPPO=1.1105",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "1.1105",
+      "found": "o en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. Inferencialmente (KPI-gains canónic",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_co2_matd3_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: ΔCO₂ E2 MATD3 kg=23070",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "23070",
+      "found": ", MATD3 lidera flexibilidad (flex_composite E1 = 1,0009) y emisiones (ΔCO₂ E2 = 23 070 kg); MAAC lidera costos (Δcosto E3 = 9 515 EUR); el score global canónico best_",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_co2_maac_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: ΔCO₂ E2 MAAC kg=70654",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "70654",
+      "found": "mente, MATD3 obtiene el menor ΔCO₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wal",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_co2_masac_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: ΔCO₂ E2 MASAC kg=77649",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "77649",
+      "found": "iene el menor ΔCO₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7648 (",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_co2_happo_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: ΔCO₂ E2 HAPPO kg=1431341",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "1431341",
+      "found": "₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7648 (HE20 no se rechaza; ",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_cost_maac_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: Δcosto E3 MAAC EUR=9515",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "9515",
+      "found": "E1 = 1,0009) y emisiones (ΔCO₂ E2 = 23 070 kg); MAAC lidera costos (Δcosto E3 = 9 515 EUR); el score global canónico best_madrl 3×3 es MATD3 = 0,6667 (sin dominador ",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_cost_masac_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: Δcosto E3 MASAC EUR=19793",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "19793",
+      "found": "nte, MAAC obtiene el menor Δcosto de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Walli",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_cost_matd3_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: Δcosto E3 MATD3 EUR=44399",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "44399",
+      "found": "e el menor Δcosto de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7357 (HE",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_cost_happo_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: Δcosto E3 HAPPO EUR=106828",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "106828",
+      "found": " de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7357 (HE30 no se rechaza; ",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_eval_v2_maac_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: evaluate_v2 4/4 MAAC score=0.9538",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "0.9538",
+      "found": "×3 es MATD3 = 0,6667 (sin dominador Pareto único; ranking evaluate_v2 4/4: MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000). Tras Shapiro–Wilk (normalidad re",
+      "source": "ranking_oe_scores_all_values.csv all4"
+    },
+    {
+      "id": "anchor_eval_v2_matd3_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: evaluate_v2 4/4 MATD3 score=0.8805",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "0.8805",
+      "found": ",6667 (sin dominador Pareto único; ranking evaluate_v2 4/4: MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000). Tras Shapiro–Wilk (normalidad rechazada), la co",
+      "source": "ranking_oe_scores_all_values.csv all4"
+    },
+    {
+      "id": "anchor_eval_v2_masac_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: evaluate_v2 4/4 MASAC score=0.8679",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "0.8679",
+      "found": "nador Pareto único; ranking evaluate_v2 4/4: MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000). Tras Shapiro–Wilk (normalidad rechazada), la contrastación inf",
+      "source": "ranking_oe_scores_all_values.csv all4"
+    },
+    {
+      "id": "anchor_run_id_tesis",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: run_id canónico=madrl_v3_20260627_164047",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": "madrl_v3_20260627_164047",
+      "found": "ursos computacionales en Google Colab para la corrida canónica de 50 episodios (madrl_v3_20260627_164047). Resumen Esta tesis doctoral determina, mediante simulación computacional bajo",
+      "source": "best_madrl_report.json"
+    },
+    {
+      "id": "objectives_tesis",
+      "category": "redaccion",
+      "status": "PASS",
+      "message": "Marcadores OG/OE/HE/metodología/caso presentes",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": null,
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "layer_topsis_formal_tesis",
+      "category": "redaccion",
+      "status": "PASS",
+      "message": "TOPSIS tratado como medida multicriterio formal adicional para objetivos/hipótesis (Caps. V–VII)",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": null,
+      "found": null,
+      "source": "outputs/madrl_multicriteria_selection/selection_report.json"
+    },
+    {
+      "id": "layer_topsis_real_tesis",
+      "category": "trazabilidad",
+      "status": "PASS",
+      "message": "TOPSIS anclado a multicriterio real_drive_50ep_c1c6",
+      "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "expected": null,
+      "found": null,
+      "source": "outputs/madrl_multicriteria_selection/selection_report.json"
+    },
+    {
+      "id": "ep50_informe",
+      "category": "episodes",
+      "status": "PASS",
+      "message": "28 menciones de '50 episodios'",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "≥3 menciones de 50 episodios",
+      "found": "28",
+      "source": null
+    },
+    {
+      "id": "happo_49_informe",
+      "category": "episodes",
+      "status": "PASS",
+      "message": "Documenta HAPPO 49/50 (trazable a best_madrl)",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": null,
+      "found": "usivamente de la corrida canónica Drive madrl_v3_20260627_164047 (50 episodios; HAPPO 49/50) y de sus artefactos en outputs/ (resumen_comparativo, _drive_madrl/kpi_reca",
+      "source": "outputs/madrl_v3_20260627_164047/resumen_comparativo/best_madrl_report.json"
+    },
+    {
+      "id": "algos_informe",
+      "category": "algorithms",
+      "status": "PASS",
+      "message": "4 MADRL presentes: {'HAPPO': 126, 'MASAC': 148, 'MATD3': 181, 'MAAC': 193}",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": null,
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "anchor_score_global_3x3_matd3_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: MATD3 score global 3×3=0.6667",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "0.6667",
+      "found": " = 1,0009) y OE.2 (ΔCO₂ = 23 070 kg) y obtiene el score global best_madrl 3×3 = 0,6667; MAAC lidera OE.3 (Δcosto = 9 515 EUR) y el ranking evaluate_v2 4/4 (MAAC 0,953",
+      "source": "best_madrl_report.json / ranking canonical3_no_happo"
+    },
+    {
+      "id": "anchor_flex_matd3_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: flex_composite E1 MATD3=1.0009",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "1.0009",
+      "found": ", estadística KPI-gains). Descriptivamente, MATD3 lidera OE.1 (flex_composite = 1,0009) y OE.2 (ΔCO₂ = 23 070 kg) y obtiene el score global best_madrl 3×3 = 0,6667; M",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_flex_maac_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: flex_composite E1 MAAC=1.0124",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "1.0124",
+      "found": "l mejor flex_composite de distrito en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. In",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_flex_masac_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: flex_composite E1 MASAC=1.0286",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "1.0286",
+      "found": "posite de distrito en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. Inferencialmente (",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_flex_happo_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: flex_composite E1 HAPPO=1.1105",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "1.1105",
+      "found": "o en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. Inferencialmente (KPI-gains canónic",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_co2_matd3_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: ΔCO₂ E2 MATD3 kg=23070",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "23070",
+      "found": "). Descriptivamente, MATD3 lidera OE.1 (flex_composite = 1,0009) y OE.2 (ΔCO₂ = 23 070 kg) y obtiene el score global best_madrl 3×3 = 0,6667; MAAC lidera OE.3 (Δcosto",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_co2_maac_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: ΔCO₂ E2 MAAC kg=70654",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "70654",
+      "found": "mente, MATD3 obtiene el menor ΔCO₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wal",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_co2_masac_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: ΔCO₂ E2 MASAC kg=77649",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "77649",
+      "found": "iene el menor ΔCO₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7648 (",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_co2_happo_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: ΔCO₂ E2 HAPPO kg=1431341",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "1431341",
+      "found": "₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7648 (HE20 no se rechaza; ",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_cost_maac_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: Δcosto E3 MAAC EUR=9515",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "9515",
+      "found": ") y obtiene el score global best_madrl 3×3 = 0,6667; MAAC lidera OE.3 (Δcosto = 9 515 EUR) y el ranking evaluate_v2 4/4 (MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > ",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_cost_masac_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: Δcosto E3 MASAC EUR=19793",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "19793",
+      "found": "nte, MAAC obtiene el menor Δcosto de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Walli",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_cost_matd3_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: Δcosto E3 MATD3 EUR=44399",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "44399",
+      "found": "e el menor Δcosto de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7357 (HE",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_cost_happo_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: Δcosto E3 HAPPO EUR=106828",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "106828",
+      "found": " de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7357 (HE30 no se rechaza; ",
+      "source": "ranking_oe_scores_all_values.csv"
+    },
+    {
+      "id": "anchor_eval_v2_maac_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: evaluate_v2 4/4 MAAC score=0.9538",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "0.9538",
+      "found": ",6667; MAAC lidera OE.3 (Δcosto = 9 515 EUR) y el ranking evaluate_v2 4/4 (MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000). Inferencialmente, tras Shapiro–W",
+      "source": "ranking_oe_scores_all_values.csv all4"
+    },
+    {
+      "id": "anchor_eval_v2_matd3_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: evaluate_v2 4/4 MATD3 score=0.8805",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "0.8805",
+      "found": "era OE.3 (Δcosto = 9 515 EUR) y el ranking evaluate_v2 4/4 (MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000). Inferencialmente, tras Shapiro–Wilk, Kruskal–Wa",
+      "source": "ranking_oe_scores_all_values.csv all4"
+    },
+    {
+      "id": "anchor_eval_v2_masac_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: evaluate_v2 4/4 MASAC score=0.8679",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "0.8679",
+      "found": "o = 9 515 EUR) y el ranking evaluate_v2 4/4 (MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000). Inferencialmente, tras Shapiro–Wilk, Kruskal–Wallis sobre KPI-",
+      "source": "ranking_oe_scores_all_values.csv all4"
+    },
+    {
+      "id": "anchor_run_id_informe",
+      "category": "anchors",
+      "status": "PASS",
+      "message": "Ancla presente: run_id canónico=madrl_v3_20260627_164047",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": "madrl_v3_20260627_164047",
+      "found": "ursos computacionales en Google Colab para la corrida canónica de 50 episodios (madrl_v3_20260627_164047). Resumen El presente estudio determina el efecto de cuatro algoritmos MADRL (H",
+      "source": "best_madrl_report.json"
+    },
+    {
+      "id": "objectives_informe",
+      "category": "redaccion",
+      "status": "PASS",
+      "message": "Marcadores OG/OE/HE/metodología/caso presentes",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": null,
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "layer_topsis_formal_informe",
+      "category": "redaccion",
+      "status": "PASS",
+      "message": "TOPSIS tratado como medida multicriterio formal adicional para objetivos/hipótesis (Caps. V–VII)",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": null,
+      "found": null,
+      "source": "outputs/madrl_multicriteria_selection/selection_report.json"
+    },
+    {
+      "id": "layer_topsis_real_informe",
+      "category": "trazabilidad",
+      "status": "PASS",
+      "message": "TOPSIS anclado a multicriterio real_drive_50ep_c1c6",
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "expected": null,
+      "found": null,
+      "source": "outputs/madrl_multicriteria_selection/selection_report.json"
+    },
+    {
+      "id": "cross_score_global_3x3_matd3",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla MATD3 score global 3×3",
+      "word": null,
+      "expected": "0.6667",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_flex_matd3",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla flex_composite E1 MATD3",
+      "word": null,
+      "expected": "1.0009",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_flex_maac",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla flex_composite E1 MAAC",
+      "word": null,
+      "expected": "1.0124",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_flex_masac",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla flex_composite E1 MASAC",
+      "word": null,
+      "expected": "1.0286",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_flex_happo",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla flex_composite E1 HAPPO",
+      "word": null,
+      "expected": "1.1105",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_co2_matd3",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla ΔCO₂ E2 MATD3 kg",
+      "word": null,
+      "expected": "23070",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_co2_maac",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla ΔCO₂ E2 MAAC kg",
+      "word": null,
+      "expected": "70654",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_co2_masac",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla ΔCO₂ E2 MASAC kg",
+      "word": null,
+      "expected": "77649",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_co2_happo",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla ΔCO₂ E2 HAPPO kg",
+      "word": null,
+      "expected": "1431341",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_cost_maac",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla Δcosto E3 MAAC EUR",
+      "word": null,
+      "expected": "9515",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_cost_masac",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla Δcosto E3 MASAC EUR",
+      "word": null,
+      "expected": "19793",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_cost_matd3",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla Δcosto E3 MATD3 EUR",
+      "word": null,
+      "expected": "44399",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_cost_happo",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla Δcosto E3 HAPPO EUR",
+      "word": null,
+      "expected": "106828",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_eval_v2_maac",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla evaluate_v2 4/4 MAAC score",
+      "word": null,
+      "expected": "0.9538",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_eval_v2_matd3",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla evaluate_v2 4/4 MATD3 score",
+      "word": null,
+      "expected": "0.8805",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_eval_v2_masac",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla evaluate_v2 4/4 MASAC score",
+      "word": null,
+      "expected": "0.8679",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_run_id",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "Ambos Word contienen ancla run_id canónico",
+      "word": null,
+      "expected": "madrl_v3_20260627_164047",
+      "found": null,
+      "source": null
+    },
+    {
+      "id": "cross_score_density",
+      "category": "cross_word",
+      "status": "PASS",
+      "message": "0,6667 en ambos (Tesis=11, Informe=8)",
+      "word": null,
+      "expected": null,
+      "found": null,
+      "source": null
+    }
+  ],
+  "veredicto": {
+    "veredicto": "SÍ",
+    "rationale": "Todas las pruebas críticas PASS; anclas 50 ep / 4 MADRL trazables",
+    "counts": {
+      "PASS": 69
+    },
+    "pass": 69,
+    "fail": 0,
+    "warn": 0,
+    "gap": 0,
+    "critical_fails": [],
+    "all_fails": [],
+    "all_warns": []
+  },
+  "redaccion_gaps": [
+    {
+      "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "gap": "Conclusiones: no se detecta mención cercana de 50 episodios en ventana Cap.6",
+      "severity": "redaccion"
+    }
+  ],
+  "word_patches": "Ninguno en este pase (solo validación; no se modificaron .docx).",
+  "recommendations": [
+    "TOPSIS es medida multicriterio formal adicional para OG/OE/HE en Caps. V–VII; complementa evaluate_v2/KPI-gains y no debe quedar como disclaimer «solo ilustrativo/no decide».",
+    "No mezclar p-valores de HE KPI-gains 3×3 con batería episódica ni presentar TOPSIS como único veredicto OG en sustitución del omnibus.",
+    "Tras ediciones: abrir Informe en Word y actualizar TOC (F9).",
+    "Capa multicriterio real_drive_50ep_c1c6: medida formal adicional en Caps. V–VII para objetivos/hipótesis; complementa best_madrl 3×3 y evaluate_v2 4/4."
+  ]
+}

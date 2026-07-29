@@ -1,0 +1,453 @@
+
+=== AUDIT tools/thesis execution 2026-07-29T12:52:34.2866831-05:00 ===
+Word canons present:
+  _backup_Tesis_Doctoral_before_cap4_20260729_124928.docx 5273611
+  Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx 4625884
+  Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx 682045
+
+=== IMPORT libs ===
+OK import thesis_word_canons
+OK import thesis_antecedents_data
+OK import thesis_cap5_structured
+OK import thesis_references_apa
+OK import thesis_doctoral_sections
+OK import generate_borrador_tesis_docx
+CANONS ['Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx', 'Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx', 'ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx']
+EXISTING ['Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx', 'Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx']
+
+=== verify --all-canons ===
+{
+  "canons": [
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "exists": true,
+      "cap5": true,
+      "doctoral": {
+        "complete": false,
+        "tables_count": 42,
+        "images_count": 6
+      },
+      "ok": false
+    },
+    {
+      "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "exists": true,
+      "cap5": true,
+      "ok": true
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx",
+      "exists": false,
+      "ok": false
+    }
+  ],
+  "ok": false
+}
+exit=2
+
+=== sync Cap5 --dry-run --informe-only ===
+{
+  "source": {
+    "source": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "range": [
+      234,
+      412
+    ],
+    "blocks": 178,
+    "checks": {
+      "Shapiro": 9,
+      "Kruskal": 9,
+      "Wilcoxon": 9,
+      "0,6667": 6,
+      "normalidad": 9,
+      "Mann": 2,
+      "no_param": 2
+    }
+  },
+  "targets": [
+    {
+      "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "toc_safe": false,
+      "old_range": [
+        500,
+        678
+      ],
+      "dry_run": true,
+      "would_replace_blocks": 178,
+      "incoming_blocks": 178
+    }
+  ],
+  "dry_run": true
+}
+exit=0
+
+=== sync Cap5 --dry-run (default targets) ===
+{
+  "source": {
+    "source": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "range": [
+      234,
+      412
+    ],
+    "blocks": 178,
+    "checks": {
+      "Shapiro": 9,
+      "Kruskal": 9,
+      "Wilcoxon": 9,
+      "0,6667": 6,
+      "normalidad": 9,
+      "Mann": 2,
+      "no_param": 2
+    }
+  },
+  "targets": [
+    {
+      "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "toc_safe": false,
+      "old_range": [
+        500,
+        678
+      ],
+      "dry_run": true,
+      "would_replace_blocks": 178,
+      "incoming_blocks": 178
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx",
+      "ok": false,
+      "error": "missing"
+    }
+  ],
+  "dry_run": true
+}
+exit=1
+
+=== pipeline --verify-only ===
+{
+  "canons": [
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "exists": true,
+      "cap5": true,
+      "doctoral": {
+        "complete": false,
+        "tables_count": 42,
+        "images_count": 6
+      },
+      "ok": false
+    },
+    {
+      "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "exists": true,
+      "cap5": true,
+      "ok": true
+    },
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx",
+      "exists": false,
+      "ok": false
+    }
+  ],
+  "ok": false
+}
+
+=== verify all canons ===
+D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\Scripts\python.exe -B D:\MADRLCitytleranflexresdr\tools\thesis\verify_tesis_doctoral_docx.py --all-canons
+exit=2
+
+=== madrl_algorithm_analysis ===
+OK -> D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\resumen_comparativo\estadistica\madrl_per_algorithm_metrics.json
+exit=0
+
+=== verify Tesis detail ===
+{
+  "sections": {
+    "Dedicatoria": true,
+    "Agradecimientos": true,
+    "Resumen": true,
+    "Abstract": true,
+    "Introduccion": true,
+    "Capitulo 5": true,
+    "Capitulo 6": true,
+    "Referencias bibliograficas": true
+  },
+  "tables_count": 42,
+  "tables_ok": true,
+  "images_count": 6,
+  "images_ok": false,
+  "references_count": 78,
+  "references_expected": 78,
+  "references_ok": true,
+  "references_single_list": true,
+  "has_matd3_selection": true,
+  "has_pe_answers": false,
+  "has_multiobjetivo": true,
+  "has_drive_figures": true,
+  "has_referencias_apa": true,
+  "complete": false
+}
+
+=== generate_drive_thesis_figures ===
+    {
+      "algo": "HAPPO",
+      "scen": "E1",
+      "status": "skip_missing_ts_trace"
+    },
+    {
+      "algo": "HAPPO",
+      "scen": "E2",
+      "status": "skip_missing_ts_trace"
+    },
+    {
+      "algo": "HAPPO",
+      "scen": "E3",
+      "status": "skip_missing_ts_trace"
+    }
+  ],
+  "comparative_figures": [
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_convergence_reward_mean.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_convergence_reward_mean.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_convergence_reward_mean.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_OE1_kpi.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_OE2_kpi.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_OE3_kpi.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_district_net_electricity_consumption_cost.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_district_net_electricity_consumption_emission.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_district_net_electricity_consumption_cost.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_district_net_electricity_consumption_emission.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_district_net_electricity_consumption_cost.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_district_net_electricity_consumption_emission.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E1_control_trace.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E2_control_trace.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_E3_control_trace.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_global_ranking_oe.png",
+    "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\comparativo\\comparativo_best_worst_por_escenario.png"
+  ],
+  "ranking_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\ranking_global_oe_drive.csv",
+  "mapping_md": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\figuras_drive_reales\\drive_figures_thesis_mapping.md"
+}
+
+Listo: D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\resumen_comparativo\figuras_drive_reales
+exit=0
+
+=== build_multiobjective_thesis_docx ===
+Word generado: D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\resumen_comparativo\multiobjetivo\RESUMEN_MULTIOBJETIVO_TESIS.docx
+Tama├▒o: 2.4 MB
+exit=0
+
+=== build_multiobjective_thesis_pdf ===
+PDF generado (24 p├íginas): D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\resumen_comparativo\multiobjetivo\RESUMEN_MULTIOBJETIVO_TESIS.pdf
+Tama├▒o: 6.5 MB
+exit=0
+
+=== build_defensa_pdf ===
+Traceback (most recent call last):
+  File "D:\MADRLCitytleranflexresdr\tools\thesis\build_defensa_pdf.py", line 7, in <module>
+    from reportlab.lib import colors
+ModuleNotFoundError: No module named 'reportlab'
+exit=1
+
+=== build_defensa_pdf_pillow ===
+PDF generado (2 paginas): outputs\defensa_pdf\ARQUITECTURA_MADRL_DEFENSA.pdf
+Tamano: 0.6 MB
+exit=0
+
+=== patch_citylearn dry check (import + argparse) ===
+{
+  "timestamp": "2026-07-29T12:59:48",
+  "decision": "RETAIN_AND_INTEGRATE",
+  "source_md": "docs/tesis_capitulos/Capitulo_3_Metodologia.md ┬º3.4.6",
+  "integration_report": "docs/INTEGRACION_CITYLEARN_THESIS_2026-07-29.md",
+  "results": [
+    {
+      "path": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "actions": [
+        "already_present"
+      ],
+      "saved": false,
+      "manual_insertion": null,
+      "ok": true,
+      "note": "Texto de integraci├│n ya presente; sin cambios."
+    },
+    {
+      "path": "docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "actions": [
+        "already_present"
+      ],
+      "saved": false,
+      "manual_insertion": null,
+      "ok": true,
+      "note": "Texto de integraci├│n ya presente; sin cambios."
+    }
+  ],
+  "claim_boundary": "No KPIs / no Cap.5 results for Quebec/Alameda/Travis/Chittenden/challenges; empirical case remains Iquitos 2023-2025 + MADRL v3."
+}
+exit=0
+
+=== update_pg help ===
+run=2026-07-29T12:59:49.376706
+targets=['Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx', 'Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx']
+BACKUP Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx -> Tesis_Doctoral_MADRL_CityLearn_Iquitos_pre_pg_pe_oe_h_20260729_125949.docx
+UPDATED Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx
+  PE.1:: 3
+  PE.2:: 3
+  PE.3:: 3
+  OG. -: 2
+  OE.1:: 4
+  OE.2:: 4
+  OE.3:: 4
+  H0G.-: 2
+  H1G.-: 2
+  HE10.-: 2
+  HE11.-: 2
+  HE20.-: 2
+  HE21.-: 2
+  HE30.-: 2
+  HE31.-: 2
+  PG: 3
+  table_cell_replacements: 24
+  heading -> 1.3.2.1 Hip├│tesis general
+  heading -> 1.3.2.1 Hip├│tesis general
+  heading -> 1.3.2.2 Hip├│tesis espec├¡ficas
+  VERIFY PG: OK
+  VERIFY PE.1: OK
+  VERIFY PE.2: OK
+  VERIFY PE.3: OK
+  VERIFY OG: OK
+  VERIFY OE.1: OK
+  VERIFY OE.2: OK
+  VERIFY OE.3: OK
+  VERIFY H0G: OK
+  VERIFY H1G: OK
+  VERIFY HE10: OK
+  VERIFY HE11: OK
+  VERIFY HE20: OK
+  VERIFY HE21: OK
+  VERIFY HE30: OK
+  VERIFY HE31: OK
+BACKUP Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx -> Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_pre_pg_pe_oe_h_20260729_125950.docx
+UPDATED Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx
+  PE.1:: 2
+  PE.2:: 2
+  PE.3:: 2
+  OG. -: 2
+  OE.1:: 3
+  OE.2:: 3
+  OE.3:: 3
+  H0G.-: 2
+  H1G.-: 2
+  HE10.-: 2
+  HE11.-: 2
+  HE20.-: 2
+  HE21.-: 2
+  HE30.-: 2
+  HE31.-: 2
+  PG: 2
+  table_cell_replacements: 27
+  heading -> 1.2.1.1 Formulaci├│n del problema general
+  heading -> 1.2.1.2 Formulaci├│n de los problemas espec├¡ficos
+  heading -> 1.3.1.1 Objetivo general
+  heading -> 1.3.1.2 Objetivos espec├¡ficos
+  heading -> 1.3.2.1 Hip├│tesis general
+  heading -> 1.3.2.2 Hip├│tesis espec├¡ficas
+  heading -> 1.3.2.1 Hip├│tesis general
+  heading -> 1.3.2.1 Hip├│tesis general
+  heading -> 1.3.2.2 Hip├│tesis espec├¡ficas
+  VERIFY PG: OK
+  VERIFY PE.1: OK
+  VERIFY PE.2: OK
+  VERIFY PE.3: OK
+  VERIFY OG: OK
+  VERIFY OE.1: OK
+  VERIFY OE.2: OK
+  VERIFY OE.3: OK
+  VERIFY H0G: OK
+  VERIFY H1G: OK
+  VERIFY HE10: OK
+  VERIFY HE11: OK
+  VERIFY HE20: OK
+  VERIFY HE21: OK
+  VERIFY HE30: OK
+  VERIFY HE31: OK
+
+=== patch_cap3 help ===
+{
+  "timestamp": "2026-07-29T12:59:54",
+  "source": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+  "canons": [
+    "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx"
+  ],
+  "files": [
+    {
+      "path": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "actions": [],
+      "checks": {
+        "resumen_cuasiexperimental": true,
+        "cap3_cuasiexperimental": true,
+        "cap3_algorithms": true,
+        "cap3_oe_terms": true,
+        "doc_still_has_no_experimental": false,
+        "canonical_exists": true
+      },
+      "ok": true
+    },
+    {
+      "path": "docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "actions": [
+        "cap3_expcomp@353",
+        "cap3_quasi_explain@353",
+        "cap3_expcomp@356"
+      ],
+      "checks": {
+        "resumen_cuasiexperimental": false,
+        "cap3_cuasiexperimental": true,
+        "cap3_algorithms": true,
+        "cap3_oe_terms": true,
+        "doc_still_has_no_experimental": true,
+        "canonical_exists": true
+      },
+      "ok": false
+    }
+  ],
+  "ok": false
+}
+
+=== patch_cap4 help ===
+{
+  "timestamp": "2026-07-29T12:59:55",
+  "source_md": "docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md",
+  "pytest_summary": {
+    "command": ".\\.venv39-citylearn-v3\\Scripts\\python.exe -B -m pytest tests/uc3m/ tests/citylearn_v3/ -v --tb=line",
+    "passed": 184,
+    "failed": 0,
+    "warnings": 1,
+    "duration_s": 91.09,
+    "date": "2026-07-29"
+  },
+  "files": [
+    {
+      "path": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "backup": "docs\\_backup_Tesis_Doctoral_before_cap4_20260729_125955.docx",
+      "actions": [
+        "insert_4_11_heading",
+        "insert_4_11_table",
+        "insert_4_12_heading",
+        "insert_4_12_body",
+        "insert_4_13_body"
+      ],
+      "checks": {
+        "has_4_11_folders": true,
+        "has_4_12_validation": true,
+        "has_4_13_repro": true,
+        "has_uc3m": true,
+        "heading_4_7_ok": true,
+        "ok": true
+      },
+      "ok": true
+    }
+  ],
+  "ok": true
+}

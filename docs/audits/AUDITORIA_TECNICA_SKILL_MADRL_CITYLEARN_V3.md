@@ -61,7 +61,7 @@ Manifiestos de control:
 
 ## Ajustes Aplicados
 
-- El dataset se construye por orquestacion con `tools/orchestrate_citylearn_dataset.py`.
+- El dataset se construye por orquestacion con `tools/dataset/orchestrate_citylearn_dataset.py`.
 - La validacion acepta cargadores EV con estados activos del esquema vigente.
 - Las maquinas controladas se detectan como `Washing_Machine_*.csv` por edificio.
 - Los reportes de dataset usan conteos dinamicos de cargadores y maquinas; no quedan conteos fijos antiguos en esos scripts.
@@ -79,7 +79,7 @@ Manifiestos de control:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
-python tools/audit_citylearn_csv_integrity.py
+python tools/dataset/audit_citylearn_csv_integrity.py
 python CityLearn\scripts\check_citylearn_v3_training_ready.py --strict --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json --scenario E1
 ```
 

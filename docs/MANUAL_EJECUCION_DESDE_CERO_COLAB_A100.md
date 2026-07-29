@@ -1,7 +1,7 @@
 # Manual de ejecucion desde cero - MADRL CityLearn v3 en Colab A100
 
 **Proyecto:** `MADRLCitytleranflexresdr`  
-**Notebook:** `CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb`  
+**Notebook:** `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb`  
 **Modo objetivo:** Google Colab A100, 50 episodios por corrida, 12 corridas  
 **Ultima verificacion local:** 2026-06-19 con `.venv39-citylearn-v3` / Python 3.9.25
 
@@ -64,7 +64,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
 Abrir en VS Code:
 
 ```text
-CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb
 ```
 
 No ejecutar el notebook con un kernel local para el entrenamiento completo. El
@@ -314,7 +314,7 @@ Desde PowerShell local:
 ```powershell
 cd D:\MADRLCitytleranflexresdr
 powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
-.\.venv39-citylearn-v3\Scripts\python.exe tools\test_notebook_cells.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\colab\test_notebook_cells.py
 ```
 
 Para validar readiness por escenario:

@@ -1,43 +1,79 @@
-# scripts/ — orquestación PowerShell del entrenamiento CityLearn v3 MADRL
+# scripts/ — orquestación operativa (PowerShell + CLIs MADRL)
 
-Fase 4 del plan de reorganización (`docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md`)
-propone regrupar estos `.ps1` en `scripts/{training,monitoring,setup}/`.
+Inventario canónico verificado **2026-07-29**.
+Redacción DOCX de tesis: carpeta única **`tools/thesis/`**
+(ver `docs/analisis_scripts_vs_tools_tesis.md` y `tools/thesis/README.md`).
 
-**Esta subdivisión NO se ejecutó** en esta pasada porque:
+## Política
 
-1. Hay un entrenamiento activo (`status: running`,
-   `outputs/citylearn_v3_madrl_full_20260613_010234`) lanzado a partir de
-   estos mismos scripts.
-2. Todos resuelven `$ProjectRoot` vía `$PSScriptRoot` con un único `..`
-   (asumen que están exactamente un nivel bajo la raíz del repo). Moverlos
-   a una subcarpeta (`scripts/training/...`) rompe esa resolución
-   (`..` apuntaría a `scripts/`, no a la raíz) y requiere editar cada script
-   y cualquier proceso/atajo que los invoque por ruta.
-3. `training_launcher_window.ps1` / `training_resume_window.ps1` pueden
-   estar referenciados desde accesos directos o tareas programadas fuera
-   del repo.
+| Ámbito | Ubicación canónica |
+|--------|--------------------|
+| Frontera de repo / entrenamiento visible / reinicios | `scripts/*.ps1` |
+| Estadística operativa MADRL (no DOCX) | `scripts/run_madrl_*.py` |
+| Generación / parches Word tesis | `tools/thesis/` |
+| Dataset CityLearn Iquitos | `tools/dataset/` |
+| KPIs / stats de resultados | `tools/eval/` |
+| Colab notebook generate/patch | `tools/colab/` |
+| Fetch / Drive operativo | `tools/drive/` |
+| Helpers entrenamiento / baselines | `tools/training/` (incluye `prune_citylearn_v3_training_artifacts.ps1`) |
+| Integridad workflow / storage | `tools/ops/` |
+| Figuras arquitectura (no Word) | `tools/figures/` |
+| Entrenamiento agentes CityLearn v3 | `CityLearn/scripts/` |
 
-Lo que sí se ejecutó (Fase 1): los `.bat` sueltos de la raíz se movieron a
-`scripts/legacy_bat/`.
+Los únicos `.py` de tesis permitidos aquí son **shims** (<1 KB) que delegan en
+`tools/thesis/`. No debe haber copias completas duplicadas.
 
-## Categorización propuesta para una migración futura (con el entrenamiento detenido)
+## Inventario activo
 
-- **training/**: `run_citylearn_v3_full_training_visible.ps1`,
-  `training_launcher_window.ps1`, `training_resume_window.ps1`
-- **monitoring/**: `monitor_citylearn_training_visible.ps1`
-- **setup/**: `activate_citylearn_v3.ps1`, `verify_project_context.ps1`
+### Core
 
-Pasos para migrar de forma segura:
+| Archivo | Rol |
+|---------|-----|
+| `verify_project_context.ps1` | Gate de frontera del proyecto |
+| `run_citylearn_v3_full_training_visible.ps1` | Wrapper entrenamiento visible |
+| `monitor_citylearn_training_visible.ps1` | Monitor legacy |
+| `training_launcher_window.ps1` | Ventana lanzador |
+| `training_resume_window.ps1` | Ventana resume |
+| `activate_citylearn_v3.ps1` | Activa `.venv39-citylearn-v3` |
 
-1. Esperar a que el entrenamiento activo termine (o se detenga
-   limpiamente) y confirmar `status != running` en
-   `outputs/*/official_full_status.json`.
-2. Mover los `.ps1` a sus subcarpetas.
-3. En cada script movido, ajustar `$ProjectRoot = (Resolve-Path (Join-Path
-   $PSScriptRoot "..")).Path` a `"..\\.."` (un nivel adicional).
-4. Actualizar `docs/workflow_manifest.json` (`workflow.training.launcher`,
-   `workflow.training.wrapper`, `workflow.monitoring.*`) y cualquier acceso
-   directo/tarea programada de Windows que invoque estos scripts por ruta
-   absoluta.
-5. Relanzar un dry-run corto para confirmar que `$ProjectRoot` resuelve
-   correctamente antes de lanzar el entrenamiento completo.
+### Reinicio / paralelo / Drive
+
+| Archivo | Rol |
+|---------|-----|
+| `restart_happo_masac_v3.ps1` | Entrypoint canónico 4 MADRL (50 ep) vía `LANZAR_ENTRENAMIENTO_V4.bat` |
+| `run_3madrl_parallel.ps1` | Lanzamiento paralelo (AWS / VRAM alta) |
+| `setup_google_drive_oauth.ps1` | OAuth Google Drive |
+| `fetch_and_generate_drive_figures.ps1` | Fetch + `tools/thesis/generate_drive_thesis_figures.py` |
+
+### CLIs Python operativos
+
+| Archivo | Rol |
+|---------|-----|
+| `run_madrl_nonparametric_battery.py` | Batería no paramétrica 50 ep |
+| `run_madrl_multicriteria_selection.py` | TOPSIS/AHP multicriterio |
+
+### Shims → `tools/thesis/`
+
+| Shim | Destino |
+|------|---------|
+| `generate_borrador_tesis_docx.py` | `tools/thesis/generate_borrador_tesis_docx.py` |
+| `thesis_doctoral_sections.py` | `tools.thesis.thesis_doctoral_sections` |
+
+### Legacy
+
+Los one-shots `_archive/` y `scripts/legacy_bat/` fueron **eliminados** (política 2026-07-29 DELETE).
+Launcher Windows canónico: `LANZAR_ENTRENAMIENTO_V4.bat` → `restart_happo_masac_v3.ps1` (50 ep).
+Detalle: `docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md`.
+
+## Ejecución
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
+.\.venv39-citylearn-v3\Scripts\python.exe scripts\run_madrl_nonparametric_battery.py
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\thesis\generate_tesis_doctoral_final_docx.py
+```
+
+## Subdivisión `training/` / `monitoring/` / `setup/`
+
+Propuesta en `docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md`.
+**No ejecutada**: los `.ps1` usan `$PSScriptRoot\..` y moverlos rompería rutas.

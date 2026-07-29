@@ -9,7 +9,12 @@ Use this project-local skill only inside this repository to connect the scientif
 
 > "Multi-Agente de Aprendizaje por Refuerzo Profundo para la Gestión Coordinada de la Flexibilidad Energética, las Emisiones de Carbono y los Costos Energéticos en Comunidades Inteligentes".
 
-**Documento canónico:** `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
+**Documentos Word canónicos (exactamente 2 — no crear nuevos `.docx` en `docs/`):**
+
+1. `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` — **fuente de verdad** (tesis doctoral; Cap. V / KPIs / Shapiro / no paramétricos).
+2. `docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx` — informe final 50 episodios (TOC; Cap. 5 alineado a la tesis).
+
+**Regla dura:** toda mejora de Word se aplica **solo** a estos dos archivos. No crear `ABRIR_*`, `*_PATCHED`, `*_VERSION_*` ni copias con fecha en `docs/`. Obsoletos → `docs/_archive/`. Detalle: `docs/CANON_WORD_Y_VALIDEZ_50EP_DRIVE_2026-07-29.md`.
 
 **Borradores Markdown:** `docs/tesis_capitulos/` (Capítulos 1–6 + Referencias APA).
 
@@ -54,7 +59,7 @@ The thesis uses a **simulation-based experimental design** (not merely comparati
 - **VI:** algoritmo MADRL — D-VI.1 (HAPPO, MASAC, MATD3, MAAC) × D-VI.2 (E1, E2, E3) → 12 tratamientos
 - **VD:** desempeño coordinado medido con **54 KPI oficiales** en D-VD.1 flexibilidad, D-VD.2 CO₂, D-VD.3 costos
 - **Control:** dataset Iquitos, clima, CI, TOU, recompensa `unified_comparable_v4`, semilla
-- **Hipótesis:** HG, HE.1, HE.2, HE.3 (directional; contrastadas con Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon; α = 0,05)
+- **Hipótesis:** H0G/H1G y HE10/HE11, HE20/HE21, HE30/HE31 (formulaciones exactas del autor; contrastadas con Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U, Wilcoxon; α = 0,05). No parafrasear PG/PE/OG/OE/H.
 
 Use the exact PG/PE/OG/OE/HG/HE wording from [module-b-thesis-report.md](references/module-b-thesis-report.md).
 
@@ -96,11 +101,11 @@ Use the exact PG/PE/OG/OE/HG/HE wording from [module-b-thesis-report.md](referen
    - **Figuras de entrenamiento (timeseries/trace reales Drive):** `outputs/madrl_v3_20260627_164047/resumen_comparativo/figuras_drive_reales/`
    - Espejo CSV Drive: `outputs/_drive_madrl/full_data/{ALGO}/{E1|E2|E3}/data/`
    - KPIs auditados: `outputs/_drive_madrl/kpis/`
-   - Generadores Word finales:
-     - `scripts/generate_tesis_doctoral_final_docx.py` → `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
-     - `tools/build_multiobjective_thesis_docx.py` → anexo multiobjetivo `.docx`
-     - `scripts/thesis_doctoral_sections.py` + `scripts/verify_tesis_doctoral_docx.py` (verificación)
-     - `scripts/thesis_references_apa.py` → carga `docs/tesis_capitulos/Referencias_APA.md` (66 refs APA)
+   - Generadores Word finales (carpeta única `tools/thesis/`):
+     - `tools/thesis/generate_tesis_doctoral_final_docx.py` → `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`
+     - `tools/thesis/build_multiobjective_thesis_docx.py` → anexo multiobjetivo `.docx`
+     - `tools/thesis/thesis_doctoral_sections.py` + `tools/thesis/verify_tesis_doctoral_docx.py` (verificación)
+     - `tools/thesis/thesis_references_apa.py` → carga `docs/tesis_capitulos/Referencias_APA.md` (66 refs APA)
 
 ## Pipeline Drive → figuras → tesis (obligatorio para Cap. 5)
 
@@ -117,7 +122,7 @@ Requiere `tools/skills/google-drive-mcp/data/credentials.json`.
 **Paso 1 — Descarga selectiva vía conector OAuth** (no usar `gdown` ni `regenerate_drive_training_figures.py`):
 
 ```powershell
-tools\skills\google-drive-mcp\.venv\Scripts\python.exe tools\fetch_drive_training_artifacts.py
+tools\skills\google-drive-mcp\.venv\Scripts\python.exe tools\drive\fetch_drive_training_artifacts.py
 ```
 
 Descarga: `timeseries.csv`, `trace.csv`, `checkpoint_manifest.json`, `results.json`, `building_kpis.csv` → `outputs/_drive_madrl/full_data/`.
@@ -125,13 +130,13 @@ Descarga: `timeseries.csv`, `trace.csv`, `checkpoint_manifest.json`, `results.js
 **Paso 2 — Análisis multiobjetivo distrito/edificio:**
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe tools\analyze_colab_drive_multiobjective_buildings.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\eval\analyze_colab_drive_multiobjective_buildings.py
 ```
 
 **Paso 3 — Figuras de entrenamiento (solo CSV reales, sin síntesis):**
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe tools\generate_drive_thesis_figures.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\thesis\generate_drive_thesis_figures.py
 ```
 
 O pipeline completo:
@@ -143,8 +148,8 @@ powershell -ExecutionPolicy Bypass -File scripts\fetch_and_generate_drive_figure
 **Paso 4 — Word doctoral integrado:**
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe scripts\generate_tesis_doctoral_final_docx.py
-.\.venv39-citylearn-v3\Scripts\python.exe scripts\verify_tesis_doctoral_docx.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\thesis\generate_tesis_doctoral_final_docx.py
+.\.venv39-citylearn-v3\Scripts\python.exe tools\thesis\verify_tesis_doctoral_docx.py
 ```
 
 ### Salidas integradas en la tesis
@@ -154,8 +159,11 @@ powershell -ExecutionPolicy Bypass -File scripts\fetch_and_generate_drive_figure
 | Figuras comparativas (convergencia, OE, control, ranking) | `outputs/madrl_v3_.../resumen_comparativo/figuras_drive_reales/comparativo/` |
 | Figuras por job (12 tratamientos) | `outputs/madrl_v3_.../{ALGO}/{E1\|E2\|E3}/figures/` |
 | Multiobjetivo (17 edificios) | `outputs/madrl_v3_.../resumen_comparativo/multiobjetivo/` |
-| Word final | `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` |
+| Word final (canónico 1) | `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` |
+| Informe 50 ep (canónico 2) | `docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx` |
 | Anexo multiobjetivo | `outputs/.../multiobjetivo/RESUMEN_MULTIOBJETIVO_TESIS.docx` |
+
+> **No crear un tercer Word en `docs/`.** Generadores sobrescriben la Tesis canónica; anexos van a `outputs/`.
 
 ### Pendientes honestos (no inventar)
 

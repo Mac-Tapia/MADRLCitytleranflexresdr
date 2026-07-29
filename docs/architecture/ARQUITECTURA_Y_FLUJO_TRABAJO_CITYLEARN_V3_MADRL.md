@@ -518,8 +518,8 @@ Estos componentes existen en el repositorio, pero no son el camino activo del la
 Generados con los scripts de la carpeta `tools/`. Regenerar con:
 
 ```powershell
-C:\Python314\python.exe tools\generate_architecture_pdfs.py   # PDFs (markdown -> HTML -> PDF)
-C:\Python314\python.exe tools\generate_architecture_pngs.py   # PNGs (infografia HTML -> screenshot)
+C:\Python314\python.exe tools\figures\generate_architecture_pdfs.py   # PDFs (markdown -> HTML -> PDF)
+C:\Python314\python.exe tools\figures\generate_architecture_pngs.py   # PNGs (infografia HTML -> screenshot)
 ```
 
 | Archivo PDF | Fuente Markdown | Contenido | Tamano |
@@ -532,7 +532,7 @@ C:\Python314\python.exe tools\generate_architecture_pngs.py   # PNGs (infografia
 | `docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.pdf` | — | Plano visual estatico de la arquitectura real (version anterior). | 45 KB |
 | `docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf` | — | Copia integrada del plano real (version anterior). | 45 KB |
 
-**PNGs de infografia** generados con `tools/generate_architecture_pngs.py` (Chrome headless, factor escala 2x):
+**PNGs de infografia** generados con `tools/figures/generate_architecture_pngs.py` (Chrome headless, factor escala 2x):
 
 | Archivo PNG | Contenido | Tamano |
 |---|---|---|

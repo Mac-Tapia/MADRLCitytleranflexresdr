@@ -49,13 +49,13 @@ de Iquitos, Peru, para los anios 2023-2025 (26 304 horas totales).
 
 Verificar que existen:
 - `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` (directorio de salida)
-- `tools/generate_iquitos_dataset.py` (script generador)
+- `tools/dataset/generate_iquitos_dataset.py` (script generador)
 - Conexion a internet para NASA POWER / PVGIS
 
 ### Paso 2 -- Prueba de descarga meteorologica
 
 ```bash
-python tools/generate_iquitos_dataset.py --buildings 1 --no-validate
+python tools/dataset/generate_iquitos_dataset.py --buildings 1 --no-validate
 ```
 
 Verifica que `.cache/weather/2023.parquet`, `2024.parquet`, `2025.parquet` se generaron.
@@ -63,7 +63,7 @@ Verifica que `.cache/weather/2023.parquet`, `2024.parquet`, `2025.parquet` se ge
 ### Paso 3 -- Generacion completa del dataset
 
 ```bash
-python tools/orchestrate_citylearn_dataset.py
+python tools/dataset/orchestrate_citylearn_dataset.py
 ```
 
 Genera, sincroniza y audita el dataset activo en `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` con 222 CSV activos vigentes.
@@ -104,22 +104,22 @@ Cuando el usuario provea datos reales adicionales:
 
 ```bash
 # Dataset completo sincronizado:
-python tools/orchestrate_citylearn_dataset.py
+python tools/dataset/orchestrate_citylearn_dataset.py
 
 # Generador base:
-python tools/generate_iquitos_dataset.py
+python tools/dataset/generate_iquitos_dataset.py
 
 # Solo edificios seleccionados:
-python tools/generate_iquitos_dataset.py --buildings 1 6 11 12
+python tools/dataset/generate_iquitos_dataset.py --buildings 1 6 11 12
 
 # Re-descargar datos meteorologicos (ignorar cache):
-python tools/generate_iquitos_dataset.py --skip-cache
+python tools/dataset/generate_iquitos_dataset.py --skip-cache
 
 # Sin validacion CityLearnEnv (generacion rapida):
-python tools/generate_iquitos_dataset.py --no-validate
+python tools/dataset/generate_iquitos_dataset.py --no-validate
 
 # Directorio de salida personalizado:
-python tools/generate_iquitos_dataset.py --output-dir ruta/al/directorio
+python tools/dataset/generate_iquitos_dataset.py --output-dir ruta/al/directorio
 ```
 
 ## Constante Consolidada MADRL_BUILDING_CONSTANTS (17 edificios)

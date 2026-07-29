@@ -17,9 +17,9 @@
   },
   "latest_output_pointer": {
     "present": true,
-    "value": "outputs/_validate_two_phase_dryrun",
+    "value": "outputs/madrl_v3_20260627_164047",
     "target_exists": true,
-    "status_exists": true
+    "status_exists": false
   },
   "errors": []
 }

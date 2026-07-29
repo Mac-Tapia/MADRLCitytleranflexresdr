@@ -1,0 +1,212 @@
+{
+  "mc_source": "hybrid_real_c1c3_plus_illustrative",
+  "mc_keys": [
+    "source",
+    "provenance"
+  ],
+  "illustrative_paths": [
+    [
+      "source",
+      "hybrid_real_c1c3_plus_illustrative"
+    ],
+    [
+      "provenance.MAAC.C4",
+      "illustrative_methodology_section_3_2"
+    ],
+    [
+      "provenance.MAAC.C5",
+      "illustrative_methodology_section_3_2"
+    ],
+    [
+      "provenance.MAAC.C6",
+      "illustrative_methodology_section_3_2"
+    ],
+    [
+      "provenance.MASAC.C4",
+      "illustrative_methodology_section_3_2"
+    ],
+    [
+      "provenance.MASAC.C5",
+      "illustrative_methodology_section_3_2"
+    ],
+    [
+      "provenance.MASAC.C6",
+      "illustrative_methodology_section_3_2"
+    ],
+    [
+      "provenance.MATD3.C4",
+      "illustrative_methodology_section_3_2"
+    ],
+    [
+      "provenance.MATD3.C5",
+      "illustrative_methodology_section_3_2"
+    ],
+    [
+      "provenance.MATD3.C6",
+      "illustrative_methodology_section_3_2"
+    ]
+  ],
+  "dm": [
+    {
+      "algorithm": "MAAC",
+      "C1": "3628.0400708369775",
+      "C2": "-38565.84588019649",
+      "C3": "1.0124257995412176",
+      "C4": "0.032",
+      "C5": "520.0",
+      "C6": "0.12"
+    },
+    {
+      "algorithm": "MASAC",
+      "C1": "14672.49268599316",
+      "C2": "-81226.6231709392",
+      "C3": "1.028552547361268",
+      "C4": "0.028",
+      "C5": "390.0",
+      "C6": "0.05"
+    },
+    {
+      "algorithm": "MATD3",
+      "C1": "33074.53857720466",
+      "C2": "-36723.33566290968",
+      "C3": "1.0009229901555254",
+      "C4": "0.021",
+      "C5": "350.0",
+      "C6": "0.1"
+    }
+  ],
+  "mm_c": [
+    {
+      "algorithm": "MAAC",
+      "C1": "1179.6",
+      "C2": "3552.0",
+      "C3": "1.0124257995412176",
+      "C6": "0.12"
+    },
+    {
+      "algorithm": "MASAC",
+      "C1": "1300.0",
+      "C2": "3302.0",
+      "C3": "1.028552547361268",
+      "C6": "0.05"
+    },
+    {
+      "algorithm": "MATD3",
+      "C1": "1209.6",
+      "C2": "3482.0",
+      "C3": "1.0009229901555254",
+      "C6": "0.1"
+    }
+  ],
+  "c3_match": {
+    "MAAC": {
+      "c3": 1.0124257995412176,
+      "flex": 1.0124257995412176,
+      "equal": true
+    },
+    "MASAC": {
+      "c3": 1.028552547361268,
+      "flex": 1.028552547361268,
+      "equal": true
+    },
+    "MATD3": {
+      "c3": 1.0009229901555254,
+      "flex": 1.0009229901555254,
+      "equal": true
+    }
+  },
+  "job_rows": [
+    {
+      "job": "MATD3/E1",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    },
+    {
+      "job": "MATD3/E2",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    },
+    {
+      "job": "MATD3/E3",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    },
+    {
+      "job": "MAAC/E1",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    },
+    {
+      "job": "MAAC/E2",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    },
+    {
+      "job": "MAAC/E3",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    },
+    {
+      "job": "MASAC/E1",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    },
+    {
+      "job": "MASAC/E2",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    },
+    {
+      "job": "MASAC/E3",
+      "ts_eps": 50,
+      "ep_sum": 50,
+      "pngs": 14,
+      "prov": true
+    }
+  ],
+  "job_issues": [],
+  "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+    "marker": true,
+    "JOB": 150,
+    "MC": 3,
+    "PC": 4,
+    "media": 212,
+    "has_08805": false,
+    "has_08679": false,
+    "has_09538": true,
+    "has_44": true
+  },
+  "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+    "marker": true,
+    "JOB": 150,
+    "MC": 3,
+    "PC": 4,
+    "media": 195,
+    "has_08805": false,
+    "has_08679": false,
+    "has_09538": true,
+    "has_44": true
+  },
+  "prev_audit_verdict": "PASS",
+  "prev_audit_issues": 0,
+  "hash_match": {
+    "tesis": "185/212",
+    "informe": "184/195"
+  }
+}

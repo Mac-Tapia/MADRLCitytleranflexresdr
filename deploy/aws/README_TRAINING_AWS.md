@@ -737,7 +737,7 @@ docker compose -f deploy/aws/training/docker-compose.yml config
 Compuertas de dataset/CityLearn v3 ejecutadas en el entorno del proyecto:
 
 ```bash
-python -B tools/check_training_dataset_ready.py \
+python -B tools/dataset/check_training_dataset_ready.py \
   --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025 \
   --buildingcsv-dir CityLearn/data/buildingcsv \
   --audit-dir outputs/dataset_audit \

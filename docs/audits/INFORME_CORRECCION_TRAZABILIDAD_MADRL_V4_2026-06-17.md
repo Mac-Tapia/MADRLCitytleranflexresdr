@@ -62,9 +62,9 @@ Comandos ejecutados:
 
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -m pytest CityLearn\tests\test_citylearn_v3_training_artifacts.py -q
-.\.venv39-citylearn-v3\Scripts\python.exe tools\verify_training_optimization.py
-.\.venv39-citylearn-v3\Scripts\python.exe -m py_compile CityLearn\scripts\citylearn_v3_training_common.py CityLearn\tests\test_citylearn_v3_training_artifacts.py tools\repair_citylearn_v3_traceability.py tools\verify_artifact_layout.py tools\verify_training_optimization.py
-powershell -ExecutionPolicy Bypass -File tools\prune_citylearn_v3_training_artifacts.ps1 -OutputRoot outputs\citylearn_v3_madrl_full_20260615_074011_v4
+.\.venv39-citylearn-v3\Scripts\python.exe tools\training\verify_training_optimization.py
+.\.venv39-citylearn-v3\Scripts\python.exe -m py_compile CityLearn\scripts\citylearn_v3_training_common.py CityLearn\tests\test_citylearn_v3_training_artifacts.py tools\training\repair_citylearn_v3_traceability.py tools\training\verify_artifact_layout.py tools\training\verify_training_optimization.py
+powershell -ExecutionPolicy Bypass -File tools\training\prune_citylearn_v3_training_artifacts.ps1 -OutputRoot outputs\citylearn_v3_madrl_full_20260615_074011_v4
 ```
 
 Resultado:

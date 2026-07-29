@@ -1,0 +1,205 @@
+{
+  "removed": [
+    {
+      "path": "citylearn/end_use_load_profiles/lstm_model/__pycache__",
+      "kind": "dir",
+      "files": 5,
+      "bytes": 26908
+    },
+    {
+      "path": "tests/unit/__pycache__",
+      "kind": "dir",
+      "files": 54,
+      "bytes": 581734
+    },
+    {
+      "path": "scripts/ci/__pycache__",
+      "kind": "dir",
+      "files": 1,
+      "bytes": 13089
+    },
+    {
+      "path": "scripts/manual/__pycache__",
+      "kind": "dir",
+      "files": 16,
+      "bytes": 69422
+    },
+    {
+      "path": "docs/source/__pycache__",
+      "kind": "dir",
+      "files": 1,
+      "bytes": 1226
+    },
+    {
+      "path": "citylearn/agents/__pycache__",
+      "kind": "dir",
+      "files": 21,
+      "bytes": 346496
+    },
+    {
+      "path": "citylearn/end_use_load_profiles/__pycache__",
+      "kind": "dir",
+      "files": 4,
+      "bytes": 87024
+    },
+    {
+      "path": "citylearn/internal/__pycache__",
+      "kind": "dir",
+      "files": 15,
+      "bytes": 542614
+    },
+    {
+      "path": "citylearn/utils/__pycache__",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 8929
+    },
+    {
+      "path": "citylearn/v3/__pycache__",
+      "kind": "dir",
+      "files": 18,
+      "bytes": 141553
+    },
+    {
+      "path": "citylearn/__pycache__",
+      "kind": "dir",
+      "files": 67,
+      "bytes": 2114019
+    },
+    {
+      "path": "examples/__pycache__",
+      "kind": "dir",
+      "files": 1,
+      "bytes": 2624
+    },
+    {
+      "path": "scripts/__pycache__",
+      "kind": "dir",
+      "files": 60,
+      "bytes": 2492570
+    },
+    {
+      "path": "tests/__pycache__",
+      "kind": "dir",
+      "files": 68,
+      "bytes": 1036456
+    },
+    {
+      "path": ".pytest_cache",
+      "kind": "dir",
+      "files": 5,
+      "bytes": 25568
+    },
+    {
+      "path": "__pycache__",
+      "kind": "dir",
+      "files": 1,
+      "bytes": 2685
+    },
+    {
+      "path": "pytest-cache-files-1xdjbnc9",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-48oeqgae",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-49f3akfi",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-5yed189h",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-8avn6dhg",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-i_ik0faz",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-nbwcv84b",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-peuxvrvi",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-rux3gkz5",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-toocw6cb",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-v8scaf3l",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "pytest-cache-files-zmdf65pf",
+      "kind": "dir",
+      "files": 3,
+      "bytes": 540
+    },
+    {
+      "path": "examples/madrl_citylearn_v3_tutorial.ipynb.bak",
+      "kind": "file",
+      "files": 1,
+      "bytes": 345473
+    },
+    {
+      "path": "examples/madrl_citylearn_v3_tutorial.ipynb.patch_bak",
+      "kind": "file",
+      "files": 1,
+      "bytes": 179096
+    },
+    {
+      "path": "examples/madrl_citylearn_v3_tutorial.ipynb.patch_bak2",
+      "kind": "file",
+      "files": 1,
+      "bytes": 820516
+    },
+    {
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup",
+      "kind": "dir",
+      "files": 75,
+      "bytes": 77242829
+    },
+    {
+      "path": "citylearn.egg-info",
+      "kind": "dir",
+      "files": 6,
+      "bytes": 8699
+    }
+  ],
+  "files": 460,
+  "bytes": 86096010,
+  "mb": 86.1
+}

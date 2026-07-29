@@ -645,6 +645,22 @@
     ]
   },
   "multiobjective": {
+    "algorithm_selection": {
+      "criteria": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "methods": [
+        "TOPSIS",
+        "AHP"
+      ],
+      "note": "District OE1/OE2/OE3 KPIs feed technical criteria; full six-dimension selection lives in uc3m.multicriteria.",
+      "package": "uc3m.multicriteria"
+    },
     "lower_is_better": {
       "battery_capacity_fade_ratio": true,
       "battery_charge_total": false,

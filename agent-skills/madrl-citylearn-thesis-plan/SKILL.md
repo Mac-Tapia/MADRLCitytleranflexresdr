@@ -7,7 +7,7 @@ description: Project-local workflow for creating the professional master's thesi
 
 Use this project-local skill only inside this repository to create or update the **Plan de Tesis de Maestría de Especialización o Profesionalizante** under **Guía N. 01 Metodológica**, section 5.1.
 
-**Coherencia vertical obligatoria:** el plan debe ser coherente con el informe final de tesis doctoral en `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` y con `docs/tesis_capitulos/`. Los problemas (PG/PE), objetivos (OG/OE), hipótesis (HG/HE), diseño factorial 4×3, operacionalización VI/VD y escenarios E1/E2/E3 deben coincidir con ese documento.
+**Coherencia vertical obligatoria:** el plan debe ser coherente con los **dos** Word canónicos — `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` (fuente de verdad) e `docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx` (informe 50 ep) — y con `docs/tesis_capitulos/`. **No crear nuevos `.docx` en `docs/`.** Los problemas (PG/PE), objetivos (OG/OE), hipótesis (HG/HE), diseño factorial 4×3, operacionalización VI/VD y escenarios E1/E2/E3 deben coincidir con la tesis.
 
 Thesis reference title:
 
@@ -88,23 +88,27 @@ Module B must not be drafted in isolation. It must use the bibliographic matrix,
 
 ---
 
-## Problem, objective, and hypothesis block (canonical — from doctoral thesis)
+## Problem, objective, and hypothesis block (canonical — author-validated 2026-07-29)
 
-Use these exact formulations in Chapters I and II of the plan. They must match `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`.
+Use these **exact** formulations in Chapters I and II of the plan and in the doctoral thesis Word. **Do not paraphrase.**
 
-**PG:** ¿En qué medida el algoritmo MADRL (VI) produce un efecto diferenciado sobre la gestión coordinada de flexibilidad, CO₂ y costos (VD), y cuál algoritmo genera el mayor efecto?
+**PG:** ¿En qué medida el algoritmo MADRL (aprendizaje por refuerzo profundo multiagente) impacta en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño a nivel global?
 
-**PE.1–PE.3:** efecto sobre D-VD.1 flexibilidad, D-VD.2 CO₂, D-VD.3 costos.
+**PE.1:** ¿En qué medida el algoritmo MADRL impacta en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E1?
 
-**OG:** Determinar el efecto del algoritmo MADRL (VI) sobre la gestión coordinada (VD) e identificar el algoritmo de mayor efecto coordinado.
+**PE.2:** ¿En qué medida el algoritmo MADRL impacta en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E2?
 
-**OE.1–OE.3:** efecto por dimensión + identificación del algoritmo de mayor efecto.
+**PE.3:** ¿En qué medida el algoritmo MADRL impacta en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E3?
 
-**HG:** efecto significativo; MATD3 mayor efecto coordinado (hipótesis direccional, contrastada con Kruskal-Wallis y Wilcoxon).
+**OG:** OG. - Determinar el impacto de los algoritmos aprendizaje por refuerzo profundo multiagente (MADRLs) en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, e identificar cuál de los algoritmos presenta el mejor desempeño a nivel global.
 
-**HE.1–HE.3:** efecto significativo por dimensión; HE.2 y HE.3 anticipan MATD3; HE.1 anticipa menor variabilidad en KPI pico/rampa.
+**OE.1–OE.3:** Determinar el impacto de los algoritmos MADRLs en flexibilidad / CO₂ / costos en Iquitos e identificar el mejor desempeño en E1 / E2 / E3 (textos exactos en `references/guide-01-plan-structure.md`).
 
-**Diseño experimental:** factorial 4×3 (12 tratamientos); VI = algoritmo × escenario E1/E2/E3; VD = 54 KPI oficiales; control = dataset Iquitos + recompensa `unified_comparable_v4` + semilla.
+**H0G / H1G:** formulaciones nula y alternativa de impacto estadísticamente significativo y diferenciado en la gestión coordinada (textos exactos en guide-01).
+
+**HE10/HE11, HE20/HE21, HE30/HE31:** nulas y alternativas por eje E1/E2/E3 (textos exactos en guide-01).
+
+**Diseño experimental:** factorial 4×3 (12 tratamientos); VI = algoritmo × escenario E1/E2/E3; VD = KPI oficiales; control = dataset Iquitos + recompensa `unified_comparable_v4` + semilla.
 
 ---
 
@@ -138,7 +142,7 @@ The dataset covers **17 real institutional/commercial buildings** from the Siste
 
 **Totales vigentes auditados:** PV = 48,790.9 kWp; BESS = 26,266 kWh; potencia BESS = 6,648 kW; EV = 185 tomas controlables CityLearn, agrupadas en 96 equipos fisicos IEC 61851 modo 3 doble toma, con 1,850 EV en pool; potencia EV nominal = 749.4 kW. Fuente: `outputs/dataset_audit/der_sizing_audit.csv`, `outputs/dataset_audit/ev_charger_sizing_audit.csv`, `outputs/dataset_audit/iquitos_citylearn_v3_dataset_evaluation.json` y `schema.json` activo.
 
-**Criterio de auditoria:** `AC modulo (kW)` es la potencia electrica pico instalada/estimada de climatizacion usada por el generador vigente `tools/generate_iquitos_dataset.py` en `MADRL_BUILDING_CONSTANTS[*].cooling_peak`. No debe confundirse con `cooling_demand` del CSV, que CityLearn almacena como demanda termica horaria. La conversion electrica validada usa el mismo COP del destilador de facturas: `non_shiftable_load + cooling_demand/COP + dhw_demand/COP`. `PV actual (kWp)`, `BESS (kWh)`, `BESS P (kW)` y conteos EV se toman de `outputs/dataset_audit/training_dataset_validation.csv`, `outputs/dataset_audit/der_sizing_audit.csv`, `outputs/dataset_audit/ev_charger_sizing_audit.csv` y del `schema.json` vigente. La PV se recalculo con `pvlib` usando PVGIS TMY local de Iquitos, `Area_Techada_m2` suministrada por edificio en `CityLearn/data/buildingcsv/building.csv` y densidad tecnica de 0.24 kWp/m2; no se usan areas inventadas. El excedente solar no infla el BESS: se exporta a la red. El BESS se recalculo para corte global de picos de 10% durante todo el horizonte horario; las ventanas por edificio se usan como referencia EV/recarga, no para limitar el corte de pico. EV representa tomas controlables, no solo equipos fisicos; cada equipo modo 3 agrupa dos tomas.
+**Criterio de auditoria:** `AC modulo (kW)` es la potencia electrica pico instalada/estimada de climatizacion usada por el generador vigente `tools/dataset/generate_iquitos_dataset.py` en `MADRL_BUILDING_CONSTANTS[*].cooling_peak`. No debe confundirse con `cooling_demand` del CSV, que CityLearn almacena como demanda termica horaria. La conversion electrica validada usa el mismo COP del destilador de facturas: `non_shiftable_load + cooling_demand/COP + dhw_demand/COP`. `PV actual (kWp)`, `BESS (kWh)`, `BESS P (kW)` y conteos EV se toman de `outputs/dataset_audit/training_dataset_validation.csv`, `outputs/dataset_audit/der_sizing_audit.csv`, `outputs/dataset_audit/ev_charger_sizing_audit.csv` y del `schema.json` vigente. La PV se recalculo con `pvlib` usando PVGIS TMY local de Iquitos, `Area_Techada_m2` suministrada por edificio en `CityLearn/data/buildingcsv/building.csv` y densidad tecnica de 0.24 kWp/m2; no se usan areas inventadas. El excedente solar no infla el BESS: se exporta a la red. El BESS se recalculo para corte global de picos de 10% durante todo el horizonte horario; las ventanas por edificio se usan como referencia EV/recarga, no para limitar el corte de pico. EV representa tomas controlables, no solo equipos fisicos; cada equipo modo 3 agrupa dos tomas.
 
 **Validacion de trazabilidad vigente:** `docs/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md` reporta estado global OK, delta maximo B02-B17 contra fuente mensual `0.000000145%`, cierre PV maximo `0.001 MWh`, B01 sin factura mensual `B_01.csv`, B06 con 8 meses pronosticados marcados, EV como carga controlada de escenario y solar PVGIS TMY/pvlib.
 
@@ -151,7 +155,7 @@ The dataset covers **17 real institutional/commercial buildings** from the Siste
 Integrate this pipeline as an ordered technical description in Section 4.9:
 
 **Etapa 1 — Descarga de Datos Meteorológicos (PVGIS-ERA5 y NASA POWER)**
-- Script: `tools/generate_iquitos_dataset.py`
+- Script: `tools/dataset/generate_iquitos_dataset.py`
 - Fuente primaria 2023: PVGIS-ERA5 vía pvlib (libre)
 - Fuente fallback 2024-2025: NASA POWER REST API
 - Ubicación SEAI: lat=-3.7491, lon=-73.2538, tz=America/Lima, alt=106 m s.n.m.
@@ -219,11 +223,11 @@ Integrate this pipeline as an ordered technical description in Section 4.9:
 
 **CLI del generador:**
 ```
-python tools/orchestrate_citylearn_dataset.py                 # 17 edificios completo sincronizado y auditado
-python tools/generate_iquitos_dataset.py                      # generador base; requiere sincronizacion DER final
-python tools/generate_iquitos_dataset.py --buildings 1 6 11  # Edificios seleccionados
-python tools/generate_iquitos_dataset.py --skip-cache        # Fuerza re-descarga meteorológica
-python tools/generate_iquitos_dataset.py --no-validate       # Sin validación CityLearnEnv
+python tools/dataset/orchestrate_citylearn_dataset.py                 # 17 edificios completo sincronizado y auditado
+python tools/dataset/generate_iquitos_dataset.py                      # generador base; requiere sincronizacion DER final
+python tools/dataset/generate_iquitos_dataset.py --buildings 1 6 11  # Edificios seleccionados
+python tools/dataset/generate_iquitos_dataset.py --skip-cache        # Fuerza re-descarga meteorológica
+python tools/dataset/generate_iquitos_dataset.py --no-validate       # Sin validación CityLearnEnv
 ```
 
 ### C.3 — Estructura del Dataset (222 CSV activos auditados)

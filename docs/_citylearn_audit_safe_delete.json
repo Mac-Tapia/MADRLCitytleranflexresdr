@@ -1,0 +1,2284 @@
+{
+  "excluding_git_files": 1999,
+  "excluding_git_mb": 1368.06,
+  "safe_delete_candidates": [
+    {
+      "kind": "temp_cache",
+      "path": ".pytest_cache/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "temp_cache",
+      "path": ".pytest_cache/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "temp_cache",
+      "path": ".pytest_cache/README.md",
+      "size": 310
+    },
+    {
+      "kind": "temp_cache",
+      "path": ".pytest_cache/v/cache/lastfailed",
+      "size": 175
+    },
+    {
+      "kind": "temp_cache",
+      "path": ".pytest_cache/v/cache/nodeids",
+      "size": 24853
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/base.cpython-311.pyc",
+      "size": 16342
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/base.cpython-314.pyc",
+      "size": 18759
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/base.cpython-39.pyc",
+      "size": 10545
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/marlisa.cpython-311.pyc",
+      "size": 39405
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/marlisa.cpython-314.pyc",
+      "size": 39862
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/marlisa.cpython-39.pyc",
+      "size": 20257
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/q_learning.cpython-311.pyc",
+      "size": 9842
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/q_learning.cpython-314.pyc",
+      "size": 9986
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/q_learning.cpython-39.pyc",
+      "size": 6462
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/rbc.cpython-311.pyc",
+      "size": 25924
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/rbc.cpython-314.pyc",
+      "size": 24981
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/rbc.cpython-39.pyc",
+      "size": 15944
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/rlc.cpython-311.pyc",
+      "size": 13641
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/rlc.cpython-314.pyc",
+      "size": 16880
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/rlc.cpython-39.pyc",
+      "size": 9297
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/sac.cpython-311.pyc",
+      "size": 25762
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/sac.cpython-314.pyc",
+      "size": 25681
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/sac.cpython-39.pyc",
+      "size": 12899
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/__init__.cpython-311.pyc",
+      "size": 1505
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/__init__.cpython-314.pyc",
+      "size": 1315
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/agents/__pycache__/__init__.cpython-39.pyc",
+      "size": 1207
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/lstm_model/__pycache__/model.cpython-314.pyc",
+      "size": 2875
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/lstm_model/__pycache__/model_generation.cpython-314.pyc",
+      "size": 11387
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/lstm_model/__pycache__/model_generation_wrapper.cpython-314.pyc",
+      "size": 3290
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/lstm_model/__pycache__/preprocessing.cpython-314.pyc",
+      "size": 9191
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/lstm_model/__pycache__/__init__.cpython-314.pyc",
+      "size": 165
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/__pycache__/clustering.cpython-314.pyc",
+      "size": 15494
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/__pycache__/neighborhood.cpython-314.pyc",
+      "size": 52714
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/__pycache__/simulate.cpython-314.pyc",
+      "size": 18662
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/end_use_load_profiles/__pycache__/__init__.cpython-314.pyc",
+      "size": 154
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/building_ops.cpython-311.pyc",
+      "size": 53165
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/building_ops.cpython-314.pyc",
+      "size": 53685
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/building_ops.cpython-39.pyc",
+      "size": 27206
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/kpi.cpython-311.pyc",
+      "size": 88416
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/kpi.cpython-314.pyc",
+      "size": 86143
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/kpi.cpython-39.pyc",
+      "size": 39518
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/loading.cpython-311.pyc",
+      "size": 46543
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/loading.cpython-314.pyc",
+      "size": 40514
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/loading.cpython-39.pyc",
+      "size": 21346
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/runtime.cpython-311.pyc",
+      "size": 34070
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/runtime.cpython-314.pyc",
+      "size": 34204
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/runtime.cpython-39.pyc",
+      "size": 17109
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/__init__.cpython-311.pyc",
+      "size": 250
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/__init__.cpython-314.pyc",
+      "size": 215
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/internal/__pycache__/__init__.cpython-39.pyc",
+      "size": 230
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/utils/__pycache__/file_handler.cpython-314.pyc",
+      "size": 6228
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/utils/__pycache__/noise.cpython-314.pyc",
+      "size": 2378
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/utils/__pycache__/paths.cpython-314.pyc",
+      "size": 323
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/backends.cpython-311.pyc",
+      "size": 4291
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/backends.cpython-314.pyc",
+      "size": 4407
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/backends.cpython-39.pyc",
+      "size": 2811
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/config.cpython-311.pyc",
+      "size": 4714
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/config.cpython-314.pyc",
+      "size": 4722
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/config.cpython-39.pyc",
+      "size": 3355
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/environment.cpython-311.pyc",
+      "size": 6438
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/environment.cpython-314.pyc",
+      "size": 6505
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/environment.cpython-39.pyc",
+      "size": 4080
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/marllib_env.cpython-311.pyc",
+      "size": 14817
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/marllib_env.cpython-314.pyc",
+      "size": 13871
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/marllib_env.cpython-39.pyc",
+      "size": 8187
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/objectives.cpython-311.pyc",
+      "size": 22412
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/objectives.cpython-314.pyc",
+      "size": 22025
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/objectives.cpython-39.pyc",
+      "size": 15753
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/__init__.cpython-311.pyc",
+      "size": 1143
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/__init__.cpython-314.pyc",
+      "size": 993
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/v3/__pycache__/__init__.cpython-39.pyc",
+      "size": 1029
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/base.cpython-311.pyc",
+      "size": 15164
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/base.cpython-314.pyc",
+      "size": 17180
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/base.cpython-39.pyc",
+      "size": 11327
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/building.cpython-311.pyc",
+      "size": 182875
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/building.cpython-314.pyc",
+      "size": 207607
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/building.cpython-39.pyc",
+      "size": 107529
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/citylearn.cpython-311.pyc",
+      "size": 97240
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/citylearn.cpython-314.pyc",
+      "size": 104515
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/citylearn.cpython-39.pyc",
+      "size": 64190
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/cost_function.cpython-311.pyc",
+      "size": 24941
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/cost_function.cpython-314.pyc",
+      "size": 24495
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/cost_function.cpython-39.pyc",
+      "size": 16212
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/data.cpython-311.pyc",
+      "size": 68885
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/data.cpython-314.pyc",
+      "size": 72403
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/data.cpython-39.pyc",
+      "size": 38553
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/dec_pomdp.cpython-311.pyc",
+      "size": 22504
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/dec_pomdp.cpython-314.pyc",
+      "size": 22310
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/dec_pomdp.cpython-39.pyc",
+      "size": 12962
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/dynamics.cpython-311.pyc",
+      "size": 8794
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/dynamics.cpython-314.pyc",
+      "size": 8954
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/dynamics.cpython-39.pyc",
+      "size": 5890
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/electric_vehicle.cpython-311.pyc",
+      "size": 7310
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/electric_vehicle.cpython-314.pyc",
+      "size": 7976
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/electric_vehicle.cpython-39.pyc",
+      "size": 4921
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/electric_vehicle_charger.cpython-311.pyc",
+      "size": 22677
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/electric_vehicle_charger.cpython-314.pyc",
+      "size": 27786
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/electric_vehicle_charger.cpython-39.pyc",
+      "size": 14839
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/energy_model.cpython-311.pyc",
+      "size": 89885
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/energy_model.cpython-314.pyc",
+      "size": 101073
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/energy_model.cpython-39.pyc",
+      "size": 61383
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/exporter.cpython-311.pyc",
+      "size": 25370
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/exporter.cpython-314.pyc",
+      "size": 24506
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/exporter.cpython-39.pyc",
+      "size": 12349
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/madrl_kpis.cpython-311.pyc",
+      "size": 15621
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/madrl_kpis.cpython-314.pyc",
+      "size": 15375
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/madrl_kpis.cpython-39.pyc",
+      "size": 15119
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/occupant.cpython-311.pyc",
+      "size": 7975
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/occupant.cpython-314.pyc",
+      "size": 9415
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/occupant.cpython-39.pyc",
+      "size": 4698
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/official_madrl.cpython-311.pyc",
+      "size": 8705
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/official_madrl.cpython-314.pyc",
+      "size": 8653
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/official_madrl.cpython-39.pyc",
+      "size": 6115
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/power_outage.cpython-311.pyc",
+      "size": 9936
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/power_outage.cpython-314.pyc",
+      "size": 10996
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/power_outage.cpython-39.pyc",
+      "size": 7583
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/preprocessing.cpython-311.pyc",
+      "size": 8982
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/preprocessing.cpython-314.pyc",
+      "size": 10443
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/preprocessing.cpython-39.pyc",
+      "size": 6433
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/reward_function.cpython-311.pyc",
+      "size": 53863
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/reward_function.cpython-314.pyc",
+      "size": 56879
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/reward_function.cpython-39.pyc",
+      "size": 30008
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/rl.cpython-311.pyc",
+      "size": 9836
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/rl.cpython-314.pyc",
+      "size": 9874
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/rl.cpython-39.pyc",
+      "size": 4976
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/scenario_manager.cpython-311.pyc",
+      "size": 19006
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/scenario_manager.cpython-314.pyc",
+      "size": 21325
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/scenario_manager.cpython-39.pyc",
+      "size": 12963
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/utilities.cpython-311.pyc",
+      "size": 10522
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/utilities.cpython-314.pyc",
+      "size": 10398
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/utilities.cpython-39.pyc",
+      "size": 7027
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/wrappers.cpython-311.pyc",
+      "size": 55408
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/wrappers.cpython-314.pyc",
+      "size": 56987
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/wrappers.cpython-39.pyc",
+      "size": 36945
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/__init__.cpython-311.pyc",
+      "size": 190
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/__init__.cpython-314.pyc",
+      "size": 160
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/__init__.cpython-39.pyc",
+      "size": 173
+    },
+    {
+      "kind": "temp_cache",
+      "path": "citylearn/__pycache__/__main__.cpython-314.pyc",
+      "size": 36825
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_1.csv",
+      "size": 1890518
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_10.csv",
+      "size": 1871771
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_11.csv",
+      "size": 2005280
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_12.csv",
+      "size": 1997034
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_13.csv",
+      "size": 1854736
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_14.csv",
+      "size": 1906024
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_15.csv",
+      "size": 1825951
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_16.csv",
+      "size": 1839614
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_17.csv",
+      "size": 1839572
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_2.csv",
+      "size": 1877125
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_3.csv",
+      "size": 1955577
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_4.csv",
+      "size": 1886592
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_5.csv",
+      "size": 1987548
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_6.csv",
+      "size": 1960756
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_7.csv",
+      "size": 1873347
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_8.csv",
+      "size": 1847374
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Building_9.csv",
+      "size": 1881399
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/carbon_intensity.csv",
+      "size": 263058
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/carbon_intensity_metadata.json",
+      "size": 1052
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_10_1.csv",
+      "size": 702693
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_10_2.csv",
+      "size": 696363
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_10_3.csv",
+      "size": 698575
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_11_1.csv",
+      "size": 946797
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_11_2.csv",
+      "size": 946001
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_11_3.csv",
+      "size": 946067
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_11_4.csv",
+      "size": 944168
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_12_1.csv",
+      "size": 816041
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_12_2.csv",
+      "size": 823210
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_12_3.csv",
+      "size": 820727
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_13_1.csv",
+      "size": 691119
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_13_2.csv",
+      "size": 695425
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_14_1.csv",
+      "size": 946483
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_14_2.csv",
+      "size": 949028
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_15_1.csv",
+      "size": 667395
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_15_2.csv",
+      "size": 664182
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_16_1.csv",
+      "size": 666830
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_17_1.csv",
+      "size": 699492
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_17_2.csv",
+      "size": 693496
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_1_1.csv",
+      "size": 729417
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_1_2.csv",
+      "size": 717798
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_2_1.csv",
+      "size": 740788
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_2_2.csv",
+      "size": 741589
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_2_3.csv",
+      "size": 747196
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_2_4.csv",
+      "size": 737204
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_3_1.csv",
+      "size": 1116358
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_3_2.csv",
+      "size": 1116385
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_3_3.csv",
+      "size": 1106815
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_3_4.csv",
+      "size": 1122955
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_4_1.csv",
+      "size": 860752
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_4_2.csv",
+      "size": 862295
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_4_3.csv",
+      "size": 869075
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_5_1.csv",
+      "size": 608935
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_5_2.csv",
+      "size": 608211
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_5_3.csv",
+      "size": 611529
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_6_1.csv",
+      "size": 919643
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_6_2.csv",
+      "size": 908451
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_6_3.csv",
+      "size": 917615
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_6_4.csv",
+      "size": 907108
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_6_5.csv",
+      "size": 910100
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_6_6.csv",
+      "size": 909962
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_6_7.csv",
+      "size": 904077
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_6_8.csv",
+      "size": 898669
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_7_1.csv",
+      "size": 694110
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_7_2.csv",
+      "size": 696148
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_7_3.csv",
+      "size": 689265
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_8_1.csv",
+      "size": 701115
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_8_2.csv",
+      "size": 693284
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_9_1.csv",
+      "size": 694519
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/charger_9_2.csv",
+      "size": 697390
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/dataset_generation_log.json",
+      "size": 2194
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/pricing.csv",
+      "size": 973365
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/schema.json",
+      "size": 51890
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/solar_fix_log.json",
+      "size": 6665
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/Washing_Machine_1.csv",
+      "size": 817056
+    },
+    {
+      "kind": "dataset_backup",
+      "path": "data/datasets/citylearn_iquitos_2023_2025_backup/weather.csv",
+      "size": 2374481
+    },
+    {
+      "kind": "temp_cache",
+      "path": "docs/source/__pycache__/conf.cpython-314.pyc",
+      "size": 1226
+    },
+    {
+      "kind": "backup",
+      "path": "examples/madrl_citylearn_v3_tutorial.ipynb.bak",
+      "size": 345473
+    },
+    {
+      "kind": "temp_cache",
+      "path": "examples/__pycache__/custom_reward_function.cpython-314.pyc",
+      "size": 2624
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-1xdjbnc9/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-1xdjbnc9/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-1xdjbnc9/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-48oeqgae/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-48oeqgae/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-48oeqgae/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-49f3akfi/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-49f3akfi/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-49f3akfi/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-5yed189h/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-5yed189h/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-5yed189h/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-8avn6dhg/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-8avn6dhg/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-8avn6dhg/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-i_ik0faz/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-i_ik0faz/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-i_ik0faz/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-nbwcv84b/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-nbwcv84b/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-nbwcv84b/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-peuxvrvi/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-peuxvrvi/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-peuxvrvi/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-rux3gkz5/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-rux3gkz5/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-rux3gkz5/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-toocw6cb/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-toocw6cb/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-toocw6cb/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-v8scaf3l/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-v8scaf3l/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-v8scaf3l/README.md",
+      "size": 310
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-zmdf65pf/.gitignore",
+      "size": 39
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-zmdf65pf/CACHEDIR.TAG",
+      "size": 191
+    },
+    {
+      "kind": "pytest_tmp",
+      "path": "pytest-cache-files-zmdf65pf/README.md",
+      "size": 310
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/ci/__pycache__/perf_smoke.cpython-314.pyc",
+      "size": 13089
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/bench_runtime.cpython-314.pyc",
+      "size": 6029
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/bench_runtime_sweep.cpython-314.pyc",
+      "size": 1113
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/compare_equity_runs.cpython-314.pyc",
+      "size": 5757
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/demo_charging_constraints_export_end.cpython-314.pyc",
+      "size": 2551
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/demo_ev_rbc.cpython-314.pyc",
+      "size": 2323
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/demo_ev_rbc_export_end.cpython-314.pyc",
+      "size": 3631
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/demo_ev_rbc_export_full.cpython-314.pyc",
+      "size": 2474
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/demo_ev_rbc_export_mid.cpython-314.pyc",
+      "size": 2315
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/demo_ev_rbc_export_minutes.cpython-314.pyc",
+      "size": 2281
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/demo_sac_training_export.cpython-314.pyc",
+      "size": 2008
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/demo_stable_baselines3.cpython-314.pyc",
+      "size": 1821
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/diagnostics_occupant_override.cpython-314.pyc",
+      "size": 13954
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/experiment_reward_exploration.cpython-314.pyc",
+      "size": 17268
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/manual_compatibility_matrix.cpython-314.pyc",
+      "size": 2182
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/manual_environment_smoke.cpython-314.pyc",
+      "size": 1382
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/manual/__pycache__/manual_lstm_smoke.cpython-314.pyc",
+      "size": 2333
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_a2c.cpython-314.pyc",
+      "size": 453
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_a2c.cpython-39.pyc",
+      "size": 395
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_agents.cpython-314.pyc",
+      "size": 22265
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_agents.cpython-39.pyc",
+      "size": 12511
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_ppo.cpython-314.pyc",
+      "size": 453
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_ppo.cpython-39.pyc",
+      "size": 395
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_sac.cpython-314.pyc",
+      "size": 453
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_sac.cpython-39.pyc",
+      "size": 395
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_sb3_common.cpython-314.pyc",
+      "size": 18897
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/benchmark_citylearn_v2_sb3_common.cpython-39.pyc",
+      "size": 9405
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/check_citylearn_v3_training_ready.cpython-314.pyc",
+      "size": 36922
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/check_citylearn_v3_training_ready.cpython-39.pyc",
+      "size": 19663
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/citylearn_v3_training_common.cpython-311.pyc",
+      "size": 429562
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/citylearn_v3_training_common.cpython-314.pyc",
+      "size": 446602
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/citylearn_v3_training_common.cpython-39.pyc",
+      "size": 236052
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_a100_live_monitor.cpython-311.pyc",
+      "size": 52576
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_a100_live_monitor.cpython-314.pyc",
+      "size": 69205
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_a100_live_monitor.cpython-39.pyc",
+      "size": 34732
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_a100_official_launcher.cpython-311.pyc",
+      "size": 124463
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_a100_official_launcher.cpython-314.pyc",
+      "size": 133348
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_a100_official_launcher.cpython-39.pyc",
+      "size": 69991
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_notebook_launch_helpers.cpython-314.pyc",
+      "size": 31432
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_notebook_urls.cpython-311.pyc",
+      "size": 2688
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_notebook_urls.cpython-314.pyc",
+      "size": 3146
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_notebook_urls.cpython-39.pyc",
+      "size": 2134
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_protocol_guard.cpython-311.pyc",
+      "size": 14552
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_protocol_guard.cpython-314.pyc",
+      "size": 15594
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_protocol_guard.cpython-39.pyc",
+      "size": 9403
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_rescue_happo_checkpoints.cpython-314.pyc",
+      "size": 17553
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/colab_verify_critical_patches.cpython-39.pyc",
+      "size": 4332
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/compare_citylearn_v2_vs_v3_madrl.cpython-314.pyc",
+      "size": 21930
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/compare_citylearn_v2_vs_v3_madrl.cpython-39.pyc",
+      "size": 12256
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/generate_citylearn_v3_building_detail_report.cpython-314.pyc",
+      "size": 17244
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/generate_thesis_objective_evidence.cpython-311.pyc",
+      "size": 121036
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/generate_thesis_objective_evidence.cpython-314.pyc",
+      "size": 117171
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/generate_thesis_objective_evidence.cpython-39.pyc",
+      "size": 69215
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/masac_runtime_optimizations.cpython-311.pyc",
+      "size": 22726
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/masac_runtime_optimizations.cpython-314.pyc",
+      "size": 23415
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/masac_runtime_optimizations.cpython-39.pyc",
+      "size": 10301
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/regenerate_citylearn_v3_figures.cpython-314.pyc",
+      "size": 4634
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/run_citylearn_v3_env_smoke.cpython-314.pyc",
+      "size": 5715
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_happo.cpython-311.pyc",
+      "size": 16240
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_happo.cpython-314.pyc",
+      "size": 16893
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_happo.cpython-39.pyc",
+      "size": 10020
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_maac.cpython-311.pyc",
+      "size": 18967
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_maac.cpython-314.pyc",
+      "size": 17534
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_maac.cpython-39.pyc",
+      "size": 11837
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_maddpg.cpython-314.pyc",
+      "size": 13862
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_mappo.cpython-314.pyc",
+      "size": 12475
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_masac.cpython-311.pyc",
+      "size": 21803
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_masac.cpython-314.pyc",
+      "size": 21261
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_masac.cpython-39.pyc",
+      "size": 8485
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_matd3.cpython-311.pyc",
+      "size": 17279
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_matd3.cpython-314.pyc",
+      "size": 16404
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/train_citylearn_v3_matd3.cpython-39.pyc",
+      "size": 10462
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/validate_citylearn_v3_cooperative_ctde.cpython-314.pyc",
+      "size": 6330
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/validate_citylearn_v3_cooperative_ctde.cpython-39.pyc",
+      "size": 3665
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/validate_citylearn_v3_objectives.cpython-314.pyc",
+      "size": 7914
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/validate_citylearn_v3_reward_profiles.cpython-314.pyc",
+      "size": 9758
+    },
+    {
+      "kind": "temp_cache",
+      "path": "scripts/__pycache__/validate_citylearn_v3_reward_profiles.cpython-39.pyc",
+      "size": 6166
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_alignment.cpython-311-pytest-9.0.2.pyc",
+      "size": 7925
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_alignment.cpython-314.pyc",
+      "size": 4006
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_alignment.cpython-39-pytest-8.4.2.pyc",
+      "size": 3576
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_battery.cpython-311-pytest-9.0.2.pyc",
+      "size": 19814
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_battery.cpython-314.pyc",
+      "size": 19654
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_battery.cpython-39-pytest-8.4.2.pyc",
+      "size": 10047
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_boolean_parser.cpython-311-pytest-9.0.2.pyc",
+      "size": 5169
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_boolean_parser.cpython-314.pyc",
+      "size": 1590
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_boolean_parser.cpython-39-pytest-8.4.2.pyc",
+      "size": 2333
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_charging_constraints.cpython-311-pytest-9.0.2.pyc",
+      "size": 37799
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_charging_constraints.cpython-314.pyc",
+      "size": 14118
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_charging_constraints.cpython-39-pytest-8.4.2.pyc",
+      "size": 15499
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_citylearn_property_contract.cpython-311-pytest-9.0.2.pyc",
+      "size": 6169
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_citylearn_property_contract.cpython-314.pyc",
+      "size": 1826
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_citylearn_property_contract.cpython-39-pytest-8.4.2.pyc",
+      "size": 2552
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_electric_vehicle.cpython-311-pytest-9.0.2.pyc",
+      "size": 22849
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_electric_vehicle.cpython-314.pyc",
+      "size": 8201
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_electric_vehicle.cpython-39-pytest-8.4.2.pyc",
+      "size": 9502
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_electric_vehicle_charger.cpython-311-pytest-9.0.2.pyc",
+      "size": 39831
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_electric_vehicle_charger.cpython-314.pyc",
+      "size": 18975
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_electric_vehicle_charger.cpython-39-pytest-8.4.2.pyc",
+      "size": 15555
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_episode_tracker.cpython-311-pytest-9.0.2.pyc",
+      "size": 3690
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_episode_tracker.cpython-314.pyc",
+      "size": 1744
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_episode_tracker.cpython-39-pytest-8.4.2.pyc",
+      "size": 1972
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_equity_kpi_formulas.cpython-311-pytest-9.0.2.pyc",
+      "size": 20201
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_equity_kpi_formulas.cpython-314.pyc",
+      "size": 4152
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_equity_kpi_formulas.cpython-39-pytest-8.4.2.pyc",
+      "size": 7988
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_export_logic.cpython-311-pytest-9.0.2.pyc",
+      "size": 6600
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_export_logic.cpython-314.pyc",
+      "size": 4328
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_export_logic.cpython-39-pytest-8.4.2.pyc",
+      "size": 3483
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_minute_time_step_export.cpython-311-pytest-9.0.2.pyc",
+      "size": 5715
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_minute_time_step_export.cpython-314.pyc",
+      "size": 3084
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_minute_time_step_export.cpython-39-pytest-8.4.2.pyc",
+      "size": 2669
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_pv.cpython-311-pytest-9.0.2.pyc",
+      "size": 12665
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_pv.cpython-314.pyc",
+      "size": 6288
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_pv.cpython-39-pytest-8.4.2.pyc",
+      "size": 6144
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_rendering_behaviour.cpython-311-pytest-9.0.2.pyc",
+      "size": 54921
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_rendering_behaviour.cpython-314.pyc",
+      "size": 24616
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_rendering_behaviour.cpython-39-pytest-8.4.2.pyc",
+      "size": 21920
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_subhour_scaling.cpython-311-pytest-9.0.2.pyc",
+      "size": 21717
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_subhour_scaling.cpython-314.pyc",
+      "size": 8432
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_subhour_scaling.cpython-39-pytest-8.4.2.pyc",
+      "size": 9620
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_tutorial_kpis.cpython-311-pytest-9.0.2.pyc",
+      "size": 5920
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_tutorial_kpis.cpython-314.pyc",
+      "size": 3387
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_tutorial_kpis.cpython-39-pytest-8.4.2.pyc",
+      "size": 2888
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_ui_export_contract.cpython-311-pytest-9.0.2.pyc",
+      "size": 20020
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_ui_export_contract.cpython-314.pyc",
+      "size": 10584
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_ui_export_contract.cpython-39-pytest-8.4.2.pyc",
+      "size": 9075
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_washing_machine.cpython-311-pytest-9.0.2.pyc",
+      "size": 7253
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_washing_machine.cpython-314.pyc",
+      "size": 6987
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_washing_machine.cpython-39-pytest-8.4.2.pyc",
+      "size": 3986
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_weather.cpython-311-pytest-9.0.2.pyc",
+      "size": 4826
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_weather.cpython-314.pyc",
+      "size": 4875
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/unit/__pycache__/test_weather.cpython-39-pytest-8.4.2.pyc",
+      "size": 2994
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/conftest.cpython-311-pytest-9.0.2.pyc",
+      "size": 4479
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/conftest.cpython-314-pytest-9.1.1.pyc",
+      "size": 4454
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/conftest.cpython-314.pyc",
+      "size": 4315
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/conftest.cpython-39-pytest-8.4.2.pyc",
+      "size": 2707
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_building_objective_kpis.cpython-39-pytest-8.4.2.pyc",
+      "size": 3169
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_charging_constraints_dataset.cpython-311-pytest-9.0.2.pyc",
+      "size": 7325
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_charging_constraints_dataset.cpython-314.pyc",
+      "size": 3448
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_charging_constraints_dataset.cpython-39-pytest-8.4.2.pyc",
+      "size": 3668
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_charging_constraints_e2e.cpython-311-pytest-9.0.2.pyc",
+      "size": 5318
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_charging_constraints_e2e.cpython-314.pyc",
+      "size": 2906
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3.cpython-311-pytest-9.0.2.pyc",
+      "size": 50358
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3.cpython-314.pyc",
+      "size": 13512
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3.cpython-39-pytest-8.4.2.pyc",
+      "size": 19013
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3_job_completion.cpython-314-pytest-9.1.1.pyc",
+      "size": 37864
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3_job_completion.cpython-39-pytest-8.4.2.pyc",
+      "size": 14211
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3_training_artifacts.cpython-311-pytest-9.0.2.pyc",
+      "size": 45845
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3_training_artifacts.cpython-314.pyc",
+      "size": 15861
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3_training_artifacts.cpython-39-pytest-8.4.2.pyc",
+      "size": 20880
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_citylearn_v3_training_artifacts.cpython-39.pyc",
+      "size": 13085
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_dynamic_backfill_scheduler.cpython-39-pytest-8.4.2.pyc",
+      "size": 9508
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_electrical_service_and_market.cpython-311-pytest-9.0.2.pyc",
+      "size": 41941
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_electrical_service_and_market.cpython-314.pyc",
+      "size": 25260
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_electrical_service_and_market.cpython-39-pytest-8.4.2.pyc",
+      "size": 18849
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_evs.cpython-311-pytest-9.0.2.pyc",
+      "size": 8209
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_evs.cpython-314.pyc",
+      "size": 4095
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_evs.cpython-39-pytest-8.4.2.pyc",
+      "size": 4002
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_arrivals.cpython-311-pytest-9.0.2.pyc",
+      "size": 16709
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_arrivals.cpython-314.pyc",
+      "size": 8157
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_arrivals.cpython-39-pytest-8.4.2.pyc",
+      "size": 7548
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_charger_unit.cpython-311-pytest-9.0.2.pyc",
+      "size": 12463
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_charger_unit.cpython-314.pyc",
+      "size": 6859
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_charger_unit.cpython-39-pytest-8.4.2.pyc",
+      "size": 5666
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_soc_behavior.cpython-311-pytest-9.0.2.pyc",
+      "size": 10450
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_soc_behavior.cpython-314.pyc",
+      "size": 8142
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_ev_soc_behavior.cpython-39-pytest-8.4.2.pyc",
+      "size": 5075
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_incremental_resume_persistence.cpython-39-pytest-8.4.2.pyc",
+      "size": 21884
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_internal_refactor_parity.cpython-311-pytest-9.0.2.pyc",
+      "size": 15596
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_internal_refactor_parity.cpython-314.pyc",
+      "size": 5660
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_internal_refactor_parity.cpython-39-pytest-8.4.2.pyc",
+      "size": 6201
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_kpis.cpython-311-pytest-9.0.2.pyc",
+      "size": 30874
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_kpis.cpython-314.pyc",
+      "size": 13324
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_kpis.cpython-39-pytest-8.4.2.pyc",
+      "size": 12994
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_kpi_v2.cpython-311-pytest-9.0.2.pyc",
+      "size": 73999
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_kpi_v2.cpython-314.pyc",
+      "size": 35418
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_kpi_v2.cpython-39-pytest-8.4.2.pyc",
+      "size": 29350
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_madrl_dec_pomdp.cpython-311-pytest-9.0.2.pyc",
+      "size": 41290
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_madrl_dec_pomdp.cpython-314.pyc",
+      "size": 12585
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_madrl_dec_pomdp.cpython-39-pytest-8.4.2.pyc",
+      "size": 16100
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_masac_oom_retry_fix.cpython-314.pyc",
+      "size": 10050
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_masac_oom_retry_fix.cpython-39-pytest-8.4.2.pyc",
+      "size": 11818
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_offline_initialization.cpython-311-pytest-9.0.2.pyc",
+      "size": 8207
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_offline_initialization.cpython-314.pyc",
+      "size": 4535
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_offline_initialization.cpython-39-pytest-8.4.2.pyc",
+      "size": 4179
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_reproducibility_and_agent_learn.cpython-311-pytest-9.0.2.pyc",
+      "size": 25304
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_reproducibility_and_agent_learn.cpython-314.pyc",
+      "size": 13325
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_rl_temporal_semantics.cpython-311-pytest-9.0.2.pyc",
+      "size": 22603
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_rl_temporal_semantics.cpython-314.pyc",
+      "size": 9510
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_rl_temporal_semantics.cpython-39-pytest-8.4.2.pyc",
+      "size": 8021
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_scenario_smoke.cpython-311-pytest-9.0.2.pyc",
+      "size": 20209
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_scenario_smoke.cpython-314.pyc",
+      "size": 8264
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_scenario_smoke.cpython-39-pytest-8.4.2.pyc",
+      "size": 8381
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_series_integrity.cpython-311-pytest-9.0.2.pyc",
+      "size": 41279
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_series_integrity.cpython-314.pyc",
+      "size": 9060
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_series_integrity.cpython-39-pytest-8.4.2.pyc",
+      "size": 14180
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_thesis_statistical_evidence.cpython-311-pytest-9.0.2.pyc",
+      "size": 14281
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_thesis_statistical_evidence.cpython-314.pyc",
+      "size": 4871
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_thesis_statistical_evidence.cpython-39-pytest-8.4.2.pyc",
+      "size": 6205
+    },
+    {
+      "kind": "temp_cache",
+      "path": "tests/__pycache__/test_training_script_variable_ordering.cpython-314.pyc",
+      "size": 11548
+    },
+    {
+      "kind": "temp_cache",
+      "path": "__pycache__/setup.cpython-314.pyc",
+      "size": 2685
+    }
+  ],
+  "safe_delete_summary": {
+    "temp_cache": {
+      "count": 340,
+      "mb": 7.49
+    },
+    "dataset_backup": {
+      "count": 75,
+      "mb": 77.24
+    },
+    "backup": {
+      "count": 1,
+      "mb": 0.35
+    },
+    "pytest_tmp": {
+      "count": 36,
+      "mb": 0.01
+    }
+  }
+}

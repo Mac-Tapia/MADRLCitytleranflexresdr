@@ -1,0 +1,46 @@
+{
+  "source": {
+    "source": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "range": [
+      497,
+      750
+    ],
+    "blocks": 253,
+    "checks": {
+      "Shapiro": 9,
+      "Kruskal": 8,
+      "Wilcoxon": 6,
+      "0,6667": 4,
+      "normalidad": 10,
+      "Mann": 3,
+      "no_param": 2
+    }
+  },
+  "targets": [
+    {
+      "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "toc_safe": true,
+      "old_range": [
+        512,
+        765
+      ],
+      "dry_run": false,
+      "backup": null,
+      "new_range": [
+        512,
+        765
+      ],
+      "checks": {
+        "Shapiro": 9,
+        "Kruskal": 8,
+        "Wilcoxon": 6,
+        "0,6667": 4,
+        "normalidad": 10,
+        "Mann": 3,
+        "no_param": 2
+      }
+    }
+  ],
+  "dry_run": false
+}

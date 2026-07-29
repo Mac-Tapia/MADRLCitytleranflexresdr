@@ -1,7 +1,0 @@
-| component | path | purpose | thesis_role |
-| --- | --- | --- | --- |
-| CityLearn v2 base | CityLearn/ | Simulador, dataset, dinamica fisica, edificios, DERs, EVs y KPIs evaluate_v2 | Entorno base existente |
-| CityLearn v3 propuesto | CityLearn/citylearn/v3/ | Capa experimental para Dec-POMDP, CTDE, objetivos OE1/OE2/OE3 y wrappers MADRL | Extension experimental propuesta por la investigacion |
-| Adaptador de entrenamiento | CityLearn/scripts/citylearn_v3_training_common.py | Estandariza registros, artefactos, KPIs, figuras y tablas | Instrumento de recoleccion y procesamiento de datos |
-| Scripts MADRL | CityLearn/scripts/train_citylearn_v3_*.py | Ejecutan HAPPO, MASAC, MATD3 y MAAC sobre CityLearn v3 propuesto | Intervencion computacional experimental |
-| Paquete de evidencia de tesis | CityLearn/scripts/generate_thesis_objective_evidence.py | Consolida evidencia por objetivo especifico y genera feeds para skills de tesis | Puente entre resultados experimentales y redaccion academica |

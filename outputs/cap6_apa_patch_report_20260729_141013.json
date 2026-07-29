@@ -1,0 +1,18 @@
+{
+  "stamp": "20260729_141013",
+  "files": {
+    "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_20260729_141013.docx",
+      "actions": [
+        "fixed Cap.6 hypothesis table to KPI-gains verdict",
+        "refs:updated OSINERGMIN entry"
+      ]
+    },
+    "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_20260729_141013.docx",
+      "actions": [
+        "refs:updated OSINERGMIN entry"
+      ]
+    }
+  }
+}

@@ -3,7 +3,7 @@
 **Fecha:** 2026-07-07  
 **Documento auditado:** `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx`  
 **Fuente canónica de datos:** [Google Drive MADRL](https://drive.google.com/drive/u/0/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX) → espejo local `outputs/_drive_madrl/full_data/` → corrida `madrl_v3_20260627_164047`  
-**Herramientas ejecutadas:** `scripts/verify_tesis_doctoral_docx.py`, extracción `python-docx` (`.venv39-citylearn-v3`), cotejo con `best_madrl_report.json`, `resumen_comparativo/estadistica/`, `figuras_drive_reales/`, `multiobjetivo/`, `docs/tesis_capitulos/Referencias_APA.md`, `agent-skills/madrl-citylearn-thesis-integrated/references/module-b-thesis-report.md`, `docs/informedetesis.txt`
+**Herramientas ejecutadas:** `tools/thesis/verify_tesis_doctoral_docx.py`, extracción `python-docx` (`.venv39-citylearn-v3`), cotejo con `best_madrl_report.json`, `resumen_comparativo/estadistica/`, `figuras_drive_reales/`, `multiobjetivo/`, `docs/tesis_capitulos/Referencias_APA.md`, `agent-skills/madrl-citylearn-thesis-integrated/references/module-b-thesis-report.md`, `docs/informedetesis.txt`
 
 ---
 

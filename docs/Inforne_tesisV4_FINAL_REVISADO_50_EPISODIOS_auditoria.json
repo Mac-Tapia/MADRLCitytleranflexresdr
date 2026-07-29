@@ -1,0 +1,19 @@
+{
+  "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+  "audited_at": "2026-07-29T12:56:00.437774+00:00",
+  "cap5_source": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+  "cap5_sync": "2026-07-29",
+  "consistency_checks": {
+    "Shapiro": 14,
+    "Kruskal": 11,
+    "Wilcoxon": 16,
+    "MannWhitney": 7,
+    "normalidad": 12,
+    "no_parametric": 9,
+    "score_06667": 5,
+    "evaluate_v2": 16,
+    "flex_composite": 8,
+    "run_id": 35
+  },
+  "verdict": "Cap.5 alineado a tesis canonica (Shapiro/Kruskal/Wilcoxon/Mann-Whitney + KPIs 50ep)"
+}

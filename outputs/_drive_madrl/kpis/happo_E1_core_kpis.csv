@@ -1,0 +1,15 @@
+kpi,value
+peak_average,1.3903228238073362
+ramping_average,1.0839090593092051
+one_minus_load_factor_average,0.8573905340133239
+pv_self_consumption_ratio,0.1796712076565404
+battery_throughput_total,8854830.572854016
+ev_charge_total,213331.46793942899
+ev_v2g_export_total,52779.5125936268
+carbon_emissions,1.5237308415454343
+carbon_emissions_control,10694870.985850561
+carbon_emissions_delta,777838.6068301143
+electricity_cost,1.0623729494773748
+electricity_cost_control,6332691.362865451
+electricity_cost_delta,186408.60670836945
+price_signal_deviation,0.44047288229275566

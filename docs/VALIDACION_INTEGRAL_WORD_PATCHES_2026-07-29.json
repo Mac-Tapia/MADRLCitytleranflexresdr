@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-07-29T21:42:56.439744+00:00",
+  "patches": {
+    "tesis": {
+      "file": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "n_changes": 2,
+      "note": "Aplicados en primer pase (antes de fallo print Unicode); confirmados por revalidacion PASS anclas 0.8805/0.8679",
+      "changes": [
+        {
+          "where": "paragraph[24] (resumen ES)",
+          "tag": "eval_v2_ranking_es",
+          "old": "ranking evaluate_v2 4/4 lidera MAAC 0,9538).",
+          "new": "ranking evaluate_v2 4/4: MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000)."
+        },
+        {
+          "where": "paragraph[28]/1134] (abstract EN / conclusiones OG)",
+          "tag": "eval_v2_ranking_en_es",
+          "old": "evaluate_v2 4/4 ranks MAAC first at 0.9538) / lidera MAAC 0,9538 con HAPPO 0,0000",
+          "new": "ranking completo MAAC 0.9538 > MATD3 0.8805 > MASAC 0.8679 > HAPPO 0.0000"
+        }
+      ]
+    },
+    "informe": {
+      "file": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "n_changes": 4,
+      "changes": [
+        {
+          "where": "paragraph[23]",
+          "tag": "eval_v2_ranking_es",
+          "old": "y el ranking evaluate_v2 4/4 (0,9538).",
+          "new": "y el ranking evaluate_v2 4/4 (MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000)."
+        },
+        {
+          "where": "paragraph[1160]",
+          "tag": "eval_v2_ranking_es",
+          "old": "El ranking evaluate_v2 4/4 sitúa a MAAC primero (0,9538).",
+          "new": "El ranking evaluate_v2 4/4 sitúa a MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000."
+        },
+        {
+          "where": "paragraph[27]",
+          "tag": "eval_v2_ranking_en",
+          "old": "and evaluate_v2 4/4 (0.9538).",
+          "new": "and evaluate_v2 4/4 (MAAC 0.9538 > MATD3 0.8805 > MASAC 0.8679 > HAPPO 0.0000)."
+        },
+        {
+          "where": "table[69].row[8].cell[6]",
+          "tag": "corrupt_delta_matd3_e2",
+          "old": "23 07047",
+          "new": "46.014,7548",
+          "rationale": "Celda corrupta; Δ coherente con Control−Baseline de la misma fila (no confundir con ΔCO₂ distrito canónico 23 070 kg de ranking_oe).",
+          "source": "misma fila tabla Informe (carbon_emissions_total MATD3 E2)"
+        }
+      ]
+    }
+  },
+  "backups": {
+    "tesis": "outputs/_word_backups/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx.pre_integral_validation_20260729.bak",
+    "informe": "outputs/_word_backups/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx.pre_integral_validation_20260729.bak"
+  },
+  "updated_at": "2026-07-29T21:44:39.481969+00:00"
+}

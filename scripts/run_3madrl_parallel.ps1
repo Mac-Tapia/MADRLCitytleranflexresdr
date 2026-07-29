@@ -2,7 +2,7 @@ param(
     [string]$Scenario = "ALL",
     [int]$Seed = 0,
     [int]$EpisodeTimeSteps = 8760,
-    [int]$Episodes = 75,
+    [int]$Episodes = 50,
     [string]$SchemaPath = "CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json",
     [string]$OutputRoot,
     [ValidateSet("happo", "masac", "matd3", "maac")]

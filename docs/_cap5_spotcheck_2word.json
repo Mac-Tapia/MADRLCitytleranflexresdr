@@ -1,0 +1,42 @@
+{
+  "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+    "cap5_start": 467,
+    "cap5_end": 643,
+    "cap5": {
+      "Shapiro": 9,
+      "Kruskal": 9,
+      "Wilcoxon": 8,
+      "MannWhitney": 2,
+      "normalidad": 9,
+      "no_parametric": 2,
+      "score_06667": 5,
+      "evaluate_v2": 3,
+      "flex_composite": 8,
+      "run_id": 1
+    },
+    "has_shapiro_cap5": true,
+    "has_kruskal_cap5": true,
+    "has_06667_cap5": true,
+    "has_no_parametric_cap5": true
+  },
+  "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+    "cap5_start": 493,
+    "cap5_end": 669,
+    "cap5": {
+      "Shapiro": 9,
+      "Kruskal": 9,
+      "Wilcoxon": 8,
+      "MannWhitney": 2,
+      "normalidad": 9,
+      "no_parametric": 2,
+      "score_06667": 5,
+      "evaluate_v2": 3,
+      "flex_composite": 8,
+      "run_id": 1
+    },
+    "has_shapiro_cap5": true,
+    "has_kruskal_cap5": true,
+    "has_06667_cap5": true,
+    "has_no_parametric_cap5": true
+  }
+}

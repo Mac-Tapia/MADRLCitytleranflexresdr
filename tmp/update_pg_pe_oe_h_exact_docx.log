@@ -1,0 +1,84 @@
+run=2026-07-29T12:59:49.376706
+targets=['Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx', 'Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx']
+BACKUP Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx -> Tesis_Doctoral_MADRL_CityLearn_Iquitos_pre_pg_pe_oe_h_20260729_125949.docx
+UPDATED Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx
+  PE.1:: 3
+  PE.2:: 3
+  PE.3:: 3
+  OG. -: 2
+  OE.1:: 4
+  OE.2:: 4
+  OE.3:: 4
+  H0G.-: 2
+  H1G.-: 2
+  HE10.-: 2
+  HE11.-: 2
+  HE20.-: 2
+  HE21.-: 2
+  HE30.-: 2
+  HE31.-: 2
+  PG: 3
+  table_cell_replacements: 24
+  heading -> 1.3.2.1 Hipótesis general
+  heading -> 1.3.2.1 Hipótesis general
+  heading -> 1.3.2.2 Hipótesis específicas
+  VERIFY PG: OK
+  VERIFY PE.1: OK
+  VERIFY PE.2: OK
+  VERIFY PE.3: OK
+  VERIFY OG: OK
+  VERIFY OE.1: OK
+  VERIFY OE.2: OK
+  VERIFY OE.3: OK
+  VERIFY H0G: OK
+  VERIFY H1G: OK
+  VERIFY HE10: OK
+  VERIFY HE11: OK
+  VERIFY HE20: OK
+  VERIFY HE21: OK
+  VERIFY HE30: OK
+  VERIFY HE31: OK
+BACKUP Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx -> Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_pre_pg_pe_oe_h_20260729_125950.docx
+UPDATED Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx
+  PE.1:: 2
+  PE.2:: 2
+  PE.3:: 2
+  OG. -: 2
+  OE.1:: 3
+  OE.2:: 3
+  OE.3:: 3
+  H0G.-: 2
+  H1G.-: 2
+  HE10.-: 2
+  HE11.-: 2
+  HE20.-: 2
+  HE21.-: 2
+  HE30.-: 2
+  HE31.-: 2
+  PG: 2
+  table_cell_replacements: 27
+  heading -> 1.2.1.1 Formulación del problema general
+  heading -> 1.2.1.2 Formulación de los problemas específicos
+  heading -> 1.3.1.1 Objetivo general
+  heading -> 1.3.1.2 Objetivos específicos
+  heading -> 1.3.2.1 Hipótesis general
+  heading -> 1.3.2.2 Hipótesis específicas
+  heading -> 1.3.2.1 Hipótesis general
+  heading -> 1.3.2.1 Hipótesis general
+  heading -> 1.3.2.2 Hipótesis específicas
+  VERIFY PG: OK
+  VERIFY PE.1: OK
+  VERIFY PE.2: OK
+  VERIFY PE.3: OK
+  VERIFY OG: OK
+  VERIFY OE.1: OK
+  VERIFY OE.2: OK
+  VERIFY OE.3: OK
+  VERIFY H0G: OK
+  VERIFY H1G: OK
+  VERIFY HE10: OK
+  VERIFY HE11: OK
+  VERIFY HE20: OK
+  VERIFY HE21: OK
+  VERIFY HE30: OK
+  VERIFY HE31: OK

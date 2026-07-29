@@ -1,0 +1,46 @@
+{
+  "generated_at": "2026-07-29T17:27:04",
+  "marker": "2.2.10 Adecuaciones de los cuatro backends MADRL al dominio electrico",
+  "results": [
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "status": "patched",
+      "changes": [
+        "heading_2.2.10",
+        "para",
+        "para",
+        "para",
+        "para",
+        "para",
+        "para",
+        "para",
+        "table_title",
+        "table_note",
+        "closing",
+        "table"
+      ],
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx.pre_madrl_adecuaciones_20260729_172703.bak",
+      "size": 18559477
+    },
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "status": "patched",
+      "changes": [
+        "heading_2.2.10",
+        "para",
+        "para",
+        "para",
+        "para",
+        "para",
+        "para",
+        "para",
+        "table_title",
+        "table_note",
+        "closing",
+        "table"
+      ],
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx.pre_madrl_adecuaciones_20260729_172704.bak",
+      "size": 17927677
+    }
+  ]
+}

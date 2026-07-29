@@ -21,7 +21,7 @@ Windows y en `deploy/aws/training/requirements-training-aws.txt`).
 | PowerShell 7 (`pwsh.exe`) | local Windows | Lanzar entrenamiento |
 | Driver NVIDIA | >=560.94 | Soporte CUDA 12.6 |
 | CUDA Toolkit | 12.6 (via wheel de torch, sin instalacion aparte) | Entrenamiento GPU |
-| Google Chrome | version reciente | Solo para `tools/generate_architecture_pdfs.py` y `generate_architecture_pngs.py` |
+| Google Chrome | version reciente | Solo para `tools/figures/generate_architecture_pdfs.py` y `generate_architecture_pngs.py` |
 
 ## 2. Mapa de archivos de dependencias
 

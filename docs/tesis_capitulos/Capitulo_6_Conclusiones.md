@@ -1,102 +1,106 @@
 # Capítulo 6. Conclusiones
 
-> **Documento de tesis — alineado a la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`).**  
-> Validación 2026-07-15: `docs/VALIDACION_SECCIONES_6_3_6_4_6_5_2026-07-15.md`. No inventar hallazgos no soportados por artefactos.
+> **Documento de tesis — alineado a la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`) y a la capa KPI-gains de Cap. 5.**  
+> Fuente Word canónica: `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` (espejo Informe: `docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx`).  
+> No inventar hallazgos no soportados por artefactos. **No** tratar ranking episódico, TOPSIS ni evaluate_v2 4/4 como decisión de HE.
 
 ---
 
 ## 6.1 Principales hallazgos
 
-1. **Respuesta al OG:** entre los MADRL evaluables con KPIs auditados (MATD3, MAAC, MASAC), **MATD3** obtiene el mejor desempeño coordinado descriptivo (score global **0,6667**; fuente `best_madrl_report.json`). No existe dominancia universal en los tres ejes: MATD3 lidera flexibilidad y CO₂; MAAC lidera costos.
+1. **Respuesta al OG:** entre los MADRL del canónico 3×3 (MATD3, MAAC, MASAC), **MATD3** obtiene el mejor desempeño coordinado **descriptivo** (score global **0,6667**; `best_madrl_report.json`). No hay dominador Pareto: MATD3 lidera flexibilidad física de distrito y CO₂; **MAAC** lidera costos. El ranking evaluate_v2 4/4 sitúa a MAAC primero (0,9538; HAPPO 0,0000) y es **descriptivo**, no veredicto de hipótesis.
 
-2. **Respuesta al OE.1 (flexibilidad):** **MATD3** registra la mejor flexibilidad compuesta en E1 (**1,0009**). En la muestra episódica completa (597 filas), **MAAC** obtiene la mejor media de `reward_mean_average`; Kruskal–Wallis sobre MAAC/MASAC/MATD3 es significativo (**p = 1,305×10⁻⁸**).
+2. **Respuesta a PE.1 / OE.1 (flexibilidad, E1):** descriptivamente, **MATD3** obtiene el mejor `flex_composite` de distrito (**1,0009**); por mediana de KPI-gain el líder es **MAAC**. Inferencialmente (KPI-gains Cap. 5), Kruskal–Wallis **p = 0,4685** → **HE10 no se rechaza**; **HE11 no se respalda**.
 
-3. **Respuesta al OE.2 (CO₂):** **MATD3** logra el menor delta de emisiones en E2 (**23 070 kg** vs MAAC 70 654 kg y MASAC 77 649 kg). Kruskal–Wallis episódico: **p = 0,043866** (efecto pequeño, ε² ≈ 0,029).
+3. **Respuesta a PE.2 / OE.2 (CO₂, E2):** descriptivamente, **MATD3** obtiene el menor ΔCO₂ de distrito (**23 070 kg**). Inferencialmente, KW **p = 0,7648** → **HE20 no se rechaza**; **HE21 no se respalda**.
 
-4. **Respuesta al OE.3 (costos):** **MAAC** obtiene el menor delta de costo en E3 (**9 515 EUR**). Kruskal–Wallis episódico: **p = 0,251421** (no significativo a α = 0,05).
+4. **Respuesta a PE.3 / OE.3 (costos, E3):** descriptivamente, **MAAC** obtiene el menor Δcosto de distrito (**9 515 EUR**). Inferencialmente, KW **p = 0,7357** → **HE30 no se rechaza**; **HE31 no se respalda**. Ranking TOPSIS/4/4 **no** sustituye HE31.
 
-5. **Cobertura HAPPO:** corpus definitivo **49 episodios por escenario** (147 filas); no se imputó el episodio ausente. MAAC, MASAC y MATD3: **50 episodios por escenario** (450 filas). Total muestra episódica: **597 filas** (`gdrive_episode_kpis_used_for_statistics.csv`).
+5. **Hipótesis general (H0G / H1G):** H0G se **rechaza de forma exploratoria** (Friedman integración **p = 0,0096** + impacto GLOBAL vs baseline Holm); KW ALL **p = 0,1554** (n.s.). H1G se respalda **exploratoriamente** (sin ganador único; **no** implica HE11∧HE21∧HE31).
 
-6. **Contribución metodológica:** benchmark reproducible Dec-POMDP/CTDE sobre 17 edificios del SEAI Iquitos con cuatro algoritmos MADRL bajo CityLearn v3.
+6. **Cobertura HAPPO:** KPI-gains evaluate_v2 4/4 disponibles (peores que el trío); cobertura episódica **49/50** por escenario. Las HE de entrenamiento usan el trío MASAC/MATD3/MAAC. `best_madrl` 3×3 permanece MATD3 0,6667.
+
+7. **Contribución metodológica:** benchmark reproducible Dec-POMDP/CTDE sobre 17 edificios del SEAI Iquitos (\(d_s=1\,856\); \(d_{o_i}\in[54,327]\); \(d_{a_i}\in[5,44]\); \(r_{\mathrm{team}}=0{,}70\)) con cuatro algoritmos MADRL bajo CityLearn v3 (extensión experimental de tesis; Caps. 2 y 4).
 
 ### 6.1.1 Veredicto de hipótesis (aceptación / rechazo)
 
-Diseño adoptado: **cuasiexperimental factorial 4×3**; formulación PG/OG tipo ranking–Pareto; contraste H₀/H₁ por eje con **dos capas** (A = episódica OE-alineada; B = KPI-gains). α = 0,05.
+Unidad de decisión = **KPI-gains** de los 50 episodios Drive (Cap. 4–5). α = 0,05. Semilla de campaña = 0 (decisiones **exploratorias**).
 
 | Hipótesis | Decisión | Fundamento |
 |-----------|----------|------------|
-| **HG (ranking / Pareto)** | **Aceptada** como ranking multiobjetivo sin dominador universal (MATD3 score 0,6667; MAAC lidera costos). Superioridad omnibus en KPI-gains: **H₀ no rechazada** (p = 0,155). | Cap. 1 §1.3; `best_madrl_report.json`; capa B |
-| **HE.1 (flexibilidad)** | **H₀ rechazada en capa A** (p = 1,305×10⁻⁸); **H₀ no rechazada en capa B** (p = 0,281). Cumplimiento de OE.1: **sí** (comparativo). | `gdrive_objective_aligned_statistics.csv`; `hipotesis_estadisticas_madrl.csv` |
-| **HE.2 (CO₂)** | **H₀ rechazada en capa A** (p = 0,0439, ε² ≈ 0,029); **H₀ no rechazada en capa B** (p = 0,546). Cumplimiento de OE.2: **sí** (descriptivo + inferencia episódica débil). | Idem |
-| **HE.3 (costos)** | **H₀ no rechazada** en capas A (p = 0,251) ni B (p = 0,388). Liderazgo MAAC: **descriptivo**. Cumplimiento de OE.3: **sí** a nivel identificación comparativa; **no** a nivel superioridad omnibus. | Idem |
+| **H0G** | **Se rechaza de forma exploratoria** | Friedman integración p = 0,0096 + impacto GLOBAL vs baseline (Holm) |
+| **H1G** | **Se respalda de forma exploratoria** (sin ganador único) | Diferenciación débil; trade-off MATD3/MAAC; **no** implica HE11∧HE21∧HE31 |
+| **HE10** | **No se rechaza** | KW p = 0,4685 |
+| **HE11** | **No se respalda** | Sin conjunción impacto + diferencias en E1 |
+| **HE20** | **No se rechaza** | KW p = 0,7648 |
+| **HE21** | **No se respalda** | Sin impacto vs cero tras Holm; 0/15 KPI mejorados |
+| **HE30** | **No se rechaza** | KW p = 0,7357 |
+| **HE31** | **No se respalda** | MAAC gana costos/TOPSIS/4/4 solo descriptivo |
 
-*Nota.* No se fusionan capas A y B. Accuracy/precision/recall/F1 no intervienen en este veredicto (métricas no primarias del control continuo MADRL).
+*Nota.* La nula no se «acepta»; se informa si se rechaza o no. Accuracy/precision/recall/F1 no intervienen (métricas no primarias del control continuo MADRL).
+
+### 6.1.2 Cumplimiento de objetivos
+
+| Objetivo | Líder descriptivo | Inferencia / H | Cumplimiento |
+|----------|-------------------|----------------|--------------|
+| **OE.1** | MATD3 (flex distrito); MAAC (mediana gain) | HE10 no rechazada; HE11 no respaldada | Cumplido descriptivo-exploratorio |
+| **OE.2** | **MATD3** | HE20 no rechazada; HE21 no respaldada | Cumplido descriptivo |
+| **OE.3** | **MAAC** | HE30 no rechazada; HE31 no respaldada | Cumplido descriptivo |
+| **OG** | MATD3 (`best_madrl` 0,6667) / MAAC (score 4/4) | H0G rechazo exploratorio; H1G exploratoria | Cumplido; sin ganador único |
 
 ---
 
 ## 6.2 Limitaciones encontradas
 
-- **Semilla única (seed = 0):** la inferencia no cuantifica robustez multi-semilla; queda como trabajo futuro (H2).
-- **HAPPO 49/50:** sin imputación del episodio faltante; HAPPO excluido de Kruskal–Wallis sobre KPI-gains por cobertura incompleta.
-- **Dos niveles inferenciales:** contrastes episódicos (597 filas) vs KPI-gains de entrenamiento (231 filas, sin HAPPO) pueden divergir; la discusión los diferencia explícitamente.
+- **Semilla única entrenada (seed = 0):** el diseño `n_seeds=12` y el runner están implementados; smoke n=3 ejecutado; no se entrenaron 12 semillas reales (H2).
+- **HAPPO 49/50:** sin imputación; KPI-gains evaluate_v2 4/4 disponibles (peores); HE de entrenamiento sobre MASAC/MATD3/MAAC.
+- **Capas de evidencia distintas:** KPI-gains (HE), `best_madrl` 3×3, evaluate_v2 4/4 y TOPSIS son planos **complementarios**; no se fusionan para inventar respaldo de HE11–HE31.
 - **Sin ganador Pareto universal:** trade-off MATD3 (flex+CO₂) vs MAAC (costos).
-- **Simulación, no despliegue físico** en red real.
+- **Simulación, no despliegue físico** en red real; MADRL por debajo del baseline RBC en score HPHI global (matiza generalización, no el benchmark inter-algoritmo).
 
 ---
 
 ## 6.3 Trabajo pendiente
 
-El trabajo pendiente se declara con honestidad metodologica respecto de la corrida canonica madrl_v3_20260627_164047 (factorial 4×3: HAPPO, MAAC, MASAC y MATD3 × E1–E3). No se imputan episodios ni KPIs inexistentes; lo que sigue son huecos reales del pipeline y del manuscrito que deben cerrarse antes de la version de sustentacion.
+Pendientes de evidencia empírica: (1) homogenizar HAPPO a 50 episodios i.i.d. por escenario; (2) campaña multi-semilla real (≥3, ideal 12) con post-hoc entre semillas; (3) frontera de Pareto por eje y % vs baseline RBC/CityLearn v2 por KPI.
 
-Pendientes de evidencia empirica (bloqueantes Cap. 5 / Anexo A): (1) homogeneizar HAPPO a evaluate_v2/core_kpis y artefactos building_* comparables con MAAC/MASAC/MATD3 (hoy HAPPO aporta trazas y series distritales —49 episodios reales por escenario— pero queda incompleto en KPIs de edificio cuando faltan CSV locales); (2) cerrar checkpoint_manifest.json de HAPPO en la corrida canonica (conteo = 0 en Figura 5.1 / Anexo A.4 frente a MAAC 52, MASAC 12 y MATD3 34 archivos listados); (3) mantener la Figura 5.8e con fuentes mixtas auditadas (action_l2 desde full_data/trace.csv; EV/BESS desde building_behavior_summary), sin reutilizar columnas muertas ev_charge_kwh / electrical_storage_soc (=0 en trace.csv); (4) auditar celdas cero en Anexo A.4 y demas tablas/figuras para distinguir cero legitimo vs fallo de lectura.
+Pendientes de análisis opcional (no bloquean lectura descriptiva 50 ep): Optuna (TPE) por backend; contraste SB3 (PPO/SAC/A2C) bajo el mismo schema de Iquitos.
 
-Pendientes de analisis y robustez (no bloquean la lectura descriptiva 50 ep, pero si afirmaciones de generalizacion): corrida multi-semilla (≥3, ideal ≥5) con post-hoc alineado a la Tabla 3.4; frontera de Pareto por eje OE.1–OE.3 frente a baseline CityLearn/RBC; Optuna (TPE) por backend solo si se declara optimizacion hiperrametricas; contraste SB3 (PPO/SAC/A2C) bajo el mismo schema de Iquitos como extension opcional.
-
-Pendientes editoriales e institucionales: pasada ortografica RAE (tildes, tipografia, concordancia) en Cap. 1–6; verificar citas marcadas [PV] y actualizar indices Word (F9); completar metadatos de asesor / [por definir] unicamente con dato real del programa (no inventar nombres); sincronizar ABRIR_ESTE y FINAL_COMPLETA sin regenerar masivamente el cuerpo; PDF final y paquete de reproducibilidad (scripts + CSV + manifiestos).
-
-**Estado de cierre documental (2026-07-15).** (3) Figura 5.8e cerrada con fuentes mixtas auditadas; (4) ceros de Anexo A.4 auditados (HAPPO = 0 legítimo por manifiesto ausente, sin inventar checkpoints). (1)–(2) quedan declarados sin inventar CSV/KPIs/manifiestos inexistentes: HAPPO no aporta `building_behavior_summary`/`core_kpis` ni `.pt` reales en `madrl_v3_20260627_164047`. Multi-semilla, Optuna y SB3 → trabajo futuro (H2/H5). Editoriales F9/PDF/asesor → H7 institucional.
+Pendientes editoriales e institucionales: pasada ortográfica RAE; actualizar índices Word (F9); metadatos de asesor solo con dato real; PDF final y paquete de reproducibilidad. **No** sincronizar ni citar documentos Word eliminados.
 
 ---
 
 ## 6.4 Plan para culminar la tesis
 
-El plan de culminación fue ejecutado diferenciando los hitos indispensables para cerrar el manuscrito de las ampliaciones experimentales que corresponden a trabajo futuro. La implementación se realizó sobre la corrida canónica `madrl_v3_20260627_164047`, sin inventar episodios, semillas, resultados ni artefactos no disponibles. El estado consolidado al **15 de julio de 2026** se presenta en la Tabla 6.1.
+**Tabla 6.1. Plan para culminar la tesis (hitos H1–H7).**
 
-**Tabla 6.1. Ejecución e implementación del plan para culminar la tesis.**
+| Hito | Entregable verificable | Estado |
+|------|------------------------|--------|
+| **H1. HAPPO KPI-gains / 50 ep** | KPI-gains evaluate_v2 4/4; 50 ep i.i.d. | KPI-gains 4/4; 49/50 ep |
+| **H2. Robustez multi-semilla** | Protocolo n_seeds=12 + smoke + campaña seed=0 | Diseño+runner+smoke; 12-seed no entrenada |
+| **H3. Inferencia Colab cerrada** | Tablas KW/Friedman/Wilcoxon + Cap. 5–6 sincronizados | Ejecutada (H0G exploratoria; HE11/21/31 no respaldadas) |
+| **H4. Pareto y % vs baseline** | Tablas/figuras OE.1–OE.3 vs RBC/CityLearn v2 | Parcial |
+| **H5. HPO Optuna** | Estudio TPE por algoritmo | Pendiente (fuera del alcance cerrado) |
+| **H6. Redacción final APA** | Cap. 1–6 + referencias APA | En curso |
+| **H7. Sustentación** | Documento oficial + defensa | Pendiente institucional |
 
-| Hito | Implementación realizada | Estado y evidencia de cierre |
-|------|--------------------------|------------------------------|
-| **H1. Cobertura HAPPO** | Se adoptó como corpus definitivo la cobertura materializada de 49 episodios por escenario para HAPPO. No se imputó el episodio ausente y se sincronizó esta condición en metodología, resultados, discusión, conclusiones y limitaciones. MAAC, MASAC y MATD3 conservan 50 episodios por escenario (597 filas episódicas en total). | **Ejecutado.** Evidencia: `gdrive_episode_kpis_used_for_statistics.csv` (597 filas; HAPPO n=49; MAAC/MASAC/MATD3 n=50). |
-| **H2. Robustez multi-semilla** | La inferencia se delimitó a una sola semilla de la corrida canónica. No se afirma generalización universal; la validación multi-semilla queda como trabajo futuro. | **Implementado como delimitación metodológica.** No ejecutado experimentalmente; no bloquea el cierre del manuscrito. |
-| **H3. Inferencia estadística** | Se consolidaron Shapiro–Wilk, Kruskal–Wallis, Mann–Whitney con Holm y tamaños de efecto; Capítulos 5 y 6 sincronizados. | **Ejecutado.** OE.1: p = 1,305×10⁻⁸; OE.2: p = 0,043866; OE.3: p = 0,251421 (`gdrive_objective_aligned_statistics.csv`). |
-| **H4. Pareto y baseline** | Se consolidó la lectura multiobjetivo sin ganador universal, con contraste CityLearn v2/RBC/baseline. La discusión diferencia medias episódicas, muestra inferencial completa y KPI anual final. | **Ejecutado en Cap. 5.** Sensibilidad de pesos como trabajo futuro. |
-| **H5. HPO y algoritmos adicionales** | Optuna y contrastes PPO/SAC/A2C no forman parte de la evidencia canónica; se evita sesgo retrospectivo. | **Delimitado → trabajo futuro.** No requerido para los objetivos actuales. |
-| **H6. Cierre documental** | Se reforzaron Cap. 2, 4, 5 y 6; discusión 5.10; referencias depuradas; tablas APA 7; campos e índices Word al abrir. | **Ejecutado.** |
-| **H7. Entrega y sustentación** | Secuencia final: índices F9, revisión visual PDF, validación del asesor, registro institucional y preparación de defensa. | **Pendiente de gestión institucional.** |
-
-*Nota.* Estado al 15 de julio de 2026. «Ejecutado» abarca cierre documental, analítico o de delimitación metodológica sobre `madrl_v3_20260627_164047`. Multi-semilla, Optuna y algoritmos adicionales quedan como trabajo futuro y no sustituyen la evidencia canónica.
-
-Con **H1, H3, H4 y H6 ejecutados**, y con **H2 y H5 delimitados** como trabajo futuro, el manuscrito queda **culminado para presentación académica** bajo las restricciones declaradas (semilla única; HAPPO con 49 episodios por escenario). Solo **H7** permanece pendiente para el cierre formal institucional.
+Con **H1 (parcial), H3 y H6 en curso/ejecutados**, y **H2/H5 delimitados** como trabajo futuro, el manuscrito queda **presentable académicamente** bajo las restricciones declaradas. Solo **H7** permanece para el cierre formal institucional.
 
 ---
 
-## 6.5 Criterios de cierre de la tesis y control de calidad final
-
-Las conclusiones se consideran suficientemente sustentadas para responder las preguntas específicas desde la corrida Drive analizada. Tras el plan de la sección 6.4, el control de calidad final se centra en campos e índices Word, legibilidad PDF, correspondencia vertical entre PE–OE–hipótesis–resultados–conclusiones y aprobación del asesor. La extensión multi-semilla se mantiene como recomendación de trabajo futuro, no como resultado de esta tesis.
-
-**Tabla 6.2. Criterios de cierre y control de calidad final.**
+## 6.5 Criterios de cierre y control de calidad final
 
 | Actividad | Propósito | Criterio de cierre |
 |-----------|-----------|-------------------|
-| **Revisión APA integral** | Alinear citas, tablas, figuras y referencias al formato APA 7. | Todas las citas tienen entrada bibliográfica y viceversa; captions coherentes. |
-| **Revisión multi-semilla opcional** | Mejorar la validez externa de la comparación MADRL. | Réplicas documentadas o limitación de semilla única explicitada (opción adoptada). |
-| **Auditoría de figuras y tablas** | Confirmar legibilidad y correspondencia con CSV/Drive canónicos. | Cada figura/tabla apunta a fuente verificable de `madrl_v3_20260627_164047`. |
-| **Revisión de coherencia vertical** | Asegurar que PE, OE, hipótesis, resultados y conclusiones respondan lo mismo. | Matriz problema–objetivo–resultado–conclusión sin vacíos. |
+| **Revisión APA integral** | Citas ↔ referencias | Toda cita en texto tiene entrada; viceversa |
+| **Campaña multi-semilla** | Validez externa | Seeds 0..11 con `--run-root` (trabajo futuro) |
+| **Auditoría figuras/tablas** | Trazabilidad Drive | Cada figura/tabla → artefacto de `madrl_v3_20260627_164047` |
+| **Coherencia vertical** | PE–OE–H–resultados–conclusiones | Misma capa KPI-gains para HE; descriptivo separado |
 
-*Nota.* Los criterios C de calidad documental no sustituyen la evidencia experimental ya auditada. El cierre formal institucional (registro y sustentación) corresponde al hito **H7**.
+*Nota.* Los criterios documentales no sustituyen la evidencia experimental ya auditada.
 
 ---
 
 ### Estado del capítulo
 
-**Actualizado y validado (2026-07-15)** contra artefactos de `madrl_v3_20260627_164047`. Fuente Word canónica: `docs/ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx`.
+**Actualizado (2026-07-29)** al veredicto Cap. 5 (KPI-gains): HE11/HE21/HE31 **no respaldadas**; OE descriptivos **sí**; H0G/H1G **exploratorios** (Friedman p = 0,0096; KW ALL p = 0,1554). Sin p-valores legacy 0,281/0,546/0,388 como veredicto de HE.

@@ -1,0 +1,601 @@
+﻿algorithm,scenario,episode,steps,reward_mean_average,reward_sum_total,source
+HAPPO,E1,0,8760,-0.7062119254468171,-105169.07993754,Drive pre-resume episode_summary + final results
+HAPPO,E1,1,8760,-0.6884911428482089,-102530.10099295528,Drive pre-resume episode_summary + final results
+HAPPO,E1,2,8760,-0.6795099016836075,-101192.61455872282,Drive pre-resume episode_summary + final results
+HAPPO,E1,3,8760,-0.6421424905977905,-95627.85969982296,Drive pre-resume episode_summary + final results
+HAPPO,E1,4,8759,-0.5952638351180066,-88636.57084057653,Drive pre-resume episode_summary + final results
+HAPPO,E1,5,8760,-0.5975061495695859,-88980.61579390275,Drive pre-resume episode_summary + final results
+HAPPO,E1,6,8760,-0.6201916145068167,-92358.93523235514,Drive pre-resume episode_summary + final results
+HAPPO,E1,7,8757,-0.6306120882601179,-93878.59096719549,Drive pre-resume episode_summary + final results
+HAPPO,E1,8,8760,-0.6001939929595089,-89380.88943153007,Drive pre-resume episode_summary + final results
+HAPPO,E1,9,8760,-0.6230791053384677,-92788.9403670046,Drive pre-resume episode_summary + final results
+HAPPO,E1,10,8760,-0.6342545665492888,-94453.19005052008,Drive pre-resume episode_summary + final results
+HAPPO,E1,11,8760,-0.6084986870929504,-90617.62448188216,Drive pre-resume episode_summary + final results
+HAPPO,E1,12,8760,-0.6271737866578214,-93398.72030908275,Drive pre-resume episode_summary + final results
+HAPPO,E1,13,8760,-0.639921907289163,-95297.17043350216,Drive pre-resume episode_summary + final results
+HAPPO,E1,14,8760,-0.6094943796917738,-90765.90302369896,Drive pre-resume episode_summary + final results
+HAPPO,E1,15,8760,-0.6289115352763557,-93657.5058333549,Drive pre-resume episode_summary + final results
+HAPPO,E1,16,8760,-0.6392667313134798,-95199.6016272034,Drive pre-resume episode_summary + final results
+HAPPO,E1,17,8760,-0.6086818706255394,-90644.90417355532,Drive pre-resume episode_summary + final results
+HAPPO,E1,18,8760,-0.6256190746717769,-93167.19260012102,Drive pre-resume episode_summary + final results
+HAPPO,E1,19,8760,-0.6391695909906105,-95185.13549032171,Drive pre-resume episode_summary + final results
+HAPPO,E1,20,8747,-0.6059942374291771,-90110.7371114812,Drive pre-resume episode_summary + final results
+HAPPO,E1,21,8760,-0.6079785194436272,-90540.16111554496,Drive pre-resume episode_summary + final results
+HAPPO,E1,22,8760,-0.6278350501063873,-93497.1956618432,Drive pre-resume episode_summary + final results
+HAPPO,E1,23,8760,-0.640304425372565,-95354.1350264824,Drive pre-resume episode_summary + final results
+HAPPO,E1,24,8760,-0.6140392072702325,-91442.71874668304,Drive pre-resume episode_summary + final results
+HAPPO,E1,25,8760,-0.6302465846057655,-93856.3213794906,Drive pre-resume episode_summary + final results
+HAPPO,E1,26,8760,-0.6442752837010614,-95945.47524876206,Drive pre-resume episode_summary + final results
+HAPPO,E1,27,8760,-0.6139097306391181,-91423.43708677749,Drive pre-resume episode_summary + final results
+HAPPO,E1,28,8760,-0.6327593042070422,-94230.51558251271,Drive pre-resume episode_summary + final results
+HAPPO,E1,29,8760,-0.6414070681590277,-95518.3405902424,Drive pre-resume episode_summary + final results
+HAPPO,E1,30,8760,-0.6130246159481576,-91291.62580699964,Drive pre-resume episode_summary + final results
+HAPPO,E1,31,8749,-0.6303079866851847,-93747.59778364756,Drive pre-resume episode_summary + final results
+HAPPO,E1,32,8760,-0.6132851999057946,-91330.43196997092,Drive pre-resume episode_summary + final results
+HAPPO,E1,33,8760,-0.632318929378835,-94164.93496309612,Drive pre-resume episode_summary + final results
+HAPPO,E1,34,8760,-0.6431848771759834,-95783.09190904743,Drive pre-resume episode_summary + final results
+HAPPO,E1,35,8760,-0.6160366968665232,-91740.18489736263,Drive pre-resume episode_summary + final results
+HAPPO,E1,36,8760,-0.6355683392273384,-94648.83707773522,Drive pre-resume episode_summary + final results
+HAPPO,E1,37,8760,-0.6471171718534506,-96368.68923241588,Drive pre-resume episode_summary + final results
+HAPPO,E1,38,8760,-0.618040191774819,-92038.54535910604,Drive pre-resume episode_summary + final results
+HAPPO,E1,39,8760,-0.63569612251996,-94667.86656567243,Drive pre-resume episode_summary + final results
+HAPPO,E1,40,8760,-0.6452161086781815,-96085.5829043548,Drive pre-resume episode_summary + final results
+HAPPO,E1,41,8760,-0.6160556804256133,-91743.01192898232,Drive pre-resume episode_summary + final results
+HAPPO,E1,42,8760,-0.6366233050792514,-94805.9425924021,Drive pre-resume episode_summary + final results
+HAPPO,E1,43,8760,-0.6479757902500556,-96496.55468403827,Drive pre-resume episode_summary + final results
+HAPPO,E1,44,8760,-0.6157080255857069,-91691.23917022347,Drive pre-resume episode_summary + final results
+HAPPO,E1,45,8760,-0.6367609229327401,-94826.43664314364,Drive pre-resume episode_summary + final results
+HAPPO,E1,46,8760,-0.6465468567128391,-96283.757901676,Drive pre-resume episode_summary + final results
+HAPPO,E1,47,8760,-0.6161927932051019,-91763.43076410376,Drive pre-resume episode_summary + final results
+HAPPO,E1,48,8760,-0.6341125105363083,-94432.03506906705,Drive pre-resume episode_summary + final results
+HAPPO,E1,49,8760,-0.618064939652382,-92042.23081303273,Drive pre-resume episode_summary + final results
+HAPPO,E2,0,8760,-0.5430863981455699,-80876.42641183829,Drive pre-resume episode_summary + final results
+HAPPO,E2,1,8760,-0.5394617765557689,-80336.6477646851,Drive pre-resume episode_summary + final results
+HAPPO,E2,2,8760,-0.5315374302950608,-79156.55411954047,Drive pre-resume episode_summary + final results
+HAPPO,E2,3,8760,-0.5067830801313629,-75470.13629316256,Drive pre-resume episode_summary + final results
+HAPPO,E2,4,8759,-0.4627288651101499,-68901.71620149666,Drive pre-resume episode_summary + final results
+HAPPO,E2,5,8760,-0.4607559602209014,-68615.77759609662,Drive pre-resume episode_summary + final results
+HAPPO,E2,6,8760,-0.4766170565931553,-70977.81206785269,Drive pre-resume episode_summary + final results
+HAPPO,E2,7,8757,-0.4909295212567794,-73084.1868999755,Drive pre-resume episode_summary + final results
+HAPPO,E2,8,8760,-0.4648395307973227,-69223.9029263373,Drive pre-resume episode_summary + final results
+HAPPO,E2,9,8760,-0.476233423021135,-70920.68135630742,Drive pre-resume episode_summary + final results
+HAPPO,E2,10,8760,-0.4940095269845013,-73567.89875853193,Drive pre-resume episode_summary + final results
+HAPPO,E2,11,8760,-0.4666024901159301,-69486.44282806432,Drive pre-resume episode_summary + final results
+HAPPO,E2,12,8760,-0.4800290450306308,-71485.92538596154,Drive pre-resume episode_summary + final results
+HAPPO,E2,13,8760,-0.490600630693473,-73060.245922872,Drive pre-resume episode_summary + final results
+HAPPO,E2,14,8760,-0.463879298688137,-69080.90516063737,Drive pre-resume episode_summary + final results
+HAPPO,E2,15,8760,-0.4781583804342716,-71207.34601427174,Drive pre-resume episode_summary + final results
+HAPPO,E2,16,8760,-0.4906437286279428,-73066.66406727325,Drive pre-resume episode_summary + final results
+HAPPO,E2,17,8760,-0.4628057176173037,-68921.02746756887,Drive pre-resume episode_summary + final results
+HAPPO,E2,18,8760,-0.4778256930782465,-71157.80221321248,Drive pre-resume episode_summary + final results
+HAPPO,E2,19,8760,-0.4919831569702523,-73266.13173600998,Drive pre-resume episode_summary + final results
+HAPPO,E2,20,8747,-0.4640371043826167,-69001.85338459072,Drive pre-resume episode_summary + final results
+HAPPO,E2,21,8760,-0.4688204396747063,-69816.73987635726,Drive pre-resume episode_summary + final results
+HAPPO,E2,22,8760,-0.4789144225118991,-71319.93580047201,Drive pre-resume episode_summary + final results
+HAPPO,E2,23,8760,-0.4933033431831287,-73462.73386683154,Drive pre-resume episode_summary + final results
+HAPPO,E2,24,8760,-0.4652991851212606,-69292.35464825813,Drive pre-resume episode_summary + final results
+HAPPO,E2,25,8760,-0.4794950370224856,-71406.40091338856,Drive pre-resume episode_summary + final results
+HAPPO,E2,26,8760,-0.4927981563515978,-73387.50144387994,Drive pre-resume episode_summary + final results
+HAPPO,E2,27,8760,-0.468999774700398,-69843.44644838327,Drive pre-resume episode_summary + final results
+HAPPO,E2,28,8760,-0.4842479363791899,-72114.20268558897,Drive pre-resume episode_summary + final results
+HAPPO,E2,29,8760,-0.4950956144191894,-73729.63889930569,Drive pre-resume episode_summary + final results
+HAPPO,E2,30,8760,-0.4682498861927679,-69731.773051827,Drive pre-resume episode_summary + final results
+HAPPO,E2,31,8749,-0.4817833171351308,-71657.07810745941,Drive pre-resume episode_summary + final results
+HAPPO,E2,32,8760,-0.4705860959793916,-70079.681413251,Drive pre-resume episode_summary + final results
+HAPPO,E2,33,8760,-0.4829501026535276,-71920.92928716334,Drive pre-resume episode_summary + final results
+HAPPO,E2,34,8760,-0.4966271911683815,-73957.72130879537,Drive pre-resume episode_summary + final results
+HAPPO,E2,35,8760,-0.4694604864583044,-69912.0556433707,Drive pre-resume episode_summary + final results
+HAPPO,E2,36,8760,-0.4828980959063895,-71913.18444237953,Drive pre-resume episode_summary + final results
+HAPPO,E2,37,8760,-0.4961455225954521,-73885.99122491473,Drive pre-resume episode_summary + final results
+HAPPO,E2,38,8760,-0.4700666261018291,-70002.3219590844,Drive pre-resume episode_summary + final results
+HAPPO,E2,39,8760,-0.4840218275873937,-72080.53056431467,Drive pre-resume episode_summary + final results
+HAPPO,E2,40,8760,-0.498637860022895,-74257.15011460954,Drive pre-resume episode_summary + final results
+HAPPO,E2,41,8760,-0.4711252354415355,-70159.97006195347,Drive pre-resume episode_summary + final results
+HAPPO,E2,42,8760,-0.4859511470092355,-72367.84481261535,Drive pre-resume episode_summary + final results
+HAPPO,E2,43,8760,-0.5016096546463357,-74699.70976993232,Drive pre-resume episode_summary + final results
+HAPPO,E2,44,8760,-0.4757257935811949,-70845.08518011154,Drive pre-resume episode_summary + final results
+HAPPO,E2,45,8760,-0.4865498057069974,-72456.99706588605,Drive pre-resume episode_summary + final results
+HAPPO,E2,46,8760,-0.5007265378784168,-74568.19602085384,Drive pre-resume episode_summary + final results
+HAPPO,E2,47,8760,-0.4733727008768073,-70494.66261457413,Drive pre-resume episode_summary + final results
+HAPPO,E2,48,8760,-0.488585151399759,-72760.10074645211,Drive pre-resume episode_summary + final results
+HAPPO,E2,49,8760,-0.47709955993467407,-71049.66646547166,Drive pre-resume episode_summary + final results
+HAPPO,E3,0,8760,-0.569580484648387,-84821.92577383778,Drive pre-resume episode_summary + final results
+HAPPO,E3,1,8760,-0.5631374619959754,-83862.43084044065,Drive pre-resume episode_summary + final results
+HAPPO,E3,2,8760,-0.5601674926691091,-83420.14300828375,Drive pre-resume episode_summary + final results
+HAPPO,E3,3,8760,-0.5380269053842299,-80122.96674981952,Drive pre-resume episode_summary + final results
+HAPPO,E3,4,8759,-0.494647246271114,-73654.45891150768,Drive pre-resume episode_summary + final results
+HAPPO,E3,5,8760,-0.4949520908490408,-73708.26536923915,Drive pre-resume episode_summary + final results
+HAPPO,E3,6,8760,-0.5118297678543742,-76221.6890288734,Drive pre-resume episode_summary + final results
+HAPPO,E3,7,8757,-0.5253315287725846,-78205.5793568459,Drive pre-resume episode_summary + final results
+HAPPO,E3,8,8760,-0.5003812463997133,-74516.77521384529,Drive pre-resume episode_summary + final results
+HAPPO,E3,9,8760,-0.5154316963764549,-76758.08822438167,Drive pre-resume episode_summary + final results
+HAPPO,E3,10,8760,-0.5294073554246426,-78839.34336983776,Drive pre-resume episode_summary + final results
+HAPPO,E3,11,8760,-0.5040731757989825,-75066.57733998448,Drive pre-resume episode_summary + final results
+HAPPO,E3,12,8760,-0.5185985115934882,-77229.69034650228,Drive pre-resume episode_summary + final results
+HAPPO,E3,13,8760,-0.5308107709633347,-79048.34001185981,Drive pre-resume episode_summary + final results
+HAPPO,E3,14,8760,-0.5040879616513111,-75068.77924911326,Drive pre-resume episode_summary + final results
+HAPPO,E3,15,8760,-0.5168508912006553,-76969.43471760159,Drive pre-resume episode_summary + final results
+HAPPO,E3,16,8760,-0.5286336250627718,-78724.11944434798,Drive pre-resume episode_summary + final results
+HAPPO,E3,17,8760,-0.4991184842485415,-74328.7246742928,Drive pre-resume episode_summary + final results
+HAPPO,E3,18,8760,-0.5146884366480945,-76647.40198563423,Drive pre-resume episode_summary + final results
+HAPPO,E3,19,8760,-0.5292700473765485,-78818.89545531559,Drive pre-resume episode_summary + final results
+HAPPO,E3,20,8747,-0.5003232071289881,-74397.56057687341,Drive pre-resume episode_summary + final results
+HAPPO,E3,21,8760,-0.506087546316704,-75366.55739748357,Drive pre-resume episode_summary + final results
+HAPPO,E3,22,8760,-0.51901520060317,-77291.74367382406,Drive pre-resume episode_summary + final results
+HAPPO,E3,23,8760,-0.5313840052085917,-79133.7060556635,Drive pre-resume episode_summary + final results
+HAPPO,E3,24,8760,-0.5053603108299534,-75258.25748879666,Drive pre-resume episode_summary + final results
+HAPPO,E3,25,8760,-0.5179335038259507,-77130.65738976057,Drive pre-resume episode_summary + final results
+HAPPO,E3,26,8760,-0.5313902447751588,-79134.63525191665,Drive pre-resume episode_summary + final results
+HAPPO,E3,27,8760,-0.5044739399459407,-75126.25913674949,Drive pre-resume episode_summary + final results
+HAPPO,E3,28,8760,-0.5182176668845656,-77172.97495244951,Drive pre-resume episode_summary + final results
+HAPPO,E3,29,8760,-0.5327779062944397,-79341.28580536797,Drive pre-resume episode_summary + final results
+HAPPO,E3,30,8760,-0.5036270471715821,-75000.139864792,Drive pre-resume episode_summary + final results
+HAPPO,E3,31,8749,-0.5186502075397844,-77140.40131801476,Drive pre-resume episode_summary + final results
+HAPPO,E3,32,8760,-0.5100392905747564,-75955.05115239273,Drive pre-resume episode_summary + final results
+HAPPO,E3,33,8760,-0.5234921851124064,-77958.45620693956,Drive pre-resume episode_summary + final results
+HAPPO,E3,34,8760,-0.5352715190643845,-79712.63461906815,Drive pre-resume episode_summary + final results
+HAPPO,E3,35,8760,-0.5073685515581575,-75557.32469804083,Drive pre-resume episode_summary + final results
+HAPPO,E3,36,8760,-0.5205069711765683,-77513.89814761456,Drive pre-resume episode_summary + final results
+HAPPO,E3,37,8760,-0.5347685656254954,-79637.73479294877,Drive pre-resume episode_summary + final results
+HAPPO,E3,38,8760,-0.5075704888438032,-75587.39719861916,Drive pre-resume episode_summary + final results
+HAPPO,E3,39,8760,-0.5218720739657974,-77717.18925498656,Drive pre-resume episode_summary + final results
+HAPPO,E3,40,8760,-0.538562516453073,-80202.72995019163,Drive pre-resume episode_summary + final results
+HAPPO,E3,41,8760,-0.5091253865516895,-75818.9525652776,Drive pre-resume episode_summary + final results
+HAPPO,E3,42,8760,-0.5227331759245752,-77845.42455868775,Drive pre-resume episode_summary + final results
+HAPPO,E3,43,8760,-0.5383579239560206,-80172.26203553058,Drive pre-resume episode_summary + final results
+HAPPO,E3,44,8760,-0.5112322215360424,-76132.70243114745,Drive pre-resume episode_summary + final results
+HAPPO,E3,45,8760,-0.5254207042265499,-78245.65127341781,Drive pre-resume episode_summary + final results
+HAPPO,E3,46,8760,-0.5399420106711393,-80408.16422914607,Drive pre-resume episode_summary + final results
+HAPPO,E3,47,8760,-0.5124714415840971,-76317.24708070373,Drive pre-resume episode_summary + final results
+HAPPO,E3,48,8760,-0.5228749893175955,-77866.54340917632,Drive pre-resume episode_summary + final results
+HAPPO,E3,49,8760,-0.5147201631677909,-76652.12669894742,Drive pre-resume episode_summary + final results
+MAAC,E1,0,8760,-0.5901762890098425,-87889.05295934575,Drive results.json episode_summaries
+MAAC,E1,1,8760,-0.6158340938365912,-91710.01325414516,Drive results.json episode_summaries
+MAAC,E1,2,8760,-0.6214699934294116,-92549.31142150797,Drive results.json episode_summaries
+MAAC,E1,3,8760,-0.5887203280144205,-87672.2312479075,Drive results.json episode_summaries
+MAAC,E1,4,8760,-0.6148209665559623,-91559.13833951391,Drive results.json episode_summaries
+MAAC,E1,5,8760,-0.6197123447469262,-92287.56237971224,Drive results.json episode_summaries
+MAAC,E1,6,8760,-0.5872629086589058,-87455.19235748425,Drive results.json episode_summaries
+MAAC,E1,7,8752,-0.6141767113086881,-91379.66781535186,Drive results.json episode_summaries
+MAAC,E1,8,8760,-0.5857070844125036,-87223.49901071005,Drive results.json episode_summaries
+MAAC,E1,9,8760,-0.61424755313666,-91473.74561311142,Drive results.json episode_summaries
+MAAC,E1,10,8757,-0.620201454174458,-92328.77028149739,Drive results.json episode_summaries
+MAAC,E1,11,8760,-0.5854646997930286,-87187.40309317783,Drive results.json episode_summaries
+MAAC,E1,12,8760,-0.6126887445160125,-91241.60783332458,Drive results.json episode_summaries
+MAAC,E1,13,8760,-0.6184372879624299,-92097.68092336506,Drive results.json episode_summaries
+MAAC,E1,14,8760,-0.5851158590868252,-87135.45373521,Drive results.json episode_summaries
+MAAC,E1,15,8760,-0.612993943769927,-91287.05810621753,Drive results.json episode_summaries
+MAAC,E1,16,8760,-0.6178685858812752,-92012.98980943952,Drive results.json episode_summaries
+MAAC,E1,17,8760,-0.5855630536827356,-87202.049954433,Drive results.json episode_summaries
+MAAC,E1,18,8760,-0.6126111153007132,-91230.04729058221,Drive results.json episode_summaries
+MAAC,E1,19,8760,-0.6177036253450032,-91988.42388637789,Drive results.json episode_summaries
+MAAC,E1,20,8760,-0.5852160178355609,-87150.36937607173,Drive results.json episode_summaries
+MAAC,E1,21,8760,-0.6121384919411609,-91159.66421987768,Drive results.json episode_summaries
+MAAC,E1,22,8760,-0.6190885510797438,-92194.66702679545,Drive results.json episode_summaries
+MAAC,E1,23,8760,-0.5860118925903146,-87268.89104454964,Drive results.json episode_summaries
+MAAC,E1,24,8760,-0.6112615766062335,-91029.07398820028,Drive results.json episode_summaries
+MAAC,E1,25,8745,-0.6175844301151995,-91813.18930307613,Drive results.json episode_summaries
+MAAC,E1,26,8760,-0.5844288248600668,-87033.14059816115,Drive results.json episode_summaries
+MAAC,E1,27,8760,-0.6117170838902802,-91096.90813294053,Drive results.json episode_summaries
+MAAC,E1,28,8760,-0.6185628484434886,-92116.37939020433,Drive results.json episode_summaries
+MAAC,E1,29,8760,-0.585381488820759,-87175.01131518744,Drive results.json episode_summaries
+MAAC,E1,30,8760,-0.6123242536469864,-91187.32785310922,Drive results.json episode_summaries
+MAAC,E1,31,8760,-0.6177232990346501,-91991.35369224008,Drive results.json episode_summaries
+MAAC,E1,32,8760,-0.5851290992442009,-87137.42545944639,Drive results.json episode_summaries
+MAAC,E1,33,8760,-0.613007820634805,-91289.12464893516,Drive results.json episode_summaries
+MAAC,E1,34,8760,-0.6183967119030249,-92091.63833659847,Drive results.json episode_summaries
+MAAC,E1,35,8760,-0.5855620873117071,-87201.90604245942,Drive results.json episode_summaries
+MAAC,E1,36,8760,-0.6123340502775755,-91188.78676733654,Drive results.json episode_summaries
+MAAC,E1,37,8760,-0.6196145562958993,-92272.99972358532,Drive results.json episode_summaries
+MAAC,E1,38,8747,-0.5862138274466363,-87169.40992748737,Drive results.json episode_summaries
+MAAC,E1,39,8760,-0.584833151916867,-87093.35298345983,Drive results.json episode_summaries
+MAAC,E1,40,8760,-0.6123142001430396,-91185.83068530145,Drive results.json episode_summaries
+MAAC,E1,41,8760,-0.6199636652215158,-92324.98902478814,Drive results.json episode_summaries
+MAAC,E1,42,8760,-0.5865720391388319,-87352.30806855485,Drive results.json episode_summaries
+MAAC,E1,43,8760,-0.6136279890933564,-91381.48013578262,Drive results.json episode_summaries
+MAAC,E1,44,8760,-0.6196508009789924,-92278.39728179155,Drive results.json episode_summaries
+MAAC,E1,45,8760,-0.5863474134151658,-87318.85680578649,Drive results.json episode_summaries
+MAAC,E1,46,8760,-0.6135889525661355,-91375.6668161489,Drive results.json episode_summaries
+MAAC,E1,47,8760,-0.619451847127264,-92248.76907419215,Drive results.json episode_summaries
+MAAC,E1,48,8760,-0.5858474200349046,-87244.39779159799,Drive results.json episode_summaries
+MAAC,E1,49,8749,-0.613195339604192,-91202.38244535029,Drive results.json episode_summaries
+MAAC,E2,0,8760,-0.5117970278910983,-76216.81339354234,Drive results.json episode_summaries
+MAAC,E2,1,8760,-0.5276548273727347,-78578.35689234766,Drive results.json episode_summaries
+MAAC,E2,2,8760,-0.5338700148763145,-79503.92261538075,Drive results.json episode_summaries
+MAAC,E2,3,8760,-0.5119963745710402,-76246.50010111931,Drive results.json episode_summaries
+MAAC,E2,4,8760,-0.5277581635428972,-78593.74571480825,Drive results.json episode_summaries
+MAAC,E2,5,8760,-0.5335961320186586,-79463.13598021865,Drive results.json episode_summaries
+MAAC,E2,6,8760,-0.5121681774595345,-76272.08498727388,Drive results.json episode_summaries
+MAAC,E2,7,8752,-0.5274129886270718,-78470.61409989026,Drive results.json episode_summaries
+MAAC,E2,8,8760,-0.5116219696961583,-76190.74372715189,Drive results.json episode_summaries
+MAAC,E2,9,8760,-0.5277609250944436,-78594.15696506455,Drive results.json episode_summaries
+MAAC,E2,10,8757,-0.5339684196918764,-79491.34467110994,Drive results.json episode_summaries
+MAAC,E2,11,8760,-0.5116550955697007,-76195.67683223983,Drive results.json episode_summaries
+MAAC,E2,12,8760,-0.5275918060049496,-78568.9717502571,Drive results.json episode_summaries
+MAAC,E2,13,8760,-0.5338114388599219,-79495.19947501957,Drive results.json episode_summaries
+MAAC,E2,14,8760,-0.5118066089008383,-76218.24019751285,Drive results.json episode_summaries
+MAAC,E2,15,8760,-0.5274189895895754,-78543.23592967958,Drive results.json episode_summaries
+MAAC,E2,16,8760,-0.5334769842866612,-79445.39249996959,Drive results.json episode_summaries
+MAAC,E2,17,8760,-0.5120197097123974,-76249.97517037022,Drive results.json episode_summaries
+MAAC,E2,18,8760,-0.527354796999978,-78533.67636923672,Drive results.json episode_summaries
+MAAC,E2,19,8760,-0.5334546293841695,-79442.06340789053,Drive results.json episode_summaries
+MAAC,E2,20,8760,-0.5121021323318762,-76262.249546863,Drive results.json episode_summaries
+MAAC,E2,21,8760,-0.5277787039077766,-78596.8045859461,Drive results.json episode_summaries
+MAAC,E2,22,8760,-0.5337856024005878,-79491.35190949554,Drive results.json episode_summaries
+MAAC,E2,23,8760,-0.5122131670803356,-76278.78484160357,Drive results.json episode_summaries
+MAAC,E2,24,8760,-0.5274042979074091,-78541.04804437136,Drive results.json episode_summaries
+MAAC,E2,25,8745,-0.5331517178004087,-79261.00012679776,Drive results.json episode_summaries
+MAAC,E2,26,8760,-0.5114318994227176,-76162.4384620311,Drive results.json episode_summaries
+MAAC,E2,27,8760,-0.5273257372548379,-78529.34879199046,Drive results.json episode_summaries
+MAAC,E2,28,8760,-0.5338771653215634,-79504.98745968723,Drive results.json episode_summaries
+MAAC,E2,29,8760,-0.5116354590742883,-76192.75256534302,Drive results.json episode_summaries
+MAAC,E2,30,8760,-0.5272623130540416,-78519.90366000787,Drive results.json episode_summaries
+MAAC,E2,31,8760,-0.533382756356851,-79431.36007666224,Drive results.json episode_summaries
+MAAC,E2,32,8760,-0.5117544899413077,-76210.47864205955,Drive results.json episode_summaries
+MAAC,E2,33,8760,-0.5275034697398087,-78555.81671365231,Drive results.json episode_summaries
+MAAC,E2,34,8760,-0.5336320790765543,-79468.48921608047,Drive results.json episode_summaries
+MAAC,E2,35,8760,-0.5118476438365493,-76224.35112013893,Drive results.json episode_summaries
+MAAC,E2,36,8760,-0.5278822697578601,-78612.22761234053,Drive results.json episode_summaries
+MAAC,E2,37,8760,-0.5337243877654989,-79482.23582603809,Drive results.json episode_summaries
+MAAC,E2,38,8747,-0.5121687385546526,-76158.9792543383,Drive results.json episode_summaries
+MAAC,E2,39,8760,-0.5113138028926756,-76144.85152677725,Drive results.json episode_summaries
+MAAC,E2,40,8760,-0.527322446093089,-78528.8586721828,Drive results.json episode_summaries
+MAAC,E2,41,8760,-0.5338977307367767,-79508.05006132078,Drive results.json episode_summaries
+MAAC,E2,42,8760,-0.511683208330953,-76199.86338464553,Drive results.json episode_summaries
+MAAC,E2,43,8760,-0.5273705245676006,-78536.01851860707,Drive results.json episode_summaries
+MAAC,E2,44,8760,-0.5334308310822081,-79438.51936476244,Drive results.json episode_summaries
+MAAC,E2,45,8760,-0.5117561754689337,-76210.72965083361,Drive results.json episode_summaries
+MAAC,E2,46,8760,-0.5275272757788116,-78559.36190898062,Drive results.json episode_summaries
+MAAC,E2,47,8760,-0.5336676285194848,-79473.78323912168,Drive results.json episode_summaries
+MAAC,E2,48,8760,-0.5119776707619665,-76243.71472987205,Drive results.json episode_summaries
+MAAC,E2,49,8749,-0.5277731741774441,-78497.28751493379,Drive results.json episode_summaries
+MAAC,E3,0,8760,-0.525818035216677,-78304.82180446755,Drive results.json episode_summaries
+MAAC,E3,1,8760,-0.5425975139470239,-80803.62177699081,Drive results.json episode_summaries
+MAAC,E3,2,8760,-0.5510281711066376,-82059.11524120046,Drive results.json episode_summaries
+MAAC,E3,3,8760,-0.5260876935436103,-78344.97932251444,Drive results.json episode_summaries
+MAAC,E3,4,8760,-0.5425519251002843,-80796.83268593434,Drive results.json episode_summaries
+MAAC,E3,5,8760,-0.5505331295172755,-81985.39364771267,Drive results.json episode_summaries
+MAAC,E3,6,8760,-0.5260514475888374,-78339.58157492966,Drive results.json episode_summaries
+MAAC,E3,7,8752,-0.5421176230138837,-80658.42842249767,Drive results.json episode_summaries
+MAAC,E3,8,8760,-0.5253566748558218,-78236.11601952898,Drive results.json episode_summaries
+MAAC,E3,9,8760,-0.5422440283811623,-80750.98070652268,Drive results.json episode_summaries
+MAAC,E3,10,8757,-0.5510442571089145,-82033.40751154699,Drive results.json episode_summaries
+MAAC,E3,11,8760,-0.5253977795300546,-78242.23732761573,Drive results.json episode_summaries
+MAAC,E3,12,8760,-0.5420738763785914,-80725.64167029984,Drive results.json episode_summaries
+MAAC,E3,13,8760,-0.5508915368807321,-82038.76767227863,Drive results.json episode_summaries
+MAAC,E3,14,8760,-0.5256124991211116,-78274.21336911595,Drive results.json episode_summaries
+MAAC,E3,15,8760,-0.5420700849126654,-80725.07704519414,Drive results.json episode_summaries
+MAAC,E3,16,8760,-0.5502501850474886,-81943.257557272,Drive results.json episode_summaries
+MAAC,E3,17,8760,-0.5258729295559338,-78312.99666946966,Drive results.json episode_summaries
+MAAC,E3,18,8760,-0.5417912079477062,-80683.54668757241,Drive results.json episode_summaries
+MAAC,E3,19,8760,-0.5503844582558507,-81963.25352346129,Drive results.json episode_summaries
+MAAC,E3,20,8760,-0.525663594045537,-78281.82242526137,Drive results.json episode_summaries
+MAAC,E3,21,8760,-0.5422065180652932,-80745.39467028347,Drive results.json episode_summaries
+MAAC,E3,22,8760,-0.5505652636516364,-81990.17906300169,Drive results.json episode_summaries
+MAAC,E3,23,8760,-0.5262573294628416,-78370.24150360638,Drive results.json episode_summaries
+MAAC,E3,24,8760,-0.5416786509701544,-80666.7847024754,Drive results.json episode_summaries
+MAAC,E3,25,8745,-0.5500937393686588,-81779.68576324166,Drive results.json episode_summaries
+MAAC,E3,26,8760,-0.5251472782170726,-78204.93267208645,Drive results.json episode_summaries
+MAAC,E3,27,8760,-0.5417073115605485,-80671.05283759689,Drive results.json episode_summaries
+MAAC,E3,28,8760,-0.550622311984098,-81998.67470067187,Drive results.json episode_summaries
+MAAC,E3,29,8760,-0.5254960123263164,-78256.86615563503,Drive results.json episode_summaries
+MAAC,E3,30,8760,-0.5419594455585118,-80708.60063257358,Drive results.json episode_summaries
+MAAC,E3,31,8760,-0.5502879415268641,-81948.88025218059,Drive results.json episode_summaries
+MAAC,E3,32,8760,-0.5254341807570457,-78247.65819833924,Drive results.json episode_summaries
+MAAC,E3,33,8760,-0.5417746739943917,-80681.08445124482,Drive results.json episode_summaries
+MAAC,E3,34,8760,-0.5502774119072933,-81947.31218123413,Drive results.json episode_summaries
+MAAC,E3,35,8760,-0.5255541150930683,-78265.51881965973,Drive results.json episode_summaries
+MAAC,E3,36,8760,-0.5420844121195109,-80727.21065283756,Drive results.json episode_summaries
+MAAC,E3,37,8760,-0.5506697682562725,-82005.7418887241,Drive results.json episode_summaries
+MAAC,E3,38,8747,-0.526292534335744,-78259.1735631908,Drive results.json episode_summaries
+MAAC,E3,39,8760,-0.5248192921266143,-78156.0889834954,Drive results.json episode_summaries
+MAAC,E3,40,8760,-0.5415060836179317,-80641.0859723824,Drive results.json episode_summaries
+MAAC,E3,41,8760,-0.5509945603833987,-82054.10993229572,Drive results.json episode_summaries
+MAAC,E3,42,8760,-0.5254143179556776,-78244.7002299595,Drive results.json episode_summaries
+MAAC,E3,43,8760,-0.5417308376725886,-80674.55634620189,Drive results.json episode_summaries
+MAAC,E3,44,8760,-0.5500662867710824,-81915.87142594959,Drive results.json episode_summaries
+MAAC,E3,45,8760,-0.5255362287935904,-78262.85519194147,Drive results.json episode_summaries
+MAAC,E3,46,8760,-0.5419086847598242,-80701.04133443302,Drive results.json episode_summaries
+MAAC,E3,47,8760,-0.5503509618328148,-81958.26523614279,Drive results.json episode_summaries
+MAAC,E3,48,8760,-0.525685534999424,-78285.08987211423,Drive results.json episode_summaries
+MAAC,E3,49,8749,-0.5419790135380939,-80610.16462056132,Drive results.json episode_summaries
+MASAC,E1,0,8760,-0.6210917477015423,-92492.98306771368,Drive results.json episode_summaries
+MASAC,E1,1,8760,-0.6273420491722544,-93423.77796273213,Drive results.json episode_summaries
+MASAC,E1,2,8760,-0.5940955721188472,-88472.71259993874,Drive results.json episode_summaries
+MASAC,E1,3,8760,-0.6223996801744109,-92687.76037157327,Drive results.json episode_summaries
+MASAC,E1,4,8760,-0.6272485963388912,-93409.86096678767,Drive results.json episode_summaries
+MASAC,E1,5,8760,-0.5946771398305757,-88559.31966356933,Drive results.json episode_summaries
+MASAC,E1,6,8760,-0.6202952471434151,-92374.36820459738,Drive results.json episode_summaries
+MASAC,E1,7,8760,-0.626684333464624,-93325.83093955182,Drive results.json episode_summaries
+MASAC,E1,8,8760,-0.5943081018458584,-88504.36252688523,Drive results.json episode_summaries
+MASAC,E1,9,8760,-0.6211253258863731,-92497.9835309987,Drive results.json episode_summaries
+MASAC,E1,10,8760,-0.627759154809035,-93485.89333416149,Drive results.json episode_summaries
+MASAC,E1,11,8760,-0.5949465356619399,-88599.4380907761,Drive results.json episode_summaries
+MASAC,E1,12,8760,-0.6201102730134485,-92346.82185716275,Drive results.json episode_summaries
+MASAC,E1,13,8760,-0.6267569655710916,-93336.64731284697,Drive results.json episode_summaries
+MASAC,E1,14,8760,-0.5935483689749503,-88391.2231077496,Drive results.json episode_summaries
+MASAC,E1,15,8760,-0.621724609506729,-92587.22884774208,Drive results.json episode_summaries
+MASAC,E1,16,8760,-0.6273043487738759,-93418.16361940559,Drive results.json episode_summaries
+MASAC,E1,17,8760,-0.5940935033245957,-88472.40451509878,Drive results.json episode_summaries
+MASAC,E1,18,8760,-0.6196734128005857,-92281.76463426324,Drive results.json episode_summaries
+MASAC,E1,19,8760,-0.626621744706036,-93316.51022162288,Drive results.json episode_summaries
+MASAC,E1,20,8760,-0.5936434362832134,-88405.38053129613,Drive results.json episode_summaries
+MASAC,E1,21,8760,-0.6209577095561946,-92473.0221071085,Drive results.json episode_summaries
+MASAC,E1,22,8737,-0.6262709057626162,-93019.39136201562,Drive results.json episode_summaries
+MASAC,E1,23,8760,-0.6198266866174633,-92304.59017107263,Drive results.json episode_summaries
+MASAC,E1,24,8760,-0.625059442587418,-93083.85219011828,Drive results.json episode_summaries
+MASAC,E1,25,8760,-0.5912577995024707,-88050.11150190793,Drive results.json episode_summaries
+MASAC,E1,26,8760,-0.617648968359532,-91980.28436810151,Drive results.json episode_summaries
+MASAC,E1,27,8760,-0.624221940411225,-92959.13136603963,Drive results.json episode_summaries
+MASAC,E1,28,8760,-0.5910754955645872,-88022.96279947832,Drive results.json episode_summaries
+MASAC,E1,29,8760,-0.6177623385667682,-91997.16745936312,Drive results.json episode_summaries
+MASAC,E1,30,8752,-0.62171172874099,-92500.75784899946,Drive results.json episode_summaries
+MASAC,E1,31,8760,-0.6198266866174633,-92304.59017107263,Drive results.json episode_summaries
+MASAC,E1,32,8760,-0.625059442587418,-93083.85219011828,Drive results.json episode_summaries
+MASAC,E1,33,8760,-0.5912577995024707,-88050.11150190793,Drive results.json episode_summaries
+MASAC,E1,34,8760,-0.617648968359532,-91980.28436810151,Drive results.json episode_summaries
+MASAC,E1,35,8760,-0.624221940411225,-92959.13136603963,Drive results.json episode_summaries
+MASAC,E1,36,8760,-0.5910754955645872,-88022.96279947832,Drive results.json episode_summaries
+MASAC,E1,37,8753,-0.6177986854378559,-91929.0621918384,Drive results.json episode_summaries
+MASAC,E1,38,8760,-0.6198266866174633,-92304.59017107263,Drive results.json episode_summaries
+MASAC,E1,39,8760,-0.625059442587418,-93083.85219011828,Drive results.json episode_summaries
+MASAC,E1,40,8760,-0.5912577995024707,-88050.11150190793,Drive results.json episode_summaries
+MASAC,E1,41,8760,-0.617648968359532,-91980.28436810151,Drive results.json episode_summaries
+MASAC,E1,42,8760,-0.624221940411225,-92959.13136603963,Drive results.json episode_summaries
+MASAC,E1,43,8760,-0.5910754955645872,-88022.96279947832,Drive results.json episode_summaries
+MASAC,E1,44,8760,-0.6177623385667682,-91997.16745936312,Drive results.json episode_summaries
+MASAC,E1,45,8760,-0.6216226868236812,-92572.0505217826,Drive results.json episode_summaries
+MASAC,E1,46,8760,-0.5913046111629162,-88057.08269438148,Drive results.json episode_summaries
+MASAC,E1,47,8760,-0.6160705411193262,-91745.22498349007,Drive results.json episode_summaries
+MASAC,E1,48,8760,-0.622954731382117,-92770.41859742487,Drive results.json episode_summaries
+MASAC,E1,49,8748,-0.5895927763098163,-87681.87932169065,Drive results.json episode_summaries
+MASAC,E2,0,8760,-0.528240462095925,-78665.56961532516,Drive results.json episode_summaries
+MASAC,E2,1,8760,-0.5342859520192066,-79565.86397470025,Drive results.json episode_summaries
+MASAC,E2,2,8760,-0.51241294757989,-76308.53615359722,Drive results.json episode_summaries
+MASAC,E2,3,8760,-0.5284359870146329,-78694.68718621913,Drive results.json episode_summaries
+MASAC,E2,4,8760,-0.5342089289762134,-79554.39370313771,Drive results.json episode_summaries
+MASAC,E2,5,8760,-0.5124602174516978,-76315.57558290684,Drive results.json episode_summaries
+MASAC,E2,6,8760,-0.5278329040124459,-78604.87606553343,Drive results.json episode_summaries
+MASAC,E2,7,8760,-0.5341600304390212,-79547.11173297903,Drive results.json episode_summaries
+MASAC,E2,8,8760,-0.5127932614670209,-76365.17249766874,Drive results.json episode_summaries
+MASAC,E2,9,8760,-0.528396128213109,-78688.7514134962,Drive results.json episode_summaries
+MASAC,E2,10,8760,-0.5344206644554094,-79585.92535069956,Drive results.json episode_summaries
+MASAC,E2,11,8760,-0.5128660689783334,-76376.01499225342,Drive results.json episode_summaries
+MASAC,E2,12,8760,-0.5280416566818644,-78635.96351306327,Drive results.json episode_summaries
+MASAC,E2,13,8760,-0.5341204026896166,-79541.2103685377,Drive results.json episode_summaries
+MASAC,E2,14,8760,-0.5124616506653793,-76315.78901708829,Drive results.json episode_summaries
+MASAC,E2,15,8760,-0.5282891881860986,-78672.82590467381,Drive results.json episode_summaries
+MASAC,E2,16,8760,-0.5344664911717443,-79592.74986529615,Drive results.json episode_summaries
+MASAC,E2,17,8760,-0.512841510416361,-76372.35773120447,Drive results.json episode_summaries
+MASAC,E2,18,8760,-0.5282145512657044,-78661.7109744887,Drive results.json episode_summaries
+MASAC,E2,19,8760,-0.5344791460117901,-79594.63442407579,Drive results.json episode_summaries
+MASAC,E2,20,8760,-0.5124952866072731,-76320.7980815551,Drive results.json episode_summaries
+MASAC,E2,21,8760,-0.5284842861702306,-78701.87989647072,Drive results.json episode_summaries
+MASAC,E2,22,8737,-0.5342170296540485,-79346.72119748619,Drive results.json episode_summaries
+MASAC,E2,23,8760,-0.528316323448379,-78676.8668879326,Drive results.json episode_summaries
+MASAC,E2,24,8760,-0.5342200265674227,-79556.04635642059,Drive results.json episode_summaries
+MASAC,E2,25,8760,-0.5122386797760721,-76282.58419225266,Drive results.json episode_summaries
+MASAC,E2,26,8760,-0.5281246595625226,-78648.32430205088,Drive results.json episode_summaries
+MASAC,E2,27,8760,-0.5341713049896714,-79548.79073906186,Drive results.json episode_summaries
+MASAC,E2,28,8760,-0.5124019091372712,-76306.89230872242,Drive results.json episode_summaries
+MASAC,E2,29,8760,-0.5280629675781271,-78639.13713173468,Drive results.json episode_summaries
+MASAC,E2,30,8752,-0.5341520103821658,-79473.27271270016,Drive results.json episode_summaries
+MASAC,E2,31,8760,-0.528316323448379,-78676.8668879326,Drive results.json episode_summaries
+MASAC,E2,32,8760,-0.5342200265674227,-79556.04635642059,Drive results.json episode_summaries
+MASAC,E2,33,8760,-0.5122386797760721,-76282.58419225266,Drive results.json episode_summaries
+MASAC,E2,34,8760,-0.5281246595625226,-78648.32430205088,Drive results.json episode_summaries
+MASAC,E2,35,8760,-0.5341713049896714,-79548.79073906186,Drive results.json episode_summaries
+MASAC,E2,36,8760,-0.5124019091372712,-76306.89230872242,Drive results.json episode_summaries
+MASAC,E2,37,8753,-0.5279973791614397,-78566.5380166014,Drive results.json episode_summaries
+MASAC,E2,38,8760,-0.528316323448379,-78676.8668879326,Drive results.json episode_summaries
+MASAC,E2,39,8760,-0.5342200265674227,-79556.04635642059,Drive results.json episode_summaries
+MASAC,E2,40,8760,-0.5122386797760721,-76282.58419225266,Drive results.json episode_summaries
+MASAC,E2,41,8760,-0.5281246595625226,-78648.32430205088,Drive results.json episode_summaries
+MASAC,E2,42,8760,-0.5341713049896714,-79548.79073906186,Drive results.json episode_summaries
+MASAC,E2,43,8760,-0.5124019091372712,-76306.89230872242,Drive results.json episode_summaries
+MASAC,E2,44,8760,-0.5280629675781271,-78639.13713173468,Drive results.json episode_summaries
+MASAC,E2,45,8760,-0.5341292031088826,-79542.5209269748,Drive results.json episode_summaries
+MASAC,E2,46,8760,-0.5126333496593685,-76341.35843127315,Drive results.json episode_summaries
+MASAC,E2,47,8760,-0.5281921079341843,-78658.36871355871,Drive results.json episode_summaries
+MASAC,E2,48,8760,-0.5341373025630299,-79543.72709768642,Drive results.json episode_summaries
+MASAC,E2,49,8748,-0.5125064952745902,-76217.91595125597,Drive results.json episode_summaries
+MASAC,E3,0,8760,-0.54328587221065,-80906.13208961,Drive results.json episode_summaries
+MASAC,E3,1,8760,-0.5518098292620185,-82175.51977369978,Drive results.json episode_summaries
+MASAC,E3,2,8760,-0.5266826511246796,-78433.58040548729,Drive results.json episode_summaries
+MASAC,E3,3,8760,-0.5437156108790443,-80970.12877210727,Drive results.json episode_summaries
+MASAC,E3,4,8760,-0.5516603422252431,-82153.25816418321,Drive results.json episode_summaries
+MASAC,E3,5,8760,-0.5269059164552964,-78466.82907852274,Drive results.json episode_summaries
+MASAC,E3,6,8760,-0.5428022325761069,-80834.10847523384,Drive results.json episode_summaries
+MASAC,E3,7,8760,-0.5515759494845673,-82140.69039724176,Drive results.json episode_summaries
+MASAC,E3,8,8760,-0.5271277014266983,-78499.85729646392,Drive results.json episode_summaries
+MASAC,E3,9,8760,-0.5433765672185381,-80919.6383901847,Drive results.json episode_summaries
+MASAC,E3,10,8760,-0.5518946498872621,-82188.15126121108,Drive results.json episode_summaries
+MASAC,E3,11,8760,-0.527185775624718,-78508.505706033,Drive results.json episode_summaries
+MASAC,E3,12,8760,-0.5428711335833696,-80844.36921323539,Drive results.json episode_summaries
+MASAC,E3,13,8760,-0.5515063561842355,-82130.32656295635,Drive results.json episode_summaries
+MASAC,E3,14,8760,-0.526716133105878,-78438.56654212734,Drive results.json episode_summaries
+MASAC,E3,15,8760,-0.5434030689842839,-80923.58503313956,Drive results.json episode_summaries
+MASAC,E3,16,8760,-0.5518058895075868,-82174.93306546981,Drive results.json episode_summaries
+MASAC,E3,17,8760,-0.5271417917155541,-78501.95562228031,Drive results.json episode_summaries
+MASAC,E3,18,8760,-0.543199383343419,-80893.25216750195,Drive results.json episode_summaries
+MASAC,E3,19,8760,-0.5519228590949066,-82192.3521764135,Drive results.json episode_summaries
+MASAC,E3,20,8760,-0.5268976734633181,-78465.60153215734,Drive results.json episode_summaries
+MASAC,E3,21,8760,-0.5434026496022172,-80923.52257876217,Drive results.json episode_summaries
+MASAC,E3,22,8737,-0.551733265259201,-81948.39015568385,Drive results.json episode_summaries
+MASAC,E3,23,8760,-0.5431901089086011,-80891.87101866888,Drive results.json episode_summaries
+MASAC,E3,24,8760,-0.5512860059573528,-82097.51200716899,Drive results.json episode_summaries
+MASAC,E3,25,8760,-0.5263660388880146,-78386.43051120313,Drive results.json episode_summaries
+MASAC,E3,26,8760,-0.5425584560941135,-80797.80528153537,Drive results.json episode_summaries
+MASAC,E3,27,8760,-0.5511507904264829,-82077.37571031181,Drive results.json episode_summaries
+MASAC,E3,28,8760,-0.5263098821800003,-78378.06765424565,Drive results.json episode_summaries
+MASAC,E3,29,8760,-0.5424389493246577,-80780.00833342804,Drive results.json episode_summaries
+MASAC,E3,30,8752,-0.5507925898136747,-81949.12468283779,Drive results.json episode_summaries
+MASAC,E3,31,8760,-0.5431901089086011,-80891.87101866888,Drive results.json episode_summaries
+MASAC,E3,32,8760,-0.5512860059573528,-82097.51200716899,Drive results.json episode_summaries
+MASAC,E3,33,8760,-0.5263660388880146,-78386.43051120313,Drive results.json episode_summaries
+MASAC,E3,34,8760,-0.5425584560941135,-80797.80528153537,Drive results.json episode_summaries
+MASAC,E3,35,8760,-0.5511507904264829,-82077.37571031181,Drive results.json episode_summaries
+MASAC,E3,36,8760,-0.5263098821800003,-78378.06765424565,Drive results.json episode_summaries
+MASAC,E3,37,8753,-0.5423942671547753,-80708.80934689773,Drive results.json episode_summaries
+MASAC,E3,38,8760,-0.5431901089086011,-80891.87101866888,Drive results.json episode_summaries
+MASAC,E3,39,8760,-0.5512860059573528,-82097.51200716899,Drive results.json episode_summaries
+MASAC,E3,40,8760,-0.5263660388880146,-78386.43051120313,Drive results.json episode_summaries
+MASAC,E3,41,8760,-0.5425584560941135,-80797.80528153537,Drive results.json episode_summaries
+MASAC,E3,42,8760,-0.5511507904264829,-82077.37571031181,Drive results.json episode_summaries
+MASAC,E3,43,8760,-0.5263098821800003,-78378.06765424565,Drive results.json episode_summaries
+MASAC,E3,44,8760,-0.5424389493246577,-80780.00833342804,Drive results.json episode_summaries
+MASAC,E3,45,8760,-0.5507613602389888,-82019.38176679022,Drive results.json episode_summaries
+MASAC,E3,46,8760,-0.5265661854577639,-78416.23633837019,Drive results.json episode_summaries
+MASAC,E3,47,8760,-0.5426501765817953,-80811.46429656095,Drive results.json episode_summaries
+MASAC,E3,48,8760,-0.5510169561042634,-82057.44510304689,Drive results.json episode_summaries
+MASAC,E3,49,8748,-0.5263825588275348,-78281.50861859568,Drive results.json episode_summaries
+MATD3,E1,0,8760,-0.7290455099358968,-108569.45733965375,Drive results.json episode_summaries
+MATD3,E1,1,8760,-0.7408485589329936,-110327.1673963014,Drive results.json episode_summaries
+MATD3,E1,2,8760,-0.7290455099358968,-108569.45733965375,Drive results.json episode_summaries
+MATD3,E1,3,8760,-0.7407922956320674,-110318.78866552748,Drive results.json episode_summaries
+MATD3,E1,4,8760,-0.5922761108176945,-88201.75842297106,Drive results.json episode_summaries
+MATD3,E1,5,8752,-0.6203870136879436,-92303.661444547,Drive results.json episode_summaries
+MATD3,E1,6,8760,-0.7290455099358968,-108569.45733965375,Drive results.json episode_summaries
+MATD3,E1,7,8758,-0.7408411170337472,-110300.8705506865,Drive results.json episode_summaries
+MATD3,E1,8,8760,-0.7290455099358968,-108569.45733965375,Drive results.json episode_summaries
+MATD3,E1,9,8758,-0.7408411170337472,-110300.8705506865,Drive results.json episode_summaries
+MATD3,E1,10,8760,-0.6275426411947297,-93453.65012671915,Drive results.json episode_summaries
+MATD3,E1,11,8760,-0.5928723266513164,-88290.54688491405,Drive results.json episode_summaries
+MATD3,E1,12,8760,-0.6198809948244577,-92312.67774925823,Drive results.json episode_summaries
+MATD3,E1,13,8760,-0.6268358120596415,-93348.38913192181,Drive results.json episode_summaries
+MATD3,E1,14,8760,-0.5917727467841729,-88126.79745109903,Drive results.json episode_summaries
+MATD3,E1,15,8760,-0.6203342994187452,-92380.18386943953,Drive results.json episode_summaries
+MATD3,E1,16,8760,-0.6283982286783234,-93581.06421477592,Drive results.json episode_summaries
+MATD3,E1,17,8760,-0.5938568489662464,-88437.1619480534,Drive results.json episode_summaries
+MATD3,E1,18,8760,-0.6213662761289298,-92533.86584112022,Drive results.json episode_summaries
+MATD3,E1,19,8760,-0.6275623168218012,-93456.58022110263,Drive results.json episode_summaries
+MATD3,E1,20,8760,-0.5923983721498567,-88219.96558055666,Drive results.json episode_summaries
+MATD3,E1,21,8760,-0.6201243990915624,-92348.92551271548,Drive results.json episode_summaries
+MATD3,E1,22,8760,-0.6272274115573233,-93406.70612911659,Drive results.json episode_summaries
+MATD3,E1,23,8760,-0.5931696773648101,-88334.82835316751,Drive results.json episode_summaries
+MATD3,E1,24,8760,-0.6204905186511218,-92403.44803752506,Drive results.json episode_summaries
+MATD3,E1,25,8760,-0.6273433676959105,-93423.97431727499,Drive results.json episode_summaries
+MATD3,E1,26,8760,-0.5928058131346036,-88280.64169200516,Drive results.json episode_summaries
+MATD3,E1,27,8760,-0.6199991237039061,-92330.26950198569,Drive results.json episode_summaries
+MATD3,E1,28,8760,-0.6271063775182276,-93388.68174001445,Drive results.json episode_summaries
+MATD3,E1,29,8760,-0.593209215177488,-88340.71632423151,Drive results.json episode_summaries
+MATD3,E1,30,8760,-0.6206955466116958,-92433.98080141374,Drive results.json episode_summaries
+MATD3,E1,31,8760,-0.6273007341341804,-93417.62532726215,Drive results.json episode_summaries
+MATD3,E1,32,8760,-0.5938652665084503,-88438.41548843842,Drive results.json episode_summaries
+MATD3,E1,33,8760,-0.6217203631282271,-92586.59647705557,Drive results.json episode_summaries
+MATD3,E1,34,8760,-0.6277545907183286,-93485.2136497735,Drive results.json episode_summaries
+MATD3,E1,35,8760,-0.593056386533042,-88317.95708250062,Drive results.json episode_summaries
+MATD3,E1,36,8760,-0.620323505435223,-92378.5764294134,Drive results.json episode_summaries
+MATD3,E1,37,8760,-0.6270121202100872,-93374.64494168619,Drive results.json episode_summaries
+MATD3,E1,38,8760,-0.5929187672102019,-88297.46281294327,Drive results.json episode_summaries
+MATD3,E1,39,8760,-0.6207299658118058,-92439.10650869412,Drive results.json episode_summaries
+MATD3,E1,40,8760,-0.6273482118240455,-93424.69570483686,Drive results.json episode_summaries
+MATD3,E1,41,8760,-0.5930866282044822,-88322.46067221148,Drive results.json episode_summaries
+MATD3,E1,42,8760,-0.6205688221034855,-92415.10898765107,Drive results.json episode_summaries
+MATD3,E1,43,8760,-0.6271540325616335,-93395.77852907847,Drive results.json episode_summaries
+MATD3,E1,44,8760,-0.5929114224400491,-88296.36902977212,Drive results.json episode_summaries
+MATD3,E1,45,8760,-0.6205522129256076,-92412.63554888149,Drive results.json episode_summaries
+MATD3,E1,46,8760,-0.6274638329804146,-93441.91400744335,Drive results.json episode_summaries
+MATD3,E1,47,8760,-0.5932659126113043,-88349.15970607544,Drive results.json episode_summaries
+MATD3,E1,48,8760,-0.6209203261908646,-92467.45497634355,Drive results.json episode_summaries
+MATD3,E1,49,8760,-0.6270644681842904,-93382.44060200453,Drive results.json episode_summaries
+MATD3,E2,0,8760,-0.5379045652431999,-80104.74785601732,Drive results.json episode_summaries
+MATD3,E2,1,8760,-0.546346867690215,-81361.97553642682,Drive results.json episode_summaries
+MATD3,E2,2,8760,-0.5379045652431999,-80104.74785601732,Drive results.json episode_summaries
+MATD3,E2,3,8760,-0.5463129732708171,-81356.92797949008,Drive results.json episode_summaries
+MATD3,E2,4,8760,-0.5200509799956652,-77445.99194095447,Drive results.json episode_summaries
+MATD3,E2,5,8752,-0.5364557770549047,-79816.03633333693,Drive results.json episode_summaries
+MATD3,E2,6,8760,-0.5379045652431999,-80104.74785601732,Drive results.json episode_summaries
+MATD3,E2,7,8758,-0.5463226664745562,-81339.79652073077,Drive results.json episode_summaries
+MATD3,E2,8,8760,-0.5379045652431999,-80104.74785601732,Drive results.json episode_summaries
+MATD3,E2,9,8758,-0.5463226664745562,-81339.79652073077,Drive results.json episode_summaries
+MATD3,E2,10,8760,-0.5437832290180135,-80980.19846536257,Drive results.json episode_summaries
+MATD3,E2,11,8760,-0.5179435756514317,-77132.1572860112,Drive results.json episode_summaries
+MATD3,E2,12,8760,-0.5355468808063508,-79753.64148968176,Drive results.json episode_summaries
+MATD3,E2,13,8760,-0.5444056873465541,-81072.89495964885,Drive results.json episode_summaries
+MATD3,E2,14,8760,-0.5198361041934004,-77413.9926364812,Drive results.json episode_summaries
+MATD3,E2,15,8760,-0.5355810446343805,-79758.72916695195,Drive results.json episode_summaries
+MATD3,E2,16,8760,-0.5425436641559441,-80795.60246610318,Drive results.json episode_summaries
+MATD3,E2,17,8760,-0.5195452125324825,-77370.67305033731,Drive results.json episode_summaries
+MATD3,E2,18,8760,-0.5353446433967475,-79723.52429464363,Drive results.json episode_summaries
+MATD3,E2,19,8760,-0.5412439665334856,-80602.05149616668,Drive results.json episode_summaries
+MATD3,E2,20,8760,-0.5163800478966408,-76899.31673276775,Drive results.json episode_summaries
+MATD3,E2,21,8760,-0.5324095383276435,-79286.42844775267,Drive results.json episode_summaries
+MATD3,E2,22,8760,-0.539854063028672,-80395.06706622984,Drive results.json episode_summaries
+MATD3,E2,23,8760,-0.5162682233948295,-76882.66382795801,Drive results.json episode_summaries
+MATD3,E2,24,8760,-0.5338357535318733,-79498.82041596656,Drive results.json episode_summaries
+MATD3,E2,25,8760,-0.5423865388068095,-80772.20335911008,Drive results.json episode_summaries
+MATD3,E2,26,8760,-0.5187932362978955,-77258.6887494826,Drive results.json episode_summaries
+MATD3,E2,27,8760,-0.5354799564595091,-79743.67511595009,Drive results.json episode_summaries
+MATD3,E2,28,8760,-0.5443911206276645,-81070.7256838718,Drive results.json episode_summaries
+MATD3,E2,29,8760,-0.5209639882541299,-77581.95713080504,Drive results.json episode_summaries
+MATD3,E2,30,8760,-0.5374121495436477,-80031.41731004001,Drive results.json episode_summaries
+MATD3,E2,31,8760,-0.5447622909459948,-81126.00036767755,Drive results.json episode_summaries
+MATD3,E2,32,8760,-0.5210693798623016,-77597.65204909396,Drive results.json episode_summaries
+MATD3,E2,33,8760,-0.5370481840301343,-79977.2155657676,Drive results.json episode_summaries
+MATD3,E2,34,8760,-0.5440354758624605,-81017.76306543761,Drive results.json episode_summaries
+MATD3,E2,35,8760,-0.5196509887585685,-77386.42524592602,Drive results.json episode_summaries
+MATD3,E2,36,8760,-0.5357672874406514,-79786.46444566181,Drive results.json episode_summaries
+MATD3,E2,37,8760,-0.5426995523740894,-80818.8173395494,Drive results.json episode_summaries
+MATD3,E2,38,8760,-0.5191190755272117,-77307.21272751236,Drive results.json episode_summaries
+MATD3,E2,39,8760,-0.5343928392074653,-79581.78161477573,Drive results.json episode_summaries
+MATD3,E2,40,8760,-0.5410807127807018,-80577.73974730211,Drive results.json episode_summaries
+MATD3,E2,41,8760,-0.5172306432109047,-77025.98738696793,Drive results.json episode_summaries
+MATD3,E2,42,8760,-0.5332846171364575,-79416.74518396125,Drive results.json episode_summaries
+MATD3,E2,43,8760,-0.5401663542078549,-80441.57346863375,Drive results.json episode_summaries
+MATD3,E2,44,8760,-0.5170151327521121,-76993.89356944454,Drive results.json episode_summaries
+MATD3,E2,45,8760,-0.5333774205833492,-79430.56547327238,Drive results.json episode_summaries
+MATD3,E2,46,8760,-0.5409636860546514,-80560.31212725869,Drive results.json episode_summaries
+MATD3,E2,47,8760,-0.5180577945888039,-77149.16677016467,Drive results.json episode_summaries
+MATD3,E2,48,8760,-0.5341633753189277,-79547.6098524947,Drive results.json episode_summaries
+MATD3,E2,49,8760,-0.5400036063529057,-80417.33705807471,Drive results.json episode_summaries
+MATD3,E3,0,8760,-0.5684158445302419,-84648.48756744362,Drive results.json episode_summaries
+MATD3,E3,1,8760,-0.57691164288679,-85913.68185870076,Drive results.json episode_summaries
+MATD3,E3,2,8760,-0.5684158445302419,-84648.48756744362,Drive results.json episode_summaries
+MATD3,E3,3,8760,-0.5768798621596843,-85908.94907282019,Drive results.json episode_summaries
+MATD3,E3,4,8760,-0.5296572948608507,-78876.56435067789,Drive results.json episode_summaries
+MATD3,E3,5,8752,-0.5462371260239373,-81271.34455834546,Drive results.json episode_summaries
+MATD3,E3,6,8760,-0.5684158445302419,-84648.48756744362,Drive results.json episode_summaries
+MATD3,E3,7,8758,-0.5768946132006594,-85891.53138099337,Drive results.json episode_summaries
+MATD3,E3,8,8760,-0.5684158445302419,-84648.48756744362,Drive results.json episode_summaries
+MATD3,E3,9,8758,-0.5768946132006594,-85891.53138099337,Drive results.json episode_summaries
+MATD3,E3,10,8760,-0.5560367784337301,-82804.99704435108,Drive results.json episode_summaries
+MATD3,E3,11,8760,-0.5290481534341094,-78785.85100940758,Drive results.json episode_summaries
+MATD3,E3,12,8760,-0.5465653053425684,-81394.50527161527,Drive results.json episode_summaries
+MATD3,E3,13,8760,-0.5570915828035414,-82962.07851110339,Drive results.json episode_summaries
+MATD3,E3,14,8760,-0.5294059028282437,-78839.12704918205,Drive results.json episode_summaries
+MATD3,E3,15,8760,-0.5461359378768078,-81330.56386861422,Drive results.json episode_summaries
+MATD3,E3,16,8760,-0.5573036510462676,-82993.65971381016,Drive results.json episode_summaries
+MATD3,E3,17,8760,-0.5306691975196048,-79027.25689461955,Drive results.json episode_summaries
+MATD3,E3,18,8760,-0.5478043395531886,-81579.02224626085,Drive results.json episode_summaries
+MATD3,E3,19,8760,-0.5573450207988863,-82999.82049737014,Drive results.json episode_summaries
+MATD3,E3,20,8760,-0.5314246043958997,-79139.75208663738,Drive results.json episode_summaries
+MATD3,E3,21,8760,-0.5477750204600343,-81574.6560469083,Drive results.json episode_summaries
+MATD3,E3,22,8760,-0.5571922573500272,-82977.07096456605,Drive results.json episode_summaries
+MATD3,E3,23,8760,-0.5310539928085858,-79084.56060905459,Drive results.json episode_summaries
+MATD3,E3,24,8760,-0.5488046468150503,-81727.98800369729,Drive results.json episode_summaries
+MATD3,E3,25,8760,-0.5592074796612345,-83277.17787115104,Drive results.json episode_summaries
+MATD3,E3,26,8760,-0.532613615070585,-79316.81955631153,Drive results.json episode_summaries
+MATD3,E3,27,8760,-0.5496729222899496,-81857.2915874193,Drive results.json episode_summaries
+MATD3,E3,28,8760,-0.5590967239198357,-83260.68412614193,Drive results.json episode_summaries
+MATD3,E3,29,8760,-0.5322197004957441,-79258.15779782619,Drive results.json episode_summaries
+MATD3,E3,30,8760,-0.5490741829018809,-81768.1273177481,Drive results.json episode_summaries
+MATD3,E3,31,8760,-0.5585123883529018,-83173.66487351415,Drive results.json episode_summaries
+MATD3,E3,32,8760,-0.531245422769196,-79113.06835878865,Drive results.json episode_summaries
+MATD3,E3,33,8760,-0.5490237537694356,-81760.61741134436,Drive results.json episode_summaries
+MATD3,E3,34,8760,-0.5590613648918028,-83255.41845968728,Drive results.json episode_summaries
+MATD3,E3,35,8760,-0.5322138703365309,-79257.28957051618,Drive results.json episode_summaries
+MATD3,E3,36,8760,-0.5493746202055392,-81812.8684410089,Drive results.json episode_summaries
+MATD3,E3,37,8760,-0.5589779915173627,-83243.00249676566,Drive results.json episode_summaries
+MATD3,E3,38,8760,-0.5317935634108971,-79194.6974631508,Drive results.json episode_summaries
+MATD3,E3,39,8760,-0.5490083374794791,-81758.32161744402,Drive results.json episode_summaries
+MATD3,E3,40,8760,-0.5589212199068986,-83234.54806853534,Drive results.json episode_summaries
+MATD3,E3,41,8760,-0.5318280955072872,-79199.83998294521,Drive results.json episode_summaries
+MATD3,E3,42,8760,-0.549230301955724,-81791.3765672464,Drive results.json episode_summaries
+MATD3,E3,43,8760,-0.5593175702688571,-83293.5725644382,Drive results.json episode_summaries
+MATD3,E3,44,8760,-0.5331477726212497,-79396.3662987565,Drive results.json episode_summaries
+MATD3,E3,45,8760,-0.5503917691234074,-81964.34225785782,Drive results.json episode_summaries
+MATD3,E3,46,8760,-0.5601154123894135,-83412.38721303146,Drive results.json episode_summaries
+MATD3,E3,47,8760,-0.5331268724667073,-79393.25384774205,Drive results.json episode_summaries
+MATD3,E3,48,8760,-0.550808564915432,-82026.41148720612,Drive results.json episode_summaries
+MATD3,E3,49,8760,-0.5606717322690229,-83495.23436950288,Drive results.json episode_summaries

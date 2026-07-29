@@ -36,57 +36,88 @@ El problema se descompone en tres dimensiones:
 
 La literatura reporta evaluaciones aisladas de algoritmos individuales sobre dimensiones únicas. **No existe un marco comparativo unificado** que cubra HAPPO, MASAC, MATD3 y MAAC bajo una misma formulación Dec-POMDP y esquema CTDE, aplicado simultáneamente a flexibilidad, CO₂ y costos. Esta brecha impide determinar el mejor agente MADRL para la gestión coordinada en comunidades inteligentes, particularmente en redes aisladas como el SEAI.
 
-### 1.1.3 Formulación del problema
+### 1.2.1 Formulación del problema
 
-**Problema general (PG):**
-> ¿Qué algoritmo MADRL ofrece el mejor compromiso (ranking / frontera de Pareto) de gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes simuladas bajo CityLearn v3 en el SEAI Iquitos?
+#### 1.2.1.1 Formulación del problema general
 
-**Problemas específicos:**
-- **PE.1:** ¿Qué MADRL lidera la flexibilidad energética (escenario E1) y con qué evidencia descriptiva e inferencial?
-- **PE.2:** ¿Qué MADRL lidera la reducción de emisiones de CO₂ (escenario E2) y con qué evidencia descriptiva e inferencial?
-- **PE.3:** ¿Qué MADRL lidera la optimización de costos energéticos (escenario E3) y con qué evidencia descriptiva e inferencial?
+¿En qué medida el algoritmo MADRL (aprendizaje por refuerzo profundo multiagente) impacta en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño a nivel global?
 
----
+#### 1.2.1.2 Formulación de los problemas específicos
 
-## 1.2 Objetivos
+PE.1: ¿En qué medida el algoritmo MADRL impacta en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E1?
 
-### 1.2.1 Objetivo general
-> **OG.** Identificar el(los) MADRL recomendable(s) por eje y el ranking integrado de gestión coordinada de flexibilidad, CO₂ y costos en el SEAI Iquitos, **sin asumir dominancia Pareto universal**.
+PE.2: ¿En qué medida el algoritmo MADRL impacta en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E2?
 
-### 1.2.2 Objetivos específicos
-> **OE.1.** Identificar el MADRL líder en flexibilidad energética (E1) y contrastar si la diferencia entre algoritmos es estadísticamente sustentable.
->
-> **OE.2.** Identificar el MADRL líder en reducción de emisiones de CO₂ (E2) y contrastar si la diferencia entre algoritmos es estadísticamente sustentable.
->
-> **OE.3.** Identificar el MADRL líder en costos energéticos (E3) y contrastar si la diferencia entre algoritmos es estadísticamente sustentable.
-
-**Coherencia vertical:** cada OE responde a su PE, se operacionaliza con un escenario de entrenamiento (E1, E2, E3) cuyos pesos de recompensa priorizan el eje correspondiente, y se evalúa con los KPIs de CityLearn v2 (`peak_average`, `ramping_average`, `carbon_emissions`, `electricity_cost`, etc.) más la recompensa episódica. Las métricas primarias son KPIs energéticos y recompensa MADRL; accuracy/precision/recall/F1 no se usan como métricas centrales (solo serían auxiliares si se dicotomizara éxito vs baseline).
+PE.3: ¿En qué medida el algoritmo MADRL impacta en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E3?
 
 ---
 
-## 1.3 Hipótesis
+## 1.3 Objetivos e hipótesis
 
-> **Nota metodológica:** el estudio es *cuantitativo, aplicado y cuasiexperimental factorial 4×3 (algoritmo × escenario), basado en simulación*. Se formula H₀/H₁ por eje y se contrastan **dos capas de evidencia** que no deben fusionarse: (A) series episódicas alineadas a OE; (B) KPI-gains de entrenamiento.
+### 1.3.1 Objetivos
 
-**Hipótesis general (HG) — ranking multiobjetivo:**
-> **H₁(G):** no existe un único MADRL que domine simultáneamente los tres ejes; el ranking integrado y los líderes por eje pueden diferir (trade-off Pareto).  
-> **H₀(G):** las distribuciones de desempeño entre algoritmos son idénticas en el agregado de ejes (omnibus).
+#### 1.3.1.1 Objetivo general
 
-**Hipótesis específicas (contraste de efecto del algoritmo):**
-- **HE.1:** H₁₁ = las distribuciones de desempeño de flexibilidad difieren entre algoritmos; H₀₁ = son idénticas.
-- **HE.2:** H₁₂ = las distribuciones de emisiones de CO₂ difieren entre algoritmos; H₀₂ = son idénticas.
-- **HE.3:** H₁₃ = las distribuciones de costo energético difieren entre algoritmos; H₀₃ = son idénticas.
+OG. - Determinar el impacto de los algoritmos aprendizaje por refuerzo profundo multiagente (MADRLs) en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, e identificar cuál de los algoritmos presenta el mejor desempeño a nivel global.
 
-**Contrastación (α = 0,05):** Shapiro–Wilk (normalidad) → Kruskal–Wallis (omnibus) → Mann–Whitney U con corrección Holm (pares) y Wilcoxon signed-rank (pareado por KPI, exploratorio). Corrida canónica `madrl_v3_20260627_164047` (seed = 0; ≈50 episodios; HAPPO n = 49).
+#### 1.3.1.2 Objetivos específicos
 
-| Hipótesis | Capa A (episódica, OE-alineada) | Capa B (KPI-gains) | Veredicto |
-|-----------|----------------------------------|--------------------|-----------|
-| **HG** | — (se decide por ejes + ranking) | KW p = 0,155 → **no se rechaza H₀** omnibus | Ranking descriptivo: **MATD3** (score 0,6667); **sin dominador Pareto**; HG de ranking/Pareto **aceptada**; superioridad omnibus KPI-gains **no confirmada** |
-| **HE.1** | KW H = 36,31; p = 1,305×10⁻⁸; ε² = 0,233 → **rechazar H₀** | KW p = 0,281 → no rechazar H₀ | Diferencia episódica **sí**; KPI-gains **no**. Líder compuesto E1: **MATD3**; media episódica `reward_mean_average`: **MAAC** |
-| **HE.2** | KW H = 6,25; p = 0,0439; ε² = 0,029 → **rechazar H₀** (efecto pequeño) | KW p = 0,546 → no rechazar H₀ | Diferencia episódica débil **sí**; KPI-gains **no**. Líder descriptivo CO₂: **MATD3** |
-| **HE.3** | KW H = 2,76; p = 0,251 → **no rechazar H₀** | KW p = 0,388 → no rechazar H₀ | Liderazgo de **MAAC** (Δcosto 9 515 EUR en E3) es **descriptivo**, no inferencial omnibus |
+OE.1: Determinar el impacto de los algoritmos MADRLs en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E1.
 
-Fuentes: `gdrive_objective_aligned_statistics.csv` (capa A); `hipotesis_estadisticas_madrl.csv` (capa B). Ver Capítulos 5 y 6.
+OE.2: Determinar el impacto de los algoritmos MADRLs en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E2.
+
+OE.3: Determinar el impacto de los algoritmos MADRLs en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E3.
+
+**Coherencia vertical:** cada OE responde a su PE, se operacionaliza con un escenario (E1, E2, E3) cuyos pesos de recompensa priorizan el eje correspondiente, y se evalúa con KPI-gains frente al baseline CityLearn v2 y con KPIs físicos de distrito y de edificio. Contrastación en Cap. 5 (§§5.2–5.5).
+
+#### 1.3.1.3 Criterios de determinación del impacto (cumplimiento completo)
+
+Para cumplir el OG y los OE.1–OE.3, y para demostrar las hipótesis, se exige el conjunto **completo** de criterios C1–C5 (sin parciales). **C5 (control de recursos)** es obligatorio. Cada eje se reporta a **nivel distrito** y a **nivel edificio**.
+
+| Id | Criterio | Medida / prueba | Rol |
+|---|---|---|---|
+| **C1** | Impacto vs baseline | Wilcoxon KPI-gains vs cero + Holm | Inferencial HE |
+| **C2** | Diferencias entre algoritmos | Kruskal–Wallis / Friedman + Holm | Inferencial HE |
+| **C3** | KPIs físicos de distrito por eje | flex_composite / ΔCO₂ / Δcosto | Descriptivo distrito |
+| **C4** | KPIs desagregados por edificio por eje | 17 edificios × E1/E2/E3 | Descriptivo edificio |
+| **C5** | Control de recursos | BESS, EV/V2G, carga desplazable (acciones y éxito EV) | Obligatorio (atribuibilidad) |
+
+Evidencia Cap. 5: §§5.1.1, 5.2 (C3–C4), 5.3–5.5 (C1–C2), 5.4.5 (C5).
+
+### 1.3.2 Hipótesis
+
+> **Nota metodológica:** estudio cuantitativo, aplicado, cuasiexperimental factorial 4×3 (algoritmo × escenario), basado en simulación. Puerta paramétrica (Shapiro–Wilk); si se rechaza normalidad, solo batería no paramétrica decide las hipótesis (α = 0,05). Unidad primaria: KPI-gains orientados. Corrida canónica madrl_v3_20260627_164047.
+
+#### 1.3.2.1 Hipótesis general
+
+H0G.-El algoritmo MADRL no impacta de manera estadísticamente significativa y diferenciada en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas en el desempeño global de los algoritmos.
+
+H1G.- El algoritmo MADRL impacta de manera estadísticamente significativa y diferenciada en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y el desempeño global difiere entre los algoritmos.
+
+#### 1.3.2.2 Hipótesis específicas
+
+HE10.- El algoritmo MADRL no impacta de manera estadísticamente significativa en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E1.
+
+HE11.- El algoritmo MADRL impacta de manera estadísticamente significativa en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E1.
+
+HE20.- El algoritmo MADRL no impacta de manera estadísticamente significativa en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E2.
+
+HE21.- El algoritmo MADRL impacta de manera estadísticamente significativa en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E2.
+
+HE30.-El algoritmo MADRL no impacta de manera estadísticamente significativa en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E3.
+
+HE31.-El algoritmo MADRL impacta de manera estadísticamente significativa en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E3.
+
+#### 1.3.2.3 Resumen de contrastación (Cap. 5)
+
+| Hipótesis | Decisión (KPI-gains, α = 0,05) | Líder descriptivo |
+|---|---|---|
+| **H0G / H1G** | Se rechaza H0G y se respalda H1G **exploratoriamente** (Friedman p = 0,0096); sin ganador global único | MAAC (score E1–E3) / MATD3 (mediana KPI / score 0,6667) |
+| **HE10 / HE11** | No se rechaza HE10; no se respalda HE11 (KW p = 0,4685) | **MAAC** (E1) |
+| **HE20 / HE21** | No se rechaza HE20; no se respalda HE21 (KW p = 0,7648) | **MATD3** (E2) |
+| **HE30 / HE31** | No se rechaza HE30; no se respalda HE31 (KW p = 0,7357) | **MAAC** (E3) |
+
+Fuente: `decisiones_problemas_objetivos_hipotesis.csv`. Detalle en Capítulos 5 y 6.
 
 ---
 

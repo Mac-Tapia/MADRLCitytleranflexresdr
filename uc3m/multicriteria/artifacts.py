@@ -152,14 +152,108 @@ def merge_with_illustrative(
     return out, prov
 
 
+def episode_summary_path(run_dir: Path, algo: str, scenario: str) -> Path:
+    return run_dir / algo / scenario / "figures" / "tables" / "episode_summary.csv"
+
+
+def load_episode_reward_series(
+    run_dir: Path,
+    *,
+    scenario: str = "E1",
+    algorithms: Optional[Sequence[str]] = None,
+) -> Dict[str, list[float]]:
+    """Load per-episode reward_mean from Drive-derived episode_summary.csv."""
+
+    algos = list(algorithms or ALGORITHMS)
+    out: Dict[str, list[float]] = {}
+    for algo in algos:
+        path = episode_summary_path(run_dir, algo, scenario)
+        if not path.is_file():
+            continue
+        frame = pd.read_csv(path)
+        col = None
+        for candidate in ("reward_mean_average", "reward_mean", "reward"):
+            if candidate in frame.columns:
+                col = candidate
+                break
+        if col is None:
+            continue
+        if "episode" in frame.columns:
+            frame = frame.sort_values("episode")
+        series = [float(x) for x in frame[col].tolist() if np.isfinite(float(x))]
+        if series:
+            out[algo] = series
+    return out
+
+
+def training_stability_from_episode_rewards(
+    rewards: Sequence[float],
+    *,
+    steps_per_episode: float = 8760.0,
+    early_late_fraction: float = 0.2,
+) -> Dict[str, float]:
+    """Derive C4/C5/C6 from a single real 50-ep training curve (no invention).
+
+    - C4: sample variance of episodic reward (stability proxy; campaign is 1 seed).
+    - C5: env-steps to 90% of asymptotic episodic reward (episode_idx * steps/ep).
+    - C6: |mean(last F) - mean(first F)| early–late gap (F≈20% of episodes).
+    """
+
+    from uc3m.multicriteria.criteria import steps_to_fraction_of_asymptotic
+
+    arr = np.asarray(list(rewards), dtype=float)
+    arr = arr[np.isfinite(arr)]
+    if arr.size == 0:
+        return {}
+
+    c4 = float(np.var(arr, ddof=1)) if arr.size > 1 else 0.0
+    ep_to_90 = steps_to_fraction_of_asymptotic(arr.tolist(), fraction=0.90)
+    c5 = float(ep_to_90) * float(steps_per_episode)
+    n_edge = max(1, int(round(arr.size * float(early_late_fraction))))
+    early = float(np.mean(arr[:n_edge]))
+    late = float(np.mean(arr[-n_edge:]))
+    c6 = abs(late - early)
+    return {"C4": c4, "C5": c5, "C6": c6}
+
+
+def load_real_c4c6_from_drive(
+    run_dir: Path,
+    *,
+    scenario: str = "E1",
+    algorithms: Optional[Sequence[str]] = None,
+) -> Tuple[Dict[str, Dict[str, float]], Dict[str, Dict[str, str]], Dict[str, list[float]]]:
+    """Fill C4–C6 + learning curves from real episode_summary tables."""
+
+    series = load_episode_reward_series(run_dir, scenario=scenario, algorithms=algorithms)
+    partial: Dict[str, Dict[str, float]] = {}
+    provenance: Dict[str, Dict[str, str]] = {}
+    for algo, rewards in series.items():
+        metrics = training_stability_from_episode_rewards(rewards)
+        if not metrics:
+            continue
+        partial[algo] = metrics
+        provenance[algo] = {
+            "C4": "drive_episode_summary.reward_mean_variance",
+            "C5": "drive_episode_summary.episodes_to_90pct_asymptotic*8760",
+            "C6": "drive_episode_summary.early_late_reward_gap_abs",
+        }
+    return partial, provenance, series
+
+
 def load_decision_matrix(
     *,
     repo: Optional[Path] = None,
     run_dir: Optional[Path] = None,
     scenario: str = "E1",
     prefer_real: bool = True,
+    allow_illustrative_fill: bool = True,
 ) -> Dict[str, Any]:
-    """Load a decision matrix from run artefacts when present, else illustrative."""
+    """Load a decision matrix from run artefacts when present, else illustrative.
+
+    When ``prefer_real`` and Drive artefacts exist, C1–C3 come from district
+    objectives and C4–C6 from episode_summary (50 ep). Set
+    ``allow_illustrative_fill=False`` for closure builds (no synthetic cells).
+    """
 
     resolved = resolve_run_dir(repo=repo, run_dir=run_dir) if prefer_real else None
     source = "illustrative"
@@ -167,6 +261,8 @@ def load_decision_matrix(
     provenance: Dict[str, Dict[str, str]] = {}
     extras: Dict[str, object] = {}
     require_real_technical = False
+    learning_curves: Dict[str, list[float]] = {}
+    seed_metric_samples: Dict[str, Dict[str, Sequence[float]]] = {}
 
     if resolved is not None:
         district_csv = (
@@ -180,12 +276,35 @@ def load_decision_matrix(
                 district_csv, scenario=scenario
             )
             require_real_technical = True
-            source = "hybrid_real_c1c3_plus_illustrative"
+            source = "real_drive_50ep_c1c3"
             extras["district_csv"] = str(district_csv)
             extras["run_dir"] = str(resolved)
             missing = [a for a in ALGORITHMS if a not in partial or "C1" not in partial[a]]
             if missing:
                 extras["algorithms_missing_real_c1c3"] = missing
+
+            c456, prov456, learning_curves = load_real_c4c6_from_drive(
+                resolved,
+                scenario=scenario,
+                algorithms=[a for a in partial if {"C1", "C2", "C3"}.issubset(partial[a])],
+            )
+            for algo, vals in c456.items():
+                partial.setdefault(algo, {}).update(vals)
+                provenance.setdefault(algo, {}).update(prov456.get(algo, {}))
+            if c456 and all(
+                {"C1", "C2", "C3", "C4", "C5", "C6"}.issubset(partial.get(a, {}))
+                for a in partial
+                if {"C1", "C2", "C3"}.issubset(partial.get(a, {}))
+            ):
+                source = "real_drive_50ep_c1c6"
+            extras["learning_curve_episodes"] = {
+                a: len(v) for a, v in learning_curves.items()
+            }
+            # Real seed samples = episodic rewards (single campaign seed).
+            seed_metric_samples = {
+                "C4": {a: list(learning_curves[a]) for a in learning_curves},
+            }
+
         report = resolved / "resumen_comparativo" / "best_madrl_report.json"
         if report.is_file():
             extras["best_madrl_report"] = str(report)
@@ -196,14 +315,48 @@ def load_decision_matrix(
             except (OSError, json.JSONDecodeError):
                 pass
 
-    matrix, provenance = merge_with_illustrative(
-        partial,
-        provenance=provenance,
-        require_real_technical=require_real_technical,
-    )
-    if not partial:
-        source = "illustrative"
+    if allow_illustrative_fill:
+        matrix, provenance = merge_with_illustrative(
+            partial,
+            provenance=provenance,
+            require_real_technical=require_real_technical,
+        )
+        if not partial:
+            source = "illustrative"
+        elif source.startswith("real_drive") and any(
+            "illustrative" in str(v)
+            for algo_prov in provenance.values()
+            for v in algo_prov.values()
+        ):
+            source = "hybrid_real_c1c3_plus_illustrative"
+        if not seed_metric_samples:
+            seed_metric_samples = {
+                cid: {
+                    algo: vals
+                    for algo, vals in by_algo.items()
+                    if algo in matrix
+                }
+                for cid, by_algo in ILLUSTRATIVE_SEED_SPREAD.items()
+            }
+    else:
+        # Closure mode: keep only algorithms with full real C1–C6.
+        matrix = {
+            a: dict(vals)
+            for a, vals in partial.items()
+            if {"C1", "C2", "C3", "C4", "C5", "C6"}.issubset(vals.keys())
+        }
+        provenance = {a: dict(provenance.get(a, {})) for a in matrix}
+        if not matrix:
+            raise FileNotFoundError(
+                "real_only multicriteria: missing Drive C1–C6 "
+                "(district_objectives + episode_summary)"
+            )
+        if any("illustrative" in str(v) for p in provenance.values() for v in p.values()):
+            raise RuntimeError("real_only multicriteria: illustrative provenance leaked")
+        source = "real_drive_50ep_c1c6"
+
     extras["algorithms_ranked"] = list(matrix.keys())
+    extras["learning_curves"] = learning_curves
     return {
         "decision_matrix": matrix,
         "provenance": provenance,
@@ -216,6 +369,9 @@ def load_decision_matrix(
                 for algo, vals in by_algo.items()
                 if algo in matrix
             }
-            for cid, by_algo in ILLUSTRATIVE_SEED_SPREAD.items()
+            for cid, by_algo in seed_metric_samples.items()
+        },
+        "learning_curves": {
+            a: [series] for a, series in learning_curves.items() if a in matrix
         },
     }

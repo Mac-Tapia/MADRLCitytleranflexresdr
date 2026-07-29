@@ -45,6 +45,3 @@ Carpeta Drive: https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS
 - MAAC/E1: 13 figuras en `D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E1\figures`
 - MAAC/E2: 13 figuras en `D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E2\figures`
 - MAAC/E3: 13 figuras en `D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\MAAC\E3\figures`
-- HAPPO/E1: 7 figuras en `D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\HAPPO\E1\figures`
-- HAPPO/E2: 7 figuras en `D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\HAPPO\E2\figures`
-- HAPPO/E3: 7 figuras en `D:\MADRLCitytleranflexresdr\outputs\madrl_v3_20260627_164047\HAPPO\E3\figures`

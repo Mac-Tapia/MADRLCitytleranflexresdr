@@ -1,0 +1,132 @@
+{
+  "run_id": "madrl_v3_20260627_164047",
+  "drive_source": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
+  "generated_at_utc": "2026-07-28T23:57:38.809673+00:00",
+  "source_root": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data",
+  "output_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\analisis_cuantitativo_completo_50_episodios",
+  "algorithms": [
+    "HAPPO",
+    "MAAC",
+    "MASAC",
+    "MATD3"
+  ],
+  "scenarios": [
+    "E1",
+    "E2",
+    "E3"
+  ],
+  "coverage": {
+    "treatments": 12,
+    "episodes_recorded_total": 600,
+    "district_kpi_values": 668,
+    "objective_kpi_values_all_axes": 648,
+    "target_scenario_objective_kpi_values": 216,
+    "comparable_target_kpi_gains": 104,
+    "building_kpi_values": 15300,
+    "building_behavior_rows": 204,
+    "episode_rows_reconstructed": 600
+  },
+  "global_test": {
+    "test": "Friedman sobre tres efectos primarios (OE1, OE2, OE3)",
+    "n_dimensions": 3,
+    "algorithms": 4,
+    "statistic": 6.600000000000001,
+    "p_value": 0.08580108740012288,
+    "kendall_w": 0.7333333333333335,
+    "significant": false,
+    "leader_topsis": "MAAC",
+    "leader_topsis_score": 0.9366270940691049
+  },
+  "global_leader_topsis": {
+    "algorithm": "MAAC",
+    "effect_flexibility_percent": -1.2425799541217586,
+    "effect_co2_percent": -1.35270229072142,
+    "effect_cost_percent": -0.2675335325077984,
+    "mean_raw_effect_percent": -0.954271925783659,
+    "mean_minmax_score": 0.9549195154230322,
+    "topsis_equal_weight": 0.9366270940691049,
+    "mean_objective_rank": 1.6666666666666667,
+    "rank_topsis": 1
+  },
+  "hypothesis_decisions": [
+    {
+      "scope": "OE1",
+      "scenario": "E1",
+      "dimension": "Flexibilidad energética",
+      "null_hypothesis": "HE10",
+      "alternative_hypothesis": "HE11",
+      "impact_condition": false,
+      "difference_condition": false,
+      "friedman_statistic": 1.8000000000000043,
+      "friedman_p": 0.6149349357825364,
+      "kendall_w": 0.20000000000000048,
+      "significant_impact_algorithms_holm": "ninguno",
+      "significant_posthoc_pairs_holm": "ninguno",
+      "primary_leader": "MATD3",
+      "leader_effect_percent": -0.09229901555254383,
+      "decision": "No rechazar HE10 y no respaldar HE11.",
+      "objective_compliance": "Cumplido cuantitativamente: se calculó el impacto, se compararon cuatro algoritmos y se identificó el líder."
+    },
+    {
+      "scope": "OE2",
+      "scenario": "E2",
+      "dimension": "Emisiones de CO₂",
+      "null_hypothesis": "HE20",
+      "alternative_hypothesis": "HE21",
+      "impact_condition": true,
+      "difference_condition": true,
+      "friedman_statistic": 39.35294117647061,
+      "friedman_p": 1.4611307640126444e-08,
+      "kendall_w": 0.7716262975778551,
+      "significant_impact_algorithms_holm": "HAPPO, MAAC, MASAC",
+      "significant_posthoc_pairs_holm": "HAPPO-MAAC; HAPPO-MASAC; HAPPO-MATD3; MASAC-MATD3",
+      "primary_leader": "MATD3",
+      "leader_effect_percent": -0.41931781815750746,
+      "decision": "Rechazar HE20 y respaldar HE21; el impacto significativo es predominantemente desfavorable.",
+      "objective_compliance": "Cumplido cuantitativamente: se calculó el impacto, se compararon cuatro algoritmos y se identificó el líder."
+    },
+    {
+      "scope": "OE3",
+      "scenario": "E3",
+      "dimension": "Costos energéticos",
+      "null_hypothesis": "HE30",
+      "alternative_hypothesis": "HE31",
+      "impact_condition": true,
+      "difference_condition": false,
+      "friedman_statistic": 6.035294117647084,
+      "friedman_p": 0.10990565877943162,
+      "kendall_w": 0.11833910034602124,
+      "significant_impact_algorithms_holm": "MATD3",
+      "significant_posthoc_pairs_holm": "ninguno",
+      "primary_leader": "MAAC",
+      "leader_effect_percent": -0.2675335325077984,
+      "decision": "No respaldar HE31: existe impacto significativo en al menos un algoritmo, pero no diferencias globales/post hoc.",
+      "objective_compliance": "Cumplido cuantitativamente: se calculó el impacto, se compararon cuatro algoritmos y se identificó el líder."
+    },
+    {
+      "scope": "OG",
+      "scenario": "E1-E3",
+      "dimension": "Gestión coordinada integral",
+      "null_hypothesis": "H0G",
+      "alternative_hypothesis": "H1G",
+      "impact_condition": false,
+      "difference_condition": false,
+      "friedman_statistic": 6.600000000000001,
+      "friedman_p": 0.08580108740012288,
+      "kendall_w": 0.7333333333333335,
+      "significant_impact_algorithms_holm": "La condición conjunta no se cumple en OE1, OE2 y OE3",
+      "significant_posthoc_pairs_holm": "no aplicable con n=3 dimensiones",
+      "primary_leader": "MAAC",
+      "leader_effect_percent": 0.9366270940691049,
+      "decision": "No rechazar H0G y no respaldar H1G bajo la regla conjuntiva: no se demostraron impacto y diferencias en las tres dimensiones; el ranking global es descriptivo.",
+      "objective_compliance": "OG cumplido cuantitativamente: se integraron los tres efectos y TOPSIS identificó el mejor desempeño relativo, sin afirmar superioridad estadística global."
+    }
+  ],
+  "delta_inconsistencies": 24,
+  "limitations": [
+    "Una sola semilla (seed=0) por tratamiento.",
+    "La inferencia OE2/OE3 usa 17 edificios como bloques emparejados; no sustituye réplicas independientes de entrenamiento.",
+    "La inferencia OE1 usa tres KPI de flexibilidad como bloques.",
+    "HAPPO conserva 49 episodios históricos y el episodio final post-resume en artefactos separados; se unen por índice 0..49 sin imputación."
+  ]
+}

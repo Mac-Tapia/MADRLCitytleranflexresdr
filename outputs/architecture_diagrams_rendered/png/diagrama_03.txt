@@ -1,1 +1,0 @@
-Diagrama 3 — Arquitectura Dec-POMDP y CTDE de los 17 Agentes

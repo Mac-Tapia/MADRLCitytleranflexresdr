@@ -1,0 +1,145 @@
+{
+  "generated_at": "2026-07-29T21:49:30.764400+00:00",
+  "stamp": "20260729_164927",
+  "run_id": "madrl_v3_20260627_164047",
+  "regeneration": {
+    "source": "real_drive_50ep_c1c6",
+    "algorithms": [
+      "MAAC",
+      "MASAC",
+      "MATD3"
+    ],
+    "topsis_winner": "MAAC",
+    "old_figure_sha256": {
+      "pareto_cost_co2_flex.png": "b83fe1edffaed9b4d4d4159314a4b4019c00dba055f22c36247e3b55f70f2d66",
+      "learning_curves.png": "f5d115304afa0b8278099f3442041a0c537630f071085b0b213f20382e5bbc84",
+      "degradation_bars.png": "31b91fccf64fc3c8beb974684d5e26e2bd8d7829f793eb70fa8bad9e8140292a"
+    },
+    "new_figure_sha256": {
+      "pareto_cost_co2_flex.png": "707abddba72c926fc9bbb7db592a6ebf2e15e34c00a803a5b36b512d3279caac",
+      "learning_curves.png": "7d9c5136bc42f7925219c3bacb5b0dd785d50ea1e01e4144b78ef4a0c971e04b",
+      "degradation_bars.png": "8edd97ddecba29ffca9249efed449abd62afd7b6dd52976e421736c560eae8bf"
+    },
+    "provenance_sample": {
+      "MAAC": {
+        "C1": "district_objectives.electricity_cost_delta_eur",
+        "C2": "district_objectives.-carbon_emissions_delta_kg",
+        "C3": "district_objectives.flex_composite_or_|grid_import_delta|",
+        "C4": "drive_episode_summary.reward_mean_variance",
+        "C5": "drive_episode_summary.episodes_to_90pct_asymptotic*8760",
+        "C6": "drive_episode_summary.early_late_reward_gap_abs"
+      }
+    },
+    "decision_matrix": {
+      "MAAC": {
+        "C1": 3628.0400708369775,
+        "C2": -38565.84588019649,
+        "C3": 1.0124257995412176,
+        "C4": 0.00021594958047850088,
+        "C5": 0.0,
+        "C6": 0.0018431394213485053
+      },
+      "MASAC": {
+        "C1": 14672.49268599316,
+        "C2": -81226.6231709392,
+        "C3": 1.028552547361268,
+        "C4": 0.00019949202159156367,
+        "C5": 438000.0,
+        "C6": 0.0065755904474352755
+      },
+      "MATD3": {
+        "C1": 33074.53857720466,
+        "C2": -36723.33566290968,
+        "C3": 1.0009229901555254,
+        "C4": 0.002213583307369681,
+        "C5": 438000.0,
+        "C6": 0.0941832382855603
+      }
+    }
+  },
+  "docs": {
+    "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "media": {
+        "backup": "outputs/_word_backups/Tesis_Doctoral_MADRL_CityLearn_Iquitos_antes_mc_real_drive_20260729_164927.docx",
+        "replaced": [
+          {
+            "media": "word/media/image58.png",
+            "old_sha256": "b83fe1edffaed9b4d4d4159314a4b4019c00dba055f22c36247e3b55f70f2d66",
+            "new_file": "outputs/madrl_multicriteria_selection/figures/pareto_cost_co2_flex.png",
+            "new_sha256": "707abddba72c926fc9bbb7db592a6ebf2e15e34c00a803a5b36b512d3279caac"
+          },
+          {
+            "media": "word/media/image59.png",
+            "old_sha256": "f5d115304afa0b8278099f3442041a0c537630f071085b0b213f20382e5bbc84",
+            "new_file": "outputs/madrl_multicriteria_selection/figures/learning_curves.png",
+            "new_sha256": "7d9c5136bc42f7925219c3bacb5b0dd785d50ea1e01e4144b78ef4a0c971e04b"
+          },
+          {
+            "media": "word/media/image60.png",
+            "old_sha256": "31b91fccf64fc3c8beb974684d5e26e2bd8d7829f793eb70fa8bad9e8140292a",
+            "new_file": "outputs/madrl_multicriteria_selection/figures/degradation_bars.png",
+            "new_sha256": "8edd97ddecba29ffca9249efed449abd62afd7b6dd52976e421736c560eae8bf"
+          }
+        ],
+        "n_replaced": 3
+      },
+      "text_changes": [
+        {
+          "paragraph": 612,
+          "old": "Complemento visual de la Tabla 5.4.1 TOPSIS. Pareto, curvas de aprendizaje y bar",
+          "new": "Complemento visual de la Tabla 5.4.1 TOPSIS. Pareto, curvas de aprendizaje y gap"
+        }
+      ],
+      "checks": {
+        "has_hybrid_illustrative": false,
+        "has_08805": true,
+        "has_08679": true,
+        "has_real_drive_note": true
+      },
+      "ok": true
+    },
+    "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "media": {
+        "backup": "outputs/_word_backups/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_antes_mc_real_drive_20260729_164927.docx",
+        "replaced": [
+          {
+            "media": "word/media/image41.png",
+            "old_sha256": "b83fe1edffaed9b4d4d4159314a4b4019c00dba055f22c36247e3b55f70f2d66",
+            "new_file": "outputs/madrl_multicriteria_selection/figures/pareto_cost_co2_flex.png",
+            "new_sha256": "707abddba72c926fc9bbb7db592a6ebf2e15e34c00a803a5b36b512d3279caac"
+          },
+          {
+            "media": "word/media/image42.png",
+            "old_sha256": "f5d115304afa0b8278099f3442041a0c537630f071085b0b213f20382e5bbc84",
+            "new_file": "outputs/madrl_multicriteria_selection/figures/learning_curves.png",
+            "new_sha256": "7d9c5136bc42f7925219c3bacb5b0dd785d50ea1e01e4144b78ef4a0c971e04b"
+          },
+          {
+            "media": "word/media/image43.png",
+            "old_sha256": "31b91fccf64fc3c8beb974684d5e26e2bd8d7829f793eb70fa8bad9e8140292a",
+            "new_file": "outputs/madrl_multicriteria_selection/figures/degradation_bars.png",
+            "new_sha256": "8edd97ddecba29ffca9249efed449abd62afd7b6dd52976e421736c560eae8bf"
+          }
+        ],
+        "n_replaced": 3
+      },
+      "text_changes": [
+        {
+          "paragraph": 636,
+          "old": "Complemento visual de la Tabla 5.4.1 TOPSIS. Pareto, curvas de aprendizaje y bar",
+          "new": "Complemento visual de la Tabla 5.4.1 TOPSIS. Pareto, curvas de aprendizaje y gap"
+        }
+      ],
+      "checks": {
+        "has_hybrid_illustrative": false,
+        "has_08805": true,
+        "has_08679": true,
+        "has_real_drive_note": true
+      },
+      "ok": true
+    }
+  },
+  "ok": true
+}

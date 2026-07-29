@@ -200,6 +200,45 @@ def test_pipeline_illustrative_end_to_end(tmp_path):
     assert result["ranking_consistency"]["topsis_on_pareto_front"] in {True, False}
 
 
+def test_pipeline_real_only_drive_50ep_no_illustrative(tmp_path):
+    """Closure path: C1–C6 and curves must come from Drive artefacts only."""
+    from pathlib import Path
+
+    repo = Path(__file__).resolve().parents[2]
+    run = repo / "outputs" / "madrl_v3_20260627_164047"
+    district = (
+        run
+        / "resumen_comparativo"
+        / "multiobjetivo"
+        / "district_objectives_by_algorithm.csv"
+    )
+    if not district.is_file():
+        pytest.skip("canonical Drive district_objectives missing")
+    ep = run / "MAAC" / "E1" / "figures" / "tables" / "episode_summary.csv"
+    if not ep.is_file():
+        pytest.skip("canonical episode_summary missing")
+
+    result = run_selection_pipeline(
+        repo=repo,
+        run_dir=run,
+        scenario="E1",
+        prefer_real=True,
+        allow_illustrative_fill=False,
+        output_dir=tmp_path,
+        make_plots=True,
+        sensitivity_samples=8,
+    )
+    assert result["source"] == "real_drive_50ep_c1c6"
+    assert set(result["decision_matrix"]) >= {"MAAC", "MASAC", "MATD3"}
+    for algo, prov in result["provenance"].items():
+        for cid, tag in prov.items():
+            assert "illustrative" not in str(tag).lower(), (algo, cid, tag)
+            assert "synthetic" not in str(tag).lower(), (algo, cid, tag)
+    assert (tmp_path / "figures" / "learning_curves.png").is_file()
+    assert (tmp_path / "figures" / "degradation_bars.png").is_file()
+    assert (tmp_path / "figures" / "pareto_cost_co2_flex.png").is_file()
+
+
 def test_merge_skips_algorithms_without_real_technical_kpis():
     from uc3m.multicriteria.artifacts import merge_with_illustrative
 

@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-07-28T23:29:22.558176+00:00",
+  "run_id": "madrl_v3_20260627_164047",
+  "alpha": 0.05,
+  "source_scores": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\scores_kpi_algoritmo_madrl.csv",
+  "source_episode_descriptives": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\descriptivo_distrito_colab.csv",
+  "target_filters": {
+    "OE1": "E1",
+    "OE2": "E2",
+    "OE3": "E3"
+  },
+  "expected_algorithms": [
+    "HAPPO",
+    "MAAC",
+    "MASAC",
+    "MATD3"
+  ],
+  "inferential_algorithms": [
+    "MAAC",
+    "MASAC",
+    "MATD3"
+  ],
+  "happo_kpi_gains_available": false,
+  "checks": {
+    "target_rows": 78,
+    "rows_by_scope_algorithm": {
+      "OE1": {
+        "MAAC": 12,
+        "MASAC": 12,
+        "MATD3": 12
+      },
+      "OE2": {
+        "MAAC": 5,
+        "MASAC": 5,
+        "MATD3": 5
+      },
+      "OE3": {
+        "MAAC": 9,
+        "MASAC": 9,
+        "MATD3": 9
+      }
+    },
+    "all_target_scenarios_match": true,
+    "decision_rows": 4,
+    "omnibus_rows": 8
+  },
+  "limitations": [
+    "Una sola semilla: los contrastes son exploratorios.",
+    "HAPPO no tiene KPI-gains finales comparables.",
+    "Las unidades KPI dentro de una corrida no sustituyen réplicas independientes."
+  ],
+  "verdict": "correct"
+}

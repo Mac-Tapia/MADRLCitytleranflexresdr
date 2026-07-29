@@ -1,4 +1,0 @@
-@echo off
-title CityLearn MADRL training monitor
-cd /d "%~dp0"
-powershell.exe -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$root = $null; if (Test-Path 'outputs\latest_visible_training_output_root.txt') { $root = (Get-Content 'outputs\latest_visible_training_output_root.txt' -Raw).Trim() }; if (-not $root) { $candidate = Get-ChildItem outputs -Directory -ErrorAction SilentlyContinue | Where-Object { Test-Path (Join-Path $_.FullName 'official_full_status.json') } | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if ($candidate) { $root = $candidate.FullName } }; if (-not $root) { Write-Host 'No se encontro un OutputRoot de entrenamiento.' -ForegroundColor Red; Read-Host 'Presiona Enter'; exit 1 }; & scripts\monitor_citylearn_training_visible.ps1 -OutputRoot $root -RefreshSeconds 30"

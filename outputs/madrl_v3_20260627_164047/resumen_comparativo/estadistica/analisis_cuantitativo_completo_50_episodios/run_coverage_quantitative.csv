@@ -1,0 +1,13 @@
+﻿run_id,algorithm,scenario,episodes_recorded,episode_summaries_current_file,timeseries_rows_current_file,trace_rows_current_file,district_kpis,buildings,building_kpi_types,building_kpi_rows,building_behavior_rows,results_bytes,timeseries_bytes,trace_bytes,drive_source
+madrl_v3_20260627_164047,HAPPO,E1,50,1,8760,0,57,17,75,1275,17,166388,2132743,2,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,HAPPO,E2,50,1,8760,0,53,17,75,1275,17,165828,2131429,2,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,HAPPO,E3,50,1,8760,0,57,17,75,1275,17,166394,2131747,2,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MAAC,E1,50,50,437950,1700,57,17,75,1275,17,199311,105408510,688417,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MAAC,E2,50,50,437950,1700,53,17,75,1275,17,198778,105417067,687974,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MAAC,E3,50,50,437950,1700,57,17,75,1275,17,199295,105177625,688651,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MASAC,E1,50,50,437950,1700,57,17,75,1275,17,200069,106300979,694793,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MASAC,E2,50,50,437950,1700,53,17,75,1275,17,199557,106302228,692009,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MASAC,E3,50,50,437950,1700,57,17,75,1275,17,200115,106032848,692879,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MATD3,E1,50,50,437988,1768,57,17,75,1275,17,198799,106331742,776240,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MATD3,E2,50,50,437988,1768,53,17,75,1275,17,198278,106296818,776771,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+madrl_v3_20260627_164047,MATD3,E3,50,50,437988,1768,57,17,75,1275,17,198778,106077423,779288,https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX

@@ -31,7 +31,7 @@ pip install pvlib requests pandas numpy scipy tqdm pathlib pyarrow
 ## Estructura de Modulos (un solo archivo)
 
 ```
-tools/generate_iquitos_dataset.py
+tools/dataset/generate_iquitos_dataset.py
 |
 +-- SECCION 1  -- Constantes y configuracion
 |   (MADRL_BUILDING_CONSTANTS, LOAD_PROFILES, DAY_FACTOR,
@@ -350,7 +350,7 @@ class IquitosDatasetPipeline:
 ## main() -- CLI argparse
 
 ```bash
-python tools/generate_iquitos_dataset.py [opciones]
+python tools/dataset/generate_iquitos_dataset.py [opciones]
 
 Opciones:
   --output-dir DIR      Directorio de salida (default: CityLearn/data/datasets/citylearn_iquitos_2023_2025)
@@ -383,7 +383,7 @@ CityLearn/data/datasets/citylearn_iquitos_2023_2025/
 ## Diagrama de Flujo
 
 ```
-python tools/generate_iquitos_dataset.py
+python tools/dataset/generate_iquitos_dataset.py
   |
   +-> [Etapa 1] WeatherDataManager
   |     +- Cache? -> .cache/weather/{year}.parquet

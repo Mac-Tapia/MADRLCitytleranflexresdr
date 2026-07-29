@@ -33,13 +33,13 @@ El dataset quedo sincronizado, limpio y cargable por CityLearn v3 antes de norma
 La construccion queda centralizada en:
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\orchestrate_citylearn_dataset.py --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\orchestrate_citylearn_dataset.py --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
 ```
 
 Para reconstruir sobre el dataset base existente:
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\orchestrate_citylearn_dataset.py --skip-base-generation --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\orchestrate_citylearn_dataset.py --skip-base-generation --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
 ```
 
 Etapas ejecutadas y validadas:

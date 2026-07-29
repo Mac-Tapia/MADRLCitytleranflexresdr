@@ -76,3 +76,10 @@ outputs/**/MAAC/**/checkpoint.pt
 .env
 .env.local
 .env.*.local
+
+# Model weights / checkpoints — do not version (neither Git LFS nor regular blobs)
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+

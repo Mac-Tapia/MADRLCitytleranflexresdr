@@ -2,7 +2,3 @@
 *.sh text eol=lf
 *.py text eol=lf
 *.ipynb text eol=lf
-# Git LFS — archivos binarios grandes (modelos, checkpoints)
-*.pt filter=lfs diff=lfs merge=lfs -text
-*.pth filter=lfs diff=lfs merge=lfs -text
-*.ckpt filter=lfs diff=lfs merge=lfs -text

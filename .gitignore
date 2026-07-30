@@ -83,3 +83,6 @@ outputs/**/MAAC/**/checkpoint.pt
 *.ckpt
 *.safetensors
 
+
+# Drive full_data timeseries (>100MB) — keep local, do not push to GitHub
+outputs/_drive_madrl/**/timeseries.csv

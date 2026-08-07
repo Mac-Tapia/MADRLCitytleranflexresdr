@@ -802,8 +802,8 @@ def _inferential_conclusion_text() -> str:
     return (
         "Decision inferencial (H0G/H1G, HE10–HE31): en la corrida canonica de 50 episodios y una "
         "semilla, ningun Kruskal-Wallis omnibus sobre KPI-gains rechaza H0 por eje (alpha = 0,05): "
-        "HE10 p = 0,4685; HE20 p = 0,7648; HE30 p = 0,7357; KW ALL p = 0,1554. "
-        "H0G se rechaza solo de forma exploratoria por Friedman (p = 0,0096). "
+        "HE10 p = 0,4685; HE20 p = 0,7648; HE30 p = 0,7357; KW GLOBAL p = 0,4044. "
+        "H0G se rechaza solo de forma exploratoria por Friedman (p = 0,0096; Kendall's W = 0,1787). "
         "Por tanto, HE11/HE21/HE31 no se respaldan con el diseno actual. "
         "La evidencia descriptiva identifica a MATD3 en flexibilidad y CO2, y a MAAC en costos "
         "(Δcosto 9 515 EUR en E3), patron coherente con la literatura de atencion multiagente "
@@ -1675,13 +1675,13 @@ def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
     )
     p(
         doc,
-        "Respecto de las hipotesis (KPI-gains Cap. 5): H0G se rechaza de forma exploratoria "
-        "(Friedman p = 0,0096) mientras KW ALL no es significativo (p = 0,1554). "
+        "Respecto de las hipotesis (Cap. 5 §5.5, KPI-gains): en el plano inferencial, H0G se "
+        "rechaza de forma exploratoria (Friedman χ² = 9,2911, p = 0,0096, Kendall's W = 0,1787), "
+        "mientras KW GLOBAL no es significativo (H = 1,8108, p = 0,4044). "
         "HE10 (KW p = 0,4685), HE20 (KW p = 0,7648) y HE30 (KW p = 0,7357) no se rechazan; "
-        "HE11/HE21/HE31 no se respaldan. Descriptivamente MATD3 lidera OE.1/OE.2 y MAAC lidera "
-        "OE.3. Wilcoxon exploratorio detecta pares que no sustituyen el contraste omnibus ni la "
-        "replicacion multi-semilla (Agarwal et al., 2021; Colas et al., 2019; Iqbal y Sha, 2019; "
-        "Xie et al., 2023).",
+        "HE11/HE21/HE31 no se respaldan. En el plano descriptivo, MATD3 lidera OE.1/OE.2 y MAAC "
+        "lidera OE.3. Wilcoxon/Mann–Whitney con Holm no sustituyen el omnibus ni la replicacion "
+        "multi-semilla (Agarwal et al., 2021; Colas et al., 2019; Iqbal y Sha, 2019; Xie et al., 2023).",
     )
 
     heading(doc, "6.2 Limitaciones encontradas", 2)

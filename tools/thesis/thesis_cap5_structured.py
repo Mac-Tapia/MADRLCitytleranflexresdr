@@ -381,8 +381,9 @@ def _inf_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
         )
         p(
             doc,
-            "Referencia integrada (50 ep Drive): Friedman pareado p = 0,0096 (W = 0,1787); "
-            "KW ALL KPI-gains p = 0,1554; KW scores globales p = 0,4044.",
+            "Referencia integrada (50 ep Drive, problemas_objetivos_hipotesis/): Friedman pareado "
+            "χ² = 9,2911, p = 0,0096, Kendall's W = 0,1787; KW GLOBAL H = 1,8108, p = 0,4044. "
+            "(La KW ALL p = 0,1554 de analisis_estadistico_madrl.csv es otra agregación y no decide HG/HE.)",
         )
         return
 

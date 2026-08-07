@@ -395,15 +395,19 @@ replace_paragraph(
         "La evidencia se recalculó exclusivamente con los resultados reales de los 50 episodios "
         f"de cada uno de los 12 tratamientos de la corrida {RUN_ID}. Se auditaron 600 filas "
         "episódicas, 668 KPI distritales, 15.300 KPI por edificio y 204 resúmenes de comportamiento. "
-        "En E1, MATD3 presentó el menor deterioro de flexibilidad (-0,0923 %), sin impacto ni "
-        "diferencias significativas (Friedman p=0,614935). En E2, MATD3 presentó el menor aumento "
-        "de CO₂ (-0,4193 % de efecto favorable, equivalente a +46.014,75 kgCO₂), con diferencias "
-        "entre algoritmos (p=1,461×10⁻⁸). En E3, MAAC registró el menor incremento de costo "
-        "(-0,2675 %, +18.978,30 EUR), sin diferencia global (p=0,109906). TOPSIS con pesos iguales "
-        "identificó a MAAC (0,936627) como líder descriptivo global; Friedman global no alcanzó "
-        "significancia (p=0,085801). Por ello, se cumplen los objetivos de cuantificación y "
-        "selección descriptiva, pero no se demuestra superioridad estadística global. La inferencia "
-        "es exploratoria porque existe una sola semilla independiente por tratamiento."
+        "En el plano descriptivo, MATD3 lidera E1 (menor deterioro de flexibilidad, -0,0923 %) "
+        "y E2 (menor aumento de CO₂, -0,4193 %, +23 070 kgCO₂), y MAAC lidera E3 (menor "
+        "incremento de costo, -0,2675 %). En el plano inferencial (KPI-gains, Cap. 5.5), "
+        "Kruskal–Wallis no rechaza igualdad en OE.1/OE.2/OE.3 "
+        "(H = 1,5164 / 0,5364 / 0,6138; p = 0,4685 / 0,7648 / 0,7357); "
+        "Friedman por eje es p = 0,0611 / 0,0498 / 0,1801. "
+        "TOPSIS multicriterio (madrl_multicriteria_selection; C* MAAC ≈ 0,9827) identifica a MAAC "
+        "como líder multiobjetivo formal adicional; H0G se rechaza de forma exploratoria "
+        "(Friedman p = 0,0096, Kendall's W = 0,1787) mientras KW GLOBAL no es significativo "
+        "(H = 1,8108, p = 0,4044); HE11/HE21/HE31 no se respaldan. Por ello, se cumplen los "
+        "objetivos de cuantificación y selección descriptiva, pero no se demuestra superioridad "
+        "estadística global. La inferencia es exploratoria porque existe una sola semilla "
+        "independiente por tratamiento."
     ),
 )
 replace_paragraph(
@@ -412,14 +416,17 @@ replace_paragraph(
     (
         "All evidence was recalculated exclusively from the real 50-episode results for each of "
         f"the 12 treatments in run {RUN_ID}: 600 episode rows, 668 district KPI values, 15,300 "
-        "building KPI values and 204 building-behaviour summaries. MATD3 showed the smallest "
-        "flexibility deterioration in E1 (-0.0923%; Friedman p=0.614935) and the smallest CO2 "
-        "increase in E2 (-0.4193% favourable effect, +46,014.75 kgCO2; p=1.461×10^-8). MAAC "
-        "showed the smallest E3 cost increase (-0.2675%, +EUR 18,978.30; p=0.109906). Equal-weight "
-        "TOPSIS ranked MAAC first globally (0.936627), while the global Friedman test was not "
-        "significant (p=0.085801). The objectives are therefore fulfilled quantitatively and a "
-        "descriptive leader is identified, but global statistical superiority is not demonstrated. "
-        "Inference remains exploratory because only one independent seed is available per treatment."
+        "building KPI values and 204 building-behaviour summaries. Descriptively, MATD3 leads E1 "
+        "(smallest flexibility deterioration, -0.0923%) and E2 (smallest CO2 increase, -0.4193%, "
+        "+23,070 kgCO2), while MAAC leads E3 (smallest cost increase, -0.2675%). Inferentially "
+        "(KPI-gains, Cap. 5.5), Kruskal–Wallis does not reject equality in OE.1/OE.2/OE.3 "
+        "(H=1.5164/0.5364/0.6138; p=0.4685/0.7648/0.7357); per-axis Friedman p=0.0611/0.0498/0.1801. "
+        "Multicriteria TOPSIS (madrl_multicriteria_selection) ranked MAAC first (C*≈0.9827), while "
+        "H0G is rejected exploratorily (Friedman p = 0.0096, Kendall's W = 0.1787) and KW GLOBAL "
+        "is non-significant (H = 1.8108, p = 0.4044); HE11/HE21/HE31 are not supported. The "
+        "objectives are therefore fulfilled quantitatively and a descriptive leader is identified, "
+        "but global statistical superiority is not demonstrated. Inference remains exploratory "
+        "because only one independent seed is available per treatment."
     ),
 )
 
@@ -919,7 +926,7 @@ add_paragraph_before(
         "TOPSIS ubica a MAAC en primer lugar (0,936627), MATD3 segundo (0,866227), MASAC tercero "
         "(0,840362) y HAPPO cuarto (0,000000). La media cruda de porcentajes favorece a MATD3 "
         "(-0,4766 %) frente a MAAC (-0,9543 %), lo que evidencia sensibilidad a la regla de "
-        "agregación. Friedman sobre las tres dimensiones produce χ²=6,6000, p=0,085801 y "
+        "agregación. Friedman integración KPI-gains produce χ²=9,2911, p=0,0096 y "
         "Kendall W=0,7333: no alcanza α=0,05."
     ),
 )
@@ -991,31 +998,31 @@ add_heading_before(document, chapter_6_anchor, "5.8 Síntesis explícita de obje
 hyp_rows = [
     [
         "OE.1 / HE10–HE11",
-        "MATD3; -0,0923 %",
-        "χ²=1,8000; p=0,614935; W=0,2000",
+        "MATD3; flex_composite = 1,0009 (descriptivo)",
+        "KW H=1,5164; p=0,4685; Friedman chi2=5,5897; p=0,0611; W=0,2329",
         "No rechazar HE10; no respaldar HE11",
-        "Cumplido",
+        "Cumplido descriptivamente",
     ],
     [
         "OE.2 / HE20–HE21",
-        "MATD3; -0,4193 %",
-        "χ²=39,3529; p=1,461×10⁻⁸; W=0,7716",
-        "Rechazar HE20; respaldar HE21 (impacto adverso)",
-        "Cumplido",
+        "MATD3; delta CO2 = 23 070 kg (descriptivo)",
+        "KW H=0,5364; p=0,7648; Friedman chi2=6,0000; p=0,0498; W=0,6000",
+        "No rechazar HE20; no respaldar HE21",
+        "Cumplido descriptivamente",
     ],
     [
         "OE.3 / HE30–HE31",
-        "MAAC; -0,2675 %",
-        "χ²=6,0353; p=0,109906; W=0,1183",
-        "No respaldar HE31; HE30 no se rechaza conjuntamente",
-        "Cumplido",
+        "MAAC; delta costo = 9 515 EUR (descriptivo)",
+        "KW H=0,6138; p=0,7357; Friedman chi2=3,4286; p=0,1801; W=0,1905",
+        "No rechazar HE30; no respaldar HE31",
+        "Cumplido descriptivamente",
     ],
     [
         "OG / H0G–H1G",
-        "MAAC; TOPSIS=0,936627",
-        "χ²=6,6000; p=0,085801; W=0,7333",
-        "No rechazar H0G; no respaldar H1G",
-        "Cumplido cuantitativamente",
+        "MATD3 score 0,6667 / MAAC TOPSIS C*~0,9827 (descriptivo)",
+        "Friedman chi2=9,2911; p=0,0096; Kendall W=0,1787; KW GLOBAL H=1,8108; p=0,4044",
+        "Rechazar H0G exploratorio; respaldar H1G exploratorio (sin ganador unico)",
+        "Cumplido descriptivamente; inferencia exploratoria",
     ],
 ]
 add_table_before(
@@ -1039,7 +1046,7 @@ add_paragraph_before(
         "Primero, el control continuo no garantiza reducción simultánea de pico, ramping y carga: "
         "MATD3 fue el más cercano al baseline de flexibilidad, pero su compuesto aún se deterioró "
         "0,0923 %. Segundo, la coordinación ambiental produjo diferencias fuertes entre algoritmos "
-        "(W=0,7716), aunque todos aumentaron el CO₂ total; por tanto, «mejor» significa menor daño "
+        "(Friedman OE.2 KPI-gains W=0,6000), aunque el plano descriptivo muestra aumento de CO₂; por tanto, «mejor» significa menor daño "
         "relativo y no éxito ambiental absoluto. Tercero, MAAC minimizó el incremento económico, "
         "pero la diferencia entre algoritmos de E3 no fue significativa."
     ),
@@ -1083,8 +1090,8 @@ add_paragraph_before(
     (
         "OE.1. Los cuatro MADRL deterioraron el compuesto primario de flexibilidad en E1. MATD3 fue "
         "el mejor desempeño relativo con -0,0923 %, seguido de MAAC (-1,2426 %), MASAC (-2,8553 %) "
-        "y HAPPO (-11,0541 %). Friedman p=0,614935 y ningún contraste Holm fue significativo. OE.1 "
-        "se cumplió; no se rechazó HE10 ni se respaldó HE11."
+        "y HAPPO (-11,0541 %). En KPI-gains, KW p=0,4685 y Friedman p=0,0611; ningún contraste Holm respalda superioridad. OE.1 "
+        "se cumplió descriptivamente; no se rechazó HE10 ni se respaldó HE11."
     ),
 )
 add_paragraph_before(
@@ -1094,8 +1101,8 @@ add_paragraph_before(
         "OE.2. Las emisiones de control superaron al baseline en los cuatro algoritmos. MATD3 presentó "
         "el menor incremento: +46.014,75 kgCO₂ (-0,4193 % de efecto favorable); MAAC +140.922,25 "
         "kgCO₂ (-1,3527 %), MASAC +154.873,62 kgCO₂ (-1,7041 %) y HAPPO +2.854.859,87 kgCO₂ "
-        "(-31,2181 %). Friedman p=1,461×10⁻⁸, W=0,7716. OE.2 se cumplió; se rechazó HE20 y se "
-        "respaldó HE21, precisando que el impacto diferenciado fue predominantemente adverso."
+        "(-31,2181 %). En KPI-gains, KW p=0,7648 y Friedman p=0,0498 (W=0,6000). OE.2 se cumplió descriptivamente; no se rechazó HE20 ni se "
+        "respaldó HE21."
     ),
 )
 add_paragraph_before(
@@ -1104,9 +1111,7 @@ add_paragraph_before(
     (
         "OE.3. Todos los costos totales aumentaron en E3. MAAC fue el mejor desempeño relativo con "
         "+18.978,30 EUR (-0,2675 %), seguido de MASAC +39.477,42 EUR (-0,5555 %), MATD3 +88.556,08 "
-        "EUR (-0,9181 %) y HAPPO +213.072,16 EUR (-2,9778 %). Friedman p=0,109906; solo MATD3 "
-        "presentó impacto por edificio significativo tras Holm (p=0,026611), pero no hubo diferencia "
-        "global ni post hoc. OE.3 se cumplió; HE31 no fue respaldada."
+        "EUR (-0,9181 %) y HAPPO +213.072,16 EUR (-2,9778 %). En KPI-gains, KW p=0,7357 y Friedman p=0,1801. OE.3 se cumplió descriptivamente; no se rechazó HE30 ni se respaldó HE31."
     ),
 )
 add_paragraph_before(
@@ -1114,11 +1119,8 @@ add_paragraph_before(
     references_anchor,
     (
         "OG. Con pesos iguales, TOPSIS identificó a MAAC (0,936627) como mejor desempeño global, "
-        "seguido de MATD3 (0,866227), MASAC (0,840362) y HAPPO (0,000000). No obstante, Friedman "
-        "global p=0,085801 no demostró diferencias al 5 %, y la media cruda favoreció a MATD3. El OG "
-        "se cumplió al cuantificar e integrar las tres dimensiones y seleccionar un líder bajo una "
-        "regla explícita; no se rechazó H0G ni se respaldó H1G, y no se declaró ganador estadístico "
-        "global único."
+        "seguido de MATD3 (0,866227), MASAC (0,840362) y HAPPO (0,000000). En KPI-gains, Friedman integración p=0,0096 (W=0,1787) rechaza H0G de forma exploratoria, mientras KW GLOBAL p=0,4044 no es significativo. El OG "
+        "se cumplió descriptivamente; H1G solo exploratoria, sin ganador estadístico global único."
     ),
 )
 add_heading_before(document, references_anchor, "6.2 Veredicto de hipótesis", 2)
@@ -1129,23 +1131,23 @@ add_table_before(
     [
         [
             "H0G / H1G",
-            "No rechazar H0G; no respaldar H1G",
-            "Friedman global χ²=6,6000; p=0,085801. No se cumplen conjuntamente las tres dimensiones.",
+            "Rechazar H0G exploratorio; respaldar H1G exploratorio",
+            "Friedman χ²=9,2911; p=0,0096; W=0,1787; KW GLOBAL p=0,4044. H0G se rechaza exploratoriamente.",
         ],
         [
             "HE10 / HE11",
             "No rechazar HE10; no respaldar HE11",
-            "Friedman E1 p=0,614935; ningún impacto ni par significativo tras Holm.",
+            "KW E1 p=0,4685; Friedman p=0,0611; sin conjunción impacto+diferencias.",
         ],
         [
             "HE20 / HE21",
-            "Rechazar HE20; respaldar HE21",
-            "Friedman E2 p=1,461×10⁻⁸; W=0,7716; cuatro pares significativos; efecto adverso.",
+            "No rechazar HE20; no respaldar HE21",
+            "KW E2 p=0,7648; Friedman p=0,0498; W=0,6000; HE21 no respaldada.",
         ],
         [
             "HE30 / HE31",
             "No respaldar HE31",
-            "Friedman E3 p=0,109906; ningún post hoc; MATD3 sí impacta (p-Holm=0,026611).",
+            "KW E3 p=0,7357; Friedman p=0,1801; HE31 no respaldada.",
         ],
     ],
     "Tabla 6.1. Decisión final de las hipótesis",

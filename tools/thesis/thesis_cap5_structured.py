@@ -1,6 +1,6 @@
-"""Capitulo 5: descriptivos -> inferenciales -> otros -> hipotesis -> discusion.
-
-Cada bloque principal trata OG, OE.1, OE.2 y OE.3 de forma independiente.
+"""Capitulo 5 reestructurado por objetivos: 5.1 marco; 5.2 OE.1; 5.3 OE.2; 5.4 OE.3;
+5.5 OG; 5.6 contrastacion consolidada; 5.7 discusion. Inferencia canónica = Capa A
+(problemas_objetivos_hipotesis/); Friedman principal; KW/MWU exploratorio.
 """
 
 from __future__ import annotations
@@ -152,7 +152,7 @@ IMPACT_CRITERIA = [
     (
         "C2",
         "Diferencias entre algoritmos",
-        "Kruskal-Wallis / Friedman + post hoc",
+        "Friedman + Kendall W + Wilcoxon/Holm (principal); KW/MWU exploratorio",
         "Inferencial HE (necesario)",
         "KPI-gains / integracion multi-eje",
     ),
@@ -342,9 +342,13 @@ def _inf_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
 
     sw_all = _shapiro_table_rows()
     if oe_key == "ALL":
-        sw_rows = [r for r in sw_all if str(r[0]).upper().startswith("ALL") or "HG" in str(r[1])]
-        if not sw_rows:
-            sw_rows = [r for r in sw_all if "ALL" in str(r[0]).upper()]
+        sw_rows = [
+            r
+            for r in sw_all
+            if "GLOBAL" in str(r[0]).upper()
+            or str(r[0]).upper().startswith("ALL")
+            or "HG" in str(r[1])
+        ]
     else:
         sw_rows = [
             r
@@ -358,42 +362,47 @@ def _inf_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
             doc,
             ["Alcance", "Hipotesis", "Algoritmo", "p (SW)", "Normalidad rechazada"],
             sw_rows,
-            caption=f"Tabla {section}a. Shapiro-Wilk {oe_display} (KPI-gains 50 ep Drive).",
+            caption=f"Tabla {section}a. Shapiro-Wilk {oe_display} (KPI-gains Capa A).",
             col_widths=[2.5, 1.5, 2.0, 2.5, 2.5],
         )
 
     if oe_key == "ALL":
-        p(doc, "Contraste inferencial del OG (alimenta H0G/H1G; decision formal en §5.5.1).")
+        p(doc, "Contraste inferencial del OG (alimenta H0G/H1G; decision formal en §5.5 / §5.6).")
         p(
             doc,
-            "Pruebas sobre la integracion multi-eje. Shapiro rechaza normalidad en ALL; "
-            "ruta parametrica descartada. Se reportan Kruskal-Wallis y Friedman sobre KPI-gains.",
+            "Pruebas sobre la integracion multi-eje (Capa A). Shapiro rechaza normalidad en GLOBAL; "
+            "ruta parametrica descartada. Prueba global principal = Friedman pareado; "
+            "Kruskal-Wallis solo exploratorio.",
         )
-        kw_rows = [r for r in _kruskal_table_rows() if r[0].startswith("ALL") or "HG" in r[1] or r[0] == "ALL"]
+        kw_rows = [
+            r
+            for r in _kruskal_table_rows()
+            if "GLOBAL" in str(r[0]).upper() or "HG" in str(r[1]) or "ALL" in str(r[0]).upper()
+        ]
         if not kw_rows:
             kw_rows = _kruskal_table_rows()
         add_table(
             doc,
-            ["Alcance", "Hipotesis", "H", "p", "Signif.", "Mejor mediana"],
+            ["Alcance", "Hipotesis", "Friedman χ²", "p", "Signif.", "KW exploratorio"],
             kw_rows,
-            caption=f"Tabla {section}b. Kruskal-Wallis OG / ALL.",
-            col_widths=[2.0, 1.5, 1.5, 1.5, 1.8, 2.7],
+            caption=f"Tabla {section}b. Omnibus OG / GLOBAL (Friedman principal).",
+            col_widths=[2.0, 1.5, 2.0, 1.5, 1.5, 3.5],
         )
         p(
             doc,
             "Referencia integrada (50 ep Drive, problemas_objetivos_hipotesis/): Friedman pareado "
-            "χ² = 9,2911, p = 0,0096, Kendall's W = 0,1787; KW GLOBAL H = 1,8108, p = 0,4044. "
-            "(La KW ALL p = 0,1554 de analisis_estadistico_madrl.csv es otra agregación y no decide HG/HE.)",
+            "χ² = 9,2911, p = 0,0096, Kendall's W = 0,1787; KW GLOBAL exploratorio H = 1,8108, "
+            "p = 0,4044. No citar KW ALL p = 0,1554 (Capa B poolada) como decision HG/HE.",
         )
         return
 
-    kw_p = float(hyp.get("KW_p_value", "nan")) if hyp else float("nan")
     h0, h1 = OE_H_PAIR[oe_key]
-    p(doc, f"Contraste inferencial de {h0}/{h1} (decision formal independiente en §5.5).")
+    p(doc, f"Contraste inferencial de {h0}/{h1} (decision formal en el mismo objetivo / §5.6).")
     p(
         doc,
         f"Puerta Shapiro: normalidad rechazada en {oe_display}. Ruta parametrica descartada. "
-        f"Kruskal-Wallis p = {kw_p:.4f} (KPI-gains, problemas_objetivos_hipotesis/).",
+        "Prueba global principal = Friedman pareado + Kendall W; KW/MWU = exploratorio "
+        "(problemas_objetivos_hipotesis/).",
     )
     all_kw = _kruskal_table_rows()
     oe_kw = [
@@ -406,10 +415,10 @@ def _inf_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
     if oe_kw:
         add_table(
             doc,
-            ["Alcance", "Hipotesis", "H", "p", "Signif.", "Mejor mediana"],
+            ["Alcance", "Hipotesis", "Friedman χ²", "p", "Signif.", "KW exploratorio"],
             oe_kw,
-            caption=f"Tabla {section}b. Kruskal-Wallis {oe_display}.",
-            col_widths=[2.0, 1.5, 1.5, 1.5, 1.8, 2.7],
+            caption=f"Tabla {section}b. Omnibus {oe_display} (Friedman principal).",
+            col_widths=[2.0, 1.5, 2.0, 1.5, 1.5, 3.5],
         )
     mwu_rows = [
         r
@@ -423,7 +432,7 @@ def _inf_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
             doc,
             ["Alcance", "Hipotesis", "Par", "U", "p", "Signif."],
             mwu_rows[:12],
-            caption=f"Tabla {section}c. Mann-Whitney U {oe_display}.",
+            caption=f"Tabla {section}c. Mann-Whitney U exploratorio {oe_display}.",
             col_widths=[2.0, 1.5, 3.0, 1.5, 1.5, 1.5],
         )
     wc = [
@@ -628,16 +637,16 @@ STATS_EXACT_BLOCK = [
         "MATD3 W = 0,6734, p = 2,343e-06. Normalidad rechazada en todos los grupos calculables."
     ),
     (
-        "Kruskal–Wallis (H y p). OE.1: H = 1,5164, p = 0,4685; OE.2: H = 0,5364, p = 0,7648; "
-        "OE.3: H = 0,6138, p = 0,7357; GLOBAL: H = 1,8108, p = 0,4044."
+        "Kruskal–Wallis exploratorio (H y p; no prueba principal HE). OE.1: H = 1,5164, p = 0,4685; "
+        "OE.2: H = 0,5364, p = 0,7648; OE.3: H = 0,6138, p = 0,7357; GLOBAL: H = 1,8108, p = 0,4044."
     ),
     (
-        "Friedman (χ², p) y Kendall's W. OE.1: χ² = 5,5897, p = 0,0611, W = 0,2329; "
+        "Friedman principal (χ², p) y Kendall's W. OE.1: χ² = 5,5897, p = 0,0611, W = 0,2329; "
         "OE.2: χ² = 6,0000, p = 0,0498, W = 0,6000; OE.3: χ² = 3,4286, p = 0,1801, W = 0,1905; "
         "GLOBAL: χ² = 9,2911, p = 0,0096, Kendall's W = 0,1787."
     ),
     (
-        "Mann–Whitney U (U, p-Holm, Cliff's δ). OE.1: MAAC–MASAC U = 89,0, p-Holm = 0,8498, δ = 0,2361; "
+        "Mann–Whitney U exploratorio (U, p-Holm, Cliff's δ). OE.1: MAAC–MASAC U = 89,0, p-Holm = 0,8498, δ = 0,2361; "
         "MAAC–MATD3 U = 67,5, p-Holm = 0,8498, δ = −0,0625; MASAC–MATD3 U = 53,0, p-Holm = 0,8498, "
         "δ = −0,2639. OE.2: U ∈ {15,0; 10,0; 10,0}, p-Holm = 1,0000. OE.3: U ∈ {49,0; 44,0; 35,0}, "
         "p-Holm = 1,0000. GLOBAL: MAAC–MASAC U = 393,0, p-Holm = 0,6294, δ = 0,1627; "
@@ -645,7 +654,7 @@ STATS_EXACT_BLOCK = [
         "p-Holm = 0,6191, δ = −0,2041. Ningún par significativo tras Holm."
     ),
     (
-        "Wilcoxon signed-rank (W, p-Holm). OE.1: W ∈ {7,0; 17,0; 14,0}, p-Holm ∈ {0,1100; 0,5143; 0,3376}. "
+        "Wilcoxon signed-rank pareado (W, p-Holm). OE.1: W ∈ {7,0; 17,0; 14,0}, p-Holm ∈ {0,1100; 0,5143; 0,3376}. "
         "OE.2: W = 0,0, p-Holm = 0,3074 (tres pares). OE.3: W ∈ {6,0; 13,0; 11,0}, "
         "p-Holm ∈ {0,5266; 1,0000; 1,0000}. GLOBAL: MAAC–MASAC W = 31,0, p-Holm = 0,0172 "
         "(único significativo); MAAC–MATD3 W = 69,0, p-Holm = 0,2953; MASAC–MATD3 W = 54,0, "
@@ -656,7 +665,8 @@ STATS_EXACT_BLOCK = [
         "exploratoria (Friedman p = 0,0096; Kendall's W = 0,1787), sin ganador único. "
         "HE1 (HE10/HE11): no se rechaza HE10; no se respalda HE11. "
         "HE2 (HE20/HE21): no se rechaza HE20; no se respalda HE21. "
-        "HE3 (HE30/HE31): no se rechaza HE30; no se respalda HE31."
+        "HE3 (HE30/HE31): no se rechaza HE30; no se respalda HE31. "
+        "TOPSIS C* MAAC = 0,9827 (descriptivo; no sustituye HE)."
     ),
 ]
 
@@ -696,8 +706,8 @@ def _hyp_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
             (
                 "HE10",
                 "No se rechaza",
-                "KW H = 1,5164, p = 0,4685; Friedman χ² = 5,5897, p = 0,0611, Kendall's W = 0,2329; "
-                "MWU/Wilcoxon pares n.s. tras Holm",
+                "Friedman χ² = 5,5897, p = 0,0611, Kendall's W = 0,2329 (principal); "
+                "KW exploratorio H = 1,5164, p = 0,4685; MWU/Wilcoxon pares n.s. tras Holm",
             ),
             ("HE11", "No se respalda", "Sin conjuncion impacto+diferencias en E1 (KPI-gains)"),
         ),
@@ -705,26 +715,27 @@ def _hyp_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
             (
                 "HE20",
                 "No se rechaza",
-                "KW H = 0,5364, p = 0,7648; Friedman χ² = 6,0000, p = 0,0498, Kendall's W = 0,6000; "
-                "sin impacto vs cero tras Holm",
+                "Friedman χ² = 6,0000, p = 0,0498, Kendall's W = 0,6000 (principal) sin impacto "
+                "vs cero tras Holm ni post hoc; KW exploratorio H = 0,5364, p = 0,7648",
             ),
             (
                 "HE21",
                 "No se respalda",
-                "Sin impacto vs cero tras Holm; Friedman marginal; 0/15 KPI mejorados",
+                "Sin impacto vs cero tras Holm; Friedman marginal; post hoc n.s.; 0/5 KPI mejorados",
             ),
         ),
         "OE3": (
             (
                 "HE30",
                 "No se rechaza",
-                "KW H = 0,6138, p = 0,7357; Friedman χ² = 3,4286, p = 0,1801, Kendall's W = 0,1905; "
-                "sin impacto vs cero tras Holm",
+                "Friedman χ² = 3,4286, p = 0,1801, Kendall's W = 0,1905 (principal); "
+                "KW exploratorio H = 0,6138, p = 0,7357; sin impacto vs cero tras Holm",
             ),
             (
                 "HE31",
                 "No se respalda",
-                "MAAC gana costos/TOPSIS/4/4 descriptivo; KPI-gains E3 sin omnibus ni impacto vs cero tras Holm",
+                "MAAC gana costos/TOPSIS C*=0,9827/4/4 descriptivo; KPI-gains E3 sin omnibus "
+                "ni impacto vs cero tras Holm",
             ),
         ),
     }
@@ -743,7 +754,7 @@ def _hyp_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
 
 
 def add_chapter_5_structured(doc, p, heading, add_table, status_note) -> None:
-    """Cap. 5: descriptivos → inferenciales → otros → hipotesis → discusion (OG/OE independientes)."""
+    """Cap. 5 por objetivos: 5.1 marco; 5.2–5.4 OE; 5.5 OG; 5.6 hipotesis; 5.7 discusion."""
     try:
         write_pe_answers_audit()
     except OSError:
@@ -755,84 +766,124 @@ def add_chapter_5_structured(doc, p, heading, add_table, status_note) -> None:
     heading(doc, "Capitulo 5. Resultados, contrastacion de hipotesis y discusion", 1)
     p(
         doc,
-        f"Este capitulo presenta la evidencia de la corrida canonica ({RUN_ID}) en cumplimiento "
-        "de los objetivos, con cinco acapites: (5.2) resultados descriptivos estadisticos "
-        "del OG y OE.1–OE.3 de forma independiente; (5.3) resultados inferenciales estadisticos "
-        "del OG y OE.1–OE.3 de forma independiente; (5.4) otros resultados del OG y OE.1–OE.3 "
-        "de forma independiente; (5.5) contrastacion de hipotesis (H0G/H1G y HE nulas/alternativas "
-        "por objetivo); (5.6) discusion de resultados. El marco experimental (§5.1) precede.",
+        f"Este capitulo determina el efecto de HAPPO, MASAC, MATD3 y MAAC e identifica el "
+        f"algoritmo de mejor desempeno para el OG y OE.1–OE.3 sobre la corrida canonica "
+        f"({RUN_ID}). Estructura por objetivos: §5.1 marco y C1–C5; §5.2 OE.1; §5.3 OE.2; "
+        "§5.4 OE.3; §5.5 OG (Pareto/TOPSIS complementario); §5.6 contrastacion consolidada "
+        "HG/HE; §5.7 discusion y auditoria de coherencia. Inferencia canónica = Capa A "
+        "(problemas_objetivos_hipotesis/); Friedman principal; KW/MWU exploratorio. "
+        "No se confunde mejor desempeno descriptivo con superioridad estadisticamente "
+        "significativa. Resumen/Abstract/Cap. VI se alinean en fase posterior.",
     )
 
     heading(doc, "5.0 Mapa de lectura del capitulo", 2)
     add_table(
         doc,
-        ["Numeral", "Bloque", "Contenido (independiente por objetivo)"],
+        ["Numeral", "Bloque", "Contenido"],
         [
-            ["5.1", "Marco", "Cobertura experimental 4x3 y operacionalizacion OE/OG"],
-            ["5.2", "Descriptivos", "5.2.1 OG; 5.2.2 OE.1; 5.2.3 OE.2; 5.2.4 OE.3"],
-            ["5.3", "Inferenciales", "5.3.1 OG; 5.3.2 OE.1; 5.3.3 OE.2; 5.3.4 OE.3"],
-            ["5.4", "Otros resultados", "5.4.1 OG; 5.4.2 OE.1; 5.4.3 OE.2; 5.4.4 OE.3; 5.4.5 Control de recursos (C5)"],
-            [
-                "5.5",
-                "Contrastacion de hipotesis",
-                "5.5.1 H0G/H1G; 5.5.2 HE10/HE11; 5.5.3 HE20/HE21; 5.5.4 HE30/HE31; 5.5.5 Cumplimiento C1–C5",
-            ],
-            ["5.6", "Discusion", "Interpretacion integrada y limitaciones"],
+            ["5.1", "Marco", "Diseno 4x3, C1–C5, artefactos canonicos, semilla unica"],
+            ["5.2", "OE.1 Flexibilidad", "Descriptivo + Shapiro + C1–C5 + HE10/HE11"],
+            ["5.3", "OE.2 Emisiones CO2", "Misma secuencia + HE20/HE21"],
+            ["5.4", "OE.3 Costos", "Misma secuencia + HE30/HE31"],
+            ["5.5", "OG Integrado", "Trade-offs, Pareto, TOPSIS C*=0,9827, H0G/H1G"],
+            ["5.6", "Contrastacion", "Tabla consolidada HG/HE"],
+            ["5.7", "Discusion", "Literatura + auditoria PG–OE–HE"],
         ],
-        caption="Tabla 5.0. Estructura del Capitulo 5 por numerales y objetivos.",
+        caption="Tabla 5.0. Estructura del Capitulo 5 por objetivos.",
         col_widths=[2.0, 3.5, 9.5],
     )
     p(
         doc,
         "Cadena vertical Cap. 1 → Cap. 5: PG ↔ OG ↔ H0G/H1G; "
         "PE.1 ↔ OE.1 ↔ HE10/HE11 (E1); PE.2 ↔ OE.2 ↔ HE20/HE21 (E2); "
-        "PE.3 ↔ OE.3 ↔ HE30/HE31 (E3). Formulaciones exactas del autor; no parafrasear. "
-        "Fuente unica: resultados guardados de 50 episodios Drive en outputs/. "
-        "Determinacion del impacto = criterios C1–C5 (§5.1.1), con C5 = control de recursos; "
-        "cada eje a nivel distrito y edificio. "
-        "TOPSIS y ranking evaluate_v2 4/4 = estadistica descriptiva; "
-        "HE11/HE21/HE31 = KPI-gains (impacto significativo y diferencias) + C3–C5.",
+        "PE.3 ↔ OE.3 ↔ HE30/HE31 (E3). Fuente unica HE: KPI-gains Capa A. "
+        "TOPSIS y evaluate_v2 4/4 = descriptivos. HAPPO excluido de HE "
+        "(sin KPI-gains finales comparables). Episodios de una corrida no son "
+        "replicas experimentales independientes.",
     )
 
-    heading(doc, "5.1 Marco experimental y cobertura", 2)
+    heading(doc, "5.1 Marco experimental y criterios de determinacion del efecto", 2)
     add_table(
         doc,
         ["Objetivo", "Escenario", "VD", "KPI principal", "Pesos"],
         [
-            ["OE.1 Flexibilidad", "E1", "D-VD.1", "flex_composite / KPI-gains", "[0,70; 0,15; 0,15]"],
-            ["OE.2 Emisiones CO2", "E2", "D-VD.2", "carbon_emissions_delta", "[0,15; 0,70; 0,15]"],
-            ["OE.3 Costos", "E3", "D-VD.3", "electricity_cost_delta", "[0,25; 0,15; 0,60]"],
-            ["OG Coordinacion", "E1–E3", "Multiobjetivo", "best_madrl + integracion", "—"],
+            ["OE.1 Flexibilidad", "E1", "D-VD.1", "flex_composite / KPI-gains (n=12)", "[0,70; 0,15; 0,15]"],
+            ["OE.2 Emisiones CO2", "E2", "D-VD.2", "carbon_emissions_delta / gains (n=5)", "[0,15; 0,70; 0,15]"],
+            ["OE.3 Costos", "E3", "D-VD.3", "electricity_cost_delta / gains (n=9)", "[0,25; 0,15; 0,60]"],
+            ["OG Coordinacion", "E1–E3", "Multiobjetivo", "best_madrl + GLOBAL (n=26)", "—"],
         ],
         caption="Tabla 5.1. Operacionalizacion OG/OE → escenario → KPI.",
         col_widths=[3.2, 1.8, 1.8, 4.5, 3.5],
     )
     add_table(
         doc,
-        ["Algoritmo", "E1", "E2", "E3", "KPIs finales", "Uso"],
+        ["Algoritmo", "E1", "E2", "E3", "KPI-gains finales", "Uso"],
         [
             ["MATD3", "50", "50", "50", "Si", "Descriptivo + inferencial canonico"],
             ["MAAC", "50", "50", "50", "Si", "Descriptivo + inferencial canonico"],
             ["MASAC", "50", "50", "50", "Si", "Descriptivo + inferencial canonico"],
-            ["HAPPO", "49", "49", "49", "Si (Drive 2026-07-28)", "Descriptivo 4/4; HE canonica 3x3"],
+            ["HAPPO", "49", "49", "49", "No comparables", "Solo descriptivo 4/4; excluido de HE"],
         ],
-        caption="Tabla 5.2. Cobertura de episodios y KPIs finales.",
+        caption="Tabla 5.2. Cobertura de episodios y uso inferencial (seed = 0).",
         col_widths=[2.2, 1.5, 1.5, 1.5, 3.5, 4.5],
+    )
+    p(
+        doc,
+        "Unidad de observacion HE: KPI-gain orientado por KPI (escenario filtrado). "
+        "Unidad experimental: tratamiento algoritmo x escenario, seed = 0. "
+        "Baseline: CityLearn v2. alpha = 0,05. Capas B (poolada), C (episodica) y D "
+        "(primary/building) no sustituyen la Capa A para HE "
+        "(docs/AUDITORIA_CAP5_CONTRADICCIONES_STATS_2026-08-06.md).",
     )
     _add_impact_criteria_block(doc, p, heading, add_table)
 
-    # --- 5.2 DESCRIPTIVOS (independientes) ---
-    heading(doc, "5.2 Resultados descriptivos estadisticos", 2)
+    # --- 5.2 OE.1 ---
+    heading(doc, "5.2 OE.1 — Efecto sobre la flexibilidad energetica", 2)
+    _desc_oe_block(
+        doc, p, heading, add_table,
+        oe_key="OE1", section="5.2.1", district=district, report=report, fig_counter=fig_counter,
+    )
+    _inf_oe_block(doc, p, heading, add_table, oe_key="OE1", section="5.2.2")
+    _hyp_oe_block(doc, p, heading, add_table, oe_key="OE1", section="5.2.3")
     p(
         doc,
-        "Primer acapite de resultados en cumplimiento de los objetivos. "
-        "Estadistica descriptiva sobre los 50 episodios Drive en outputs/, "
-        "con subacapites independientes para OG, OE.1, OE.2 y OE.3. "
-        "Cada OE documenta C3 (distrito) y C4 (edificio). "
-        "TOPSIS y evaluate_v2 4/4 son descriptivos; no deciden HE.",
+        "Respuesta OE.1: mejor desempeno descriptivo = MAAC (mediana KPI-gain) / MATD3 "
+        "(flex_composite distrito). Nivel de evidencia: descriptivo; HE10 no se rechaza; "
+        "HE11 no se respalda (sin superioridad estadistica conjunta).",
     )
 
-    heading(doc, "5.2.1 OG — resultados descriptivos estadisticos", 3)
+    # --- 5.3 OE.2 ---
+    heading(doc, "5.3 OE.2 — Efecto sobre las emisiones de CO2", 2)
+    _desc_oe_block(
+        doc, p, heading, add_table,
+        oe_key="OE2", section="5.3.1", district=district, report=report, fig_counter=fig_counter,
+    )
+    _inf_oe_block(doc, p, heading, add_table, oe_key="OE2", section="5.3.2")
+    _hyp_oe_block(doc, p, heading, add_table, oe_key="OE2", section="5.3.3")
+    p(
+        doc,
+        "Respuesta OE.2: mejor MADRL descriptivo = MATD3 (mediana gain, Delta CO2, score OE2). "
+        "Friedman p = 0,0498 es senal pareada debil; sin impacto vs cero ni post hoc Holm "
+        "no habilita HE21. HE20 no se rechaza; HE21 no se respalda.",
+    )
+
+    # --- 5.4 OE.3 ---
+    heading(doc, "5.4 OE.3 — Efecto sobre los costos energeticos", 2)
+    _desc_oe_block(
+        doc, p, heading, add_table,
+        oe_key="OE3", section="5.4.1", district=district, report=report, fig_counter=fig_counter,
+    )
+    _inf_oe_block(doc, p, heading, add_table, oe_key="OE3", section="5.4.2")
+    _hyp_oe_block(doc, p, heading, add_table, oe_key="OE3", section="5.4.3")
+    p(
+        doc,
+        "Respuesta OE.3: mejor MADRL descriptivo = MAAC (KPI-gain, Delta costo, score 4/4, "
+        "TOPSIS C* = 0,9827). Ventaja descriptiva sin omnibus ni impacto Holm. "
+        "HE30 no se rechaza; HE31 no se respalda.",
+    )
+
+    # --- 5.5 OG ---
+    heading(doc, "5.5 OG — Efecto integrado y mejor desempeno global", 2)
     p(doc, f"PG (referencia). {PG_EXACT}")
     p(doc, OG_EXACT)
     ranking_rows = []
@@ -851,142 +902,140 @@ def add_chapter_5_structured(doc, p, heading, add_table, status_note) -> None:
         doc,
         ["Rango", "Algoritmo", "Global", "OE.1", "OE.2", "OE.3"],
         ranking_rows,
-        caption="Tabla 5.2.1. Ranking descriptivo integrado (best_madrl_report.json, canonico 3x3).",
+        caption="Tabla 5.5. Ranking descriptivo best_madrl 3x3 (MATD3 = 0,6667).",
         col_widths=[1.5, 2.5, 2.2, 2.0, 2.0, 2.0],
     )
     p(
         doc,
-        "Lectura descriptiva del OG / PG: MATD3 obtiene el mejor score global (0,6667) al liderar "
-        "OE.1 y OE.2; MAAC lidera OE.3. No hay dominador Pareto unico. "
-        "El ranking evaluate_v2 4/4 (incluye HAPPO) confirma a HAPPO en ultimo lugar (score 0). "
-        "El cumplimiento completo del OG exige ademas C1–C5 (§5.1.1), con control de recursos en §5.4.5.",
+        "Trade-off: MATD3 lidera flex fisica y CO2; MAAC lidera costos, evaluate_v2 4/4 "
+        "(score 0,9538) y TOPSIS (C* = 0,9827). Frente de Pareto = {MAAC, MASAC, MATD3}. "
+        "TOPSIS es herramienta multicriterio complementaria y no sustituye la contrastacion "
+        "estadistica. Sin dominador Pareto unico ni superioridad estadistica global de un "
+        "unico MADRL.",
     )
-
-    _desc_oe_block(
-        doc, p, heading, add_table,
-        oe_key="OE1", section="5.2.2", district=district, report=report, fig_counter=fig_counter,
-    )
-    _desc_oe_block(
-        doc, p, heading, add_table,
-        oe_key="OE2", section="5.2.3", district=district, report=report, fig_counter=fig_counter,
-    )
-    _desc_oe_block(
-        doc, p, heading, add_table,
-        oe_key="OE3", section="5.2.4", district=district, report=report, fig_counter=fig_counter,
-    )
-
-    # --- 5.3 INFERENCIALES (independientes) ---
-    heading(doc, "5.3 Resultados inferenciales estadisticos", 2)
-    p(
-        doc,
-        "Segundo acapite. Pruebas sobre KPI-gains de los 50 episodios Drive "
-        f"(outputs/{RUN_ID}/resumen_comparativo/estadistica/problemas_objetivos_hipotesis/), "
-        "alpha = 0,05. Subacapites independientes OG, OE.1, OE.2 y OE.3. "
-        "No usa TOPSIS ni ranking 4/4 como prueba de hipotesis. Decision formal en §5.5.",
-    )
-    _inf_oe_block(doc, p, heading, add_table, oe_key="ALL", section="5.3.1")
-    _inf_oe_block(doc, p, heading, add_table, oe_key="OE1", section="5.3.2")
-    _inf_oe_block(doc, p, heading, add_table, oe_key="OE2", section="5.3.3")
-    _inf_oe_block(doc, p, heading, add_table, oe_key="OE3", section="5.3.4")
-
-    # --- 5.4 OTROS (independientes) ---
-    heading(doc, "5.4 Otros resultados", 2)
-    p(
-        doc,
-        "Tercer acapite. Resultados complementarios por objetivo (OG, OE.1, OE.2, OE.3) "
-        "de forma independiente: convergencia, multiobjetivo distrito/edificio, baseline v2, "
-        "TOPSIS descriptivo y control de recursos (C5). "
-        "No sustituyen §5.2–§5.3 ni §5.5.",
-    )
+    _inf_oe_block(doc, p, heading, add_table, oe_key="ALL", section="5.5.1")
+    _hyp_general_block(doc, p, heading, add_table)
     _otros_og_block(doc, p, heading, add_table, fig_counter)
-    _otros_oe_block(doc, p, heading, add_table, oe_key="OE1", section="5.4.2", fig_counter=fig_counter)
-    _otros_oe_block(doc, p, heading, add_table, oe_key="OE2", section="5.4.3", fig_counter=fig_counter)
-    _otros_oe_block(doc, p, heading, add_table, oe_key="OE3", section="5.4.4", fig_counter=fig_counter)
     _control_recursos_block(doc, p, heading, add_table, fig_counter)
 
-    # --- 5.5 HIPOTESIS (independientes) ---
-    heading(doc, "5.5 Contrastacion de hipotesis", 2)
+    # --- 5.6 Contrastacion consolidada ---
+    heading(doc, "5.6 Contrastacion consolidada de hipotesis", 2)
     p(
         doc,
-        "Cuarto acapite. Contrastacion formal H0/H1 con textos exactos del Cap. 1. "
-        "Primero la hipotesis general (nula y alternativa); luego las hipotesis especificas "
-        "nulas y alternativas de forma independiente por objetivo (OE.1, OE.2, OE.3). "
-        "Unidad de decision = KPI-gains de 50 ep Drive. "
-        "La demostracion exige C1–C5 (§5.1.1), incluido control de recursos.",
+        "Tabla consolidada HG/HE desde problemas_objetivos_hipotesis/ (Capa A). "
+        "Se usa «se rechaza / no se rechaza H0»; no se utiliza «se acepta H0».",
     )
-    p(
+    for line in STATS_EXACT_BLOCK:
+        p(doc, line)
+    add_table(
         doc,
-        "Protocolo: (1) Shapiro-Wilk; si se rechaza normalidad, solo no parametrico; "
-        "(2) omnibus KW/Friedman + post hoc Holm (C1–C2); "
-        "(3) HE alternativas requieren impacto significativo y diferencias entre algoritmos; "
-        "(4) evidencia C3–C5 (distrito, edificio, control de recursos) documenta atribuibilidad; "
-        "(5) TOPSIS/4/4/best_madrl son descriptivos y no respaldan HE por si solos.",
+        ["Hipotesis", "Decision", "Mejor descriptivo", "Fundamento Friedman (principal)"],
+        [
+            [
+                "H0G / H1G",
+                "Se rechaza H0G; H1G exploratoria; sin ganador unico",
+                "MAAC score / MATD3 mediana",
+                "χ² = 9,2911; p = 0,0096; W = 0,1787",
+            ],
+            [
+                "HE10 / HE11",
+                "No se rechaza HE10; no se respalda HE11",
+                "MAAC (gain) / MATD3 (flex)",
+                "χ² = 5,5897; p = 0,0611; W = 0,2329",
+            ],
+            [
+                "HE20 / HE21",
+                "No se rechaza HE20; no se respalda HE21",
+                "MATD3",
+                "χ² = 6,0000; p = 0,0498; W = 0,6000 (sin post hoc/impacto)",
+            ],
+            [
+                "HE30 / HE31",
+                "No se rechaza HE30; no se respalda HE31",
+                "MAAC",
+                "χ² = 3,4286; p = 0,1801; W = 0,1905",
+            ],
+        ],
+        caption="Tabla 5.6. Contrastacion consolidada HG/HE (Capa A, alpha = 0,05).",
+        col_widths=[2.5, 4.5, 3.5, 4.5],
     )
-    for para in STATS_EXACT_BLOCK:
-        p(doc, para)
-    _hyp_general_block(doc, p, heading, add_table)
-    _hyp_oe_block(doc, p, heading, add_table, oe_key="OE1", section="5.5.2")
-    _hyp_oe_block(doc, p, heading, add_table, oe_key="OE2", section="5.5.3")
-    _hyp_oe_block(doc, p, heading, add_table, oe_key="OE3", section="5.5.4")
 
-    heading(doc, "5.5.5 Cumplimiento OG y OE.1–OE.3", 3)
-    verdict_rows = _verdict_table_rows(report)
+    heading(doc, "5.6.1 Cumplimiento OG y OE.1–OE.3", 3)
     add_table(
         doc,
         ["Objetivo", "VD / Esc.", "Mayor efecto (VI)", "Evidencia KPI", "Cumplimiento"],
-        verdict_rows,
-        caption="Tabla 5.5.5. Veredicto de cumplimiento OG y OE.1–OE.3.",
+        _verdict_table_rows(report),
+        caption="Tabla 5.6.1. Cumplimiento de objetivos (efecto + identificacion MADRL).",
         col_widths=[1.5, 2.2, 2.0, 4.5, 4.8],
     )
-    p(doc, _og_oe_verdict_text())
-    add_table(
-        doc,
-        ["Criterio", "Distrito", "Edificio", "Integrado en Cap. 5", "Estado"],
-        [
-            ["C1 Impacto vs baseline", "Si (KPI-gains)", "Via KPIs agregados", "§5.3 / §5.5", "Documentado"],
-            ["C2 Diferencias entre algoritmos", "Si (KW/Friedman)", "N/A (unidad KPI-gains)", "§5.3 / §5.5", "Documentado"],
-            ["C3 KPIs fisicos por eje", "Si (tablas+fig)", "—", "§5.2 / §5.4.1", "Documentado"],
-            ["C4 KPIs por edificio × eje", "—", "Si (17 edif. × 3 ejes)", "§5.2 / §5.4.2–5.4.5", "Documentado"],
-            ["C5 Control de recursos", "Trazas E1–E3", "BESS/EV/carga + inventario", "§5.4.5", "Documentado"],
-        ],
-        caption=(
-            "Tabla 5.5.5b. Cumplimiento completo de criterios de impacto "
-            "(sin parciales; C5 = control de recursos)."
-        ),
-        col_widths=[3.5, 3.0, 4.0, 3.0, 2.0],
-    )
-    p(
-        doc,
-        "Cumplimiento documental completo: C1–C5 estan presentes a nivel distrito y edificio "
-        "para OE.1–OE.3. El veredicto estadistico de HE (aceptacion/rechazo) permanece el de "
-        "§5.5.1–5.5.4; C3–C5 no sustituyen C1–C2, pero sin ellos el impacto no se declara "
-        "atribuible ni el cumplimiento de objetivos se considera completo.",
-    )
 
-    # --- 5.6 DISCUSION ---
-    heading(doc, "5.6 Discusion de resultados", 2)
+    # --- 5.7 Discusion ---
+    heading(doc, "5.7 Discusion de resultados", 2)
     p(
         doc,
-        "Quinto y ultimo acapite del capitulo. "
-        "1) Separacion de planos: §5.2 descriptivo por OG/OE; §5.3 inferencial por OG/OE; "
-        "§5.4 otros por OG/OE; §5.5 contrastacion H0G/H1G y HE por objetivo; §5.6 discusion. "
-        "2) No normalidad → solo no parametrico. "
-        "3) Trade-off: MATD3 flex+CO2; MAAC costos/TOPSIS/4/4 (descriptivo). "
-        "4) H1G exploratoria no equivale a HE11/HE21/HE31. "
-        "5) TOPSIS/4/4 = descriptivo de 50 ep Drive; HE = KPI-gains (impacto + diferencias). "
-        "6) Limitaciones: semilla = 0; HAPPO 49/50 ep; n KPI 12/5/9.",
+        "1) Separacion descriptivo/inferencial: lideres MAAC/MATD3 no equivalen a HE11/HE21/HE31. "
+        "2) CityLearn y flexibilidad comunitaria (Nweye et al., 2022, 2023b, 2024): la coordinacion "
+        "DER no garantiza mejoras univocas en todos los KPI bajo semilla unica. "
+        "3) Familias MADRL (Iqbal y Sha, 2019; Kuba et al., 2021; Zhong et al., 2023; Haarnoja et al., "
+        "2018; Gao et al., 2023): trade-offs tipicos actor-critico multiagente. "
+        "4) Carbon-aware y precios (Nweye et al., 2024; Nweye y Nagy, 2024b): disociacion Delta CO2 "
+        "vs Delta costo. "
+        "5) Rigor estadistico RL (Agarwal et al., 2021; Demsar, 2006; Colas et al., 2019; "
+        "Patterson et al., 2024): no tratar episodios como replicas independientes; reportar "
+        "incertidumbre y tamanos de efecto. "
+        "6) Limitaciones: seed = 0; HAPPO sin KPI-gains HE; n KPI 12/5/9; impacto GLOBAL desfavorable.",
     )
-    heading(doc, "5.6.1 Contrastacion con antecedentes", 3)
+    heading(doc, "5.7.1 Contrastacion con antecedentes nacionales", 3)
     p(
         doc,
-        f"La discusion se ancla a los antecedentes del Capitulo 2 "
+        f"Anclaje adicional a antecedentes del Capitulo 2 "
         f"({len(ANTECEDENTES_NACIONALES)} antecedentes nacionales/peruanos).",
     )
     for paragraph in _antecedents_discussion_text():
         p(doc, paragraph)
+
+    heading(doc, "5.7.2 Auditoria de coherencia PG–OG–HG / PE–OE–HE", 3)
+    add_table(
+        doc,
+        ["Cadena", "Efecto respondido", "Mejor MADRL", "Nivel de evidencia"],
+        [
+            [
+                "PG → OG → H0G/H1G",
+                "Si (H0G rechazada exploratoria)",
+                "Parcial: sin ganador unico",
+                "Descriptivo + inferencial exploratorio",
+            ],
+            [
+                "PE.1 → OE.1 → HE10/HE11",
+                "Si (HE10 no rechazada)",
+                "MAAC gain / MATD3 flex (solo descriptivo)",
+                "Descriptivo",
+            ],
+            [
+                "PE.2 → OE.2 → HE20/HE21",
+                "Si (HE20 no rechazada)",
+                "MATD3 (solo descriptivo)",
+                "Descriptivo",
+            ],
+            [
+                "PE.3 → OE.3 → HE30/HE31",
+                "Si (HE30 no rechazada)",
+                "MAAC (solo descriptivo)",
+                "Descriptivo",
+            ],
+        ],
+        caption="Tabla 5.7.2. Auditoria de coherencia vertical Cap. 1 ↔ Cap. 5.",
+        col_widths=[3.5, 4.0, 4.0, 3.5],
+    )
+    p(
+        doc,
+        "Veredicto de cierre Cap. V: los objetivos quedan respondidos en cuanto a determinacion "
+        "del efecto y a identificacion del MADRL de mejor desempeno descriptivo por eje; "
+        "la superioridad estadisticamente significativa por eje no se establece. "
+        "Resumen, Abstract y Cap. VI se alinearan a este cierre en fase posterior.",
+    )
     status_note(
         doc,
-        "Capitulo 5 (2026-07-29): cumplimiento de objetivos con acapites "
-        "descriptivos → inferenciales → otros → contrastacion de hipotesis → discusion; "
-        "OG/OE.1/OE.2/OE.3 independientes en cada bloque.",
+        "Capitulo 5 (2026-08-06): reestructurado por objetivos OE.1–OE.3/OG; Capa A canónica; "
+        "Friedman principal; TOPSIS C*=0,9827; auditoria de coherencia PG–OE–HE.",
     )

@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-29T21:12:27.401702+00:00",
+  "generated_at": "2026-08-07T05:04:54.376870+00:00",
   "run_id": "madrl_v3_20260627_164047",
   "verdict": "structured_from_csv",
   "sources": {
     "descriptivo_distrito_colab": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\descriptivo_distrito_colab.csv",
     "district_episode_kpis": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\full_data\\analysis_real_drive\\tables\\district_episode_kpis.csv",
     "hipotesis_estadisticas_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\hipotesis_estadisticas_madrl.csv",
-    "comparaciones_mwu_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\comparaciones_mwu_madrl.csv",
-    "comparaciones_wilcoxon_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\comparaciones_wilcoxon_madrl.csv",
+    "comparaciones_mwu_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\problemas_objetivos_hipotesis\\comparaciones_mwu_holm_problemas.csv",
+    "comparaciones_wilcoxon_madrl": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\problemas_objetivos_hipotesis\\comparaciones_wilcoxon_pareado_holm.csv",
     "best_madrl_report": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\best_madrl_report.json",
     "inferential_audit_report": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\inferential_audit_report.json"
   },
@@ -112,21 +112,10 @@
         },
         "best_median_kpi_gain": "MAAC",
         "mann_whitney_significant": [],
-        "wilcoxon_significant": [
-          {
-            "pair": "MASAC vs MATD3",
-            "p_value": 0.04100769198114653,
-            "better_by_median": "MATD3"
-          },
-          {
-            "pair": "MASAC vs MAAC",
-            "p_value": 0.0013220986971835887,
-            "better_by_median": "MAAC"
-          }
-        ],
-        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.1, p = 0,281); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.1). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MATD3 (p = 0,041, mejor MATD3), MASAC vs MAAC (p = 0,001, mejor MAAC). Mayor efecto por mediana KPI-gain: MAAC."
+        "wilcoxon_significant": [],
+        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.1, p = 0,281); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.1). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): ningún par significativo. Mayor efecto por mediana KPI-gain: MAAC."
       },
-      "generated_at": "2026-07-29T21:12:27.401702+00:00"
+      "generated_at": "2026-08-07T05:04:54.376870+00:00"
     },
     "PE.2": {
       "pe_id": "PE.2",
@@ -228,16 +217,10 @@
         },
         "best_median_kpi_gain": "MATD3",
         "mann_whitney_significant": [],
-        "wilcoxon_significant": [
-          {
-            "pair": "MASAC vs MAAC",
-            "p_value": 0.007685794055213263,
-            "better_by_median": "MAAC"
-          }
-        ],
-        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.2, p = 0,546); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.2). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MAAC (p = 0,008, mejor MAAC). Mayor efecto por mediana KPI-gain: MATD3."
+        "wilcoxon_significant": [],
+        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.2, p = 0,546); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.2). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): ningún par significativo. Mayor efecto por mediana KPI-gain: MATD3."
       },
-      "generated_at": "2026-07-29T21:12:27.401702+00:00"
+      "generated_at": "2026-08-07T05:04:54.376870+00:00"
     },
     "PE.3": {
       "pe_id": "PE.3",
@@ -339,16 +322,10 @@
         },
         "best_median_kpi_gain": "MAAC",
         "mann_whitney_significant": [],
-        "wilcoxon_significant": [
-          {
-            "pair": "MASAC vs MAAC",
-            "p_value": 0.03334022025101753,
-            "better_by_median": "MAAC"
-          }
-        ],
-        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.3, p = 0,388); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.3). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): MASAC vs MAAC (p = 0,033, mejor MAAC). Mayor efecto por mediana KPI-gain: MAAC."
+        "wilcoxon_significant": [],
+        "explicit_answer": "En qué medida inferencial: H0 de igualdad global entre algoritmos no rechazada (Kruskal-Wallis HE.3, p = 0,388); el efecto entre algoritmos no es estadísticamente distinguible al nivel omnibus (alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo (HE.3). Mann-Whitney U: ningún par significativo. Wilcoxon pareado (exploratorio): ningún par significativo. Mayor efecto por mediana KPI-gain: MAAC."
       },
-      "generated_at": "2026-07-29T21:12:27.403705+00:00"
+      "generated_at": "2026-08-07T05:04:54.376870+00:00"
     }
   }
 }

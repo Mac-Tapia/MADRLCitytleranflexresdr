@@ -109,13 +109,13 @@ Revisión bibliográfica sistemática (50 antecedentes), extracción/preprocesam
 ### 3.5.2 Técnicas de análisis
 - KPIs por eje vía `env.evaluate_v2()` de CityLearn v2.
 - Comparación inter-algoritmo por KPI y ranking integrado (`compare_citylearn_v2_vs_v3_madrl.py`, `generate_thesis_objective_evidence.py`).
-- **Pruebas estadísticas no paramétricas** (justificadas por rechazo de normalidad Shapiro-Wilk; alpha = 0,05):
-  - **Kruskal–Wallis:** diferencia global entre algoritmos (omnibus).
-  - **Mann–Whitney U** con Holm: pares independientes; tamaños de efecto Cliff's δ, Vargha–Delaney A12, Cohen d, Hedges g.
-  - **Wilcoxon signed-rank:** pares pareados por KPI (exploratorio).
-  - **Friedman:** solo si hubiera ≥3 semillas (bloques); **no aplicable** con seed única.
-- El uso de pruebas no paramétricas y reporte de tamaño de efecto sigue recomendaciones para comparación robusta de algoritmos de aprendizaje por refuerzo (Demšar, 2006; Agarwal et al., 2021).
-- **Dos capas de evidencia (no fusionar):** (A) series episódicas OE-alineadas (`gdrive_objective_aligned_statistics.csv`); (B) KPI-gains de entrenamiento (`hipotesis_estadisticas_madrl.csv`). Suite materializada también en `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb` (celdas 8.1 y 9.1).
+- **Pruebas estadísticas no paramétricas** (justificadas por rechazo de normalidad Shapiro–Wilk; α = 0,05). Unidad primaria de contrastación HE: **KPI-gains** orientados, filtrados por escenario objetivo (E1/E2/E3), con emparejamiento por KPI entre algoritmos (Capa A: `problemas_objetivos_hipotesis/`).
+  - **Friedman** (principal, datos pareados por KPI) → **Kendall W** (tamaño del efecto) → **Wilcoxon signed-rank** entre pares de algoritmos con corrección de **Holm**.
+  - **Wilcoxon signed-rank vs cero** + Holm: impacto frente al baseline (C1).
+  - **Kruskal–Wallis** y **Mann–Whitney U** (+ Cliff’s δ, Holm): solo cuando exista independencia real entre grupos; con KPI-gains pareados se reportan únicamente como **análisis exploratorio / sensibilidad**, no como prueba principal de HE.
+  - **Semilla única (seed = 0):** los episodios de una sola corrida **no** constituyen réplicas experimentales independientes ni permiten afirmar robustez multisemilla. La repetición multi-semilla (≥3) queda como trabajo futuro; no habilita sustituir Friedman pareado-por-KPI por una batería “solo KW”.
+- El uso de pruebas no paramétricas y reporte de tamaño de efecto sigue recomendaciones para comparación robusta de algoritmos de aprendizaje por refuerzo (Demšar, 2006; Agarwal et al., 2021; Colas et al., 2019; Patterson et al., 2024).
+- **Capas de evidencia (no fusionar):** (A) KPI-gains canónicos por problema/objetivo (`problemas_objetivos_hipotesis/`) — **única contrastación HE**; (B) KPI-gains poolados entre escenarios (`analisis_estadistico_madrl.csv`) — no citar como HE; (C) series episódicas OE-alineadas — complementarias/sensibilidad. Suite materializada también en `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb`.
 
 ### 3.5.3 Instrumentos (software)
 Python 3.9 (`.venv39-citylearn-v3`), PyTorch 2.8.0+cu126, CUDA 12.6, CityLearn v2/v3, backends `external/HARL`, `external/MARL/src`, `external/off-policy`, `external/MAAC`; Gymnasium, PettingZoo; MARLlib (referencia) y Optuna (HPO previsto).

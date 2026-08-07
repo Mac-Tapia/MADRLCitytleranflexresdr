@@ -1,5 +1,5 @@
 {
-  "built_blocks": 234,
+  "built_blocks": 305,
   "missing_headings": [],
   "ok_structure": true,
   "tesis": {
@@ -7,23 +7,23 @@
     "ok": true,
     "toc_safe": false,
     "old_range": [
-      497,
-      674
+      524,
+      1243
     ],
     "dry_run": false,
-    "backup": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx.pre_cap5_sync.bak",
+    "backup": null,
     "new_range": [
-      497,
-      731
+      524,
+      829
     ],
     "checks": {
-      "Shapiro": 9,
-      "Kruskal": 8,
-      "Wilcoxon": 6,
-      "0,6667": 4,
-      "normalidad": 10,
-      "Mann": 3,
-      "no_param": 2
+      "Shapiro": 10,
+      "Kruskal": 2,
+      "Wilcoxon": 4,
+      "0,6667": 3,
+      "normalidad": 9,
+      "Mann": 4,
+      "no_param": 0
     }
   },
   "informe": {
@@ -31,23 +31,23 @@
     "ok": true,
     "toc_safe": false,
     "old_range": [
-      500,
-      677
+      539,
+      1257
     ],
     "dry_run": false,
-    "backup": "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx.pre_cap5_sync.bak",
+    "backup": null,
     "new_range": [
-      500,
-      734
+      539,
+      844
     ],
     "checks": {
-      "Shapiro": 9,
-      "Kruskal": 8,
-      "Wilcoxon": 6,
-      "0,6667": 4,
-      "normalidad": 10,
-      "Mann": 3,
-      "no_param": 2
+      "Shapiro": 10,
+      "Kruskal": 2,
+      "Wilcoxon": 4,
+      "0,6667": 3,
+      "normalidad": 9,
+      "Mann": 4,
+      "no_param": 0
     }
   }
 }

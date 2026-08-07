@@ -31,10 +31,17 @@ INVENTORY_CSV = MO_DIR / "building_inventory_multiobjective.csv"
 
 BL_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "citylearn_v2_baseline"
 STAT_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "estadistica"
+POH_DIR = STAT_DIR / "problemas_objetivos_hipotesis"
 HYP_CSV = STAT_DIR / "hipotesis_estadisticas_madrl.csv"
 ANALYSIS_CSV = STAT_DIR / "analisis_estadistico_madrl.csv"
-MWU_CSV = STAT_DIR / "comparaciones_mwu_madrl.csv"
-WC_CSV = STAT_DIR / "comparaciones_wilcoxon_madrl.csv"
+# Capa A (canónica HE): no mezclar con analisis_estadistico_madrl.csv (Capa B poolada).
+POH_SHAPIRO_CSV = POH_DIR / "normalidad_shapiro_por_problema.csv"
+POH_OMNIBUS_CSV = POH_DIR / "pruebas_omnibus_problemas_objetivos.csv"
+POH_DECISIONES_CSV = POH_DIR / "decisiones_problemas_objetivos_hipotesis.csv"
+POH_MWU_CSV = POH_DIR / "comparaciones_mwu_holm_problemas.csv"
+POH_WC_CSV = POH_DIR / "comparaciones_wilcoxon_pareado_holm.csv"
+MWU_CSV = POH_MWU_CSV if POH_MWU_CSV.is_file() else STAT_DIR / "comparaciones_mwu_madrl.csv"
+WC_CSV = POH_WC_CSV if POH_WC_CSV.is_file() else STAT_DIR / "comparaciones_wilcoxon_madrl.csv"
 DESCRIPTIVE_CSV = STAT_DIR / "descriptivo_distrito_colab.csv"
 EPISODE_CSV = (
     REPO / "outputs" / "_drive_madrl" / "full_data" / "analysis_real_drive" / "tables" / "district_episode_kpis.csv"
@@ -506,7 +513,28 @@ def _analysis_row(scope: str) -> dict[str, str]:
 
 
 def _shapiro_table_rows() -> list[list[str]]:
+    """Shapiro desde Capa A (problemas_objetivos_hipotesis/); fallback Capa B."""
     rows: list[list[str]] = []
+    if POH_SHAPIRO_CSV.is_file():
+        for row in _read_csv(POH_SHAPIRO_CSV):
+            if (row.get("status") or "") == "datos insuficientes":
+                continue
+            scope = row.get("scope", "")
+            hyp, label = HYPOTHESIS_LABELS.get(scope, (scope, scope))
+            if scope == "GLOBAL":
+                hyp, label = ("HG", "Global (GLOBAL)")
+            p_val = row.get("p_value", "")
+            rejected = row.get("normality_rejected", "")
+            rows.append(
+                [
+                    label,
+                    hyp,
+                    row.get("algorithm", ""),
+                    _fmt_stat_num(p_val, ".4f") if p_val else "-",
+                    "Si" if str(rejected).lower() == "true" else "No",
+                ]
+            )
+        return rows
     for scope in ("OE1", "OE2", "OE3", "ALL"):
         row = _analysis_row(scope)
         if not row:
@@ -532,7 +560,40 @@ def _shapiro_table_rows() -> list[list[str]]:
 
 
 def _kruskal_table_rows() -> list[list[str]]:
+    """Omnibus desde Capa A: Friedman (principal) + KW (exploratorio)."""
     rows: list[list[str]] = []
+    if POH_OMNIBUS_CSV.is_file():
+        by_scope: dict[str, dict[str, dict]] = {}
+        for row in _read_csv(POH_OMNIBUS_CSV):
+            scope = row.get("scope", "")
+            method = row.get("method", "")
+            by_scope.setdefault(scope, {})[method] = row
+        for scope in ("OE1", "OE2", "OE3", "GLOBAL"):
+            methods = by_scope.get(scope, {})
+            fried = next((v for k, v in methods.items() if "Friedman" in k), {})
+            kw = next((v for k, v in methods.items() if "Kruskal" in k), {})
+            if not fried and not kw:
+                continue
+            hyp, label = HYPOTHESIS_LABELS.get(scope, (scope, scope))
+            if scope == "GLOBAL":
+                hyp, label = ("HG", "Global (GLOBAL)")
+            p_f = float(fried.get("p_value", "nan")) if fried else float("nan")
+            rows.append(
+                [
+                    label,
+                    hyp,
+                    _fmt_stat_num(fried.get("statistic"), ".4f") if fried else "-",
+                    _fmt_stat_num(p_f, ".4f") if fried else "-",
+                    "Si" if p_f < 0.05 else "No",
+                    (
+                        f"KW explor. H={_fmt_stat_num(kw.get('statistic'), '.4f')} "
+                        f"p={_fmt_stat_num(kw.get('p_value'), '.4f')}"
+                        if kw
+                        else "-"
+                    ),
+                ]
+            )
+        return rows
     for axis in ("OE1", "OE2", "OE3", "OG"):
         hyp_row = next((r for r in _read_csv(HYP_CSV) if r.get("axis") == axis), {})
         if not hyp_row:
@@ -560,18 +621,28 @@ def _mwu_table_rows(scope_filter: str | None = None) -> list[list[str]]:
         scope = row.get("scope", "")
         if scope_filter and scope != scope_filter:
             continue
-        if row.get("mann_whitney_status") != "ok":
-            continue
-        p_val = float(row.get("mann_whitney_p_value", "nan"))
+        # Capa A usa p_holm; Capa B legacy usa mann_whitney_status.
+        if "p_holm" in row:
+            p_val = float(row.get("p_holm", "nan"))
+            u_stat = row.get("u_statistic", "")
+            sig = str(row.get("significant_holm", "")).lower() == "true"
+        else:
+            if row.get("mann_whitney_status") != "ok":
+                continue
+            p_val = float(row.get("mann_whitney_p_value", "nan"))
+            u_stat = row.get("mann_whitney_u", "")
+            sig = p_val < 0.05
         hyp, label = HYPOTHESIS_LABELS.get(scope, (scope, scope))
+        if scope == "GLOBAL":
+            hyp, label = ("HG", "Global (GLOBAL)")
         rows.append(
             [
                 label,
                 hyp,
                 f"{row.get('algorithm_a')} vs {row.get('algorithm_b')}",
-                _fmt_stat_num(row.get("mann_whitney_u"), ".1f"),
+                _fmt_stat_num(u_stat, ".1f"),
                 _fmt_stat_num(p_val, ".4f"),
-                "Si" if p_val < 0.05 else "No",
+                "Si" if sig else "No",
             ]
         )
     return rows

@@ -77,7 +77,7 @@ Para cumplir el OG y los OE.1–OE.3, y para demostrar las hipótesis, se exige 
 | Id | Criterio | Medida / prueba | Rol |
 |---|---|---|---|
 | **C1** | Impacto vs baseline | Wilcoxon KPI-gains vs cero + Holm | Inferencial HE |
-| **C2** | Diferencias entre algoritmos | Kruskal–Wallis / Friedman + Holm | Inferencial HE |
+| **C2** | Diferencias entre algoritmos | **Friedman + Kendall W + Wilcoxon/Holm** (principal); KW/MWU exploratorio | Inferencial HE |
 | **C3** | KPIs físicos de distrito por eje | flex_composite / ΔCO₂ / Δcosto | Descriptivo distrito |
 | **C4** | KPIs desagregados por edificio por eje | 17 edificios × E1/E2/E3 | Descriptivo edificio |
 | **C5** | Control de recursos | BESS, EV/V2G, carga desplazable (acciones y éxito EV) | Obligatorio (atribuibilidad) |
@@ -110,12 +110,12 @@ HE31.-El algoritmo MADRL impacta de manera estadísticamente significativa en lo
 
 #### 1.3.2.3 Resumen de contrastación (Cap. 5)
 
-| Hipótesis | Decisión (KPI-gains, α = 0,05) | Líder descriptivo |
+| Hipótesis | Decisión (KPI-gains Capa A, α = 0,05; omnibus principal = Friedman pareado) | Líder descriptivo |
 |---|---|---|
-| **H0G / H1G** | Se rechaza H0G y se respalda H1G **exploratoriamente** (Friedman p = 0,0096); sin ganador global único | MAAC (score E1–E3) / MATD3 (mediana KPI / score 0,6667) |
-| **HE10 / HE11** | No se rechaza HE10; no se respalda HE11 (KW p = 0,4685) | **MAAC** (E1) |
-| **HE20 / HE21** | No se rechaza HE20; no se respalda HE21 (KW p = 0,7648) | **MATD3** (E2) |
-| **HE30 / HE31** | No se rechaza HE30; no se respalda HE31 (KW p = 0,7357) | **MAAC** (E3) |
+| **H0G / H1G** | Se rechaza H0G y se respalda H1G **exploratoriamente** (Friedman χ² = 9,2911, p = 0,0096; Kendall W = 0,1787); sin ganador global único | MAAC (score E1–E3) / MATD3 (mediana KPI / score 0,6667) |
+| **HE10 / HE11** | No se rechaza HE10; no se respalda HE11 (Friedman p = 0,0611; KW exploratorio p = 0,4685) | **MAAC** (E1) |
+| **HE20 / HE21** | No se rechaza HE20; no se respalda HE21 (Friedman p = 0,0498 sin impacto vs cero ni post hoc Holm; KW exploratorio p = 0,7648) | **MATD3** (E2) |
+| **HE30 / HE31** | No se rechaza HE30; no se respalda HE31 (Friedman p = 0,1801; KW exploratorio p = 0,7357) | **MAAC** (E3) |
 
 Fuente: `decisiones_problemas_objetivos_hipotesis.csv`. Detalle en Capítulos 5 y 6.
 

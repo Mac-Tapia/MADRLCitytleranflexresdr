@@ -1,0 +1,46 @@
+{
+  "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+    "banned_counts": {
+      "0,1554": 2,
+      "0.1554": 1,
+      "0,0333": 0,
+      "0.0333": 0,
+      "0,7828": 0,
+      "0.7828": 0
+    },
+    "required_present": {
+      "0,9827": true,
+      "5.2 OE.1": true,
+      "5.7.2 Auditoria": true,
+      "Friedman": true,
+      "No se rechaza": true,
+      "Capa A": true,
+      "5.6 Contrastacion consolidada": true,
+      "5.5 OG": true
+    },
+    "has_friedman_principal": true,
+    "has_kw_exploratorio": true
+  },
+  "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+    "banned_counts": {
+      "0,1554": 1,
+      "0.1554": 0,
+      "0,0333": 0,
+      "0.0333": 0,
+      "0,7828": 0,
+      "0.7828": 0
+    },
+    "required_present": {
+      "0,9827": true,
+      "5.2 OE.1": true,
+      "5.7.2 Auditoria": true,
+      "Friedman": true,
+      "No se rechaza": true,
+      "Capa A": true,
+      "5.6 Contrastacion consolidada": true,
+      "5.5 OG": true
+    },
+    "has_friedman_principal": true,
+    "has_kw_exploratorio": true
+  }
+}

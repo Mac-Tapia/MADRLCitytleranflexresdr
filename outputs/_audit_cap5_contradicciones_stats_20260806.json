@@ -1,0 +1,17 @@
+{
+  "audit_date": "2026-08-06",
+  "canonical_run": "madrl_v3_20260627_164047",
+  "canonical_he_dir": "outputs/madrl_v3_20260627_164047/resumen_comparativo/estadistica/problemas_objetivos_hipotesis",
+  "alpha": 0.05,
+  "algorithms_he": ["MAAC", "MASAC", "MATD3"],
+  "happo_excluded_reason": "sin KPI-gains finales comparables",
+  "canonical_decisions": {
+    "OE1": {"he10": "no se rechaza", "he11": "no se respalda", "descriptive_best": "MAAC", "friedman_p": 0.061122710075168216, "kw_p": 0.46851031324120784},
+    "OE2": {"he20": "no se rechaza", "he21": "no se respalda", "descriptive_best": "MATD3", "friedman_p": 0.04978706836786389, "kw_p": 0.764755400863019},
+    "OE3": {"he30": "no se rechaza", "he31": "no se respalda", "descriptive_best": "MAAC", "friedman_p": 0.18009231214795343, "kw_p": 0.7357160858633792},
+    "GLOBAL": {"h0g": "se rechaza exploratoria", "h1g": "se respalda exploratoria", "unique_winner": false, "friedman_p": 0.009604057435644813, "kw_p": 0.4043834679949526}
+  },
+  "topsis_closeness_maac": 0.9826857601271446,
+  "banned_he_citations": ["0.1554", "wilcoxon_oe3_p_0.0333_as_holm", "shapiro_oe1_1e-7", "episodic_kw_as_he"],
+  "md_report": "docs/AUDITORIA_CAP5_CONTRADICCIONES_STATS_2026-08-06.md"
+}

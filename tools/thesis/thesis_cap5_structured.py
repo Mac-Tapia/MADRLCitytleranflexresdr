@@ -607,6 +607,59 @@ def _control_recursos_block(doc, p, heading, add_table, fig_counter) -> None:
     )
 
 
+# Valores exactos desde problemas_objetivos_hipotesis/ (no mezclar con analisis_estadistico_madrl.csv).
+STATS_EXACT_BLOCK = [
+    "[[STATS_EXACTAS_KPI_GAINS_50EP]]",
+    (
+        "Síntesis de pruebas estadísticas con valores exactos (KPI-gains, 50 episodios Drive, "
+        "carpeta problemas_objetivos_hipotesis/; α = 0,05; MAAC, MASAC y MATD3; HAPPO sin "
+        "KPI-gains finales comparables). Los números siguientes son la referencia obligatoria "
+        "para HG/HE1–HE3."
+    ),
+    (
+        "Shapiro–Wilk (W y p) por objetivo. OE.1/E1: MAAC W = 0,7152, p = 0,001184; "
+        "MASAC W = 0,5997, p = 1,066e-04; MATD3 W = 0,7160, p = 0,001208. "
+        "OE.2/E2: MAAC W = 0,6993, p = 0,009419; MASAC W = 0,6999, p = 0,009548; "
+        "MATD3 W = 0,7012, p = 0,009848. "
+        "OE.3/E3: MAAC W = 0,5575, p = 3,029e-05; MASAC W = 0,5879, p = 6,905e-05; "
+        "MATD3 W = 0,5464, p = 2,246e-05. "
+        "GLOBAL: MAAC W = 0,6772, p = 2,628e-06; MASAC W = 0,6011, p = 3,047e-07; "
+        "MATD3 W = 0,6734, p = 2,343e-06. Normalidad rechazada en todos los grupos calculables."
+    ),
+    (
+        "Kruskal–Wallis (H y p). OE.1: H = 1,5164, p = 0,4685; OE.2: H = 0,5364, p = 0,7648; "
+        "OE.3: H = 0,6138, p = 0,7357; GLOBAL: H = 1,8108, p = 0,4044."
+    ),
+    (
+        "Friedman (χ², p) y Kendall's W. OE.1: χ² = 5,5897, p = 0,0611, W = 0,2329; "
+        "OE.2: χ² = 6,0000, p = 0,0498, W = 0,6000; OE.3: χ² = 3,4286, p = 0,1801, W = 0,1905; "
+        "GLOBAL: χ² = 9,2911, p = 0,0096, Kendall's W = 0,1787."
+    ),
+    (
+        "Mann–Whitney U (U, p-Holm, Cliff's δ). OE.1: MAAC–MASAC U = 89,0, p-Holm = 0,8498, δ = 0,2361; "
+        "MAAC–MATD3 U = 67,5, p-Holm = 0,8498, δ = −0,0625; MASAC–MATD3 U = 53,0, p-Holm = 0,8498, "
+        "δ = −0,2639. OE.2: U ∈ {15,0; 10,0; 10,0}, p-Holm = 1,0000. OE.3: U ∈ {49,0; 44,0; 35,0}, "
+        "p-Holm = 1,0000. GLOBAL: MAAC–MASAC U = 393,0, p-Holm = 0,6294, δ = 0,1627; "
+        "MAAC–MATD3 U = 325,5, p-Holm = 0,8251, δ = −0,0370; MASAC–MATD3 U = 269,0, "
+        "p-Holm = 0,6191, δ = −0,2041. Ningún par significativo tras Holm."
+    ),
+    (
+        "Wilcoxon signed-rank (W, p-Holm). OE.1: W ∈ {7,0; 17,0; 14,0}, p-Holm ∈ {0,1100; 0,5143; 0,3376}. "
+        "OE.2: W = 0,0, p-Holm = 0,3074 (tres pares). OE.3: W ∈ {6,0; 13,0; 11,0}, "
+        "p-Holm ∈ {0,5266; 1,0000; 1,0000}. GLOBAL: MAAC–MASAC W = 31,0, p-Holm = 0,0172 "
+        "(único significativo); MAAC–MATD3 W = 69,0, p-Holm = 0,2953; MASAC–MATD3 W = 54,0, "
+        "p-Holm = 0,1137."
+    ),
+    (
+        "Decisión HG/HE1/HE2/HE3. HG (H0G/H1G): se rechaza H0G y se respalda H1G de forma "
+        "exploratoria (Friedman p = 0,0096; Kendall's W = 0,1787), sin ganador único. "
+        "HE1 (HE10/HE11): no se rechaza HE10; no se respalda HE11. "
+        "HE2 (HE20/HE21): no se rechaza HE20; no se respalda HE21. "
+        "HE3 (HE30/HE31): no se rechaza HE30; no se respalda HE31."
+    ),
+]
+
+
 def _hyp_general_block(doc, p, heading, add_table) -> None:
     heading(doc, "5.5.1 Hipotesis general (H0G / H1G)", 3)
     p(doc, "Formulacion nula (texto exacto Cap. 1):")
@@ -620,7 +673,8 @@ def _hyp_general_block(doc, p, heading, add_table) -> None:
             [
                 "H0G",
                 "Se rechaza de forma exploratoria",
-                "Friedman integracion p = 0,0096 + impacto GLOBAL vs baseline (Holm)",
+                "Friedman χ² = 9,2911, p = 0,0096, Kendall's W = 0,1787; impacto GLOBAL vs baseline "
+                "Holm (MAAC/MASAC/MATD3); KW GLOBAL H = 1,8108, p = 0,4044",
             ],
             [
                 "H1G",
@@ -638,11 +692,21 @@ def _hyp_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
     oe_display = {"OE1": "OE.1", "OE2": "OE.2", "OE3": "OE.3"}[oe_key]
     decisions = {
         "OE1": (
-            ("HE10", "No se rechaza", "KW p = 0,4685"),
+            (
+                "HE10",
+                "No se rechaza",
+                "KW H = 1,5164, p = 0,4685; Friedman χ² = 5,5897, p = 0,0611, Kendall's W = 0,2329; "
+                "MWU/Wilcoxon pares n.s. tras Holm",
+            ),
             ("HE11", "No se respalda", "Sin conjuncion impacto+diferencias en E1 (KPI-gains)"),
         ),
         "OE2": (
-            ("HE20", "No se rechaza", "KW p = 0,7648"),
+            (
+                "HE20",
+                "No se rechaza",
+                "KW H = 0,5364, p = 0,7648; Friedman χ² = 6,0000, p = 0,0498, Kendall's W = 0,6000; "
+                "sin impacto vs cero tras Holm",
+            ),
             (
                 "HE21",
                 "No se respalda",
@@ -650,7 +714,12 @@ def _hyp_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str) -> N
             ),
         ),
         "OE3": (
-            ("HE30", "No se rechaza", "KW p = 0,7357"),
+            (
+                "HE30",
+                "No se rechaza",
+                "KW H = 0,6138, p = 0,7357; Friedman χ² = 3,4286, p = 0,1801, Kendall's W = 0,1905; "
+                "sin impacto vs cero tras Holm",
+            ),
             (
                 "HE31",
                 "No se respalda",
@@ -852,6 +921,8 @@ def add_chapter_5_structured(doc, p, heading, add_table, status_note) -> None:
         "(4) evidencia C3–C5 (distrito, edificio, control de recursos) documenta atribuibilidad; "
         "(5) TOPSIS/4/4/best_madrl son descriptivos y no respaldan HE por si solos.",
     )
+    for para in STATS_EXACT_BLOCK:
+        p(doc, para)
     _hyp_general_block(doc, p, heading, add_table)
     _hyp_oe_block(doc, p, heading, add_table, oe_key="OE1", section="5.5.2")
     _hyp_oe_block(doc, p, heading, add_table, oe_key="OE2", section="5.5.3")

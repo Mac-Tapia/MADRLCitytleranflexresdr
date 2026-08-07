@@ -1,0 +1,42 @@
+[
+  {
+    "path": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "backup": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_20260806_223415.docx",
+    "removed_old_block": 8,
+    "inserted": true,
+    "table_cells_patched": 0,
+    "verify": {
+      "0,0096": true,
+      "0,1787": true,
+      "9,2911": true,
+      "Kendall's W": true,
+      "0,7152": true,
+      "1,5164": true,
+      "p-Holm": true,
+      "Cliff's δ": true,
+      "no se rechaza HE10": true,
+      "se rechaza H0G": true,
+      "[[STATS_EXACTAS_KPI_GAINS_50EP]]": true
+    }
+  },
+  {
+    "path": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+    "backup": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_20260806_223415.docx",
+    "removed_old_block": 8,
+    "inserted": true,
+    "table_cells_patched": 4,
+    "verify": {
+      "0,0096": true,
+      "0,1787": true,
+      "9,2911": true,
+      "Kendall's W": true,
+      "0,7152": true,
+      "1,5164": true,
+      "p-Holm": true,
+      "Cliff's δ": true,
+      "no se rechaza HE10": true,
+      "se rechaza H0G": true,
+      "[[STATS_EXACTAS_KPI_GAINS_50EP]]": true
+    }
+  }
+]

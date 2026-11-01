@@ -21,3 +21,8 @@ The current architecture uses `NativeBackend` which delegates to CityLearn launc
 - `SimulatorPort` exists as a typed contract for future adapters.
 - Current training continues via subprocess delegation in `NativeBackend`.
 - A future decomposition of SPEC-003 can implement a `CityLearnSimulator` adapter that satisfies `SimulatorPort`.
+- `LearnerPort`, `ArtifactStore` and `SimulatorPort` are `runtime_checkable`; `tests/contract/test_ports_contract.py` verifies that `NativeBackend` and `LocalArtifactStore` satisfy their ports and that ports import only the standard library and the domain.
+
+## Addendum 2026-11-01: ExperimentTrackerPort also deferred
+
+The design (§6) lists an `ExperimentTrackerPort`. No use case consumes one today: run telemetry is the persisted `EvidenceManifest`, heartbeat and KPI files written by the runner, which the local panel reads. Adding a port and a local adapter without a caller would be untested dead code, and MLflow/DVC spikes remain deferred (SPEC-008). The port is introduced together with its first consumer, for example when campaign metrics need streaming beyond the persisted manifests.

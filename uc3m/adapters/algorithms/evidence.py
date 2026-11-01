@@ -2,11 +2,7 @@
 import math
 from collections.abc import Mapping
 
-
-def finite_kpis(values):
-    return isinstance(values, Mapping) and bool(values) and all(
-        isinstance(value, (int, float)) and not isinstance(value, bool)
-        and math.isfinite(value) for value in values.values())
+from uc3m.domain.evidence import finite_kpis  # noqa: F401  (re-exported for existing callers)
 
 
 def checkpoint_bundle(root, algorithm, agents):

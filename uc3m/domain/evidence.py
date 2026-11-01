@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import hashlib
+import math
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Dict, Tuple
+from typing import Any, Dict, Tuple
 
 from uc3m.domain.experiments import RunIdentity, RunStatus
 
@@ -21,6 +23,13 @@ def _sha256(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def finite_kpis(values: Any) -> bool:
+    """True only for a non-empty mapping of finite real numbers (booleans excluded)."""
+    return isinstance(values, Mapping) and bool(values) and all(
+        isinstance(value, (int, float)) and not isinstance(value, bool)
+        and math.isfinite(value) for value in values.values())
 
 
 def verify_artifact(path: Path, expected_sha256: str) -> bool:

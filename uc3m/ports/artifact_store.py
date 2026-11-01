@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Mapping, Protocol
+from typing import Mapping, Protocol, runtime_checkable
 
 from uc3m.domain.evidence import ArtifactRef
 
 
+@runtime_checkable
 class ArtifactStore(Protocol):
     def write_bytes(
         self,

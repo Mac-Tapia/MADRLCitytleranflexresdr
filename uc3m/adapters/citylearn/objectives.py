@@ -1,13 +1,18 @@
-"""Project canonical ObjectivePolicy into CityLearn reward_weights format."""
+"""Project canonical ObjectivePolicy into CityLearn reward_weights format.
+
+CityLearn's ScenarioConfig keys its weights as flex/carbon/cost;
+tests/integration/test_citylearn_objective_adapter.py keeps this projection,
+CityLearn's built-in E1-E3 weights and its canonical catalog path identical.
+"""
 from typing import Dict
 
 from uc3m.domain.objectives import canonical_objective_policies, ObjectiveAxis
 
 
 _AXIS_TO_CITYLEARN = {
-    ObjectiveAxis.FLEXIBILITY: "flexibility",
-    ObjectiveAxis.CO2_EMISSIONS: "co2_emissions",
-    ObjectiveAxis.ENERGY_COST: "energy_cost",
+    ObjectiveAxis.FLEXIBILITY: "flex",
+    ObjectiveAxis.CO2_EMISSIONS: "carbon",
+    ObjectiveAxis.ENERGY_COST: "cost",
 }
 
 

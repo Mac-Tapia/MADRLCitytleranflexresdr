@@ -1,5 +1,5 @@
 """Small auditable report projection; scientific promotion remains separate."""
-from uc3m.adapters.algorithms.evidence import finite_kpis
+from uc3m.domain.evidence import finite_kpis
 
 
 def build_training_report(payload):

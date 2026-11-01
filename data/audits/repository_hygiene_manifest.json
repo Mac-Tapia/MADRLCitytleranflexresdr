@@ -74,7 +74,12 @@
         "codex/integrar-limpieza-diagnosticos": "chore/integrar-limpieza-diagnosticos"
       }
     },
-    "incident": "Renaming cursor/setup-dev-environment-3ea9 closed open PR #6 (event head_ref_deleted at 2026-11-01T03:55:42Z). Its commits remain on chore/setup-dev-environment; a replacement PR needs the user's confirmation."
+    "incident": "Renaming cursor/setup-dev-environment-3ea9 closed open PR #6 (event head_ref_deleted at 2026-11-01T03:55:42Z). Its commits remain on chore/setup-dev-environment. Not reopened: its goal (tracking uc3m/env) is superseded by commit 8fcb91b with the current modules."
+  },
+  "author_identity": {
+    "date": "2026-10-31",
+    "requirement": "FR-012.1",
+    "change": "Repository-local git user.name/user.email set to the project owner in this repository and all submodules; the global ~/.gitconfig identity 'GitHub Copilot' is left untouched for other projects. Earlier commits keep their recorded author (history is not rewritten)."
   },
   "exemptions": [
     {
@@ -91,8 +96,6 @@
     }
   ],
   "pending": [
-    "Replace closed PR #6 with a new PR from chore/setup-dev-environment (title without agent tool name), if the user confirms.",
-    "Commit author is configured as 'GitHub Copilot <copilot@github.com>'; changing git user.name/email needs the user's decision.",
     "tools/colab/verify_notebook.py and validate_colab_two_phase.py read CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb, which no longer exists (notebook lives in examples_madrl_v3/); fix or retire in SPEC-011.",
     "Classify the 2648 tracked files under outputs/ into promoted evidence, history and temporaries (SPEC-008).",
     "Inventory duplicate and obsolete documents in docs/ and scripts in tools/."

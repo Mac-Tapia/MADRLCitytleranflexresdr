@@ -181,7 +181,7 @@ Cada edificio es un agente descentralizado:
 
 La recompensa de entrenamiento no usa los pesos heredados de `MARL` como criterio principal. Los scripts v3 fuerzan `CityLearnV3MADRLRewardFunction`, que combina:
 
-- pesos por eje: `E1={flex:0.70, carbon:0.15, cost:0.15}`, `E2={flex:0.15, carbon:0.70, cost:0.15}`, `E3={flex:0.25, carbon:0.15, cost:0.60}`;
+- pesos por eje (suma ponderada jerarquizada compensatoria): `E1={flex:0.60, carbon:0.15, cost:0.25}`, `E2={flex:0.25, carbon:0.60, cost:0.15}`, `E3={flex:0.15, carbon:0.25, cost:0.60}`;
 - perfil por algoritmo: HAPPO cooperativo on-policy, MASAC con senal local densa, MATD3 orientado a picos/ramping y MAAC con coordinacion por atencion;
 - componente EV/V2G separado para restricciones de carga, SoC de salida, autoconsumo y uso de excedentes;
 - mezcla colaborativa local/equipo mediante `team_reward_ratio` especifico por MADRL.

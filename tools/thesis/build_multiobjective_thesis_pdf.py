@@ -91,7 +91,7 @@ def make_cover() -> Image.Image:
     rows = [
         ("OE1 Flexibilidad (E1)", "MATD3", "flex_composite = 1.001"),
         ("OE2 Emisiones CO₂ (E2)", "MATD3", "ΔCO₂ = 23,070 kg"),
-        ("OE3 Costo energético (E3)", "MAAC", "Δcosto = 9,515 EUR"),
+        ("OE3 Costo energético (E3)", "MAAC", "Δcosto = 9,515 USD"),
         ("Éxito salida EV (distrito)", "MATD3", "tasa ≈ 36–48 % según escenario"),
         ("Inventario EV", "—", "185 tomas controlables (96 equipos Modo 3)"),
     ]
@@ -146,7 +146,7 @@ def build(out_pdf: Path = OUT_PDF) -> Path:
         ("KPIs multiobjetivo — distrito", MO_DIR / "drive_district_objectives.png"),
         ("OE1 Flexibilidad por edificio", MO_DIR / "drive_building_E1_flex_composite_proxy.png"),
         ("OE2 Δ CO₂ por edificio (kg)", MO_DIR / "drive_building_E2_carbon_emissions_delta_kgco2.png"),
-        ("OE3 Δ costo por edificio (EUR)", MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png"),
+        ("OE3 Δ costo por edificio (USD)", MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png"),
         ("Inventario EV por edificio", MO_DIR / "drive_building_ev_inventory.png"),
         ("Desempeño EV — MATD3 / E2", MO_DIR / "drive_building_ev_success_matd3_e2.png"),
     ]

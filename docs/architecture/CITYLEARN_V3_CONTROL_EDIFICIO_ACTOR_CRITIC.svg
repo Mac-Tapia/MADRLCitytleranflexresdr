@@ -311,7 +311,7 @@
     <text x="210" y="24" text-anchor="middle" class="t lab" font-weight="700" fill="#0f766e">Objetivo cooperativo</text>
     <text x="20" y="52" class="math eq2">rᵢ = α [w_f flexᵢ + w_c CO2ᵢ + w_$ costᵢ + w_e EVᵢ]</text>
     <text x="20" y="76" class="math eq2">max_π  J(π) = 𝔼_π [ Σ_{t=0}^{T-1} γᵗ Rₜ ]</text>
-    <text x="20" y="100" class="t tiny">E1 (flex 0,70) · E2 (CO₂ 0,70) · E3 (cost 0,60)</text>
+    <text x="20" y="100" class="t tiny">E1 (flex 0,60) · E2 (CO₂ 0,60) · E3 (cost 0,60)</text>
     <text x="20" y="122" class="t tiny">Tras entrenamiento: se descarta el crítico; persisten π₁…π₁₇</text>
     <text x="20" y="144" class="t tiny">Dataset: citylearn_iquitos_2023_2025 · KPIs evaluate_v2</text>
   </g>

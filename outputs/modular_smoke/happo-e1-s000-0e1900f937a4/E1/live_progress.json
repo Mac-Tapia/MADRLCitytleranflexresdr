@@ -1,0 +1,15 @@
+{
+  "algorithm": "HAPPO",
+  "backend_training_active": true,
+  "backend_training_heartbeat_count": 1,
+  "completed_episode_count": 1,
+  "episode": 1,
+  "episode_step": 8,
+  "episode_time_steps": 8,
+  "global_step": 8,
+  "live_progress_semantics": "global_step changes only when CityLearn advances the environment; heartbeat fields change while an external backend is updating neural networks.",
+  "live_status": "happo_backend_finished",
+  "live_status_note": "HAPPO backend runner finished; writing final artifacts.",
+  "live_status_updated_at": "2026-11-01T00:15:06.105752+00:00",
+  "scenario": "E1"
+}

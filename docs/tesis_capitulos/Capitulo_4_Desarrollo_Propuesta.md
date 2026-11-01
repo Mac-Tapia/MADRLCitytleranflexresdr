@@ -1,346 +1,370 @@
 # Capítulo 4. Desarrollo de la Propuesta
 
-> **Documento de tesis doctoral — desarrollo de la propuesta.** Traza el flujo de trabajo completo del proyecto `MADRLCitytleranflexresdr` desde el dataset Iquitos hasta la batería de pruebas paramétricas/no paramétricas. Fuentes: `docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md`, `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md`, `docs/workflow_manifest.json`, `CityLearn/citylearn/v3/`, `reward_function.py`, scripts `train_citylearn_v3_*.py`, `scripts/run_madrl_nonparametric_battery.py` y artefactos de la corrida canónica `madrl_v3_20260627_164047`. **No inventar datos.**
+> **Documento de tesis doctoral — desarrollo de la propuesta.** Describe la arquitectura ejecutable, el entorno CityLearn, la formulación Dec-POMDP/CTDE, los algoritmos MADRL, la recompensa multiobjetivo E1/E2/E3 y el diseño experimental de la corrida canónica `madrl_v3_20260627_164047`. Fuentes: `docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md`, `docs/workflow_manifest.json`, `CityLearn/citylearn/v3/`, `data/dataset_audit/der_sizing_audit.csv`, `reward_function.py` y scripts `train_citylearn_v3_*.py`. **No inventar datos.** Este capítulo **no** responde hipótesis, **no** declara algoritmo ganador y **no** interpreta significancia estadística de resultados (Cap. 5).
 
 ---
 
-## 4.1 Visión del flujo de trabajo (de cero a evidencia)
+## 4.1 Arquitectura general del sistema
 
-La propuesta se implementa como un pipeline reproducible de trece etapas. Cada etapa deja artefactos verificables; el Capítulo 5 consume únicamente salidas de las etapas 10–13.
+La propuesta implementa un sistema de **coordinación energética multiobjetivo** mediante aprendizaje por refuerzo profundo multiagente (MADRL: HAPPO, MASAC, MATD3 y MAAC) sobre una **comunidad inteligente heterogénea de Iquitos**. El flujo de datos y control es lineal y reproducible:
 
-| Paso | Etapa del flujo | Archivo / ruta canónica | Resultado esperado |
-|---:|---|---|---|
-| 1 | Problema, OG/OE e hipótesis | Cap. 1; Plan de tesis | OE.1–OE.3 y H0G/H1G, HE10/HE11, HE20/HE21, HE30/HE31 formulados |
-| 2 | Dataset oficial Iquitos | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` | 17 edificios, 26 304 h, DER/EV |
-| 3 | Gate de calidad del dataset | `tools/dataset/generate_iquitos_dataset.py`, auditorías | 222 CSV sin NaN/Inf |
-| 4 | Simulador CityLearn v2 | `CityLearn/citylearn/` | Física BESS/PV/EV + KPIs v2 |
-| 5 | Capa CityLearn v3 | `CityLearn/citylearn/v3/` | Dec-POMDP, objetivos, config |
-| 6 | Recompensa multiobjetivo | `CityLearnV3MADRLRewardFunction` | Pesos por escenario E1/E2/E3 |
-| 7 | Adaptador CTDE común | `citylearn_v3_training_common.py` | Wrappers, trazas, figuras |
-| 8 | Cuatro backends MADRL | `train_citylearn_v3_{happo,masac,matd3,maac}.py` | HAPPO, MASAC, MATD3, MAAC |
-| 9 | Lanzamiento 12 corridas | `launch_citylearn_v3_official_training.ps1` (canónico local) + Colab `two_phase_happo_masac_v3`; `*_iquitos_training.ps1` retenido como legado | 4 algoritmos × 3 escenarios |
-| 10 | Artefactos por job | `results.json`, `timeseries.csv`, `trace.csv`, KPIs | Evidencia primaria de entrenamiento |
-| 11 | Benchmark CityLearn v2 | `benchmark_citylearn_v2_agents.py` | Baseline y hour_rBC |
-| 12 | Comparación v2 vs v3 | `compare_citylearn_v2_vs_v3_madrl.py` | Deltas, ranking, `best_madrl_report.json` |
-| — | Framework UC3M (`uc3m/`) | Sustento 7 ejes + `EmpiricalProtocol` (n_seeds=12); **no** canal de las 12 corridas | Diseño / tests / batería no paramétrica |
-| 13 | Pruebas estadísticas | `run_madrl_nonparametric_battery.py`; carpeta `estadistica/` | Shapiro → no paramétrico → decisión de hipótesis |
-
-### 4.1.1 Mapa de contribución por carpetas (propio vs externo)
-
-La narrativa de implementación del repositorio `MADRLCitytleranflexresdr` se organiza por frontera de propiedad. Solo el código **propio** de la tesis se trata como aporte metodológico; los submódulos se citan como dependencias.
-
-| Carpeta | Frontera | Rol en Cap. IV | Consumo en Cap. V |
-|---|---|---|---|
-| `CityLearn/` | Dependencia (fork / submódulo) | Simulador v2, capa v3, `scripts/train_citylearn_v3_*.py`, dataset Iquitos embebido | Artefactos de las 12 corridas y KPIs v2 |
-| `external/` | Dependencia | Backends HARL, MARL/src, off-policy, MAAC | No se edita; solo se invoca vía wrappers |
-| `uc3m/` | **Propio** (capa de diseño) | BACT, RewardAxes 7-D, HPHI, `EmpiricalProtocol`, KPIEvaluator, AlgorithmFactory | Sustento y tests; **no** canal de las 12 corridas |
-| `tools/` | **Propio** | Dataset (`tools/dataset/`), eval (`tools/eval/`), thesis (`tools/thesis/`), training validators | Puente evidencia → Word / estadística |
-| `scripts/` | **Propio** | Orquestación local, batería no paramétrica, selección multicriterio, guards de contexto | Runners que alimentan `outputs/` |
-| `tests/` | **Propio** | `tests/uc3m/` + `tests/citylearn_v3/` (smoke de schema) | Reproducibilidad de la fachada UC3M y del schema v3 |
-| `outputs/` | Artefactos | Resultados canónicos, estadística, multicriterio | Fuente primaria Cap. 5 |
-| `docs/` / `docs/architecture/` | **Propio** | Arquitectura, flujo de trabajo, capítulos markdown | Trazabilidad documental |
-| `deploy/` | **Propio** (ops) | Contenedores / AWS opcionales | No sustituye la corrida Colab canónica |
-| `examples_madrl_v3/` | **Propio** | Notebook Colab tutorial / protocolo `two_phase_happo_masac_v3` | Procedimiento de la corrida 50 ep |
-| `agent-skills/` | **Propio** (sustento) | Módulos de sustento matemático 7 ejes (referencia Cap. 2) | No ejecuta entrenamiento |
-
-Fuentes de arquitectura: `docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md`, `docs/architecture/ARQUITECTURA_PROYECTO_DEFENSA.md`, `docs/workflow_manifest.json`.
+**datos → CityLearn → comunidad heterogénea → Dec-POMDP → agentes → CTDE → MADRL → recursos controlables → recompensas E1/E2/E3 → entrenamiento → evaluación → artefactos.**
 
 ```mermaid
 flowchart LR
-  A[Problema / OE / H] --> B[Dataset Iquitos]
-  B --> C[CityLearn v2]
-  C --> D[Capa v3 Dec-POMDP]
-  D --> E[Reward E1/E2/E3]
-  E --> F[4 MADRL]
-  F --> G[12 jobs Colab]
-  G --> H[KPIs + baseline]
-  H --> I[Shapiro]
-  I -->|normal| J[Paramétrico]
-  I -->|no normal| K[No paramétrico]
-  J --> L[Cap. 5 decisiones H]
-  K --> L
+  A[Datos SEAI / PVGIS / NASA / TOU] --> B[CityLearn v2 + fork A1–A4]
+  B --> C[Comunidad heterogénea 17 edificios]
+  C --> D[Dec-POMDP N=17]
+  D --> E[Agentes edificio]
+  E --> F[CTDE]
+  F --> G[MADRL HAPPO/MASAC/MATD3/MAAC]
+  G --> H[BESS / EV-V2G / cargas desplazables]
+  H --> I[Reward E1/E2/E3]
+  I --> J[Entrenamiento 4×3]
+  J --> K[Evaluación + baseline v2]
+  K --> L[Artefactos outputs/]
 ```
 
-## 4.2 Construcción del entorno de simulación (pasos 2–4)
+### 4.1.1 Frontera heredada frente a aportes de la tesis
 
-### 4.2.1 Dataset `citylearn_iquitos_2023_2025` y pipeline `tools/dataset/`
+| Componente | Frontera | Rol |
+|---|---|---|
+| Física CityLearn v2 (edificios, BESS, PV, EV, KPIs `evaluate_v2`) | **Heredada** (Nweye et al., 2024) | Simulador base; baseline `baseline` / `hour_rbc` |
+| Dataset `citylearn_iquitos_2023_2025` | **Aporte tesis** (`tools/dataset/`) | 17 edificios SEAI, 26 304 h, 222 CSV |
+| Extensiones A1–A4 (Arrhenius, PV IEC, pico OSINERGMIN, `CarbonIntensityModel`) | **Aporte tesis** (fork) | Realismo tropical / red aislada |
+| Capa v3 Dec-POMDP + wrappers CTDE | **Aporte tesis** (`citylearn/v3/`, `dec_pomdp.py`) | Observabilidad parcial y estado centralizado |
+| `CityLearnV3MADRLRewardFunction` (E1/E2/E3) | **Aporte tesis** | Operacionalización OE.1–OE.3 |
+| Backends HARL / MARL / off-policy / MAAC | **Heredados** (`external/`) | Algoritmos; no se editan |
+| Wrappers + `train_citylearn_v3_*.py` + adaptador común | **Aporte tesis** | Puente CityLearn ↔ backends |
+| Orquestación Colab / validadores / tesis Word | **Aporte tesis** (`scripts/`, `tools/`) | Reproducibilidad y evidencia |
 
-El entorno se construye desde datos primarios del SEAI (facturación, clima PVGIS/NASA POWER, tarifas TOU Electro Oriente). Cifras auditadas: **17 edificios**, **26 304 horas**, **222 CSV**, **185 cargadores EV**, BESS **26 266 kWh / 6 648 kW**, PV **48 790,9 kWp**, CI ∈ [0,6715; 0,790] kgCO₂/kWh.
+El paquete `uc3m/` (BACT, HPHI, `EmpiricalProtocol`) constituye **sustento de diseño**; las doce corridas canónicas no pasan por esa fachada.
 
-La generación y auditoría viven en `tools/dataset/` (p. ej. `generate_iquitos_dataset.py` y scripts de destilación/auditoría asociados). El artefacto canónico queda bajo `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` (`schema.json` + CSV por edificio/weather/carbon/pricing). El gate de calidad exige ausencia de NaN/Inf y consistencia dimensional antes de habilitar entrenamiento.
+---
 
-### 4.2.2 Conservación de CityLearn v2
+## 4.2 Comunidad inteligente heterogénea
 
-La física de edificios, almacenamiento, PV, EV y la batería de KPIs v2 se mantienen intactas. La propuesta **extiende** el simulador; no lo sustituye. El baseline de evaluación (`baseline`, `hour_rbc`) proviene de esta capa.
+La unidad experimental es la comunidad de **17 edificios** institucionales/comerciales del SEAI (Iquitos), tipológicamente heterogénea en área, demanda, PV, BESS y flota EV. Dimensionamiento auditado en `data/dataset_audit/der_sizing_audit.csv` (totales distritales: PV **48 790,9 kWp**; BESS **26 266 kWh / 6 648 kW**; **185** cargadores EV).
 
-Además del schema Iquitos, el fork **retiene** en `CityLearn/data/datasets/` los barrios de referencia del paquete (Quebec ×2, Alameda, Travis, Chittenden) y los challenges CityLearn 2020–2023. Su función en la propuesta es (i) conservar el árbol offline del simulador y (ii) sostener tests/integridad del submódulo; **no** constituyen corridas del diseño 4×3 ni evidencia Cap. 5. Inventario y claim-boundary: `docs/INTEGRACION_CITYLEARN_THESIS_2026-07-29.md`.
+### 4.2.1 Inventario cuantitativo de los 17 edificios
 
-### 4.2.3 Cuatro aportes al motor (fork documentado)
+| ID | Edificio (abreviado) | Tipo | Área m² | Demanda MWh | PV kWp | BESS kWh/kW | EV n / kW | Máq. ctrl. |
+|---|---|---|---:|---:|---:|---|---|:---:|
+| B01 | ELECTRO ORIENTE S.A. | Office | 14 000 | 17 378,1 | 3 360,2 | 6 747 / 1 609 | 4 / 21,8 | Sí |
+| B02 | Mun. San Juan Bautista | Office | 8 000 | 247,5 | 1 920,0 | 244 / 50 | 6 / 24,4 | Sí |
+| B03 | Aeropuerto Internacional | Assembly | 6 000 | 3 155,2 | 1 440,2 | 2 363 / 511 | 8 / 37,8 | Sí |
+| B04 | Hipermercados Tottus | Retail | 2 500 | 4 131,9 | 600,2 | 454 / 409 | 6 / 24,4 | Sí |
+| B05 | Hotel Plaza S.A. | MultiFamily_Hotel | 1 141,89 | 3 000,1 | 274,1 | 234 / 124 | 3 / 14,4 | Sí |
+| B06 | Mall Aventura S.A. | Commercial_Mall | 20 637 | 34 622,6 | 4 952,9 | 2 541 / 835 | 32 / 119,6 | Sí |
+| B07 | UNAP Biología | Education | 8 103,45 | 1 314,1 | 1 944,9 | 984 / 240 | 42 / 153,2 | Sí |
+| B08 | PNP Escuela Técnica | Assembly_Military | 21 000 | 873,7 | 5 040,2 | 601 / 129 | 17 / 73,6 | Sí |
+| B09 | GORE Loreto — COER | Office_Critical | 4 479,67 | 234,8 | 1 075,3 | 138 / 30 | 10 / 37,4 | Sí |
+| B10 | Gobierno Regional Loreto | Office | 14 295,73 | 3 838,1 | 3 431,1 | 2 353 / 591 | 6 / 36,6 | Sí |
+| B11 | Hospital Regional Loreto | Healthcare_Hospital | 42 649,33 | 3 018,9 | 10 236,1 | 1 901 / 424 | 3 / 14,4 | Sí |
+| B12 | EsSalud | Healthcare | 18 197,48 | 7 120,6 | 4 367,5 | 4 346 / 960 | 3 / 14,4 | Sí |
+| B13 | UNAP Cs. Contables y Eco. | Education | 2 723 | 388,6 | 653,8 | 272 / 69 | 11 / 41,4 | Sí |
+| B14 | Autoridad Portuaria Nacional | Industrial_Port | 17 761 | 327,9 | 4 262,9 | 229 / 48 | 4 / 21,8 | Sí |
+| B15 | DREL — Colegio Nacional | Education | 9 889,92 | 683,7 | 2 373,8 | 500 / 104 | 8 / 31,4 | Sí |
+| B16 | SIMA — Iquitos | Industrial | 10 294 | 2 134,6 | 2 470,8 | 1 622 / 357 | 11 / 41,4 | Sí |
+| B17 | Asoc. Civil Selva Amazónica | Laboratory | 1 611,23 | 1 406,4 | 386,9 | 737 / 158 | 11 / 41,4 | Sí |
+| **Σ** | | | | | **48 790,9** | **26 266 / 6 648** | **185 / 749,4** | **17** |
 
-| Código | Aporte | Archivo | Función en la tesis |
+*Fuente:* `data/dataset_audit/der_sizing_audit.csv` (columnas `PV_schema_kWp`, `BESS_schema_*`, `EV_schema_*`, `Carga_total_MWh`, `Maquina_controlada_count`). Demanda redondeada a 1 decimal; potencias EV = `EV_schema_kW`.
+
+### 4.2.2 Señales controlables frente a exógenas
+
+| Clase | Variables | Naturaleza |
+|---|---|---|
+| **Controlables (acción MADRL)** | `electrical_storage` (BESS), `electric_vehicle_storage` × \(n_i^{\mathrm{ch}}\) (EV/V2G), `washing_machine` (carga desplazable) | Setpoints en \([-1,1]\) por canal |
+| **Exógenas (no actuadas)** | Precio TOU/RTP (`pricing.csv`), intensidad de carbono CI ∈ [0,6715; 0,790] kgCO₂/kWh (`carbon_intensity.csv`), meteorología (`weather.csv`: T, RH, irradiancia, viento), carga no desplazable residual | Observables; entran en \(o_i\) y en \(R\), no en \(a_i\) |
+
+La generación PV es física determinista condicionada por GHI/temperatura (aporte A2); el agente no fija potencia PV, solo reacciona vía almacenamiento, EV y carga desplazable.
+
+---
+
+## 4.3 Datos y preprocesamiento
+
+### 4.3.1 Origen y periodo
+
+El dataset `citylearn_iquitos_2023_2025` se construye desde datos primarios del **SEAI** (facturación Electro Oriente S.A.), meteorología **PVGIS-ERA5** (2023, vía `pvlib`) y **NASA POWER** (2024–2025), e incentivos tarifarios **TOU** locales (0,38 USD/kWh en punta 18:00–22:59; 0,26 USD/kWh fuera de punta). Periodo: **2023–2025**; horizonte tabular: **26 304 horas**; artefactos activos auditados: **222 CSV**.
+
+Pipeline canónico: `tools/dataset/generate_iquitos_dataset.py` / `orchestrate_citylearn_dataset.py` → `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` (`schema.json`, `Building_*.csv`, `charger_*.csv`, `Washing_Machine_*.csv`, `weather.csv`, `carbon_intensity.csv`, `pricing.csv`).
+
+### 4.3.2 Limpieza, fugas temporales y compuerta NaN/Inf
+
+1. Destilación de cargas mensuales a horarias (`distill_building_loads.py`) con balance residual NSL y error mensual de cierre < 0,1 %.
+2. Series meteorológicas cacheadas (`.cache/weather/{year}.parquet`) sin remezcla futuro→pasado: el episodio de entrenamiento usa el schema completo en orden temporal horario.
+3. Dimensionamiento DER/EV/lavadoras antes del `schema.json`; sin imputación ad hoc en el bucle MADRL.
+4. **Compuerta de calidad:** `check_training_dataset_ready.py`, `audit_citylearn_csv_integrity.py`, `audit_der_sizing.py` → manifiestos en `outputs/dataset_audit/`. Criterio de aceptación: `status=ready`, **0 NaN / 0 Inf**, sin cargadores ni máquinas huérfanos.
+
+No se adopta un dataset CityLearn upstream como caso empírico: los barrios/challenges retenidos en el submódulo sirven solo a integridad y reproducibilidad del paquete (Cap. 3 §3.4.6).
+
+---
+
+## 4.4 Entorno CityLearn y extensiones
+
+### 4.4.1 Capa heredada CityLearn v2
+
+Se conserva la física de edificios, almacenamiento, PV, EV/V2G y la batería de KPIs vía `env.evaluate_v2()`. El baseline de contraste (`baseline`, `hour_rbc`) proviene de esta capa. La propuesta **extiende** el simulador; no lo sustituye.
+
+### 4.4.2 Aportes A1–A4 del fork (tesis)
+
+| Código | Aporte | Archivo | Función |
 |---|---|---|---|
-| A1 | Degradación BESS C-rate + Arrhenius | `energy_model.py` | Realismo térmico tropical |
-| A2 | Corrección PV IEC 61215 | `energy_model.py` | Derating tropical 10,9–14,4 % |
-| A3 | Pico con ventana de facturación | `cost_function.py` | Alineación OSINERGMIN MT-3/MT-4 |
-| A4 | `CarbonIntensityModel` | `energy_model.py` | CI dinámica de red aislada |
+| **A1** | Degradación BESS C-rate + Arrhenius (LiFePO₄) | `energy_model.py` | Realismo térmico tropical |
+| **A2** | Corrección PV IEC 61215 | `energy_model.py` | Derating tropical ≈ 10,9–14,4 % vs STC |
+| **A3** | Pico con ventana de facturación | `cost_function.py` | Alineación OSINERGMIN MT-3/MT-4 |
+| **A4** | `CarbonIntensityModel` | `energy_model.py` | CI dinámica diésel+PV: \(CI(t)=0{,}790\times(1-0{,}15\times\min(GHI/1000,1))\) |
 
-## 4.3 Formulación Dec-POMDP y esquema CTDE (pasos 5–7)
+Documentación: `docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md`; arquitectura: `docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` §4b.
 
-### 4.3.1 Dec-POMDP cooperativo
+---
 
-> **ℳ = ⟨𝒮, {𝒜ᵢ}ᵢ₌₁¹⁷, 𝒯, R, {𝒪ᵢ}ᵢ₌₁¹⁷, Ω, γ, T⟩**
+## 4.5 Formulación Dec-POMDP
 
-Implementación: `CityLearn/citylearn/dec_pomdp.py` (`CityLearnDecPOMDPEnv.state` = concatenación local), fábrica `citylearn/v3/` (`ctde_state` / `concatenated_local_observations_for_ctde` en `v3/backends.py`), adaptador `CityLearn/scripts/citylearn_v3_training_common.py`. Valores medidos con `CityLearnEnv(schema Iquitos, central_agent=False)` — desglose por edificio en Tabla 2.A (Cap. 2).
+El control distrital se formula como Dec-POMDP cooperativo:
 
-- **N = 17** agentes-edificio.
-- **𝒮**: estado global CTDE \(s=[o_1,\ldots,o_{17}]\); dimensión medida **1 856** (\(=\sum_i d_{o_i}\)); solo crítico en entrenamiento.
-- **𝒪ᵢ**: observación local heterogénea (**54–327** dims; 7 canales EV × \(n_i^{\mathrm{ch}}\) + bloque fijo del schema).
-- **𝒜ᵢ**: `electrical_storage` + `electric_vehicle_storage`×\(n_i^{\mathrm{ch}}\) + `washing_machine` ⇒ \(d_{a_i}=2+n_i^{\mathrm{ch}}\) ∈ **[5, 44]** (suma distrital **219**).
-- **R**: `CityLearnV3MADRLRewardFunction` con `team_reward_ratio` \(r_{\mathrm{team}}=0{,}70\) ⇒ \(\mathrm{mixed}_i=(1-r_{\mathrm{team}})\mathrm{reward}_i+r_{\mathrm{team}}\cdot\mathrm{mean}_j(\mathrm{reward}_j)\) (canal canónico de las 12 corridas; no el fallback `reward_aggregation="mixed"` de `DecPOMDPEnv`).
-- **γ = 0,9999**; **T = 8 760** pasos/episodio.
-- Observabilidad parcial estricta: cada edificio observa solo \(o_i\). El **distrito** no es un agente: entra por el crítico CTDE (\(s\)) y por la mezcla cooperativa / KPIs `evaluate_v2` agregados.
+\[
+\mathcal{M}=\langle\mathcal{S},\{\mathcal{A}_i\}_{i=1}^{17},\mathcal{T},R,\{\mathcal{O}_i\}_{i=1}^{17},\Omega,\gamma,T\rangle
+\]
 
-### 4.3.2 CTDE
+Implementación: `CityLearn/citylearn/dec_pomdp.py`, fábrica `citylearn/v3/`, adaptador `CityLearn/scripts/citylearn_v3_training_common.py`. Dimensiones medidas con `CityLearnEnv(schema Iquitos, central_agent=False)`.
 
-- Entrenamiento centralizado: crítico con \(s\in\mathbb{R}^{1856}\) (o info conjunta según backend).
-- Ejecución descentralizada: política πᵢ(aᵢ|oᵢ) local, sin comunicación entre edificios.
-- Post-entrenamiento: solo persisten las políticas locales.
+| Símbolo | Mapeo físico | Valor Iquitos |
+|---|---|---|
+| \(N\) | Agentes-edificio | **17** |
+| \(\mathcal{S}\) | Estado CTDE \(s=[o_1,\ldots,o_{17}]\) | \(\lvert\mathcal{S}\rvert=d_s=\mathbf{1\,856}\) |
+| \(o_i\in\mathcal{O}_i\) | Observación local (calendario, meteo, carga, térmica, PV, SoC BESS, 7 canales EV/toma, precio, CI) | \(d_{o_i}\in[\mathbf{54},\mathbf{327}]\) |
+| \(a_i\in\mathcal{A}_i\) | BESS + EV×\(n_i^{\mathrm{ch}}\) + lavadora | \(d_{a_i}=2+n_i^{\mathrm{ch}}\in[\mathbf{5},\mathbf{44}]\); \(\sum_i d_{a_i}=\mathbf{219}\) |
+| \(R\) | Recompensa mixta cooperativa | `team_reward_ratio` \(r_{\mathrm{team}}=0{,}70\) |
+| \(\gamma\) | Descuento | **0,9999** |
+| \(T\) | Horizonte por episodio | **8 760** pasos (1 año horario) |
+| \(\mathcal{T},\Omega\) | Física CityLearn + observación schema | Transición horaria; observabilidad parcial estricta |
 
-## 4.4 Función de recompensa multiobjetivo (paso 6)
+Agregación cooperativa canónica (canal de las 12 corridas):
 
-Clase `CityLearnV3MADRLRewardFunction`:
+\[
+\mathrm{mixed}_i=(1-r_{\mathrm{team}})\,\mathrm{reward}_i+r_{\mathrm{team}}\cdot\mathrm{mean}_j(\mathrm{reward}_j),\quad r_{\mathrm{team}}=0{,}70.
+\]
 
-> **rewardᵢ(t) = reward_scale · [ w_flex·flexᵢ + w_carbon·carbonᵢ + w_cost·costᵢ + w_ev·evᵢ ]**
+El distrito **no** es un agente adicional: entra por el crítico CTDE (\(s\)) y por KPIs agregados `evaluate_v2`.
 
-Agregación cooperativa: `team_reward_ratio = 0,70`.
+---
 
-### 4.4.1 Pesos por escenario (operacionalización OE → E)
+## 4.6 CTDE
 
-| Escenario | Objetivo | flex | carbon | cost | KPI primario |
-|---|---|:---:|:---:|:---:|---|
-| **E1** | OE.1 Flexibilidad | **0,70** | 0,15 | 0,15 | `peak_average` / flex_composite |
-| **E2** | OE.2 CO₂ | 0,15 | **0,70** | 0,15 | `carbon_emissions_total` |
-| **E3** | OE.3 Costos | 0,25 | 0,15 | **0,60** | `electricity_cost_total` |
+**Entrenamiento centralizado / ejecución descentralizada:**
 
-### 4.4.2 Perfil unificado de comparabilidad
+- **Centralizado (train):** el crítico (o mezcla Q, según backend) recibe información conjunta —en la práctica el estado CTDE \(s\in\mathbb{R}^{1856}\) o su equivalente por wrapper— para estabilizar el crédito multiagente.
+- **Descentralizado (exec):** cada política \(\pi_i(a_i\mid o_i)\) actúa solo con \(o_i\); no hay comunicación entre edificios en despliegue.
+- Post-entrenamiento solo persisten las políticas locales.
 
-Todos los algoritmos usan el perfil `*_unified_comparable_v4` (`team_reward_ratio=0,70`, `peak_weight=0,45`, `ramp_weight=0,35`, `ev_weight=0,25`) para que las diferencias atribuibles a la VI (algoritmo) no se confundan con cambios de recompensa.
+| Algoritmo | Lectura CTDE en esta tesis |
+|---|---|
+| HAPPO | On-policy; actor local continuo; crítico / valor con observación compartida CTDE (`CityLearnHARLEnv`) |
+| MASAC | Off-policy entrópico; estado global tipo SMAC + mezcla cooperativa QMIX (`CityLearnSMACDiscreteEnv`) |
+| MATD3 | Off-policy determinístico continuo; críticos centralizados / info conjunta (`CityLearnOffPolicyVecEnv`) |
+| MAAC | Attention-critic CTDE; acciones discretas (`CityLearnMAACVecEnv`) |
 
-## 4.5 Algoritmos MADRL, wrappers e hiperparámetros (pasos 7–8)
+---
 
-> **Sustento teórico (Cap. 2 §2.2.4 / Word §2.2.10):** los backends originales en `external/` no vienen preparados para electricidad (flexibilidad, CO₂, costos). Esta sección implementa las **adecuaciones** (wrappers + adaptador común + recompensa v4) que el marco teórico justifica.
+## 4.7 Algoritmos MADRL
+
+Los backends residen en `external/`; la tesis aporta wrappers y scripts de entrenamiento. Sustento teórico de la adecuación: Cap. 2.
 
 | Algoritmo | Wrapper | Backend | Paradigma | Acción |
 |---|---|---|---|---|
 | HAPPO | `CityLearnHARLEnv` | `external/HARL` | on-policy CTDE | continua |
-| MASAC | `CityLearnSMACDiscreteEnv` | `external/MARL/src` | entropy-regularized | discreta (bins=3) |
+| MASAC | `CityLearnSMACDiscreteEnv` | `external/MARL/src` | entropy-regularized + QMIX | discreta (`bins=3`, modo eje) |
 | MATD3 | `CityLearnOffPolicyVecEnv` | `external/off-policy` | off-policy determinístico | continua |
-| MAAC | `CityLearnMAACVecEnv` | `external/MAAC` | attention-critic CTDE | discreta (bins=3) |
+| MAAC | `CityLearnMAACVecEnv` | `external/MAAC` | attention-critic CTDE | discreta (`bins=3`) |
 
-### 4.5.1 Hiperparámetros canónicos (corrida Colab, 50 episodios)
+### 4.7.1 HAPPO
 
-Fuente: notebook `madrl_citylearn_v3_tutorial.ipynb`, celda 6.1 (`HYPERPARAMS`), protocolo `two_phase_happo_masac_v3`.
+Actualización secuencial con región de confianza para agentes heterogéneos. Script: `train_citylearn_v3_happo.py`. Acciones continuas en \([-1,1]^{d_{a_i}}\).
+
+### 4.7.2 MASAC
+
+Regularización de entropía multiagente con mezcla tipo QMIX. Script: `train_citylearn_v3_masac.py`. Discretización tractable (`action_bins=3`, no producto cartesiano \(3^{d_{a_i}}\)).
+
+### 4.7.3 MATD3
+
+Doble crítico, *policy delay* y ruido sobre el target; control continuo BESS/EV. Script: `train_citylearn_v3_matd3.py` (backend PyTorch `external/off-policy`).
+
+### 4.7.4 MAAC
+
+Crítico con atención multi-cabeza sobre los 17 agentes. Script: `train_citylearn_v3_maac.py`.
+
+### Tabla comparativa de hiperparámetros canónicos (50 episodios)
+
+Fuente: notebook `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb` (celda 6.1, `HYPERPARAMS`), protocolo `two_phase_happo_masac_v3`.
 
 | Parámetro | HAPPO | MASAC | MATD3 | MAAC |
 |---|:---:|:---:|:---:|:---:|
 | Episodios × pasos | 50 × 8 760 | 50 × 8 760 | 50 × 8 760 | 50 × 8 760 |
-| `gamma` | 0,9999 | 0,9999 | 0,9999 | 0,9999 |
+| `gamma` (\(\gamma\)) | 0,9999 | 0,9999 | 0,9999 | 0,9999 |
 | `hidden_size` | [512, 512] | rnn 64 / qmix 32 | 768 | 768 |
 | Buffer | on-policy | 2 ep (CPU) | 2 000 000 | 1 000 000 |
 | Batch | rollout | 512 | 1 024 | 512 |
-| LR actor/crítico | 1e-4 / 5e-4 | 3e-4 / 5e-4 | 3e-4 / 3e-4 | 3e-4 / 1e-3 |
+| LR actor / crítico | 1e-4 / 5e-4 | 3e-4 / 5e-4 | 3e-4 / 3e-4 | 3e-4 / 1e-3 |
 
-La corrida local v4 (5 episodios, RTX 4060 8 GB) valida el pipeline; **no** sustituye la corrida canónica Colab `madrl_v3_20260627_164047`.
+La validación local (p. ej. 5 episodios, RTX 4060 8 GB) comprueba el pipeline; **no** sustituye la corrida canónica Colab `madrl_v3_20260627_164047`.
 
-## 4.6 Matriz experimental de 12 corridas y orquestación (paso 9)
+---
 
-|  | HAPPO | MASAC | MATD3 | MAAC |
-|---|:---:|:---:|:---:|:---:|
-| **E1** (OE.1) | happo/E1 | masac/E1 | matd3/E1 | maac/E1 |
-| **E2** (OE.2) | happo/E2 | masac/E2 | matd3/E2 | maac/E2 |
-| **E3** (OE.3) | happo/E3 | masac/E3 | matd3/E3 | maac/E3 |
+## 4.8 Recursos controlables
 
-Artefactos por job: `results.json`, `training_summary.json`, `timeseries.csv`, `trace.csv`, `core_kpis.csv`, `figures/` (13 PNG), checkpoints.
+Las acciones del schema Iquitos son exactamente tres familias (§2.2.6.3):
 
-### 4.6.1 Scripts de orquestación
+\[
+a_{i,t}=\big(a_i^{\mathrm{BESS}}(t),\,a_{i,1}^{\mathrm{EV}}(t),\ldots,a_{i,n_i^{\mathrm{ch}}}^{\mathrm{EV}}(t),\,a_i^{\mathrm{WM}}(t)\big)\in[-1,1]^{d_{a_i}}.
+\]
 
-| Vía | Script / protocolo | Uso |
-|---|---|---|
-| Canónica Colab 50 ep | `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb` + `colab_a100_official_launcher.py` (`two_phase_happo_masac_v3`) | Corrida doctoral `madrl_v3_20260627_164047` |
-| Local oficial | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` | Pipeline local / validación |
-| Legado Iquitos | `*_iquitos_training.ps1` | Retenido; no sustituye la vía canónica |
-| Validación ligera de jobs | `tools/training/validate_launch_config.py` | Comprueba 12 jobs 4×3 e hiperparámetros (no entrena) |
+### 4.8.1 BESS
 
-Cada algoritmo se invoca mediante `CityLearn/scripts/train_citylearn_v3_{happo,masac,matd3,maac}.py` sobre el adaptador común `citylearn_v3_training_common.py`. Los backends residen en `external/`; los wrappers CityLearn v3 son el único puente de observación/acción.
+- **Modelo:** batería CityLearn v2 + degradación A1 (C-rate y Arrhenius).
+- **Límites:** capacidad/potencia por edificio (Tabla 4.2.1); SoC acotado por la física del `Battery`.
+- **Acción:** `electrical_storage` ∈ \([-1,1]\) (carga/descarga normalizada).
+- **Inventario distrital:** 26 266 kWh / 6 648 kW.
 
-## 4.7 Evaluación, baseline, ranking y puente multicriterio (pasos 10–12)
+### 4.8.2 EV / V2G
 
-1. **KPIs v2** vía `env.evaluate_v2()` normalizados frente a baseline (valores < 1 favorecen al MADRL cuando la métrica es “menor = mejor”).
-2. **Ganancias relativas orientadas (KPI-gains):** un valor positivo favorece al MADRL frente al baseline; unidad primaria de las hipótesis HE10–HE31.
-3. **Score de escenario** (igual peso E1–E3) y `best_madrl_report.json` para ranking descriptivo integrado.
-4. Persistencia Drive: [carpeta canónica](https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX).
+- **Modelo:** tomas Mode 3; 185 cargadores schema; subconjunto V2G bidireccional documentado en Cap. 3 (31 tomas de camionetas).
+- **Límites:** potencia por toma (`EV_schema_kW`); SoC, llegada/salida y ventana operativa en observación (7 canales/toma).
+- **Acción:** `electric_vehicle_storage` por cargador ∈ \([-1,1]\).
+- **Potencia nominal simultánea auditada:** 749,4 kW.
 
-### 4.7.1 Puente multicriterio (metodología; resultados en Cap. 5)
+### 4.8.3 Cargas desplazables
 
-Tras el ranking KPI-gains, `scripts/run_madrl_multicriteria_selection.py` y `tools/thesis/madrl_algorithm_analysis.py` formalizan la selección multiobjetivo (TOPSIS/AHP y perfiles de aprendizaje). Los artefactos metodológicos y figuras viven en `outputs/madrl_multicriteria_selection/` (incl. `figures/`). **Este capítulo no reporta tablas numéricas de ranking ni figuras de Pareto como evidencia de hipótesis**: esas salidas se interpretan en el Capítulo 5. Aquí solo se fija el contrato de implementación (entradas desde jobs 4×3, pesos iguales ⅓·⅓·⅓ por defecto, salida reproducible bajo `outputs/`).
+- **Modelo:** una lavadora controlada por edificio (`washing_machine`; 17 máquinas).
+- **Límites:** ciclos y potencia pico en CSV `Washing_Machine_*.csv` / columnas de auditoría `Maquina_controlada_*`.
+- **Acción:** canal binario/continuo normalizado en el espacio de acción del agente.
+- Las cargas residuales no desplazables permanecen **exógenas**.
 
-## 4.8 Protocolo de pruebas paramétricas y no paramétricas (paso 13)
+---
 
-El contraste de hipótesis (α = 0,05) sigue una **puerta paramétrica** y una **ruta no paramétrica**. Scripts de ejecución (venv `.venv39-citylearn-v3`, orden obligatorio):
+## 4.9 Función de recompensa E1/E2/E3
 
-1. `tools/eval/run_colab_drive_statistical_analysis.py` — descriptivo episódico + suite KPI-gains (Shapiro → KW → MWU → Wilcoxon) vía `CityLearn/scripts/generate_thesis_objective_evidence.py`.
-2. `tools/eval/run_problem_objective_hypothesis_statistical_analysis.py` — decisiones PE/OE/HE y PG/OG/HG.
-3. `scripts/run_madrl_nonparametric_battery.py --allow-episode-fallback --complementary` — batería metodológica OE/OG (en esta corrida: unidad episodio por 1 semilla; no sustituye n=12 semillas).
-4. `scripts/run_madrl_multicriteria_selection.py` y `tools/thesis/madrl_algorithm_analysis.py` — TOPSIS/AHP y métricas de aprendizaje.
-5. Catalizadores Word: `tools/thesis/run_thesis_word_pipeline.py` → `generate_tesis_doctoral_final_docx.py` (leen Cap. 5 desde `tools/thesis/thesis_doctoral_sections.py` + CSVs de `estadistica/`).
+Clase `CityLearnV3MADRLRewardFunction`:
 
-Artefactos: `outputs/madrl_v3_20260627_164047/resumen_comparativo/estadistica/`, `outputs/madrl_nonparametric_battery/`, `outputs/madrl_multicriteria_selection/`.
+\[
+\mathrm{reward}_i(t)=\mathrm{reward\_scale}\cdot\big[w_{\mathrm{flex}}\mathrm{flex}_i+w_{\mathrm{carbon}}\mathrm{carbon}_i+w_{\mathrm{cost}}\mathrm{cost}_i+w_{\mathrm{ev}}\mathrm{ev}_i\big].
+\]
 
-### 4.8.1 Puerta paramétrica (Shapiro–Wilk + homogeneidad)
+Agregación cooperativa: \(r_{\mathrm{team}}=0{,}70\). Perfil unificado de comparabilidad `*_unified_comparable_v4`: `peak_weight=0,45`, `ramp_weight=0,35`, `ev_weight=0,25` (constantes entre algoritmos para no confundir VI con cambios de \(R\)).
 
-| Prueba | Hipótesis nula de la prueba | Decisión de ruta |
-|---|---|---|
-| **Shapiro–Wilk** (por algoritmo) | Los KPI-gains / métricas episódicas siguen distribución normal | Si se rechaza en ≥1 grupo → **no** aplicar ANOVA/t |
-| **Fligner–Killeen / Brown–Forsythe** | Homogeneidad de varianzas | Informa sensibilidad; no habilita ANOVA si falla Shapiro |
+| Escenario | OE | \(w_{\mathrm{flex}}\) | \(w_{\mathrm{carbon}}\) | \(w_{\mathrm{cost}}\) | KPI primario de diseño |
+|---|---|:---:|:---:|:---:|---|
+| **E1** | OE.1 Flexibilidad | **0,60** | 0,15 | 0,25 | `peak_average` / flex_composite |
+| **E2** | OE.2 CO₂ | 0,25 | **0,60** | 0,15 | `carbon_emissions_total` |
+| **E3** | OE.3 Costos | 0,15 | 0,25 | **0,60** | `electricity_cost_total` |
 
-En la corrida canónica, Shapiro–Wilk **rechaza normalidad** en MASAC, MATD3 y MAAC en OE.1–OE.3 y en el agregado ALL. Por tanto, **las pruebas paramétricas (ANOVA de un factor, t de Student) quedan deshabilitadas** y se reportan solo como contraste de supuestos, no como base de decisión.
+Los niveles principal/secundario/residual (0,60/0,25/0,15) rotan entre los tres ejes y cada fila suma uno. Esta formulación es una **suma ponderada jerarquizada compensatoria**, no una optimización lexicográfica: los términos secundarios permanecen activos y pueden compensar parcialmente el principal.
 
-### 4.8.2 Batería no paramétrica (decisión de hipótesis)
+**Nota metodológica:** la recompensa de estado (señal de entrenamiento) **no** es el KPI final de contrastación. Los efectos diferenciales se miden en Cap. 5 con KPIs físicos / KPI-gains frente al baseline CityLearn v2.
 
-| Alcance | Pruebas | Rol |
-|---|---|---|
-| Por OE (E1/E2/E3) | Kruskal–Wallis + ε²; Mann–Whitney U (Holm); Wilcoxon signed-rank; Cliff’s δ | Diferencias entre algoritmos e impacto vs cero (baseline) |
-| Pareado por KPI | Friedman + Kendall W; post hoc Wilcoxon (Holm) | Sensibilidad a la dependencia entre KPIs del mismo escenario |
-| Global (OG) | Friedman / KW sobre score E1–E3; TOPSIS (pesos ⅓,⅓,⅓) | H0G/H1G y ranking multiobjetivo |
+---
 
-### 4.8.3 Regla de decisión doctoral (HE / HG)
+## 4.10 Diseño experimental
 
-Para cada objetivo específico se exige **evidencia conjunta** de impacto y de diferencia entre algoritmos:
+Diseño factorial **4 × 3 = 12** tratamientos (algoritmo × eje), corrida canónica **`madrl_v3_20260627_164047`**.
 
-1. **Impacto MADRL vs baseline:** Wilcoxon de una muestra (ganancias ≠ 0) con Holm, o mediana de KPI-gains favorable y significativa.
-2. **Diferencia entre algoritmos:** Kruskal–Wallis o Friedman significativos (α = 0,05) y, de ser el caso, post hoc significativo.
-3. **Líder descriptivo:** mediana de ganancia (o score de escenario) para identificar el algoritmo de mejor desempeño, **sin** confundir liderazgo descriptivo con rechazo de H₀.
+| # | Algoritmo | Eje | Episodios | Seed | Horizonte | Config / salida |
+|---:|---|---|---:|---:|---:|---|
+| 1 | HAPPO | E1 | 50 | 0 | 8 760 | `happo/E1_seed_0` |
+| 2 | HAPPO | E2 | 50 | 0 | 8 760 | `happo/E2_seed_0` |
+| 3 | HAPPO | E3 | 50 | 0 | 8 760 | `happo/E3_seed_0` |
+| 4 | MASAC | E1 | 50 | 0 | 8 760 | `masac/E1_seed_0` |
+| 5 | MASAC | E2 | 50 | 0 | 8 760 | `masac/E2_seed_0` |
+| 6 | MASAC | E3 | 50 | 0 | 8 760 | `masac/E3_seed_0` |
+| 7 | MATD3 | E1 | 50 | 0 | 8 760 | `matd3/E1_seed_0` |
+| 8 | MATD3 | E2 | 50 | 0 | 8 760 | `matd3/E2_seed_0` |
+| 9 | MATD3 | E3 | 50 | 0 | 8 760 | `matd3/E3_seed_0` |
+| 10 | MAAC | E1 | 50 | 0 | 8 760 | `maac/E1_seed_0` |
+| 11 | MAAC | E2 | 50 | 0 | 8 760 | `maac/E2_seed_0` |
+| 12 | MAAC | E3 | 50 | 0 | 8 760 | `maac/E3_seed_0` |
 
-Si (1) o (2) fallan, se **no rechaza** la hipótesis nula específica (HE10, HE20, HE30) y no se respalda la alternativa (HE11, HE21, HE31).
+Orquestación canónica: notebook `madrl_citylearn_v3_tutorial.ipynb` + `colab_a100_official_launcher.py` (`two_phase_happo_masac_v3`). Validación de plan: `tools/training/validate_launch_config.py`. Raíz de artefactos: `outputs/madrl_v3_20260627_164047/`.
 
-### 4.8.4 Diseño multi-semilla (implementado; campaña canónica seed=0)
+---
 
-El protocolo empírico `EmpiricalProtocol` en `uc3m/multicriteria/scenarios.py` fija **`n_seeds=12`** (semillas 0…11) como unidad canónica de análisis para la batería no paramétrica. El runner `scripts/run_madrl_nonparametric_battery.py` carga:
+## 4.11 Entrenamiento
 
-1. `--run-root` con jobs `{ALGO}/{E*}_seed_{k}/data/results.json` (preferido), o
-2. CSV con columna `seed`, o
-3. `--allow-episode-fallback` (unidad episodio; no canónico), o
-4. `--smoke` / `--illustrative-only` (validación de pipeline con datos sintéticos).
+| Fase | Contenido |
+|---|---|
+| **Inicialización** | Schema Iquitos; escenario E1/E2/E3; seed = 0; wrapper del algoritmo; hiperparámetros §4.7; verificación de contexto `scripts/verify_project_context.ps1` |
+| **Interacción** | Rollout horario \(T=8760\); observación local \(o_i\); acción \(a_i\); transición física; recompensa mixta |
+| **Actualización** | Gradientes según paradigma (on-policy HAPPO; off-policy MASAC/MATD3/MAAC) sobre batch/rollout |
+| **Checkpoint** | Persistencia periódica + reanudación `--skip-completed` / manifests de checkpoint |
+| **Terminación** | Cupo de episodios (objetivo 50) o parada por error/OOM con reintento del launcher |
+| **Almacenamiento** | Por job: `results.json`, `training_summary.json`, `timeseries.csv`, `trace.csv`, `core_kpis.csv`, `figures/`, checkpoints bajo `{algo}/E*_seed_0/` |
 
-**Estado ejecutado en esta tesis:** (i) campaña Colab/Drive canónica con **seed=0** (12 jobs); (ii) smoke ilustrativo `n_seeds=3` → `outputs/madrl_nonparametric_battery_smoke_n3/`; (iii) batería episódica complementaria con HAPPO → `outputs/madrl_nonparametric_battery/`. **No** existen 12 semillas entrenadas reales bajo `outputs/_drive_madrl`; no se inventan. Cap. 5 reporta seed=0 + diseño/smoke; no afirma robustez multi-semilla entrenada.
+Adaptador común: `citylearn_v3_training_common.py`. Guardas: tensores finitos, heartbeats, auditoría `episodes_recorded`.
 
-### 4.8.5 UC3M 7 ejes vs recompensa ejecutada (3 ejes) y fachada BACT
+---
 
-El paquete `uc3m/` y el sustento `agent-skills/madrl-sustento-doc-capa v3/` formalizan siete ejes (flexibilidad, CO₂, costo, EV, BESS, resiliencia, ACS) sobre el tensor de contexto BACT (`uc3m/env/bact.py`) y métricas HPHI (`uc3m/reward/hphi.py`). Las 12 corridas usan **solo** `CityLearnV3MADRLRewardFunction` (OE.1/OE.2/OE.3 + término EV). Cap. 2 §§2.2.5–2.2.9 axiomatizan el Meta-Dec-POMDP y el mapeo 7→3; aquí no se repite la axiomatización 7-D. La fachada `UC3MEnv` / `AlgorithmFactory` es infraestructura genérica validada por `tests/uc3m/`; el entrenamiento reportado no pasa por esa fachada.
+## 4.12 Evaluación
 
-## 4.9 Correspondencia problemas → objetivos → hipótesis → ruta estadística
+| Elemento | Especificación |
+|---|---|
+| **Baseline** | CityLearn v2: `baseline` y `hour_rbc` (`benchmark_citylearn_v2_agents.py`) |
+| **Periodo / horizonte** | Mismo schema horario; episodio de evaluación alineado a 8 760 pasos |
+| **KPI** | `env.evaluate_v2()` (flexibilidad, carbono, costo, EV, etc.); KPI-gains orientados vs baseline como unidad de contraste Cap. 5 |
+| **Unidad de análisis** | Tratamiento algoritmo × escenario (seed = 0); reportes a nivel distrito y edificio |
+| **Artefactos** | Comparador `compare_citylearn_v2_vs_v3_madrl.py`; `best_madrl_report.json`; carpeta `resumen_comparativo/`; puente multicriterio en `outputs/madrl_multicriteria_selection/` (metodología; interpretación en Cap. 5) |
 
-### 4.9.1 Problema general, objetivo general e hipótesis general
+Este capítulo fija el **contrato de evaluación**; no reporta tablas de ranking ni decisiones de hipótesis.
 
-**Problema general (PG).** ¿En qué medida los algoritmos de aprendizaje por refuerzo profundo multiagente (MADRLs) impactan en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño a nivel global?
+---
 
-OG. - Determinar el impacto de los algoritmos aprendizaje por refuerzo profundo multiagente (MADRLs) en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, e identificar cuál de los algoritmos presenta el mejor desempeño a nivel global.
+## 4.13 Reproducibilidad
 
-**Hipótesis general.**
+| Dimensión | Valor canónico |
+|---|---|
+| **Software** | Python 3.9 (`.venv39-citylearn-v3`), PyTorch 2.8.0+cu126, CUDA 12.6; pytest 8.4.2 (validación) |
+| **Activación** | `scripts/activate_citylearn_v3.ps1` (`PYTHONPATH` = raíz + `CityLearn/`) |
+| **Hardware local** | NVIDIA RTX 4060 Laptop 8 GB (validación de pipeline) |
+| **Hardware canónico** | Google Colab Pro+ (A100 / H100 según runtime del notebook); protocolo `two_phase_happo_masac_v3` |
+| **Semilla** | seed = 0 en las 12 corridas reportadas |
+| **Rutas** | Dataset: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/`; run: `outputs/madrl_v3_20260627_164047/`; auditoría DER: `data/dataset_audit/der_sizing_audit.csv` |
+| **Ops** | `deploy/` (Docker/AWS) opcional; no sustituye la evidencia Colab |
 
-H0G.-El algoritmo MADRL no impacta de manera estadísticamente significativa y diferenciada en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas en el desempeño global de los algoritmos.
+---
 
-H1G.- El algoritmo MADRL impacta de manera estadísticamente significativa y diferenciada en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y el desempeño global difiere entre los algoritmos.
+## 4.14 Validación técnica
 
-**Ruta estadística OG.** Integración E1+E2+E3; score de escenario con igual peso; Wilcoxon vs baseline; Friedman pareado; Kendall W; Kruskal–Wallis de sensibilidad; TOPSIS.
-
-### 4.9.2 OE.1 — Flexibilidad energética (E1)
-
-OE.1: Determinar el impacto de los algoritmos MADRLs en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E1.
-
-HE10.- El algoritmo MADRL no impacta de manera estadísticamente significativa en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E1.
-
-HE11.- El algoritmo MADRL impacta de manera estadísticamente significativa en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E1.
-
-**Ruta.** Filtro E1; KPI-gains de flexibilidad; Shapiro; Wilcoxon vs cero; Friedman/KW; Holm.
-
-### 4.9.3 OE.2 — Emisiones de CO₂ (E2)
-
-OE.2: Determinar el impacto de los algoritmos MADRLs en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E2.
-
-HE20.- El algoritmo MADRL no impacta de manera estadísticamente significativa en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E2.
-
-HE21.- El algoritmo MADRL impacta de manera estadísticamente significativa en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E2.
-
-**Ruta.** Filtro E2; KPI-gains de carbono; misma batería.
-
-### 4.9.4 OE.3 — Costos energéticos (E3)
-
-OE.3: Determinar el impacto de los algoritmos MADRLs en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E3.
-
-HE30.-El algoritmo MADRL no impacta de manera estadísticamente significativa en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E3.
-
-HE31.-El algoritmo MADRL impacta de manera estadísticamente significativa en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E3.
-
-**Ruta.** Filtro E3; KPI-gains de costo; misma batería.
-
-### 4.9.5 Matriz de consistencia (diseño → evidencia)
-
-| Alcance | Problema | Objetivo | H₀ / H₁ | Escenario | Instrumentos |
-|---|---|---|---|---|---|
-| General | PG | OG | H0G / H1G | E1–E3 | `best_madrl_report.json`, Friedman/KW, TOPSIS |
-| Específico 1 | PE.1 | OE.1 | HE10 / HE11 | E1 | KPI-gains flex; SW; KW; Wilcoxon |
-| Específico 2 | PE.2 | OE.2 | HE20 / HE21 | E2 | KPI-gains CO₂; SW; KW; Wilcoxon |
-| Específico 3 | PE.3 | OE.3 | HE30 / HE31 | E3 | KPI-gains costo; SW; KW; Wilcoxon |
-
-Fuente de decisión Cap. 5: `outputs/madrl_v3_20260627_164047/resumen_comparativo/estadistica/problemas_objetivos_hipotesis/`.
-
-## 4.10 Implementación, entorno de cómputo y reproducibilidad
-
-- **Stack:** Python 3.9 (`.venv39-citylearn-v3`), PyTorch 2.8.0+cu126, CUDA 12.6; activación vía `scripts/activate_citylearn_v3.ps1` (`PYTHONPATH` = raíz del repo + `CityLearn/`).
-- **Validación local:** RTX 4060 Laptop 8 GB, 5 episodios (pipeline).
-- **Corrida canónica:** Google Colab Pro+ High-RAM; protocolo `two_phase_happo_masac_v3`; objetivo 50 episodios × 8 760 pasos; artefactos en Drive bajo `madrl_v3_20260627_164047`.
-- **Guardas de proyecto:** `scripts/verify_project_context.ps1` (frontera `D:\MADRLCitytleranflexresdr`); heartbeats, reanudación por checkpoint, filtros de tensores finitos, auditoría `episodes_recorded`.
-- **Word / tesis:** pipeline `tools/thesis/run_thesis_word_pipeline.py` sobre los tres canones; Cap. IV se redacta en markdown (`docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md`) y se integra al Word canónico mediante parches `tools/thesis/` (sin regeneración destructiva por defecto).
-- **Ops opcional:** `deploy/` (Docker/AWS) no sustituye la evidencia Colab; se documenta solo como vía de despliegue.
-
-## 4.11 Validación implementada (tests UC3M + schema CityLearn v3)
-
-Esta sección registra la **validación de software** de la fachada UC3M y del schema CityLearn v3. No sustituye las 12 corridas de entrenamiento ni las pruebas estadísticas Cap. 5; acredita que la capa de diseño y el contrato de datos son ejecutables y reproducibles en el venv del proyecto.
-
-### 4.11.1 Comando y entorno (2026-07-29)
+### 4.14.1 Suite automatizada (2026-07-29)
 
 ```text
 .\.venv39-citylearn-v3\Scripts\python.exe -B -m pytest tests/uc3m/ tests/citylearn_v3/ -v --tb=line
 ```
 
-Entorno: Python 3.9.25, pytest 8.4.2, raíz `D:\MADRLCitytleranflexresdr`, contexto verificado con `scripts/verify_project_context.ps1`.
+**Resultado:** **184 passed** (180 `tests/uc3m/` + 4 `tests/citylearn_v3/`), 1 warning no bloqueante; duración ≈ 91 s. Entorno: Python 3.9.25, raíz `D:\MADRLCitytleranflexresdr`, contexto verificado.
 
-### 4.11.2 Resumen de resultados
+### 4.14.2 Controles de integridad operativa
 
-| Suite | Archivos / alcance | Resultado | Duración |
-|---|---|---|---|
-| `tests/uc3m/` | factory, BACT, calibración, adapters, ingestion, HPHI, KPIEvaluator, multicriteria, reward axes, UC3MEnv, universality | **180 passed** | (incluido en total) |
-| `tests/citylearn_v3/` | `test_schema_smoke.py` (schema Iquitos / v3) | **4 passed** | (incluido en total) |
-| **Total** | 184 ítems recolectados | **184 passed**, 1 warning | **91,09 s** |
+- Acciones en rangos de actuadores; evolución de SoC BESS/EV bajo física CityLearn; filtros **NaN/Inf** en tensores y CSV del dataset.
+- `tools/training/validate_launch_config.py`: **PASS** en construcción de **12 jobs** 4×3, hiperparámetros por algoritmo y dry-run del *scheduler* (concurrencia ≤ 6; fase 1 HAPPO+MASAC).
 
-Advertencia no bloqueante: `RuntimeWarning` de SciPy en `test_full_methodology_battery_smoke` (estimación de p-valor con `distribution='t'` y g.l. indefinidos); el test pasó.
+La validación de software **no** sustituye el entrenamiento Colab ni la batería estadística del Cap. 5.
 
-Interpretación para reproducibilidad: la fachada UC3M (BACT, ejes de recompensa, HPHI, protocolo empírico, evaluador de KPIs y factory de algoritmos) y el smoke del schema CityLearn v3 son **verdes** en la máquina de redacción de la tesis. El canal de las 12 corridas sigue siendo `CityLearn/scripts/train_citylearn_v3_*.py` + backends `external/`; UC3M permanece como capa de diseño y batería metodológica.
+---
 
-### 4.11.3 Validación ligera de orquestación (opcional)
+## 4.15 Correspondencia OE.1→E1, OE.2→E2, OE.3→E3 y OG→E1+E2+E3
 
-Se ejecutó además `tools/training/validate_launch_config.py`. Comprobaciones **PASS**: construcción de **12 jobs** (4 algoritmos × 3 escenarios), hiperparámetros por algoritmo tras el patch de fase, y dry-run de *dynamic backfill* (scheduler `rc=0`, 12 jobs, cap de concurrencia ≤ 6, primeros 6 = fase 1 HAPPO+MASAC). La resolución auto de `happo_n_rollout_threads` se aplica también cuando el validador invoca el backfill sin pasar por `main()`.
+Se citan los elementos definitivos de investigación (sin reformular) y su operacionalización técnica. **Cap. IV no contrastará hipótesis.**
 
-No se reentrenaron las 12 corridas MADRL (coste Colab/A100; evidencia canónica ya en `outputs/` / Drive). No se reejecutó la batería estadística completa Cap. 5 (fuera del alcance de este capítulo de implementación).
+| Alcance | Texto rector (efectos diferenciales) | Escenario / pesos | Variables / KPI de diseño | Rutas |
+|---|---|---|---|---|
+| **OE.1** | Determinar y cuantificar los efectos diferenciales de HAPPO, MASAC, MATD3 y MAAC sobre la **flexibilidad energética (eje E1)** e identificar el algoritmo de mejor desempeño en la comunidad inteligente heterogénea de Iquitos | **E1:** 0,60 / 0,15 / 0,25 | `peak_average`, `ramping_average`, `one_minus_load_factor_average`, flex_composite | `*/E1_seed_0/`; `CityLearnV3MADRLRewardFunction` |
+| **OE.2** | … sobre las **emisiones de CO₂ (eje E2)** … | **E2:** 0,25 / 0,60 / 0,15 | `carbon_emissions_total` (+ deltas vs baseline) | `*/E2_seed_0/`; `carbon_intensity.csv` |
+| **OE.3** | … sobre los **costos energéticos (eje E3)** … | **E3:** 0,15 / 0,25 / 0,60 | `electricity_cost_total` (+ TOU/RTP) | `*/E3_seed_0/`; `pricing.csv` |
+| **OG** | Determinar y cuantificar los efectos diferenciales … en la **coordinación energética multiobjetivo** … e identificar el algoritmo de mejor desempeño **global** | **E1+E2+E3** (integración) | Score de escenario / multicriterio (pesos iguales ⅓ por defecto en puente metodológico) | `outputs/madrl_v3_20260627_164047/resumen_comparativo/`; `outputs/madrl_multicriteria_selection/` |
 
-## 4.12 Síntesis del capítulo
-
-El Capítulo 4 fija la **propuesta ejecutable**: dataset real → CityLearn v2/v3 → Dec-POMDP/CTDE → recompensa por OE → 12 corridas MADRL → KPIs/baseline → puerta Shapiro → batería no paramétrica → decisión de H0G/H1G y HE10–HE31, con mapa de carpetas (propio vs externo) y validación de software UC3M/schema v3 ejecutada el 2026-07-29.
-
-**Coherencia vertical con Caps. 2 y 5.** La formalización teórica de la capa CityLearn v3 propuesto vive en Cap. 2 §2.2.5 (skills Módulo D + rutas `CityLearn/citylearn/v3/`). Cada paso 1–13 de este capítulo se consume en Cap. 5 §5.0 (mapa paso→sección→artefacto) y en §§5.1–5.7 (cobertura, Shapiro→no paramétrico, OE.1–OE.3, OG). El Capítulo 5 no introduce etapas nuevas: solo reporta evidencia de las etapas 10–13 y el cumplimiento de objetivos.
+Tema del título: **coordinación energética multiobjetivo**; mecanismo: **MADRL HAPPO/MASAC/MATD3/MAAC**; unidad: **comunidad inteligente heterogénea de Iquitos**. La identificación del mejor desempeño pertenece al objetivo y se resuelve con evidencia en Cap. 5; no se anticipa aquí.
 
 ---
 
 ### Estado del capítulo
-**Completo y alineado al flujo de trabajo 1–13**, con mapa de carpetas, diseño multi-semilla (`n_seeds=12`), distinción UC3M 7 ejes (sustento) vs 3 ejes ejecutados, y sección 4.11 de validación implementada (184 tests passed, 2026-07-29). Pendiente menor: desglose exacto de las 1 856 dimensiones de estado global. Reentrenamiento 12×50 ep y batería estadística completa permanecen en Cap. 5 / corrida canónica previa.
+
+Estructura **4.1–4.15 completa**: arquitectura (heredado vs aporte), comunidad 17 edificios, datos/preprocesamiento, CityLearn A1–A4, Dec-POMDP, CTDE, algoritmos e hiperparámetros, recursos BESS/EV/cargas, recompensa E1/E2/E3, diseño 4×3 (`madrl_v3_20260627_164047`), entrenamiento, evaluación, reproducibilidad, validación técnica (184 pytest) y correspondencia OE↔E / OG↔E1+E2+E3. Pendiente de consumo en Cap. 5: interpretación de artefactos y contrastación de hipótesis.

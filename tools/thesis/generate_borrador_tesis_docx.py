@@ -666,16 +666,18 @@ def build(*, max_chapter: int | None = None):
       "diseno factorial completo comprende 12 tratamientos (4×3), ejecutados con la misma "
       "funcion de recompensa multiobjetivo. Cada escenario condiciona la politica hacia un "
       "objetivo dominante mediante un vector de pesos distinto, respondiendo a OE.1, OE.2 "
-      "y OE.3 por separado. La escalarizacion lineal de objetivos (Roijers et al., 2013) "
+      "y OE.3 por separado. Los niveles principal/secundario/residual 0.60/0.25/0.15 rotan "
+      "entre los tres ejes; esta es una suma ponderada jerarquizada compensatoria y no una "
+      "optimizacion lexicografica. La escalarizacion lineal de objetivos (Roijers et al., 2013) "
       "y el entrenamiento de politicas separadas por vector de pesos (Abels et al., 2019; "
       "Felten et al., 2024) sustentan este diseno.")
     add_table(
         doc,
         ["Escenario", "Objetivo", "Pesos [flex, CO2, costo]", "Eje dominante"],
         [
-            ["E1", "OE.1 Flexibilidad", "[0.70, 0.15, 0.15]", "Flexibilidad"],
-            ["E2", "OE.2 Emisiones CO2", "[0.15, 0.70, 0.15]", "Carbono"],
-            ["E3", "OE.3 Costos", "[0.25, 0.15, 0.60]", "Costos"],
+            ["E1", "OE.1 Flexibilidad", "[0.60, 0.15, 0.25]", "Flexibilidad"],
+            ["E2", "OE.2 Emisiones CO2", "[0.25, 0.60, 0.15]", "Carbono"],
+            ["E3", "OE.3 Costos", "[0.15, 0.25, 0.60]", "Costos"],
             ["Global", "O.G. Coordinado", "[0.50, 0.25, 0.25]", "Coordinado"],
         ],
         caption="Tabla 3.1. Escenarios de entrenamiento y pesos de recompensa por eje.",
@@ -951,9 +953,9 @@ def build(*, max_chapter: int | None = None):
         doc,
         ["Parametro", "Valor", "Justificacion sintetica"],
         [
-            ["w_flex / w_carbon / w_cost (E1)", "0.70 / 0.15 / 0.15", "Escenario lexicografico de flexibilidad."],
-            ["w_flex / w_carbon / w_cost (E2)", "0.15 / 0.70 / 0.15", "Escenario lexicografico de CO2."],
-            ["w_flex / w_carbon / w_cost (E3)", "0.25 / 0.15 / 0.60", "Costo-pico correlacionados en TOU."],
+            ["w_flex / w_carbon / w_cost (E1)", "0.60 / 0.15 / 0.25", "Prioridad fuerte de flexibilidad; costo secundario."],
+            ["w_flex / w_carbon / w_cost (E2)", "0.25 / 0.60 / 0.15", "Prioridad fuerte de CO2; flexibilidad secundaria."],
+            ["w_flex / w_carbon / w_cost (E3)", "0.15 / 0.25 / 0.60", "Prioridad fuerte de costo; CO2 secundario."],
             ["team_reward_ratio (r)", "0.70", "Coordinacion cooperativa Dec-POMDP (media de perfiles del plan)."],
             ["peak_weight / ramp_weight", "0.45 / 0.35", "KPI primario y secundario de flexibilidad CityLearn."],
             ["ev_weight", "0.25", "Termino EV/SOC reforzado para evitar dejar EV sin cargar."],

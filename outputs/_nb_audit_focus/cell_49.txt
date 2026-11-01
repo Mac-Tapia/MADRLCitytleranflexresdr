@@ -1,0 +1,16 @@
+### 7.2 Entrenamiento de 50 episodios por corrida (reanudable con --skip-completed)
+
+Ejecuta **12 corridas desde cero o reanudadas** en **dos fases** (`two_phase_happo_masac`):
+- **Fase 1** HAPPO×3 + MASAC×3 (6 paralelos) → **Fase 2** MATD3×3 + MAAC×3 (6 paralelos)
+
+Prior de tiempo: ~12 min/ep por fase → **~20 h** wall con 50 ep (ETA dinámico vía `live_progress.json`).
+
+**Desde cero:** deja `LAUNCH_FULL_TRAINING = True` y ejecuta tras **6.1 → 7.0 → 7.1**.
+
+**Reanudación:** re-ejecuta **solo 7.2**. Bootstrap: git hard sync, Drive, mismo `OUTPUT_ROOT`, dry-run interno y `--skip-completed`.
+
+> **Opcional:** salvage HAPPO 49/50 — **7.2** cubre tails; **2.3** es atajo solo-KPI (`skip` por defecto).
+
+Al terminar (exit=0): verifica 12/12 y, si `AUTO_RUN_POST_TRAINING=True`, encadena **7.3→9.x**.
+
+**KPIs en entrenamiento:** al completar cada job, `write_training_artifacts` calcula y guarda los **54 OE** (OE1/OE2/OE3) a nivel **distrito** (`objective_kpis.csv`, `district_kpis.csv`) y **edificio** (`building_objective_kpis.csv`, `building_kpis.csv`) — no un subconjunto ad-hoc de 3 métricas.

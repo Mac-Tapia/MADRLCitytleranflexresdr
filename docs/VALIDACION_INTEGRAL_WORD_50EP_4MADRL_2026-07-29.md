@@ -3,7 +3,7 @@
 **Repo:** `D:/MADRLCitytleranflexresdr`
 **Run canónico:** `madrl_v3_20260627_164047`
 **Drive:** https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
-**Generado:** 2026-07-29T22:08:14.499121+00:00
+**Generado:** 2026-08-07T06:30:50.903521+00:00
 **Script:** `tools/thesis/validate_integral_word_50ep_4madrl.py`
 
 ## Veredicto: **SÍ**
@@ -20,8 +20,8 @@ Todas las pruebas críticas PASS; anclas 50 ep / 4 MADRL trazables
 
 | Archivo | Rol | chars | tablas | 50 ep | HAPPO/MASAC/MATD3/MAAC |
 |---|---|---:|---:|---:|---|
-| `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` | tesis | 227879 | 83 | 31 | 113/142/185/185 |
-| `docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx` | informe | 263978 | 72 | 28 | 126/148/181/193 |
+| `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` | tesis | 201172 | 63 | 16 | 107/125/158/168 |
+| `docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx` | informe | 244276 | 56 | 17 | 124/132/162/180 |
 
 ## Ground truth (anclas)
 

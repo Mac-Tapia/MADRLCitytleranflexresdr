@@ -1,0 +1,8 @@
+## Sección 9: Evaluación estadística — Selección OG / OE.1 / OE.2 / OE.3
+
+Protocolo alineado a CityLearn v3 (`objectives.py`, **54 KPIs** OE completos; distrito + edificio en artefactos):
+
+1. **Score por escenario** — media del *signed relative gain* vs baseline (`evaluate_v2`) sobre **todos** los KPIs del OE emparejado (E1→OE1, E2→OE2, E3→OE3); positivo = mejor.
+2. **Ganador OE.k** — mejor algoritmo en el escenario Ek.
+3. **Ganador OG** — media de los 3 scores E1/E2/E3 (mejor MADRL global).
+4. **Shapiro-Wilk / Kruskal-Wallis / Mann-Whitney U** — sobre los scores de escenario.

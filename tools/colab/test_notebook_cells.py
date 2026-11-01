@@ -318,9 +318,9 @@ import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots(1, 3, figsize=(12, 4))
 for axis, (sc, wts) in zip(ax, {
-    "E1": [0.70, 0.15, 0.15],
-    "E2": [0.15, 0.70, 0.15],
-    "E3": [0.25, 0.15, 0.60],
+    "E1": [0.60, 0.15, 0.25],
+    "E2": [0.25, 0.60, 0.15],
+    "E3": [0.15, 0.25, 0.60],
 }.items()):
     axis.bar(["Flex", "CO2", "Cost"], wts, color=["#3b82f6","#22c55e","#f59e0b"])
     axis.set_title(sc)

@@ -1,106 +1,107 @@
 # Capítulo 6. Conclusiones
 
-> **Documento de tesis — alineado a la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`) y a la capa KPI-gains de Cap. 5.**  
-> Fuente Word canónica: `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` (espejo Informe: `docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx`).  
-> No inventar hallazgos no soportados por artefactos. **No** tratar ranking episódico, TOPSIS ni evaluate_v2 4/4 como decisión de HE.
+> **Documento de tesis — conclusiones.** Alineado a la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`) y a la Capa A de Cap. 5 (`problemas_objetivos_hipotesis/`). α = 0,05. Semilla de campaña = 0. HAPPO excluido de la contrastación HE. **No** se inventan hallazgos; **no** se cita Kruskal–Wallis ALL como veredicto de H0G/H1G; TOPSIS y evaluate_v2 4/4 son descriptivos y no sustituyen hipótesis.
 
 ---
 
-## 6.1 Principales hallazgos
+## 6.1 Conclusión general
 
-1. **Respuesta al OG:** entre los MADRL del canónico 3×3 (MATD3, MAAC, MASAC), **MATD3** obtiene el mejor desempeño coordinado **descriptivo** (score global **0,6667**; `best_madrl_report.json`). No hay dominador Pareto: MATD3 lidera flexibilidad física de distrito y CO₂; **MAAC** lidera costos. El ranking evaluate_v2 4/4 sitúa a MAAC primero (0,9538; HAPPO 0,0000) y es **descriptivo**, no veredicto de hipótesis.
+Respecto del objetivo general (OG) —determinar el impacto de los algoritmos MADRL en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de Iquitos, e identificar el algoritmo de mejor desempeño global—, la evidencia de Cap. 5 permite concluir lo siguiente.
 
-2. **Respuesta a PE.1 / OE.1 (flexibilidad, E1):** descriptivamente, **MATD3** obtiene el mejor `flex_composite` de distrito (**1,0009**); por mediana de KPI-gain el líder es **MAAC**. Inferencialmente (KPI-gains Cap. 5), Kruskal–Wallis **p = 0,4685** → **HE10 no se rechaza**; **HE11 no se respalda**.
+**Efecto global.** A nivel integrado (KPI-gains GLOBAL, n = 26), se observan efectos diferenciales entre algoritmos y frente al baseline CityLearn v2: el contraste omnibus pareado detecta diferenciación agregada, y el impacto frente a cero tras corrección Holm resulta significativo para los tres algoritmos del canónico 3×3, en dirección **desfavorable** (no mejora agregada vs baseline).
 
-3. **Respuesta a PE.2 / OE.2 (CO₂, E2):** descriptivamente, **MATD3** obtiene el menor ΔCO₂ de distrito (**23 070 kg**). Inferencialmente, KW **p = 0,7648** → **HE20 no se rechaza**; **HE21 no se respalda**.
+**Valor y magnitud de la diferenciación.** La prueba de Friedman sobre la integración GLOBAL arroja χ² = 9,2911, p = 0,0096, con Kendall W = 0,1787 (concordancia débil). El post hoc Wilcoxon–Holm identifica un único par significativo: MAAC–MASAC (p-Holm = 0,0172). El impacto GLOBAL vs baseline (Holm) es desfavorable y significativo para MAAC, MASAC y MATD3.
 
-4. **Respuesta a PE.3 / OE.3 (costos, E3):** descriptivamente, **MAAC** obtiene el menor Δcosto de distrito (**9 515 EUR**). Inferencialmente, KW **p = 0,7357** → **HE30 no se rechaza**; **HE31 no se respalda**. Ranking TOPSIS/4/4 **no** sustituye HE31.
+**Mejor algoritmo global.** No existe ganador único inferencial. En el plano descriptivo coexisten dos liderazgos: MATD3 encabeza `best_madrl` 3×3 (score 0,6667), mientras que MAAC encabeza el ranking evaluate_v2 4/4 y TOPSIS (C\* = 0,9827). El frente de Pareto retiene a MATD3, MAAC y MASAC; el trade-off MATD3 (flexibilidad física / CO₂) frente a MAAC (costos) impide declarar un dominador universal.
 
-5. **Hipótesis general (H0G / H1G):** H0G se **rechaza de forma exploratoria** (Friedman integración **p = 0,0096** + impacto GLOBAL vs baseline Holm); KW ALL **p = 0,1554** (n.s.). H1G se respalda **exploratoriamente** (sin ganador único; **no** implica HE11∧HE21∧HE31).
+**Limitación metodológica.** La unidad experimental es semilla única (`seed = 0`); los episodios de una sola corrida no constituyen réplicas experimentales independientes ni habilitan robustez multisemilla.
 
-6. **Cobertura HAPPO:** KPI-gains evaluate_v2 4/4 disponibles (peores que el trío); cobertura episódica **49/50** por escenario. Las HE de entrenamiento usan el trío MASAC/MATD3/MAAC. `best_madrl` 3×3 permanece MATD3 0,6667.
+**Decisión HG.** Se **rechaza H0G**. Se **respalda H1G** (efectos diferenciales agregados sin ganador único). El respaldo de H1G **no** implica la conjunción HE11 ∧ HE21 ∧ HE31.
 
-7. **Contribución metodológica:** benchmark reproducible Dec-POMDP/CTDE sobre 17 edificios del SEAI Iquitos (\(d_s=1\,856\); \(d_{o_i}\in[54,327]\); \(d_{a_i}\in[5,44]\); \(r_{\mathrm{team}}=0{,}70\)) con cuatro algoritmos MADRL bajo CityLearn v3 (extensión experimental de tesis; Caps. 2 y 4).
-
-### 6.1.1 Veredicto de hipótesis (aceptación / rechazo)
-
-Unidad de decisión = **KPI-gains** de los 50 episodios Drive (Cap. 4–5). α = 0,05. Semilla de campaña = 0 (decisiones **exploratorias**).
-
-| Hipótesis | Decisión | Fundamento |
-|-----------|----------|------------|
-| **H0G** | **Se rechaza de forma exploratoria** | Friedman integración p = 0,0096 + impacto GLOBAL vs baseline (Holm) |
-| **H1G** | **Se respalda de forma exploratoria** (sin ganador único) | Diferenciación débil; trade-off MATD3/MAAC; **no** implica HE11∧HE21∧HE31 |
-| **HE10** | **No se rechaza** | KW p = 0,4685 |
-| **HE11** | **No se respalda** | Sin conjunción impacto + diferencias en E1 |
-| **HE20** | **No se rechaza** | KW p = 0,7648 |
-| **HE21** | **No se respalda** | Sin impacto vs cero tras Holm; 0/15 KPI mejorados |
-| **HE30** | **No se rechaza** | KW p = 0,7357 |
-| **HE31** | **No se respalda** | MAAC gana costos/TOPSIS/4/4 solo descriptivo |
-
-*Nota.* La nula no se «acepta»; se informa si se rechaza o no. Accuracy/precision/recall/F1 no intervienen (métricas no primarias del control continuo MADRL).
-
-### 6.1.2 Cumplimiento de objetivos
-
-| Objetivo | Líder descriptivo | Inferencia / H | Cumplimiento |
-|----------|-------------------|----------------|--------------|
-| **OE.1** | MATD3 (flex distrito); MAAC (mediana gain) | HE10 no rechazada; HE11 no respaldada | Cumplido descriptivo-exploratorio |
-| **OE.2** | **MATD3** | HE20 no rechazada; HE21 no respaldada | Cumplido descriptivo |
-| **OE.3** | **MAAC** | HE30 no rechazada; HE31 no respaldada | Cumplido descriptivo |
-| **OG** | MATD3 (`best_madrl` 0,6667) / MAAC (score 4/4) | H0G rechazo exploratorio; H1G exploratoria | Cumplido; sin ganador único |
+**Alcance.** Inferencia HE/H0G restringida a MASAC, MATD3 y MAAC. HAPPO dispone de una curva descriptiva reconstruida con 49 episodios históricos y uno post-resume, pero no de KPI-gains finales comparables; por ello queda fuera de la contrastación HE y solo aporta lectura descriptiva 4/4.
 
 ---
 
-## 6.2 Limitaciones encontradas
+## 6.2 Conclusión OE.1 (flexibilidad energética)
 
-- **Semilla única entrenada (seed = 0):** el diseño `n_seeds=12` y el runner están implementados; smoke n=3 ejecutado; no se entrenaron 12 semillas reales (H2).
-- **HAPPO 49/50:** sin imputación; KPI-gains evaluate_v2 4/4 disponibles (peores); HE de entrenamiento sobre MASAC/MATD3/MAAC.
-- **Capas de evidencia distintas:** KPI-gains (HE), `best_madrl` 3×3, evaluate_v2 4/4 y TOPSIS son planos **complementarios**; no se fusionan para inventar respaldo de HE11–HE31.
-- **Sin ganador Pareto universal:** trade-off MATD3 (flex+CO₂) vs MAAC (costos).
-- **Simulación, no despliegue físico** en red real; MADRL por debajo del baseline RBC en score HPHI global (matiza generalización, no el benchmark inter-algoritmo).
+Respecto de OE.1 —determinar el impacto de los MADRL en la flexibilidad energética e identificar el mejor desempeño en E1—, Cap. 5 establece lo siguiente.
 
----
+**Efecto.** Los efectos diferenciales sobre flexibilidad se caracterizan descriptivamente (liderazgo mixto) y se contrastan inferencialmente sin alcanzar el umbral de la hipótesis alternativa conjunta.
 
-## 6.3 Trabajo pendiente
+**Magnitud.** Las medianas de KPI-gain en E1 son ≤ 0 (deterioro relativo al baseline en la métrica de gain orientada). Por mediana, MAAC (−0,00119) supera a MATD3 (−0,00289) y a MASAC (−0,01363). En el KPI físico de distrito, MATD3 obtiene el mejor `flex_composite` (1,0009).
 
-Pendientes de evidencia empírica: (1) homogenizar HAPPO a 50 episodios i.i.d. por escenario; (2) campaña multi-semilla real (≥3, ideal 12) con post-hoc entre semillas; (3) frontera de Pareto por eje y % vs baseline RBC/CityLearn v2 por KPI.
+**Significancia entre algoritmos.** Friedman (principal): p = 0,0611 (χ² = 5,5897; Kendall W = 0,2329). No se rechaza la igualdad pareada al α = 0,05. El post hoc Wilcoxon–Holm entre pares es no significativo. Kruskal–Wallis se menciona solo como sensibilidad exploratoria (p = 0,4685) y **no** fundamenta la decisión de HE.
 
-Pendientes de análisis opcional (no bloquean lectura descriptiva 50 ep): Optuna (TPE) por backend; contraste SB3 (PPO/SAC/A2C) bajo el mismo schema de Iquitos.
+**Baseline.** Tras Holm, solo MASAC muestra impacto significativo vs cero, en dirección desfavorable (p-Holm = 0,0483). MAAC y MATD3 no alcanzan impacto detectado vs baseline en OE.1.
 
-Pendientes editoriales e institucionales: pasada ortográfica RAE; actualizar índices Word (F9); metadatos de asesor solo con dato real; PDF final y paquete de reproducibilidad. **No** sincronizar ni citar documentos Word eliminados.
+**Mejor MADRL (descriptivo).** MAAC por mediana de KPI-gain; MATD3 por flexibilidad física de distrito (`flex_composite` / score OE1).
+
+**Decisión HE.** **HE10 no se rechaza.** **HE11 no se respalda.**
 
 ---
 
-## 6.4 Plan para culminar la tesis
+## 6.3 Conclusión OE.2 (emisiones de CO₂)
 
-**Tabla 6.1. Plan para culminar la tesis (hitos H1–H7).**
+Respecto de OE.2 —impacto MADRL sobre emisiones de CO₂ y mejor desempeño en E2—, Cap. 5 concluye lo siguiente.
 
-| Hito | Entregable verificable | Estado |
-|------|------------------------|--------|
-| **H1. HAPPO KPI-gains / 50 ep** | KPI-gains evaluate_v2 4/4; 50 ep i.i.d. | KPI-gains 4/4; 49/50 ep |
-| **H2. Robustez multi-semilla** | Protocolo n_seeds=12 + smoke + campaña seed=0 | Diseño+runner+smoke; 12-seed no entrenada |
-| **H3. Inferencia Colab cerrada** | Tablas KW/Friedman/Wilcoxon + Cap. 5–6 sincronizados | Ejecutada (H0G exploratoria; HE11/21/31 no respaldadas) |
-| **H4. Pareto y % vs baseline** | Tablas/figuras OE.1–OE.3 vs RBC/CityLearn v2 | Parcial |
-| **H5. HPO Optuna** | Estudio TPE por algoritmo | Pendiente (fuera del alcance cerrado) |
-| **H6. Redacción final APA** | Cap. 1–6 + referencias APA | En curso |
-| **H7. Sustentación** | Documento oficial + defensa | Pendiente institucional |
+**Efecto.** Se identifica un liderazgo descriptivo claro de MATD3; el efecto inferencial conjunto no alcanza a respaldar la alternativa.
 
-Con **H1 (parcial), H3 y H6 en curso/ejecutados**, y **H2/H5 delimitados** como trabajo futuro, el manuscrito queda **presentable académicamente** bajo las restricciones declaradas. Solo **H7** permanece para el cierre formal institucional.
+**Magnitud.** Medianas de KPI-gain negativas y 0/5 KPI mejorados en los tres algoritmos. En delta físico de distrito, MATD3 minimiza ΔCO₂ (23 070 kg) frente a MAAC (70 654 kg) y MASAC (77 649 kg).
+
+**Significancia.** Friedman p = 0,0498 (χ² = 6,0000; Kendall W = 0,6000) indica señal pareada global débil-moderada; el post hoc Wilcoxon–Holm entre pares es no significativo (p-Holm = 0,307). Sin impacto vs cero tras Holm (p-Holm = 0,1875 para los tres). Kruskal–Wallis exploratorio p = 0,7648; **no** fundamenta HE.
+
+**Mejor MADRL (descriptivo).** **MATD3** (mediana gain, ΔCO₂ de distrito y score OE2).
+
+**Decisión HE.** Pese a la señal omnibus de Friedman, la ausencia de post hoc significativo y de impacto vs baseline tras Holm implica: **HE20 no se rechaza**; **HE21 no se respalda**.
 
 ---
 
-## 6.5 Criterios de cierre y control de calidad final
+## 6.4 Conclusión OE.3 (costos energéticos)
 
-| Actividad | Propósito | Criterio de cierre |
-|-----------|-----------|-------------------|
-| **Revisión APA integral** | Citas ↔ referencias | Toda cita en texto tiene entrada; viceversa |
-| **Campaña multi-semilla** | Validez externa | Seeds 0..11 con `--run-root` (trabajo futuro) |
-| **Auditoría figuras/tablas** | Trazabilidad Drive | Cada figura/tabla → artefacto de `madrl_v3_20260627_164047` |
-| **Coherencia vertical** | PE–OE–H–resultados–conclusiones | Misma capa KPI-gains para HE; descriptivo separado |
+Respecto de OE.3 —impacto MADRL sobre costos energéticos y mejor desempeño en E3—, Cap. 5 establece lo siguiente.
 
-*Nota.* Los criterios documentales no sustituyen la evidencia experimental ya auditada.
+**Efecto.** Existe liderazgo descriptivo de MAAC en costos; no se establece superioridad ni impacto estadísticamente concluyentes.
+
+**Magnitud.** MAAC obtiene la mejor mediana de KPI-gain (−0,00268) y el menor Δcosto de distrito (9 515 USD), frente a MASAC (19 793 USD) y MATD3 (44 399 USD). TOPSIS y score OE3 4/4 también sitúan a MAAC primero (C\* = 0,9827; score 1,0000), en plano descriptivo.
+
+**Significancia.** Friedman p = 0,1801 (χ² = 3,4286; W = 0,1905) — no significativo. Post hoc n.s. Impacto vs cero tras Holm no significativo (dirección desfavorable). Kruskal–Wallis exploratorio p = 0,7357; **no** fundamenta HE.
+
+**Distinción crítica.** El **menor costo observado** (descriptivo: MAAC) no equivale a un **ahorro estadísticamente demostrado** frente al baseline ni a una superioridad inter-algoritmo inferencial.
+
+**Mejor MADRL (descriptivo).** **MAAC**.
+
+**Decisión HE.** **HE30 no se rechaza.** **HE31 no se respalda.**
 
 ---
 
-### Estado del capítulo
+## 6.5 Contribuciones científicas
 
-**Actualizado (2026-07-29)** al veredicto Cap. 5 (KPI-gains): HE11/HE21/HE31 **no respaldadas**; OE descriptivos **sí**; H0G/H1G **exploratorios** (Friedman p = 0,0096; KW ALL p = 0,1554). Sin p-valores legacy 0,281/0,546/0,388 como veredicto de HE.
+**Metodológica.** Se cierra un protocolo de contrastación vertical PG–OG–HG / PE–OE–HE sobre KPI-gains (Capa A), con puerta Shapiro–Wilk → Friedman pareado + Kendall W + Wilcoxon/Holm como batería principal, y Kruskal–Wallis / Mann–Whitney solo como sensibilidad exploratoria, sin mezclar capas B/C/D con la decisión de hipótesis.
+
+**Algorítmica.** Se compara de forma homogénea el trío canónico MASAC, MATD3 y MAAC (e, en plano descriptivo, HAPPO) bajo el mismo esquema Dec-POMDP/CTDE y la misma función de recompensa multiobjetivo por escenario E1–E3.
+
+**Energética.** Se operacionalizan tres ejes de gestión —flexibilidad, emisiones de CO₂ y costos— con KPIs físicos de distrito y KPI-gains orientados, frente a baseline CityLearn v2 / RBC.
+
+**Multiobjetivo.** Se documenta el trade-off Pareto entre algoritmos (MATD3 en flexibilidad física/CO₂; MAAC en costos; MASAC en el frente sin liderar un eje) y se evita declarar un dominador único a partir de rankings complementarios (TOPSIS, 4/4, `best_madrl`).
+
+**Computacional.** Se ejecuta y audita una campaña canónica de 50 episodios por escenario (`madrl_v3_20260627_164047`) con artefactos trazables en Drive/local para reproducir tablas y figuras de Cap. 5.
+
+**Aplicada a Iquitos.** Se instancia el problema en una comunidad de 17 edificios del SEAI–Iquitos (Electro Oriente S.A.), con señales exógenas de clima, precio y carbono propias del caso de estudio.
+
+**Reproducibilidad.** Se delimitan unidad experimental (algoritmo × escenario, seed = 0), cobertura episódica, exclusión de HAPPO de HE, n de KPI por eje (12/5/9) y la separación explícita entre evidencia descriptiva e inferencial, de modo que las decisiones HG/HE sean auditables contra Cap. 5.
+
+---
+
+## 6.6 Limitaciones
+
+Las limitaciones verificadas, coherentes con Cap. 5, son únicamente las siguientes:
+
+1. **Semilla única entrenada (`seed = 0`).** No se afirma robustez multisemilla; la generalización de las decisiones HG/HE queda limitada por esa unidad experimental.
+2. **HAPPO sin KPI-gains finales comparables.** Su curva descriptiva reúne 49 episodios históricos y uno post-resume, pero esa cobertura no lo habilita como réplica inferencial homogénea. Queda excluido de HE; solo aporta lectura descriptiva 4/4.
+3. **Tamaño muestral de KPI por eje.** n = 12 (OE.1), n = 5 (OE.2) y n = 9 (OE.3) en la Capa A.
+4. **Simulación, no despliegue.** Los resultados corresponden a CityLearn / capa MADRL v3, no a operación en red real.
+5. **Trade-off Pareto.** No hay dominador universal entre flexibilidad/CO₂ y costos.
+6. **Capas B/C/D no deben mezclarse con la Capa A** para inventar respaldo de HE11–HE31 ni de H1G.
+7. **No se entrenaron 12 semillas reales.** El diseño `n_seeds=12` y el runner existen; la campaña completa queda fuera del alcance cerrado de evidencia.
+
+---

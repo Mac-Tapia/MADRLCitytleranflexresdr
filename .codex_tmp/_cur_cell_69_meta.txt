@@ -1,0 +1,4 @@
+type=code
+id=d375dae7
+len=2013
+head='# ── 9b.1  Pipeline multicriterio TOPSIS + AHP (ilustrativo o artefactos reales) ──\nimport sys\nfrom pathlib import Path\n\n_repo = Path(str(globals().ge'

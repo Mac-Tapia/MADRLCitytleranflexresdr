@@ -1,0 +1,60 @@
+# ── 9b.1  Pipeline multicriterio TOPSIS + AHP (ilustrativo o artefactos reales) ──
+import sys
+from pathlib import Path
+
+_repo = Path(str(globals().get("REPO_DIR", Path.cwd())))
+for _cand in (_repo, _repo.parent, Path.cwd(), Path.cwd().parent):
+    if (_cand / "uc3m" / "multicriteria").is_dir():
+        if str(_cand) not in sys.path:
+            sys.path.insert(0, str(_cand))
+        _repo = _cand
+        break
+
+from uc3m.multicriteria import run_selection_pipeline
+from uc3m.multicriteria.scenarios import list_scenarios
+from IPython.display import display
+
+_out = Path(str(globals().get("OUTPUT_ROOT", _repo / "outputs"))) / "madrl_multicriteria_selection"
+_prefer_real = True  # False → solo matriz ilustrativa de la metodología §3.2
+
+result = run_selection_pipeline(
+    repo=_repo,
+    prefer_real=_prefer_real,
+    scenario="E1",
+    output_dir=_out,
+    make_plots=True,
+    sensitivity_samples=48,
+)
+
+print("Fuente de la matriz:", result["source"])
+print(
+    f"AHP CR = {result['ahp']['consistency_ratio']:.4f} "
+    f"(consistente={result['ahp']['consistent']})"
+)
+print("Pesos:", {k: round(v, 4) for k, v in result["weights"].items()})
+print("\nEscenarios empíricos configurados:")
+for sc in list_scenarios():
+    print(f"  - {sc['name']}: {sc['description']}")
+
+print("\nMatriz de decisión (C1–C6):")
+display(result["decision_matrix_frame"].round(4))
+
+print("\nRanking TOPSIS:")
+display(__import__("pandas").DataFrame(result["topsis"]["ranking"]))
+
+print("\nChequeos de robustez del ranking:")
+for k, v in result["ranking_consistency"].items():
+    print(f"  {k}: {v}")
+
+_stats = result.get("stats") or {}
+if _stats.get("significance_gate"):
+    gate = _stats["significance_gate"]
+    print(
+        f"\nPuerta de significancia (C1/C2, 1º vs 2º): "
+        f"defensible={gate.get('defensible')} "
+        f"({gate.get('first')} vs {gate.get('second')})"
+    )
+
+print(f"\nArtefactos guardados en: {_out}")
+for name, path in (result.get("saved_paths") or {}).items():
+    print(f"  {name}: {path}")

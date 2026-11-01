@@ -123,7 +123,7 @@ def build(out_docx: Path = OUT_DOCX) -> Path:
         [
             ["OE1 Flexibilidad", "E1", "MATD3", "flex_composite = 1.001"],
             ["OE2 Emisiones CO₂", "E2", "MATD3", "ΔCO₂ = 23,070 kg"],
-            ["OE3 Costo energético", "E3", "MAAC", "Δcosto = 9,515 EUR"],
+            ["OE3 Costo energético", "E3", "MAAC", "Δcosto = 9,515 USD"],
         ],
         caption="Tabla 1. Ranking por objetivo multiobjetivo.",
     )
@@ -143,7 +143,7 @@ def build(out_docx: Path = OUT_DOCX) -> Path:
         )
     add_table(
         doc,
-        ["Algoritmo", "Escenario", "Flex", "ΔCO₂ (kg)", "ΔCosto (EUR)", "EV éxito"],
+        ["Algoritmo", "Escenario", "Flex", "ΔCO₂ (kg)", "ΔCosto (USD)", "EV éxito"],
         dist_table,
         caption="Tabla 2. KPIs agregados de distrito por algoritmo y escenario.",
     )
@@ -153,7 +153,7 @@ def build(out_docx: Path = OUT_DOCX) -> Path:
         (MO_DIR / "drive_district_objectives.png", "Figura 1. KPIs multiobjetivo — distrito."),
         (MO_DIR / "drive_building_E1_flex_composite_proxy.png", "Figura 2. OE1 Flexibilidad por edificio."),
         (MO_DIR / "drive_building_E2_carbon_emissions_delta_kgco2.png", "Figura 3. OE2 Δ CO₂ por edificio (kg)."),
-        (MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png", "Figura 4. OE3 Δ costo por edificio (EUR)."),
+        (MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png", "Figura 4. OE3 Δ costo por edificio (USD)."),
         (MO_DIR / "drive_building_ev_inventory.png", "Figura 5. Inventario EV por edificio (185 tomas)."),
         (MO_DIR / "drive_building_ev_success_matd3_e2.png", "Figura 6. Desempeño EV — MATD3 / E2."),
     ]

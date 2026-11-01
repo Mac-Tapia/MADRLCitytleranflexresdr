@@ -1,0 +1,487 @@
+# ── 8.1  Cargar KPIs CityLearn v3 (OE1/OE2/OE3 completos = 54) ───────────────
+import json
+import os
+import glob
+from pathlib import Path
+import numpy as np
+import pandas as pd
+
+# OE1=36→E1 · OE2=7→E2 · OE3=11→E3 (objectives.py). Baseline=evaluate_v2. Fallback si falla import.
+try:
+    from citylearn.v3.objectives import (
+        OBJECTIVE_AXES,
+        OE1_FLEXIBILITY_KPIS,
+        OE2_EMISSIONS_KPIS,
+        OE3_COST_KPIS,
+        HIGHER_IS_BETTER,
+        RATIO_TO_BASELINE_KPIS,
+    )
+except ImportError:
+    OE1_FLEXIBILITY_KPIS = (
+        "grid_import", "grid_import_control", "grid_import_baseline", "grid_import_delta",
+        "zero_net_energy", "net_exchange_control", "net_exchange_baseline", "net_exchange_delta",
+        "grid_export_ratio", "grid_export_control", "grid_export_baseline", "grid_export_delta",
+        "peak_average", "ramping_average", "one_minus_load_factor_average",
+        "pv_generation_total", "pv_generation_daily_average", "pv_export_total", "pv_export_daily_average",
+        "pv_self_consumption_ratio",
+        "community_local_traded_total", "community_local_traded_daily_average", "community_import_share",
+        "battery_charge_total", "battery_discharge_total", "battery_throughput_total",
+        "battery_equivalent_full_cycles", "battery_capacity_fade_ratio",
+        "ev_departure_count", "ev_departure_met_count", "ev_departure_within_tolerance_count",
+        "ev_departure_success_rate", "ev_departure_within_tolerance_rate", "ev_departure_soc_deficit_mean",
+        "ev_charge_total", "ev_v2g_export_total",
+    )
+    OE2_EMISSIONS_KPIS = (
+        "carbon_emissions", "carbon_emissions_control", "carbon_emissions_baseline", "carbon_emissions_delta",
+        "carbon_emissions_daily_average_control", "carbon_emissions_daily_average_baseline",
+        "carbon_emissions_daily_average_delta",
+    )
+    OE3_COST_KPIS = (
+        "electricity_cost", "electricity_cost_control", "electricity_cost_baseline", "electricity_cost_delta",
+        "electricity_cost_daily_average_control", "electricity_cost_daily_average_baseline",
+        "electricity_cost_daily_average_delta",
+        "cost_peak_average", "cost_ramping_average", "cost_one_minus_load_factor_average",
+        "price_signal_deviation",
+    )
+    HIGHER_IS_BETTER = {
+        "pv_generation_total", "pv_generation_daily_average", "pv_self_consumption_ratio",
+        "community_local_traded_total", "community_local_traded_daily_average", "community_import_share",
+        "battery_charge_total", "battery_discharge_total", "battery_throughput_total",
+        "battery_equivalent_full_cycles",
+        "ev_departure_met_count", "ev_departure_within_tolerance_count",
+        "ev_departure_success_rate", "ev_departure_within_tolerance_rate",
+        "ev_charge_total", "ev_v2g_export_total",
+    }
+    RATIO_TO_BASELINE_KPIS = {
+        "grid_import", "zero_net_energy", "grid_export_ratio",
+        "peak_average", "ramping_average", "one_minus_load_factor_average",
+        "carbon_emissions", "electricity_cost",
+        "cost_peak_average", "cost_ramping_average", "cost_one_minus_load_factor_average",
+    }
+    OBJECTIVE_AXES = {
+        "OE1": type("A", (), {"code": "OE1", "scenario": "E1", "name": "Flexibilidad energetica", "kpis": OE1_FLEXIBILITY_KPIS})(),
+        "OE2": type("A", (), {"code": "OE2", "scenario": "E2", "name": "Emisiones de CO2", "kpis": OE2_EMISSIONS_KPIS})(),
+        "OE3": type("A", (), {"code": "OE3", "scenario": "E3", "name": "Costos energeticos", "kpis": OE3_COST_KPIS})(),
+    }
+
+SCENARIO_TO_OE = {"E1": "OE1", "E2": "OE2", "E3": "OE3"}
+OE_TO_SCENARIO = {"OE1": "E1", "OE2": "E2", "OE3": "E3"}
+OE_KPI_SETS = {
+    "OE1": tuple(OE1_FLEXIBILITY_KPIS),
+    "OE2": tuple(OE2_EMISSIONS_KPIS),
+    "OE3": tuple(OE3_COST_KPIS),
+}
+ALL_OE_KPIS = tuple(dict.fromkeys(
+    list(OE1_FLEXIBILITY_KPIS) + list(OE2_EMISSIONS_KPIS) + list(OE3_COST_KPIS)
+))
+
+
+def _safe_float(v):
+    try:
+        x = float(v)
+    except (TypeError, ValueError):
+        return np.nan
+    return x if np.isfinite(x) else np.nan
+
+
+def _parse_algo_scenario(fp: Path, output_root: Path):
+    parts = fp.parts
+    root_name = output_root.name
+    try:
+        root_idx = next(i for i, p in enumerate(parts) if p == root_name)
+    except StopIteration:
+        root_idx = max(0, len(parts) - 4)
+    algo = parts[root_idx + 1].upper() if root_idx + 1 < len(parts) else "?"
+    sc_seed = parts[root_idx + 2] if root_idx + 2 < len(parts) else "?"
+    if "_seed_" in sc_seed:
+        scenario, seed_s = sc_seed.split("_seed_", 1)
+        try:
+            seed = int(seed_s)
+        except ValueError:
+            seed = int(globals().get("SEED", 0))
+    else:
+        scenario = sc_seed
+        seed = int(globals().get("SEED", 0))
+    return algo, scenario, seed
+
+
+def _rows_from_objective_csv(csv_path: Path, algo: str, scenario: str, seed: int = 0):
+    try:
+        df = pd.read_csv(csv_path)
+    except Exception:
+        return []
+    if df.empty or "kpi" not in df.columns:
+        return []
+    rows = []
+    for _, r in df.iterrows():
+        kpi = str(r.get("kpi", "")).strip()
+        if not kpi:
+            continue
+        axis = str(r.get("axis", "") or "").strip().upper()
+        if not axis:
+            for oe, kpis in OE_KPI_SETS.items():
+                if kpi in kpis:
+                    axis = oe
+                    break
+        rows.append({
+            "algorithm": algo,
+            "scenario": scenario,
+            "seed": int(seed),
+            "axis": axis or SCENARIO_TO_OE.get(scenario, ""),
+            "kpi": kpi,
+            "value": _safe_float(r.get("value")),
+            "baseline": _safe_float(r.get("baseline")),
+            "delta_vs_baseline": _safe_float(r.get("delta_vs_baseline")),
+            "improved_vs_baseline": r.get("improved_vs_baseline"),
+            "lower_is_better": (
+                bool(r.get("lower_is_better"))
+                if pd.notna(r.get("lower_is_better"))
+                else (kpi not in HIGHER_IS_BETTER)
+            ),
+            "available": r.get("available"),
+            "source": "objective_kpis.csv",
+            "run_path": str(csv_path.parent.parent.parent),
+        })
+    return rows
+
+
+def _rows_from_results_json(rj_path: Path, algo: str, scenario: str, seed: int = 0):
+    try:
+        with open(rj_path, encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return []
+    report = data.get("citylearn_v3_report") or {}
+    axes = report.get("objective_axis_kpis") or report.get("axes") or {}
+    rows = []
+    if isinstance(axes, dict) and axes:
+        for axis_code, axis in axes.items():
+            if not isinstance(axis, dict):
+                continue
+            kpis = axis.get("kpis") or {}
+            if not isinstance(kpis, dict):
+                continue
+            for kpi, payload in kpis.items():
+                payload = payload if isinstance(payload, dict) else {}
+                trace = payload.get("trace") if isinstance(payload.get("trace"), dict) else {}
+                comparison = payload.get("comparison") if isinstance(payload.get("comparison"), dict) else {}
+                rows.append({
+                    "algorithm": algo,
+                    "scenario": scenario,
+                    "seed": int(seed),
+                    "axis": str(axis_code).upper(),
+                    "kpi": kpi,
+                    "value": _safe_float(payload.get("value")),
+                    "baseline": _safe_float(comparison.get("baseline")),
+                    "delta_vs_baseline": _safe_float(comparison.get("delta_vs_baseline")),
+                    "improved_vs_baseline": comparison.get("improved_vs_baseline"),
+                    "lower_is_better": bool(trace.get("lower_is_better", kpi not in HIGHER_IS_BETTER)),
+                    "available": comparison.get("available"),
+                    "source": "results.json:objective_axis_kpis",
+                    "run_path": str(rj_path.parent.parent),
+                })
+        return rows
+
+    # Fallback mínimo: all_values con lista OE completa
+    all_v = report.get("all_values") or {}
+    if not isinstance(all_v, dict):
+        return []
+    for kpi in ALL_OE_KPIS:
+        if kpi not in all_v:
+            continue
+        axis = next((oe for oe, ks in OE_KPI_SETS.items() if kpi in ks), "")
+        val = _safe_float(all_v.get(kpi))
+        baseline = 1.0 if kpi in RATIO_TO_BASELINE_KPIS else np.nan
+        rows.append({
+            "algorithm": algo,
+            "scenario": scenario,
+            "seed": int(seed),
+            "axis": axis,
+            "kpi": kpi,
+            "value": val,
+            "baseline": baseline,
+            "delta_vs_baseline": (val - baseline) if np.isfinite(val) and np.isfinite(baseline) else np.nan,
+            "improved_vs_baseline": None,
+            "lower_is_better": kpi not in HIGHER_IS_BETTER,
+            "available": bool(np.isfinite(val)),
+            "source": "results.json:all_values",
+            "run_path": str(rj_path.parent.parent),
+        })
+    return rows
+
+
+def load_objective_kpis(output_root: str) -> pd.DataFrame:
+    """Carga KPIs OE1/OE2/OE3 (forma larga) por algoritmo, escenario y semilla (distrito)."""
+    root = Path(output_root)
+    records = []
+    seen_runs = set()
+
+    for csv_path in sorted(root.glob("*/*/figures/tables/objective_kpis.csv")):
+        algo, scenario, seed = _parse_algo_scenario(csv_path, root)
+        if scenario not in SCENARIO_TO_OE:
+            continue
+        rows = _rows_from_objective_csv(csv_path, algo, scenario, seed=seed)
+        if rows:
+            records.extend(rows)
+            seen_runs.add((algo, scenario, seed))
+
+    for rj_path in sorted(root.glob("*/*/data/results.json")):
+        algo, scenario, seed = _parse_algo_scenario(rj_path, root)
+        if scenario not in SCENARIO_TO_OE:
+            continue
+        if (algo, scenario, seed) in seen_runs:
+            continue
+        rows = _rows_from_results_json(rj_path, algo, scenario, seed=seed)
+        if rows:
+            records.extend(rows)
+            seen_runs.add((algo, scenario, seed))
+
+    return pd.DataFrame(records)
+
+
+def load_building_objective_kpis(output_root: str) -> pd.DataFrame:
+    """Carga KPIs OE por edificio (escritos durante el entrenamiento)."""
+    root = Path(output_root)
+    records = []
+    seen = set()
+    patterns = (
+        "*/*/data/building_objective_kpis.csv",
+        "*/*/figures/tables/building_objective_kpis.csv",
+        "*/*/building_objective_kpis.csv",
+    )
+    for pattern in patterns:
+        for csv_path in sorted(root.glob(pattern)):
+            algo, scenario, seed = _parse_algo_scenario(csv_path, root)
+            if scenario not in SCENARIO_TO_OE:
+                continue
+            key = (algo, scenario, seed, str(csv_path.resolve()))
+            if key in seen:
+                continue
+            seen.add(key)
+            try:
+                df = pd.read_csv(csv_path)
+            except Exception:
+                continue
+            if df.empty:
+                continue
+            df = df.copy()
+            df["algorithm"] = algo
+            df["scenario"] = scenario
+            df["seed"] = int(seed)
+            df["level"] = df.get("level", "building")
+            df["source"] = str(csv_path.relative_to(root)) if csv_path.is_relative_to(root) else str(csv_path)
+            records.append(df)
+    if not records:
+        # Fallback: raw evaluate_v2 building_kpis (cost_function nativo)
+        for csv_path in sorted(root.glob("*/*/data/building_kpis.csv")):
+            algo, scenario, seed = _parse_algo_scenario(csv_path, root)
+            if scenario not in SCENARIO_TO_OE:
+                continue
+            try:
+                df = pd.read_csv(csv_path)
+            except Exception:
+                continue
+            if df.empty:
+                continue
+            df = df.copy()
+            df["algorithm"] = algo
+            df["scenario"] = scenario
+            df["seed"] = int(seed)
+            df["building"] = df.get("name", df.get("building"))
+            df["kpi"] = df.get("cost_function", df.get("kpi"))
+            df["source"] = f"{csv_path.relative_to(root)} (raw evaluate_v2)"
+            records.append(df)
+    return pd.concat(records, ignore_index=True) if records else pd.DataFrame()
+
+
+def objective_long_to_wide(df_long: pd.DataFrame) -> pd.DataFrame:
+    """Wide: una fila por (algorithm, scenario[, seed]) con columnas = KPI values (+ baseline/delta)."""
+    if df_long.empty:
+        return pd.DataFrame()
+    keys = ["algorithm", "scenario"] + (["seed"] if "seed" in df_long.columns else [])
+    base = (
+        df_long.groupby(keys, as_index=False)
+        .agg(n_kpis=("kpi", "nunique"), source=("source", "first"))
+    )
+    piv = df_long.pivot_table(
+        index=keys, columns="kpi", values="value", aggfunc="first"
+    )
+    piv_b = df_long.pivot_table(
+        index=keys, columns="kpi", values="baseline", aggfunc="first"
+    )
+    piv_d = df_long.pivot_table(
+        index=keys, columns="kpi", values="delta_vs_baseline", aggfunc="first"
+    )
+    piv_b = piv_b.add_suffix("__baseline")
+    piv_d = piv_d.add_suffix("__delta")
+    wide = base.set_index(keys).join(piv).join(piv_b).join(piv_d).reset_index()
+    return wide
+
+
+def scenario_axis_table(df_long: pd.DataFrame, scenario: str) -> pd.DataFrame:
+    """Tabla de cumplimiento: todos los KPIs del OE emparejado al escenario."""
+    oe = SCENARIO_TO_OE[scenario]
+    kpis = list(OE_KPI_SETS[oe])
+    sub = df_long[(df_long["scenario"] == scenario) & (df_long["kpi"].isin(kpis))].copy()
+    if sub.empty:
+        return sub
+    sub["oe"] = oe
+    sub["objetivo"] = {
+        "OE1": "OE.1 Flexibilidad",
+        "OE2": "OE.2 Emisiones CO2",
+        "OE3": "OE.3 Costos energeticos",
+    }[oe]
+    cols = [
+        "objetivo", "oe", "scenario", "algorithm", "kpi", "value", "baseline",
+        "delta_vs_baseline", "improved_vs_baseline", "lower_is_better", "available", "source",
+    ]
+    return sub[cols].sort_values(["algorithm", "kpi"])
+
+
+df_objective_long = load_objective_kpis(str(OUTPUT_ROOT))
+df_results = objective_long_to_wide(df_objective_long)
+
+os.makedirs(f"{OUTPUT_ROOT}/evaluation", exist_ok=True)
+pd.set_option("display.float_format", "{:.4f}".format)
+pd.set_option("display.max_rows", 200)
+pd.set_option("display.max_columns", 40)
+
+print("KPIs CityLearn v3 por eje:")
+for oe, kpis in OE_KPI_SETS.items():
+    print(f"  {oe} ({OE_TO_SCENARIO[oe]}): {len(kpis)} KPIs")
+
+if df_objective_long.empty:
+    print("⚠️  Sin objective_kpis / results.json — ejecuta el entrenamiento (7.2) primero.")
+    print("   (Referencia v4: MATD3 KW p=0.0459, Score global 0.7445)")
+else:
+    n_keys = ["algorithm", "scenario"] + (["seed"] if "seed" in df_objective_long.columns else [])
+    n_runs = df_objective_long.groupby(n_keys).ngroups
+    n_seeds = (
+        int(df_objective_long["seed"].nunique())
+        if "seed" in df_objective_long.columns
+        else 1
+    )
+    expected_seeds = int(globals().get("N_SEEDS", 12))
+    print(
+        f"\n✅  {n_runs} corridas | {n_seeds}/{expected_seeds} semillas | "
+        f"{len(df_objective_long)} filas KPI (forma larga)\n"
+    )
+    df_objective_long.to_csv(f"{OUTPUT_ROOT}/evaluation/all_objective_kpis_long.csv", index=False)
+    df_results.to_csv(f"{OUTPUT_ROOT}/evaluation/all_kpis.csv", index=False)
+
+    # Tablas por escenario = OE emparejado (cumplimiento OE.1 / OE.2 / OE.3)
+    scenario_tables = {}
+    for sc in ("E1", "E2", "E3"):
+        tbl = scenario_axis_table(df_objective_long, sc)
+        scenario_tables[sc] = tbl
+        oe = SCENARIO_TO_OE[sc]
+        out_csv = f"{OUTPUT_ROOT}/evaluation/{sc}_{oe}_kpis.csv"
+        if not tbl.empty:
+            tbl.to_csv(out_csv, index=False)
+            print(f"── {sc} → {oe} ({len(OE_KPI_SETS[oe])} KPIs definidos) ──")
+            # Vista pivote valor por algoritmo
+            piv = tbl.pivot_table(index="kpi", columns="algorithm", values="value", aggfunc="first")
+            # Asegurar filas en orden oficial aunque falten valores
+            piv = piv.reindex(list(OE_KPI_SETS[oe]))
+            print(piv.to_string())
+            print(f"  → {out_csv}\n")
+        else:
+            print(f"── {sc} → {oe}: sin datos\n")
+
+    # Resumen cobertura: cuántos KPIs oficiales aparecen por corrida/eje
+    cov_rows = []
+    for (algo, sc), g in df_objective_long.groupby(["algorithm", "scenario"]):
+        oe = SCENARIO_TO_OE.get(sc)
+        if not oe:
+            continue
+        expected = set(OE_KPI_SETS[oe])
+        present = set(g.loc[g["axis"] == oe, "kpi"]) | set(g.loc[g["kpi"].isin(expected), "kpi"])
+        avail = g[g["kpi"].isin(expected) & np.isfinite(g["value"].astype(float))]
+        cov_rows.append({
+            "algorithm": algo,
+            "scenario": sc,
+            "oe": oe,
+            "kpis_definidos": len(expected),
+            "kpis_presentes": len(present & expected),
+            "kpis_con_valor": int(avail["kpi"].nunique()),
+        })
+    df_coverage = pd.DataFrame(cov_rows)
+    if not df_coverage.empty:
+        print("Cobertura de KPIs oficiales (escenario → OE emparejado):")
+        print(df_coverage.to_string(index=False))
+        df_coverage.to_csv(f"{OUTPUT_ROOT}/evaluation/oe_kpi_coverage.csv", index=False)
+
+# ── 8.1a  KPIs por edificio (artefactos del entrenamiento) ───────────────────
+df_building_long = load_building_objective_kpis(str(OUTPUT_ROOT))
+if df_building_long.empty:
+    print("⚠️  Sin building_objective_kpis / building_kpis — re-entrena o verifica write_training_artifacts.")
+else:
+    n_bldg = df_building_long["building"].nunique() if "building" in df_building_long.columns else (
+        df_building_long["name"].nunique() if "name" in df_building_long.columns else "?"
+    )
+    n_runs_b = df_building_long.groupby(["algorithm", "scenario"]).ngroups
+    print(f"\n✅  Edificio: {n_runs_b} corridas | {n_bldg} edificios | {len(df_building_long)} filas KPI")
+    out_b = f"{OUTPUT_ROOT}/evaluation/all_building_objective_kpis_long.csv"
+    df_building_long.to_csv(out_b, index=False)
+    print(f"  → {out_b}")
+
+# ── 8.1b  Exportar artefactos auxiliares de tesis ────────────────────────────
+_exported = 0
+for ts_path in sorted(glob.glob(f"{OUTPUT_ROOT}/*/*/data/timeseries.csv")):
+    run_dir = Path(ts_path).parent.parent
+    summary_path = run_dir / "data" / "training_summary.json"
+    try:
+        ts_df = pd.read_csv(ts_path)
+    except Exception:
+        continue
+
+    reward_cols = {
+        c: c for c in ts_df.columns
+        if any(k in c.lower() for k in ["reward", "episode", "peak", "carbon", "cost", "step"])
+    }
+    if reward_cols:
+        ts_df[list(reward_cols.values())].to_csv(run_dir / "data" / "rewards.csv", index=False)
+
+    ts_df = ts_df.copy()
+    ts_df["monitor_ts"] = pd.date_range(start="2026-01-01", periods=len(ts_df), freq="min")
+    ts_df.to_csv(run_dir / "data" / "training_monitor.csv", index=False)
+
+    if summary_path.exists():
+        with open(summary_path, encoding="utf-8") as f:
+            summary = json.load(f)
+        config_out = {
+            "algorithm": summary.get("algorithm"),
+            "scenario": summary.get("scenario"),
+            "seed": summary.get("seed"),
+            "episodes": summary.get("episodes"),
+            "episode_steps": summary.get("episode_time_steps"),
+            "num_env_steps": summary.get("num_env_steps"),
+            "hyperparameters": summary.get("hyperparameters", {}),
+            "backend": summary.get("backend"),
+            "output_dir": summary.get("output_dir"),
+            "gpu_runtime": summary.get("gpu_runtime", {}),
+        }
+        with open(run_dir / "data" / "config.json", "w", encoding="utf-8") as f:
+            json.dump(config_out, f, indent=2, default=str)
+
+    live_path = run_dir / "live_progress.json"
+    if live_path.exists():
+        try:
+            with open(live_path, encoding="utf-8") as f:
+                lp = json.load(f)
+            pd.DataFrame([{
+                "episode": lp.get("episode"),
+                "global_step": lp.get("global_step"),
+                "ram_used_gib": lp.get("ram_used_gib"),
+                "vram_used_gib": lp.get("vram_used_gib"),
+                "gpu_util_pct": lp.get("gpu_util_pct"),
+                "live_status": lp.get("live_status"),
+            }]).to_csv(run_dir / "data" / "resource_usage.csv", index=False)
+        except Exception:
+            pass
+    _exported += 1
+
+print(f"\nArtefactos auxiliares exportados: {_exported} corridas")
+print("  evaluation/all_objective_kpis_long.csv — KPIs OE completos (largo)")
+print("  evaluation/E{1,2,3}_OE{1,2,3}_kpis.csv — KPIs del OE emparejado")
+print("  evaluation/all_kpis.csv — wide (valores + baseline/delta)")

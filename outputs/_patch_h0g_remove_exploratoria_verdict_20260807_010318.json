@@ -1,0 +1,36 @@
+{
+  "stamp": "20260807_010318",
+  "patches": [
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "backup": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_20260807_010318.docx",
+      "n_changes": 7,
+      "samples": [
+        "H0G se rechaza de forma exploratoria por Friedman",
+        "H0G is rejected only exploratorily via Friedman",
+        "H0G: se rechaza de forma exploratoria.",
+        "H1G: se respalda de forma exploratoria (",
+        "Decisión HG. Se rechaza H0G de forma exploratoria. Se respalda H1G de ",
+        "Nivel de evidencia. Las decisiones de la hipótesis general se califica",
+        "Se rechaza H0G; se respalda H1G exploratoria; sin ganador único"
+      ],
+      "residual_decision_hits": []
+    },
+    {
+      "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "backup": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_20260807_010318.docx",
+      "n_changes": 8,
+      "samples": [
+        "ni respalda HE11/HE21/HE31; H0G se rechaza solo de forma exploratoria ",
+        "and does not support HE11/HE21/HE31; H0G is rejected only exploratoril",
+        "while H0G is rejected exploratorily (Friedman p = 0.0096, Kendall's W ",
+        "H0G: se rechaza de forma exploratoria.",
+        "H1G: se respalda de forma exploratoria (",
+        "Decisión HG. Se rechaza H0G de forma exploratoria. Se respalda H1G de ",
+        "Nivel de evidencia. Las decisiones de la hipótesis general se califica",
+        "Se rechaza H0G; se respalda H1G exploratoria; sin ganador único"
+      ],
+      "residual_decision_hits": []
+    }
+  ]
+}

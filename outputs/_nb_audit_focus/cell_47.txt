@@ -1,0 +1,5 @@
+### 7.1 Preflight y dry-run obligatorio
+
+Valida GPU, CUDA, imports, rutas, manifest y los **12 comandos** planificados **sin entrenar**. Si falla aquí, no ejecutes **7.2**.
+
+**Tras `git pull`:** re-ejecuta **1.2 → 6.1 → 7.0 → 7.1** antes de **7.2**.

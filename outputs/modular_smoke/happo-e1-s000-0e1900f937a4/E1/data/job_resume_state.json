@@ -1,0 +1,13 @@
+{
+  "active": false,
+  "algorithm": "HAPPO",
+  "target_episodes": 1,
+  "completed_episodes": 0,
+  "remaining_episodes": 1,
+  "remaining_num_env_steps": 8,
+  "model_dir": null,
+  "maac_checkpoint": null,
+  "maac_start_episode": 0,
+  "note": "job_complete_or_resume_disabled",
+  "updated_at": "2026-11-01T00:14:11.755440+00:00"
+}

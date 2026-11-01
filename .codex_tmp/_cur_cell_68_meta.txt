@@ -1,0 +1,4 @@
+type=markdown
+id=b392ee34
+len=779
+head='## Sección 9b: Selección multicriterio MADRL (TOPSIS + AHP)\n\nMetodología de **6 dimensiones** (desempeño técnico, restricciones, estabilidad, eficienc'

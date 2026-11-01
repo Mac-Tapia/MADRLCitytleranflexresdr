@@ -1,0 +1,666 @@
+axis,axis_name,building,kpi,level,name,source,value
+OE1,Flexibilidad energetica,Building_1,grid_import,building,Building_1,citylearn_v2.evaluate_v2.building,1.6028826113834846
+OE1,Flexibilidad energetica,Building_1,grid_import_control,building,Building_1,citylearn_v2.evaluate_v2.building,5576.1209716796875
+OE1,Flexibilidad energetica,Building_1,grid_import_baseline,building,Building_1,citylearn_v2.evaluate_v2.building,3478.808074951172
+OE1,Flexibilidad energetica,Building_1,grid_import_delta,building,Building_1,citylearn_v2.evaluate_v2.building,4644.049985613141
+OE1,Flexibilidad energetica,Building_1,zero_net_energy,building,Building_1,citylearn_v2.evaluate_v2.building,1.6028826113834846
+OE1,Flexibilidad energetica,Building_1,net_exchange_control,building,Building_1,citylearn_v2.evaluate_v2.building,5576.1209716796875
+OE1,Flexibilidad energetica,Building_1,net_exchange_baseline,building,Building_1,citylearn_v2.evaluate_v2.building,3478.808074951172
+OE1,Flexibilidad energetica,Building_1,net_exchange_delta,building,Building_1,citylearn_v2.evaluate_v2.building,4644.049985613141
+OE1,Flexibilidad energetica,Building_1,grid_export_ratio,building,Building_1,citylearn_v2.evaluate_v2.building,1.0
+OE1,Flexibilidad energetica,Building_1,grid_export_control,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,grid_export_baseline,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,grid_export_delta,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,pv_generation_total,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,pv_generation_daily_average,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,pv_export_total,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,pv_export_daily_average,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,battery_charge_total,building,Building_1,citylearn_v2.evaluate_v2.building,2809.806869506836
+OE1,Flexibilidad energetica,Building_1,battery_discharge_total,building,Building_1,citylearn_v2.evaluate_v2.building,712.4939575195312
+OE1,Flexibilidad energetica,Building_1,battery_throughput_total,building,Building_1,citylearn_v2.evaluate_v2.building,3522.300827026367
+OE1,Flexibilidad energetica,Building_1,battery_equivalent_full_cycles,building,Building_1,citylearn_v2.evaluate_v2.building,0.2610271844543032
+OE1,Flexibilidad energetica,Building_1,battery_capacity_fade_ratio,building,Building_1,citylearn_v2.evaluate_v2.building,7.056336202247972e-07
+OE1,Flexibilidad energetica,Building_1,ev_departure_count,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,ev_departure_met_count,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,ev_departure_within_tolerance_count,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,ev_charge_total,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_1,ev_v2g_export_total,building,Building_1,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_1,carbon_emissions,building,Building_1,citylearn_v2.evaluate_v2.building,1.6022503661164298
+OE2,Emisiones de CO2,Building_1,carbon_emissions_control,building,Building_1,citylearn_v2.evaluate_v2.building,4400.262557983398
+OE2,Emisiones de CO2,Building_1,carbon_emissions_baseline,building,Building_1,citylearn_v2.evaluate_v2.building,2746.3014838616346
+OE2,Emisiones de CO2,Building_1,carbon_emissions_delta,building,Building_1,citylearn_v2.evaluate_v2.building,3662.342378412477
+OE2,Emisiones de CO2,Building_1,carbon_emissions_daily_average_control,building,Building_1,citylearn_v2.evaluate_v2.building,15086.614484514508
+OE2,Emisiones de CO2,Building_1,carbon_emissions_daily_average_baseline,building,Building_1,citylearn_v2.evaluate_v2.building,9415.890801811318
+OE2,Emisiones de CO2,Building_1,carbon_emissions_daily_average_delta,building,Building_1,citylearn_v2.evaluate_v2.building,5670.72368270319
+OE3,Costos energeticos,Building_1,electricity_cost,building,Building_1,citylearn_v2.evaluate_v2.building,1.5801186294758789
+OE3,Costos energeticos,Building_1,electricity_cost_control,building,Building_1,citylearn_v2.evaluate_v2.building,2927.0905149266628
+OE3,Costos energeticos,Building_1,electricity_cost_baseline,building,Building_1,citylearn_v2.evaluate_v2.building,1852.4498479570302
+OE3,Costos energeticos,Building_1,electricity_cost_delta,building,Building_1,citylearn_v2.evaluate_v2.building,2379.561476861329
+OE3,Costos energeticos,Building_1,electricity_cost_daily_average_control,building,Building_1,citylearn_v2.evaluate_v2.building,10035.738908319987
+OE3,Costos energeticos,Building_1,electricity_cost_daily_average_baseline,building,Building_1,citylearn_v2.evaluate_v2.building,6351.25662156696
+OE3,Costos energeticos,Building_1,electricity_cost_daily_average_delta,building,Building_1,citylearn_v2.evaluate_v2.building,3684.4822867530256
+OE1,Flexibilidad energetica,Building_10,grid_import,building,Building_10,citylearn_v2.evaluate_v2.building,28.171797058314297
+OE1,Flexibilidad energetica,Building_10,grid_import_control,building,Building_10,citylearn_v2.evaluate_v2.building,1128.4277877807617
+OE1,Flexibilidad energetica,Building_10,grid_import_baseline,building,Building_10,citylearn_v2.evaluate_v2.building,40.05522918701172
+OE1,Flexibilidad energetica,Building_10,grid_import_delta,building,Building_10,citylearn_v2.evaluate_v2.building,2409.967808314732
+OE1,Flexibilidad energetica,Building_10,zero_net_energy,building,Building_10,citylearn_v2.evaluate_v2.building,17.72825035013492
+OE1,Flexibilidad energetica,Building_10,net_exchange_control,building,Building_10,citylearn_v2.evaluate_v2.building,710.109130859375
+OE1,Flexibilidad energetica,Building_10,net_exchange_baseline,building,Building_10,citylearn_v2.evaluate_v2.building,40.05522918701172
+OE1,Flexibilidad energetica,Building_10,net_exchange_delta,building,Building_10,citylearn_v2.evaluate_v2.building,1483.6907822745186
+OE1,Flexibilidad energetica,Building_10,grid_export_control,building,Building_10,citylearn_v2.evaluate_v2.building,418.3186569213867
+OE1,Flexibilidad energetica,Building_10,grid_export_baseline,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,grid_export_delta,building,Building_10,citylearn_v2.evaluate_v2.building,926.2770260402134
+OE1,Flexibilidad energetica,Building_10,pv_generation_total,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,pv_generation_daily_average,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,pv_export_total,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,pv_export_daily_average,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,battery_charge_total,building,Building_10,citylearn_v2.evaluate_v2.building,1100.1506805419922
+OE1,Flexibilidad energetica,Building_10,battery_discharge_total,building,Building_10,citylearn_v2.evaluate_v2.building,430.0967788696289
+OE1,Flexibilidad energetica,Building_10,battery_throughput_total,building,Building_10,citylearn_v2.evaluate_v2.building,1530.247459411621
+OE1,Flexibilidad energetica,Building_10,battery_equivalent_full_cycles,building,Building_10,citylearn_v2.evaluate_v2.building,0.32516945588857227
+OE1,Flexibilidad energetica,Building_10,battery_capacity_fade_ratio,building,Building_10,citylearn_v2.evaluate_v2.building,1.0893049204827033e-06
+OE1,Flexibilidad energetica,Building_10,ev_departure_count,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,ev_departure_met_count,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,ev_departure_within_tolerance_count,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,ev_charge_total,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_10,ev_v2g_export_total,building,Building_10,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_10,carbon_emissions,building,Building_10,citylearn_v2.evaluate_v2.building,28.193154328434204
+OE2,Emisiones de CO2,Building_10,carbon_emissions_control,building,Building_10,citylearn_v2.evaluate_v2.building,891.4579963684082
+OE2,Emisiones de CO2,Building_10,carbon_emissions_baseline,building,Building_10,citylearn_v2.evaluate_v2.building,31.619661495958553
+OE2,Emisiones de CO2,Building_10,carbon_emissions_delta,building,Building_10,citylearn_v2.evaluate_v2.building,1903.9277415032814
+OE2,Emisiones de CO2,Building_10,carbon_emissions_daily_average_control,building,Building_10,citylearn_v2.evaluate_v2.building,3056.4274161202566
+OE2,Emisiones de CO2,Building_10,carbon_emissions_daily_average_baseline,building,Building_10,citylearn_v2.evaluate_v2.building,108.41026798614361
+OE2,Emisiones de CO2,Building_10,carbon_emissions_daily_average_delta,building,Building_10,citylearn_v2.evaluate_v2.building,2948.017148134113
+OE3,Costos energeticos,Building_10,electricity_cost,building,Building_10,citylearn_v2.evaluate_v2.building,18.618479218196963
+OE3,Costos energeticos,Building_10,electricity_cost_control,building,Building_10,citylearn_v2.evaluate_v2.building,397.11785579197056
+OE3,Costos energeticos,Building_10,electricity_cost_baseline,building,Building_10,citylearn_v2.evaluate_v2.building,21.329231627245008
+OE3,Costos energeticos,Building_10,electricity_cost_delta,building,Building_10,citylearn_v2.evaluate_v2.building,832.1033820790351
+OE3,Costos energeticos,Building_10,electricity_cost_daily_average_control,building,Building_10,citylearn_v2.evaluate_v2.building,1361.5469341438989
+OE3,Costos energeticos,Building_10,electricity_cost_daily_average_baseline,building,Building_10,citylearn_v2.evaluate_v2.building,73.12879415055431
+OE3,Costos energeticos,Building_10,electricity_cost_daily_average_delta,building,Building_10,citylearn_v2.evaluate_v2.building,1288.4181399933445
+OE1,Flexibilidad energetica,Building_11,grid_import,building,Building_11,citylearn_v2.evaluate_v2.building,0.8076288705642638
+OE1,Flexibilidad energetica,Building_11,grid_import_control,building,Building_11,citylearn_v2.evaluate_v2.building,272.8020896911621
+OE1,Flexibilidad energetica,Building_11,grid_import_baseline,building,Building_11,citylearn_v2.evaluate_v2.building,337.78149795532227
+OE1,Flexibilidad energetica,Building_11,grid_import_delta,building,Building_11,citylearn_v2.evaluate_v2.building,-143.88297544206893
+OE1,Flexibilidad energetica,Building_11,zero_net_energy,building,Building_11,citylearn_v2.evaluate_v2.building,0.3719344961403889
+OE1,Flexibilidad energetica,Building_11,net_exchange_control,building,Building_11,citylearn_v2.evaluate_v2.building,125.6325912475586
+OE1,Flexibilidad energetica,Building_11,net_exchange_baseline,building,Building_11,citylearn_v2.evaluate_v2.building,337.78149795532227
+OE1,Flexibilidad energetica,Building_11,net_exchange_delta,building,Building_11,citylearn_v2.evaluate_v2.building,-469.75829342433383
+OE1,Flexibilidad energetica,Building_11,grid_export_control,building,Building_11,citylearn_v2.evaluate_v2.building,147.16949844360352
+OE1,Flexibilidad energetica,Building_11,grid_export_baseline,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,grid_export_delta,building,Building_11,citylearn_v2.evaluate_v2.building,325.8753179822649
+OE1,Flexibilidad energetica,Building_11,pv_generation_total,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,pv_generation_daily_average,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,pv_export_total,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,pv_export_daily_average,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,battery_charge_total,building,Building_11,citylearn_v2.evaluate_v2.building,159.45639038085938
+OE1,Flexibilidad energetica,Building_11,battery_discharge_total,building,Building_11,citylearn_v2.evaluate_v2.building,371.60529708862305
+OE1,Flexibilidad energetica,Building_11,battery_throughput_total,building,Building_11,citylearn_v2.evaluate_v2.building,531.0616874694824
+OE1,Flexibilidad energetica,Building_11,battery_equivalent_full_cycles,building,Building_11,citylearn_v2.evaluate_v2.building,0.13967956009192067
+OE1,Flexibilidad energetica,Building_11,battery_capacity_fade_ratio,building,Building_11,citylearn_v2.evaluate_v2.building,2.5751189154344423e-07
+OE1,Flexibilidad energetica,Building_11,ev_departure_count,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,ev_departure_met_count,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,ev_departure_within_tolerance_count,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,ev_charge_total,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_11,ev_v2g_export_total,building,Building_11,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_11,carbon_emissions,building,Building_11,citylearn_v2.evaluate_v2.building,0.8082013082352849
+OE2,Emisiones de CO2,Building_11,carbon_emissions_control,building,Building_11,citylearn_v2.evaluate_v2.building,215.5136604309082
+OE2,Emisiones de CO2,Building_11,carbon_emissions_baseline,building,Building_11,citylearn_v2.evaluate_v2.building,266.6583909663352
+OE2,Emisiones de CO2,Building_11,carbon_emissions_delta,building,Building_11,citylearn_v2.evaluate_v2.building,-113.24904618558838
+OE2,Emisiones de CO2,Building_11,carbon_emissions_daily_average_control,building,Building_11,citylearn_v2.evaluate_v2.building,738.9039786202567
+OE2,Emisiones de CO2,Building_11,carbon_emissions_daily_average_baseline,building,Building_11,citylearn_v2.evaluate_v2.building,914.2573404560064
+OE2,Emisiones de CO2,Building_11,carbon_emissions_daily_average_delta,building,Building_11,citylearn_v2.evaluate_v2.building,-175.35336183574975
+OE3,Costos energeticos,Building_11,electricity_cost,building,Building_11,citylearn_v2.evaluate_v2.building,0.3735868750074056
+OE3,Costos energeticos,Building_11,electricity_cost_control,building,Building_11,citylearn_v2.evaluate_v2.building,67.19600548536337
+OE3,Costos energeticos,Building_11,electricity_cost_baseline,building,Building_11,citylearn_v2.evaluate_v2.building,179.86714732425048
+OE3,Costos energeticos,Building_11,electricity_cost_delta,building,Building_11,citylearn_v2.evaluate_v2.building,-249.48609978610716
+OE3,Costos energeticos,Building_11,electricity_cost_daily_average_control,building,Building_11,citylearn_v2.evaluate_v2.building,230.38630452124582
+OE3,Costos energeticos,Building_11,electricity_cost_daily_average_baseline,building,Building_11,citylearn_v2.evaluate_v2.building,616.687362254573
+OE3,Costos energeticos,Building_11,electricity_cost_daily_average_delta,building,Building_11,citylearn_v2.evaluate_v2.building,-386.3010577333272
+OE1,Flexibilidad energetica,Building_12,grid_import,building,Building_12,citylearn_v2.evaluate_v2.building,2.0129034685043115
+OE1,Flexibilidad energetica,Building_12,grid_import_control,building,Building_12,citylearn_v2.evaluate_v2.building,2250.2179565429688
+OE1,Flexibilidad energetica,Building_12,grid_import_baseline,building,Building_12,citylearn_v2.evaluate_v2.building,1117.8966064453125
+OE1,Flexibilidad energetica,Building_12,grid_import_delta,building,Building_12,citylearn_v2.evaluate_v2.building,2507.282989501953
+OE1,Flexibilidad energetica,Building_12,zero_net_energy,building,Building_12,citylearn_v2.evaluate_v2.building,1.6101924597903277
+OE1,Flexibilidad energetica,Building_12,net_exchange_control,building,Building_12,citylearn_v2.evaluate_v2.building,1800.0286865234375
+OE1,Flexibilidad energetica,Building_12,net_exchange_baseline,building,Building_12,citylearn_v2.evaluate_v2.building,1117.8966064453125
+OE1,Flexibilidad energetica,Building_12,net_exchange_delta,building,Building_12,citylearn_v2.evaluate_v2.building,1510.435320172991
+OE1,Flexibilidad energetica,Building_12,grid_export_control,building,Building_12,citylearn_v2.evaluate_v2.building,450.18927001953125
+OE1,Flexibilidad energetica,Building_12,grid_export_baseline,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,grid_export_delta,building,Building_12,citylearn_v2.evaluate_v2.building,996.847669328962
+OE1,Flexibilidad energetica,Building_12,pv_generation_total,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,pv_generation_daily_average,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,pv_export_total,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,pv_export_daily_average,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,battery_charge_total,building,Building_12,citylearn_v2.evaluate_v2.building,1553.193992614746
+OE1,Flexibilidad energetica,Building_12,battery_discharge_total,building,Building_12,citylearn_v2.evaluate_v2.building,871.0619201660156
+OE1,Flexibilidad energetica,Building_12,battery_throughput_total,building,Building_12,citylearn_v2.evaluate_v2.building,2424.2559127807617
+OE1,Flexibilidad energetica,Building_12,battery_equivalent_full_cycles,building,Building_12,citylearn_v2.evaluate_v2.building,0.278906570729494
+OE1,Flexibilidad energetica,Building_12,battery_capacity_fade_ratio,building,Building_12,citylearn_v2.evaluate_v2.building,8.033336960222181e-07
+OE1,Flexibilidad energetica,Building_12,ev_departure_count,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,ev_departure_met_count,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,ev_departure_within_tolerance_count,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,ev_charge_total,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_12,ev_v2g_export_total,building,Building_12,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_12,carbon_emissions,building,Building_12,citylearn_v2.evaluate_v2.building,2.0132289567245785
+OE2,Emisiones de CO2,Building_12,carbon_emissions_control,building,Building_12,citylearn_v2.evaluate_v2.building,1776.6313104629517
+OE2,Emisiones de CO2,Building_12,carbon_emissions_baseline,building,Building_12,citylearn_v2.evaluate_v2.building,882.4785201547274
+OE2,Emisiones de CO2,Building_12,carbon_emissions_delta,building,Building_12,citylearn_v2.evaluate_v2.building,1979.9097499682107
+OE2,Emisiones de CO2,Building_12,carbon_emissions_daily_average_control,building,Building_12,citylearn_v2.evaluate_v2.building,6091.307350158691
+OE2,Emisiones de CO2,Building_12,carbon_emissions_daily_average_baseline,building,Building_12,citylearn_v2.evaluate_v2.building,3025.640640530494
+OE2,Emisiones de CO2,Building_12,carbon_emissions_daily_average_delta,building,Building_12,citylearn_v2.evaluate_v2.building,3065.666709628197
+OE3,Costos energeticos,Building_12,electricity_cost,building,Building_12,citylearn_v2.evaluate_v2.building,1.6456116797117721
+OE3,Costos energeticos,Building_12,electricity_cost_control,building,Building_12,citylearn_v2.evaluate_v2.building,979.5914556604833
+OE3,Costos energeticos,Building_12,electricity_cost_baseline,building,Building_12,citylearn_v2.evaluate_v2.building,595.2749775281482
+OE3,Costos energeticos,Building_12,electricity_cost_delta,building,Building_12,citylearn_v2.evaluate_v2.building,850.986487293028
+OE3,Costos energeticos,Building_12,electricity_cost_daily_average_control,building,Building_12,citylearn_v2.evaluate_v2.building,3358.5992765502283
+OE3,Costos energeticos,Building_12,electricity_cost_daily_average_baseline,building,Building_12,citylearn_v2.evaluate_v2.building,2040.942780096508
+OE3,Costos energeticos,Building_12,electricity_cost_daily_average_delta,building,Building_12,citylearn_v2.evaluate_v2.building,1317.6564964537206
+OE1,Flexibilidad energetica,Building_13,grid_import,building,Building_13,citylearn_v2.evaluate_v2.building,381.4978398287773
+OE1,Flexibilidad energetica,Building_13,grid_import_control,building,Building_13,citylearn_v2.evaluate_v2.building,126.91801524162292
+OE1,Flexibilidad energetica,Building_13,grid_import_baseline,building,Building_13,citylearn_v2.evaluate_v2.building,0.3326834440231323
+OE1,Flexibilidad energetica,Building_13,grid_import_delta,building,Building_13,citylearn_v2.evaluate_v2.building,280.29609183754235
+OE1,Flexibilidad energetica,Building_13,zero_net_energy,building,Building_13,citylearn_v2.evaluate_v2.building,312.2911352535572
+OE1,Flexibilidad energetica,Building_13,net_exchange_control,building,Building_13,citylearn_v2.evaluate_v2.building,103.89409041404724
+OE1,Flexibilidad energetica,Building_13,net_exchange_baseline,building,Building_13,citylearn_v2.evaluate_v2.building,0.3326834440231323
+OE1,Flexibilidad energetica,Building_13,net_exchange_delta,building,Building_13,citylearn_v2.evaluate_v2.building,229.31454400505336
+OE1,Flexibilidad energetica,Building_13,grid_export_control,building,Building_13,citylearn_v2.evaluate_v2.building,23.023924827575684
+OE1,Flexibilidad energetica,Building_13,grid_export_baseline,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,grid_export_delta,building,Building_13,citylearn_v2.evaluate_v2.building,50.981547832489014
+OE1,Flexibilidad energetica,Building_13,pv_generation_total,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,pv_generation_daily_average,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,pv_export_total,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,pv_export_daily_average,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,battery_charge_total,building,Building_13,citylearn_v2.evaluate_v2.building,126.67482841014862
+OE1,Flexibilidad energetica,Building_13,battery_discharge_total,building,Building_13,citylearn_v2.evaluate_v2.building,23.11342144012451
+OE1,Flexibilidad energetica,Building_13,battery_throughput_total,building,Building_13,citylearn_v2.evaluate_v2.building,149.78824985027313
+OE1,Flexibilidad energetica,Building_13,battery_equivalent_full_cycles,building,Building_13,citylearn_v2.evaluate_v2.building,0.2753460475188844
+OE1,Flexibilidad energetica,Building_13,battery_capacity_fade_ratio,building,Building_13,citylearn_v2.evaluate_v2.building,8.206854243506795e-07
+OE1,Flexibilidad energetica,Building_13,ev_departure_count,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,ev_departure_met_count,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,ev_departure_within_tolerance_count,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,ev_charge_total,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_13,ev_v2g_export_total,building,Building_13,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_13,carbon_emissions,building,Building_13,citylearn_v2.evaluate_v2.building,381.4053753841278
+OE2,Emisiones de CO2,Building_13,carbon_emissions_control,building,Building_13,citylearn_v2.evaluate_v2.building,100.0924881696701
+OE2,Emisiones de CO2,Building_13,carbon_emissions_baseline,building,Building_13,citylearn_v2.evaluate_v2.building,0.26243072234853315
+OE2,Emisiones de CO2,Building_13,carbon_emissions_delta,building,Building_13,citylearn_v2.evaluate_v2.building,221.05227006192632
+OE2,Emisiones de CO2,Building_13,carbon_emissions_daily_average_control,building,Building_13,citylearn_v2.evaluate_v2.building,343.17424515315463
+OE2,Emisiones de CO2,Building_13,carbon_emissions_daily_average_baseline,building,Building_13,citylearn_v2.evaluate_v2.building,0.8997624766235421
+OE2,Emisiones de CO2,Building_13,carbon_emissions_daily_average_delta,building,Building_13,citylearn_v2.evaluate_v2.building,342.2744826765311
+OE3,Costos energeticos,Building_13,electricity_cost,building,Building_13,citylearn_v2.evaluate_v2.building,256.6717313487779
+OE3,Costos energeticos,Building_13,electricity_cost_control,building,Building_13,citylearn_v2.evaluate_v2.building,45.47002765826829
+OE3,Costos energeticos,Building_13,electricity_cost_baseline,building,Building_13,citylearn_v2.evaluate_v2.building,0.17715245624957987
+OE3,Costos energeticos,Building_13,electricity_cost_delta,building,Building_13,citylearn_v2.evaluate_v2.building,100.29136651875571
+OE3,Costos energeticos,Building_13,electricity_cost_daily_average_control,building,Building_13,citylearn_v2.evaluate_v2.building,155.8972376854913
+OE3,Costos energeticos,Building_13,electricity_cost_daily_average_baseline,building,Building_13,citylearn_v2.evaluate_v2.building,0.6073798499985595
+OE3,Costos energeticos,Building_13,electricity_cost_daily_average_delta,building,Building_13,citylearn_v2.evaluate_v2.building,155.2898578354927
+OE1,Flexibilidad energetica,Building_14,grid_import,building,Building_14,citylearn_v2.evaluate_v2.building,4.748684232697655
+OE1,Flexibilidad energetica,Building_14,grid_import_control,building,Building_14,citylearn_v2.evaluate_v2.building,39.860764503479004
+OE1,Flexibilidad energetica,Building_14,grid_import_baseline,building,Building_14,citylearn_v2.evaluate_v2.building,8.394065082073212
+OE1,Flexibilidad energetica,Building_14,grid_import_delta,building,Building_14,citylearn_v2.evaluate_v2.building,69.6762630045414
+OE1,Flexibilidad energetica,Building_14,zero_net_energy,building,Building_14,citylearn_v2.evaluate_v2.building,1.0717781629745222
+OE1,Flexibilidad energetica,Building_14,net_exchange_control,building,Building_14,citylearn_v2.evaluate_v2.building,8.996575653553009
+OE1,Flexibilidad energetica,Building_14,net_exchange_baseline,building,Building_14,citylearn_v2.evaluate_v2.building,8.394065082073212
+OE1,Flexibilidad energetica,Building_14,net_exchange_delta,building,Building_14,citylearn_v2.evaluate_v2.building,1.334130551133837
+OE1,Flexibilidad energetica,Building_14,grid_export_control,building,Building_14,citylearn_v2.evaluate_v2.building,30.864188849925995
+OE1,Flexibilidad energetica,Building_14,grid_export_baseline,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,grid_export_delta,building,Building_14,citylearn_v2.evaluate_v2.building,68.34213245340756
+OE1,Flexibilidad energetica,Building_14,pv_generation_total,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,pv_generation_daily_average,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,pv_export_total,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,pv_export_daily_average,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,battery_charge_total,building,Building_14,citylearn_v2.evaluate_v2.building,36.9627628326416
+OE1,Flexibilidad energetica,Building_14,battery_discharge_total,building,Building_14,citylearn_v2.evaluate_v2.building,34.93893802165985
+OE1,Flexibilidad energetica,Building_14,battery_throughput_total,building,Building_14,citylearn_v2.evaluate_v2.building,71.90170085430145
+OE1,Flexibilidad energetica,Building_14,battery_equivalent_full_cycles,building,Building_14,citylearn_v2.evaluate_v2.building,0.1569906132189988
+OE1,Flexibilidad energetica,Building_14,battery_capacity_fade_ratio,building,Building_14,citylearn_v2.evaluate_v2.building,3.372266235146526e-07
+OE1,Flexibilidad energetica,Building_14,ev_departure_count,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,ev_departure_met_count,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,ev_departure_within_tolerance_count,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,ev_charge_total,building,Building_14,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_14,ev_v2g_export_total,building,Building_14,citylearn_v2.evaluate_v2.building,1.421314001083374
+OE2,Emisiones de CO2,Building_14,carbon_emissions,building,Building_14,citylearn_v2.evaluate_v2.building,4.754228969125899
+OE2,Emisiones de CO2,Building_14,carbon_emissions_control,building,Building_14,citylearn_v2.evaluate_v2.building,31.490004062652588
+OE2,Emisiones de CO2,Building_14,carbon_emissions_baseline,building,Building_14,citylearn_v2.evaluate_v2.building,6.6235775069205935
+OE2,Emisiones de CO2,Building_14,carbon_emissions_delta,building,Building_14,citylearn_v2.evaluate_v2.building,55.06137308769227
+OE2,Emisiones de CO2,Building_14,carbon_emissions_daily_average_control,building,Building_14,citylearn_v2.evaluate_v2.building,107.96572821480886
+OE2,Emisiones de CO2,Building_14,carbon_emissions_daily_average_baseline,building,Building_14,citylearn_v2.evaluate_v2.building,22.70940859515632
+OE2,Emisiones de CO2,Building_14,carbon_emissions_daily_average_delta,building,Building_14,citylearn_v2.evaluate_v2.building,85.25631961965254
+OE3,Costos energeticos,Building_14,electricity_cost,building,Building_14,citylearn_v2.evaluate_v2.building,0.8866685394337778
+OE3,Costos energeticos,Building_14,electricity_cost_control,building,Building_14,citylearn_v2.evaluate_v2.building,3.9632331407078913
+OE3,Costos energeticos,Building_14,electricity_cost_baseline,building,Building_14,citylearn_v2.evaluate_v2.building,4.469802371965056
+OE3,Costos energeticos,Building_14,electricity_cost_delta,building,Building_14,citylearn_v2.evaluate_v2.building,-1.1216890120694352
+OE3,Costos energeticos,Building_14,electricity_cost_daily_average_control,building,Building_14,citylearn_v2.evaluate_v2.building,13.588227910998484
+OE3,Costos energeticos,Building_14,electricity_cost_daily_average_baseline,building,Building_14,citylearn_v2.evaluate_v2.building,15.32503670388019
+OE3,Costos energeticos,Building_14,electricity_cost_daily_average_delta,building,Building_14,citylearn_v2.evaluate_v2.building,-1.7368087928817062
+OE1,Flexibilidad energetica,Building_15,grid_import,building,Building_15,citylearn_v2.evaluate_v2.building,11.885886836737493
+OE1,Flexibilidad energetica,Building_15,grid_import_control,building,Building_15,citylearn_v2.evaluate_v2.building,97.51733016967773
+OE1,Flexibilidad energetica,Building_15,grid_import_baseline,building,Building_15,citylearn_v2.evaluate_v2.building,8.204463958740234
+OE1,Flexibilidad energetica,Building_15,grid_import_delta,building,Building_15,citylearn_v2.evaluate_v2.building,197.76420375279017
+OE1,Flexibilidad energetica,Building_15,zero_net_energy,building,Building_15,citylearn_v2.evaluate_v2.building,8.757493893993308
+OE1,Flexibilidad energetica,Building_15,net_exchange_control,building,Building_15,citylearn_v2.evaluate_v2.building,71.85054302215576
+OE1,Flexibilidad energetica,Building_15,net_exchange_baseline,building,Building_15,citylearn_v2.evaluate_v2.building,8.204463958740234
+OE1,Flexibilidad energetica,Building_15,net_exchange_delta,building,Building_15,citylearn_v2.evaluate_v2.building,140.9306036404201
+OE1,Flexibilidad energetica,Building_15,grid_export_control,building,Building_15,citylearn_v2.evaluate_v2.building,25.666787147521973
+OE1,Flexibilidad energetica,Building_15,grid_export_baseline,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,grid_export_delta,building,Building_15,citylearn_v2.evaluate_v2.building,56.83360011237008
+OE1,Flexibilidad energetica,Building_15,pv_generation_total,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,pv_generation_daily_average,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,pv_export_total,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,pv_export_daily_average,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,battery_charge_total,building,Building_15,citylearn_v2.evaluate_v2.building,91.6513409614563
+OE1,Flexibilidad energetica,Building_15,battery_discharge_total,building,Building_15,citylearn_v2.evaluate_v2.building,28.00526189804077
+OE1,Flexibilidad energetica,Building_15,battery_throughput_total,building,Building_15,citylearn_v2.evaluate_v2.building,119.65660285949707
+OE1,Flexibilidad energetica,Building_15,battery_equivalent_full_cycles,building,Building_15,citylearn_v2.evaluate_v2.building,0.11965660285949707
+OE1,Flexibilidad energetica,Building_15,battery_capacity_fade_ratio,building,Building_15,citylearn_v2.evaluate_v2.building,2.2591762387946802e-07
+OE1,Flexibilidad energetica,Building_15,ev_departure_count,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,ev_departure_met_count,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,ev_departure_within_tolerance_count,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,ev_charge_total,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_15,ev_v2g_export_total,building,Building_15,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_15,carbon_emissions,building,Building_15,citylearn_v2.evaluate_v2.building,11.889049243104536
+OE2,Emisiones de CO2,Building_15,carbon_emissions_control,building,Building_15,citylearn_v2.evaluate_v2.building,77.00333714485168
+OE2,Emisiones de CO2,Building_15,carbon_emissions_baseline,building,Building_15,citylearn_v2.evaluate_v2.building,6.476828850676384
+OE2,Emisiones de CO2,Building_15,carbon_emissions_delta,building,Building_15,citylearn_v2.evaluate_v2.building,156.1658397942453
+OE2,Emisiones de CO2,Building_15,carbon_emissions_daily_average_control,building,Building_15,citylearn_v2.evaluate_v2.building,264.01144163949147
+OE2,Emisiones de CO2,Building_15,carbon_emissions_daily_average_baseline,building,Building_15,citylearn_v2.evaluate_v2.building,22.206270345176172
+OE2,Emisiones de CO2,Building_15,carbon_emissions_daily_average_delta,building,Building_15,citylearn_v2.evaluate_v2.building,241.8051712943153
+OE3,Costos energeticos,Building_15,electricity_cost,building,Building_15,citylearn_v2.evaluate_v2.building,7.138975056464773
+OE3,Costos energeticos,Building_15,electricity_cost_control,building,Building_15,citylearn_v2.evaluate_v2.building,31.189044182928562
+OE3,Costos energeticos,Building_15,electricity_cost_baseline,building,Building_15,citylearn_v2.evaluate_v2.building,4.368840615948784
+OE3,Costos energeticos,Building_15,electricity_cost_delta,building,Building_15,citylearn_v2.evaluate_v2.building,59.38759361259808
+OE3,Costos energeticos,Building_15,electricity_cost_daily_average_control,building,Building_15,citylearn_v2.evaluate_v2.building,106.93386577004078
+OE3,Costos energeticos,Building_15,electricity_cost_daily_average_baseline,building,Building_15,citylearn_v2.evaluate_v2.building,14.9788821118244
+OE3,Costos energeticos,Building_15,electricity_cost_daily_average_delta,building,Building_15,citylearn_v2.evaluate_v2.building,91.95498365821638
+OE1,Flexibilidad energetica,Building_16,grid_import,building,Building_16,citylearn_v2.evaluate_v2.building,4.134418591473649
+OE1,Flexibilidad energetica,Building_16,grid_import_control,building,Building_16,citylearn_v2.evaluate_v2.building,518.961296081543
+OE1,Flexibilidad energetica,Building_16,grid_import_baseline,building,Building_16,citylearn_v2.evaluate_v2.building,125.52219486236572
+OE1,Flexibilidad energetica,Building_16,grid_import_delta,building,Building_16,citylearn_v2.evaluate_v2.building,871.1865812710353
+OE1,Flexibilidad energetica,Building_16,zero_net_energy,building,Building_16,citylearn_v2.evaluate_v2.building,1.962236593389033
+OE1,Flexibilidad energetica,Building_16,net_exchange_control,building,Building_16,citylearn_v2.evaluate_v2.building,246.30424404144287
+OE1,Flexibilidad energetica,Building_16,net_exchange_baseline,building,Building_16,citylearn_v2.evaluate_v2.building,125.52219486236572
+OE1,Flexibilidad energetica,Building_16,net_exchange_delta,building,Building_16,citylearn_v2.evaluate_v2.building,267.4459660393851
+OE1,Flexibilidad energetica,Building_16,grid_export_control,building,Building_16,citylearn_v2.evaluate_v2.building,272.6570520401001
+OE1,Flexibilidad energetica,Building_16,grid_export_baseline,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,grid_export_delta,building,Building_16,citylearn_v2.evaluate_v2.building,603.7406152316502
+OE1,Flexibilidad energetica,Building_16,pv_generation_total,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,pv_generation_daily_average,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,pv_export_total,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,pv_export_daily_average,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,battery_charge_total,building,Building_16,citylearn_v2.evaluate_v2.building,444.4541244506836
+OE1,Flexibilidad energetica,Building_16,battery_discharge_total,building,Building_16,citylearn_v2.evaluate_v2.building,323.67207527160645
+OE1,Flexibilidad energetica,Building_16,battery_throughput_total,building,Building_16,citylearn_v2.evaluate_v2.building,768.12619972229
+OE1,Flexibilidad energetica,Building_16,battery_equivalent_full_cycles,building,Building_16,citylearn_v2.evaluate_v2.building,0.23678366205989212
+OE1,Flexibilidad energetica,Building_16,battery_capacity_fade_ratio,building,Building_16,citylearn_v2.evaluate_v2.building,6.076237164539976e-07
+OE1,Flexibilidad energetica,Building_16,ev_departure_count,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,ev_departure_met_count,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,ev_departure_within_tolerance_count,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,ev_charge_total,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_16,ev_v2g_export_total,building,Building_16,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_16,carbon_emissions,building,Building_16,citylearn_v2.evaluate_v2.building,4.132337133709501
+OE2,Emisiones de CO2,Building_16,carbon_emissions_control,building,Building_16,citylearn_v2.evaluate_v2.building,409.4030570983887
+OE2,Emisiones de CO2,Building_16,carbon_emissions_baseline,building,Building_16,citylearn_v2.evaluate_v2.building,99.07300490046833
+OE2,Emisiones de CO2,Building_16,carbon_emissions_delta,building,Building_16,citylearn_v2.evaluate_v2.building,687.159401295395
+OE2,Emisiones de CO2,Building_16,carbon_emissions_daily_average_control,building,Building_16,citylearn_v2.evaluate_v2.building,1403.6676243373324
+OE2,Emisiones de CO2,Building_16,carbon_emissions_daily_average_baseline,building,Building_16,citylearn_v2.evaluate_v2.building,339.67887394446285
+OE2,Emisiones de CO2,Building_16,carbon_emissions_daily_average_delta,building,Building_16,citylearn_v2.evaluate_v2.building,1063.9887503928696
+OE3,Costos energeticos,Building_16,electricity_cost,building,Building_16,citylearn_v2.evaluate_v2.building,2.0164516656035976
+OE3,Costos energeticos,Building_16,electricity_cost_control,building,Building_16,citylearn_v2.evaluate_v2.building,134.77965196863704
+OE3,Costos energeticos,Building_16,electricity_cost_baseline,building,Building_16,citylearn_v2.evaluate_v2.building,66.84001122749083
+OE3,Costos energeticos,Building_16,electricity_cost_delta,building,Building_16,citylearn_v2.evaluate_v2.building,150.43777592682375
+OE3,Costos energeticos,Building_16,electricity_cost_daily_average_control,building,Building_16,citylearn_v2.evaluate_v2.building,462.10166389246984
+OE3,Costos energeticos,Building_16,electricity_cost_daily_average_baseline,building,Building_16,citylearn_v2.evaluate_v2.building,229.16575277996856
+OE3,Costos energeticos,Building_16,electricity_cost_daily_average_delta,building,Building_16,citylearn_v2.evaluate_v2.building,232.93591111250126
+OE1,Flexibilidad energetica,Building_17,grid_import,building,Building_17,citylearn_v2.evaluate_v2.building,1.536944225643426
+OE1,Flexibilidad energetica,Building_17,grid_import_control,building,Building_17,citylearn_v2.evaluate_v2.building,237.45288467407227
+OE1,Flexibilidad energetica,Building_17,grid_import_baseline,building,Building_17,citylearn_v2.evaluate_v2.building,154.49674797058105
+OE1,Flexibilidad energetica,Building_17,grid_import_delta,building,Building_17,citylearn_v2.evaluate_v2.building,183.68858841487338
+OE1,Flexibilidad energetica,Building_17,zero_net_energy,building,Building_17,citylearn_v2.evaluate_v2.building,1.1631352587655595
+OE1,Flexibilidad energetica,Building_17,net_exchange_control,building,Building_17,citylearn_v2.evaluate_v2.building,179.70061492919922
+OE1,Flexibilidad energetica,Building_17,net_exchange_baseline,building,Building_17,citylearn_v2.evaluate_v2.building,154.49674797058105
+OE1,Flexibilidad energetica,Building_17,net_exchange_delta,building,Building_17,citylearn_v2.evaluate_v2.building,55.80856255122593
+OE1,Flexibilidad energetica,Building_17,grid_export_control,building,Building_17,citylearn_v2.evaluate_v2.building,57.75226974487305
+OE1,Flexibilidad energetica,Building_17,grid_export_baseline,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,grid_export_delta,building,Building_17,citylearn_v2.evaluate_v2.building,127.88002586364746
+OE1,Flexibilidad energetica,Building_17,pv_generation_total,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,pv_generation_daily_average,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,pv_export_total,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,pv_export_daily_average,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,battery_charge_total,building,Building_17,citylearn_v2.evaluate_v2.building,135.9940852969885
+OE1,Flexibilidad energetica,Building_17,battery_discharge_total,building,Building_17,citylearn_v2.evaluate_v2.building,110.79021835327148
+OE1,Flexibilidad energetica,Building_17,battery_throughput_total,building,Building_17,citylearn_v2.evaluate_v2.building,246.78430365025997
+OE1,Flexibilidad energetica,Building_17,battery_equivalent_full_cycles,building,Building_17,citylearn_v2.evaluate_v2.building,0.16742490071252372
+OE1,Flexibilidad energetica,Building_17,battery_capacity_fade_ratio,building,Building_17,citylearn_v2.evaluate_v2.building,4.2261005911885354e-07
+OE1,Flexibilidad energetica,Building_17,ev_departure_count,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,ev_departure_met_count,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,ev_departure_within_tolerance_count,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,ev_charge_total,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_17,ev_v2g_export_total,building,Building_17,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_17,carbon_emissions,building,Building_17,citylearn_v2.evaluate_v2.building,1.5380757173553081
+OE2,Emisiones de CO2,Building_17,carbon_emissions_control,building,Building_17,citylearn_v2.evaluate_v2.building,187.58778285980225
+OE2,Emisiones de CO2,Building_17,carbon_emissions_baseline,building,Building_17,citylearn_v2.evaluate_v2.building,121.96264510459594
+OE2,Emisiones de CO2,Building_17,carbon_emissions_delta,building,Building_17,citylearn_v2.evaluate_v2.building,145.3128050293854
+OE2,Emisiones de CO2,Building_17,carbon_emissions_daily_average_control,building,Building_17,citylearn_v2.evaluate_v2.building,643.1581126621791
+OE2,Emisiones de CO2,Building_17,carbon_emissions_daily_average_baseline,building,Building_17,citylearn_v2.evaluate_v2.building,418.15764035861463
+OE2,Emisiones de CO2,Building_17,carbon_emissions_daily_average_delta,building,Building_17,citylearn_v2.evaluate_v2.building,225.00047230356446
+OE3,Costos energeticos,Building_17,electricity_cost,building,Building_17,citylearn_v2.evaluate_v2.building,1.0007429264347438
+OE3,Costos energeticos,Building_17,electricity_cost_control,building,Building_17,citylearn_v2.evaluate_v2.building,82.32995175033125
+OE3,Costos energeticos,Building_17,electricity_cost_baseline,building,Building_17,citylearn_v2.evaluate_v2.building,82.2688320602382
+OE3,Costos energeticos,Building_17,electricity_cost_delta,building,Building_17,citylearn_v2.evaluate_v2.building,0.13533645663461258
+OE3,Costos energeticos,Building_17,electricity_cost_daily_average_control,building,Building_17,citylearn_v2.evaluate_v2.building,282.27412028684995
+OE3,Costos energeticos,Building_17,electricity_cost_daily_average_baseline,building,Building_17,citylearn_v2.evaluate_v2.building,282.0645670636738
+OE3,Costos energeticos,Building_17,electricity_cost_daily_average_delta,building,Building_17,citylearn_v2.evaluate_v2.building,0.20955322317617434
+OE1,Flexibilidad energetica,Building_2,grid_import,building,Building_2,citylearn_v2.evaluate_v2.building,1012.1408049465045
+OE1,Flexibilidad energetica,Building_2,grid_import_control,building,Building_2,citylearn_v2.evaluate_v2.building,97.41306018829346
+OE1,Flexibilidad energetica,Building_2,grid_import_baseline,building,Building_2,citylearn_v2.evaluate_v2.building,0.09624457359313965
+OE1,Flexibilidad energetica,Building_2,grid_import_delta,building,Building_2,citylearn_v2.evaluate_v2.building,215.48723457540783
+OE1,Flexibilidad energetica,Building_2,zero_net_energy,building,Building_2,citylearn_v2.evaluate_v2.building,697.9422437134456
+OE1,Flexibilidad energetica,Building_2,net_exchange_control,building,Building_2,citylearn_v2.evaluate_v2.building,67.17315363883972
+OE1,Flexibilidad energetica,Building_2,net_exchange_baseline,building,Building_2,citylearn_v2.evaluate_v2.building,0.09624457359313965
+OE1,Flexibilidad energetica,Building_2,net_exchange_delta,building,Building_2,citylearn_v2.evaluate_v2.building,148.52744150161743
+OE1,Flexibilidad energetica,Building_2,grid_export_control,building,Building_2,citylearn_v2.evaluate_v2.building,30.239906549453735
+OE1,Flexibilidad energetica,Building_2,grid_export_baseline,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,grid_export_delta,building,Building_2,citylearn_v2.evaluate_v2.building,66.95979307379041
+OE1,Flexibilidad energetica,Building_2,pv_generation_total,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,pv_generation_daily_average,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,pv_export_total,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,pv_export_daily_average,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,battery_charge_total,building,Building_2,citylearn_v2.evaluate_v2.building,97.34032392501831
+OE1,Flexibilidad energetica,Building_2,battery_discharge_total,building,Building_2,citylearn_v2.evaluate_v2.building,30.26341485977173
+OE1,Flexibilidad energetica,Building_2,battery_throughput_total,building,Building_2,citylearn_v2.evaluate_v2.building,127.60373878479004
+OE1,Flexibilidad energetica,Building_2,battery_equivalent_full_cycles,building,Building_2,citylearn_v2.evaluate_v2.building,0.26148307128030746
+OE1,Flexibilidad energetica,Building_2,battery_capacity_fade_ratio,building,Building_2,citylearn_v2.evaluate_v2.building,8.068109195380843e-07
+OE1,Flexibilidad energetica,Building_2,ev_departure_count,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,ev_departure_met_count,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,ev_departure_within_tolerance_count,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,ev_charge_total,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_2,ev_v2g_export_total,building,Building_2,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_2,carbon_emissions,building,Building_2,citylearn_v2.evaluate_v2.building,1012.9541474437872
+OE2,Emisiones de CO2,Building_2,carbon_emissions_control,building,Building_2,citylearn_v2.evaluate_v2.building,76.91340208053589
+OE2,Emisiones de CO2,Building_2,carbon_emissions_baseline,building,Building_2,citylearn_v2.evaluate_v2.building,0.07592979630383923
+OE2,Emisiones de CO2,Building_2,carbon_emissions_delta,building,Building_2,citylearn_v2.evaluate_v2.building,170.14011720079952
+OE2,Emisiones de CO2,Building_2,carbon_emissions_daily_average_control,building,Building_2,citylearn_v2.evaluate_v2.building,263.7030928475516
+OE2,Emisiones de CO2,Building_2,carbon_emissions_daily_average_baseline,building,Building_2,citylearn_v2.evaluate_v2.building,0.26033073018459163
+OE2,Emisiones de CO2,Building_2,carbon_emissions_daily_average_delta,building,Building_2,citylearn_v2.evaluate_v2.building,263.442762117367
+OE3,Costos energeticos,Building_2,electricity_cost,building,Building_2,citylearn_v2.evaluate_v2.building,636.7245317855688
+OE3,Costos energeticos,Building_2,electricity_cost_control,building,Building_2,citylearn_v2.evaluate_v2.building,32.632009967978924
+OE3,Costos energeticos,Building_2,electricity_cost_baseline,building,Building_2,citylearn_v2.evaluate_v2.building,0.05124980794515466
+OE3,Costos energeticos,Building_2,electricity_cost_delta,building,Building_2,citylearn_v2.evaluate_v2.building,72.14311178293191
+OE3,Costos energeticos,Building_2,electricity_cost_daily_average_control,building,Building_2,citylearn_v2.evaluate_v2.building,111.88117703307059
+OE3,Costos energeticos,Building_2,electricity_cost_daily_average_baseline,building,Building_2,citylearn_v2.evaluate_v2.building,0.17571362724053025
+OE3,Costos energeticos,Building_2,electricity_cost_daily_average_delta,building,Building_2,citylearn_v2.evaluate_v2.building,111.70546340583006
+OE1,Flexibilidad energetica,Building_3,grid_import,building,Building_3,citylearn_v2.evaluate_v2.building,1.698038893882457
+OE1,Flexibilidad energetica,Building_3,grid_import_control,building,Building_3,citylearn_v2.evaluate_v2.building,865.3778076171875
+OE1,Flexibilidad energetica,Building_3,grid_import_baseline,building,Building_3,citylearn_v2.evaluate_v2.building,509.6336784362793
+OE1,Flexibilidad energetica,Building_3,grid_import_delta,building,Building_3,citylearn_v2.evaluate_v2.building,787.7191431862967
+OE1,Flexibilidad energetica,Building_3,zero_net_energy,building,Building_3,citylearn_v2.evaluate_v2.building,1.4387910107030442
+OE1,Flexibilidad energetica,Building_3,net_exchange_control,building,Building_3,citylearn_v2.evaluate_v2.building,733.2563552856445
+OE1,Flexibilidad energetica,Building_3,net_exchange_baseline,building,Building_3,citylearn_v2.evaluate_v2.building,509.6336784362793
+OE1,Flexibilidad energetica,Building_3,net_exchange_delta,building,Building_3,citylearn_v2.evaluate_v2.building,495.16449873788014
+OE1,Flexibilidad energetica,Building_3,grid_export_control,building,Building_3,citylearn_v2.evaluate_v2.building,132.12145233154297
+OE1,Flexibilidad energetica,Building_3,grid_export_baseline,building,Building_3,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_3,grid_export_delta,building,Building_3,citylearn_v2.evaluate_v2.building,292.5546444484165
+OE1,Flexibilidad energetica,Building_3,pv_generation_total,building,Building_3,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_3,pv_generation_daily_average,building,Building_3,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_3,pv_export_total,building,Building_3,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_3,pv_export_daily_average,building,Building_3,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_3,battery_charge_total,building,Building_3,citylearn_v2.evaluate_v2.building,596.7400093078613
+OE1,Flexibilidad energetica,Building_3,battery_discharge_total,building,Building_3,citylearn_v2.evaluate_v2.building,374.3393898010254
+OE1,Flexibilidad energetica,Building_3,battery_throughput_total,building,Building_3,citylearn_v2.evaluate_v2.building,971.0793991088867
+OE1,Flexibilidad energetica,Building_3,battery_equivalent_full_cycles,building,Building_3,citylearn_v2.evaluate_v2.building,0.2054759625706489
+OE1,Flexibilidad energetica,Building_3,battery_capacity_fade_ratio,building,Building_3,citylearn_v2.evaluate_v2.building,4.932075936543177e-07
+OE1,Flexibilidad energetica,Building_3,ev_departure_count,building,Building_3,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_3,ev_departure_met_count,building,Building_3,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_3,ev_departure_within_tolerance_count,building,Building_3,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_3,ev_charge_total,building,Building_3,citylearn_v2.evaluate_v2.building,2.3101511001586914
+OE1,Flexibilidad energetica,Building_3,ev_v2g_export_total,building,Building_3,citylearn_v2.evaluate_v2.building,1.0880937576293945
+OE2,Emisiones de CO2,Building_3,carbon_emissions,building,Building_3,citylearn_v2.evaluate_v2.building,1.699659010419733
+OE2,Emisiones de CO2,Building_3,carbon_emissions_control,building,Building_3,citylearn_v2.evaluate_v2.building,683.6484727859497
+OE2,Emisiones de CO2,Building_3,carbon_emissions_baseline,building,Building_3,citylearn_v2.evaluate_v2.building,402.2268399689899
+OE2,Emisiones de CO2,Building_3,carbon_emissions_delta,building,Building_3,citylearn_v2.evaluate_v2.building,623.1479012375538
+OE2,Emisiones de CO2,Building_3,carbon_emissions_daily_average_control,building,Building_3,citylearn_v2.evaluate_v2.building,2343.937620980399
+OE2,Emisiones de CO2,Building_3,carbon_emissions_daily_average_baseline,building,Building_3,citylearn_v2.evaluate_v2.building,1379.063451322251
+OE2,Emisiones de CO2,Building_3,carbon_emissions_daily_average_delta,building,Building_3,citylearn_v2.evaluate_v2.building,964.8741696581478
+OE3,Costos energeticos,Building_3,electricity_cost,building,Building_3,citylearn_v2.evaluate_v2.building,1.4076116510422387
+OE3,Costos energeticos,Building_3,electricity_cost_control,building,Building_3,citylearn_v2.evaluate_v2.building,381.9943702766863
+OE3,Costos energeticos,Building_3,electricity_cost_baseline,building,Building_3,citylearn_v2.evaluate_v2.building,271.37767010797756
+OE3,Costos energeticos,Building_3,electricity_cost_delta,building,Building_3,citylearn_v2.evaluate_v2.building,244.93697894499792
+OE3,Costos energeticos,Building_3,electricity_cost_daily_average_control,building,Building_3,citylearn_v2.evaluate_v2.building,1309.6949838057815
+OE3,Costos energeticos,Building_3,electricity_cost_daily_average_baseline,building,Building_3,citylearn_v2.evaluate_v2.building,930.4377260844944
+OE3,Costos energeticos,Building_3,electricity_cost_daily_average_delta,building,Building_3,citylearn_v2.evaluate_v2.building,379.2572577212871
+OE1,Flexibilidad energetica,Building_4,grid_import,building,Building_4,citylearn_v2.evaluate_v2.building,3.096778655294891
+OE1,Flexibilidad energetica,Building_4,grid_import_control,building,Building_4,citylearn_v2.evaluate_v2.building,360.8957462310791
+OE1,Flexibilidad energetica,Building_4,grid_import_baseline,building,Building_4,citylearn_v2.evaluate_v2.building,116.53908348083496
+OE1,Flexibilidad energetica,Building_4,grid_import_delta,building,Building_4,citylearn_v2.evaluate_v2.building,541.0754675183978
+OE1,Flexibilidad energetica,Building_4,zero_net_energy,building,Building_4,citylearn_v2.evaluate_v2.building,0.3675323600017761
+OE1,Flexibilidad energetica,Building_4,net_exchange_control,building,Building_4,citylearn_v2.evaluate_v2.building,42.83188438415527
+OE1,Flexibilidad energetica,Building_4,net_exchange_baseline,building,Building_4,citylearn_v2.evaluate_v2.building,116.53908348083496
+OE1,Flexibilidad energetica,Building_4,net_exchange_delta,building,Building_4,citylearn_v2.evaluate_v2.building,-163.20879799979073
+OE1,Flexibilidad energetica,Building_4,grid_export_control,building,Building_4,citylearn_v2.evaluate_v2.building,318.0638618469238
+OE1,Flexibilidad energetica,Building_4,grid_export_baseline,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,grid_export_delta,building,Building_4,citylearn_v2.evaluate_v2.building,704.2842655181885
+OE1,Flexibilidad energetica,Building_4,pv_generation_total,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,pv_generation_daily_average,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,pv_export_total,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,pv_export_daily_average,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,battery_charge_total,building,Building_4,citylearn_v2.evaluate_v2.building,310.14820861816406
+OE1,Flexibilidad energetica,Building_4,battery_discharge_total,building,Building_4,citylearn_v2.evaluate_v2.building,383.85540795326233
+OE1,Flexibilidad energetica,Building_4,battery_throughput_total,building,Building_4,citylearn_v2.evaluate_v2.building,694.0036165714264
+OE1,Flexibilidad energetica,Building_4,battery_equivalent_full_cycles,building,Building_4,citylearn_v2.evaluate_v2.building,0.764321163624919
+OE1,Flexibilidad energetica,Building_4,battery_capacity_fade_ratio,building,Building_4,citylearn_v2.evaluate_v2.building,3.826783851853195e-06
+OE1,Flexibilidad energetica,Building_4,ev_departure_count,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,ev_departure_met_count,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,ev_departure_within_tolerance_count,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,ev_charge_total,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_4,ev_v2g_export_total,building,Building_4,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_4,carbon_emissions,building,Building_4,citylearn_v2.evaluate_v2.building,3.0988501480676214
+OE2,Emisiones de CO2,Building_4,carbon_emissions_control,building,Building_4,citylearn_v2.evaluate_v2.building,285.01752281188965
+OE2,Emisiones de CO2,Building_4,carbon_emissions_baseline,building,Building_4,citylearn_v2.evaluate_v2.building,91.97525184934182
+OE2,Emisiones de CO2,Building_4,carbon_emissions_delta,building,Building_4,citylearn_v2.evaluate_v2.building,427.4507428456416
+OE2,Emisiones de CO2,Building_4,carbon_emissions_daily_average_control,building,Building_4,citylearn_v2.evaluate_v2.building,977.2029353550502
+OE2,Emisiones de CO2,Building_4,carbon_emissions_daily_average_baseline,building,Building_4,citylearn_v2.evaluate_v2.building,315.3437206263148
+OE2,Emisiones de CO2,Building_4,carbon_emissions_daily_average_delta,building,Building_4,citylearn_v2.evaluate_v2.building,661.8592147287354
+OE3,Costos energeticos,Building_4,electricity_cost,building,Building_4,citylearn_v2.evaluate_v2.building,0.6736528234823868
+OE3,Costos energeticos,Building_4,electricity_cost_control,building,Building_4,citylearn_v2.evaluate_v2.building,41.804566295012776
+OE3,Costos energeticos,Building_4,electricity_cost_baseline,building,Building_4,citylearn_v2.evaluate_v2.building,62.05654431745404
+OE3,Costos energeticos,Building_4,electricity_cost_delta,building,Building_4,citylearn_v2.evaluate_v2.building,-44.84366562111994
+OE3,Costos energeticos,Building_4,electricity_cost_daily_average_control,building,Building_4,citylearn_v2.evaluate_v2.building,143.32994158290094
+OE3,Costos energeticos,Building_4,electricity_cost_daily_average_baseline,building,Building_4,citylearn_v2.evaluate_v2.building,212.76529480269954
+OE3,Costos energeticos,Building_4,electricity_cost_daily_average_delta,building,Building_4,citylearn_v2.evaluate_v2.building,-69.43535321979861
+OE1,Flexibilidad energetica,Building_5,grid_import,building,Building_5,citylearn_v2.evaluate_v2.building,1.0804064922015537
+OE1,Flexibilidad energetica,Building_5,grid_import_control,building,Building_5,citylearn_v2.evaluate_v2.building,393.7528610229492
+OE1,Flexibilidad energetica,Building_5,grid_import_baseline,building,Building_5,citylearn_v2.evaluate_v2.building,364.4488105773926
+OE1,Flexibilidad energetica,Building_5,grid_import_delta,building,Building_5,citylearn_v2.evaluate_v2.building,64.887540272304
+OE1,Flexibilidad energetica,Building_5,zero_net_energy,building,Building_5,citylearn_v2.evaluate_v2.building,1.0804064922015537
+OE1,Flexibilidad energetica,Building_5,net_exchange_control,building,Building_5,citylearn_v2.evaluate_v2.building,393.7528610229492
+OE1,Flexibilidad energetica,Building_5,net_exchange_baseline,building,Building_5,citylearn_v2.evaluate_v2.building,364.4488105773926
+OE1,Flexibilidad energetica,Building_5,net_exchange_delta,building,Building_5,citylearn_v2.evaluate_v2.building,64.887540272304
+OE1,Flexibilidad energetica,Building_5,grid_export_ratio,building,Building_5,citylearn_v2.evaluate_v2.building,1.0
+OE1,Flexibilidad energetica,Building_5,grid_export_control,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,grid_export_baseline,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,grid_export_delta,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,pv_generation_total,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,pv_generation_daily_average,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,pv_export_total,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,pv_export_daily_average,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,battery_charge_total,building,Building_5,citylearn_v2.evaluate_v2.building,122.4186577796936
+OE1,Flexibilidad energetica,Building_5,battery_discharge_total,building,Building_5,citylearn_v2.evaluate_v2.building,93.11460494995117
+OE1,Flexibilidad energetica,Building_5,battery_throughput_total,building,Building_5,citylearn_v2.evaluate_v2.building,215.53326272964478
+OE1,Flexibilidad energetica,Building_5,battery_equivalent_full_cycles,building,Building_5,citylearn_v2.evaluate_v2.building,0.46054115967872816
+OE1,Flexibilidad energetica,Building_5,battery_capacity_fade_ratio,building,Building_5,citylearn_v2.evaluate_v2.building,1.7581609674533686e-06
+OE1,Flexibilidad energetica,Building_5,ev_departure_count,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,ev_departure_met_count,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,ev_departure_within_tolerance_count,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,ev_charge_total,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_5,ev_v2g_export_total,building,Building_5,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_5,carbon_emissions,building,Building_5,citylearn_v2.evaluate_v2.building,1.0808743748071732
+OE2,Emisiones de CO2,Building_5,carbon_emissions_control,building,Building_5,citylearn_v2.evaluate_v2.building,310.929904460907
+OE2,Emisiones de CO2,Building_5,carbon_emissions_baseline,building,Building_5,citylearn_v2.evaluate_v2.building,287.6651641559886
+OE2,Emisiones de CO2,Building_5,carbon_emissions_delta,building,Building_5,citylearn_v2.evaluate_v2.building,51.5147821037479
+OE2,Emisiones de CO2,Building_5,carbon_emissions_daily_average_control,building,Building_5,citylearn_v2.evaluate_v2.building,1066.0453867231097
+OE2,Emisiones de CO2,Building_5,carbon_emissions_daily_average_baseline,building,Building_5,citylearn_v2.evaluate_v2.building,986.2805628205322
+OE2,Emisiones de CO2,Building_5,carbon_emissions_daily_average_delta,building,Building_5,citylearn_v2.evaluate_v2.building,79.76482390257739
+OE3,Costos energeticos,Building_5,electricity_cost,building,Building_5,citylearn_v2.evaluate_v2.building,0.9290638534303486
+OE3,Costos energeticos,Building_5,electricity_cost_control,building,Building_5,citylearn_v2.evaluate_v2.building,180.3009812416725
+OE3,Costos energeticos,Building_5,electricity_cost_baseline,building,Building_5,citylearn_v2.evaluate_v2.building,194.06737284628366
+OE3,Costos energeticos,Building_5,electricity_cost_delta,building,Building_5,citylearn_v2.evaluate_v2.building,-30.482724267353277
+OE3,Costos energeticos,Building_5,electricity_cost_daily_average_control,building,Building_5,citylearn_v2.evaluate_v2.building,618.1747928285914
+OE3,Costos energeticos,Building_5,electricity_cost_daily_average_baseline,building,Building_5,citylearn_v2.evaluate_v2.building,665.3738497586868
+OE3,Costos energeticos,Building_5,electricity_cost_daily_average_delta,building,Building_5,citylearn_v2.evaluate_v2.building,-47.199056930095395
+OE1,Flexibilidad energetica,Building_6,grid_import,building,Building_6,citylearn_v2.evaluate_v2.building,0.7844203912428319
+OE1,Flexibilidad energetica,Building_6,grid_import_control,building,Building_6,citylearn_v2.evaluate_v2.building,598.6145095825195
+OE1,Flexibilidad energetica,Building_6,grid_import_baseline,building,Building_6,citylearn_v2.evaluate_v2.building,763.1297149658203
+OE1,Flexibilidad energetica,Building_6,grid_import_delta,building,Building_6,citylearn_v2.evaluate_v2.building,-364.2836690630231
+OE1,Flexibilidad energetica,Building_6,zero_net_energy,building,Building_6,citylearn_v2.evaluate_v2.building,0.4412183889581616
+OE1,Flexibilidad energetica,Building_6,net_exchange_control,building,Building_6,citylearn_v2.evaluate_v2.building,336.7068634033203
+OE1,Flexibilidad energetica,Building_6,net_exchange_baseline,building,Building_6,citylearn_v2.evaluate_v2.building,763.1297149658203
+OE1,Flexibilidad energetica,Building_6,net_exchange_delta,building,Building_6,citylearn_v2.evaluate_v2.building,-944.2220284598213
+OE1,Flexibilidad energetica,Building_6,grid_export_control,building,Building_6,citylearn_v2.evaluate_v2.building,261.9076461791992
+OE1,Flexibilidad energetica,Building_6,grid_export_baseline,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,grid_export_delta,building,Building_6,citylearn_v2.evaluate_v2.building,579.9383593967982
+OE1,Flexibilidad energetica,Building_6,pv_generation_total,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,pv_generation_daily_average,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,pv_export_total,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,pv_export_daily_average,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,battery_charge_total,building,Building_6,citylearn_v2.evaluate_v2.building,269.28550720214844
+OE1,Flexibilidad energetica,Building_6,battery_discharge_total,building,Building_6,citylearn_v2.evaluate_v2.building,695.7083578109741
+OE1,Flexibilidad energetica,Building_6,battery_throughput_total,building,Building_6,citylearn_v2.evaluate_v2.building,964.9938650131226
+OE1,Flexibilidad energetica,Building_6,battery_equivalent_full_cycles,building,Building_6,citylearn_v2.evaluate_v2.building,0.18988466450474667
+OE1,Flexibilidad energetica,Building_6,battery_capacity_fade_ratio,building,Building_6,citylearn_v2.evaluate_v2.building,4.4107058020175065e-07
+OE1,Flexibilidad energetica,Building_6,ev_departure_count,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,ev_departure_met_count,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,ev_departure_within_tolerance_count,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,ev_charge_total,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_6,ev_v2g_export_total,building,Building_6,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_6,carbon_emissions,building,Building_6,citylearn_v2.evaluate_v2.building,0.7851762355139814
+OE2,Emisiones de CO2,Building_6,carbon_emissions_control,building,Building_6,citylearn_v2.evaluate_v2.building,472.9054718017578
+OE2,Emisiones de CO2,Building_6,carbon_emissions_baseline,building,Building_6,citylearn_v2.evaluate_v2.building,602.2921357167552
+OE2,Emisiones de CO2,Building_6,carbon_emissions_delta,building,Building_6,citylearn_v2.evaluate_v2.building,-286.4990415260656
+OE2,Emisiones de CO2,Building_6,carbon_emissions_daily_average_control,building,Building_6,citylearn_v2.evaluate_v2.building,1621.390189034598
+OE2,Emisiones de CO2,Building_6,carbon_emissions_daily_average_baseline,building,Building_6,citylearn_v2.evaluate_v2.building,2065.0016081717317
+OE2,Emisiones de CO2,Building_6,carbon_emissions_daily_average_delta,building,Building_6,citylearn_v2.evaluate_v2.building,-443.6114191371338
+OE3,Costos energeticos,Building_6,electricity_cost,building,Building_6,citylearn_v2.evaluate_v2.building,0.4585837737418971
+OE3,Costos energeticos,Building_6,electricity_cost_control,building,Building_6,citylearn_v2.evaluate_v2.building,186.35156224365946
+OE3,Costos energeticos,Building_6,electricity_cost_baseline,building,Building_6,citylearn_v2.evaluate_v2.building,406.36318359694724
+OE3,Costos energeticos,Building_6,electricity_cost_delta,building,Building_6,citylearn_v2.evaluate_v2.building,-487.1685901394229
+OE3,Costos energeticos,Building_6,electricity_cost_daily_average_control,building,Building_6,citylearn_v2.evaluate_v2.building,638.919641978261
+OE3,Costos energeticos,Building_6,electricity_cost_daily_average_baseline,building,Building_6,citylearn_v2.evaluate_v2.building,1393.245200903819
+OE3,Costos energeticos,Building_6,electricity_cost_daily_average_delta,building,Building_6,citylearn_v2.evaluate_v2.building,-754.3255589255581
+OE1,Flexibilidad energetica,Building_7,grid_import,building,Building_7,citylearn_v2.evaluate_v2.building,180.94354847160656
+OE1,Flexibilidad energetica,Building_7,grid_import_control,building,Building_7,citylearn_v2.evaluate_v2.building,98.80199432373047
+OE1,Flexibilidad energetica,Building_7,grid_import_baseline,building,Building_7,citylearn_v2.evaluate_v2.building,0.5460376739501953
+OE1,Flexibilidad energetica,Building_7,grid_import_delta,building,Building_7,citylearn_v2.evaluate_v2.building,217.56676115308488
+OE1,Flexibilidad energetica,Building_7,zero_net_energy,building,Building_7,citylearn_v2.evaluate_v2.building,-476.0542404141386
+OE1,Flexibilidad energetica,Building_7,net_exchange_control,building,Building_7,citylearn_v2.evaluate_v2.building,-259.9435501098633
+OE1,Flexibilidad energetica,Building_7,net_exchange_baseline,building,Building_7,citylearn_v2.evaluate_v2.building,0.5460376739501953
+OE1,Flexibilidad energetica,Building_7,net_exchange_delta,building,Building_7,citylearn_v2.evaluate_v2.building,-576.7983729498726
+OE1,Flexibilidad energetica,Building_7,grid_export_control,building,Building_7,citylearn_v2.evaluate_v2.building,358.74554443359375
+OE1,Flexibilidad energetica,Building_7,grid_export_baseline,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,grid_export_delta,building,Building_7,citylearn_v2.evaluate_v2.building,794.3651341029575
+OE1,Flexibilidad energetica,Building_7,pv_generation_total,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,pv_generation_daily_average,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,pv_export_total,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,pv_export_daily_average,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,battery_charge_total,building,Building_7,citylearn_v2.evaluate_v2.building,98.74246978759766
+OE1,Flexibilidad energetica,Building_7,battery_discharge_total,building,Building_7,citylearn_v2.evaluate_v2.building,359.23205757141113
+OE1,Flexibilidad energetica,Building_7,battery_throughput_total,building,Building_7,citylearn_v2.evaluate_v2.building,457.9745273590088
+OE1,Flexibilidad energetica,Building_7,battery_equivalent_full_cycles,building,Building_7,citylearn_v2.evaluate_v2.building,0.23271063382063456
+OE1,Flexibilidad energetica,Building_7,battery_capacity_fade_ratio,building,Building_7,citylearn_v2.evaluate_v2.building,6.56355250085409e-07
+OE1,Flexibilidad energetica,Building_7,ev_departure_count,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,ev_departure_met_count,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,ev_departure_within_tolerance_count,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,ev_charge_total,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_7,ev_v2g_export_total,building,Building_7,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_7,carbon_emissions,building,Building_7,citylearn_v2.evaluate_v2.building,181.20694828458343
+OE2,Emisiones de CO2,Building_7,carbon_emissions_control,building,Building_7,citylearn_v2.evaluate_v2.building,78.05358123779297
+OE2,Emisiones de CO2,Building_7,carbon_emissions_baseline,building,Building_7,citylearn_v2.evaluate_v2.building,0.43074276111758536
+OE2,Emisiones de CO2,Building_7,carbon_emissions_delta,building,Building_7,citylearn_v2.evaluate_v2.building,171.87914234120976
+OE2,Emisiones de CO2,Building_7,carbon_emissions_daily_average_control,building,Building_7,citylearn_v2.evaluate_v2.building,267.61227852957586
+OE2,Emisiones de CO2,Building_7,carbon_emissions_daily_average_baseline,building,Building_7,citylearn_v2.evaluate_v2.building,1.4768323238317211
+OE2,Emisiones de CO2,Building_7,carbon_emissions_daily_average_delta,building,Building_7,citylearn_v2.evaluate_v2.building,266.13544620574413
+OE3,Costos energeticos,Building_7,electricity_cost,building,Building_7,citylearn_v2.evaluate_v2.building,-370.1026314035278
+OE3,Costos energeticos,Building_7,electricity_cost_control,building,Building_7,citylearn_v2.evaluate_v2.building,-107.61201670561388
+OE3,Costos energeticos,Building_7,electricity_cost_baseline,building,Building_7,citylearn_v2.evaluate_v2.building,0.29076263602212293
+OE3,Costos energeticos,Building_7,electricity_cost_delta,building,Building_7,citylearn_v2.evaluate_v2.building,-238.92758282790828
+OE3,Costos energeticos,Building_7,electricity_cost_daily_average_control,building,Building_7,citylearn_v2.evaluate_v2.building,-368.955485847819
+OE3,Costos energeticos,Building_7,electricity_cost_daily_average_baseline,building,Building_7,citylearn_v2.evaluate_v2.building,0.9969004663615643
+OE3,Costos energeticos,Building_7,electricity_cost_daily_average_delta,building,Building_7,citylearn_v2.evaluate_v2.building,-369.95238631418056
+OE1,Flexibilidad energetica,Building_8,grid_import,building,Building_8,citylearn_v2.evaluate_v2.building,220.91068866796374
+OE1,Flexibilidad energetica,Building_8,grid_import_control,building,Building_8,citylearn_v2.evaluate_v2.building,50.297728538513184
+OE1,Flexibilidad energetica,Building_8,grid_import_baseline,building,Building_8,citylearn_v2.evaluate_v2.building,0.22768354415893555
+OE1,Flexibilidad energetica,Building_8,grid_import_delta,building,Building_8,citylearn_v2.evaluate_v2.building,110.86938534464154
+OE1,Flexibilidad energetica,Building_8,zero_net_energy,building,Building_8,citylearn_v2.evaluate_v2.building,-493.3759913882472
+OE1,Flexibilidad energetica,Building_8,net_exchange_control,building,Building_8,citylearn_v2.evaluate_v2.building,-112.33359432220459
+OE1,Flexibilidad energetica,Building_8,net_exchange_baseline,building,Building_8,citylearn_v2.evaluate_v2.building,0.22768354415893555
+OE1,Flexibilidad energetica,Building_8,net_exchange_delta,building,Building_8,citylearn_v2.evaluate_v2.building,-249.24282956123352
+OE1,Flexibilidad energetica,Building_8,grid_export_control,building,Building_8,citylearn_v2.evaluate_v2.building,162.63132286071777
+OE1,Flexibilidad energetica,Building_8,grid_export_baseline,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,grid_export_delta,building,Building_8,citylearn_v2.evaluate_v2.building,360.1122149058751
+OE1,Flexibilidad energetica,Building_8,pv_generation_total,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,pv_generation_daily_average,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,pv_export_total,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,pv_export_daily_average,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,battery_charge_total,building,Building_8,citylearn_v2.evaluate_v2.building,50.25318765640259
+OE1,Flexibilidad energetica,Building_8,battery_discharge_total,building,Building_8,citylearn_v2.evaluate_v2.building,162.8144655227661
+OE1,Flexibilidad energetica,Building_8,battery_throughput_total,building,Building_8,citylearn_v2.evaluate_v2.building,213.0676531791687
+OE1,Flexibilidad energetica,Building_8,battery_equivalent_full_cycles,building,Building_8,citylearn_v2.evaluate_v2.building,0.1772609427447327
+OE1,Flexibilidad energetica,Building_8,battery_capacity_fade_ratio,building,Building_8,citylearn_v2.evaluate_v2.building,4.004042595107374e-07
+OE1,Flexibilidad energetica,Building_8,ev_departure_count,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,ev_departure_met_count,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,ev_departure_within_tolerance_count,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,ev_charge_total,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_8,ev_v2g_export_total,building,Building_8,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_8,carbon_emissions,building,Building_8,citylearn_v2.evaluate_v2.building,221.29265848808365
+OE2,Emisiones de CO2,Building_8,carbon_emissions_control,building,Building_8,citylearn_v2.evaluate_v2.building,39.73520803451538
+OE2,Emisiones de CO2,Building_8,carbon_emissions_baseline,building,Building_8,citylearn_v2.evaluate_v2.building,0.17955954032092336
+OE2,Emisiones de CO2,Building_8,carbon_emissions_delta,building,Building_8,citylearn_v2.evaluate_v2.building,87.58750738000201
+OE2,Emisiones de CO2,Building_8,carbon_emissions_daily_average_control,building,Building_8,citylearn_v2.evaluate_v2.building,136.2349989754813
+OE2,Emisiones de CO2,Building_8,carbon_emissions_daily_average_baseline,building,Building_8,citylearn_v2.evaluate_v2.building,0.6156327096717372
+OE2,Emisiones de CO2,Building_8,carbon_emissions_daily_average_delta,building,Building_8,citylearn_v2.evaluate_v2.building,135.61936626580956
+OE3,Costos energeticos,Building_8,electricity_cost,building,Building_8,citylearn_v2.evaluate_v2.building,-394.70079311059783
+OE3,Costos energeticos,Building_8,electricity_cost_control,building,Building_8,citylearn_v2.evaluate_v2.building,-47.85371201613194
+OE3,Costos energeticos,Building_8,electricity_cost_baseline,building,Building_8,citylearn_v2.evaluate_v2.building,0.12124047595395382
+OE3,Costos energeticos,Building_8,electricity_cost_delta,building,Building_8,citylearn_v2.evaluate_v2.building,-106.23025194676161
+OE3,Costos energeticos,Building_8,electricity_cost_daily_average_control,building,Building_8,citylearn_v2.evaluate_v2.building,-164.0698697695952
+OE3,Costos energeticos,Building_8,electricity_cost_daily_average_baseline,building,Building_8,citylearn_v2.evaluate_v2.building,0.41568163184212736
+OE3,Costos energeticos,Building_8,electricity_cost_daily_average_delta,building,Building_8,citylearn_v2.evaluate_v2.building,-164.48555140143733
+OE1,Flexibilidad energetica,Building_9,grid_import,building,Building_9,citylearn_v2.evaluate_v2.building,1.4136589319742985
+OE1,Flexibilidad energetica,Building_9,grid_import_control,building,Building_9,citylearn_v2.evaluate_v2.building,31.20320415496826
+OE1,Flexibilidad energetica,Building_9,grid_import_baseline,building,Building_9,citylearn_v2.evaluate_v2.building,22.072653770446777
+OE1,Flexibilidad energetica,Building_9,grid_import_delta,building,Building_9,citylearn_v2.evaluate_v2.building,20.217647280011857
+OE1,Flexibilidad energetica,Building_9,zero_net_energy,building,Building_9,citylearn_v2.evaluate_v2.building,-0.6097417114948441
+OE1,Flexibilidad energetica,Building_9,net_exchange_control,building,Building_9,citylearn_v2.evaluate_v2.building,-13.458617687225342
+OE1,Flexibilidad energetica,Building_9,net_exchange_baseline,building,Building_9,citylearn_v2.evaluate_v2.building,22.072653770446777
+OE1,Flexibilidad energetica,Building_9,net_exchange_delta,building,Building_9,citylearn_v2.evaluate_v2.building,-78.67638679913111
+OE1,Flexibilidad energetica,Building_9,grid_export_control,building,Building_9,citylearn_v2.evaluate_v2.building,44.6618218421936
+OE1,Flexibilidad energetica,Building_9,grid_export_baseline,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,grid_export_delta,building,Building_9,citylearn_v2.evaluate_v2.building,98.89403407914297
+OE1,Flexibilidad energetica,Building_9,pv_generation_total,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,pv_generation_daily_average,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,pv_export_total,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,pv_export_daily_average,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,battery_charge_total,building,Building_9,citylearn_v2.evaluate_v2.building,21.51695680618286
+OE1,Flexibilidad energetica,Building_9,battery_discharge_total,building,Building_9,citylearn_v2.evaluate_v2.building,57.04822826385498
+OE1,Flexibilidad energetica,Building_9,battery_throughput_total,building,Building_9,citylearn_v2.evaluate_v2.building,78.56518507003784
+OE1,Flexibilidad energetica,Building_9,battery_equivalent_full_cycles,building,Building_9,citylearn_v2.evaluate_v2.building,0.28465646764506464
+OE1,Flexibilidad energetica,Building_9,battery_capacity_fade_ratio,building,Building_9,citylearn_v2.evaluate_v2.building,7.828821879598579e-07
+OE1,Flexibilidad energetica,Building_9,ev_departure_count,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,ev_departure_met_count,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,ev_departure_within_tolerance_count,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,ev_charge_total,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE1,Flexibilidad energetica,Building_9,ev_v2g_export_total,building,Building_9,citylearn_v2.evaluate_v2.building,0.0
+OE2,Emisiones de CO2,Building_9,carbon_emissions,building,Building_9,citylearn_v2.evaluate_v2.building,1.4147858669822577
+OE2,Emisiones de CO2,Building_9,carbon_emissions_control,building,Building_9,citylearn_v2.evaluate_v2.building,24.650532722473145
+OE2,Emisiones de CO2,Building_9,carbon_emissions_baseline,building,Building_9,citylearn_v2.evaluate_v2.building,17.423507894557076
+OE2,Emisiones de CO2,Building_9,carbon_emissions_delta,building,Building_9,citylearn_v2.evaluate_v2.building,16.00269783324272
+OE2,Emisiones de CO2,Building_9,carbon_emissions_daily_average_control,building,Building_9,citylearn_v2.evaluate_v2.building,84.51611219133649
+OE2,Emisiones de CO2,Building_9,carbon_emissions_daily_average_baseline,building,Building_9,citylearn_v2.evaluate_v2.building,59.73774135276712
+OE2,Emisiones de CO2,Building_9,carbon_emissions_daily_average_delta,building,Building_9,citylearn_v2.evaluate_v2.building,24.778370838569376
+OE3,Costos energeticos,Building_9,electricity_cost,building,Building_9,citylearn_v2.evaluate_v2.building,-0.4877933691958752
+OE3,Costos energeticos,Building_9,electricity_cost_control,building,Building_9,citylearn_v2.evaluate_v2.building,-5.733323311033722
+OE3,Costos energeticos,Building_9,electricity_cost_baseline,building,Building_9,citylearn_v2.evaluate_v2.building,11.753590091815056
+OE3,Costos energeticos,Building_9,electricity_cost_delta,building,Building_9,citylearn_v2.evaluate_v2.building,-38.72102253487944
+OE3,Costos energeticos,Building_9,electricity_cost_daily_average_control,building,Building_9,citylearn_v2.evaluate_v2.building,-19.65710849497276
+OE3,Costos energeticos,Building_9,electricity_cost_daily_average_baseline,building,Building_9,citylearn_v2.evaluate_v2.building,40.29802317193733
+OE3,Costos energeticos,Building_9,electricity_cost_daily_average_delta,building,Building_9,citylearn_v2.evaluate_v2.building,-59.95513166691009

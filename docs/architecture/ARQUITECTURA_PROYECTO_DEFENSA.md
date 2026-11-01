@@ -267,9 +267,9 @@ flowchart TD
     subgraph PHASE1["FASE 1 — HAPPO + MASAC (6 jobs en paralelo, sin stagger) · ~10 h"]
         direction LR
         subgraph P1_H["HAPPO x3 (on-policy)"]
-            H_E1["E1 flex\nw: 0.70/0.15/0.15"]
-            H_E2["E2 CO2\nw: 0.15/0.70/0.15"]
-            H_E3["E3 costo\nw: 0.25/0.15/0.60"]
+            H_E1["E1 flex\nw: 0.60/0.15/0.25"]
+            H_E2["E2 CO2\nw: 0.25/0.60/0.15"]
+            H_E3["E3 costo\nw: 0.15/0.25/0.60"]
         end
         subgraph P1_M["MASAC x3 (off-policy, buffer GPU)"]
             M_E1["E1\nbuf 8 ep · 11 GiB"]
@@ -342,9 +342,9 @@ flowchart LR
 
     subgraph PESOS["Pesos por escenario (w_eje)"]
         direction TB
-        PE1["E1 Flexibilidad\nflex=0.70 co2=0.15 cost=0.15"]
-        PE2["E2 CO2\nflex=0.15 co2=0.70 cost=0.15"]
-        PE3["E3 Costos\nflex=0.25 co2=0.15 cost=0.60"]
+        PE1["E1 Flexibilidad\nflex=0.60 co2=0.15 cost=0.25"]
+        PE2["E2 CO2\nflex=0.25 co2=0.60 cost=0.15"]
+        PE3["E3 Costos\nflex=0.15 co2=0.25 cost=0.60"]
     end
 
     subgraph MIX["Recompensa mixta (CTDE)"]

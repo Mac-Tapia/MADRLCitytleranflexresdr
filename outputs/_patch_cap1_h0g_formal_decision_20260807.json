@@ -1,0 +1,30 @@
+{
+  "patches": [
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_20260807_004016.docx",
+      "n_changes": 6,
+      "samples": [
+        "H0G se rechaza de forma exploratoria (",
+        "se respalda H1G de forma exploratoria (",
+        "H0G se rechaza de forma exploratoria (",
+        "Se rechaza de forma exploratoria",
+        "Se respalda de forma exploratoria (",
+        "H1G exploratoria; sin ganador"
+      ]
+    },
+    {
+      "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_20260807_004017.docx",
+      "n_changes": 6,
+      "samples": [
+        "H0G se rechaza de forma exploratoria (",
+        "se respalda H1G de forma exploratoria (",
+        "H0G se rechaza de forma exploratoria (",
+        "Se rechaza de forma exploratoria",
+        "Se respalda de forma exploratoria (",
+        "H1G exploratoria; sin ganador"
+      ]
+    }
+  ]
+}

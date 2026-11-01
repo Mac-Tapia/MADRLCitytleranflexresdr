@@ -1,0 +1,41 @@
+[OK] Project context verified: D:/MADRLCitytleranflexresdr
+........................................................................ [ 22%]
+........................................................................ [ 44%]
+........................................................................ [ 66%]
+........................................................................ [ 88%]
+....................................                                     [100%]
+============================== warnings summary ===============================
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:64
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/uc3m/test_madrl_multicriteria.py::test_pipeline_real_only_drive_50ep_no_illustrative
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+tests/uc3m/test_madrl_multicriteria.py::test_full_methodology_battery_smoke
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\scipy\stats\_stats_py.py:8830: RuntimeWarning: p-value cannot be estimated with `distribution='t' because degrees of freedom parameter is undefined (0/0). Try using `distribution='normal'
+    warnings.warn(message, RuntimeWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: D:\MADRLCitytleranflexresdr\outputs\orchestration-tests.xml -
+324 passed, 15 warnings in 501.92s (0:08:21)
+{"schema_version": 1, "runs": [{"run_id": "happo-e1-s000-0e1900f937a4", "algorithm": "HAPPO", "status": "verified_smoke", "checkpoint_files": 19, "episode_time_steps": 8}, {"run_id": "maac-e1-s000-fcedd413337b", "algorithm": "MAAC", "status": "verified_smoke", "checkpoint_files": 1, "episode_time_steps": 8}, {"run_id": "masac-e1-s000-3a935ada02f9", "algorithm": "MASAC", "status": "verified_smoke", "checkpoint_files": 3, "episode_time_steps": 8}, {"run_id": "matd3-e1-s000-88015f677ab0", "algorithm": "MATD3", "status": "verified_smoke", "checkpoint_files": 34, "episode_time_steps": 8}], "four_algorithm_smoke_verified": true, "scientific_acceptance": false, "full_plan_complete": false, "pending": ["full_horizon_multiseed_campaign", "optimizer_rng_replay_resume_parity", "full_report_extraction", "open_source_provenance_gate", "best_model_selection_and_delivery"]}

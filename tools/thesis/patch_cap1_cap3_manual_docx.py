@@ -39,8 +39,12 @@ VERDICT_NEW = (
     "Contrastación canónica Cap. 5 sobre KPI-gains (omnibus principal = Friedman pareado): "
     "HE10/HE20/HE30 no se rechazan (Friedman p = 0,0611 / 0,0498 / 0,1801; KW exploratorio "
     "p = 0,4685 / 0,7648 / 0,7357); HE11/HE21/HE31 no se respaldan; H0G se rechaza "
-    "de forma exploratoria (Friedman p = 0,0096, Kendall's W = 0,1787"
+    "(Friedman p = 0,0096, Kendall's W = 0,1787"
 )
+# También normaliza veredictos ya parcheados que aún digan «de forma exploratoria»
+VERDICT_EXPLORATORIA = "H0G se rechaza de forma exploratoria ("
+VERDICT_FORMAL = "H0G se rechaza ("
+
 
 PROTO_OLD = "Protocolo: Shapiro–Wilk → Kruskal–Wallis → Mann–Whitney / Wilcoxon (Holm); α = 0,05."
 PROTO_NEW = (
@@ -67,6 +71,9 @@ def patch_paragraph_text(paragraph, changes: list[str]) -> None:
     if VERDICT_OLD in text:
         text = text.replace(VERDICT_OLD, VERDICT_NEW)
         changes.append("cap1_verdict")
+    if VERDICT_EXPLORATORIA in text:
+        text = text.replace(VERDICT_EXPLORATORIA, VERDICT_FORMAL)
+        changes.append("cap1_verdict_formal")
     if PROTO_OLD in text:
         text = text.replace(PROTO_OLD, PROTO_NEW)
         changes.append("cap1_protocol")

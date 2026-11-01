@@ -661,12 +661,13 @@ STATS_EXACT_BLOCK = [
         "p-Holm = 0,1137."
     ),
     (
-        "Decisión HG/HE1/HE2/HE3. HG (H0G/H1G): se rechaza H0G y se respalda H1G de forma "
-        "exploratoria (Friedman p = 0,0096; Kendall's W = 0,1787), sin ganador único. "
+        "Decisión HG/HE1/HE2/HE3. HG (H0G/H1G): se rechaza H0G y se respalda H1G "
+        "(Friedman p = 0,0096; Kendall's W = 0,1787), sin ganador único. "
         "HE1 (HE10/HE11): no se rechaza HE10; no se respalda HE11. "
         "HE2 (HE20/HE21): no se rechaza HE20; no se respalda HE21. "
         "HE3 (HE30/HE31): no se rechaza HE30; no se respalda HE31. "
-        "TOPSIS C* MAAC = 0,9827 (descriptivo; no sustituye HE)."
+        "TOPSIS C* MAAC = 0,9827 (descriptivo; no sustituye HE). "
+        "Limitación metodológica (aparte del veredicto): semilla única seed = 0."
     ),
 ]
 
@@ -683,13 +684,13 @@ def _hyp_general_block(doc, p, heading, add_table) -> None:
         [
             [
                 "H0G",
-                "Se rechaza de forma exploratoria",
+                "Se rechaza",
                 "Friedman χ² = 9,2911, p = 0,0096, Kendall's W = 0,1787; impacto GLOBAL vs baseline "
                 "Holm (MAAC/MASAC/MATD3); KW GLOBAL H = 1,8108, p = 0,4044",
             ],
             [
                 "H1G",
-                "Se respalda de forma exploratoria (sin ganador unico; impacto agregado desfavorable)",
+                "Se respalda (sin ganador unico; impacto agregado desfavorable)",
                 "No implica HE11∧HE21∧HE31; trade-off MATD3/MAAC",
             ],
         ],
@@ -933,7 +934,7 @@ def add_chapter_5_structured(doc, p, heading, add_table, status_note) -> None:
         [
             [
                 "H0G / H1G",
-                "Se rechaza H0G; H1G exploratoria; sin ganador unico",
+                "Se rechaza H0G; se respalda H1G; sin ganador unico",
                 "MAAC score / MATD3 mediana",
                 "χ² = 9,2911; p = 0,0096; W = 0,1787",
             ],
@@ -983,7 +984,8 @@ def add_chapter_5_structured(doc, p, heading, add_table, status_note) -> None:
         "5) Rigor estadistico RL (Agarwal et al., 2021; Demsar, 2006; Colas et al., 2019; "
         "Patterson et al., 2024): no tratar episodios como replicas independientes; reportar "
         "incertidumbre y tamanos de efecto. "
-        "6) Limitaciones: seed = 0; HAPPO sin KPI-gains HE; n KPI 12/5/9; impacto GLOBAL desfavorable.",
+        "6) Limitaciones metodologicas (no alteran la formula del veredicto H): seed = 0 "
+        "(semilla unica); HAPPO sin KPI-gains HE; n KPI 12/5/9; impacto GLOBAL desfavorable.",
     )
     heading(doc, "5.7.1 Contrastacion con antecedentes nacionales", 3)
     p(
@@ -1001,9 +1003,9 @@ def add_chapter_5_structured(doc, p, heading, add_table, status_note) -> None:
         [
             [
                 "PG → OG → H0G/H1G",
-                "Si (H0G rechazada exploratoria)",
+                "Si (H0G rechazada / H1G respaldada)",
                 "Parcial: sin ganador unico",
-                "Descriptivo + inferencial exploratorio",
+                "Descriptivo + inferencial (limitacion: semilla unica)",
             ],
             [
                 "PE.1 → OE.1 → HE10/HE11",

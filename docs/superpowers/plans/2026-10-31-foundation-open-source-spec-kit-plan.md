@@ -12,6 +12,14 @@
 
 **Spec Kit slices covered:** `SPEC-000` and `SPEC-001`.
 
+## Conciliación de estado — 2026-10-31
+
+Ver [SPEC-000–010 y pendientes](../../../specs/STATUS.md). Existen captura,
+constitución, política y auditorías; la aceptación de procedencia continúa
+bloqueada por licencias locales ausentes y revisiones copyleft. Código
+implementado no significa puerta integral aprobada. No se acreditan RED,
+worktrees, instalaciones o commits individuales históricos sin evidencia.
+
 ## Global Constraints
 
 - No ejecutar `specify init --force` sobre el árbol sucio actual.

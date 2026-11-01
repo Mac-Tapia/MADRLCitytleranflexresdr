@@ -6,7 +6,7 @@
 
 ## ░░ PROMPT PARA PERPLEXITY (versión final) ░░
 
-**Rol / Contexto:** Actúa como redactor académico experto en aprendizaje por refuerzo multiagente (MADRL) y sistemas energéticos. Estás puliendo el **Capítulo 1 (Introducción)** de una **tesis de maestría profesionalizante de la Universidad Nacional de Ingeniería (UNI), Perú**, titulada *"Multi-Agente de Aprendizaje por Refuerzo Profundo para la Gestión Coordinada de Flexibilidad Energética, Emisiones de Carbono y Costos Energéticos en Comunidades Inteligentes"*. Autor: Mac Tapia (mac.tapia.c@uni.pe). Caso de estudio: **Sistema Eléctrico Aislado de Iquitos (SEAI)**, Electro Oriente S.A., Loreto, Perú: 17 edificios institucionales/comerciales reales, simulados en **CityLearn v2 extendido con una capa propia CityLearn v3** (Dec-POMDP + CTDE). Se comparan cuatro algoritmos MADRL: **HAPPO, MASAC, MATD3 y MAAC**, sobre tres objetivos: **OE.1 flexibilidad energética, OE.2 reducción de CO₂, OE.3 reducción de costos**.
+**Rol / Contexto:** Actúa como redactor académico experto en aprendizaje por refuerzo multiagente (MADRL) y sistemas energéticos. Estás puliendo el **Capítulo 1 (Introducción)** de una **tesis de maestría profesionalizante de la Universidad Nacional de Ingeniería (UNI), Perú**, titulada *"COORDINACIÓN ENERGÉTICA MULTIOBJETIVO MEDIANTE APRENDIZAJE POR REFUERZO PROFUNDO MULTIAGENTE EN UNA COMUNIDAD INTELIGENTE HETEROGÉNEA DE IQUITOS: EFECTOS Y DESEMPEÑO ALGORÍTMICO, 2026"*. Autor: Mac Tapia (mac.tapia.c@uni.pe). Caso de estudio: **Sistema Eléctrico Aislado de Iquitos (SEAI)**, Electro Oriente S.A., Loreto, Perú: 17 edificios institucionales/comerciales reales, simulados en **CityLearn v2 extendido con una capa propia CityLearn v3** (Dec-POMDP + CTDE). Se comparan cuatro algoritmos MADRL: **HAPPO, MASAC, MATD3 y MAAC**, sobre tres objetivos: **OE.1 flexibilidad energética, OE.2 emisiones de CO₂, OE.3 costos energéticos**.
 
 **Objetivo del prompt:** Convertir el borrador siguiente en una versión final de calidad académica, en español formal, con:
 1. Redacción fluida y coherencia argumentativa entre problema → objetivos → hipótesis → justificación.
@@ -40,15 +40,15 @@ La literatura reporta evaluaciones aisladas de algoritmos individuales sobre dim
 
 #### 1.2.1.1 Formulación del problema general
 
-¿En qué medida el algoritmo MADRL (aprendizaje por refuerzo profundo multiagente) impacta en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño a nivel global?
+PG. ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC producen efectos diferenciales en la coordinación energética multiobjetivo de una comunidad inteligente heterogénea de Iquitos, considerando la flexibilidad energética, las emisiones de CO₂ y los costos energéticos, y cuál presenta el mejor desempeño global?
 
 #### 1.2.1.2 Formulación de los problemas específicos
 
-PE.1: ¿En qué medida el algoritmo MADRL impacta en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E1?
+PE.1. ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC producen efectos diferenciales sobre la flexibilidad energética (eje E1) y cuál presenta el mejor desempeño en la comunidad inteligente heterogénea de Iquitos?
 
-PE.2: ¿En qué medida el algoritmo MADRL impacta en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E2?
+PE.2. ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC producen efectos diferenciales sobre las emisiones de CO₂ (eje E2) y cuál presenta el mejor desempeño en la comunidad inteligente heterogénea de Iquitos?
 
-PE.3: ¿En qué medida el algoritmo MADRL impacta en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E3?
+PE.3. ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC producen efectos diferenciales sobre los costos energéticos (eje E3) y cuál presenta el mejor desempeño en la comunidad inteligente heterogénea de Iquitos?
 
 ---
 
@@ -58,15 +58,15 @@ PE.3: ¿En qué medida el algoritmo MADRL impacta en los costos energéticos en 
 
 #### 1.3.1.1 Objetivo general
 
-OG. - Determinar el impacto de los algoritmos aprendizaje por refuerzo profundo multiagente (MADRLs) en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, e identificar cuál de los algoritmos presenta el mejor desempeño a nivel global.
+OG. Determinar y cuantificar los efectos diferenciales de los algoritmos HAPPO, MASAC, MATD3 y MAAC en la coordinación energética multiobjetivo de una comunidad inteligente heterogénea de Iquitos, considerando la flexibilidad energética, las emisiones de CO₂ y los costos energéticos, e identificar el algoritmo de mejor desempeño global.
 
 #### 1.3.1.2 Objetivos específicos
 
-OE.1: Determinar el impacto de los algoritmos MADRLs en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E1.
+OE.1. Determinar y cuantificar los efectos diferenciales de los algoritmos HAPPO, MASAC, MATD3 y MAAC sobre la flexibilidad energética (eje E1) e identificar el algoritmo de mejor desempeño en la comunidad inteligente heterogénea de Iquitos.
 
-OE.2: Determinar el impacto de los algoritmos MADRLs en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E2.
+OE.2. Determinar y cuantificar los efectos diferenciales de los algoritmos HAPPO, MASAC, MATD3 y MAAC sobre las emisiones de CO₂ (eje E2) e identificar el algoritmo de mejor desempeño en la comunidad inteligente heterogénea de Iquitos.
 
-OE.3: Determinar el impacto de los algoritmos MADRLs en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E3.
+OE.3. Determinar y cuantificar los efectos diferenciales de los algoritmos HAPPO, MASAC, MATD3 y MAAC sobre los costos energéticos (eje E3) e identificar el algoritmo de mejor desempeño en la comunidad inteligente heterogénea de Iquitos.
 
 **Coherencia vertical:** cada OE responde a su PE, se operacionaliza con un escenario (E1, E2, E3) cuyos pesos de recompensa priorizan el eje correspondiente, y se evalúa con KPI-gains frente al baseline CityLearn v2 y con KPIs físicos de distrito y de edificio. Contrastación en Cap. 5 (§§5.2–5.5).
 
@@ -90,29 +90,29 @@ Evidencia Cap. 5: §§5.1.1, 5.2 (C3–C4), 5.3–5.5 (C1–C2), 5.4.5 (C5).
 
 #### 1.3.2.1 Hipótesis general
 
-H0G.-El algoritmo MADRL no impacta de manera estadísticamente significativa y diferenciada en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas en el desempeño global de los algoritmos.
+H0G. Los algoritmos HAPPO, MASAC, MATD3 y MAAC no producen efectos diferenciales estadísticamente significativos en la coordinación energética multiobjetivo de la comunidad inteligente heterogénea de Iquitos, considerando conjuntamente la flexibilidad energética, las emisiones de CO₂ y los costos energéticos.
 
-H1G.- El algoritmo MADRL impacta de manera estadísticamente significativa y diferenciada en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y el desempeño global difiere entre los algoritmos.
+H1G. Al menos uno de los algoritmos HAPPO, MASAC, MATD3 y MAAC produce un efecto diferencial estadísticamente significativo en la coordinación energética multiobjetivo de la comunidad inteligente heterogénea de Iquitos, considerando conjuntamente la flexibilidad energética, las emisiones de CO₂ y los costos energéticos.
 
 #### 1.3.2.2 Hipótesis específicas
 
-HE10.- El algoritmo MADRL no impacta de manera estadísticamente significativa en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E1.
+HE10. Los algoritmos HAPPO, MASAC, MATD3 y MAAC no producen efectos diferenciales estadísticamente significativos sobre la flexibilidad energética (eje E1) de la comunidad inteligente heterogénea de Iquitos.
 
-HE11.- El algoritmo MADRL impacta de manera estadísticamente significativa en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E1.
+HE11. Al menos uno de los algoritmos HAPPO, MASAC, MATD3 y MAAC produce un efecto diferencial estadísticamente significativo sobre la flexibilidad energética (eje E1) de la comunidad inteligente heterogénea de Iquitos.
 
-HE20.- El algoritmo MADRL no impacta de manera estadísticamente significativa en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E2.
+HE20. Los algoritmos HAPPO, MASAC, MATD3 y MAAC no producen efectos diferenciales estadísticamente significativos sobre las emisiones de CO₂ (eje E2) de la comunidad inteligente heterogénea de Iquitos.
 
-HE21.- El algoritmo MADRL impacta de manera estadísticamente significativa en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E2.
+HE21. Al menos uno de los algoritmos HAPPO, MASAC, MATD3 y MAAC produce un efecto diferencial estadísticamente significativo sobre las emisiones de CO₂ (eje E2) de la comunidad inteligente heterogénea de Iquitos.
 
-HE30.-El algoritmo MADRL no impacta de manera estadísticamente significativa en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y no existen diferencias significativas entre los algoritmos evaluados en el escenario E3.
+HE30. Los algoritmos HAPPO, MASAC, MATD3 y MAAC no producen efectos diferenciales estadísticamente significativos sobre los costos energéticos (eje E3) de la comunidad inteligente heterogénea de Iquitos.
 
-HE31.-El algoritmo MADRL impacta de manera estadísticamente significativa en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y existen diferencias significativas entre los algoritmos evaluados en el escenario E3.
+HE31. Al menos uno de los algoritmos HAPPO, MASAC, MATD3 y MAAC produce un efecto diferencial estadísticamente significativo sobre los costos energéticos (eje E3) de la comunidad inteligente heterogénea de Iquitos.
 
 #### 1.3.2.3 Resumen de contrastación (Cap. 5)
 
 | Hipótesis | Decisión (KPI-gains Capa A, α = 0,05; omnibus principal = Friedman pareado) | Líder descriptivo |
 |---|---|---|
-| **H0G / H1G** | Se rechaza H0G y se respalda H1G **exploratoriamente** (Friedman χ² = 9,2911, p = 0,0096; Kendall W = 0,1787); sin ganador global único | MAAC (score E1–E3) / MATD3 (mediana KPI / score 0,6667) |
+| **H0G / H1G** | Se rechaza H0G y se respalda H1G (Friedman χ² = 9,2911, p = 0,0096; Kendall W = 0,1787); sin ganador global único | MAAC (score E1–E3) / MATD3 (mediana KPI / score 0,6667) |
 | **HE10 / HE11** | No se rechaza HE10; no se respalda HE11 (Friedman p = 0,0611; KW exploratorio p = 0,4685) | **MAAC** (E1) |
 | **HE20 / HE21** | No se rechaza HE20; no se respalda HE21 (Friedman p = 0,0498 sin impacto vs cero ni post hoc Holm; KW exploratorio p = 0,7648) | **MATD3** (E2) |
 | **HE30 / HE31** | No se rechaza HE30; no se respalda HE31 (Friedman p = 0,1801; KW exploratorio p = 0,7357) | **MAAC** (E3) |

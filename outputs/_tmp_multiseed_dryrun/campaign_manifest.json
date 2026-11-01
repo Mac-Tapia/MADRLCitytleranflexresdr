@@ -1,0 +1,1300 @@
+{
+  "generated_at": "2026-08-08T15:49:22.584599+00:00",
+  "campaign": "citylearn_v3_madrl_multiseed",
+  "n_seeds": 12,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "algorithms": [
+    "HAPPO",
+    "MASAC",
+    "MATD3",
+    "MAAC"
+  ],
+  "scenarios": [
+    "E1",
+    "E2",
+    "E3"
+  ],
+  "episodes": 50,
+  "expected_jobs": 144,
+  "formula": "4 algorithms x 3 scenarios x N seeds",
+  "output_root": "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+  "layout_note": "seed 0 -> ALGO/E*; seed k>0 -> ALGO/E*_sk (normalize_scenario_dir)",
+  "mode": "dry_run",
+  "jobs": [
+    {
+      "id": 1,
+      "seed": 0,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 2,
+      "seed": 0,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 3,
+      "seed": 0,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 4,
+      "seed": 0,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 5,
+      "seed": 0,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 6,
+      "seed": 0,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 7,
+      "seed": 0,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 8,
+      "seed": 0,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 9,
+      "seed": 0,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 10,
+      "seed": 0,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 11,
+      "seed": 0,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 12,
+      "seed": 0,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 13,
+      "seed": 1,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 14,
+      "seed": 1,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 15,
+      "seed": 1,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 16,
+      "seed": 1,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 17,
+      "seed": 1,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 18,
+      "seed": 1,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 19,
+      "seed": 1,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 20,
+      "seed": 1,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 21,
+      "seed": 1,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 22,
+      "seed": 1,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 23,
+      "seed": 1,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 24,
+      "seed": 1,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 25,
+      "seed": 2,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 26,
+      "seed": 2,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 27,
+      "seed": 2,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 28,
+      "seed": 2,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 29,
+      "seed": 2,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 30,
+      "seed": 2,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 31,
+      "seed": 2,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 32,
+      "seed": 2,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 33,
+      "seed": 2,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 34,
+      "seed": 2,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 35,
+      "seed": 2,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 36,
+      "seed": 2,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 37,
+      "seed": 3,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 38,
+      "seed": 3,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 39,
+      "seed": 3,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 40,
+      "seed": 3,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 41,
+      "seed": 3,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 42,
+      "seed": 3,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 43,
+      "seed": 3,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 44,
+      "seed": 3,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 45,
+      "seed": 3,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 46,
+      "seed": 3,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 47,
+      "seed": 3,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 48,
+      "seed": 3,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 49,
+      "seed": 4,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 50,
+      "seed": 4,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 51,
+      "seed": 4,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 52,
+      "seed": 4,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 53,
+      "seed": 4,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 54,
+      "seed": 4,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 55,
+      "seed": 4,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 56,
+      "seed": 4,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 57,
+      "seed": 4,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 58,
+      "seed": 4,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 59,
+      "seed": 4,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 60,
+      "seed": 4,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 61,
+      "seed": 5,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 62,
+      "seed": 5,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 63,
+      "seed": 5,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 64,
+      "seed": 5,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 65,
+      "seed": 5,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 66,
+      "seed": 5,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 67,
+      "seed": 5,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 68,
+      "seed": 5,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 69,
+      "seed": 5,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 70,
+      "seed": 5,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 71,
+      "seed": 5,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 72,
+      "seed": 5,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 73,
+      "seed": 6,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 74,
+      "seed": 6,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 75,
+      "seed": 6,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 76,
+      "seed": 6,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 77,
+      "seed": 6,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 78,
+      "seed": 6,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 79,
+      "seed": 6,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 80,
+      "seed": 6,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 81,
+      "seed": 6,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 82,
+      "seed": 6,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 83,
+      "seed": 6,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 84,
+      "seed": 6,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 85,
+      "seed": 7,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 86,
+      "seed": 7,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 87,
+      "seed": 7,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 88,
+      "seed": 7,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 89,
+      "seed": 7,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 90,
+      "seed": 7,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 91,
+      "seed": 7,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 92,
+      "seed": 7,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 93,
+      "seed": 7,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 94,
+      "seed": 7,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 95,
+      "seed": 7,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 96,
+      "seed": 7,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 97,
+      "seed": 8,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 98,
+      "seed": 8,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 99,
+      "seed": 8,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 100,
+      "seed": 8,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 101,
+      "seed": 8,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 102,
+      "seed": 8,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 103,
+      "seed": 8,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 104,
+      "seed": 8,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 105,
+      "seed": 8,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 106,
+      "seed": 8,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 107,
+      "seed": 8,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 108,
+      "seed": 8,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 109,
+      "seed": 9,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 110,
+      "seed": 9,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 111,
+      "seed": 9,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 112,
+      "seed": 9,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 113,
+      "seed": 9,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 114,
+      "seed": 9,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 115,
+      "seed": 9,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 116,
+      "seed": 9,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 117,
+      "seed": 9,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 118,
+      "seed": 9,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 119,
+      "seed": 9,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 120,
+      "seed": 9,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 121,
+      "seed": 10,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 122,
+      "seed": 10,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 123,
+      "seed": 10,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 124,
+      "seed": 10,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 125,
+      "seed": 10,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 126,
+      "seed": 10,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 127,
+      "seed": 10,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 128,
+      "seed": 10,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 129,
+      "seed": 10,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 130,
+      "seed": 10,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 131,
+      "seed": 10,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 132,
+      "seed": 10,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 133,
+      "seed": 11,
+      "algorithm": "HAPPO",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 134,
+      "seed": 11,
+      "algorithm": "HAPPO",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 135,
+      "seed": 11,
+      "algorithm": "HAPPO",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 136,
+      "seed": 11,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 137,
+      "seed": 11,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 138,
+      "seed": 11,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 139,
+      "seed": 11,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 140,
+      "seed": 11,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 141,
+      "seed": 11,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "n_episodes": 50
+    },
+    {
+      "id": 142,
+      "seed": 11,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "n_episodes": 50
+    },
+    {
+      "id": 143,
+      "seed": 11,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "n_episodes": 50
+    },
+    {
+      "id": 144,
+      "seed": 11,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "n_episodes": 50
+    }
+  ],
+  "seed_runs": [
+    {
+      "seed": 0,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "0",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 1,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "1",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 2,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "2",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 3,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "3",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 4,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "4",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 5,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "5",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 6,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "6",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 7,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "7",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 8,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "8",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 9,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "9",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 10,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "10",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    },
+    {
+      "seed": 11,
+      "command": [
+        "C:\\Python314\\python.exe",
+        "D:\\MADRLCitytleranflexresdr\\CityLearn\\scripts\\colab_a100_official_launcher.py",
+        "--scenario",
+        "ALL",
+        "--seed",
+        "11",
+        "--episodes",
+        "50",
+        "--output-root",
+        "D:\\MADRLCitytleranflexresdr\\outputs\\_tmp_multiseed_dryrun",
+        "--skip-completed",
+        "--start-from-algorithm",
+        "happo",
+        "--dry-run"
+      ],
+      "status": "dry_run",
+      "returncode": null
+    }
+  ]
+}

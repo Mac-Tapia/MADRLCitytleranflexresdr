@@ -129,9 +129,9 @@ def verify_reward_profiles() -> None:
     data = json.loads(read_text("CityLearn/configs/citylearn_v3_madrl_training.json"))
     reward_text = read_text("CityLearn/citylearn/reward_function.py")
     expected_axis = {
-        "E1": {"flex": 0.70, "carbon": 0.15, "cost": 0.15},
-        "E2": {"flex": 0.15, "carbon": 0.70, "cost": 0.15},
-        "E3": {"flex": 0.25, "carbon": 0.15, "cost": 0.60},
+        "E1": {"flex": 0.60, "carbon": 0.15, "cost": 0.25},
+        "E2": {"flex": 0.25, "carbon": 0.60, "cost": 0.15},
+        "E3": {"flex": 0.15, "carbon": 0.25, "cost": 0.60},
     }
     expected_profile = {
         "team_reward_ratio": 0.70,
@@ -149,6 +149,24 @@ def verify_reward_profiles() -> None:
         "ev_idle_deficit_weight": 0.25,
     }
     require(data["reward"]["axis_weights"] == expected_axis, "reward axis weights must match the validated multi-objective scenarios")
+    require(
+        data["reward"].get("weighting_method") == "compensatory_hierarchical_weighted_sum",
+        "reward weighting method must identify the compensatory hierarchy",
+    )
+    require(
+        data["reward"].get("hierarchy_levels")
+        == {"primary": 0.60, "secondary": 0.25, "residual": 0.15},
+        "reward hierarchy levels must match the validated primary/secondary/residual design",
+    )
+    require(
+        data["reward"].get("priority_order")
+        == {
+            "E1": ["flex", "cost", "carbon"],
+            "E2": ["carbon", "flex", "cost"],
+            "E3": ["cost", "carbon", "flex"],
+        },
+        "reward priority order must be cyclically balanced across E1/E2/E3",
+    )
     require("def _ev_service_constraint_term" in reward_text, "reward function must include reinforced EV SOC service constraint")
     require('-abs(self.weights["soc_under"] ** 2)' in reward_text, "severe EV SOC deficit must remain a negative penalty")
     require("bess_cycle_weight" in reward_text, "reward function must include unified_comparable_v4 BESS cycle penalty")

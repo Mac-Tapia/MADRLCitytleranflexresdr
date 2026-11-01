@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import math
 from datetime import datetime, timezone
@@ -12,7 +13,8 @@ from scipy import stats
 
 
 REPO = Path(__file__).resolve().parents[2]
-RUN_ID = "madrl_v3_20260627_164047"
+DEFAULT_RUN_ID = "madrl_v3_20260627_164047"
+RUN_ID = DEFAULT_RUN_ID
 STATS_DIR = (
     REPO
     / "outputs"
@@ -28,20 +30,22 @@ OUT_DIR = STATS_DIR / "problemas_objetivos_hipotesis"
 ALPHA = 0.05
 ALGORITHMS = ["MAAC", "MASAC", "MATD3"]
 EXPECTED_ALGORITHMS = ["HAPPO", "MAAC", "MASAC", "MATD3"]
+# Formulaciones alineadas a docs/tesis_capitulos/Capitulo_1_PG_PE_OE_H_EXACTO.md
 TARGETS = {
     "OE1": {
         "scenario": "E1",
         "dimension": "Flexibilidad energética",
         "problem": (
-            "PE.1: ¿En qué medida el algoritmo MADRL impacta en la flexibilidad "
-            "energética en comunidades inteligentes de la ciudad de Iquitos, y "
-            "cuál de los algoritmos presenta el mejor desempeño en el escenario E1?"
+            "PE.1: ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC "
+            "producen efectos diferenciales sobre la flexibilidad energética "
+            "(eje E1) y cuál presenta el mejor desempeño en la comunidad "
+            "inteligente heterogénea de Iquitos?"
         ),
         "objective": (
-            "OE.1: Determinar el impacto de los algoritmos MADRLs en la "
-            "flexibilidad energética en comunidades inteligentes de la ciudad de "
-            "Iquitos e identificar cuál de los algoritmos presenta el mejor "
-            "desempeño en el escenario E1."
+            "OE.1: Determinar y cuantificar los efectos diferenciales de los "
+            "algoritmos HAPPO, MASAC, MATD3 y MAAC sobre la flexibilidad "
+            "energética (eje E1) e identificar el algoritmo de mejor desempeño "
+            "en la comunidad inteligente heterogénea de Iquitos."
         ),
         "h0": "HE10",
         "h1": "HE11",
@@ -50,15 +54,16 @@ TARGETS = {
         "scenario": "E2",
         "dimension": "Emisiones de CO₂",
         "problem": (
-            "PE.2: ¿En qué medida el algoritmo MADRL impacta en las emisiones de "
-            "CO₂ en comunidades inteligentes de la ciudad de Iquitos, y cuál de "
-            "los algoritmos presenta el mejor desempeño en el escenario E2?"
+            "PE.2: ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC "
+            "producen efectos diferenciales sobre las emisiones de CO₂ (eje E2) "
+            "y cuál presenta el mejor desempeño en la comunidad inteligente "
+            "heterogénea de Iquitos?"
         ),
         "objective": (
-            "OE.2: Determinar el impacto de los algoritmos MADRLs en las emisiones "
-            "de CO₂ en comunidades inteligentes de la ciudad de Iquitos e "
-            "identificar cuál de los algoritmos presenta el mejor desempeño en el "
-            "escenario E2."
+            "OE.2: Determinar y cuantificar los efectos diferenciales de los "
+            "algoritmos HAPPO, MASAC, MATD3 y MAAC sobre las emisiones de CO₂ "
+            "(eje E2) e identificar el algoritmo de mejor desempeño en la "
+            "comunidad inteligente heterogénea de Iquitos."
         ),
         "h0": "HE20",
         "h1": "HE21",
@@ -67,20 +72,33 @@ TARGETS = {
         "scenario": "E3",
         "dimension": "Costos energéticos",
         "problem": (
-            "PE.3: ¿En qué medida el algoritmo MADRL impacta en los costos "
-            "energéticos en comunidades inteligentes de la ciudad de Iquitos, y "
-            "cuál de los algoritmos presenta el mejor desempeño en el escenario E3?"
+            "PE.3: ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC "
+            "producen efectos diferenciales sobre los costos energéticos "
+            "(eje E3) y cuál presenta el mejor desempeño en la comunidad "
+            "inteligente heterogénea de Iquitos?"
         ),
         "objective": (
-            "OE.3: Determinar el impacto de los algoritmos MADRLs en los costos "
-            "energéticos en comunidades inteligentes de la ciudad de Iquitos e "
-            "identificar cuál de los algoritmos presenta el mejor desempeño en el "
-            "escenario E3."
+            "OE.3: Determinar y cuantificar los efectos diferenciales de los "
+            "algoritmos HAPPO, MASAC, MATD3 y MAAC sobre los costos energéticos "
+            "(eje E3) e identificar el algoritmo de mejor desempeño en la "
+            "comunidad inteligente heterogénea de Iquitos."
         ),
         "h0": "HE30",
         "h1": "HE31",
     },
 }
+
+
+def configure_paths(run_root: Path) -> None:
+    """Reasigna rutas globales al OUTPUT_ROOT del notebook / campaña."""
+    global RUN_ID, STATS_DIR, SCORES_CSV, EPISODE_CSV, SCENARIO_SCORES_CSV, OUT_DIR
+    run_root = run_root.resolve()
+    RUN_ID = run_root.name
+    STATS_DIR = run_root / "resumen_comparativo" / "estadistica"
+    SCORES_CSV = STATS_DIR / "scores_kpi_algoritmo_madrl.csv"
+    EPISODE_CSV = STATS_DIR / "descriptivo_distrito_colab.csv"
+    SCENARIO_SCORES_CSV = STATS_DIR / "scenario_scores_colab.csv"
+    OUT_DIR = STATS_DIR / "problemas_objetivos_hipotesis"
 
 
 def holm_adjust(p_values: list[float]) -> list[float]:
@@ -588,16 +606,20 @@ def build_decisions(
         {
             "scope": "GLOBAL",
             "problem": (
-                "PG: ¿En qué medida los algoritmos MADRLs impactan en la gestión "
-                "coordinada de la flexibilidad energética, las emisiones de CO₂ y "
-                "los costos energéticos en comunidades inteligentes de la ciudad "
-                "de Iquitos, y cuál presenta el mejor desempeño a nivel global?"
+                "PG: ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC "
+                "producen efectos diferenciales en la coordinación energética "
+                "multiobjetivo de una comunidad inteligente heterogénea de "
+                "Iquitos, considerando la flexibilidad energética, las emisiones "
+                "de CO₂ y los costos energéticos, y cuál presenta el mejor "
+                "desempeño global?"
             ),
             "objective": (
-                "OG: Determinar el impacto de los algoritmos MADRLs en la gestión "
-                "coordinada de la flexibilidad energética, las emisiones de CO₂ y "
-                "los costos energéticos en comunidades inteligentes de la ciudad "
-                "de Iquitos, e identificar el mejor desempeño global."
+                "OG: Determinar y cuantificar los efectos diferenciales de los "
+                "algoritmos HAPPO, MASAC, MATD3 y MAAC en la coordinación "
+                "energética multiobjetivo de una comunidad inteligente "
+                "heterogénea de Iquitos, considerando la flexibilidad energética, "
+                "las emisiones de CO₂ y los costos energéticos, e identificar el "
+                "algoritmo de mejor desempeño global."
             ),
             "null_hypothesis": "H0G",
             "alternative_hypothesis": "H1G",
@@ -805,7 +827,45 @@ def write_markdown(
     )
 
 
-def main() -> None:
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Capa A Cap.5: Shapiro → Friedman+Kendall W + Wilcoxon/Holm "
+            "(principal) sobre KPI-gains vs baseline evaluate_v2."
+        )
+    )
+    parser.add_argument(
+        "--run-root",
+        default=None,
+        help=(
+            "OUTPUT_ROOT del entrenamiento (p.ej. outputs/madrl_v3_...). "
+            f"Default: outputs/{DEFAULT_RUN_ID}"
+        ),
+    )
+    return parser.parse_args()
+
+
+def _atomic_to_csv(df: pd.DataFrame, path: Path) -> None:
+    """Escritura atómica (tmp + replace) — evita OSError errno 22 en Windows/sync."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    df.to_csv(tmp, index=False)
+    tmp.replace(path)
+
+
+def main(run_root: Path | None = None) -> None:
+    if run_root is None:
+        args = parse_args()
+        if args.run_root:
+            root = Path(args.run_root)
+            if not root.is_absolute():
+                root = (REPO / root).resolve()
+            configure_paths(root)
+        else:
+            configure_paths(REPO / "outputs" / DEFAULT_RUN_ID)
+    else:
+        configure_paths(Path(run_root))
+
     for path in (SCORES_CSV, EPISODE_CSV, SCENARIO_SCORES_CSV):
         if not path.exists():
             raise FileNotFoundError(path)
@@ -827,24 +887,14 @@ def main() -> None:
         build_decisions(descriptive, omnibus, impact, scenario_scores)
     )
 
-    descriptive.to_csv(
-        OUT_DIR / "descriptivos_kpi_gains_por_problema.csv", index=False
-    )
-    episode.to_csv(
-        OUT_DIR / "descriptivos_episodicos_contexto.csv", index=False
-    )
-    shapiro.to_csv(OUT_DIR / "normalidad_shapiro_por_problema.csv", index=False)
-    omnibus.to_csv(
-        OUT_DIR / "pruebas_omnibus_problemas_objetivos.csv", index=False
-    )
-    impact.to_csv(OUT_DIR / "impacto_vs_baseline_wilcoxon.csv", index=False)
-    mwu.to_csv(OUT_DIR / "comparaciones_mwu_holm_problemas.csv", index=False)
-    paired.to_csv(
-        OUT_DIR / "comparaciones_wilcoxon_pareado_holm.csv", index=False
-    )
-    decisions.to_csv(
-        OUT_DIR / "decisiones_problemas_objetivos_hipotesis.csv", index=False
-    )
+    _atomic_to_csv(descriptive, OUT_DIR / "descriptivos_kpi_gains_por_problema.csv")
+    _atomic_to_csv(episode, OUT_DIR / "descriptivos_episodicos_contexto.csv")
+    _atomic_to_csv(shapiro, OUT_DIR / "normalidad_shapiro_por_problema.csv")
+    _atomic_to_csv(omnibus, OUT_DIR / "pruebas_omnibus_problemas_objetivos.csv")
+    _atomic_to_csv(impact, OUT_DIR / "impacto_vs_baseline_wilcoxon.csv")
+    _atomic_to_csv(mwu, OUT_DIR / "comparaciones_mwu_holm_problemas.csv")
+    _atomic_to_csv(paired, OUT_DIR / "comparaciones_wilcoxon_pareado_holm.csv")
+    _atomic_to_csv(decisions, OUT_DIR / "decisiones_problemas_objetivos_hipotesis.csv")
     write_markdown(
         decisions, descriptive, omnibus, impact, scenario_scores
     )
@@ -853,6 +903,14 @@ def main() -> None:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "run_id": RUN_ID,
         "alpha": ALPHA,
+        "protocol": (
+            "Shapiro-Wilk → Friedman pareado + Kendall W + Wilcoxon/Holm "
+            "(principal); Kruskal-Wallis / Mann-Whitney U (exploratorio)"
+        ),
+        "baseline": (
+            "citylearn_v2.evaluate_v2 sobre el mismo schema Iquitos "
+            "citylearn_iquitos_2023_2025 que el entrenamiento MADRL"
+        ),
         "source_scores": str(SCORES_CSV),
         "source_episode_descriptives": str(EPISODE_CSV),
         "target_filters": {

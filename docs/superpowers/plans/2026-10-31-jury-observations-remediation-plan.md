@@ -12,6 +12,14 @@
 
 **Spec Kit slice:** `SPEC-009 — Levantamiento de observaciones del jurado`.
 
+## Conciliación de estado — 2026-10-31
+
+Ver [SPEC-000–010 y pendientes](../../../specs/STATUS.md). Smokes, integridad
+de artefactos y preparación Colab no cierran las observaciones J-01–J-17.
+Conservar por separado correcciones documentales, validaciones analíticas y
+`pending_experiment`; faltan campaña aceptada y evidencia integral del jurado.
+No acreditar ejecución RED ni commits históricos por una edición documental.
+
 ## Global Constraints
 
 - El DOCX del jurado es entrada de solo lectura.

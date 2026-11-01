@@ -1,0 +1,2 @@
+absolute_net_energy_total,carbon_emissions_total,electricity_cost_total,episode,grid_import_total,return_per_cost,return_per_grid_import,return_per_kgco2,return_total,steps
+2138.6986288428307,1747.5619526803493,1138.847514897585,0,2138.6986288428307,-0.0785642861319586,-0.04183513320410841,-0.051198609516448716,-89.47274202108383,8

@@ -99,18 +99,31 @@
 
 ## G. Metodología y estadística aplicada
 
-- Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A., & Bengio, Y. (2021). Deep reinforcement learning at the edge of the statistical precipice. *Advances in Neural Information Processing Systems, 34*, 29304-29320. https://proceedings.neurips.cc/paper/2021/hash/f514cec81cb148559cf475e7426eed5e-Abstract.html
+- Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A., & Bellemare, M. G. (2021). Deep reinforcement learning at the edge of the statistical precipice. *Advances in Neural Information Processing Systems, 34*, 29304–29320. https://proceedings.neurips.cc/paper/2021/hash/f514cec81cb148559cf475e7426eed5e-Abstract.html
 - Arias, J. L. (2020). *Proyecto de tesis: Guía para la elaboración* (7.a ed.). Depósito Legal en la Biblioteca Nacional del Perú.
+- Casagrande, V. (2024). *Learning-based and distributed model predictive control architectures for resilient microgrid energy management* [Doctoral thesis, University College London]. UCL Discovery. https://discovery.ucl.ac.uk/id/eprint/10187385/
+- Charbonnier, F. (2023). *Multi-agent reinforcement learning for the coordination of residential energy flexibility* [Doctoral thesis, University of Oxford]. Oxford University Research Archive. https://doi.org/10.5287/ora-ovzyxredj
 - Campbell, D. T., & Stanley, J. C. (1963). *Experimental and quasi-experimental designs for research*. Houghton Mifflin.
 - Creswell, J. W., & Creswell, J. D. (2023). *Research design: Qualitative, quantitative, and mixed methods approaches* (6.ª ed.). SAGE Publications.
 - Demsar, J. (2006). Statistical comparisons of classifiers over multiple data sets. *Journal of Machine Learning Research, 7*, 1-30. https://jmlr.org/papers/v7/demsar06a.html
 - Hernández-Sampieri, R., & Mendoza, C. (2018). *Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta*. McGraw-Hill.
+- Henderson, P., Islam, R., Bachman, P., Pineau, J., Precup, D., & Meger, D. (2018). Deep reinforcement learning that matters. *Proceedings of the AAAI Conference on Artificial Intelligence, 32*(1). https://doi.org/10.1609/aaai.v32i1.11694
 - Hesse, H. C., Schimpe, M., Kucevic, D., & Jossen, A. (2017). Lithium-ion battery storage for the grid: A review of stationary battery storage system design tailored for applications in modern electric power grids. *Energies, 10*(12), 2107. https://doi.org/10.3390/en10122107
 - Holmgren, W. F., Hansen, C. W., & Mikofski, M. A. (2018). pvlib python: A python package for modeling solar energy systems. *Journal of Open Source Software, 3*(29), 884. https://doi.org/10.21105/joss.00884
 - Little, J. D. C. (1961). A proof for the queueing formula: L = lambda W. *Operations Research, 9*(3), 383-387. https://doi.org/10.1287/opre.9.3.383
 - National Aeronautics and Space Administration. (2024). *NASA POWER Data Access Viewer*. https://power.larc.nasa.gov/
 - Shadish, W. R., Cook, T. D., & Campbell, D. T. (2002). *Experimental and quasi-experimental designs for generalized causal inference*. Houghton Mifflin.
+- Smart Grid Interoperability Panel–Smart Grid Cybersecurity Committee. (2014). *Guidelines for smart grid cybersecurity* (NISTIR 7628 Rev. 1). National Institute of Standards and Technology. https://doi.org/10.6028/NIST.IR.7628r1
+- Sun, Y., Zhang, S., Liu, M., Zheng, R., & Dong, S. (2024). Energy management based on safe multi-agent reinforcement learning for smart buildings in distribution networks. *Energy and Buildings, 318*, 114410. https://doi.org/10.1016/j.enbuild.2024.114410
 - Tamayo y Tamayo, M. (2004). *El proceso de la investigación científica* (4.a ed.). Limusa.
+
+## H. Optimización multiobjetivo y jerarquías de preferencia
+
+- Huy, T. H. B., Dinh, H. T., & Kim, D. (2023). Multi-objective framework for a home energy management system with the integration of solar energy and an electric vehicle using an augmented ε-constraint method and lexicographic optimization. *Sustainable Cities and Society, 88*, 104289. https://doi.org/10.1016/j.scs.2022.104289
+- Jiménez Perdomo, J. E., & González Escobar, R. S. (2024). *Modelo multiobjetivo para la gestión de energía en generadores fotovoltaicos conectados en redes de distribución considerando indicadores técnicos, económicos y ambientales* [Trabajo de grado, Universidad Distrital Francisco José de Caldas]. Repositorio Institucional RIUD. http://hdl.handle.net/11349/42554
+- Lu, J., Mannion, P., & Mason, K. (2022). A multi-objective multi-agent deep reinforcement learning approach to residential appliance scheduling. *IET Smart Grid, 5*(4), 260–280. https://doi.org/10.1049/stg2.12068
+- Mayanti, B., Songok, J., & Helo, P. (2021). Multi-objective optimization to improve energy, economic and environmental life cycle assessment in waste-to-energy plant. *Waste Management, 127*, 147–157. https://doi.org/10.1016/j.wasman.2021.04.042
+- Tostado-Véliz, M., Gurung, S., & Jurado, F. (2022). Efficient solution of many-objective home energy management systems. *International Journal of Electrical Power & Energy Systems, 136*, 107666. https://doi.org/10.1016/j.ijepes.2021.107666
 
 
 ---

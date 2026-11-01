@@ -12,6 +12,16 @@
 
 **Spec Kit slices covered:** `SPEC-006` and `SPEC-007`.
 
+## Conciliación de estado — 2026-10-31
+
+Ver [SPEC-000–010 y pendientes](../../../specs/STATUS.md). Normalizar skills
+y roles no equivale a promover evidencia de tesis. Instalar instrucciones o
+validar su estructura no acredita mejor rendimiento ni cierra APA, render,
+§3.1.3 o experimentos. Tareas sin entregables/verificación siguen abiertas;
+RED y commits históricos no se marcan retrospectivamente sin evidencia.
+
+El corte de skills se materializó en [SPEC-007](../../../specs/007-local-agent-harness/spec.md): siete skills externos y cuatro propios, registro con hashes/licencias, validación bidireccional, perfiles Claude y descubrimiento local. Nombres propios con prefijo `madrl-` para delimitar el ámbito; sustituyen las rutas genéricas previstas en Task 6, sin instalar duplicados globales. Nueve pruebas de skills y tres de SPEC/panel pasan en este corte. Invocación real en ambos clientes, eficiencia medida, migración de cuatro skills heredados (no cinco), decisión del hook Stop y la puerta integral de tesis siguen pendientes.
+
 ## Global Constraints
 
 - Mantener exactamente los dos DOCX canónicos declarados en `docs/workflow_manifest.json`; no crear terceros permanentes.

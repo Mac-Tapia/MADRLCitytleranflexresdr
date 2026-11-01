@@ -1,0 +1,92 @@
+{
+  "completed_episode_count_from_timeseries": 2,
+  "episode_summaries": [
+    {
+      "episode": 0,
+      "first_global_step": 0,
+      "last_all_done": true,
+      "last_episode_step": 7,
+      "last_global_step": 7,
+      "last_time_step": 7,
+      "reward_mean_average": -0.6578878089785576,
+      "reward_sum_total": -89.47274202108383,
+      "steps": 8
+    }
+  ],
+  "expected_episode_time_steps": 8,
+  "expected_episodes": 1,
+  "expected_timeseries_row_options": [
+    7,
+    8
+  ],
+  "expected_timeseries_rows": 8,
+  "last_timeseries_row": {
+    "algorithm": "MATD3",
+    "all_done": true,
+    "carbon_intensity_mean": 0.7586429715156555,
+    "district_net_electricity_consumption": 1022.6378108859062,
+    "district_net_electricity_consumption_cost": 544.550096064806,
+    "district_net_electricity_consumption_emission": 820.6937685906887,
+    "district_net_electricity_consumption_without_storage": 1207.7627769708633,
+    "electricity_price_mean": 0.5324955582618713,
+    "episode": 0,
+    "episode_step": 7,
+    "global_step": 7,
+    "reset_count": 1,
+    "reward_axis_weights": {
+      "carbon": 0.15,
+      "cost": 0.25,
+      "flex": 0.6
+    },
+    "reward_function": "CityLearnV3MADRLRewardFunction",
+    "reward_mean": -0.6764997839927673,
+    "reward_profile": "matd3_unified_comparable_v4",
+    "reward_sum": -11.500496327877045,
+    "scenario": "E1",
+    "time_step": 7
+  },
+  "objective_report_values": {
+    "carbon_emissions": 8.680388414064751,
+    "electricity_cost": 0.6362029768896288,
+    "ev_charge_total": 6.186065673828125,
+    "ev_departure_count": 0.0,
+    "ev_departure_success_rate": null,
+    "grid_import_baseline": 7405.734069824219,
+    "grid_import_control": 4711.549977242947,
+    "pv_export_total": 0.0,
+    "pv_generation_total": 0.0,
+    "ramping_average": 4.371630798144308
+  },
+  "report_source": {
+    "adapter_algorithm": "MATD3",
+    "adapter_class": "CityLearnV3BackendAdapter",
+    "candidate_class": "CityLearnOffPolicyVecEnv",
+    "completed_episode_count": 2,
+    "episode_time_steps": 8,
+    "last_completed_episode": 0,
+    "last_completed_global_step": 7,
+    "last_completed_time_step": 7,
+    "last_recorded_all_done": true,
+    "last_recorded_episode": 0,
+    "last_recorded_episode_step": 7,
+    "last_recorded_global_step": 7,
+    "last_recorded_time_step": 7,
+    "objective_env_class": "CityLearnDecPOMDPEnv",
+    "snapshot_error": null,
+    "timeseries_rows": 8,
+    "trace_rows": 136,
+    "type": "last_completed_episode_snapshot"
+  },
+  "status": "ok",
+  "timeseries_rows": 8,
+  "trace_rows": 136,
+  "training_trace_totals": {
+    "ev_charge_kwh": 0.0,
+    "ev_v2g_export_kwh": 0.0,
+    "grid_export_kwh": 83.57798838615417,
+    "grid_import_kwh": 2222.276617228985,
+    "pv_export_kwh": 0.0,
+    "pv_generation_kwh": 0.0
+  },
+  "warnings": []
+}

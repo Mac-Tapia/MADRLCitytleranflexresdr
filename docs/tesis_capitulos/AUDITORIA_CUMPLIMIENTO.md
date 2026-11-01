@@ -130,9 +130,9 @@ Leyenda: **SÍ** · **NO** · **NO VERIFICABLE**
 | γ (descuento) corrida v4 | 0.9999 | `official_full_status.json` jobs → `--gamma 0.9999` | **SÍ** |
 | Episodios corrida v4 | 5 × 8 760 = 43 800 pasos | `official_full_status.json` → `episodes: 5`, `num_env_steps: 43800` | **SÍ** |
 | Episodios canónicos objetivo | 50 × 8 760 = 438 000 | `citylearn_v3_madrl_training.yaml` → `episodes: 50`, `num_env_steps: 438000`; notebook celda 6.1 | **SÍ** |
-| Pesos recompensa E1 | 0.70 / 0.15 / 0.15 | `citylearn_v3_madrl_training.yaml` → `reward.axis_weights.E1` | **SÍ** |
-| Pesos recompensa E2 | 0.15 / 0.70 / 0.15 | Idem `E2` | **SÍ** |
-| Pesos recompensa E3 | 0.25 / 0.15 / 0.60 | Idem `E3` | **SÍ** |
+| Pesos recompensa E1 | 0.60 / 0.15 / 0.25 | `citylearn_v3_madrl_training.yaml` → `reward.axis_weights.E1` | **SÍ** |
+| Pesos recompensa E2 | 0.25 / 0.60 / 0.15 | Idem `E2` | **SÍ** |
+| Pesos recompensa E3 | 0.15 / 0.25 / 0.60 | Idem `E3` | **SÍ** |
 | team_reward_ratio | 0.70 | `reward_function.py` perfiles; YAML `profiles.*.team_reward_ratio: 0.70` | **SÍ** |
 | peak/ramp/ev weights | 0.45 / 0.35 / 0.25 | `reward_function.py`; YAML perfiles | **SÍ** |
 | 12/12 jobs exit_code=0 | Completada | `official_full_status.json` → `status: completed`, 12 jobs `exit_code: 0` | **SÍ** |

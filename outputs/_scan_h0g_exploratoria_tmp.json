@@ -1,0 +1,38 @@
+{
+  "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": [
+    {
+      "loc": "p24",
+      "text": "Esta tesis doctoral determina, mediante simulación computacional bajo diseño cuasiexperimental factorial 4×3, el efecto de cuatro algoritmos Multi-Agente de Aprendizaje por Refuerzo Profundo (MADRL) —HAPPO, MASAC, MATD3 y MAAC— sobre la gestión coordinada de flexibilidad energética, emisiones de CO₂ y costos en una comunidad inteligente del Sistema Eléctrico Aislado de Iquitos (SEAI). La formulación Dec-POMDP con CTDE se implementa sobre CityLearn v3 propuesto (17 edificios reales, 26 304 h, 185"
+    },
+    {
+      "loc": "p28",
+      "text": "This doctoral thesis determines the effect of four cooperative Multi-Agent Deep Reinforcement Learning (MADRL) algorithms (HAPPO, MASAC, MATD3, MAAC) under a Dec-POMDP/CTDE framework on a real 17-building CityLearn v3 dataset from Iquitos, Peru (quasi-experimental factorial design 4×3; canonical Drive run madrl_v3_20260627_164047, 50 episodes; HAPPO 49/50). Descriptive PE.1–PE.3 / OE.1–OE.3 answers: MATD3 leads flexibility (flex_composite E1 = 1.0009) and CO₂ (ΔCO₂ E2 = 23,070 kg); MAAC leads co"
+    },
+    {
+      "loc": "t79r3c2",
+      "text": "Ejecutada (HG no confirmada omnibus; H0G exploratoria Friedman)"
+    }
+  ],
+  "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": [
+    {
+      "loc": "p23",
+      "text": "El presente estudio determina el efecto de cuatro algoritmos MADRL (HAPPO, MASAC, MATD3 y MAAC) sobre la flexibilidad energética, las emisiones de CO₂ y los costos energéticos de una comunidad inteligente del Sistema Eléctrico Aislado de Iquitos, bajo diseño cuasiexperimental factorial 4×3 en CityLearn v3 (Dec-POMDP/CTDE). La evidencia proviene exclusivamente de la corrida canónica Drive madrl_v3_20260627_164047 (50 episodios; HAPPO 49/50) y de sus artefactos en outputs/ (resumen_comparativo, _d"
+    },
+    {
+      "loc": "p27",
+      "text": "This study determines the effect of four MADRL algorithms (HAPPO, MASAC, MATD3, MAAC) on energy flexibility, CO₂ emissions and energy costs in a smart community of the Iquitos Isolated Electric System under a 4×3 quasi-experimental design on CityLearn v3 (Dec-POMDP/CTDE). Evidence comes solely from canonical Drive run madrl_v3_20260627_164047 (50 episodes; HAPPO 49/50). Descriptively, MATD3 leads OE.1 (flex_composite=1.0009) and OE.2 (ΔCO₂=23,070 kg) with best_madrl 3×3 score 0.6667; MAAC leads "
+    },
+    {
+      "loc": "p28",
+      "text": "All evidence was recalculated exclusively from the real 50-episode results for each of the 12 treatments in run madrl_v3_20260627_164047: 600 episode rows, 668 district KPI values, 15,300 building KPI values and 204 building-behaviour summaries. Descriptively, MATD3 leads E1 (smallest flexibility deterioration, -0.0923%) and E2 (smallest CO2 increase, -0.4193%, +23,070 kgCO2), while MAAC leads E3 (smallest cost increase, -0.2675%). Inferentially (KPI-gains, Cap. 5.5), Kruskal–Wallis does not rej"
+    },
+    {
+      "loc": "p779",
+      "text": "OG. El ranking canónico best_madrl 3×3 identifica a MATD3 (score global 0,6667) como mejor desempeño coordinado descriptivo, con trade-off: MATD3 lidera OE.1/OE.2 y MAAC lidera OE.3. El ranking evaluate_v2 4/4 sitúa a MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000. TOPSIS/AHP en outputs/madrl_multicriteria_selection es medida multicriterio formal adicional (MAAC C* ≈ 0,9827 > MASAC 0,5656 > MATD3 0,3074) que apoya la determinación de OG/OE y el contraste multiobjetivo de HE, en converg"
+    },
+    {
+      "loc": "t67r1c1",
+      "text": "Rechazar H0G de forma exploratoria; respaldar H1G exploratoria (sin ganador único)"
+    }
+  ]
+}

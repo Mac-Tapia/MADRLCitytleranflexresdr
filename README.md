@@ -95,14 +95,14 @@ Hardware: RTX 4060 Laptop, 8,188 MiB VRAM, driver 560.94, PyTorch 2.8.0+cu126, C
 
 - **Penalidad degradacion BESS**: modelo LiFePO4 con ciclo Arrhenius. Penaliza C-rate alto durante carga/descarga de la bateria; incentiva ciclos suaves para prolongar vida util.
 - **Urgencia EV por SOC**: penalizacion proporcional al deficit de carga cuando el EV esta proximo a la hora de salida. Fuerza priorizacion de carga en ventana horaria restante.
-- Perfil activo: `*_unified_comparable_v4` con los mismos pesos de escenario que v3.
+- Perfil activo: `*_unified_comparable_v4`. Las nuevas ejecuciones usan la jerarquía compensatoria cíclica 0.60/0.25/0.15; las corridas v3 históricas conservan sus pesos originales.
 
 ### Configuracion fija
 
 - Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 222 CSV activos auditados, 185 tomas EV Mode 3, 96 equipos fisicos doble toma, 1,850 EV en pool y 17 maquinas controladas).
 - EV/V2G validado: las 31 tomas de camioneta institucional/logistica son bidireccionales (`max_discharging_power=7.4 kW`, `power_flow_direction=bidirectional_v2g`); moto lineal y mototaxi quedan solo carga.
 - Entorno unico: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1).
-- Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v3`**: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. Pesos por escenario: E1=[0.70,0.15,0.15], E2=[0.15,0.70,0.15], E3=[0.25,0.15,0.60].
+- Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v4`**: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. Suma ponderada jerarquizada y compensatoria `[flex, carbon, cost]`: E1=[0.60,0.15,0.25], E2=[0.25,0.60,0.15], E3=[0.15,0.25,0.60].
 - Horizonte oficial para nuevas ejecuciones AWS/Docker: 75 episodios x 8760 pasos = 657 000 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
 - Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json`, `data/checkpoint_manifest.json`, `data/artifact_audit.json` y `figures/figures_manifest.json` por algoritmo/escenario.
 - Contrato de trazabilidad: `data/` es la fuente canónica por corrida; no se escriben espejos raíz ni `statistical_comparison/` salvo flags heredados explícitos. `live_progress.json` es transitorio y se elimina al finalizar correctamente.
@@ -294,9 +294,11 @@ Los cuatro MADRL usan `CityLearnV3MADRLRewardFunction`. La recompensa combina pe
 
 | Escenario | flex | carbon | cost |
 | --------- | ---: | -----: | ---: |
-| E1 | 0.70 | 0.15 | 0.15 |
-| E2 | 0.15 | 0.70 | 0.15 |
-| E3 | 0.25 | 0.15 | 0.60 |
+| E1 | 0.60 | 0.15 | 0.25 |
+| E2 | 0.25 | 0.60 | 0.15 |
+| E3 | 0.15 | 0.25 | 0.60 |
+
+El nivel 0.60 es una mayoría estricta frente a 0.25+0.15 y rota entre OE.1, OE.2 y OE.3. Es una escalarización lineal compensatoria; no es optimización lexicográfica/preemptiva.
 
 ## Contrato cooperativo Dec-POMDP/CTDE
 

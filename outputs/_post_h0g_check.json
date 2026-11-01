@@ -1,0 +1,24 @@
+{
+  "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+    "key_paras": {
+      "p24": "Esta tesis doctoral determina, mediante simulación computacional bajo diseño cuasiexperimental factorial 4×3, el efecto de cuatro algoritmos Multi-Agente de Aprendizaje por Refuerzo Profundo (MADRL) —HAPPO, MASAC, MATD3 y MAAC— sobre la gestión coordinada de flexibilidad energética, emisiones de CO₂ y costos en una comunidad inteligente del Sistema Eléctrico Aislado de Iquitos (SEAI). La formulación Dec-POMDP con CTDE se implementa sobre CityLearn v3 propuesto (17 edificios reales, 26 304 h, 185",
+      "p28": "This doctoral thesis determines the effect of four cooperative Multi-Agent Deep Reinforcement Learning (MADRL) algorithms (HAPPO, MASAC, MATD3, MAAC) under a Dec-POMDP/CTDE framework on a real 17-building CityLearn v3 dataset from Iquitos, Peru (quasi-experimental factorial design 4×3; canonical Drive run madrl_v3_20260627_164047, 50 episodes; HAPPO 49/50). Descriptive PE.1–PE.3 / OE.1–OE.3 answers: MATD3 leads flexibility (flex_composite E1 = 1.0009) and CO₂ (ΔCO₂ E2 = 23,070 kg); MAAC leads co",
+      "p703": "Decisión HG. Se rechaza H0G. Se respalda H1G (efectos diferenciales agregados sin ganador único). El respaldo de H1G no implica la conjunción HE11 ∧ HE21 ∧ HE31.",
+      "p704": "Limitación metodológica. La unidad experimental es semilla única (seed = 0); los episodios de una sola corrida no constituyen réplicas experimentales independientes ni habilitan robustez multisemilla."
+    },
+    "residuals": [],
+    "kw_all": []
+  },
+  "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+    "key_paras": {
+      "p23": "El presente estudio determina el efecto de cuatro algoritmos MADRL (HAPPO, MASAC, MATD3 y MAAC) sobre la flexibilidad energética, las emisiones de CO₂ y los costos energéticos de una comunidad inteligente del Sistema Eléctrico Aislado de Iquitos, bajo diseño cuasiexperimental factorial 4×3 en CityLearn v3 (Dec-POMDP/CTDE). La evidencia proviene exclusivamente de la corrida canónica Drive madrl_v3_20260627_164047 (50 episodios; HAPPO 49/50) y de sus artefactos en outputs/ (resumen_comparativo, _d",
+      "p24": "La evidencia se recalculó exclusivamente con los resultados reales de los 50 episodios de cada uno de los 12 tratamientos de la corrida madrl_v3_20260627_164047. Se auditaron 600 filas episódicas, 668 KPI distritales, 15.300 KPI por edificio y 204 resúmenes de comportamiento. En el plano descriptivo, MATD3 lidera E1 (menor deterioro de flexibilidad, -0,0923 %) y E2 (menor aumento de CO₂, -0,4193 %, +23 070 kgCO₂), y MAAC lidera E3 (menor incremento de costo, -0,2675 %). En el plano inferencial (",
+      "p27": "This study determines the effect of four MADRL algorithms (HAPPO, MASAC, MATD3, MAAC) on energy flexibility, CO₂ emissions and energy costs in a smart community of the Iquitos Isolated Electric System under a 4×3 quasi-experimental design on CityLearn v3 (Dec-POMDP/CTDE). Evidence comes solely from canonical Drive run madrl_v3_20260627_164047 (50 episodes; HAPPO 49/50). Descriptively, MATD3 leads OE.1 (flex_composite=1.0009) and OE.2 (ΔCO₂=23,070 kg) with best_madrl 3×3 score 0.6667; MAAC leads ",
+      "p28": "All evidence was recalculated exclusively from the real 50-episode results for each of the 12 treatments in run madrl_v3_20260627_164047: 600 episode rows, 668 district KPI values, 15,300 building KPI values and 204 building-behaviour summaries. Descriptively, MATD3 leads E1 (smallest flexibility deterioration, -0.0923%) and E2 (smallest CO2 increase, -0.4193%, +23,070 kgCO2), while MAAC leads E3 (smallest cost increase, -0.2675%). Inferentially (KPI-gains, Cap. 5.5), Kruskal–Wallis does not rej",
+      "p752": "Decisión HG. Se rechaza H0G. Se respalda H1G (efectos diferenciales agregados sin ganador único). El respaldo de H1G no implica la conjunción HE11 ∧ HE21 ∧ HE31.",
+      "p753": "Limitación metodológica. La unidad experimental es semilla única (seed = 0); los episodios de una sola corrida no constituyen réplicas experimentales independientes ni habilitan robustez multisemilla."
+    },
+    "residuals": [],
+    "kw_all": []
+  }
+}

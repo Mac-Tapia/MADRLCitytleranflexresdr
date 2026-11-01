@@ -1,0 +1,6 @@
+## Sección 7: Lanzamiento oficial recuperable
+
+Orquestador único (`colab_a100_official_launcher.py`, protocolo `two_phase_happo_masac_v3`):
+**Fase1** HAPPO+MASAC → **Fase2** MATD3+MAAC, 12 jobs, `official_full_status.json` / manifest, checkpoint/resume y monitor visible.
+
+Defaults: `N_EPISODES=50`, `LAUNCH_FULL_TRAINING=True` en **7.2**. Celdas **2.2/2.3** no forman parte de este lanzamiento.

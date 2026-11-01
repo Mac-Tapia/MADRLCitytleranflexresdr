@@ -1,0 +1,12 @@
+{
+  "output_root": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047",
+  "stats_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica",
+  "scores_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\scores_kpi_algoritmo_madrl.csv",
+  "scenario_scores_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\scenario_scores_colab.csv",
+  "descriptivo_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\descriptivo_distrito_colab.csv",
+  "capa_a_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\problemas_objetivos_hipotesis",
+  "pe_answers_audit": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\pe_answers_audit.json",
+  "decisions_csv": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\problemas_objetivos_hipotesis\\decisiones_problemas_objetivos_hipotesis.csv",
+  "seed": 0,
+  "generated_at": "2026-08-08T16:02:11.267344+00:00"
+}

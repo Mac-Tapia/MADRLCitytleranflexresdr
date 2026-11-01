@@ -12,6 +12,14 @@
 
 **Spec Kit slices covered:** `SPEC-002` and `SPEC-005`.
 
+## Conciliación de estado — 2026-10-31
+
+Ver [SPEC-000–010 y pendientes](../../../specs/STATUS.md). Dominio, catálogo,
+Pareto y sensibilidad dry-run existen; campaña y aceptación estadística siguen
+pendientes. El backend rechaza políticas no soportadas: generar la rejilla
+no implica poder entrenarla. La matriz del simulador no equivale a aprendizaje
+real 4×3. No se acreditan RED/commits históricos por existir código actual.
+
 ## Global Constraints
 
 - E1=`[0.60,0.15,0.25]`, E2=`[0.25,0.60,0.15]`, E3=`[0.15,0.25,0.60]` en orden flexibilidad, CO2, costo.

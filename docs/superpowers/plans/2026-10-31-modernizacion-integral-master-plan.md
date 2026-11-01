@@ -10,6 +10,15 @@
 
 **Spec:** `docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md`
 
+## Conciliación de estado — 2026-10-31
+
+Ver [SPEC-000–010 y pendientes](../../../specs/STATUS.md), índice común de los
+cinco planes y del monitor local añadido. Hay cortes de código implementados,
+pero la aceptación integral sigue parcial/bloqueada: licencias, campaña,
+reanudación exacta, reportes, tesis/jurado y mejor modelo no están cerrados.
+No marcar todos los planes completos ni reconstruir RED/commits históricos
+desconocidos. La preparación Colab no demuestra ejecución en un runtime real.
+
 ## Global Constraints
 
 - Trabajar solo en `D:\MADRLCitytleranflexresdr`; nunca leer ni modificar `D:\madrl_lima`.

@@ -278,7 +278,7 @@ def insert_block(doc: Document, anchor: Paragraph) -> list[str]:
         load_district_rank_rows(),
         "Tabla 5.4.5a. Ranking distrital por escenario (menor KPI primario = mejor).",
         "Nota. E1: flex_composite; E2: carbon_emissions_delta (kg); "
-        "E3: electricity_cost_delta (EUR). Fuente: all_core_kpis_wide.csv.",
+        "E3: electricity_cost_delta (USD). Fuente: all_core_kpis_wide.csv.",
     )
     actions.append("table_district")
 

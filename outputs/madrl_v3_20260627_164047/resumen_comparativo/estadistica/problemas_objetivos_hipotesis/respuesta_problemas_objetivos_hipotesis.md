@@ -6,9 +6,9 @@ Alcance: análisis exploratorio de una sola semilla. HAPPO conserva episodios de
 
 ## OE1 / E1 — Flexibilidad energética
 
-**Problema.** PE.1: ¿En qué medida el algoritmo MADRL impacta en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E1?
+**Problema.** PE.1: ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC producen efectos diferenciales sobre la flexibilidad energética (eje E1) y cuál presenta el mejor desempeño en la comunidad inteligente heterogénea de Iquitos?
 
-**Objetivo.** OE.1: Determinar el impacto de los algoritmos MADRLs en la flexibilidad energética en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E1.
+**Objetivo.** OE.1: Determinar y cuantificar los efectos diferenciales de los algoritmos HAPPO, MASAC, MATD3 y MAAC sobre la flexibilidad energética (eje E1) e identificar el algoritmo de mejor desempeño en la comunidad inteligente heterogénea de Iquitos.
 
 | Algoritmo | n KPI | Media | Mediana | Mejorados | No mejorados |
 |---|---:|---:|---:|---:|---:|
@@ -26,9 +26,9 @@ Alcance: análisis exploratorio de una sola semilla. HAPPO conserva episodios de
 
 ## OE2 / E2 — Emisiones de CO₂
 
-**Problema.** PE.2: ¿En qué medida el algoritmo MADRL impacta en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E2?
+**Problema.** PE.2: ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC producen efectos diferenciales sobre las emisiones de CO₂ (eje E2) y cuál presenta el mejor desempeño en la comunidad inteligente heterogénea de Iquitos?
 
-**Objetivo.** OE.2: Determinar el impacto de los algoritmos MADRLs en las emisiones de CO₂ en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E2.
+**Objetivo.** OE.2: Determinar y cuantificar los efectos diferenciales de los algoritmos HAPPO, MASAC, MATD3 y MAAC sobre las emisiones de CO₂ (eje E2) e identificar el algoritmo de mejor desempeño en la comunidad inteligente heterogénea de Iquitos.
 
 | Algoritmo | n KPI | Media | Mediana | Mejorados | No mejorados |
 |---|---:|---:|---:|---:|---:|
@@ -46,9 +46,9 @@ Alcance: análisis exploratorio de una sola semilla. HAPPO conserva episodios de
 
 ## OE3 / E3 — Costos energéticos
 
-**Problema.** PE.3: ¿En qué medida el algoritmo MADRL impacta en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál de los algoritmos presenta el mejor desempeño en el escenario E3?
+**Problema.** PE.3: ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC producen efectos diferenciales sobre los costos energéticos (eje E3) y cuál presenta el mejor desempeño en la comunidad inteligente heterogénea de Iquitos?
 
-**Objetivo.** OE.3: Determinar el impacto de los algoritmos MADRLs en los costos energéticos en comunidades inteligentes de la ciudad de Iquitos e identificar cuál de los algoritmos presenta el mejor desempeño en el escenario E3.
+**Objetivo.** OE.3: Determinar y cuantificar los efectos diferenciales de los algoritmos HAPPO, MASAC, MATD3 y MAAC sobre los costos energéticos (eje E3) e identificar el algoritmo de mejor desempeño en la comunidad inteligente heterogénea de Iquitos.
 
 | Algoritmo | n KPI | Media | Mediana | Mejorados | No mejorados |
 |---|---:|---:|---:|---:|---:|
@@ -66,9 +66,9 @@ Alcance: análisis exploratorio de una sola semilla. HAPPO conserva episodios de
 
 ## Problema general, objetivo general e hipótesis general
 
-**Problema.** PG: ¿En qué medida los algoritmos MADRLs impactan en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, y cuál presenta el mejor desempeño a nivel global?
+**Problema.** PG: ¿En qué medida los algoritmos HAPPO, MASAC, MATD3 y MAAC producen efectos diferenciales en la coordinación energética multiobjetivo de una comunidad inteligente heterogénea de Iquitos, considerando la flexibilidad energética, las emisiones de CO₂ y los costos energéticos, y cuál presenta el mejor desempeño global?
 
-**Objetivo.** OG: Determinar el impacto de los algoritmos MADRLs en la gestión coordinada de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes de la ciudad de Iquitos, e identificar el mejor desempeño global.
+**Objetivo.** OG: Determinar y cuantificar los efectos diferenciales de los algoritmos HAPPO, MASAC, MATD3 y MAAC en la coordinación energética multiobjetivo de una comunidad inteligente heterogénea de Iquitos, considerando la flexibilidad energética, las emisiones de CO₂ y los costos energéticos, e identificar el algoritmo de mejor desempeño global.
 
 | Algoritmo | Score medio E1-E3 | Desv. |
 |---|---:|---:|

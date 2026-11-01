@@ -34,7 +34,7 @@ SUBS: list[tuple[str, str]] = [
         "diferencias significativas (Friedman p=0,614935). En E2, MATD3 presentó el menor aumento "
         "de CO₂ (-0,4193 % de efecto favorable, equivalente a +23 070 kgCO₂), con diferencias "
         "entre algoritmos (p=1,461×10⁻⁸). En E3, MAAC registró el menor incremento de costo "
-        "(-0,2675 %, +18.978,30 EUR), sin diferencia global (p=0,109906).",
+        "(-0,2675 %, +18.978,30 USD), sin diferencia global (p=0,109906).",
         "En el plano descriptivo, MATD3 lidera E1 (menor deterioro de flexibilidad, -0,0923 %) "
         "y E2 (menor aumento de CO₂, -0,4193 %, +23 070 kgCO₂), y MAAC lidera E3 (menor "
         "incremento de costo, -0,2675 %). En el plano inferencial (KPI-gains, Cap. 5.5), "
@@ -47,7 +47,7 @@ SUBS: list[tuple[str, str]] = [
     (
         "MATD3 showed the smallest flexibility deterioration in E1 (-0.0923%; Friedman p=0.614935) "
         "and the smallest CO2 increase in E2 (-0.4193% favourable effect, 23,070 kgCO2; "
-        "p=1.461×10^-8). MAAC showed the smallest E3 cost increase (-0.2675%, +EUR 18,978.30; "
+        "p=1.461×10^-8). MAAC showed the smallest E3 cost increase (-0.2675%, +USD 18,978.30; "
         "p=0.109906).",
         "Descriptively, MATD3 leads E1 (smallest flexibility deterioration, -0.0923%) and E2 "
         "(smallest CO2 increase, -0.4193%, +23,070 kgCO2), while MAAC leads E3 (smallest cost "
@@ -77,8 +77,8 @@ SUBS: list[tuple[str, str]] = [
         "23,070 kgCO2; KPI-gains KW p=0.7648, Friedman p=0.0498)",
     ),
     (
-        "+EUR 18,978.30; p=0.109906)",
-        "+EUR 18,978.30; KPI-gains KW p=0.7357, Friedman p=0.1801)",
+        "+USD 18,978.30; p=0.109906)",
+        "+USD 18,978.30; KPI-gains KW p=0.7357, Friedman p=0.1801)",
     ),
 ]
 

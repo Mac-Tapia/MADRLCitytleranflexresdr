@@ -12,9 +12,9 @@ Cada escenario evalúa **todos los KPIs** del entorno CityLearn al final del epi
 
 | Escenario | OE | w_eje | KPI primario de evaluación | KPIs secundarios evaluados |
 | --------- | -- | :---: | -------------------------- | -------------------------- |
-| **E1** | OE.1 Flexibilidad | 0.70 | `peak_average` · `ramping_average` · `1−load_factor_average` | `carbon_emissions_total` · `electricity_cost_total` |
-| **E2** | OE.2 Emisiones CO₂ | 0.70 | `carbon_emissions_total` · `carbon_emissions_from_electrical_consumption` | `peak_average` · `electricity_cost_total` |
-| **E3** | OE.3 Costos | 0.60 | `electricity_cost_total` · `electricity_cost_from_electrical_consumption` | `peak_average` · `carbon_emissions_total` |
+| **E1** | OE.1 Flexibilidad | 0.60 | `peak_average` · `ramping_average` · `1−load_factor_average` | costo 0.25 · CO₂ 0.15 |
+| **E2** | OE.2 Emisiones CO₂ | 0.60 | `carbon_emissions_total` · `carbon_emissions_from_electrical_consumption` | flexibilidad 0.25 · costo 0.15 |
+| **E3** | OE.3 Costos | 0.60 | `electricity_cost_total` · `electricity_cost_from_electrical_consumption` | CO₂ 0.25 · flexibilidad 0.15 |
 
 > **Distinción crítica:** los KPIs de evaluación son los del entorno CityLearn (computados independientemente de la función de recompensa), no las componentes del reward. Esta separación garantiza comparabilidad entre escenarios aunque los pesos de entrenamiento sean distintos (Vázquez-Canteli et al., 2020; Nweye et al., 2024).
 

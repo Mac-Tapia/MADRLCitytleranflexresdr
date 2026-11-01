@@ -838,11 +838,11 @@ for algorithm in ["HAPPO", "MAAC", "MASAC", "MATD3"]:
 add_table_before(
     document,
     chapter_6_anchor,
-    ["Algoritmo", "Baseline EUR", "Control EUR", "Δ control−base", "Efecto favorable", "Rango"],
+    ["Algoritmo", "Baseline USD", "Control USD", "Δ control−base", "Efecto favorable", "Rango"],
     oe3_rows,
     "Tabla 5.6. Costos totales verificados y efecto en E3",
     (
-        "Nota. Todos los Δ son positivos. MAAC presenta el menor aumento absoluto (+18.978,30 EUR) "
+        "Nota. Todos los Δ son positivos. MAAC presenta el menor aumento absoluto (+18.978,30 USD) "
         "y porcentual (-0,2675 %), seguido de MASAC, MATD3 y HAPPO."
     ),
 )
@@ -1012,7 +1012,7 @@ hyp_rows = [
     ],
     [
         "OE.3 / HE30–HE31",
-        "MAAC; delta costo = 9 515 EUR (descriptivo)",
+        "MAAC; delta costo = 9 515 USD (descriptivo)",
         "KW H=0,6138; p=0,7357; Friedman chi2=3,4286; p=0,1801; W=0,1905",
         "No rechazar HE30; no respaldar HE31",
         "Cumplido descriptivamente",
@@ -1069,7 +1069,7 @@ add_paragraph_before(
     chapter_6_anchor,
     (
         "La evidencia por edificio revela heterogeneidad que el total distrital puede ocultar: HAPPO "
-        "mejoró el costo en 12 de 17 edificios de E3, pero el agregado aumentó 213.072,16 EUR; MATD3 "
+        "mejoró el costo en 12 de 17 edificios de E3, pero el agregado aumentó 213.072,16 USD; MATD3 "
         "mejoró CO₂ en 5 de 17 edificios de E2, pero el agregado aumentó 46.014,75 kgCO₂. Este resultado "
         "justifica conservar simultáneamente totales distritales, efectos relativos por edificio y "
         "pruebas pareadas."
@@ -1110,8 +1110,8 @@ add_paragraph_before(
     references_anchor,
     (
         "OE.3. Todos los costos totales aumentaron en E3. MAAC fue el mejor desempeño relativo con "
-        "+18.978,30 EUR (-0,2675 %), seguido de MASAC +39.477,42 EUR (-0,5555 %), MATD3 +88.556,08 "
-        "EUR (-0,9181 %) y HAPPO +213.072,16 EUR (-2,9778 %). En KPI-gains, KW p=0,7357 y Friedman p=0,1801. OE.3 se cumplió descriptivamente; no se rechazó HE30 ni se respaldó HE31."
+        "+18.978,30 USD (-0,2675 %), seguido de MASAC +39.477,42 USD (-0,5555 %), MATD3 +88.556,08 "
+        "USD (-0,9181 %) y HAPPO +213.072,16 USD (-2,9778 %). En KPI-gains, KW p=0,7357 y Friedman p=0,1801. OE.3 se cumplió descriptivamente; no se rechazó HE30 ni se respaldó HE31."
     ),
 )
 add_paragraph_before(

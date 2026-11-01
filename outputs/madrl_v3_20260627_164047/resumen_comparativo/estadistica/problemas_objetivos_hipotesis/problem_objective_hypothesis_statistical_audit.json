@@ -1,7 +1,9 @@
 {
-  "generated_at": "2026-07-28T23:29:22.558176+00:00",
+  "generated_at": "2026-08-08T16:02:11.180202+00:00",
   "run_id": "madrl_v3_20260627_164047",
   "alpha": 0.05,
+  "protocol": "Shapiro-Wilk → Friedman pareado + Kendall W + Wilcoxon/Holm (principal); Kruskal-Wallis / Mann-Whitney U (exploratorio)",
+  "baseline": "citylearn_v2.evaluate_v2 sobre el mismo schema Iquitos citylearn_iquitos_2023_2025 que el entrenamiento MADRL",
   "source_scores": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\scores_kpi_algoritmo_madrl.csv",
   "source_episode_descriptives": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047\\resumen_comparativo\\estadistica\\descriptivo_distrito_colab.csv",
   "target_filters": {

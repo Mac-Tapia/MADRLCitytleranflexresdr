@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-29T22:08:14.499121+00:00",
+  "generated_at": "2026-08-07T06:30:50.903521+00:00",
   "date_tag": "2026-07-29",
   "script": "tools/thesis/validate_integral_word_50ep_4madrl.py",
   "canon_policy": "docs/CANON_WORD_Y_VALIDEZ_50EP_DRIVE_2026-07-29.md",
@@ -79,18 +79,18 @@
     "tesis": {
       "name": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
-      "chars": 227879,
-      "paragraphs": 1274,
-      "tables": 83,
+      "chars": 201172,
+      "paragraphs": 860,
+      "tables": 63,
       "algo_counts": {
-        "HAPPO": 113,
-        "MASAC": 142,
-        "MATD3": 185,
-        "MAAC": 185
+        "HAPPO": 107,
+        "MASAC": 125,
+        "MATD3": 158,
+        "MAAC": 168
       },
-      "episode_50_mentions": 31,
+      "episode_50_mentions": 16,
       "episode_other_mentions": {
-        "5": 0,
+        "5": 1,
         "10": 0,
         "20": 0,
         "49": 0,
@@ -100,21 +100,21 @@
     "informe": {
       "name": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
-      "chars": 263978,
-      "paragraphs": 1418,
-      "tables": 72,
+      "chars": 244276,
+      "paragraphs": 1036,
+      "tables": 56,
       "algo_counts": {
-        "HAPPO": 126,
-        "MASAC": 148,
-        "MATD3": 181,
-        "MAAC": 193
+        "HAPPO": 124,
+        "MASAC": 132,
+        "MATD3": 162,
+        "MAAC": 180
       },
-      "episode_50_mentions": 28,
+      "episode_50_mentions": 17,
       "episode_other_mentions": {
-        "5": 0,
+        "5": 1,
         "10": 0,
         "20": 0,
-        "49": 2,
+        "49": 1,
         "100": 0
       }
     }
@@ -134,7 +134,7 @@
       "id": "exists_Tesis_Doctoral_MADRL_Cit",
       "category": "inventory",
       "status": "PASS",
-      "message": "Existe Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx (18707476 bytes)",
+      "message": "Existe Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx (19936832 bytes)",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": null,
       "found": null,
@@ -144,7 +144,7 @@
       "id": "exists_Inforne_tesisV4_FINAL_RE",
       "category": "inventory",
       "status": "PASS",
-      "message": "Existe Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx (18072041 bytes)",
+      "message": "Existe Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx (19300863 bytes)",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": null,
       "found": null,
@@ -174,10 +174,10 @@
       "id": "ep50_tesis",
       "category": "episodes",
       "status": "PASS",
-      "message": "31 menciones de '50 episodios'",
+      "message": "16 menciones de '50 episodios'",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "≥3 menciones de 50 episodios",
-      "found": "31",
+      "found": "16",
       "source": null
     },
     {
@@ -194,7 +194,7 @@
       "id": "algos_tesis",
       "category": "algorithms",
       "status": "PASS",
-      "message": "4 MADRL presentes: {'HAPPO': 113, 'MASAC': 142, 'MATD3': 185, 'MAAC': 185}",
+      "message": "4 MADRL presentes: {'HAPPO': 107, 'MASAC': 125, 'MATD3': 158, 'MAAC': 168}",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": null,
       "found": null,
@@ -227,7 +227,7 @@
       "message": "Ancla presente: flex_composite E1 MAAC=1.0124",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "1.0124",
-      "found": "l mejor flex_composite de distrito en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. In",
+      "found": " | Score OE1 (4/4) **MATD3** | **1,0009** | 1,0081 | 1,0012 | **1,0000** MAAC | 1,0124 | 1,0307 | 1,0110 | 0,8951 MASAC | 1,0286 | 1,0851 | 1,0220 | 0,7479 HAPPO | 1,",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -237,7 +237,7 @@
       "message": "Ancla presente: flex_composite E1 MASAC=1.0286",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "1.0286",
-      "found": "posite de distrito en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. Inferencialmente (",
+      "found": "| 1,0081 | 1,0012 | **1,0000** MAAC | 1,0124 | 1,0307 | 1,0110 | 0,8951 MASAC | 1,0286 | 1,0851 | 1,0220 | 0,7479 HAPPO | 1,1105 | 1,3903 | 1,0839 | 0,0000 Algoritmo ",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -247,7 +247,7 @@
       "message": "Ancla presente: flex_composite E1 HAPPO=1.1105",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "1.1105",
-      "found": "o en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. Inferencialmente (KPI-gains canónic",
+      "found": "24 | 1,0307 | 1,0110 | 0,8951 MASAC | 1,0286 | 1,0851 | 1,0220 | 0,7479 HAPPO | 1,1105 | 1,3903 | 1,0839 | 0,0000 Algoritmo | Media gain | Mediana gain | Mejorados / ",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -267,7 +267,7 @@
       "message": "Ancla presente: ΔCO₂ E2 MAAC kg=70654",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "70654",
-      "found": "mente, MATD3 obtiene el menor ΔCO₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wal",
+      "found": "s. En el plano físico de distrito, ΔCO₂ (kg; menor = mejor): MATD3 23 070; MAAC 70 654; MASAC 77 649; HAPPO 1 431 341. Un ΔCO₂ positivo no se interpreta como “reducci",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -277,7 +277,7 @@
       "message": "Ancla presente: ΔCO₂ E2 MASAC kg=77649",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "77649",
-      "found": "iene el menor ΔCO₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7648 (",
+      "found": " físico de distrito, ΔCO₂ (kg; menor = mejor): MATD3 23 070; MAAC 70 654; MASAC 77 649; HAPPO 1 431 341. Un ΔCO₂ positivo no se interpreta como “reducción” frente al ",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -287,7 +287,7 @@
       "message": "Ancla presente: ΔCO₂ E2 HAPPO kg=1431341",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "1431341",
-      "found": "₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7648 (HE20 no se rechaza; ",
+      "found": "trito, ΔCO₂ (kg; menor = mejor): MATD3 23 070; MAAC 70 654; MASAC 77 649; HAPPO 1 431 341. Un ΔCO₂ positivo no se interpreta como “reducción” frente al baseline. 5.4.4 P",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -307,7 +307,7 @@
       "message": "Ancla presente: Δcosto E3 MASAC EUR=19793",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "19793",
-      "found": "nte, MAAC obtiene el menor Δcosto de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Walli",
+      "found": "negativas. Δcosto distrito E3 (EUR; menor = mejor observado): MAAC 9 515; MASAC 19 793; MATD3 44 399; HAPPO 106 828. Se distingue menor costo observado de ahorro esta",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -317,7 +317,7 @@
       "message": "Ancla presente: Δcosto E3 MATD3 EUR=44399",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "44399",
-      "found": "e el menor Δcosto de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7357 (HE",
+      "found": "sto distrito E3 (EUR; menor = mejor observado): MAAC 9 515; MASAC 19 793; MATD3 44 399; HAPPO 106 828. Se distingue menor costo observado de ahorro estadísticamente d",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -327,7 +327,7 @@
       "message": "Ancla presente: Δcosto E3 HAPPO EUR=106828",
       "word": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
       "expected": "106828",
-      "found": " de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7357 (HE30 no se rechaza; ",
+      "found": "3 (EUR; menor = mejor observado): MAAC 9 515; MASAC 19 793; MATD3 44 399; HAPPO 106 828. Se distingue menor costo observado de ahorro estadísticamente demostrado. 5.5.",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -404,10 +404,10 @@
       "id": "ep50_informe",
       "category": "episodes",
       "status": "PASS",
-      "message": "28 menciones de '50 episodios'",
+      "message": "17 menciones de '50 episodios'",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "≥3 menciones de 50 episodios",
-      "found": "28",
+      "found": "17",
       "source": null
     },
     {
@@ -424,7 +424,7 @@
       "id": "algos_informe",
       "category": "algorithms",
       "status": "PASS",
-      "message": "4 MADRL presentes: {'HAPPO': 126, 'MASAC': 148, 'MATD3': 181, 'MAAC': 193}",
+      "message": "4 MADRL presentes: {'HAPPO': 124, 'MASAC': 132, 'MATD3': 162, 'MAAC': 180}",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": null,
       "found": null,
@@ -457,7 +457,7 @@
       "message": "Ancla presente: flex_composite E1 MAAC=1.0124",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "1.0124",
-      "found": "l mejor flex_composite de distrito en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. In",
+      "found": " | Score OE1 (4/4) **MATD3** | **1,0009** | 1,0081 | 1,0012 | **1,0000** MAAC | 1,0124 | 1,0307 | 1,0110 | 0,8951 MASAC | 1,0286 | 1,0851 | 1,0220 | 0,7479 HAPPO | 1,",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -467,7 +467,7 @@
       "message": "Ancla presente: flex_composite E1 MASAC=1.0286",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "1.0286",
-      "found": "posite de distrito en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. Inferencialmente (",
+      "found": "| 1,0081 | 1,0012 | **1,0000** MAAC | 1,0124 | 1,0307 | 1,0110 | 0,8951 MASAC | 1,0286 | 1,0851 | 1,0220 | 0,7479 HAPPO | 1,1105 | 1,3903 | 1,0839 | 0,0000 Algoritmo ",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -477,7 +477,7 @@
       "message": "Ancla presente: flex_composite E1 HAPPO=1.1105",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "1.1105",
-      "found": "o en E1 (1,0009; menor = mejor) frente a MAAC (1,0124), MASAC (1,0286) y HAPPO (1,1105); por mediana de KPI-gain el líder es MAAC. Inferencialmente (KPI-gains canónic",
+      "found": "24 | 1,0307 | 1,0110 | 0,8951 MASAC | 1,0286 | 1,0851 | 1,0220 | 0,7479 HAPPO | 1,1105 | 1,3903 | 1,0839 | 0,0000 Algoritmo | Media gain | Mediana gain | Mejorados / ",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -497,7 +497,7 @@
       "message": "Ancla presente: ΔCO₂ E2 MAAC kg=70654",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "70654",
-      "found": "mente, MATD3 obtiene el menor ΔCO₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wal",
+      "found": "s. En el plano físico de distrito, ΔCO₂ (kg; menor = mejor): MATD3 23 070; MAAC 70 654; MASAC 77 649; HAPPO 1 431 341. Un ΔCO₂ positivo no se interpreta como “reducci",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -507,7 +507,7 @@
       "message": "Ancla presente: ΔCO₂ E2 MASAC kg=77649",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "77649",
-      "found": "iene el menor ΔCO₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7648 (",
+      "found": " físico de distrito, ΔCO₂ (kg; menor = mejor): MATD3 23 070; MAAC 70 654; MASAC 77 649; HAPPO 1 431 341. Un ΔCO₂ positivo no se interpreta como “reducción” frente al ",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -517,7 +517,7 @@
       "message": "Ancla presente: ΔCO₂ E2 HAPPO kg=1431341",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "1431341",
-      "found": "₂ de distrito en E2 (23 070 kg) frente a MAAC (70 654), MASAC (77 649) y HAPPO (1 431 341). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7648 (HE20 no se rechaza; ",
+      "found": "trito, ΔCO₂ (kg; menor = mejor): MATD3 23 070; MAAC 70 654; MASAC 77 649; HAPPO 1 431 341. Un ΔCO₂ positivo no se interpreta como “reducción” frente al baseline. 5.4.4 P",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -537,7 +537,7 @@
       "message": "Ancla presente: Δcosto E3 MASAC EUR=19793",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "19793",
-      "found": "nte, MAAC obtiene el menor Δcosto de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Walli",
+      "found": "negativas. Δcosto distrito E3 (EUR; menor = mejor observado): MAAC 9 515; MASAC 19 793; MATD3 44 399; HAPPO 106 828. Se distingue menor costo observado de ahorro esta",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -547,7 +547,7 @@
       "message": "Ancla presente: Δcosto E3 MATD3 EUR=44399",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "44399",
-      "found": "e el menor Δcosto de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7357 (HE",
+      "found": "sto distrito E3 (EUR; menor = mejor observado): MAAC 9 515; MASAC 19 793; MATD3 44 399; HAPPO 106 828. Se distingue menor costo observado de ahorro estadísticamente d",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -557,7 +557,7 @@
       "message": "Ancla presente: Δcosto E3 HAPPO EUR=106828",
       "word": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
       "expected": "106828",
-      "found": " de distrito en E3 (9 515 EUR) frente a MASAC (19 793), MATD3 (44 399) y HAPPO (106 828). Inferencialmente (KPI-gains), Kruskal–Wallis p = 0,7357 (HE30 no se rechaza; ",
+      "found": "3 (EUR; menor = mejor observado): MAAC 9 515; MASAC 19 793; MATD3 44 399; HAPPO 106 828. Se distingue menor costo observado de ahorro estadísticamente demostrado. 5.5.",
       "source": "ranking_oe_scores_all_values.csv"
     },
     {
@@ -804,7 +804,7 @@
       "id": "cross_score_density",
       "category": "cross_word",
       "status": "PASS",
-      "message": "0,6667 en ambos (Tesis=11, Informe=8)",
+      "message": "0,6667 en ambos (Tesis=8, Informe=7)",
       "word": null,
       "expected": null,
       "found": null,

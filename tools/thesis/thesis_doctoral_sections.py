@@ -32,14 +32,15 @@ INVENTORY_CSV = MO_DIR / "building_inventory_multiobjective.csv"
 BL_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "citylearn_v2_baseline"
 STAT_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "estadistica"
 POH_DIR = STAT_DIR / "problemas_objetivos_hipotesis"
-HYP_CSV = STAT_DIR / "hipotesis_estadisticas_madrl.csv"
-ANALYSIS_CSV = STAT_DIR / "analisis_estadistico_madrl.csv"
+HYP_CSV = STAT_DIR / "hipotesis_estadisticas_madrl.csv"  # Capa B (no-HE / legacy)
+ANALYSIS_CSV = STAT_DIR / "analisis_estadistico_madrl.csv"  # Capa B (no-HE / legacy)
 # Capa A (canónica HE): no mezclar con analisis_estadistico_madrl.csv (Capa B poolada).
 POH_SHAPIRO_CSV = POH_DIR / "normalidad_shapiro_por_problema.csv"
 POH_OMNIBUS_CSV = POH_DIR / "pruebas_omnibus_problemas_objetivos.csv"
 POH_DECISIONES_CSV = POH_DIR / "decisiones_problemas_objetivos_hipotesis.csv"
 POH_MWU_CSV = POH_DIR / "comparaciones_mwu_holm_problemas.csv"
 POH_WC_CSV = POH_DIR / "comparaciones_wilcoxon_pareado_holm.csv"
+# HE/PE siempre leen Capa A cuando existe (sin fallback silencioso a B).
 MWU_CSV = POH_MWU_CSV if POH_MWU_CSV.is_file() else STAT_DIR / "comparaciones_mwu_madrl.csv"
 WC_CSV = POH_WC_CSV if POH_WC_CSV.is_file() else STAT_DIR / "comparaciones_wilcoxon_madrl.csv"
 DESCRIPTIVE_CSV = STAT_DIR / "descriptivo_distrito_colab.csv"
@@ -70,7 +71,7 @@ OE_EPISODE_SPECS = {
     "OE3": {
         "scenario": "E3",
         "metric": "district_cost",
-        "label": "costo distrital por episodio (EUR)",
+        "label": "costo distrital por episodio (USD)",
         "hypothesis": "HE.3",
         "fmt": ",.1f",
         "higher_better": False,
@@ -172,7 +173,7 @@ OE_DEFINITIONS = {
         "dimension": "costos energeticos",
         "weights": "[0,15; 0,15; 0,70]",
         "primary_kpis": [
-            ("electricity_cost_delta_eur", "Delta costo electrico (EUR)", ",.0f", True),
+            ("electricity_cost_delta_eur", "Delta costo electrico (USD)", ",.0f", True),
             ("flex_composite", "Flexibilidad compuesta (secundaria)", ".4f", True),
             ("peak_average", "Pico promedio", ".4f", True),
             ("ev_departure_success_rate", "Exito salida EV", ".1%", False),
@@ -220,7 +221,7 @@ def _antecedents_discussion_text() -> list[str]:
         ),
         (
             "Iqbal y Sha (2019) fundamentan MAAC con mejoras de ~15-30% frente a MADDPG/COMA. En "
-            "PE.3 (costos, E3), MAAC lidera (delta costo = 9 515 EUR), alineado con coordinacion "
+            "PE.3 (costos, E3), MAAC lidera (delta costo = 9 515 USD), alineado con coordinacion "
             "selectiva bajo senales TOU; este patron es consistente con Xie et al. (2023) sobre "
             "atencion para demand response, aunque la tesis no replica sus magnitudes (~25% DR) "
             "por diferencias de dataset y funcion de recompensa."
@@ -339,23 +340,28 @@ def add_dedicatoria_agradecimientos(doc, p, heading) -> None:
 
 
 def _resumen_inferential_snippet() -> tuple[str, str]:
-    og = _hyp_row_by_axis("OG")
-    kw_all = float(og.get("KW_p_value", 0.155)) if og else 0.155
+    """Snippet Resumen/Abstract from Capa A GLOBAL (Friedman principal; KW exploratorio)."""
+    global_row = _poh_decision_row("GLOBAL")
+    friedman_p = float(global_row.get("friedman_p", "nan")) if global_row else float("nan")
+    kw_p = float(global_row.get("kruskal_p", "nan")) if global_row else float("nan")
     wc = next(
         (
             r
             for r in _significant_wilcoxon_rows()
-            if r.get("scope") == "ALL" and r.get("algorithm_a") == "MASAC" and r.get("algorithm_b") == "MATD3"
+            if r.get("scope") == "GLOBAL"
+            and {r.get("algorithm_a"), r.get("algorithm_b")} == {"MAAC", "MASAC"}
         ),
         {},
     )
-    wc_p = float(wc.get("wilcoxon_p_value", 0.0049)) if wc else 0.0049
+    wc_p = float(wc.get("p_holm") or wc.get("p_value") or "nan") if wc else float("nan")
     es = (
-        f"(Kruskal-Wallis ALL p={kw_all:.3f}; Wilcoxon MASAC vs MATD3 p={wc_p:.4f})"
+        f"(Capa A GLOBAL: Friedman p={friedman_p:.4f}; Kruskal-Wallis exploratorio p={kw_p:.4f}"
+        + (f"; Wilcoxon–Holm MAAC–MASAC p={wc_p:.4f}" if wc else "")
+        + ")"
     )
     en = (
-        f"Kruskal-Wallis ALL p={kw_all:.3f} (not significant at alpha=0.05); "
-        f"Wilcoxon MASAC vs MATD3 p={wc_p:.4f}."
+        f"Capa A GLOBAL Friedman p={friedman_p:.4f}; exploratory Kruskal-Wallis p={kw_p:.4f}"
+        + (f"; Wilcoxon-Holm MAAC-MASAC p={wc_p:.4f}." if wc else ".")
     )
     return es, en
 
@@ -438,13 +444,36 @@ def _best_algo_by_kpi(rows: list[dict[str, str]], kpi: str, lower_better: bool =
     return best_algo, best_val
 
 
-def _hypothesis_row(oe_key: str) -> dict[str, str]:
-    rows = _read_csv(HYP_CSV)
-    axis = {"OE1": "OE1", "OE2": "OE2", "OE3": "OE3"}[oe_key]
-    for row in rows:
-        if row.get("axis") == axis:
+def _poh_decision_row(scope: str) -> dict[str, str]:
+    """Capa A decision row by scope (OE1/OE2/OE3/GLOBAL). No Capa B fallback for HE."""
+    if not POH_DECISIONES_CSV.is_file():
+        return {}
+    for row in _read_csv(POH_DECISIONES_CSV):
+        if row.get("scope") == scope:
             return row
     return {}
+
+
+def _hypothesis_row(oe_key: str) -> dict[str, str]:
+    """HE row from Capa A POH decisiones (compatible keys for PE builders)."""
+    scope = {"OE1": "OE1", "OE2": "OE2", "OE3": "OE3", "OE.1": "OE1", "OE.2": "OE2", "OE.3": "OE3"}.get(
+        oe_key, oe_key
+    )
+    poh = _poh_decision_row(scope)
+    if not poh:
+        return {}
+    # Compatibility aliases historically consumed from hipotesis_estadisticas_madrl.csv (Capa B).
+    return {
+        **poh,
+        "axis": scope,
+        "KW_H_statistic": poh.get("kruskal_h", ""),
+        "KW_p_value": poh.get("kruskal_p", ""),
+        "statistical_best_algorithm_by_median_gain": poh.get("descriptive_best_algorithm", ""),
+        "friedman_chi2": poh.get("friedman_chi2", ""),
+        "friedman_p": poh.get("friedman_p", ""),
+        "kendall_w": poh.get("kendall_w", ""),
+        "hypothesis_decision": poh.get("hypothesis_decision", ""),
+    }
 
 
 def _fmt_stat_num(value: float | str | None, fmt: str) -> str:
@@ -504,6 +533,7 @@ def _best_algo_descriptive(rows: list[dict], oe_key: str) -> str:
 
 
 def _analysis_row(scope: str) -> dict[str, str]:
+    """Legacy Capa B row lookup — not used for HE/PE veredicts."""
     if not ANALYSIS_CSV.is_file():
         return {}
     for row in _read_csv(ANALYSIS_CSV):
@@ -513,49 +543,28 @@ def _analysis_row(scope: str) -> dict[str, str]:
 
 
 def _shapiro_table_rows() -> list[list[str]]:
-    """Shapiro desde Capa A (problemas_objetivos_hipotesis/); fallback Capa B."""
+    """Shapiro desde Capa A (problemas_objetivos_hipotesis/) únicamente para HE."""
     rows: list[list[str]] = []
-    if POH_SHAPIRO_CSV.is_file():
-        for row in _read_csv(POH_SHAPIRO_CSV):
-            if (row.get("status") or "") == "datos insuficientes":
-                continue
-            scope = row.get("scope", "")
-            hyp, label = HYPOTHESIS_LABELS.get(scope, (scope, scope))
-            if scope == "GLOBAL":
-                hyp, label = ("HG", "Global (GLOBAL)")
-            p_val = row.get("p_value", "")
-            rejected = row.get("normality_rejected", "")
-            rows.append(
-                [
-                    label,
-                    hyp,
-                    row.get("algorithm", ""),
-                    _fmt_stat_num(p_val, ".4f") if p_val else "-",
-                    "Si" if str(rejected).lower() == "true" else "No",
-                ]
-            )
+    if not POH_SHAPIRO_CSV.is_file():
         return rows
-    for scope in ("OE1", "OE2", "OE3", "ALL"):
-        row = _analysis_row(scope)
-        if not row:
+    for row in _read_csv(POH_SHAPIRO_CSV):
+        if (row.get("status") or "") == "datos insuficientes":
             continue
+        scope = row.get("scope", "")
         hyp, label = HYPOTHESIS_LABELS.get(scope, (scope, scope))
-        for algo in ("MASAC", "MATD3", "MAAC", "HAPPO"):
-            p_key = f"shapiro_wilk_p_value_{algo}"
-            status = row.get(f"shapiro_wilk_status_{algo}", "")
-            if status == "no_data":
-                continue
-            p_val = row.get(p_key, "")
-            rejected = row.get(f"shapiro_wilk_normality_rejected_{algo}", "")
-            rows.append(
-                [
-                    label,
-                    hyp,
-                    algo,
-                    _fmt_stat_num(p_val, ".3e") if p_val else "-",
-                    "Si" if str(rejected).lower() == "true" else "No",
-                ]
-            )
+        if scope == "GLOBAL":
+            hyp, label = ("HG", "Global (GLOBAL)")
+        p_val = row.get("p_value", "")
+        rejected = row.get("normality_rejected", "")
+        rows.append(
+            [
+                label,
+                hyp,
+                row.get("algorithm", ""),
+                _fmt_stat_num(p_val, ".4f") if p_val else "-",
+                "Si" if str(rejected).lower() == "true" else "No",
+            ]
+        )
     return rows
 
 
@@ -594,22 +603,6 @@ def _kruskal_table_rows() -> list[list[str]]:
                 ]
             )
         return rows
-    for axis in ("OE1", "OE2", "OE3", "OG"):
-        hyp_row = next((r for r in _read_csv(HYP_CSV) if r.get("axis") == axis), {})
-        if not hyp_row:
-            continue
-        hyp, label = HYPOTHESIS_LABELS.get(axis, (axis, axis))
-        p_val = float(hyp_row.get("KW_p_value", "nan"))
-        rows.append(
-            [
-                label,
-                hyp,
-                _fmt_stat_num(hyp_row.get("KW_H_statistic"), ".3f"),
-                _fmt_stat_num(p_val, ".4f"),
-                "Si" if p_val < 0.05 else "No",
-                hyp_row.get("statistical_best_algorithm_by_median_gain", "-"),
-            ]
-        )
     return rows
 
 
@@ -656,18 +649,28 @@ def _wilcoxon_table_rows(scope_filter: str | None = None) -> list[list[str]]:
         scope = row.get("scope", "")
         if scope_filter and scope != scope_filter:
             continue
-        if not str(row.get("wilcoxon_status", "")).startswith("ok"):
-            continue
-        p_val = float(row.get("wilcoxon_p_value", "nan"))
+        # Capa A: p_holm / significant_holm; Capa B legacy: wilcoxon_status.
+        if "p_holm" in row:
+            p_val = float(row.get("p_holm", "nan"))
+            w_stat = row.get("w_statistic", "")
+            sig = str(row.get("significant_holm", "")).lower() == "true"
+        else:
+            if not str(row.get("wilcoxon_status", "")).startswith("ok"):
+                continue
+            p_val = float(row.get("wilcoxon_p_value", "nan"))
+            w_stat = row.get("wilcoxon_T_statistic", "")
+            sig = p_val < 0.05
         hyp, label = HYPOTHESIS_LABELS.get(scope, (scope, scope))
+        if scope == "GLOBAL":
+            hyp, label = ("HG", "Global (GLOBAL)")
         rows.append(
             [
                 label,
                 hyp,
                 f"{row.get('algorithm_a')} vs {row.get('algorithm_b')}",
-                _fmt_stat_num(row.get("wilcoxon_T_statistic"), ".1f"),
+                _fmt_stat_num(w_stat, ".1f"),
                 _fmt_stat_num(p_val, ".4f"),
-                "Si" if p_val < 0.05 else "No",
+                "Si" if sig else "No",
             ]
         )
     return rows
@@ -683,21 +686,26 @@ def _fmt_p_es(value: float | str | None, digits: int = 3) -> str:
 
 
 def _hyp_row_by_axis(axis: str) -> dict[str, str]:
-    for row in _read_csv(HYP_CSV):
-        if row.get("axis") == axis:
-            return row
-    return {}
+    """Map legacy OG/OE axes to Capa A scopes (GLOBAL/OE1/…)."""
+    scope = {"OG": "GLOBAL", "HG": "GLOBAL", "ALL": "GLOBAL"}.get(axis, axis)
+    return _hypothesis_row(scope)
 
 
 def _significant_wilcoxon_rows() -> list[dict[str, str]]:
     if not WC_CSV.is_file():
         return []
-    return [
-        row
-        for row in _read_csv(WC_CSV)
-        if row.get("wilcoxon_significant_alpha_0_05") == "True"
-        and str(row.get("wilcoxon_status", "")).startswith("ok")
-    ]
+    out: list[dict[str, str]] = []
+    for row in _read_csv(WC_CSV):
+        if "significant_holm" in row:
+            if str(row.get("significant_holm", "")).lower() == "true":
+                out.append(row)
+            continue
+        if (
+            row.get("wilcoxon_significant_alpha_0_05") == "True"
+            and str(row.get("wilcoxon_status", "")).startswith("ok")
+        ):
+            out.append(row)
+    return out
 
 
 def _kw_narrative_text() -> str:
@@ -772,7 +780,7 @@ def _hypothesis_decision_label(axis: str, kw_p: float, wc_n: int) -> str:
     if kw_p < 0.05:
         return "Confirmada (H0 rechazada, KW p<0,05)"
     if axis == "OE3":
-        tail = f"; lider descriptivo {desc_best} (Δcosto 9 515 EUR)"
+        tail = f"; lider descriptivo {desc_best} (Δcosto 9 515 USD)"
     else:
         tail = f"; lider descriptivo {desc_best}"
     if wc_n:
@@ -851,7 +859,7 @@ def _og_oe_verdict_text() -> str:
         "sentido de determinar el efecto coordinado del MADRL e identificar a MATD3 como mayor "
         "efecto integrado (score 0,6667), con trade-offs entre ejes. OE.1 cumplido: MATD3 "
         "(flex_composite = 1,0009). OE.2 cumplido: MATD3 (delta CO2 = 23 070 kg). OE.3 cumplido: "
-        "MAAC (delta costo = 9 515 EUR). Ningun objetivo exige por si mismo significancia "
+        "MAAC (delta costo = 9 515 USD). Ningun objetivo exige por si mismo significancia "
         "estadistica omnibus; los limites de inferencia causal (semilla unica seed=0; "
         "HAPPO con KPI-gains 4/4 peores y 49 ep) se declaran explicitamente. Las hipotesis "
         "HG y HE.1–HE.3 se resuelven solo en la seccion 5.9.5."
@@ -877,7 +885,7 @@ def _inferential_conclusion_text() -> str:
         "H0G se rechaza solo de forma exploratoria por Friedman (p = 0,0096; Kendall's W = 0,1787). "
         "Por tanto, HE11/HE21/HE31 no se respaldan con el diseno actual. "
         "La evidencia descriptiva identifica a MATD3 en flexibilidad y CO2, y a MAAC en costos "
-        "(Δcosto 9 515 EUR en E3), patron coherente con la literatura de atencion multiagente "
+        "(Δcosto 9 515 USD en E3), patron coherente con la literatura de atencion multiagente "
         "para optimizacion tarifaria (Iqbal y Sha, 2019; Xie et al., 2023). Cuando el ranking "
         "descriptivo difiere del contraste omnibus no significativo, la interpretacion debe "
         "priorizar intervalos y replicacion multi-semilla (Agarwal et al., 2021; Colas et al., "
@@ -906,21 +914,25 @@ def _pct_delta_vs_best(value: float, best: float) -> float:
 
 
 def _shapiro_rows_for_scope(scope: str) -> list[list[str]]:
-    row = _analysis_row(scope)
-    if not row:
+    """Shapiro rows for one OE scope from Capa A only."""
+    if not POH_SHAPIRO_CSV.is_file():
         return []
     hyp, label = HYPOTHESIS_LABELS.get(scope, (scope, scope))
     out: list[list[str]] = []
-    for algo in ("MASAC", "MATD3", "MAAC"):
-        p_key = f"shapiro_wilk_p_value_{algo}"
-        if row.get(f"shapiro_wilk_status_{algo}") == "no_data":
+    for row in _read_csv(POH_SHAPIRO_CSV):
+        if row.get("scope") != scope:
             continue
-        rejected = str(row.get(f"shapiro_wilk_normality_rejected_{algo}", "")).lower() == "true"
+        if (row.get("status") or "") == "datos insuficientes":
+            continue
+        algo = row.get("algorithm", "")
+        if algo not in ("MASAC", "MATD3", "MAAC"):
+            continue
+        rejected = str(row.get("normality_rejected", "")).lower() == "true"
         out.append(
             [
                 label,
                 algo,
-                _fmt_stat_num(row.get(p_key), ".3e"),
+                _fmt_stat_num(row.get("p_value"), ".3e"),
                 "Si" if rejected else "No",
             ]
         )
@@ -930,21 +942,48 @@ def _shapiro_rows_for_scope(scope: str) -> list[list[str]]:
 def _mwu_pairs_for_scope(scope: str) -> list[dict[str, str]]:
     if not MWU_CSV.is_file():
         return []
-    return [
-        row
-        for row in _read_csv(MWU_CSV)
-        if row.get("scope") == scope and row.get("mann_whitney_status") == "ok"
-    ]
+    out: list[dict[str, str]] = []
+    for row in _read_csv(MWU_CSV):
+        if row.get("scope") != scope:
+            continue
+        if "p_holm" in row:
+            out.append(row)
+            continue
+        if row.get("mann_whitney_status") == "ok":
+            out.append(row)
+    return out
 
 
 def _wilcoxon_pairs_for_scope(scope: str) -> list[dict[str, str]]:
     if not WC_CSV.is_file():
         return []
-    return [
-        row
-        for row in _read_csv(WC_CSV)
-        if row.get("scope") == scope and str(row.get("wilcoxon_status", "")).startswith("ok")
-    ]
+    out: list[dict[str, str]] = []
+    for row in _read_csv(WC_CSV):
+        if row.get("scope") != scope:
+            continue
+        if "p_holm" in row:
+            out.append(row)
+            continue
+        if str(row.get("wilcoxon_status", "")).startswith("ok"):
+            out.append(row)
+    return out
+
+
+def _pair_is_significant_holm(row: dict[str, str], *, legacy_flag: str, legacy_p_key: str) -> bool:
+    if "significant_holm" in row:
+        return str(row.get("significant_holm", "")).lower() == "true"
+    if row.get(legacy_flag) == "True":
+        return True
+    try:
+        return float(row.get(legacy_p_key, "nan")) < 0.05
+    except (TypeError, ValueError):
+        return False
+
+
+def _pair_p_display(row: dict[str, str], *, legacy_p_key: str) -> str:
+    if row.get("p_holm") not in (None, ""):
+        return str(row.get("p_holm"))
+    return str(row.get(legacy_p_key, ""))
 
 
 def build_pe_answer(pe_id: str, *, district: list[dict[str, str]] | None = None, report: dict | None = None) -> dict:
@@ -959,7 +998,6 @@ def build_pe_answer(pe_id: str, *, district: list[dict[str, str]] | None = None,
     district = district or _read_csv(DISTRICT_CSV)
     report = report or _read_json(BEST_REPORT)
     hyp_row = _hypothesis_row(oe_key)
-    analysis_row = _analysis_row(oe_key)
 
     scen_rows = _rows_for_scenario(district, scenario)
     best_algo, best_val = _best_algo_by_kpi(scen_rows, primary_kpi, lower_better=True)
@@ -994,11 +1032,24 @@ def build_pe_answer(pe_id: str, *, district: list[dict[str, str]] | None = None,
     kw_p = float(hyp_row.get("KW_p_value", "nan")) if hyp_row else float("nan")
     kw_h0_rejected = kw_p < 0.05
     best_median_gain = hyp_row.get("statistical_best_algorithm_by_median_gain", "-")
+    friedman_p = float(hyp_row.get("friedman_p", "nan")) if hyp_row else float("nan")
     sw_rows = _shapiro_rows_for_scope(oe_key)
     mwu_pairs = _mwu_pairs_for_scope(oe_key)
     wc_pairs = _wilcoxon_pairs_for_scope(oe_key)
-    wc_sig = [r for r in wc_pairs if r.get("wilcoxon_significant_alpha_0_05") == "True"]
-    mwu_sig = [r for r in mwu_pairs if r.get("mann_whitney_significant_alpha_0_05") == "True"]
+    wc_sig = [
+        r
+        for r in wc_pairs
+        if _pair_is_significant_holm(
+            r, legacy_flag="wilcoxon_significant_alpha_0_05", legacy_p_key="wilcoxon_p_value"
+        )
+    ]
+    mwu_sig = [
+        r
+        for r in mwu_pairs
+        if _pair_is_significant_holm(
+            r, legacy_flag="mann_whitney_significant_alpha_0_05", legacy_p_key="mann_whitney_p_value"
+        )
+    ]
 
     delta_text = "; ".join(
         f"{d['algorithm']} {d['formatted_delta']} ({d['formatted_pct']} vs {best_algo})"
@@ -1016,28 +1067,36 @@ def build_pe_answer(pe_id: str, *, district: list[dict[str, str]] | None = None,
 
     wc_sig_text = (
         ", ".join(
-            f"{r['algorithm_a']} vs {r['algorithm_b']} (p = {_fmt_p_es(r.get('wilcoxon_p_value'))}, "
-            f"mejor {r.get('better_by_median_difference', '-')})"
+            f"{r['algorithm_a']} vs {r['algorithm_b']} "
+            f"(p-Holm = {_fmt_p_es(_pair_p_display(r, legacy_p_key='wilcoxon_p_value'))}, "
+            f"mejor {r.get('better_by_median_difference', r.get('decision', '-'))})"
             for r in wc_sig
         )
         if wc_sig
-        else "ningún par significativo"
+        else "ningún par significativo tras Holm"
     )
     mwu_sig_text = (
         ", ".join(
-            f"{r['algorithm_a']} vs {r['algorithm_b']} (p = {_fmt_p_es(r.get('mann_whitney_p_value'))})"
+            f"{r['algorithm_a']} vs {r['algorithm_b']} "
+            f"(p-Holm = {_fmt_p_es(_pair_p_display(r, legacy_p_key='mann_whitney_p_value'))})"
             for r in mwu_sig
         )
         if mwu_sig
-        else "ningún par significativo"
+        else "ningún par significativo tras Holm"
+    )
+    friedman_note = (
+        f"; Friedman principal p = {_fmt_p_es(friedman_p)}"
+        if hyp_row.get("friedman_p")
+        else ""
     )
     inf_explicit = (
-        f"En qué medida inferencial: H0 de igualdad global entre algoritmos "
+        f"En qué medida inferencial (Capa A KPI-gains): H0 de igualdad global entre algoritmos "
         f"{'rechazada' if kw_h0_rejected else 'no rechazada'} "
-        f"(Kruskal-Wallis {spec['he']}, p = {_fmt_p_es(kw_p)}); el efecto entre algoritmos "
-        f"{'es' if kw_h0_rejected else 'no es'} estadísticamente distinguible al nivel omnibus "
+        f"(Kruskal-Wallis exploratorio {spec['he']}, p = {_fmt_p_es(kw_p)}{friedman_note}); "
+        f"el efecto entre algoritmos "
+        f"{'es' if kw_h0_rejected else 'no es'} estadísticamente distinguible al nivel omnibus KW "
         f"(alpha = 0,05). Shapiro-Wilk: normalidad rechazada en al menos un grupo "
-        f"({spec['he']}). Mann-Whitney U: {mwu_sig_text}. Wilcoxon pareado (exploratorio): "
+        f"({spec['he']}). Mann-Whitney U (Holm): {mwu_sig_text}. Wilcoxon pareado (Holm): "
         f"{wc_sig_text}. Mayor efecto por mediana KPI-gain: {best_median_gain}."
     )
 
@@ -1087,13 +1146,18 @@ def build_pe_answer(pe_id: str, *, district: list[dict[str, str]] | None = None,
                 "p_value": kw_p,
                 "h0_rejected": kw_h0_rejected,
             },
+            "friedman": {
+                "chi2": float(hyp_row.get("friedman_chi2", "nan")) if hyp_row else None,
+                "p_value": friedman_p,
+                "kendall_w": float(hyp_row.get("kendall_w", "nan")) if hyp_row else None,
+            },
             "best_median_kpi_gain": best_median_gain,
             "mann_whitney_significant": [
                 {
                     "pair": f"{r['algorithm_a']} vs {r['algorithm_b']}",
-                    "p_value": float(r.get("mann_whitney_p_value", "nan")),
-                    "better_by_median": r.get("better_by_median", "-"),
-                    "cliffs_delta": r.get("cliffs_delta", ""),
+                    "p_value": float(_pair_p_display(r, legacy_p_key="mann_whitney_p_value") or "nan"),
+                    "better_by_median": r.get("better_by_median", r.get("decision", "-")),
+                    "cliffs_delta": r.get("cliffs_delta_a_minus_b", r.get("cliffs_delta", "")),
                     "cohen_d": r.get("cohen_d", ""),
                 }
                 for r in mwu_sig
@@ -1101,8 +1165,8 @@ def build_pe_answer(pe_id: str, *, district: list[dict[str, str]] | None = None,
             "wilcoxon_significant": [
                 {
                     "pair": f"{r['algorithm_a']} vs {r['algorithm_b']}",
-                    "p_value": float(r.get("wilcoxon_p_value", "nan")),
-                    "better_by_median": r.get("better_by_median_difference", "-"),
+                    "p_value": float(_pair_p_display(r, legacy_p_key="wilcoxon_p_value") or "nan"),
+                    "better_by_median": r.get("better_by_median_difference", r.get("decision", "-")),
                 }
                 for r in wc_sig
             ],
@@ -1123,11 +1187,17 @@ def build_all_pe_answers(*, district: list[dict[str, str]] | None = None, report
         "sources": {
             "descriptivo_distrito_colab": str(DESCRIPTIVE_CSV),
             "district_episode_kpis": str(EPISODE_CSV),
-            "hipotesis_estadisticas_madrl": str(HYP_CSV),
-            "comparaciones_mwu_madrl": str(MWU_CSV),
-            "comparaciones_wilcoxon_madrl": str(WC_CSV),
+            "decisiones_problemas_objetivos_hipotesis": str(POH_DECISIONES_CSV),
+            "normalidad_shapiro_por_problema": str(POH_SHAPIRO_CSV),
+            "pruebas_omnibus_problemas_objetivos": str(POH_OMNIBUS_CSV),
+            "comparaciones_mwu_holm_problemas": str(MWU_CSV),
+            "comparaciones_wilcoxon_pareado_holm": str(WC_CSV),
             "best_madrl_report": str(BEST_REPORT),
-            "inferential_audit_report": str(STAT_DIR / "inferential_audit_report.json"),
+            "capa_he": "A",
+            "banned_for_he": [
+                str(HYP_CSV),
+                str(ANALYSIS_CSV),
+            ],
         },
         "answers": answers,
     }
@@ -1368,7 +1438,7 @@ def _add_per_algorithm_analysis_section(
             "ponderar contribuciones de agentes vecinos, lo que mejora escalabilidad en distritos "
             "grandes (Iqbal & Sha, 2019; Di Savino et al., 2025). En esta corrida, MAAC converge "
             "tempranamente (meseta ~episodio 4 en los tres escenarios) con baja varianza de "
-            "reward_mean y lidera OE.3 (delta costo = 9 515 EUR). Su debilidad relativa en CO2 "
+            "reward_mean y lidera OE.3 (delta costo = 9 515 USD). Su debilidad relativa en CO2 "
             "(70 654 kg) refleja trade-off multiobjetivo.",
         ),
         (
@@ -1457,7 +1527,7 @@ def _add_per_algorithm_analysis_section(
                 )
             add_table(
                 doc,
-                ["Esc.", "flex_composite", "Delta CO2 (kg)", "Delta costo (EUR)", "Exito EV", "Delta import."],
+                ["Esc.", "flex_composite", "Delta CO2 (kg)", "Delta costo (USD)", "Exito EV", "Delta import."],
                 kpi_rows,
                 caption=f"Tabla 5.4-{algo}. KPIs distritales por escenario ({algo}, corrida 50 ep).",
                 col_widths=[1.2, 2.2, 2.5, 2.5, 1.8, 2.0],
@@ -1733,8 +1803,8 @@ def add_chapter_6_doctoral(doc, p, heading, bullet, add_table) -> None:
     p(
         doc,
         "OE.3 (costos energeticos, D-VD.3, escenario E3): el algoritmo de mayor efecto es MAAC "
-        "(delta costo = 9 515 EUR; score OE.3 = 1,0000), frente a MATD3 (44 399 EUR) y MASAC "
-        "(19 793 EUR). Esta conclusion es independiente del score global y confirma trade-offs "
+        "(delta costo = 9 515 USD; score OE.3 = 1,0000), frente a MATD3 (44 399 USD) y MASAC "
+        "(19 793 USD). Esta conclusion es independiente del score global y confirma trade-offs "
         "entre objetivos.",
     )
     p(

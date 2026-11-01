@@ -1,0 +1,49 @@
+=== Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx
+cap5_headings=55
+494	5.1 Auditoría inicial de resultados
+503	5.1-bis Entrenamiento canónico (curvas y eficiencia)
+509	5.2 Criterio cuantitativo de efecto
+516	5.3 OE.1 — Flexibilidad energética (E1)
+520	5.3.1 Descriptivos
+524	5.3.2 Shapiro–Wilk
+528	5.3.3 Cambio frente a baseline
+530	5.3.4 Prueba inferencial frente a baseline
+534	5.3.5 Comparación entre HAPPO, MASAC, MATD3 y MAAC
+539	5.3.6 Tamaño del efecto
+541	5.3.7 Post hoc
+543	5.3.8 KPI distritales
+...
+639	5.6.2 TOPSIS (complementario; no es prueba de hipótesis)
+641	5.6.3 Inferencia GLOBAL (Capa A, n = 26)
+646	5.6.4 Decisión H0G / H1G
+649	5.7 Contrastación consolidada de hipótesis
+654	5.8 Discusión
+655	5.8.1 Triangulación con la literatura
+660	5.8.2 Limitaciones verificadas
+662	5.8.3 Auditoría de coherencia PG–OG–HG / PE–OE–HE
+majors_in_order=5.1 Auditoría inicia | 5.1-bis Entrenamient | 5.2 Criterio cuantit | 5.3 OE.1 — Flexibili | 5.3.1 Descriptivos | 5.3.2 Shapiro–Wilk | 5.3.3 Cambio frente  | 5.3.4 Prueba inferen | 5.3.5 Comparación en | 5.3.6 Tamaño del efe | 5.3.7 Post hoc | 5.3.8 KPI distritale | 5.3.9 Resultados de  | 5.3.10 BESS, EV/V2G  | 5.3.11 Identificació | 5.3.12 Respuesta OE. | 5.3.13 Decisión HE.1 | 5.4 OE.2 — Emisiones | 5.4.1 Descriptivos | 5.4.2 Shapiro–Wilk
+
+=== Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx
+cap5_headings=55
+543	5.1 Auditoría inicial de resultados
+552	5.1-bis Entrenamiento canónico (curvas y eficiencia)
+558	5.2 Criterio cuantitativo de efecto
+565	5.3 OE.1 — Flexibilidad energética (E1)
+569	5.3.1 Descriptivos
+573	5.3.2 Shapiro–Wilk
+577	5.3.3 Cambio frente a baseline
+579	5.3.4 Prueba inferencial frente a baseline
+583	5.3.5 Comparación entre HAPPO, MASAC, MATD3 y MAAC
+588	5.3.6 Tamaño del efecto
+590	5.3.7 Post hoc
+592	5.3.8 KPI distritales
+...
+688	5.6.2 TOPSIS (complementario; no es prueba de hipótesis)
+690	5.6.3 Inferencia GLOBAL (Capa A, n = 26)
+695	5.6.4 Decisión H0G / H1G
+698	5.7 Contrastación consolidada de hipótesis
+703	5.8 Discusión
+704	5.8.1 Triangulación con la literatura
+709	5.8.2 Limitaciones verificadas
+711	5.8.3 Auditoría de coherencia PG–OG–HG / PE–OE–HE
+majors_in_order=5.1 Auditoría inicia | 5.1-bis Entrenamient | 5.2 Criterio cuantit | 5.3 OE.1 — Flexibili | 5.3.1 Descriptivos | 5.3.2 Shapiro–Wilk | 5.3.3 Cambio frente  | 5.3.4 Prueba inferen | 5.3.5 Comparación en | 5.3.6 Tamaño del efe | 5.3.7 Post hoc | 5.3.8 KPI distritale | 5.3.9 Resultados de  | 5.3.10 BESS, EV/V2G  | 5.3.11 Identificació | 5.3.12 Respuesta OE. | 5.3.13 Decisión HE.1 | 5.4 OE.2 — Emisiones | 5.4.1 Descriptivos | 5.4.2 Shapiro–Wilk

@@ -1,0 +1,3 @@
+INFO:citylearn.scenario_manager:Selected scenario E1: Flexibility Scenario - load shifting, storage, EV flexibility and PV self-consumption
+INFO:citylearn.scenario_manager:Scenario E1: applied flat_mean_price tariff to 17 buildings.
+[maac] buffer-length capped 50000 -> 16 (target 1 ep x 8 steps)

@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-31",
+  "canonical_root": "tools/skills",
+  "skills": [
+    {
+      "name": "fastapi-templates",
+      "path": "tools/skills/fastapi-templates",
+      "license": "MIT",
+      "status": "installed",
+      "source": {
+        "repo": "https://github.com/wshobson/agents",
+        "commit": "7e2fb559cf4b824b27f1fec49fe88f7511066d26",
+        "path": "plugins/api-scaffolding/skills/fastapi-templates"
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "LICENSE.txt": "8ceaab71b527eb5db43810b74afc618ee36556197d2d51c45fd00aac483988c1",
+        "SKILL.md": "dba8e1287ae03591198ea0ea638bb9862ec3c7b5cbdeb1163368f3ebc9487cb6",
+        "references/details.md": "5c390fb29a98af4742c489495a76505c5da6bdcf2f336c652186855d1a0bab1a"
+      }
+    },
+    {
+      "name": "architecture-patterns",
+      "path": "tools/skills/architecture-patterns",
+      "license": "MIT",
+      "status": "installed",
+      "source": {
+        "repo": "https://github.com/wshobson/agents",
+        "commit": "7e2fb559cf4b824b27f1fec49fe88f7511066d26",
+        "path": "plugins/backend-development/skills/architecture-patterns"
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "LICENSE.txt": "8ceaab71b527eb5db43810b74afc618ee36556197d2d51c45fd00aac483988c1",
+        "SKILL.md": "350caf22b856b7d2908a10a69a8cc13e743c757ba9838716051b4e29fc1d7595",
+        "references/details.md": "a53411600b253b343247db9d86140f3136ee7bd26a67aa8411962bcc1f5ff981",
+        "references/advanced-patterns.md": "a3513435c141f177ae6603697e1fbbaeec404943ea89dab14c6b76a0b51b03e3"
+      }
+    },
+    {
+      "name": "frontend-design",
+      "path": "tools/skills/frontend-design",
+      "license": "Apache-2.0",
+      "status": "installed",
+      "source": {
+        "repo": "https://github.com/anthropics/skills",
+        "commit": "ca45fc496a3436251f191354091d557da31c15b5",
+        "path": "skills/frontend-design"
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "SKILL.md": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3",
+        "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+      }
+    },
+    {
+      "name": "webapp-testing",
+      "path": "tools/skills/webapp-testing",
+      "license": "Apache-2.0",
+      "status": "installed",
+      "source": {
+        "repo": "https://github.com/anthropics/skills",
+        "commit": "ca45fc496a3436251f191354091d557da31c15b5",
+        "path": "skills/webapp-testing"
+      },
+      "local_adaptation": "Repo-relative helper paths, project safety override; notices in modified SKILL.md",
+      "sha256": {
+        "examples/static_html_automation.py": "9d533aafb875ee3ab8b8ebf8f5b9003ac8d999da3d09b285cce252e623140064",
+        "examples/console_logging.py": "ea46877289acb82da7e7ce59d0bc37c8977cd57e2a006d0c88d7a1c625bf95da",
+        "LICENSE.txt": "bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362",
+        "examples/element_discovery.py": "d63c89604a22f8845d724e95dda45db49b1bf57c25ce0a83afbb7b8da3d402f0",
+        "SKILL.md": "b0b4defd77ecc5da9ac17b96e24da29e2f52ce4480856382659e3582783ee1fa",
+        "scripts/with_server.py": "b0dcf4918935b795f4eda9821579b9902119235ff4447f687a30286e7d0925fd"
+      }
+    },
+    {
+      "name": "docker-build-strategies",
+      "path": "tools/skills/docker-build-strategies",
+      "license": "Apache-2.0",
+      "status": "installed",
+      "source": {
+        "repo": "https://github.com/docker/skills",
+        "commit": "34969c320b839772a26f3855d3e87cc3d8090da1",
+        "path": "skills/docker-build-strategies"
+      },
+      "local_adaptation": "Repo-relative helper paths, project safety override; notices in modified SKILL.md",
+      "sha256": {
+        "scripts/verify-build.sh": "d52633ba734587b1a0513366a4e13f771edff538492c42df8020d74d2ba7532b",
+        "checks/verification.md": "71e6e6f55d5754304e8e04281d5e6dec2ad8ba36d0460f716c3c4b4d18457d19",
+        "references/multi-stage-builds.md": "0faf45c4ce1582ab78ce15b5e918ca57d783bb261e9e97d7d807115c5b46a337",
+        "LICENSE.txt": "fb472f51db3e7416bfb1f6600b4ca9694495a88172619f4772da508a6c4b36cf",
+        "assets/dockerignore-example": "c6a9a826899d82de2203ae47821bb08eb878b5370ac3cb92013f1ab9259bd500",
+        "skill.yaml": "ada7a02bd259603e0b6850e642d258a01f7b6db016c5fa3543a280b2ad6be8ad",
+        "agents/openai.yaml": "9fc985ee4a18fefaf4e50e078f3469f80f60713ae87698303a2a9d95f3b91176",
+        "SKILL.md": "0397c9377e9a4d50f93fae480360f09f860d5397347da6398b6098ddb33c8655",
+        "assets/Dockerfile.go": "04a56fd7b3617dbf83cc177532f216e999112c59e5e2f66f7fdde9c219eccdd7",
+        "assets/Dockerfile.python": "c3f4c4d3f0ee27f6dbe5022db721daf641a569d34ae017d0999b251f00d0a78b",
+        "assets/Dockerfile.nodejs": "0758d34aaba0879fc88fc7e4f1a9716b23af0b7ef0aee7c394498e67871266eb",
+        "references/layer-caching.md": "bacaf379622bd018e5aa2c0b20ff9ae94fcf9b8640ff7b75f2b4b8b17b6f25c7"
+      }
+    },
+    {
+      "name": "docker-compose-patterns",
+      "path": "tools/skills/docker-compose-patterns",
+      "license": "Apache-2.0",
+      "status": "installed",
+      "source": {
+        "repo": "https://github.com/docker/skills",
+        "commit": "34969c320b839772a26f3855d3e87cc3d8090da1",
+        "path": "skills/docker-compose-patterns"
+      },
+      "local_adaptation": "Repo-relative helper paths, project safety override; notices in modified SKILL.md",
+      "sha256": {
+        "assets/compose-dev-override.yaml": "d01ff97e0860e712c981c7100d1ce8f5e0cd18ed4a55b2237bbff604be01c2ad",
+        "checks/verification.md": "0b41c98fc7f76d878f26187395df50c95ad9882b90d0c0a86536ab3e617956f5",
+        "assets/compose-web-app.yaml": "b9fa2b9162533724f3295b06377f76f8be5d13a428cb5572865c9d1420ded7e4",
+        "LICENSE.txt": "fb472f51db3e7416bfb1f6600b4ca9694495a88172619f4772da508a6c4b36cf",
+        "skill.yaml": "2f00f4fb618c32a8ace611dc66267572036e5494ec183ae53350107f35f4e342",
+        "agents/openai.yaml": "aec9d1df3cb1ce775e36d499da60ee728ad079516e26865a59007af276e1a424",
+        "assets/bad-vs-good.md": "f7de35332fa1c57f141a3df2e30fa82d109858ed00609a566536625b3df9eef8",
+        "SKILL.md": "43d70acf48d17a68f9458cf2a16f734eade900839cfdf014db3a3adb1bbed11b",
+        "scripts/verify-compose.sh": "42ba672ba1b933f00c2871c37c1e60067685b5ff58d25b1f1264f171c219ebd2",
+        "references/volumes-and-networks.md": "b7d077cbb3ddbdf3c1cc3fae0475604477f30ee8a905c4c5feb0ac42ffa66c23",
+        "references/service-dependencies.md": "54f2d8a2b0b84e5639da76c9c0b85a4b5f12f33cff407fd1a44febc7ba8f12bb"
+      }
+    },
+    {
+      "name": "harness-engineering",
+      "path": "tools/skills/harness-engineering",
+      "license": "MIT",
+      "status": "installed",
+      "source": {
+        "repo": "https://github.com/github/awesome-copilot",
+        "commit": "5269f7ea2d6c3a9bfda5ed878b6726cf509121fd",
+        "path": "skills/harness-engineering"
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "SKILL.md": "536ae3b482b68d818a97e511405c220d3cf3fb87f34bc4d30722dc996f4b064f",
+        "LICENSE.txt": "2510b446bc1f0cf9702453075d20cd88631e20e5642658edb7325d9c1eb534f7"
+      }
+    },
+    {
+      "name": "madrl-agent-coordination",
+      "path": "tools/skills/madrl-agent-coordination",
+      "license": "MIT",
+      "status": "installed",
+      "source": {
+        "repo": "this-repository",
+        "version": 1
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "SKILL.md": "b97d479869c44117e58e4961482e58f707003983bd5ef8a52589de8f1acb5f90",
+        "LICENSE.txt": "747933dcfce17fd71e8eedcc2c52471477ea2baeb3aec4f841a3ecd73d4a7317"
+      }
+    },
+    {
+      "name": "madrl-spec-conformance",
+      "path": "tools/skills/madrl-spec-conformance",
+      "license": "MIT",
+      "status": "installed",
+      "source": {
+        "repo": "this-repository",
+        "version": 1
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "SKILL.md": "0178a5d4354fc31729887022da24df841e02011623ed757f59ca4b2828c308b6",
+        "LICENSE.txt": "747933dcfce17fd71e8eedcc2c52471477ea2baeb3aec4f841a3ecd73d4a7317"
+      }
+    },
+    {
+      "name": "madrl-experiment-evidence-audit",
+      "path": "tools/skills/madrl-experiment-evidence-audit",
+      "license": "MIT",
+      "status": "installed",
+      "source": {
+        "repo": "this-repository",
+        "version": 1
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "SKILL.md": "32589203c6d2ca4938f2922043972dc5617be6ad043219e3952a3407865014e5",
+        "LICENSE.txt": "747933dcfce17fd71e8eedcc2c52471477ea2baeb3aec4f841a3ecd73d4a7317"
+      }
+    },
+    {
+      "name": "madrl-scientific-literature-audit",
+      "path": "tools/skills/madrl-scientific-literature-audit",
+      "license": "MIT",
+      "status": "installed",
+      "source": {
+        "repo": "this-repository",
+        "version": 1
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "SKILL.md": "e21f279bf73c37e907b2a32ea0a823f4135c5789f7388a765e8b3747a4709f9a",
+        "LICENSE.txt": "747933dcfce17fd71e8eedcc2c52471477ea2baeb3aec4f841a3ecd73d4a7317"
+      }
+    }
+  ],
+  "legacy_skills": [
+    {
+      "name": "madrl-citylearn-thesis-plan",
+      "path": "agent-skills/madrl-citylearn-thesis-plan",
+      "status": "pending_license_and_collision_review",
+      "active": false
+    },
+    {
+      "name": "madrl-citylearn-thesis-integrated",
+      "path": "agent-skills/madrl-citylearn-thesis-integrated",
+      "status": "pending_license_and_collision_review",
+      "active": false
+    },
+    {
+      "name": "iquitos-citylearn-dataset",
+      "path": "agent-skills/iquitos-citylearn-dataset",
+      "status": "pending_license_and_collision_review",
+      "active": false
+    },
+    {
+      "name": "madrl-citylearn-literature-review",
+      "path": "agent-skills/madrl-citylearn-literature-review",
+      "status": "pending_license_and_collision_review",
+      "active": false
+    }
+  ],
+  "connectors": [
+    {
+      "name": "google-drive-mcp",
+      "status": "optional_legacy",
+      "required": false,
+      "enabled_by_this_change": false
+    },
+    {
+      "name": "notebooklm-mcp",
+      "status": "optional_legacy",
+      "required": false,
+      "enabled_by_this_change": false
+    }
+  ],
+  "already_available": [
+    "find-skills",
+    "skill-installer",
+    "skill-creator",
+    "superpowers:executing-plans",
+    "superpowers:test-driven-development",
+    "superpowers:systematic-debugging",
+    "superpowers:requesting-code-review",
+    "superpowers:verification-before-completion"
+  ],
+  "not_installed": [
+    {
+      "name": "improve-codebase-architecture",
+      "reason": "Additional skill dependencies and CDN report generation; architecture-patterns covers requested architecture without that bundle."
+    },
+    {
+      "name": "harness/harness-skills",
+      "reason": "Harness.io platform integration is not generic harness engineering and is not required by this local project."
+    }
+  ],
+  "pending": [
+    "real_client_discovery_and_invocation",
+    "measured_agent_efficiency",
+    "legacy_skills_migration",
+    "legacy_auto_publish_hook_decision"
+  ]
+}

@@ -1,0 +1,16 @@
+## Sección 9: Evaluación estadística — Selección OG / OE.1 / OE.2 / OE.3 y Capa A (HE/H0G)
+
+Protocolo alineado a Cap. III–V y CityLearn v3 (`objectives.py`, **54 KPIs** OE; distrito + edificio):
+
+### Capa descriptiva / ranking (notebook)
+1. **Score por escenario** — media del *signed relative gain* vs baseline `evaluate_v2` (mismo dataset Iquitos) sobre KPIs del OE emparejado (E1→OE1, E2→OE2, E3→OE3).
+2. **Ganador OE.k** — mejor algoritmo en Ek (descriptivo).
+3. **Ganador OG** — media de scores E1/E2/E3 (descriptivo; **no** sustituye H0G).
+
+### Capa A inferencial Cap.5 (HE10–HE31 / H0G–H1G) — `RUN_CAPA_A_HYPOTHESIS=True`
+4. Puerta **Shapiro–Wilk** sobre KPI-gains.
+5. Principal: **Friedman pareado + Kendall W** + **Wilcoxon firmado vs 0** (impacto vs baseline) + **Wilcoxon pareado + Holm**.
+6. Exploratorio: Kruskal–Wallis / Mann–Whitney U (no fundamentan HE).
+7. Salidas: `{OUTPUT_ROOT}/resumen_comparativo/estadistica/problemas_objetivos_hipotesis/` + `pe_answers_audit.json`.
+
+> Con `SEED=0` (campaña actual) la unidad HE es el KPI-gain pareado, no la semilla. Shapiro/KW/MWU *sobre semillas* solo aplica si `MULTI_SEED_TRAINING` aporta ≥3 semillas.

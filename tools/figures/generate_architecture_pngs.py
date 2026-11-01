@@ -176,9 +176,9 @@ HTML_ARQUITECTURA = """<!DOCTYPE html>
     <div class="box-title">Multiobjetivo — Escalarización lineal</div>
     <div class="box-text">
       r = w₁·flex + w₂·CO₂ + w₃·costo + w₄·EV<br>
-      E1: w=(0.70, 0.15, 0.15, ~) → flexibilidad<br>
-      E2: w=(0.15, 0.70, 0.15, ~) → carbono<br>
-      E3: w=(0.25, 0.15, 0.60, ~) → costos<br>
+      E1: w=(0.60, 0.15, 0.25, ~) → flexibilidad<br>
+      E2: w=(0.25, 0.60, 0.15, ~) → carbono<br>
+      E3: w=(0.15, 0.25, 0.60, ~) → costos<br>
       Pesos por eje + perfil por algoritmo
     </div>
   </div>
@@ -253,7 +253,7 @@ HTML_ARQUITECTURA = """<!DOCTYPE html>
   <div class="box axis">
     <div class="box-title">E1 / OE.1 — Flexibilidad energética</div>
     <div class="box-text">
-      Pesos: flex=0.70 · CO₂=0.15 · costo=0.15<br>
+      Pesos: flex=0.60 · CO₂=0.15 · costo=0.25<br>
       KPIs: peak_average · ramping_average<br>
       one_minus_load_factor_average<br>
       Uso PV · BESS · EV · autoconsumo<br>
@@ -263,7 +263,7 @@ HTML_ARQUITECTURA = """<!DOCTYPE html>
   <div class="box axis">
     <div class="box-title">E2 / OE.2 — Emisiones de CO₂</div>
     <div class="box-text">
-      Pesos: flex=0.15 · CO₂=0.70 · costo=0.15<br>
+      Pesos: flex=0.25 · CO₂=0.60 · costo=0.15<br>
       KPIs: carbon_emissions_total<br>
       carbon_emissions_delta<br>
       Gestión carbon-aware · red diesel aislada<br>
@@ -273,7 +273,7 @@ HTML_ARQUITECTURA = """<!DOCTYPE html>
   <div class="box axis">
     <div class="box-title">E3 / OE.3 — Costos energéticos</div>
     <div class="box-text">
-      Pesos: flex=0.25 · CO₂=0.15 · costo=0.60<br>
+      Pesos: flex=0.15 · CO₂=0.25 · costo=0.60<br>
       KPIs: electricity_cost_total<br>
       electricity_cost_delta · cost_peak_average<br>
       Tarifa TOU: 0.26/0.38 USD/kWh<br>
@@ -445,8 +445,8 @@ HTML_FLUJO = """<!DOCTYPE html>
   <thead>
     <tr>
       <th style="text-align:left;">Algoritmo / Modo</th>
-      <th>E1 — Flexibilidad<br><small style="font-weight:400">w_flex=0.70</small></th>
-      <th>E2 — CO₂<br><small style="font-weight:400">w_CO₂=0.70</small></th>
+      <th>E1 — Flexibilidad<br><small style="font-weight:400">w_flex=0.60</small></th>
+      <th>E2 — CO₂<br><small style="font-weight:400">w_CO₂=0.60</small></th>
       <th>E3 — Costos<br><small style="font-weight:400">w_costo=0.60</small></th>
       <th>Concurrencia</th>
       <th>Tiempo/escenario</th>

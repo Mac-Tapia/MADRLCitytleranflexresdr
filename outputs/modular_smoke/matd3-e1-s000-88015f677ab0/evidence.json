@@ -1,0 +1,1513 @@
+{
+  "artifacts": [
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/artifact_audit.json",
+      "sha256": "3d699b217cd6bc1e57982f0ba853d302e5b4d3544979b6d7f72a0957dd7f5d1f",
+      "size_bytes": 2812
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoint_manifest.json",
+      "sha256": "1f5824f8bb9c6790dc13f7eb1d2dc1a1680116646aaa1d77963c72e66405d197",
+      "size_bytes": 11957
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/average_episode_rewards/average_episode_rewards/events.out.tfevents.1793493059.MAC",
+      "sha256": "4e20e9c4424975b59a3a2a20dca66bfc7587b9624caf009776926f24c8120e98",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/events.out.tfevents.1793492255.MAC",
+      "sha256": "611a79c51b931727f38f19d021ac30ca27f7947ec1b1473cc0cf6338e29d8604",
+      "size_bytes": 40
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_0/actor_grad_norm/policy_0/actor_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "763306f8e99bc04db84365fecfc6b3005a57980603a25b2ee03f710400fd2a5c",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_0/actor_loss/policy_0/actor_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "0872bb6ea55173fc5556c5f4acd0bad9284ce1800990a41f9d87366be24a30c3",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_0/critic_grad_norm/policy_0/critic_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "0e3a42a8a5df2e8155ce10faecd0384348c54cd89a9e1c5ee764b3a9231230a8",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_0/critic_loss/policy_0/critic_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "b5b8e326f77605ca4cc47106524f532a0f9a9fedbf0a51b27fa5b1e122f075ca",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_0/update_actor/policy_0/update_actor/events.out.tfevents.1793493058.MAC",
+      "sha256": "8a44b5716beea4dba145a204bda1011790db47862612a37b98a419adab54e36c",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_1/actor_grad_norm/policy_1/actor_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "46382d25b39f5f3ed224843105c2d292d8c0c4e9d35900584e1ac3c8f556934d",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_1/actor_loss/policy_1/actor_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "a9d2fa13edf4f041b268e57b8cc542b7d5499b5cedf597ad6eea2d427b7798cd",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_1/critic_grad_norm/policy_1/critic_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "61e72315c1e1f87c06614f05073ad8ebe1f787bbfd71c40ec42d6d0b2209997c",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_1/critic_loss/policy_1/critic_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "0d485a896ad3fe88b7c7f94cff8fb437554db75b279a154bd0dfe340edd0e873",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_1/update_actor/policy_1/update_actor/events.out.tfevents.1793493058.MAC",
+      "sha256": "3c978ac2ac6ca0513999c3210eafc53f04787d42ab334c6d05796bcd1b5b8b0b",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_10/actor_grad_norm/policy_10/actor_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "9f728d26b4a1ca8689533b11244d0416d81ef9f392ec6ccd2f6bc3504e963003",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_10/actor_loss/policy_10/actor_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "2e8afec439713bbb4e41105b9ad2f48bf5944fae7c994d47c883f593185bbb7c",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_10/critic_grad_norm/policy_10/critic_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "4a5c9232f43f3f11474967a138c4a9eb793f115924206568bc351bca49eeee75",
+      "size_bytes": 104
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_10/critic_loss/policy_10/critic_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "2bfb3fdc49dc801705f62c39bcf3eda82c53bfc2a05ff32273d34c34b51de661",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_10/update_actor/policy_10/update_actor/events.out.tfevents.1793493058.MAC",
+      "sha256": "edf373dee311749950b916f199acd9a50e9a9b804ada3f80f2d31094e7aa765c",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_11/actor_grad_norm/policy_11/actor_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "e98b3a143bbc330f26dbe4035d0c48097ee5ad993ba56c615cf3dc02a0144fa4",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_11/actor_loss/policy_11/actor_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "ce7ee2f1e4a49da5f4b36dc7f97067ee1f4eada0df4820ac0a2afefe380e37e3",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_11/critic_grad_norm/policy_11/critic_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "68bfb5f347f1ab68248b2a9dd0c0ce856531ea3b707be81a22689e3f811f1091",
+      "size_bytes": 104
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_11/critic_loss/policy_11/critic_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "ca6e04e40cb67aa0a3265df70a5428ab4d10dcf9b071bf53a613343e264ec65f",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_11/update_actor/policy_11/update_actor/events.out.tfevents.1793493058.MAC",
+      "sha256": "474388007dee43b882fe5ff8efc2436062480cb78b5dd1b12825f3b05ba40eff",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_12/actor_grad_norm/policy_12/actor_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "8730da4fd246c105b34e0931a2b9fa5c21118d1a3bb4e81c7d0aa16d777a6390",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_12/actor_loss/policy_12/actor_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "826a38e28a691ff5607bebcd2e46780025de3e6a18af11f15c125e0014ae74d4",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_12/critic_grad_norm/policy_12/critic_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "5d37e4fe9b8145e143d952f520924949734d1d24bb19ebb8387a5b56882ffaf3",
+      "size_bytes": 104
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_12/critic_loss/policy_12/critic_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "204d92fbf5f7a37587d3732cd258ff3870f3f7fc1e0fcd1f13963e727f341c4a",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_12/update_actor/policy_12/update_actor/events.out.tfevents.1793493058.MAC",
+      "sha256": "09ac5958c35b43963500042192f7dea4cd6cbec7699ae894a20a779a6eee6df0",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_13/actor_grad_norm/policy_13/actor_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "84d420f9870d3a18fd86c8fe1b2e7b8f916fab90a534ab2b99d1b0df772824e4",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_13/actor_loss/policy_13/actor_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "0d8e8f42e5477d115142f6276a4af5b62a2ce169478eca239d501a1a82883a34",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_13/critic_grad_norm/policy_13/critic_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "0adda1215d5a4c5e719a56c72d938793d6340cbb51e5de050522083bac29022f",
+      "size_bytes": 104
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_13/critic_loss/policy_13/critic_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "ef02c7e2677d7946248a74edc3274c80c0f974a4c2b99465f6e7cafea57dd790",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_13/update_actor/policy_13/update_actor/events.out.tfevents.1793493058.MAC",
+      "sha256": "f09f5c446a89465baefed7c153f4f552f23761f76766f9e5289ab61527612b74",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_14/actor_grad_norm/policy_14/actor_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "d3ed1abc626ce3c1dcfdc6ba383602ddec1632b28daac1a936e9781fca510b0b",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_14/actor_loss/policy_14/actor_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "1cb5f339a2bb02f2fbe3c5d0b186861934787677741d1dc3c70fa0031b332503",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_14/critic_grad_norm/policy_14/critic_grad_norm/events.out.tfevents.1793493058.MAC",
+      "sha256": "823cf698902bebc9f09461c6a2cb551fb5cac01ea085e178ed56b4c1aac23d08",
+      "size_bytes": 104
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_14/critic_loss/policy_14/critic_loss/events.out.tfevents.1793493058.MAC",
+      "sha256": "17fdd8db40d66e93199dc4546a3ae6440e1d039335b38ec891a9a773aad5d9ab",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_14/update_actor/policy_14/update_actor/events.out.tfevents.1793493058.MAC",
+      "sha256": "375147ba43dfc5efff40ea775175ad1147e8ed3246aaaff44e2a6cc65594d715",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_15/actor_grad_norm/policy_15/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "5fa4b67c3e7a91adfc54ebed40cef9e232d3b0b55ae681334caf84d516f07d87",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_15/actor_loss/policy_15/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "4761693702535ecebaa8c208345e03be081a1294f80a4c79fb75a16f4f81d57a",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_15/critic_grad_norm/policy_15/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "6e1243a1acabb835b4b3f87a3cf06be5c29202fa2f38ea495d151852498a6707",
+      "size_bytes": 104
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_15/critic_loss/policy_15/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "1de2da02618b3b8e42661b4d8e304341e2ca7c95f00205a5bb04c80b524c3953",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_15/update_actor/policy_15/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "21e52426995052906cb4f11547074fa5b6edded3c30ca2f18a47c603a87b6959",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_16/actor_grad_norm/policy_16/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "5d8b988db94efcc8b184d16c0b00926a828e738d465d27a6f6386adbf6dc23f7",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_16/actor_loss/policy_16/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "b6caa2280aad3f16ade7cbf5ce97c349683337af0860ad0c4c8098b949cd270e",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_16/critic_grad_norm/policy_16/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "7dee297f3e43c0ee63ece1358fca1682c80c89ea3e35c3dd8e594f1c1f532d5a",
+      "size_bytes": 104
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_16/critic_loss/policy_16/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "0b29384c6a1f56d13b3c5f45dc5b389098d24c75fc9157968212c20302997820",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_16/update_actor/policy_16/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "4a399c4dccc9ba5be11e44236bce77cde49e26468e676e9d1ea9746fb06e18bb",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_2/actor_grad_norm/policy_2/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "b828e878e967d12bbaf8ec5b54a212a27bc30eaed277d279b0fd420f495d1585",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_2/actor_loss/policy_2/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "f44ad9899c3f1615207862df06716711af3037ea54a92d4d9551568d53431db2",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_2/critic_grad_norm/policy_2/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "58e5d5289d14e692468941a234d6daffefc045d519b6429b19f26c3876b22cdf",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_2/critic_loss/policy_2/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "6b05b24197a797bf73fd762f0e6e810886b6a748da8f84fc8b361f738895a639",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_2/update_actor/policy_2/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "19b1a3346c66c5378aa9c44049d2be8344d6c808489a96a0c73bb87e26204c90",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_3/actor_grad_norm/policy_3/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "182aa61c455e13851dc44a9c4978c9f06e5afac0209d3c52a50680ced3a76c75",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_3/actor_loss/policy_3/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "dc8bdef3531bcf7ff36dc3e765394f6cc3c7ec975245f3c11603f764c7abf6af",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_3/critic_grad_norm/policy_3/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "e47bfa8554d27a1a2985bb7c34484aab47f3b8a3400baeef303229ae157a5211",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_3/critic_loss/policy_3/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "8d09be71cc4e70fbd985626d31bdcc6392810711ccd755e6cc7ccf41341cbd42",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_3/update_actor/policy_3/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "8f59d0f8683dc49ba62e52c9ba07b380550cec7920ddac614b034597c011dc26",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_4/actor_grad_norm/policy_4/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "885cb7c97e379adbd93fde1017b374420b1104a83eb30c243b0afba9cb68f05c",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_4/actor_loss/policy_4/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "cc52cbcbcd4d0c80289ed20cee148d0c6525ce4b57089ac117326ac757cef233",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_4/critic_grad_norm/policy_4/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "97c5d695a299eb2372b2097fd3a87d79cf44439f4c9082130fd38af4b175d2ca",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_4/critic_loss/policy_4/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "8c0a5cabcfbca58489b66a2e3285eb095bc4f67b53b70db278a6a069c4f9dcc9",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_4/update_actor/policy_4/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "d8de9fbb3721f401112d20f86eccc50ae572838d3ce0576e5312ed7fddd92294",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_5/actor_grad_norm/policy_5/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "f95511c2b3ab9b23695875237d676a8ed7a6bb297ea631cabd82203e101c9d86",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_5/actor_loss/policy_5/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "91ee262a2028cd1ff4cc8a2d76d0160ac7fcedc9cc2ef13e2f53b04a374ae40c",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_5/critic_grad_norm/policy_5/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "ffa716cf14265853e35fadde27bc43fc45748b8aa17f33310b4158f55ee65e82",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_5/critic_loss/policy_5/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "dd8ce8e5fd32f9f61e61f23a021bda7cbb79d22d3f5148432154f98e00b01c29",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_5/update_actor/policy_5/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "0b8df16679faa96696add02f392414766b84bb4d6d202969276f14363055f8bf",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_6/actor_grad_norm/policy_6/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "ded94b148063b510f75b248b2fa2580710c9bb3436ee4ceb58f24c5eeb2b2e89",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_6/actor_loss/policy_6/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "9852b563f037ad990609bb1e948dbb1b18d04ad110a5b7719183153b91414394",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_6/critic_grad_norm/policy_6/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "705436cc5aedb7e3eab1d00766f70d178288ed251f0eeff2cbd97b0983f50fcf",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_6/critic_loss/policy_6/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "243b7368abcd0d536765ca68cccf59aa99085858140ac4bc72fa99580746bd40",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_6/update_actor/policy_6/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "caa6299362850dfa38d251a4f7349a8e7bcd9bca0a323f1c8413ab057a360e8c",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_7/actor_grad_norm/policy_7/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "48415799d6ab93c0f5c8ab5363254c05d2fbd483388eb8e4f40440a128c07c12",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_7/actor_loss/policy_7/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "9b855a62bfdf584b0f8294f0ad1aec5a3c5c3263be2abac5928a371421b03832",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_7/critic_grad_norm/policy_7/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "9a0ebae18d94254412f3ecc8d713c9fd13ecb1a899df6b29c985a6ebe84ec038",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_7/critic_loss/policy_7/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "992d46e7af7bfc89274e82db32edcc9d55f078e133a9ebce84a1910c37bfb266",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_7/update_actor/policy_7/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "99748737d088fc148589452c7c8e6bbd9160920d2152eb6d4b294915393f7221",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_8/actor_grad_norm/policy_8/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "9075a4cfe712a2288f1072fd99534b12b53bd5f6736b39b8b58a5ab36603485c",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_8/actor_loss/policy_8/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "27d702d64243abf5d3d9a384755ab35769bc18648a738ba99c376d50925ed270",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_8/critic_grad_norm/policy_8/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "6822332a8a2f7765c19245fd47e130e89706ee03c67b584f3937a84313568b8c",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_8/critic_loss/policy_8/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "9b7eebbfc556a0d104edf261450e85416c5ffebc3497d42ce5969299f1a7adfd",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_8/update_actor/policy_8/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "0c052f97a4c611dbf993ea218c372fc23e56606e92a14b018cb91970a6fc8f48",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_9/actor_grad_norm/policy_9/actor_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "639db935eab942ebfff7a776962c195c0699dc222eba5144f8fbd156fe1010b1",
+      "size_bytes": 102
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_9/actor_loss/policy_9/actor_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "9b1c7b069628c7cb8f57d3c1e2f686d2a03b5cbaae1f557453525927efbd5259",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_9/critic_grad_norm/policy_9/critic_grad_norm/events.out.tfevents.1793493059.MAC",
+      "sha256": "1060d86ac7c8f044976dc3fec05c9666d8aa77b89c1e1bf530ce19fb08f72938",
+      "size_bytes": 103
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_9/critic_loss/policy_9/critic_loss/events.out.tfevents.1793493059.MAC",
+      "sha256": "2051aab5965e0809f5f193e81f97c3b26b7f95c6503d4b9fb1ff5e168e44fe6c",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/policy_9/update_actor/policy_9/update_actor/events.out.tfevents.1793493059.MAC",
+      "sha256": "db890c386b3f09ec938cbffacbaf68eb95e39271ac80af8f5578c4902d009a24",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/logs/summary.json",
+      "sha256": "d257ebc43d6d5f4e1070a0ea122a012a948d1144ffb2dc149a4f352a47a7e926",
+      "size_bytes": 15817
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_0/actor.pt",
+      "sha256": "c26a64561476898906746e0908a2116665612dca63ed9b3e9beb2f02424a2843",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_0/critic.pt",
+      "sha256": "1c21afa2be1be394a853ad9d3db049cdae8794653de2c485f916a458449130cc",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_1/actor.pt",
+      "sha256": "028506da12ee75ee52072a1a4791fbc5a232e45d19b4b264ec2e3ab2a4d6af66",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_1/critic.pt",
+      "sha256": "6e915beeac395c51e75ffae2903590c272f464071ab04986194943f27415d015",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_10/actor.pt",
+      "sha256": "7e5ac368de65b241e7aa3b97c8f043734513f778db96bdb4e6daae2dae901321",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_10/critic.pt",
+      "sha256": "6305d8e3ef28de25edebbf6f494b466d23750f6815644c849d24fba5902e8833",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_11/actor.pt",
+      "sha256": "166576df94d01a9c2716ccc9838d7fc98f7e17e628979fd0afb25d689133dc7c",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_11/critic.pt",
+      "sha256": "6b5983db40e6faebb83bb9e28070dfdb5fb0c1b8f4429f6956c9d3d6ad75fbc2",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_12/actor.pt",
+      "sha256": "0e1da207af3c83441d965bb2a33214abc7db57a314b7086e3265c4379394cdbf",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_12/critic.pt",
+      "sha256": "c2d4103036ae44df27709ae50b160740ce01bdeca617a08be782f830e4273b04",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_13/actor.pt",
+      "sha256": "42467335a412c5cf8b0e8bcfbacbddfa25c580b10d2bbad3f2729332857804c9",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_13/critic.pt",
+      "sha256": "277685b810f7c5626f132438b07fb3f48f4caad49e67860f159fdacc3656c81a",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_14/actor.pt",
+      "sha256": "7b05503f01fdd670afa31c2e41c2518d10bdc4c5cbc97faa92ea0ba750f53da4",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_14/critic.pt",
+      "sha256": "961a304dd69302492d51a1c82331bb351085eec66678840323d1c6e075dc5413",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_15/actor.pt",
+      "sha256": "c4b1ff9ce4ac5a6a374bb231acc1fa3d93dbc02fd0dd7391d9a28711f1323ae4",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_15/critic.pt",
+      "sha256": "3becb55b2b7473e79f69ebca94dc9b969d2b660772d9c2fab8ba2d5d60caaf81",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_16/actor.pt",
+      "sha256": "080ac550644134fcd501b13fd28ae558eacbb5055a890036e043598606cd70ef",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_16/critic.pt",
+      "sha256": "50d5f9a7f232ecb34731578022290e4a7047ae23f1c7aaa4b8960297bde421a3",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_2/actor.pt",
+      "sha256": "3721d41d4e468174a056a7cd9c42a4d1cb9ca1f5ebecfd39e16cc190e2debb85",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_2/critic.pt",
+      "sha256": "02dab9ffdc943b50319298d5c1cf95898546c87f681e8f23d74148367d640dfb",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_3/actor.pt",
+      "sha256": "baaeda75143774ff9b6d038320b966798a8b699cf0286b3dddd0995cd411a357",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_3/critic.pt",
+      "sha256": "3c85d70a078f10281729cbe8b152a5d43ae387de9d4176ec7db1fffb5be6bf3f",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_4/actor.pt",
+      "sha256": "30c96ed7602399539f763755cf8060a66e4dabc7715a2872a1263f1f8a35c711",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_4/critic.pt",
+      "sha256": "cfaa67b5c54a5231222e53e5b24bb9433c9150120aee97a471c2d857b5aab649",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_5/actor.pt",
+      "sha256": "930640c728dfe19912db73e70779da70ed46448bf452350a07c19fa331330303",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_5/critic.pt",
+      "sha256": "906d4b5e259d6ec2cffcfe56c9449782baf0177d7d14b77ec5dcb8fbc0a02b58",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_6/actor.pt",
+      "sha256": "8aab3aff26c4c9970d936d77785efc92962650f3181bc50d54d3b1be4dbf04e7",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_6/critic.pt",
+      "sha256": "f6fa8aed08b03c5b86ddf8ecbb37e8bc757cbb03853fad52508bf32635284a72",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_7/actor.pt",
+      "sha256": "4c4b1c802121f9e2d9e87ab9dff1eeb6a57c34d62f481c6003254164491acbaf",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_7/critic.pt",
+      "sha256": "0131da90e689f3e2da80ed9dc890fcea0f69b4491dff1265242b28280a1807ba",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_8/actor.pt",
+      "sha256": "e943e07221528c30b25fa818af9711c9a393f994e88f983c70109ae307e11b64",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_8/critic.pt",
+      "sha256": "253b504568c010724041bacf0e34696a46bfba6b165b62929d2a8c92c51cb981",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_9/actor.pt",
+      "sha256": "c4c7a229e5904f639f11a2d34c50a5a9cb82de3f7fc5eb536aaa245a218cfb44",
+      "size_bytes": 967879
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/checkpoints/offpolicy_run/models/policy_9/critic.pt",
+      "sha256": "e48e144401b1b4b9161964dba4fabd3951681a4ad13c5c063af52aa55b4df74b",
+      "size_bytes": 7839509
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/artifact_audit.json",
+      "sha256": "3d699b217cd6bc1e57982f0ba853d302e5b4d3544979b6d7f72a0957dd7f5d1f",
+      "size_bytes": 2812
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/building_behavior_summary.csv",
+      "sha256": "12f307187acb9ead072af3b5df968dd3d5b9d4bfbf074f0844ffa5f17f91846a",
+      "size_bytes": 26004
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/building_kpis.csv",
+      "sha256": "e815a1b679b8e57838210c126ef2dd271031458f7c0db71da86ea3722df07b2b",
+      "size_bytes": 107994
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/building_objective_kpis.csv",
+      "sha256": "78eb8920b0b3a2a87b3b1e0f00798f2661a352c93749ba964307ad96bb9e4bf8",
+      "size_bytes": 88206
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/building_observation_action_schema.csv",
+      "sha256": "b3f381e509b446e3c3d83f8efbbf09e1b3419db7e820ea9e0a000a7fd973b096",
+      "size_bytes": 318399
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/building_trace_sample.csv",
+      "sha256": "09c5955ba5212809d7d745cce0141a72acffaa3d6d425b486e0a5e7d8244443b",
+      "size_bytes": 475666
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/checkpoint_manifest.json",
+      "sha256": "1f5824f8bb9c6790dc13f7eb1d2dc1a1680116646aaa1d77963c72e66405d197",
+      "size_bytes": 11957
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/citylearn_kpi_frame.csv",
+      "sha256": "03d414cfaf52aa35b6aa41046952e9dfb0edb5a661bea9d54704881acc57ed60",
+      "size_bytes": 115285
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/district_kpis.csv",
+      "sha256": "1b993641451e873cd5473e5ad2397f381bd929bd4011fe5109d124eb8c1a25b9",
+      "size_bytes": 7323
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/job_launcher_complete.json",
+      "sha256": "74894193c223bcee1727dfbf2fb8aea9b28fdd5038fec5b0383765f84b9d849e",
+      "size_bytes": 188
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/job_resume_state.json",
+      "sha256": "0ce67144ddb916cb7cae24c70a5eaded5f77aacbd6b84702c5ce02f589b760ea",
+      "size_bytes": 339
+    },
+    {
+      "kind": "kpi",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/results.json",
+      "sha256": "23aec6d5ad34a15b8dde7aaa2fcef8ecdf51f28e8d706de2c3497844e501a1eb",
+      "size_bytes": 406405
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/timeseries.csv",
+      "sha256": "f11ebd5916826ee1c141bdfc0bbcaba4c5fcd890e134a059c10f73d86f06864e",
+      "size_bytes": 2339
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/trace.csv",
+      "sha256": "b15129052ca593083432c74d3bc2cc8aa603766c5d71eb21d1b8c7573dac6b93",
+      "size_bytes": 464873
+    },
+    {
+      "kind": "training_summary",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/data/training_summary.json",
+      "sha256": "f39e1357059d0cd28e06bd8756af4b6a08996c319e15affdc479d2c6377e1714",
+      "size_bytes": 398684
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/agent_reward_contribution.png",
+      "sha256": "faf607abc685c3262959439045f9a6f01e844fa3132fc951ade4045c6bbb3d5f",
+      "size_bytes": 36516
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/axis_baseline_comparison.png",
+      "sha256": "a3334a21414b1bd56abf0acdbba3bb46302540fc64aa18d8330f0bdcfbee18ed",
+      "size_bytes": 26724
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/baseline_gain_by_kpi.png",
+      "sha256": "9b9da05d5f6841fb9271377061c7678aad760c5357c4e006dc0da067e92966da",
+      "size_bytes": 120426
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/citylearn_v2_district_timeseries.png",
+      "sha256": "d9f3c4752ae06832da9518e0ea21642187f651a5827f702d73d9735db2debe6e",
+      "size_bytes": 149842
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/convergence_returns.png",
+      "sha256": "e80de54961641685ee9285014c2174483e899e41d8aa50e7f4f8c4c53c397a73",
+      "size_bytes": 102160
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/core_kpis.png",
+      "sha256": "a33e34a82a4b07264eed16aae7c1d435a841e8690eecb02128e372c0d4dfdb7b",
+      "size_bytes": 64709
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/episode_reward_summary.png",
+      "sha256": "d5eb1084ebafa6376d40097e5f3e87233e47a72ca2c59fab07f2db95b9fba8aa",
+      "size_bytes": 32106
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/exploration_action_l2.png",
+      "sha256": "5e20135c0f6847c950d13c66847ec969a332ce654f579628a178f6f79a52197c",
+      "size_bytes": 58857
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/figures_manifest.json",
+      "sha256": "edc1c789a3efeb1a9c16da4f86e1fb3d0d5854330f00f44c917505a291a053ae",
+      "size_bytes": 9216
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/learning_efficiency.png",
+      "sha256": "babe3b68aae6bc626ed7730decb650e9858e69e0a1765e1b022c5c674c75653e",
+      "size_bytes": 47969
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/OE1_flexibility_kpis.png",
+      "sha256": "1b8f5bbd49f26bf5eb4b793b597139d6e6878b23954d7b823e7cc7608852387a",
+      "size_bytes": 123495
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/OE2_co2_kpis.png",
+      "sha256": "5ae64544780bdfc47ba5fdf2a66c1c53641f7ad5f10226a706e5c75a0097b85a",
+      "size_bytes": 44384
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/OE3_cost_kpis.png",
+      "sha256": "7ce0ed813ebdaf60453b145eca641e6cbf449d99a020601ba74840614b3838fa",
+      "size_bytes": 55181
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/reward_timeseries.png",
+      "sha256": "63b9e5d47c7dcd3a811121b5f79f3f8069f199e1a782770c7b54c8895a203736",
+      "size_bytes": 42354
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/agent_reward_summary.csv",
+      "sha256": "b17fe9bd331495d07afbc21c5ab2eb475857964aeecaf7abff3435842f7d4bb3",
+      "size_bytes": 1981
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/agent_reward_summary.md",
+      "sha256": "314b7f39020193891819e854ab50c2f7eb38a9e32a4d9ff16f35b8255351bbc0",
+      "size_bytes": 2314
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/axis_baseline_comparison.csv",
+      "sha256": "ed66fb2e3b2c52cb1f3c37fc2acc7c1ea199dbdb9d080a4b7c4f7d42cba74b07",
+      "size_bytes": 158
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/axis_baseline_comparison.md",
+      "sha256": "32944476964e8c5ba046c47c49aed2ea8161ea7fd840b3d47cd852fe58718c87",
+      "size_bytes": 239
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_behavior_summary.csv",
+      "sha256": "12f307187acb9ead072af3b5df968dd3d5b9d4bfbf074f0844ffa5f17f91846a",
+      "size_bytes": 26004
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_behavior_summary.md",
+      "sha256": "5a6fdf86a20cfff1287cc27803ac53b558d4081dd746cc18722111c7f58cd910",
+      "size_bytes": 30201
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_kpis.csv",
+      "sha256": "e815a1b679b8e57838210c126ef2dd271031458f7c0db71da86ea3722df07b2b",
+      "size_bytes": 107994
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_kpis.md",
+      "sha256": "1e4d39a89e3539f60a12cc0dfb85c916108ddf187e472e12a86128b69c3ecec2",
+      "size_bytes": 120781
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_objective_kpis.csv",
+      "sha256": "78eb8920b0b3a2a87b3b1e0f00798f2661a352c93749ba964307ad96bb9e4bf8",
+      "size_bytes": 88206
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_objective_kpis.md",
+      "sha256": "d7b86b8366c93ff616d73b2437bf5ee03f295e1951c3b6687436ae578ef8509e",
+      "size_bytes": 100335
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_observation_action_schema.csv",
+      "sha256": "b3f381e509b446e3c3d83f8efbbf09e1b3419db7e820ea9e0a000a7fd973b096",
+      "size_bytes": 318399
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_observation_action_schema.md",
+      "sha256": "f9bd3bcd6ed0ccf2749b130edd7d0d6cb66c830bc32f56eb904e8ed06c60a0b7",
+      "size_bytes": 356736
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_trace_sample.csv",
+      "sha256": "09c5955ba5212809d7d745cce0141a72acffaa3d6d425b486e0a5e7d8244443b",
+      "size_bytes": 475666
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/building_trace_sample.md",
+      "sha256": "14bf22c4aaa7e5e9acc68000aee056a3560ab346103455985555dc83aaf12700",
+      "size_bytes": 921567
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/checkpoint_inventory.csv",
+      "sha256": "fd35efce6250f5132e64ce4073a6c016fc977ad5064e43ef5fc646f6fc9797f1",
+      "size_bytes": 5613
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/checkpoint_inventory.md",
+      "sha256": "e1d521c2bdba468645142a56ffc3fafa8f06bf0a9824eae5b81f2d21728a70aa",
+      "size_bytes": 5914
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/citylearn_kpi_frame.csv",
+      "sha256": "03d414cfaf52aa35b6aa41046952e9dfb0edb5a661bea9d54704881acc57ed60",
+      "size_bytes": 115285
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/citylearn_kpi_frame.md",
+      "sha256": "214e970ea32379072c4b463467e85a223f8909d9dea3dbef3f747e2ec0c4c7a4",
+      "size_bytes": 128932
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/core_kpis.csv",
+      "sha256": "17e5ef4a79dbf6c14dccddf6e691fb99a68799037551b59fedd8fdf662bd1e75",
+      "size_bytes": 550
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/core_kpis.md",
+      "sha256": "bb549cdc559eaba1f74edde4f1748162dc2f4cb368e6a7225bbb2d95c524f383",
+      "size_bytes": 655
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/district_kpis.csv",
+      "sha256": "1b993641451e873cd5473e5ad2397f381bd929bd4011fe5109d124eb8c1a25b9",
+      "size_bytes": 7323
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/district_kpis.md",
+      "sha256": "b0393b88c809a3eb1c2daf2ce548bc22bb8ac48dce2f5c8274946141f6151fdb",
+      "size_bytes": 8220
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/episode_summary.csv",
+      "sha256": "60cd33d11349b521f37dbd25666421562a5b7917384ce6138c6d7ed53a5998cd",
+      "size_bytes": 191
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/episode_summary.md",
+      "sha256": "dff8c7a263d3ac8f577968a1dd65a422a56a55354d12b8a2c7123519b1d03552",
+      "size_bytes": 288
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/exploration_summary.csv",
+      "sha256": "9e1755660a7ab6278f7eed4c54f7f24eea2d8517e8365b21bd2f1c0103111235",
+      "size_bytes": 255
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/exploration_summary.md",
+      "sha256": "b91dc576d897d67622b73dab15ad8fa5004ebcb516cc3f6caed5dc524c6b2577",
+      "size_bytes": 342
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/objective_kpis.csv",
+      "sha256": "7b8145ee4d0edc5a2abb1c4d956db1ba083015b4e32e57254c1731ef5ed69415",
+      "size_bytes": 6428
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/objective_kpis.md",
+      "sha256": "6b59b0504778484fe1d6fb3bae7e9a2f03e2fc39d222c06ebee52e0d233266cf",
+      "size_bytes": 7701
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/training_efficiency.csv",
+      "sha256": "de10f6987de0b5317b6f8e143b78dacc86a06cd8030b7dc1943fa67d5915020a",
+      "size_bytes": 336
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/figures/tables/training_efficiency.md",
+      "sha256": "81d3f2f1ff8e41ed6a24c47428b12eabb41ee220f14c9bab21e84fcbfc606dd3",
+      "size_bytes": 443
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/job_launcher_complete.json",
+      "sha256": "74894193c223bcee1727dfbf2fb8aea9b28fdd5038fec5b0383765f84b9d849e",
+      "size_bytes": 188
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/live_progress.json",
+      "sha256": "d3c081b035777f0e89ed23a34eb8ccba5a63718244f196382ae4db25052564a6",
+      "size_bytes": 2589
+    },
+    {
+      "kind": "kpi",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/results.json",
+      "sha256": "23aec6d5ad34a15b8dde7aaa2fcef8ecdf51f28e8d706de2c3497844e501a1eb",
+      "size_bytes": 406405
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/timeseries.csv",
+      "sha256": "f11ebd5916826ee1c141bdfc0bbcaba4c5fcd890e134a059c10f73d86f06864e",
+      "size_bytes": 2339
+    },
+    {
+      "kind": "training_summary",
+      "media_type": "application/octet-stream",
+      "producer": "MATD3",
+      "relative_path": "E1/training_summary.json",
+      "sha256": "f39e1357059d0cd28e06bd8756af4b6a08996c319e15affdc479d2c6377e1714",
+      "size_bytes": 398684
+    }
+  ],
+  "completed_episodes": 1,
+  "experiment_fingerprint": "88015f677ab0f71a7d17572e71a13229db63bf13801086366786aeb2f5ec6186",
+  "run_id": "matd3-e1-s000-88015f677ab0",
+  "status": "verified",
+  "target_episodes": 1
+}

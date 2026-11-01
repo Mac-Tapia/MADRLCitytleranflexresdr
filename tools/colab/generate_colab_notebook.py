@@ -324,9 +324,9 @@ cells.append(md("""\
 
 | Escenario | flex | carbon | cost |
 |:---:|:---:|:---:|:---:|
-| **E1** | **0.70** | 0.15 | 0.15 |
-| **E2** | 0.15 | **0.70** | 0.15 |
-| **E3** | 0.25 | 0.15 | **0.60** |
+| **E1** | **0.60** | 0.15 | 0.25 |
+| **E2** | 0.25 | **0.60** | 0.15 |
+| **E3** | 0.15 | 0.25 | **0.60** |
 
 ### Recompensa mixta CTDE (team_ratio = 0.70)
 ```
@@ -341,9 +341,9 @@ import matplotlib.pyplot as plt
 import numpy as np, os
 
 WEIGHTS = {
-    "E1": {"Flexibilidad": 0.70, "CO₂": 0.15, "Costo": 0.15},
-    "E2": {"Flexibilidad": 0.15, "CO₂": 0.70, "Costo": 0.15},
-    "E3": {"Flexibilidad": 0.25, "CO₂": 0.15, "Costo": 0.60},
+    "E1": {"Flexibilidad": 0.60, "CO₂": 0.15, "Costo": 0.25},
+    "E2": {"Flexibilidad": 0.25, "CO₂": 0.60, "Costo": 0.15},
+    "E3": {"Flexibilidad": 0.15, "CO₂": 0.25, "Costo": 0.60},
 }
 COLORS = ["#3b82f6", "#22c55e", "#f59e0b"]
 LABELS = list(WEIGHTS["E1"].keys())

@@ -1,0 +1,498 @@
+import subprocess
+# ── 9.1  Ranking OE-completo (54 KPIs) + pruebas estadísticas ───────────────
+# Score Ek = mean signed relative gain vs evaluate_v2; OG = media(E1,E2,E3). Requiere 8.1.
+from scipy import stats
+import itertools
+import json
+import os
+from datetime import datetime
+from pathlib import Path
+import numpy as np
+import pandas as pd
+
+# Requiere celda 8.1 (df_objective_long, OE_KPI_SETS, SCENARIO_TO_OE, HIGHER_IS_BETTER, ...)
+assert "df_objective_long" in globals(), "Ejecuta la celda 8.1 primero."
+
+SCENARIO_OE_LABEL = {
+    "E1": ("OE1", "OE.1 Flexibilidad energetica"),
+    "E2": ("OE2", "OE.2 Emisiones de CO2"),
+    "E3": ("OE3", "OE.3 Costos energeticos"),
+}
+
+
+def _as_bool(v):
+    if isinstance(v, (bool, np.bool_)):
+        return bool(v)
+    if v is None or (isinstance(v, float) and not np.isfinite(v)):
+        return None
+    s = str(v).strip().lower()
+    if s in {"true", "1", "yes", "si", "sí"}:
+        return True
+    if s in {"false", "0", "no"}:
+        return False
+    return None
+
+
+def signed_relative_gain(value, baseline, lower_is_better: bool):
+    if value is None or baseline is None:
+        return None
+    try:
+        v = float(value)
+        b = float(baseline)
+    except (TypeError, ValueError):
+        return None
+    if not (np.isfinite(v) and np.isfinite(b)):
+        return None
+    raw_delta = v - b
+    signed_abs = -raw_delta if lower_is_better else raw_delta
+    denom = abs(b)
+    if denom < 1e-12:
+        denom = max(abs(v), 1.0)
+    return float(signed_abs / denom)
+
+
+def build_axis_scores(df_long: pd.DataFrame):
+    """Scores por (algoritmo, escenario, semilla); unit estadistica = semilla (N_SEEDS=12).
+
+    Returns
+    -------
+    seed_scores : dict[scen][algo] -> np.ndarray de scores (una por semilla)
+    mean_scores : dict[algo] -> np.ndarray [mean_E1, mean_E2, mean_E3] (descriptivo OG)
+    detail : DataFrame con gains y __AXIS_SCORE__ por semilla
+    """
+    if "seed" not in df_long.columns:
+        df_long = df_long.copy()
+        df_long["seed"] = int(globals().get("SEED", 0))
+
+    algorithms = sorted(str(a) for a in df_long["algorithm"].dropna().unique())
+    seed_scores = {sc: {a: [] for a in algorithms} for sc in ("E1", "E2", "E3")}
+    detail_rows = []
+    expected_n = int(globals().get("N_SEEDS", 12))
+
+    for sc in ("E1", "E2", "E3"):
+        oe, oe_label = SCENARIO_OE_LABEL[sc]
+        expected = set(OE_KPI_SETS[oe])
+        sub = df_long[(df_long["scenario"] == sc) & (df_long["kpi"].isin(expected))].copy()
+        for algo in algorithms:
+            g_algo = sub[sub["algorithm"] == algo]
+            for seed, g in g_algo.groupby("seed", sort=True):
+                gains = []
+                for _, r in g.iterrows():
+                    kpi = str(r["kpi"])
+                    lib = r.get("lower_is_better")
+                    if lib is None or (isinstance(lib, float) and not np.isfinite(lib)):
+                        lib = kpi not in HIGHER_IS_BETTER
+                    else:
+                        lib = bool(lib)
+                    baseline = r.get("baseline")
+                    if baseline is None or (isinstance(baseline, float) and not np.isfinite(baseline)):
+                        if kpi in RATIO_TO_BASELINE_KPIS:
+                            baseline = 1.0
+                        elif str(kpi).endswith("_delta"):
+                            baseline = 0.0
+                        else:
+                            continue
+                    gain = signed_relative_gain(r.get("value"), baseline, lib)
+                    if gain is None:
+                        continue
+                    gains.append(gain)
+                    detail_rows.append({
+                        "algorithm": algo,
+                        "scenario": sc,
+                        "seed": int(seed),
+                        "oe": oe,
+                        "objetivo": oe_label,
+                        "kpi": kpi,
+                        "value": r.get("value"),
+                        "baseline": baseline,
+                        "signed_relative_gain": gain,
+                        "lower_is_better": lib,
+                    })
+                score = float(np.mean(gains)) if gains else np.nan
+                if np.isfinite(score):
+                    seed_scores[sc][algo].append(score)
+                detail_rows.append({
+                    "algorithm": algo,
+                    "scenario": sc,
+                    "seed": int(seed),
+                    "oe": oe,
+                    "objetivo": oe_label,
+                    "kpi": "__AXIS_SCORE__",
+                    "value": score,
+                    "baseline": np.nan,
+                    "signed_relative_gain": score,
+                    "lower_is_better": False,
+                })
+
+    seed_arrays = {
+        sc: {a: np.asarray(v, dtype=float) for a, v in by_algo.items()}
+        for sc, by_algo in seed_scores.items()
+    }
+    mean_scores = {}
+    for a in algorithms:
+        mean_scores[a] = np.asarray(
+            [
+                float(np.nanmean(seed_arrays[sc][a])) if seed_arrays[sc][a].size else np.nan
+                for sc in ("E1", "E2", "E3")
+            ],
+            dtype=float,
+        )
+    coverage = {
+        sc: {a: int(seed_arrays[sc][a].size) for a in algorithms}
+        for sc in ("E1", "E2", "E3")
+    }
+    return seed_arrays, mean_scores, pd.DataFrame(detail_rows), coverage, expected_n
+
+
+def cliff_delta(x, y):
+    n1, n2 = len(x), len(y)
+    if n1 == 0 or n2 == 0:
+        return 0.0
+    d = sum(1 for a in x for b in y if a > b) - sum(1 for a in x for b in y if a < b)
+    return d / (n1 * n2)
+
+
+stat_results = {}
+df_score_detail = pd.DataFrame()
+
+if df_objective_long.empty:
+    print("⚠️  Sin datos — referencia oficial v4: MATD3 mejor (KW p=0.0459)")
+else:
+    seed_arrays, mean_scores, df_score_detail, seed_coverage, expected_n = build_axis_scores(
+        df_objective_long
+    )
+    algorithms = sorted(mean_scores.keys())
+    score_arrays = mean_scores  # compat: media por escenario para ranking descriptivo OG
+
+    print("=" * 68)
+    print(f"COBERTURA DE SEMILLAS (esperado N_SEEDS={expected_n})")
+    print("=" * 68)
+    for sc in ("E1", "E2", "E3"):
+        parts = [f"{a}={seed_coverage[sc][a]}" for a in algorithms]
+        print(f"  {sc}: " + ", ".join(parts))
+    incomplete = [
+        f"{sc}/{a}"
+        for sc in ("E1", "E2", "E3")
+        for a in algorithms
+        if seed_coverage[sc][a] < expected_n
+    ]
+    if incomplete:
+        print(f"  AVISO: cobertura incompleta vs {expected_n} semillas → {incomplete}")
+    else:
+        print(f"  OK: {expected_n} semillas por algoritmo/escenario")
+
+    # Cumplimiento / selección por OE (media sobre semillas)
+    print("=" * 68)
+    print("CUMPLIMIENTO Y SELECCIÓN POR OBJETIVO (KPIs CityLearn v3)")
+    print("=" * 68)
+    oe_winners = {}
+    for i, sc in enumerate(("E1", "E2", "E3")):
+        oe, oe_label = SCENARIO_OE_LABEL[sc]
+        ranking_sc = sorted(
+            [
+                {"algorithm": a, "score": float(score_arrays[a][i]), "n_seeds": seed_coverage[sc][a]}
+                for a in algorithms
+                if np.isfinite(score_arrays[a][i])
+            ],
+            key=lambda x: -x["score"],
+        )
+        winner = ranking_sc[0]["algorithm"] if ranking_sc else "N/A"
+        oe_winners[oe] = {
+            "scenario": sc,
+            "objetivo": oe_label,
+            "winner": winner,
+            "ranking": ranking_sc,
+            "n_kpis_definidos": len(OE_KPI_SETS[oe]),
+            "n_seeds_by_algorithm": seed_coverage[sc],
+            "expected_n_seeds": expected_n,
+        }
+        print(f"\n{oe_label}  |  escenario {sc}  |  KPIs={len(OE_KPI_SETS[oe])}")
+        for rank_i, r in enumerate(ranking_sc, 1):
+            mark = " ★ seleccionado" if rank_i == 1 else ""
+            print(
+                f"  {rank_i}. {r['algorithm']:<6}  score={r['score']:+.4f}  "
+                f"n_seeds={r['n_seeds']}{mark}"
+            )
+
+    # OG = media de scores E1/E2/E3 (medias sobre semillas)
+    print("\n" + "=" * 68)
+    print("OBJETIVO GENERAL (OG) — mejor MADRL global")
+    print("=" * 68)
+    ranking = sorted(
+        [
+            {
+                "algorithm": a,
+                "mean_score": float(np.nanmean(score_arrays[a])),
+                "score_E1_OE1": float(score_arrays[a][0]),
+                "score_E2_OE2": float(score_arrays[a][1]),
+                "score_E3_OE3": float(score_arrays[a][2]),
+            }
+            for a in algorithms
+        ],
+        key=lambda x: -x["mean_score"],
+    )
+    for i, r in enumerate(ranking, 1):
+        mark = " ★ Ganador OG" if i == 1 else ""
+        print(
+            f"  {i}. {r['algorithm']:<6}  OG={r['mean_score']:+.4f}  "
+            f"(E1={r['score_E1_OE1']:+.4f} E2={r['score_E2_OE2']:+.4f} E3={r['score_E3_OE3']:+.4f}){mark}"
+        )
+    stat_results["ranking"] = ranking
+    stat_results["best_madrl"] = ranking[0]["algorithm"] if ranking else "N/A"
+    stat_results["oe_winners"] = oe_winners
+    stat_results["expected_n_seeds"] = expected_n
+    stat_results["seed_coverage"] = seed_coverage
+    stat_results["sample_unit"] = "seed"
+    stat_results["score_rule"] = (
+        "signed_relative_gain_vs_baseline_mean_over_all_matching_OE_kpis; "
+        "positive_is_better; per-seed axis score; OG=mean(mean_E1,mean_E2,mean_E3); "
+        f"statistical tests on {expected_n} seeds per OE"
+    )
+    stat_results["kpis_por_oe"] = {oe: list(kpis) for oe, kpis in OE_KPI_SETS.items()}
+
+    # Pruebas por OE sobre semillas (no sobre los 3 escenarios)
+    kw_by_oe = {}
+    mwu_by_oe = {}
+    shapiro_by_oe = {}
+    for sc in ("E1", "E2", "E3"):
+        oe, oe_label = SCENARIO_OE_LABEL[sc]
+        print(f"\n{'=' * 68}")
+        print(f"PRUEBAS SOBRE SEMILLAS — {oe_label} ({sc})")
+        print("=" * 68)
+        groups = {
+            a: seed_arrays[sc][a][np.isfinite(seed_arrays[sc][a])]
+            for a in algorithms
+            if seed_arrays[sc][a].size
+        }
+        print("1. SHAPIRO-WILK (scores por semilla)")
+        shapiro_by_oe[oe] = {}
+        for a, arr in groups.items():
+            if len(arr) >= 3:
+                s, p = stats.shapiro(arr)
+                shapiro_by_oe[oe][a] = {"W": float(s), "p": float(p), "n": int(len(arr))}
+                print(f"  {a:<6}: n={len(arr)} W={s:.4f} p={p:.4f}  {'NORMAL' if p > 0.05 else 'no normal'}")
+            else:
+                shapiro_by_oe[oe][a] = {"n": int(len(arr)), "status": "insufficient"}
+                print(f"  {a:<6}: n={len(arr)} muestras insuficientes (hace falta >=3 semillas)")
+
+        print("2. KRUSKAL-WALLIS (entre algoritmos, unit=semilla)")
+        group_list = [groups[a] for a in algorithms if a in groups and len(groups[a]) > 0]
+        if len(group_list) >= 2 and all(len(g) >= 1 for g in group_list):
+            h, p = stats.kruskal(*group_list)
+            sig = p < 0.05
+            kw_by_oe[oe] = {
+                "H": float(h),
+                "p": float(p),
+                "significant": bool(sig),
+                "n_by_algorithm": {a: int(len(groups[a])) for a in groups},
+                "expected_n_seeds": expected_n,
+            }
+            print(f"  H={h:.4f}  p={p:.4f}  → {'SIGNIFICATIVO ✅' if sig else 'No significativo'}")
+        else:
+            print("  muestras insuficientes para Kruskal-Wallis")
+
+        print("3. MANN-WHITNEY U (pairwise + Cliff δ) sobre semillas")
+        mwu_by_oe[oe] = {}
+        for a1, a2 in itertools.combinations(algorithms, 2):
+            arr1 = groups.get(a1, np.array([]))
+            arr2 = groups.get(a2, np.array([]))
+            if len(arr1) < 1 or len(arr2) < 1:
+                continue
+            try:
+                s, p = stats.mannwhitneyu(arr1, arr2, alternative="two-sided")
+                d = cliff_delta(arr1.tolist(), arr2.tolist())
+                winner = a1 if float(np.mean(arr1)) > float(np.mean(arr2)) else a2
+                mwu_by_oe[oe][f"{a1}_vs_{a2}"] = {
+                    "p": float(p),
+                    "cliff_delta": float(d),
+                    "winner": winner,
+                    "n1": int(len(arr1)),
+                    "n2": int(len(arr2)),
+                }
+                print(
+                    f"  {a1} vs {a2}: n=({len(arr1)},{len(arr2)}) p={p:.4f} "
+                    f"{'✅' if p < 0.05 else ''}  δ={d:.3f}  ▶ {winner}"
+                )
+            except Exception as e:
+                print(f"  {a1} vs {a2}: {e}")
+
+    # Compat: KW/MWU globales = OE.1 (E1) si existe; report también por OE
+    stat_results["shapiro_wilk_by_oe"] = shapiro_by_oe
+    stat_results["kruskal_wallis_by_oe"] = kw_by_oe
+    stat_results["mann_whitney_u_by_oe"] = mwu_by_oe
+    stat_results["kruskal_wallis"] = kw_by_oe.get("OE1", {})
+    stat_results["mann_whitney_u"] = mwu_by_oe.get("OE1", {})
+
+    os.makedirs(f"{OUTPUT_ROOT}/evaluation", exist_ok=True)
+    with open(f"{OUTPUT_ROOT}/evaluation/statistical_analysis.json", "w", encoding="utf-8") as f:
+        json.dump(stat_results, f, indent=2, default=str)
+    if not df_score_detail.empty:
+        df_score_detail.to_csv(f"{OUTPUT_ROOT}/evaluation/oe_kpi_signed_gains.csv", index=False)
+    print(f"\n✅  {OUTPUT_ROOT}/evaluation/statistical_analysis.json")
+
+# ── 9.2  resumen_comparativo/ (una sola ruta de artefactos) ─────────────────
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as _plt
+
+_comp_dir = Path(str(OUTPUT_ROOT)) / "resumen_comparativo"
+_comp_dir.mkdir(parents=True, exist_ok=True)
+
+if not df_objective_long.empty and stat_results:
+    # comparison_metrics: forma larga completa + wide
+    df_objective_long.to_csv(_comp_dir / "comparison_objective_kpis_long.csv", index=False)
+    if "df_results" in globals() and not df_results.empty:
+        df_results.to_csv(_comp_dir / "comparison_metrics.csv", index=False)
+    else:
+        df_objective_long.to_csv(_comp_dir / "comparison_metrics.csv", index=False)
+
+    _ranking_df = pd.DataFrame(stat_results.get("ranking", []))
+    _ranking_df.to_csv(_comp_dir / "best_madrl_selection.csv", index=False)
+
+    _best_report = {
+        "mejor_algoritmo_madrl_OG": stat_results.get("best_madrl", "N/A"),
+        "ganadores_por_objetivo": {
+            oe: {
+                "objetivo": payload.get("objetivo"),
+                "scenario": payload.get("scenario"),
+                "winner": payload.get("winner"),
+                "n_kpis_definidos": payload.get("n_kpis_definidos"),
+            }
+            for oe, payload in (stat_results.get("oe_winners") or {}).items()
+        },
+        "fecha_seleccion": datetime.now().isoformat(),
+        "ranking_OG": stat_results.get("ranking", []),
+        "oe_winners": stat_results.get("oe_winners", {}),
+        "kruskal_wallis": stat_results.get("kruskal_wallis", {}),
+        "mann_whitney_u": stat_results.get("mann_whitney_u", {}),
+        "kruskal_wallis_by_oe": stat_results.get("kruskal_wallis_by_oe", {}),
+        "mann_whitney_u_by_oe": stat_results.get("mann_whitney_u_by_oe", {}),
+        "expected_n_seeds": stat_results.get("expected_n_seeds", int(globals().get("N_SEEDS", 12))),
+        "seed_coverage": stat_results.get("seed_coverage", {}),
+        "sample_unit": "seed",
+        "metodologia": (
+            "Por escenario Ek y semilla se promedia el signed relative gain vs baseline de "
+            "TODOS los KPIs del eje OEk (E1→OE1, E2→OE2, E3→OE3). "
+            "OG = media de medias E1/E2/E3. "
+            "Pruebas Shapiro/KW/Mann-Whitney sobre semillas requieren cobertura multi-seed; con SEED=0 la inferencia HE/H0G es Capa A (9.3) sobre KPI-gains. N_SEEDS diseño="
+            "independientes por OE (no a los 3 escenarios)."
+        ),
+        "score_rule": stat_results.get("score_rule"),
+        "escenarios_evaluados": ["E1", "E2", "E3"],
+        "objetivos": ["OG", "OE.1", "OE.2", "OE.3"],
+        "algoritmos_evaluados": ["HAPPO", "MASAC", "MATD3", "MAAC"],
+        "kpis_por_oe": stat_results.get("kpis_por_oe", {}),
+        "output_root": str(OUTPUT_ROOT),
+    }
+    with open(_comp_dir / "best_madrl_report.json", "w", encoding="utf-8") as _f:
+        json.dump(_best_report, _f, indent=2, ensure_ascii=False, default=str)
+
+    _CLR = {"HAPPO": "#3b82f6", "MASAC": "#a21caf", "MATD3": "#16a34a", "MAAC": "#d97706"}
+    _ranking = stat_results.get("ranking", [])
+    _algos = [r["algorithm"] for r in _ranking]
+    _scores = [r["mean_score"] for r in _ranking]
+    _colors = [_CLR.get(a, "#94a3b8") for a in _algos]
+
+    _fig, _axes = _plt.subplots(1, 2, figsize=(14, 5))
+
+    # Panel OG
+    _ax = _axes[0]
+    _bars = _ax.bar(_algos, _scores, color=_colors, edgecolor="white", linewidth=1.5, width=0.5)
+    for _bar_rect, _v in zip(_bars, _scores):
+        _ax.text(
+            _bar_rect.get_x() + _bar_rect.get_width() / 2,
+            _bar_rect.get_height() + 0.005,
+            f"{_v:+.4f}",
+            ha="center", fontsize=10, fontweight="bold",
+        )
+    _ax.set_title("OG — Score global (media E1/E2/E3)", fontweight="bold")
+    _ax.set_ylabel("Signed relative gain medio (mayor = mejor)")
+    _ax.axhline(0, color="#94a3b8", lw=1)
+    _ax.grid(axis="y", alpha=0.3)
+    _ax.set_facecolor("#f8fafc")
+
+    # Panel por OE
+    _ax2 = _axes[1]
+    _x = np.arange(3)
+    _width = 0.18
+    for j, algo in enumerate(_algos):
+        row = next(r for r in _ranking if r["algorithm"] == algo)
+        vals = [row["score_E1_OE1"], row["score_E2_OE2"], row["score_E3_OE3"]]
+        _ax2.bar(_x + (j - 1.5) * _width, vals, _width, label=algo, color=_CLR.get(algo, "#94a3b8"))
+    _ax2.set_xticks(_x)
+    _ax2.set_xticklabels(["E1→OE.1", "E2→OE.2", "E3→OE.3"])
+    _ax2.set_title("Cumplimiento por objetivo específico", fontweight="bold")
+    _ax2.axhline(0, color="#94a3b8", lw=1)
+    _ax2.legend(fontsize=8)
+    _ax2.grid(axis="y", alpha=0.3)
+    _ax2.set_facecolor("#f8fafc")
+
+    _kw = stat_results.get("kruskal_wallis", {})
+    _fig.suptitle(
+        f"Selección MADRL CityLearn v3 — KPIs OE completos  |  Ganador OG: {stat_results.get('best_madrl', 'N/A')}"
+        + (f"  |  KW p={_kw.get('p', float('nan')):.4f}" if _kw else ""),
+        fontsize=12, fontweight="bold",
+    )
+    _plt.tight_layout()
+    _plt.savefig(_comp_dir / "global_comparison.png", dpi=150, bbox_inches="tight")
+    _plt.close(_fig)
+
+    print(f"\n{'=' * 65}")
+    print(f"  resumen_comparativo/ → {_comp_dir}")
+    print(f"{'=' * 65}")
+    print("  comparison_objective_kpis_long.csv — todos los KPIs OE")
+    print("  comparison_metrics.csv            — wide por corrida")
+    print("  best_madrl_selection.csv          — ranking OG")
+    print("  best_madrl_report.json            — OG + ganadores OE.1/2/3")
+    print("  global_comparison.png             — OG + scores por OE")
+    print(f"\n  Mejor MADRL (OG): {stat_results.get('best_madrl', 'N/A')}")
+    for oe, payload in (stat_results.get("oe_winners") or {}).items():
+        print(f"  {payload.get('objetivo')}: {payload.get('winner')} (escenario {payload.get('scenario')})")
+    if _kw:
+        print(
+            f"  Kruskal-Wallis p = {_kw.get('p', float('nan')):.4f}  "
+            f"{'(SIGNIFICATIVO ✅)' if _kw.get('significant') else ''}"
+        )
+    print(f"{'=' * 65}")
+else:
+    print("⚠️  Sin datos de entrenamiento — ejecuta Sección 7 y 8 primero.")
+    print("   Referencia corrida v4 (MATD3 ganador, KW p=0.0459)")
+
+# ── 9.3  Capa A Cap.5: HE/H0G desde results del entrenamiento (mismo OUTPUT_ROOT) ──
+# Conecta scores KPI vs baseline evaluate_v2 → Friedman/Wilcoxon-Holm → pe_answers.
+if bool(globals().get("RUN_CAPA_A_HYPOTHESIS", True)):
+    import sys
+    from pathlib import Path as _Pcapa
+    _repo_capa = _Pcapa(str(globals().get("REPO", ".")))
+    _pipe = _repo_capa / "tools" / "eval" / "run_notebook_hypothesis_pipeline.py"
+    _out_capa = _Pcapa(str(OUTPUT_ROOT))
+    if not _pipe.is_file():
+        print(f"[9.3] AVISO: no se encontró {_pipe}; Capa A no ejecutada.")
+    else:
+        _py_capa = globals().get("PROJECT_PYTHON", globals().get("PYTHON", sys.executable))
+        _cmd_capa = [
+            str(_py_capa), "-B", str(_pipe),
+            f"--output-root={_out_capa}",
+            f"--seed={int(globals().get('SEED', 0))}",
+        ]
+        print("[9.3] Pipeline hipótesis Cap.5:", " ".join(_cmd_capa))
+        _rc_capa = subprocess.run(_cmd_capa, cwd=str(_repo_capa)).returncode
+        _capa_dir = _out_capa / "resumen_comparativo" / "estadistica" / "problemas_objetivos_hipotesis"
+        _pe = _out_capa / "resumen_comparativo" / "estadistica" / "pe_answers_audit.json"
+        if _rc_capa == 0 and _capa_dir.is_dir():
+            print(f"[9.3] OK Capa A → {_capa_dir}")
+            print(f"[9.3] Decisiones HE/H0G: {_capa_dir / 'decisiones_problemas_objetivos_hipotesis.csv'}")
+            print(f"[9.3] pe_answers: {_pe}")
+            try:
+                import pandas as _pd_capa
+                _dec = _pd_capa.read_csv(_capa_dir / "decisiones_problemas_objetivos_hipotesis.csv")
+                cols = [c for c in ("scope", "null_hypothesis", "alternative_hypothesis",
+                                     "descriptive_best_algorithm", "friedman_p",
+                                     "hypothesis_decision") if c in _dec.columns]
+                print(_dec[cols].to_string(index=False))
+            except Exception as _exc_capa:
+                print(f"[9.3] No se pudo imprimir decisiones: {_exc_capa}")
+        else:
+            print(f"[9.3] FALLO pipeline hipótesis rc={_rc_capa}")
+else:
+    print("[9.3] RUN_CAPA_A_HYPOTHESIS=False — ranking 9.1/9.2 solo descriptivo.")

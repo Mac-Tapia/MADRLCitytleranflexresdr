@@ -143,7 +143,7 @@ ANCHOR_SPECS: list[dict] = [
     },
     {
         "id": "cost_maac",
-        "label": "Δcosto E3 MAAC EUR",
+        "label": "Δcosto E3 MAAC USD",
         "value": 9515,
         "patterns": [r"9[\s.]?515", r"9515"],
         "source": "ranking_oe_scores_all_values.csv",
@@ -151,7 +151,7 @@ ANCHOR_SPECS: list[dict] = [
     },
     {
         "id": "cost_masac",
-        "label": "Δcosto E3 MASAC EUR",
+        "label": "Δcosto E3 MASAC USD",
         "value": 19793,
         "patterns": [r"19[\s.]?793", r"19[\s.]?792", r"19792", r"19793"],
         "source": "ranking_oe_scores_all_values.csv",
@@ -159,7 +159,7 @@ ANCHOR_SPECS: list[dict] = [
     },
     {
         "id": "cost_matd3",
-        "label": "Δcosto E3 MATD3 EUR",
+        "label": "Δcosto E3 MATD3 USD",
         "value": 44399,
         "patterns": [r"44[\s.]?399", r"44399"],
         "source": "ranking_oe_scores_all_values.csv",
@@ -167,7 +167,7 @@ ANCHOR_SPECS: list[dict] = [
     },
     {
         "id": "cost_happo",
-        "label": "Δcosto E3 HAPPO EUR",
+        "label": "Δcosto E3 HAPPO USD",
         "value": 106828,
         "patterns": [r"106[\s.]?828", r"106[\s.]?827", r"106828", r"106827"],
         "source": "ranking_oe_scores_all_values.csv",

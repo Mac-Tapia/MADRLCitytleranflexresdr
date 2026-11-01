@@ -1,0 +1,22 @@
+{
+  "algorithm": "MAAC",
+  "code_commit": "44ff08b32f7321d6e98c8ffe8677d7d416a1f14f",
+  "dataset_sha256": "a1e44a72f417138a1c0cfcf5656500b7cef462babe773f5e4ebf81add21bb400",
+  "episode_time_steps": 8,
+  "scenario_fingerprint": "8ab4c80435acc7402111f94e0416a706c5d931096397a9c859700a725fe4dc95",
+  "scenario_id": "E1",
+  "seed": 0,
+  "source_sha256": "24a355e8cdc034494ef11728345c4d776915880903c8905556730560a330891f",
+  "submodule_commits": {
+    "CityLearn": "c2085a39f7404c9f60ee289a736581c289bf571a",
+    "external/HARL": "591d1125882c5a9552c01dea9e1733762f4ff591",
+    "external/MAAC": "03e3c08419c960e9b9b6926540011e2f46774c97",
+    "external/MARL": "d63d7145e4c7754babd53cd577c495d87817aadb",
+    "external/MARLlib": "51f196cd1627d655c9326730460d520d1b7df21e",
+    "external/MATD3implementation": "8e9ebb8f665a661763463b41bafa328c6cd338a5",
+    "external/MicroGrids": "c9786b82093bf6e9f718c41119f45d14c85d2f9c",
+    "external/evcc": "fed967856f8eeb1820ca403bbfd28ba33700c116",
+    "external/prosumpy": "60b1bb769ee0a5d3bd2994484de78082959e8953"
+  },
+  "target_episodes": 1
+}

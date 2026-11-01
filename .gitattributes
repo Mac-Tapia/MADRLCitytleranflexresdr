@@ -2,3 +2,19 @@
 *.sh text eol=lf
 *.py text eol=lf
 *.ipynb text eol=lf
+
+# Preserve the audited byte hashes of newly installed, canonical skills on checkout.
+tools/skills/architecture-patterns/** text=auto eol=lf
+tools/skills/fastapi-templates/** text=auto eol=lf
+tools/skills/frontend-design/** text=auto eol=lf
+tools/skills/webapp-testing/** text=auto eol=lf
+tools/skills/docker-build-strategies/** text=auto eol=lf
+tools/skills/docker-compose-patterns/** text=auto eol=lf
+tools/skills/harness-engineering/** text=auto eol=lf
+tools/skills/madrl-agent-coordination/** text=auto eol=lf
+tools/skills/madrl-spec-conformance/** text=auto eol=lf
+tools/skills/madrl-experiment-evidence-audit/** text=auto eol=lf
+tools/skills/madrl-scientific-literature-audit/** text=auto eol=lf
+
+# Native smoke manifests contain byte hashes; preserve their original bytes.
+outputs/modular_smoke/** -text

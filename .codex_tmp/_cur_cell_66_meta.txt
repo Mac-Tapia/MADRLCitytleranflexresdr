@@ -1,0 +1,4 @@
+type=markdown
+id=babbf9da
+len=957
+head='## Sección 9: Evaluación estadística — OG / OE.1 / OE.2 / OE.3 y Capa A (HE/H0G)\n\nProtocolo alineado a Cap. III–V y a CityLearn v3 (`objectives.py`, *'

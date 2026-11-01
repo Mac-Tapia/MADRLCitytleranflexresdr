@@ -12,6 +12,14 @@ Este capítulo describe el enfoque metodológico que sustenta la respuesta al ob
 
 El nivel comparativo es esencial para identificar el algoritmo de mayor efecto por eje (OE.1, OE.2, OE.3) y para el ranking global; el nivel propositivo se justifica por la implementación de la capa CityLearn v3 de tesis sobre CityLearn v2. En consecuencia, se descarta el rótulo de estudio no experimental, porque la VI se manipula de manera explícita y controlada.
 
+### 3.1.3 Coordinación energética multiobjetivo (VD)
+
+La coordinación se implementa mediante una suma ponderada de tres componentes acotados: \(R_s=w_F R_F+w_{CO_2}R_{CO_2}+w_{\mathrm{cost}}R_{\mathrm{cost}}\). Se adopta una jerarquía compensatoria cíclica con nivel dominante 0,60, secundario 0,25 y residual 0,15, en el orden **[flexibilidad, CO₂, costo]**: E1=[0,60; 0,15; 0,25] se vincula con OE.1; E2=[0,25; 0,60; 0,15], con OE.2; y E3=[0,15; 0,25; 0,60], con OE.3. Cada fila suma uno, el peso dominante supera la suma de los otros dos (0,60>0,40) y cada objetivo recibe una vez cada nivel, por lo que la intensidad de preferencia es comparable entre escenarios. La escalarización lineal mediante vectores de preferencia se emplea en gestión energética con aprendizaje por refuerzo (Lu et al., 2022; Nweye et al., 2023a), mientras que estudios energéticos y tesis afines confirman la necesidad de evaluar por separado los compromisos técnicos, ambientales y económicos (Jiménez Perdomo & González Escobar, 2024; Mayanti et al., 2021).
+
+Esta formulación es una **suma ponderada jerarquizada y compensatoria**, no optimización lexicográfica: los objetivos secundarios pueden compensar parcialmente el deterioro del dominante. Una jerarquía lexicográfica estricta exige optimizar los objetivos en secuencia y preservar el óptimo superior —o una tolerancia explícita— antes de atender el siguiente (Huy et al., 2023; Tostado-Véliz et al., 2022). En consecuencia, 0,60/0,25/0,15 representa una decisión del diseño experimental y no un valor universal. Su validez se verificará con KPI independientes —pico y rampa para OE.1, CO₂ para OE.2 y costo para OE.3—, las contribuciones efectivas \(|w_jR_j|\), sensibilidad del peso dominante y repetición por semillas; los resultados obtenidos con ponderaciones anteriores no se reinterpretan y requieren reentrenamiento.
+
+El alcance ejecutado y contrastado en esta tesis comprende exclusivamente los tres ejes E1–E3. El marco auxiliar UC3M de siete ejes se conserva como extensión arquitectónica no ejecutada y, por tanto, no aporta tratamientos, KPI ni evidencia para las decisiones HE10–HE31 o H0G–H1G.
+
 ## 3.2 Variables
 
 - **Variable independiente (tratamiento):** algoritmo MADRL (HAPPO, MASAC, MATD3 y MAAC) bajo Dec-POMDP y CTDE, con escenarios E1/E2/E3 (pesos de recompensa por eje). La capa CityLearn v3 es el entorno común del cuasiexperimento, no la VI primaria.
@@ -24,7 +32,7 @@ El nivel comparativo es esencial para identificar el algoritmo de mayor efecto p
 - **Unidad de análisis:** comunidad inteligente simulada (17 edificios SEAI) y agentes MADRL cooperativos. La heterogeneidad Dec-POMDP de observación/acción por edificio (\(d_{o_i}\in[54,327]\), \(d_{a_i}=2+n_i^{\mathrm{ch}}\in[5,44]\), \(d_s=1\,856\)) se detalla en Cap. 2 Tabla 2.A y se operacionaliza en Cap. 4 §4.3.
 - **Población:** escenarios simulados con múltiples edificios y DER; series temporales de demanda, precio e intensidad de carbono (2023-2025).
 - **Muestreo:** no probabilístico, intencional y técnicamente conveniente, justificado por la disponibilidad del dataset real de Iquitos y la pertinencia técnico-científica de los cuatro algoritmos evaluados (Hernández-Sampieri & Mendoza, 2018).
-- **Tamaño de muestra:** 4 algoritmos MADRL + líneas base (CityLearn v2 `baseline`, `hour_rbc`) + comparadores SB3 (PPO/SAC/A2C). Corrida canónica: **≈50 episodios × 8 760 = 438 000 pasos** por job (HAPPO 49/50; MAAC/MASAC/MATD3 50). Semilla única (seed = 0); multi-semilla (≥3) = trabajo futuro. Los episodios **no** son réplicas i.i.d.; constituyen la unidad de contraste episódico bajo dependencia serial.
+- **Tamaño de muestra:** 4 algoritmos MADRL + líneas base (CityLearn v2 `baseline`, `hour_rbc`) + comparadores SB3 (PPO/SAC/A2C). Corrida canónica: MAAC/MASAC/MATD3 completan 50 episodios con KPI-gains finales; HAPPO conserva 49 episodios históricos y un episodio post-resume para una serie descriptiva de 50 puntos, pero sin KPI-gains finales comparables. En consecuencia, el diseño nominal es 4×3 y el contraste inferencial efectivo es 3×3. Semilla única (seed = 0); la campaña confirmatoria multisemilla queda pendiente. Los episodios **no** son réplicas i.i.d. ni sustituyen semillas independientes.
 
 ## 3.4 Datos utilizados — Dataset `citylearn_iquitos_2023_2025`
 

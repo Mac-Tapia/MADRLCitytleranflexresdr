@@ -1,0 +1,1297 @@
+{
+  "artifacts": [
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/artifact_audit.json",
+      "sha256": "90cf827328f449d8df40d0f3ca8a1f8af0b5a342b3fba297d66092d210ca2627",
+      "size_bytes": 2971
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoint_manifest.json",
+      "sha256": "a068515633a48200419fee17b2d3dfc6914f416b91399aaf5aa2e2368150d295",
+      "size_bytes": 7600
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/config.json",
+      "sha256": "31898818953306993a0c10e0bf8426f13fda1de41e1b7ae2b9260fc5ef9a95e9",
+      "size_bytes": 2547
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent0/actor_grad_norm/agent0/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "afc7102257a6f5218256b99d009e26174781f291b73e0d204992a46eddc0d1ec",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent0/dist_entropy/agent0/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "76c34e4e32dd388a01365a9d43cb29e12c4d07c0ac1c8e08ce6d39794d8e77d4",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent0/policy_loss/agent0/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "ce3e79b77cd3b64ccdf0c6be6c3fc817dc87d22ae30b8ed1b64195f6868ac820",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent0/ratio/agent0/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "b3094abade7d0a009262c55d1cdaf8ad97cfc980a03dafff9d371a198e02bf04",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent1/actor_grad_norm/agent1/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "a49d40ba53e294fedc6b56a365d3b8a9504ab30e2bfc1405e8a49ab0604f8f53",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent1/dist_entropy/agent1/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "f6937f280b7ca7934b40d9cc5a72078272db63c746a044a9dd55d3cb2bbf7ea5",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent1/policy_loss/agent1/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "5951c978e399da2702c58c80153878155325bc88699eb405731ae4d7354342b2",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent1/ratio/agent1/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "2fe542ee24e82c26fc10ad16d06356d81f293d78234a35fddaea231dd1911e39",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent10/actor_grad_norm/agent10/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "7306948a2e4ec64959cbe55f950682088d8d9da66a8ad93532fbf31d548fde14",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent10/dist_entropy/agent10/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "c22c901b38950a75168a1ecb962a8aa07b80384710816cc2588bf857d2a99c69",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent10/policy_loss/agent10/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "81a5cabba26bf65a1c55e74918af34b0e14c89dbb94d6b8e18bcdb7049b9a26c",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent10/ratio/agent10/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "df3ec8ddf3f61f2b358f31d688191c5d08949d1e53df8d797a8380ace271f635",
+      "size_bytes": 91
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent11/actor_grad_norm/agent11/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "06ddfbc12482a1315433ef9825dbdc0fc6936e65ca824e134f9c7c493ab132f3",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent11/dist_entropy/agent11/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "d44234afa062ac780ccec5b19cc7d238b83dba9493b499db708bf1de1025ffa9",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent11/policy_loss/agent11/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "3821853e8971ce3f89656def2e339e474ce5d781775cab8e93dea8728133dd2f",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent11/ratio/agent11/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "d884a0e1b2fd6f65921cede6607b8d31cc48040ea7580e471ff63fb6b2b541ee",
+      "size_bytes": 91
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent12/actor_grad_norm/agent12/actor_grad_norm/events.out.tfevents.1793492106.MAC",
+      "sha256": "d4005c0fffc5a6b2eeca2e843e674a0e67afb9d904c5900ba1eb8e1b9a3e8fa3",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent12/dist_entropy/agent12/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "ebb77f7dd768878d69b94fa19c212f2dc9f2fb8f928aab87c91572646c4f78c6",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent12/policy_loss/agent12/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "e01d2eeecb025ff1803caea0ac3d22d473ffd3c734300f13595795fd238dfdd7",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent12/ratio/agent12/ratio/events.out.tfevents.1793492106.MAC",
+      "sha256": "0b6435616197edd4c42b12baf041cd0f505a5a8fcbd0e05cc6a3d5fb5b453bd5",
+      "size_bytes": 91
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent13/actor_grad_norm/agent13/actor_grad_norm/events.out.tfevents.1793492106.MAC",
+      "sha256": "9e0df6b8ea94127377ccc0d35ad858a90703d56a846eec706348913f96c08b28",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent13/dist_entropy/agent13/dist_entropy/events.out.tfevents.1793492106.MAC",
+      "sha256": "71612f42199a3d07d642e863ae37a8c3a720800de8d9a2f1f3845054aadecf6e",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent13/policy_loss/agent13/policy_loss/events.out.tfevents.1793492106.MAC",
+      "sha256": "e219e5f37430a8c0dec791d2e04ab907a62d1ea6f5dce83819ea9fee04295f47",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent13/ratio/agent13/ratio/events.out.tfevents.1793492106.MAC",
+      "sha256": "c7b85c6cab8eb0f1c117ef796a330ab7719be94239bb7aff2fbdc478d3af89ee",
+      "size_bytes": 91
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent14/actor_grad_norm/agent14/actor_grad_norm/events.out.tfevents.1793492106.MAC",
+      "sha256": "045e699a3b1bc49d7f42671a2792c26cb9ccbe7a6005a8333bad44ad438afc5a",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent14/dist_entropy/agent14/dist_entropy/events.out.tfevents.1793492106.MAC",
+      "sha256": "10367bd68eca5d8413b7d0483a8aee0f3212ecdc9d21048cd55973d3eba9180e",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent14/policy_loss/agent14/policy_loss/events.out.tfevents.1793492106.MAC",
+      "sha256": "8fc6eb52e7e96e2771663aa44e4384fc6ee440fdc77a2ff64c2ef6c89fff167d",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent14/ratio/agent14/ratio/events.out.tfevents.1793492106.MAC",
+      "sha256": "eaacc41adc7d6ccc918e69efdd829dfade0b8f11366d90562555264df44b7976",
+      "size_bytes": 91
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent15/actor_grad_norm/agent15/actor_grad_norm/events.out.tfevents.1793492106.MAC",
+      "sha256": "8010dc1440eb2e09049d25f679ec91570804259f251cb16177df1c9e46e1f84b",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent15/dist_entropy/agent15/dist_entropy/events.out.tfevents.1793492106.MAC",
+      "sha256": "d2ba17763cebf39ae1f804e7596e76060dc57a97c8aa0a49381e1fdb423256b6",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent15/policy_loss/agent15/policy_loss/events.out.tfevents.1793492106.MAC",
+      "sha256": "087a985c412971e371f8d811e15ca9f9fdb1ab41e7898b7a2336e0b4f07d1246",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent15/ratio/agent15/ratio/events.out.tfevents.1793492106.MAC",
+      "sha256": "839f6ec19290a2d33ea24b94ff8b071088d35c3e2d3cee2997ef412034f33f43",
+      "size_bytes": 91
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent16/actor_grad_norm/agent16/actor_grad_norm/events.out.tfevents.1793492106.MAC",
+      "sha256": "192485e36a9b467caf4f6c3b19fbe5db6d605fed3a5800fd18915303e307d003",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent16/dist_entropy/agent16/dist_entropy/events.out.tfevents.1793492106.MAC",
+      "sha256": "10e438091aff6fa77fd644b0195bb5e0da0268a07b79a3ce98e11c819d2e196e",
+      "size_bytes": 98
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent16/policy_loss/agent16/policy_loss/events.out.tfevents.1793492106.MAC",
+      "sha256": "2cc081a00c0f790c55e8b26266076270338c2463b2f3f9e4e24f035f5108adac",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent16/ratio/agent16/ratio/events.out.tfevents.1793492106.MAC",
+      "sha256": "40cbb41a8491bb81b152e3001ce4e43e8370cafd1da60fff52512cdbf5af0d9a",
+      "size_bytes": 91
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent2/actor_grad_norm/agent2/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "4d562fdffa0e461b94fc0479be406f73e59e8439c865e419b01449db5055792a",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent2/dist_entropy/agent2/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "e90ff1ce81ee13bf0678d964a919628d5c5e11d54403b6aba182d0c67cad78f0",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent2/policy_loss/agent2/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "eb4023e657fb56d727ab526a40b6332df80cad3cff2e2a56978ba73028d311fa",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent2/ratio/agent2/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "605b6624992ae57f597e56ff25b4f7482ac6bf88b71ef4dd499d36108fdccebb",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent3/actor_grad_norm/agent3/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "1eb4a36294a62d973773a4b3139a7afa9f982a0ce7724e175ebeb30b2c6e8049",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent3/dist_entropy/agent3/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "9d67138576a7cd776c2d4671d16f080b9f74bca65754b47ddbc90612b84eb93e",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent3/policy_loss/agent3/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "e8d1d1cc72ac7ecb81e2c896ba9637d8258b4b6e8d1fa898f76bb6fa0d88cb7d",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent3/ratio/agent3/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "b1ef65592a65eef58694968f7dc75291e65692fd026bf2720701057cbac77ac7",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent4/actor_grad_norm/agent4/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "761a38a8fadb4a4a978c7f973dd53fddbaa1c0868acb350a7dab0de3be6e9366",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent4/dist_entropy/agent4/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "3d4b9c6c65b27bfb667b4676fd1db2a27e4adc6925e5a195b1176f1ede6f57ab",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent4/policy_loss/agent4/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "e6dd2fb237117c7c9c10ff6f846124e0d6a005abc9602ad6c09de0ce1cc4abb3",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent4/ratio/agent4/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "d29f0d684a2cfb419386ec5bf56b5eceea6a1a7441047b63b172a790574449b8",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent5/actor_grad_norm/agent5/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "db86e8baa959ecd5bde3503994dff27b7ebde0f47af1879899f8a927452ce531",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent5/dist_entropy/agent5/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "65a5bbf8dfc2b7186da2ba61a66b5e74f54fb7b6521f66695585a97c2e726e41",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent5/policy_loss/agent5/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "b6756b3701a239659cf6abb4d780ecabcce7b0b64982422bff94ee4659ca5e2a",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent5/ratio/agent5/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "32762380e66313dfc0be1996321d6373a45a504e60b9f64f66b485c52fab817d",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent6/actor_grad_norm/agent6/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "9e57b164e98d2bc35fee2db4f5949c9a747e59e5c3be86463434eea8abf367b2",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent6/dist_entropy/agent6/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "61a9ab6e9921fd07bcce0d7e58c33142a30b2440467cc48c4671978d474f5b2c",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent6/policy_loss/agent6/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "f2148f1202350560e0e3cce41fef16f7ad361fe6c79d9c08c3beb8321db6d523",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent6/ratio/agent6/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "4fb38abb5a727d2d47daef9ed1f273144e4755e8e1e80159f1885e1871d9414c",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent7/actor_grad_norm/agent7/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "37ad838fb0974590816b78a2d4a6ea3180a95f710a233d28132db27c26c07513",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent7/dist_entropy/agent7/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "21a72fa33ebbfce6a8bf5f5c435500b1d604f88dd61bb53402c5ffe5b6bf184f",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent7/policy_loss/agent7/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "3dcb772fcdbe8c17ab4c0849b987d536a0290122a04c927ba0a331e35f1e700a",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent7/ratio/agent7/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "f6eb7728ba829830bdb2202d37b0722882fe0c121e677215b88525e155655f9b",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent8/actor_grad_norm/agent8/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "70e24fccd87e702c0dba949c870d7ce01efa3edfa826fa57637127099a746dea",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent8/dist_entropy/agent8/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "4e05dd8cd52b26fc50861771b0f6fd2680346531b5c7e920f4703e128a5b9d01",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent8/policy_loss/agent8/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "6eef24ddf4714ccd78d30af1d9959dff6a2ff2445f178ed9a92b6ae8b9d77427",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent8/ratio/agent8/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "92376c8edba4d223f50f98e58f1cb9d7d36144f3d257c4e63ae03e8e6c21232b",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent9/actor_grad_norm/agent9/actor_grad_norm/events.out.tfevents.1793492105.MAC",
+      "sha256": "9840092a4a0ca736d4523e87386617600f1113903620d3da2231410184525143",
+      "size_bytes": 100
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent9/dist_entropy/agent9/dist_entropy/events.out.tfevents.1793492105.MAC",
+      "sha256": "fae9cd90f64f7716b413e0f9f664b099a1df609f44d64dfa35455b6584e9333d",
+      "size_bytes": 97
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent9/policy_loss/agent9/policy_loss/events.out.tfevents.1793492105.MAC",
+      "sha256": "2acdcfd4008a805ada0eb8a2055fa05f61b68e9e9912673e77c8ae31a0516d2f",
+      "size_bytes": 96
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/agent9/ratio/agent9/ratio/events.out.tfevents.1793492105.MAC",
+      "sha256": "39c545b8da2c094e130dac087000da8f5bedadfb992719ffd5c8a9fe8d3c9c9e",
+      "size_bytes": 90
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/critic/average_step_rewards/critic/average_step_rewards/events.out.tfevents.1793492106.MAC",
+      "sha256": "b59cebedeb82d623f804b5f2464cba3a19e47b2fc4672def6a7d88e233ca386d",
+      "size_bytes": 105
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/critic/critic_grad_norm/critic/critic_grad_norm/events.out.tfevents.1793492106.MAC",
+      "sha256": "ce1e6de9370bd842da654f32307a6ced57c627dc5c802caefa899a5c1506fa6e",
+      "size_bytes": 101
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/critic/value_loss/critic/value_loss/events.out.tfevents.1793492106.MAC",
+      "sha256": "e5320aa90d76cb2e4ecfa48c1565cf6703abc9c7785127a2c3ad46033f3c5805",
+      "size_bytes": 95
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/events.out.tfevents.1793492053.MAC",
+      "sha256": "b54327f2b0fa6f20ce3bc9338621b3758b40d0ee6b58fe80dfe7c5d36731f591",
+      "size_bytes": 40
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/summary.json",
+      "sha256": "f98c2a9a457d245d03a35f2dd9243bf22b4757d8f77454c88a2fcda6593bef6d",
+      "size_bytes": 11828
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/logs/train_episode_rewards/aver_rewards/events.out.tfevents.1793492106.MAC",
+      "sha256": "d88a83d87a3ef9eb7c691206ff0066ccac334b9fa032f4c78c637e340b9bc9d8",
+      "size_bytes": 99
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent0.pt",
+      "sha256": "70b1398741103ddad471a196976e4d912af287bc88357befdca3c1cb9bd04dbc",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent1.pt",
+      "sha256": "a7af423b90082b9f2ac8e1a09c4a9eb81e2772abf0993442c700e1992d4cef12",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent10.pt",
+      "sha256": "33623ae244ba72291f3208249a8dc3cf8848b1ba41a461db543d60597e161c7b",
+      "size_bytes": 702830
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent11.pt",
+      "sha256": "0a8bfd93463299f0eb4a992b8a4e3152fbbca4727bc38fb82441e8123cc5a21b",
+      "size_bytes": 702830
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent12.pt",
+      "sha256": "cc5fdcb4692545c0b6a0d234834c256cac3cf597b86c03746d59beeb2884b0aa",
+      "size_bytes": 702830
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent13.pt",
+      "sha256": "56345dcd6755146b6c2465ca62cb757f17f74b7c1d57e0f24e966d47df0091f6",
+      "size_bytes": 702830
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent14.pt",
+      "sha256": "0c7421c13d22ea2a0a18767b52dec3991fe5f2670ac453e9b6300339a76171e7",
+      "size_bytes": 702830
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent15.pt",
+      "sha256": "dcd5bdf86f6d83da03f77d6585d988730962962204b3e9fdf0a113dd3bb643b6",
+      "size_bytes": 702830
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent16.pt",
+      "sha256": "925e406d824afaa10320f94c15a2f96347911aeb6e8bc783129c46263f8d16f2",
+      "size_bytes": 702830
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent2.pt",
+      "sha256": "f4a043bc6a2eeb89551951f538da4b313b93e265539df53bb03b95ecea3e89ee",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent3.pt",
+      "sha256": "cfb602a1d73e52d4fd23668556e10df7daa385639efab5adbfedd8f25b6e0b7f",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent4.pt",
+      "sha256": "a768cfdd21166e370122d98f2b792ff6d2a98c74b021c55d649d4a05d85d4c7a",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent5.pt",
+      "sha256": "3ee0e1dd7c19c9903a3a0dd55d2bed853201648e987f009ae71856b916c54128",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent6.pt",
+      "sha256": "17678b86f6f1639bea7b59de3731c0c61be2887118496ae16caed48e9ed87b66",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent7.pt",
+      "sha256": "252fa1cf157b8285a6aa2c2363133e3a8e155c8ebc78fd92c64868ad70c491a9",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent8.pt",
+      "sha256": "9f4a2f62ed4c67b1ac4bc6ecfe4825b0ad4e42fe63af6bc60b70724a75e7a6ca",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/actor_agent9.pt",
+      "sha256": "a29b0885348be16888a1514ceb17a369f116a69d6716121f91046111ed76b327",
+      "size_bytes": 702811
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/critic_agent.pt",
+      "sha256": "6b5d284be36b814bd1c0eaeba801e9df011997d884336607d6860cfff214ca5e",
+      "size_bytes": 2242265
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/models/value_normalizer.pt",
+      "sha256": "7d718a757c6b794ff69a642ac5b9620991721ecb86ad67423ca391c5924c966c",
+      "size_bytes": 2226
+    },
+    {
+      "kind": "checkpoint",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/checkpoints/progress.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/artifact_audit.json",
+      "sha256": "90cf827328f449d8df40d0f3ca8a1f8af0b5a342b3fba297d66092d210ca2627",
+      "size_bytes": 2971
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/building_behavior_summary.csv",
+      "sha256": "4cc22fd076306d73a6143e91b344ec7d460f381ddfc1ac0ca2b1102882fcec31",
+      "size_bytes": 25660
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/building_kpis.csv",
+      "sha256": "526c194bbae517bf3ae50595f47f8ca10a5806d644ec6e7b4d90ccd251ec2890",
+      "size_bytes": 108709
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/building_objective_kpis.csv",
+      "sha256": "dcc38f5947f05f0109ff33c85be12060ca9fd3acbd5a52df7924f598938cbf96",
+      "size_bytes": 87901
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/building_observation_action_schema.csv",
+      "sha256": "b3f381e509b446e3c3d83f8efbbf09e1b3419db7e820ea9e0a000a7fd973b096",
+      "size_bytes": 318399
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/building_trace_sample.csv",
+      "sha256": "f4cb4d34aa2a57e0571de2550277699af7e0dba76936ce367ff180553a507217",
+      "size_bytes": 474857
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/checkpoint_manifest.json",
+      "sha256": "a068515633a48200419fee17b2d3dfc6914f416b91399aaf5aa2e2368150d295",
+      "size_bytes": 7600
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/citylearn_kpi_frame.csv",
+      "sha256": "844d99afaaa007d531e8e8460410548a62104d43115b6277d2f5873fa5f9277a",
+      "size_bytes": 115999
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/district_kpis.csv",
+      "sha256": "fa1778dff5e6460a7c48dec0c66585af1083e2f035675980a988196bf5b9aa15",
+      "size_bytes": 7322
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/job_launcher_complete.json",
+      "sha256": "303e230d065ce230107bd44a0adbfc5817b72d6b16af62901235337ee1bef38d",
+      "size_bytes": 188
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/job_resume_state.json",
+      "sha256": "3e6e4d33ed8a97fea88aa98d308c32b869fbd10a0030999cf61656dea0eed940",
+      "size_bytes": 339
+    },
+    {
+      "kind": "kpi",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/results.json",
+      "sha256": "d951895a8f1e8ebdb3a320029b7cba398db1d8b95d353d8d9bb5c4a3045c1e8b",
+      "size_bytes": 405733
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/timeseries.csv",
+      "sha256": "d4b570254f33152988a3651b99beb5a781e74b07ff95c67287854cc2b62dc769",
+      "size_bytes": 2277
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/trace.csv",
+      "sha256": "91520bf43c49e27e3a76e5988133a17def9822ea2d0a33282674f9bbcf38458b",
+      "size_bytes": 464283
+    },
+    {
+      "kind": "training_summary",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/data/training_summary.json",
+      "sha256": "45923929dbea73c89b97731539b2ede1a88acf97ecbeccbc7a1300c3210680e9",
+      "size_bytes": 398049
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/agent_reward_contribution.png",
+      "sha256": "a1a7089f88659203168b06b1e7d26f245022ed7365f6daabd84f2efac02483dd",
+      "size_bytes": 36504
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/axis_baseline_comparison.png",
+      "sha256": "1f3c0b7fd8106f7c63f3db36c368619083a83c3fb568c34d77c172854ed76697",
+      "size_bytes": 27197
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/baseline_gain_by_kpi.png",
+      "sha256": "c88b35df679af4593548743310fa76aca84137cc3b856813e8aefe33d36e255b",
+      "size_bytes": 121451
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/citylearn_v2_district_timeseries.png",
+      "sha256": "bcd36ccde18efb488cd9043db8bfccf6cb48c78bd1ba910fe8ed6e67d9262bed",
+      "size_bytes": 138691
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/convergence_returns.png",
+      "sha256": "c2ad4baac68da136c0801fc12c6b75c2480dc32c443b04068f86c767ce64bc55",
+      "size_bytes": 104722
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/core_kpis.png",
+      "sha256": "f64ac5b73eac1db350a423a31efe488b337129dbf97a2469b9131c229bf4f607",
+      "size_bytes": 65840
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/episode_reward_summary.png",
+      "sha256": "39a51cfb059b7aa4eb0b7d6a171a82cb51d37b5eaf4fe9d7520589451076c64b",
+      "size_bytes": 33128
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/exploration_action_l2.png",
+      "sha256": "6fca963f6de3d42bf76958e8ede29fff8e59698a994d93b94015c470c373e129",
+      "size_bytes": 56998
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/figures_manifest.json",
+      "sha256": "e3cba59a35a75395aaf5d4a3863bbd5c0fd222c30e3a6b79462e97f26fd688e3",
+      "size_bytes": 9216
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/learning_efficiency.png",
+      "sha256": "bd7ad7a8d870fbf047ab76e8daa5c3762fbd4e75fda95ce40e9d2803eb542049",
+      "size_bytes": 48739
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/OE1_flexibility_kpis.png",
+      "sha256": "ef56578d6bb42a92e1b0d602870acde678abc55f732b1feaa1077e7677450b33",
+      "size_bytes": 123615
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/OE2_co2_kpis.png",
+      "sha256": "1067650486f03822e2bd374a2009de3906edd2fcd0165b87cb58410d7c8891cb",
+      "size_bytes": 45061
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/OE3_cost_kpis.png",
+      "sha256": "8881ed51979988177062e932acb890d54c701a4cd63a7de3546e52d39d8fbf90",
+      "size_bytes": 54828
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/reward_timeseries.png",
+      "sha256": "5c48015b85acf3664998036315e37f71a8d116e4725ab909e1eb235d2e4611b2",
+      "size_bytes": 42930
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/agent_reward_summary.csv",
+      "sha256": "3896b955e9d768183e2cedaa734f0019553ecb09f312cbda8a2af692dcb873e2",
+      "size_bytes": 1939
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/agent_reward_summary.md",
+      "sha256": "0c589bb5b4dd28f701fee5d8a9f6bad72e22d24df3869f3890a0ff5f2bb38492",
+      "size_bytes": 2272
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/axis_baseline_comparison.csv",
+      "sha256": "23acf1de16fe84e3ca61e3746e80af28195e488446f90c680f39370c6b0183f7",
+      "size_bytes": 159
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/axis_baseline_comparison.md",
+      "sha256": "326a02876c5db252e86a806140ff8b71e2448e60fbe9940a19efa0b47d509762",
+      "size_bytes": 240
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_behavior_summary.csv",
+      "sha256": "4cc22fd076306d73a6143e91b344ec7d460f381ddfc1ac0ca2b1102882fcec31",
+      "size_bytes": 25660
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_behavior_summary.md",
+      "sha256": "a13ef999ce79987e86d41a06ec1e3a0106785a59ddc8afe9a1e41a7a781ad912",
+      "size_bytes": 29857
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_kpis.csv",
+      "sha256": "526c194bbae517bf3ae50595f47f8ca10a5806d644ec6e7b4d90ccd251ec2890",
+      "size_bytes": 108709
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_kpis.md",
+      "sha256": "c4d40957703414e43ad001b189df9a83f1aa4a1a7cd11d7e623fd45616cb8c1c",
+      "size_bytes": 121496
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_objective_kpis.csv",
+      "sha256": "dcc38f5947f05f0109ff33c85be12060ca9fd3acbd5a52df7924f598938cbf96",
+      "size_bytes": 87901
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_objective_kpis.md",
+      "sha256": "01fbc667ad24b3998f97f5834c893b86225391de7282cec2fa2f2e3a6834f50d",
+      "size_bytes": 99940
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_observation_action_schema.csv",
+      "sha256": "b3f381e509b446e3c3d83f8efbbf09e1b3419db7e820ea9e0a000a7fd973b096",
+      "size_bytes": 318399
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_observation_action_schema.md",
+      "sha256": "f9bd3bcd6ed0ccf2749b130edd7d0d6cb66c830bc32f56eb904e8ed06c60a0b7",
+      "size_bytes": 356736
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_trace_sample.csv",
+      "sha256": "f4cb4d34aa2a57e0571de2550277699af7e0dba76936ce367ff180553a507217",
+      "size_bytes": 474857
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/building_trace_sample.md",
+      "sha256": "abd925074ad74c6a63231ed3c4a340a551db0e1ee454c331420020bcb650eab7",
+      "size_bytes": 920758
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/checkpoint_inventory.csv",
+      "sha256": "f537dc435b8f7a760138a9d17bd5902bc498f155c1e5d65f3b52ea6a653b9704",
+      "size_bytes": 2517
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/checkpoint_inventory.md",
+      "sha256": "762cf05e6b852345fba5784f472b430b75a49a6e52a2f19e5ce4e40f01b3d413",
+      "size_bytes": 2698
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/citylearn_kpi_frame.csv",
+      "sha256": "844d99afaaa007d531e8e8460410548a62104d43115b6277d2f5873fa5f9277a",
+      "size_bytes": 115999
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/citylearn_kpi_frame.md",
+      "sha256": "a6131b9ed6be16838cb4b9fdc99ad2d489af4e5fa2621ab689187c5ce27d08c3",
+      "size_bytes": 129646
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/core_kpis.csv",
+      "sha256": "3854622270cb103654742b48ad446b91e9bacca548d0a9c552cc0c1214871ca8",
+      "size_bytes": 550
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/core_kpis.md",
+      "sha256": "751af642e9e305f8da9da86a4678905a6495a851585d47841ed7416a328bff61",
+      "size_bytes": 655
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/district_kpis.csv",
+      "sha256": "fa1778dff5e6460a7c48dec0c66585af1083e2f035675980a988196bf5b9aa15",
+      "size_bytes": 7322
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/district_kpis.md",
+      "sha256": "0a298fcd911baf59903e05f93e5ac84b93cb03dd8fea692305becbd30ec7376e",
+      "size_bytes": 8219
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/episode_summary.csv",
+      "sha256": "4a9dae58477c0e4bda49bedbf04f06a636336172a4064b89af00fb9d06cbbee3",
+      "size_bytes": 190
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/episode_summary.md",
+      "sha256": "ee55446bc31187d5276428b5c35b0821fc65101b2dd4b0d690cda69eb84b6ecf",
+      "size_bytes": 287
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/exploration_summary.csv",
+      "sha256": "1f64262007437be76fce492b2f9c92b4114d93ff7e33b5f91af5bf8aeb62b71b",
+      "size_bytes": 253
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/exploration_summary.md",
+      "sha256": "4b86651a792766c2590eaecf70678d49acd7a029251c71557005ddebba7fbf41",
+      "size_bytes": 340
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/objective_kpis.csv",
+      "sha256": "70c58e6e3ef54718e3b107c83ac80947c323993803c82c478cf97d09c42e4aa1",
+      "size_bytes": 6425
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/objective_kpis.md",
+      "sha256": "a13967ee10f1654f7d5562e632234d55fae701b516e02da0cc0c8aad44c14f66",
+      "size_bytes": 7698
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/training_efficiency.csv",
+      "sha256": "510044fc27b7343d0ca0e29bc8710da0922789610fba13df98086d7d2cd91f72",
+      "size_bytes": 335
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/figures/tables/training_efficiency.md",
+      "sha256": "4e8196a03151203fb5eedde42d9aecdc5b56fee7cc6bc11ac47a625e2655f04b",
+      "size_bytes": 442
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/job_launcher_complete.json",
+      "sha256": "303e230d065ce230107bd44a0adbfc5817b72d6b16af62901235337ee1bef38d",
+      "size_bytes": 188
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/live_progress.json",
+      "sha256": "fdb187db414519a436303b4e96d04eebe425b3abc888d994dcffc704d665b234",
+      "size_bytes": 617
+    },
+    {
+      "kind": "kpi",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/results.json",
+      "sha256": "d951895a8f1e8ebdb3a320029b7cba398db1d8b95d353d8d9bb5c4a3045c1e8b",
+      "size_bytes": 405733
+    },
+    {
+      "kind": "artifact",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/timeseries.csv",
+      "sha256": "d4b570254f33152988a3651b99beb5a781e74b07ff95c67287854cc2b62dc769",
+      "size_bytes": 2277
+    },
+    {
+      "kind": "training_summary",
+      "media_type": "application/octet-stream",
+      "producer": "HAPPO",
+      "relative_path": "E1/training_summary.json",
+      "sha256": "45923929dbea73c89b97731539b2ede1a88acf97ecbeccbc7a1300c3210680e9",
+      "size_bytes": 398049
+    }
+  ],
+  "completed_episodes": 1,
+  "experiment_fingerprint": "0e1900f937a44dca7e2d02626e95575f556a06118cab52b859884262598f9f1e",
+  "run_id": "happo-e1-s000-0e1900f937a4",
+  "status": "verified",
+  "target_episodes": 1
+}

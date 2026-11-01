@@ -1,8 +1,0 @@
-Init Agents
-Init alg QMIX
-Init RolloutWorker
-Run 0, train epoch 0
-Run 0, train epoch 1
-Run 0, train epoch 2
-Run 0, train epoch 3
-Run 0, train epoch 4

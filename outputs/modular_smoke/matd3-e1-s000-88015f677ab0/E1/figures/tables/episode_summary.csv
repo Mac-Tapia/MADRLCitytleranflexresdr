@@ -1,2 +1,0 @@
-episode,first_global_step,last_all_done,last_episode_step,last_global_step,last_time_step,reward_mean_average,reward_sum_total,steps
-0,0,True,7,7,7,-0.6578878089785576,-89.47274202108383,8

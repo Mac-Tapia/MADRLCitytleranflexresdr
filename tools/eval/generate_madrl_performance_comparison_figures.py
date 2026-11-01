@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 from pathlib import Path
 
 import matplotlib
@@ -21,7 +22,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
-RUN_ID = "madrl_v3_20260627_164047"
+RUN_ID = os.environ.get("MADRL_RUN_ID", "madrl_v3_20260627_164047")
 RUN = REPO / "outputs" / RUN_ID
 AQ = RUN / "resumen_comparativo" / "estadistica" / "analisis_cuantitativo_completo_50_episodios"
 MO = RUN / "resumen_comparativo" / "multiobjetivo"

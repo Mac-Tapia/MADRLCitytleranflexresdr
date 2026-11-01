@@ -1,3 +1,0 @@
-| episode | first_global_step | last_all_done | last_episode_step | last_global_step | last_time_step | reward_mean_average | reward_sum_total | steps |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0 | 0 | False | 7 | 7 | 1 | -0.70332345739007 | -95.65199020504951 | 8 |

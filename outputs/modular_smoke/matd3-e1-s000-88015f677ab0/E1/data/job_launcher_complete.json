@@ -1,8 +1,0 @@
-{
-  "algorithm": "MATD3",
-  "episodes_completed": 2,
-  "marked_at": "2026-11-01T00:31:04.499187+00:00",
-  "scenario": "E1",
-  "source": "write_training_artifacts",
-  "target_episodes": 1
-}

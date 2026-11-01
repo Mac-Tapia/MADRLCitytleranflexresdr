@@ -1,1 +1,0 @@
-{"timestamp": "2026-06-17T10:11:52.215808+00:00", "event": "finite_optimizer_step_guard_audit_file_repaired", "installed_optimizers": 18, "run_dir": "outputs\\citylearn_v3_madrl_full_20260615_074011_v4\\happo\\E3_seed_0", "reason": "manifest_referenced_missing_audit_file"}

@@ -101,7 +101,7 @@ outputs/**/MAAC/**/checkpoint.pt
 
 
 # Drive full_data timeseries (>100MB) — keep local, do not push to GitHub
-outputs/_drive_madrl/
+outputs/_drive_madrl/**/timeseries.csv
 outputs/test_notebook/
 
 # Generated local discovery links; canonical skill contents are tools/skills/.

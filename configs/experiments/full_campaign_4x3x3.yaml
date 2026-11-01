@@ -1,0 +1,8 @@
+campaign_id: full_4x3x3_v1
+algorithms: [HAPPO, MASAC, MATD3, MAAC]
+scenarios: [E1, E2, E3]
+seeds: [42, 123, 456]
+episodes: 50
+episode_time_steps: 8760
+schema: CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json
+output_root: outputs/modular_training

@@ -1,0 +1,1041 @@
+{
+  "a2_verdict": "VALIDADA",
+  "a2_matches_before": 20,
+  "a2_matches_after": 20,
+  "a2_header_before": [
+    "algorithm",
+    "scenario",
+    "agent",
+    "electricity_cost_delta_eur",
+    "carbon_emissions_delta_kgco2",
+    "grid_import_delta_kwh",
+    "ev_charge_total_kwh"
+  ],
+  "a2_top20_recomputed": [
+    {
+      "rank": 1,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "agent": "Building_14",
+      "electricity_cost_delta_eur": -3532.4155618258374,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 2,
+      "algorithm": "MATD3",
+      "scenario": "E3",
+      "agent": "Building_12",
+      "electricity_cost_delta_eur": -2672.0535701428307,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E3/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 3,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "agent": "Building_12",
+      "electricity_cost_delta_eur": -2322.773223772878,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 4,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "agent": "Building_11",
+      "electricity_cost_delta_eur": -2304.438581703289,
+      "source_file": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 5,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "agent": "Building_11",
+      "electricity_cost_delta_eur": -2279.042941080581,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 6,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "agent": "Building_12",
+      "electricity_cost_delta_eur": -2053.6084617908346,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 7,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "agent": "Building_8",
+      "electricity_cost_delta_eur": -1950.974042386908,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 8,
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "agent": "Building_11",
+      "electricity_cost_delta_eur": -1824.6310089519247,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 9,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "agent": "Building_11",
+      "electricity_cost_delta_eur": -1367.6378789224543,
+      "source_file": "outputs/_drive_madrl/full_data/MASAC/E1/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 10,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "agent": "Building_3",
+      "electricity_cost_delta_eur": -958.8966749461832,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 11,
+      "algorithm": "MATD3",
+      "scenario": "E2",
+      "agent": "Building_5",
+      "electricity_cost_delta_eur": -950.0458268172516,
+      "source_file": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 12,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "agent": "Building_8",
+      "electricity_cost_delta_eur": -899.2025018301028,
+      "source_file": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 13,
+      "algorithm": "MAAC",
+      "scenario": "E1",
+      "agent": "Building_11",
+      "electricity_cost_delta_eur": -888.9321198133257,
+      "source_file": "outputs/_drive_madrl/full_data/MAAC/E1/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 14,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "agent": "Building_8",
+      "electricity_cost_delta_eur": -853.7371509218392,
+      "source_file": "outputs/_drive_madrl/full_data/MASAC/E2/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 15,
+      "algorithm": "MASAC",
+      "scenario": "E3",
+      "agent": "Building_14",
+      "electricity_cost_delta_eur": -845.4150263144693,
+      "source_file": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 16,
+      "algorithm": "MASAC",
+      "scenario": "E2",
+      "agent": "Building_11",
+      "electricity_cost_delta_eur": -717.3080218275427,
+      "source_file": "outputs/_drive_madrl/full_data/MASAC/E2/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 17,
+      "algorithm": "MAAC",
+      "scenario": "E2",
+      "agent": "Building_14",
+      "electricity_cost_delta_eur": -701.8555300273947,
+      "source_file": "outputs/_drive_madrl/full_data/MAAC/E2/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 18,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "agent": "Building_14",
+      "electricity_cost_delta_eur": -683.7813220831522,
+      "source_file": "outputs/_drive_madrl/full_data/MAAC/E3/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 19,
+      "algorithm": "MAAC",
+      "scenario": "E3",
+      "agent": "Building_5",
+      "electricity_cost_delta_eur": -610.0458629335917,
+      "source_file": "outputs/_drive_madrl/full_data/MAAC/E3/data/building_behavior_summary.csv"
+    },
+    {
+      "rank": 20,
+      "algorithm": "MASAC",
+      "scenario": "E1",
+      "agent": "Building_14",
+      "electricity_cost_delta_eur": -609.4339546957053,
+      "source_file": "outputs/_drive_madrl/full_data/MASAC/E1/data/building_behavior_summary.csv"
+    }
+  ],
+  "a2_comparison_before": [
+    {
+      "rank": 1,
+      "word": [
+        "MATD3",
+        "E1",
+        "Building_14",
+        "-3532",
+        "-2071",
+        "-2680",
+        "0"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_14",
+        "delta": -3532.4155618258374,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_14",
+        "delta": "-3532"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 2,
+      "word": [
+        "MATD3",
+        "E3",
+        "Building_12",
+        "-2672",
+        "-2163",
+        "-2795",
+        "0"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E3",
+        "agent": "Building_12",
+        "delta": -2672.0535701428307,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E3/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E3",
+        "agent": "Building_12",
+        "delta": "-2672"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 3,
+      "word": [
+        "MATD3",
+        "E1",
+        "Building_12",
+        "-2323",
+        "-2153",
+        "-2781",
+        "0"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_12",
+        "delta": -2322.773223772878,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_12",
+        "delta": "-2323"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 4,
+      "word": [
+        "MASAC",
+        "E3",
+        "Building_11",
+        "-2304",
+        "7086",
+        "8960",
+        "493.9"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_11",
+        "delta": -2304.438581703289,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_11",
+        "delta": "-2304"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 5,
+      "word": [
+        "MATD3",
+        "E2",
+        "Building_11",
+        "-2279",
+        "-1848",
+        "-2386",
+        "0"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_11",
+        "delta": -2279.042941080581,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_11",
+        "delta": "-2279"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 6,
+      "word": [
+        "MATD3",
+        "E2",
+        "Building_12",
+        "-2054",
+        "-2163",
+        "-2795",
+        "0"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_12",
+        "delta": -2053.6084617908346,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_12",
+        "delta": "-2054"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 7,
+      "word": [
+        "MATD3",
+        "E2",
+        "Building_8",
+        "-1951",
+        "-1904",
+        "-2490",
+        "3839"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_8",
+        "delta": -1950.974042386908,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_8",
+        "delta": "-1951"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 8,
+      "word": [
+        "MATD3",
+        "E1",
+        "Building_11",
+        "-1825",
+        "-801.1",
+        "-996.6",
+        "1455"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "delta": -1824.6310089519247,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "delta": "-1825"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 9,
+      "word": [
+        "MASAC",
+        "E1",
+        "Building_11",
+        "-1368",
+        "7845",
+        "9909",
+        "454.1"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MASAC",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "delta": -1367.6378789224543,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E1/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MASAC",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "delta": "-1368"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 10,
+      "word": [
+        "MATD3",
+        "E2",
+        "Building_3",
+        "-958.9",
+        "-1113",
+        "-1383",
+        "4230"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_3",
+        "delta": -958.8966749461832,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_3",
+        "delta": "-958.9"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 11,
+      "word": [
+        "MATD3",
+        "E2",
+        "Building_5",
+        "-950",
+        "-1416",
+        "-1793",
+        "0"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_5",
+        "delta": -950.0458268172516,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "agent": "Building_5",
+        "delta": "-950"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 12,
+      "word": [
+        "MASAC",
+        "E3",
+        "Building_8",
+        "-899.2",
+        "3807",
+        "4927",
+        "1619"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_8",
+        "delta": -899.2025018301028,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_8",
+        "delta": "-899.2"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 13,
+      "word": [
+        "MAAC",
+        "E1",
+        "Building_11",
+        "-888.9",
+        "2103",
+        "2855",
+        "570.4"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MAAC",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "delta": -888.9321198133257,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E1/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MAAC",
+        "scenario": "E1",
+        "agent": "Building_11",
+        "delta": "-888.9"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 14,
+      "word": [
+        "MASAC",
+        "E2",
+        "Building_8",
+        "-853.7",
+        "2636",
+        "3412",
+        "1460"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MASAC",
+        "scenario": "E2",
+        "agent": "Building_8",
+        "delta": -853.7371509218392,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E2/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MASAC",
+        "scenario": "E2",
+        "agent": "Building_8",
+        "delta": "-853.7"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 15,
+      "word": [
+        "MASAC",
+        "E3",
+        "Building_14",
+        "-845.4",
+        "1785",
+        "2300",
+        "614.3"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_14",
+        "delta": -845.4150263144693,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "agent": "Building_14",
+        "delta": "-845.4"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 16,
+      "word": [
+        "MASAC",
+        "E2",
+        "Building_11",
+        "-717.3",
+        "7957",
+        "1.01e+04",
+        "530.1"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MASAC",
+        "scenario": "E2",
+        "agent": "Building_11",
+        "delta": -717.3080218275427,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E2/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MASAC",
+        "scenario": "E2",
+        "agent": "Building_11",
+        "delta": "-717.3"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 17,
+      "word": [
+        "MAAC",
+        "E2",
+        "Building_14",
+        "-701.9",
+        "1510",
+        "1954",
+        "438.6"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MAAC",
+        "scenario": "E2",
+        "agent": "Building_14",
+        "delta": -701.8555300273947,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E2/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MAAC",
+        "scenario": "E2",
+        "agent": "Building_14",
+        "delta": "-701.9"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 18,
+      "word": [
+        "MAAC",
+        "E3",
+        "Building_14",
+        "-683.8",
+        "1707",
+        "2212",
+        "450.8"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MAAC",
+        "scenario": "E3",
+        "agent": "Building_14",
+        "delta": -683.7813220831522,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E3/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MAAC",
+        "scenario": "E3",
+        "agent": "Building_14",
+        "delta": "-683.8"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 19,
+      "word": [
+        "MAAC",
+        "E3",
+        "Building_5",
+        "-610",
+        "1249",
+        "1621",
+        "207.1"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MAAC",
+        "scenario": "E3",
+        "agent": "Building_5",
+        "delta": -610.0458629335917,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E3/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MAAC",
+        "scenario": "E3",
+        "agent": "Building_5",
+        "delta": "-610"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    },
+    {
+      "rank": 20,
+      "word": [
+        "MASAC",
+        "E1",
+        "Building_14",
+        "-609.4",
+        "1510",
+        "1952",
+        "522.2"
+      ],
+      "status": "match",
+      "expected": {
+        "algorithm": "MASAC",
+        "scenario": "E1",
+        "agent": "Building_14",
+        "delta": -609.4339546957053,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E1/data/building_behavior_summary.csv"
+      },
+      "got": {
+        "algorithm": "MASAC",
+        "scenario": "E1",
+        "agent": "Building_14",
+        "delta": "-609.4"
+      },
+      "checks": {
+        "algo": true,
+        "scenario": true,
+        "agent": true,
+        "delta": true,
+        "carbon": true,
+        "grid": true,
+        "ev": true
+      }
+    }
+  ],
+  "a2_sources": {
+    "sources": [
+      "outputs/_drive_madrl/full_data/MAAC/E1/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MAAC/E2/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MAAC/E3/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MASAC/E1/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MASAC/E2/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MASAC/E3/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MATD3/E1/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MATD3/E2/data/building_behavior_summary.csv",
+      "outputs/_drive_madrl/full_data/MATD3/E3/data/building_behavior_summary.csv"
+    ],
+    "definition": "electricity_cost_delta_eur = control - baseline; lower (more negative) = greater reduction; universe = MAAC/MASAC/MATD3 × E1/E2/E3 with real building_behavior_summary.csv",
+    "excluded": [
+      "HAPPO-E1: missing D:/MADRLCitytleranflexresdr/outputs/_drive_madrl/full_data/HAPPO/E1/data/building_behavior_summary.csv",
+      "HAPPO-E2: missing D:/MADRLCitytleranflexresdr/outputs/_drive_madrl/full_data/HAPPO/E2/data/building_behavior_summary.csv",
+      "HAPPO-E3: missing D:/MADRLCitytleranflexresdr/outputs/_drive_madrl/full_data/HAPPO/E3/data/building_behavior_summary.csv"
+    ],
+    "n_complete_rows": 153,
+    "n_treatments": 9,
+    "algorithms_in_ranking": [
+      "MAAC",
+      "MASAC",
+      "MATD3"
+    ]
+  },
+  "a9_old_vs_new": {
+    "old_interpretation_claim": "351 checkpoints / 119,627.66 MB (interpretación previa en ABRIR_ESTE)",
+    "new_total_files": 294,
+    "new_total_gb": 116.71868079341948,
+    "new_total_mb": 119519.92913246155,
+    "per_treatment_gb": [
+      {
+        "treatment": "HAPPO-E1",
+        "n_files_listed": 0,
+        "total_gb": 0.0,
+        "source": "missing"
+      },
+      {
+        "treatment": "HAPPO-E2",
+        "n_files_listed": 0,
+        "total_gb": 0.0,
+        "source": "missing"
+      },
+      {
+        "treatment": "HAPPO-E3",
+        "n_files_listed": 0,
+        "total_gb": 0.0,
+        "source": "missing"
+      },
+      {
+        "treatment": "MAAC-E1",
+        "n_files_listed": 52,
+        "total_gb": 38.7644000928849,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E1/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MAAC-E2",
+        "n_files_listed": 52,
+        "total_gb": 38.7644000928849,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E2/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MAAC-E3",
+        "n_files_listed": 52,
+        "total_gb": 38.7644000928849,
+        "source": "outputs/_drive_madrl/full_data/MAAC/E3/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MASAC-E1",
+        "n_files_listed": 12,
+        "total_gb": 0.002378944307565689,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E1/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MASAC-E2",
+        "n_files_listed": 12,
+        "total_gb": 0.002378944307565689,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E2/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MASAC-E3",
+        "n_files_listed": 12,
+        "total_gb": 0.002378944307565689,
+        "source": "outputs/_drive_madrl/full_data/MASAC/E3/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MATD3-E1",
+        "n_files_listed": 34,
+        "total_gb": 0.1394478939473629,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E1/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MATD3-E2",
+        "n_files_listed": 34,
+        "total_gb": 0.1394478939473629,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E2/data/checkpoint_manifest.json"
+      },
+      {
+        "treatment": "MATD3-E3",
+        "n_files_listed": 34,
+        "total_gb": 0.1394478939473629,
+        "source": "outputs/_drive_madrl/full_data/MATD3/E3/data/checkpoint_manifest.json"
+      }
+    ],
+    "cause": "La interpretación previa (~351 archivos / ~119627 MB) no corresponde al agregado por tratamiento recalculado solo desde checkpoint_manifest.json del espejo full_data de la corrida canónica; además HAPPO debe figurar en 0 si falta el manifiesto.",
+    "png": "outputs/_drive_madrl/gdrive_20260627_164047_objective_analysis/figures/checkpoint_manifest_total_size_by_treatment.png"
+  },
+  "docs": {
+    "primary": {
+      "actions": [
+        "Tabla A.2 celdas actualizadas",
+        "Caption A.2 actualizado",
+        "Nota A.2 actualizada",
+        "Interpretación A.2 actualizada",
+        "Tabla A.2 VALIDADA frente a full_data (reescritura idempotente)",
+        "fig51_interp=1",
+        "fig58e_interp=2",
+        "figA9_interp=2",
+        "6.4 + Tabla 6.1 reemplazados",
+        "6.5 + Tabla 6.2 reemplazados"
+      ],
+      "save": {
+        "saved": "D:\\MADRLCitytleranflexresdr\\docs\\ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+        "ok": true
+      },
+      "a2": "VALIDADA"
+    },
+    "mirror": {
+      "actions": [
+        "Tabla A.2 celdas actualizadas",
+        "Caption A.2 actualizado",
+        "Nota A.2 actualizada",
+        "Interpretación A.2 actualizada",
+        "Tabla A.2 VALIDADA frente a full_data (reescritura idempotente)",
+        "fig51_interp=1",
+        "fig58e_interp=2",
+        "figA9_interp=2",
+        "6.4 + Tabla 6.1 reemplazados",
+        "6.5 + Tabla 6.2 reemplazados"
+      ],
+      "save": {
+        "saved": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+        "ok": true
+      },
+      "a2": "VALIDADA"
+    },
+    "a9_embeds": [
+      {
+        "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+        "replaced": true,
+        "rId": "rId32",
+        "media": "word/media/image24.png"
+      },
+      {
+        "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+        "replaced": true,
+        "rId": "rId32",
+        "media": "word/media/image24.png"
+      }
+    ],
+    "a2_verdict": "VALIDADA"
+  }
+}

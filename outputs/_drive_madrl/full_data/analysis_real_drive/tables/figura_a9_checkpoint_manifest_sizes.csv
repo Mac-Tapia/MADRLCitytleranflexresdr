@@ -1,0 +1,13 @@
+algorithm,scenario,treatment,n_files_listed,total_bytes,total_mb,total_gb,max_file_mb,max_relative_path,source
+HAPPO,E1,HAPPO-E1,0,0,0.0,0.0,0.0,,missing
+HAPPO,E2,HAPPO-E2,0,0,0.0,0.0,0.0,,missing
+HAPPO,E3,HAPPO-E3,0,0,0.0,0.0,0.0,,missing
+MAAC,E1,MAAC-E1,52,41622957662,39694.745695114136,38.7644000928849,763.3617601394653,checkpoints/checkpoint_episode_1.pt,outputs/_drive_madrl/full_data/MAAC/E1/data/checkpoint_manifest.json
+MAAC,E2,MAAC-E2,52,41622957662,39694.745695114136,38.7644000928849,763.3617601394653,checkpoints/checkpoint_episode_1.pt,outputs/_drive_madrl/full_data/MAAC/E2/data/checkpoint_manifest.json
+MAAC,E3,MAAC-E3,52,41622957662,39694.745695114136,38.7644000928849,763.3617601394653,checkpoints/checkpoint_episode_1.pt,outputs/_drive_madrl/full_data/MAAC/E3/data/checkpoint_manifest.json
+MASAC,E1,MASAC-E1,12,2554372,2.4360389709472656,0.002378944307565689,0.23778247833251953,checkpoints/models/linear_mix/qmix_sac/clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_12_1.0/citylearn_v3_E1/0_policy_net_params.pkl,outputs/_drive_madrl/full_data/MASAC/E1/data/checkpoint_manifest.json
+MASAC,E2,MASAC-E2,12,2554372,2.4360389709472656,0.002378944307565689,0.23778247833251953,checkpoints/models/linear_mix/qmix_sac/clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_12_1.0/citylearn_v3_E2/0_policy_net_params.pkl,outputs/_drive_madrl/full_data/MASAC/E2/data/checkpoint_manifest.json
+MASAC,E3,MASAC-E3,12,2554372,2.4360389709472656,0.002378944307565689,0.23778247833251953,checkpoints/models/linear_mix/qmix_sac/clamp2-5_rewardscale10_2_32_32_1_1_2_0.0005_12_1.0/citylearn_v3_E3/0_policy_net_params.pkl,outputs/_drive_madrl/full_data/MASAC/E3/data/checkpoint_manifest.json
+MATD3,E1,MATD3-E1,34,149731036,142.7946434020996,0.1394478939473629,7.4765214920043945,checkpoints/offpolicy_run/models/policy_0/critic.pt,outputs/_drive_madrl/full_data/MATD3/E1/data/checkpoint_manifest.json
+MATD3,E2,MATD3-E2,34,149731036,142.7946434020996,0.1394478939473629,7.4765214920043945,checkpoints/offpolicy_run/models/policy_0/critic.pt,outputs/_drive_madrl/full_data/MATD3/E2/data/checkpoint_manifest.json
+MATD3,E3,MATD3-E3,34,149731036,142.7946434020996,0.1394478939473629,7.4765214920043945,checkpoints/offpolicy_run/models/policy_0/critic.pt,outputs/_drive_madrl/full_data/MATD3/E3/data/checkpoint_manifest.json

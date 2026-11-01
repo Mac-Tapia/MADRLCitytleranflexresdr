@@ -1,0 +1,5 @@
+algorithm,scenario,electricity_cost,electricity_cost_control,electricity_cost_baseline,electricity_cost_delta,electricity_cost_daily_average_control,electricity_cost_daily_average_baseline,electricity_cost_daily_average_delta,cost_peak_average,cost_ramping_average,cost_one_minus_load_factor_average,peak_average,carbon_emissions
+HAPPO,E3,1.0297782949986545,7368356.081858005,,106827.9907668146,,,,,,,1.421289039691373,1.5929649660423615
+MASAC,E3,1.0055554410308447,7145558.689493987,,19792.792564499217,,,,,,,1.0863807148533065,1.0601897274206082
+MATD3,E3,1.0091805161969924,9734645.597044019,,44399.364069434494,,,,,,,1.0071128697365774,1.0741932384067436
+MAAC,E3,1.002675335325078,7112781.500188709,,9515.151784724349,,,,,,,1.0309261417946909,1.043854275478452

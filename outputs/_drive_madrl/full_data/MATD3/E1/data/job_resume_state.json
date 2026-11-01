@@ -1,0 +1,17 @@
+{
+  "active": true,
+  "algorithm": "MATD3",
+  "target_episodes": 50,
+  "completed_episodes": 10,
+  "remaining_episodes": 40,
+  "remaining_num_env_steps": 350400,
+  "model_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/MATD3/E1/checkpoints/offpolicy_run/models",
+  "maac_checkpoint": null,
+  "maac_start_episode": 0,
+  "note": "resume_from_checkpoint",
+  "completed_episodes_global_step": 9,
+  "completed_episodes_csv": 10,
+  "live_progress_episode": 0,
+  "live_progress_global_step": 8700,
+  "updated_at": "2026-06-29T20:45:04.558393+00:00"
+}

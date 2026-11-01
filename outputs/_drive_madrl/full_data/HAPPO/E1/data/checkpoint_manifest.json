@@ -1,0 +1,208 @@
+{
+  "algorithm": "HAPPO",
+  "backend": "external/HARL",
+  "checkpoint_count": 19,
+  "checkpoint_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints",
+  "checkpoints": [
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent0.pt",
+      "relative_path": "checkpoints/models/actor_agent0.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent1.pt",
+      "relative_path": "checkpoints/models/actor_agent1.pt"
+    },
+    {
+      "bytes": 1921518,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent10.pt",
+      "relative_path": "checkpoints/models/actor_agent10.pt"
+    },
+    {
+      "bytes": 1921518,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent11.pt",
+      "relative_path": "checkpoints/models/actor_agent11.pt"
+    },
+    {
+      "bytes": 1921518,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent12.pt",
+      "relative_path": "checkpoints/models/actor_agent12.pt"
+    },
+    {
+      "bytes": 1921518,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent13.pt",
+      "relative_path": "checkpoints/models/actor_agent13.pt"
+    },
+    {
+      "bytes": 1921518,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent14.pt",
+      "relative_path": "checkpoints/models/actor_agent14.pt"
+    },
+    {
+      "bytes": 1921518,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent15.pt",
+      "relative_path": "checkpoints/models/actor_agent15.pt"
+    },
+    {
+      "bytes": 1921518,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent16.pt",
+      "relative_path": "checkpoints/models/actor_agent16.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent2.pt",
+      "relative_path": "checkpoints/models/actor_agent2.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent3.pt",
+      "relative_path": "checkpoints/models/actor_agent3.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent4.pt",
+      "relative_path": "checkpoints/models/actor_agent4.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent5.pt",
+      "relative_path": "checkpoints/models/actor_agent5.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent6.pt",
+      "relative_path": "checkpoints/models/actor_agent6.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent7.pt",
+      "relative_path": "checkpoints/models/actor_agent7.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent8.pt",
+      "relative_path": "checkpoints/models/actor_agent8.pt"
+    },
+    {
+      "bytes": 1921499,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/actor_agent9.pt",
+      "relative_path": "checkpoints/models/actor_agent9.pt"
+    },
+    {
+      "bytes": 4988761,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/critic_agent.pt",
+      "relative_path": "checkpoints/models/critic_agent.pt"
+    },
+    {
+      "bytes": 1379,
+      "path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models/value_normalizer.pt",
+      "relative_path": "checkpoints/models/value_normalizer.pt"
+    }
+  ],
+  "hyperparameters": {
+    "action_aggregation": "mean",
+    "actor_lr": 0.0001,
+    "actor_num_mini_batch": 1,
+    "algorithm_family": "MADRL",
+    "checkpoint_interval_episodes": 1,
+    "critic_lr": 0.0005,
+    "critic_num_mini_batch": 1,
+    "ctde_state_type": "EP",
+    "cuda": true,
+    "episode_length": 8760,
+    "episodes": 1,
+    "finite_optimizer_step_guard": {
+      "audit_path": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/data/happo_finite_gradient_guard.jsonl",
+      "installed_optimizers": 18
+    },
+    "gamma": 0.9999,
+    "gpu_runtime": {
+      "cuda_available": true,
+      "cuda_device": "cuda:0",
+      "cuda_device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "cuda_device_total_memory_gib": 94.97076416015625,
+      "cuda_enabled": true,
+      "cuda_memory_fraction_applied": 0.15,
+      "cuda_memory_fraction_error": null,
+      "cuda_memory_fraction_requested": 0.15,
+      "cuda_requested": true,
+      "cudnn_benchmark": true,
+      "matmul_precision": "high",
+      "profile": "aws",
+      "pytorch_cuda_alloc_conf": "expandable_segments:True,max_split_size_mb:128",
+      "tf32_allowed": true,
+      "torch_threads": 1
+    },
+    "hidden_sizes": [
+      512,
+      512
+    ],
+    "job_resume": {
+      "active": true,
+      "algorithm": "HAPPO",
+      "completed_episodes": 49,
+      "completed_episodes_csv": 49,
+      "completed_episodes_global_step": 49,
+      "live_progress_episode": 49,
+      "live_progress_global_step": 429240,
+      "maac_checkpoint": null,
+      "maac_start_episode": 0,
+      "model_dir": "/content/drive/MyDrive/MADRLCitytleranflexresdr/outputs/madrl_v3_20260627_164047/HAPPO/E1/checkpoints/models",
+      "note": "resume_from_checkpoint",
+      "remaining_episodes": 1,
+      "remaining_num_env_steps": 8760,
+      "target_episodes": 50
+    },
+    "live_heartbeat_seconds": 600,
+    "live_progress_interval": 300,
+    "log_interval": 1,
+    "max_grad_norm": 1.0,
+    "n_rollout_threads": 1,
+    "num_env_steps": 8760,
+    "reward_function": "CityLearnV3MADRLRewardFunction",
+    "reward_metadata": {
+      "algorithm": "HAPPO",
+      "axis_weights": {
+        "carbon": 0.15,
+        "cost": 0.15,
+        "flex": 0.7
+      },
+      "base_reward": "CityLearnV3MADRLRewardFunction",
+      "function": "CityLearnV3MADRLRewardFunction",
+      "not_using_marl_base_weights": true,
+      "profile": {
+        "axis_weight_multipliers": {
+          "carbon": 1.0,
+          "cost": 1.0,
+          "flex": 1.0
+        },
+        "bess_cycle_scale": 0.05,
+        "bess_cycle_weight": 0.1,
+        "ev_departure_deficit_weight": 0.7,
+        "ev_idle_deficit_weight": 0.25,
+        "ev_soc_critical_deficit": 0.25,
+        "ev_soc_tolerance": 0.05,
+        "ev_urgency_deficit_weight": 0.3,
+        "ev_urgency_hours": 8.0,
+        "ev_weight": 0.25,
+        "peak_weight": 0.45,
+        "profile_name": "happo_unified_comparable_v4",
+        "ramp_weight": 0.35,
+        "reward_scale": 1.0,
+        "team_reward_ratio": 0.7
+      },
+      "scenario": "E1"
+    },
+    "reward_profile": "HAPPO",
+    "share_param": false,
+    "torch_threads": 1,
+    "use_recurrent_policy": false
+  },
+  "normalization": {
+    "action_note": "CityLearn storage/EV actions already use the native control-space bounds exposed by action_space.",
+    "normalize_actions": false,
+    "normalize_observations": true,
+    "observation_method": "CityLearn NormalizedObservationWrapper plus adapter clipping to [0, 1]."
+  }
+}

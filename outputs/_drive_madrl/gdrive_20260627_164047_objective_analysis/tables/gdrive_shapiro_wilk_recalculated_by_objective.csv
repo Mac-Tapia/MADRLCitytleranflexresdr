@@ -1,0 +1,13 @@
+objective,scenario,dimension,metric,algorithm,n_episode_artifacts,shapiro_w,shapiro_p,shapiro_decision,shapiro_inferential_use
+OE.1,E1,flexibilidad energetica,reward_mean_average,HAPPO,49,0.8942834734916687,0.00035935695632360876,normalidad rechazada,descriptivo; excluido de Kruskal-Wallis por n<50
+OE.1,E1,flexibilidad energetica,reward_mean_average,MAAC,50,0.7530270218849182,8.482652447128203e-08,normalidad rechazada,incluido en Kruskal-Wallis
+OE.1,E1,flexibilidad energetica,reward_mean_average,MASAC,50,0.7621653079986572,1.3063412040992262e-07,normalidad rechazada,incluido en Kruskal-Wallis
+OE.1,E1,flexibilidad energetica,reward_mean_average,MATD3,50,0.6874924898147583,4.9697614912247445e-09,normalidad rechazada,incluido en Kruskal-Wallis
+OE.2,E2,emisiones de CO2,district_emission,HAPPO,49,0.9332813620567322,0.008154917508363724,normalidad rechazada,descriptivo; excluido de Kruskal-Wallis por n<50
+OE.2,E2,emisiones de CO2,district_emission,MAAC,50,0.7056064605712891,1.0447892329068509e-08,normalidad rechazada,incluido en Kruskal-Wallis
+OE.2,E2,emisiones de CO2,district_emission,MASAC,50,0.7643879652023315,1.4532379566389864e-07,normalidad rechazada,incluido en Kruskal-Wallis
+OE.2,E2,emisiones de CO2,district_emission,MATD3,50,0.611748456954956,2.921810016154325e-10,normalidad rechazada,incluido en Kruskal-Wallis
+OE.3,E3,costos energeticos,district_cost,HAPPO,49,0.8576273918151855,2.9542197808041237e-05,normalidad rechazada,descriptivo; excluido de Kruskal-Wallis por n<50
+OE.3,E3,costos energeticos,district_cost,MAAC,50,0.6491007804870605,1.1234708718887987e-09,normalidad rechazada,incluido en Kruskal-Wallis
+OE.3,E3,costos energeticos,district_cost,MASAC,50,0.689295768737793,5.34453548084457e-09,normalidad rechazada,incluido en Kruskal-Wallis
+OE.3,E3,costos energeticos,district_cost,MATD3,50,0.792750895023346,5.992915248498321e-07,normalidad rechazada,incluido en Kruskal-Wallis

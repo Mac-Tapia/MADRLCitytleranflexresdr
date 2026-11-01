@@ -1,0 +1,50 @@
+[
+  {
+    "url": "https://drive.google.com/uc?id=1UkxuWSFlp922_RS7KZOKrX4qWFEVB-kd",
+    "path": "artifact_audit.json"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1cGuHkbkxQR0_jOA7dWOdTRtNq2Y2I9GQ",
+    "path": "building_behavior_summary.csv"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1xdqdy-h6_DaxX3bdz0Vakg-ddB-G6EgS",
+    "path": "building_kpis.csv"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=137Pbvvyy0VMnyl_wSFfPU0-9D_adCy1B",
+    "path": "building_observation_action_schema.csv"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1W0nnw6vM9BdYYHGZ6QYDSISCENQSvFck",
+    "path": "building_trace_sample.csv"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1x5wLErdmwWNDYSPNGTFTi_DizageSUog",
+    "path": "checkpoint_manifest.json"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1fj6e9nw4nWKPYKmk6VDjJAq72zmfqGsS",
+    "path": "job_launcher_complete.json"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1nrfC37b68BMR3HkERdooiSQQpbQtrJ0O",
+    "path": "job_resume_state.json"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1kt2oVokdIr1fSclV_TGYY22XhFS8Qw9Z",
+    "path": "results.json"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1h0WbFO0ST9SoYvRdwxhhu-UoErcfbw2C",
+    "path": "timeseries.csv"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=1fWrxV1fYVuS_us3CvnCQ3CdsbqB5cc4N",
+    "path": "trace.csv"
+  },
+  {
+    "url": "https://drive.google.com/uc?id=19tBFnoS6_dG56kuz8kog7jtb5LEu2hne",
+    "path": "training_summary.json"
+  }
+]

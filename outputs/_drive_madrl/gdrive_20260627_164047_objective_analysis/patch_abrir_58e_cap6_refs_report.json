@@ -1,0 +1,136 @@
+{
+  "targets": [
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "exists": true,
+      "caption_58e": 1,
+      "sec_6_3": "replaced",
+      "lang_status": {
+        "lang": 1,
+        "status_cells": 2,
+        "filename_fix": 15
+      },
+      "refs_pagebreak": "page_break_before_set",
+      "saved_as": "docs/ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "blocked": false,
+      "image_58e": {
+        "replaced": true,
+        "rId": "rId58",
+        "media": "word/media/image50.png",
+        "png_bytes": 112978
+      },
+      "verification": {
+        "has_6_3": true,
+        "has_6_4": true,
+        "has_6_5": true,
+        "has_5_8e_mixed_caption": true,
+        "refs_page_break_before": true,
+        "banned_body_hits": [
+          "Doctoral"
+        ],
+        "no_doctorado_body": false,
+        "no_tesis_de_tesis": true,
+        "happo_action_l2_ok": true,
+        "ev_panel_nonzero": true,
+        "bess_panel_nonzero": true,
+        "words_6_3": 302
+      }
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "exists": true,
+      "caption_58e": 1,
+      "sec_6_3": "replaced",
+      "lang_status": {
+        "lang": 1,
+        "status_cells": 2,
+        "filename_fix": 15
+      },
+      "refs_pagebreak": "page_break_before_set",
+      "saved_as": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "blocked": false,
+      "image_58e": {
+        "replaced": true,
+        "rId": "rId58",
+        "media": "word/media/image50.png",
+        "png_bytes": 112978
+      },
+      "verification": {
+        "has_6_3": true,
+        "has_6_4": true,
+        "has_6_5": true,
+        "has_5_8e_mixed_caption": true,
+        "refs_page_break_before": true,
+        "banned_body_hits": [
+          "Doctoral"
+        ],
+        "no_doctorado_body": false,
+        "no_tesis_de_tesis": true,
+        "happo_action_l2_ok": true,
+        "ev_panel_nonzero": true,
+        "bess_panel_nonzero": true,
+        "words_6_3": 302
+      }
+    }
+  ],
+  "actions": [
+    {
+      "patched_generator": true
+    },
+    {
+      "regen_58e": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\gdrive_20260627_164047_objective_analysis\\figures\\trace_policy_action_heatmaps.png",
+      "verify": {
+        "action_l2": {
+          "HAPPO-E1": 2.2503338500920287,
+          "HAPPO-E2": 2.233969006746213,
+          "HAPPO-E3": 2.2210505689181113,
+          "MAAC-E1": 0.1723529411764706,
+          "MAAC-E2": 0.17529411764705882,
+          "MAAC-E3": 0.1723529411764706,
+          "MASAC-E1": 0.18411764705882352,
+          "MASAC-E2": 0.18058823529411766,
+          "MASAC-E3": 0.17411764705882352,
+          "MATD3-E1": 2.477769604166254,
+          "MATD3-E2": 2.385445444254756,
+          "MATD3-E3": 2.4696399550109414
+        },
+        "ev": {
+          "HAPPO-E1": 12548.90987878994,
+          "HAPPO-E2": 11233.247107912073,
+          "HAPPO-E3": 11462.557749985663,
+          "MAAC-E1": 652.0839118168634,
+          "MAAC-E2": 645.1511783314978,
+          "MAAC-E3": 645.1263832226396,
+          "MASAC-E1": 630.5979464457315,
+          "MASAC-E2": 677.3049375875031,
+          "MASAC-E3": 680.3010197628071,
+          "MATD3-E1": 9059.572376060245,
+          "MATD3-E2": 6658.153946081067,
+          "MATD3-E3": 9576.913370569182
+        },
+        "bess": {
+          "HAPPO-E1": 520872.3866384716,
+          "HAPPO-E2": 984011.7740871272,
+          "HAPPO-E3": 834885.8784486325,
+          "MAAC-E1": 20060.31123321538,
+          "MAAC-E2": 35536.06125641785,
+          "MAAC-E3": 36190.872933028055,
+          "MASAC-E1": 36725.497010176136,
+          "MASAC-E2": 37526.324416385614,
+          "MASAC-E3": 42177.2409771862,
+          "MATD3-E1": 499.42651761990464,
+          "MATD3-E2": 557.9107304875151,
+          "MATD3-E3": 530.0755124720855
+        },
+        "sources": {
+          "action_l2": "outputs/_drive_madrl/full_data/*/E*/data/trace.csv (action_l2)",
+          "ev": "gdrive_building_behavior_summary_all.csv::ev_charge_total_kwh",
+          "bess": "gdrive_building_behavior_summary_all.csv::battery_throughput_total_kwh",
+          "note": "No usar ev_charge_kwh / electrical_storage_soc de trace.csv (columnas muertas = 0)"
+        }
+      }
+    }
+  ],
+  "fig_ok": true,
+  "png_path": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl\\gdrive_20260627_164047_objective_analysis\\figures\\trace_policy_action_heatmaps.png"
+}

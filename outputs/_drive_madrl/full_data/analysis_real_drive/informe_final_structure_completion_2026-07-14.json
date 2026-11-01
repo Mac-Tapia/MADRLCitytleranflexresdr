@@ -1,0 +1,47 @@
+{
+  "docx": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+  "run_id": "madrl_v3_20260627_164047",
+  "actions": [
+    "Renombrado antecedentes -> trabajos relacionados: 2.4 Trabajos relacionados y antecedentes",
+    "Insertado 2.1 Estado del arte actualizado (contenido sustentado)",
+    "Renumberto H2: 2.5 Definicion de terminos -> 2.6 Definicion de terminos y posicion teorica",
+    "Renumberto H2: 2.4 Trabajos relacionados y antecedentes -> 2.5 Trabajos relacionados y antecedentes",
+    "Renumberto H2: 2.3 Bases teoricas por eje -> 2.4 Bases teoricas por eje",
+    "Renumberto H2: 2.2 Variables de la investigacion -> 2.3 Variables de la investigacion",
+    "Renumberto H2: 2.1 Fundamentos -> 2.2 Fundamentos teoricos y matematicos",
+    "Bases teoricas presentes: 2.4 Bases teoricas por eje",
+    "Renombrado 3.5 para incluir Herramientas",
+    "Insertado bloque explicitos de Herramientas bajo 3.5",
+    "Renombrado 5.1 -> Experimentos realizados y cobertura experimental",
+    "Insertado 5.1.1 Metricas utilizadas",
+    "Regenerado Capitulo 6 (Principales hallazgos, Limitaciones encontradas, Trabajo pendiente, Plan para culminar la tesis)",
+    "Sincronizado Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "Sincronizado Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.docx",
+    "Sincronizado Tesis_Doctoral_MADRL_CityLearn_Iquitos_VERSION_FINAL_50EP_ANTECEDENTES.docx"
+  ],
+  "verification": {
+    "sections": {
+      "Dedicatoria": true,
+      "Agradecimientos": true,
+      "Resumen": true,
+      "Abstract": true,
+      "Introduccion": true,
+      "Capitulo 5": true,
+      "Capitulo 6": true,
+      "Referencias bibliograficas": true
+    },
+    "tables_count": 81,
+    "tables_ok": true,
+    "images_count": 33,
+    "images_ok": true,
+    "references_count": 67,
+    "references_expected": 70,
+    "references_ok": true,
+    "has_matd3_selection": true,
+    "has_pe_answers": true,
+    "has_multiobjetivo": true,
+    "has_drive_figures": true,
+    "has_referencias_apa": true,
+    "complete": true
+  }
+}

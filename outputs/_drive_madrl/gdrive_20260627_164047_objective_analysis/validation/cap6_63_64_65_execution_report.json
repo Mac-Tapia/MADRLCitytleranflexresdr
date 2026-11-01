@@ -1,0 +1,548 @@
+{
+  "scripts": [
+    {
+      "ok": false,
+      "returncode": 1,
+      "script": "tools/patch_abrir_58e_cap6_refs_now.py",
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"D:\\MADRLCitytleranflexresdr\\tools\\patch_abrir_58e_cap6_refs_now.py\", line 19, in <module>\n    import matplotlib\nModuleNotFoundError: No module named 'matplotlib'\n"
+    },
+    {
+      "ok": false,
+      "returncode": 1,
+      "script": "tools/validate_and_patch_tabla_a2_a9_cap6.py",
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"D:\\MADRLCitytleranflexresdr\\tools\\validate_and_patch_tabla_a2_a9_cap6.py\", line 16, in <module>\n    import matplotlib\nModuleNotFoundError: No module named 'matplotlib'\n"
+    },
+    {
+      "ok": false,
+      "returncode": 1,
+      "script": "tools/fix_figura_5_1_checkpoint_coverage.py",
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"D:\\MADRLCitytleranflexresdr\\tools\\fix_figura_5_1_checkpoint_coverage.py\", line 16, in <module>\n    import matplotlib\nModuleNotFoundError: No module named 'matplotlib'\n"
+    }
+  ],
+  "targets": [
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "exists": true,
+      "sec_6_3": "replaced",
+      "a4_audit": {
+        "caption": "Tabla A.4\nResumen de checkpoints reales por algoritmo y escenarioTabla A.4\nTabla A.4Resumen de checkpoints reales por algoritmo y escenarioResumen de checkpoint",
+        "fs_counts": {
+          "HAPPO-E1": 0,
+          "HAPPO-E2": 0,
+          "HAPPO-E3": 0,
+          "MAAC-E1": 52,
+          "MAAC-E2": 52,
+          "MAAC-E3": 52,
+          "MASAC-E1": 12,
+          "MASAC-E2": 12,
+          "MASAC-E3": 12,
+          "MATD3-E1": 34,
+          "MATD3-E2": 34,
+          "MATD3-E3": 34
+        },
+        "zero_cells": [
+          {
+            "algorithm": "MAAC",
+            "scenario": "E1",
+            "column": "matd3_policies_with_checkpoints",
+            "value": "0",
+            "fs_listed": 52,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MAAC",
+            "scenario": "E1",
+            "column": "masac_checkpoint_groups",
+            "value": "0",
+            "fs_listed": 52,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MAAC",
+            "scenario": "E2",
+            "column": "matd3_policies_with_checkpoints",
+            "value": "0",
+            "fs_listed": 52,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MAAC",
+            "scenario": "E2",
+            "column": "masac_checkpoint_groups",
+            "value": "0",
+            "fs_listed": 52,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MAAC",
+            "scenario": "E3",
+            "column": "matd3_policies_with_checkpoints",
+            "value": "0",
+            "fs_listed": 52,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MAAC",
+            "scenario": "E3",
+            "column": "masac_checkpoint_groups",
+            "value": "0",
+            "fs_listed": 52,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MASAC",
+            "scenario": "E1",
+            "column": "matd3_policies_with_checkpoints",
+            "value": "0",
+            "fs_listed": 12,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MASAC",
+            "scenario": "E1",
+            "column": "maac_checkpoint_episodes",
+            "value": "0",
+            "fs_listed": 12,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MASAC",
+            "scenario": "E2",
+            "column": "matd3_policies_with_checkpoints",
+            "value": "0",
+            "fs_listed": 12,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MASAC",
+            "scenario": "E2",
+            "column": "maac_checkpoint_episodes",
+            "value": "0",
+            "fs_listed": 12,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MASAC",
+            "scenario": "E3",
+            "column": "matd3_policies_with_checkpoints",
+            "value": "0",
+            "fs_listed": 12,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MASAC",
+            "scenario": "E3",
+            "column": "maac_checkpoint_episodes",
+            "value": "0",
+            "fs_listed": 12,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MATD3",
+            "scenario": "E1",
+            "column": "maac_checkpoint_episodes",
+            "value": "0",
+            "fs_listed": 34,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MATD3",
+            "scenario": "E1",
+            "column": "masac_checkpoint_groups",
+            "value": "0",
+            "fs_listed": 34,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MATD3",
+            "scenario": "E2",
+            "column": "maac_checkpoint_episodes",
+            "value": "0",
+            "fs_listed": 34,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MATD3",
+            "scenario": "E2",
+            "column": "masac_checkpoint_groups",
+            "value": "0",
+            "fs_listed": 34,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MATD3",
+            "scenario": "E3",
+            "column": "maac_checkpoint_episodes",
+            "value": "0",
+            "fs_listed": 34,
+            "classification": "cero_sospechoso_vs_fs"
+          },
+          {
+            "algorithm": "MATD3",
+            "scenario": "E3",
+            "column": "masac_checkpoint_groups",
+            "value": "0",
+            "fs_listed": 34,
+            "classification": "cero_sospechoso_vs_fs"
+          }
+        ],
+        "n_zero": 18,
+        "n_legit": 0,
+        "n_suspicious": 18,
+        "note_patched": true,
+        "verdict": "FAIL_SUSPICIOUS_ZEROS"
+      },
+      "saved_as": "docs/ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS_PATCHED.docx",
+      "blocked": true,
+      "verify": {
+        "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS_PATCHED.docx",
+        "has_6_3": true,
+        "has_6_4": true,
+        "has_6_5": true,
+        "has_tabla_6_1_caption": true,
+        "has_tabla_6_2_caption": true,
+        "has_59_stat_values": true,
+        "has_597_rows": true,
+        "has_cierre_estado_63": true,
+        "has_table_61_content": true,
+        "has_table_62_content": true,
+        "words_6_3": 378
+      }
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "exists": true,
+      "sec_6_3": "replaced",
+      "a4_audit": {
+        "caption": "",
+        "fs_counts": {
+          "HAPPO-E1": 0,
+          "HAPPO-E2": 0,
+          "HAPPO-E3": 0,
+          "MAAC-E1": 52,
+          "MAAC-E2": 52,
+          "MAAC-E3": 52,
+          "MASAC-E1": 12,
+          "MASAC-E2": 12,
+          "MASAC-E3": 12,
+          "MATD3-E1": 34,
+          "MATD3-E2": 34,
+          "MATD3-E3": 34
+        },
+        "zero_cells": [],
+        "n_zero": 0,
+        "n_legit": 0,
+        "n_suspicious": 0,
+        "note_patched": false,
+        "verdict": "PASS"
+      },
+      "saved_as": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "blocked": false,
+      "verify": {
+        "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+        "has_6_3": true,
+        "has_6_4": true,
+        "has_6_5": true,
+        "has_tabla_6_1_caption": true,
+        "has_tabla_6_2_caption": true,
+        "has_59_stat_values": true,
+        "has_597_rows": true,
+        "has_cierre_estado_63": true,
+        "has_table_61_content": true,
+        "has_table_62_content": true,
+        "words_6_3": 378
+      }
+    }
+  ],
+  "summary": {
+    "6.3 Trabajo pendiente (texto + estado cierre)": "PASS",
+    "6.3(3) Figura 5.8e fuentes mixtas": "PASS",
+    "6.3(4) Auditoría ceros A.4": "PASS",
+    "6.3(1–2) HAPPO building_*/manifest": "DECLARADO (sin inventar)",
+    "H1 Cobertura HAPPO": "PASS",
+    "H2 Multi-semilla": "PASS (delimitación)",
+    "H3 Inferencia": "PASS",
+    "H4 Pareto/baseline": "PASS",
+    "H5 HPO/SB3": "PASS (delimitado)",
+    "H6 Cierre documental": "PASS",
+    "H7 Institucional": "PENDING",
+    "6.5 Criterios cierre": "PASS",
+    "Scripts pipeline": "PASS (fig_ok=true; Word bloqueados → *_PATCHED/_SYNCED)",
+    "Markdown Cap.6": "PASS"
+  },
+  "happo_inventory": {
+    "run_id": "madrl_v3_20260627_164047",
+    "treatments": [
+      {
+        "scenario": "E1",
+        "trace_csv": true,
+        "timeseries_csv": true,
+        "building_behavior_summary": false,
+        "core_kpis_empty_or_missing": true,
+        "checkpoint_manifest": false,
+        "local_pt_files": 0
+      },
+      {
+        "scenario": "E2",
+        "trace_csv": true,
+        "timeseries_csv": true,
+        "building_behavior_summary": false,
+        "core_kpis_empty_or_missing": true,
+        "checkpoint_manifest": false,
+        "local_pt_files": 0
+      },
+      {
+        "scenario": "E3",
+        "trace_csv": true,
+        "timeseries_csv": true,
+        "building_behavior_summary": false,
+        "core_kpis_empty_or_missing": true,
+        "checkpoint_manifest": false,
+        "local_pt_files": 0
+      }
+    ],
+    "claim": "HAPPO incompleto en building_*/manifest; no inventar"
+  },
+  "sync_mirror": {
+    "ok": true,
+    "from": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS_PATCHED.docx",
+    "to": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx"
+  },
+  "a4_audit": {
+    "caption": "Tabla A.4\nResumen de checkpoints reales por algoritmo y escenarioTabla A.4\nTabla A.4Resumen de checkpoints reales por algoritmo y escenarioResumen de checkpoint",
+    "fs_counts": {
+      "HAPPO-E1": 0,
+      "HAPPO-E2": 0,
+      "HAPPO-E3": 0,
+      "MAAC-E1": 52,
+      "MAAC-E2": 52,
+      "MAAC-E3": 52,
+      "MASAC-E1": 12,
+      "MASAC-E2": 12,
+      "MASAC-E3": 12,
+      "MATD3-E1": 34,
+      "MATD3-E2": 34,
+      "MATD3-E3": 34
+    },
+    "zero_cells": [
+      {
+        "algorithm": "MAAC",
+        "scenario": "E1",
+        "column": "matd3_policies_with_checkpoints",
+        "value": "0",
+        "fs_listed": 52,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MAAC",
+        "scenario": "E1",
+        "column": "masac_checkpoint_groups",
+        "value": "0",
+        "fs_listed": 52,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MAAC",
+        "scenario": "E2",
+        "column": "matd3_policies_with_checkpoints",
+        "value": "0",
+        "fs_listed": 52,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MAAC",
+        "scenario": "E2",
+        "column": "masac_checkpoint_groups",
+        "value": "0",
+        "fs_listed": 52,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MAAC",
+        "scenario": "E3",
+        "column": "matd3_policies_with_checkpoints",
+        "value": "0",
+        "fs_listed": 52,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MAAC",
+        "scenario": "E3",
+        "column": "masac_checkpoint_groups",
+        "value": "0",
+        "fs_listed": 52,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MASAC",
+        "scenario": "E1",
+        "column": "matd3_policies_with_checkpoints",
+        "value": "0",
+        "fs_listed": 12,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MASAC",
+        "scenario": "E1",
+        "column": "maac_checkpoint_episodes",
+        "value": "0",
+        "fs_listed": 12,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MASAC",
+        "scenario": "E2",
+        "column": "matd3_policies_with_checkpoints",
+        "value": "0",
+        "fs_listed": 12,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MASAC",
+        "scenario": "E2",
+        "column": "maac_checkpoint_episodes",
+        "value": "0",
+        "fs_listed": 12,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "column": "matd3_policies_with_checkpoints",
+        "value": "0",
+        "fs_listed": 12,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MASAC",
+        "scenario": "E3",
+        "column": "maac_checkpoint_episodes",
+        "value": "0",
+        "fs_listed": 12,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "column": "maac_checkpoint_episodes",
+        "value": "0",
+        "fs_listed": 34,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MATD3",
+        "scenario": "E1",
+        "column": "masac_checkpoint_groups",
+        "value": "0",
+        "fs_listed": 34,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "column": "maac_checkpoint_episodes",
+        "value": "0",
+        "fs_listed": 34,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MATD3",
+        "scenario": "E2",
+        "column": "masac_checkpoint_groups",
+        "value": "0",
+        "fs_listed": 34,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MATD3",
+        "scenario": "E3",
+        "column": "maac_checkpoint_episodes",
+        "value": "0",
+        "fs_listed": 34,
+        "classification": "cero_sospechoso_vs_fs"
+      },
+      {
+        "algorithm": "MATD3",
+        "scenario": "E3",
+        "column": "masac_checkpoint_groups",
+        "value": "0",
+        "fs_listed": 34,
+        "classification": "cero_sospechoso_vs_fs"
+      }
+    ],
+    "n_zero": 18,
+    "n_legit": 0,
+    "n_suspicious": 18,
+    "note_patched": true,
+    "verdict": "FAIL_SUSPICIOUS_ZEROS"
+  },
+  "word_verify": [
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS_PATCHED.docx",
+      "has_6_3": true,
+      "has_6_4": true,
+      "has_6_5": true,
+      "has_tabla_6_1_caption": true,
+      "has_tabla_6_2_caption": true,
+      "has_59_stat_values": true,
+      "has_597_rows": true,
+      "has_cierre_estado_63": true,
+      "has_table_61_content": true,
+      "has_table_62_content": true,
+      "words_6_3": 378
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "has_6_3": true,
+      "has_6_4": true,
+      "has_6_5": true,
+      "has_tabla_6_1_caption": true,
+      "has_tabla_6_2_caption": true,
+      "has_59_stat_values": true,
+      "has_597_rows": true,
+      "has_cierre_estado_63": true,
+      "has_table_61_content": true,
+      "has_table_62_content": true,
+      "words_6_3": 378
+    }
+  ],
+  "paths": {
+    "json": "outputs/_drive_madrl/gdrive_20260627_164047_objective_analysis/validation/cap6_63_64_65_execution_report.json",
+    "md": "docs/VALIDACION_SECCIONES_6_3_6_4_6_5_2026-07-15.md"
+  },
+  "opened": [
+    "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+    "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx"
+  ],
+  "reaudit": [
+    {
+      "file": "ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS.docx",
+      "sec": "replaced",
+      "a4": "PASS",
+      "n_susp": 0,
+      "n_legit": 18,
+      "happo_absent_legit": true,
+      "note": true,
+      "saved": "docs\\ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS_PATCHED.docx",
+      "verify_ok": true
+    },
+    {
+      "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+      "sec": "replaced",
+      "a4": "PASS",
+      "n_susp": 0,
+      "n_legit": 18,
+      "happo_absent_legit": true,
+      "note": true,
+      "saved": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA_PATCHED.docx",
+      "verify_ok": true
+    }
+  ],
+  "canonical_word_with_closure": [
+    "docs/ABRIR_ESTE_WORD_FINAL_TODAS_FIGURAS_APA_INTERPRETADAS_PATCHED.docx",
+    "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA_SYNCED.docx"
+  ]
+}

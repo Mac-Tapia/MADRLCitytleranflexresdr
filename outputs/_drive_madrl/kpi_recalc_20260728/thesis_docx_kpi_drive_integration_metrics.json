@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-07-29T12:34:39.278523+00:00",
+  "source": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+  "output": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA_KPI_DRIVE_20260729_123433.docx",
+  "output_latest": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA_KPI_DRIVE_LATEST.docx",
+  "synced_copies": [
+    "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA_SYNCED.docx",
+    "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA_PATCHED.docx",
+    "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_FINAL_COMPLETA.docx",
+    "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.docx"
+  ],
+  "verification": {
+    "sections": {
+      "Dedicatoria": true,
+      "Agradecimientos": true,
+      "Resumen": true,
+      "Abstract": true,
+      "Introduccion": true,
+      "Capitulo 5": true,
+      "Capitulo 6": true,
+      "Referencias bibliograficas": true
+    },
+    "tables_count": 72,
+    "tables_ok": true,
+    "images_count": 57,
+    "images_ok": true,
+    "references_count": 106,
+    "references_expected": 78,
+    "references_ok": true,
+    "references_single_list": false,
+    "has_matd3_selection": true,
+    "has_pe_answers": false,
+    "has_multiobjetivo": true,
+    "has_drive_figures": true,
+    "has_referencias_apa": true,
+    "complete": false
+  },
+  "probes": {
+    "has_drive_20260728": true,
+    "has_kpis_finales_si": false,
+    "has_matd3_06667": true,
+    "mentions_58_kpis": true
+  },
+  "size_bytes": 5272372,
+  "paragraphs_non_empty": 697,
+  "tables": 72
+}

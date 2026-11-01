@@ -1,0 +1,398 @@
+{
+  "docx": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_resultados_drive_integrados_ordenado_con_diagramas.docx",
+  "exists": true,
+  "size_bytes": 3554659,
+  "paragraphs_total": 432,
+  "paragraphs_non_empty": 329,
+  "word_count_estimated": 7174,
+  "tables": 23,
+  "inline_images": 33,
+  "headings": [
+    {
+      "index": 17,
+      "style": "Heading 1",
+      "text": "Dedicatoria"
+    },
+    {
+      "index": 20,
+      "style": "Heading 1",
+      "text": "Agradecimientos"
+    },
+    {
+      "index": 23,
+      "style": "Heading 1",
+      "text": "Resumen"
+    },
+    {
+      "index": 27,
+      "style": "Heading 1",
+      "text": "Abstract"
+    },
+    {
+      "index": 30,
+      "style": "Heading 1",
+      "text": "Indice"
+    },
+    {
+      "index": 34,
+      "style": "Heading 1",
+      "text": "Capitulo 1. Introduccion"
+    },
+    {
+      "index": 35,
+      "style": "Heading 2",
+      "text": "1.1 Problema de investigacion"
+    },
+    {
+      "index": 45,
+      "style": "Heading 2",
+      "text": "1.2 Objetivos"
+    },
+    {
+      "index": 53,
+      "style": "Heading 2",
+      "text": "1.3 Hipotesis"
+    },
+    {
+      "index": 58,
+      "style": "Heading 2",
+      "text": "1.4 Justificacion"
+    },
+    {
+      "index": 64,
+      "style": "Heading 2",
+      "text": "1.5 Alcances y limitaciones"
+    },
+    {
+      "index": 76,
+      "style": "Heading 1",
+      "text": "Capitulo 2. Marco teorico"
+    },
+    {
+      "index": 77,
+      "style": "Heading 2",
+      "text": "2.1 Estado del arte actualizado"
+    },
+    {
+      "index": 87,
+      "style": "Heading 2",
+      "text": "2.2 Bases teoricas"
+    },
+    {
+      "index": 88,
+      "style": "Heading 3",
+      "text": "2.2.1 Flexibilidad energetica en comunidades inteligentes"
+    },
+    {
+      "index": 90,
+      "style": "Heading 3",
+      "text": "2.2.2 Emisiones de carbono en comunidades inteligentes"
+    },
+    {
+      "index": 92,
+      "style": "Heading 3",
+      "text": "2.2.3 Costos energeticos en comunidades inteligentes"
+    },
+    {
+      "index": 94,
+      "style": "Heading 3",
+      "text": "2.2.4 Marco tecnico MADRL"
+    },
+    {
+      "index": 97,
+      "style": "Heading 2",
+      "text": "2.3 Trabajos relacionados"
+    },
+    {
+      "index": 102,
+      "style": "Heading 1",
+      "text": "Capitulo 3. Metodologia"
+    },
+    {
+      "index": 103,
+      "style": "Heading 2",
+      "text": "3.1 Tipo de investigacion"
+    },
+    {
+      "index": 109,
+      "style": "Heading 2",
+      "text": "3.2 Diseno metodologico"
+    },
+    {
+      "index": 113,
+      "style": "Heading 2",
+      "text": "3.3 Datos utilizados — Dataset citylearn_iquitos_2023_2025"
+    },
+    {
+      "index": 121,
+      "style": "Heading 2",
+      "text": "3.4 Variables"
+    },
+    {
+      "index": 129,
+      "style": "Heading 2",
+      "text": "3.5 Tecnicas e instrumentos"
+    },
+    {
+      "index": 136,
+      "style": "Heading 2",
+      "text": "3.6 Procedimiento experimental"
+    },
+    {
+      "index": 144,
+      "style": "Heading 1",
+      "text": "Capitulo 4. Desarrollo de la propuesta"
+    },
+    {
+      "index": 145,
+      "style": "Heading 2",
+      "text": "4.1 Desarrollo del sistema y arquitectura de software"
+    },
+    {
+      "index": 150,
+      "style": "Heading 2",
+      "text": "4.2 Modelo de IA: formulacion Dec-POMDP"
+    },
+    {
+      "index": 160,
+      "style": "Heading 2",
+      "text": "4.3 Esquema CTDE"
+    },
+    {
+      "index": 162,
+      "style": "Heading 2",
+      "text": "4.4 Algoritmos"
+    },
+    {
+      "index": 172,
+      "style": "Heading 2",
+      "text": "4.5 Funcion de recompensa multiobjetivo"
+    },
+    {
+      "index": 178,
+      "style": "Heading 2",
+      "text": "4.6 Aportes originales al motor de simulacion"
+    },
+    {
+      "index": 182,
+      "style": "Heading 2",
+      "text": "4.7 Diseno experimental: matriz de 12 corridas"
+    },
+    {
+      "index": 186,
+      "style": "Heading 2",
+      "text": "4.8 Implementacion"
+    },
+    {
+      "index": 190,
+      "style": "Heading 1",
+      "text": "Capitulo 5. Resultados y contrastacion de hipotesis"
+    },
+    {
+      "index": 192,
+      "style": "Heading 2",
+      "text": "5.1 Experimentos realizados"
+    },
+    {
+      "index": 195,
+      "style": "Heading 2",
+      "text": "5.2 Seleccion del mejor MADRL (distrito)"
+    },
+    {
+      "index": 199,
+      "style": "Heading 2",
+      "text": "5.3 KPIs fisicos por objetivo (distrito)"
+    },
+    {
+      "index": 202,
+      "style": "Heading 2",
+      "text": "5.5 Figuras de entrenamiento (artefactos Drive reales)"
+    },
+    {
+      "index": 240,
+      "style": "Heading 2",
+      "text": "5.6 Analisis multiobjetivo por edificio"
+    },
+    {
+      "index": 244,
+      "style": "Heading 2",
+      "text": "5.7 Figuras multiobjetivo (distrito y edificio)"
+    },
+    {
+      "index": 269,
+      "style": "Heading 2",
+      "text": "5.8 Pruebas estadisticas"
+    },
+    {
+      "index": 274,
+      "style": "Heading 2",
+      "text": "5.9 Discusion"
+    },
+    {
+      "index": 277,
+      "style": "Heading 1",
+      "text": "Capitulo 6. Conclusiones y trabajo futuro"
+    },
+    {
+      "index": 278,
+      "style": "Heading 2",
+      "text": "6.1 Conclusiones"
+    },
+    {
+      "index": 283,
+      "style": "Heading 2",
+      "text": "6.2 Limitaciones"
+    },
+    {
+      "index": 286,
+      "style": "Heading 2",
+      "text": "6.3 Trabajo futuro"
+    },
+    {
+      "index": 291,
+      "style": "Heading 1",
+      "text": "Referencias bibliograficas"
+    },
+    {
+      "index": 359,
+      "style": "Heading 1",
+      "text": "Anexo A. Resultados reales integrados desde Google Drive"
+    },
+    {
+      "index": 362,
+      "style": "Heading 2",
+      "text": "A.1 Resultados distritales por algoritmo y escenario"
+    },
+    {
+      "index": 373,
+      "style": "Heading 2",
+      "text": "A.2 Resultados por edificio"
+    },
+    {
+      "index": 380,
+      "style": "Heading 2",
+      "text": "A.3 Equipamiento controlado y no controlado"
+    },
+    {
+      "index": 387,
+      "style": "Heading 2",
+      "text": "A.4 Checkpoints y reproducibilidad de modelos"
+    },
+    {
+      "index": 392,
+      "style": "Heading 2",
+      "text": "A.5 Archivos reproducibles"
+    },
+    {
+      "index": 403,
+      "style": "Heading 1",
+      "text": "Anexo B. Diagramas de flujo y arquitectura del proyecto"
+    },
+    {
+      "index": 405,
+      "style": "Heading 2",
+      "text": "Diagrama 1 — Vision General del Proyecto (inicio a fin)"
+    },
+    {
+      "index": 408,
+      "style": "Heading 2",
+      "text": "Diagrama 2 — Pipeline del Dataset Iquitos 2023-2025"
+    },
+    {
+      "index": 411,
+      "style": "Heading 2",
+      "text": "Diagrama 3 — Arquitectura Dec-POMDP y CTDE de los 17 Agentes"
+    },
+    {
+      "index": 414,
+      "style": "Heading 2",
+      "text": "Diagrama 4 — Los 4 Algoritmos MADRL: Taxonomia y Diferencias"
+    },
+    {
+      "index": 417,
+      "style": "Heading 2",
+      "text": "Diagrama 5 — Flujo de Entrenamiento: 12 Corridas (two_phase_happo_masac_v3)"
+    },
+    {
+      "index": 420,
+      "style": "Heading 2",
+      "text": "Diagrama 6 — Recompensa Multiobjetivo por Escenario"
+    },
+    {
+      "index": 423,
+      "style": "Heading 2",
+      "text": "Diagrama 7 — Pipeline de Evaluacion y Seleccion del Mejor MADRL"
+    },
+    {
+      "index": 426,
+      "style": "Heading 2",
+      "text": "Diagrama 8 — Infraestructura de Despliegue: Local, Colab A100 y AWS EC2"
+    },
+    {
+      "index": 429,
+      "style": "Heading 2",
+      "text": "Diagrama 9 — Estructura de Capas del Software"
+    }
+  ],
+  "main_chapters": [
+    "Capitulo 1. Introduccion",
+    "Capitulo 2. Marco teorico",
+    "Capitulo 3. Metodologia",
+    "Capitulo 4. Desarrollo de la propuesta",
+    "Capitulo 5. Resultados y contrastacion de hipotesis",
+    "Capitulo 6. Conclusiones y trabajo futuro"
+  ],
+  "figure_caption_count": 33,
+  "table_caption_count": 22,
+  "reference_item_count_estimated": 67,
+  "checks": {
+    "resumen": true,
+    "abstract": true,
+    "capitulos_1_a_6_en_orden": true,
+    "anexo_a_resultados_drive": true,
+    "anexo_b_diagramas": true,
+    "figuras_a_1_a_9": true,
+    "figuras_b_1_a_9": true,
+    "timeseries": true,
+    "trace": true,
+    "building_kpis": true,
+    "checkpoints": true,
+    "happo_parcial": true,
+    "equipos_controlados_no_controlados": false,
+    "kpis_distrito_edificio_escenario": true
+  },
+  "sample_figures_last_20": [
+    "Figura 5.14. Inventario EV por edificio.",
+    "Figura 5.15. Desempeno EV — MATD3/E2.",
+    "Figura A.1. Evolucion del reward distrital medio por episodio.",
+    "Figura A.2. Energia neta distrital por episodio.",
+    "Figura A.3. Costo distrital medio por algoritmo y escenario.",
+    "Figura A.4. Emisiones distritales medias por algoritmo y escenario.",
+    "Figura A.5. Delta de costo electrico por edificio y corrida completa.",
+    "Figura A.6. Delta de emisiones por edificio y corrida completa.",
+    "Figura A.7. Variables de accion controladas por edificio.",
+    "Figura A.8. Carga controlada de escenario frente a carga base no controlada.",
+    "Figura A.9. Tamano total listado en manifiestos de checkpoint por algoritmo y escenario.",
+    "Figura B.1. Diagrama 1 — Vision General del Proyecto (inicio a fin).",
+    "Figura B.2. Diagrama 2 — Pipeline del Dataset Iquitos 2023-2025.",
+    "Figura B.3. Diagrama 3 — Arquitectura Dec-POMDP y CTDE de los 17 Agentes.",
+    "Figura B.4. Diagrama 4 — Los 4 Algoritmos MADRL: Taxonomia y Diferencias.",
+    "Figura B.5. Diagrama 5 — Flujo de Entrenamiento: 12 Corridas (two_phase_happo_masac_v3).",
+    "Figura B.6. Diagrama 6 — Recompensa Multiobjetivo por Escenario.",
+    "Figura B.7. Diagrama 7 — Pipeline de Evaluacion y Seleccion del Mejor MADRL.",
+    "Figura B.8. Diagrama 8 — Infraestructura de Despliegue: Local, Colab A100 y AWS EC2.",
+    "Figura B.9. Diagrama 9 — Estructura de Capas del Software."
+  ],
+  "sample_tables_last_10": [
+    "Tabla 4.6. Matriz experimental de 12 corridas oficiales.",
+    "Tabla 5.1. Cobertura de episodios auditada (episodes_recorded).",
+    "Tabla 5.2. Ranking global Colab/Drive (best_madrl_report.json).",
+    "Tabla 5.3. KPIs fisicos agregados de distrito.",
+    "Tabla 5.4. Inventario multiobjetivo (extracto B01–B08; completo en anexo CSV).",
+    "Tabla 5.5. Contrastacion inferencial Colab vs referencia local v4.",
+    "Tabla A.1. Resumen distrital real por algoritmo y escenario.",
+    "Tabla A.2. Mejores 20 filas por reduccion de costo electrico en edificios completos.",
+    "Tabla A.3. Equipamiento controlado y carga base no controlada por edificio.",
+    "Tabla A.4. Resumen de checkpoints reales por algoritmo y escenario."
+  ]
+}

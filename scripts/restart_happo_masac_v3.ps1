@@ -1,6 +1,32 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 Set-Location $ProjectRoot
+
+# -- Candado dataset -> entrenamiento (SPEC-011 FR-011.4/FR-011.5) -------------
+# Ningun entrenamiento arranca si el dataset no paso la validacion o cambio
+# despues de ella (digest de schema + CSV/JSON referenciados).
+$SchemaPath    = "CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json"
+$ProjectPython = Join-Path $ProjectRoot ".venv39-citylearn-v3\Scripts\python.exe"
+if (-not (Test-Path $ProjectPython)) {
+    Write-Host "ERROR: no existe el Python del proyecto: $ProjectPython" -ForegroundColor Red
+    exit 2
+}
+$GateCode = "import sys; from pathlib import Path; " +
+    "from uc3m.application.training.dataset_gate import require_validated_dataset, DEFAULT_READY_MANIFEST; " +
+    "print('dataset_digest=' + require_validated_dataset(Path(sys.argv[1]), Path(sys.argv[2]) / DEFAULT_READY_MANIFEST))"
+$PreviousErrorAction = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
+& $ProjectPython -c $GateCode $SchemaPath $ProjectRoot
+$GateExit = $LASTEXITCODE
+$ErrorActionPreference = $PreviousErrorAction
+if ($GateExit -ne 0) {
+    Write-Host ""
+    Write-Host "ABORTADO: el dataset no esta validado para entrenamiento (codigo $GateExit)." -ForegroundColor Red
+    Write-Host "  Revalide con: .venv39-citylearn-v3\Scripts\python.exe tools/dataset/check_training_dataset_ready.py" -ForegroundColor Red
+    Write-Host "  No se lanzo ningun entrenamiento." -ForegroundColor Red
+    exit 2
+}
+Write-Host "Candado del dataset OK." -ForegroundColor Green
 
 # Sesion definitiva v4 — nueva sesion con timestamp al momento de ejecucion.
 # Entrena TODOS los algoritmos (HAPPO, MASAC, MATD3, MAAC) con perfil v4:
@@ -48,7 +74,7 @@ Write-Host ""
     -Seed 0 `
     -EpisodeTimeSteps 8760 `
     -Episodes 50 `
-    -SchemaPath "CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json" `
+    -SchemaPath $SchemaPath `
     -OutputRoot $OutputRoot `
     -ArtifactProfile efficient `
     -TraceRecordInterval 10 `

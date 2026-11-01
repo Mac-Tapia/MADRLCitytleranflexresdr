@@ -92,6 +92,8 @@ class NativeBackend:
                 kind = 'kpi'
             elif path.name == 'training_summary.json':
                 kind = 'training_summary'
+            elif path.name == 'training_state.pt':
+                kind = 'training_state'
             artifacts.append(ArtifactRef.from_file(run_root, path, kind=kind,
                 media_type='application/octet-stream', producer=spec.algorithm))
         return TrainingResult(return_code, min(spec.target_episodes,

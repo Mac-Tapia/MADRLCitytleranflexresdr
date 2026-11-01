@@ -36,6 +36,19 @@ def test_copied_setup_cell_imports_every_stdlib_module_it_uses():
     assert (used & STDLIB_MODULES) - imported == set()
 
 
+def test_campaign_cell_takes_seeds_from_the_campaign_config():
+    from tools.colab.build_modular_colab_notebook import build_notebook
+    root = Path(__file__).resolve().parents[2]
+    original = json.loads((root/'examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb').read_text(encoding='utf-8'))
+    sources = [''.join(cell['source']) for cell in build_notebook(original, 'a'*64)['cells']]
+    campaign = next(source for source in sources if 'uc3m.application.training.colab' in source)
+    assert 'configs/experiments/full_campaign_4x3x3.yaml' in campaign
+    assert "CAMPAIGN['seeds']" in campaign
+    assert 'SEEDS = [0]' not in campaign
+    launch_doc = next(source for source in sources if source.startswith('## 5.'))
+    assert 'Fase 1:** HAPPO + MASAC' in launch_doc and 'Fase 2:** MATD3 + MAAC' in launch_doc
+
+
 def test_notebook_records_the_dataset_digest_it_expects():
     from tools.colab.build_modular_colab_notebook import build_notebook
     root = Path(__file__).resolve().parents[2]

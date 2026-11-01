@@ -120,19 +120,33 @@ subprocess.run([str(PYTHON), '-c', code], cwd=PROJECT_ROOT, check=True)
 Revisar el presupuesto detectado y `colab_campaign.json`. La misma combinación
 de datos, código, argumentos y semilla tiene identidad estable. Cambiar buffers,
 redes o recursos efectivos crea otro tratamiento; no mezclar sus estadísticas.
-'''), cell('code', '''N_EPISODES = 50
-EPISODE_STEPS = 8760
-SEEDS = [0]  # Para la campaña multisemilla, declarar aquí las semillas previstas.
+'''), cell('code', '''import yaml
+CAMPAIGN = yaml.safe_load((PROJECT_ROOT/'configs/experiments/full_campaign_4x3x3.yaml').read_text())
+N_EPISODES = int(CAMPAIGN['episodes'])
+EPISODE_STEPS = int(CAMPAIGN['episode_time_steps'])
+SEEDS = [int(seed) for seed in CAMPAIGN['seeds']]  # [42, 123, 456]: una sola fuente de verdad
 BASE_COMMAND = [str(PYTHON), '-m', 'uc3m.application.training.colab',
     '--output-root', str(OUTPUT_ROOT), '--episodes', str(N_EPISODES),
     '--episode-time-steps', str(EPISODE_STEPS), '--seeds', *map(str, SEEDS)]
 subprocess.run(BASE_COMMAND, cwd=PROJECT_ROOT, check=True)
-print((OUTPUT_ROOT/'colab_campaign.json').read_text()[:6000])
+plan = json.loads((OUTPUT_ROOT/'colab_campaign.json').read_text())
+for phase, algorithms in (('Fase 1', ('HAPPO', 'MASAC')), ('Fase 2', ('MATD3', 'MAAC'))):
+    runs = [e for e in plan['experiments'] if e['algorithm'] in algorithms]
+    print(f"{phase} {'+'.join(algorithms)}: {len(runs)} corridas")
+print('Total:', len(plan['experiments']), 'corridas; recursos:', plan['resources'])
 '''), cell('markdown', '''## 5. Lanzamiento explícito y reanudación
 
-Se conserva el orden original: HAPPO+MASAC, después MATD3+MAAC. La concurrencia
-se limita según recursos medidos. No hay desconexión automática ni compra de
-unidades. `RUN_TRAINING=False` evita iniciar una campaña por ejecutar todo.
+Se conserva el orden original por fases:
+
+- **Fase 1:** HAPPO + MASAC × E1–E3 × semillas 42/123/456 (18 corridas).
+- **Fase 2:** MATD3 + MAAC × E1–E3 × semillas 42/123/456 (18 corridas); solo
+  arranca si todas las corridas de la Fase 1 quedaron verificadas.
+
+La concurrencia dentro de cada fase se limita según recursos medidos. Si Colab
+se desconecta, volver a ejecutar esta celda reanuda cada corrida desde su último
+checkpoint con optimizadores y estado aleatorio restaurados (`training_state.pt`).
+No hay desconexión automática ni compra de unidades. `RUN_TRAINING=False` evita
+iniciar una campaña por ejecutar todo.
 '''), cell('code', '''RUN_TRAINING = False
 if RUN_TRAINING:
     subprocess.run(BASE_COMMAND + ['--execute', '--resume'], cwd=PROJECT_ROOT, check=True)
@@ -145,9 +159,12 @@ result = subprocess.check_output([str(PYTHON), '-c', code], cwd=PROJECT_ROOT, te
 display(pd.DataFrame(json.loads(result)))
 '''), cell('markdown', '''## Alcance de validación
 
-Preparado y probado estructuralmente en local. No se ha ejecutado una sesión
-real de Colab desde esta entrega. Un smoke no sustituye campaña completa,
-reanudación del optimizador/RNG/replay ni selección científica del ganador.
+Preparado y probado estructuralmente en local, incluida una reanudación real
+corta (1 episodio + reanudación) de HAPPO, MASAC, MATD3 y MAAC con restauración
+de optimizadores y RNG. No se ha ejecutado una sesión real de Colab desde esta
+entrega. El replay buffer off-policy no se persiste: al reanudar se rellena con
+el warmup del backend. Un smoke no sustituye campaña completa ni selección
+científica del ganador.
 
 Sustento: Charbonnier (2023), tesis doctoral, https://doi.org/10.5287/ora-ovzyxredj;
 Costea (2026), tesis de maestría, https://webthesis.biblio.polito.it/40396/;

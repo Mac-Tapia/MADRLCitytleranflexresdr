@@ -1,17 +1,1 @@
-{
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/auto_save.sh",
-            "timeout": 60,
-            "statusMessage": "Guardando en GitHub...",
-            "async": true
-          }
-        ]
-      }
-    ]
-  }
-}
+{}

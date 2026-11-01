@@ -44,7 +44,7 @@ archivo existe en el árbol.
 | [009 — Observaciones del jurado](009-jury-observations/spec.md) | `pending`: plan J-01–J-17 sin manifiesto. | Manifiesto, verdad estadística única, HAPPO 49/50, ejes UC3M, anexos y puerta del jurado. |
 | [010 — Panel local](010-local-training-panel/spec.md) | `implemented` como monitor de lectura: HTTP/HTML sin CDN, hashes, `/api/runs`, loopback. | Mantener límites; mejoras opcionales (HTML separado, curvas) no son requisito de cierre. |
 | [011 — Flujo dataset → entrega](011-dataset-to-delivery-pipeline/spec.md) | `partial`: orquestador y verificador de dataset, puerto `DatasetSource`, CLI de entrenamiento. | Consolidar los 21 scripts de `tools/dataset/`, CLI por etapas, encadenamiento por hash y humo end-to-end. |
-| [012 — Higiene del repositorio](012-repository-hygiene/spec.md) | `pending`: manifiestos `*.codex_*.json` renombrados a `*.audit_*.json`. | Decisión sobre el Stop hook, ramas `codex/*`/`cursor/*`, `.codex_tmp/` (1 213 archivos rastreados), raíz, duplicados y prueba de higiene. |
+| [012 — Higiene del repositorio](012-repository-hygiene/spec.md) | `pending`: manifiestos `*.codex_*.json` renombrados a `*.audit_*.json`; Stop hook desactivado. | Ramas `codex/*`/`cursor/*`, `.codex_tmp/` (1 213 archivos rastreados), raíz, duplicados y prueba de higiene. |
 
 ## Conciliación técnica
 
@@ -61,8 +61,9 @@ archivo existe en el árbol.
    y generador preservan instalación y argumentos. Pendientes: runtime real,
    wheels/CUDA, bloqueo Drive y desconexión/reanudación.
 5. **Selección:** no existe mejor modelo final aceptado.
-6. **Higiene:** el Stop hook heredado publica todo al cerrar cada turno; ningún
-   cambio masivo de SPEC-012 se ejecuta antes de la decisión del usuario.
+6. **Higiene:** el Stop hook heredado, que publicaba todo al cerrar cada turno,
+   se desactivó el 2026-10-31. Antes de eso confirmó y publicó sin revisión los
+   commits automáticos `0c884b1`, `d85f9b7` y `495216d`; no se reescriben.
 
 ## Orden de continuación
 
@@ -71,7 +72,7 @@ El plan integral por fases está en el
 
 - [x] Materializar SPEC-007 con contrato, plan y tareas.
 - [x] Materializar SPEC-001–006, SPEC-008–009 y los nuevos SPEC-011–012.
-- [ ] Fase 0 — Higiene (SPEC-012), tras decidir el Stop hook.
+- [ ] Fase 0 — Higiene (SPEC-012); Stop hook ya desactivado.
 - [ ] Fase 1 — Procedencia y licencias (SPEC-001).
 - [ ] Fase 2 — Puertos y adaptadores faltantes (SPEC-002, SPEC-003).
 - [ ] Fase 3 — Flujo dataset → entrega con humo end-to-end (SPEC-011).

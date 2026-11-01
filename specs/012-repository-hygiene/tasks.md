@@ -7,7 +7,7 @@
 `[x]` = archivo verificado en el árbol el 2026-10-31; no implica aceptación.
 
 - [x] **FR-012.1:** Renombrar manifiestos `*.codex_*.json` a `*.audit_*.json` — `data/dataset_audit/`
-- [ ] **FR-012.6:** Decisión del usuario sobre el Stop hook — `.claude/settings.json`
+- [x] **FR-012.6:** Stop hook desactivado por decisión del usuario (2026-10-31) — `.claude/settings.json`
 - [ ] **FR-012.1:** Renombrar ramas `codex/*` y `cursor/*` (local y remoto, con confirmación) — `git`
 - [ ] **FR-012.1:** Retirar `.codex` de los scripts de registro y contexto — `scripts/skills/register_local_skills.ps1, scripts/verify_project_context.ps1`
 - [ ] **FR-012.3:** Retirar `.codex_tmp/` (1 213 archivos) del índice — `.gitignore`

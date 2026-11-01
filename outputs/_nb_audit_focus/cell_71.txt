@@ -1,4 +1,0 @@
-## Informe Técnico de Supervisión — MADRL CityLearn v3
-
-> Generado al ejecutar la celda siguiente. Documenta módulos, validaciones y resultados del run actual
-> (protocolo two_phase, `N_EPISODES`, KPIs OE, ranking OG si ya corriste 9.x).

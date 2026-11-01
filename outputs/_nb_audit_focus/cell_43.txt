@@ -1,8 +1,0 @@
-### 6.2 Prueba rápida de validación — 1 episodio por algoritmo
-
-> **SOLO PARA VERIFICAR EL PIPELINE.** No usar como resultado de tesis.
-> Entrenamiento oficial: **N_EPISODES = 50** + **7.2** (`LAUNCH_FULL_TRAINING=True`), reanudable con `--skip-completed`.
-
-Activa `QUICK_TEST = True` en **6.1**, luego ejecuta esta celda. Comprueba que launcher/scripts cargan y cada algoritmo arranca 1 episodio corto (168 pasos).
-
-Si `QUICK_TEST = False` (default), solo imprime instrucciones y no entrena.

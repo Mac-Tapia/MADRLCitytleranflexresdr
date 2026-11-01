@@ -1,3 +1,0 @@
-## Sección 10: Resumen final de la sesión
-
-Imprime resumen ejecutivo del run (`OUTPUT_ROOT`, jobs completos, rutas clave). Ejecutar al cierre de la sesión Colab o tras reanudar.

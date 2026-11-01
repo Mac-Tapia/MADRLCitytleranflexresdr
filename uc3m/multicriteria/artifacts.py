@@ -1,4 +1,11 @@
-"""Load real MADRL run artefacts or fall back to the illustrative matrix."""
+"""Load real MADRL campaign artefacts or fall back to the illustrative matrix.
+
+Real artefacts come from the modular campaign results root
+(``<root>/<run_id>/<E*>/...``) resolved by
+``uc3m.application.evaluation.results_catalog``; derived summaries live in
+``<root>/resumen_comparativo/``. The illustrative matrix remains available for
+tests and methodology demos (``prefer_real=False``).
+"""
 
 from __future__ import annotations
 
@@ -9,6 +16,11 @@ from typing import Any, Dict, Mapping, Optional, Sequence, Tuple
 import numpy as np
 import pandas as pd
 
+from uc3m.application.evaluation.results_catalog import (
+    campaign_layout,
+    discover_runs,
+    resolve_results_root,
+)
 from uc3m.domain.pareto import (
     expected_utility,
     hypervolume_3d,
@@ -102,24 +114,26 @@ def pareto_quality_from_decision_matrix(
     }
 
 
-def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[2]
+def default_results_root(repo: Optional[Path] = None) -> Path:
+    """``<repo>/outputs/campaign`` for an explicit repo, else the catalog default."""
 
-
-def default_run_candidates(repo: Optional[Path] = None) -> Tuple[Path, ...]:
-    root = Path(repo) if repo is not None else _repo_root()
-    return (
-        root / "outputs" / "madrl_v3_20260627_164047",
-        root / "outputs" / "citylearn_v3_madrl_full_20260615_074011_v4",
-    )
+    if repo is not None:
+        return Path(repo) / "outputs" / "campaign"
+    return resolve_results_root(None)
 
 
 def resolve_run_dir(repo: Optional[Path] = None, run_dir: Optional[Path] = None) -> Optional[Path]:
+    """Return the campaign results root to read, or None when no verified run exists.
+
+    ``run_dir`` is an explicit results root; otherwise the default root is used
+    only if the catalog finds at least one verified run in it.
+    """
+
     if run_dir is not None and Path(run_dir).is_dir():
         return Path(run_dir)
-    for candidate in default_run_candidates(repo):
-        if candidate.is_dir():
-            return candidate
+    candidate = default_results_root(repo)
+    if candidate.is_dir() and discover_runs(candidate):
+        return candidate
     return None
 
 
@@ -218,8 +232,19 @@ def merge_with_illustrative(
     return out, prov
 
 
-def episode_summary_path(run_dir: Path, algo: str, scenario: str) -> Path:
-    return run_dir / algo / scenario / "figures" / "tables" / "episode_summary.csv"
+def _summary_table(scenario_dir: Path) -> Path:
+    return scenario_dir / "figures" / "tables" / "episode_summary.csv"
+
+
+def episode_summary_path(
+    run_dir: Path, algo: str, scenario: str, *, seed: int = 0
+) -> Optional[Path]:
+    """episode_summary.csv of the verified run for ``algo``/``scenario``/``seed``."""
+
+    scenario_dir = campaign_layout(Path(run_dir), seed=seed).get(
+        (str(algo).upper(), str(scenario).upper())
+    )
+    return None if scenario_dir is None else _summary_table(scenario_dir)
 
 
 def load_episode_reward_series(
@@ -227,13 +252,18 @@ def load_episode_reward_series(
     *,
     scenario: str = "E1",
     algorithms: Optional[Sequence[str]] = None,
+    seed: int = 0,
 ) -> Dict[str, list[float]]:
-    """Load per-episode reward_mean from Drive-derived episode_summary.csv."""
+    """Load per-episode reward_mean from each verified run's episode_summary.csv."""
 
     algos = list(algorithms or ALGORITHMS)
+    layout = campaign_layout(Path(run_dir), seed=seed)
     out: Dict[str, list[float]] = {}
     for algo in algos:
-        path = episode_summary_path(run_dir, algo, scenario)
+        scenario_dir = layout.get((str(algo).upper(), str(scenario).upper()))
+        if scenario_dir is None:
+            continue
+        path = _summary_table(scenario_dir)
         if not path.is_file():
             continue
         frame = pd.read_csv(path)
@@ -316,7 +346,7 @@ def load_decision_matrix(
 ) -> Dict[str, Any]:
     """Load a decision matrix from run artefacts when present, else illustrative.
 
-    When ``prefer_real`` and Drive artefacts exist, C1–C3 come from district
+    When ``prefer_real`` and campaign artefacts exist, C1–C3 come from district
     objectives and C4–C6 from episode_summary (50 ep). Set
     ``allow_illustrative_fill=False`` for closure builds (no synthetic cells).
     """
@@ -414,7 +444,7 @@ def load_decision_matrix(
         provenance = {a: dict(provenance.get(a, {})) for a in matrix}
         if not matrix:
             raise FileNotFoundError(
-                "real_only multicriteria: missing Drive C1–C6 "
+                "real_only multicriteria: missing campaign C1–C6 "
                 "(district_objectives + episode_summary)"
             )
         if any("illustrative" in str(v) for p in provenance.values() for v in p.values()):

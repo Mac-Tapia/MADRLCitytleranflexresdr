@@ -8,12 +8,18 @@ Implements the methodology sections 1–8 against **per-seed** KPIs (canonical
   OG (global): Friedman → Kendall W → Nemenyi → TOPSIS (+ Friedman validation)
 
 The statistical unit of analysis is an independent training seed (not an
-episode within a run). Prefer CSVs with a ``seed`` column, or a run root with
-``{ALGO}/{E*}_seed_{k}/data/results.json``.
+episode within a run). The default source is the modular campaign catalog
+(``uc3m.application.evaluation.results_catalog``): ``--results-root``, then
+``MADRL_RESULTS_ROOT``, then ``outputs/campaign``; one verified run per
+algorithm, scenario and seed. CSVs with a ``seed`` column or a legacy run root
+with ``{ALGO}/{E*}_seed_{k}/data/results.json`` remain explicit alternatives.
+Missing real data is reported and exits with code 2; illustrative values are
+used only with ``--illustrative-only``/``--smoke``.
 
 Usage (from repo root):
 
     .\\.venv39-citylearn-v3\\Scripts\\python.exe scripts\\run_madrl_nonparametric_battery.py
+    .\\.venv39-citylearn-v3\\Scripts\\python.exe scripts\\run_madrl_nonparametric_battery.py --results-root outputs\\campaign
     .\\.venv39-citylearn-v3\\Scripts\\python.exe scripts\\run_madrl_nonparametric_battery.py --complementary
     .\\.venv39-citylearn-v3\\Scripts\\python.exe scripts\\run_madrl_nonparametric_battery.py --illustrative-only
     .\\.venv39-citylearn-v3\\Scripts\\python.exe scripts\\run_madrl_nonparametric_battery.py --episodes-csv path\\to\\district_episode_kpis.csv
@@ -37,7 +43,12 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from uc3m.multicriteria.scenarios import DEFAULT_PROTOCOL
+from uc3m.application.evaluation.results_catalog import (  # noqa: E402
+    AmbiguousCampaign,
+    campaign_layout,
+    resolve_results_root,
+)
+from uc3m.multicriteria.scenarios import DEFAULT_PROTOCOL  # noqa: E402
 
 # Canonical campaign: 12 independent seeds (0..11).
 N_SEEDS = int(DEFAULT_PROTOCOL.n_seeds)
@@ -67,15 +78,9 @@ DEFAULT_OE_SPECS: Dict[str, Dict[str, Any]] = {
     },
 }
 
-DEFAULT_EPISODES = (
-    REPO
-    / "outputs"
-    / "_drive_madrl"
-    / "full_data"
-    / "analysis_real_drive"
-    / "tables"
-    / "district_episode_kpis.csv"
-)
+
+class NoCampaignData(FileNotFoundError):
+    """The results root has no verified run usable by the battery."""
 
 # Equal AHP-style weights for the three OE axes in OG TOPSIS (documented default).
 DEFAULT_TOPSIS_WEIGHTS = {"OE.1": 1.0 / 3.0, "OE.2": 1.0 / 3.0, "OE.3": 1.0 / 3.0}
@@ -331,6 +336,74 @@ def load_oe_groups_from_run_root(
     return groups, meta
 
 
+def load_oe_groups_from_results_root(
+    results_root: Path,
+    *,
+    algorithms: Optional[Sequence[str]] = None,
+    specs: Optional[Mapping[str, Mapping[str, object]]] = None,
+    expected_n_seeds: int = N_SEEDS,
+    seeds: Optional[Sequence[int]] = None,
+) -> Tuple[Dict[str, Dict[str, List[float]]], Dict[str, Any]]:
+    """One KPI value per verified campaign run located through the results catalog."""
+
+    specs = specs or DEFAULT_OE_SPECS
+    seed_list = sorted(int(s) for s in (seeds if seeds is not None else range(expected_n_seeds)))
+    if algorithms is None:
+        algorithms = ["HAPPO", "MASAC", "MATD3", "MAAC"]
+    else:
+        algorithms = [str(a).upper() for a in algorithms]
+
+    layouts = {seed: campaign_layout(results_root, seed=seed) for seed in seed_list}
+    if not any(layouts.values()):
+        raise NoCampaignData(
+            f"{results_root}: no verified campaign runs for seeds {seed_list}"
+        )
+
+    groups: Dict[str, Dict[str, List[float]]] = {name: {} for name in specs}
+    meta: Dict[str, Any] = {
+        "source_results_root": str(results_root),
+        "unit": "seed",
+        "expected_n_seeds": int(expected_n_seeds),
+        "algorithms": list(algorithms),
+        "n": {},
+        "coverage": {},
+        "missing": [],
+        "run_ids": {},
+    }
+
+    for algo in algorithms:
+        for oe_name, spec in specs.items():
+            scen = str(spec["scenario"]).upper()
+            metric = str(spec["metric"])
+            values: List[float] = []
+            for seed in seed_list:
+                scenario_dir = layouts[seed].get((algo, scen))
+                path = scenario_dir / "data" / "results.json" if scenario_dir is not None else None
+                if path is None or not path.is_file():
+                    meta["missing"].append(f"{algo}/{scen}/seed={seed}")
+                    continue
+                try:
+                    payload = json.loads(path.read_text(encoding="utf-8"))
+                except (OSError, json.JSONDecodeError):
+                    meta["missing"].append(f"{algo}/{scen}/seed={seed}:unreadable")
+                    continue
+                val = _metric_from_results_json(payload, metric)
+                if val is None:
+                    meta["missing"].append(f"{algo}/{scen}/seed={seed}:no_{metric}")
+                    continue
+                values.append(float(val))
+                meta["run_ids"][f"{algo}/{scen}/seed={seed}"] = scenario_dir.parent.name
+            groups[oe_name][algo] = values
+            n = len(values)
+            meta["n"][f"{oe_name}:{algo}"] = n
+            meta["coverage"][f"{oe_name}:{algo}"] = {
+                "n": n,
+                "expected": int(expected_n_seeds),
+                "complete": n >= int(expected_n_seeds),
+            }
+    return groups, meta
+
+
 def _json_default(obj):
     if isinstance(obj, (np.floating, np.integer)):
         return obj.item()
@@ -354,13 +427,19 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--episodes-csv",
         type=Path,
         default=None,
-        help="district_episode_kpis.csv with a seed column (default Drive table if present)",
+        help="Explicit district_episode_kpis.csv with a seed column",
+    )
+    parser.add_argument(
+        "--results-root",
+        type=Path,
+        default=None,
+        help="Modular campaign results root (default source: MADRL_RESULTS_ROOT, then outputs/campaign)",
     )
     parser.add_argument(
         "--run-root",
         type=Path,
         default=None,
-        help="Training output root with {ALGO}/{E*}_seed_{k}/data/results.json (preferred)",
+        help="Legacy training output root with {ALGO}/{E*}_seed_{k}/data/results.json",
     )
     parser.add_argument(
         "--illustrative-only",
@@ -458,45 +537,39 @@ def main(argv: Optional[List[str]] = None) -> int:
             seeds=range(n_seeds),
         )
         meta["source"] = "run_root_results_json"
+    elif args.episodes_csv is not None:
+        csv_path = Path(args.episodes_csv)
+        if not csv_path.is_file():
+            print(f"[error] episodes CSV not found: {csv_path}", file=sys.stderr)
+            return 2
+        try:
+            oe_groups, meta = load_oe_groups_from_episodes(
+                csv_path,
+                max_seeds=args.max_seeds,
+                expected_n_seeds=n_seeds,
+                allow_episode_fallback=bool(args.allow_episode_fallback),
+            )
+        except ValueError as exc:
+            print(f"[error] {exc}", file=sys.stderr)
+            return 2
+        meta["source"] = "episodes_csv"
     else:
-        csv_path = args.episodes_csv or DEFAULT_EPISODES
-        if not Path(csv_path).is_file():
+        results_root = resolve_results_root(args.results_root)
+        try:
+            oe_groups, meta = load_oe_groups_from_results_root(
+                results_root,
+                expected_n_seeds=n_seeds,
+                seeds=range(n_seeds),
+            )
+        except (NoCampaignData, AmbiguousCampaign) as exc:
+            print(f"[error] {exc}", file=sys.stderr)
+            return 2
+        meta["source"] = "results_catalog_results_json"
+        if meta["missing"]:
             print(
-                f"[warn] episodes CSV not found ({csv_path}); falling back to illustrative "
-                f"({n_seeds} seeds).",
+                "[warn] missing campaign treatments: " + ", ".join(meta["missing"]),
                 file=sys.stderr,
             )
-            oe_groups = _illustrative_oe_groups(n_per_algo=n_seeds)
-            meta = {
-                "source": "illustrative_fallback",
-                "missing_csv": str(csv_path),
-                "unit": "seed",
-                "n_per_algo": n_seeds,
-                "expected_n_seeds": n_seeds,
-            }
-        else:
-            try:
-                oe_groups, meta = load_oe_groups_from_episodes(
-                    Path(csv_path),
-                    max_seeds=args.max_seeds,
-                    expected_n_seeds=n_seeds,
-                    allow_episode_fallback=bool(args.allow_episode_fallback),
-                )
-                meta["source"] = "episodes_csv"
-            except ValueError as exc:
-                print(f"[warn] {exc}", file=sys.stderr)
-                print(
-                    f"[warn] Falling back to illustrative ({n_seeds} seeds).",
-                    file=sys.stderr,
-                )
-                oe_groups = _illustrative_oe_groups(n_per_algo=n_seeds)
-                meta = {
-                    "source": "illustrative_fallback_no_seed_column",
-                    "missing_csv_seed": str(csv_path),
-                    "unit": "seed",
-                    "n_per_algo": n_seeds,
-                    "expected_n_seeds": n_seeds,
-                }
 
     hib = {
         name: bool(DEFAULT_OE_SPECS[name]["higher_is_better"])

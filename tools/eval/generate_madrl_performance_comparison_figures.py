@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
-"""Genera performance_comparison.png por MADRL (distrito + edificio, 50 ep Drive).
+"""Genera performance_comparison.png por MADRL (distrito + edificio, 50 episodios).
 
-Salidas:
-  - outputs/{RUN}/{ALGO}/{E}/figures/performance_comparison.png  (12 jobs)
-  - outputs/{RUN}/resumen_comparativo/performance_comparison/{ALGO}_performance_comparison.png
+Entradas (sin datos sintéticos), todas bajo la raíz de la campaña modular que
+resuelve ``uc3m.application.evaluation.results_catalog`` (``--results-root``,
+luego ``MADRL_RESULTS_ROOT``, luego ``outputs/campaign``):
+  - resumen_comparativo/estadistica/analisis_cuantitativo_completo_50_episodios/
+    (``run_complete_drive_kpi_objective_analysis.py``)
+  - resumen_comparativo/multiobjetivo/ (``analyze_colab_drive_multiobjective_buildings.py``)
+El catálogo confirma que existe una corrida verificada por tratamiento y aporta
+su ``run_id``; si falta alguna, el script termina con código 2.
+
+Salidas (no modifica las carpetas de las corridas verificadas):
+  - resumen_comparativo/performance_comparison/jobs/{ALGO}_{E}_performance_comparison.png  (12 jobs)
+  - resumen_comparativo/performance_comparison/{ALGO}_performance_comparison.png
   - mapping + report JSON con interpretación por figura
-
-Fuente exclusiva: artefactos cuantitativos de madrl_v3_20260627_164047 (sin datos sintéticos).
 """
 from __future__ import annotations
 
+import argparse
 import csv
 import json
-import os
+import sys
 from pathlib import Path
+from typing import Optional, Sequence
 
 import matplotlib
 
@@ -22,11 +31,19 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
-RUN_ID = os.environ.get("MADRL_RUN_ID", "madrl_v3_20260627_164047")
-RUN = REPO / "outputs" / RUN_ID
-AQ = RUN / "resumen_comparativo" / "estadistica" / "analisis_cuantitativo_completo_50_episodios"
-MO = RUN / "resumen_comparativo" / "multiobjetivo"
-OUT_SUMMARY = RUN / "resumen_comparativo" / "performance_comparison"
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+
+from uc3m.application.evaluation.results_catalog import (  # noqa: E402
+    AmbiguousCampaign,
+    campaign_layout,
+    resolve_results_root,
+)
+
+SUMMARY = Path("resumen_comparativo")
+AQ_SUBDIR = SUMMARY / "estadistica" / "analisis_cuantitativo_completo_50_episodios"
+MO_SUBDIR = SUMMARY / "multiobjetivo"
+OUT_SUBDIR = SUMMARY / "performance_comparison"
 ALGOS = ("MATD3", "MAAC", "MASAC", "HAPPO")
 SCENARIOS = ("E1", "E2", "E3")
 OE_LABEL = {
@@ -56,17 +73,35 @@ def fnum(x: str | None, default: float = float("nan")) -> float:
         return default
 
 
-def load_primary() -> list[dict[str, str]]:
-    return read_csv(AQ / "primary_objective_values.csv")
+def display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(REPO)).replace("\\", "/")
+    except ValueError:
+        return path.as_posix()
 
 
-def load_building_mo() -> list[dict[str, str]]:
-    path = MO / "building_objectives_by_algorithm.csv"
+def campaign_run_ids(results_root: Path, seed: int = 0) -> dict[tuple[str, str], str]:
+    """(ALGO, SCENARIO) -> run_id of the verified run; raises when one is missing."""
+    layout = campaign_layout(results_root, seed=seed)
+    missing = [f"{a} {s}" for a in ALGOS for s in SCENARIOS if (a, s) not in layout]
+    if missing:
+        raise FileNotFoundError(
+            f"{results_root}: no verified run for seed {seed}: " + ", ".join(missing)
+        )
+    return {(a, s): layout[(a, s)].parent.name for a in ALGOS for s in SCENARIOS}
+
+
+def load_primary(aq: Path) -> list[dict[str, str]]:
+    return read_csv(aq / "primary_objective_values.csv")
+
+
+def load_building_mo(mo: Path) -> list[dict[str, str]]:
+    path = mo / "building_objectives_by_algorithm.csv"
     return read_csv(path) if path.is_file() else []
 
 
-def load_building_raw() -> list[dict[str, str]]:
-    return read_csv(AQ / "building_kpis_raw.csv")
+def load_building_raw(aq: Path) -> list[dict[str, str]]:
+    return read_csv(aq / "building_kpis_raw.csv")
 
 
 def district_effect(primary: list[dict[str, str]], algo: str, scenario: str) -> float:
@@ -149,11 +184,12 @@ def plot_job_figure(
     building_mo: list[dict[str, str]],
     building_raw: list[dict[str, str]],
     out_path: Path,
+    run_id: str,
 ) -> dict:
     fig, axes = plt.subplots(1, 2, figsize=(14.5, 5.6), constrained_layout=True)
     fig.suptitle(
-        f"Performance comparison — {algo} / {scenario} (50 episodios Drive)\n"
-        f"{OE_LABEL[scenario]} | corrida {RUN_ID}",
+        f"Performance comparison — {algo} / {scenario} (50 episodios)\n"
+        f"{OE_LABEL[scenario]} | corrida {run_id}",
         fontsize=12,
         fontweight="bold",
     )
@@ -220,7 +256,8 @@ def plot_job_figure(
         f"en E2/E3, Δ negativo = reducción local; en E1 el proxy/heterogeneidad se lee por edificio."
     )
     return {
-        "path": str(out_path.relative_to(REPO)).replace("\\", "/"),
+        "path": display_path(out_path),
+        "run_id": run_id,
         "algorithm": algo,
         "scenario": scenario,
         "district_effect_percent": focal,
@@ -236,11 +273,12 @@ def plot_algo_summary(
     building_mo: list[dict[str, str]],
     building_raw: list[dict[str, str]],
     out_path: Path,
+    source_label: str,
 ) -> dict:
     fig, axes = plt.subplots(2, 3, figsize=(16.5, 8.8), constrained_layout=True)
     fig.suptitle(
         f"Performance comparison — {algo} (distrito + edificio, 50 episodios)\n"
-        f"Fuente: {RUN_ID} | descriptivo; no decide HE10–HE31",
+        f"Fuente: {source_label} | descriptivo; no decide HE10–HE31",
         fontsize=13,
         fontweight="bold",
     )
@@ -300,20 +338,20 @@ def plot_algo_summary(
     plt.close(fig)
 
     return {
-        "path": str(out_path.relative_to(REPO)).replace("\\", "/"),
+        "path": display_path(out_path),
         "algorithm": algo,
         "interpretation": " ".join(interpretations),
     }
 
 
-def write_mapping(job_meta: list[dict], algo_meta: list[dict]) -> Path:
+def write_mapping(job_meta: list[dict], algo_meta: list[dict], out_summary: Path, results_root: Path) -> Path:
     lines = [
-        f"# Performance comparison — {RUN_ID}",
+        f"# Performance comparison — campaña `{results_root}`",
         "",
         "## Qué es esta figura",
         "",
         "Cada `performance_comparison.png` resume el **desempeño descriptivo** de un MADRL",
-        "sobre la corrida canónica de **50 episodios**, en dos escalas:",
+        "sobre las corridas verificadas de **50 episodios** de la campaña, en dos escalas:",
         "",
         "1. **Distrito:** efecto primario vs baseline CityLearn (`favorable_effect_percent`)",
         "   en E1 (flexibilidad), E2 (CO₂) y E3 (costo), comparado con los otros tres MADRL.",
@@ -336,16 +374,16 @@ def write_mapping(job_meta: list[dict], algo_meta: list[dict]) -> Path:
         [
             "## Archivos por job (algoritmo × escenario)",
             "",
-            "| Algoritmo | Escenario | Archivo | Efecto distrito (%) | Líder escenario | Edificios |",
-            "|---|---|---|---:|---|---:|",
+            "| Algoritmo | Escenario | Corrida | Archivo | Efecto distrito (%) | Líder escenario | Edificios |",
+            "|---|---|---|---|---:|---|---:|",
         ]
     )
     for m in job_meta:
         lines.append(
-            f"| {m['algorithm']} | {m['scenario']} | `{m['path']}` | "
+            f"| {m['algorithm']} | {m['scenario']} | `{m['run_id']}` | `{m['path']}` | "
             f"{m['district_effect_percent']:.3f} | {m['district_leader']} | {m['n_buildings']} |"
         )
-        lines.append(f"| | | *{m['interpretation']}* | | | |")
+        lines.append(f"| | | | *{m['interpretation']}* | | | |")
 
     lines.extend(
         [
@@ -359,21 +397,56 @@ def write_mapping(job_meta: list[dict], algo_meta: list[dict]) -> Path:
             "",
         ]
     )
-    out = OUT_SUMMARY / "performance_comparison_mapping.md"
+    out = out_summary / "performance_comparison_mapping.md"
     out.write_text("\n".join(lines), encoding="utf-8")
     return out
 
 
-def main() -> int:
-    primary = load_primary()
-    building_mo = load_building_mo()
-    building_raw = load_building_raw()
+def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--results-root",
+        type=Path,
+        default=None,
+        help="Campaign results root (default: MADRL_RESULTS_ROOT, then outputs/campaign)",
+    )
+    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--analysis-dir", type=Path, default=None, help=f"Default: <results-root>/{AQ_SUBDIR.as_posix()}")
+    parser.add_argument("--multiobjective-dir", type=Path, default=None, help=f"Default: <results-root>/{MO_SUBDIR.as_posix()}")
+    parser.add_argument("--output-dir", type=Path, default=None, help=f"Default: <results-root>/{OUT_SUBDIR.as_posix()}")
+    return parser.parse_args(argv)
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    args = parse_args(argv)
+    results_root = resolve_results_root(args.results_root)
+    aq = args.analysis_dir or results_root / AQ_SUBDIR
+    mo = args.multiobjective_dir or results_root / MO_SUBDIR
+    out_summary = args.output_dir or results_root / OUT_SUBDIR
+    try:
+        run_ids = campaign_run_ids(results_root, seed=args.seed)
+    except (FileNotFoundError, AmbiguousCampaign) as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        return 2
+    missing_inputs = [
+        p for p in (aq / "primary_objective_values.csv", aq / "building_kpis_raw.csv") if not p.is_file()
+    ]
+    if missing_inputs:
+        print(
+            "[error] run run_complete_drive_kpi_objective_analysis.py first; missing: "
+            + ", ".join(str(p) for p in missing_inputs),
+            file=sys.stderr,
+        )
+        return 2
+    primary = load_primary(aq)
+    building_mo = load_building_mo(mo)
+    building_raw = load_building_raw(aq)
 
     job_meta: list[dict] = []
     for algo in ALGOS:
         for scen in SCENARIOS:
-            out = RUN / algo / scen / "figures" / "performance_comparison.png"
-            meta = plot_job_figure(algo, scen, primary, building_mo, building_raw, out)
+            out = out_summary / "jobs" / f"{algo}_{scen}_performance_comparison.png"
+            meta = plot_job_figure(algo, scen, primary, building_mo, building_raw, out, run_ids[(algo, scen)])
             # sidecar explanation
             (out.with_suffix(".md")).write_text(
                 f"# {algo} / {scen} — performance_comparison\n\n{meta['interpretation']}\n",
@@ -383,24 +456,26 @@ def main() -> int:
 
     algo_meta: list[dict] = []
     for algo in ALGOS:
-        out = OUT_SUMMARY / f"{algo}_performance_comparison.png"
-        meta = plot_algo_summary(algo, primary, building_mo, building_raw, out)
+        out = out_summary / f"{algo}_performance_comparison.png"
+        meta = plot_algo_summary(algo, primary, building_mo, building_raw, out, display_path(results_root))
         (out.with_suffix(".md")).write_text(
             f"# {algo} — performance_comparison (distrito + edificio)\n\n{meta['interpretation']}\n",
             encoding="utf-8",
         )
         algo_meta.append(meta)
 
-    mapping = write_mapping(job_meta, algo_meta)
+    mapping = write_mapping(job_meta, algo_meta, out_summary, results_root)
     report = {
-        "run_id": RUN_ID,
+        "results_root": str(results_root),
+        "seed": args.seed,
+        "run_ids": {f"{a}/{s}": run_id for (a, s), run_id in run_ids.items()},
         "n_job_figures": len(job_meta),
         "n_algo_summaries": len(algo_meta),
         "job_figures": job_meta,
         "algo_summaries": algo_meta,
-        "mapping": str(mapping.relative_to(REPO)).replace("\\", "/"),
+        "mapping": display_path(mapping),
     }
-    report_path = OUT_SUMMARY / "generation_report.json"
+    report_path = out_summary / "generation_report.json"
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"ok": True, "jobs": len(job_meta), "summaries": len(algo_meta), "mapping": report["mapping"]}, ensure_ascii=False))
     return 0

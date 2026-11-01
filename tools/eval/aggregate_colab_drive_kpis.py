@@ -1,22 +1,85 @@
-"""Agrega KPIs descargados de Google Drive (corrida Colab) y genera resumen comparativo."""
+"""Agrega los KPI de la campaña MADRL modular (Colab) y genera el resumen comparativo.
+
+Las carpetas de cada tratamiento se localizan con el catálogo de resultados
+(``uc3m.application.evaluation.results_catalog``): ``--results-root``, luego
+``MADRL_RESULTS_ROOT`` y luego ``outputs/campaign``. Por tratamiento se leen
+``<E*>/figures/tables/core_kpis.csv`` y ``<E*>/data/results.json``. Si falta un
+tratamiento verificado o su ``core_kpis.csv``, el script termina con código 2 y
+no escribe ranking: no rellena KPI ausentes.
+"""
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Optional, Sequence
 
 REPO = Path(__file__).resolve().parents[2]
-KPIS_DIR = REPO / "outputs" / "_drive_madrl" / "kpis"
-RUN_ID = "madrl_v3_20260627_164047"
-OUT_RUN = REPO / "outputs" / RUN_ID / "resumen_comparativo"
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+
+from uc3m.application.evaluation.results_catalog import (  # noqa: E402
+    AmbiguousCampaign,
+    campaign_layout,
+    discover_runs,
+    resolve_results_root,
+)
+
 ALGOS = ("happo", "masac", "matd3", "maac")
 SCENARIOS = ("E1", "E2", "E3")
+TARGET_EPISODES = 50
+SUMMARY_SUBDIR = Path("resumen_comparativo")
+
+Layout = dict[tuple[str, str], Path]
 
 
-def read_core_kpis(algo: str, scen: str) -> dict[str, float] | None:
-    path = KPIS_DIR / f"{algo}_{scen.lower()}_core_kpis.csv"
+class MissingTreatments(FileNotFoundError):
+    """A required treatment has no verified run or lacks a KPI file."""
+
+
+def locate_treatments(results_root: Path, seed: int = 0) -> Layout:
+    layout = campaign_layout(results_root, seed=seed)
+    statuses = {
+        (run.algorithm, run.scenario): run.status
+        for run in discover_runs(results_root, verified_only=False)
+        if run.seed == seed
+    }
+    missing: list[str] = []
+    for algo in ALGOS:
+        for scen in SCENARIOS:
+            key = (algo.upper(), scen)
+            if key not in layout:
+                status = statuses.get(key)
+                missing.append(f"{key[0]} {scen}" + (f" (status={status})" if status else ""))
+            elif not (core_kpis_path(layout, algo, scen)).is_file():
+                missing.append(f"{key[0]} {scen} (missing figures/tables/core_kpis.csv)")
+            elif not (results_path(layout, algo, scen)).is_file():
+                missing.append(f"{key[0]} {scen} (missing data/results.json)")
+    if missing:
+        raise MissingTreatments(
+            f"{results_root}: no verified run for seed {seed}: " + ", ".join(missing)
+        )
+    return {key: layout[key] for key in ((a.upper(), s) for a in ALGOS for s in SCENARIOS)}
+
+
+def core_kpis_path(layout: Layout, algo: str, scen: str) -> Path:
+    return layout[(algo.upper(), scen)] / "figures" / "tables" / "core_kpis.csv"
+
+
+def results_path(layout: Layout, algo: str, scen: str) -> Path:
+    return layout[(algo.upper(), scen)] / "data" / "results.json"
+
+
+def run_id_of(layout: Layout, algo: str, scen: str) -> str:
+    return layout[(algo.upper(), scen)].parent.name
+
+
+def read_core_kpis(layout: Layout, algo: str, scen: str) -> dict[str, float] | None:
+    path = core_kpis_path(layout, algo, scen)
     if not path.exists():
         return None
     data: dict[str, float] = {}
@@ -29,9 +92,9 @@ def read_core_kpis(algo: str, scen: str) -> dict[str, float] | None:
     return data
 
 
-def read_episodes(algo: str, scen: str) -> int | None:
-    path = resolve_results_path(algo, scen)
-    if path is None:
+def read_episodes(layout: Layout, algo: str, scen: str) -> int | None:
+    path = results_path(layout, algo, scen)
+    if not path.is_file():
         return None
     payload = json.loads(path.read_text(encoding="utf-8"))
     recorded = payload.get("episodes_recorded")
@@ -43,16 +106,6 @@ def read_episodes(algo: str, scen: str) -> int | None:
         return int(jr["completed_episodes"])
     ep = payload.get("episodes")
     return int(ep) if ep else None
-
-
-def resolve_results_path(algo: str, scen: str) -> Path | None:
-    """Busca results.json por output_dir/scenario interno (nombres locales pueden estar cruzados)."""
-    for path in KPIS_DIR.glob(f"{algo}_*_results.json"):
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        out = (payload.get("output_dir") or "").rstrip("/")
-        if out.endswith(f"/{scen}") and payload.get("algorithm", "").upper() == algo.upper():
-            return path
-    return None
 
 
 def flex_composite(kpis: dict[str, float]) -> float:
@@ -70,15 +123,42 @@ def norm_lower_better(values: dict[str, float]) -> dict[str, float]:
     return {k: 1.0 - (v - lo) / (hi - lo) for k, v in values.items()}
 
 
-def main() -> int:
+def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--results-root",
+        type=Path,
+        default=None,
+        help="Campaign results root (default: MADRL_RESULTS_ROOT, then outputs/campaign)",
+    )
+    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help=f"Default: <results-root>/{SUMMARY_SUBDIR.as_posix()}",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    args = parse_args(argv)
+    results_root = resolve_results_root(args.results_root)
+    out_run = args.output_dir or results_root / SUMMARY_SUBDIR
+    try:
+        layout = locate_treatments(results_root, seed=args.seed)
+    except (MissingTreatments, AmbiguousCampaign) as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        return 2
+
     flex_raw: dict[str, float] = {}
     co2_raw: dict[str, float] = {}
     cost_raw: dict[str, float] = {}
     rows: list[dict] = []
 
     for algo in ALGOS:
-        e1, e2, e3 = (read_core_kpis(algo, s) for s in SCENARIOS)
-        ep = {s: read_episodes(algo, s) for s in SCENARIOS}
+        e1, e2, e3 = (read_core_kpis(layout, algo, s) for s in SCENARIOS)
+        ep = {s: read_episodes(layout, algo, s) for s in SCENARIOS}
         if e1:
             flex_raw[algo.upper()] = flex_composite(e1)
         if e2 and "carbon_emissions_delta" in e2:
@@ -91,7 +171,7 @@ def main() -> int:
                 continue
             rows.append(
                 {
-                    "run_id": RUN_ID,
+                    "run_id": run_id_of(layout, algo, scen),
                     "algorithm": algo.upper(),
                     "scenario": scen,
                     "episodes": ep.get(scen),
@@ -116,9 +196,9 @@ def main() -> int:
                 "score_oe2_co2": round(s2, 4),
                 "score_oe3_cost": round(s3, 4),
                 "score_global": round(mean, 4),
-                "episodes_e1": read_episodes(algo.lower(), "E1"),
-                "episodes_e2": read_episodes(algo.lower(), "E2"),
-                "episodes_e3": read_episodes(algo.lower(), "E3"),
+                "episodes_e1": read_episodes(layout, algo.lower(), "E1"),
+                "episodes_e2": read_episodes(layout, algo.lower(), "E2"),
+                "episodes_e3": read_episodes(layout, algo.lower(), "E3"),
             }
         )
     ranking.sort(key=lambda x: -x["score_global"])
@@ -126,41 +206,39 @@ def main() -> int:
         item["rank"] = i
         item["selected"] = i == 1
 
-    happo_pending = []
-    for scen in SCENARIOS:
-        ep = read_episodes("happo", scen)
-        path = resolve_results_path("happo", scen)
-        salvage = None
-        if path and path.is_file():
-            payload = json.loads(path.read_text(encoding="utf-8"))
-            salvage = payload.get("salvage_reason")
-        happo_pending.append(
-            {
-                "scenario": scen,
-                "episodes_recorded": ep,
-                "target_episodes": 50,
-                "has_kpis": read_core_kpis("happo", scen) is not None,
-                "salvage_reason": salvage,
-                "action": "celda_2.3_resume_execute",
-            }
-        )
+    episode_coverage = [
+        {
+            "algorithm": algo.upper(),
+            "scenario": scen,
+            "run_id": run_id_of(layout, algo, scen),
+            "episodes_recorded": read_episodes(layout, algo, scen),
+            "target_episodes": TARGET_EPISODES,
+        }
+        for algo in ALGOS
+        for scen in SCENARIOS
+    ]
+    incomplete = [
+        f"{item['algorithm']} {item['scenario']}"
+        for item in episode_coverage
+        if item["episodes_recorded"] != TARGET_EPISODES
+    ]
 
     best = ranking[0]["algorithm"] if ranking else None
 
     report = {
         "mejor_madrl": best,
-        "fuente": "colab_drive",
-        "run_id": RUN_ID,
-        "drive_folder": "https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX",
-        "target_episodes": 50,
-        "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition (Colab)",
+        "fuente": "modular_campaign_results_catalog",
+        "results_root": str(results_root),
+        "seed": args.seed,
+        "run_ids": {
+            f"{algo.upper()}/{scen}": run_id_of(layout, algo, scen)
+            for algo in ALGOS
+            for scen in SCENARIOS
+        },
+        "target_episodes": TARGET_EPISODES,
         "algorithms_in_study": ["HAPPO", "MASAC", "MATD3", "MAAC"],
-        "nota_episodios": (
-            "Episodios = episodes_recorded (o job_resume.completed_episodes si salvage). "
-            "MATD3/MAAC/MASAC: 50/50 con KPIs. HAPPO: 49/50 — pendiente resume celda 2.3 "
-            "(NO excluido del estudio; checkpoints en Drive)."
-        ),
-        "happo_pending": happo_pending,
+        "episode_coverage": episode_coverage,
+        "treatments_below_target_episodes": incomplete,
         "ranking_with_kpis": ranking,
         "ranking": ranking,
         "kpis_primarios": {
@@ -171,12 +249,12 @@ def main() -> int:
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
 
-    OUT_RUN.mkdir(parents=True, exist_ok=True)
-    (OUT_RUN / "best_madrl_report.json").write_text(
+    out_run.mkdir(parents=True, exist_ok=True)
+    (out_run / "best_madrl_report.json").write_text(
         json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8"
     )
 
-    csv_path = OUT_RUN / "comparison_metrics_colab.csv"
+    csv_path = out_run / "comparison_metrics_colab.csv"
     if rows:
         fields = sorted({k for r in rows for k in r})
         with csv_path.open("w", newline="", encoding="utf-8") as f:
@@ -184,7 +262,7 @@ def main() -> int:
             writer.writeheader()
             writer.writerows(rows)
 
-    sel_path = OUT_RUN / "best_madrl_selection.csv"
+    sel_path = out_run / "best_madrl_selection.csv"
     with sel_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
@@ -211,9 +289,6 @@ def main() -> int:
                     "selected": item["selected"],
                 }
             )
-
-    latest = REPO / "outputs" / "latest_colab_output_root.txt"
-    latest.write_text(f"outputs/{RUN_ID}\n", encoding="utf-8")
 
     print(json.dumps(report, indent=2, ensure_ascii=False))
     return 0

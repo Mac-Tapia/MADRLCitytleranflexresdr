@@ -1,11 +1,19 @@
-"""Análisis multiobjetivo Colab/Drive: KPIs por distrito y por edificio (17 edificios Iquitos).
+"""Análisis multiobjetivo de la campaña modular: KPIs por distrito y por edificio (17 edificios Iquitos).
+
+Las carpetas de cada tratamiento se localizan con el catálogo de resultados
+(``uc3m.application.evaluation.results_catalog``): ``--results-root``, luego
+``MADRL_RESULTS_ROOT`` y luego ``outputs/campaign``. Por tratamiento se leen
+``<E*>/data/results.json``, ``building_behavior_summary.csv`` y el esquema
+``building_observation_action_schema.csv``. Si falta un tratamiento verificado
+el script termina con código 2 e indica cuál.
 
 Genera inventario con elementos controlados/no controlados, cantidad de EVs,
-tablas CSV y figuras en outputs/<run_id>/resumen_comparativo/multiobjetivo/.
+tablas CSV y figuras en <results_root>/resumen_comparativo/multiobjetivo/.
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import math
@@ -13,23 +21,32 @@ import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional, Sequence
 
 import matplotlib.pyplot as plt
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[2]
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
 if str(REPO / "tools") not in sys.path:
     sys.path.insert(0, str(REPO / "tools" / "dataset"))
 
 from dimension_ev_chargers import build_charger_config  # noqa: E402
 
-RUN_ID = "madrl_v3_20260627_164047"
-KPIS_DIR = REPO / "outputs" / "_drive_madrl" / "kpis"
-FULL_DATA = REPO / "outputs" / "_drive_madrl" / "full_data"
+from uc3m.application.evaluation.results_catalog import (  # noqa: E402
+    AmbiguousCampaign,
+    campaign_layout,
+    discover_runs,
+    resolve_results_root,
+)
+
 METADATA = REPO / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025" / "building_metadata.json"
 MACHINES = REPO / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025" / "controlled_machines_log.json"
-OUT = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "multiobjetivo"
+OUTPUT_SUBDIR = Path("resumen_comparativo") / "multiobjetivo"
+# Output directory of the current invocation; main() sets it before any writer runs.
+OUT = Path(OUTPUT_SUBDIR)
+SCHEMA_FILE = "building_observation_action_schema.csv"
 
 ALGOS = ("MASAC", "MATD3", "MAAC")
 SCENARIOS = ("E1", "E2", "E3")
@@ -52,6 +69,37 @@ class BuildingInventoryRow:
     elementos_no_controlados: str
     acciones_dim: int
     observaciones_dim: int
+
+
+Layout = dict[tuple[str, str], Path]
+
+
+class MissingTreatments(FileNotFoundError):
+    """The results root lacks a verified run for one or more treatments."""
+
+
+def locate_treatments(results_root: Path, seed: int = 0) -> Layout:
+    layout = campaign_layout(results_root, seed=seed)
+    statuses = {
+        (run.algorithm, run.scenario): run.status
+        for run in discover_runs(results_root, verified_only=False)
+        if run.seed == seed
+    }
+    missing = [
+        f"{algo} {scen}" + (f" (status={statuses[(algo, scen)]})" if (algo, scen) in statuses else "")
+        for algo in ALGOS
+        for scen in SCENARIOS
+        if (algo, scen) not in layout
+    ]
+    if missing:
+        raise MissingTreatments(
+            f"{results_root}: no verified run for seed {seed}: " + ", ".join(missing)
+        )
+    return {(algo, scen): layout[(algo, scen)] for algo in ALGOS for scen in SCENARIOS}
+
+
+def run_id_of(layout: Layout, algo: str, scen: str) -> str:
+    return layout[(algo, scen)].parent.name
 
 
 def read_json(path: Path) -> Any:
@@ -118,15 +166,15 @@ def parse_schema(schema_path: Path) -> dict[str, dict[str, Any]]:
     return by_agent
 
 
-def build_inventory() -> list[BuildingInventoryRow]:
+def build_inventory(layout: Layout) -> list[BuildingInventoryRow]:
     meta_by_id = load_building_metadata()
     machines = load_controlled_machines()
     _, ev_rows = build_charger_config(return_summary=True)
     ev_by_id = {int(r["B"]): r for r in ev_rows}
 
-    schema_path = FULL_DATA / "MATD3" / "E1" / "data" / "building_observation_action_schema.csv"
+    schema_path = layout[("MATD3", "E1")] / "data" / SCHEMA_FILE
     if not schema_path.exists():
-        raise FileNotFoundError(f"Falta schema local: {schema_path}")
+        raise FileNotFoundError(f"Falta schema de la corrida MATD3/E1: {schema_path}")
     schema = parse_schema(schema_path)
 
     rows: list[BuildingInventoryRow] = []
@@ -189,19 +237,15 @@ def write_inventory_csv(rows: list[BuildingInventoryRow]) -> Path:
     return out
 
 
-def resolve_data_file(algo: str, scen: str, fname: str) -> Path | None:
-    candidates = [
-        FULL_DATA / algo / scen / "data" / fname,
-        REPO / "outputs" / RUN_ID / algo / scen / "data" / fname,
-    ]
-    for path in candidates:
-        if path.is_file() and path.stat().st_size > 0:
-            return path
+def resolve_data_file(layout: Layout, algo: str, scen: str, fname: str) -> Path | None:
+    path = layout[(algo, scen)] / "data" / fname
+    if path.is_file() and path.stat().st_size > 0:
+        return path
     return None
 
 
-def read_results(algo: str, scen: str) -> dict | None:
-    path = KPIS_DIR / f"{algo.lower()}_{scen}_results.json"
+def read_results(layout: Layout, algo: str, scen: str) -> dict | None:
+    path = layout[(algo, scen)] / "data" / "results.json"
     if not path.exists():
         return None
     return read_json(path)
@@ -228,8 +272,8 @@ def district_objectives(results: dict) -> dict[str, float | None]:
     }
 
 
-def read_behavior_summary(algo: str, scen: str) -> list[dict[str, Any]]:
-    path = resolve_data_file(algo, scen, "building_behavior_summary.csv")
+def read_behavior_summary(layout: Layout, algo: str, scen: str) -> list[dict[str, Any]]:
+    path = resolve_data_file(layout, algo, scen, "building_behavior_summary.csv")
     if path is None:
         return []
     with path.open(encoding="utf-8", newline="") as f:
@@ -278,31 +322,39 @@ def _f(val: Any) -> float | None:
         return None
 
 
-def collect_tables(inventory: list[BuildingInventoryRow]) -> tuple[list[dict], list[dict]]:
+def collect_tables(
+    inventory: list[BuildingInventoryRow], layout: Layout
+) -> tuple[list[dict], list[dict], list[str]]:
     inv_by_id = {r.building_id: r for r in inventory}
     district_rows: list[dict] = []
     building_rows: list[dict] = []
+    missing_files: list[str] = []
 
     for algo in ALGOS:
         for scen in SCENARIOS:
-            results = read_results(algo, scen)
+            run_id = run_id_of(layout, algo, scen)
+            results = read_results(layout, algo, scen)
             if not results:
+                missing_files.append(f"{algo} {scen}: data/results.json")
                 continue
             dist = district_objectives(results)
             district_rows.append(
                 {
-                    "run_id": RUN_ID,
+                    "run_id": run_id,
                     "algorithm": algo,
                     "scenario": scen,
                     "objective": SCENARIO_OBJECTIVE[scen],
                     **dist,
                 }
             )
-            for brow in building_objectives(read_behavior_summary(algo, scen)):
+            behavior = read_behavior_summary(layout, algo, scen)
+            if not behavior:
+                missing_files.append(f"{algo} {scen}: data/building_behavior_summary.csv")
+            for brow in building_objectives(behavior):
                 inv = inv_by_id.get(brow["building_id"])
                 building_rows.append(
                     {
-                        "run_id": RUN_ID,
+                        "run_id": run_id,
                         "algorithm": algo,
                         "scenario": scen,
                         "objective": SCENARIO_OBJECTIVE[scen],
@@ -312,7 +364,7 @@ def collect_tables(inventory: list[BuildingInventoryRow]) -> tuple[list[dict], l
                         **brow,
                     }
                 )
-    return district_rows, building_rows
+    return district_rows, building_rows, missing_files
 
 
 def write_csv(path: Path, rows: list[dict]) -> Path:
@@ -410,7 +462,6 @@ def plot_building_heatmap(building_rows: list[dict], scen: str, metric: str, tit
 
 def plot_ev_inventory(inventory: list[BuildingInventoryRow]) -> Path:
     labels = [f"B{r.building_id:02d}" for r in inventory]
-    totals = [r.ev_total for r in inventory]
     moto = [r.ev_moto_lineal for r in inventory]
     mototaxi = [r.ev_mototaxi for r in inventory]
     cam = [r.ev_camioneta for r in inventory]
@@ -566,13 +617,23 @@ def write_building_detail_report(
     return out
 
 
-def write_thesis_mapping(inventory: list[BuildingInventoryRow], generated: dict[str, str]) -> Path:
+def write_thesis_mapping(
+    inventory: list[BuildingInventoryRow],
+    generated: dict[str, str],
+    layout: Layout,
+    results_root: Path,
+) -> Path:
     total_ev = sum(r.ev_total for r in inventory)
-    content = f"""# Análisis multiobjetivo Colab/Drive — {RUN_ID}
+    run_lines = "\n".join(
+        f"  - {algo}/{scen}: `{run_id_of(layout, algo, scen)}`" for algo in ALGOS for scen in SCENARIOS
+    )
+    content = f"""# Análisis multiobjetivo — campaña modular `{results_root}`
 
 ## Alcance
 
-- **Distrito:** KPIs agregados desde `citylearn_v3_report.all_values` en `outputs/_drive_madrl/kpis/*_results.json`.
+- **Corridas verificadas usadas (catálogo de resultados):**
+{run_lines}
+- **Distrito:** KPIs agregados desde `citylearn_v3_report.all_values` en `<run_id>/<E*>/data/results.json`.
 - **Edificio:** KPIs desde `building_behavior_summary.csv` (17 filas por job) y `building_kpis.csv` (1275 filas).
 - **Inventario:** 17 edificios Iquitos con nombre, tipo de uso, elementos controlados/no controlados y **{total_ev} cargadores EV** dimensionados.
 
@@ -616,10 +677,40 @@ Detalle por edificio disponible para **MASAC**, **MATD3** y **MAAC** (17 edifici
     return out
 
 
-def main() -> int:
+def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--results-root",
+        type=Path,
+        default=None,
+        help="Campaign results root (default: MADRL_RESULTS_ROOT, then outputs/campaign)",
+    )
+    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help=f"Default: <results-root>/{OUTPUT_SUBDIR.as_posix()}",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    global OUT
+    args = parse_args(argv)
+    results_root = resolve_results_root(args.results_root)
+    try:
+        layout = locate_treatments(results_root, seed=args.seed)
+    except (MissingTreatments, AmbiguousCampaign) as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        return 2
+    inventory = build_inventory(layout)
+    district_rows, building_rows, missing_files = collect_tables(inventory, layout)
+    if missing_files:
+        print("[error] missing campaign files: " + "; ".join(missing_files), file=sys.stderr)
+        return 2
+    OUT = args.output_dir or results_root / OUTPUT_SUBDIR
     OUT.mkdir(parents=True, exist_ok=True)
-    inventory = build_inventory()
-    district_rows, building_rows = collect_tables(inventory)
 
     generated = {
         "building_inventory_csv": str(write_inventory_csv(inventory)),
@@ -663,7 +754,7 @@ def main() -> int:
         generated["building_cards_dir"] = str(OUT / "por_edificio")
         generated["building_cards_count"] = str(len(per_building))
 
-    generated["thesis_mapping_md"] = str(write_thesis_mapping(inventory, generated))
+    generated["thesis_mapping_md"] = str(write_thesis_mapping(inventory, generated, layout, results_root))
     print(json.dumps({"output_dir": str(OUT), "generated": generated}, indent=2, ensure_ascii=False))
     return 0
 

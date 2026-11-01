@@ -1,31 +1,35 @@
-"""Análisis cuantitativo completo de la corrida canónica MADRL almacenada en Drive.
+"""Análisis cuantitativo completo de la campaña MADRL modular (Colab, backend nativo).
 
-Fuente exclusiva:
-    outputs/_drive_madrl/full_data/{ALGORITHM}/{SCENARIO}/data/*
-
-La carpeta local es el espejo auditado de:
-    https://drive.google.com/drive/folders/1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX
+Fuente: el catálogo de resultados (``uc3m.application.evaluation.results_catalog``)
+resuelve ``(ALGORITMO, ESCENARIO) -> <results_root>/<run_id>/<E*>/`` a partir de
+``evidence.json``/``experiment.json``; solo cuenta corridas ``verified``. La raíz
+se toma de ``--results-root``, luego ``MADRL_RESULTS_ROOT`` y luego
+``outputs/campaign``.
 
 El script:
 1. valida 4 algoritmos x 3 escenarios x 50 episodios;
 2. materializa todos los KPI distritales y los 75 KPI de 17 edificios;
-3. reconstruye las 50 observaciones episódicas de HAPPO a partir de los
-   49 episodios previos al resume y el episodio final 49 conservado después;
+3. reconstruye las 50 observaciones episódicas desde ``results.json`` y, si un
+   resume dejó episodios previos solo en ``figures/tables/episode_summary.csv``,
+   los une por índice (los de ``results.json`` prevalecen);
 4. calcula los indicadores primarios alineados con OE.1/E1, OE.2/E2 y OE.3/E3;
 5. ejecuta pruebas no paramétricas y decide las hipótesis compuestas;
 6. calcula el ranking global TOPSIS con igual peso por dimensión.
 
-No entrena modelos, no imputa KPI y no inventa episodios.
+No entrena modelos, no imputa KPI y no inventa episodios: si falta un
+tratamiento verificado, termina con código 2 e indica cuál falta.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import math
+import sys
 from datetime import datetime, timezone
 from itertools import combinations
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Optional, Sequence
 
 import numpy as np
 import pandas as pd
@@ -33,19 +37,17 @@ from scipy import stats
 
 
 REPO = Path(__file__).resolve().parents[2]
-RUN_ID = "madrl_v3_20260627_164047"
-DRIVE_URL = (
-    "https://drive.google.com/drive/folders/"
-    "1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX"
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+
+from uc3m.application.evaluation.results_catalog import (  # noqa: E402
+    AmbiguousCampaign,
+    campaign_layout,
+    discover_runs,
+    resolve_results_root,
 )
-FULL_ROOT = REPO / "outputs" / "_drive_madrl" / "full_data"
-RUN_ROOT = REPO / "outputs" / RUN_ID
-OUT_DIR = (
-    RUN_ROOT
-    / "resumen_comparativo"
-    / "estadistica"
-    / "analisis_cuantitativo_completo_50_episodios"
-)
+
+ANALYSIS_SUBDIR = Path("resumen_comparativo") / "estadistica" / "analisis_cuantitativo_completo_50_episodios"
 
 ALGORITHMS = ["HAPPO", "MAAC", "MASAC", "MATD3"]
 SCENARIOS = ["E1", "E2", "E3"]
@@ -77,6 +79,51 @@ OBJECTIVES = {
         "h1": "HE31",
     },
 }
+
+
+class MissingTreatments(FileNotFoundError):
+    """The results root lacks a verified run for one or more treatments."""
+
+
+def locate_treatments(
+    results_root: Path, seed: int = 0
+) -> dict[tuple[str, str], Path]:
+    """(ALGORITHM, SCENARIO) -> scenario dir for every required treatment."""
+    layout = campaign_layout(results_root, seed=seed)
+    missing = [
+        (algorithm, scenario)
+        for algorithm in ALGORITHMS
+        for scenario in SCENARIOS
+        if (algorithm, scenario) not in layout
+    ]
+    if missing:
+        unverified = {
+            (run.algorithm, run.scenario): run.status
+            for run in discover_runs(results_root, verified_only=False)
+            if run.seed == seed
+        }
+        labels = [
+            f"{algorithm} {scenario}"
+            + (
+                f" (status={unverified[(algorithm, scenario)]})"
+                if (algorithm, scenario) in unverified
+                else ""
+            )
+            for algorithm, scenario in missing
+        ]
+        raise MissingTreatments(
+            f"{results_root}: no verified run for seed {seed}: "
+            + ", ".join(labels)
+        )
+    return {
+        (algorithm, scenario): layout[(algorithm, scenario)]
+        for algorithm in ALGORITHMS
+        for scenario in SCENARIOS
+    }
+
+
+def run_id_of(scenario_dir: Path) -> str:
+    return scenario_dir.parent.name
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -152,7 +199,7 @@ def descriptive(values: np.ndarray) -> dict[str, float | int]:
 
 
 def objective_kpi_rows(
-    algorithm: str, scenario: str, results: dict[str, Any]
+    algorithm: str, scenario: str, results: dict[str, Any], run_id: str
 ) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     axes = results["citylearn_v3_report"]["objective_axis_kpis"]
@@ -183,7 +230,7 @@ def objective_kpi_rows(
                 gain = signed / denominator
             rows.append(
                 {
-                    "run_id": RUN_ID,
+                    "run_id": run_id,
                     "algorithm": algorithm,
                     "scenario": scenario,
                     "axis": axis,
@@ -205,7 +252,7 @@ def objective_kpi_rows(
     return rows
 
 
-def coverage_and_kpis() -> tuple[
+def coverage_and_kpis(layout: dict[tuple[str, str], Path]) -> tuple[
     pd.DataFrame,
     pd.DataFrame,
     pd.DataFrame,
@@ -222,7 +269,9 @@ def coverage_and_kpis() -> tuple[
 
     for algorithm in ALGORITHMS:
         for scenario in SCENARIOS:
-            data_dir = FULL_ROOT / algorithm / scenario / "data"
+            scenario_dir = layout[(algorithm, scenario)]
+            run_id = run_id_of(scenario_dir)
+            data_dir = scenario_dir / "data"
             results_path = data_dir / "results.json"
             building_path = data_dir / "building_kpis.csv"
             behavior_path = data_dir / "building_behavior_summary.csv"
@@ -262,7 +311,7 @@ def coverage_and_kpis() -> tuple[
 
             coverage_rows.append(
                 {
-                    "run_id": RUN_ID,
+                    "run_id": run_id,
                     "algorithm": algorithm,
                     "scenario": scenario,
                     "episodes_recorded": int(results["episodes_recorded"]),
@@ -283,14 +332,14 @@ def coverage_and_kpis() -> tuple[
                     "results_bytes": results_path.stat().st_size,
                     "timeseries_bytes": timeseries_path.stat().st_size,
                     "trace_bytes": trace_path.stat().st_size,
-                    "drive_source": DRIVE_URL,
+                    "source_dir": str(scenario_dir),
                 }
             )
 
             for kpi, value in all_values.items():
                 district_rows.append(
                     {
-                        "run_id": RUN_ID,
+                        "run_id": run_id,
                         "algorithm": algorithm,
                         "scenario": scenario,
                         "kpi": kpi,
@@ -299,7 +348,7 @@ def coverage_and_kpis() -> tuple[
                 )
 
             objective_rows.extend(
-                objective_kpi_rows(algorithm, scenario, results)
+                objective_kpi_rows(algorithm, scenario, results, run_id)
             )
 
             building.insert(0, "scenario", scenario)
@@ -364,26 +413,29 @@ def summarize_behavior(behavior: pd.DataFrame) -> pd.DataFrame:
 
 
 def episode_rows(
-    results_map: dict[tuple[str, str], dict[str, Any]]
+    results_map: dict[tuple[str, str], dict[str, Any]],
+    layout: dict[tuple[str, str], Path],
 ) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
     for algorithm in ALGORITHMS:
         for scenario in SCENARIOS:
             results = results_map[(algorithm, scenario)]
             summaries = list(results.get("episode_summaries") or [])
-            if algorithm == "HAPPO":
+            current = {int(item["episode"]) for item in summaries}
+            source = "results.json episode_summaries"
+            if current != set(range(50)):
+                # A resume can keep earlier episodes only in the table written by
+                # the same run; results.json entries win on duplicate indices.
                 previous = (
-                    RUN_ROOT
-                    / algorithm
-                    / scenario
+                    layout[(algorithm, scenario)]
                     / "figures"
                     / "tables"
                     / "episode_summary.csv"
                 )
-                if not previous.exists():
-                    raise FileNotFoundError(previous)
-                old = pd.read_csv(previous).to_dict("records")
-                summaries = old + summaries
+                if previous.exists():
+                    old = pd.read_csv(previous).to_dict("records")
+                    summaries = old + summaries
+                    source = "episode_summary.csv + results.json episode_summaries"
             by_episode: dict[int, dict[str, Any]] = {}
             for item in summaries:
                 episode = int(item["episode"])
@@ -403,11 +455,8 @@ def episode_rows(
                             item["reward_mean_average"]
                         ),
                         "reward_sum_total": float(item["reward_sum_total"]),
-                        "source": (
-                            "Drive pre-resume episode_summary + final results"
-                            if algorithm == "HAPPO"
-                            else "Drive results.json episode_summaries"
-                        ),
+                        "run_id": run_id_of(layout[(algorithm, scenario)]),
+                        "source": source,
                     }
                 )
     return pd.DataFrame(rows)
@@ -951,18 +1000,25 @@ def write_markdown(
     global_test: dict[str, Any],
     decisions: pd.DataFrame,
     delta_audit: pd.DataFrame,
+    out_dir: Path,
+    results_root: Path,
 ) -> None:
+    run_lines = [
+        f"  - {row.algorithm}/{row.scenario}: `{row.run_id}`"
+        for row in coverage.itertuples()
+    ]
     lines = [
         "# Análisis cuantitativo completo de KPI y métricas",
         "",
-        f"- Corrida: `{RUN_ID}`.",
-        f"- Fuente exclusiva: [{DRIVE_URL}]({DRIVE_URL}).",
+        f"- Raíz de resultados (catálogo modular): `{results_root}`.",
+        "- Corridas verificadas usadas:",
+        *run_lines,
         "- Cobertura: 12/12 tratamientos; 50 episodios registrados por "
         "tratamiento; 17 edificios; 75 KPI por edificio; 1.275 filas por "
         "tratamiento.",
-        "- HAPPO: los 50 episodios se reconstruyen sin imputación con 49 "
-        "episodios pre-resume y el episodio final 49 del archivo Drive "
-        "posterior al resume.",
+        "- Episodios: se toman de `results.json`; si un resume dejó episodios "
+        "previos solo en `figures/tables/episode_summary.csv` de la misma "
+        "corrida, se unen por índice sin imputación.",
         "",
         "## Indicadores primarios por objetivo",
         "",
@@ -1008,13 +1064,39 @@ def write_markdown(
         "- `global_ranking_topsis.csv`: selección global.",
         "- `hypothesis_decisions_quantitative.csv`: decisión de hipótesis.",
     ]
-    (OUT_DIR / "complete_quantitative_report.md").write_text(
+    (out_dir / "complete_quantitative_report.md").write_text(
         "\n".join(lines), encoding="utf-8"
     )
 
 
-def main() -> int:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--results-root",
+        type=Path,
+        default=None,
+        help="Campaign results root (default: MADRL_RESULTS_ROOT, then outputs/campaign)",
+    )
+    parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help=f"Default: <results-root>/{ANALYSIS_SUBDIR.as_posix()}",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    args = parse_args(argv)
+    results_root = resolve_results_root(args.results_root)
+    out_dir = args.output_dir or results_root / ANALYSIS_SUBDIR
+    try:
+        layout = locate_treatments(results_root, seed=args.seed)
+    except (MissingTreatments, AmbiguousCampaign) as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        return 2
+    out_dir.mkdir(parents=True, exist_ok=True)
     (
         coverage,
         district,
@@ -1022,11 +1104,11 @@ def main() -> int:
         building,
         behavior,
         results_map,
-    ) = coverage_and_kpis()
+    ) = coverage_and_kpis(layout)
 
     building_summary = summarize_building_kpis(building)
     behavior_summary = summarize_behavior(behavior)
-    episodes = episode_rows(results_map)
+    episodes = episode_rows(results_map, layout)
     episode_summary = episode_descriptives(episodes)
     delta_audit = audit_stored_deltas(district)
 
@@ -1102,7 +1184,7 @@ def main() -> int:
         "hypothesis_decisions_quantitative.csv": decisions,
     }
     for name, frame in files.items():
-        frame.to_csv(OUT_DIR / name, index=False, encoding="utf-8-sig")
+        frame.to_csv(out_dir / name, index=False, encoding="utf-8-sig")
 
     write_markdown(
         coverage,
@@ -1114,14 +1196,19 @@ def main() -> int:
         global_test,
         decisions,
         delta_audit,
+        out_dir,
+        results_root,
     )
 
     audit = {
-        "run_id": RUN_ID,
-        "drive_source": DRIVE_URL,
+        "run_ids": {
+            f"{algorithm}/{scenario}": run_id_of(path)
+            for (algorithm, scenario), path in layout.items()
+        },
+        "seed": args.seed,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "source_root": str(FULL_ROOT),
-        "output_dir": str(OUT_DIR),
+        "source_root": str(results_root),
+        "output_dir": str(out_dir),
         "algorithms": ALGORITHMS,
         "scenarios": SCENARIOS,
         "coverage": {
@@ -1146,15 +1233,16 @@ def main() -> int:
             (~delta_audit["consistent_at_1e_6_relative"]).sum()
         ),
         "limitations": [
-            "Una sola semilla (seed=0) por tratamiento.",
+            f"Una sola semilla (seed={args.seed}) por tratamiento.",
             "La inferencia OE2/OE3 usa 17 edificios como bloques emparejados; "
             "no sustituye réplicas independientes de entrenamiento.",
             "La inferencia OE1 usa tres KPI de flexibilidad como bloques.",
-            "HAPPO conserva 49 episodios históricos y el episodio final post-resume "
-            "en artefactos separados; se unen por índice 0..49 sin imputación.",
+            "Si results.json no cubre los episodios 0..49, se unen por índice "
+            "con figures/tables/episode_summary.csv de la misma corrida, sin "
+            "imputación.",
         ],
     }
-    (OUT_DIR / "complete_quantitative_audit.json").write_text(
+    (out_dir / "complete_quantitative_audit.json").write_text(
         json.dumps(audit, indent=2, ensure_ascii=False), encoding="utf-8"
     )
 

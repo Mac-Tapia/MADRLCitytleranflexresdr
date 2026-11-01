@@ -51,3 +51,23 @@ def test_source_snapshot_is_the_same_on_windows_and_linux_checkouts(tmp_path):
     changed = project('changed', b'\n')
     (changed / 'uc3m' / 'module.py').write_bytes(b'def f():\n    return 2\n')
     assert source_snapshot(changed) != source_snapshot(project('again', b'\n'))
+
+
+def test_source_archive_digest_matches_the_snapshot_for_crlf_sources(tmp_path):
+    # NativeBackend refuses a run unless archive_sources returns spec.source_sha256,
+    # which is source_snapshot. With CRLF sources (Windows checkout, Colab overlay)
+    # both must agree, while the archive keeps the original bytes.
+    import zipfile
+
+    from uc3m.application.training.preflight import archive_sources, source_snapshot
+
+    root = tmp_path / 'project'
+    (root / 'uc3m').mkdir(parents=True)
+    original = b'def f():\r\n    return 1\r\n'
+    (root / 'uc3m' / 'module.py').write_bytes(original)
+    (root / 'pyproject.toml').write_bytes(b'[project]\r\nname = "x"\r\n')
+
+    archive = tmp_path / 'source_snapshot.zip'
+    assert archive_sources(root, archive) == source_snapshot(root)
+    with zipfile.ZipFile(archive) as bundle:
+        assert bundle.read('uc3m/module.py') == original

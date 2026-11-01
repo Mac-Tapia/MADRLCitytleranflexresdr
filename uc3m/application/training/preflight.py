@@ -71,7 +71,11 @@ def _source_paths(root):
 
 
 def archive_sources(project_root: Path, destination: Path) -> str:
-    """Preserve actual source bytes, including uncommitted local changes."""
+    """Preserve actual source bytes, including uncommitted local changes.
+
+    The returned digest equals source_snapshot: it hashes CRLF as LF like the
+    snapshot does, while the archive keeps the raw bytes.
+    """
     root = Path(project_root).resolve()
     destination = Path(destination)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -83,7 +87,7 @@ def archive_sources(project_root: Path, destination: Path) -> str:
             for path in _source_paths(root):
                 name = path.relative_to(root).as_posix()
                 payload = path.read_bytes()
-                digest.update(name.encode('utf-8') + b'\0' + payload + b'\0')
+                digest.update(name.encode('utf-8') + b'\0' + payload.replace(b'\r\n', b'\n') + b'\0')
                 archive.writestr(name, payload)
         os.replace(temporary, destination)
     finally:

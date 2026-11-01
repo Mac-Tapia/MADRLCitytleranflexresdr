@@ -38,7 +38,7 @@ from buildingcsv_inputs import (
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = DATASET_DIR / "schema.json"
 WEATHER_CSV = DATASET_DIR / "weather.csv"
-DEFAULT_REPORT_PATH = ROOT / "tools" / "dataset_docs" / "distillation_report.csv"
+DEFAULT_REPORT_PATH = ROOT / "tools" / "dataset" / "dataset_docs" / "distillation_report.csv"
 PRICING_CSV = DATASET_DIR / "pricing.csv"
 
 try:

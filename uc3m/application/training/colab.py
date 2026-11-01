@@ -11,6 +11,11 @@ from pathlib import Path
 from uc3m.adapters.algorithms.native import NativeBackend
 from uc3m.application.configuration import load_scenario_catalog
 from uc3m.application.training.context import repository_revision
+from uc3m.application.training.dataset_gate import (
+    DEFAULT_READY_MANIFEST,
+    DatasetNotValidated,
+    require_validated_dataset,
+)
 from uc3m.application.training.persistence import write_json_atomic
 from uc3m.application.training.preflight import dataset_digest, source_snapshot
 from uc3m.application.training.runner import ExperimentRunner
@@ -77,11 +82,19 @@ def main(argv=None):
     parser.add_argument('--seeds', type=int, nargs='+', default=[0])
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--resume', action='store_true')
+    parser.add_argument('--ready-manifest', type=Path, default=None,
+                        help='dataset gate manifest; execution requires it to match the dataset')
     args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[3]
+    schema = root/'CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json'
+    if args.execute:
+        try:
+            require_validated_dataset(schema, args.ready_manifest or root/DEFAULT_READY_MANIFEST)
+        except DatasetNotValidated as exc:
+            print(json.dumps({'status': 'dataset_not_validated', 'reason': str(exc)}))
+            return 2
     commit, submodules = repository_revision(root)
     budget = detect_resources()
-    schema = root/'CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json'
     catalog = load_scenario_catalog(root/'configs/scenarios.yaml')
     data_hash, code_hash = dataset_digest(schema), source_snapshot(root)
     specs = []

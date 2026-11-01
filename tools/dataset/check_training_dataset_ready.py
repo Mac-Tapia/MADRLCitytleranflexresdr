@@ -490,7 +490,7 @@ def _check_auxiliary_audit_files(dataset_dir: Path, audit_dir: Path, issues: lis
         dataset_dir / "ev_charger_sizing_log.json",
         dataset_dir / "controlled_machines_log.json",
         dataset_dir / "building_metadata.json",
-        ROOT / "tools" / "dataset_docs" / "distillation_report.csv",
+        ROOT / "tools" / "dataset" / "dataset_docs" / "distillation_report.csv",
         audit_dir / "ev_charger_sizing_audit.csv",
         audit_dir / "ev_charger_sizing_audit.json",
         audit_dir / "training_dataset_validation.csv",
@@ -574,6 +574,18 @@ def _check_citylearn_load(schema_path: Path, issues: list[str]) -> dict[str, Any
     return status
 
 
+def _dataset_digest(schema_path: Path, issues: list[str]) -> str | None:
+    """Same digest the training run records, so training can refuse a changed dataset."""
+    sys.path.insert(0, str(ROOT))
+    try:
+        from uc3m.application.training.preflight import dataset_digest  # type: ignore
+
+        return dataset_digest(schema_path)
+    except Exception as exc:
+        issues.append(f"No se pudo calcular dataset_digest: {exc}")
+        return None
+
+
 def build_manifest(
     dataset_dir: Path,
     buildingcsv_dir: Path,
@@ -596,6 +608,7 @@ def build_manifest(
     }
     if citylearn_load:
         checks["citylearn_load"] = _check_citylearn_load(schema_path, issues)
+    digest = _dataset_digest(schema_path, issues) if schema_path.exists() else None
 
     ok = not issues
     manifest = {
@@ -604,6 +617,7 @@ def build_manifest(
         "buildingcsv_dir": _rel(buildingcsv_dir),
         "audit_dir": _rel(audit_dir),
         "schema_sha256": _sha256(schema_path) if schema_path.exists() else None,
+        "dataset_digest": digest,
         "status": "ready" if ok else "blocked",
         "raw_dataset_loaded_before_normalization": ok,
         "normalization_allowed_for_training": ok,

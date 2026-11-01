@@ -24,4 +24,7 @@ def plan_resume(spec: ExperimentSpec, manifest: EvidenceManifest, run_root: Path
         return ResumePlan(False, 0, (), 'checkpoint_missing')
     if manifest.target_episodes != spec.target_episodes:
         return ResumePlan(False, 0, (), 'target_mismatch')
+    has_training_state = any(item.kind == 'training_state' for item in manifest.artifacts)
+    if not has_training_state:
+        return ResumePlan(False, 0, (), 'training_state_missing')
     return ResumePlan(True, manifest.completed_episodes, checkpoints, 'verified_checkpoint')

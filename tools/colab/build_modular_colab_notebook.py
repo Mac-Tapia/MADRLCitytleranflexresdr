@@ -1,6 +1,7 @@
 """Build a Colab companion without overwriting the original tutorial notebook."""
 from __future__ import annotations
 
+import ast
 import json
 import hashlib
 import zipfile
@@ -15,6 +16,22 @@ ORIGINAL = ROOT/'examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb'
 DESTINATION = ROOT/'examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb'
 
 
+STDLIB_MODULES = {'importlib', 'json', 'os', 'pathlib', 'platform', 're', 'shutil', 'subprocess', 'sys'}
+
+
+def self_contained(source):
+    """Prepend stdlib imports a copied cell uses but relied on earlier cells for."""
+    tree = ast.parse(source)
+    imported = {alias.asname or alias.name.split('.')[0] for node in ast.walk(tree)
+                if isinstance(node, (ast.Import, ast.ImportFrom)) for alias in node.names}
+    imported |= {node.module.split('.')[0] for node in ast.walk(tree)
+                 if isinstance(node, ast.ImportFrom) and node.module}
+    used = {node.value.id for node in ast.walk(tree)
+            if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name)}
+    missing = sorted((used & STDLIB_MODULES) - imported)
+    return ''.join(f'import {name}\n' for name in missing) + source
+
+
 def cell(kind, source):
     result = {'cell_type': kind, 'metadata': {}, 'source': source.splitlines(keepends=True),
               'id': 'modular-' + hashlib.sha256(source.encode('utf-8')).hexdigest()[:12]}
@@ -24,8 +41,8 @@ def cell(kind, source):
 
 
 def build_notebook(original, expected_dataset_hash):
-    setup = next(''.join(item['source']) for item in original['cells']
-                 if item['cell_type'] == 'code' and '# 1.3 Instalar dependencias' in ''.join(item['source']))
+    setup = self_contained(next(''.join(item['source']) for item in original['cells']
+                 if item['cell_type'] == 'code' and '# 1.3 Instalar dependencias' in ''.join(item['source'])))
     cells = [cell('markdown', '''# MADRL · Entrenamiento modular en Google Colab
 
 Complemento del tutorial original: reutiliza su instalación Python 3.9 y el

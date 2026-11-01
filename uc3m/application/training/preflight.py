@@ -7,13 +7,18 @@ import zipfile
 from pathlib import Path
 
 
-def hash_files(root, paths):
+def hash_files(root, paths, *, normalize_newlines=False):
+    """normalize_newlines hashes CRLF as LF so a Windows checkout (core.autocrlf)
+    and a Linux/Colab checkout of the same text files share one digest."""
     digest = hashlib.sha256()
     for path in sorted(set(paths)):
         digest.update(path.relative_to(root).as_posix().encode('utf-8') + b'\0')
-        with path.open('rb') as stream:
-            for chunk in iter(lambda: stream.read(1024*1024), b''):
-                digest.update(chunk)
+        if normalize_newlines:
+            digest.update(path.read_bytes().replace(b'\r\n', b'\n'))
+        else:
+            with path.open('rb') as stream:
+                for chunk in iter(lambda: stream.read(1024*1024), b''):
+                    digest.update(chunk)
         digest.update(b'\0')
     return digest.hexdigest()
 
@@ -42,7 +47,8 @@ def dataset_digest(schema_path: Path) -> str:
                 raise ValueError(f'missing dataset file: {value}')
             references.append(path)
     visit(payload)
-    return hash_files(root, [schema_path] + references)
+    # Every dataset file is CSV or JSON text, so line endings are not content.
+    return hash_files(root, [schema_path] + references, normalize_newlines=True)
 
 
 def source_snapshot(project_root: Path) -> str:

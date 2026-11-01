@@ -44,9 +44,9 @@ from uc3m.multicriteria.stats_tests import (
 from uc3m.multicriteria.topsis import pareto_nondominated, topsis_rank, vector_normalize
 
 
-def test_default_protocol_uses_twelve_seeds():
-    assert DEFAULT_PROTOCOL.n_seeds == 12
-    assert ">=12 seeds" in criteria_manifest()["reporting"]
+def test_default_protocol_uses_three_seeds():
+    assert DEFAULT_PROTOCOL.n_seeds == 3
+    assert ">=3 seeds" in criteria_manifest()["reporting"]
 
 
 def test_aggregate_seed_values_mean_std():
@@ -269,24 +269,24 @@ def test_merge_skips_algorithms_without_real_technical_kpis():
 def test_oe_battery_minimum_keys_and_cost_orientation():
     rng = np.random.default_rng(0)
     groups = {
-        "HAPPO": list(rng.normal(400, 10, 12)),
-        "MAAC": list(rng.normal(320, 10, 12)),
-        "MASAC": list(rng.normal(480, 10, 12)),
-        "MATD3": list(rng.normal(360, 10, 12)),
+        "HAPPO": list(rng.normal(400, 10, 3)),
+        "MAAC": list(rng.normal(320, 10, 3)),
+        "MASAC": list(rng.normal(480, 10, 3)),
+        "MATD3": list(rng.normal(360, 10, 3)),
     }
     result = run_oe_battery(
         groups,
         objective="OE.3",
         higher_is_better=False,
         complementary=False,
-        expected_n_seeds=12,
+        expected_n_seeds=3,
     )
     assert result["kruskal_wallis"]["status"] == "ok"
     assert result["epsilon_squared"] is not None
     assert len(result["dunn_holm"]) == 6
     assert result["winner"]["winners"]
     assert result["sample_coverage"]["complete"] is True
-    assert result["sample_coverage"]["expected_n_seeds"] == 12
+    assert result["sample_coverage"]["expected_n_seeds"] == 3
     # Lower cost → better after orientation: MAAC should have highest mean rank.
     ranks = result["kruskal_wallis"]["mean_ranks"]
     assert ranks["MAAC"] == max(ranks.values())
@@ -298,22 +298,22 @@ def test_full_methodology_battery_smoke():
     rng = np.random.default_rng(1)
     oe = {
         "OE.1": {
-            "HAPPO": list(rng.normal(-0.5, 0.05, 12)),
-            "MAAC": list(rng.normal(-0.6, 0.05, 12)),
-            "MASAC": list(rng.normal(-0.7, 0.05, 12)),
-            "MATD3": list(rng.normal(-0.65, 0.05, 12)),
+            "HAPPO": list(rng.normal(-0.5, 0.05, 3)),
+            "MAAC": list(rng.normal(-0.6, 0.05, 3)),
+            "MASAC": list(rng.normal(-0.7, 0.05, 3)),
+            "MATD3": list(rng.normal(-0.65, 0.05, 3)),
         },
         "OE.2": {
-            "HAPPO": list(rng.normal(900, 30, 12)),
-            "MAAC": list(rng.normal(850, 30, 12)),
-            "MASAC": list(rng.normal(980, 30, 12)),
-            "MATD3": list(rng.normal(820, 30, 12)),
+            "HAPPO": list(rng.normal(900, 30, 3)),
+            "MAAC": list(rng.normal(850, 30, 3)),
+            "MASAC": list(rng.normal(980, 30, 3)),
+            "MATD3": list(rng.normal(820, 30, 3)),
         },
         "OE.3": {
-            "HAPPO": list(rng.normal(400, 20, 12)),
-            "MAAC": list(rng.normal(320, 20, 12)),
-            "MASAC": list(rng.normal(480, 20, 12)),
-            "MATD3": list(rng.normal(360, 20, 12)),
+            "HAPPO": list(rng.normal(400, 20, 3)),
+            "MAAC": list(rng.normal(320, 20, 3)),
+            "MASAC": list(rng.normal(480, 20, 3)),
+            "MATD3": list(rng.normal(360, 20, 3)),
         },
     }
     battery = run_full_methodology_battery(
@@ -321,10 +321,10 @@ def test_full_methodology_battery_smoke():
         oe_higher_is_better={"OE.1": True, "OE.2": False, "OE.3": False},
         complementary=True,
         page_order=["MASAC", "HAPPO", "MATD3", "MAAC"],
-        expected_n_seeds=12,
+        expected_n_seeds=3,
     )
     assert set(battery["oe"]) == {"OE.1", "OE.2", "OE.3"}
-    assert battery["expected_n_seeds"] == 12
+    assert battery["expected_n_seeds"] == 3
     assert battery["sample_unit"] == "seed"
     for oe_name in ("OE.1", "OE.2", "OE.3"):
         assert battery["oe"][oe_name]["sample_coverage"]["complete"] is True

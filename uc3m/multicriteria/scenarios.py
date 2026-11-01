@@ -38,6 +38,7 @@ BASE_SCENARIO = ScenarioConfig(
     "methodology example uses N=10 as the nominal reference.",
 )
 
+# -- Future work scenarios (not in current campaign) -----------------------
 SCALABILITY_SCENARIO = ScenarioConfig(
     name="scalability",
     description="Reward degradation and training-time growth vs agent count.",
@@ -81,12 +82,12 @@ class EmpiricalProtocol:
     """Shared experimental budget for fair algorithm comparison."""
 
     algorithms: Tuple[str, ...] = ("HAPPO", "MAAC", "MASAC", "MATD3")
-    n_seeds: int = 12
+    n_seeds: int = 3
     equal_step_budget: bool = True
     step_budget: int | None = None
     optimizer: str = "Adam"
     hidden_sizes: Tuple[int, ...] = (256, 256)
-    scenarios: Tuple[str, ...] = tuple(SCENARIO_CATALOG.keys())
+    scenarios: Tuple[str, ...] = ("base",)
     significance_alpha: float = 0.05
     extras: Dict[str, object] = field(default_factory=dict)
 

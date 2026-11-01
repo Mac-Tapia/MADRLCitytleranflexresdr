@@ -1455,7 +1455,7 @@ def validate_topsis_vs_friedman(
 def sample_coverage(
     groups: Mapping[str, Sequence[float]],
     *,
-    expected_n_seeds: int = 12,
+    expected_n_seeds: int = 3,
     unit: str = "seed",
 ) -> Dict[str, Any]:
     """Report how many independent samples (seeds) each algorithm contributed."""
@@ -1486,12 +1486,12 @@ def run_oe_battery(
     higher_is_better: bool = True,
     alpha: float = 0.05,
     complementary: bool = False,
-    expected_n_seeds: int = 12,
+    expected_n_seeds: int = 3,
     sample_unit: str = "seed",
 ) -> Dict[str, Any]:
     """Full per-objective non-parametric battery (sections 5–6 / 8).
 
-    ``groups`` must map algorithm → independent seed scores (canonical n=12).
+    ``groups`` must map algorithm → independent seed scores (canonical n=3).
     """
 
     coverage = sample_coverage(
@@ -1670,12 +1670,12 @@ def run_full_methodology_battery(
     complementary: bool = False,
     binary_blocks: Optional[Mapping[str, Mapping[str, int]]] = None,
     page_order: Optional[Sequence[str]] = None,
-    expected_n_seeds: int = 12,
+    expected_n_seeds: int = 3,
     sample_unit: str = "seed",
 ) -> Dict[str, Any]:
     """Run OE.1/OE.2/OE.3 batteries then OG synthesis (section 8 flow).
 
-    Each OE group must be algorithm → seed scores (canonical ``expected_n_seeds=12``).
+    Each OE group must be algorithm → seed scores (canonical ``expected_n_seeds=3``).
     """
 
     hib_default = {"OE.1": True, "OE.2": False, "OE.3": False, "E1": True, "E2": False, "E3": False}
@@ -1848,7 +1848,7 @@ def format_full_report(battery: Mapping[str, Any]) -> str:
         "# Bateria no parametrica MADRL (HAPPO, MAAC, MASAC, MATD3)",
         "",
         f"alpha={battery.get('alpha')}, complementary={battery.get('complementary')}",
-        f"expected_n_seeds={battery.get('expected_n_seeds', 12)}, "
+        f"expected_n_seeds={battery.get('expected_n_seeds', 3)}, "
         f"sample_unit={battery.get('sample_unit', 'seed')}",
         f"TOPSIS weights: {battery.get('topsis_weights')}",
         f"TOPSIS criteria kinds: {battery.get('topsis_criteria_kind')}",

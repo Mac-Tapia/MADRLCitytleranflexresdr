@@ -395,5 +395,5 @@ def criteria_manifest() -> Dict[str, Any]:
         "algorithms": list(ALGORITHMS),
         "criteria": {cid: asdict(spec) for cid, spec in CRITERION_SPECS.items()},
         "default_weights": dict(DEFAULT_CRITERION_WEIGHTS),
-        "reporting": "Always report mean ± std over >=12 seeds when available.",
+        "reporting": "Always report mean ± std over >=3 seeds when available.",
     }

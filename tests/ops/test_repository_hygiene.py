@@ -61,6 +61,18 @@ def test_root_contains_only_project_files() -> None:
     assert root_entries - ROOT_ALLOWED == set()
 
 
+def test_package_sources_are_not_ignored() -> None:
+    # A clone (Colab, CI) only gets tracked files; an ignored module breaks `import uc3m`.
+    result = subprocess.run(
+        ["git", "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--", "uc3m"],
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+        check=True,
+    )
+    ignored = [p for p in result.stdout.decode("utf-8").split("\0") if p.endswith(".py")]
+    assert ignored == []
+
+
 def test_hygiene_manifest_records_recoverable_removals() -> None:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     assert manifest["schema_version"] == "1.0"

@@ -12,12 +12,39 @@
 
 ## Conciliación de estado — 2026-10-31
 
-Ver [SPEC-000–010 y pendientes](../../../specs/STATUS.md), índice común de los
-cinco planes y del monitor local añadido. Hay cortes de código implementados,
+Ver [SPEC-000–012 y pendientes](../../../specs/STATUS.md), índice común de los
+cinco planes, del monitor local y de los cortes de flujo integral (SPEC-011) e
+higiene (SPEC-012). Hay cortes de código implementados,
 pero la aceptación integral sigue parcial/bloqueada: licencias, campaña,
 reanudación exacta, reportes, tesis/jurado y mejor modelo no están cerrados.
 No marcar todos los planes completos ni reconstruir RED/commits históricos
 desconocidos. La preparación Colab no demuestra ejecución en un runtime real.
+
+## Plan integral por fases
+
+Revisión 2026-10-31. Integra los cinco planes por corte con los SPEC-000–012
+materializados en `specs/` y con la meta pedida por el usuario: un solo proyecto
+modular, limpio y listo para el nuevo entrenamiento, desde la creación del
+dataset hasta la entrega. Cada fase cierra solo con su puerta en verde; una
+fase posterior no se inicia si consume un contrato aún abierto.
+
+| Fase | SPEC | Entregable | Puerta de salida |
+|---|---|---|---|
+| 0 — Higiene | 012 | Decisión sobre el Stop hook; sin etiquetas de agentes en rutas, ramas, datos ni código; temporales fuera del índice; raíz limpia; manifiesto de limpieza | `python -m pytest -q tests/ops/test_repository_hygiene.py` y suite sin regresión |
+| 1 — Procedencia | 001 | Licencias ausentes y copyleft resueltas; SBOM local | `scripts/quality/run_foundation_gates.ps1` en 0 |
+| 2 — Puertos y adaptadores | 002, 003 | `SimulatorPort`, `ExperimentTrackerPort`, `adapters/citylearn/{simulator,objectives}.py`, seguimiento local, conformidad explícita de `NativeBackend`, prueba de imports | `tests/contract`, `tests/integration/test_citylearn_objective_adapter.py`, `run_orchestration_gates.ps1` |
+| 3 — Flujo dataset → entrega | 011 | `tools/dataset/` consolidado por etapas; CLI con subcomandos; encadenamiento por hash; humo end-to-end sin red ni GPU | `python -m pytest -q tests/acceptance/test_pipeline_smoke.py` |
+| 4 — Continuidad y artefactos | 004, 008 | Reanudación exacta en los cuatro algoritmos; retención; respaldo/restauración por hash | `tests/integration/test_resume_trajectory_parity.py`, `tests/integration/test_artifact_restore.py` |
+| 5 — Campaña y selección | 005 | `configs/experiments/madrl_4x3_multiseed.yaml`, campaña aprobada, informe estadístico, regla de selección | 12 tratamientos válidos y `tests/acceptance/test_model_selection.py` |
+| 6 — Tesis y jurado | 006, 009 | Registro de evidencia, §3.1.3, APA, J-01–J-17 trazadas | `run_thesis_agent_gates.ps1`, `run_jury_observations_gates.ps1` |
+| 7 — Harness | 007 | Skills legados migrados o retirados; invocación real y eficiencia medida | `python tools/skills/validate_skills.py --check-discovery`, `tests/skills` |
+| 8 — Aceptación integral | todos | `data/audits/modernization_acceptance_manifest.json` | `tests/acceptance/test_modernization_acceptance.py` (Task 5) |
+
+Paralelismo permitido: las fases 0 y 1 son independientes; dentro de la fase 2,
+los puertos se fijan antes de escribir adaptadores, y luego cada adaptador tiene
+un único dueño. Las fases 3–8 son secuenciales. La fase 5 exige aprobación
+explícita de cómputo; ninguna fase autoriza compras, servicios cerrados ni
+cambios en `CityLearn/` o `external/` sin registro de contribución.
 
 ## Global Constraints
 

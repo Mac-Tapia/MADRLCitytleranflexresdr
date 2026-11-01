@@ -1,9 +1,10 @@
 # Estado conciliado de las especificaciones
 
-Revisión: 2026-10-31. Este índice concilia los planes con archivos y manifiestos
-existentes; no sustituye pruebas ni acredita la secuencia histórica RED→GREEN.
-Los checkboxes originales sin evidencia permanecen abiertos. Código
-implementado no equivale a aceptación científica, cierre del jurado o modelo ganador.
+Revisión: 2026-10-31 (materialización de SPEC-001–012). Este índice concilia los
+planes con archivos y manifiestos existentes; no sustituye pruebas ni acredita la
+secuencia histórica RED→GREEN. Los checkboxes sin evidencia permanecen abiertos.
+Código implementado no equivale a aceptación científica, cierre del jurado o
+modelo ganador.
 
 ## Convenciones y evidencia
 
@@ -20,58 +21,65 @@ cuatro smokes nativos E1 de ocho pasos, `four_algorithm_smoke_verified=true`,
 `data/audits/orchestration_acceptance.json`, nombrado en el plan original,
 todavía no existe: no citarlo como evidencia generada.
 
-## Mapa SPEC-000–010
+## Mapa SPEC-000–012
 
-SPEC-001–009 están definidos en el
-[diseño aprobado](../docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md),
-pero salvo SPEC-007 todavía no tienen cada uno su carpeta completa `spec.md/plan.md/tasks.md`.
-Hasta materializarlas, sus contratos viven en los planes enlazados. Esta
-correspondencia permite continuar, pero no cierra esa deuda documental.
+Todos los cortes tienen carpeta `spec.md/plan.md/tasks.md`. SPEC-011 y SPEC-012
+se añadieron el 2026-10-31 a petición del usuario (flujo integral desde el
+dataset y repositorio limpio). Los planes detallados en
+`docs/superpowers/plans/` siguen siendo la fuente de pasos TDD; las carpetas
+fijan contrato, estado y aceptación. En `tasks.md`, `[x]` solo significa que el
+archivo existe en el árbol.
 
 | SPEC | Estado y evidencia existente | Pendiente para cierre |
 |---|---|---|
-| [000 — Constitución y línea base](000-foundation/spec.md) | `implemented` para identidad, custodia y trazabilidad inicial: constitución, captura, manifiesto y tests contractuales. | FR-005 sigue `partial` hasta completar dataset→evaluación→selección→entrega. FR-007 tiene política implementada, pero aceptación bloqueada por SPEC-001. |
-| 001 — Cadena abierta y procedencia | `partial/blocked`: política, auditorías y registro; [plan de fundación](../docs/superpowers/plans/2026-10-31-foundation-open-source-spec-kit-plan.md). | Resolver tres licencias locales ausentes, dos revisiones copyleft e inventario de paquetes. No inventar licencias ni editar dependencias sin autorización vigente. |
-| 002 — Política multiobjetivo única | `implemented` en dominio y catálogo: `uc3m/domain/objectives.py`, `scenarios.py`, YAML canónicos; [plan multiobjetivo](../docs/superpowers/plans/2026-10-31-multiobjective-domain-plan.md). | Consolidar proyecciones documentales y registrar adaptador nativo real. No existe `uc3m/adapters/citylearn/objectives.py`; sensibilidad arbitraria aún no entrenable por backend actual. |
-| 003 — Orquestación modular | `partial`: layout, persistencia, completitud, reanudación, runner, CLI, `LearnerPort` y `NativeBackend`; [plan de orquestación](../docs/superpowers/plans/2026-10-31-orchestration-artifacts-plan.md). | Extraer reportes/figuras; documentar desviaciones de puertos; probar continuidad de entrenamiento y cancelación de hijos tras muerte del padre. |
-| 004 — Manifiestos de ejecución | `implemented` para identidad y custodia local: `domain/experiments.py`, `domain/evidence.py`, `training/preflight.py`, hashes y snapshot ZIP. | Acreditar continuidad de optimizador/RNG/replay en los cuatro algoritmos y custodia de campañas completas; no reinterpretar resultados históricos. |
-| 005 — Evaluación científica | `partial/pending_experiment`: Pareto puro, diseño de sensibilidad y dry-run presupuestado. | Campaña completa 4×3 multisemilla, baselines, KPI independientes y aceptación estadística. La matriz del simulador no demuestra aprendizaje real 4×3. |
-| 006 — Evidencia de tesis | `pending` para cierre integrado: [plan de tesis y agentes](../docs/superpowers/plans/2026-10-31-thesis-agents-plan.md). | Evidencia promovida, tablas/figuras trazables, coherencia única en §3.1.3, APA, reapertura y render de ambos DOCX canónicos. No reemplazar experimentos por redacción. |
-| [007 — Agentes y skills locales](007-local-agent-harness/spec.md) | `implemented/partial`: siete skills de terceros, cuatro propios, registro/hash/licencias, validador, perfiles Claude y enlaces locales; [guía](../docs/architecture/AGENT_HARNESS.md). | Invocación real en cada cliente, medición de eficiencia, revisión/migración de cuatro skills legados y decisión sobre hook heredado de publicación. Instalar instrucciones no acredita ganancias de rendimiento. |
-| 008 — Artefactos y datos | `partial`: almacén atómico y [ADR adoptado](../docs/decisions/ADR-OPEN-ARTIFACT-STORE.md); ZIP Colab reproducible. | Retención, respaldo/restauración y separación sostenible de artefactos grandes de Git. Spikes DVC/MLflow aplazados, no ejecutados. No borrar evidencia o reescribir historia para cerrar. |
-| 009 — Observaciones del jurado | `pending`: [plan J-01–J-17](../docs/superpowers/plans/2026-10-31-jury-observations-remediation-plan.md). | Observación→corrección→prueba→artefacto; separar documentos, análisis y experimentos. Falta aceptación integral verificable. |
-| [010 — Panel local](010-local-training-panel/spec.md) | `implemented` como monitor de lectura: HTTP/HTML sin CDN, hashes, `/api/runs`, loopback; [plan](010-local-training-panel/plan.md), [tareas](010-local-training-panel/tasks.md). | Mantener límites: no lanzamiento HTTP, exposición externa o aceptación científica inferida. No es plataforma de producción. |
+| [000 — Constitución y línea base](000-foundation/spec.md) | `implemented` para identidad, custodia y trazabilidad: constitución, captura, manifiesto y tests contractuales. | FR-005 `partial` hasta cerrar SPEC-011. FR-007 bloqueado por SPEC-001. |
+| [001 — Cadena abierta y procedencia](001-open-source-provenance/spec.md) | `partial/blocked`: política, auditor de dependencias, registro de repositorios y auditor de secretos. | Tres licencias locales ausentes, dos revisiones copyleft y SBOM. No inventar licencias ni editar dependencias sin autorización. |
+| [002 — Política multiobjetivo única](002-multiobjective-policy/spec.md) | `implemented` en dominio y catálogo: `uc3m/domain/objectives.py`, `scenarios.py`, YAML canónicos y detector de deriva. | Falta `uc3m/adapters/citylearn/objectives.py` y su prueba de integración; telemetría EV/BESS por término; duplicados activos restantes. |
+| [003 — Orquestación modular](003-modular-orchestration/spec.md) | `partial`: layout, persistencia, completitud, reanudación, runner, CLI, `LearnerPort`, `ArtifactStore` y `NativeBackend`. | `SimulatorPort`, `ExperimentTrackerPort`, conformidad explícita de `NativeBackend`, tablas y figuras, cancelación de hijos, prueba de imports y `orchestration_acceptance.json`. |
+| [004 — Manifiestos de ejecución](004-execution-manifests/spec.md) | `implemented` para identidad y custodia: `domain/experiments.py`, `domain/evidence.py`, `training/preflight.py`. | Continuidad de optimizador/RNG/replay en los cuatro algoritmos y manifiesto de runs históricos. |
+| [005 — Evaluación científica](005-scientific-evaluation/spec.md) | `partial/pending_experiment`: Pareto puro, diseño de sensibilidad y dry-run. | Configuración y ejecución de la campaña 4×3 multisemilla, informe estadístico, regla de selección y `tests/acceptance/`. |
+| [006 — Evidencia de tesis](006-thesis-evidence/spec.md) | `pending`: no existe `uc3m/application/thesis/`. | Registro de evidencia, vista multiobjetivo, §3.1.3, APA y render de ambos DOCX canónicos. |
+| [007 — Agentes y skills locales](007-local-agent-harness/spec.md) | `implemented/partial`: once skills con registro, hashes y licencias, validador, perfiles y enlaces locales. | Invocación real por cliente, medición de eficiencia, migración de cuatro skills legados y decisión sobre el hook heredado. |
+| [008 — Artefactos y datos](008-artifacts-data/spec.md) | `partial`: almacén atómico y [ADR adoptado](../docs/decisions/ADR-OPEN-ARTIFACT-STORE.md). | Política de retención, respaldo/restauración probados y retiro de artefactos grandes y temporales del índice. |
+| [009 — Observaciones del jurado](009-jury-observations/spec.md) | `pending`: plan J-01–J-17 sin manifiesto. | Manifiesto, verdad estadística única, HAPPO 49/50, ejes UC3M, anexos y puerta del jurado. |
+| [010 — Panel local](010-local-training-panel/spec.md) | `implemented` como monitor de lectura: HTTP/HTML sin CDN, hashes, `/api/runs`, loopback. | Mantener límites; mejoras opcionales (HTML separado, curvas) no son requisito de cierre. |
+| [011 — Flujo dataset → entrega](011-dataset-to-delivery-pipeline/spec.md) | `partial`: orquestador y verificador de dataset, puerto `DatasetSource`, CLI de entrenamiento. | Consolidar los 21 scripts de `tools/dataset/`, CLI por etapas, encadenamiento por hash y humo end-to-end. |
+| [012 — Higiene del repositorio](012-repository-hygiene/spec.md) | `pending`: manifiestos `*.codex_*.json` renombrados a `*.audit_*.json`. | Decisión sobre el Stop hook, ramas `codex/*`/`cursor/*`, `.codex_tmp/` (1 213 archivos rastreados), raíz, duplicados y prueba de higiene. |
 
 ## Conciliación técnica
 
 1. **Persistencia:** las fachadas nativas delegan layout y escritura atómica;
    `ResumePlan` exige fingerprint y archivos verificados. No demuestra igualdad
-   de trayectorias al restaurar optimizador, RNG y replay. Recuperar prefijos
-   materializa memoria; falta medir el costo con horizonte completo.
+   de trayectorias al restaurar optimizador, RNG y replay.
 2. **Adaptadores:** `NativeBackend` invoca los launchers HAPPO/MASAC/MATD3/MAAC
-   existentes. No existen el `SimulatorPort` ni los cuatro archivos separados
-   del plan original: registrar la alternativa o mantener esa deuda explícita.
+   existentes y cumple `LearnerPort` solo por tipado estructural. SPEC-003 adopta
+   un único backend nativo en lugar de los cuatro archivos por algoritmo del plan
+   original; falta `SimulatorPort`.
 3. **Reportes:** `application/evaluation/training_report.py` proyecta KPI
-   finitos; no equivale a extraer todas las tablas/figuras ni a implementar
-   `TrainingReportBuilder` y `FigureRenderer` del plan original.
+   finitos; no equivale a `TrainingReportBuilder` ni `FigureRenderer`.
 4. **Colab:** [guía](../docs/architecture/ENTRENAMIENTO_MODULAR_COLAB.md), notebook
-   y generador preservan instalación y argumentos originales. Pendientes:
-   runtime real, wheels/CUDA, bloqueo Drive y desconexión/reanudación.
-   `RUN_TRAINING=False` prepara sin lanzar. No exige compra, pero recursos
-   gratuitos suficientes no están garantizados.
-5. **Selección:** no existe mejor modelo final aceptado. Faltan regla explícita
-   de selección, evaluación independiente y entrega reproducible sin fuga.
+   y generador preservan instalación y argumentos. Pendientes: runtime real,
+   wheels/CUDA, bloqueo Drive y desconexión/reanudación.
+5. **Selección:** no existe mejor modelo final aceptado.
+6. **Higiene:** el Stop hook heredado publica todo al cerrar cada turno; ningún
+   cambio masivo de SPEC-012 se ejecuta antes de la decisión del usuario.
 
 ## Orden de continuación
 
-- [x] Materializar SPEC-007 con contrato, plan y tareas de skills/harness.
-- [ ] Materializar SPEC-001–006 y SPEC-008–009 con contratos y criterios actuales.
-- [ ] Resolver procedencia/licencias y formalizar capacidades/roles locales sin secretos ni suscripciones requeridas.
-- [ ] Validar Colab real y continuidad tras interrupción; registrar recursos e hiperparámetros efectivos.
-- [ ] Completar reportes y evaluación independiente reproducible.
-- [ ] Ejecutar campaña aprobada de horizonte completo, sensibilidad y multisemilla.
-- [ ] Seleccionar/entregar modelo aceptado y promover evidencia hacia tesis/jurado.
-- [ ] Ejecutar agregación integral; completar solo con todas las puertas exigidas acreditadas.
+El plan integral por fases está en el
+[plan maestro](../docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md#plan-integral-por-fases).
+
+- [x] Materializar SPEC-007 con contrato, plan y tareas.
+- [x] Materializar SPEC-001–006, SPEC-008–009 y los nuevos SPEC-011–012.
+- [ ] Fase 0 — Higiene (SPEC-012), tras decidir el Stop hook.
+- [ ] Fase 1 — Procedencia y licencias (SPEC-001).
+- [ ] Fase 2 — Puertos y adaptadores faltantes (SPEC-002, SPEC-003).
+- [ ] Fase 3 — Flujo dataset → entrega con humo end-to-end (SPEC-011).
+- [ ] Fase 4 — Continuidad, retención y artefactos (SPEC-004, SPEC-008).
+- [ ] Fase 5 — Campaña aprobada 4×3 multisemilla y selección (SPEC-005).
+- [ ] Fase 6 — Evidencia de tesis y observaciones del jurado (SPEC-006, SPEC-009).
+- [ ] Fase 7 — Skills legados y eficiencia medida (SPEC-007).
+- [ ] Fase 8 — Aceptación integral; completar solo con todas las puertas acreditadas.
 
 ## Sustento y límites (APA 7)
 

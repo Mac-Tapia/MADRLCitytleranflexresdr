@@ -34,33 +34,35 @@ archivo existe en el árbol.
 |---|---|---|
 | [000 — Constitución y línea base](000-foundation/spec.md) | `implemented` para identidad, custodia y trazabilidad: constitución, captura, manifiesto y tests contractuales. | FR-005 `partial` hasta cerrar SPEC-011. FR-007 bloqueado por SPEC-001. |
 | [001 — Cadena abierta y procedencia](001-open-source-provenance/spec.md) | `partial/blocked`: política, auditor de dependencias, registro de repositorios y auditor de secretos. | Tres licencias locales ausentes, dos revisiones copyleft y SBOM. No inventar licencias ni editar dependencias sin autorización. |
-| [002 — Política multiobjetivo única](002-multiobjective-policy/spec.md) | `implemented` en dominio y catálogo: `uc3m/domain/objectives.py`, `scenarios.py`, YAML canónicos y detector de deriva. | Falta `uc3m/adapters/citylearn/objectives.py` y su prueba de integración; telemetría EV/BESS por término; duplicados activos restantes. |
-| [003 — Orquestación modular](003-modular-orchestration/spec.md) | `partial`: layout, persistencia, completitud, reanudación, runner, CLI, `LearnerPort`, `ArtifactStore` y `NativeBackend`. | `SimulatorPort`, `ExperimentTrackerPort`, conformidad explícita de `NativeBackend`, tablas y figuras, cancelación de hijos, prueba de imports y `orchestration_acceptance.json`. |
-| [004 — Manifiestos de ejecución](004-execution-manifests/spec.md) | `implemented` para identidad y custodia: `domain/experiments.py`, `domain/evidence.py`, `training/preflight.py`. | Continuidad de optimizador/RNG/replay en los cuatro algoritmos y manifiesto de runs históricos. |
-| [005 — Evaluación científica](005-scientific-evaluation/spec.md) | `partial/pending_experiment`: Pareto puro, diseño de sensibilidad y dry-run. | Configuración y ejecución de la campaña 4×3 multisemilla, informe estadístico, regla de selección y `tests/acceptance/`. |
-| [006 — Evidencia de tesis](006-thesis-evidence/spec.md) | `pending`: no existe `uc3m/application/thesis/`. | Registro de evidencia, vista multiobjetivo, §3.1.3, APA y render de ambos DOCX canónicos. |
+| [002 — Política multiobjetivo única](002-multiobjective-policy/spec.md) | `implemented`: dominio, catálogo, adaptador CityLearn (`uc3m/adapters/citylearn/objectives.py`), test de fuente única y test de generadores. | Telemetría EV/BESS por término. |
+| [003 — Orquestación modular](003-modular-orchestration/spec.md) | `partial`: layout, persistencia, completitud, reanudación, runner, CLI, `LearnerPort`, `ArtifactStore`, `NativeBackend`, `SimulatorPort` (deferred per ADR). | `ExperimentTrackerPort`, conformidad explícita de `NativeBackend`, cancelación de hijos y `orchestration_acceptance.json` (generado por campaña). |
+| [004 — Manifiestos de ejecución](004-execution-manifests/spec.md) | `implemented`: identidad, custodia, `checkpoint_state.py` para optimizador/RNG/replay, `ResumePlan` requiere `training_state` (fail-closed). | Integración de `save_training_state` en los 4 launchers y manifiesto de runs históricos. |
+| [005 — Evaluación científica](005-scientific-evaluation/spec.md) | `partial/pending_experiment`: campaña 4×3×3 configurada, launcher validado (dry-run 36 tratamientos), `scientific_evaluation.py`, `model_selection.py`, `TrainingReportBuilder`, acceptance gates. | Ejecución de la campaña (50 ep × 8760 steps), generación de `orchestration_acceptance.json` y `scientific_evaluation.json`. |
+| [006 — Evidencia de tesis](006-thesis-evidence/spec.md) | `partial`: `uc3m/application/thesis/evidence_registry.py` con `EvidenceRegistry`. | Vista multiobjetivo, §3.1.3, APA y render de ambos DOCX canónicos. |
 | [007 — Agentes y skills locales](007-local-agent-harness/spec.md) | `implemented/partial`: once skills con registro, hashes y licencias, validador, perfiles y enlaces locales. | Invocación real por cliente, medición de eficiencia, migración de cuatro skills legados y decisión sobre el hook heredado. |
 | [008 — Artefactos y datos](008-artifacts-data/spec.md) | `partial`: almacén atómico y [ADR adoptado](../docs/decisions/ADR-OPEN-ARTIFACT-STORE.md). | Política de retención, respaldo/restauración probados y retiro de artefactos grandes y temporales del índice. |
-| [009 — Observaciones del jurado](009-jury-observations/spec.md) | `pending`: plan J-01–J-17 sin manifiesto. | Manifiesto, verdad estadística única, HAPPO 49/50, ejes UC3M, anexos y puerta del jurado. |
+| [009 — Observaciones del jurado](009-jury-observations/spec.md) | `partial`: manifiesto J-01–J-17 formalizado (`data/audits/jury_observations_manifest.json`), evidence registry. | Correcciones documentales, verdad estadística única, HAPPO 49/50, ejes UC3M; experimentales requieren campaña. |
 | [010 — Panel local](010-local-training-panel/spec.md) | `implemented` como monitor de lectura: HTTP/HTML sin CDN, hashes, `/api/runs`, loopback. | Mantener límites; mejoras opcionales (HTML separado, curvas) no son requisito de cierre. |
 | [011 — Flujo dataset → entrega](011-dataset-to-delivery-pipeline/spec.md) | `partial`: orquestador y verificador de dataset, puerto `DatasetSource`, CLI de entrenamiento. | Consolidar los 21 scripts de `tools/dataset/`, CLI por etapas, encadenamiento por hash y humo end-to-end. |
-| [012 — Higiene del repositorio](012-repository-hygiene/spec.md) | `pending`: manifiestos `*.codex_*.json` renombrados a `*.audit_*.json`; Stop hook desactivado. | Ramas `codex/*`/`cursor/*`, `.codex_tmp/` (1 213 archivos rastreados), raíz, duplicados y prueba de higiene. |
+| [012 — Higiene del repositorio](012-repository-hygiene/spec.md) | `partial`: Stop hook desactivado, `.gitignore` actualizado (`.codex_tmp/`, browser_state, google-drive-mcp), LFS configurado para `*.pt`/`*.pkl`. | Ramas `codex/*`/`cursor/*`, duplicados restantes y prueba de higiene integral. |
 
 ## Conciliación técnica
 
 1. **Persistencia:** las fachadas nativas delegan layout y escritura atómica;
-   `ResumePlan` exige fingerprint y archivos verificados. No demuestra igualdad
-   de trayectorias al restaurar optimizador, RNG y replay.
+   `ResumePlan` exige fingerprint, archivos verificados y `training_state` (fail-closed).
+   `checkpoint_state.py` en CityLearn provee save/load de optimizador, RNG y replay.
 2. **Adaptadores:** `NativeBackend` invoca los launchers HAPPO/MASAC/MATD3/MAAC
    existentes y cumple `LearnerPort` solo por tipado estructural. SPEC-003 adopta
    un único backend nativo en lugar de los cuatro archivos por algoritmo del plan
-   original; falta `SimulatorPort`.
-3. **Reportes:** `application/evaluation/training_report.py` proyecta KPI
-   finitos; no equivale a `TrainingReportBuilder` ni `FigureRenderer`.
+   original; `SimulatorPort` definido como Protocol con ADR de integración diferida.
+3. **Reportes:** `training_report.py` proyecta KPI finitos; `TrainingReportBuilder`
+   añadido con KPIs estructurados. `scientific_evaluation.py` y `model_selection.py`
+   implementados. Falta `FigureRenderer`.
 4. **Colab:** [guía](../docs/architecture/ENTRENAMIENTO_MODULAR_COLAB.md), notebook
    y generador preservan instalación y argumentos. Pendientes: runtime real,
    wheels/CUDA, bloqueo Drive y desconexión/reanudación.
-5. **Selección:** no existe mejor modelo final aceptado.
+5. **Selección:** `model_selection.py` implementa regla determinista (max hypervolume,
+   min variance tiebreak); ejecución pendiente de campaña completa.
 6. **Higiene:** el Stop hook heredado, que publicaba todo al cerrar cada turno,
    se desactivó el 2026-10-31. Antes de eso confirmó y publicó sin revisión los
    commits automáticos `0c884b1`, `d85f9b7` y `495216d`; no se reescriben.
@@ -69,6 +71,8 @@ archivo existe en el árbol.
 
 El plan integral por fases está en el
 [plan maestro](../docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md#plan-integral-por-fases).
+El [plan de remediación post-auditoría](../docs/superpowers/plans/2026-10-31-post-audit-remediation-plan.md)
+detalla las 8 tareas TDD derivadas de los 16 hallazgos de la auditoría independiente.
 
 - [x] Materializar SPEC-007 con contrato, plan y tareas.
 - [x] Materializar SPEC-001–006, SPEC-008–009 y los nuevos SPEC-011–012.

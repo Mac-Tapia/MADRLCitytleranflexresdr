@@ -407,7 +407,7 @@ Opcion rapida — doble clic o desde PowerShell:
 ```powershell
 # Genera timestamp automatico, registra outputs\latest_visible_training_output_root.txt
 # y lanza cadena completa HAPPO→MASAC→MATD3→MAAC (50 episodios, canónico thesis)
-.\LANZAR_ENTRENAMIENTO_V4.bat
+.\scripts\LANZAR_ENTRENAMIENTO_V4.bat
 ```
 
 Comando completo manual (requiere PowerShell 7 — `pwsh.exe`):

@@ -40,7 +40,7 @@ Los únicos `.py` de tesis permitidos aquí son **shims** (<1 KB) que delegan en
 
 | Archivo | Rol |
 |---------|-----|
-| `restart_happo_masac_v3.ps1` | Entrypoint canónico 4 MADRL (50 ep) vía `LANZAR_ENTRENAMIENTO_V4.bat` |
+| `restart_happo_masac_v3.ps1` | Entrypoint canónico 4 MADRL (50 ep) vía `scripts/LANZAR_ENTRENAMIENTO_V4.bat` |
 | `run_3madrl_parallel.ps1` | Lanzamiento paralelo (AWS / VRAM alta) |
 | `setup_google_drive_oauth.ps1` | OAuth Google Drive |
 | `fetch_and_generate_drive_figures.ps1` | Fetch + `tools/thesis/generate_drive_thesis_figures.py` |
@@ -62,7 +62,7 @@ Los únicos `.py` de tesis permitidos aquí son **shims** (<1 KB) que delegan en
 ### Legacy
 
 Los one-shots `_archive/` y `scripts/legacy_bat/` fueron **eliminados** (política 2026-07-29 DELETE).
-Launcher Windows canónico: `LANZAR_ENTRENAMIENTO_V4.bat` → `restart_happo_masac_v3.ps1` (50 ep).
+Launcher Windows canónico: `scripts/LANZAR_ENTRENAMIENTO_V4.bat` → `restart_happo_masac_v3.ps1` (50 ep).
 Detalle: `docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md`.
 
 ## Ejecución

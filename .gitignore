@@ -103,3 +103,10 @@ outputs/_drive_madrl/**/timeseries.csv
 # Generated local discovery links; canonical skill contents are tools/skills/.
 /.agents/skills/
 /.claude/skills/
+
+# Temporales locales (SPEC-012/FR-012.3): usar .tmp/ para trabajo intermedio
+/.tmp/
+.git_commit_msg.tmp
+**/_tmp_*
+**/~$*
+

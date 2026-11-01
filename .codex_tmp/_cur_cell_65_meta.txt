@@ -1,4 +1,0 @@
-type=code
-id=c4e0369d
-len=1980
-head='# ── 8.2  Curvas de convergencia (timeseries.csv, por episodio) ───────────────\nimport matplotlib.pyplot as plt\nimport glob\nimport pandas as pd\nfrom p'

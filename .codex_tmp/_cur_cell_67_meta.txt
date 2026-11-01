@@ -1,4 +1,0 @@
-type=code
-id=10e6efc1
-len=21480
-head='import subprocess\n# ── 9.1  Ranking OE-completo (54 KPIs) + pruebas estadísticas ───────────────\n# Score Ek = mean signed relative gain vs evaluate_v2'

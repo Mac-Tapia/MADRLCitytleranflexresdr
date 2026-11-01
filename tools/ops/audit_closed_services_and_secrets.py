@@ -26,7 +26,7 @@ TEXT_SUFFIXES = {
 }
 DOCUMENT_SUFFIXES = {".md", ".rst", ".txt"}
 SKIP_DIRS = {
-    ".codex_tmp",
+    ".tmp",
     ".git",
     ".pytest_cache",
     ".superpowers",

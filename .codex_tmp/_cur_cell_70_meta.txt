@@ -1,4 +1,0 @@
-type=markdown
-id=cba237ee
-len=178
-head='## Sección 10: Resumen final de la sesión\n\nImprime resumen ejecutivo del run (`OUTPUT_ROOT`, jobs completos, rutas clave). Ejecutar al cierre de la se'

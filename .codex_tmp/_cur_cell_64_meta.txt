@@ -1,4 +1,0 @@
-type=code
-id=64fb494c
-len=20696
-head='# ── 8.1  Cargar KPIs CityLearn v3 (OE1/OE2/OE3 completos = 54) ───────────────\nimport json\nimport os\nimport glob\nfrom pathlib import Path\nimport nump'

@@ -1,4 +1,0 @@
-type=code
-id=f1cac01b
-len=3731
-head='# ── 10.  Resumen final de la sesión Colab ───────────────────────────────────\n# Resume: OUTPUT_ROOT, 12 jobs, two_phase, KPIs OE en results.json si y'

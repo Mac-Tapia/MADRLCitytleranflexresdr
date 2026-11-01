@@ -17,6 +17,8 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     (Join-Path $ProjectRoot 'tests\ops\test_capture_modernization_baseline.py') `
     (Join-Path $ProjectRoot 'tests\ops\test_open_source_dependency_audit.py') `
     (Join-Path $ProjectRoot 'tests\ops\test_closed_services_and_secrets.py') `
+    (Join-Path $ProjectRoot 'tests\ops\test_sbom.py') `
+    (Join-Path $ProjectRoot 'tests\contract\test_dependency_roles.py') `
     (Join-Path $ProjectRoot 'tests\contract\test_spec_kit_consistency.py') `
     (Join-Path $ProjectRoot 'tests\contract\test_foundation_manifests.py') `
     -q
@@ -28,6 +30,10 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 & $Python (Join-Path $ProjectRoot 'tools\ops\audit_open_source_dependencies.py') `
     --output (Join-Path $ProjectRoot 'data\audits\open_source_dependency_manifest.json')
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+& $Python (Join-Path $ProjectRoot 'tools\ops\generate_sbom.py') `
+    --output (Join-Path $ProjectRoot 'data\audits\sbom.cdx.json')
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 & $Python (Join-Path $ProjectRoot 'tools\ops\audit_closed_services_and_secrets.py') `

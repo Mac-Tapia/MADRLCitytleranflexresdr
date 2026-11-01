@@ -5,37 +5,91 @@ from __future__ import annotations
 import argparse
 import configparser
 import json
+import re
+from importlib import metadata
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional, Sequence
+from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
 import tomli
 import yaml
 
-from uc3m.governance.open_source import DependencyRecord, OpenSourcePolicy
+from uc3m.governance.open_source import (
+    DependencyRecord,
+    OpenSourcePolicy,
+    classify_license_text,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 POLICY_PATH = PROJECT_ROOT / "governance/open_source_policy.yaml"
+ROLES_RELATIVE_PATH = Path("governance/dependency_roles.yaml")
+LICENSE_STEMS = {"LICENSE", "LICENCE", "COPYING"}
+CLASSIFIER_SPDX = {
+    "License :: OSI Approved :: MIT License": "MIT",
+    "License :: OSI Approved :: Apache Software License": "Apache-2.0",
+    "License :: OSI Approved :: ISC License (ISCL)": "ISC",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)": "MPL-2.0",
+    "License :: OSI Approved :: Python Software Foundation License": "PSF-2.0",
+}
+
+PackageResolver = Callable[[str], Optional[Dict[str, str]]]
 
 
 def _normalize_url(url: str) -> str:
     return url.strip().rstrip("/").removesuffix(".git").casefold()
 
 
-def _declared_packages(project_root: Path) -> List[Dict[str, Any]]:
+def license_file_candidates(files: Sequence[object]) -> List[object]:
+    """License files of a distribution, its own dist-info license first.
+
+    Files elsewhere in the package usually belong to bundled components.
+    """
+    candidates = [f for f in files if Path(str(f)).name.upper().split(".", 1)[0] in LICENSE_STEMS]
+    return sorted(candidates, key=lambda f: ".dist-info/" not in Path(str(f)).as_posix())
+
+
+def installed_package_license(name: str) -> Optional[Dict[str, str]]:
+    """Read version and license of an installed distribution, or None if absent."""
+    try:
+        distribution = metadata.distribution(name)
+    except metadata.PackageNotFoundError:
+        return None
+    expression = distribution.metadata.get("License-Expression")
+    license_spdx = expression.strip() if expression else None
+    if not license_spdx:
+        own = [f for f in license_file_candidates(list(distribution.files or ())) if ".dist-info/" in Path(str(f)).as_posix()]
+        if own:
+            text = Path(distribution.locate_file(own[0])).read_text(encoding="utf-8", errors="replace")
+            license_spdx = classify_license_text(text)
+    if not license_spdx or license_spdx == "NOASSERTION":
+        classifiers = distribution.metadata.get_all("Classifier") or []
+        mapped = {CLASSIFIER_SPDX[c] for c in classifiers if c in CLASSIFIER_SPDX}
+        license_spdx = mapped.pop() if len(mapped) == 1 else "NOASSERTION"
+    return {"version": distribution.version, "license_spdx": license_spdx}
+
+
+def _declared_packages(
+    project_root: Path, policy: OpenSourcePolicy, resolve: PackageResolver
+) -> List[Dict[str, Any]]:
     pyproject = project_root / "pyproject.toml"
     if not pyproject.is_file():
         return []
     payload = tomli.loads(pyproject.read_text(encoding="utf-8"))
-    dependencies = payload.get("project", {}).get("dependencies", [])
-    return [
-        {
-            "declaration": str(dependency),
-            "status": "declared_unverified",
-            "reason": "license_requires_inventory_resolution",
-        }
-        for dependency in dependencies
-    ]
+    records = []
+    for declaration in payload.get("project", {}).get("dependencies", []):
+        name = re.match(r"[A-Za-z0-9._-]+", str(declaration)).group(0)
+        record: Dict[str, Any] = {"declaration": str(declaration), "name": name}
+        resolved = resolve(name)
+        if resolved is None:
+            record.update(status="declared_unverified", reason="package_not_installed")
+        else:
+            decision = policy.evaluate(
+                DependencyRecord(name=name, license_spdx=resolved["license_spdx"])
+            )
+            record.update(resolved)
+            record.update(status=decision.status, reason=";".join(decision.reasons) or None)
+        records.append(record)
+    return records
 
 
 def _parse_submodules(project_root: Path) -> List[Dict[str, str]]:
@@ -56,60 +110,67 @@ def _parse_submodules(project_root: Path) -> List[Dict[str, str]]:
     return sorted(records, key=lambda record: record["path"])
 
 
+def _load_roles(roles_path: Path) -> Mapping[str, Any]:
+    if not roles_path.is_file():
+        return {}
+    payload = yaml.safe_load(roles_path.read_text(encoding="utf-8")) or {}
+    return payload.get("submodules") or {}
+
+
 def _local_license(path: Path) -> Optional[Dict[str, str]]:
     candidates = sorted(
         candidate
         for candidate in path.glob("*")
-        if candidate.is_file()
-        and candidate.name.upper().split(".", 1)[0] in {"LICENSE", "LICENCE", "COPYING"}
+        if candidate.is_file() and candidate.name.upper().split(".", 1)[0] in LICENSE_STEMS
     )
     if not candidates:
         return None
     license_path = candidates[0]
-    sample = license_path.read_text(encoding="utf-8", errors="replace")[:4096].casefold()
-    if "mit license" in sample:
-        spdx = "MIT"
-    elif "european union public licence" in sample and "1.1" in sample:
-        spdx = "EUPL-1.1"
-    elif "apache license" in sample and "version 2.0" in sample:
-        spdx = "Apache-2.0"
-    elif "gnu affero general public license" in sample:
-        spdx = "AGPL-3.0-only"
-    elif "gnu general public license" in sample:
-        spdx = "GPL-3.0-only"
-    else:
-        spdx = "NOASSERTION"
-    return {"file": license_path.name, "license_spdx": spdx}
+    text = license_path.read_text(encoding="utf-8", errors="replace")
+    return {"file": license_path.name, "license_spdx": classify_license_text(text)}
 
 
-def audit_dependencies(project_root: Path, registry_path: Path) -> Dict[str, Any]:
+def audit_dependencies(
+    project_root: Path,
+    registry_path: Path,
+    roles_path: Optional[Path] = None,
+    package_resolver: Optional[PackageResolver] = None,
+) -> Dict[str, Any]:
     policy = OpenSourcePolicy.from_yaml(POLICY_PATH)
+    roles = _load_roles(roles_path or project_root / ROLES_RELATIVE_PATH)
     submodule_declarations = _parse_submodules(project_root)
     submodule_urls = {_normalize_url(record["url"]) for record in submodule_declarations}
 
     blockers: List[Dict[str, str]] = []
     submodules: List[Dict[str, Any]] = []
     for declaration in submodule_declarations:
+        # An undeclared submodule is treated as part of the required runtime (fail closed).
+        role = str((roles.get(declaration["path"]) or {}).get("role", "runtime"))
         license_record = _local_license(project_root / declaration["path"])
-        record: Dict[str, Any] = dict(declaration)
+        record: Dict[str, Any] = dict(declaration, role=role)
         if license_record is None:
-            record.update(status="blocked", reason="missing_local_license")
-            blockers.append({"kind": "submodule", "name": declaration["name"], "reason": record["reason"]})
+            policy_status, reason = "blocked", "missing_local_license"
         else:
             decision = policy.evaluate(
                 DependencyRecord(
                     name=declaration["name"],
                     license_spdx=license_record["license_spdx"],
+                    required=role == "runtime",
                 )
             )
             record.update(license_record)
-            record.update(status=decision.status, reason=";".join(decision.reasons) or None)
-            if decision.status != "allow":
+            policy_status, reason = decision.status, ";".join(decision.reasons) or None
+        record.update(policy_status=policy_status, reason=reason)
+        if role == "reference_only":
+            record["status"] = "reference_only"
+        else:
+            record["status"] = policy_status
+            if policy_status != "allow":
                 blockers.append(
                     {
                         "kind": "submodule",
                         "name": declaration["name"],
-                        "reason": record["reason"] or decision.status,
+                        "reason": reason or policy_status,
                     }
                 )
         submodules.append(record)
@@ -156,7 +217,16 @@ def audit_dependencies(project_root: Path, registry_path: Path) -> Dict[str, Any
                     )
         research_records.append(entry)
 
-    packages = _declared_packages(project_root)
+    packages = _declared_packages(project_root, policy, package_resolver or installed_package_license)
+    for package in packages:
+        if package["status"] not in ("allow", "declared_unverified"):
+            blockers.append(
+                {
+                    "kind": "package",
+                    "name": package["name"],
+                    "reason": package["reason"] or package["status"],
+                }
+            )
     return {
         "schema_version": "1.0",
         "ok": not blockers,

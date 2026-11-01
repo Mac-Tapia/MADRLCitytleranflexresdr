@@ -8,8 +8,11 @@
 
 - [x] **FR-001.1:** Política y evaluador implementados — `governance/open_source_policy.yaml, uc3m/governance/open_source.py`
 - [x] **FR-001.2:** Auditor de dependencias e inventario inicial — `tools/ops/audit_open_source_dependencies.py, data/audits/open_source_dependency_manifest.json`
-- [ ] **FR-001.2:** Resolver 3 licencias ausentes y 2 copyleft (sin editar dependencias sin autorización) — `data/audits/open_source_dependency_manifest.json`
-- [ ] **FR-001.3:** Generar SBOM local — `data/audits/sbom.cdx.json`
+- [x] **FR-001.2:** Rol de cada submódulo (`runtime`/`reference_only`) con evidencia; MicroGrids (EUPL-1.1), prosumpy (EUPL-1.1) y evcc quedan como referencia no importada, verificada por prueba contractual — `governance/dependency_roles.yaml, tests/contract/test_dependency_roles.py`
+- [x] **FR-001.2:** Paquetes declarados verificados desde metadatos instalados: numpy 1.23.5, pandas 2.0.3 y scipy 1.10.1, todos BSD-3-Clause — `data/audits/open_source_dependency_manifest.json`
+- [ ] **FR-001.2:** HARL, MARL y MATD3implementation no tienen licencia en origen (API de GitHub `license=null`, sin LICENSE en el árbol fijado) y son backends de HAPPO, MASAC y MATD3. **Decisión del propietario:** pedir licencia a los autores, sustituir el backend o registrar una excepción de uso local sin redistribución. La puerta sigue bloqueada hasta entonces — `governance/dependency_roles.yaml`
+- [x] **FR-001.3:** SBOM CycloneDX 1.5 local: 247 componentes (paquetes del entorno y submódulos fijados), 15 sin licencia verificable marcados `unverified`; se regenera en la puerta — `tools/ops/generate_sbom.py, data/audits/sbom.cdx.json`
+- [x] **FR-001.5:** Inventarios que declaran un conector desactivado ya no cuentan como uso en tiempo de ejecución: 0 hallazgos críticos — `tools/ops/audit_closed_services_and_secrets.py`
 - [x] **FR-001.4:** Registro de repositorios — `docs/research/repository_registry.yaml`
 - [x] **FR-001.5:** Auditor de secretos y servicios cerrados — `tools/ops/audit_closed_services_and_secrets.py`
 

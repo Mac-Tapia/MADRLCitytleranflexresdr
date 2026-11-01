@@ -14,34 +14,33 @@
       "kind": "submodule",
       "name": "external/MATD3implementation",
       "reason": "missing_local_license"
-    },
-    {
-      "kind": "submodule",
-      "name": "external/MicroGrids",
-      "reason": "copyleft_compatibility_review"
-    },
-    {
-      "kind": "submodule",
-      "name": "external/prosumpy",
-      "reason": "copyleft_compatibility_review"
     }
   ],
   "ok": false,
   "packages": [
     {
       "declaration": "numpy>=1.23.5,<2.0",
-      "reason": "license_requires_inventory_resolution",
-      "status": "declared_unverified"
+      "license_spdx": "BSD-3-Clause",
+      "name": "numpy",
+      "reason": null,
+      "status": "allow",
+      "version": "1.23.5"
     },
     {
       "declaration": "pandas>=2.0",
-      "reason": "license_requires_inventory_resolution",
-      "status": "declared_unverified"
+      "license_spdx": "BSD-3-Clause",
+      "name": "pandas",
+      "reason": null,
+      "status": "allow",
+      "version": "2.0.3"
     },
     {
       "declaration": "scipy>=1.10",
-      "reason": "license_requires_inventory_resolution",
-      "status": "declared_unverified"
+      "license_spdx": "BSD-3-Clause",
+      "name": "scipy",
+      "reason": null,
+      "status": "allow",
+      "version": "1.10.1"
     }
   ],
   "research_repositories": [
@@ -113,14 +112,18 @@
       "license_spdx": "MIT",
       "name": "CityLearn",
       "path": "CityLearn",
+      "policy_status": "allow",
       "reason": null,
+      "role": "runtime",
       "status": "allow",
       "url": "https://github.com/Mac-Tapia/CityLearn.git"
     },
     {
       "name": "external/HARL",
       "path": "external/HARL",
+      "policy_status": "blocked",
       "reason": "missing_local_license",
+      "role": "runtime",
       "status": "blocked",
       "url": "https://github.com/Mac-Tapia/HARL.git"
     },
@@ -129,14 +132,18 @@
       "license_spdx": "MIT",
       "name": "external/MAAC",
       "path": "external/MAAC",
+      "policy_status": "allow",
       "reason": null,
+      "role": "runtime",
       "status": "allow",
       "url": "https://github.com/Mac-Tapia/MAAC.git"
     },
     {
       "name": "external/MARL",
       "path": "external/MARL",
+      "policy_status": "blocked",
       "reason": "missing_local_license",
+      "role": "runtime",
       "status": "blocked",
       "url": "https://github.com/Mac-Tapia/MARL.git"
     },
@@ -145,14 +152,18 @@
       "license_spdx": "MIT",
       "name": "external/MARLlib",
       "path": "external/MARLlib",
+      "policy_status": "allow",
       "reason": null,
+      "role": "runtime",
       "status": "allow",
       "url": "https://github.com/Mac-Tapia/MARLlib.git"
     },
     {
       "name": "external/MATD3implementation",
       "path": "external/MATD3implementation",
+      "policy_status": "blocked",
       "reason": "missing_local_license",
+      "role": "runtime",
       "status": "blocked",
       "url": "https://github.com/Mac-Tapia/MATD3implementation.git"
     },
@@ -161,8 +172,10 @@
       "license_spdx": "EUPL-1.1",
       "name": "external/MicroGrids",
       "path": "external/MicroGrids",
+      "policy_status": "review",
       "reason": "copyleft_compatibility_review",
-      "status": "review",
+      "role": "reference_only",
+      "status": "reference_only",
       "url": "https://github.com/Mac-Tapia/MicroGrids.git"
     },
     {
@@ -170,8 +183,10 @@
       "license_spdx": "MIT",
       "name": "external/evcc",
       "path": "external/evcc",
+      "policy_status": "allow",
       "reason": null,
-      "status": "allow",
+      "role": "reference_only",
+      "status": "reference_only",
       "url": "https://github.com/evcc-io/evcc.git"
     },
     {
@@ -179,8 +194,10 @@
       "license_spdx": "EUPL-1.1",
       "name": "external/prosumpy",
       "path": "external/prosumpy",
+      "policy_status": "review",
       "reason": "copyleft_compatibility_review",
-      "status": "review",
+      "role": "reference_only",
+      "status": "reference_only",
       "url": "https://github.com/Mac-Tapia/prosumpy.git"
     }
   ]

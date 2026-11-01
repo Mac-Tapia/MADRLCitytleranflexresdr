@@ -1,0 +1,39 @@
+# Rol de cada submódulo en el flujo requerido (SPEC-001/FR-001.2).
+# runtime: el entrenamiento o la evaluación lo importa o lo ejecuta; su licencia
+#   debe ser permitida por governance/open_source_policy.yaml.
+# reference_only: se conserva como referencia científica sin importarlo;
+#   tests/contract/test_dependency_roles.py falla si el código de ejecución lo usa.
+# Un submódulo ausente aquí se trata como runtime (fallo cerrado).
+schema_version: "1.0"
+reviewed: "2026-10-31"
+submodules:
+  CityLearn:
+    role: runtime
+    evidence: "Simulador del entorno; fork propio Mac-Tapia/CityLearn instalado en modo editable."
+  external/HARL:
+    role: runtime
+    evidence: "Backend HAPPO: CityLearn/scripts/train_citylearn_v3_happo.py importa harl.runners."
+    license_evidence: "Sin licencia declarada: la API de GitHub devuelve license=null para PKU-MARL/HARL y el árbol fijado no tiene LICENSE (2026-10-31). Requiere decisión del propietario."
+  external/MAAC:
+    role: runtime
+    evidence: "Backend MAAC: CityLearn/scripts/train_citylearn_v3_maac.py usa external/MAAC."
+  external/MARL:
+    role: runtime
+    evidence: "Backend MASAC: CityLearn/scripts/train_citylearn_v3_masac.py declara backend_repository external/MARL/src."
+    license_evidence: "Sin licencia declarada: la API de GitHub devuelve license=null para puyuan1996/MARL y el árbol fijado no tiene LICENSE (2026-10-31). Requiere decisión del propietario."
+  external/MARLlib:
+    role: runtime
+    evidence: "Backend opcional: uc3m/algorithms/factory.py y CityLearn/citylearn/v3/marllib_env.py importan marllib."
+  external/MATD3implementation:
+    role: runtime
+    evidence: "Backend MATD3: CityLearn/scripts/check_citylearn_v3_training_ready.py añade external/MATD3implementation/matd3 al path."
+    license_evidence: "Sin licencia declarada: la API de GitHub devuelve license=null para JohannesAck/MATD3implementation y el árbol fijado no tiene LICENSE (2026-10-31). Requiere decisión del propietario."
+  external/MicroGrids:
+    role: reference_only
+    evidence: "Referencia de optimización PV/BESS citada en tools/dataset/dimension_ev_chargers.py; ningún import ni ruta en uc3m/ o CityLearn/."
+  external/evcc:
+    role: reference_only
+    evidence: "Referencia de gestión de carga EV; sin referencias en uc3m/ ni CityLearn/."
+  external/prosumpy:
+    role: reference_only
+    evidence: "Referencia de autoconsumo PV y despacho de batería citada en tools/dataset/dimension_ev_chargers.py; ningún import ni ruta en uc3m/ o CityLearn/."

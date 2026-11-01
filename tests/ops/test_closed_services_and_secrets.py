@@ -89,6 +89,21 @@ def test_project_history_external_code_and_tests_do_not_become_runtime_blockers(
     assert by_path[".cursor/mcp.json"] == {"critical"}
 
 
+def test_inventory_that_declares_a_connector_disabled_is_not_a_runtime_blocker(
+    tmp_path: Path,
+) -> None:
+    _write(
+        tmp_path / "tools/skills/registry.yaml",
+        '{"connectors": [{"name": "notebooklm-mcp", "status": "optional_legacy", '
+        '"required": false}]}\n',
+    )
+
+    manifest = audit_closed_services(tmp_path)
+
+    assert manifest["ok"] is True
+    assert [finding["category"] for finding in manifest["findings"]] == ["documentation_only"]
+
+
 def test_generated_audit_does_not_flag_its_own_previous_findings(tmp_path: Path) -> None:
     _write(
         tmp_path / "data/audits/closed_services_and_secrets.json",

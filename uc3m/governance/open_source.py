@@ -31,6 +31,35 @@ class PolicyDecision:
     reasons: Tuple[str, ...]
 
 
+def classify_license_text(text: str) -> str:
+    """Map the opening of a license file to an SPDX id, or NOASSERTION.
+
+    BSD is checked before GPL because permissive packages often append the
+    licenses of bundled components after their own terms.
+    """
+    sample = text[:4096].casefold()
+    if "mit license" in sample:
+        return "MIT"
+    if "european union public licence" in sample and "1.1" in sample:
+        return "EUPL-1.1"
+    if "apache license" in sample and "version 2.0" in sample:
+        return "Apache-2.0"
+    if "redistribution and use in source and binary forms" in sample:
+        return "BSD-3-Clause" if "neither the name" in sample else "BSD-2-Clause"
+    # MPL and PSF texts name the GPL as a secondary or comparison license.
+    if "mozilla public license" in sample and "2.0" in sample:
+        return "MPL-2.0"
+    if "python software foundation license" in sample:
+        return "PSF-2.0"
+    if "gnu lesser general public license" in sample:
+        return "LGPL-3.0-only" if "version 3" in sample else "LGPL-2.1-only"
+    if "gnu affero general public license" in sample:
+        return "AGPL-3.0-only"
+    if "gnu general public license" in sample:
+        return "GPL-3.0-only"
+    return "NOASSERTION"
+
+
 class OpenSourcePolicy:
     """Evaluate dependency facts against an explicit SPDX allowlist."""
 

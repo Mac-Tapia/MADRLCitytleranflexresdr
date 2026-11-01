@@ -44,6 +44,11 @@ SECRET_NAMES = {
     "storage_state.json",
     "token.json",
 }
+# Inventories that record closed services as excluded or optional, not as runtime.
+INVENTORY_PATHS = {
+    "tools/skills/registry.yaml",
+    "docs/research/repository_registry.yaml",
+}
 LEGACY_PREFIXES = (
     "citylearn/",
     "external/",
@@ -124,7 +129,7 @@ def audit_closed_services(project_root: Path) -> Dict[str, Any]:
                 continue
             if legacy or "drive" in lowered_path or "colab" in lowered_path:
                 category = "excluded_legacy"
-            elif lowered_path.startswith(("docs/", "tests/")):
+            elif lowered_path.startswith(("docs/", "tests/")) or relative_path in INVENTORY_PATHS:
                 category = "documentation_only"
             elif path.suffix.casefold() in DOCUMENT_SUFFIXES:
                 category = "documentation_only"

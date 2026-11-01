@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -19,7 +20,14 @@ def test_capture_baseline_records_repository_identity_and_auditable_state() -> N
     assert baseline["repository"]["origin"] == (
         "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git"
     )
-    assert baseline["repository"]["branch"].startswith("codex/")
+    current_branch = subprocess.run(
+        ["git", "branch", "--show-current"],
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    assert baseline["repository"]["branch"] == current_branch
 
     changes = baseline["working_tree"]
     assert set(changes) == {

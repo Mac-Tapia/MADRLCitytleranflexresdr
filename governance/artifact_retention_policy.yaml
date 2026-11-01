@@ -1,0 +1,118 @@
+# Política de retención de artefactos (SPEC-008/FR-008.2).
+#
+# Fuente de los `kind`: valores reales de ArtifactRef emitidos por el código,
+#   uc3m/adapters/algorithms/native.py (_collect): source_snapshot, checkpoint,
+#   kpi, training_summary, training_state y el genérico `artifact`;
+#   uc3m/ports/artifact_store.py y uc3m/adapters/local_artifacts.py: `artifact`
+#   (write_bytes) y `manifest` (write_json).
+# tests/integration/test_artifact_restore.py falla si el código emite un `kind`
+#   sin clase aquí, o si una `gitignore_rules` no existe literalmente en .gitignore.
+#
+# Estados del ciclo de vida:
+#   active    corrida en curso o parcial (evidence.json status running/partial/blocked).
+#   promoted  evidence.json status=verified y respaldo verificado por
+#             uc3m.application.artifacts.backup_run.
+#   historical resultados retirados por decisión del propietario
+#             (docs/audits/DIAGNOSTICO_Y_RETIRO_HISTORICOS_2026-11-01.md): no se
+#             restauran ni se usan; esta política no les aplica.
+#   temporary archivos de trabajo que nunca entran en evidence.json.
+#
+# Reglas:
+#   - Solo se respalda una corrida verified cuyo evidence.json verifica todos los hashes.
+#   - Todo artefacto listado en evidence.json se respalda (backup: true); así la
+#     restauración reproduce todos los hashes del contrato de evidencia.
+#   - discard_after_promotion: true significa que la copia de trabajo local puede
+#     borrarse SOLO después de existir un respaldo verificado; exige backup: true.
+#     El borrado no está automatizado por este módulo. Excepción: clases sin
+#     `kinds` (temporales) nunca están en evidence.json y se descartan sin respaldo.
+#   - git_versioned: false sin regla en .gitignore queda pendiente de FR-008.4
+#     (no se modifica .gitignore desde FR-008.2).
+schema_version: "1.0"
+reviewed: "2026-11-01"
+run_manifests: [evidence.json, experiment.json, completion.json]
+classes:
+  run_manifests:
+    description: "Manifiestos por corrida (evidence/experiment/completion) y manifiestos JSON del almacén."
+    kinds: [manifest]
+    path_globs: []
+    git_versioned: true
+    gitignore_rules: []
+    backup: true
+    retention: {active: keep, promoted: keep_permanent}
+    discard_after_promotion: false
+  kpi_and_summary:
+    description: "results.json (kind kpi solo si la corrida está completa) y training_summary.json."
+    kinds: [kpi, training_summary]
+    path_globs: []
+    git_versioned: true
+    gitignore_rules: []
+    backup: true
+    retention: {active: keep, promoted: keep_permanent}
+    discard_after_promotion: false
+  tables:
+    description: "Tablas y series en <run_id>/<E|E_s<seed>>/data/ (kind artifact)."
+    kinds: [artifact]
+    path_globs: ["*/data/*"]
+    git_versioned: true
+    gitignore_rules: []
+    backup: true
+    retention: {active: keep, promoted: keep_permanent}
+    discard_after_promotion: false
+    note: "Series grandes no se versionan: .gitignore excluye outputs/_drive_madrl/**/timeseries.csv."
+  figures:
+    description: "Figuras en <run_id>/<E|E_s<seed>>/figures/ (kind artifact)."
+    kinds: [artifact]
+    path_globs: ["*/figures/*"]
+    git_versioned: true
+    gitignore_rules: []
+    backup: true
+    retention: {active: keep, promoted: keep_permanent}
+    discard_after_promotion: false
+  checkpoints:
+    description: "Pesos del modelo final (kind checkpoint); necesarios para evaluar y seleccionar el mejor modelo."
+    kinds: [checkpoint]
+    path_globs: []
+    git_versioned: false
+    gitignore_rules: ["*.pt", "*.pth", "*.ckpt", "*.safetensors", "*.pkl"]
+    backup: true
+    retention: {active: keep, promoted: keep_permanent_in_backup}
+    discard_after_promotion: false
+  training_state:
+    description: "training_state.pt: optimizador, RNG y replay para reanudar; innecesario tras verificar."
+    kinds: [training_state]
+    path_globs: []
+    git_versioned: false
+    gitignore_rules: ["*.pt"]
+    backup: true
+    retention: {active: keep, promoted: backup_only}
+    discard_after_promotion: true
+  source_snapshot:
+    description: "source_snapshot.zip con el código fuente usado por la corrida."
+    kinds: [source_snapshot]
+    path_globs: []
+    git_versioned: false
+    gitignore_rules: []
+    backup: true
+    retention: {active: keep, promoted: keep_permanent_in_backup}
+    discard_after_promotion: false
+    note: "Reconstruible desde code_commit; .gitignore aún no excluye *.zip (pendiente FR-008.4)."
+  other_artifacts:
+    description: "Resto de archivos indexados con kind artifact fuera de data/ y figures/."
+    kinds: [artifact]
+    path_globs: []
+    git_versioned: false
+    gitignore_rules: []
+    backup: true
+    retention: {active: keep, promoted: backup_only}
+    discard_after_promotion: true
+    note: "Sin regla .gitignore (pendiente FR-008.4)."
+  temporaries:
+    description: "*.tmp de escrituras atómicas, .runner.lock, .tmp/; nunca entran en evidence.json."
+    kinds: []
+    path_globs: ["*.tmp", ".runner.lock"]
+    git_versioned: false
+    gitignore_rules: ["/.tmp/", "**/_tmp_*"]
+    backup: false
+    retention: {active: discard_any_time, promoted: discard}
+    discard_after_promotion: true
+    note: "*.tmp en outputs/ aún no está en .gitignore (pendiente FR-008.4)."

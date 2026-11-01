@@ -14,12 +14,17 @@ modelo ganador.
 - `pending`: no se acredita el entregable o experimento requerido.
 - `verified_smoke`: integridad operativa corta, no aprendizaje demostrado.
 
-El manifiesto real es
-[`modular_training_acceptance.json`](../data/audits/modular_training_acceptance.json):
-cuatro smokes nativos E1 de ocho pasos, `four_algorithm_smoke_verified=true`,
-`scientific_acceptance=false` y `full_plan_complete=false`.
-`data/audits/orchestration_acceptance.json`, nombrado en el plan original,
-todavía no existe: no citarlo como evidencia generada.
+**Resultados históricos retirados (2026-11-01).** Por decisión del propietario,
+los resultados de campañas anteriores ya no cuentan: corrida v4 de 50
+episodios, madrl_v3, espejo de Drive, smokes modulares, benchmark CityLearn v2
+y evidencia de objetivos. Se retiraron de la rama y del disco; lo que estuvo en
+Git se recupera desde `387a237` (etiqueta local
+`archive/resultados-historicos-2026-11-01`). Por eso
+[`modular_training_acceptance.json`](../data/audits/modular_training_acceptance.json)
+describe smokes cuyos artefactos ya no están y se hicieron con la identidad de
+dataset anterior: no es evidencia vigente. Toda evidencia nueva sale del
+entrenamiento nuevo en Colab. `data/audits/orchestration_acceptance.json`,
+nombrado en el plan original, no existe: no citarlo.
 
 ## Mapa SPEC-000–012
 

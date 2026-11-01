@@ -53,7 +53,8 @@ def dataset_digest(schema_path: Path) -> str:
 
 def source_snapshot(project_root: Path) -> str:
     root = Path(project_root).resolve()
-    return hash_files(root, _source_paths(root))
+    # Only text sources (.py/.yaml/.toml/config .json/requirements) are hashed.
+    return hash_files(root, _source_paths(root), normalize_newlines=True)
 
 
 def _source_paths(root):

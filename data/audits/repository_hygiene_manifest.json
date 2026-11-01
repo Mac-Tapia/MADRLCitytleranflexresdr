@@ -52,6 +52,56 @@
         "outputs/_tmp_apa_refs_retry.json": "0735fd716b32f4510a43d4373c088be76a2cf96e",
         "outputs/_tmp_multiseed_dryrun/campaign_manifest.json": "761298403a0e11d067abe37ca9c69453bcc46a6e"
       }
+    },
+    {
+      "date": "2026-11-01",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "directory",
+      "path": "outputs/_drive_madrl/",
+      "reason": "Results of earlier campaigns are retired by the owner's decision: the new training produces new results. Commit 62972f9 had already retired 2250 other historical files (runs, benchmark, objective evidence, audits).",
+      "recover_from_commit": "387a237437fbc20e071508943e9208c1c27e66cb",
+      "recover_from_tag": "archive/resultados-historicos-2026-11-01"
+    },
+    {
+      "date": "2026-11-01",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "directory",
+      "path": "outputs/citylearn_v3_madrl_full_20260615_074011_v4/",
+      "reason": "Remaining tracked files of the earlier v4 campaign; retired with the other historical results.",
+      "recover_from_commit": "387a237437fbc20e071508943e9208c1c27e66cb",
+      "recover_from_tag": "archive/resultados-historicos-2026-11-01"
+    },
+    {
+      "date": "2026-11-01",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "directory",
+      "path": "outputs/madrl_v3_20260627_164047/",
+      "reason": "Remaining tracked files of an earlier campaign; retired with the other historical results.",
+      "recover_from_commit": "387a237437fbc20e071508943e9208c1c27e66cb",
+      "recover_from_tag": "archive/resultados-historicos-2026-11-01"
+    },
+    {
+      "date": "2026-11-01",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "directory",
+      "path": "outputs/thesis_objective_evidence/",
+      "reason": "Objective evidence derived from earlier campaigns; retired with the other historical results.",
+      "recover_from_commit": "387a237437fbc20e071508943e9208c1c27e66cb",
+      "recover_from_tag": "archive/resultados-historicos-2026-11-01"
+    },
+    {
+      "date": "2026-11-01",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "directory",
+      "path": "outputs/modular_smoke/",
+      "reason": "Smoke runs made with the previous dataset identity; retired with the other historical results.",
+      "recover_from_commit": "387a237437fbc20e071508943e9208c1c27e66cb",
+      "recover_from_tag": "archive/resultados-historicos-2026-11-01"
     }
   ],
   "branch_renames": {

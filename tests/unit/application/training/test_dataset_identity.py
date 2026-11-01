@@ -33,3 +33,21 @@ def test_dataset_digest_is_the_same_on_windows_and_linux_checkouts(tmp_path):
         return root / 'schema.json'
 
     assert dataset_digest(dataset('linux', b'\n')) == dataset_digest(dataset('windows', b'\r\n'))
+
+
+def test_source_snapshot_is_the_same_on_windows_and_linux_checkouts(tmp_path):
+    # The run identity also includes the source snapshot; a CRLF checkout of the
+    # same code must not look like different code.
+    from uc3m.application.training.preflight import source_snapshot
+
+    def project(name, newline):
+        root = tmp_path / name
+        (root / 'uc3m').mkdir(parents=True)
+        (root / 'uc3m' / 'module.py').write_bytes(newline.join([b'def f():', b'    return 1', b'']))
+        (root / 'pyproject.toml').write_bytes(newline.join([b'[project]', b'name = "x"', b'']))
+        return root
+
+    assert source_snapshot(project('linux', b'\n')) == source_snapshot(project('windows', b'\r\n'))
+    changed = project('changed', b'\n')
+    (changed / 'uc3m' / 'module.py').write_bytes(b'def f():\n    return 2\n')
+    assert source_snapshot(changed) != source_snapshot(project('again', b'\n'))

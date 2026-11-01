@@ -38,6 +38,7 @@ def validate_foundation_manifests(project_root: Path) -> Dict[str, Any]:
             "closed_services_ok": False,
             "dependencies_ok": False,
             "dependency_blocker_count": 0,
+            "accepted_exception_count": 0,
             "ready": False,
             "status": "invalid_or_missing_manifest",
         }
@@ -47,6 +48,7 @@ def validate_foundation_manifests(project_root: Path) -> Dict[str, Any]:
     )
     closed_services_ok = bool(closed.get("ok")) and critical_count == 0
     blocker_count = len(dependencies["blockers"])
+    exception_count = len(dependencies.get("accepted_exceptions") or [])
     dependencies_ok = bool(dependencies.get("ok")) and blocker_count == 0
     ready = schemas_valid and closed_services_ok and dependencies_ok
 
@@ -56,6 +58,9 @@ def validate_foundation_manifests(project_root: Path) -> Dict[str, Any]:
         status = "blocked_closed_services_or_secrets"
     elif not dependencies_ok:
         status = "blocked_open_source_dependencies"
+    elif exception_count:
+        # An owner-accepted exception is not a verified open-source license.
+        status = "verified_with_exceptions"
     else:
         status = "verified"
 
@@ -64,6 +69,7 @@ def validate_foundation_manifests(project_root: Path) -> Dict[str, Any]:
         "closed_services_ok": closed_services_ok,
         "dependencies_ok": dependencies_ok,
         "dependency_blocker_count": blocker_count,
+        "accepted_exception_count": exception_count,
         "ready": ready,
         "status": status,
     }

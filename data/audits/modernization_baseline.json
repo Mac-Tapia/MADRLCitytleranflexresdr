@@ -19,7 +19,7 @@
   },
   "repository": {
     "branch": "fix/madrl-traceability-docs",
-    "head_commit": "a8b60e23acfa094d7e563fd3b93db3aef886f5f1",
+    "head_commit": "51095ef153b9863de63b3ad2cf99f05b54a7c3da",
     "origin": "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git",
     "root": "D:/MADRLCitytleranflexresdr"
   },
@@ -79,10 +79,10 @@
   "working_tree": {
     "conflicted": 0,
     "renamed": 0,
-    "total": 18,
+    "total": 10,
     "tracked_added": 0,
     "tracked_deleted": 0,
-    "tracked_modified": 11,
-    "untracked": 7
+    "tracked_modified": 8,
+    "untracked": 2
   }
 }

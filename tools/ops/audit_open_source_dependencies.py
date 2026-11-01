@@ -6,6 +6,7 @@ import argparse
 import configparser
 import json
 import re
+from datetime import date
 from importlib import metadata
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
@@ -117,6 +118,12 @@ def _load_roles(roles_path: Path) -> Mapping[str, Any]:
     return payload.get("submodules") or {}
 
 
+def _load_exceptions(policy_path: Path) -> Dict[str, Mapping[str, Any]]:
+    """Owner-approved, expiring exceptions keyed by submodule path."""
+    payload = yaml.safe_load(policy_path.read_text(encoding="utf-8")) or {}
+    return {str(entry["name"]): entry for entry in payload.get("exceptions") or []}
+
+
 def _local_license(path: Path) -> Optional[Dict[str, str]]:
     candidates = sorted(
         candidate
@@ -135,8 +142,14 @@ def audit_dependencies(
     registry_path: Path,
     roles_path: Optional[Path] = None,
     package_resolver: Optional[PackageResolver] = None,
+    policy_path: Optional[Path] = None,
+    today: Optional[date] = None,
 ) -> Dict[str, Any]:
-    policy = OpenSourcePolicy.from_yaml(POLICY_PATH)
+    policy_file = policy_path or POLICY_PATH
+    policy = OpenSourcePolicy.from_yaml(policy_file)
+    exceptions = _load_exceptions(policy_file)
+    today = today or date.today()
+    accepted_exceptions: List[Dict[str, str]] = []
     roles = _load_roles(roles_path or project_root / ROLES_RELATIVE_PATH)
     submodule_declarations = _parse_submodules(project_root)
     submodule_urls = {_normalize_url(record["url"]) for record in submodule_declarations}
@@ -161,18 +174,33 @@ def audit_dependencies(
             record.update(license_record)
             policy_status, reason = decision.status, ";".join(decision.reasons) or None
         record.update(policy_status=policy_status, reason=reason)
+        exception = exceptions.get(declaration["path"])
         if role == "reference_only":
             record["status"] = "reference_only"
+        elif policy_status == "allow":
+            record["status"] = policy_status
+        elif exception and date.fromisoformat(str(exception["expires_on"])) >= today:
+            # Reported, never counted as a verified license.
+            record["status"] = "accepted_exception"
+            accepted_exceptions.append(
+                {
+                    "name": declaration["path"],
+                    "reason": reason or policy_status,
+                    **{
+                        key: str(exception[key])
+                        for key in ("scope", "approved_by", "approved_on", "expires_on")
+                    },
+                }
+            )
         else:
             record["status"] = policy_status
-            if policy_status != "allow":
-                blockers.append(
-                    {
-                        "kind": "submodule",
-                        "name": declaration["name"],
-                        "reason": reason or policy_status,
-                    }
-                )
+            blockers.append(
+                {
+                    "kind": "submodule",
+                    "name": declaration["name"],
+                    "reason": "license_exception_expired" if exception else reason or policy_status,
+                }
+            )
         submodules.append(record)
 
     registry: Mapping[str, Any] = yaml.safe_load(registry_path.read_text(encoding="utf-8")) or {}
@@ -234,6 +262,7 @@ def audit_dependencies(
         "submodules": submodules,
         "research_repositories": research_records,
         "blockers": blockers,
+        "accepted_exceptions": accepted_exceptions,
     }
 
 

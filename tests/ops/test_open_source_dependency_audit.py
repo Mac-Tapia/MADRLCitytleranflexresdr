@@ -52,6 +52,82 @@ def test_reference_only_copyleft_submodule_is_recorded_without_blocking(
     assert manifest["blockers"] == []
 
 
+def _unlicensed_runtime_fixture(tmp_path: Path, expires_on: str) -> tuple:
+    (tmp_path / "pyproject.toml").write_text(
+        '[project]\nname = "fixture"\ndependencies = []\n', encoding="utf-8"
+    )
+    (tmp_path / ".gitmodules").write_text(
+        '[submodule "external/backend"]\n'
+        "\tpath = external/backend\n"
+        "\turl = https://github.com/example/backend.git\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "external/backend").mkdir(parents=True)
+    registry = tmp_path / "registry.yaml"
+    registry.write_text("repositories: []\n", encoding="utf-8")
+    roles = tmp_path / "roles.yaml"
+    roles.write_text(
+        'schema_version: "1.0"\nsubmodules:\n  external/backend:\n    role: runtime\n'
+        "    evidence: fixture\n",
+        encoding="utf-8",
+    )
+    policy = tmp_path / "policy.yaml"
+    policy.write_text(
+        'schema_version: "1.0"\nallow: [MIT]\nreview: []\nblock: [NOASSERTION]\n'
+        "exceptions:\n"
+        "  - name: external/backend\n"
+        "    reason: no upstream license\n"
+        "    scope: local thesis reproduction only\n"
+        "    approved_by: owner\n"
+        "    approved_on: '2026-11-01'\n"
+        f"    expires_on: '{expires_on}'\n",
+        encoding="utf-8",
+    )
+    return registry, roles, policy
+
+
+def test_unexpired_exception_is_reported_without_blocking(tmp_path: Path) -> None:
+    from datetime import date
+
+    registry, roles, policy = _unlicensed_runtime_fixture(tmp_path, "2027-06-30")
+
+    manifest = audit_dependencies(
+        tmp_path, registry, roles_path=roles, policy_path=policy, today=date(2026, 11, 1)
+    )
+
+    record = manifest["submodules"][0]
+    assert record["status"] == "accepted_exception"
+    assert record["policy_status"] == "blocked"
+    assert record["reason"] == "missing_local_license"
+    assert manifest["blockers"] == []
+    assert manifest["accepted_exceptions"] == [
+        {
+            "name": "external/backend",
+            "reason": "missing_local_license",
+            "scope": "local thesis reproduction only",
+            "approved_by": "owner",
+            "approved_on": "2026-11-01",
+            "expires_on": "2027-06-30",
+        }
+    ]
+
+
+def test_expired_exception_blocks_again(tmp_path: Path) -> None:
+    from datetime import date
+
+    registry, roles, policy = _unlicensed_runtime_fixture(tmp_path, "2026-10-31")
+
+    manifest = audit_dependencies(
+        tmp_path, registry, roles_path=roles, policy_path=policy, today=date(2026, 11, 1)
+    )
+
+    assert manifest["submodules"][0]["status"] == "blocked"
+    assert manifest["blockers"] == [
+        {"kind": "submodule", "name": "external/backend", "reason": "license_exception_expired"}
+    ]
+    assert manifest["accepted_exceptions"] == []
+
+
 def test_runtime_copyleft_submodule_still_blocks(tmp_path: Path) -> None:
     registry = _fixture_with_submodule(tmp_path, "GNU General Public License v3")
 

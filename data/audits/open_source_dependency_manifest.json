@@ -1,22 +1,32 @@
 {
-  "blockers": [
+  "accepted_exceptions": [
     {
-      "kind": "submodule",
+      "approved_by": "Mac Tapia Ccoyso",
+      "approved_on": "2026-11-01",
+      "expires_on": "2027-06-30",
       "name": "external/HARL",
-      "reason": "missing_local_license"
+      "reason": "missing_local_license",
+      "scope": "Reproducción local de la tesis; sin redistribución fuera del fork de GitHub."
     },
     {
-      "kind": "submodule",
+      "approved_by": "Mac Tapia Ccoyso",
+      "approved_on": "2026-11-01",
+      "expires_on": "2027-06-30",
       "name": "external/MARL",
-      "reason": "missing_local_license"
+      "reason": "missing_local_license",
+      "scope": "Reproducción local de la tesis; sin redistribución fuera del fork de GitHub."
     },
     {
-      "kind": "submodule",
+      "approved_by": "Mac Tapia Ccoyso",
+      "approved_on": "2026-11-01",
+      "expires_on": "2027-06-30",
       "name": "external/MATD3implementation",
-      "reason": "missing_local_license"
+      "reason": "missing_local_license",
+      "scope": "Reproducción local de la tesis; sin redistribución fuera del fork de GitHub."
     }
   ],
-  "ok": false,
+  "blockers": [],
+  "ok": true,
   "packages": [
     {
       "declaration": "numpy>=1.23.5,<2.0",
@@ -124,7 +134,7 @@
       "policy_status": "blocked",
       "reason": "missing_local_license",
       "role": "runtime",
-      "status": "blocked",
+      "status": "accepted_exception",
       "url": "https://github.com/Mac-Tapia/HARL.git"
     },
     {
@@ -144,7 +154,7 @@
       "policy_status": "blocked",
       "reason": "missing_local_license",
       "role": "runtime",
-      "status": "blocked",
+      "status": "accepted_exception",
       "url": "https://github.com/Mac-Tapia/MARL.git"
     },
     {
@@ -164,7 +174,7 @@
       "policy_status": "blocked",
       "reason": "missing_local_license",
       "role": "runtime",
-      "status": "blocked",
+      "status": "accepted_exception",
       "url": "https://github.com/Mac-Tapia/MATD3implementation.git"
     },
     {

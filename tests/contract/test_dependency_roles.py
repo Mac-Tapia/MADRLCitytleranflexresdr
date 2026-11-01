@@ -30,6 +30,25 @@ def test_every_submodule_has_one_declared_role_with_evidence() -> None:
         assert str(entry.get("evidence", "")).strip(), path
 
 
+def test_distributed_images_exclude_external_backends() -> None:
+    # The license exception for unlicensed backends covers local reproduction only;
+    # images pushed to a registry must not contain external/ code.
+    distributed = [
+        PROJECT_ROOT / "Dockerfile",
+        PROJECT_ROOT / "deploy/inference/Dockerfile",
+        PROJECT_ROOT / "deploy/plant-adapter/Dockerfile",
+        PROJECT_ROOT / "deploy/dashboard/Dockerfile",
+    ]
+    copy_line = re.compile(r"^\s*(?:COPY|ADD)\s+(.+)$", re.IGNORECASE | re.MULTILINE)
+    offending = []
+    for dockerfile in distributed:
+        for sources in copy_line.findall(dockerfile.read_text(encoding="utf-8")):
+            parts = [p for p in sources.split() if not p.startswith("--")][:-1]
+            if any(p in {".", "./"} or p.startswith(("external", "./external")) for p in parts):
+                offending.append(f"{dockerfile.relative_to(PROJECT_ROOT).as_posix()}: {sources}")
+    assert offending == []
+
+
 def test_reference_only_submodules_are_not_imported_by_runtime_code() -> None:
     reference_only = [path for path, entry in _roles().items() if entry["role"] == "reference_only"]
     patterns = []

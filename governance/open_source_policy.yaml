@@ -31,3 +31,28 @@ constraints:
   saas_required: block
   missing_license: block
   copyleft: review
+
+# Excepciones aprobadas por el propietario (SPEC-001, opción C). No convierten el
+# código en abierto: la puerta las informa como verified_with_exceptions y vuelven
+# a bloquear al vencer. Pedidos de licencia: docs/research/license_requests.md.
+# Alcance común: reproducir localmente los experimentos de la tesis; no incluir
+# este código en paquetes ni en imágenes publicadas (tests/contract/test_dependency_roles.py).
+exceptions:
+  - name: external/HARL
+    reason: "Sin licencia en origen (PKU-MARL/HARL); backend HAPPO de los resultados v4."
+    scope: "Reproducción local de la tesis; sin redistribución fuera del fork de GitHub."
+    approved_by: "Mac Tapia Ccoyso"
+    approved_on: "2026-11-01"
+    expires_on: "2027-06-30"
+  - name: external/MARL
+    reason: "Sin licencia en origen (puyuan1996/MARL); backend MASAC de los resultados v4."
+    scope: "Reproducción local de la tesis; sin redistribución fuera del fork de GitHub."
+    approved_by: "Mac Tapia Ccoyso"
+    approved_on: "2026-11-01"
+    expires_on: "2027-06-30"
+  - name: external/MATD3implementation
+    reason: "Sin licencia en origen (JohannesAck/MATD3implementation); backend MATD3 de los resultados v4."
+    scope: "Reproducción local de la tesis; sin redistribución fuera del fork de GitHub."
+    approved_by: "Mac Tapia Ccoyso"
+    approved_on: "2026-11-01"
+    expires_on: "2027-06-30"

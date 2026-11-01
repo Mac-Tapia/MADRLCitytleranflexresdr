@@ -32,8 +32,8 @@ cells = []
 # ════════════════════════════════════════════════════════════════════════════
 # SECCIÓN 0 — PORTADA
 # ════════════════════════════════════════════════════════════════════════════
-COLAB_NOTEBOOK_BRANCH = "codex/fix-madrl-traceability-docs"
-PARENT_REPO_BRANCH = "codex/fix-madrl-traceability-docs"
+COLAB_NOTEBOOK_BRANCH = "fix/madrl-traceability-docs"
+PARENT_REPO_BRANCH = "fix/madrl-traceability-docs"
 COLAB_NOTEBOOK_PATH = "examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb"
 
 COLAB_OPEN_URL = (

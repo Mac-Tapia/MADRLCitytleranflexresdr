@@ -54,7 +54,7 @@ Si se parte de cero en una maquina nueva:
 
 ```powershell
 cd D:\
-git clone --recurse-submodules --branch codex/fix-madrl-traceability-docs https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
+git clone --recurse-submodules --branch fix/madrl-traceability-docs https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
 cd D:\MADRLCitytleranflexresdr
 powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
 ```
@@ -128,7 +128,7 @@ Ejecutar en orden:
 Puntos criticos:
 
 - `1.1` debe detectar A100.
-- `1.2` clona la rama `codex/fix-madrl-traceability-docs` en
+- `1.2` clona la rama `fix/madrl-traceability-docs` en
   `/content/MADRLCitytleranflexresdr`.
 - `1.2b` valida submodulos, dataset y que `CityLearn` coincida con el commit
   fijado por el repo padre.

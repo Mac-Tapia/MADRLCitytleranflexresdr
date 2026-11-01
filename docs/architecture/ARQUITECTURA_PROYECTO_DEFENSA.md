@@ -474,7 +474,7 @@ flowchart TD
 flowchart LR
     subgraph COLAB["Colab A100 Pro+ (canal oficial de entrenamiento)"]
         direction TB
-        BADGE["Open in Colab\nMac-Tapia/CityLearn\ncodex/iquitos-distillation-madrl-docs"]
+        BADGE["Open in Colab\nMac-Tapia/CityLearn\nfix/iquitos-distillation-madrl-docs"]
         SYNC["Celda 1.2 hard sync\n/content/MADRLCitytleranflexresdr"]
         LAUNCH_C["colab_a100_official_launcher.py\ntwo_phase_happo_masac_v3\n50 ep · 12 jobs"]
         DRIVE["Google Drive outputs\nMADRLCitytleranflexresdr/outputs"]
@@ -493,8 +493,8 @@ flowchart LR
     end
 
     subgraph GIT["Repositorio GitHub"]
-        REPO_P["Mac-Tapia/MADRLCitytleranflexresdr\ncodex/fix-madrl-traceability-docs"]
-        REPO_CL["Mac-Tapia/CityLearn\ncodex/iquitos-distillation-madrl-docs"]
+        REPO_P["Mac-Tapia/MADRLCitytleranflexresdr\nfix/madrl-traceability-docs"]
+        REPO_CL["Mac-Tapia/CityLearn\nfix/iquitos-distillation-madrl-docs"]
         REPO_P --- REPO_CL
     end
 

@@ -27,8 +27,8 @@ REPLACEMENTS = [
         "Ejecuta celda 1.2 (checkout -B CityLearn).",
     ),
     (
-        "#   CityLearn        → github.com/Mac-Tapia/CityLearn           (codex/iquitos-distillation-madrl-docs)",
-        "#   CityLearn        → Mac-Tapia/CityLearn (Colab rama viva: codex/iquitos-distillation-madrl-docs; .gitmodules pin: citylearn-v3-madrl)",
+        "#   CityLearn        → github.com/Mac-Tapia/CityLearn           (fix/iquitos-distillation-madrl-docs)",
+        "#   CityLearn        → Mac-Tapia/CityLearn (Colab rama viva: fix/iquitos-distillation-madrl-docs; .gitmodules pin: citylearn-v3-madrl)",
     ),
 ]
 

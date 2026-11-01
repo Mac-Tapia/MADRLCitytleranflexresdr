@@ -39,7 +39,7 @@ import os, subprocess
 from pathlib import Path
 
 REPO_URL    = 'https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git'
-REPO_BRANCH = 'codex/fix-madrl-traceability-docs'
+REPO_BRANCH = 'fix/madrl-traceability-docs'
 REPO        = '/content/MADRLCitytleranflexresdr'
 
 

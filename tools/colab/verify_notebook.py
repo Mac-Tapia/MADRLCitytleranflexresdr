@@ -63,8 +63,8 @@ check("MIN_RAM_GIB = 64.0 (buffers replay CPU)", "MIN_RAM_GIB" in cell3 and "64.
 check("Diagnostico A100 Standard vs High-RAM", "A100 *Standard*" in cell3)
 
 cell17 = cell("c06557c1")
-check("REPO_BRANCH = codex/fix-madrl-traceability-docs", "REPO_BRANCH      = 'codex/fix-madrl-traceability-docs'" in cell17)
-check("CITYLEARN_BRANCH = codex/iquitos-distillation-madrl-docs", "CITYLEARN_BRANCH = 'codex/iquitos-distillation-madrl-docs'" in cell17)
+check("REPO_BRANCH = fix/madrl-traceability-docs", "REPO_BRANCH      = 'fix/madrl-traceability-docs'" in cell17)
+check("CITYLEARN_BRANCH = fix/iquitos-distillation-madrl-docs", "CITYLEARN_BRANCH = 'fix/iquitos-distillation-madrl-docs'" in cell17)
 check("Clonado Colab usa --branch REPO_BRANCH", "'--branch', REPO_BRANCH" in cell17)
 check("CityLearn usa checkout -B (no detached HEAD)", "checkout', '-B', CITYLEARN_BRANCH" in cell17)
 check("Submodulos se actualizan al commit fijado", "submodule', 'update', '--init', '--recursive'" in cell17)

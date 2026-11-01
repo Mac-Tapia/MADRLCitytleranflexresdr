@@ -87,8 +87,8 @@ def main() -> int:
     nb = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
     src = "\n".join("".join(c.get("source", [])) for c in nb["cells"])
     for needle in (
-        "REPO_BRANCH      = 'codex/fix-madrl-traceability-docs'",
-        "CITYLEARN_BRANCH = 'codex/iquitos-distillation-madrl-docs'",
+        "REPO_BRANCH      = 'fix/madrl-traceability-docs'",
+        "CITYLEARN_BRANCH = 'fix/iquitos-distillation-madrl-docs'",
         "EXECUTION_MODE = 'two_phase_happo_masac'",
         "verify_two_phase_protocol()",
         "'--execution-mode', 'two_phase_happo_masac'",

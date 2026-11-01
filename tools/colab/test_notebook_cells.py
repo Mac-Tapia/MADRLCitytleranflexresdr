@@ -107,8 +107,8 @@ assert not missing_cells, f"Faltan celdas críticas: {missing_cells}"
 positions = [cell_ids.index(cell_id) for cell_id in required_order]
 assert positions == sorted(positions), f"Orden crítico de celdas incorrecto: {positions}"
 
-assert "REPO_BRANCH      = 'codex/fix-madrl-traceability-docs'" in code_src, \
-    "Notebook no fija la rama codex/fix-madrl-traceability-docs del repo padre para Colab"
+assert "REPO_BRANCH      = 'fix/madrl-traceability-docs'" in code_src, \
+    "Notebook no fija la rama fix/madrl-traceability-docs del repo padre para Colab"
 assert "'clone'," in code_src and "'--branch', REPO_BRANCH" in code_src, \
     "Clone de Colab no usa --branch REPO_BRANCH"
 assert "git_check(['checkout', '-B', CITYLEARN_BRANCH" in code_src, \

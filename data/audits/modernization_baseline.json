@@ -1,0 +1,88 @@
+{
+  "canonical_files": {
+    "README.md": {
+      "sha256": "b103171f7993951dae9c180e1a948af7ea09c80cc791f32cda99f0514b2ddeb8",
+      "size_bytes": 43488
+    },
+    "docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md": {
+      "sha256": "94ab87da683498103b2c8440f585df30e53d3d8ec6c544dbda2d1ef84316c1bf",
+      "size_bytes": 7807
+    },
+    "docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md": {
+      "sha256": "492d82e5be75faa13d4526d3c24e48496facef77b3d2774e38dd2fb126f2a5f1",
+      "size_bytes": 25057
+    },
+    "pyproject.toml": {
+      "sha256": "6e51d97b8d8735ac7e49c92e72a37e5f4d4ae96c421a62363f787bf164e27119",
+      "size_bytes": 3298
+    }
+  },
+  "repository": {
+    "branch": "codex/fix-madrl-traceability-docs",
+    "head_commit": "44ff08b32f7321d6e98c8ffe8677d7d416a1f14f",
+    "origin": "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git",
+    "root": "D:/MADRLCitytleranflexresdr"
+  },
+  "schema_version": "1.0",
+  "submodules": [
+    {
+      "commit": "c2085a39f7404c9f60ee289a736581c289bf571a",
+      "path": "CityLearn",
+      "state": " "
+    },
+    {
+      "commit": "591d1125882c5a9552c01dea9e1733762f4ff591",
+      "path": "external/HARL",
+      "state": " "
+    },
+    {
+      "commit": "6c1abbe2ba53268eaf2178bebd946af0e49c7d43",
+      "path": "external/HARL/harl/envs/lag/JSBSim/data",
+      "state": "-"
+    },
+    {
+      "commit": "03e3c08419c960e9b9b6926540011e2f46774c97",
+      "path": "external/MAAC",
+      "state": " "
+    },
+    {
+      "commit": "d63d7145e4c7754babd53cd577c495d87817aadb",
+      "path": "external/MARL",
+      "state": " "
+    },
+    {
+      "commit": "51f196cd1627d655c9326730460d520d1b7df21e",
+      "path": "external/MARLlib",
+      "state": " "
+    },
+    {
+      "commit": "8e9ebb8f665a661763463b41bafa328c6cd338a5",
+      "path": "external/MATD3implementation",
+      "state": " "
+    },
+    {
+      "commit": "c9786b82093bf6e9f718c41119f45d14c85d2f9c",
+      "path": "external/MicroGrids",
+      "state": " "
+    },
+    {
+      "commit": "fed967856f8eeb1820ca403bbfd28ba33700c116",
+      "path": "external/evcc",
+      "state": " "
+    },
+    {
+      "commit": "60b1bb769ee0a5d3bd2994484de78082959e8953",
+      "path": "external/prosumpy",
+      "state": " "
+    }
+  ],
+  "working_tree": {
+    "conflicted": 0,
+    "renamed": 0,
+    "total": 260,
+    "tracked_added": 0,
+    "tracked_deleted": 1,
+    "tracked_modified": 45,
+    "untracked": 214
+  }
+}

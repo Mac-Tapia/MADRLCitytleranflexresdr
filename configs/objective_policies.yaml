@@ -1,0 +1,24 @@
+schema_version: 1
+axis_order:
+  - flexibility
+  - co2_emissions
+  - energy_cost
+policies:
+  E1:
+    method: compensatory_hierarchical_weighted_sum
+    weights:
+      flexibility: 0.60
+      co2_emissions: 0.15
+      energy_cost: 0.25
+  E2:
+    method: compensatory_hierarchical_weighted_sum
+    weights:
+      flexibility: 0.25
+      co2_emissions: 0.60
+      energy_cost: 0.15
+  E3:
+    method: compensatory_hierarchical_weighted_sum
+    weights:
+      flexibility: 0.15
+      co2_emissions: 0.25
+      energy_cost: 0.60

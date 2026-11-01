@@ -1,0 +1,80 @@
+{
+  "active_blockers": [],
+  "canonical_policy_fingerprints": {
+    "E1": "74df0095ddc4734897c836b84645862c12ba32d5766b513c5928854e4d481afd",
+    "E2": "2794921cfdc0fcee78f2fd8234e6742507820d92469b1462edc35ce2ef865004",
+    "E3": "2c47f2e6a80de234727e9258a5ee88f2a7b849559735ee8a4e1e0d8d3731e3b8"
+  },
+  "excluded_dependencies": [
+    "CityLearn",
+    "external"
+  ],
+  "legacy_findings": [],
+  "ok": true,
+  "schema_version": "1.0",
+  "thesis_findings": [
+    {
+      "classification": "thesis_review",
+      "line": 47,
+      "path": "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E1"
+    },
+    {
+      "classification": "thesis_review",
+      "line": 48,
+      "path": "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E2"
+    },
+    {
+      "classification": "thesis_review",
+      "line": 49,
+      "path": "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E3"
+    },
+    {
+      "classification": "thesis_review",
+      "line": 17,
+      "path": "docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E1"
+    },
+    {
+      "classification": "thesis_review",
+      "line": 18,
+      "path": "docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E2"
+    },
+    {
+      "classification": "thesis_review",
+      "line": 19,
+      "path": "docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E3"
+    },
+    {
+      "classification": "thesis_review",
+      "line": 33,
+      "path": "docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E1"
+    },
+    {
+      "classification": "thesis_review",
+      "line": 34,
+      "path": "docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E2"
+    },
+    {
+      "classification": "thesis_review",
+      "line": 35,
+      "path": "docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md",
+      "reason": "obsolete_objective_vector",
+      "scenario_id": "E3"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+schema_version: "1.0"
+repositories:
+  - name: Spec Kit
+    url: https://github.com/github/spec-kit.git
+    candidate_commit: null
+    license_spdx: MIT
+    license_source: https://github.com/github/spec-kit/blob/main/LICENSE
+    article: null
+    decision: candidate
+  - name: MO-Gymnasium
+    url: https://github.com/Farama-Foundation/MO-Gymnasium.git
+    candidate_commit: null
+    license_spdx: MIT
+    license_source: https://github.com/Farama-Foundation/MO-Gymnasium/blob/main/LICENSE
+    article: https://doi.org/10.48550/arXiv.2308.01551
+    decision: candidate
+  - name: MORL-Baselines
+    url: https://github.com/LucasAlegre/morl-baselines.git
+    candidate_commit: null
+    license_spdx: MIT
+    license_source: https://github.com/LucasAlegre/morl-baselines/blob/main/LICENSE
+    article: https://jmlr.org/papers/v25/23-0677.html
+    decision: candidate
+  - name: rliable
+    url: https://github.com/google-research/rliable.git
+    candidate_commit: null
+    license_spdx: Apache-2.0
+    license_source: https://github.com/google-research/rliable/blob/master/LICENSE
+    article: https://papers.nips.cc/paper/2021/hash/f514cec81cb148559cf475e7426eed5e-Abstract.html
+    decision: candidate
+  - name: C-MORL
+    url: https://github.com/optimization-for-data-driven-science/C-MORL.git
+    candidate_commit: null
+    license_spdx: null
+    license_source: null
+    article: https://arxiv.org/abs/2403.01357
+    decision: reference_only

@@ -15,6 +15,7 @@ from uc3m.multicriteria.ahp import (
 from uc3m.multicriteria.artifacts import (
     ILLUSTRATIVE_DECISION_MATRIX,
     load_decision_matrix,
+    pareto_quality_from_decision_matrix,
 )
 from uc3m.multicriteria.consolidation import (
     decision_matrix_frame,
@@ -32,7 +33,6 @@ from uc3m.multicriteria.stats_tests import (
     significance_gate_top_metrics,
 )
 from uc3m.multicriteria.topsis import (
-    pareto_nondominated,
     topsis_rank,
     weight_sweep_sensitivity,
 )
@@ -97,11 +97,8 @@ def run_selection_pipeline(
         n_samples=sensitivity_samples,
         criteria_kind=criteria_kind,
     )
-    pareto_front = pareto_nondominated(
-        decision_matrix,
-        minimize=("C1",),
-        maximize=("C2", "C3"),
-    )
+    pareto_quality = pareto_quality_from_decision_matrix(decision_matrix)
+    pareto_front = pareto_quality["front"]
     topsis_winner = str(topsis["ranking"][0]["algorithm"])
     topsis_second = (
         str(topsis["ranking"][1]["algorithm"]) if len(topsis["ranking"]) > 1 else topsis_winner
@@ -202,6 +199,7 @@ def run_selection_pipeline(
             "topsis_ranking": topsis["ranking"],
             "ahp_ranking": ahp_only["ranking"],
             "pareto_front": pareto_front,
+            "pareto_quality": pareto_quality,
             "ranking_consistency": ranking_consistency,
             "sensitivity": {
                 "majority_winner": sensitivity.get("majority_winner"),
@@ -235,6 +233,7 @@ def run_selection_pipeline(
         "ahp_only": ahp_only,
         "sensitivity": sensitivity,
         "pareto_front": pareto_front,
+        "pareto_quality": pareto_quality,
         "ranking_consistency": ranking_consistency,
         "stats": stats_block,
         "source": loaded["source"],

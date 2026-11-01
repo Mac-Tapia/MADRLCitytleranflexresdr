@@ -9,6 +9,12 @@ from typing import Any, Dict, Mapping, Optional, Sequence, Tuple
 import numpy as np
 import pandas as pd
 
+from uc3m.domain.pareto import (
+    expected_utility,
+    hypervolume_3d,
+    non_dominated_indices,
+    sparsity,
+)
 from uc3m.multicriteria.criteria import ALGORITHMS, CRITERION_IDS
 
 # Section 3.2 illustrative decision matrix (methodology text).
@@ -34,6 +40,66 @@ ILLUSTRATIVE_SEED_SPREAD: Dict[str, Dict[str, Tuple[float, ...]]] = {
         "MATD3": (3460, 3495, 3475, 3500, 3480),
     },
 }
+
+
+def pareto_quality_from_decision_matrix(
+    decision_matrix: Mapping[str, Mapping[str, float]],
+) -> Dict[str, Any]:
+    """Compute scale-independent Pareto metrics for cost, CO2, and flexibility."""
+
+    algorithms = list(decision_matrix)
+    if not algorithms:
+        raise ValueError("Pareto quality requires at least one algorithm")
+    raw = np.asarray(
+        [
+            [
+                decision_matrix[algorithm]["C1"],
+                decision_matrix[algorithm]["C2"],
+                decision_matrix[algorithm]["C3"],
+            ]
+            for algorithm in algorithms
+        ],
+        dtype=float,
+    )
+    if not np.all(np.isfinite(raw)):
+        raise ValueError("Pareto criteria must be finite")
+
+    normalized = np.empty_like(raw)
+    for axis in range(3):
+        values = raw[:, axis]
+        minimum = float(np.min(values))
+        maximum = float(np.max(values))
+        span = maximum - minimum
+        if np.isclose(span, 0.0):
+            normalized[:, axis] = 1.0
+        elif axis == 0:
+            normalized[:, axis] = (maximum - values) / span
+        else:
+            normalized[:, axis] = (values - minimum) / span
+
+    maximize = (True, True, True)
+    front_indices = non_dominated_indices(normalized.tolist(), maximize=maximize)
+    front_points = normalized[list(front_indices)]
+    return {
+        "objective_order": ["C1_cost", "C2_co2", "C3_flexibility"],
+        "orientation": ["min", "max", "max"],
+        "normalization": "benefit_minmax_with_constant_axis_equal_to_one",
+        "reference_point": [0.0, 0.0, 0.0],
+        "front": [algorithms[index] for index in front_indices],
+        "hypervolume_3d": hypervolume_3d(
+            normalized.tolist(), reference=[0.0, 0.0, 0.0], maximize=maximize
+        ),
+        "expected_utility_equal_weights": expected_utility(
+            normalized.tolist(),
+            weights=[1.0 / 3.0] * 3,
+            maximize=maximize,
+        ),
+        "sparsity": sparsity(front_points.tolist()),
+        "normalized_points": {
+            algorithm: normalized[index].tolist()
+            for index, algorithm in enumerate(algorithms)
+        },
+    }
 
 
 def _repo_root() -> Path:

@@ -6,6 +6,14 @@ from multiprocessing import Process, Pipe
 from abc import ABC, abstractmethod
 
 
+class VecEnvWrapper:
+    """Compatibility stub: off-policy fork may omit gym vector wrappers but
+    legacy ``ShareVecEnv.unwrapped`` referenced this name (NameError on KPI path).
+    """
+
+    pass
+
+
 class CloudpickleWrapper(object):
     """
     Uses cloudpickle to serialize contents (otherwise multiprocessing tries to use pickle)
@@ -125,10 +133,10 @@ class ShareVecEnv(ABC):
 
     @property
     def unwrapped(self):
+        # Prefer explicit wrapper chain when present; otherwise this is the leaf vec env.
         if isinstance(self, VecEnvWrapper):
             return self.venv.unwrapped
-        else:
-            return self
+        return self
 
     def get_viewer(self):
         if self.viewer is None:

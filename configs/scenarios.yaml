@@ -1,0 +1,26 @@
+schema_version: 1
+objective_policies_file: objective_policies.yaml
+tariff_policies:
+  baseline:
+    mode: flat
+    multiplier: 1.0
+constraint_policies:
+  ev_bess_safe:
+    ev_service_enabled: true
+    bess_limits_enabled: true
+scenarios:
+  E1:
+    objective_policy: E1
+    tariff_policy: baseline
+    constraint_policy: ev_bess_safe
+    study_kind: weights_only
+  E2:
+    objective_policy: E2
+    tariff_policy: baseline
+    constraint_policy: ev_bess_safe
+    study_kind: weights_only
+  E3:
+    objective_policy: E3
+    tariff_policy: baseline
+    constraint_policy: ev_bess_safe
+    study_kind: weights_only

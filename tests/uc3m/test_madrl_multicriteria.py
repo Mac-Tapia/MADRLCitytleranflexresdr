@@ -198,6 +198,19 @@ def test_pipeline_illustrative_end_to_end(tmp_path):
     assert (tmp_path / "selection_report.json").is_file()
     assert (tmp_path / "topsis_ranking.csv").is_file()
     assert result["ranking_consistency"]["topsis_on_pareto_front"] in {True, False}
+    pareto_quality = result["pareto_quality"]
+    assert pareto_quality["objective_order"] == ["C1_cost", "C2_co2", "C3_flexibility"]
+    assert pareto_quality["orientation"] == ["min", "max", "max"]
+    assert pareto_quality["hypervolume_3d"] >= 0.0
+    assert pareto_quality["sparsity"] >= 0.0
+    assert set(pareto_quality["front"]) == set(result["pareto_front"])
+
+    report = __import__("json").loads(
+        (tmp_path / "selection_report.json").read_text(encoding="utf-8")
+    )
+    assert report["pareto_quality"]["hypervolume_3d"] == pytest.approx(
+        pareto_quality["hypervolume_3d"]
+    )
 
 
 def test_pipeline_real_only_drive_50ep_no_illustrative(tmp_path):

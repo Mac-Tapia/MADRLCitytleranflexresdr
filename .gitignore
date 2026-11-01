@@ -77,11 +77,24 @@ outputs/**/MAAC/**/checkpoint.pt
 .env.local
 .env.*.local
 
+# Credenciales y sesiones de conectores opcionales/legados
+**/credentials.json
+**/token.json
+**/storage_state.json
+**/browser-profile/
+**/browser_profile/
+**/user-data-dir/
+**/playwright/.auth/
+
 # Model weights / checkpoints — do not version (neither Git LFS nor regular blobs)
 *.pt
 *.pth
 *.ckpt
 *.safetensors
+
+# Espacios de trabajo y cachés locales de ejecución Spec-Driven
+.superpowers/sdd/
+.specify/cache/
 
 
 # Drive full_data timeseries (>100MB) — keep local, do not push to GitHub

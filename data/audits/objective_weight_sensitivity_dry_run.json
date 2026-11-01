@@ -1,0 +1,733 @@
+{
+  "algorithms": [
+    "HAPPO",
+    "MASAC",
+    "MATD3",
+    "MAAC"
+  ],
+  "config": "configs/experiments/objective_weight_sensitivity.yaml",
+  "estimated_environment_steps": 18720000000,
+  "launch_authorized": false,
+  "run_count": 3744,
+  "schema_version": "1.0",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "study_kind": "weights_only",
+  "timesteps_per_run": 5000000,
+  "treatments": [
+    {
+      "fingerprint": "74df0095ddc4734897c836b84645862c12ba32d5766b513c5928854e4d481afd",
+      "policy_id": "E1",
+      "weights": {
+        "co2_emissions": 0.15,
+        "energy_cost": 0.25,
+        "flexibility": 0.6
+      }
+    },
+    {
+      "fingerprint": "2794921cfdc0fcee78f2fd8234e6742507820d92469b1462edc35ce2ef865004",
+      "policy_id": "E2",
+      "weights": {
+        "co2_emissions": 0.6,
+        "energy_cost": 0.15,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "2c47f2e6a80de234727e9258a5ee88f2a7b849559735ee8a4e1e0d8d3731e3b8",
+      "policy_id": "E3",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.6,
+        "flexibility": 0.15
+      }
+    },
+    {
+      "fingerprint": "a29ae67357208d3ad923eb06e94d5a0b40d5711782d6cf4afb75b7299ed06787",
+      "policy_id": "SENS-015-015-070",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.7000000000000001,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "bf088d13491088117e1daebfd93e29142aa887952586c2e972ae093f05e941a3",
+      "policy_id": "SENS-015-020-065",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.65,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "11a3868cb47e1ed68780e8653eb2b5bc1089a047823d3d3df79c552e92e1f7f3",
+      "policy_id": "SENS-015-030-055",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.55,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "d88843df463eb1351389cd1886d6766f3a58a92549e0a35f36c690cba36dca37",
+      "policy_id": "SENS-015-035-050",
+      "weights": {
+        "co2_emissions": 0.35000000000000003,
+        "energy_cost": 0.5,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "353d097e8623ff7061ecc15220cdcc8bb81ba167fe3c91be5bbe2b9d39be5b16",
+      "policy_id": "SENS-015-040-045",
+      "weights": {
+        "co2_emissions": 0.4,
+        "energy_cost": 0.45,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "51ba42469353d0c1418707c00a1a2a8e6c995ce48f083e8505f29305c1c8f31a",
+      "policy_id": "SENS-015-045-040",
+      "weights": {
+        "co2_emissions": 0.45,
+        "energy_cost": 0.4,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "3dde688b637bb096b91f5c328431006bade9ed1d5d717899b72570f67c25a27e",
+      "policy_id": "SENS-015-050-035",
+      "weights": {
+        "co2_emissions": 0.5,
+        "energy_cost": 0.35000000000000003,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "9f9cbb88d8563afd70c052f1c4a7c0929aab047e19e04465766c1d09a7b72366",
+      "policy_id": "SENS-015-055-030",
+      "weights": {
+        "co2_emissions": 0.55,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "1ed4eab8366072e4889121c89bdee00e0a2fb941f80ae41e7197b435bea27f30",
+      "policy_id": "SENS-015-060-025",
+      "weights": {
+        "co2_emissions": 0.6000000000000001,
+        "energy_cost": 0.25,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "cd5b9a8a0302e431029fc19d31025a0e1a3268fd9c1a56f2d3c235502ab40152",
+      "policy_id": "SENS-015-065-020",
+      "weights": {
+        "co2_emissions": 0.65,
+        "energy_cost": 0.2,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "34246db256776d05661908951cf4532906af62174fa22df0e7ed9e574d13466a",
+      "policy_id": "SENS-015-070-015",
+      "weights": {
+        "co2_emissions": 0.7000000000000001,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.15000000000000002
+      }
+    },
+    {
+      "fingerprint": "e37dc090ea7017183cf0c6f1df26a64ca189f00476703fbd56d82b014fc3f5ca",
+      "policy_id": "SENS-020-015-065",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.65,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "bef743838176ef4dd85a57d2a1dfae75c780910e0a968e97f5b3e6e8e67658ca",
+      "policy_id": "SENS-020-020-060",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.6000000000000001,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "c4907418ffd7d92814011420879a5c00ee973bd904d62d8b31375a6a98e9ac30",
+      "policy_id": "SENS-020-025-055",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.55,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "481ec06485a61edf01508a9c21fbfd27f7b4d719b473c684001533f28519d5e1",
+      "policy_id": "SENS-020-030-050",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.5,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "129af78816a307945058ddf4b456bd081fe20b95b2b05f56ea88f4be6320aadf",
+      "policy_id": "SENS-020-035-045",
+      "weights": {
+        "co2_emissions": 0.35000000000000003,
+        "energy_cost": 0.45,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "1a15dd6f595f70e503baa21aa37fa8d05db34b6f4dc2814e1febb670255ef42f",
+      "policy_id": "SENS-020-040-040",
+      "weights": {
+        "co2_emissions": 0.4,
+        "energy_cost": 0.4,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "0842733e5858397c8d75e0f123441d8fa84b8fb7e645b22335f339e1223b4f6a",
+      "policy_id": "SENS-020-045-035",
+      "weights": {
+        "co2_emissions": 0.45,
+        "energy_cost": 0.35000000000000003,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "17e1234773aa283212b65a58239b4a5e143cba284597adb1663b8dfcedd93355",
+      "policy_id": "SENS-020-050-030",
+      "weights": {
+        "co2_emissions": 0.5,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "017a5159e3cf9b537f208b17fbe6cd9503326282dba5d17244adff3ca7d791db",
+      "policy_id": "SENS-020-055-025",
+      "weights": {
+        "co2_emissions": 0.55,
+        "energy_cost": 0.25,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "3ed76ad20c45d5e77d346d80c16382a2ccc0e630368e735bca6da51259f4501b",
+      "policy_id": "SENS-020-060-020",
+      "weights": {
+        "co2_emissions": 0.6000000000000001,
+        "energy_cost": 0.2,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "ede066cc862c379dfcb95290321741ebd7f81b73dff7c8cdb3bfcae52543a6dd",
+      "policy_id": "SENS-020-065-015",
+      "weights": {
+        "co2_emissions": 0.65,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.2
+      }
+    },
+    {
+      "fingerprint": "e12e2862e206bcaa4e7245c9b9b11af79fc1ecc250afcffb00c970f44afcf4af",
+      "policy_id": "SENS-025-015-060",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.6000000000000001,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "f747febbb06a41a8cc537ed35376ecb60c1bf31fa9cc59947a399a9dad7279a7",
+      "policy_id": "SENS-025-020-055",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.55,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "5197c34cb159d9ec673c3cd37590ca60582979371824a8b36dc8dd3881670448",
+      "policy_id": "SENS-025-025-050",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.5,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "25e57661c6e43e6c4638261a424f4d70b796951b76170daca70584438fd70e95",
+      "policy_id": "SENS-025-030-045",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.45,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "8fda4a73bbc7f535b17faa9798109ea20e373ac94ad906635ec3f34f58186ace",
+      "policy_id": "SENS-025-035-040",
+      "weights": {
+        "co2_emissions": 0.35000000000000003,
+        "energy_cost": 0.4,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "2fbe34a79b9bf7771283f129da7c8f5231551ff1e7210ba1e294a2894b613b9d",
+      "policy_id": "SENS-025-040-035",
+      "weights": {
+        "co2_emissions": 0.4,
+        "energy_cost": 0.35000000000000003,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "56cd23bc4fac27190772eef64371f46f3a0d7d9b3c4ed65d1056f0f123a0d6c3",
+      "policy_id": "SENS-025-045-030",
+      "weights": {
+        "co2_emissions": 0.45,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "303d16869bfd71eaacda03fc883a717b6eaea7f8b3dbb2d4b4bccbf15b38d643",
+      "policy_id": "SENS-025-050-025",
+      "weights": {
+        "co2_emissions": 0.5,
+        "energy_cost": 0.25,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "7d4eb201c3ba17b864a78d48ff0503898c0ed1480cf605af22afef444edd62a4",
+      "policy_id": "SENS-025-055-020",
+      "weights": {
+        "co2_emissions": 0.55,
+        "energy_cost": 0.2,
+        "flexibility": 0.25
+      }
+    },
+    {
+      "fingerprint": "71b7f3f6f2f84b77803d8290bed3e534c1f4e3d05b506f345e0690d3bec428a2",
+      "policy_id": "SENS-030-015-055",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.55,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "0c11943fa46948309db964c358bb4c5e07bf0c36805802a031d58ab8e406a3f8",
+      "policy_id": "SENS-030-020-050",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.5,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "6375a942b372eeef8b76e817533f08cf250a00bc0cff77b7e3db9bdd6ceaaddf",
+      "policy_id": "SENS-030-025-045",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.45,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "f2828b95109277f0d611e6728f46054a07a22430f470a28973159e1e2a410085",
+      "policy_id": "SENS-030-030-040",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.4,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "ea61d4ee09301242b5a0b55ce740da9f1adfb03c5b038f3de9f57e5d95dcbe07",
+      "policy_id": "SENS-030-035-035",
+      "weights": {
+        "co2_emissions": 0.35000000000000003,
+        "energy_cost": 0.35000000000000003,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "66480d2a264fa867fe97dcfbcd98c6b384eb769bfb3c769c41242103bda2b659",
+      "policy_id": "SENS-030-040-030",
+      "weights": {
+        "co2_emissions": 0.4,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "67f578bf08bea92e18c2cc15c06d7fc96fb85490c1b3ebdc27ca44015bd9ac4c",
+      "policy_id": "SENS-030-045-025",
+      "weights": {
+        "co2_emissions": 0.45,
+        "energy_cost": 0.25,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "6f0de72b3892a0689262c1aa968aba7bb9ca9d60f3abe3c647b8bab37a53bf6d",
+      "policy_id": "SENS-030-050-020",
+      "weights": {
+        "co2_emissions": 0.5,
+        "energy_cost": 0.2,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "8b9b194e02f978befd0adc90ccaacb527be953a97767a4f147a235978557db3a",
+      "policy_id": "SENS-030-055-015",
+      "weights": {
+        "co2_emissions": 0.55,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.30000000000000004
+      }
+    },
+    {
+      "fingerprint": "1f6da25166dde82fac751098cafeb405ed97620f49377112a3fea1e99c8efc79",
+      "policy_id": "SENS-035-015-050",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.5,
+        "flexibility": 0.35000000000000003
+      }
+    },
+    {
+      "fingerprint": "d6e82197958f17c07b7c9a39c7536cff91935b25e5a046be143d7819416d3fbd",
+      "policy_id": "SENS-035-020-045",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.45,
+        "flexibility": 0.35000000000000003
+      }
+    },
+    {
+      "fingerprint": "681f639b85408de0dd7576491aa49a2fb32f586cd8bf22b8713bde300f24947a",
+      "policy_id": "SENS-035-025-040",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.4,
+        "flexibility": 0.35000000000000003
+      }
+    },
+    {
+      "fingerprint": "230333fff4e0be320d9be3c56ca322a02043dc1adf52bedb43f2f33c65195d2d",
+      "policy_id": "SENS-035-030-035",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.35000000000000003,
+        "flexibility": 0.35000000000000003
+      }
+    },
+    {
+      "fingerprint": "d26387b1700271fe33251b176dc15bfe947bccc20cd4480a8568c13054f451f6",
+      "policy_id": "SENS-035-035-030",
+      "weights": {
+        "co2_emissions": 0.35000000000000003,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.35000000000000003
+      }
+    },
+    {
+      "fingerprint": "8c91d6de90612821718071dedf0a5fb4175c3f9f45d8df9aed62077d4353944f",
+      "policy_id": "SENS-035-040-025",
+      "weights": {
+        "co2_emissions": 0.4,
+        "energy_cost": 0.25,
+        "flexibility": 0.35000000000000003
+      }
+    },
+    {
+      "fingerprint": "0d0fde20b8e287c95e72054f694afa7cbe2fadeb5e94e2ae279e4f491f12b620",
+      "policy_id": "SENS-035-045-020",
+      "weights": {
+        "co2_emissions": 0.45,
+        "energy_cost": 0.2,
+        "flexibility": 0.35000000000000003
+      }
+    },
+    {
+      "fingerprint": "b752a2cc0948a84c68d435d1812dc881a3044b97b0194a13efc01e9708d11ec6",
+      "policy_id": "SENS-035-050-015",
+      "weights": {
+        "co2_emissions": 0.5,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.35000000000000003
+      }
+    },
+    {
+      "fingerprint": "176ed61aa053f9942744421989a1ef078f2d72b67982f891903fcec1917cd1a8",
+      "policy_id": "SENS-040-015-045",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.45,
+        "flexibility": 0.4
+      }
+    },
+    {
+      "fingerprint": "f65540f9f37a353742817044921d8a889fbed6f63aadd732d5d252d6d772b760",
+      "policy_id": "SENS-040-020-040",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.4,
+        "flexibility": 0.4
+      }
+    },
+    {
+      "fingerprint": "004e54a93c1ee0f62a89d99a28b42268c2e13635eab6aac8830b0e8b0bed8692",
+      "policy_id": "SENS-040-025-035",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.35000000000000003,
+        "flexibility": 0.4
+      }
+    },
+    {
+      "fingerprint": "4f6df83b30a8ded06d928af74b04e64021ebecec1642ca85e2724a75e17c5ca4",
+      "policy_id": "SENS-040-030-030",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.4
+      }
+    },
+    {
+      "fingerprint": "849486e872f5bd7c7d248b6f046d1b1d51252a023983c4224d8bf10be34a6cfa",
+      "policy_id": "SENS-040-035-025",
+      "weights": {
+        "co2_emissions": 0.35000000000000003,
+        "energy_cost": 0.25,
+        "flexibility": 0.4
+      }
+    },
+    {
+      "fingerprint": "a1a2d53b8c47464a656f764530b3824663d077691e3436d591ed4b23704a106c",
+      "policy_id": "SENS-040-040-020",
+      "weights": {
+        "co2_emissions": 0.4,
+        "energy_cost": 0.2,
+        "flexibility": 0.4
+      }
+    },
+    {
+      "fingerprint": "0f41454f58fed00e805784d6a652131aacfa1c48de3015e3b0dcef0047243496",
+      "policy_id": "SENS-040-045-015",
+      "weights": {
+        "co2_emissions": 0.45,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.4
+      }
+    },
+    {
+      "fingerprint": "c3c51500b1651f97bfc5eb907ccff4c05333766d83f1acbb3d6c7f6c69e85dae",
+      "policy_id": "SENS-045-015-040",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.4,
+        "flexibility": 0.45
+      }
+    },
+    {
+      "fingerprint": "9c171622bc244d5bc0e9c9bb7d1409ed6f25a04c2ccc3d6818f542bbc54e1d50",
+      "policy_id": "SENS-045-020-035",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.35000000000000003,
+        "flexibility": 0.45
+      }
+    },
+    {
+      "fingerprint": "400e61b8c993edc670cef5445cee97410347c910db22f9fa942551898eb8b271",
+      "policy_id": "SENS-045-025-030",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.45
+      }
+    },
+    {
+      "fingerprint": "f709aed7672e9eca42bc8d8b92ab2262135dc24acc68a9a774198f0a26726a96",
+      "policy_id": "SENS-045-030-025",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.25,
+        "flexibility": 0.45
+      }
+    },
+    {
+      "fingerprint": "301873b29757d0e127c7a194ef8959a9441d3d716a237b5c2684a89573693b28",
+      "policy_id": "SENS-045-035-020",
+      "weights": {
+        "co2_emissions": 0.35000000000000003,
+        "energy_cost": 0.2,
+        "flexibility": 0.45
+      }
+    },
+    {
+      "fingerprint": "990829d6fab09c464ae09d41869c3a35e0b48c99cb3034c893dd8327a22be807",
+      "policy_id": "SENS-045-040-015",
+      "weights": {
+        "co2_emissions": 0.4,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.45
+      }
+    },
+    {
+      "fingerprint": "7946757f975f68ca2ceee465f2f90270d821599ccfe63e0c01f2f0b8b2e63867",
+      "policy_id": "SENS-050-015-035",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.35000000000000003,
+        "flexibility": 0.5
+      }
+    },
+    {
+      "fingerprint": "ca4ae3c9ea02946edb8b8f179dce8352088c6bdb1515c4dfa81f396d8e56aacf",
+      "policy_id": "SENS-050-020-030",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.5
+      }
+    },
+    {
+      "fingerprint": "14e6008e0785be557d569cbf54554185da60f8323d00812c853695b985798776",
+      "policy_id": "SENS-050-025-025",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.25,
+        "flexibility": 0.5
+      }
+    },
+    {
+      "fingerprint": "8c527870652cb05079faf671bd8dcb32e7ed643eb3af1a42fe273e754a54b3f9",
+      "policy_id": "SENS-050-030-020",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.2,
+        "flexibility": 0.5
+      }
+    },
+    {
+      "fingerprint": "5e83f1dc00f99e0b0eb9e7a895b9ac2d2f33535e82b484dfcc763a3717f894c0",
+      "policy_id": "SENS-050-035-015",
+      "weights": {
+        "co2_emissions": 0.35000000000000003,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.5
+      }
+    },
+    {
+      "fingerprint": "3167c88f11b8bd9018b1a0c99cc62cea9394250161e179aa9036fd9b35356547",
+      "policy_id": "SENS-055-015-030",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.30000000000000004,
+        "flexibility": 0.55
+      }
+    },
+    {
+      "fingerprint": "8a02e64c9ab0ccb1e8c0956d23b2dafa158df6f5f54273a10c63d192a6bef591",
+      "policy_id": "SENS-055-020-025",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.25,
+        "flexibility": 0.55
+      }
+    },
+    {
+      "fingerprint": "1dbef7c30e8ac166148dfe5a76354540dcab7dc3e87cd9eba9d2769e488273e4",
+      "policy_id": "SENS-055-025-020",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.2,
+        "flexibility": 0.55
+      }
+    },
+    {
+      "fingerprint": "89337f054d35037e886a93c566a8c4cf60988ca1bd08e7b3b0a35f0142c592b5",
+      "policy_id": "SENS-055-030-015",
+      "weights": {
+        "co2_emissions": 0.30000000000000004,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.55
+      }
+    },
+    {
+      "fingerprint": "6e1dfc990e255c7871a22ea2fc5851458618be3b1743ee329a04aaa249ce2e53",
+      "policy_id": "SENS-060-020-020",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.2,
+        "flexibility": 0.6000000000000001
+      }
+    },
+    {
+      "fingerprint": "5393780a62de5878c1b7f5f3e16dca754aa7c506947ab3d43ebb9536cdd80e17",
+      "policy_id": "SENS-060-025-015",
+      "weights": {
+        "co2_emissions": 0.25,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.6000000000000001
+      }
+    },
+    {
+      "fingerprint": "7bf382b8738355352886d2d4bf8e9c42d0d47896f62cf576015e0c945160c6b8",
+      "policy_id": "SENS-065-015-020",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.2,
+        "flexibility": 0.65
+      }
+    },
+    {
+      "fingerprint": "85b37a845e939bddec9992cf16de1656ce320182eb5dde8f188c4edbd09b9390",
+      "policy_id": "SENS-065-020-015",
+      "weights": {
+        "co2_emissions": 0.2,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.65
+      }
+    },
+    {
+      "fingerprint": "155776d025fc4bb00c4308e739a104c0d7bcac4db87835a3e879973c41b4cb73",
+      "policy_id": "SENS-070-015-015",
+      "weights": {
+        "co2_emissions": 0.15000000000000002,
+        "energy_cost": 0.15000000000000002,
+        "flexibility": 0.7000000000000001
+      }
+    }
+  ]
+}

@@ -8,10 +8,13 @@ mitigations is accidentally removed.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from uc3m.domain.objectives import canonical_objective_policies, HierarchyLevels  # noqa: E402
 
 
 def read_text(relative_path: str) -> str:
@@ -128,10 +131,10 @@ def verify_visible_wrappers() -> None:
 def verify_reward_profiles() -> None:
     data = json.loads(read_text("CityLearn/configs/citylearn_v3_madrl_training.json"))
     reward_text = read_text("CityLearn/citylearn/reward_function.py")
+    _axis_map = {"flexibility": "flex", "co2_emissions": "carbon", "energy_cost": "cost"}
     expected_axis = {
-        "E1": {"flex": 0.60, "carbon": 0.15, "cost": 0.25},
-        "E2": {"flex": 0.25, "carbon": 0.60, "cost": 0.15},
-        "E3": {"flex": 0.15, "carbon": 0.25, "cost": 0.60},
+        sid: {_axis_map[ax.value]: w for ax, w in pol.weights.items()}
+        for sid, pol in canonical_objective_policies().items()
     }
     expected_profile = {
         "team_reward_ratio": 0.70,
@@ -155,7 +158,7 @@ def verify_reward_profiles() -> None:
     )
     require(
         data["reward"].get("hierarchy_levels")
-        == {"primary": 0.60, "secondary": 0.25, "residual": 0.15},
+        == {"primary": HierarchyLevels().primary, "secondary": HierarchyLevels().secondary, "residual": HierarchyLevels().residual},
         "reward hierarchy levels must match the validated primary/secondary/residual design",
     )
     require(

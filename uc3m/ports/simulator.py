@@ -1,0 +1,13 @@
+"""Simulator port for environment interaction; integration deferred (see ADR)."""
+from typing import Any, Dict, Protocol
+
+import numpy as np
+
+
+class SimulatorPort(Protocol):
+    def reset(self) -> Dict[str, np.ndarray]: ...
+    def step(self, actions: Dict[str, np.ndarray]) -> tuple: ...
+    @property
+    def observation_space(self) -> Any: ...
+    @property
+    def action_space(self) -> Any: ...

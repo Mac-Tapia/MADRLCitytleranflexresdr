@@ -114,6 +114,9 @@ outputs/test_notebook/
 **/_tmp_*
 **/~$*
 
+# Pytest XML reports (regenerated each run)
+outputs/orchestration-tests.xml
+
 # Temporales de agentes y perfiles de navegador (H-07, H-08)
 .codex_tmp/
 tools/skills/notebooklm-mcp/data/browser_state/

@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "source": "docs/audits/MATRIZ_LEVANTAMIENTO_OBSERVACIONES_JURADO_2026-10-31.md",
+  "observations": [
+    {
+      "id": "J-01",
+      "description": "Se atribuye superioridad inferencial pese a p > 0.05 en OE.1-OE.3",
+      "type": "documental",
+      "status": "partial",
+      "correction": "Mantener única tabla de decisión; prohibir verbos causales fuera de capa descriptiva",
+      "evidence_path": "tools/eval/run_problem_objective_hypothesis_statistical_analysis.py"
+    },
+    {
+      "id": "J-02",
+      "description": "Una sola semilla elimina validez externa",
+      "type": "experimental",
+      "status": "pending_experiment",
+      "correction": "Ejecutar multisemilla (mínimo 3); reportar IQM, bootstrap CI",
+      "evidence_path": "data/audits/orchestration_acceptance.json"
+    },
+    {
+      "id": "J-03",
+      "description": "UC3M de siete ejes se confunde con el experimento CityLearn de tres ejes",
+      "type": "documental",
+      "status": "partial",
+      "correction": "Rotular UC3M como extensión arquitectónica no ejecutada; E1-E3 único alcance experimental",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_3_Metodologia.md"
+    },
+    {
+      "id": "J-04",
+      "description": "HAPPO reporta 49 episodios no 50; inconsistencia documental",
+      "type": "analytical",
+      "status": "partial",
+      "correction": "Definir episodic_curve_coverage, final_kpi_coverage, inferential_eligibility; mantener eligibility=false sin KPI-gains homogéneos",
+      "evidence_path": "tools/eval/run_complete_drive_kpi_objective_analysis.py"
+    },
+    {
+      "id": "J-05",
+      "description": "Originalidad y aporte vagos",
+      "type": "documental",
+      "status": "partial",
+      "correction": "Definir aporte como implementación y evaluación comparativa estandarizada MADRL para SEAI Iquitos",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_1_Introduccion.md"
+    },
+    {
+      "id": "J-06",
+      "description": "Seguridad y privacidad ausentes",
+      "type": "documental",
+      "status": "pending_documental",
+      "correction": "Añadir modelo de amenazas de despliegue como propuesta futura; no afirmar implementación",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_6_Conclusiones.md"
+    },
+    {
+      "id": "J-07",
+      "description": "No se proporciona el código fuente en la tesis",
+      "type": "documental",
+      "status": "pending_documental",
+      "correction": "Añadir anexo de reproducibilidad con URL, rama/commit, licencia e instrucciones",
+      "evidence_path": "docs/tesis_capitulos/Anexos.md"
+    },
+    {
+      "id": "J-08",
+      "description": "Falta una introducción general separada",
+      "type": "documental",
+      "status": "pending_documental",
+      "correction": "Incorporar 1-2 páginas: contexto, brecha, pregunta, enfoque, contribución, resultados y estructura",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_0_Introduccion_General.md"
+    },
+    {
+      "id": "J-09",
+      "description": "Tratamiento de datos faltantes/imputación insuficiente",
+      "type": "analytical",
+      "status": "partial",
+      "correction": "Documentar por campo: fuente, ausencia, regla de exclusión/imputación, indicador de calidad",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_3_Metodologia.md"
+    },
+    {
+      "id": "J-10",
+      "description": "Riesgo de fuga de datos poco discutido",
+      "type": "analytical",
+      "status": "partial",
+      "correction": "Añadir matriz de leakage: normalización, selección de hiperparámetros, construcción de baseline",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_3_Metodologia.md"
+    },
+    {
+      "id": "J-11",
+      "description": "Sesgos de simulación y sim-to-real débiles",
+      "type": "analytical",
+      "status": "partial",
+      "correction": "Añadir validez de simulación, pruebas de estrés, transferencia y necesidad de piloto",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_6_Conclusiones.md"
+    },
+    {
+      "id": "J-12",
+      "description": "No hay intervalos robustos entre entrenamientos",
+      "type": "experimental",
+      "status": "pending_experiment",
+      "correction": "Con multisemilla, reportar IQM, mediana, IC bootstrap estratificado y probabilidad de mejora",
+      "evidence_path": "data/audits/scientific_evaluation.json"
+    },
+    {
+      "id": "J-13",
+      "description": "Escalabilidad no evaluada formalmente",
+      "type": "experimental",
+      "status": "pending_experiment",
+      "correction": "Ensayar tamaños de comunidad factibles con límites explícitos",
+      "evidence_path": "data/audits/scientific_evaluation.json"
+    },
+    {
+      "id": "J-14",
+      "description": "Sin análisis costo-beneficio",
+      "type": "analytical",
+      "status": "pending_documental",
+      "correction": "Separar ahorro energético simulado, costo computacional, CAPEX/OPEX hipotético; no inventar tarifas",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_5_Resultados.md"
+    },
+    {
+      "id": "J-15",
+      "description": "Mantenimiento e integración operativa insuficientes",
+      "type": "documental",
+      "status": "pending_documental",
+      "correction": "Definir operación local: versionado, detección de deriva, límites seguros, fallback RBC, rollback",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_6_Conclusiones.md"
+    },
+    {
+      "id": "J-16",
+      "description": "Impacto organizacional, transferencia y TRL",
+      "type": "documental",
+      "status": "partial",
+      "correction": "Conservar TRL 4, definir ruta a TRL 5-6, actores, competencias y autorizaciones",
+      "evidence_path": "docs/tesis_capitulos/Capitulo_6_Conclusiones.md"
+    },
+    {
+      "id": "J-17",
+      "description": "Exceso de detalle diluye conclusiones",
+      "type": "documental",
+      "status": "pending_documental",
+      "correction": "Abrir cada capítulo con propósito y cerrarlo con 3-5 hallazgos; mover detalles a anexos",
+      "evidence_path": "docs/tesis_capitulos/"
+    }
+  ]
+}

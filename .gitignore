@@ -110,3 +110,8 @@ outputs/_drive_madrl/**/timeseries.csv
 **/_tmp_*
 **/~$*
 
+# Temporales de agentes y perfiles de navegador (H-07, H-08)
+.codex_tmp/
+tools/skills/notebooklm-mcp/data/browser_state/
+tools/skills/google-drive-mcp/
+

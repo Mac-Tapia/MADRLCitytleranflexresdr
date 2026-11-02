@@ -14,8 +14,6 @@ WEIGHT_PATTERN = re.compile(
 SCAN_EXTENSIONS = {'.py', '.yaml', '.yml', '.json', '.toml', '.cfg', '.ini'}
 EXCLUDED_DIRS = {'tests', '.superpowers', '.specify', 'external', '__pycache__', 'outputs', 'agent-skills'}
 GENERATOR_ALLOWLIST = {
-    'tools/colab/generate_colab_notebook.py',
-    'tools/colab/test_notebook_cells.py',
     'tools/figures/generate_architecture_pngs.py',
     'tools/thesis/_patch_notebook_hypothesis_demo.py',
     'tools/thesis/_patch_notebook_hypothesis_pipeline.py',

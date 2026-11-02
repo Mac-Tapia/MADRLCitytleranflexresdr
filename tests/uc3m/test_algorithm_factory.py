@@ -90,3 +90,48 @@ class TestAlgorithmFactoryCreate:
             if "import" in str(e).lower():
                 pytest.skip(f"Backend no configurado: {e}")
             raise
+
+
+class _TinyEnv:
+    """Two agents, one action each; enough to drive a placeholder loop."""
+    n_agents = 2
+    action_dimension = 1
+    observation_dimension = 3
+    time_steps = 4
+    harl_mode = True
+
+    def reset(self):
+        return [[0.0]*3]*2
+
+    def step(self, actions):
+        return [[0.0]*3]*2, [0.0, 0.0], False, {}
+
+
+class TestNoPlaceholderLearning:
+    """P02/A15: a missing backend never trains with random actions or announces a model."""
+
+    @pytest.mark.parametrize("algorithm", ["HAPPO", "MASAC", "MAPPO"])
+    def test_missing_backend_fails_instead_of_random_learning(self, algorithm, tmp_path):
+        from uc3m.algorithms.factory import BackendUnavailable
+        algo = AlgorithmFactory.create(algorithm, _TinyEnv(), cfg={}, checkpoint_dir=tmp_path)
+        # MARLlib may be importable, but its adapter never trains: it must fail as well.
+        if getattr(algo, "_trainer", None) is not None:
+            pytest.fail(f"{algorithm}: unexpected native backend in this environment")
+        with pytest.raises(BackendUnavailable):
+            algo.learn(total_timesteps=3)
+
+    @pytest.mark.parametrize("algorithm", ["HAPPO", "MASAC"])
+    def test_explicit_smoke_is_never_eligible_for_promotion(self, algorithm, tmp_path):
+        algo = AlgorithmFactory.create(algorithm, _TinyEnv(), cfg={"smoke": True}, checkpoint_dir=tmp_path)
+        result = algo.learn(total_timesteps=3)
+        assert result["smoke"] is True
+        assert result["promotion_eligible"] is False
+        assert result["learned"] is False
+
+    @pytest.mark.parametrize("algorithm", ["HAPPO", "MASAC", "MAPPO"])
+    def test_save_without_model_does_not_announce_a_checkpoint(self, algorithm, tmp_path):
+        from uc3m.algorithms.factory import BackendUnavailable
+        algo = AlgorithmFactory.create(algorithm, _TinyEnv(), cfg={"smoke": True}, checkpoint_dir=tmp_path)
+        with pytest.raises(BackendUnavailable):
+            algo.save(tmp_path/"model_final")
+        assert not (tmp_path/"model_final").exists()

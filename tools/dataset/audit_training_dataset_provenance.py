@@ -36,7 +36,7 @@ DATASET_DIR = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023
 OUT_DIR = ROOT / "outputs" / "dataset_audit"
 CSV_PATH = OUT_DIR / "training_dataset_validation.csv"
 JSON_PATH = OUT_DIR / "training_dataset_validation.json"
-DOC_PATH = ROOT / "docs" / "INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md"
+DOC_PATH = ROOT / "docs" / "dataset.md"
 DER_AUDIT_PATH = OUT_DIR / "der_sizing_audit.csv"
 
 EXPECTED_ROWS = 26304

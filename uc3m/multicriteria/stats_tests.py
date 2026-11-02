@@ -20,6 +20,7 @@ Complementary catalog (sections 1–4), behind ``complementary=True`` / flags:
 from __future__ import annotations
 
 from itertools import combinations
+import math
 from typing import Dict, List, Mapping, Optional, Sequence, Tuple, Any, cast
 
 import numpy as np
@@ -1313,83 +1314,96 @@ def decide_oe_winner(
     *,
     higher_is_better: bool = True,
     alpha: float = 0.05,
+    omnibus_p: Optional[float] = None,
 ) -> Dict[str, Any]:
-    """KW mean-rank winner + Dunn-Holm validation; Cliff/median tie-break."""
+    """Descriptive leader by KW mean rank; an inferential winner only with evidence.
 
+    ``inferential_winner`` is set only when the omnibus p-value (Kruskal-Wallis)
+    is below ``alpha`` AND the Dunn-Holm comparison of the leader against the
+    runner-up is significant. Without the omnibus p-value, or when it is not
+    significant, ``winners`` is empty: a complete study may end without a winner.
+    When the omnibus is significant but the runner-up is not separated, both are
+    reported as co-winners (descriptive tie-breaks by Cliff's delta / median),
+    still without an inferential winner.
+    """
+
+    if omnibus_p is not None and (
+        isinstance(omnibus_p, bool)
+        or not isinstance(omnibus_p, (int, float))
+        or not math.isfinite(float(omnibus_p))
+        or not 0.0 <= float(omnibus_p) <= 1.0
+    ):
+        raise ValueError(f"omnibus_p must be a finite p-value in [0, 1], got {omnibus_p!r}")
     if not mean_ranks:
-        return {"winners": [], "status": "no_ranks"}
+        return {"winners": [], "inferential_winner": None, "descriptive_leader": None,
+                "status": "no_ranks", "alpha": float(alpha)}
 
-    ordered = sorted(mean_ranks.items(), key=lambda kv: kv[1], reverse=True)
+    ordered = sorted(mean_ranks.items(), key=lambda kv: (-kv[1], kv[0]))
     top_algo, top_rank = ordered[0]
-    winners = [top_algo]
-    rationale = [
-        f"Highest KW mean rank: {top_algo} (Rmean={top_rank:.3f}).",
-    ]
+    rationale = [f"Highest KW mean rank (descriptive): {top_algo} (Rmean={top_rank:.3f})."]
+    base = {"descriptive_leader": top_algo, "mean_ranks": dict(mean_ranks), "alpha": float(alpha),
+            "omnibus_p": None if omnibus_p is None else float(omnibus_p)}
 
-    if len(ordered) >= 2:
-        second_algo, second_rank = ordered[1]
-        pair = None
-        for row in dunn_pairs:
-            a, b = row.get("algorithm_a"), row.get("algorithm_b")
-            if {a, b} == {top_algo, second_algo}:
-                pair = row
-                break
-        if pair is not None and not bool(pair.get("significant")):
-            winners = [top_algo, second_algo]
-            rationale.append(
-                f"Dunn-Holm vs 2nd ({second_algo}, Rmean={second_rank:.3f}) not significant "
-                f"(p_holm={pair.get('p_holm')}) -> co-winners."
-            )
-            # Secondary tie-break: Cliff's δ then median on oriented metric.
-            sign = 1.0 if higher_is_better else -1.0
-            g_top = _finite(groups.get(top_algo, [])) * sign
-            g_sec = _finite(groups.get(second_algo, [])) * sign
-            delta = cliffs_delta(g_top, g_sec)
-            med_top = float(np.median(g_top)) if g_top.size else float("nan")
-            med_sec = float(np.median(g_sec)) if g_sec.size else float("nan")
-            rationale.append(
-                f"Tie-break Cliff's delta({top_algo},{second_algo})={delta} "
-                f"({cliffs_delta_magnitude(delta)}); "
-                f"oriented medians {top_algo}={med_top:.4f}, {second_algo}={med_sec:.4f}."
-            )
-            if delta is not None and abs(delta) >= 0.147:
-                preferred = top_algo if delta > 0 else second_algo
-                rationale.append(f"Cliff's delta prefers {preferred} (report as primary among co-winners).")
-                return {
-                    "winners": winners,
-                    "primary_among_cowinners": preferred,
-                    "mean_ranks": dict(mean_ranks),
-                    "rationale": rationale,
-                    "status": "cowinners_cliff_tiebreak",
-                    "alpha": float(alpha),
-                }
-            if np.isfinite(med_top) and np.isfinite(med_sec) and med_top != med_sec:
-                preferred = top_algo if med_top > med_sec else second_algo
-                rationale.append(f"Median tie-break prefers {preferred}.")
-                return {
-                    "winners": winners,
-                    "primary_among_cowinners": preferred,
-                    "mean_ranks": dict(mean_ranks),
-                    "rationale": rationale,
-                    "status": "cowinners_median_tiebreak",
-                    "alpha": float(alpha),
-                }
-        elif pair is not None:
-            rationale.append(
-                f"Dunn-Holm confirms {top_algo} > {second_algo} "
-                f"(p_holm={pair.get('p_holm')}, alpha={alpha})."
-            )
-        else:
-            rationale.append("Dunn pair vs 2nd not found; mean-rank winner retained.")
+    if omnibus_p is None:
+        rationale.append("Omnibus p-value not provided: no inferential decision.")
+        return {**base, "winners": [], "inferential_winner": None, "primary_among_cowinners": None,
+                "rationale": rationale, "status": "omnibus_not_provided"}
+    if float(omnibus_p) >= alpha:
+        rationale.append(f"Kruskal-Wallis not significant (p={float(omnibus_p):.4g} >= alpha={alpha}).")
+        return {**base, "winners": [], "inferential_winner": None, "primary_among_cowinners": None,
+                "rationale": rationale, "status": "no_inferential_winner"}
 
-    return {
-        "winners": winners,
-        "primary_among_cowinners": winners[0],
-        "mean_ranks": dict(mean_ranks),
-        "rationale": rationale,
-        "status": "ok",
-        "alpha": float(alpha),
-    }
+    if len(ordered) < 2:
+        return {**base, "winners": [top_algo], "inferential_winner": None,
+                "primary_among_cowinners": top_algo, "rationale": rationale, "status": "single_group"}
+
+    second_algo, second_rank = ordered[1]
+    pair = None
+    for row in dunn_pairs:
+        a, b = row.get("algorithm_a"), row.get("algorithm_b")
+        if {a, b} == {top_algo, second_algo}:
+            pair = row
+            break
+    if pair is not None and bool(pair.get("significant")):
+        rationale.append(
+            f"Dunn-Holm confirms {top_algo} > {second_algo} "
+            f"(p_holm={pair.get('p_holm')}, alpha={alpha})."
+        )
+        return {**base, "winners": [top_algo], "inferential_winner": top_algo,
+                "primary_among_cowinners": top_algo, "rationale": rationale, "status": "ok"}
+    if pair is None:
+        rationale.append("Dunn pair vs 2nd not found: no inferential winner.")
+        return {**base, "winners": [top_algo, second_algo], "inferential_winner": None,
+                "primary_among_cowinners": top_algo, "rationale": rationale, "status": "posthoc_missing"}
+
+    winners = [top_algo, second_algo]
+    rationale.append(
+        f"Dunn-Holm vs 2nd ({second_algo}, Rmean={second_rank:.3f}) not significant "
+        f"(p_holm={pair.get('p_holm')}) -> co-winners, no inferential winner."
+    )
+    # Descriptive tie-break among co-winners: Cliff's delta then median on oriented metric.
+    sign = 1.0 if higher_is_better else -1.0
+    g_top = _finite(groups.get(top_algo, [])) * sign
+    g_sec = _finite(groups.get(second_algo, [])) * sign
+    delta = cliffs_delta(g_top, g_sec)
+    med_top = float(np.median(g_top)) if g_top.size else float("nan")
+    med_sec = float(np.median(g_sec)) if g_sec.size else float("nan")
+    rationale.append(
+        f"Tie-break Cliff's delta({top_algo},{second_algo})={delta} "
+        f"({cliffs_delta_magnitude(delta)}); "
+        f"oriented medians {top_algo}={med_top:.4f}, {second_algo}={med_sec:.4f}."
+    )
+    preferred, status = top_algo, "cowinners"
+    if delta is not None and abs(delta) >= 0.147:
+        preferred = top_algo if delta > 0 else second_algo
+        status = "cowinners_cliff_tiebreak"
+        rationale.append(f"Cliff's delta prefers {preferred} (descriptive primary among co-winners).")
+    elif np.isfinite(med_top) and np.isfinite(med_sec) and med_top != med_sec:
+        preferred = top_algo if med_top > med_sec else second_algo
+        status = "cowinners_median_tiebreak"
+        rationale.append(f"Median tie-break prefers {preferred} (descriptive).")
+    return {**base, "winners": winners, "inferential_winner": None,
+            "primary_among_cowinners": preferred, "rationale": rationale, "status": status}
 
 
 def validate_topsis_vs_friedman(
@@ -1524,6 +1538,7 @@ def run_oe_battery(
         groups,
         higher_is_better=higher_is_better,
         alpha=alpha,
+        omnibus_p=kw.get("p_value") if kw.get("status") == "ok" else None,
     )
 
     result: Dict[str, Any] = {

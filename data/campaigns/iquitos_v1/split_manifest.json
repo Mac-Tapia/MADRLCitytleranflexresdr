@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "campaign_id": "fresh_iquitos_20261101_v1",
+  "source_dataset_sha256": "6adc312c54062275bbe7bba886c60a0cf516f6419d4e4c781d42f3dc77033cbd",
+  "splits": [
+    {
+      "split_id": "train_2023",
+      "directory": "train_2023",
+      "schema_path": "train_2023/schema.json",
+      "start": "2023-01-01T00:00:00-05:00",
+      "end": "2023-12-31T23:00:00-05:00",
+      "rows": 8760,
+      "sha256": "8eb9a8782c1c9932f06ec546338d5c31c4f0e7ecf45d36d97c4493266c3297c0"
+    },
+    {
+      "split_id": "validation_2024",
+      "directory": "validation_2024",
+      "schema_path": "validation_2024/schema.json",
+      "start": "2024-01-01T00:00:00-05:00",
+      "end": "2024-12-31T23:00:00-05:00",
+      "rows": 8784,
+      "sha256": "fc61066bc522b3dbe28ebb2517f9581bc53a484287dcd33840abf350e9f7d285"
+    },
+    {
+      "split_id": "test_2025",
+      "directory": "test_2025",
+      "schema_path": "test_2025/schema.json",
+      "start": "2025-01-01T00:00:00-05:00",
+      "end": "2025-12-31T23:00:00-05:00",
+      "rows": 8760,
+      "sha256": "c38ff90ef37227e3a08403680342ceecf08f61ad788c2000b21ca5e421be9ed5"
+    }
+  ],
+  "fit_dependencies": {
+    "normalizer": "train_2023 only",
+    "predicted_fields": "deactivated"
+  },
+  "dataset_hash": "6adc312c54062275bbe7bba886c60a0cf516f6419d4e4c781d42f3dc77033cbd",
+  "fixed_device_sizes": {
+    "Building_1": {
+      "cooling_device": {
+        "nominal_power": 117.0277201770172,
+        "efficiency": 0.27621664256999595,
+        "target_cooling_temperature": 9.286499277099878,
+        "target_heating_temperature": 48.8108321284998
+      }
+    },
+    "Building_2": {
+      "cooling_device": {
+        "nominal_power": 30.580942217264173,
+        "efficiency": 0.22003355528529486,
+        "target_cooling_temperature": 7.601006658558846,
+        "target_heating_temperature": 46.00167776426474
+      }
+    },
+    "Building_3": {
+      "cooling_device": {
+        "nominal_power": 198.77446024887084,
+        "efficiency": 0.2581561743809795,
+        "target_cooling_temperature": 8.744685231429385,
+        "target_heating_temperature": 47.90780871904897
+      }
+    },
+    "Building_4": {
+      "cooling_device": {
+        "nominal_power": 358.1876140466308,
+        "efficiency": 0.25776380715631636,
+        "target_cooling_temperature": 8.73291421468949,
+        "target_heating_temperature": 47.888190357815816
+      }
+    },
+    "Building_5": {
+      "cooling_device": {
+        "nominal_power": 101.13173107547759,
+        "efficiency": 0.2825566708607574,
+        "target_cooling_temperature": 9.476700125822722,
+        "target_heating_temperature": 49.127833543037866
+      },
+      "dhw_device": {
+        "nominal_power": 300.0,
+        "efficiency": 0.2792504844167991,
+        "target_cooling_temperature": 9.377514532503973,
+        "target_heating_temperature": 48.96252422083995
+      }
+    },
+    "Building_6": {
+      "cooling_device": {
+        "nominal_power": 2355.727941663086,
+        "efficiency": 0.265895811980551,
+        "target_cooling_temperature": 8.97687435941653,
+        "target_heating_temperature": 48.29479059902755
+      }
+    },
+    "Building_7": {
+      "cooling_device": {
+        "nominal_power": 45.79178620922088,
+        "efficiency": 0.26632499169304236,
+        "target_cooling_temperature": 8.98974975079127,
+        "target_heating_temperature": 48.31624958465212
+      }
+    },
+    "Building_8": {
+      "cooling_device": {
+        "nominal_power": 45.23082678595733,
+        "efficiency": 0.21365948389777017,
+        "target_cooling_temperature": 7.409784516933105,
+        "target_heating_temperature": 45.68297419488851
+      }
+    },
+    "Building_9": {
+      "cooling_device": {
+        "nominal_power": 10.155995988200187,
+        "efficiency": 0.23370094433226019,
+        "target_cooling_temperature": 8.011028329967806,
+        "target_heating_temperature": 46.68504721661301
+      }
+    },
+    "Building_10": {
+      "cooling_device": {
+        "nominal_power": 291.4916855343628,
+        "efficiency": 0.231145951333688,
+        "target_cooling_temperature": 7.93437854001064,
+        "target_heating_temperature": 46.5572975666844
+      }
+    },
+    "Building_11": {
+      "cooling_device": {
+        "nominal_power": 177.59266111299132,
+        "efficiency": 0.2081162089571859,
+        "target_cooling_temperature": 7.243486268715577,
+        "target_heating_temperature": 45.405810447859295
+      },
+      "dhw_device": {
+        "nominal_power": 300.0,
+        "efficiency": 0.206915428296766,
+        "target_cooling_temperature": 7.2074628489029795,
+        "target_heating_temperature": 45.345771414838296
+      }
+    },
+    "Building_12": {
+      "cooling_device": {
+        "nominal_power": 376.06241829837035,
+        "efficiency": 0.20491869511901079,
+        "target_cooling_temperature": 7.147560853570323,
+        "target_heating_temperature": 45.245934755950536
+      },
+      "dhw_device": {
+        "nominal_power": 200.0,
+        "efficiency": 0.2855997683260566,
+        "target_cooling_temperature": 9.567993049781698,
+        "target_heating_temperature": 49.27998841630283
+      }
+    },
+    "Building_13": {
+      "cooling_device": {
+        "nominal_power": 23.041816865036008,
+        "efficiency": 0.23654574571274511,
+        "target_cooling_temperature": 8.096372371382353,
+        "target_heating_temperature": 46.827287285637254
+      }
+    },
+    "Building_14": {
+      "cooling_device": {
+        "nominal_power": 6.787676923168182,
+        "efficiency": 0.28805168733725994,
+        "target_cooling_temperature": 9.6415506201178,
+        "target_heating_temperature": 49.402584366862996
+      }
+    },
+    "Building_15": {
+      "cooling_device": {
+        "nominal_power": 24.266894765527724,
+        "efficiency": 0.26671421220399755,
+        "target_cooling_temperature": 9.001426366119928,
+        "target_heating_temperature": 48.335710610199875
+      }
+    },
+    "Building_16": {
+      "cooling_device": {
+        "nominal_power": 132.19524633085632,
+        "efficiency": 0.2423920605524264,
+        "target_cooling_temperature": 8.271761816572791,
+        "target_heating_temperature": 47.11960302762132
+      }
+    },
+    "Building_17": {
+      "cooling_device": {
+        "nominal_power": 57.7531591019783,
+        "efficiency": 0.2507490837855554,
+        "target_cooling_temperature": 8.522472513566662,
+        "target_heating_temperature": 47.53745418927777
+      }
+    }
+  }
+}

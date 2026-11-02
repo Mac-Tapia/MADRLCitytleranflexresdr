@@ -51,10 +51,49 @@ def dataset_digest(schema_path: Path) -> str:
     return hash_files(root, [schema_path] + references, normalize_newlines=True)
 
 
-def source_snapshot(project_root: Path) -> str:
+def source_snapshot(project_root: Path, *, scope='legacy') -> str:
     root = Path(project_root).resolve()
     # Only text sources (.py/.yaml/.toml/config .json/requirements) are hashed.
-    return hash_files(root, _source_paths(root), normalize_newlines=True)
+    return hash_files(root, _scoped_paths(root, scope), normalize_newlines=True)
+
+
+# The fresh campaign identity also covers dataset builders, evaluators, quality
+# gates, governance registries and the lockfile, never secrets or outputs.
+_FRESH_FOLDERS = ('uc3m', 'configs', 'governance', 'tools/dataset', 'tools/eval', 'tools/ops',
+                  'scripts/quality', 'scripts/maintenance', 'CityLearn/configs',
+                  'CityLearn/citylearn', 'CityLearn/scripts', 'external')
+_FRESH_SUFFIXES = {'.py', '.yaml', '.yml', '.toml', '.ps1', '.cfg'}
+_FRESH_ROOT_FILES = ('pyproject.toml', 'uv.lock', 'requirements.txt', 'requirements-dev.txt')
+_SECRET_MARKERS = ('secret', 'token', 'credential', 'password')
+_SECRET_SUFFIXES = {'.key', '.pem', '.pfx', '.p12'}
+
+
+def _is_secret(path):
+    name = path.name.casefold()
+    return (name.startswith('.env') or path.suffix.casefold() in _SECRET_SUFFIXES
+            or any(marker in name for marker in _SECRET_MARKERS))
+
+
+def fresh_source_paths(project_root: Path):
+    root = Path(project_root).resolve()
+    paths = []
+    for folder in _FRESH_FOLDERS:
+        for path in (root/folder).rglob('*'):
+            allowed = (path.suffix in _FRESH_SUFFIXES
+                       or (folder.endswith('configs') and path.suffix == '.json'))
+            if (path.is_file() and allowed and '.git' not in path.parts
+                    and '__pycache__' not in path.parts and not _is_secret(path)):
+                paths.append(path)
+    paths.extend(root/name for name in _FRESH_ROOT_FILES if (root/name).is_file())
+    return sorted(set(paths))
+
+
+def _scoped_paths(root, scope):
+    if scope == 'legacy':
+        return _source_paths(root)
+    if scope == 'fresh':
+        return fresh_source_paths(root)
+    raise ValueError(f'unknown source scope: {scope}')
 
 
 def _source_paths(root):
@@ -70,11 +109,11 @@ def _source_paths(root):
     return sorted(paths)
 
 
-def archive_sources(project_root: Path, destination: Path) -> str:
+def archive_sources(project_root: Path, destination: Path, *, scope='legacy') -> str:
     """Preserve actual source bytes, including uncommitted local changes.
 
-    The returned digest equals source_snapshot: it hashes CRLF as LF like the
-    snapshot does, while the archive keeps the raw bytes.
+    The returned digest equals source_snapshot for the same scope: it hashes
+    CRLF as LF like the snapshot does, while the archive keeps the raw bytes.
     """
     root = Path(project_root).resolve()
     destination = Path(destination)
@@ -84,7 +123,7 @@ def archive_sources(project_root: Path, destination: Path) -> str:
         temporary = Path(stream.name)
     try:
         with zipfile.ZipFile(temporary, 'w', zipfile.ZIP_DEFLATED) as archive:
-            for path in _source_paths(root):
+            for path in _scoped_paths(root, scope):
                 name = path.relative_to(root).as_posix()
                 payload = path.read_bytes()
                 digest.update(name.encode('utf-8') + b'\0' + payload.replace(b'\r\n', b'\n') + b'\0')

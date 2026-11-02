@@ -320,3 +320,22 @@ def test_build_report_raises_on_incomplete_campaign(tmp_path: Path) -> None:
 
     with pytest.raises(report_tool.IncompleteCampaign, match="MATD3 E1 seed 3"):
         report_tool.build_report(root, spec)
+
+
+@pytest.mark.parametrize('values, expected', [
+    ([0.0, 1.0, 100.0], 17.3333333333333),
+    ([1.0, 2.0, 3.0, 4.0, 5.0], 3.0),
+    ([1.0, 2.0, 3.0, 4.0, 5.0, 60.0], 3.5),
+    ([float(v) for v in range(1, 13)], 6.5),
+    ([2.0, 2.0, 2.0, 9.0], 2.0),
+])
+def test_iqm_is_the_canonical_fractional_convention(values, expected):
+    # P08/A13: one IQM for the project (fractional weights at the 25 %/75 % cuts).
+    from uc3m.application.evaluation.fresh_analysis import iqm as canonical
+    assert canonical(values) == pytest.approx(expected, abs=1e-9)
+    assert _iqm_under_test(values) == pytest.approx(canonical(values), abs=1e-12)
+
+
+def _iqm_under_test(values):
+    from tools.eval.build_campaign_statistical_report import iqm
+    return iqm(values)

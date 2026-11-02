@@ -27,7 +27,7 @@ import size_bess_optimal as bess_sizing  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 DATASET_DIR = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
-DOC_PATH = ROOT / "docs" / "INFORME_AUDITORIA_DIMENSIONAMIENTO_DER_IQUITOS.md"
+DOC_PATH = ROOT / "docs" / "der.md"
 OUT_DIR = ROOT / "outputs" / "dataset_audit"
 CSV_PATH = OUT_DIR / "der_sizing_audit.csv"
 JSON_PATH = OUT_DIR / "der_sizing_audit.json"
@@ -157,7 +157,7 @@ def build_audit() -> tuple[pd.DataFrame, dict]:
     t_out = weather["outdoor_dry_bulb_temperature"].to_numpy(dtype=float)
 
     ev_sizing.log.setLevel(logging.WARNING)
-    ev_config = ev_sizing.build_charger_config()
+    ev_config = ev_sizing.build_legacy_scenario_charger_config()  # audits the earlier (v1) design
 
     rows = []
     for bkey, bdata in sorted(schema["buildings"].items(), key=lambda item: _sort_key(item[0])):

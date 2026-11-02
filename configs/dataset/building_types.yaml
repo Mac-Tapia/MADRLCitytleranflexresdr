@@ -1,0 +1,992 @@
+schema_version: 1
+description: Canonical building type registry for the Iquitos fresh campaign dataset. Every dataset module (hourly generator,
+  load distillation, controlled machines, EV sizing, DER sizing) reads the building type and operating schedule from this
+  file only.
+source_inventory: CityLearn/data/buildingcsv/building.csv (Nombre_Edificio, Tipo_Uso_CityLearn, Sistemas_Refrigeracion_Grandes)
+peer_group_rule: peer_group keeps the building.csv Tipo_Uso_CityLearn class; it is used only to complete missing monthly targets
+  from same-year peers
+reference_outdoor_temperature_c: 28.0
+chilled_water_target_c:
+  value: 8.5
+  origin: assumption
+  assumption: true
+  reason: HeatPump target_cooling_temperature carried from distill_building_loads.T_TARGET; written into schema.json so CityLearn
+    uses the calibration value
+schedules:
+  office_daytime:
+    hourly_profile:
+    - 0.07
+    - 0.06
+    - 0.06
+    - 0.06
+    - 0.06
+    - 0.08
+    - 0.15
+    - 0.42
+    - 0.82
+    - 0.9
+    - 0.92
+    - 0.9
+    - 0.82
+    - 0.9
+    - 0.92
+    - 0.88
+    - 0.72
+    - 0.38
+    - 0.15
+    - 0.1
+    - 0.09
+    - 0.08
+    - 0.07
+    - 0.07
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 0.08
+    - 0.03
+    occupied_hours:
+    - 7
+    - 17
+    cooling_setpoint_c: 24.0
+    thermal_time_constant_h: 3.5
+    generator_cooling_cop: 3.0
+    machine_days: laboral
+    machine_cycle_profile:
+    - 0.6
+    - 0.4
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'administrativo'
+  office_24h:
+    hourly_profile:
+    - 0.58
+    - 0.52
+    - 0.5
+    - 0.5
+    - 0.52
+    - 0.68
+    - 0.88
+    - 0.98
+    - 0.95
+    - 0.9
+    - 0.88
+    - 0.85
+    - 0.82
+    - 0.82
+    - 0.82
+    - 0.85
+    - 0.88
+    - 0.9
+    - 0.92
+    - 0.88
+    - 0.8
+    - 0.72
+    - 0.68
+    - 0.62
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 0.95
+    - 0.95
+    occupied_hours:
+    - 0
+    - 24
+    cooling_setpoint_c: 24.0
+    thermal_time_constant_h: 2.0
+    generator_cooling_cop: 4.0
+    machine_days: todos
+    machine_cycle_profile:
+    - 0.4
+    - 0.35
+    - 0.25
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'transporte_24h'; day factors set to 1.0/0.95/0.95 because an emergency operations centre runs every
+      day
+  airport_extended:
+    hourly_profile:
+    - 0.58
+    - 0.52
+    - 0.5
+    - 0.5
+    - 0.52
+    - 0.68
+    - 0.88
+    - 0.98
+    - 0.95
+    - 0.9
+    - 0.88
+    - 0.85
+    - 0.82
+    - 0.82
+    - 0.82
+    - 0.85
+    - 0.88
+    - 0.9
+    - 0.92
+    - 0.88
+    - 0.8
+    - 0.72
+    - 0.68
+    - 0.62
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 1.12
+    - 1.08
+    occupied_hours:
+    - 0
+    - 24
+    cooling_setpoint_c: 24.0
+    thermal_time_constant_h: 2.0
+    generator_cooling_cop: 4.0
+    machine_days: todos
+    machine_cycle_profile:
+    - 0.4
+    - 0.35
+    - 0.25
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'transporte_24h'
+  retail_extended:
+    hourly_profile:
+    - 0.08
+    - 0.06
+    - 0.06
+    - 0.06
+    - 0.06
+    - 0.08
+    - 0.1
+    - 0.15
+    - 0.25
+    - 0.45
+    - 0.72
+    - 0.88
+    - 0.92
+    - 0.9
+    - 0.88
+    - 0.9
+    - 0.92
+    - 0.95
+    - 0.98
+    - 0.92
+    - 0.78
+    - 0.52
+    - 0.22
+    - 0.1
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 1.08
+    - 1.05
+    occupied_hours:
+    - 9
+    - 22
+    cooling_setpoint_c: 23.0
+    thermal_time_constant_h: 3.0
+    generator_cooling_cop: 4.5
+    machine_days: todos
+    machine_cycle_profile:
+    - 0.25
+    - 0.3
+    - 0.25
+    - 0.2
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'mall'
+  hotel_24h:
+    hourly_profile:
+    - 0.6
+    - 0.58
+    - 0.55
+    - 0.52
+    - 0.55
+    - 0.62
+    - 0.72
+    - 0.85
+    - 0.9
+    - 0.88
+    - 0.85
+    - 0.82
+    - 0.82
+    - 0.85
+    - 0.88
+    - 0.9
+    - 0.95
+    - 0.98
+    - 1.0
+    - 0.98
+    - 0.9
+    - 0.82
+    - 0.75
+    - 0.68
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 1.18
+    - 1.22
+    occupied_hours:
+    - 0
+    - 24
+    cooling_setpoint_c: 23.0
+    thermal_time_constant_h: 4.0
+    generator_cooling_cop: 2.8
+    machine_days: todos
+    machine_cycle_profile:
+    - 0.45
+    - 0.35
+    - 0.2
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'hotelero_24h'
+  university_daytime:
+    hourly_profile:
+    - 0.1
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.08
+    - 0.1
+    - 0.22
+    - 0.58
+    - 0.88
+    - 0.92
+    - 0.92
+    - 0.9
+    - 0.82
+    - 0.9
+    - 0.92
+    - 0.88
+    - 0.78
+    - 0.62
+    - 0.38
+    - 0.2
+    - 0.14
+    - 0.11
+    - 0.1
+    - 0.1
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 0.12
+    - 0.04
+    occupied_hours:
+    - 7
+    - 19
+    cooling_setpoint_c: 25.0
+    thermal_time_constant_h: 3.0
+    generator_cooling_cop: 2.8
+    machine_days: laboral
+    machine_cycle_profile:
+    - 0.6
+    - 0.4
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'universitario'
+  school_daytime:
+    hourly_profile:
+    - 0.05
+    - 0.05
+    - 0.05
+    - 0.05
+    - 0.05
+    - 0.08
+    - 0.18
+    - 0.6
+    - 0.9
+    - 0.95
+    - 0.92
+    - 0.92
+    - 0.82
+    - 0.9
+    - 0.92
+    - 0.82
+    - 0.5
+    - 0.18
+    - 0.08
+    - 0.07
+    - 0.06
+    - 0.06
+    - 0.05
+    - 0.05
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 0.05
+    - 0.02
+    occupied_hours:
+    - 7
+    - 16
+    cooling_setpoint_c: 25.0
+    thermal_time_constant_h: 2.5
+    generator_cooling_cop: 2.5
+    machine_days: laboral
+    machine_cycle_profile:
+    - 0.55
+    - 0.45
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'educacion'
+  healthcare_24h:
+    hourly_profile:
+    - 0.72
+    - 0.7
+    - 0.68
+    - 0.68
+    - 0.7
+    - 0.72
+    - 0.78
+    - 0.85
+    - 0.92
+    - 0.98
+    - 1.0
+    - 1.0
+    - 0.98
+    - 0.98
+    - 0.98
+    - 0.95
+    - 0.92
+    - 0.9
+    - 0.88
+    - 0.85
+    - 0.82
+    - 0.78
+    - 0.75
+    - 0.73
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 0.98
+    - 0.95
+    occupied_hours:
+    - 0
+    - 24
+    cooling_setpoint_c: 22.0
+    thermal_time_constant_h: 5.0
+    generator_cooling_cop: 3.5
+    machine_days: todos
+    machine_cycle_profile:
+    - 0.4
+    - 0.35
+    - 0.25
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'salud_24h'
+  port_extended:
+    hourly_profile:
+    - 0.48
+    - 0.45
+    - 0.42
+    - 0.42
+    - 0.45
+    - 0.68
+    - 0.9
+    - 0.98
+    - 0.95
+    - 0.88
+    - 0.82
+    - 0.8
+    - 0.78
+    - 0.8
+    - 0.88
+    - 0.9
+    - 0.85
+    - 0.78
+    - 0.7
+    - 0.62
+    - 0.55
+    - 0.52
+    - 0.5
+    - 0.48
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 0.75
+    - 0.55
+    occupied_hours:
+    - 6
+    - 20
+    cooling_setpoint_c: 26.0
+    thermal_time_constant_h: 2.0
+    generator_cooling_cop: 2.5
+    machine_days: todos
+    machine_cycle_profile:
+    - 0.4
+    - 0.35
+    - 0.25
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'portuario_24h'
+  industrial_shift:
+    hourly_profile:
+    - 0.65
+    - 0.62
+    - 0.6
+    - 0.6
+    - 0.62
+    - 0.7
+    - 0.85
+    - 0.92
+    - 0.95
+    - 0.95
+    - 0.95
+    - 0.92
+    - 0.88
+    - 0.9
+    - 0.95
+    - 0.9
+    - 0.85
+    - 0.75
+    - 0.6
+    - 0.45
+    - 0.4
+    - 0.38
+    - 0.35
+    - 0.3
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 0.65
+    - 0.4
+    occupied_hours:
+    - 6
+    - 18
+    cooling_setpoint_c: 24.0
+    thermal_time_constant_h: 4.0
+    generator_cooling_cop: 2.5
+    machine_days: laboral
+    machine_cycle_profile:
+    - 0.45
+    - 0.35
+    - 0.2
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'industrial'
+  laboratory_24h:
+    hourly_profile:
+    - 0.72
+    - 0.7
+    - 0.68
+    - 0.68
+    - 0.7
+    - 0.72
+    - 0.78
+    - 0.85
+    - 0.92
+    - 0.98
+    - 1.0
+    - 1.0
+    - 0.98
+    - 0.98
+    - 0.98
+    - 0.95
+    - 0.92
+    - 0.9
+    - 0.88
+    - 0.85
+    - 0.82
+    - 0.78
+    - 0.75
+    - 0.73
+    day_factors_weekday_saturday_sunday:
+    - 1.0
+    - 0.98
+    - 0.95
+    occupied_hours:
+    - 0
+    - 24
+    cooling_setpoint_c: 22.0
+    thermal_time_constant_h: 5.0
+    generator_cooling_cop: 3.5
+    machine_days: todos
+    machine_cycle_profile:
+    - 0.4
+    - 0.35
+    - 0.25
+    origin: assumption
+    assumption: true
+    reason: no measured hourly occupancy or load shape is available; values copied from tools/dataset/generate_iquitos_dataset.py
+      constants for key 'salud_24h'
+buildings:
+  1:
+    canonical_type: utility_office
+    schedule: office_daytime
+    peer_group: Office
+    justification: 'ELECTRO ORIENTE S.A. is the regional electricity distribution utility; 40 offices and a DataCenter Precision
+      AC in building.csv: daytime administrative office with a 24 h critical IT load (critical-load proxy in the distillation)'
+    cooling_cop_design:
+      value: 2.8
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 14.8
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 175.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 17.7
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  2:
+    canonical_type: municipal_office
+    schedule: office_daytime
+    peer_group: Office
+    justification: 'MUNICIPALIDAD DISTRITAL DE SAN JUAN BAUTISTA is a district municipality: daytime public administration
+      offices'
+    cooling_cop_design:
+      value: 2.8
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 35.6
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 140.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 2.15
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  3:
+    canonical_type: airport
+    schedule: airport_extended
+    peer_group: Assembly
+    justification: 'AEROPUERTO INTERNACIONAL: passenger terminal with a central water-cooled chiller; operates every day'
+    cooling_cop_design:
+      value: 3.0
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 95.0
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 465.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 62.5
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  4:
+    canonical_type: retail_hypermarket
+    schedule: retail_extended
+    peer_group: Retail
+    justification: 'HIPERMERCADOS TOTTUS: hypermarket with food cold-chain racks; extended retail hours every day'
+    cooling_cop_design:
+      value: 3.0
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 22.2
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 350.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 78.2
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  5:
+    canonical_type: hotel
+    schedule: hotel_24h
+    peer_group: MultiFamily_Hotel
+    justification: 'HOTEL PLAZA S.A.: hotel with commercial kitchen and walk-in cold rooms; guests 24 h'
+    cooling_cop_design:
+      value: 3.0
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 99.0
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 157.5
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 54.9
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  6:
+    canonical_type: shopping_mall
+    schedule: retail_extended
+    peer_group: Commercial_Mall
+    justification: 'MALL AVENTURA S.A.: shopping mall with a multi-chiller plant; extended retail hours every day'
+    cooling_cop_design:
+      value: 3.0
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 176.0
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 1800.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 691.2
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  7:
+    canonical_type: university_faculty
+    schedule: university_daytime
+    peer_group: Education
+    justification: 'UNAP Facultad de Biologia (aulas): university classrooms and laboratories, weekday daytime'
+    cooling_cop_design:
+      value: 2.5
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 39.2
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 59.5
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 7.45
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  8:
+    canonical_type: police_school
+    schedule: school_daytime
+    peer_group: Assembly_Military
+    justification: 'PNP Escuela Tecnica Superior: police training school; weekday daytime instruction (a boarding operation
+      is not documented in building.csv)'
+    cooling_cop_design:
+      value: 2.5
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 99.3
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 105.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 3.62
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  9:
+    canonical_type: emergency_operations_office_24h
+    schedule: office_24h
+    peer_group: Office_Critical
+    justification: 'GOBIERNO REGIONAL DE LORETO - COER: regional emergency operations centre, staffed 24 h, DataCenter Precision
+      AC (N+1)'
+    cooling_cop_design:
+      value: 2.8
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 12.1
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 150.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 2.86
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  10:
+    canonical_type: regional_government_office
+    schedule: office_daytime
+    peer_group: Office
+    justification: 'GOBIERNO REGIONAL DE LORETO: regional government headquarters offices, weekday daytime'
+    cooling_cop_design:
+      value: 2.8
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 22.2
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 287.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 70.8
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  11:
+    canonical_type: hospital
+    schedule: healthcare_24h
+    peer_group: Healthcare_Hospital
+    justification: 'HOSPITAL REGIONAL DE LORETO: regional hospital with clinical chiller, HEPA and blood-bank cold room; 24
+      h'
+    cooling_cop_design:
+      value: 2.5
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 73.0
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 1000.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 53.4
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  12:
+    canonical_type: healthcare_facility
+    schedule: healthcare_24h
+    peer_group: Healthcare
+    justification: 'SEGURO SOCIAL DE SALUD - ESSALUD: social-security health facility with medical archive AC; 24 h care'
+    cooling_cop_design:
+      value: 2.5
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 34.5
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 427.5
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 133.3
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  13:
+    canonical_type: university_faculty
+    schedule: university_daytime
+    peer_group: Education
+    justification: 'UNAP Facultad de Ciencias Administrativas y Contables: university faculty, weekday daytime'
+    cooling_cop_design:
+      value: 2.5
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 14.8
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 45.5
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 2.45
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  14:
+    canonical_type: port_authority
+    schedule: port_extended
+    peer_group: Industrial_Port
+    justification: 'AUTORIDAD PORTUARIA NACIONAL: port authority offices and terminal operation, extended hours every day'
+    cooling_cop_design:
+      value: 2.5
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 47.0
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 77.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 2.59
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  15:
+    canonical_type: secondary_school
+    schedule: school_daytime
+    peer_group: Education
+    justification: 'DREL - COLEGIO NACIONAL DE IQUITOS: public secondary school, weekday daytime'
+    cooling_cop_design:
+      value: 2.5
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 23.4
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 35.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 5.94
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  16:
+    canonical_type: industrial_shipyard
+    schedule: industrial_shift
+    peer_group: Industrial
+    justification: 'SIMA - IQUITOS: naval shipyard (Servicios Industriales de la Marina) with workshops and vessel AC units;
+      industrial day shifts'
+    cooling_cop_design:
+      value: 2.8
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 51.24
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 237.5
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 35.8
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill
+  17:
+    canonical_type: laboratory_24h
+    schedule: laboratory_24h
+    peer_group: Laboratory
+    justification: 'ASOCIACION CIVIL SELVA AMAZONICA: research laboratory with -80 C ultra-freezers running 24 h'
+    cooling_cop_design:
+      value: 2.5
+      origin: assumption
+      assumption: true
+      reason: design COP at the 28 C reference outdoor temperature, carried from distill_building_loads.ETA_BY_USE for this
+        use class; no nameplate data
+    controlled_machine_cycle_kwh:
+      value: 26.3
+      origin: assumption
+      assumption: true
+      reason: daily energy of the controllable shiftable load carried from generate_iquitos_dataset.MADRL_BUILDING_CONSTANTS[shiftable];
+        no inventory of these machines exists; it is subtracted from the bill, not added on top
+    generator_cooling_peak_kw:
+      value: 206.0
+      origin: assumption
+      assumption: true
+      reason: initial hourly cooling shape amplitude (split units x 3.5 kW) from MADRL_BUILDING_CONSTANTS; monthly energy
+        is then closed to the bill
+    generator_non_shiftable_base_kw:
+      value: 22.3
+      origin: assumption
+      assumption: true
+      reason: initial base-load amplitude from MADRL_BUILDING_CONSTANTS; monthly energy is then closed to the bill

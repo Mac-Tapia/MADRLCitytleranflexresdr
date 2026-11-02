@@ -29,14 +29,16 @@ dependencies = [
     "numpy>=1.23.5,<2.0",
     "pandas>=2.0",
     "scipy>=1.10",
-    # CityLearn v2 must be installed separately (local editable install)
-    # pip install -e ./CityLearn
+    "pyyaml>=6.0",
+    # CityLearn (submodule fork) and the native backends are local dependencies,
+    # see [tool.uc3m.local-dependencies]; they are not installed from PyPI.
 ]
 
 [project.optional-dependencies]
 # Full training stack — install with: pip install uc3m[train]
 train = [
     "torch>=2.0",
+    "gym>=0.20",
     "pvlib>=0.10",
     "stable-baselines3==2.2.1",
 ]
@@ -54,6 +56,10 @@ all = [
     "tqdm>=4.65",
     "stable-baselines3==2.2.1",
 ]
+# Figures of the multicriteria analysis
+analysis = [
+    "matplotlib>=3.9",
+]
 # Development / testing
 dev = [
     "pytest>=7.0",
@@ -61,8 +67,15 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-org/uc3m"
-Repository = "https://github.com/your-org/uc3m"
+Homepage = "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr"
+Repository = "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr"
+
+# Import name -> local checkout; installed editable, never from PyPI.
+[tool.uc3m.local-dependencies]
+citylearn = "CityLearn"
+harl = "external/HARL"
+marllib = "external/MARLlib"
+algorithms = "external/MAAC"
 
 [tool.setuptools]
 packages = { find = { where = ["."], include = ["uc3m*"] } }

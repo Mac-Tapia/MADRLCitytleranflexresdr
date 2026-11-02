@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from itertools import product
 from typing import Sequence, Tuple
 
 import numpy as np
@@ -66,28 +65,65 @@ def non_dominated_indices(
     return tuple(keep)
 
 
-def hypervolume_3d(
+def _maximized_front(oriented: np.ndarray) -> np.ndarray:
+    keep = [
+        index
+        for index, point in enumerate(oriented)
+        if not any(
+            other_index != index
+            and np.all(other >= point)
+            and np.any(other > point)
+            for other_index, other in enumerate(oriented)
+        )
+    ]
+    # Equal points dominate nothing; keep one copy of each.
+    return np.unique(oriented[keep], axis=0)
+
+
+def _slice_volume(front: np.ndarray, reference: np.ndarray) -> float:
+    """Exact volume dominated by a maximized front, by slicing the last axis."""
+
+    if front.shape[0] == 0:
+        return 0.0
+    if front.shape[1] == 1:
+        return float(front[:, 0].max() - reference[0])
+    order = np.argsort(-front[:, -1], kind="stable")
+    ordered = front[order]
+    volume = 0.0
+    for index in range(ordered.shape[0]):
+        upper = ordered[index, -1]
+        lower = (
+            ordered[index + 1, -1] if index + 1 < ordered.shape[0] else reference[-1]
+        )
+        if upper <= lower:
+            continue
+        section = _maximized_front(ordered[: index + 1, :-1])
+        volume += (upper - lower) * _slice_volume(section, reference[:-1])
+    return volume
+
+
+def hypervolume(
     points: Sequence[Sequence[float]],
     *,
     reference: Sequence[float],
     maximize: Sequence[bool],
 ) -> float:
-    """Exact dominated hypervolume for three objectives.
+    """Exact dominated hypervolume in any number of objectives.
 
     The reference must be weakly worse than every submitted point. Dominated
-    points are removed first, then the union of axis-aligned cells is summed.
+    points are removed, then the volume is summed slice by slice along the last
+    axis (exact; no sampling, so no seed or sampling error to report).
     """
 
     matrix = _matrix(points)
-    if matrix.shape[1] != 3:
-        raise ValueError("hypervolume_3d requires exactly three objectives")
-    direction = _orientation(maximize, 3)
+    dimensions = matrix.shape[1]
+    direction = _orientation(maximize, dimensions)
     try:
         reference_array = np.asarray(reference, dtype=float)
     except (TypeError, ValueError) as exc:
-        raise ValueError("reference must be a finite three-value vector") from exc
-    if reference_array.shape != (3,) or not np.all(np.isfinite(reference_array)):
-        raise ValueError("reference must be a finite three-value vector")
+        raise ValueError("reference must be a finite vector with one value per objective") from exc
+    if reference_array.shape != (dimensions,) or not np.all(np.isfinite(reference_array)):
+        raise ValueError("reference must be a finite vector with one value per objective")
 
     oriented = matrix * direction
     oriented_reference = reference_array * direction
@@ -95,34 +131,20 @@ def hypervolume_3d(
         raise ValueError("reference must be no better than every point")
     if matrix.shape[0] == 0:
         return 0.0
+    return _slice_volume(_maximized_front(oriented), oriented_reference)
 
-    front = oriented[
-        list(non_dominated_indices(matrix, maximize=maximize))
-    ]
-    coordinates = [
-        np.unique(np.concatenate(([oriented_reference[axis]], front[:, axis])))
-        for axis in range(3)
-    ]
-    volume = 0.0
-    ranges = [range(max(len(values) - 1, 0)) for values in coordinates]
-    for x_index, y_index, z_index in product(*ranges):
-        lower = np.asarray(
-            [
-                coordinates[0][x_index],
-                coordinates[1][y_index],
-                coordinates[2][z_index],
-            ]
-        )
-        upper = np.asarray(
-            [
-                coordinates[0][x_index + 1],
-                coordinates[1][y_index + 1],
-                coordinates[2][z_index + 1],
-            ]
-        )
-        if np.any(np.all(front >= upper, axis=1)):
-            volume += float(np.prod(upper - lower))
-    return volume
+
+def hypervolume_3d(
+    points: Sequence[Sequence[float]],
+    *,
+    reference: Sequence[float],
+    maximize: Sequence[bool],
+) -> float:
+    """Exact dominated hypervolume for three objectives (see ``hypervolume``)."""
+
+    if _matrix(points).shape[1] != 3:
+        raise ValueError("hypervolume_3d requires exactly three objectives")
+    return hypervolume(points, reference=reference, maximize=maximize)
 
 
 def expected_utility(

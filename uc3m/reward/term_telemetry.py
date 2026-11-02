@@ -1,20 +1,32 @@
 """Per-term reward telemetry for the three-objective simplex (SPEC-002 FR-002.5).
 
-The CityLearn v3 MADRL reward combines, per building ``i``::
+The CityLearn v3 MADRL reward (citylearn.v3.reward, profile
+fresh_kpi_aligned_v6_net_billing) returns, per
+building ``i``, the local reward::
 
     local_i = reward_scale * (w_flex*flex_i + w_carbon*carbon_i + w_cost*cost_i
                               + ev_i + bess_cycle_i)
-    reward_i = (1 - team_ratio) * local_i + team_ratio * mean_j(local_j)
 
-and, for a central agent, ``sum_i reward_i``. Only ``flex``, ``carbon`` and
-``cost`` belong to the weighted simplex (E1-E3). ``ev`` and ``bess_cycle`` are
-service/constraint terms added outside it. Because team mixing and the central
-sum are linear, each term can be propagated separately and the per-term
-contributions add up exactly to the reward the environment returned.
+and, for a central agent, ``sum_i local_i``. The common-payoff team reward is
+applied afterwards by ``CityLearnDecPOMDPEnv`` (``reward_aggregation='team_mean'``);
+the former in-reward 0.70/0.30 mixing was removed because team_mean made it
+inert. ``team_reward_ratio`` is still accepted here (default 0) to decompose
+historical breakdowns. Only ``flex``, ``carbon`` and ``cost`` belong to the
+weighted simplex (E1-E3); ``ev`` and ``bess_cycle`` are constraint terms added
+outside it. Because mixing and the central sum are linear, each term can be
+propagated separately and the per-term contributions add up exactly to the
+reward the environment returned.
+
+``RewardTelemetryRecorder`` accumulates the breakdown of every step into
+episode summaries for attempt supervision: axis means before and after
+weighting, constraint means, the dominance ratio of constraint terms over the
+weighted axes, the saturation fraction of bounded terms and an action-spread
+proxy per agent.
 
 This module is read-only telemetry: it consumes the breakdown that the reward
 function already records and never alters weights, profiles or reward values.
-It does not import CityLearn; the reward function is accessed by duck typing.
+The reward function is accessed by duck typing; only price_signal_deviation reuses
+the CityLearn v3 formula (citylearn.v3.objectives), imported lazily.
 """
 
 from __future__ import annotations
@@ -28,7 +40,7 @@ SIMPLEX_AXES = ("flex", "carbon", "cost")
 SERVICE_TERMS = ("ev", "bess_cycle")
 
 _WEIGHTED_KEY = {axis: f"weighted_{axis}" for axis in SIMPLEX_AXES}
-_DEFAULT_TEAM_RATIO = 0.70
+_DEFAULT_TEAM_RATIO = 0.0
 
 
 @dataclass(frozen=True)
@@ -150,3 +162,237 @@ def verify_reward_decomposition(
             raise ValueError(
                 f"decomposition {index}: total {decomposition.total!r} != reward {reward!r}"
             )
+
+
+THESIS_INDICATORS = ("peak_average", "ramping_average", "one_minus_load_factor_average", "flex_composite",
+                     "carbon_emissions_total", "carbon_emissions_delta", "ci_weighted_consumption",
+                     "electricity_cost_total", "electricity_cost_delta", "peak_billing", "price_signal_deviation")
+PENDING_INDICATORS = {"peak_billing": "pending_owner: billing period and p_pot undefined (tesis ~593, 974)"}
+
+
+def _daily_peak(series, steps_per_day):
+    days = [series[i:i + steps_per_day] for i in range(0, len(series), steps_per_day)]
+    return sum(max(abs(v) for v in day) for day in days) / len(days)
+
+
+def _ramping(series):
+    if len(series) < 2:
+        return None
+    return math.fsum(abs(b - a) for a, b in zip(series, series[1:])) / (len(series) - 1)
+
+
+def _one_minus_lf(series, steps_per_day):
+    values = []
+    for i in range(0, len(series), steps_per_day):
+        day = series[i:i + steps_per_day]
+        peak = max(abs(v) for v in day)
+        if peak <= 0:
+            return None
+        values.append(1 - (math.fsum(abs(v) for v in day) / len(day)) / peak)
+    return math.fsum(values) / len(values)
+
+
+def _ratio(control, baseline):
+    if control is None or baseline is None or baseline == 0:
+        return None
+    return control / baseline
+
+
+def thesis_indicators_from_series(net, baseline, price, carbon, steps_per_day=24) -> dict:
+    """Layer A indicators (tesis Tabla 2.1) of one series: district or one building.
+
+    Same conventions as configs/evaluation/kpis.yaml: |P| shape KPIs as CityLearn-style
+    ratios to the per-step baseline (WITHOUT_STORAGE_BUT_WITH_PV), net billing for CO2
+    and cost; peak_billing stays pending (None).
+    """
+    shape = {
+        "peak_average": _ratio(_daily_peak(net, steps_per_day), _daily_peak(baseline, steps_per_day)),
+        "ramping_average": _ratio(_ramping(net), _ramping(baseline)),
+        "one_minus_load_factor_average": _ratio(_one_minus_lf(net, steps_per_day), _one_minus_lf(baseline, steps_per_day)),
+    }
+    parts = list(shape.values())
+    co2 = math.fsum(n * c for n, c in zip(net, carbon))
+    co2_base = math.fsum(b * c for b, c in zip(baseline, carbon))
+    cost = math.fsum(n * q for n, q in zip(net, price))
+    cost_base = math.fsum(b * q for b, q in zip(baseline, price))
+    try:
+        from citylearn.v3.objectives import price_signal_deviation
+        psd = price_signal_deviation(net, price)
+    except Exception:  # noqa: BLE001 - CityLearn unavailable or flat price: reported as None
+        psd = None
+    return {
+        **shape,
+        "flex_composite": None if any(v is None for v in parts) else math.fsum(parts) / 3.0,
+        "carbon_emissions_total": co2,
+        "carbon_emissions_delta": co2 - co2_base,
+        "ci_weighted_consumption": math.fsum(max(n, 0.0) * c for n, c in zip(net, carbon)),
+        "electricity_cost_total": cost,
+        "electricity_cost_delta": cost - cost_base,
+        "peak_billing": None,
+        "price_signal_deviation": None if psd is None else float(psd),
+    }
+
+
+def _abs_sum(values) -> float:
+    return math.fsum(abs(float(v)) for v in values)
+
+
+class RewardTelemetryRecorder:
+    """Accumulate reward breakdowns and actions into episode supervision summaries.
+
+    ``constraint_dominance_ratio = sum(|ev| + |bess_cycle|) / sum(|weighted axes|)``
+    over every building and step; ``saturation_fraction`` is the share of bounded
+    terms (``sat_*`` flags) that hit their bound. ``action_std_by_agent`` is the
+    mean over action dimensions of the per-dimension standard deviation over the
+    episode, an exploration/entropy proxy that needs no access to the policy.
+    """
+
+    def __init__(self, steps_per_day: int = 24) -> None:
+        self.steps_per_day = int(steps_per_day)
+        self.episodes: List[dict] = []
+        self._weights = None
+        self._reset_episode()
+
+    def _reset_episode(self) -> None:
+        self._steps = 0
+        self._axis = {axis: 0.0 for axis in SIMPLEX_AXES}
+        self._weighted = {axis: 0.0 for axis in SIMPLEX_AXES}
+        self._constraints = {name: 0.0 for name in SERVICE_TERMS}
+        self._abs_weighted = 0.0
+        self._abs_constraints = 0.0
+        self._terms = 0
+        self._saturated = 0.0
+        self._count = 0
+        self._actions: dict = {}
+        self._series: dict = {}
+
+    def record_step(self, breakdown: Mapping[str, Any], actions: Mapping[str, Sequence[float]] = None) -> None:
+        components = (breakdown or {}).get("components") or []
+        if not components:
+            return
+        self._weights = {axis: float(breakdown["axis_weights"][axis]) for axis in SIMPLEX_AXES}
+        self._steps += 1
+        for component in components:
+            self._count += 1
+            for axis in SIMPLEX_AXES:
+                self._axis[axis] += float(component.get(axis, 0.0))
+                self._weighted[axis] += float(component[_WEIGHTED_KEY[axis]])
+            for name in SERVICE_TERMS:
+                self._constraints[name] += float(component.get(name, 0.0))
+            self._abs_weighted += _abs_sum(component[_WEIGHTED_KEY[a]] for a in SIMPLEX_AXES)
+            self._abs_constraints += _abs_sum(component.get(n, 0.0) for n in SERVICE_TERMS)
+            flags = [float(v) for k, v in component.items() if k.startswith("sat_")]
+            self._terms += len(flags)
+            self._saturated += math.fsum(flags)
+        for index, component in enumerate(components):
+            series = self._series.setdefault(index, {"net": [], "baseline": [], "price": [], "carbon": []})
+            series["net"].append(float(component.get("net", 0.0)))
+            series["baseline"].append(float(component.get("baseline_net", component.get("net", 0.0))))
+            series["price"].append(float(component.get("price", 0.0)))
+            series["carbon"].append(float(component.get("carbon_intensity", 0.0)))
+        for agent, action in (actions or {}).items():
+            raw = action.tolist() if hasattr(action, "tolist") else action
+            values = [float(v) for v in (raw if isinstance(raw, (list, tuple)) else [raw])]
+            sums = self._actions.setdefault(str(agent), {"n": 0, "sum": [0.0] * len(values),
+                                                         "sq": [0.0] * len(values)})
+            if len(sums["sum"]) != len(values):
+                continue
+            sums["n"] += 1
+            for index, value in enumerate(values):
+                sums["sum"][index] += value
+                sums["sq"][index] += value * value
+
+    @staticmethod
+    def _ratio(numerator: float, denominator: float) -> float:
+        if denominator > 0.0:
+            return numerator / denominator
+        return 0.0 if numerator == 0.0 else math.inf
+
+    def _action_std(self) -> dict:
+        out = {}
+        for agent, sums in self._actions.items():
+            n = sums["n"]
+            if not n or not sums["sum"]:
+                continue
+            stds = [math.sqrt(max(sq / n - (s / n) ** 2, 0.0)) for s, sq in zip(sums["sum"], sums["sq"])]
+            out[agent] = math.fsum(stds) / len(stds)
+        return out
+
+    def _episode_indicators(self) -> dict:
+        if not self._series:
+            return {}
+        buildings = {f"building_{i}": thesis_indicators_from_series(
+            v["net"], v["baseline"], v["price"], v["carbon"], self.steps_per_day) for i, v in self._series.items()}
+        first = self._series[min(self._series)]
+        district = {key: [math.fsum(v[key][t] for v in self._series.values()) for t in range(len(first["net"]))]
+                    for key in ("net", "baseline")}
+        return {"district": thesis_indicators_from_series(district["net"], district["baseline"], first["price"],
+                                                          first["carbon"], self.steps_per_day),
+                "buildings": buildings, "pending": dict(PENDING_INDICATORS)}
+
+    def close_episode(self, citylearn_v3=None):
+        """Close the running episode; returns its summary, or None if it had no step.
+
+        ``citylearn_v3``: optional Layer B record of the episode (KPI-gain rows of
+        evaluate_objectives, district and building), stored as given.
+        """
+        if not self._steps:
+            return None
+        count = max(self._count, 1)
+        summary = {
+            "episode": len(self.episodes),
+            "steps": self._steps,
+            "effective_axis_weights": dict(self._weights),
+            "axis_means": {a: v / count for a, v in self._axis.items()},
+            "weighted_axis_means": {a: v / count for a, v in self._weighted.items()},
+            "constraint_means": {n: v / count for n, v in self._constraints.items()},
+            "abs_weighted_axes_sum": self._abs_weighted,
+            "abs_constraint_sum": self._abs_constraints,
+            "constraint_dominance_ratio": self._ratio(self._abs_constraints, self._abs_weighted),
+            "saturation_fraction": (self._saturated / self._terms) if self._terms else 0.0,
+            "action_std_by_agent": self._action_std(),
+            "thesis_indicators": self._episode_indicators(),
+            "citylearn_v3": citylearn_v3,
+        }
+        self.episodes.append(summary)
+        self._reset_episode()
+        return summary
+
+    def summary(self) -> dict:
+        """Attempt-level summary over every closed episode (closes the running one)."""
+        self.close_episode()
+        abs_weighted = math.fsum(e["abs_weighted_axes_sum"] for e in self.episodes)
+        abs_constraints = math.fsum(e["abs_constraint_sum"] for e in self.episodes)
+        saturation = [e["saturation_fraction"] for e in self.episodes]
+        return {
+            "episodes": len(self.episodes),
+            "steps": sum(e["steps"] for e in self.episodes),
+            "effective_axis_weights": dict(self._weights) if self._weights else None,
+            "constraint_dominance_ratio": (
+                self._ratio(abs_constraints, abs_weighted) if self.episodes else None
+            ),
+            "max_episode_constraint_dominance_ratio": (
+                max(e["constraint_dominance_ratio"] for e in self.episodes) if self.episodes else None
+            ),
+            "saturation_fraction": (math.fsum(saturation) / len(saturation)) if saturation else None,
+            "episodes_detail": list(self.episodes),
+            "kpi_trend": self.kpi_trend(),
+        }
+
+    def kpi_trend(self) -> dict:
+        """First versus last episode of every Layer A indicator (district) and Layer B gain."""
+        if not self.episodes:
+            return {}
+        first, last = self.episodes[0], self.episodes[-1]
+        trend = {}
+        for name in THESIS_INDICATORS:
+            a = (first.get("thesis_indicators") or {}).get("district", {}).get(name)
+            b = (last.get("thesis_indicators") or {}).get("district", {}).get(name)
+            trend[name] = {"first": a, "last": b, "change": None if a is None or b is None else b - a}
+        rows_first = {r["name"]: r for r in ((first.get("citylearn_v3") or {}).get("gains") or [])}
+        for row in ((last.get("citylearn_v3") or {}).get("gains") or []):
+            a = (rows_first.get(row["name"]) or {}).get("gain")
+            trend[f"citylearn_v3:{row['name']}"] = {"first": a, "last": row.get("gain"),
+                                                     "change": None if a is None or row.get("gain") is None
+                                                     else row["gain"] - a}
+        return trend

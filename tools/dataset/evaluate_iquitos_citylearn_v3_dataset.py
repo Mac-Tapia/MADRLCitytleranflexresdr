@@ -19,8 +19,8 @@ CITYLEARN_ROOT = ROOT / "CityLearn"
 DATASET_DIR = CITYLEARN_ROOT / "data" / "datasets" / "citylearn_iquitos_2023_2025"
 SCHEMA_PATH = DATASET_DIR / "schema.json"
 OUT_DIR = ROOT / "outputs" / "dataset_audit"
-REPORT_PATH = ROOT / "docs" / "INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md"
-MANIFEST_PATH = OUT_DIR / "iquitos_citylearn_v3_dataset_evaluation.json"
+REPORT_PATH = ROOT / "docs" / "evaluacion_dataset.md"
+MANIFEST_PATH = OUT_DIR / "dataset_evaluation.json"
 EXPECTED_ROWS = 26304
 SCENARIOS = ("E1", "E2", "E3")
 

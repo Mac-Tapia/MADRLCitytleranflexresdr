@@ -116,9 +116,18 @@ outputs/test_notebook/
 
 # Pytest XML reports (regenerated each run)
 outputs/orchestration-tests.xml
+outputs/quality_reports/
 
 # Temporales de agentes y perfiles de navegador (H-07, H-08)
 .codex_tmp/
 tools/skills/notebooklm-mcp/data/browser_state/
 tools/skills/google-drive-mcp/
 
+
+# Fresh campaign: generated data stays out of the Git tree (T13). The build tool
+# and provenance.json regenerate it; top-level campaign manifests stay versioned.
+data/campaigns/*/*
+!data/campaigns/*/*.json
+data/maintenance/dataset_builds/
+data/maintenance/gates/*.xml
+outputs/colab_delivery/

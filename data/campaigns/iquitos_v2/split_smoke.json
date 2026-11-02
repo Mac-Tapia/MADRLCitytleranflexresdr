@@ -1,0 +1,23 @@
+{
+  "train_2023": {
+    "reset_ok": true,
+    "steps": 24,
+    "finite": true,
+    "predicted_fields_observed": [],
+    "time_steps": 8760
+  },
+  "validation_2024": {
+    "reset_ok": true,
+    "steps": 24,
+    "finite": true,
+    "predicted_fields_observed": [],
+    "time_steps": 8784
+  },
+  "test_2025": {
+    "reset_ok": true,
+    "steps": 24,
+    "finite": true,
+    "predicted_fields_observed": [],
+    "time_steps": 8760
+  }
+}

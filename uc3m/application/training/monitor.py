@@ -2,11 +2,12 @@
 from pathlib import Path
 
 from uc3m.application.training.runner import read_manifest
+from uc3m.application.training.layout import iter_evidence_paths
 
 
 def list_runs(output_root: Path):
     rows = []
-    for path in sorted(Path(output_root).glob('*/evidence.json')):
+    for path in sorted(iter_evidence_paths(output_root)):
         try:
             manifest = read_manifest(path)
             integrity = manifest.verify_files(path.parent)

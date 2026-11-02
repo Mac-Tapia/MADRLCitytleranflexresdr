@@ -185,11 +185,11 @@ def _campaign(root: Path, *, skip=(), seeds=(0,), partial=()) -> Dict[Tuple[str,
     return run_ids
 
 
-# --- run_complete_drive_kpi_objective_analysis -------------------------------------------------
+# --- objective_analysis -------------------------------------------------
 
 
 def test_complete_analysis_reads_every_treatment_from_the_catalog(tmp_path: Path) -> None:
-    from tools.eval import run_complete_drive_kpi_objective_analysis as tool
+    from tools.eval import objective_analysis as tool
 
     root = tmp_path / "campaign"
     run_ids = _campaign(root)
@@ -211,7 +211,7 @@ def test_complete_analysis_reads_every_treatment_from_the_catalog(tmp_path: Path
 
 
 def test_complete_analysis_uses_the_environment_results_root(tmp_path: Path, monkeypatch) -> None:
-    from tools.eval import run_complete_drive_kpi_objective_analysis as tool
+    from tools.eval import objective_analysis as tool
 
     root = tmp_path / "campaign"
     _campaign(root)
@@ -225,7 +225,7 @@ def test_complete_analysis_uses_the_environment_results_root(tmp_path: Path, mon
 
 
 def test_complete_analysis_names_missing_and_unverified_treatments(tmp_path: Path, capsys) -> None:
-    from tools.eval import run_complete_drive_kpi_objective_analysis as tool
+    from tools.eval import objective_analysis as tool
 
     root = tmp_path / "campaign"
     _campaign(root, skip={("MAAC", "E3")}, partial={("HAPPO", "E1")})
@@ -287,11 +287,11 @@ def test_aggregate_reports_missing_treatments_without_writing_a_ranking(tmp_path
     assert not (out / "best_madrl_report.json").exists()
 
 
-# --- analyze_colab_drive_multiobjective_buildings ----------------------------------------------
+# --- building_analysis ----------------------------------------------
 
 
 def test_multiobjective_tables_come_from_catalog_run_directories(tmp_path: Path) -> None:
-    from tools.eval import analyze_colab_drive_multiobjective_buildings as tool
+    from tools.eval import building_analysis as tool
 
     root = tmp_path / "campaign"
     run_ids = _campaign(root)
@@ -309,7 +309,7 @@ def test_multiobjective_tables_come_from_catalog_run_directories(tmp_path: Path)
 
 
 def test_multiobjective_reports_missing_treatments(tmp_path: Path, capsys) -> None:
-    from tools.eval import analyze_colab_drive_multiobjective_buildings as tool
+    from tools.eval import building_analysis as tool
 
     root = tmp_path / "campaign"
     _campaign(root, skip={("MASAC", "E2")})
@@ -437,7 +437,7 @@ def test_inventory_lists_every_file_still_referencing_the_retired_campaign() -> 
 def test_adapted_tools_no_longer_reference_the_retired_campaign() -> None:
     adapted = [entry["path"] for entry in _inventory()["files"] if entry["classification"] == "adapted"]
     assert {
-        "tools/eval/run_complete_drive_kpi_objective_analysis.py",
+        "tools/eval/objective_analysis.py",
         "tools/eval/aggregate_colab_drive_kpis.py",
     } <= set(adapted)
     offenders = {

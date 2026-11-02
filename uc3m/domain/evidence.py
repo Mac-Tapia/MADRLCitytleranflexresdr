@@ -25,6 +25,14 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def checkpoint_bundle_hash(files) -> str:
+    """Identity of a checkpoint bundle: sha256 over sorted files of name + NUL + bytes."""
+    digest = hashlib.sha256()
+    for path in sorted(files):
+        digest.update(Path(path).name.encode('utf-8') + b'\0' + Path(path).read_bytes())
+    return digest.hexdigest()
+
+
 def finite_kpis(values: Any) -> bool:
     """True only for a non-empty mapping of finite real numbers (booleans excluded)."""
     return isinstance(values, Mapping) and bool(values) and all(

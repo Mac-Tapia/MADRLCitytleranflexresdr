@@ -19,7 +19,7 @@ def test_policy_drift_classifies_active_thesis_and_legacy_sources(tmp_path: Path
         "| E2 | 0.15 | 0.70 | 0.15 |\n", encoding="utf-8"
     )
     (tmp_path / "docs").mkdir(exist_ok=True)
-    (tmp_path / "docs" / "HISTORIA_PROYECTO.md").write_text(
+    (tmp_path / "docs" / "historia.md").write_text(
         "E3 = (0.25, 0.15, 0.60)\n", encoding="utf-8"
     )
     (tmp_path / "data" / "audits").mkdir(parents=True)
@@ -39,7 +39,7 @@ def test_policy_drift_classifies_active_thesis_and_legacy_sources(tmp_path: Path
     ]
     assert {item["path"] for item in report["legacy_findings"]} == {
         "data/audits/old.json",
-        "docs/HISTORIA_PROYECTO.md",
+        "docs/historia.md",
     }
 
 

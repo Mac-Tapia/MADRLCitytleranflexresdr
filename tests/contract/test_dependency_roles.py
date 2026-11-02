@@ -36,7 +36,7 @@ def test_distributed_images_exclude_external_backends() -> None:
     distributed = [
         PROJECT_ROOT / "Dockerfile",
         PROJECT_ROOT / "deploy/inference/Dockerfile",
-        PROJECT_ROOT / "deploy/plant-adapter/Dockerfile",
+        PROJECT_ROOT / 'deploy' / 'plant_adapter' / 'Dockerfile',
         PROJECT_ROOT / "deploy/dashboard/Dockerfile",
     ]
     copy_line = re.compile(r"^\s*(?:COPY|ADD)\s+(.+)$", re.IGNORECASE | re.MULTILINE)

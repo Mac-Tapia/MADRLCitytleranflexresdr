@@ -25,8 +25,14 @@ def test_runner_persists_verified_evidence_and_rejects_corruption(tmp_path):
     runner = ExperimentRunner(tmp_path, DeterministicBackend())
     result = runner.run(spec)
     assert result.status.value == 'verified'
-    run_root = tmp_path / result.identity.run_id
+    run_root = tmp_path/'pilot/happo/e1/seed_0/try_01'
     assert json.loads((run_root / 'evidence.json').read_text())['status'] == 'verified'
+    from uc3m.application.training.monitor import list_runs
+    from uc3m.application.evaluation.results_catalog import discover_runs
+    from tools.ops.audit_modular_training import audit
+    assert list_runs(tmp_path)[0]['run_id'] == result.identity.run_id
+    assert discover_runs(tmp_path)[0].run_id == result.identity.run_id
+    assert audit(tmp_path)['runs'][0]['run_id'] == result.identity.run_id
     (run_root / 'model.bin').write_bytes(b'corrupt')
     try:
         runner.run(spec, resume=True)
@@ -53,8 +59,7 @@ def test_runner_recovers_durable_checkpoint_after_backend_exception(tmp_path):
     import pytest
     with pytest.raises(RuntimeError, match='interruption'):
         runner.run(spec)
-    from uc3m.domain.experiments import RunIdentity
-    run_root = tmp_path/RunIdentity.from_spec(spec).run_id
+    run_root = tmp_path/'pilot/happo/e1/seed_0/try_01'
     recovered = read_manifest(run_root/'evidence.json')
     assert recovered.completed_episodes == 1
     assert recovered.verify_files(run_root)

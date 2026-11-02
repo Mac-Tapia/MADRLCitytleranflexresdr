@@ -1,0 +1,22 @@
+# Carbon intensity of the isolated Iquitos thermal grid: one constant factor,
+# computed with declared assumptions, no solar modulation (owner decision 2026-11-01).
+#   CI [kgCO2/kWh_e] = EF_fuel [kgCO2/TJ] * 3.6e-6 [TJ/kWh] / eta_thermal
+schema_version: 1
+fuel:
+  value: gas_diesel_oil
+  origin: assumption
+  assumption: true
+  reason: the fuel mix of the Iquitos thermal plant (diesel and/or residual fuel oil) is not documented in the repository; residual fuel oil would give 77 400 kgCO2/TJ
+fuel_co2_emission_factor_kg_per_tj:
+  value: 74100
+  origin: cited
+  source: IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Vol. 2 Energy, Ch. 2 Stationary Combustion, Table 2.2, Gas/Diesel Oil, default CO2 emission factor
+net_thermal_efficiency:
+  value: 0.40
+  origin: assumption
+  assumption: true
+  reason: net electrical efficiency of medium-speed reciprocating engine plants; plant data not available; network losses not included
+energy_conversion_tj_per_kwh:
+  value: 3.6e-6
+  origin: model
+  reason: 1 kWh = 3.6 MJ

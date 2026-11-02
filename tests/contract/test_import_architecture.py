@@ -25,7 +25,7 @@ OUTER_LAYERS = (
     "uc3m.presentation",
 )
 # Composition roots wire concrete adapters into application use cases.
-COMPOSITION_ROOTS = {"uc3m/application/training/cli.py", "uc3m/application/training/colab.py"}
+COMPOSITION_ROOTS = {"uc3m/application/training/cli.py", "uc3m/application/pipeline.py"}
 
 
 def _imports(module: Path):

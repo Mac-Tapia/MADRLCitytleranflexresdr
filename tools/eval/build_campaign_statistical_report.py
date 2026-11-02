@@ -20,9 +20,13 @@ Statistics
     the recommendation of Agarwal, Schwarzer, Castro, Courville and Bellemare
     (2021), "Deep Reinforcement Learning at the Edge of the Statistical
     Precipice", NeurIPS 34, to report robust aggregates with interval
-    estimates instead of point estimates over few runs. Here IQM is the 25 %
-    trimmed mean (``scipy.stats.trim_mean(x, 0.25)``, the definition used by
-    the authors' ``rliable`` library; rliable itself is not used). Resampling
+    estimates instead of point estimates over few runs. Here IQM is the
+    project's fractional interquartile mean
+    (``uc3m.application.evaluation.fresh_analysis.iqm``: the observations cut
+    at 25 % and 75 % enter with fractional weight). It equals the 25 % trimmed
+    mean of the authors' ``rliable`` library only when the number of seeds is a
+    multiple of four; the fractional rule is a project convention, not a value
+    prescribed by the literature. Resampling
     unit is the seed (one final KPI per independent run), resampled with
     replacement independently inside each algorithm x scenario stratum, so
     treatments are never pooled. ``N_RESAMPLES`` resamples, confidence
@@ -63,12 +67,12 @@ from typing import Dict, List, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 import yaml
-from scipy import stats as scipy_stats
 
 REPO = Path(__file__).resolve().parents[2]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
+from uc3m.application.evaluation.fresh_analysis import iqm as canonical_iqm  # noqa: E402
 from uc3m.application.evaluation.results_catalog import (  # noqa: E402
     discover_runs,
     resolve_results_root,
@@ -90,7 +94,6 @@ ALPHA = 0.05
 BOOTSTRAP_SEED = 20211206  # arbitrary fixed value chosen before any campaign result; never tuned
 N_RESAMPLES = 10_000
 CONFIDENCE = 0.95
-IQM_TRIM = 0.25
 MIN_SEEDS = 2
 
 # Orientation declared by this tool for KPIs of core_kpis.csv. True = higher is
@@ -139,7 +142,7 @@ def load_campaign_spec(path: Path) -> CampaignSpec:
 
 
 def iqm(values: Sequence[float]) -> float:
-    return float(scipy_stats.trim_mean(np.asarray(values, dtype=float), IQM_TRIM))
+    return float(canonical_iqm(values))
 
 
 def bootstrap_ci(
@@ -154,7 +157,7 @@ def bootstrap_ci(
     arr = np.asarray(values, dtype=float)
     rng = np.random.default_rng([seed, zlib.crc32(stream.encode("utf-8"))])
     indices = rng.integers(0, arr.size, size=(n_resamples, arr.size))
-    replicates = scipy_stats.trim_mean(arr[indices], IQM_TRIM, axis=1)
+    replicates = np.asarray([canonical_iqm(row) for row in arr[indices]])
     tail = (1.0 - confidence) / 2.0
     low, high = np.quantile(replicates, [tail, 1.0 - tail])
     return float(low), float(high)
@@ -377,7 +380,7 @@ def build_report(
             "episodes": spec.episodes,
         },
         "alpha": alpha,
-        "iqm_definition": f"scipy.stats.trim_mean(values, {IQM_TRIM})",
+        "iqm_definition": "fractional interquartile mean (uc3m.application.evaluation.fresh_analysis.iqm)",
         "bootstrap": {
             "method": "percentile; seeds resampled with replacement within each algorithm x scenario stratum",
             "statistic": "iqm",

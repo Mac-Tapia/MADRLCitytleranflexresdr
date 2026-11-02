@@ -3,7 +3,7 @@
 Orquesta:
 1) ``generate_thesis_objective_evidence.py`` → scores KPI vs baseline evaluate_v2
 2) tablas auxiliares (scenario_scores / descriptivo mínimo)
-3) ``run_problem_objective_hypothesis_statistical_analysis.py`` →
+3) ``hypothesis.py`` →
    ``resumen_comparativo/estadistica/problemas_objetivos_hipotesis/``
 
 Uso (desde notebook o CLI)::
@@ -29,7 +29,7 @@ import pandas as pd
 REPO = Path(__file__).resolve().parents[2]
 EVIDENCE_SCRIPT = REPO / "CityLearn" / "scripts" / "generate_thesis_objective_evidence.py"
 CAPA_A_SCRIPT = (
-    REPO / "tools" / "eval" / "run_problem_objective_hypothesis_statistical_analysis.py"
+    REPO / 'tools' / 'eval' / 'hypothesis.py'
 )
 
 

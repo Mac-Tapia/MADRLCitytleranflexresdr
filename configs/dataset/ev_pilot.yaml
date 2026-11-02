@@ -1,0 +1,51 @@
+# EV design of the fresh Iquitos campaign. Iquitos has no public charging stations and
+# no mass EV fleet: every building has zero EVs and zero chargers except one declared
+# pilot at B01 Electro Oriente (owner decision 2026-11-01).
+schema_version: 1
+buildings_without_ev: all except pilot.building_id
+pilot:
+  building_id: 1
+  vehicle_type: electric_service_motorcycle
+  vehicle_count:
+    value: 2
+    origin: design_rule
+    reason: owner decision; the EV pool equals the two real vehicles (no pool constant)
+  battery_kwh:
+    value: 4.0
+    origin: cited
+    source: external/evcc/templates/definition/vehicle/niu-e-scooter.yaml (param capacity, default 4)
+  charger:
+    physical_units: {value: 1, origin: design_rule, reason: owner decision}
+    sockets_per_unit: {value: 2, origin: design_rule, reason: owner decision, one socket per vehicle}
+    mode: IEC_61851_Mode_3_AC
+    phases: {value: 1, origin: design_rule, reason: owner decision, single-phase}
+    voltage_v:
+      value: 230
+      origin: design_rule
+      reason: owner decision; Peru low-voltage nominal is 220 V, so 230 V must be verified by the user
+      assumption: true
+    min_current_a:
+      value: 6
+      origin: cited
+      source: external/evcc/core/loadpoint.go (NewLoadpoint defaults minCurrent 6 A)
+    max_current_a:
+      value: 16
+      origin: cited
+      source: external/evcc/core/loadpoint.go (NewLoadpoint defaults maxCurrent 16 A)
+    power_rule: power_w = voltage_v * current_a * phases (external/evcc/core/loadpoint_effective.go effectiveMaxPower)
+    efficiency: {value: 0.95, origin: assumption, assumption: true, reason: carried from the earlier dataset charger efficiency; no nameplate}
+  v2g: {value: false, origin: design_rule, reason: owner decision}
+  operation:
+    working_days: {value: [0, 1, 2, 3, 4], origin: assumption, assumption: true, reason: Monday-Friday service rounds of a utility office; not measured}
+    depot_arrival_hour: {value: 18, origin: assumption, assumption: true, reason: return to the B01 depot after the 07-17 office day}
+    depot_departure_hour: {value: 7, origin: assumption, assumption: true, reason: start of the next working day; charging is overnight}
+    km_per_day: {value: 40.0, origin: assumption, assumption: true, reason: daily service route of an electric motorcycle; not measured}
+    kwh_per_km: {value: 0.045, origin: assumption, assumption: true, reason: light electric motorcycle consumption; to be verified with the vehicle data sheet}
+    required_departure_soc: {value: 0.90, origin: assumption, assumption: true, reason: operating margin for the next route}
+  battery_nominal_power_kw:
+    value: null  # set to the charger maximum power (230 V x 16 A x 1 phase)
+    origin: assumption
+    assumption: true
+    reason: the vehicle on-board acceptance power is unknown; a 4 kWh light-vehicle battery may accept less than Mode 3 minimum 1.38 kW
+  battery_efficiency: {value: 0.92, origin: assumption, assumption: true, reason: carried from the earlier dataset light-EV battery; no data sheet}
+  battery_depth_of_discharge: {value: 0.80, origin: assumption, assumption: true, reason: carried from the earlier dataset light-EV battery}

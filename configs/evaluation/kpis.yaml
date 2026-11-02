@@ -1,0 +1,159 @@
+schema_version: 1
+# KPI catalog of the fresh campaign in THREE layers, every entry with a verifiable
+# source (owner 2026-11-01: «no inventes»; «los KPIs ... usados en el modelamiento
+# matemático»; «hay más KPIs en la etapa de resultados, estadísticas, modelamiento de
+# la nueva capa de entrenamiento»). No formula is created here: when the thesis does
+# not define one, the entry is definition_status: pending_owner.
+#
+# Layer A (thesis_indicators): the 9 indicators 3 axes x 3 dimensions of the thesis
+#   (docs/audits/deep_20261101/tesis.docx.txt Tabla 1.2 ~136-160, VD ~489-492,
+#   Tabla 2.1 ~548-600; docs/chapters/cap2.md §2.2.8 ~323-345). Values from the
+#   physical-trace cross-check below (uc3m/application/evaluation/kpi_contract.py).
+# Layer B (citylearn_v3_kpis + citylearn_v3_gain_rule): every KPI of the CityLearn
+#   v3 objective groups (CityLearn/citylearn/v3/objectives.py OE1/OE2/OE3), values
+#   from CityLearn evaluate_objectives / evaluate_v2 (district and building twins of
+#   madrl_kpis). The statistical unit of the thesis (tesis ~1971-1975) is the oriented
+#   KPI-gain of each STRUCTURALLY comparable KPI filtered to its scenario
+#   (OE1/E1, OE2/E2, OE3/E3); the comparable set is derived by
+#   fresh_analysis.comparable_kpis (objectives._baseline_for; kpi_contract reuses it), never
+#   typed here; kpi_report.json comparable_kpi_gains = [{name, axis, value, baseline,
+#   lower_is_better, gain, available}]. Cost labels end in '_eur' but are in the currency of the schema price
+#   (USD for Iquitos); they are not renamed.
+# Layer C (reward_terms): one dense reward term per Layer A indicator
+#   (CityLearn/citylearn/v3/reward.py CITYLEARN_V3_REWARD_TERMS, profile
+#   thesis_indicators_v7); pending terms carry weight 0.
+#
+# Conventions (owner decision 2026-11-01, net billing): flexibility on the
+# bidirectional district net power |P|; cost = net consumption x price (p_exp = p_imp);
+# CO2 = net consumption x carbon intensity (xi_disp = xi; Building emission no longer
+# clipped at zero; CostFunction.carbon_emissions/cost no longer clip exporting steps,
+# so the evaluate_v2 ratios follow the same convention). Still pending owner: the
+# iquitos_v1 schema settles cost through the community market with grid_export_price 0
+# (see CHANGES.md).
+currency: USD
+tolerances:
+  balance_atol: 1.0e-6
+  balance_rtol: 1.0e-6
+definitions:
+  # E1 primaries. The district peak is taken after summing coincident building power.
+  - {name: district_daily_peak, quantity: district_daily_peak, unit: kW, sense: minimize,
+     level: district, window: daily, aggregation: daily_mean, axis: flexibility, primary: true,
+     convention: daily_peak_of_absolute_district_net_power, citylearn_v3_name: peak_average}
+  - {name: district_ramping, quantity: district_ramping, unit: kW/h, sense: minimize,
+     level: district, window: episode, aggregation: mean, axis: flexibility, primary: true,
+     convention: mean_absolute_change_of_district_net_power, citylearn_v3_name: ramping_average}
+  - {name: one_minus_load_factor, quantity: one_minus_load_factor, unit: '1', sense: minimize,
+     level: district, window: daily, aggregation: daily_mean, axis: flexibility, primary: true,
+     convention: one_minus_mean_over_max_of_absolute_district_net_power,
+     citylearn_v3_name: one_minus_load_factor_average}
+  # E2 and E3 primaries: totals are sums over the window, never means of daily values.
+  - {name: co2_total, quantity: co2_emissions, unit: kgCO2, sense: minimize, level: district,
+     window: total, aggregation: sum, axis: co2_emissions, primary: true,
+     convention: building_level_net_consumption_times_intensity_export_displaces_generation,
+     citylearn_v3_name: carbon_emissions}
+  - {name: energy_cost_total, quantity: energy_cost, unit: USD, sense: minimize, level: district,
+     window: total, aggregation: sum, axis: energy_cost, primary: true,
+     convention: building_level_net_consumption_times_price_net_billing, citylearn_v3_name: electricity_cost}
+  # Diagnostics: reported, never stacked as statistical replicas of the primaries.
+  - {name: import_energy, quantity: import_energy, unit: kWh, sense: minimize, level: district,
+     window: total, aggregation: sum, citylearn_v3_name: grid_import}
+  - {name: export_energy, quantity: export_energy, unit: kWh, sense: exposure, level: district,
+     window: total, aggregation: sum, citylearn_v3_name: grid_export_control}
+  - {name: battery_throughput, quantity: battery_throughput, unit: kWh, sense: exposure,
+     level: district, window: total, aggregation: sum, citylearn_v3_name: battery_throughput_total}
+  # Thesis Layer A indicators that CityLearn evaluate_v2 does not produce.
+  - {name: ci_weighted_consumption, quantity: ci_weighted_import, unit: kgCO2, sense: minimize,
+     level: district, window: total, aggregation: sum,
+     convention: building_import_times_hourly_carbon_intensity}
+  - {name: price_signal_deviation, quantity: price_signal_deviation, unit: '1', sense: minimize,
+     level: district, window: episode, aggregation: mean,
+     convention: citylearn_v3_objectives_price_signal_deviation, citylearn_v3_name: price_signal_deviation}
+primary_endpoints: [district_daily_peak, district_ramping, one_minus_load_factor, co2_total,
+                    energy_cost_total]
+axes:
+  flexibility: [district_daily_peak, district_ramping, one_minus_load_factor]
+  co2_emissions: [co2_total]
+  energy_cost: [energy_cost_total]
+citylearn_v3_kpis:
+  # OE1 Flexibilidad energetica
+  - {name: grid_import, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_ratio_to_baseline_import_total_ratio]}
+  - {name: grid_import_control, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_import_control_kwh]}
+  - {name: grid_import_baseline, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_import_baseline_kwh]}
+  - {name: grid_import_delta, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_import_delta_kwh, district_energy_grid_daily_average_import_delta_kwh]}
+  - {name: zero_net_energy, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_ratio_to_baseline_net_exchange_total_ratio]}
+  - {name: net_exchange_control, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_net_exchange_control_kwh]}
+  - {name: net_exchange_baseline, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_net_exchange_baseline_kwh]}
+  - {name: net_exchange_delta, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_net_exchange_delta_kwh, district_energy_grid_daily_average_net_exchange_delta_kwh]}
+  - {name: grid_export_ratio, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_ratio_to_baseline_export_total_ratio]}
+  - {name: grid_export_control, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_export_control_kwh]}
+  - {name: grid_export_baseline, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_export_baseline_kwh]}
+  - {name: grid_export_delta, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_total_export_delta_kwh, district_energy_grid_daily_average_export_delta_kwh]}
+  - {name: peak_average, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio, district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio]}
+  - {name: ramping_average, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_shape_quality_ramping_average_to_baseline_ratio]}
+  - {name: one_minus_load_factor_average, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio, district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio]}
+  - {name: pv_generation_total, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_solar_self_consumption_total_generation_kwh]}
+  - {name: pv_generation_daily_average, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_solar_self_consumption_daily_average_generation_kwh]}
+  - {name: pv_export_total, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_solar_self_consumption_total_export_kwh]}
+  - {name: pv_export_daily_average, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_solar_self_consumption_daily_average_export_kwh]}
+  - {name: pv_self_consumption_ratio, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_solar_self_consumption_ratio_self_consumption_ratio]}
+  - {name: community_local_traded_total, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_community_market_local_traded_total_kwh]}
+  - {name: community_local_traded_daily_average, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_community_market_local_traded_daily_average_kwh]}
+  - {name: community_import_share, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_solar_self_consumption_community_market_import_share_ratio]}
+  - {name: battery_charge_total, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_battery_total_charge_kwh]}
+  - {name: battery_discharge_total, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_battery_total_discharge_kwh]}
+  - {name: battery_throughput_total, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_battery_total_throughput_kwh]}
+  - {name: battery_equivalent_full_cycles, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_battery_health_equivalent_full_cycles_count]}
+  - {name: battery_capacity_fade_ratio, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_battery_health_capacity_fade_ratio]}
+  - {name: ev_departure_count, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_ev_events_departure_count]}
+  - {name: ev_departure_met_count, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_ev_events_departure_met_count]}
+  - {name: ev_departure_within_tolerance_count, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_ev_events_departure_within_tolerance_count]}
+  - {name: ev_departure_success_rate, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_ev_performance_departure_success_ratio]}
+  - {name: ev_departure_within_tolerance_rate, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_ev_performance_departure_within_tolerance_ratio]}
+  - {name: ev_departure_soc_deficit_mean, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_ev_performance_departure_soc_deficit_mean_ratio]}
+  - {name: ev_charge_total, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_ev_total_charge_kwh]}
+  - {name: ev_v2g_export_total, axis: flexibility, objective: OE1, sense: maximize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_ev_total_v2g_export_kwh]}
+  # OE2 Emisiones de CO2
+  - {name: carbon_emissions, axis: co2_emissions, objective: OE2, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_emissions_ratio_to_baseline_total_ratio]}
+  - {name: carbon_emissions_control, axis: co2_emissions, objective: OE2, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_emissions_total_control_kgco2]}
+  - {name: carbon_emissions_baseline, axis: co2_emissions, objective: OE2, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_emissions_total_baseline_kgco2]}
+  - {name: carbon_emissions_delta, axis: co2_emissions, objective: OE2, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_emissions_total_delta_kgco2, district_emissions_daily_average_delta_kgco2]}
+  - {name: carbon_emissions_daily_average_control, axis: co2_emissions, objective: OE2, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_emissions_daily_average_control_kgco2]}
+  - {name: carbon_emissions_daily_average_baseline, axis: co2_emissions, objective: OE2, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_emissions_daily_average_baseline_kgco2]}
+  - {name: carbon_emissions_daily_average_delta, axis: co2_emissions, objective: OE2, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_emissions_daily_average_delta_kgco2]}
+  # OE3 Costos energeticos
+  - {name: electricity_cost, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_cost_ratio_to_baseline_total_ratio]}
+  - {name: electricity_cost_control, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_cost_total_control_eur]}
+  - {name: electricity_cost_baseline, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_cost_total_baseline_eur]}
+  - {name: electricity_cost_delta, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_cost_total_delta_eur, district_cost_daily_average_delta_eur]}
+  - {name: electricity_cost_daily_average_control, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_cost_daily_average_control_eur]}
+  - {name: electricity_cost_daily_average_baseline, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_cost_daily_average_baseline_eur]}
+  - {name: electricity_cost_daily_average_delta, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: false, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_cost_daily_average_delta_eur]}
+  - {name: cost_peak_average, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_shape_quality_peak_all_time_average_to_baseline_ratio, district_energy_grid_shape_quality_peak_daily_average_to_baseline_ratio]}
+  - {name: cost_ramping_average, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_shape_quality_ramping_average_to_baseline_ratio]}
+  - {name: cost_one_minus_load_factor_average, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_shape_quality_load_factor_penalty_daily_average_to_baseline_ratio, district_energy_grid_shape_quality_load_factor_penalty_monthly_average_to_baseline_ratio]}
+  - {name: price_signal_deviation, axis: energy_cost, objective: OE3, sense: minimize, ratio_to_baseline: false, source: derived_from_citylearn_v2_timeseries, citylearn_v2_names: [district_demand_response_price_signal_deviation_ratio]}
+citylearn_v3_gain_rule:
+  source: tools/eval/objective_analysis.py objective_kpi_rows (~200-250), scenario filter (~1150-1166)
+  formula: "gain = (-(value - baseline) if lower_is_better else (value - baseline)) / |baseline|; if |baseline| < 1e-12 the denominator is max(|value|, 1)"
+  lower_is_better: "name not in citylearn.v3.objectives.HIGHER_IS_BETTER"
+  comparable: "objectives._baseline_for gives a baseline: _control/_daily_average_control with a _baseline twin, _delta (baseline 0), RATIO_TO_BASELINE_KPIS (baseline 1), price_signal_deviation (its _baseline); *_baseline names excluded"
+  scenario_filter: {OE1: E1, OE2: E2, OE3: E3}
+thesis_indicators:
+  - {name: peak_average, axis: flexibility, dimension: 1, source: 'tesis.docx.txt:490,553; cap2.md:345-351', formula: "control / baseline of the mean daily peak of |P_com|", value_from: trace:district_daily_peak, citylearn_v3_name: peak_average, reward_term: daily_peak, definition_status: defined}
+  - {name: ramping_average, axis: flexibility, dimension: 2, source: 'tesis.docx.txt:490,558; cap2.md:345-351', formula: "control / baseline of mean |P_com(t) - P_com(t-1)|", value_from: trace:district_ramping, citylearn_v3_name: ramping_average, reward_term: ramp, definition_status: defined}
+  - {name: one_minus_load_factor_average, axis: flexibility, dimension: 3, source: 'tesis.docx.txt:490,563', formula: "control / baseline of the daily mean of 1 - mean|P_com|/max|P_com|", value_from: trace:one_minus_load_factor, citylearn_v3_name: one_minus_load_factor_average, reward_term: load_factor, definition_status: defined}
+  - {name: flex_composite, axis: flexibility, dimension: 3, source: 'tesis.docx.txt:179,490,563,1989; tools/eval/objective_analysis.py:56-60,730', formula: "mean of the peak_average, ramping_average and one_minus_load_factor_average ratios to baseline", value_from: derived:layer_a_ratios, definition_status: defined_in_repository_tools}
+  - {name: carbon_emissions_total, axis: co2_emissions, dimension: 1, source: 'tesis.docx.txt:491,568; cap2.md:329-335', formula: "sum_t sum_i xi_t * P_i_net(t) dt (xi_disp = xi)", value_from: trace:co2_total, citylearn_v3_name: carbon_emissions_control, reward_term: carbon_net, definition_status: defined}
+  - {name: carbon_emissions_delta, axis: co2_emissions, dimension: 2, source: 'tesis.docx.txt:491,573', formula: "carbon_emissions_total(control) - carbon_emissions_total(baseline)", value_from: trace:co2_total.delta, citylearn_v3_name: carbon_emissions_delta, reward_term: carbon_delta, definition_status: defined}
+  - {name: ci_weighted_consumption, axis: co2_emissions, dimension: 3, source: 'tesis.docx.txt:491,578', formula: "sum_t sum_i max(0, P_i_net(t)) * CI(t) dt (import weighted by hourly CI, literal reading)", value_from: trace:ci_weighted_consumption, reward_term: carbon_ci_import, definition_status: defined_literal_reading}
+  - {name: electricity_cost_total, axis: energy_cost, dimension: 1, source: 'tesis.docx.txt:492,583; cap2.md:337-343', formula: "sum_t sum_i price_t * P_i_net(t) dt (p_exp = p_imp)", value_from: trace:energy_cost_total, citylearn_v3_name: electricity_cost_control, reward_term: cost_net, definition_status: defined}
+  - {name: electricity_cost_delta, axis: energy_cost, dimension: 2, source: 'tesis.docx.txt:492,588', formula: "electricity_cost_total(control) - electricity_cost_total(baseline)", value_from: trace:energy_cost_total.delta, citylearn_v3_name: electricity_cost_delta, reward_term: cost_delta, definition_status: defined}
+  - {name: peak_billing, axis: energy_cost, dimension: 3, source: 'tesis.docx.txt:492,593,646,974; cap2.md:340 (p_pot * max_t P_net)', formula: null, value_from: null, reward_term: cost_peak_billing, definition_status: pending_owner, pending: "billing period (month?) and demand charge p_pot have no value in the repository; 15-min window = 1 hourly step"}
+  - {name: price_signal_deviation, axis: energy_cost, dimension: 3, source: 'tesis.docx.txt:492,593; CityLearn/citylearn/v3/objectives.py:360', formula: "CityLearn v3 price_signal_deviation over the episode", value_from: trace:price_signal_deviation, citylearn_v3_name: price_signal_deviation, reward_term: cost_price_signal, definition_status: defined_per_episode_reward_pending_owner}
+  - {name: PAR, axis: flexibility, dimension: null, source: 'cap2.md:351 (cited only)', formula: null, definition_status: pending_owner, pending: "no formula in the thesis"}
+  - {name: DPR, axis: flexibility, dimension: null, source: 'cap2.md:351 (cited only)', formula: null, definition_status: pending_owner, pending: "no formula in the thesis"}
+  - {name: dso_excess, axis: flexibility, dimension: null, source: 'cap2.md:345-349 beta2*max(0, P_com - P_lim_DSO)^2', formula: "max(0, P_com - P_lim_DSO)^2", reward_term: dso_excess, definition_status: pending_owner, pending: "P_lim_DSO has no value in the repository"}
+
+# Scenario formulated for each CityLearn v3 objective (objectives.OBJECTIVE_AXES[...].scenario);
+# tests/fresh_training/test_kpi_catalog_complete.py fixes it against CityLearn.
+objective_scenarios: {OE1: E1, OE2: E2, OE3: E3}

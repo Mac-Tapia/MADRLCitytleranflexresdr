@@ -43,7 +43,18 @@ OUT_DIR = ROOT / "outputs" / "dataset_audit"
 EV_AUDIT_CSV = OUT_DIR / "ev_charger_sizing_audit.csv"
 EV_AUDIT_JSON = OUT_DIR / "ev_charger_sizing_audit.json"
 EV_DATASET_LOG = BASE / "ev_charger_sizing_log.json"
-EV_AUDIT_MD = ROOT / "docs" / "INFORME_AUDITORIA_DIMENSIONAMIENTO_EV_IQUITOS.md"
+EV_AUDIT_MD = ROOT / "docs" / "vehiculos.md"
+
+
+def configure(dataset_dir: Path, audit_dir: Path) -> None:
+    """Write the dataset and every EV audit file under explicit campaign roots."""
+    global BASE, OUT_DIR, EV_AUDIT_CSV, EV_AUDIT_JSON, EV_DATASET_LOG, EV_AUDIT_MD
+    BASE = Path(dataset_dir)
+    OUT_DIR = Path(audit_dir)
+    EV_AUDIT_CSV = OUT_DIR / "ev_charger_sizing_audit.csv"
+    EV_AUDIT_JSON = OUT_DIR / "ev_charger_sizing_audit.json"
+    EV_DATASET_LOG = BASE / "ev_charger_sizing_log.json"
+    EV_AUDIT_MD = OUT_DIR / "ev_charger_sizing_audit.md"
 TOTAL_H = 26304    # 2023 (8760) + 2024 bisiesto (8784) + 2025 (8760)
 YEARS   = [2023, 2024, 2025]
 
@@ -650,8 +661,12 @@ def generate_charger_csv(bldg_id, charger_idx, ev_type, bldg_type, seed):
 # SECCIÓN 6 — Dimensionamiento y configuración de cargadores por edificio
 # ══════════════════════════════════════════════════════════════════════════════
 
-def build_charger_config(return_summary=False):
+def build_legacy_scenario_charger_config(return_summary=False):
     """
+    LEGACY (campaign iquitos_v1 only): mass-adoption scenario with PE/FC flows.
+    Retained so v1 analyses can be reproduced; it is not a realistic Iquitos design
+    (no public charging stations, no mass EV fleet). Use build_charger_config.
+
     Construye tomas Mode 3 por edificio usando flujos EV de escenario,
     tipo de vehiculo, horario operativo, concurrencia y area EV-ready.
 
@@ -743,6 +758,209 @@ def build_charger_config(return_summary=False):
     if return_summary:
         return config, summary_rows
     return config
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SECCIÓN 6b — Diseño realista vigente (campaña iquitos_v2): piloto B01
+# Iquitos no tiene estaciones de carga ni flota EV masiva: cero EV y cero tomas en
+# todos los edificios salvo un piloto en B01 (configs/dataset/ev_pilot.yaml).
+# ══════════════════════════════════════════════════════════════════════════════
+
+PILOT_CONFIG_PATH = ROOT / "configs" / "dataset" / "ev_pilot.yaml"
+PILOT_EV_TYPE = "service_motorcycle"
+BUILDING_TYPES: dict = {}  # canonical registry types (configs/dataset/building_types.yaml)
+_PILOT: dict = {}
+
+
+def configure_building_types(registry: dict) -> None:
+    BUILDING_TYPES.clear()
+    BUILDING_TYPES.update({int(b): row["canonical_type"] for b, row in registry["buildings"].items()})
+
+
+def load_pilot_config(path: Path = None) -> dict:
+    import yaml
+    return yaml.safe_load(Path(path or PILOT_CONFIG_PATH).read_text(encoding="utf-8"))["pilot"]
+
+
+def _value(entry):
+    return entry["value"] if isinstance(entry, dict) and "value" in entry else entry
+
+
+def pilot_charger_power_kw(pilot: dict) -> tuple[float, float]:
+    """evcc loadpoint semantics: power = voltage x current x phases, current in [min, max]."""
+    charger = pilot["charger"]
+    volts, phases = float(_value(charger["voltage_v"])), int(_value(charger["phases"]))
+    return (volts*float(_value(charger["min_current_a"]))*phases/1000.0,
+            volts*float(_value(charger["max_current_a"]))*phases/1000.0)
+
+
+def pilot_ev_id(vehicle_index: int) -> str:
+    return f"EV_B01_SM{vehicle_index:02d}"
+
+
+def pilot_daily_energy_kwh(pilot: dict) -> float:
+    operation = pilot["operation"]
+    return float(_value(operation["km_per_day"]))*float(_value(operation["kwh_per_km"]))
+
+
+def generate_depot_charger_csv(pilot: dict, vehicle_index: int) -> pd.DataFrame:
+    """Overnight depot sessions of one dedicated vehicle on one socket.
+
+    Each working day the vehicle arrives at the depot hour and stays connected
+    until the departure hour of the next working day (weekends included), so the
+    window wraps midnight. Sessions never cross a year boundary: the last one of a
+    year departs at 23:00 on 31 December, so each physical split is self-contained.
+    """
+    operation = pilot["operation"]
+    arrival_h = int(_value(operation["depot_arrival_hour"]))
+    departure_h = int(_value(operation["depot_departure_hour"]))
+    working = set(int(d) for d in _value(operation["working_days"]))
+    capacity = float(_value(pilot["battery_kwh"]))
+    required = float(_value(operation["required_departure_soc"]))
+    arrival_soc = required - pilot_daily_energy_kwh(pilot)/capacity
+    if not 0.0 < arrival_soc < required:
+        raise ValueError(f"pilot daily energy does not fit the battery: arrival SOC {arrival_soc:.3f}")
+    n_rows = len(FULL_INDEX)
+    state = np.full(n_rows, 3, dtype=int)
+    ev_id = np.full(n_rows, "NONE", dtype=object)
+    dep_cdwn = np.full(n_rows, -1.0)
+    req_soc = np.full(n_rows, -0.1)
+    arr_eta = np.full(n_rows, -1.0)
+    arr_soc = np.full(n_rows, -0.1)
+    name = pilot_ev_id(vehicle_index)
+    start = 0
+    for year in YEARS:
+        hours = 8784 if year == 2024 else 8760
+        days = pd.date_range(f"{year}-01-01", periods=hours // 24, freq="D")
+        work_days = [i for i, day in enumerate(days) if day.dayofweek in working]
+        for k, day in enumerate(work_days):
+            arrive = start + day*24 + arrival_h
+            leave = start + work_days[k + 1]*24 + departure_h if k + 1 < len(work_days) else start + hours - 1
+            if arrive >= start + hours:
+                continue
+            leave = min(leave, start + hours - 1)
+            for pos in range(arrive, leave + 1):
+                state[pos] = 1
+                ev_id[pos] = name
+                dep_cdwn[pos] = float(leave - pos)
+                req_soc[pos] = required*100.0
+                arr_soc[pos] = arrival_soc*100.0
+            pre = arrive - 1
+            if pre >= start and state[pre] == 3:
+                state[pre] = 2
+                ev_id[pre] = name
+                arr_eta[pre] = 1.0  # hours until arrival
+                arr_soc[pre] = arrival_soc*100.0
+        start += hours
+    return pd.DataFrame({
+        'electric_vehicle_charger_state': state,
+        'electric_vehicle_id': ev_id,
+        'electric_vehicle_departure_time': dep_cdwn,
+        'electric_vehicle_required_soc_departure': req_soc,
+        'electric_vehicle_estimated_arrival_time': arr_eta,
+        'electric_vehicle_estimated_soc_arrival': arr_soc,
+    }, index=FULL_INDEX)
+
+
+def build_charger_config(return_summary=False, pilot: dict = None):
+    """Canonical EV sizing: zero sockets everywhere except the B01 pilot sockets."""
+    global LAST_SUMMARY_ROWS
+    pilot = pilot or load_pilot_config()
+    pilot_building = int(pilot["building_id"])
+    vehicles = int(_value(pilot["vehicle_count"]))
+    sockets = int(_value(pilot["charger"]["physical_units"]))*int(_value(pilot["charger"]["sockets_per_unit"]))
+    if sockets != vehicles:
+        raise ValueError(f"pilot: {sockets} sockets for {vehicles} vehicles; one dedicated socket per vehicle")
+    _, max_kw = pilot_charger_power_kw(pilot)
+    config, rows = {}, []
+    for bid in sorted(BUILDING_NAMES):
+        chargers = [PILOT_EV_TYPE]*vehicles if bid == pilot_building else []
+        config[bid] = chargers
+        rows.append({'B': bid, 'name': BUILDING_NAMES[bid],
+                     'type': BUILDING_TYPES.get(bid, ''), 'total_chargers': len(chargers),
+                     'n_moto_stalls': 0, 'n_mototaxi_stalls': 0, 'n_cam_stalls': 0,
+                     'n_service_motorcycle_sockets': len(chargers),
+                     'electric_vehicle_pool_count': len(chargers),
+                     'mode3_physical_units': int(_value(pilot["charger"]["physical_units"])) if chargers else 0,
+                     'total_kw': round(len(chargers)*max_kw, 3),
+                     'sizing_policy': 'B01 pilot (configs/dataset/ev_pilot.yaml)' if chargers
+                     else 'no EV: Iquitos has no public charging and no EV fleet'})
+    LAST_SUMMARY_ROWS = rows
+    return (config, rows) if return_summary else config
+
+
+def pilot_ev_definition(pilot: dict) -> dict:
+    _, max_kw = pilot_charger_power_kw(pilot)
+    nominal = _value(pilot["battery_nominal_power_kw"])
+    required = float(_value(pilot["operation"]["required_departure_soc"]))
+    return {"include": True, "battery": {
+        "type": "citylearn.energy_model.Battery", "autosize": False,
+        "attributes": {"capacity": float(_value(pilot["battery_kwh"])),
+                       "nominal_power": float(max_kw if nominal is None else nominal),
+                       "initial_soc": round(required - pilot_daily_energy_kwh(pilot)/float(_value(pilot["battery_kwh"])), 6),
+                       "depth_of_discharge": float(_value(pilot["battery_depth_of_discharge"])),
+                       "efficiency": float(_value(pilot["battery_efficiency"])),
+                       "capacity_loss_coefficient": 1e-5}}}
+
+
+def update_schema_pilot(schema_path: Path, pilot: dict) -> dict:
+    schema = json.loads(Path(schema_path).read_text(encoding="utf-8"))
+    min_kw, max_kw = pilot_charger_power_kw(pilot)
+    charger = pilot["charger"]
+    vehicles = int(_value(pilot["vehicle_count"]))
+    schema["electric_vehicles_def"] = {pilot_ev_id(i): pilot_ev_definition(pilot) for i in range(1, vehicles + 1)}
+    for key, building in schema["buildings"].items():
+        building.pop("chargers", None)
+        building.pop("electrical_service", None)
+    building = schema["buildings"][f"Building_{int(pilot['building_id'])}"]
+    building["chargers"] = {}
+    for i in range(1, vehicles + 1):
+        name = f"charger_{int(pilot['building_id'])}_{i}"
+        building["chargers"][name] = {
+            "type": "citylearn.electric_vehicle_charger.Charger", "charger_simulation": f"{name}.csv",
+            "autosize": False,
+            "hardware": {"charging_mode": charger["mode"], "equipment_type": MODE3_EQUIPMENT_LABEL,
+                         "connector_standard": MODE3_CONNECTOR_STANDARD,
+                         "physical_charger_id": "mode3_B01_01",
+                         "socket_count_per_physical_unit": int(_value(charger["sockets_per_unit"])),
+                         "outlet_index": i, "ev_type": PILOT_EV_TYPE, "electric_vehicle_id": pilot_ev_id(i),
+                         "electric_vehicle_pool_size": 1, "phases": int(_value(charger["phases"])),
+                         "phase_connection": "L1", "voltage_v": float(_value(charger["voltage_v"])),
+                         "min_current_a": float(_value(charger["min_current_a"])),
+                         "max_current_a": float(_value(charger["max_current_a"])),
+                         "v2g_capable": False, "power_flow_direction": "charge_only",
+                         "v2g_max_export_power_kw": 0.0},
+            "attributes": {"nominal_power": round(max_kw, 6), "efficiency": float(_value(charger["efficiency"])),
+                           "charger_type": 3, "max_charging_power": round(max_kw, 6),
+                           "min_charging_power": round(min_kw, 6), "max_discharging_power": 0.0,
+                           "min_discharging_power": 0.0, "phase_connection": "L1"}}
+    Path(schema_path).write_text(json.dumps(schema, indent=2, ensure_ascii=False), encoding="utf-8")
+    return schema
+
+
+def write_pilot(dataset_dir: Path, audit_dir: Path, pilot: dict = None) -> dict:
+    """Write the pilot charger files and schema entries; return the audit record."""
+    pilot = pilot or load_pilot_config()
+    for path in Path(dataset_dir).glob("charger_*.csv"):
+        path.unlink()
+    config, rows = build_charger_config(return_summary=True, pilot=pilot)
+    sessions = {}
+    for bid, chargers in config.items():
+        for i, _ in enumerate(chargers, start=1):
+            frame = generate_depot_charger_csv(pilot, i)
+            frame.to_csv(Path(dataset_dir)/f"charger_{bid}_{i}.csv", index=False)
+            sessions[f"charger_{bid}_{i}"] = _session_start_count(frame["electric_vehicle_charger_state"])
+    update_schema_pilot(Path(dataset_dir)/"schema.json", pilot)
+    min_kw, max_kw = pilot_charger_power_kw(pilot)
+    audit = {"rule": "zero EV and zero chargers except the B01 pilot", "pilot": pilot,
+             "charger_power_kw": {"min": min_kw, "max": max_kw},
+             "daily_energy_kwh_per_vehicle": pilot_daily_energy_kwh(pilot), "sessions": sessions,
+             "buildings": {str(r["B"]): {"building_type": r["type"], "chargers": r["total_chargers"],
+                                         "vehicles": r["electric_vehicle_pool_count"]} for r in rows}}
+    Path(audit_dir).mkdir(parents=True, exist_ok=True)
+    (Path(audit_dir)/"ev_pilot.json").write_text(json.dumps(audit, indent=2, ensure_ascii=False, default=str),
+                                                 encoding="utf-8")
+    return audit
+
 
 def _format_summary_table(rows):
     lines = []
@@ -1090,96 +1308,11 @@ def clean_existing_charger_csvs():
 # ══════════════════════════════════════════════════════════════════════════════
 
 def main():
-    log.info("=" * 80)
-    log.info("dimension_ev_chargers.py v3.1 — Iquitos: EV por tipo, concurrencia y tomas Mode 3")
-    log.info(
-        "  Moto %.1f kW | Mototaxi %.1f kW | Camioneta %.1f kW | 2 tomas por equipo Mode 3",
-        EV_SPEC["moto_lineal"]["charger_kw"],
-        EV_SPEC["mototaxi"]["charger_kw"],
-        EV_SPEC["camioneta"]["charger_kw"],
-    )
-    log.info("=" * 80)
+    """Write the canonical EV design (B01 pilot only) into the configured dataset."""
+    audit = write_pilot(BASE, OUT_DIR)
+    log.info("EV pilot: %s", json.dumps(audit["buildings"]["1"]))
+    return audit
 
-    BASE.mkdir(parents=True, exist_ok=True)
-    schema_path = BASE / 'schema.json'
-
-    # 1 — Calcular dimensionamiento
-    charger_config, summary_rows = build_charger_config(return_summary=True)
-
-    total_chargers = sum(len(v) for v in charger_config.values())
-    total_physical_units = sum(r['mode3_physical_units'] for r in summary_rows)
-    log.info(f"\n  Total tomas controlables a generar: {total_chargers}")
-    log.info(f"  Equipos fisicos modo 3 doble toma: {total_physical_units}")
-    write_ev_sizing_audit(summary_rows)
-
-    # 2 — Generar CSV por cargador
-    log.info("\nGENERANDO CSV CHARGERS:")
-    log.info("-" * 80)
-    clean_existing_charger_csvs()
-    total_state1 = total_state2 = total_sessions = 0
-
-    for bid, ev_list in charger_config.items():
-        btype = BUILDING_DATA[bid]['bldg_type']
-        kw_list = [EV_SPEC[e]['charger_kw'] for e in ev_list]
-        log.info(f"  B{bid} ({len(ev_list)} cargadores @ {kw_list} kW | {btype}):")
-
-        for idx, ev_type in enumerate(ev_list, start=1):
-            cname = f'charger_{bid}_{idx}'
-            seed  = bid * 1000 + idx
-            df = generate_charger_csv(bid, idx, ev_type, btype, seed)
-            fpath = BASE / f'{cname}.csv'
-            df.to_csv(fpath, index=False)
-
-            s1   = (df['electric_vehicle_charger_state'] == 1).sum()
-            s2   = (df['electric_vehicle_charger_state'] == 2).sum()
-            sess = _session_start_count(df['electric_vehicle_charger_state'])
-            soc_req = df.loc[df['electric_vehicle_charger_state']==1,
-                             'electric_vehicle_required_soc_departure'].dropna()
-            soc_mean = soc_req.mean() if len(soc_req) > 0 else 0
-
-            first_state = df.iloc[0]['electric_vehicle_charger_state']
-            status = "OK" if int(first_state) == 3 else f"ERROR inicio={first_state}"
-
-            log.info(f"    {cname} [{EV_SPEC[ev_type]['ev_label']} {EV_SPEC[ev_type]['charger_kw']}kW]: "
-                     f"state1={s1}h ({s1/TOTAL_H*100:.1f}%) | state2={s2}h ({s2/TOTAL_H*100:.1f}%) | "
-                     f"sessions={sess} | soc_req={soc_mean:.1f}% | {status}")
-
-            total_state1 += s1
-            total_state2 += s2
-            total_sessions += sess
-
-    # 3 — Actualizar schema.json
-    log.info("\n  Actualizando schema.json...")
-    update_schema(charger_config, schema_path)
-
-    # 4 — Resumen final
-    log.info("\n" + "=" * 80)
-    log.info(f"  Archivos/tomas generados: {total_chargers}")
-    log.info(f"  Equipos fisicos modo 3 : {total_physical_units}")
-    log.info(f"  Total horas state=1    : {total_state1:,} ({total_state1/TOTAL_H/total_chargers*100:.1f}% avg)")
-    log.info(f"  Total horas state=2    : {total_state2:,} ({total_state2/TOTAL_H/total_chargers*100:.1f}% avg)")
-    log.info(f"  Total sesiones EV      : {total_sessions:,}")
-    log.info("=" * 80)
-
-    # 5 — Print charger count table for thesis
-    log.info("\nRESUMEN CARGADORES POR EDIFICIO:")
-    for bid, ev_list in charger_config.items():
-        n_ml  = sum(1 for e in ev_list if e == 'moto_lineal')
-        n_mt  = sum(1 for e in ev_list if e == 'mototaxi')
-        n_cv  = sum(1 for e in ev_list if e == 'camioneta')
-        kw_total = sum(EV_SPEC[e]['charger_kw'] for e in ev_list)
-        name  = BUILDING_NAMES.get(bid, f'Building_{bid}')
-        rem   = ' [REMOTO]' if BUILDING_DATA[bid].get('remote') else ''
-        units = math.ceil(len(ev_list) / MODE3_SOCKET_COUNT)
-        spare = units * MODE3_SOCKET_COUNT - len(ev_list)
-        log.info(
-            f"  B{bid:2d} {name:<26}{rem}: "
-            f"{n_ml}×{EV_SPEC['moto_lineal']['charger_kw']:.1f}kW + "
-            f"{n_mt}×{EV_SPEC['mototaxi']['charger_kw']:.1f}kW + "
-            f"{n_cv}×{EV_SPEC['camioneta']['charger_kw']:.1f}kW = "
-            f"{len(ev_list)} tomas, {units} equipos modo 3 doble toma, "
-            f"{spare} tomas reserva ({kw_total:.1f} kW)"
-        )
 
 if __name__ == '__main__':
     main()

@@ -39,6 +39,14 @@ DATASET_DIR = BASE_DIR / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_
 CACHE_DIR   = BASE_DIR / ".cache" / "weather"
 LOG_PATH    = DATASET_DIR / "solar_fix_log.json"
 
+
+def configure(dataset_dir: Path, weather_dir: Path) -> None:
+    """Point the tool at an explicit dataset and per-year observed weather (fresh campaign)."""
+    global DATASET_DIR, CACHE_DIR, LOG_PATH
+    DATASET_DIR = Path(dataset_dir)
+    CACHE_DIR = Path(weather_dir)
+    LOG_PATH = DATASET_DIR / "solar_fix_log.json"
+
 # ─── Configuración Iquitos ────────────────────────────────────────────────────
 LAT, LON, ALT = -3.7491, -73.2538, 106
 TZ = "America/Lima"

@@ -7,13 +7,14 @@ resolve directories here instead of hard-coding a campaign folder.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from uc3m.application.training.layout import normalize_scenario_dir
+from uc3m.application.training.layout import normalize_scenario_dir, iter_evidence_paths
 
 RESULTS_ROOT_ENV = "MADRL_RESULTS_ROOT"
 DEFAULT_RESULTS_ROOT = Path(__file__).resolve().parents[3] / "outputs" / "campaign"
@@ -45,7 +46,7 @@ def resolve_results_root(results_root: Optional[Path] = None) -> Path:
 
 def discover_runs(results_root: Path, *, verified_only: bool = True) -> List[CampaignRun]:
     runs = []
-    for evidence_path in sorted(Path(results_root).glob("*/evidence.json")):
+    for evidence_path in sorted(iter_evidence_paths(results_root)):
         run_dir = evidence_path.parent
         experiment_path = run_dir / "experiment.json"
         if not experiment_path.is_file():
@@ -69,6 +70,111 @@ def discover_runs(results_root: Path, *, verified_only: bool = True) -> List[Cam
             )
         )
     return sorted(runs, key=lambda run: (run.algorithm, run.scenario, run.seed, run.run_id))
+
+
+@dataclass(frozen=True)
+class FreshAttempt:
+    """One attempt of an explicit fresh campaign, with the verdict of the single trust rule."""
+    campaign_id: str
+    stage: str
+    treatment_id: str
+    algorithm: str
+    scenario: str
+    seed: int
+    attempt_id: str
+    attempt_root: Path
+    accepted: bool
+    reasons: Tuple[str, ...]
+
+
+def _read_json(path: Path):
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def discover_attempts(manifest_path: Path, *, accepted_only: bool = True) -> List[FreshAttempt]:
+    """Attempts recorded in the stage results of the campaign at ``manifest_path``.
+
+    The campaign is always explicit: no folder is searched for the newest run. A
+    treatment counts as accepted only through
+    ``fresh_acceptance.treatment_trust_reasons``; the attempt listed is its
+    complete attempt, or its last one when none completed.
+    """
+    from uc3m.application.dataset.provenance import contained_path
+    from uc3m.application.training.fresh_acceptance import treatment_trust_reasons
+
+    if manifest_path is None:
+        raise TypeError("discover_attempts needs the campaign manifest path")
+    manifest_path = Path(manifest_path)
+    if not manifest_path.is_file():
+        raise FileNotFoundError(f"no campaign manifest at {manifest_path}")
+    manifest = _read_json(manifest_path)
+    artifacts = manifest_path.parent
+    campaign_id = manifest["campaign_id"]
+    found: List[FreshAttempt] = []
+    for stage in sorted(manifest.get("stages") or {}):
+        result_path = artifacts / "stages" / f"{stage}_result.json"
+        if not result_path.is_file():
+            continue
+        result = _read_json(result_path)
+        if result.get("campaign_id") != campaign_id or result.get("stage") != stage:
+            raise ValueError(f"{result_path}: stage result of another campaign or stage")
+        for treatment in result.get("treatments") or []:
+            attempts = treatment.get("attempts") or []
+            if not attempts:
+                continue
+            chosen = next((a for a in attempts if a.get("training_complete")), attempts[-1])
+            reasons = tuple(treatment_trust_reasons(artifacts, campaign_id, treatment))
+            try:
+                root = contained_path(artifacts, str(chosen["path"]))
+                record = _read_json(root / "attempt.json")
+                key = record["treatment"]
+            except (ValueError, OSError, KeyError) as exc:
+                reasons += (f"unreadable_attempt:{exc}",)
+                root, record, key = artifacts / str(chosen.get("path", "")), {}, {}
+            if key and (key.get("campaign_id") != campaign_id or key.get("stage") != stage):
+                reasons += ("attempt_of_another_campaign_or_stage",)
+            accepted = not reasons
+            if accepted_only and not accepted:
+                continue
+            found.append(FreshAttempt(
+                campaign_id, stage, str(record.get("treatment_id", treatment.get("treatment_id"))),
+                str(key.get("algorithm", "")), str(key.get("scenario", "")), int(key.get("seed", -1)),
+                str(record.get("attempt_id", chosen.get("attempt_id", ""))), root, accepted, reasons))
+    return found
+
+
+def build_seed_table(manifest_path: Path, *, stage: str = "confirm", split: str = "validation_2024"):
+    """Seed rows from the hash-verified KPI reports of the accepted attempts of one stage.
+
+    Layout: ``<attempt_root>/evaluation/<split>/kpi_report.json`` with its sha256 in
+    ``evaluation_manifest.json`` (``{"files": {"kpi_report.json": "<sha256>"}}``) in
+    the same folder. An attempt without a report is a missing measurement (no row);
+    a changed report or a report whose context is not this attempt is refused.
+    """
+    from uc3m.application.evaluation.fresh_analysis import SeedTable, rows_from_kpi_report
+
+    rows = []
+    for attempt in discover_attempts(manifest_path):
+        if attempt.stage != stage:
+            continue
+        folder = attempt.attempt_root / "evaluation" / split
+        report_path = folder / "kpi_report.json"
+        if not report_path.is_file():
+            continue
+        recorded = (_read_json(folder / "evaluation_manifest.json").get("files") or {}).get("kpi_report.json")
+        digest = hashlib.sha256(report_path.read_bytes()).hexdigest()
+        if digest != recorded:
+            raise ValueError(f"{report_path}: sha256 differs from evaluation_manifest.json")
+        report = _read_json(report_path)
+        expected = {"campaign_id": attempt.campaign_id, "treatment_id": attempt.treatment_id,
+                    "algorithm": attempt.algorithm, "scenario": attempt.scenario,
+                    "seed": attempt.seed, "split": split}
+        context = report.get("context") or {}
+        mismatched = sorted(k for k, v in expected.items() if context.get(k) != v)
+        if mismatched:
+            raise ValueError(f"{report_path}: report context does not match the attempt ({mismatched})")
+        rows.extend(rows_from_kpi_report(report, report_sha256=digest))
+    return SeedTable.from_rows(rows)
 
 
 def campaign_layout(results_root: Path, *, seed: int = 0) -> Dict[Tuple[str, str], Path]:

@@ -297,6 +297,39 @@ def compute_cop_array(t_out: np.ndarray, eta: float) -> np.ndarray:
     return np.clip(cop, COP_CLIP_LOW, COP_CLIP_HIGH)
 
 
+def citylearn_cooling_cop(t_out: np.ndarray, eta: float, t_target: float) -> np.ndarray:
+    """Cooling COP exactly as citylearn.energy_model.HeatPump.get_cop(heating=False).
+
+    cop = eta*(T_target + 273.15)/(T_out - T_target); negative or > 20 values are set
+    to 20 as CityLearn does. Calibrating with this function and writing eta and
+    T_target into schema.json makes the simulated cooling electricity equal to the
+    calibrated one (owner decision 2026-11-01, campaign v2).
+    """
+    t_out = np.asarray(t_out, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        cop = float(eta)*(float(t_target) + 273.15)/(t_out - float(t_target))
+    cop = np.array(cop, dtype=float)
+    cop[~np.isfinite(cop)] = 20.0
+    cop[cop < 0] = 20.0
+    cop[cop > 20] = 20.0
+    return cop
+
+
+# Canonical building types and schedules (configs/dataset/building_types.yaml).
+# Empty: the legacy inventory-use rules below; set by configure_building_types.
+BUILDING_TYPES: dict[int, str] = {}
+BUILDING_SCHEDULES: dict[int, dict] = {}
+
+
+def configure_building_types(registry: dict) -> None:
+    """Use the registry type and schedule of each building (one source for all modules)."""
+    BUILDING_TYPES.clear()
+    BUILDING_SCHEDULES.clear()
+    for bid, row in registry["buildings"].items():
+        BUILDING_TYPES[int(bid)] = row["canonical_type"]
+        BUILDING_SCHEDULES[int(bid)] = registry["schedules"][row["schedule"]]
+
+
 def compute_managed_energy(df: pd.DataFrame, cop_act: np.ndarray, cop_acs: float) -> np.ndarray:
     """Electrical energy of controlled cooling and DHW in kWh per hour."""
     cd = df["cooling_demand"].to_numpy(dtype=float) if "cooling_demand" in df.columns else np.zeros(len(df))
@@ -331,6 +364,11 @@ def operational_factor(meta: BuildingInventory, hours: np.ndarray, day_type: np.
     """Deterministic operating schedule by inventory use type."""
     h = np.asarray(hours, dtype=int)
     day = np.asarray(day_type, dtype=int)
+    schedule = BUILDING_SCHEDULES.get(meta.building_id)
+    if schedule is not None:
+        profile = np.asarray(schedule["hourly_profile"], dtype=float)[h % 24]
+        weekday, saturday, sunday = schedule["day_factors_weekday_saturday_sunday"]
+        return profile*np.where(day <= 5, weekday, np.where(day == 6, saturday, sunday))
     use = _normalise_use(meta.tipo_uso_citylearn)
 
     if "healthcare" in use:
@@ -370,6 +408,8 @@ def operational_factor(meta: BuildingInventory, hours: np.ndarray, day_type: np.
 
 
 def cooling_setpoint(meta: BuildingInventory) -> float:
+    if meta.building_id in BUILDING_SCHEDULES:
+        return float(BUILDING_SCHEDULES[meta.building_id]["cooling_setpoint_c"])
     use = _normalise_use(meta.tipo_uso_citylearn)
     if "healthcare" in use:
         return 22.0
@@ -502,25 +542,34 @@ def _allocate_residual_energy_block(
     nsl_elec: np.ndarray,
     cooling_elec: np.ndarray,
     dhw_elec: np.ndarray,
+    fixed_elec: np.ndarray | None = None,
 ) -> dict[str, float]:
     """Set NSL as measured active energy minus controllable electric loads.
 
     The controllable loads already represented in CityLearn's training CSV are
     cooling_demand/COP and dhw_demand/COP. They are not copied into
     non_shiftable_load; NSL receives only the residual measured energy.
+    ``fixed_elec`` is an electric load inside the bill that is simulated outside
+    the building CSV (the controlled machines at their as-billed start): it is
+    subtracted from the measured energy, never added on top.
     """
+    fixed_kwh = float(np.clip(fixed_elec[idx], 0.0, None).sum()) if fixed_elec is not None and len(idx) else 0.0
     empty = {
         "measured_energy_kwh": 0.0,
         "controlled_model_kwh": 0.0,
         "controlled_used_kwh": 0.0,
         "controlled_scale": 1.0,
         "residual_nsl_kwh": 0.0,
+        "fixed_kwh": fixed_kwh,
     }
 
     if len(idx) == 0:
         return empty
 
     energy = max(float(energy_kwh), 0.0)
+    if fixed_kwh > energy + 1e-9:
+        raise ValueError(f"controlled machines use {fixed_kwh:.3f} kWh but the billed block has {energy:.3f} kWh")
+    energy -= fixed_kwh
     if energy == 0.0:
         nsl_elec[idx] = 0.0
         cooling_elec[idx] = 0.0
@@ -551,6 +600,7 @@ def _allocate_residual_energy_block(
         "controlled_used_kwh": controlled_used,
         "controlled_scale": controlled_scale,
         "residual_nsl_kwh": float(nsl_elec[idx].sum()),
+        "fixed_kwh": fixed_kwh,
     }
 
 
@@ -574,7 +624,16 @@ def calibrate_building(
     dataset_dir: Path = DATASET_DIR,
     inventory: dict[int, BuildingInventory] | None = None,
     measurements: pd.DataFrame | None = None,
+    machine_elec: np.ndarray | None = None,
 ) -> pd.DataFrame:
+    """Close each measured month (per TOU block) with NSL as the residual.
+
+    When schema.json declares cooling_device.attributes.target_cooling_temperature
+    the cooling COP is CityLearn's own HeatPump formula with that target and the
+    schema efficiency (campaign v2); otherwise the legacy clipped convention.
+    ``machine_elec`` (kWh per hour, as-billed start of the controlled machines) is
+    subtracted from the bill inside the same blocks.
+    """
     # B_01 now has B_01.csv billing data (generated 2026-06-06) — no longer skipped
     inventory = DEFAULT_INVENTORY if inventory is None else inventory
     if bldg_id not in inventory:
@@ -596,7 +655,17 @@ def calibrate_building(
         raise ValueError(f"B{bldg_id}: Building CSV rows={len(df_orig)} != weather rows={len(t_out)}")
 
     eta, cop_acs = get_cop_params(schema, bldg_id, inventory)
-    cop_act = compute_cop_array(t_out, eta)
+    cooling_attributes = (schema.get("buildings", {}).get(f"Building_{bldg_id}", {})
+                          .get("cooling_device", {}) or {}).get("attributes", {}) or {}
+    t_target = cooling_attributes.get("target_cooling_temperature")
+    if t_target is not None:
+        t_target = float(t_target)
+        cop_act = citylearn_cooling_cop(t_out, eta, t_target)
+    else:
+        t_target = T_TARGET
+        cop_act = compute_cop_array(t_out, eta)
+    if machine_elec is not None and len(machine_elec) != len(t_out):
+        raise ValueError(f"B{bldg_id}: machine series rows={len(machine_elec)} != weather rows={len(t_out)}")
     managed_orig = compute_managed_energy(df_orig, cop_act, cop_acs)
     nsl_orig = df_orig["non_shiftable_load"].to_numpy(dtype=float)
 
@@ -625,11 +694,12 @@ def calibrate_building(
         offpeak_idx = month_idx[~np.isin(hours[month_idx], list(PEAK_HOURS))]
 
         peak_audit = _allocate_residual_energy_block(
-            m.energia_punta_kwh, peak_idx, drivers, nsl_elec, cooling_elec, dhw_elec
+            m.energia_punta_kwh, peak_idx, drivers, nsl_elec, cooling_elec, dhw_elec, machine_elec
         )
         offpeak_audit = _allocate_residual_energy_block(
-            m.energia_fuera_punta_kwh, offpeak_idx, drivers, nsl_elec, cooling_elec, dhw_elec
+            m.energia_fuera_punta_kwh, offpeak_idx, drivers, nsl_elec, cooling_elec, dhw_elec, machine_elec
         )
+        e_machine = float(peak_audit["fixed_kwh"] + offpeak_audit["fixed_kwh"])
 
         e_total_syn, e_gest_syn, e_ns_syn = _monthly_original_energy(
             df_indexed, month_idx, nsl_orig, managed_orig
@@ -637,9 +707,12 @@ def calibrate_building(
         e_ns_cal = float(nsl_elec[month_idx].sum())
         e_cooling_elec_cal = float(cooling_elec[month_idx].sum())
         e_dhw_elec_cal = float(dhw_elec[month_idx].sum())
-        e_peak_cal = float((nsl_elec[peak_idx] + cooling_elec[peak_idx] + dhw_elec[peak_idx]).sum())
-        e_offpeak_cal = float((nsl_elec[offpeak_idx] + cooling_elec[offpeak_idx] + dhw_elec[offpeak_idx]).sum())
-        e_cal = e_ns_cal + e_cooling_elec_cal + e_dhw_elec_cal
+        machine_block = machine_elec if machine_elec is not None else np.zeros(len(t_out))
+        e_peak_cal = float((nsl_elec[peak_idx] + cooling_elec[peak_idx] + dhw_elec[peak_idx]
+                            + machine_block[peak_idx]).sum())
+        e_offpeak_cal = float((nsl_elec[offpeak_idx] + cooling_elec[offpeak_idx] + dhw_elec[offpeak_idx]
+                               + machine_block[offpeak_idx]).sum())
+        e_cal = e_ns_cal + e_cooling_elec_cal + e_dhw_elec_cal + e_machine
         e_med = float(m.energia_total_kwh)
         delta_pct = (e_cal - e_med) / max(e_med, 1.0) * 100.0
         e_controlled_model = float(peak_audit["controlled_model_kwh"] + offpeak_audit["controlled_model_kwh"])
@@ -655,6 +728,12 @@ def calibrate_building(
         rows.append({
             "building_id": bldg_id,
             "building_name": inventory[bldg_id].name,
+            "building_type": BUILDING_TYPES.get(bldg_id, inventory[bldg_id].tipo_uso_citylearn),
+            "cooling_efficiency": float(eta),
+            "cooling_target_c": float(t_target),
+            "cooling_cop_model": "citylearn_heat_pump" if "target_cooling_temperature" in cooling_attributes
+            else "legacy_clipped",
+            "E_machine_kWh": round(e_machine, 6),
             "year": int(m.year),
             "mes": int(m.month),
             "E_medido_kWh": round(e_med, 6),

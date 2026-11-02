@@ -257,7 +257,10 @@ def _build_canonical_ev_config() -> dict[int, list[tuple[str, int, int, float, f
         bldg_type = evdim.BUILDING_DATA.get(bldg_id, {}).get("bldg_type", "institucional")
         entries = []
         for ev_type in charger_config.get(bldg_id, []):
-            spec = evdim.EV_SPEC[ev_type]
+            spec = evdim.EV_SPEC.get(ev_type)
+            if spec is None:
+                # Campaign v2 pilot sockets are written by dimension_ev_chargers.write_pilot.
+                continue
             arr_mu, _arr_sig, session_mu, _session_sig, _prob_wd, _prob_we = evdim.ARRIVAL_PROFILE.get(
                 (ev_type, bldg_type),
                 default_profile,
@@ -298,6 +301,58 @@ EV_DAYS_ACTIVE = {
     'salud':     'todos',   'ambulancia':'todos',  'portuario':  'todos',
     'tec':       'laboral',
 }
+
+WEEKDAY_ONLY_TYPES: set[str] = set()
+BUILDING_CANONICAL_TYPES: dict[int, str] = {}
+
+
+def apply_building_type_registry(registry: dict) -> dict[int, str]:
+    """Make the canonical registry (configs/dataset/building_types.yaml) the only type source.
+
+    Each building's generator key becomes its registry schedule name, whose hourly
+    profile, day factors, occupied hours, setpoint, time constant, initial COP and
+    machine rule are taken from the registry; the controlled-machine cycle energy
+    and initial amplitudes come from the registry too.
+    """
+    WEEKDAY_ONLY_TYPES.clear()
+    BUILDING_CANONICAL_TYPES.clear()
+    for name, schedule in registry["schedules"].items():
+        LOAD_PROFILES[name] = list(schedule["hourly_profile"])
+        DAY_FACTOR_MAP[name] = tuple(schedule["day_factors_weekday_saturday_sunday"])
+        OCCUPANCY_HOURS[name] = tuple(schedule["occupied_hours"])
+        SETPOINTS_C[name] = float(schedule["cooling_setpoint_c"])
+        TAU_HOURS[name] = float(schedule["thermal_time_constant_h"])
+        COP_BY_TYPE[name] = float(schedule["generator_cooling_cop"])
+        CONTROLLED_MACHINE_RULES[name] = {"days": schedule["machine_days"],
+                                          "profile": list(schedule["machine_cycle_profile"])}
+        if schedule["machine_days"] == "laboral" and tuple(schedule["occupied_hours"]) != (0, 24):
+            WEEKDAY_ONLY_TYPES.add(name)
+    for bid, row in registry["buildings"].items():
+        cfg = MADRL_BUILDING_CONSTANTS[int(bid)]
+        cfg["bldg_type"] = row["schedule"]
+        cfg["canonical_type"] = row["canonical_type"]
+        cfg["shiftable"] = float(row["controlled_machine_cycle_kwh"]["value"])
+        cfg["cooling_peak"] = float(row["generator_cooling_peak_kw"]["value"])
+        cfg["non_shiftable_base"] = float(row["generator_non_shiftable_base_kw"]["value"])
+        BUILDING_CANONICAL_TYPES[int(bid)] = row["canonical_type"]
+    return dict(BUILDING_CANONICAL_TYPES)
+
+
+def constant_carbon_intensity(config_path: Path) -> tuple[float, dict]:
+    """CI = EF_fuel [kgCO2/TJ] * 3.6e-6 [TJ/kWh] / eta_thermal, one constant (no solar modulation)."""
+    import yaml
+    cfg = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
+    ef = float(cfg["fuel_co2_emission_factor_kg_per_tj"]["value"])
+    conversion = float(cfg["energy_conversion_tj_per_kwh"]["value"])
+    eta = float(cfg["net_thermal_efficiency"]["value"])
+    value = ef*conversion/eta
+    derivation = {"name": "carbon_intensity", "value": value, "unit": "kgCO2/kWh", "origin": "model",
+                  "assumption": True, "formula": "EF_fuel * 3.6e-6 / eta_thermal",
+                  "reason": "computed with a cited fuel factor and an assumed fuel and plant efficiency",
+                  "inputs": {key: cfg[key] for key in ("fuel", "fuel_co2_emission_factor_kg_per_tj",
+                                                      "net_thermal_efficiency", "energy_conversion_tj_per_kwh")}}
+    return value, derivation
+
 
 FE_DIESEL_KG_KWH   = 0.79
 SOLAR_PENETRACION   = 0.15
@@ -592,7 +647,7 @@ class BuildingDataGenerator:
             self._occ = np.where((h >= occ_start) & (h < occ_end), 1.0, 0.0)
             if dow is not None:
                 weekend = dow >= 5
-                if self.btype in ('educacion', 'administrativo', 'universitario'):
+                if self.btype in ('educacion', 'administrativo', 'universitario') or self.btype in WEEKDAY_ONLY_TYPES:
                     self._occ[weekend] = 0.0
 
     # ── Columnas de contexto temporal ─────────────────────────────────
@@ -735,6 +790,10 @@ class SupportFilesGenerator:
                 df[f'{base}_predicted_{k}'] = shift_col(arr, k)
 
         return df
+
+    def build_constant_carbon_intensity(self, n_hours: int, value: float) -> pd.DataFrame:
+        """One constant factor of the isolated thermal grid (campaign v2)."""
+        return pd.DataFrame({'carbon_intensity': np.full(int(n_hours), float(value))})
 
     def build_carbon_intensity(self, weather_full: pd.DataFrame) -> pd.DataFrame:
         ghi_frac = (weather_full['GHI'].values / 1000.0).clip(0, 1)

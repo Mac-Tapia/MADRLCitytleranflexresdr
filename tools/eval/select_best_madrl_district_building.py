@@ -77,7 +77,7 @@ def resolve_tables(
     if not d.is_file() or not b.is_file():
         raise FileNotFoundError(
             f"Faltan tablas en {rankings_dir}. "
-            "Ejecuta tools/eval/compute_drive50_district_building_kpi_rankings.py "
+            "Ejecuta tools/eval/kpi_rankings.py "
             "o completa Sección 8 del notebook."
         )
     return d, b

@@ -74,7 +74,7 @@ class TestLocalCsvAdapter:
         assert m.buildings == 5
         assert m.hours == 100          # end_step 99 + 1
         assert m.name == "mini"
-        assert len(m.content_hash) == 16
+        assert len(m.content_hash) == 64   # full SHA-256 of every file (P12/A26)
 
     def test_describe_hash_is_deterministic(self, tmp_path):
         self._make_dataset(tmp_path)

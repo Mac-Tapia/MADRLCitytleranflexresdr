@@ -14,7 +14,7 @@ import math
 
 import pytest
 
-from citylearn.reward_function import CityLearnV3MADRLRewardFunction
+from citylearn.v3.reward import CityLearnV3MADRLRewardFunction
 from uc3m.domain.objectives import ObjectiveAxis, canonical_objective_policies
 from uc3m.reward.term_telemetry import (
     SERVICE_TERMS,
@@ -169,14 +169,14 @@ def test_decomposition_does_not_change_reward_or_state(scenario):
     instrumented, rewards = _run_two_steps(scenario)
     snapshot = copy.deepcopy(instrumented._last_component_breakdown)
     snapshot_socs = dict(instrumented._last_bess_socs)
-    snapshot_import = instrumented._last_district_import
+    snapshot_import = instrumented._last_district_power
 
     decompose_reward_function(instrumented)
     decompose_reward_function(instrumented)
 
     assert instrumented._last_component_breakdown == snapshot
     assert instrumented._last_bess_socs == snapshot_socs
-    assert instrumented._last_district_import == snapshot_import
+    assert instrumented._last_district_power == snapshot_import
 
     # A reference run without any telemetry call gives identical rewards.
     _, reference_rewards = _run_two_steps(scenario)
@@ -257,3 +257,55 @@ def test_missing_breakdown_raises():
     )
     with pytest.raises(ValueError, match="breakdown"):
         decompose_reward_function(reward_function)
+
+
+# --- Audit 2026-11-01 (items 5d, 7): episode supervision summaries ---------------------------------
+
+def test_default_profile_has_no_team_mixing_and_decomposition_is_local():
+    reward_function, rewards = _run_two_steps("E1")
+    assert "team_reward_ratio" not in reward_function.profile
+    decompositions = decompose_reward_function(reward_function)
+    local = [c["local_reward"] for c in reward_function._last_component_breakdown["components"]]
+    assert [d.total for d in decompositions] == pytest.approx(local, abs=ATOL)
+
+
+def test_recorder_summarizes_dominance_saturation_and_action_spread():
+    from uc3m.reward.term_telemetry import RewardTelemetryRecorder
+
+    recorder = RewardTelemetryRecorder()
+    reward_function = CityLearnV3MADRLRewardFunction({"central_agent": False}, algorithm="MATD3", scenario="E1")
+    for step in range(3):
+        reward_function.calculate(_observations(step))
+        recorder.record_step(reward_function._last_component_breakdown,
+                             actions={"agent_0": [0.1 * step, -0.2], "agent_1": [0.5, 0.5]})
+    episode = recorder.close_episode()
+    assert episode["steps"] == 3 and episode["episode"] == 0
+    assert set(episode["axis_means"]) == {"flex", "carbon", "cost"}
+    assert set(episode["weighted_axis_means"]) == {"flex", "carbon", "cost"}
+    assert set(episode["constraint_means"]) == {"ev", "bess_cycle"}
+    assert episode["effective_axis_weights"] == pytest.approx(EXPECTED_WEIGHTS["E1"])
+    components = reward_function._last_component_breakdown["components"]
+    assert episode["constraint_dominance_ratio"] > 0
+    assert 0.0 <= episode["saturation_fraction"] <= 1.0
+    assert episode["action_std_by_agent"]["agent_1"] == pytest.approx(0.0)
+    assert episode["action_std_by_agent"]["agent_0"] > 0.0
+    summary = recorder.summary()
+    assert summary["episodes"] == 1 and summary["steps"] == 3
+    assert summary["constraint_dominance_ratio"] == pytest.approx(episode["constraint_dominance_ratio"])
+    assert summary["effective_axis_weights"] == pytest.approx(EXPECTED_WEIGHTS["E1"])
+    assert len(components) == 3
+
+
+def test_recorder_dominance_is_hand_computable():
+    from uc3m.reward.term_telemetry import RewardTelemetryRecorder
+
+    breakdown = {"axis_weights": {"flex": 0.6, "carbon": 0.15, "cost": 0.25},
+                 "components": [{"flex": -1.0, "carbon": -1.0, "cost": -1.0, "weighted_flex": -0.6,
+                                 "weighted_carbon": -0.15, "weighted_cost": -0.25, "ev": -0.5,
+                                 "bess_cycle": -0.5, "sat_peak": 1.0, "sat_ramp": 0.0}]}
+    recorder = RewardTelemetryRecorder()
+    recorder.record_step(breakdown)
+    episode = recorder.close_episode()
+    assert episode["constraint_dominance_ratio"] == pytest.approx(1.0 / 1.0)
+    assert episode["saturation_fraction"] == pytest.approx(0.5)
+    assert recorder.close_episode() is None      # an empty episode is not recorded

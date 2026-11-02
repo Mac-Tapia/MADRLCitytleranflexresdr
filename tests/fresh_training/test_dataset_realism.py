@@ -1,0 +1,329 @@
+"""Realism contract of the fresh Iquitos campaign dataset (iquitos_v2).
+
+Owner criteria (2026-11-01): every dataset calculation is realistic and traceable;
+Iquitos has no charging stations and no mass EV fleet (only a 2-motorcycle pilot at
+B01); rooftop PV and BESS are sized by the MicroGrids LP on pvlib AC per kWp; every
+building is grid-connected, nothing is curtailed and export is credited at the
+building's purchase price (user decision, net billing scenario); one building type
+per building across modules; heat pumps frozen at
+the calibration values; controlled machines inside the bills; constant carbon
+factor; the bills close against what CityLearn actually simulates.
+
+Unit tests use tmp_path; integration tests read data/campaigns/iquitos_v2 and fail
+(never skip) when it is absent.
+"""
+import csv
+import json
+import sys
+from pathlib import Path
+
+import pytest
+import yaml
+
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO/'tools/dataset'))
+CAMPAIGN = REPO/'data/campaigns/iquitos_v2'
+DATASET = CAMPAIGN/'dataset'
+REGISTRY = yaml.safe_load((REPO/'configs/dataset/building_types.yaml').read_text(encoding='utf-8'))
+EV_PILOT = yaml.safe_load((REPO/'configs/dataset/ev_pilot.yaml').read_text(encoding='utf-8'))
+ORIGINS = {'measured', 'model', 'cited', 'assumption', 'design_rule', 'derived', 'user_decision'}
+EVCC_MIN_A, EVCC_MAX_A, VOLT = 6.0, 16.0, 230.0
+
+
+def _json(path):
+    assert path.is_file(), f'{path.relative_to(REPO)} missing: build iquitos_v2 first'
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def _schema():
+    return _json(DATASET/'schema.json')
+
+
+def _csv_column(path, column):
+    with open(path, newline='', encoding='utf-8') as stream:
+        return [row[column] for row in csv.DictReader(stream)]
+
+
+# ── registry and configuration (unit) ───────────────────────────────────────
+
+def test_registry_declares_required_types():
+    types = {int(b): row['canonical_type'] for b, row in REGISTRY['buildings'].items()}
+    assert set(types) == set(range(1, 18))
+    assert types[16] == 'industrial_shipyard' and types[17] == 'laboratory_24h'
+    assert types[2] == 'municipal_office' and types[9] == 'emergency_operations_office_24h'
+    assert types[8] == 'police_school'
+    for row in REGISTRY['buildings'].values():
+        assert row['schedule'] in REGISTRY['schedules'] and row['justification']
+    assert REGISTRY['schedules']['laboratory_24h']['occupied_hours'] == [0, 24]
+    assert REGISTRY['schedules']['office_24h']['occupied_hours'] == [0, 24]
+
+
+def test_der_economics_declares_source_and_status():
+    economics = yaml.safe_load((REPO/'configs/dataset/der_economics.yaml').read_text(encoding='utf-8'))
+    allowed = {'repository_example', 'design_rule', 'assumption_pending_user_verification'}
+    for group in ('pv', 'bess', 'project'):
+        for name, entry in economics[group].items():
+            assert entry['status'] in allowed, (group, name)
+            assert entry.get('source'), (group, name)
+    assert economics['export']['price_ratio_to_purchase'] == 1.0
+    assert economics['export']['curtailment_allowed'] is False and economics['export']['origin'] == 'user_decision'
+
+
+def test_tou_blocks_scaled_to_printed_total(tmp_path):
+    from uc3m.application.dataset import construction as cn
+    path = tmp_path/'B_04.csv'
+    path.write_text('E;Mes;Año;EnergiaActivaHoraPunta;EnergiaActivaFueraPunta;EnergiaReactiva;FactorCarga;'
+                    'totalEnergiaActiva;TotalFacturado;Tarifa\n'
+                    'X;ene;2023;100,0;400,0;0;0,5;600,0;10,0;MT3\n'
+                    'X;feb;2023;100,0;400,0;0;0,5;505,0;10,0;MT3\n'
+                    'X;mar;2023;100,0;400,0;0;0,5;50,0;10,0;MT3\n', encoding='utf-8')
+    jan, feb, mar = cn.parse_billing_csv(path, 4, scale_tou_to_printed_total=True)
+    assert jan.energy_kwh == pytest.approx(600.0) and jan.peak_kwh == pytest.approx(120.0)
+    assert 'tou_scaled_to_printed_total' in jan.flags and 'total_mismatch' in jan.flags
+    assert feb.energy_kwh == pytest.approx(500.0) and 'tou_scaled_to_printed_total' not in feb.flags  # within 2 %
+    # A printed total outside 0.5..2 x the registers is a transcription error: registers kept, flagged.
+    assert mar.energy_kwh == pytest.approx(500.0) and 'printed_total_implausible' in mar.flags
+    legacy = cn.parse_billing_csv(path, 4)
+    assert legacy[0].energy_kwh == pytest.approx(500.0)  # the earlier campaign rule is unchanged
+
+
+def test_carbon_factor_is_constant_and_derived():
+    import generate_iquitos_dataset as gen
+    value, derivation = gen.constant_carbon_intensity(REPO/'configs/dataset/grid_emissions.yaml')
+    assert value == pytest.approx(74100*3.6e-6/0.40)
+    assert derivation['origin'] == 'model' and derivation['inputs']
+    frame = gen.SupportFilesGenerator().build_constant_carbon_intensity(10, value)
+    assert frame['carbon_intensity'].nunique() == 1
+
+
+def test_citylearn_cooling_cop_matches_heat_pump():
+    import numpy as np
+    from citylearn.energy_model import HeatPump
+    import distill_building_loads as dl
+    t_out = np.array([20.0, 26.5, 34.0])
+    pump = HeatPump(nominal_power=10.0, efficiency=0.21, target_cooling_temperature=8.5)
+    assert dl.citylearn_cooling_cop(t_out, 0.21, 8.5) == pytest.approx(pump.get_cop(t_out, heating=False))
+
+
+def test_depot_sessions_are_overnight_and_respect_year_boundaries():
+    import dimension_ev_chargers as ev
+    frame = ev.generate_depot_charger_csv(EV_PILOT['pilot'], vehicle_index=1)
+    state = frame['electric_vehicle_charger_state'].to_numpy()
+    assert len(state) == 26304 and set(state) <= {1, 2, 3}
+    hours = frame.index.hour
+    starts = [i for i in range(1, len(state)) if state[i] == 1 and state[i-1] != 1]
+    assert starts and all(hours[i] == 18 for i in starts)
+    for boundary in (8760, 17544):  # no session crosses a split boundary
+        assert state[boundary - 1] != 1 or frame['electric_vehicle_departure_time'].iloc[boundary - 1] == 0
+        assert state[boundary] != 1
+    ends = [i for i in range(len(state) - 1) if state[i] == 1 and state[i+1] != 1]
+    assert all(hours[i] in (7, 23) for i in ends)
+    ids = set(frame['electric_vehicle_id']) - {'NONE'}
+    assert len(ids) == 1  # one dedicated vehicle per socket
+
+
+# ── built dataset (integration) ──────────────────────────────────────────────
+# Every realism gate holds in each fresh campaign: iquitos_v2 (bill-average price) and
+# iquitos_v3 (official Osinergmin tariff, PV bound = covered area x 0.63).
+
+@pytest.fixture(params=['iquitos_v2', 'iquitos_v3'])
+def campaign(request, monkeypatch):
+    root = REPO/'data/campaigns'/request.param
+    module = sys.modules[__name__]
+    monkeypatch.setattr(module, 'CAMPAIGN', root)
+    monkeypatch.setattr(module, 'DATASET', root/'dataset')
+    return root
+
+@pytest.mark.usefixtures('campaign')
+def test_zero_ev_and_chargers_outside_b01():
+    schema = _schema()
+    for key, building in schema['buildings'].items():
+        if key != 'Building_1':
+            assert not building.get('chargers'), key
+    files = sorted(p.name for p in DATASET.glob('charger_*.csv'))
+    assert files == ['charger_1_1.csv', 'charger_1_2.csv'], files
+
+
+@pytest.mark.usefixtures('campaign')
+def test_b01_pilot_matches_evcc_semantics_without_v2g():
+    schema = _schema()
+    chargers = schema['buildings']['Building_1']['chargers']
+    assert len(chargers) == 2
+    units = {c['hardware']['physical_charger_id'] for c in chargers.values()}
+    assert len(units) == 1 and all(c['hardware']['socket_count_per_physical_unit'] == 2 for c in chargers.values())
+    for charger in chargers.values():
+        attributes = charger['attributes']
+        assert attributes['max_discharging_power'] == 0.0 and charger['hardware']['v2g_capable'] is False
+        assert attributes['max_charging_power'] <= VOLT*EVCC_MAX_A/1000 + 1e-9
+        assert attributes['min_charging_power'] >= VOLT*EVCC_MIN_A/1000 - 1e-9
+        assert charger['hardware']['phases'] == 1
+    vehicles = schema['electric_vehicles_def']
+    assert len(vehicles) == 2
+    assert all(v['battery']['attributes']['capacity'] == 4.0 for v in vehicles.values())
+    used = set()
+    for charger in chargers.values():
+        used |= set(_csv_column(DATASET/charger['charger_simulation'], 'electric_vehicle_id')) - {'NONE'}
+    assert used == set(vehicles)
+
+
+@pytest.mark.usefixtures('campaign')
+def test_pv_within_roof_bound():
+    sizing = _json(CAMPAIGN/'audit/der_sizing_microgrids.json')
+    schema = _schema()
+    for b in range(1, 18):
+        row = sizing['buildings'][str(b)]
+        kwp = schema['buildings'][f'Building_{b}']['pv']['attributes']['nominal_power']
+        assert kwp == pytest.approx(row['pv_kwp'], abs=1e-6)
+        assert kwp <= row['roof_bound_kwp'] + 1e-6, b
+        solar = [float(v) for v in _csv_column(DATASET/f'Building_{b}.csv', 'solar_generation')[:8760]]
+        assert sum(solar)*kwp/1000.0 == pytest.approx(row['annual_pv_kwh_2023'], rel=1e-3, abs=1.0)
+
+
+@pytest.mark.usefixtures('campaign')
+def test_microgrids_optimal_and_prosumpy_check_recorded():
+    sizing = _json(CAMPAIGN/'audit/der_sizing_microgrids.json')
+    assert sizing['solver'] == 'appsi_highs'
+    for b in range(1, 18):
+        row = sizing['buildings'][str(b)]
+        assert row['termination_condition'] == 'optimal', b
+        check = row['prosumpy']
+        for key in ('self_consumption_pct', 'grid_import_kwh', 'peak_import_kw'):
+            assert set(check[key]) == {'no_der', 'pv_only', 'pv_bess'}, (b, key)
+        battery = _schema()['buildings'][f'Building_{b}'].get('electrical_storage')
+        if row['bess_kwh'] > 0:
+            assert battery['attributes']['capacity'] == pytest.approx(row['bess_kwh'])
+    assert sizing['sensitivity']['capex_relative_change'] == [-0.3, 0.3]
+    assert 'material_change' in sizing['sensitivity']
+
+
+@pytest.mark.usefixtures('campaign')
+def test_export_credited_at_purchase_price_without_curtailment():
+    sizing = _json(CAMPAIGN/'audit/der_sizing_microgrids.json')
+    for b in range(1, 18):
+        row = sizing['buildings'][str(b)]
+        assert row['lp']['curtailed_kwh'] == pytest.approx(0.0, abs=1e-6), b
+        assert row['lp']['export_price_usd_per_kwh'] == pytest.approx(row['price_usd_per_kwh']), b
+        assert row['lp']['lost_load_kwh'] == pytest.approx(0.0, abs=1e-6), b
+    # Local peer trading is a different mechanism: the community market stays off.
+    assert _schema()['community_market']['enabled'] is False
+    rules = [e for e in _json(CAMPAIGN/'provenance.json')['quantities'] if e['name'] == 'export_credit_rule']
+    assert rules and rules[0]['origin'] == 'user_decision' and 'Iquitos' in rules[0]['reason']
+
+
+@pytest.mark.usefixtures('campaign')
+def test_every_provenance_quantity_has_an_origin_class():
+    provenance = _json(CAMPAIGN/'provenance.json')
+    quantities = provenance['quantities']
+    assert len(quantities) >= 30
+    for entry in quantities:
+        assert entry['origin'] in ORIGINS, entry
+        assert entry.get('name') and 'value' in entry, entry
+        if entry['origin'] == 'assumption':
+            assert entry['assumption'] is True and entry.get('reason'), entry
+        if entry['origin'] in {'measured', 'cited'}:
+            assert entry.get('source'), entry
+    names = {e['name'] for e in quantities}
+    for required in ('pv_kwp', 'bess_kwh', 'carbon_intensity', 'ev_battery_kwh', 'cooling_efficiency',
+                     'controlled_machine_cycle_kwh', 'pv_capex_usd_per_wp', 'monthly_energy_targets'):
+        assert required in names, required
+
+
+@pytest.mark.usefixtures('campaign')
+def test_one_building_type_per_building_across_modules():
+    expected = {str(b): row['canonical_type'] for b, row in REGISTRY['buildings'].items()}
+    seen = {}
+    with open(CAMPAIGN/'audit/distillation_report.csv', newline='', encoding='utf-8') as stream:
+        for row in csv.DictReader(stream):
+            seen.setdefault(('distillation', row['building_id']), set()).add(row['building_type'])
+    for row in _json(DATASET/'controlled_machines_log.json')['rows']:
+        seen.setdefault(('machines', str(row['building_id'])), set()).add(row['building_type'])
+    for b, row in _json(CAMPAIGN/'audit/ev_pilot.json')['buildings'].items():
+        seen.setdefault(('ev', b), set()).add(row['building_type'])
+    for b, row in _json(CAMPAIGN/'audit/der_sizing_microgrids.json')['buildings'].items():
+        seen.setdefault(('der', b), set()).add(row['building_type'])
+    for b, row in _json(DATASET/'building_metadata.json')['building_types'].items():
+        seen.setdefault(('generator', b), set()).add(row)
+    modules = {module for module, _ in seen}
+    assert modules == {'distillation', 'machines', 'ev', 'der', 'generator'}
+    for (module, b), values in seen.items():
+        assert values == {expected[b]}, (module, b, values)
+
+
+@pytest.mark.usefixtures('campaign')
+def test_heat_pump_parameters_in_schema_equal_calibration():
+    schema = _schema()
+    with open(CAMPAIGN/'audit/distillation_report.csv', newline='', encoding='utf-8') as stream:
+        rows = list(csv.DictReader(stream))
+    for b in range(1, 18):
+        device = schema['buildings'][f'Building_{b}']['cooling_device']['attributes']
+        used = {(float(r['cooling_efficiency']), float(r['cooling_target_c'])) for r in rows if r['building_id'] == str(b)}
+        assert used == {(device['efficiency'], device['target_cooling_temperature'])}, b
+    split = _json(CAMPAIGN/'split_manifest.json')['fixed_device_sizes']
+    for key, devices in split.items():
+        attributes = schema['buildings'][key]['cooling_device']['attributes']
+        assert devices['cooling_device']['efficiency'] == pytest.approx(attributes['efficiency'])
+        assert devices['cooling_device']['target_cooling_temperature'] == pytest.approx(
+            attributes['target_cooling_temperature'])
+
+
+@pytest.mark.usefixtures('campaign')
+def test_controlled_machines_are_inside_the_bills():
+    with open(CAMPAIGN/'audit/distillation_report.csv', newline='', encoding='utf-8') as stream:
+        rows = list(csv.DictReader(stream))
+    assert sum(float(r['E_machine_kWh']) for r in rows) > 0
+    for row in rows:
+        parts = sum(float(row[k]) for k in ('E_non_shiftable_cal_kWh', 'E_cooling_elec_cal_kWh',
+                                            'E_dhw_elec_cal_kWh', 'E_machine_kWh'))
+        assert parts == pytest.approx(float(row['E_medido_kWh']), rel=1e-4, abs=1e-3), row['building_id']
+
+
+@pytest.mark.usefixtures('campaign')
+def test_carbon_intensity_is_one_constant():
+    values = {float(v) for v in _csv_column(DATASET/'carbon_intensity.csv', 'carbon_intensity')}
+    assert len(values) == 1 and values.pop() == pytest.approx(74100*3.6e-6/0.40, rel=1e-6)
+
+
+@pytest.mark.usefixtures('campaign')
+def test_bills_close_against_citylearn_no_control_simulation():
+    report = _json(CAMPAIGN/'audit/citylearn_balance.json')
+    assert report['split'] == 'train_2023' and report['tolerance_relative'] <= 0.01
+    assert set(report['buildings']) == {str(b) for b in range(1, 18)}
+    for b, row in report['buildings'].items():
+        assert len(row['months']) == 12 and row['passed'], (b, row['max_relative_error'])
+    assert 'peak_check' in report and len(report['peak_check']) == 17
+
+
+@pytest.mark.usefixtures('campaign')
+def test_acceptance_records_realism_gates():
+    acceptance = _json(CAMPAIGN/'dataset_acceptance.json')
+    assert acceptance['dataset_verified'] is True
+    for gate in ('hourly_balance', 'citylearn_balance', 'microgrids_optimal', 'ev_pilot_only'):
+        assert acceptance['gates'][gate] is True, gate
+
+
+@pytest.mark.usefixtures('campaign')
+def test_export_step_is_credited_at_the_hourly_purchase_price():
+    """No-control CityLearn step with PV surplus: net cost = -export x that hour's price (net billing)."""
+    schema = _schema()
+    assert schema['community_market']['enabled'] is False and 'grid_export_price' not in schema['community_market']
+    assert schema['community_market']['export_settlement'] == 'net_billing_at_hourly_purchase_price'
+    from citylearn.citylearn import CityLearnEnv
+    env = CityLearnEnv(str(CAMPAIGN/'splits/train_2023/schema.json'))
+    env.reset()
+    assert env.community_market_enabled is False
+    building = next(b for b in env.buildings if b.name == 'Building_2')  # municipal office, roof PV >> load
+    zero = [[0.0]*len(names) for names in env.action_names]
+    for _ in range(48):
+        env.step(zero)
+        t = env.time_step - 1
+        net = float(building.net_electricity_consumption[t])
+        if net < 0:
+            price = float(building.pricing.electricity_pricing[t])
+            # CityLearn stores the cost series as float32 (relative precision ~6e-8).
+            assert float(building.net_electricity_consumption_cost[t]) == pytest.approx(net*price, rel=1e-6)
+            assert net*price < 0
+            break
+    else:
+        pytest.fail('no exporting step for Building_2 in the first 48 h')
+    rules = [e for e in _json(CAMPAIGN/'provenance.json')['quantities'] if e['name'] == 'export_settlement_citylearn']
+    assert rules and rules[0]['origin'] == 'user_decision'

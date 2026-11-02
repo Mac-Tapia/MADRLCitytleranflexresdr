@@ -73,6 +73,14 @@ ROOT = Path(__file__).resolve().parents[2]
 DATASET_DIR = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
 SCHEMA_PATH = DATASET_DIR / "schema.json"
 WEATHER_PATH = DATASET_DIR / "weather.csv"
+
+
+def configure(dataset_dir: Path) -> None:
+    """Point the tool at an explicit dataset directory (fresh campaign)."""
+    global DATASET_DIR, SCHEMA_PATH, WEATHER_PATH
+    DATASET_DIR = Path(dataset_dir)
+    SCHEMA_PATH = DATASET_DIR / "schema.json"
+    WEATHER_PATH = DATASET_DIR / "weather.csv"
 _INVENTORY_CACHE = None
 
 # Parametros LFP

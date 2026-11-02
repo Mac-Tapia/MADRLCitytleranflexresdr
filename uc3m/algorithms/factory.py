@@ -28,6 +28,17 @@ from typing import Any, Dict, Type
 
 logger = logging.getLogger(__name__)
 
+
+class BackendUnavailable(RuntimeError):
+    """The native backend is missing: nothing is trained and no model exists."""
+
+
+def _smoke_result(name: str, total: int, mean_rew: float) -> Dict[str, Any]:
+    # An explicit smoke loop exercises the environment with random actions; it is
+    # never learning, never a model and never eligible for promotion.
+    return {"mean_reward": mean_rew, "total_steps": total, "smoke": True,
+            "learned": False, "promotion_eligible": False, "algorithm": name}
+
 # ── Registro de backends ───────────────────────────────────────────────────────
 
 _HARL_ALGOS = {
@@ -175,6 +186,13 @@ class _BaseAdapter:
         self.checkpoint_dir = Path(checkpoint_dir) if checkpoint_dir else Path("checkpoints") / name.lower()
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
         self._trainer = None
+        self.smoke = bool(cfg.get("smoke", False))
+
+    def _require_backend_or_smoke(self, available: bool) -> None:
+        if not available and not self.smoke:
+            raise BackendUnavailable(
+                f"{self.name}: native backend unavailable; random-action learning is not "
+                "provided (pass cfg={'smoke': True} for an explicit, non-promotable smoke loop)")
 
     def learn(self, total_timesteps: int = 500_000) -> Dict[str, Any]:
         raise NotImplementedError
@@ -235,8 +253,9 @@ class _HARLAdapter(_BaseAdapter):
         return base
 
     def learn(self, total_timesteps: int = 5_000_000) -> Dict[str, Any]:
+        self._require_backend_or_smoke(self._trainer is not None)
         if self._trainer is None:
-            logger.warning(f"[HARL] {self.name} no disponible — bucle de entrenamiento de placeholder.")
+            logger.warning(f"[HARL] {self.name} no disponible — smoke explícito, sin aprendizaje.")
             return self._placeholder_loop(total_timesteps)
         self._trainer.run()
         return {}
@@ -258,13 +277,14 @@ class _HARLAdapter(_BaseAdapter):
             if done:
                 self.env.reset()
         mean_rew = float(np.mean(ep_rewards)) if ep_rewards else 0.0
-        logger.info(f"[HARL placeholder] {self.name} | steps={total} | mean_r={mean_rew:.4f}")
-        return {"mean_reward": mean_rew, "total_steps": total}
+        logger.info(f"[HARL smoke] {self.name} | steps={total} | mean_r={mean_rew:.4f}")
+        return _smoke_result(self.name, total, mean_rew)
 
     def save(self, path=None) -> Path:
         p = Path(path) if path else self.checkpoint_dir / "model_final"
-        if self._trainer and hasattr(self._trainer, "save"):
-            self._trainer.save(str(p))
+        if not (self._trainer and hasattr(self._trainer, "save")):
+            raise BackendUnavailable(f"{self.name}: no trained native model to save")
+        self._trainer.save(str(p))
         logger.info(f"[HARL] Checkpoint guardado en {p}")
         return p
 
@@ -297,15 +317,12 @@ class _MARLlibAdapter(_BaseAdapter):
 
     def learn(self, total_timesteps: int = 5_000_000) -> Dict[str, Any]:
         if self._marl is None:
-            return {"error": "MARLlib no disponible"}
-        # MARLlib requiere registrar el env personalizado; aquí stub
-        logger.info(f"[MARLlib] {self.name} — entrenamiento vía RLlib no implementado en esta versión.")
-        return {}
+            raise BackendUnavailable(f"{self.name}: MARLlib no disponible")
+        # MARLlib requiere registrar el env personalizado; no implementado.
+        raise BackendUnavailable(f"{self.name}: entrenamiento vía RLlib no implementado en esta versión")
 
     def save(self, path=None) -> Path:
-        p = Path(path) if path else self.checkpoint_dir / "model_final"
-        logger.info(f"[MARLlib] Checkpoint en {p}")
-        return p
+        raise BackendUnavailable(f"{self.name}: MARLlib no produce modelos en esta versión")
 
     def load(self, path) -> None:
         pass
@@ -350,6 +367,7 @@ class _OffPolicyAdapter(_BaseAdapter):
         }
 
     def learn(self, total_timesteps: int = 500_000) -> Dict[str, Any]:
+        self._require_backend_or_smoke(self._trainer is not None)
         if self._trainer is None:
             return self._placeholder_loop(total_timesteps)
         return self._trainer.run(total_timesteps)
@@ -370,13 +388,14 @@ class _OffPolicyAdapter(_BaseAdapter):
             if done:
                 self.env.reset()
         mean_rew = float(np.mean(ep_rewards)) if ep_rewards else 0.0
-        logger.info(f"[off-policy placeholder] {self.name} | steps={total} | mean_r={mean_rew:.4f}")
-        return {"mean_reward": mean_rew, "total_steps": total}
+        logger.info(f"[off-policy smoke] {self.name} | steps={total} | mean_r={mean_rew:.4f}")
+        return _smoke_result(self.name, total, mean_rew)
 
     def save(self, path=None) -> Path:
         p = Path(path) if path else self.checkpoint_dir / "model_final"
-        if self._trainer and hasattr(self._trainer, "save"):
-            self._trainer.save(str(p))
+        if not (self._trainer and hasattr(self._trainer, "save")):
+            raise BackendUnavailable(f"{self.name}: no trained native model to save")
+        self._trainer.save(str(p))
         return p
 
     def load(self, path) -> None:

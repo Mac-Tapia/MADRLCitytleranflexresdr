@@ -1,14 +1,20 @@
 """
 HPHI — Holistic Pareto Hypervolume Index  (Definición 4.6)
 ===========================================================
-Métrica original 7-D normalizada para evaluación multiobjetivo:
+Métrica 7-D normalizada para evaluación multiobjetivo (extensión arquitectónica;
+el experimento principal conserva tres ejes):
 
-    HPHI(F) = HV(F; z_nadir) / Π_{k=1}^{7}(z_k^nadir - z_k^ideal)  ∈ [0, 1]
+    HPHI(F) = HV(F; z_nadir) / Π_{k=1}^{7}(z_k^ideal - z_k^nadir)  ∈ [0, 1]
 
-donde HV es el hipervolumen Lebesgue 7-D (Zitzler & Thiele, 1999).
+Todos los ejes se maximizan: z_nadir es el peor valor admitido y z_ideal el
+mejor. La referencia es fija (se declara al construir y no la mueven los puntos
+ni reset); comparar algoritmos exige la misma referencia. HV es el hipervolumen
+exacto de ``uc3m.domain.pareto.hypervolume`` (sin muestreo). Un punto peor que
+el nadir en algún eje no aporta volumen; un eje mejor que el ideal se acota al
+ideal y el punto se cuenta en ``Saturated_points``, sin ocultarlo.
 
-HPHI = 1 → frontera Pareto perfecta (alcanza el ideal en todos los ejes).
-HPHI = 0 → política trivial.
+HPHI = 1 → algún punto alcanza el ideal en todos los ejes.
+HPHI = 0 → ningún punto domina estrictamente al nadir.
 
 Complementado por:
   - Sparsity: dispersión sobre la frontera
@@ -17,56 +23,13 @@ Complementado por:
 
 from __future__ import annotations
 
-import numpy as np
 from typing import Sequence
 
+import numpy as np
+
+from uc3m.domain.pareto import hypervolume
+
 _EPS = 1e-12
-
-
-def _hypervolume_2d(points: np.ndarray, ref: np.ndarray) -> float:
-    """Hipervolumen 2D exacto (contribución incremental ordenada por eje 0)."""
-    pts = points[np.all(points < ref, axis=1)]  # filtrar puntos dominados por ref
-    if len(pts) == 0:
-        return 0.0
-    pts_sorted = pts[np.argsort(pts[:, 0])]
-    hv = 0.0
-    prev_y = ref[1]
-    for p in pts_sorted:
-        hv += (ref[0] - p[0]) * (prev_y - p[1])
-        prev_y = min(prev_y, p[1])
-    return hv
-
-
-def _hypervolume_nd(points: np.ndarray, ref: np.ndarray) -> float:
-    """
-    Hipervolumen N-D via algoritmo WFG simplificado (no escalable, OK para
-    frontera pequeña de laboratorio).  Para |F| > 500, usar pymoo HV.
-    """
-    try:
-        from pymoo.indicators.hv import HV  # type: ignore[import-not-found]
-        ind = HV(ref_point=ref)
-        return float(ind(points))
-    except ImportError:
-        pass
-
-    # Fallback: Monte Carlo 7-D (aprox. suficiente para N_points < 200)
-    n_pts, n_dim = points.shape
-    # Calcular bounding box
-    lower = points.min(axis=0)
-    upper = ref.copy()
-    if np.any(upper <= lower):
-        return 0.0
-    vol_box = float(np.prod(np.maximum(upper - lower, _EPS)))
-    n_samples = 50_000
-    rng = np.random.default_rng(42)
-    samples = rng.uniform(lower, upper, size=(n_samples, n_dim))
-
-    # Punto dominado si ∃ p ∈ points tal que p ≤ sample en todos los ejes
-    dominated = np.zeros(n_samples, dtype=bool)
-    for p in points:
-        dominated |= np.all(samples >= p, axis=1)
-    hv = vol_box * dominated.mean()
-    return float(hv)
 
 
 class HPHI:
@@ -87,25 +50,38 @@ class HPHI:
         ideal: np.ndarray | None = None,
     ):
         self.n_obj = n_obj
-        # Nadir: peores valores observados (maximizando penalizaciones)
-        # Por defecto: recompensa mínima posible por eje (clamped a -10)
-        self._nadir = nadir if nadir is not None else np.full(n_obj, -10.0)
-        # Ideal: mejores valores posibles por eje
-        self._ideal = ideal if ideal is not None else np.zeros(n_obj)
-
+        # Por defecto: recompensa mínima por eje -10 (nadir) y 0 (ideal).
+        nadir_array = np.asarray(nadir if nadir is not None else np.full(n_obj, -10.0), dtype=np.float64)
+        ideal_array = np.asarray(ideal if ideal is not None else np.zeros(n_obj), dtype=np.float64)
+        if nadir_array.shape != (n_obj,) or ideal_array.shape != (n_obj,):
+            raise ValueError(f"nadir e ideal deben tener {n_obj} valores")
+        if not (np.all(np.isfinite(nadir_array)) and np.all(np.isfinite(ideal_array))):
+            raise ValueError("nadir e ideal deben ser finitos")
+        if np.any(ideal_array - nadir_array <= _EPS):
+            raise ValueError("el ideal debe ser estrictamente mejor que el nadir en cada eje")
+        self._nadir = nadir_array
+        self._ideal = ideal_array
         self._frontier: list[np.ndarray] = []
 
+    @property
+    def nadir(self) -> np.ndarray:
+        return self._nadir.copy()
+
+    @property
+    def ideal(self) -> np.ndarray:
+        return self._ideal.copy()
+
     def add_point(self, axis_values: np.ndarray | Sequence[float]) -> None:
-        """Añade un punto a la aproximación de la frontera de Pareto."""
+        """Añade un punto a la aproximación de la frontera; la referencia no cambia."""
         p = np.asarray(axis_values, dtype=np.float64)
-        assert len(p) == self.n_obj, f"Se esperan {self.n_obj} valores, se recibieron {len(p)}"
-        # Actualizar nadir e ideal dinámicamente
-        self._nadir = np.minimum(self._nadir, p)
-        self._ideal = np.maximum(self._ideal, p)
+        if p.shape != (self.n_obj,):
+            raise ValueError(f"Se esperan {self.n_obj} valores, se recibieron {p.size}")
+        if not np.all(np.isfinite(p)):
+            raise ValueError("los valores por eje deben ser finitos")
         self._frontier.append(p.copy())
 
     def clear(self) -> None:
-        """Limpia la frontera acumulada (nuevo experimento)."""
+        """Limpia la frontera acumulada (nuevo experimento); conserva la referencia."""
         self._frontier.clear()
 
     def update(self, axis_values: np.ndarray | Sequence[float]) -> None:
@@ -121,11 +97,10 @@ class HPHI:
         return self.compute()
 
     def pareto_front(self) -> np.ndarray:
-        """Filtra la frontera de Pareto no dominada de los puntos acumulados."""
+        """Filtra la frontera de Pareto no dominada de los puntos acumulados (maximización)."""
         if not self._frontier:
             return np.empty((0, self.n_obj))
         pts = np.stack(self._frontier, axis=0)
-        # Eliminar puntos dominados
         is_dominated = np.zeros(len(pts), dtype=bool)
         for i, p in enumerate(pts):
             for j, q in enumerate(pts):
@@ -134,34 +109,30 @@ class HPHI:
                     break
         return pts[~is_dominated]
 
+    def saturated_points(self) -> int:
+        """Puntos con algún eje mejor que el ideal declarado."""
+        return int(sum(bool(np.any(p > self._ideal)) for p in self._frontier))
+
     def compute(self) -> float:
         """
         Calcula HPHI ∈ [0, 1]:
-            HPHI = HV(F; z_nadir) / Π_k(z_k^nadir - z_k^ideal)
+            HPHI = HV(F; z_nadir) / Π_k(z_k^ideal - z_k^nadir)
         """
         pf = self.pareto_front()
         if len(pf) == 0:
             return 0.0
-
-        nadir = self._nadir.copy()
-        ideal = self._ideal.copy()
-
-        # Asegurar que nadir ≠ ideal
-        denom_vec = nadir - ideal
-        if np.any(np.abs(denom_vec) < _EPS):
-            denom_vec = np.where(np.abs(denom_vec) < _EPS, 1.0, denom_vec)
-
-        # Normalizar puntos a [0, 1] (ideal=1, nadir=0 tras negación)
-        # HV usa nadir como punto de referencia (peor)
-        ref = nadir + 1e-6  # ligeramente peor que nadir para incluir todos
-
-        if self.n_obj == 2:
-            hv = _hypervolume_2d(pf, ref)
-        else:
-            hv = _hypervolume_nd(pf, ref)
-
-        denom = float(np.prod(np.abs(denom_vec) + _EPS))
-        return float(np.clip(hv / (denom + _EPS), 0.0, 1.0))
+        capped = np.minimum(pf, self._ideal)
+        inside = capped[np.all(capped >= self._nadir, axis=1)]
+        if len(inside) == 0:
+            return 0.0
+        normalized = (inside - self._nadir) / (self._ideal - self._nadir)
+        return float(
+            hypervolume(
+                normalized.tolist(),
+                reference=[0.0] * self.n_obj,
+                maximize=[True] * self.n_obj,
+            )
+        )
 
     # ── Métricas auxiliares (§4.7.3) ─────────────────────────────────────────
     def sparsity(self) -> float:
@@ -198,18 +169,18 @@ class HPHI:
     def summary(self) -> dict[str, float]:
         """Resumen de métricas HPHI + sparsity para logging."""
         pf = self.pareto_front()
-        return {
+        summary = {
             "HPHI":     self.compute(),
             "Sparsity": self.sparsity(),
             "PF_size":  float(len(pf)),
-            "Ideal_CO2":        float(self._ideal[0]),
-            "Ideal_Costo":      float(self._ideal[1]),
-            "Ideal_Flex":       float(self._ideal[2]),
-            "Ideal_Confort":    float(self._ideal[3]),
-            "Ideal_Degra":      float(self._ideal[4]),
-            "Ideal_Resilic":    float(self._ideal[5]),
-            "Ideal_ACS":        float(self._ideal[6]),
+            "Saturated_points": float(self.saturated_points()),
         }
+        if self.n_obj == 7:
+            for index, name in enumerate(
+                ("CO2", "Costo", "Flex", "Confort", "Degra", "Resilic", "ACS")
+            ):
+                summary[f"Ideal_{name}"] = float(self._ideal[index])
+        return summary
 
 
 def compute_global_score(axis_means: np.ndarray) -> float:

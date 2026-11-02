@@ -22,6 +22,14 @@ SCHEMA_PATH = DATASET_DIR / "schema.json"
 LOG_PATH = DATASET_DIR / "controlled_machines_log.json"
 
 
+def configure(dataset_dir: Path) -> None:
+    """Point schema and log at an explicit dataset; the log otherwise lands in CityLearn."""
+    global DATASET_DIR, SCHEMA_PATH, LOG_PATH
+    DATASET_DIR = Path(dataset_dir)
+    SCHEMA_PATH = DATASET_DIR / "schema.json"
+    LOG_PATH = DATASET_DIR / "controlled_machines_log.json"
+
+
 def sync_controlled_machines(dataset_dir: Path = DATASET_DIR, schema_path: Path = SCHEMA_PATH) -> dict:
     generator = SupportFilesGenerator()
     rows = []
@@ -49,7 +57,8 @@ def sync_controlled_machines(dataset_dir: Path = DATASET_DIR, schema_path: Path 
         rows.append({
             "building_id": bldg_id,
             "file": filename,
-            "building_type": cfg["bldg_type"],
+            "building_type": cfg.get("canonical_type", cfg["bldg_type"]),
+            "schedule": cfg["bldg_type"],
             "shiftable_cycle_kwh": float(cfg.get("shiftable", 0.0)),
             "active_window_rows": int(active.sum()),
             "potential_cycles": len(seen_starts),

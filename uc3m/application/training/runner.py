@@ -6,6 +6,7 @@ from uc3m.application.training.completion import evaluate_completion
 from uc3m.application.training.persistence import write_json_atomic
 from uc3m.application.training.resume import plan_resume
 from uc3m.application.training.lock import run_lock
+from uc3m.application.training.layout import experiment_path
 from uc3m.domain.evidence import ArtifactRef, EvidenceManifest
 from uc3m.domain.experiments import ExperimentSpec, RunIdentity, RunStatus
 from uc3m.ports.learner import LearnerPort
@@ -21,13 +22,16 @@ def read_manifest(path: Path) -> EvidenceManifest:
 
 
 class ExperimentRunner:
-    def __init__(self, output_root: Path, learner: LearnerPort):
+    def __init__(self, output_root: Path, learner: LearnerPort, *, run_root=None):
         self.output_root = Path(output_root).resolve()
         self.learner = learner
+        self.run_root = Path(run_root).resolve() if run_root is not None else None
+        if self.run_root is not None:
+            self.run_root.relative_to(self.output_root)
 
     def run(self, spec: ExperimentSpec, *, resume: bool = False) -> EvidenceManifest:
         identity = RunIdentity.from_spec(spec)
-        root = self.output_root / identity.run_id
+        root = self.run_root or experiment_path(self.output_root, spec)
         root.mkdir(parents=True, exist_ok=True)
         # A concurrent process may not mutate the same experiment directory.
         lock = run_lock(root / '.runner.lock')

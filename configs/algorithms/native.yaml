@@ -1,0 +1,71 @@
+schema_version: 1
+# Resolved native configuration of the fresh campaign (design section 5).
+# Every hyperparameter maps to flags the native launcher really parses
+# (checked by tests/fresh_training/test_campaign_contract.py); an unknown key
+# fails instead of being ignored. Native defaults not listed stay frozen and
+# are serialized per attempt in resolved_backend_config.json.
+# Runtime flags for every launcher: native defaults are CPU with one thread.
+# runtime_requirements (GiB, estimates + margin, owner 2026-11-01: native capacity,
+# no silent clamp): checked by uc3m/adapters/algorithms/native_entrypoint.py
+# before the learner runs on episodes >= applies_from_episode_time_steps; below
+# them the attempt is refused with insufficient_resources:<algorithm>:<ram|vram>.
+runtime_flags: [--cuda]
+hyperparameter_grid:
+  learning_rate: [0.0001, 0.0003]
+  hidden_dimension: [128, 256]
+  gamma: [0.99, 0.9999]
+# optimizer_owners: optimizers the native guard must observe updating in an
+# accepted attempt (names as the native backends emit them; {i} = agent index
+# 0..n_agents-1 from the split schema). Acceptance derives the expected set
+# from here, never from the owners that happen to appear in the evidence.
+algorithms:
+  HAPPO:
+    mapping: {learning_rate: [--actor-lr, --critic-lr], hidden_dimension: [--hidden-size], gamma: [--gamma]}
+    fixed_flags: {}
+    fixed: {}
+    optimizer_owners: {per_agent: ['actor_agent{i}'], shared: [critic]}
+    # On-policy rollout of one 8760-step episode: ~1.2 GiB float32 (obs + state).
+    runtime_requirements: {min_ram_gib: 8, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
+  MASAC:
+    # MASAC keeps its native QMIX mixing architecture; parameter counts differ.
+    mapping: {learning_rate: [--actor-lr, --critic-lr], hidden_dimension: [--rnn-hidden-dim], gamma: [--gamma]}
+    # Native capacity, no clamp (owner 2026-11-01). Author defaults of
+    # external/MARL/src/common/arguments.py: critic_batch_size 32 EPISODES,
+    # critic_train_steps 1, episode buffer 5000. buffer_size counts EPISODES; 50
+    # holds every episode of the longest stage (confirm, 50) and the launcher
+    # keeps min(50, run episodes), a lossless bound. qmix/hyper widths follow the
+    # author ratio to the grid rnn_hidden_dim (qmix = rnn/2, hyper = rnn).
+    fixed_flags: {buffer_size: --buffer-size, critic_batch_size: --critic-batch-size,
+                  critic_train_steps: --critic-train-steps}
+    fixed: {buffer_size: 50, critic_batch_size: 32, critic_train_steps: 1}
+    optimizer_owners: {per_agent: [], shared: [masac_policy, masac_critic_q1, masac_critic_q2, masac_alpha]}
+    # Estimates (iquitos_v1: 17 agents, obs 357, state 1652, 89 actions, T 8760):
+    # replay float64 50 ep = 65.3 GiB (estimate_replay_buffer_gib); one critic
+    # update over 32 x 8760 steps = 74.7 GiB (rnn 128) / 103.3 GiB (rnn 256)
+    # (estimate_masac_critic_gpu_gib, conservative x2). The launcher refuses with
+    # these numbers when the device cannot hold them; nothing is shrunk.
+    runtime_requirements: {min_ram_gib: 72, min_vram_gib: 82, applies_from_episode_time_steps: 1000}
+    declared_limitations:
+      - "one QMIX critic update per episode (author critic_train_steps=1) over a 32-episode batch; the update budget per environment step differs from the other backends (declared confound)."
+      - "with rnn_hidden_dim 256 the estimated critic update (103 GiB) exceeds every target GPU (80 GB = 74.5 GiB, 96 GB = 89.4 GiB): such candidates are refused before training, not shrunk."
+  MATD3:
+    mapping: {learning_rate: [--lr], hidden_dimension: [--hidden-size], gamma: [--gamma]}
+    # buffer_size > 16384 is the TOTAL across the 17 per-agent policies (native rule
+    # effective_matd3_per_policy_buffer_size): 744600 // 17 = 43800 transitions per
+    # policy = five 8760-step episodes, the MAAC horizon. Measured iquitos_v1 dims
+    # (padded obs 357, joint obs 6069, action 44): estimate_matd3_replay_ram_gib =
+    # 35.8 GiB. The entrypoint sets MATD3_MAX_REPLAY_RAM_GIB to the measured
+    # available RAM, so the launcher refuses instead of shrinking.
+    fixed_flags: {batch_size: --batch-size, buffer_size: --buffer-size}
+    fixed: {batch_size: 256, buffer_size: 744600}
+    optimizer_owners: {per_agent: ['policy_{i}/actor', 'policy_{i}/critic'], shared: []}
+    runtime_requirements: {min_ram_gib: 40, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
+  MAAC:
+    mapping: {learning_rate: [--pi-lr, --q-lr], hidden_dimension: [--hidden-size], gamma: [--gamma]}
+    # buffer_length counts transitions: 43800 = 5 x 8760-step episodes (native default
+    # 50000; the launcher caps it at run_steps + one episode).
+    fixed_flags: {batch_size: --batch-size, buffer_length: --buffer-length}
+    fixed: {batch_size: 256, buffer_length: 43800}
+    optimizer_owners: {per_agent: ['maac_agent{i}_policy'], shared: [maac_critic]}
+    # Replay float32 upper bound 17 x 43800 x (2 x 357 + 89 + 2) x 4 B = 2.2 GiB.
+    runtime_requirements: {min_ram_gib: 8, min_vram_gib: 4, applies_from_episode_time_steps: 1000}

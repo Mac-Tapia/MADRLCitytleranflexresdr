@@ -50,7 +50,7 @@ class LocalCsvDatasetAdapter:
             source_uri=self._dir.as_uri(),
             buildings=buildings,
             hours=hours,
-            content_hash=self._hash_schema(schema_file),
+            content_hash=self._hash_tree(self._dir),
             schema_version=int(schema.get("schema_version", 1) or 1),
             extra={"root_directory": str(self._dir)},
         )
@@ -75,8 +75,14 @@ class LocalCsvDatasetAdapter:
         return 8760
 
     @staticmethod
-    def _hash_schema(schema_file: Path) -> str:
-        return hashlib.sha256(schema_file.read_bytes()).hexdigest()[:16]
+    def _hash_tree(root: Path) -> str:
+        """Full SHA-256 over every file (relative path + bytes): a CSV change under
+        an unchanged schema is a different dataset."""
+        digest = hashlib.sha256()
+        for path in sorted(p for p in root.rglob("*") if p.is_file()):
+            digest.update(path.relative_to(root).as_posix().encode("utf-8") + b"\0")
+            digest.update(hashlib.sha256(path.read_bytes()).hexdigest().encode("ascii") + b"\n")
+        return digest.hexdigest()
 
 
 __all__ = ["LocalCsvDatasetAdapter"]

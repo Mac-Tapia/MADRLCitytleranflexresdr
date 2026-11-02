@@ -18,6 +18,13 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATASET_DIR = PROJECT_ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
 SCHEMA_PATH = DATASET_DIR / "schema.json"
+
+
+def configure(dataset_dir: Path) -> None:
+    """Point the tool at an explicit dataset directory (fresh campaign)."""
+    global DATASET_DIR, SCHEMA_PATH
+    DATASET_DIR = Path(dataset_dir)
+    SCHEMA_PATH = DATASET_DIR / "schema.json"
 SAFETY_FACTOR = 1.000001
 
 

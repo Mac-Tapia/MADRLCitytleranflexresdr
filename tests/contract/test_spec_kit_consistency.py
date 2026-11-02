@@ -43,18 +43,18 @@ def test_spec_000_has_consistent_constitution_plan_and_tasks() -> None:
 
 EXPECTED_SPECS = {
     "000-foundation",
-    "001-open-source-provenance",
-    "002-multiobjective-policy",
-    "003-modular-orchestration",
-    "004-execution-manifests",
-    "005-scientific-evaluation",
-    "006-thesis-evidence",
-    "007-local-agent-harness",
-    "008-artifacts-data",
-    "009-jury-observations",
-    "010-local-training-panel",
-    "011-dataset-to-delivery-pipeline",
-    "012-repository-hygiene",
+    "001-provenance",
+    "002-objectives",
+    "003-orchestration",
+    "004-manifests",
+    "005-evaluation",
+    "006-evidence",
+    "007-agents",
+    "008-artifacts",
+    "009-jury",
+    "010-panel",
+    "011-pipeline",
+    "012-hygiene",
 }
 
 REQUIRED_FILES = ("spec.md", "plan.md", "tasks.md")

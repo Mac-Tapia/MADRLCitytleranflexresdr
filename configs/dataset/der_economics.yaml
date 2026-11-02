@@ -1,0 +1,112 @@
+# Economic inputs of the MicroGrids LP that sizes rooftop PV and BESS per building
+# (tools/dataset/size_der_microgrids.py). PV and BESS sizes DEPEND on these values;
+# the builder runs a +/-30 % capex sensitivity and records whether sizes change.
+#
+# status values:
+#   repository_example                 value of the upstream MicroGrids example
+#                                      (external/MicroGrids/MicroGrids/Example/data.dat), not Iquitos data
+#   design_rule                        decided by the project owner (no market data needed)
+#   assumption_pending_user_verification  no source available in the repository; the user must verify
+# Nothing here is a measured Iquitos price.
+schema_version: 1
+currency: USD
+pv:
+  capex_usd_per_wp:
+    value: 1.00
+    status: assumption_pending_user_verification
+    source: none in repository
+    reason: rooftop commercial PV installed in an isolated Amazon city (river logistics); the upstream example uses 1.67 USD/W
+    reference_to_verify: IRENA Renewable Power Generation Costs (latest edition, commercial rooftop PV) or NREL ATB commercial PV
+  om_fraction_of_capex_per_year:
+    value: 0.015
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Maintenance_Operation_Cost_PV
+  lifetime_years:
+    value: 25
+    status: assumption_pending_user_verification
+    source: none in repository
+    reason: no PV replacement is modeled because it exceeds the project horizon
+  usable_area_fraction:
+    value: 0.63
+    status: design_rule
+    origin: user_decision
+    source: user decision 2026-11-01 (campaign v3) "usa las areas existentes"; factor of the base generator (fix_solar_pvlib.AREA_UTIL_FACTOR = 0.70 roof use x 0.90 packing)
+    reason: area techada usada como techo disponible; Area_Techada_m2 is covered built area, not a roof survey
+bess:
+  capex_usd_per_wh:
+    value: 0.40
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Battery_Invesment_Cost
+    reason: upstream example value; not an Iquitos quotation
+    reference_to_verify: NREL ATB commercial battery storage or a local supplier quotation
+  om_fraction_of_capex_per_year:
+    value: 0.015
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Maintenance_Operation_Cost_Battery
+  replacement_year:
+    value: 10
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Battery_Reposition_Time
+  charge_efficiency:
+    value: 0.95
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Charge_Battery_Efficiency
+  discharge_efficiency:
+    value: 0.95
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Discharge_Battery_Efficiency
+  minimum_soc_fraction:
+    value: 0.20
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Deep_of_Discharge (MicroGrids uses it as the minimum state of charge)
+  max_charge_time_h:
+    value: 5
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Maximun_Battery_Charge_Time
+  max_discharge_time_h:
+    value: 5
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Maximun_Battery_Discharge_Time
+project:
+  discount_rate:
+    value: 0.08
+    status: assumption_pending_user_verification
+    source: none in repository
+    reference_to_verify: Peru MEF Invierte.pe social discount rate (Anexo de parametros de evaluacion social)
+  project_years:
+    value: 20
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Years
+  fraction_funded_by_loan:
+    value: 0.0
+    status: assumption_pending_user_verification
+    source: none in repository
+    reason: equity-financed investment; with 0 the loan interest rate has no effect
+  loan_interest_rate:
+    value: 0.06
+    status: repository_example
+    source: external/MicroGrids/MicroGrids/Example/data.dat Interest_Rate_Loan
+grid_supply_mapping:
+  description: >-
+    The on-grid supply is MicroGrids' generator: Generator_Efficiency = 1 and Low_Heating_Value = 1 Wh/unit so the
+    LP marginal cost per Wh equals Diesel_Unitary_Cost = the building's 2023 energy price [USD/kWh] / 1000; generator
+    capex and O&M are zero; Generator_Nominal_Capacity is bounded below by the observed hourly peak and lost load is
+    not allowed. MicroGrids' LP has one constant marginal cost, so time-of-use arbitrage is NOT valued by the sizing.
+  status: design_rule
+  generator_invesment_cost_usd_per_w: 0.0
+  maintenance_operation_cost_generator: 0.0
+  lost_load_probability: 0.0
+  value_of_lost_load_usd_per_wh: 0.0
+export:
+  price_ratio_to_purchase: 1.0
+  curtailment_allowed: false
+  status: design_rule
+  source: user decision 2026-11-01 (coordinator relay)
+  origin: user_decision
+  reason: >-
+    All buildings are connected to the public grid and nothing is wasted: surplus PV goes first to the
+    building's BESS and the rest is injected and credited at the building's purchase price (net billing).
+    No such tariff scheme exists in Iquitos today; the user chose it knowingly as a scenario.
+sensitivity:
+  capex_relative_change: [-0.30, 0.30]
+  material_change_threshold_relative: 0.10

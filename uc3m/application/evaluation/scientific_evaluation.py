@@ -3,6 +3,7 @@ from typing import Dict, List, Sequence
 
 import numpy as np
 
+from uc3m.application.evaluation.fresh_analysis import iqm as canonical_iqm
 from uc3m.domain.pareto import hypervolume_3d, non_dominated_indices
 
 REQUIRED_KPI_KEYS = {'cost_total', 'co2_emissions', 'peak_demand'}
@@ -20,9 +21,7 @@ def compute_multiseed_stats(values: List[float]) -> dict:
     if len(values) < 3:
         raise ValueError("minimum 3 seeds required for multiseed statistics")
     arr = np.array(values, dtype=float)
-    sorted_vals = np.sort(arr)
-    trim = max(1, len(sorted_vals) // 4)
-    iqm = float(np.mean(sorted_vals[trim:-trim])) if len(sorted_vals) > 2 * trim else float(np.mean(arr))
+    iqm = float(canonical_iqm(arr))
     return {
         'mean': float(np.mean(arr)),
         'std': float(np.std(arr, ddof=1)),

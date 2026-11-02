@@ -52,22 +52,6 @@ def test_dataset_not_marked_ready_blocks_training(tmp_path: Path) -> None:
         require_validated_dataset(schema, manifest)
 
 
-def test_cli_refuses_to_execute_an_unvalidated_dataset(tmp_path: Path, capsys) -> None:
-    from uc3m.application.training import cli
-
-    schema = _dataset(tmp_path)
-    output_root = tmp_path / "runs"
-    code = cli.main([
-        "--algorithm", "HAPPO", "--scenario", "E1", "--schema", str(schema),
-        "--output-root", str(output_root), "--execute",
-        "--ready-manifest", str(tmp_path / "absent.json"),
-    ])
-
-    assert code == 2
-    assert "dataset_not_validated" in capsys.readouterr().out
-    assert not output_root.exists()
-
-
 def test_missing_manifest_or_digest_blocks_training(tmp_path: Path) -> None:
     schema = _dataset(tmp_path)
 

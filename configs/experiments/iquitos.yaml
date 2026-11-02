@@ -1,0 +1,54 @@
+schema_version: 1
+# Fresh campaign: new dataset, no prior-run inputs, every attempt from zero.
+campaign_id: fresh_iquitos_20261101_v1
+storage_alias: iquitos_v1
+dataset_root: data/campaigns/iquitos_v1
+scenario_catalog: configs/scenarios.yaml      # single E1/E2/E3 weight table
+algorithm_config: configs/algorithms/native.yaml
+kpi_catalog: configs/evaluation/kpis.yaml
+algorithms: [HAPPO, MASAC, MATD3, MAAC]
+# Owner decision 2026-11-01: every stage trains by phases. Phase 2 starts only when
+# every treatment of phase 1 is training_complete; inside a phase treatments run in
+# parallel up to the worker limit measured from RAM, VRAM and CPUs
+# (uc3m/application/training/phases.py, runtime_requirements in native.yaml).
+training_phases: [[HAPPO, MASAC], [MATD3, MAAC]]
+scenarios: [E1, E2, E3]
+seeds:
+  development: [901, 902, 903]
+  confirmatory: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012]
+splits: [train_2023, validation_2024, test_2025]
+stages:
+  pilot:
+    # Owner decision 2026-11-01: 3 full years per algorithm to measure real RAM/VRAM
+    # (MASAC depends on T) and wall time before the long campaign; not confirmatory.
+    episodes: 3
+    episode_time_steps: 8760
+    seeds: [901]
+    scenarios: [E1]
+  hpo:
+    episodes: 10
+    episode_time_steps: 8760
+    seeds: development
+    grid: true
+  confirm:
+    episodes: 50
+    episode_time_steps: 8760
+    seeds: confirmatory
+  sensitivity:
+    episodes: 50
+    episode_time_steps: 8760
+    seeds: [1001, 1002, 1003]
+    dominance: [0.55, 0.65]          # the centre 0.60 is the confirmatory run itself
+    secondary_to_residual: [5, 3]
+# Supervision criterion of the project (not a literature value): an attempt is
+# rejected when the EV/BESS constraint terms outweigh the weighted three-axis
+# objective over the whole attempt, i.e. when
+#   sum(|ev| + |bess_cycle|) / sum(|w_flex*flex| + |w_co2*co2| + |w_cost*cost|) > 1.0
+# (computed from the reward breakdown of every training step, see
+# uc3m/reward/term_telemetry.py). A larger ratio means the learner mostly
+# optimizes constraints and the E1/E2/E3 weights stop driving the policy.
+supervision:
+  max_constraint_dominance_ratio: 1.0
+# Long stages run only on Colab resources the owner authorizes (no AWS).
+resource_authorization:
+  authorized_stages: []

@@ -2,7 +2,6 @@
 from pathlib import Path
 from typing import Protocol
 
-import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -39,7 +38,7 @@ def test_training_report_builder_produces_structured_kpis(tmp_path):
 
 
 def test_adr_simulator_port_exists():
-    path = ROOT / 'docs' / 'decisions' / 'ADR-SIMULATOR-PORT-DEFERRED.md'
+    path = ROOT / 'docs' / 'decisions' / 'simulator.md'
     assert path.is_file(), "ADR for SimulatorPort deferred integration missing"
     content = path.read_text(encoding='utf-8')
     assert 'SimulatorPort' in content

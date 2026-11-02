@@ -74,3 +74,30 @@ def test_expected_utility_and_sparsity_are_deterministic() -> None:
 def test_pareto_metrics_reject_invalid_points(points: list[list[float]]) -> None:
     with pytest.raises(ValueError):
         non_dominated_indices(points, maximize=[True, True])
+
+
+def test_hypervolume_nd_matches_3d_and_analytic_boxes():
+    from uc3m.domain.pareto import hypervolume, hypervolume_3d
+
+    points = [[3.0, 1.0, 2.0], [1.0, 3.0, 1.0], [2.0, 2.0, 3.0]]
+    reference = [0.0, 0.0, 0.0]
+    maximize = [True, True, True]
+    assert hypervolume(points, reference=reference, maximize=maximize) == pytest.approx(
+        hypervolume_3d(points, reference=reference, maximize=maximize), abs=1e-12)
+    # A single 7-D box and two overlapping 2-D boxes, exactly.
+    assert hypervolume([[2.0]*7], reference=[0.0]*7, maximize=[True]*7) == pytest.approx(128.0)
+    assert hypervolume([[1.0, 8.0], [8.0, 1.0]], reference=[0.0, 0.0],
+                       maximize=[True, True]) == pytest.approx(8 + 8 - 1)
+    # Minimized axes use the same exact volume.
+    assert hypervolume([[1.0, 1.0]], reference=[10.0, 10.0], maximize=[False, False]) == pytest.approx(81.0)
+
+
+def test_hypervolume_nd_is_order_independent_and_rejects_bad_reference():
+    from uc3m.domain.pareto import hypervolume
+
+    points = [[1.0, 4.0, 2.0, 3.0], [4.0, 1.0, 3.0, 2.0], [2.0, 2.0, 4.0, 4.0]]
+    forward = hypervolume(points, reference=[0.0]*4, maximize=[True]*4)
+    backward = hypervolume(points[::-1], reference=[0.0]*4, maximize=[True]*4)
+    assert forward == pytest.approx(backward, abs=1e-12)
+    with pytest.raises(ValueError):
+        hypervolume(points, reference=[2.0]*4, maximize=[True]*4)

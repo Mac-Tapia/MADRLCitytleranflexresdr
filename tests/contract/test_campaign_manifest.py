@@ -1,6 +1,5 @@
 """Contract tests for the full 4x3x3 experimental campaign configuration."""
 import itertools
-import json
 from pathlib import Path
 
 import yaml

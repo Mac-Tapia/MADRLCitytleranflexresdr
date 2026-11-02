@@ -2,7 +2,7 @@
 Genera CityLearn/data/buildingcsv/B_01.csv para ELECTRO ORIENTE S.A.
 =======================================================================
 FUENTE DE DEMANDA REAL:
-  docs/Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx, hoja '8.ELOR'
+  docs/resultados_preliminares.xlsx, hoja '8.ELOR'
   Columnas: NOMBRES | ANO | MES | EA [kWh] | MD [KW]
   Datos disponibles: 2024 (12 meses) + 2025 (ene-oct, 10 meses)
 
@@ -47,7 +47,7 @@ from pathlib import Path
 
 # ── Rutas ─────────────────────────────────────────────────────────────────────
 ROOT           = Path(__file__).resolve().parents[2]
-XLSX_PATH      = ROOT / "docs" / "Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx"
+XLSX_PATH      = ROOT / "docs" / "resultados_preliminares.xlsx"
 DATASET_DIR    = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
 META_JSON      = DATASET_DIR / "building_metadata.json"
 BUILDINGCSV    = ROOT / "CityLearn" / "data" / "buildingcsv"
@@ -245,7 +245,7 @@ def main():
     out = write_csv(rows)
     print(f"\nGenerado: {out}")
     print(f"Tarifa: MT3 | pf=0.92 | PEAK_FRAC={PEAK_FRAC:.3f}")
-    print("Fuente: Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx, hoja 8.ELOR")
+    print("Fuente: resultados_preliminares.xlsx, hoja 8.ELOR")
 
 
 if __name__ == "__main__":

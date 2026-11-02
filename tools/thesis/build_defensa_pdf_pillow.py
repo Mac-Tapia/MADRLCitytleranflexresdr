@@ -206,7 +206,7 @@ def build(png_dir: Path, out_pdf: Path):
 
     pages = [make_cover()]
 
-    pngs = sorted(png_dir.glob("ARQUITECTURA_PROYECTO_DEFENSA-*.png"))
+    pngs = sorted(png_dir.glob("defensa-*.png"))
     for png in pngs:
         m = re.search(r"-(\d+)\.png$", png.name)
         idx = int(m.group(1)) if m else 0

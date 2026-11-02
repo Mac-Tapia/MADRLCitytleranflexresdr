@@ -1,0 +1,11 @@
+﻿{
+    "scientific_acceptance":  false,
+    "schema_version":  1,
+    "naming_verified":  false,
+    "consumers":  152,
+    "created_at":  "2026-11-01T09:40:32.2133399Z",
+    "consolidated":  1,
+    "manifest_sha256":  "685fab134bb13df30d6d7650f69f5fb958fbaf8661c00e9a065acacd59e5787f",
+    "status":  "executed",
+    "moved":  173
+}

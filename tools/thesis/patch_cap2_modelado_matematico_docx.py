@@ -2,8 +2,8 @@
 """Parche Cap. II UC3M en los 2 Word canónicos (Tesis + Informe).
 
 NO crea Word nuevos en docs/. Solo edita:
-  - docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx
-  - docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx
+  - docs/tesis.docx
+  - docs/informe.docx
 
 Backups temporales van a outputs/_word_backups/ (fuera de docs/).
 Idempotente: si 2.2.6 ya existe, no duplica.
@@ -30,7 +30,7 @@ if str(_THESIS_DIR) not in sys.path:
 
 from thesis_word_canons import DOCS, INFORME, TESIS  # noqa: E402
 
-REPORT = DOCS / "CAP2_MODELADO_MATEMATICO_PATCH_REPORT_2026-07-29.json"
+REPORT = DOCS / 'audits' / 'word' / 'cap2_modelo.json'
 BACKUP_DIR = REPO / "outputs" / "_word_backups"
 
 SECTIONS: list[tuple[str, list[str]]] = [

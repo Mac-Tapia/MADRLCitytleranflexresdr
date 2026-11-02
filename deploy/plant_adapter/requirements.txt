@@ -1,0 +1,8 @@
+requests>=2.28
+numpy>=1.23.5,<2.0
+pandas>=2.0
+paho-mqtt>=1.6,<2.0
+pyyaml>=6.0
+# Solo necesarios si ADAPTER_MODE=modbus / opcua respectivamente:
+pymodbus>=3.6
+asyncua>=1.1

@@ -1,0 +1,11 @@
+{
+  "changed_text_sources_since_scan": [
+    "configs/algorithms/native.yaml",
+    "configs/experiments/iquitos.yaml",
+    "tests/fresh_training/test_campaign_contract.py",
+    "uc3m/application/training/cli.py",
+    "uc3m/application/training/fresh_campaign.py",
+    "uc3m/domain/campaigns.py"
+  ],
+  "note": "Checks inspected text files only; not external dependencies, binaries or an atomic filesystem snapshot."
+}

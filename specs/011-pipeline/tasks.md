@@ -1,0 +1,17 @@
+# Tareas — SPEC-011
+
+**Ámbito:** `D:\MADRLCitytleranflexresdr` · **Exclusión:** `D:\madrl_lima`  
+**Diseño:** [aprobado](../../docs/design/modernizacion.md) · **Estado conciliado:** [STATUS](../STATUS.md)  
+**Revisión:** 2026-11-01
+
+`[x]` = archivo verificado en el árbol el 2026-10-31; no implica aceptación.
+
+- [x] **FR-011.1:** Orquestador de dataset existente — `tools/dataset/orchestrate_citylearn_dataset.py`
+- [x] **FR-011.2:** Verificador de dataset listo — `tools/dataset/check_training_dataset_ready.py`
+- [x] **FR-011.1:** Inventario: los 21 scripts de `tools/dataset/` son etapas del orquestador (11, en orden) o soporte documentado en su README; los sueltos ya se retiraron el 2026-07-29. El reporte de destilación se escribía y leía en `tools/dataset_docs/`, ruta abandonada desde el 2026-07-29, lo que dejaba el chequeo en BLOCKED; ahora ambos usan `tools/dataset/dataset_docs/` y una prueba lo fija — `tests/contract/test_dataset_pipeline_paths.py`
+- [x] **FR-011.4 (parcial, candado del lanzador local):** `scripts/LANZAR_ENTRENAMIENTO_V4.bat` → `scripts/restart_happo_masac_v3.ps1` ejecuta `require_validated_dataset` con `.venv39-citylearn-v3\Scripts\python.exe` sobre el mismo `$SchemaPath` que entrena, antes de escribir en `outputs/` y de llamar a `launch_citylearn_v3_official_training.ps1`; si falla imprime "ABORTADO" y sale con código 2. El `.ps1` se guardó con BOM UTF-8 porque `powershell.exe` 5.1 no lo podía analizar (4 errores de parseo previos por la raya "—" leída como ANSI). Verificado: prueba estática `tests/ops/test_local_launcher_dataset_gate.py`; parseo 5.1 sin errores; el bloque del candado extraído a un script temporal devolvió 2 con un dataset no validado y 0 con el dataset Iquitos actual (digest `e3f3c3a3…09dd7`). No se ejecutó el lanzador completo (lanzaría entrenamiento real). Argumentos científicos y orden de algoritmos sin cambios.
+- [ ] **FR-011.4 (pendiente):** Subcomandos por etapa en la CLI (`python -m uc3m.application.training.cli`) y lanzadores `.bat/.ps1` que deleguen en ella; el lanzador local aún llama a los scripts de CityLearn directamente (ahora detrás del candado) — `uc3m/application/training/cli.py`
+- [x] **FR-011.5:** Candado dataset → entrenamiento: el chequeo registra `dataset_digest` (schema y todos los CSV referenciados) y `cli.py`/`colab.py` se niegan a ejecutar si el manifiesto no está `ready` o el dataset cambió después; un byte distinto bloquea hasta revalidar — `uc3m/application/training/dataset_gate.py, tests/unit/application/test_dataset_gate.py`
+- [x] **FR-011.6:** Humo dataset → candado → plan, sin red, sin GPU y sin entrenamiento real: con un dataset mínimo en `tmp_path` (schema + 1 CSV) y un manifiesto `ready`, `cli.main` sin `--execute` prepara un plan cuyo `experiment.dataset_sha256` es el digest validado y no crea directorio de corrida; la variante CRLF da el mismo digest y pasa el candado; tras cambiar un byte del CSV, `--execute --ready-manifest` devuelve 2 (`dataset_not_validated`) sin crear `output_root`. No cubre el entrenamiento ni la entrega (ver SPEC-012/Colab) — `tests/acceptance/test_pipeline_smoke.py`
+
+**Aceptación:** `.venv39-citylearn-v3\Scripts\python.exe -m pytest -p no:cacheprovider -o addopts="" -q tests/acceptance/test_pipeline_smoke.py tests/ops/test_local_launcher_dataset_gate.py tests/unit/application/test_dataset_gate.py` → 13 passed, 0 skipped (2026-11-01).

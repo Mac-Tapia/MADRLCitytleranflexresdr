@@ -1,0 +1,11 @@
+{
+  "scope": "synthetic boundary probe in empty temporary repository; no experiment",
+  "call": "load_decision_matrix(repo=temporary_empty_repository)",
+  "source": "illustrative",
+  "algorithms": [
+    "HAPPO",
+    "MAAC",
+    "MASAC",
+    "MATD3"
+  ]
+}

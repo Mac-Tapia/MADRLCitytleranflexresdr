@@ -36,7 +36,7 @@ BACKUP_DIR = REPO / "outputs" / "_word_backups"
 RUN = REPO / "outputs" / RUN_ID
 MC_DIR = REPO / "outputs" / "madrl_multicriteria_selection" / "figures"
 PERF_DIR = RUN / "resumen_comparativo" / "performance_comparison"
-REPORT = REPO / "docs" / "COMPLETE_FIGURES_CATALOG_WORD_PATCH_REPORT_2026-07-29.json"
+REPORT = REPO / 'docs' / 'audits' / 'word' / 'figuras.json'
 STAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 GREY = RGBColor(0x55, 0x55, 0x55)
 

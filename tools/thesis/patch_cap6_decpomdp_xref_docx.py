@@ -22,7 +22,7 @@ if str(_THESIS_DIR) not in sys.path:
 
 from thesis_word_canons import DOCS, INFORME, TESIS  # noqa: E402
 
-REPORT = DOCS / "CAP6_DECPOMDP_XREF_PATCH_REPORT_2026-07-29.json"
+REPORT = DOCS / 'audits' / 'word' / 'cap6_referencias.json'
 BACKUP_DIR = REPO / "outputs" / "_word_backups"
 MARKER = "Caps. 2 y 4 (Tabla 2.A"
 ADD = (

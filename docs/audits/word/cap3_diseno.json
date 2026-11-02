@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-07-29T12:59:54",
+  "source": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+  "canons": [
+    "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx"
+  ],
+  "files": [
+    {
+      "path": "docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "actions": [],
+      "checks": {
+        "resumen_cuasiexperimental": true,
+        "cap3_cuasiexperimental": true,
+        "cap3_algorithms": true,
+        "cap3_oe_terms": true,
+        "doc_still_has_no_experimental": false,
+        "canonical_exists": true
+      },
+      "ok": true
+    },
+    {
+      "path": "docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "actions": [
+        "cap3_expcomp@353",
+        "cap3_quasi_explain@353",
+        "cap3_expcomp@356"
+      ],
+      "checks": {
+        "resumen_cuasiexperimental": false,
+        "cap3_cuasiexperimental": true,
+        "cap3_algorithms": true,
+        "cap3_oe_terms": true,
+        "doc_still_has_no_experimental": true,
+        "canonical_exists": true
+      },
+      "ok": false
+    }
+  ],
+  "ok": false
+}

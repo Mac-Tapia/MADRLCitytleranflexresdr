@@ -1,6 +1,6 @@
 # Análisis: reorganización de `tools/` (dataset único + dominios)
 
-> **Nota 2026-07-29 (post-auditoría):** las rutas `tools/_archive/` citadas abajo fueron **eliminadas** (política sin archivos). Ver [`AUDITORIA_TOOLS_2026-07-29.md`](AUDITORIA_TOOLS_2026-07-29.md) para el estado actual.
+> **Nota 2026-07-29 (post-auditoría):** las rutas `tools/_archive/` citadas abajo fueron **eliminadas** (política sin archivos). Ver `AUDITORIA_TOOLS_2026-07-29.md` (referencia histórica no disponible) para el estado actual.
 
 **Fecha:** 2026-07-29  
 **Repo:** `D:/MADRLCitytleranflexresdr`  
@@ -107,7 +107,7 @@ Ejemplos representativos:
 | `reports/ver_metricas_madrl.py` | `tools/training/` |
 
 Imports cruzados dataset: hermanos en la misma carpeta (sys.path del script = `tools/dataset/`).  
-Caller dual: `tools/eval/analyze_colab_drive_multiobjective_buildings.py` apunta `sys.path` a `tools/dataset` para `dimension_ev_chargers`.
+Caller dual: `tools/eval/building_analysis.py` apunta `sys.path` a `tools/dataset` para `dimension_ev_chargers`.
 
 ---
 

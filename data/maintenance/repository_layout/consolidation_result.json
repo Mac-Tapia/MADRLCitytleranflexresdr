@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "status": "not_executed",
+  "reason": "deletion in the real repository is the coordinator decision; Execute was not run",
+  "proposed_removed_paths": [],
+  "at_utc": "2026-11-01T16:36:46.908146+00:00"
+}

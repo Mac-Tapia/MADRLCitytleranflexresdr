@@ -1,0 +1,78 @@
+{
+  "scope": "synthetic local contract probes only; not a campaign or a trained model",
+  "reports": {
+    "baseline_minimal_fixture": {
+      "campaign_id": "fresh_test_20261101_v1",
+      "status": "trained_not_evaluated",
+      "software_acceptance": true,
+      "scientific_acceptance": false,
+      "checks": {
+        "fresh_identity": true,
+        "campaign_claim": true,
+        "spec_hash": true,
+        "stage_manifests": true,
+        "gate_clean": true,
+        "trusted_models": true
+      },
+      "reasons": [
+        "scientific_evaluation_pending"
+      ]
+    },
+    "zero_updates_steps_and_foreign_attempt": {
+      "campaign_id": "fresh_test_20261101_v1",
+      "status": "trained_not_evaluated",
+      "software_acceptance": true,
+      "scientific_acceptance": false,
+      "checks": {
+        "fresh_identity": true,
+        "campaign_claim": true,
+        "spec_hash": true,
+        "stage_manifests": true,
+        "gate_clean": true,
+        "trusted_models": true
+      },
+      "reasons": [
+        "scientific_evaluation_pending"
+      ]
+    },
+    "minimal_scientific_report_no_statistics": {
+      "campaign_id": "fresh_test_20261101_v1",
+      "status": "scientifically_complete",
+      "software_acceptance": true,
+      "scientific_acceptance": true,
+      "checks": {
+        "fresh_identity": true,
+        "campaign_claim": true,
+        "spec_hash": true,
+        "stage_manifests": true,
+        "gate_clean": true,
+        "trusted_models": true
+      },
+      "reasons": []
+    },
+    "two_planned_one_reported": {
+      "campaign_id": "fresh_test_20261101_v1",
+      "status": "scientifically_complete",
+      "software_acceptance": true,
+      "scientific_acceptance": true,
+      "checks": {
+        "fresh_identity": true,
+        "campaign_claim": true,
+        "spec_hash": true,
+        "stage_manifests": true,
+        "gate_clean": true,
+        "trusted_models": true
+      },
+      "reasons": []
+    },
+    "pipeline_deliver_without_gate_input": {
+      "status": "rejected",
+      "software_acceptance": false,
+      "scientific_acceptance": false,
+      "reasons": [
+        "gate_not_clean",
+        "scientific_evaluation_pending"
+      ]
+    }
+  }
+}

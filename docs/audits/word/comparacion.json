@@ -1,0 +1,41 @@
+{
+  "stamp": "20260729_161441",
+  "files": {
+    "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "ok": true,
+      "skipped": false,
+      "backup": "outputs/_word_backups/Tesis_Doctoral_MADRL_CityLearn_Iquitos_antes_perf_comparison_20260729_161441.docx",
+      "inserted": [
+        "Figura 5.3e. Performance comparison — MATD3 (distrito + edificio, E1–E3).",
+        "Figura 5.3f. Performance comparison — MAAC (distrito + edificio, E1–E3).",
+        "Figura 5.3g. Performance comparison — MASAC (distrito + edificio, E1–E3).",
+        "Figura 5.3h. Performance comparison — HAPPO (distrito + edificio, E1–E3)."
+      ],
+      "checks": {
+        "Figura 5.3e. Performance comparison": true,
+        "Figura 5.3f. Performance comparison": true,
+        "Figura 5.3g. Performance comparison": true,
+        "Figura 5.3h. Performance comparison": true
+      }
+    },
+    "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "skipped": false,
+      "backup": "outputs/_word_backups/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_antes_perf_comparison_20260729_161441.docx",
+      "inserted": [
+        "Figura 5.3e. Performance comparison — MATD3 (distrito + edificio, E1–E3).",
+        "Figura 5.3f. Performance comparison — MAAC (distrito + edificio, E1–E3).",
+        "Figura 5.3g. Performance comparison — MASAC (distrito + edificio, E1–E3).",
+        "Figura 5.3h. Performance comparison — HAPPO (distrito + edificio, E1–E3)."
+      ],
+      "checks": {
+        "Figura 5.3e. Performance comparison": true,
+        "Figura 5.3f. Performance comparison": true,
+        "Figura 5.3g. Performance comparison": true,
+        "Figura 5.3h. Performance comparison": true
+      }
+    }
+  }
+}

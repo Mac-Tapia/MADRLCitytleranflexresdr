@@ -1,0 +1,330 @@
+﻿path,scope,reason,files_in_inventoried_scope,responsibility
+.claude,inventoried,,5,"configuracion, frontera o recurso local; ver alcance"
+.git,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.github,inventoried,,3,"configuracion, frontera o recurso local; ver alcance"
+.pytest_cache,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.ruff_cache,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.specify,inventoried,,1,"configuracion, frontera o recurso local; ver alcance"
+.superpowers,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.venv39-citylearn-v3,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.vscode,inventoried,,6,"configuracion, frontera o recurso local; ver alcance"
+build,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+CityLearn,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+configs,inventoried,,11,fuentes declarativas; dataset v1 activo
+data,inventoried,,4284,datos con identidad y procedencia; no deduplicar
+deploy,inventoried,,30,demo; sin aceptacion operacional
+docs,inventoried,,96,documentacion; divergencias verificadas
+examples_madrl_v3,inventoried,,7,clientes Colab; aceptacion remota pendiente
+external,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+governance,inventoried,,5,registros; layout rechazado
+outputs,inventoried,,6,runtime; no evidencia cientifica nueva
+scripts,inventoried,,18,"contexto, calidad y fachadas"
+specs,inventoried,,40,contratos; conciliacion pendiente
+tests,inventoried,,122,verificacion; ver validation.md
+tools,inventoried,,201,herramientas; revisar consumidores legados
+uc3m,inventoried,,103,nucleo y compatibilidad; parcial
+uc3m.egg-info,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/agents,inventoried,,3,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills,inventoried,,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/architecture-patterns,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/docker-build-strategies,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/docker-compose-patterns,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/fastapi-templates,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/frontend-design,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/harness-engineering,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/madrl-agent-coordination,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/madrl-experiment-evidence-audit,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/madrl-scientific-literature-audit,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/madrl-spec-conformance,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.claude/skills/webapp-testing,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"configuracion, frontera o recurso local; ver alcance"
+.github/workflows,inventoried,,1,"configuracion, frontera o recurso local; ver alcance"
+.specify/memory,inventoried,,1,"configuracion, frontera o recurso local; ver alcance"
+.vscode/codex-terminal-bridge,inventoried,,2,"configuracion, frontera o recurso local; ver alcance"
+configs/algorithms,inventoried,,1,fuentes declarativas; dataset v1 activo
+configs/dataset,inventoried,,4,fuentes declarativas; dataset v1 activo
+configs/evaluation,inventoried,,1,fuentes declarativas; dataset v1 activo
+configs/experiments,inventoried,,3,fuentes declarativas; dataset v1 activo
+data/audits,inventoried,,10,datos con identidad y procedencia; no deduplicar
+data/campaigns,inventoried,,1451,datos con identidad y procedencia; no deduplicar
+data/dataset_audit,inventoried,,14,datos con identidad y procedencia; no deduplicar
+data/maintenance,inventoried,,2809,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1,inventoried,,937,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2,inventoried,,203,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3,inventoried,,311,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/audit,inventoried,,7,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/dataset,inventoried,,228,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/raw,inventoried,,26,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/splits,inventoried,,669,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/raw/buildingcsv,inventoried,,18,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/raw/fx,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/raw/thesis,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/raw/weather,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/splits/test_2025,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/splits/train_2023,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v1/splits/validation_2024,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/audit,inventoried,,7,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/dataset,inventoried,,43,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/raw,inventoried,,26,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/splits,inventoried,,120,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/raw/buildingcsv,inventoried,,18,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/raw/fx,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/raw/thesis,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/raw/weather,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/splits/test_2025,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/splits/train_2023,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v2/splits/validation_2024,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/audit,inventoried,,9,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/dataset,inventoried,,59,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/raw,inventoried,,68,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/splits,inventoried,,168,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/raw/buildingcsv,inventoried,,18,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/raw/fx,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/raw/osinergmin,inventoried,,42,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/raw/thesis,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/raw/weather,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/splits/test_2025,inventoried,,56,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/splits/train_2023,inventoried,,56,datos con identidad y procedencia; no deduplicar
+data/campaigns/iquitos_v3/splits/validation_2024,inventoried,,56,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds,inventoried,,2781,datos con identidad y procedencia; no deduplicar
+data/maintenance/gates,inventoried,,2,datos con identidad y procedencia; no deduplicar
+data/maintenance/github_readiness,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/historicos,inventoried,,5,datos con identidad y procedencia; no deduplicar
+data/maintenance/layout,inventoried,,3,datos con identidad y procedencia; no deduplicar
+data/maintenance/names,inventoried,,10,datos con identidad y procedencia; no deduplicar
+data/maintenance/remediacion,inventoried,,2,datos con identidad y procedencia; no deduplicar
+data/maintenance/repository_layout,inventoried,,5,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed,inventoried,,2781,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01,inventoried,,671,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02,inventoried,,672,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03,inventoried,,673,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01,inventoried,,137,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01,inventoried,,79,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02,inventoried,,204,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03,inventoried,,204,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01,inventoried,,141,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits,inventoried,,669,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/test_2025,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/train_2023,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/validation_2024,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits,inventoried,,669,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/test_2025,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/train_2023,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/validation_2024,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits,inventoried,,669,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits/test_2025,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits/train_2023,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits/validation_2024,inventoried,,223,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/dataset,inventoried,,109,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw,inventoried,,26,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/buildingcsv,inventoried,,18,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/fx,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/thesis,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/weather,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/audit,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/dataset,inventoried,,43,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw,inventoried,,26,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/buildingcsv,inventoried,,18,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/fx,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/thesis,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/weather,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/audit,inventoried,,7,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/dataset,inventoried,,43,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw,inventoried,,26,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/splits,inventoried,,120,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/buildingcsv,inventoried,,18,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/fx,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/thesis,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/weather,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/splits/test_2025,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/splits/train_2023,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/splits/validation_2024,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/audit,inventoried,,7,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/dataset,inventoried,,43,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw,inventoried,,26,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/splits,inventoried,,120,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/buildingcsv,inventoried,,18,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/fx,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/thesis,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/weather,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/splits/test_2025,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/splits/train_2023,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/splits/validation_2024,inventoried,,40,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/audit,inventoried,,9,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/dataset,inventoried,,59,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw,inventoried,,68,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/buildingcsv,inventoried,,18,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/fx,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/osinergmin,inventoried,,42,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/thesis,inventoried,,1,datos con identidad y procedencia; no deduplicar
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/weather,inventoried,,6,datos con identidad y procedencia; no deduplicar
+data/maintenance/remediacion/c20261101a,inventoried,,2,datos con identidad y procedencia; no deduplicar
+data/maintenance/remediacion/c20261101a/P00,inventoried,,2,datos con identidad y procedencia; no deduplicar
+deploy/aws,inventoried,,4,demo; sin aceptacion operacional
+deploy/dashboard,inventoried,,3,demo; sin aceptacion operacional
+deploy/edge,inventoried,,1,demo; sin aceptacion operacional
+deploy/inference,inventoried,,6,demo; sin aceptacion operacional
+deploy/k8s,inventoried,,7,demo; sin aceptacion operacional
+deploy/plant_adapter,inventoried,,4,demo; sin aceptacion operacional
+deploy/aws/iac,inventoried,,3,demo; sin aceptacion operacional
+deploy/inference/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,demo; sin aceptacion operacional
+deploy/plant_adapter/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,demo; sin aceptacion operacional
+docs/architecture,inventoried,,24,documentacion; divergencias verificadas
+docs/audits,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,documentacion; divergencias verificadas
+docs/chapters,inventoried,,12,documentacion; divergencias verificadas
+docs/contributions,inventoried,,18,documentacion; divergencias verificadas
+docs/decisions,inventoried,,6,documentacion; divergencias verificadas
+docs/design,inventoried,,2,documentacion; divergencias verificadas
+docs/failures,inventoried,,1,documentacion; divergencias verificadas
+docs/plans,inventoried,,14,documentacion; divergencias verificadas
+docs/research,inventoried,,2,documentacion; divergencias verificadas
+docs/thesis,inventoried,,2,documentacion; divergencias verificadas
+docs/architecture/_refs,inventoried,,1,documentacion; divergencias verificadas
+docs/contributions/CityLearn,inventoried,,2,documentacion; divergencias verificadas
+docs/contributions/evcc,inventoried,,2,documentacion; divergencias verificadas
+docs/contributions/HARL,inventoried,,2,documentacion; divergencias verificadas
+docs/contributions/MAAC,inventoried,,2,documentacion; divergencias verificadas
+docs/contributions/MARL,inventoried,,2,documentacion; divergencias verificadas
+docs/contributions/MARLlib,inventoried,,2,documentacion; divergencias verificadas
+docs/contributions/MATD3implementation,inventoried,,2,documentacion; divergencias verificadas
+docs/contributions/MicroGrids,inventoried,,2,documentacion; divergencias verificadas
+docs/contributions/prosumpy,inventoried,,2,documentacion; divergencias verificadas
+outputs/colab_delivery,inventoried,,1,runtime; no evidencia cientifica nueva
+outputs/dataset_cache,inventoried,,4,runtime; no evidencia cientifica nueva
+scripts/maintenance,inventoried,,3,"contexto, calidad y fachadas"
+scripts/quality,inventoried,,4,"contexto, calidad y fachadas"
+scripts/skills,inventoried,,1,"contexto, calidad y fachadas"
+scripts/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"contexto, calidad y fachadas"
+scripts/quality/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,"contexto, calidad y fachadas"
+specs/000-foundation,inventoried,,3,contratos; conciliacion pendiente
+specs/001-provenance,inventoried,,3,contratos; conciliacion pendiente
+specs/002-objectives,inventoried,,3,contratos; conciliacion pendiente
+specs/003-orchestration,inventoried,,3,contratos; conciliacion pendiente
+specs/004-manifests,inventoried,,3,contratos; conciliacion pendiente
+specs/005-evaluation,inventoried,,3,contratos; conciliacion pendiente
+specs/006-evidence,inventoried,,3,contratos; conciliacion pendiente
+specs/007-agents,inventoried,,3,contratos; conciliacion pendiente
+specs/008-artifacts,inventoried,,3,contratos; conciliacion pendiente
+specs/009-jury,inventoried,,3,contratos; conciliacion pendiente
+specs/010-panel,inventoried,,3,contratos; conciliacion pendiente
+specs/011-pipeline,inventoried,,3,contratos; conciliacion pendiente
+specs/012-hygiene,inventoried,,3,contratos; conciliacion pendiente
+tests/acceptance,inventoried,,4,verificacion; ver validation.md
+tests/citylearn_v3,inventoried,,3,verificacion; ver validation.md
+tests/contract,inventoried,,16,verificacion; ver validation.md
+tests/fresh_training,inventoried,,45,verificacion; ver validation.md
+tests/integration,inventoried,,4,verificacion; ver validation.md
+tests/ops,inventoried,,8,verificacion; ver validation.md
+tests/skills,inventoried,,1,verificacion; ver validation.md
+tests/uc3m,inventoried,,16,verificacion; ver validation.md
+tests/unit,inventoried,,23,verificacion; ver validation.md
+tests/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/acceptance/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/citylearn_v3/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/contract/multiobjective,inventoried,,2,verificacion; ver validation.md
+tests/contract/training,inventoried,,4,verificacion; ver validation.md
+tests/contract/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/contract/multiobjective/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/contract/training/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/fresh_training/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/integration/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/ops/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/skills/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/uc3m/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/unit/adapters,inventoried,,1,verificacion; ver validation.md
+tests/unit/application,inventoried,,15,verificacion; ver validation.md
+tests/unit/domain,inventoried,,5,verificacion; ver validation.md
+tests/unit/evaluation,inventoried,,1,verificacion; ver validation.md
+tests/unit/governance,inventoried,,1,verificacion; ver validation.md
+tests/unit/adapters/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/unit/application/training,inventoried,,8,verificacion; ver validation.md
+tests/unit/application/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/unit/application/training/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/unit/domain/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/unit/evaluation/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tests/unit/governance/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,verificacion; ver validation.md
+tools/colab,inventoried,,2,herramientas; revisar consumidores legados
+tools/dataset,inventoried,,27,herramientas; revisar consumidores legados
+tools/drive,inventoried,,7,herramientas; revisar consumidores legados
+tools/eval,inventoried,,21,herramientas; revisar consumidores legados
+tools/figures,inventoried,,6,herramientas; revisar consumidores legados
+tools/ops,inventoried,,13,herramientas; revisar consumidores legados
+tools/skills,inventoried,,51,herramientas; revisar consumidores legados
+tools/thesis,inventoried,,59,herramientas; revisar consumidores legados
+tools/training,inventoried,,13,herramientas; revisar consumidores legados
+tools/colab/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+tools/dataset/dataset_docs,inventoried,,2,herramientas; revisar consumidores legados
+tools/dataset/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+tools/drive/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+tools/eval/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+tools/ops/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+tools/skills/architecture-patterns,inventoried,,4,herramientas; revisar consumidores legados
+tools/skills/docker-build-strategies,inventoried,,12,herramientas; revisar consumidores legados
+tools/skills/docker-compose-patterns,inventoried,,11,herramientas; revisar consumidores legados
+tools/skills/fastapi-templates,inventoried,,3,herramientas; revisar consumidores legados
+tools/skills/frontend-design,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/google-drive-mcp,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+tools/skills/harness-engineering,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/madrl-agent-coordination,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/madrl-experiment-evidence-audit,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/madrl-scientific-literature-audit,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/madrl-spec-conformance,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/notebooklm-mcp,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+tools/skills/webapp-testing,inventoried,,6,herramientas; revisar consumidores legados
+tools/skills/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+tools/skills/architecture-patterns/references,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/docker-build-strategies/agents,inventoried,,1,herramientas; revisar consumidores legados
+tools/skills/docker-build-strategies/assets,inventoried,,4,herramientas; revisar consumidores legados
+tools/skills/docker-build-strategies/checks,inventoried,,1,herramientas; revisar consumidores legados
+tools/skills/docker-build-strategies/references,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/docker-build-strategies/scripts,inventoried,,1,herramientas; revisar consumidores legados
+tools/skills/docker-compose-patterns/agents,inventoried,,1,herramientas; revisar consumidores legados
+tools/skills/docker-compose-patterns/assets,inventoried,,3,herramientas; revisar consumidores legados
+tools/skills/docker-compose-patterns/checks,inventoried,,1,herramientas; revisar consumidores legados
+tools/skills/docker-compose-patterns/references,inventoried,,2,herramientas; revisar consumidores legados
+tools/skills/docker-compose-patterns/scripts,inventoried,,1,herramientas; revisar consumidores legados
+tools/skills/fastapi-templates/references,inventoried,,1,herramientas; revisar consumidores legados
+tools/skills/webapp-testing/examples,inventoried,,3,herramientas; revisar consumidores legados
+tools/skills/webapp-testing/scripts,inventoried,,1,herramientas; revisar consumidores legados
+tools/thesis/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,herramientas; revisar consumidores legados
+uc3m/adapters,inventoried,,13,nucleo y compatibilidad; parcial
+uc3m/algorithms,inventoried,,2,nucleo y compatibilidad; parcial
+uc3m/application,inventoried,,41,nucleo y compatibilidad; parcial
+uc3m/data,inventoried,,8,nucleo y compatibilidad; parcial
+uc3m/domain,inventoried,,7,nucleo y compatibilidad; parcial
+uc3m/env,inventoried,,4,nucleo y compatibilidad; parcial
+uc3m/geography,inventoried,,2,nucleo y compatibilidad; parcial
+uc3m/governance,inventoried,,3,nucleo y compatibilidad; parcial
+uc3m/kpis,inventoried,,2,nucleo y compatibilidad; parcial
+uc3m/multicriteria,inventoried,,10,nucleo y compatibilidad; parcial
+uc3m/ports,inventoried,,4,nucleo y compatibilidad; parcial
+uc3m/presentation,inventoried,,2,nucleo y compatibilidad; parcial
+uc3m/reward,inventoried,,4,nucleo y compatibilidad; parcial
+uc3m/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/adapters/algorithms,inventoried,,5,nucleo y compatibilidad; parcial
+uc3m/adapters/citylearn,inventoried,,6,nucleo y compatibilidad; parcial
+uc3m/adapters/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/adapters/algorithms/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/adapters/citylearn/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/algorithms/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/application/artifacts,inventoried,,3,nucleo y compatibilidad; parcial
+uc3m/application/dataset,inventoried,,4,nucleo y compatibilidad; parcial
+uc3m/application/evaluation,inventoried,,9,nucleo y compatibilidad; parcial
+uc3m/application/thesis,inventoried,,2,nucleo y compatibilidad; parcial
+uc3m/application/training,inventoried,,19,nucleo y compatibilidad; parcial
+uc3m/application/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/application/artifacts/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/application/dataset/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/application/evaluation/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/application/thesis/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/application/training/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/data/adapters,inventoried,,4,nucleo y compatibilidad; parcial
+uc3m/data/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/data/adapters/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/domain/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/env/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/governance/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/kpis/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/multicriteria/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/ports/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/presentation/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial
+uc3m/reward/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point,0,nucleo y compatibilidad; parcial

@@ -1,0 +1,61 @@
+{
+  "stamp": "20260729_161257",
+  "run_id": "madrl_v3_20260627_164047",
+  "kpi_dir": "outputs/madrl_v3_20260627_164047/resumen_comparativo/multiobjetivo/kpi_rankings_drive50",
+  "files": {
+    "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx": {
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "ok": true,
+      "skipped": false,
+      "backup": "outputs/_word_backups/Tesis_Doctoral_MADRL_CityLearn_Iquitos_antes_kpi_rankings_20260729_161257.docx",
+      "actions": [
+        "heading_5.4.5",
+        "intro",
+        "table_district",
+        "table_buildings",
+        "Figura 5.4.5a. KPIs de distrito (4 MADRL × 50 episodios Drive).",
+        "Figura 5.4.5b. Ranking por edificio OE.1 flexibilidad — MATD3/E1.",
+        "Figura 5.4.5c. Ranking por edificio OE.2 reducción CO₂ — MATD3/E2.",
+        "Figura 5.4.5d. Ranking por edificio OE.3 reducción costo — MATD3/E3.",
+        "Figura 5.4.5e. Control de recursos por edificio (BESS/EV) — MATD3/E1.",
+        "closing_note"
+      ],
+      "checks": {
+        "has_marker": true,
+        "has_table_a": true,
+        "has_table_b": true,
+        "has_fig_a": true,
+        "has_fig_e": true,
+        "has_b12": true,
+        "has_b14": true
+      }
+    },
+    "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx": {
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "skipped": false,
+      "backup": "outputs/_word_backups/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_antes_kpi_rankings_20260729_161257.docx",
+      "actions": [
+        "heading_5.4.5",
+        "intro",
+        "table_district",
+        "table_buildings",
+        "Figura 5.4.5a. KPIs de distrito (4 MADRL × 50 episodios Drive).",
+        "Figura 5.4.5b. Ranking por edificio OE.1 flexibilidad — MATD3/E1.",
+        "Figura 5.4.5c. Ranking por edificio OE.2 reducción CO₂ — MATD3/E2.",
+        "Figura 5.4.5d. Ranking por edificio OE.3 reducción costo — MATD3/E3.",
+        "Figura 5.4.5e. Control de recursos por edificio (BESS/EV) — MATD3/E1.",
+        "closing_note"
+      ],
+      "checks": {
+        "has_marker": true,
+        "has_table_a": true,
+        "has_table_b": true,
+        "has_fig_a": true,
+        "has_fig_e": true,
+        "has_b12": true,
+        "has_b14": true
+      }
+    }
+  }
+}

@@ -34,7 +34,7 @@ from thesis_doctoral_sections import (  # noqa: E402
     verify_doctoral_docx,
 )
 
-OUT_PATH = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx"
+OUT_PATH = REPO / 'docs' / 'tesis.docx'
 
 
 def build_doctoral() -> Path:

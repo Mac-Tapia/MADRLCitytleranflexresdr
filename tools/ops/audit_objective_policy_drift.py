@@ -78,7 +78,9 @@ def audit_policy_drift(
     legacy_files = list(_text_files(project_root / "data" / "audits"))
     docs_root = project_root / "docs"
     if docs_root.exists():
-        legacy_files.extend(docs_root.glob("HISTORIA*"))
+        history = docs_root/'historia.md'
+        if history.is_file():
+            legacy_files.append(history)
 
     active = _find(project_root, active_files, "active_blocker")
     thesis = _find(project_root, thesis_files, "thesis_review")

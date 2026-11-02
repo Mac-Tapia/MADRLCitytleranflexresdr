@@ -2,8 +2,8 @@
 """Sincroniza Cap. III / Resumen a diseño cuasiexperimental en el Word canónico.
 
 Fuente de verdad previa:
-- docs/tesis_capitulos/Capitulo_3_Metodologia.md
-- docs/tesis_capitulos/Referencias_APA.md
+- docs/chapters/cap3.md
+- docs/chapters/referencias.md
 - tools/thesis/thesis_doctoral_sections.py (Resumen)
 - tools/thesis/generate_borrador_tesis_docx.py (Cap. 3)
 
@@ -35,7 +35,7 @@ from thesis_word_canons import DOCS, TESIS, existing_canons  # noqa: E402
 
 SRC_CANDIDATES = [TESIS]
 OUT_CANON = TESIS
-REPORT = DOCS / "CAP3_CUASIEXPERIMENTAL_PATCH_REPORT_2026-07-29.json"
+REPORT = DOCS / 'audits' / 'word' / 'cap3_diseno.json'
 
 
 def set_run_font(run, bold: bool = False, size: float = 12.0, italic: bool = False) -> None:

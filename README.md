@@ -138,7 +138,7 @@ Dataset citylearn_iquitos_2023_2025 (17 edificios Iquitos, 2023-2025)
   -> Resultados para tesis
 ```
 
-Contrato operativo actualizado: `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` y `docs/workflow_manifest.json`.
+Contrato operativo actualizado: `docs/architecture/operacion.md` y `docs/workflow_manifest.json`.
 
 Componentes principales:
 
@@ -172,7 +172,7 @@ El paquete `uc3m/` es un framework universal reutilizable sobre CityLearn v2 que
 | `KPIEvaluator` | `uc3m/kpis/evaluator.py` | Calculo holistico de KPIs normalizados contra baseline RBC |
 | `AlgorithmFactory` | `uc3m/algorithms/factory.py` | Mapeo centralizado de 4 MADRL a sus backends externos |
 
-Instalar todas las dependencias del proyecto (un solo comando, ver `docs/MANUAL_INSTALACION_DEPENDENCIAS.md`):
+Instalar todas las dependencias del proyecto (un solo comando, ver `docs/instalacion.md`):
 
 ```bash
 pip install -r requirements.txt
@@ -308,7 +308,7 @@ El nivel 0.60 es una mayoría estricta frente a 0.25+0.15 y rota entre OE.1, OE.
 - `team_reward = mean(reward_i)` — señal colectiva distrital; `mixed_reward_i = 0.30*reward_i + 0.70*team_reward`.
 - Control distrital es **emergente**: no hay agente distrital, el comportamiento coordinado surge de las 17 politicas aprendidas actuando en el mismo entorno fisico.
 - La ejecucion permanece completamente descentralizada: cada politica actua solo con oᵢ local, sin comunicacion entre edificios.
-- Documentacion completa: `docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md`.
+- Documentacion completa: `docs/architecture/coordinacion.md`.
 
 Validar el contrato:
 
@@ -400,85 +400,23 @@ Validacion actual:
 - `git diff --check`: OK.
 - No hay procesos de entrenamiento ni manifiestos `status: running` despues de la limpieza.
 
-## Entrenamiento oficial local
+## Lanzamiento del entrenamiento (via unica)
 
-Opcion rapida — doble clic o desde PowerShell:
-
-```powershell
-# Genera timestamp automatico, registra outputs\latest_visible_training_output_root.txt
-# y lanza cadena completa HAPPO→MASAC→MATD3→MAAC (50 episodios, canónico thesis)
-.\scripts\LANZAR_ENTRENAMIENTO_V4.bat
-```
-
-Comando completo manual (requiere PowerShell 7 — `pwsh.exe`):
+Decision del propietario (2026-11-01): el entrenamiento se lanza solo por la CLI
+de la campana nueva y se ejecuta en Colab con los notebooks existentes de
+`examples_madrl_v3/`, reconectados a esa CLI. No hay despliegue AWS ni
+lanzadores locales `.bat`/`.ps1`; los retirados y los clientes pendientes de
+reconexion estan registrados en `governance/repository_layout.yaml` (`launch`).
 
 ```powershell
-$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
-$root = "outputs\citylearn_v3_madrl_full_$ts"
-Set-Content outputs\latest_visible_training_output_root.txt $root -Encoding UTF8
-
-pwsh.exe -NoProfile -ExecutionPolicy Bypass `
-  -File scripts\run_citylearn_v3_full_training_visible.ps1 `
-  -OutputRoot $root `
-  -Scenario ALL `
-  -Seed 0 `
-  -EpisodeTimeSteps 8760 `
-  -Episodes 50 `
-  -TorchThreads 8 `
-  -LiveProgressInterval 1000 `
-  -ArtifactProfile efficient `
-  -TraceRecordInterval 10 `
-  -TraceDetail compact `
-  -GpuProfile local4060_fast `
-  -Cuda
+# Prepara y revisa el DAG de la campana; no entrena.
+.\.venv39-citylearn-v3\Scripts\python.exe -B -m uc3m.application.training.cli --config configs/experiments/iquitos.yaml --stage prepare
 ```
 
-Para continuar una corrida interrumpida sin reejecutar lo ya completado:
-
-```powershell
-pwsh.exe -NoProfile -ExecutionPolicy Bypass `
-  -File scripts\run_citylearn_v3_full_training_visible.ps1 `
-  -OutputRoot $root -Scenario ALL -Seed 0 `
-  -EpisodeTimeSteps 8760 -Episodes 50 -TorchThreads 8 `
-  -LiveProgressInterval 1000 -ArtifactProfile efficient `
-  -TraceRecordInterval 10 -TraceDetail compact `
-  -GpuProfile local4060_fast -Cuda -SkipCompleted
-```
-
-Antes del comando manual el bloque `$ts`/`$root`/`Set-Content` de arriba ya prepara el puntero.
-Esto genera 12 corridas (4 algoritmos x 3 ejes) con etapas por algoritmo. En 8 GB, HAPPO y MATD3 pueden ejecutar hasta 2 escenarios en paralelo; MASAC y MAAC conservan concurrencia 1 por memoria de replay/critic.
-
-```text
-HAPPO x E1/E2/E3 -> MASAC x E1/E2/E3 -> MATD3 x E1/E2/E3 -> MAAC x E1/E2/E3
-```
-
-Fixes aplicados al launcher:
-- `FOR_DISABLE_CONSOLE_CTRL_HANDLER=1`: previene `forrtl: error (200)` al cerrar ventana.
-- `PYTHONUNBUFFERED=1`: flush inmediato de stdout a logs.
-- Monitor en tiempo real: episodio, paso, retorno, pesos OE1/OE2/OE3, CO2, precio, historial por episodio, GPU y logs. Para display rico dentro de cada job usar `-LiveOutput $true`, sabiendo que desactiva el paralelismo de escenarios.
-
-### Entrenamiento en paralelo (3 MADRL simultaneos, AWS)
-
-`launch_citylearn_v3_official_training.ps1` corre los 4 algoritmos en serie (HAPPO -> MASAC -> MATD3 -> MAAC), paralelizando solo los escenarios (E1/E2/E3) dentro de cada uno. Para correr varios algoritmos en paralelo (uno por proceso, cada uno con sus propios escenarios en paralelo) usar `scripts\run_3madrl_parallel.ps1`:
-
-```powershell
-pwsh.exe -NoProfile -ExecutionPolicy Bypass `
-  -File scripts\run_3madrl_parallel.ps1 `
-  -Algorithms happo,matd3,maac `
-  -Episodes 50 `
-  -GpuProfile aws
-```
-
-Requiere una GPU con VRAM suficiente para varios algoritmos+escenarios a la vez (no viable en RTX 4060 8 GB); el script bloquea la ejecucion si detecta <=8.5 GiB de VRAM dedicada salvo que se pase `-AllowGpuOversubscription`. Instancia AWS recomendada: `g5.2xlarge` (A10G, 24 GB VRAM). MASAC queda fuera de la lista por defecto por su mayor consumo de memoria de replay; se puede agregar explicitamente con `-Algorithms happo,masac,matd3,maac` si la VRAM lo permite.
-
-### Perfil GPU-tuned local (RTX 4060 Laptop 8 GB)
-
-| MADRL | Backend | Ajustes activos |
-| ----- | ------- | --------------- |
-| HAPPO | HARL (on-policy) | `hidden_size=256`, `torch_threads=12`, `team_ratio=0.70` (unified_comparable_v3) |
-| MASAC | MARLlib (off-policy, RNN+QMIX) | `rnn_hidden_dim=64`, `qmix_hidden_dim=32`, `buffer_size=2` |
-| MATD3 | off-policy PyTorch | `batch_size=256`, `buffer_size=4096`, `hidden_size=256` |
-| MAAC | Attention SAC | `batch_size=64`, `buffer_length=256`, `hidden_size=128`, `attend_heads=4` |
+Procedimiento completo (dataset, splits, preparacion, etapas en Colab, fallos):
+`docs/architecture/runbook.md`. Todo intento usa `--no-resume` y empieza desde
+cero; una etapa solo se ejecuta si `configs/experiments/iquitos.yaml` la
+autoriza en `resource_authorization`.
 
 ### Herramientas de diagnostico y monitoreo
 
@@ -496,25 +434,8 @@ Requiere una GPU con VRAM suficiente para varios algoritmos+escenarios a la vez 
 .\.venv39-citylearn-v3\Scripts\python.exe -B tools/training/ver_metricas_madrl.py --run <nombre_run>
 ```
 
-## Monitor de entrenamiento
-
-```powershell
-# Monitor en tiempo real (refresca cada 5 segundos)
-$root = Get-Content outputs\latest_visible_training_output_root.txt
-powershell -NoProfile -ExecutionPolicy Bypass `
-  -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 `
-  -OutputRoot $root `
-  -IntervalSeconds 5 `
-  -LogTail 12
-```
-
-El monitor muestra: estado global, jobs completados/en cola, pesos OE1/OE2/OE3,
-paso/episodio actual, retorno acumulado, CO2, precio electricidad, GPU y logs
-filtrados (sin ruido de arrays Box de inicializacion).
-
 ## Requisitos
 
-- Windows PowerShell para el launcher local.
 - Python 3.9.
 - PyTorch CUDA para entrenamiento GPU.
 - GPU NVIDIA recomendada.
@@ -533,7 +454,7 @@ pip install -r requirements.txt
 pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu126
 ```
 
-Manual completo paso a paso (Windows y AWS): `docs/MANUAL_INSTALACION_DEPENDENCIAS.md`.
+Manual completo paso a paso (Windows y AWS): `docs/instalacion.md`.
 
 ## Clonar el repositorio
 
@@ -547,83 +468,6 @@ Si ya se clono sin submodulos:
 ```bash
 git submodule update --init --recursive
 ```
-
-## Inicio rapido AWS EC2 Ubuntu + Docker
-
-Flujo recomendado para una instancia Ubuntu con driver NVIDIA/CUDA y Docker:
-
-```bash
-cd ~
-git clone --recurse-submodules https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
-cd MADRLCitytleranflexresdr
-git submodule update --init --recursive
-
-docker --version
-docker compose version
-nvidia-smi
-docker run --rm --gpus all ubuntu:22.04 nvidia-smi   # verificar GPU en Docker
-
-mkdir -p outputs
-docker compose -f deploy/aws/training/docker-compose.yml up -d --build
-docker compose -f deploy/aws/training/docker-compose.yml logs -f
-```
-
-El Compose ejecuta `happo,masac,matd3,maac` en `E1,E2,E3` con `--episodes 75`,
-`--episode-time-steps 8760`, `--cuda`, `--max-parallel-jobs 1` y
-`--log-chunk-size 10M --log-max-files 100`. Los logs se ven en
-`docker compose logs -f` y quedan como texto plano rotado por escenario y
-algoritmo: `outputs/aws_citylearn_v3_madrl_*/logs/E1_happo-00001.log`,
-`E1_happo-00002.log`, etc. Los artefactos quedan con la misma organizacion
-que el flujo local: `outputs/aws_citylearn_v3_madrl_*/happo/E1_seed_0/`,
-`masac/E2_seed_0/`, etc. El launcher crea desde el inicio las carpetas
-`E1_seed_0`, `E2_seed_0` y `E3_seed_0` de cada algoritmo; al principio pueden
-estar vacias si `--max-parallel-jobs 1` aun esta ejecutando el job anterior.
-El contenedor usa `restart: unless-stopped`: sobrevive
-cierres de SSH/VS Code y reinicios de EC2 sin necesidad de tmux. Al completar
-el entrenamiento se crea `outputs/.training_completed`; si falla, se crea
-`outputs/.training_failed` para evitar bucles de reinicio.
-
-Monitoreo y validacion rapida:
-
-```bash
-# Monitor interactivo (refresca cada 10 s)
-bash deploy/aws/training/tail_aws_training.sh
-
-# Estado general del entrenamiento
-cat "$(cat outputs/latest_visible_training_output_root.txt)/official_full_status.json"
-
-# Jobs planificados/activos por algoritmo y escenario
-cat "$(cat outputs/latest_visible_training_output_root.txt)/official_full_status.json" | \
-  jq '.jobs[] | {algorithm, scenario, status, output_dir}'
-
-# Estado y acceso directo al contenedor
-docker ps --filter name=madrl-training
-docker exec -it madrl-training nvidia-smi
-docker exec -it madrl-training ps aux | grep python
-
-# Verificar rotacion de logs (no debe haber archivos >10 MB)
-find "$(cat outputs/latest_visible_training_output_root.txt)" -path "*/logs/*.log" -size +10M -print
-
-# Detener cuando termine (o para relanzar)
-docker compose -f deploy/aws/training/docker-compose.yml stop
-rm outputs/.training_completed   # solo si se quiere un nuevo entrenamiento
-```
-
-Manual completo con instalacion del NVIDIA Container Toolkit:
-`deploy/aws/README_TRAINING_AWS.md`.
-
-## Resumen operativo de entrenamiento
-
-| Paso | Windows local | Ubuntu/AWS | Comentario |
-| ---- | ------------- | ---------- | ---------- |
-| Entrar al proyecto | `cd D:\MADRLCitytleranflexresdr` | `cd ~/MADRLCitytleranflexresdr` | Ejecutar siempre desde la raiz del repositorio correcto. |
-| Verificar contexto | `powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1` | `pwd && git remote -v` | En Windows este proyecto exige el verificador antes de editar o usar git. |
-| Verificar GPU | `nvidia-smi --query-gpu=index,name,utilization.gpu,memory.used,memory.total --format=csv,noheader` | `nvidia-smi` | Confirma que la GPU NVIDIA esta visible antes de entrenar. |
-| Lanzar local visible | `pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\run_citylearn_v3_full_training_visible.ps1 -OutputRoot $root -Scenario ALL -Seed 0 -EpisodeTimeSteps 8760 -Episodes 5 -GpuProfile local4060_fast -Cuda -SelfLaunched` | No aplica | Perfil local RTX 4060; util para pruebas visibles o corridas locales cortas. |
-| Lanzar AWS bare-metal | No aplica | `bash deploy/aws/training/run_aws_training.sh --scenario ALL --algorithms happo,masac,matd3,maac --episodes 75 --episode-time-steps 8760 --max-parallel-jobs 1 --log-chunk-size 10M --log-max-files 100 --cuda` | Configuracion canonica AWS sin cambiar hiperparametros. |
-| Lanzar AWS Docker | No aplica | `docker compose -f deploy/aws/training/docker-compose.yml up -d --build` | Usa la misma configuracion AWS y monta `outputs/` en el host. |
-| Monitorear | `powershell -File CityLearn\scripts\monitor_citylearn_v3_official_training.ps1 -OutputRoot $root` | `bash deploy/aws/training/tail_aws_training.sh` | El monitor AWS lee status, live progress y logs rotados. |
-| Revisar resultados | `Get-ChildItem $root -Recurse -Filter results.json` | `find "$OUTPUT_ROOT" -name results.json -type f | sort` | Los `results.json` aparecen cuando cada job termina. |
 
 ## Salidas esperadas por corrida
 
@@ -700,24 +544,24 @@ Comparar CityLearn v2 contra CityLearn v3 MADRL. Si faltan artefactos v2, el com
 
 | Documento | Ruta |
 | --------- | ---- |
-| **Historia de creacion del proyecto** | `docs/HISTORIA_CREACION_PROYECTO_MADRL_CITYLEARN.md` |
+| **Historia de creacion del proyecto** | `docs/historia.md` |
 | **Pipeline dataset** | `docs/architecture/dataset_construction_pipeline.md` |
-| **Flujo operativo vigente** | `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md` |
+| **Flujo operativo vigente** | `docs/architecture/operacion.md` |
 | **Manifest machine-readable del flujo** | `docs/workflow_manifest.json` |
-| **Justificacion recompensas multiobjetivo** | `docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md` |
-| **Justificacion diseno experimental** | `docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md` |
-| **Cooperacion, coordinacion y control distrital** | `docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md` |
-| **Informe optimizacion VRAM** | `docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md` |
-| **Registro reorganizacion + politica paralelismo** | `docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md` |
-| Arquitectura y flujo (MD) | `docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md` |
-| Arquitectura y flujo (PDF) | `docs/architecture/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf` |
-| Flujo operativo (PDF) | `docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf` |
-| Arquitectura operativa entrenamiento (PDF) | `docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf` |
-| Cooperacion/coordinacion/control (PDF) | `docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf` |
-| Pipeline dataset (PDF) | `docs/architecture/DATASET_CONSTRUCTION_PIPELINE.pdf` |
-| Infografias PNG (arquitectura + flujo) | `docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png`, `FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png` |
-| Destilacion dataset Iquitos | `docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md` |
-| Auditoria tecnica skill MADRL | `docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md` |
+| **Justificacion recompensas multiobjetivo** | `docs/decisions/recompensas.md` |
+| **Justificacion diseno experimental** | `docs/decisions/escenarios.md` |
+| **Cooperacion, coordinacion y control distrital** | `docs/architecture/coordinacion.md` |
+| **Informe optimizacion VRAM** | `docs/audits/vram.md` |
+| **Registro reorganizacion + politica paralelismo** | `docs/decisions/paralelismo.md` |
+| Arquitectura y flujo (MD) | `docs/architecture/flujo.md` |
+| Arquitectura y flujo (PDF) | `docs/architecture/flujo.pdf` |
+| Flujo operativo (PDF) | `docs/architecture/operacion.pdf` |
+| Arquitectura operativa entrenamiento (PDF) | `docs/architecture/entrenamiento.pdf` |
+| Cooperacion/coordinacion/control (PDF) | `docs/architecture/coordinacion.pdf` |
+| Pipeline dataset (PDF) | `docs/architecture/dataset.pdf` |
+| Infografias PNG (arquitectura + flujo) | `docs/architecture/arquitectura.png`, `trabajo.png` |
+| Destilacion dataset Iquitos | `docs/audits/destilacion.md` |
+| Auditoria tecnica skill MADRL | `docs/audits/tecnica.md` |
 | Tutorial notebook | `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb` |
 | Quickstart notebook | `examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb` |
 | Informe de tesis | `docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx` |
@@ -750,9 +594,9 @@ Este repositorio esta orientado a investigacion de tesis. La arquitectura y los 
 La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Kruskal-Wallis (diferencias globales entre 4 MADRL) → Mann-Whitney U (diferencias por par, independiente) → Wilcoxon signed-rank (diferencias por par, pareado), aplicados sobre KPI-gains de entrenamiento de HAPPO, MASAC, MATD3 y MAAC.
 
 ## Cambios Recientes
-- **2026-10-31 21:56**: docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md, specs/STATUS.md
-- **2026-10-31 21:52**: specs/001-open-source-provenance/plan.md, specs/001-open-source-provenance/spec.md, specs/001-open-source-provenance/tasks.md, specs/002-multiobjective-policy/plan.md (+26 mas)
-- **2026-10-31 21:43**: .vscode/settings.json, data/dataset_audit/training_dataset_ready_manifest.audit_postcheck.json, data/dataset_audit/training_dataset_ready_manifest.audit_precheck.json, data/dataset_audit/training_dataset_ready_manifest.audit_supervision.json
+- **2026-10-31 21:56**: docs/plans/modernizacion.md, specs/STATUS.md
+- **2026-10-31 21:52**: specs/001-provenance/plan.md, specs/001-provenance/spec.md, specs/001-provenance/tasks.md, specs/002-objectives/plan.md (+26 mas)
+- **2026-10-31 21:43**: .vscode/settings.json, data/dataset_audit/ready_postcheck.json, data/dataset_audit/ready_precheck.json, data/dataset_audit/ready_supervision.json
 - **2026-06-20 15:55**: tools/fix_clone_submodule.py
 - **2026-06-20 15:50**: README.md, tools/fix_colab_cell2.py, tools/generate_informe_final.py, tools/patch_notebook_final.py
 - **2026-06-20 15:47**: tools/generate_informe_final.py, tools/patch_notebook_final.py

@@ -1,0 +1,49 @@
+{
+  "native_training_launched": false,
+  "reproduction": "analytical trace using the real declared split horizon",
+  "time_steps": 8760,
+  "default_taken": 8759,
+  "daily_primary_availability": {
+    "district_daily_peak": {
+      "name": "district_daily_peak",
+      "value": null,
+      "baseline": null,
+      "delta": null,
+      "gain": null,
+      "unit": "kW",
+      "sense": "minimize",
+      "level": "district",
+      "window": "daily",
+      "aggregation": "daily_mean",
+      "axis": "flexibility",
+      "primary": true,
+      "provenance": "trace",
+      "convention": "project_derivation_of_citylearn_daily_peak",
+      "availability": "unavailable",
+      "cause": "incomplete_days"
+    },
+    "one_minus_load_factor": {
+      "name": "one_minus_load_factor",
+      "value": null,
+      "baseline": null,
+      "delta": null,
+      "gain": null,
+      "unit": "1",
+      "sense": "minimize",
+      "level": "district",
+      "window": "daily",
+      "aggregation": "daily_mean",
+      "axis": "flexibility",
+      "primary": true,
+      "provenance": "trace",
+      "convention": "project_derivation_of_citylearn_load_factor",
+      "availability": "unavailable",
+      "cause": "incomplete_days"
+    }
+  },
+  "kpi_validation_passed": false,
+  "validation_reasons": [
+    "district_daily_peak: unavailable (incomplete_days)",
+    "one_minus_load_factor: unavailable (incomplete_days)"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "absolute_raw_source": {
+    "accepted": true,
+    "source_is_inside_declared_root": false,
+    "source_count": 1,
+    "platform": "Windows",
+    "note": "Both files belong to this temporary probe; no actual outside source was accessed."
+  },
+  "evidence_registry": {
+    "summary": {
+      "total": 1,
+      "accepted": 1,
+      "pending": 0
+    },
+    "artifact_exists": false
+  },
+  "attempt_metadata": {
+    "training_complete": true,
+    "reasons": []
+  },
+  "fresh_catalog": {
+    "fresh_attempt_files": [
+      "learning_evidence.json",
+      "completion.json"
+    ],
+    "discovered_runs": 0,
+    "note": "New native runs are not in the legacy evidence.json/experiment.json contract."
+  }
+}

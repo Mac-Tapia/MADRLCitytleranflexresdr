@@ -3,7 +3,7 @@
 """Atomically replace Capítulos 4–7 in Word canons from markdown sources.
 
 Deletes body from Cap.4 heading through (but not including) Referencias, then
-inserts Cap.4 + Cap.5 + Cap.6 + Cap.7 built from docs/tesis_capitulos/*.md.
+inserts Cap.4 + Cap.5 + Cap.6 + Cap.7 built from docs/chapters/*.md.
 """
 
 from __future__ import annotations
@@ -32,7 +32,7 @@ from inject_md_chapters_4_7_to_canons import (  # noqa: E402
 )
 from thesis_word_canons import INFORME, TESIS, require_tesis  # noqa: E402
 
-CAPS_DIR = REPO / "docs" / "tesis_capitulos"
+CAPS_DIR = REPO / 'docs' / 'chapters'
 
 
 def find_cap4_and_refs(doc: Document, *, toc_safe: bool) -> tuple[int, int, list]:
@@ -156,10 +156,10 @@ def main() -> int:
 
     require_tesis()
     md_map = {
-        4: (CAPS_DIR / "Capitulo_4_Desarrollo_Propuesta.md", "Capitulo 4. Desarrollo e implementacion de la coordinacion energetica multiobjetivo mediante MADRL"),
-        5: (CAPS_DIR / "Capitulo_5_Resultados.md", "Capitulo 5. Resultados, efectos diferenciales y desempeno algoritmico"),
-        6: (CAPS_DIR / "Capitulo_6_Conclusiones.md", "Capitulo 6. Conclusiones"),
-        7: (CAPS_DIR / "Capitulo_7_Recomendaciones.md", "Capitulo 7. Recomendaciones y trabajo futuro"),
+        4: (REPO / 'docs' / 'chapters' / 'cap4.md', "Capitulo 4. Desarrollo e implementacion de la coordinacion energetica multiobjetivo mediante MADRL"),
+        5: (REPO / 'docs' / 'chapters' / 'cap5.md', "Capitulo 5. Resultados, efectos diferenciales y desempeno algoritmico"),
+        6: (REPO / 'docs' / 'chapters' / 'cap6.md', "Capitulo 6. Conclusiones"),
+        7: (REPO / 'docs' / 'chapters' / 'cap7.md', "Capitulo 7. Recomendaciones y trabajo futuro"),
     }
     combined: list = []
     for n in (4, 5, 6, 7):

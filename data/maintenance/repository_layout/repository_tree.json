@@ -1,0 +1,934 @@
+{
+  "schema_version": 1,
+  "phase": "C-software",
+  "actual_tree": {
+    "depth": 2,
+    "files_total": 3918,
+    "bytes_total": 1536917946,
+    "entries": [
+      {
+        "path": ".claude",
+        "kind": "dir",
+        "files": 5,
+        "bytes": 4097
+      },
+      {
+        "path": ".claude/agents",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 2003
+      },
+      {
+        "path": ".claude/skills",
+        "kind": "dir",
+        "files": 0,
+        "bytes": 0
+      },
+      {
+        "path": ".dockerignore",
+        "kind": "file",
+        "files": 1,
+        "bytes": 935
+      },
+      {
+        "path": ".gitattributes",
+        "kind": "file",
+        "files": 1,
+        "bytes": 1021
+      },
+      {
+        "path": ".github",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 5537
+      },
+      {
+        "path": ".github/workflows",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 4468
+      },
+      {
+        "path": ".gitignore",
+        "kind": "file",
+        "files": 1,
+        "bytes": 2916
+      },
+      {
+        "path": ".gitmodules",
+        "kind": "file",
+        "files": 1,
+        "bytes": 991
+      },
+      {
+        "path": ".specify",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 3193
+      },
+      {
+        "path": ".specify/memory",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 3193
+      },
+      {
+        "path": ".vscode",
+        "kind": "dir",
+        "files": 6,
+        "bytes": 6696
+      },
+      {
+        "path": ".vscode/codex-terminal-bridge",
+        "kind": "dir",
+        "files": 2,
+        "bytes": 167
+      },
+      {
+        "path": "AGENTS.md",
+        "kind": "file",
+        "files": 1,
+        "bytes": 2341
+      },
+      {
+        "path": "CLAUDE.md",
+        "kind": "file",
+        "files": 1,
+        "bytes": 711
+      },
+      {
+        "path": "Dockerfile",
+        "kind": "file",
+        "files": 1,
+        "bytes": 2234
+      },
+      {
+        "path": "README.md",
+        "kind": "file",
+        "files": 1,
+        "bytes": 34994
+      },
+      {
+        "path": "configs",
+        "kind": "dir",
+        "files": 7,
+        "bytes": 9460
+      },
+      {
+        "path": "configs/algorithms",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 3543
+      },
+      {
+        "path": "configs/evaluation",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 2489
+      },
+      {
+        "path": "configs/experiments",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 2296
+      },
+      {
+        "path": "data",
+        "kind": "dir",
+        "files": 3140,
+        "bytes": 1427873904
+      },
+      {
+        "path": "data/audits",
+        "kind": "dir",
+        "files": 10,
+        "bytes": 156443
+      },
+      {
+        "path": "data/campaigns",
+        "kind": "dir",
+        "files": 937,
+        "bytes": 518051492
+      },
+      {
+        "path": "data/dataset_audit",
+        "kind": "dir",
+        "files": 14,
+        "bytes": 417212
+      },
+      {
+        "path": "data/maintenance",
+        "kind": "dir",
+        "files": 2179,
+        "bytes": 909248757
+      },
+      {
+        "path": "deploy",
+        "kind": "dir",
+        "files": 30,
+        "bytes": 83806
+      },
+      {
+        "path": "deploy/aws",
+        "kind": "dir",
+        "files": 4,
+        "bytes": 10817
+      },
+      {
+        "path": "deploy/dashboard",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 4552
+      },
+      {
+        "path": "deploy/edge",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 4230
+      },
+      {
+        "path": "deploy/inference",
+        "kind": "dir",
+        "files": 6,
+        "bytes": 27817
+      },
+      {
+        "path": "deploy/k8s",
+        "kind": "dir",
+        "files": 7,
+        "bytes": 13243
+      },
+      {
+        "path": "deploy/plant_adapter",
+        "kind": "dir",
+        "files": 4,
+        "bytes": 12946
+      },
+      {
+        "path": "docs",
+        "kind": "dir",
+        "files": 209,
+        "bytes": 103981285
+      },
+      {
+        "path": "docs/architecture",
+        "kind": "dir",
+        "files": 24,
+        "bytes": 10120545
+      },
+      {
+        "path": "docs/audits",
+        "kind": "dir",
+        "files": 115,
+        "bytes": 5737700
+      },
+      {
+        "path": "docs/chapters",
+        "kind": "dir",
+        "files": 12,
+        "bytes": 199808
+      },
+      {
+        "path": "docs/contributions",
+        "kind": "dir",
+        "files": 18,
+        "bytes": 23524
+      },
+      {
+        "path": "docs/decisions",
+        "kind": "dir",
+        "files": 6,
+        "bytes": 96137
+      },
+      {
+        "path": "docs/design",
+        "kind": "dir",
+        "files": 2,
+        "bytes": 80504
+      },
+      {
+        "path": "docs/failures",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 1181
+      },
+      {
+        "path": "docs/plans",
+        "kind": "dir",
+        "files": 12,
+        "bytes": 256127
+      },
+      {
+        "path": "docs/research",
+        "kind": "dir",
+        "files": 2,
+        "bytes": 4493
+      },
+      {
+        "path": "docs/thesis",
+        "kind": "dir",
+        "files": 2,
+        "bytes": 28346595
+      },
+      {
+        "path": "examples_madrl_v3",
+        "kind": "dir",
+        "files": 7,
+        "bytes": 238277
+      },
+      {
+        "path": "governance",
+        "kind": "dir",
+        "files": 5,
+        "bytes": 34950
+      },
+      {
+        "path": "pyproject.toml",
+        "kind": "file",
+        "files": 1,
+        "bytes": 3725
+      },
+      {
+        "path": "pyrightconfig.json",
+        "kind": "file",
+        "files": 1,
+        "bytes": 1944
+      },
+      {
+        "path": "requirements.txt",
+        "kind": "file",
+        "files": 1,
+        "bytes": 2399
+      },
+      {
+        "path": "scripts",
+        "kind": "dir",
+        "files": 18,
+        "bytes": 88500
+      },
+      {
+        "path": "scripts/maintenance",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 23516
+      },
+      {
+        "path": "scripts/quality",
+        "kind": "dir",
+        "files": 4,
+        "bytes": 9453
+      },
+      {
+        "path": "scripts/skills",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 2205
+      },
+      {
+        "path": "specs",
+        "kind": "dir",
+        "files": 40,
+        "bytes": 79108
+      },
+      {
+        "path": "specs/000-foundation",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 3606
+      },
+      {
+        "path": "specs/001-provenance",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 5292
+      },
+      {
+        "path": "specs/002-objectives",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 5006
+      },
+      {
+        "path": "specs/003-orchestration",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 4478
+      },
+      {
+        "path": "specs/004-manifests",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 3126
+      },
+      {
+        "path": "specs/005-evaluation",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 5063
+      },
+      {
+        "path": "specs/006-evidence",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 3229
+      },
+      {
+        "path": "specs/007-agents",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 4531
+      },
+      {
+        "path": "specs/008-artifacts",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 4237
+      },
+      {
+        "path": "specs/009-jury",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 3288
+      },
+      {
+        "path": "specs/010-panel",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 4902
+      },
+      {
+        "path": "specs/011-pipeline",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 7611
+      },
+      {
+        "path": "specs/012-hygiene",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 5312
+      },
+      {
+        "path": "tests",
+        "kind": "dir",
+        "files": 106,
+        "bytes": 521420
+      },
+      {
+        "path": "tests/acceptance",
+        "kind": "dir",
+        "files": 4,
+        "bytes": 9739
+      },
+      {
+        "path": "tests/citylearn_v3",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 2325
+      },
+      {
+        "path": "tests/contract",
+        "kind": "dir",
+        "files": 16,
+        "bytes": 36040
+      },
+      {
+        "path": "tests/fresh_training",
+        "kind": "dir",
+        "files": 32,
+        "bytes": 240544
+      },
+      {
+        "path": "tests/integration",
+        "kind": "dir",
+        "files": 4,
+        "bytes": 16390
+      },
+      {
+        "path": "tests/ops",
+        "kind": "dir",
+        "files": 6,
+        "bytes": 25538
+      },
+      {
+        "path": "tests/skills",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 4001
+      },
+      {
+        "path": "tests/uc3m",
+        "kind": "dir",
+        "files": 15,
+        "bytes": 110978
+      },
+      {
+        "path": "tests/unit",
+        "kind": "dir",
+        "files": 23,
+        "bytes": 74724
+      },
+      {
+        "path": "tools",
+        "kind": "dir",
+        "files": 231,
+        "bytes": 2904912
+      },
+      {
+        "path": "tools/colab",
+        "kind": "dir",
+        "files": 1,
+        "bytes": 10818
+      },
+      {
+        "path": "tools/dataset",
+        "kind": "dir",
+        "files": 25,
+        "bytes": 931188
+      },
+      {
+        "path": "tools/drive",
+        "kind": "dir",
+        "files": 7,
+        "bytes": 35841
+      },
+      {
+        "path": "tools/eval",
+        "kind": "dir",
+        "files": 21,
+        "bytes": 349874
+      },
+      {
+        "path": "tools/figures",
+        "kind": "dir",
+        "files": 6,
+        "bytes": 72432
+      },
+      {
+        "path": "tools/ops",
+        "kind": "dir",
+        "files": 13,
+        "bytes": 178068
+      },
+      {
+        "path": "tools/skills",
+        "kind": "dir",
+        "files": 84,
+        "bytes": 346637
+      },
+      {
+        "path": "tools/thesis",
+        "kind": "dir",
+        "files": 59,
+        "bytes": 825753
+      },
+      {
+        "path": "tools/training",
+        "kind": "dir",
+        "files": 13,
+        "bytes": 151919
+      },
+      {
+        "path": "uc3m",
+        "kind": "dir",
+        "files": 98,
+        "bytes": 618060
+      },
+      {
+        "path": "uc3m/adapters",
+        "kind": "dir",
+        "files": 12,
+        "bytes": 79866
+      },
+      {
+        "path": "uc3m/algorithms",
+        "kind": "dir",
+        "files": 2,
+        "bytes": 16202
+      },
+      {
+        "path": "uc3m/application",
+        "kind": "dir",
+        "files": 37,
+        "bytes": 209443
+      },
+      {
+        "path": "uc3m/data",
+        "kind": "dir",
+        "files": 8,
+        "bytes": 26753
+      },
+      {
+        "path": "uc3m/domain",
+        "kind": "dir",
+        "files": 7,
+        "bytes": 37205
+      },
+      {
+        "path": "uc3m/env",
+        "kind": "dir",
+        "files": 4,
+        "bytes": 30062
+      },
+      {
+        "path": "uc3m/geography",
+        "kind": "dir",
+        "files": 2,
+        "bytes": 13568
+      },
+      {
+        "path": "uc3m/governance",
+        "kind": "dir",
+        "files": 3,
+        "bytes": 7223
+      },
+      {
+        "path": "uc3m/kpis",
+        "kind": "dir",
+        "files": 2,
+        "bytes": 20584
+      },
+      {
+        "path": "uc3m/multicriteria",
+        "kind": "dir",
+        "files": 10,
+        "bytes": 136276
+      },
+      {
+        "path": "uc3m/ports",
+        "kind": "dir",
+        "files": 4,
+        "bytes": 2186
+      },
+      {
+        "path": "uc3m/presentation",
+        "kind": "dir",
+        "files": 2,
+        "bytes": 3748
+      },
+      {
+        "path": "uc3m/reward",
+        "kind": "dir",
+        "files": 4,
+        "bytes": 33759
+      },
+      {
+        "path": "uv.lock",
+        "kind": "file",
+        "files": 1,
+        "bytes": 410530
+      }
+    ]
+  },
+  "excluded_scope": [
+    {
+      "path": ".superpowers",
+      "reason": "agent scratch and pytest temp trees of agent sessions; not project content",
+      "present": true
+    },
+    {
+      "path": "CityLearn",
+      "reason": "protected dependency (own fork, read-only for this task)",
+      "present": true
+    },
+    {
+      "path": "build",
+      "reason": "generated setuptools build tree",
+      "present": true
+    },
+    {
+      "path": "external",
+      "reason": "protected third-party dependencies",
+      "present": true
+    },
+    {
+      "path": "outputs",
+      "reason": "runtime results; governed by T0 retirement and fresh_roots, not by the clone criterion",
+      "present": true
+    },
+    {
+      "path": "tools/skills/notebooklm-mcp/data/browser_state",
+      "reason": "gitignored browser profile of a local MCP client (runtime state, may hold session data)",
+      "present": true
+    },
+    {
+      "path": "uc3m.egg-info",
+      "reason": "generated packaging metadata",
+      "present": true
+    },
+    {
+      "path": "**/.git|.mypy_cache|.pytest_cache|.ruff_cache|__pycache__|node_modules|.venv*",
+      "reason": "version control, environments and caches (never entered)",
+      "present": true
+    }
+  ],
+  "links_not_followed": [
+    ".claude/skills/architecture-patterns",
+    ".claude/skills/docker-build-strategies",
+    ".claude/skills/docker-compose-patterns",
+    ".claude/skills/fastapi-templates",
+    ".claude/skills/frontend-design",
+    ".claude/skills/harness-engineering",
+    ".claude/skills/madrl-agent-coordination",
+    ".claude/skills/madrl-experiment-evidence-audit",
+    ".claude/skills/madrl-scientific-literature-audit",
+    ".claude/skills/madrl-spec-conformance",
+    ".claude/skills/webapp-testing"
+  ],
+  "required_paths": [
+    "AGENTS.md",
+    "README.md",
+    "governance/repository_layout.yaml",
+    "governance/naming.yaml",
+    "scripts/verify_project_context.ps1",
+    "tools/ops/historical_inventory.py",
+    "scripts/maintenance/retire_historical_outputs.ps1",
+    "configs/objective_policies.yaml",
+    "configs/scenarios.yaml",
+    "configs/experiments/iquitos.yaml",
+    "configs/algorithms/native.yaml",
+    "configs/evaluation/kpis.yaml",
+    "uc3m/application/training/cli.py",
+    "uc3m/application/training/fresh_campaign.py",
+    "tools/colab/build_modular_colab_notebook.py",
+    "examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb",
+    "tools/ops/audit_repository_layout.py",
+    "tools/ops/audit_duplicate_files.py",
+    "scripts/maintenance/consolidate_repository.ps1",
+    "tests/fresh_training/test_repository_layout.py",
+    "tests/fresh_training/test_duplicate_consolidation.py",
+    "scripts/quality/run_fresh_training_gates.ps1",
+    "docs/00_INDEX.md",
+    "docs/architecture/runbook.md"
+  ],
+  "missing_paths": [],
+  "canonical_sources_missing": [],
+  "checked_indexes": [
+    "README.md",
+    "docs/00_INDEX.md",
+    "scripts/README.md",
+    "tools/README.md",
+    "docs/architecture/runbook.md"
+  ],
+  "active_broken_references": [
+    {
+      "source": "README.md",
+      "line": 567,
+      "kind": "code_path",
+      "target": "docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx",
+      "reason": "relative reference does not resolve"
+    },
+    {
+      "source": "README.md",
+      "line": 568,
+      "kind": "code_path",
+      "target": "docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3.docx",
+      "reason": "relative reference does not resolve"
+    },
+    {
+      "source": "scripts/README.md",
+      "line": 61,
+      "kind": "code_path",
+      "target": "docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md",
+      "reason": "relative reference does not resolve"
+    },
+    {
+      "source": "tools/README.md",
+      "line": 5,
+      "kind": "code_path",
+      "target": "docs/AUDITORIA_TOOLS_2026-07-29.md",
+      "reason": "relative reference does not resolve"
+    }
+  ],
+  "retired_mentions": [
+    {
+      "source": "README.md",
+      "line": 60,
+      "kind": "code_path",
+      "target": "data/backend_results",
+      "reason": "mentioned as retired/removed; not an active reference"
+    },
+    {
+      "source": "scripts/README.md",
+      "line": 58,
+      "kind": "code_path",
+      "target": "scripts/legacy_bat",
+      "reason": "mentioned as retired/removed; not an active reference"
+    },
+    {
+      "source": "docs/architecture/runbook.md",
+      "line": 10,
+      "kind": "code_path",
+      "target": "uc3m/train.py",
+      "reason": "mentioned as retired/removed; not an active reference"
+    }
+  ],
+  "runtime_references_not_checked": [
+    {
+      "source": "README.md",
+      "line": 54,
+      "kind": "code_path",
+      "target": "outputs/citylearn_v3_madrl_full_20260615_074011_v4",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 56,
+      "kind": "code_path",
+      "target": "outputs/thesis_objective_evidence/madrl_checkpoint_stats_v4",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 59,
+      "kind": "code_path",
+      "target": "outputs/comparison_citylearn_v2_vs_v3_madrl/E1..E3",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 107,
+      "kind": "code_path",
+      "target": "data/results.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 107,
+      "kind": "code_path",
+      "target": "data/timeseries.csv",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 107,
+      "kind": "code_path",
+      "target": "data/trace.csv",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 107,
+      "kind": "code_path",
+      "target": "data/training_summary.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 107,
+      "kind": "code_path",
+      "target": "data/checkpoint_manifest.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 107,
+      "kind": "code_path",
+      "target": "data/artifact_audit.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 317,
+      "kind": "command_path",
+      "target": "outputs/validation/cooperative_ctde_validation.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 346,
+      "kind": "code_path",
+      "target": "outputs/thesis_objective_evidence",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 393,
+      "kind": "command_path",
+      "target": "outputs/dataset_audit/workflow_integrity_manifest.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 502,
+      "kind": "code_path",
+      "target": "data/results.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 502,
+      "kind": "code_path",
+      "target": "data/training_summary.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 502,
+      "kind": "code_path",
+      "target": "data/artifact_audit.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 503,
+      "kind": "code_path",
+      "target": "data/timeseries.csv",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 503,
+      "kind": "code_path",
+      "target": "data/trace.csv",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 503,
+      "kind": "code_path",
+      "target": "data/checkpoint_manifest.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 504,
+      "kind": "code_path",
+      "target": "data/building_behavior_summary.csv",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 504,
+      "kind": "code_path",
+      "target": "data/building_kpis.csv",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 505,
+      "kind": "code_path",
+      "target": "data/building_observation_action_schema.csv",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "README.md",
+      "line": 505,
+      "kind": "code_path",
+      "target": "data/building_trace_sample.csv",
+      "reason": "run-produced path; not required to exist in the tree"
+    },
+    {
+      "source": "docs/architecture/runbook.md",
+      "line": 49,
+      "kind": "code_path",
+      "target": "outputs/campaigns/iquitos_v1/campaign_manifest.json",
+      "reason": "run-produced path; not required to exist in the tree"
+    }
+  ],
+  "repository_layout_verified": false,
+  "reasons": [
+    "4 active broken references in checked indexes"
+  ],
+  "at_utc": "2026-11-01T16:36:46.908146+00:00"
+}

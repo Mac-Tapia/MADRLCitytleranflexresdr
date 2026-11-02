@@ -1,0 +1,84 @@
+[
+  {
+    "sha256": "ae05467c3b327f681ec15117b3b81b851c21d457096c25efbcea07fbe95102ba",
+    "paths": [
+      "data/campaigns/iquitos_v1/split_smoke.json",
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/split_smoke.json"
+    ]
+  },
+  {
+    "sha256": "b8b38fdbdb5658d324e7d8b50c4ad0f9000afaab211fdc2ca8d26ccfece04224",
+    "paths": [
+      "data/campaigns/iquitos_v1/audit/ev_charger_sizing_audit.json",
+      "data/campaigns/iquitos_v1/dataset/ev_charger_sizing_log.json",
+      "data/dataset_audit/ev_charger_sizing_audit.json"
+    ]
+  },
+  {
+    "sha256": "38367bbda7848e68406960fb184ff8ddd507edf7d688deb325ff98741bf88157",
+    "paths": [
+      "data/campaigns/iquitos_v1/raw/fx/worldbank_pa_nus_fcrf_per.json",
+      "data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/fx/worldbank_pa_nus_fcrf_per.json"
+    ]
+  },
+  {
+    "sha256": "d395fe920c140fe6af23fa6460558e39462ddb7ba28e43d67143c98a94ff6ee3",
+    "paths": [
+      "data/campaigns/iquitos_v1/splits/test_2025/schema.json",
+      "data/campaigns/iquitos_v1/splits/train_2023/schema.json"
+    ]
+  },
+  {
+    "sha256": "0633f3e56ad04644f52db299a3f264097e75001999ac2df9d61f736daff754f2",
+    "paths": [
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/split_manifest.json",
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/split_manifest.json"
+    ]
+  },
+  {
+    "sha256": "fba67f3c63edde5ac2972683135ce02942c4c13d009b6284d760036e523edf41",
+    "paths": [
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/test_2025/schema.json",
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/train_2023/schema.json",
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/test_2025/schema.json",
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/train_2023/schema.json"
+    ]
+  },
+  {
+    "sha256": "97c1464de1a01e1f741ad04d9b11b6011da4558707ae00aa92d2f29e2b8d3144",
+    "paths": [
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/validation_2024/schema.json",
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/validation_2024/schema.json"
+    ]
+  },
+  {
+    "sha256": "f7a3f1324d9864459cc542e81e0a2ba91daa3e956a9a1774b8fa56025a9d4786",
+    "paths": [
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits/test_2025/schema.json",
+      "data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits/train_2023/schema.json"
+    ]
+  },
+  {
+    "sha256": "8ceaab71b527eb5db43810b74afc618ee36556197d2d51c45fd00aac483988c1",
+    "paths": [
+      "tools/skills/architecture-patterns/LICENSE.txt",
+      "tools/skills/fastapi-templates/LICENSE.txt"
+    ]
+  },
+  {
+    "sha256": "fb472f51db3e7416bfb1f6600b4ca9694495a88172619f4772da508a6c4b36cf",
+    "paths": [
+      "tools/skills/docker-build-strategies/LICENSE.txt",
+      "tools/skills/docker-compose-patterns/LICENSE.txt"
+    ]
+  },
+  {
+    "sha256": "747933dcfce17fd71e8eedcc2c52471477ea2baeb3aec4f841a3ecd73d4a7317",
+    "paths": [
+      "tools/skills/madrl-agent-coordination/LICENSE.txt",
+      "tools/skills/madrl-experiment-evidence-audit/LICENSE.txt",
+      "tools/skills/madrl-scientific-literature-audit/LICENSE.txt",
+      "tools/skills/madrl-spec-conformance/LICENSE.txt"
+    ]
+  }
+]

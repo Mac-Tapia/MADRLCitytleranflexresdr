@@ -1,0 +1,47 @@
+[
+  {
+    "path": "docs/tesis.docx",
+    "exists": true,
+    "sha256": "3cb2ac9d80b8558e68a14bc9401e2442f8270298b0f99963bb1357edb602874d",
+    "paragraphs": 2654,
+    "terms": {
+      "security_privacy": 2,
+      "source_code_url": 0,
+      "general_introduction": 0,
+      "old_campaign": 39,
+      "no_reject": 12,
+      "seven_axes": 2
+    },
+    "review": "XML textual extraction only; no rendering, pagination or validation of scientific claims"
+  },
+  {
+    "path": "docs/informe.docx",
+    "exists": true,
+    "sha256": "c7002dabbae51ad7ebc97bdba5b95658911fec7db0fd2f515e9dc8be18d629a5",
+    "paragraphs": 3740,
+    "terms": {
+      "security_privacy": 6,
+      "source_code_url": 0,
+      "general_introduction": 0,
+      "old_campaign": 59,
+      "no_reject": 12,
+      "seven_axes": 3
+    },
+    "review": "XML textual extraction only; no rendering, pagination or validation of scientific claims"
+  },
+  {
+    "path": "docs/auditoria_tesis.docx",
+    "exists": true,
+    "sha256": "621780927e1bb019d1386442c60716f0e74083770257253822ae1c703ad157ff",
+    "paragraphs": 3705,
+    "terms": {
+      "security_privacy": 6,
+      "source_code_url": 0,
+      "general_introduction": 0,
+      "old_campaign": 47,
+      "no_reject": 8,
+      "seven_axes": 3
+    },
+    "review": "XML textual extraction only; no rendering, pagination or validation of scientific claims"
+  }
+]

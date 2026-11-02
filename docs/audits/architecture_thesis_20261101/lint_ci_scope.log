@@ -1,0 +1,104 @@
+[
+  {
+    "cell": null,
+    "code": "F841",
+    "end_location": {
+      "column": 14,
+      "row": 37
+    },
+    "filename": "D:\\MADRLCitytleranflexresdr\\tests\\fresh_training\\test_citylearn_net_emissions.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "",
+          "end_location": {
+            "column": 17,
+            "row": 37
+          },
+          "location": {
+            "column": 9,
+            "row": 37
+          }
+        }
+      ],
+      "message": "Remove assignment to unused variable `price`"
+    },
+    "location": {
+      "column": 9,
+      "row": 37
+    },
+    "message": "Local variable `price` is assigned to but never used",
+    "noqa_row": 37,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unused-variable"
+  },
+  {
+    "cell": null,
+    "code": "F401",
+    "end_location": {
+      "column": 12,
+      "row": 8
+    },
+    "filename": "D:\\MADRLCitytleranflexresdr\\tests\\fresh_training\\test_learning_observer.py",
+    "fix": {
+      "applicability": "safe",
+      "edits": [
+        {
+          "content": "",
+          "end_location": {
+            "column": 1,
+            "row": 9
+          },
+          "location": {
+            "column": 1,
+            "row": 8
+          }
+        }
+      ],
+      "message": "Remove unused import: `math`"
+    },
+    "location": {
+      "column": 8,
+      "row": 8
+    },
+    "message": "`math` imported but unused",
+    "noqa_row": 8,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unused-import"
+  },
+  {
+    "cell": null,
+    "code": "F401",
+    "end_location": {
+      "column": 40,
+      "row": 31
+    },
+    "filename": "D:\\MADRLCitytleranflexresdr\\uc3m\\application\\training\\drive_sync.py",
+    "fix": {
+      "applicability": "safe",
+      "edits": [
+        {
+          "content": "from typing import Dict, List",
+          "end_location": {
+            "column": 40,
+            "row": 31
+          },
+          "location": {
+            "column": 1,
+            "row": 31
+          }
+        }
+      ],
+      "message": "Remove unused import: `typing.Optional`"
+    },
+    "location": {
+      "column": 32,
+      "row": 31
+    },
+    "message": "`typing.Optional` imported but unused",
+    "noqa_row": 31,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unused-import"
+  }
+]

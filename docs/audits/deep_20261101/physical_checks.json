@@ -1,0 +1,10 @@
+{
+  "read_only": true,
+  "targets_reconstructed_from_raw": 612,
+  "measured_input_records": 590,
+  "checks_recomputed": 1836,
+  "failures": 0,
+  "failed_checks": [],
+  "max_relative_error": 4.414274339375274e-08,
+  "limitation": "Uses the project COP reconstruction, not an independent meter or native whole-year energy validation."
+}

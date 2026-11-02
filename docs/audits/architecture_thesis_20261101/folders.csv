@@ -1,0 +1,330 @@
+﻿path,scope,reason
+.claude,inventoried,
+.git,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.github,inventoried,
+.pytest_cache,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.ruff_cache,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.specify,inventoried,
+.superpowers,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.venv39-citylearn-v3,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.vscode,inventoried,
+build,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+CityLearn,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+configs,inventoried,
+data,inventoried,
+deploy,inventoried,
+docs,inventoried,
+examples_madrl_v3,inventoried,
+external,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+governance,inventoried,
+outputs,inventoried,
+scripts,inventoried,
+specs,inventoried,
+tests,inventoried,
+tools,inventoried,
+uc3m,inventoried,
+uc3m.egg-info,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/agents,inventoried,
+.claude/skills,inventoried,
+.claude/skills/architecture-patterns,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/docker-build-strategies,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/docker-compose-patterns,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/fastapi-templates,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/frontend-design,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/harness-engineering,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/madrl-agent-coordination,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/madrl-experiment-evidence-audit,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/madrl-scientific-literature-audit,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/madrl-spec-conformance,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.claude/skills/webapp-testing,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+.github/workflows,inventoried,
+.specify/memory,inventoried,
+.vscode/codex-terminal-bridge,inventoried,
+configs/algorithms,inventoried,
+configs/dataset,inventoried,
+configs/evaluation,inventoried,
+configs/experiments,inventoried,
+data/audits,inventoried,
+data/campaigns,inventoried,
+data/dataset_audit,inventoried,
+data/maintenance,inventoried,
+data/campaigns/iquitos_v1,inventoried,
+data/campaigns/iquitos_v2,inventoried,
+data/campaigns/iquitos_v3,inventoried,
+data/campaigns/iquitos_v1/audit,inventoried,
+data/campaigns/iquitos_v1/dataset,inventoried,
+data/campaigns/iquitos_v1/raw,inventoried,
+data/campaigns/iquitos_v1/splits,inventoried,
+data/campaigns/iquitos_v1/raw/buildingcsv,inventoried,
+data/campaigns/iquitos_v1/raw/fx,inventoried,
+data/campaigns/iquitos_v1/raw/thesis,inventoried,
+data/campaigns/iquitos_v1/raw/weather,inventoried,
+data/campaigns/iquitos_v1/splits/test_2025,inventoried,
+data/campaigns/iquitos_v1/splits/train_2023,inventoried,
+data/campaigns/iquitos_v1/splits/validation_2024,inventoried,
+data/campaigns/iquitos_v2/audit,inventoried,
+data/campaigns/iquitos_v2/dataset,inventoried,
+data/campaigns/iquitos_v2/raw,inventoried,
+data/campaigns/iquitos_v2/splits,inventoried,
+data/campaigns/iquitos_v2/raw/buildingcsv,inventoried,
+data/campaigns/iquitos_v2/raw/fx,inventoried,
+data/campaigns/iquitos_v2/raw/thesis,inventoried,
+data/campaigns/iquitos_v2/raw/weather,inventoried,
+data/campaigns/iquitos_v2/splits/test_2025,inventoried,
+data/campaigns/iquitos_v2/splits/train_2023,inventoried,
+data/campaigns/iquitos_v2/splits/validation_2024,inventoried,
+data/campaigns/iquitos_v3/audit,inventoried,
+data/campaigns/iquitos_v3/dataset,inventoried,
+data/campaigns/iquitos_v3/raw,inventoried,
+data/campaigns/iquitos_v3/splits,inventoried,
+data/campaigns/iquitos_v3/raw/buildingcsv,inventoried,
+data/campaigns/iquitos_v3/raw/fx,inventoried,
+data/campaigns/iquitos_v3/raw/osinergmin,inventoried,
+data/campaigns/iquitos_v3/raw/thesis,inventoried,
+data/campaigns/iquitos_v3/raw/weather,inventoried,
+data/campaigns/iquitos_v3/splits/test_2025,inventoried,
+data/campaigns/iquitos_v3/splits/train_2023,inventoried,
+data/campaigns/iquitos_v3/splits/validation_2024,inventoried,
+data/maintenance/dataset_builds,inventoried,
+data/maintenance/gates,inventoried,
+data/maintenance/github_readiness,inventoried,
+data/maintenance/historicos,inventoried,
+data/maintenance/layout,inventoried,
+data/maintenance/names,inventoried,
+data/maintenance/remediacion,inventoried,
+data/maintenance/repository_layout,inventoried,
+data/maintenance/dataset_builds/failed,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/test_2025,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/train_2023,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_01/splits/validation_2024,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/test_2025,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/train_2023,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_02/splits/validation_2024,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits/test_2025,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits/train_2023,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_splits_try_03/splits/validation_2024,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/dataset,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/buildingcsv,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/fx,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/thesis,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/weather,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/audit,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/dataset,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/buildingcsv,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/fx,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/thesis,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/weather,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/audit,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/dataset,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/splits,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/buildingcsv,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/fx,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/thesis,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/weather,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/splits/test_2025,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/splits/train_2023,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_02/splits/validation_2024,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/audit,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/dataset,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/splits,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/buildingcsv,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/fx,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/thesis,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/weather,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/splits/test_2025,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/splits/train_2023,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v2_try_03/splits/validation_2024,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/audit,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/dataset,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/buildingcsv,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/fx,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/osinergmin,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/thesis,inventoried,
+data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/weather,inventoried,
+data/maintenance/remediacion/c20261101a,inventoried,
+data/maintenance/remediacion/c20261101a/P00,inventoried,
+deploy/aws,inventoried,
+deploy/dashboard,inventoried,
+deploy/edge,inventoried,
+deploy/inference,inventoried,
+deploy/k8s,inventoried,
+deploy/plant_adapter,inventoried,
+deploy/aws/iac,inventoried,
+deploy/inference/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+deploy/plant_adapter/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+docs/architecture,inventoried,
+docs/audits,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+docs/chapters,inventoried,
+docs/contributions,inventoried,
+docs/decisions,inventoried,
+docs/design,inventoried,
+docs/failures,inventoried,
+docs/plans,inventoried,
+docs/research,inventoried,
+docs/thesis,inventoried,
+docs/architecture/_refs,inventoried,
+docs/contributions/CityLearn,inventoried,
+docs/contributions/evcc,inventoried,
+docs/contributions/HARL,inventoried,
+docs/contributions/MAAC,inventoried,
+docs/contributions/MARL,inventoried,
+docs/contributions/MARLlib,inventoried,
+docs/contributions/MATD3implementation,inventoried,
+docs/contributions/MicroGrids,inventoried,
+docs/contributions/prosumpy,inventoried,
+outputs/colab_delivery,inventoried,
+outputs/dataset_cache,inventoried,
+scripts/maintenance,inventoried,
+scripts/quality,inventoried,
+scripts/skills,inventoried,
+scripts/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+scripts/quality/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+specs/000-foundation,inventoried,
+specs/001-provenance,inventoried,
+specs/002-objectives,inventoried,
+specs/003-orchestration,inventoried,
+specs/004-manifests,inventoried,
+specs/005-evaluation,inventoried,
+specs/006-evidence,inventoried,
+specs/007-agents,inventoried,
+specs/008-artifacts,inventoried,
+specs/009-jury,inventoried,
+specs/010-panel,inventoried,
+specs/011-pipeline,inventoried,
+specs/012-hygiene,inventoried,
+tests/acceptance,inventoried,
+tests/citylearn_v3,inventoried,
+tests/contract,inventoried,
+tests/fresh_training,inventoried,
+tests/integration,inventoried,
+tests/ops,inventoried,
+tests/skills,inventoried,
+tests/uc3m,inventoried,
+tests/unit,inventoried,
+tests/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/acceptance/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/citylearn_v3/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/contract/multiobjective,inventoried,
+tests/contract/training,inventoried,
+tests/contract/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/contract/multiobjective/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/contract/training/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/fresh_training/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/integration/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/ops/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/skills/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/uc3m/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/unit/adapters,inventoried,
+tests/unit/application,inventoried,
+tests/unit/domain,inventoried,
+tests/unit/evaluation,inventoried,
+tests/unit/governance,inventoried,
+tests/unit/adapters/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/unit/application/training,inventoried,
+tests/unit/application/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/unit/application/training/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/unit/domain/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/unit/evaluation/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tests/unit/governance/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/colab,inventoried,
+tools/dataset,inventoried,
+tools/drive,inventoried,
+tools/eval,inventoried,
+tools/figures,inventoried,
+tools/ops,inventoried,
+tools/skills,inventoried,
+tools/thesis,inventoried,
+tools/training,inventoried,
+tools/colab/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/dataset/dataset_docs,inventoried,
+tools/dataset/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/drive/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/eval/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/ops/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/skills/architecture-patterns,inventoried,
+tools/skills/docker-build-strategies,inventoried,
+tools/skills/docker-compose-patterns,inventoried,
+tools/skills/fastapi-templates,inventoried,
+tools/skills/frontend-design,inventoried,
+tools/skills/google-drive-mcp,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/skills/harness-engineering,inventoried,
+tools/skills/madrl-agent-coordination,inventoried,
+tools/skills/madrl-experiment-evidence-audit,inventoried,
+tools/skills/madrl-scientific-literature-audit,inventoried,
+tools/skills/madrl-spec-conformance,inventoried,
+tools/skills/notebooklm-mcp,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/skills/webapp-testing,inventoried,
+tools/skills/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+tools/skills/architecture-patterns/references,inventoried,
+tools/skills/docker-build-strategies/agents,inventoried,
+tools/skills/docker-build-strategies/assets,inventoried,
+tools/skills/docker-build-strategies/checks,inventoried,
+tools/skills/docker-build-strategies/references,inventoried,
+tools/skills/docker-build-strategies/scripts,inventoried,
+tools/skills/docker-compose-patterns/agents,inventoried,
+tools/skills/docker-compose-patterns/assets,inventoried,
+tools/skills/docker-compose-patterns/checks,inventoried,
+tools/skills/docker-compose-patterns/references,inventoried,
+tools/skills/docker-compose-patterns/scripts,inventoried,
+tools/skills/fastapi-templates/references,inventoried,
+tools/skills/webapp-testing/examples,inventoried,
+tools/skills/webapp-testing/scripts,inventoried,
+tools/thesis/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/adapters,inventoried,
+uc3m/algorithms,inventoried,
+uc3m/application,inventoried,
+uc3m/data,inventoried,
+uc3m/domain,inventoried,
+uc3m/env,inventoried,
+uc3m/geography,inventoried,
+uc3m/governance,inventoried,
+uc3m/kpis,inventoried,
+uc3m/multicriteria,inventoried,
+uc3m/ports,inventoried,
+uc3m/presentation,inventoried,
+uc3m/reward,inventoried,
+uc3m/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/adapters/algorithms,inventoried,
+uc3m/adapters/citylearn,inventoried,
+uc3m/adapters/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/adapters/algorithms/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/adapters/citylearn/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/algorithms/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/application/artifacts,inventoried,
+uc3m/application/dataset,inventoried,
+uc3m/application/evaluation,inventoried,
+uc3m/application/thesis,inventoried,
+uc3m/application/training,inventoried,
+uc3m/application/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/application/artifacts/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/application/dataset/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/application/evaluation/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/application/thesis/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/application/training/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/data/adapters,inventoried,
+uc3m/data/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/data/adapters/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/domain/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/env/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/governance/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/kpis/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/multicriteria/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/ports/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/presentation/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point
+uc3m/reward/__pycache__,boundary_not_recursed,dependency/evidence/runtime/tool boundary or reparse point

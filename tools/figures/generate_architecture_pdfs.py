@@ -22,24 +22,24 @@ ARCH_DIR = Path(__file__).resolve().parents[2] / "docs" / "architecture"
 # Mapeo: markdown fuente -> pdf destino
 FILES = [
     (
-        "ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md",
-        "ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf",
+        "flujo.md",
+        "flujo.pdf",
     ),
     (
-        "FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md",
-        "FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf",
+        "operacion.md",
+        "operacion.pdf",
     ),
     (
-        "ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md",
-        "ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf",
+        "entrenamiento.md",
+        "entrenamiento.pdf",
     ),
     (
-        "COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md",
-        "COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf",
+        "coordinacion.md",
+        "coordinacion.pdf",
     ),
     (
         "dataset_construction_pipeline.md",
-        "DATASET_CONSTRUCTION_PIPELINE.pdf",
+        "dataset.pdf",
     ),
 ]
 

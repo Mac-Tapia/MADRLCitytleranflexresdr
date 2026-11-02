@@ -18,8 +18,8 @@ REPO = Path(__file__).resolve().parents[2]
 BACKUP = REPO / "outputs" / "_word_backups"
 REPORT = REPO / "outputs" / "_patch_cap1_h0g_formal_decision_20260807.json"
 CANONS = [
-    REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
-    REPO / "docs" / "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+    REPO / 'docs' / 'tesis.docx',
+    REPO / 'docs' / 'informe.docx',
 ]
 
 # (old, new) — orden importa: frases más largas primero

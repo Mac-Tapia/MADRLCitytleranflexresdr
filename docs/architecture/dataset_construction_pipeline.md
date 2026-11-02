@@ -4,7 +4,7 @@
 **Dataset activo:** `citylearn_iquitos_2023_2025`
 **Ultima actualizacion:** 2026-06-15
 **Fuente canonica dataset:** `python tools/dataset/orchestrate_citylearn_dataset.py`
-**Fuente canonica flujo completo:** `docs/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md`
+**Fuente canonica flujo completo:** `docs/operacion.md`
 
 Este documento reemplaza las tablas historicas del pipeline. La fuente valida del dataset es la orquestacion actual y sus auditorias en `outputs/dataset_audit/`; no se deben usar resultados, conteos ni salidas de corridas antiguas.
 

@@ -11,7 +11,7 @@ from pathlib import Path
 from docx import Document
 
 REPO = Path(__file__).resolve().parents[2]
-PATH = REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx"
+PATH = REPO / 'docs' / 'tesis.docx'
 BACKUP = REPO / "outputs" / "_word_backups"
 STAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 

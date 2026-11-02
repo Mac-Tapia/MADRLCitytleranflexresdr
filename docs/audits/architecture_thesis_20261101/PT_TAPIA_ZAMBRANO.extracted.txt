@@ -1,0 +1,692 @@
+P0000: UNIVERSIDAD NACIONAL DE INGENIERÍA
+P0001: UNIDAD DE POSGRADO DE LA FACULTAD DE INGENIERÍA INDUSTRIAL Y DE SISTEMAS
+P0002: 
+P0003: PLAN DE TESIS
+P0004: “MULTI-AGENTE DE APRENDIZAJE POR REFUERZO PROFUNDO PARA LA GESTIÓN COORDINADA DE FLEXIBILIDAD ENERGÉTICA, EMISIONES DE CARBONO Y COSTOS ENERGÉTICOS EN COMUNIDADES INTELIGENTES”
+P0005: PARA OPTAR EL GRADO ACADÉMICO DE MAESTRO EN CIENCIAS CON MENCIÓN EN INTELIGENCIA ARTIFICIAL
+P0006: 
+P0007: ELABORADO POR:
+P0008: Bach. MAC TAPIA CCOYSO
+P0009: Bach. SERGIO ZAMBRANO JOVE
+P0010: ASESOR:
+P0011: ____________________________
+P0012: 
+P0013: LIMA – PERÚ
+P0014: 2026
+P0015: 
+P0016: DATOS GENERALES
+P0017: 1) Título del Plan de Tesis: Multi-Agente de Aprendizaje por Refuerzo Profundo para la gestión coordinada de flexibilidad energética, emisiones de carbono y costos energéticos en comunidades inteligentes.
+P0018: 2) Autores: Bach. Mac Tapia Ccoyso; Bach. Sergio Zambrano Jove.
+P0019: 3) Asesor: por definir (asesor temático y, de corresponder, asesor metodológico, conforme al Reglamento de Posgrado de la UNI vigente).
+P0020: 4) Área involucrada: Unidad de Posgrado de la Facultad de Ingeniería Industrial y de Sistemas (UNI). Línea: Inteligencia Artificial aplicada a la Ingeniería Energética — Sistemas Eléctricos Inteligentes.
+P0021: 5) Lugar o institución donde se desarrolla el proyecto: Universidad Nacional de Ingeniería (UNI), Lima; caso de aplicación en el Sistema Eléctrico Aislado de Iquitos (SEAI), Electro Oriente S.A., Loreto, Perú.
+P0022: 6) Duración estimada del proyecto: 24 meses (inicio: enero de 2025; culminación: diciembre de 2026).
+P0023: 
+P0024: ÍNDICE
+P0025: 
+P0026: 
+P0027: CAPÍTULO I. PLANTEAMIENTO DEL PROBLEMA
+P0028: 1.1. Diagnóstico
+P0029: Las comunidades inteligentes (smart communities) constituyen entornos energéticos complejos que integran recursos de energía distribuida (DER): generación solar fotovoltaica (PV), sistemas de almacenamiento de energía en baterías (BESS) y estaciones de carga de vehículos eléctricos (EV). La coordinación multiagente de estos recursos bajo observabilidad parcial constituye un problema de decisión secuencial no resuelto que afecta de manera simultánea tres dimensiones críticas: la flexibilidad energética, las emisiones de carbono y los costos energéticos.
+P0030: Dimensión de flexibilidad energética (OE.1)
+P0031: La ausencia de una gestión coordinada de los DER en comunidades inteligentes limita la capacidad de modular la demanda, desplazar cargas y aprovechar la generación renovable, lo que deriva en un comportamiento interactivo con la red subóptimo y en razones pico-promedio elevadas. Los enfoques de aprendizaje por refuerzo profundo (DRL) de agente único han mostrado una capacidad limitada para generalizar en portafolios de edificios heterogéneos. Hasta la fecha, ningún estudio comparativo ha determinado cuál algoritmo de aprendizaje por refuerzo profundo multiagente (MADRL) alcanza el mejor desempeño de flexibilidad energética en escenarios coordinados de comunidades inteligentes.
+P0032: Dimensión de emisiones de carbono (OE.2)
+P0033: Las comunidades inteligentes operan bajo señales de intensidad de carbono variables que reflejan la dependencia de su suministro eléctrico respecto de los combustibles fósiles. En el Sistema Eléctrico Aislado de Iquitos (SEAI), el factor de emisión del sistema diésel operado por Electro Oriente S.A. es de 0,790 kgCO₂/kWh (MINAM, 2019), con una penetración solar creciente cercana al 15 %. La falta de control multiagente coordinado impide el desplazamiento temporal óptimo del consumo hacia periodos de baja intensidad de carbono. Ningún banco de pruebas (benchmark) ha establecido cuál algoritmo MADRL reduce mejor las emisiones de CO₂ en comunidades inteligentes bajo condiciones dinámicas de intensidad de carbono.
+P0034: Dimensión de costos energéticos (OE.3)
+P0035: El precio dinámico de la electricidad —tarifas por uso horario y en tiempo real— genera incentivos económicos para la flexibilidad de la demanda. En el SEAI Iquitos, la tarifa en horas punta (18:00–22:59 h) es de 0,38 USD/kWh y la tarifa fuera de punta es de 0,26 USD/kWh (Electro Oriente S.A., 2024). Las respuestas no coordinadas a nivel de edificio producen resultados colectivos subóptimos. Ninguna evaluación comparativa rigurosa ha determinado qué algoritmo MADRL logra la mayor reducción de costos energéticos bajo operación coordinada en comunidades inteligentes.
+P0036: Limitaciones metodológicas del estado del arte y oportunidad de CityLearn v2
+P0037: La literatura existente reporta evaluaciones aisladas de algoritmos individuales sobre dimensiones únicas. La ausencia de un marco comparativo unificado —que cubra HAPPO, MASAC, MATD3 y MAAC bajo una formulación de proceso de decisión de Markov descentralizado y parcialmente observable (Dec-POMDP) y un esquema de entrenamiento centralizado con ejecución descentralizada (CTDE)— impide determinar el mejor agente MADRL para la gestión coordinada y simultánea de los tres ejes. En este contexto, CityLearn v2 ofrece un entorno de simulación de código abierto, validado para la gestión multiagente de energía en comunidades interactivas con la red (Nweye et al., 2024). Su integración con el CityLearn v3 propuesto —una extensión experimental que implementa la capa MADRL cooperativa, la formulación Dec-POMDP, el entrenamiento CTDE y backends compatibles con MARLlib— habilita la evaluación comparativa rigurosa de algoritmos MADRL.
+P0038: 1.2. Identificación y descripción del problema de estudio
+P0039: El problema central es la falta de determinación del mejor algoritmo Multi-Agente de Aprendizaje por Refuerzo Profundo que gestione de manera coordinada la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes.
+P0040: Problema técnico: ausencia de control MADRL coordinado que optimice de forma simultánea las tres dimensiones (flexibilidad, CO₂ y costos) en simulaciones de comunidades inteligentes.
+P0041: Síntomas observables: alta demanda pico, consumo elevado ponderado por intensidad de carbono, reducción subóptima del costo eléctrico y pobre coordinación del perfil de carga en escenarios multiedificio.
+P0042: Causas energéticas: DER no coordinados, falta de toma de decisión cooperativa entre agentes y ausencia de aprovechamiento del estado global compartido.
+P0043: Causas metodológicas: inexistencia de un benchmark unificado de HAPPO, MASAC, MATD3 y MAAC bajo condiciones idénticas de Dec-POMDP y CTDE aplicadas a las tres dimensiones de desempeño.
+P0044: Consecuencias: despacho subóptimo y fallo en la explotación de ventanas de respuesta a la demanda (operacionales); emisiones de CO₂ excesivas por importaciones de red en periodos de alta intensidad de carbono (ambientales); y costos energéticos innecesarios por una respuesta no optimizada a las tarifas por uso horario (económicas).
+P0045: La variable independiente es la capa MADRL cooperativa implementada sobre CityLearn v2 (CityLearn v3 propuesto), constituida por los algoritmos HAPPO, MASAC, MATD3 y MAAC bajo Dec-POMDP y CTDE. La variable dependiente es el desempeño coordinado en flexibilidad energética, emisiones de CO₂ y costos energéticos en comunidades inteligentes. El ámbito espacial corresponde a comunidades inteligentes simuladas mediante CityLearn v2 y el CityLearn v3 propuesto, con aplicabilidad al SEAI Iquitos (17 edificios institucionales y comerciales reales de Loreto, Perú); el ámbito temporal abarca el periodo 2015–2026, alineado con los horizontes de los conjuntos de datos de CityLearn v2 y con la literatura reciente de MADRL.
+P0046: 1.2.1. Antecedentes bibliográficos
+P0047: La revisión bibliográfica sistemática comprende 50 investigaciones verificadas, organizadas en cuatro ejes temáticos alineados con los objetivos específicos de la tesis: flexibilidad energética con MADRL (Eje 1), reducción de emisiones de CO₂ con MADRL (Eje 2), optimización de costos energéticos con MADRL (Eje 3) y marco técnico MADRL (eje transversal).
+P0048: Eje 1 — Flexibilidad energética con MADRL
+P0049: Vázquez-Canteli y Nagy (2019a) introdujeron CityLearn v1.0 como entorno OpenAI Gym para la evaluación estandarizada de agentes de aprendizaje por refuerzo en respuesta a la demanda multiedificio, y demostraron que el algoritmo soft actor-critic (SAC) supera al control basado en reglas con una reducción del pico de demanda cercana al 20 %; este trabajo constituye la base del entorno de simulación empleado en la tesis.
+P0050: Vázquez-Canteli et al. (2020) extendieron CityLearn para estandarizar la investigación en aprendizaje por refuerzo multiagente aplicado a la respuesta de la demanda y la gestión energética urbana, e introdujeron indicadores comparables de pico promedio, ramping promedio y complemento del factor de carga.
+P0051: Nweye et al. (2024) desarrollaron CityLearn v2 como entorno oficial para la gestión multiagente de energía en comunidades interactivas con la red; el simulador integra vehículos eléctricos y vehículo a red, intensidad de carbono dinámica, BESS, PV y confort de los ocupantes, con un conjunto completo de KPI de flexibilidad, CO₂ y costos. Este entorno constituye la base tecnológica directa del CityLearn v3 propuesto.
+P0052: Nweye et al. (2022) identificaron nueve desafíos del mundo real para el aprendizaje por refuerzo multiagente en edificios interactivos con la red —generalización, escalabilidad, seguridad, observabilidad parcial y no estacionariedad—, lo que motiva la formulación Dec-POMDP adoptada en la tesis.
+P0053: Nweye et al. (2023a) desarrollaron MERLIN, el primer sistema de aprendizaje multiagente offline y por transferencia para la operación centrada en el ocupante de comunidades interactivas de 17 edificios reales, demostrando la viabilidad del control multiagente en comunidades de escala equivalente al SEAI Iquitos.
+P0054: Nweye et al. (2023b) evaluaron HAPPO para la gestión energética heterogénea en comunidades interactivas con la red usando CityLearn, siendo el primer estudio que aplica HAPPO en este entorno y a escala de 17 edificios heterogéneos comparable al SEAI Iquitos.
+P0055: Yao et al. (2023) propusieron LSD-MADDPG, un marco multiagente de estrategia local descentralizada para la gestión energética coordinada en comunidades inteligentes con PV, BESS y EV, con reducciones de pico cercanas al 15 % y de costo cercanas al 18 % frente a agentes no cooperativos.
+P0056: Xie et al. (2023) demostraron que un mecanismo de atención en aprendizaje multiagente para la respuesta de la demanda en edificios sensibles a la red supera a MADDPG en la coordinación, con una mejora cercana al 25 %, lo que valida el enfoque del backend MAAC de la tesis.
+P0057: Hribar et al. (2025) demostraron que el MADRL mejora la autonomía energética de distritos de energía positiva europeos con PV, BESS y EV en torno al 20 % frente al control basado en reglas, validando el enfoque multiagente cooperativo en sistemas con alta penetración renovable.
+P0058: Nweye y Nagy (2024) presentaron un benchmark multiobjetivo en el entorno CityLearn Gymnasium para el control de edificios interactivos con la red, estableciendo métricas comparables para la evaluación de algoritmos de control en comunidades inteligentes.
+P0059: Kathirgamanathan et al. (2020) propusieron un enfoque SAC centralizado para la gestión de la respuesta de la demanda en distritos a través de CityLearn, demostrando la viabilidad de las políticas centralizadas para la optimización de la flexibilidad energética.
+P0060: Felicetti et al. (2024) combinaron programación entera y aprendizaje por refuerzo para la maximización del autoconsumo y el recorte de picos en sistemas con almacenamiento, con resultados pertinentes para los KPI del OE.1.
+P0061: Li et al. (2024) presentaron un enfoque de aprendizaje por refuerzo profundo para la programación en línea de sistemas PV con BESS, aplicable a la optimización del autoconsumo en el contexto del SEAI Iquitos.
+P0062: Zhao et al. (2024) propusieron un marco multiagente seguro para la gestión de edificios inteligentes en redes de distribución, con aplicación directa a los KPI de flexibilidad y costos (OE.1 y OE.3).
+P0063: Wu et al. (2025) presentaron un enfoque multiagente basado en datos para el control de voltaje bajo Dec-POMDP en redes eléctricas débiles, validando la formulación Dec-POMDP para sistemas con restricciones de observabilidad.
+P0064: Eje 2 — Reducción de emisiones de CO₂ con MADRL
+P0065: Liu et al. (2022) propusieron MADDPG para la gestión coordinada de sistemas energéticos con renovables en edificios con PV y BESS, logrando una reducción de costos cercana al 20 % y de emisiones de CO₂ cercana al 15 % frente al control basado en reglas, lo que resulta relevante para los ejes OE.2 y OE.3.
+P0066: Ye et al. (2025) propusieron un MADRL seguro para la operación de baja emisión de carbono en redes de distribución activas y multimicrorredes, estableciendo restricciones de seguridad en el marco de optimización, con aplicabilidad directa al SEAI Iquitos (factor de emisión de 0,790 kgCO₂/kWh).
+P0067: Sarkar et al. (2024) desarrollaron un sistema en tiempo real para la reducción de la huella de carbono en centros de datos mediante aprendizaje multiagente, con técnicas de desplazamiento temporal de carga hacia periodos de baja intensidad de carbono directamente transferibles al OE.2.
+P0068: Ahmed et al. (2025) propusieron un marco multiagente para la integración óptima de fuentes de energía renovable distribuida con baja emisión de CO₂, con aplicabilidad al SEAI Iquitos dada su creciente penetración solar.
+P0069: Ren et al. (2025) propusieron aprendizaje multiagente para el diseño conjunto de mercados entre pares de baja emisión y estrategias de puja en microrredes, integrando restricciones de carbono en la función de recompensa cooperativa.
+P0070: Ma et al. (2025) presentaron un aprendizaje multiagente seguro para el intercambio de energía entre microrredes heterogéneas bajo restricciones de tope de carbono, pertinente para el OE.2 dado el contexto del SEAI Iquitos.
+P0071: Shojaeighadikolaei et al. (2022) presentaron un marco MADRL para la gestión distribuida de energía y la respuesta de la demanda en redes inteligentes, con una reducción de costos cercana al 22 % frente a configuraciones no cooperativas y métricas indirectas de emisiones aplicables al OE.2.
+P0072: Eje 3 — Optimización de costos energéticos con MADRL
+P0073: Shojaeighadikolaei et al. (2024) realizaron una evaluación comparativa de aprendizaje multiagente centralizado frente a descentralizado para redes de carga de vehículos eléctricos, identificando las compensaciones entre coordinación global y escalabilidad local en contextos de tarifas por uso horario.
+P0074: Zhang et al. (2023) propusieron aprendizaje por refuerzo profundo jerárquico para la coordinación vehículo a red multiagente con acondicionamiento de baterías, pertinente para los cargadores EV del conjunto de datos de Iquitos.
+P0075: Kim et al. (2025) propusieron aprendizaje multiagente para la respuesta de la demanda residencial de electrodomésticos bajo incertidumbre de precio y solar, con validación en escenarios de tarifas por uso horario aplicables al contexto tarifario del SEAI Iquitos.
+P0076: Xiong et al. (2024) presentaron aprendizaje por refuerzo profundo para la gestión de sistemas de energía doméstica con tarifa por uso horario y control de BESS en tiempo real, con resultados de reducción de costos relevantes para la estructura tarifaria del SEAI Iquitos (0,38 USD/kWh en punta y 0,26 USD/kWh fuera de punta).
+P0077: Fang et al. (2021) propusieron aprendizaje multiagente para la gestión de energía distribuida y la optimización de estrategias en mercados de microrredes, con KPI de costo eléctrico y respuesta a precios aplicables al OE.3.
+P0078: Gao et al. (2023) propusieron un algoritmo MASAC multimicrorred mejorado para la programación colaborativa con respuesta a precios, validando MASAC como backend adecuado para la optimización de costos cooperativos del OE.3.
+P0079: Wang et al. (2025) evaluaron aprendizaje multiagente cooperativo para la gestión de carga de vehículos eléctricos con conciencia de la red, con KPI de costo eléctrico y pico de demanda aplicables a los OE.1 y OE.3.
+P0080: Chen et al. (2025) propusieron MADRL para la gestión segura de energía en edificios inteligentes con restricciones probabilísticas, integrando control de costos y confort en la función de recompensa cooperativa.
+P0081: Rezazadeh y Bartzoudis (2022) propusieron aprendizaje por refuerzo profundo federado para el control de energía en microrredes inteligentes con privacidad de datos, técnica extrapolable a escenarios de respuesta de la demanda distribuida con restricciones de privacidad.
+P0082: Eje transversal — Marco técnico MADRL
+P0083: Lowe et al. (2017) introdujeron MADDPG con el esquema CTDE para entornos cooperativos-competitivos, estableciendo el paradigma base de todos los backends de la tesis; su demostración de que el crítico centralizado con estado global y la política descentralizada basada en observaciones locales mejoran la coordinación multiagente fundamenta el diseño del CityLearn v3 propuesto.
+P0084: Oliehoek y Amato (2016) proporcionaron el marco teórico del Dec-POMDP —definido como la tupla ⟨S, A₁,…,Aₙ, T, R, O₁,…,Oₙ, Z⟩— que constituye el modelo formal de la tesis para la toma de decisiones cooperativa descentralizada bajo observabilidad parcial.
+P0085: Kuba et al. (2021) presentaron HAPPO con garantías de mejora monotónica para agentes heterogéneos bajo el esquema CTDE; HAPPO supera a MAPPO e IPPO en cerca del 85 % de las tareas de referencia y es el primer algoritmo on-policy con garantías teóricas para la heterogeneidad de agentes.
+P0086: Iqbal y Sha (2019) introdujeron MAAC con un mecanismo de atención multicabeza en el crítico centralizado, que permite una coordinación selectiva entre los 17 agentes del SEAI Iquitos; MAAC supera a MADDPG y COMA con mejoras de recompensa de entre 15 % y 30 % en entornos cooperativos.
+P0087: Hu et al. (2023) presentaron MARLlib como una biblioteca escalable y eficiente de aprendizaje por refuerzo multiagente compatible con Ray/RLlib, que unifica más de veinte algoritmos —incluidos HAPPO, MAAC y MADDPG— bajo una interfaz estandarizada; MARLlib se emplea como referencia técnica de integración en la tesis.
+P0088: Akiba et al. (2019) presentaron Optuna como marco de optimización automática de hiperparámetros con API define-by-run basada en el estimador de Parzen estructurado en árbol (TPE), que se utiliza para ajustar los hiperparámetros de los cuatro backends MADRL.
+P0089: Sutton y Barto (2018) proporcionaron el marco teórico fundamental del aprendizaje por refuerzo como base conceptual de todos los algoritmos DRL y MADRL evaluados, en tanto que Haarnoja et al. (2018) propusieron SAC con maximización de entropía, base conceptual de los backends MASAC y MAAC.
+P0090: Vázquez-Canteli y Nagy (2019b) realizaron una revisión sistemática de algoritmos de aprendizaje por refuerzo y técnicas de modelado para la respuesta de la demanda en edificios, e identificaron la coordinación multiagente como el principal desafío abierto, lo que motiva directamente el presente trabajo. Por su parte, Zhu et al. (2024) revisaron los mecanismos de atención en aprendizaje multiagente, validando el mecanismo del backend MAAC como estado del arte en coordinación selectiva.
+P0091: De manera complementaria, Dolatyabi et al. (2025) demostraron que HAPPO heterogéneo supera a PPO, QMIX y Mean-Field RL en el restablecimiento de sistemas de distribución bajo restricciones operativas similares al SEAI Iquitos; Chen et al. (2024) y Chen, X. et al. (2024) aportaron formulaciones de aprendizaje por refuerzo profundo bi-nivel y jerárquico con vehículos eléctricos como almacenamiento móvil, aplicables a la función vehículo a red del conjunto de datos de Iquitos; y Zhong et al. (2023) extendieron las garantías de mejora monotónica de los algoritmos heterogéneos, validando la aplicabilidad de HAPPO a escenarios de 17 agentes heterogéneos.
+P0092: 1.2.2. Formulación del problema
+P0093: La brecha identificada es la ausencia de un estudio comparativo que determine el mejor MADRL para la gestión coordinada y simultánea de la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes.
+P0094: 1.2.2.1. Formulación del problema general
+P0095: PG. ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes?
+P0096: 1.2.2.2. Formulación de los problemas específicos
+P0097: PE.1. ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza la flexibilidad energética en comunidades inteligentes?
+P0098: PE.2. ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que reduce las emisiones de CO₂ en comunidades inteligentes?
+P0099: PE.3. ¿Cuál es el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza los costos energéticos en comunidades inteligentes?
+P0100: 1.2.3. Justificación y alcances
+P0101: 1.2.3.1. Justificación
+P0102: Justificación técnica. La determinación comparativa del mejor MADRL avanza el estado del arte en la gestión energética cooperativa para comunidades inteligentes mediante una evaluación unificada de HAPPO, MASAC, MATD3 y MAAC bajo Dec-POMDP y CTDE.
+P0103: Justificación ambiental. Identificar el mejor MADRL para la reducción de CO₂ contribuye directamente a los objetivos de descarbonización de comunidades interactivas con la red, con aplicabilidad al SEAI Iquitos (factor de emisión de 0,790 kgCO₂/kWh).
+P0104: Justificación económica. Establecer el mejor MADRL para la optimización de costos provee orientación accionable para reducir el gasto eléctrico en comunidades inteligentes bajo tarifas por uso horario.
+P0105: Justificación metodológica y científica. La formulación Dec-POMDP, el esquema CTDE y el benchmark unificado con el CityLearn v3 propuesto, los cuatro backends, MARLlib y Optuna constituyen una contribución metodológica reproducible; la evaluación unificada en tres ejes llena una laguna en la literatura comparativa de MADRL.
+P0106: Justificación social. Las comunidades inteligentes energéticamente flexibles y de bajo costo benefician a usuarios residenciales e institucionales y contribuyen a la transición energética a nivel comunitario.
+P0107: 1.2.3.2. Alcances
+P0108: Alcance temático: evaluación comparativa de HAPPO, MASAC, MATD3 y MAAC en KPI de flexibilidad energética, emisiones de CO₂ y costos energéticos en simulación de comunidades inteligentes.
+P0109: Alcance espacial y temporal: comunidades inteligentes simuladas mediante CityLearn v2 y el CityLearn v3 propuesto, con discusión de aplicabilidad al SEAI Iquitos (17 edificios reales); horizonte de datos 2023–2025 (26 304 pasos horarios) y literatura 2015–2026.
+P0110: Alcance metodológico y computacional: estudio cuantitativo, aplicado, comparativo, no experimental, basado en simulación computacional; entorno Python 3.9, PyTorch 2.8.0+cu126, CityLearn v2, CityLearn v3 propuesto, MARLlib (referencia técnica), Optuna, Gymnasium y PettingZoo, sobre recursos locales (NVIDIA RTX 4060 Laptop 8 GB).
+P0111: Límites, supuestos y exclusiones: no se modela ninguna red eléctrica física; los resultados de simulación no constituyen validación de despliegue real; el CityLearn v3 propuesto es una extensión experimental de tesis, no una versión oficial de CityLearn. Se excluyen el despliegue en campo en tiempo real, la investigación con sujetos humanos, el despacho económico de unidades de generación física y el análisis de estabilidad de red.
+P0112: 
+P0113: CAPÍTULO II. OBJETIVOS
+P0114: 2.1. Objetivo general
+P0115: O.G. Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes.
+P0116: 2.2. Objetivos específicos
+P0117: OE.1. Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza la flexibilidad energética en comunidades inteligentes.
+P0118: OE.2. Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que reduce las emisiones de CO₂ en comunidades inteligentes.
+P0119: OE.3. Determinar el mejor Multi-Agente de Aprendizaje por Refuerzo Profundo que optimiza los costos energéticos en comunidades inteligentes.
+P0120: La coherencia vertical del estudio garantiza que cada objetivo específico responda directamente a su problema específico correspondiente, se operacionalice mediante su eje de KPI y se evalúe mediante la metodología comparativa del CityLearn v3 propuesto con HAPPO, MASAC, MATD3 y MAAC bajo Dec-POMDP y CTDE.
+P0121: 
+P0122: CAPÍTULO III. MARCO TEÓRICO
+P0123: 3.1. Bases teóricas
+P0124: El marco teórico se organiza en torno a las dos variables del estudio. Primero se conceptualiza la comunidad inteligente y la energía flexible como objeto de estudio; a continuación se desarrolla, con profundidad y sustento bibliográfico, la variable independiente —la capa CityLearn v3 propuesta sobre CityLearn v2— y sus tres dimensiones; luego se fundamenta la variable dependiente —el desempeño coordinado— en sus dimensiones de flexibilidad, emisiones de carbono y costos; posteriormente se exponen los fundamentos algorítmicos de los cuatro backends; y, finalmente, se establece la relación causal entre ambas variables con su respaldo empírico. Cada constructo se vincula con un indicador y con un instrumento, de modo que el desarrollo teórico sea trazable hasta los resultados experimentales del Capítulo IV.
+P0125: 3.1.1. Comunidades inteligentes y energía flexible
+P0126: Las comunidades inteligentes (smart communities) son agrupaciones de edificios interconectados eléctricamente que comparten recursos de energía distribuida (DER) —generación solar fotovoltaica, almacenamiento en baterías y estaciones de carga de vehículos eléctricos— y que responden de manera colectiva a señales horarias de precio, intensidad de carbono y capacidad de red (Nweye et al., 2024; Vázquez-Canteli et al., 2020). A diferencia de la gestión por edificio aislado, la comunidad interactiva con la red (grid-interactive community) habilita la coordinación distrital de la demanda, el desplazamiento de cargas y el aprovechamiento compartido de la generación renovable, lo que constituye el sustrato físico de la flexibilidad energética (Lund et al., 2017).
+P0127: La energía flexible se define como la capacidad del sistema para modificar la forma de su curva de demanda neta sin menoscabo del servicio, mediante el desplazamiento de cargas, el almacenamiento, el autoconsumo solar y la carga o descarga controlada de vehículos eléctricos (Lund et al., 2017). El entorno CityLearn fue concebido precisamente para estandarizar la investigación en aprendizaje por refuerzo aplicado a la respuesta de la demanda y la gestión energética urbana (Vázquez-Canteli & Nagy, 2019a; Vázquez-Canteli et al., 2020), y su revisión sistemática identificó la coordinación multiagente como el principal desafío abierto del campo (Vázquez-Canteli & Nagy, 2019b). CityLearn v2 extendió ese marco hacia comunidades interactivas con la red, resilientes, centradas en el ocupante y conscientes del carbono, con vehículos eléctricos, señales de carbono y precio, y un conjunto de indicadores clave de desempeño (KPI) homologables (Nweye et al., 2024). Sin embargo, la operación de estos recursos plantea desafíos de generalización, escalabilidad, observabilidad parcial y no estacionariedad que el control basado en reglas o el aprendizaje de agente único no resuelven satisfactoriamente (Nweye et al., 2022).
+P0128: 3.1.2. Variable independiente: la capa CityLearn v3 propuesta
+P0129: La variable independiente es la capa CityLearn v3 propuesta, definida como una arquitectura computacional de entrenamiento, comparación y trazabilidad de políticas de control multiagente profundo (MADRL) que opera sobre CityLearn v2 sin sustituir su modelo físico, su esquema de datos, sus observaciones, sus acciones ni sus KPI oficiales. Su función es transformar un simulador de comunidades energéticas en un entorno experimental multiagente dotado de formalización Dec-POMDP, entrenamiento centralizado con ejecución descentralizada (CTDE), backends comparables y trazabilidad reproducible (Lowe et al., 2017; Nweye et al., 2024; Oliehoek & Amato, 2016). La variable se operacionaliza en tres dimensiones.
+P0130: 3.1.2.1. Dimensión VI-1: entorno y formalización Dec-POMDP. El problema de control energético comunitario no puede tratarse como una decisión centralizada simple, pues cada edificio dispone de información local, recursos heterogéneos y acciones que afectan el resultado distrital. Por ello se formaliza como un proceso de decisión de Markov descentralizado y parcialmente observable (Dec-POMDP), modelo que representa la observabilidad parcial, la simultaneidad de las decisiones y la recompensa cooperativa (Oliehoek & Amato, 2016; Oliehoek et al., 2013). En CityLearn v2, este entorno provee el conjunto de datos, las observaciones, las acciones, la línea base y los KPI que hacen comparables las políticas evaluadas (Nweye et al., 2024; Vázquez-Canteli et al., 2020).
+P0131: 3.1.2.2. Dimensión VI-2: arquitectura MADRL bajo CTDE. El esquema de entrenamiento centralizado con ejecución descentralizada (CTDE) permite que el crítico acceda a información agregada del distrito durante el entrenamiento, lo que estabiliza el aprendizaje y mitiga la no estacionariedad propia del aprendizaje simultáneo de múltiples agentes, mientras que cada actor decide con observaciones locales durante la ejecución (Lowe et al., 2017). Esta dimensión comprende los cuatro backends —HAPPO, MASAC, MATD3 y MAAC— cuyos fundamentos se detallan en el numeral 3.1.4, y se apoya en bibliotecas que estandarizan observaciones, estado global, recompensas y asignación de políticas por agente (Hu et al., 2023).
+P0132: 3.1.2.3. Dimensión VI-3: protocolo experimental reproducible. La capa CityLearn v3 propuesta no se limita a entrenar políticas, sino que produce evidencia reproducible: episodios, semillas, configuración, línea base, artefactos de resultados, puntos de control y figuras. El ajuste de hiperparámetros se realiza mediante optimización automática con el estimador de Parzen estructurado en árbol (Akiba et al., 2019), y la reproducibilidad se garantiza fijando el conjunto de datos, el horizonte, las semillas y las reglas de recompensa, conforme al despliegue descrito en el numeral 4.3.6.
+P0133: 3.1.3. Variable dependiente: el desempeño coordinado de la comunidad
+P0134: La variable dependiente es el desempeño coordinado de la comunidad inteligente, definido como el cambio cuantificable obtenido por la política de control respecto de la línea base de CityLearn v2. Dado el carácter multiobjetivo del problema, se evalúa mediante tres dimensiones independientes, correspondientes a los objetivos específicos OE.1, OE.2 y OE.3, sin colapsarlas en una única métrica opaca (Nweye et al., 2024; Nweye & Nagy, 2024).
+P0135: 3.1.3.1. Dimensión VD-1: flexibilidad energética. Expresa la capacidad de la comunidad para modificar su perfil de importación, exportación y consumo neto sin menoscabo del servicio. Se observa mediante la reducción del pico, la suavización de las rampas, la mejora del factor de carga, el incremento del autoconsumo fotovoltaico y la utilización útil de baterías y vehículos eléctricos (Lund et al., 2017; Nweye et al., 2024). La evidencia muestra que la coordinación multiagente mejora estos indicadores frente al control no cooperativo: reducción de picos y costos en comunidades con PV, BESS y vehículos eléctricos (Yao et al., 2023), mejora de la autonomía energética en distritos de energía positiva (Hribar et al., 2025), gestión centralizada de la respuesta de la demanda distrital (Kathirgamanathan et al., 2020), maximización del autoconsumo y recorte de picos (Felicetti et al., 2024) y control de voltaje bajo Dec-POMDP en redes débiles (Wu et al., 2025).
+P0136: Peak = max_t (P_grid,t);   Ramping = Σ_t | P_grid,t − P_grid,t−1 |;   Load Factor = mean_t(P_grid,t) / max_t(P_grid,t)
+P0137: 3.1.3.2. Dimensión VD-2: emisiones de carbono. Una operación eficiente no solo reduce kilovatios-hora, sino que desplaza el consumo hacia horas de menor intensidad de carbono. CityLearn v2 es un entorno consciente del carbono que provee la señal de intensidad horaria y los KPI correspondientes (Nweye et al., 2024). En el caso del SEAI Iquitos, el factor de emisión del sistema diésel es de 0,790 kgCO₂/kWh y se reduce con la generación solar (MINAM, 2019). La literatura confirma la pertinencia de tratar el carbono como dimensión independiente: operación de baja emisión en redes activas y multimicrorredes (Ye et al., 2025), reducción de la huella de carbono en tiempo real mediante desplazamiento temporal de carga (Sarkar et al., 2024), integración óptima de renovables con bajas emisiones (Ahmed et al., 2025; Ren et al., 2025) y reparto multienergético con tope de carbono (Ma et al., 2025; Liu et al., 2022).
+P0138: CO₂_total = Σ_t E_import,t × CI_t,   con CI_t ∈ [0,672; 0,790] kgCO₂/kWh
+P0139: 3.1.3.3. Dimensión VD-3: costos energéticos. Las tarifas por uso horario (TOU) crean incentivos para la flexibilidad económica de la demanda. En el SEAI Iquitos, la tarifa en punta (18:00–22:59 h) es de 0,38 USD/kWh y la tarifa fuera de punta es de 0,26 USD/kWh (Electro Oriente S.A., 2024). La coordinación entre edificios es necesaria para reducir el costo y perfilar la carga sin conocimiento explícito del sistema energético (Xie et al., 2023); estudios de microrredes y respuesta de la demanda confirman ahorros significativos de la coordinación multiagente frente al control no cooperativo (Fang et al., 2021; Gao et al., 2023; Kim et al., 2025; Shojaeighadikolaei et al., 2022; Wang et al., 2025; Xiong et al., 2024).
+P0140: Cost_total = Σ_t E_import,t × Price_t,   con Price_t ∈ {0,26; 0,38} USD/kWh
+P0141: 3.1.4. Fundamentos algorítmicos de los cuatro backends MADRL
+P0142: El aprendizaje por refuerzo proporciona el marco conceptual común: un agente aprende una política que maximiza el retorno esperado acumulado mediante la interacción con el entorno (Sutton & Barto, 2018). En el caso multiagente cooperativo, el paradigma CTDE de actor-crítico con crítico centralizado constituye la base de los cuatro backends (Lowe et al., 2017).
+P0143: HAPPO (Heterogeneous-Agent Proximal Policy Optimization) es un algoritmo on-policy con actualización secuencial por agente y garantías de mejora monótona para agentes heterogéneos; supera a MAPPO e IPPO en una proporción amplia de tareas de referencia y es pertinente porque los 17 edificios no pueden asumirse idénticos en demanda ni en capacidad de respuesta (Kuba et al., 2021; Zhong et al., 2023). Su aplicabilidad a comunidades interactivas de escala equivalente al SEAI Iquitos ha sido demostrada (Nweye et al., 2023b).
+P0144: MASAC extiende el soft actor-critic al caso multiagente, con maximización de entropía que favorece la exploración suficiente en espacios de acción continuos como el control de almacenamiento y de carga de vehículos eléctricos (Haarnoja et al., 2018); su variante cooperativa ha sido validada para la programación colaborativa con respuesta a precios en microrredes (Gao et al., 2023).
+P0145: MATD3 es la extensión multiagente de TD3, con doble crítico para reducir la sobreestimación del valor y actualización retardada de la política, lo que aporta robustez frente al ruido de entrenamiento en acciones continuas (Lowe et al., 2017; Sutton & Barto, 2018).
+P0146: MAAC (actor-attention-critic) incorpora un mecanismo de atención multicabeza en el crítico centralizado, que selecciona dinámicamente qué agentes observar y habilita una coordinación selectiva entre los 17 edificios (Iqbal & Sha, 2019); los mecanismos de atención constituyen el estado del arte en coordinación selectiva multiagente (Zhu et al., 2024), y su pertinencia para la respuesta de la demanda entre edificios ha sido demostrada empíricamente (Xie et al., 2023).
+P0147: 3.1.5. Relación entre las variables y sustento empírico
+P0148: La relación causal postulada es que la capa CityLearn v3 propuesta (variable independiente), al coordinar los DER mediante políticas MADRL bajo Dec-POMDP y CTDE, mejora el desempeño coordinado de la comunidad (variable dependiente) en sus tres dimensiones respecto de la línea base. La evidencia revisada respalda esta relación de manera convergente: la coordinación cooperativa reduce simultáneamente el costo y las emisiones frente al control basado en reglas (Liu et al., 2022), mejora la flexibilidad y la autonomía energética (Hribar et al., 2025; Yao et al., 2023) y reduce el costo bajo tarifas dinámicas (Xie et al., 2023; Xiong et al., 2024). La comparación de esquemas centralizados y descentralizados (Shojaeighadikolaei et al., 2024), la coordinación jerárquica de vehículos eléctricos (Chen et al., 2024; Zhang et al., 2023) y el restablecimiento de sistemas de distribución con agentes heterogéneos (Dolatyabi et al., 2025) confirman, además, que la elección del algoritmo influye de manera significativa en el desempeño, lo que justifica la comparación de los cuatro backends como núcleo metodológico de la tesis. La cadena de evidencia es trazable: Dec-POMDP explica la existencia de agentes con observaciones locales; CTDE explica el uso de información global en el entrenamiento; CityLearn v2 garantiza la comparabilidad de los KPI; y los artefactos de salida permiten auditar la ruta desde el dato horario hasta la tabla o figura final.
+P0149: 3.2. Definición de términos
+P0150: MADRL: aprendizaje por refuerzo profundo multiagente.
+P0151: DRL: aprendizaje por refuerzo profundo de agente único.
+P0152: Dec-POMDP: proceso de decisión de Markov descentralizado y parcialmente observable; modelo formal de la decisión cooperativa bajo observabilidad parcial.
+P0153: CTDE: entrenamiento centralizado con ejecución descentralizada.
+P0154: Comunidad inteligente: grupo de edificios interconectados que comparten DER y responden coordinadamente a señales de red, precio y carbono.
+P0155: Energía flexible: capacidad del sistema de modificar su curva de demanda neta sin menoscabo del servicio.
+P0156: BESS: sistema de almacenamiento de energía en baterías.
+P0157: EV / V2G: vehículo eléctrico y su capacidad de devolver energía a la red (vehicle-to-grid).
+P0158: PV: generación solar fotovoltaica.
+P0159: DER: recursos de energía distribuida (PV, BESS y cargadores de vehículos eléctricos).
+P0160: KPI: indicador clave de desempeño energético, ambiental o económico.
+P0161: Intensidad de carbono (CI): factor de emisión horario de la electricidad; en el SEAI Iquitos, CI ∈ [0,672; 0,790] kgCO₂/kWh.
+P0162: Tarifa TOU: tarifa por uso horario; en el SEAI Iquitos, 0,38 USD/kWh en punta y 0,26 USD/kWh fuera de punta.
+P0163: CityLearn v2: simulador base oficial multiagente para comunidades energéticas; provee datos, física, KPI y línea base.
+P0164: CityLearn v3 propuesto: extensión experimental de tesis sobre CityLearn v2 que implementa la capa MADRL cooperativa; no es una versión oficial del simulador.
+P0165: MARLlib: biblioteca unificada de algoritmos MADRL (nombre propio).
+P0166: HAPPO, MASAC, MATD3 y MAAC: los cuatro backends MADRL comparados en esta tesis.
+P0167: Optuna: marco de optimización automática de hiperparámetros.
+P0168: Línea base (baseline): referencia de comparación obtenida de CityLearn v2 o de controladores base, sin la capa MADRL propuesta.
+P0169: 
+P0170: CAPÍTULO IV. METODOLOGÍA
+P0171: 4.1. Tipo de investigación
+P0172: La investigación adopta un enfoque cuantitativo y es de tipo aplicada, con orientación tecnológica. Es cuantitativa porque opera con datos numéricos, series horarias e indicadores de desempeño (KPI) y reporta deltas porcentuales frente a una línea base; y es aplicada porque su producto central es una solución computacional verificable —la capa CityLearn v3 propuesta sobre CityLearn v2— dirigida a resolver el problema real de la gestión coordinada de recursos energéticos distribuidos en comunidades inteligentes. En coherencia con la modalidad profesionalizante, el estudio no contrasta hipótesis inferenciales y se sustenta en estadística descriptiva, complementada con pruebas no paramétricas de apoyo.
+P0173: 4.2. Nivel de investigación
+P0174: El nivel es descriptivo, comparativo y propositivo. El componente descriptivo caracteriza el sistema y sus variables a partir del conjunto de datos citylearn_iquitos_2023_2025; el comparativo es esencial, pues el estudio determina el mejor MADRL contrastando HAPPO, MASAC, MATD3 y MAAC en los tres ejes de evaluación bajo condiciones idénticas de entorno, datos y horizonte; y el propositivo se justifica porque el CityLearn v3 propuesto constituye una extensión arquitectónica original sobre CityLearn v2.
+P0175: 4.3. Métodos de trabajo
+P0176: El método combina el modelamiento computacional, la simulación de entornos energéticos, la comparación de algoritmos MADRL y el análisis de indicadores de desempeño. La arquitectura se organiza en dos capas: CityLearn v2, como entorno base de simulación, conjunto de datos, línea base y KPI; y el CityLearn v3 propuesto, como capa experimental de adaptación, entrenamiento, comparación y análisis. La cadena de evidencia enlaza los datos horarios, su transformación mediante envoltorios, la interacción agente-entorno, el entrenamiento MADRL, el registro de artefactos, el cálculo de KPI y la comparación frente a la línea base.
+P0177: 4.3.1. Construcción del conjunto de datos citylearn_iquitos_2023_2025
+P0178: El conjunto de datos se construye íntegramente a partir de datos primarios mediante un script reproducible. No se adoptan conjuntos preexistentes de CityLearn v2, porque el SEAI Iquitos presenta condiciones irrepresentables en aquellos: sistema eléctrico aislado, generación diésel dominante, factor de emisión de 0,790 kgCO₂/kWh, clima ecuatorial sin calefacción y tarifas por uso horario locales de Electro Oriente S.A. Los 17 edificios institucionales y comerciales reales constituyen los agentes del sistema multiagente; su heterogeneidad —ocupación de 24 horas en hospitales, hoteles y aeropuerto; horarios diurnos en educación y administración; y usos industriales y deportivos— es un prerrequisito para la formulación Dec-POMDP y para justificar el uso de HAPPO (Kuba et al., 2021).
+P0179: Tabla 1. Edificios reales del SEAI Iquitos que constituyen los 17 agentes del sistema multiagente, con tipología, área, potencia pico de climatización, capacidad fotovoltaica, almacenamiento y cargadores de vehículos eléctricos.
+P0180: ID
+P0181: Edificio
+P0182: Tipo
+P0183: Área (m²)
+P0184: Pico AC (kW)
+P0185: PV (kWp)
+P0186: BESS (kWh)
+P0187: EV
+P0188: B01
+P0189: Electro Oriente S.A.
+P0190: industrial
+P0191: 14 000
+P0192: 175,0
+P0193: 1 703,6
+P0194: 4 020,0
+P0195: 2
+P0196: B02
+P0197: Municipalidad Distrital San Juan Bautista
+P0198: administrativo
+P0199: 8 000
+P0200: 140,0
+P0201: 973,6
+P0202: 2 382,0
+P0203: 4
+P0204: B03
+P0205: Aeropuerto Internacional de Iquitos
+P0206: transporte 24 h
+P0207: 6 000
+P0208: 465,0
+P0209: 730,0
+P0210: 2 905,6
+P0211: 4
+P0212: B04
+P0213: Hipermercados Tottus Oriente
+P0214: mall
+P0215: 2 500
+P0216: 350,0
+P0217: 304,0
+P0218: 2 495,0
+P0219: 3
+P0220: B05
+P0221: Hotel Plaza S.A.
+P0222: hotelero 24 h
+P0223: 1 142
+P0224: 157,5
+P0225: 138,9
+P0226: 1 205,3
+P0227: 3
+P0228: B06
+P0229: Mall Aventura Iquitos
+P0230: mall
+P0231: 20 637
+P0232: 1 800,0
+P0233: 2 511,4
+P0234: 15 075,3
+P0235: 8
+P0236: B07
+P0237: UNAP Facultad de Biología
+P0238: universitario
+P0239: 8 103
+P0240: 59,5
+P0241: 986,2
+P0242: 2 550,3
+P0243: 3
+P0244: B08
+P0245: PNP Escuela Técnica Superior Iquitos
+P0246: educación
+P0247: 21 000
+P0248: 105,0
+P0249: 2 555,5
+P0250: 6 836,0
+P0251: 2
+P0252: B09
+P0253: Gobierno Regional Loreto COER
+P0254: transporte 24 h
+P0255: 4 480
+P0256: 150,0
+P0257: 545,1
+P0258: 851,5
+P0259: 2
+P0260: B10
+P0261: Gobierno Regional de Loreto
+P0262: administrativo
+P0263: 14 296
+P0264: 287,0
+P0265: 1 739,5
+P0266: 3 964,5
+P0267: 3
+P0268: B11
+P0269: Hospital Regional de Loreto
+P0270: salud 24 h
+P0271: 42 649
+P0272: 1 000,0
+P0273: 5 190,2
+P0274: 6 661,9
+P0275: 4
+P0276: B12
+P0277: Seguro Social de Salud EsSalud
+P0278: salud 24 h
+P0279: 18 197
+P0280: 427,5
+P0281: 2 214,6
+P0282: 3 158,7
+P0283: 3
+P0284: B13
+P0285: UNAP Facultad de Ciencias Económicas
+P0286: universitario
+P0287: 2 723
+P0288: 45,5
+P0289: 331,1
+P0290: 798,2
+P0291: 2
+P0292: B14
+P0293: Autoridad Portuaria Nacional Iquitos
+P0294: portuario 24 h
+P0295: 17 761
+P0296: 77,0
+P0297: 2 161,4
+P0298: 5 767,3
+P0299: 2
+P0300: B15
+P0301: DREL Colegio Nacional de Iquitos
+P0302: educación
+P0303: 9 890
+P0304: 35,0
+P0305: 1 203,6
+P0306: 3 220,7
+P0307: 2
+P0308: B16
+P0309: SIMA Iquitos S.R.Ltda
+P0310: industrial
+P0311: 10 294
+P0312: 237,5
+P0313: 1 252,7
+P0314: 2 496,7
+P0315: 1
+P0316: B17
+P0317: Asociación Civil Selva Amazónica
+P0318: salud 24 h
+P0319: 1 611
+P0320: 206,0
+P0321: 196,0
+P0322: 1 640,7
+P0323: 2
+P0324: Totales del distrito: aproximadamente 24,7 MWp de capacidad fotovoltaica instalada, 66,0 MWh de almacenamiento en baterías y 50 cargadores de vehículos eléctricos (mototaxi, motolineal y Van con capacidad vehículo a red). Por brevedad se omiten en la tabla las columnas de potencia base (kW), potencia flexible (kW) y el sistema de climatización específico de cada edificio, registradas en la ficha técnica del conjunto de datos; los valores provienen del levantamiento in situ y de los registros de facturación de Electro Oriente S.A. (2024), el almacenamiento se dimensionó con el método de Hesse et al. (2017) y la heterogeneidad tipológica justifica el uso de HAPPO para agentes heterogéneos (Kuba et al., 2021).
+P0325: La construcción integra tres categorías de datos: datos meteorológicos horarios (PVGIS-ERA5 para 2023 y NASA POWER para 2024–2025, en la ubicación lat = −3,7491°, lon = −73,2538°); datos de consumo eléctrico real (mediciones mensuales de facturación de Electro Oriente S.A. para 2023–2025, destiladas a perfiles horarios sintéticos que preservan la energía real consumida); y señales regulatorias y de mercado (intensidad de carbono calculada como CI(t) = 0,790 × (1 − 0,15 × GHI(t)/1000) kgCO₂/kWh, en el rango 0,672–0,790, y precios TOU de 0,38 USD/kWh en punta y 0,26 USD/kWh fuera de punta).
+P0326: El pipeline comprende diez etapas secuenciales, ejecutadas de forma reproducible con control de semilla y validación: (1) descarga de la serie meteorológica horaria de 26 304 filas; (2) selección del módulo fotovoltaico Sandia con criterios de clima tropical (eficiencia ≥ 18 %, Pmp ≥ 300 W); (3) generación de la serie solar por edificio con pvlib.ModelChain (modelo SAPM); (4) dimensionamiento del BESS por edificio con el método de Hesse et al. (2017) y parámetros LFP (DoD = 0,80; η_RT = 0,9025); (5) generación de los 17 archivos Building_X.csv (12 columnas, 26 304 filas); (6) generación de los 50 archivos de cargadores de vehículos eléctricos con sesiones estocásticas reproducibles; (7) generación del archivo de lavasecadora industrial del edificio B1; (8) generación de los archivos de red (weather.csv, carbon_intensity.csv y pricing.csv); (9) construcción del schema.json que referencia los 72 archivos y define los 17 edificios, 50 cargadores, BESS y PV; y (10) validación de rangos e instanciación en CityLearnEnv. El conjunto final contiene 72 archivos CSV/JSON con 26 304 filas horarias.
+P0327: 4.3.2. Formulación Dec-POMDP y arquitectura del CityLearn v3 propuesto
+P0328: El CityLearn v3 propuesto es una extensión experimental sobre CityLearn v2 que implementa la capa MADRL cooperativa; no constituye una versión oficial del simulador. Su contribución central es la formalización del problema como un Dec-POMDP bajo esquema CTDE, con una función de recompensa multiobjetivo cooperativa. El problema de gestión coordinada de los 17 edificios se formaliza como:
+P0329: M = ⟨ S, {Aᵢ}ᵢ₌₁ⁿ, P, R, {Oᵢ}ᵢ₌₁ⁿ, Ω, γ, T ⟩
+P0330: donde N = 17 es el número de agentes (edificios); S ⊆ ℝ^(~680) es el espacio de estado global que concatena las observaciones locales de los 17 agentes y es accesible solo por el crítico centralizado durante el entrenamiento; Aᵢ ⊆ ℝ^(2–5) es el espacio de acción local del edificio i (escalado de potencia HVAC, potencia del BESS y potencia de carga de los vehículos eléctricos); P es la función de transición estocástica; R es la función de recompensa cooperativa; Oᵢ ⊆ ℝ^(~40) es la observación local del edificio i; Ω es la función de observación; γ = 0,99 es el factor de descuento; y T = 8 760 es el horizonte de decisión (pasos horarios de un año). La condición de observabilidad parcial estricta se satisface porque cada edificio observa únicamente su propio estado local y no accede a la temperatura interior, la demanda, el estado de carga del BESS ni el perfil de vehículos eléctricos de los demás edificios durante la ejecución.
+P0331: 4.3.3. Esquema CTDE
+P0332: El esquema CTDE (Lowe et al., 2017) organiza el aprendizaje en dos planos. En el entrenamiento centralizado, el crítico Qᵢ(s, a₁, …, aₙ) de cada agente accede al estado global s = [o₁, …, o₁₇], lo que le permite evaluar la calidad cooperativa de los perfiles de acción colectiva y corregir la no estacionariedad que surge cuando cada agente aprende de forma independiente. En la ejecución descentralizada, la política πᵢ(aᵢ | oᵢ) de cada edificio utiliza exclusivamente su observación local, sin comunicación entre edificios ni acceso al estado global. La capa se materializa en clases especializadas por backend: un entorno Dec-POMDP base, envoltorios para HARL (HAPPO), para el formato SMAC (MASAC), vectorizado off-policy (MATD3) y para el mecanismo de atención (MAAC), y la función de recompensa multiobjetivo cooperativa.
+P0333: 4.3.4. Escenarios de entrenamiento y función de recompensa multiobjetivo
+P0334: El experimento comparativo se organiza en tres escenarios evaluativos (E1, E2 y E3) y un modo global; cada escenario se corresponde con un objetivo específico y establece la distribución de pesos de eje en la función de recompensa.
+P0335: Tabla 2. Escenarios de entrenamiento y pesos multiobjetivo de la función de recompensa.
+P0336: Escenario
+P0337: Objetivo
+P0338: Eje dominante
+P0339: Pesos [flex, CO₂, costo]
+P0340: Prioridad
+P0341: E1
+P0342: OE.1 — Flexibilidad energética
+P0343: Flexibilidad
+P0344: [0,70; 0,15; 0,15]
+P0345: Reducir pico y ramping
+P0346: E2
+P0347: OE.2 — Emisiones de CO₂
+P0348: Carbono
+P0349: [0,15; 0,70; 0,15]
+P0350: Desplazar a baja CI
+P0351: E3
+P0352: OE.3 — Costos energéticos
+P0353: Costos
+P0354: [0,25; 0,15; 0,60]
+P0355: Arbitraje tarifa TOU
+P0356: Global
+P0357: O.G. — Gestión coordinada
+P0358: Coordinado
+P0359: [0,50; 0,25; 0,25]
+P0360: Balance multiobjetivo
+P0361: La función de recompensa cooperativa calcula, para cada edificio i en el paso t:
+P0362: rewardᵢ(t) = reward_scale × [ w_flex·flexᵢ(t) + w_carbon·carbonᵢ(t) + w_cost·costᵢ(t) + w_ev·evᵢ(t) ]
+P0363: El componente de flexibilidad se evalúa a nivel de distrito (pico promedio y rampa promedio sobre la carga neta agregada de los 17 edificios); el componente de carbono opera sobre la importación de red ponderada por la intensidad de carbono horaria CI(t) ∈ [0,672; 0,790] kgCO₂/kWh; y el componente de costo refleja la tarifa TOU, con incentivo para importar fuera de punta (0,26 USD/kWh) y reducir importación en punta (0,38 USD/kWh). La recompensa individual se mezcla con la recompensa media del equipo mediante el parámetro team_reward_ratio (r):
+P0364: team_reward = (1/N) ∑ᵢ rewardᵢ(t);    mixed_rewardᵢ = (1 − r)·rewardᵢ + r·team_reward
+P0365: Tabla 3. Perfiles de recompensa por backend MADRL.
+P0366: Algoritmo
+P0367: Tipo de entrenamiento
+P0368: r (team)
+P0369: w_peak
+P0370: w_ramp
+P0371: reward_scale
+P0372: HAPPO
+P0373: On-policy cooperativo CTDE
+P0374: 0,75
+P0375: 0,45
+P0376: 0,35
+P0377: 1,00
+P0378: MASAC
+P0379: Off-policy con entropía
+P0380: 0,55
+P0381: 0,40
+P0382: 0,30
+P0383: 0,80
+P0384: MATD3
+P0385: Off-policy determinístico
+P0386: 0,65
+P0387: 0,50
+P0388: 0,45
+P0389: 1,10
+P0390: MAAC
+P0391: Off-policy con atención
+P0392: 0,80
+P0393: 0,42
+P0394: 0,38
+P0395: 1,00
+P0396: Las 12 corridas oficiales resultan del producto de los cuatro backends por los tres escenarios; la run de referencia se ejecuta con 5 episodios × 8 760 pasos (43 800 pasos por algoritmo), semilla 0 y CUDA habilitado sobre una NVIDIA RTX 4060 Laptop de 8 GB. Cada corrida genera los artefactos live_progress.json, results.json, timeseries.csv, trace.csv y episode_summary.csv.
+P0397: 4.3.5. Control a nivel de edificio y de distrito; hiperparámetros
+P0398: La arquitectura opera en dos niveles. En el nivel de edificio (ejecución descentralizada), cada edificio Bᵢ actúa como un agente autónomo con política local πᵢ(aᵢ | oᵢ): recibe exclusivamente su observación local de aproximadamente 40 dimensiones y controla sus propios recursos con una acción de 2 a 5 dimensiones, sin comunicación con otros edificios, lo que garantiza la escalabilidad. En el nivel de distrito (entrenamiento centralizado), el crítico centralizado accede al estado global de aproximadamente 680 dimensiones y a las métricas de coordinación distrital (importación neta del distrito, pico promedio y rampa promedio por agente); la recompensa individual se pondera con la recompensa media del equipo según team_reward_ratio. Tras el entrenamiento, el crítico centralizado se descarta y solo las políticas locales se utilizan en la evaluación final.
+P0399: Tabla 4. Hiperparámetros comunes y específicos del entrenamiento MADRL.
+P0400: Hiperparámetro
+P0401: Valor
+P0402: Aplicabilidad
+P0403: hidden_sizes
+P0404: [256, 256]
+P0405: Todos
+P0406: actor_lr
+P0407: 3×10⁻⁴
+P0408: Todos
+P0409: critic_lr
+P0410: 1×10⁻³
+P0411: Todos
+P0412: gamma
+P0413: 0,99
+P0414: Todos
+P0415: batch_size
+P0416: 256
+P0417: Todos
+P0418: replay_buffer_size
+P0419: 1 000 000
+P0420: MASAC, MATD3, MAAC
+P0421: tau
+P0422: 0,005
+P0423: MASAC, MATD3, MAAC
+P0424: ppo_clip
+P0425: 0,2
+P0426: Solo HAPPO
+P0427: matd3_policy_delay
+P0428: 2
+P0429: Solo MATD3
+P0430: maac_attention_heads
+P0431: 4
+P0432: Solo MAAC
+P0433: masac_alpha
+P0434: auto
+P0435: Solo MASAC
+P0436: La optimización automática de hiperparámetros mediante Optuna (Akiba et al., 2019) se contempla para la fase de run oficial de 50 episodios.
+P0437: 4.3.6. Despliegue, reproducibilidad y ejecución del entrenamiento
+P0438: La ejecución del estudio se realiza sobre un proyecto versionado en un único directorio de trabajo y un repositorio Git dedicado, en el que CityLearn v2 se conserva como simulador base y se añade la capa CityLearn v3 propuesta; los resultados se almacenan en un directorio de salidas y no se modifican los submódulos del simulador ni de los backends, salvo tareas explícitas. Antes de cualquier operación se verifica el contexto del proyecto, lo que garantiza que el experimento no se mezcle con otros entornos y preserva la reproducibilidad (Akiba et al., 2019; Nweye et al., 2024).
+P0439: Los requisitos de cómputo comprenden un sistema operativo Windows 10/11 con PowerShell, Git, el gestor uv para instalar Python 3.9 y crear el entorno virtual aislado, y una GPU NVIDIA con controlador y CUDA funcionales para PyTorch. El entorno de entrenamiento se materializa en un entorno virtual dedicado, cuya validez se comprueba verificando la versión de Python, la versión de PyTorch y la disponibilidad de CUDA. La arquitectura de software se organiza en componentes con responsabilidades separadas: el conjunto de datos (schema.json del dataset de Iquitos), el simulador base de CityLearn v2, la capa CityLearn v3 con los objetivos OE.1/OE.2/OE.3, un adaptador común que conecta el entorno con los backends, los cuatro algoritmos MADRL —HAPPO sobre el repositorio HARL, MASAC sobre el código MARL, MATD3 sobre el repositorio off-policy y MAAC sobre su repositorio de atención—, el lanzador oficial y el monitor de progreso.
+P0440: Antes de ejecutar el entrenamiento se aplican cuatro validaciones: la verificación estricta de preparación del entorno y del conjunto de datos; una prueba de humo (smoke test) de pocos pasos para comprobar la instanciación del entorno; la validación del contrato cooperativo Dec-POMDP/CTDE; y una ejecución en seco (dry run) del lanzador, que enumera las corridas planificadas sin consumir tiempo de GPU. El entrenamiento oficial ejecuta doce corridas secuenciales correspondientes al producto de los tres escenarios (E1, E2 y E3) por los cuatro backends; la run de referencia emplea cinco episodios de 8 760 pasos (43 800 pasos por corrida), semilla 0 y CUDA habilitado sobre la GPU local.
+P0441: El escalamiento a la run oficial de 50 episodios eleva el cómputo a 438 000 pasos por corrida y 5 256 000 pasos de entorno en total —aproximadamente diez veces el trabajo de la run de referencia—, por lo que se contemplan tres entornos de ejecución: local, contenedor Docker reproducible e instancias de cómputo en la nube (AWS EC2). Para la cadena secuencial se recomienda una instancia de una sola GPU potente con amplio margen de CPU y memoria; la paralelización por trabajos independientes, asignando una GPU por proceso, solo reduce el tiempo de pared si se ejecutan procesos separados sin alterar el código. Se prefiere almacenamiento EBS gp3 (500 GB a 1 TB) y el uso de instancias bajo demanda o reserva de capacidad antes que instancias spot, a fin de proteger los puntos de control frente a interrupciones.
+P0442: Tabla 5. Entornos de ejecución y perfiles de cómputo para el entrenamiento.
+P0443: Entorno
+P0444: Cómputo de referencia
+P0445: Uso
+P0446: Local
+P0447: NVIDIA RTX 4060 Laptop 8 GB (perfil local4060), CUDA, 12 hilos de PyTorch
+P0448: Run de referencia (5 episodios; 43 800 pasos por corrida)
+P0449: Docker
+P0450: Imagen reproducible Linux con CUDA
+P0451: Verificación de portabilidad y prueba de humo
+P0452: AWS EC2 secuencial
+P0453: g6.16xlarge (1 GPU NVIDIA L4 24 GB, 64 vCPU, 256 GiB) o g5.16xlarge (A10G)
+P0454: Run oficial (50 episodios; 438 000 pasos por corrida)
+P0455: AWS EC2 paralelo
+P0456: g6.12xlarge o g5.12xlarge (4 GPU; CUDA_VISIBLE_DEVICES)
+P0457: Reducción de tiempo por trabajos independientes
+P0458: Cada corrida genera, dentro del directorio de salidas y por backend y escenario (por ejemplo, happo/E1_seed_0), los artefactos live_progress.json, results.json, training_summary.json, timeseries.csv, trace.csv, checkpoint_manifest.json, building_behavior_summary.csv, building_kpis.csv y la carpeta de figuras; el estado final del proceso se registra en official_full_status.json con el valor "completed" y en un manifiesto general. Esta organización asegura que todo resultado pueda reconstruirse a partir del conjunto de datos, el algoritmo, el escenario, la semilla y el episodio, y habilita el benchmark comparativo entre CityLearn v2 y la capa CityLearn v3 propuesta para la generación de tablas, figuras y rankings de la tesis.
+P0459: 4.4. Población y muestra
+P0460: La unidad de análisis comprende las comunidades inteligentes simuladas mediante CityLearn v2 y el CityLearn v3 propuesto, los agentes MADRL cooperativos (HAPPO, MASAC, MATD3 y MAAC) bajo Dec-POMDP y CTDE, los recursos de energía distribuida (edificios, BESS, PV y estaciones de carga de vehículos eléctricos) y los indicadores de desempeño energético, ambiental y económico. La población —al tratarse de una investigación de simulación que no involucra sujetos humanos— está conformada por los escenarios simulados de comunidades inteligentes, las series temporales de demanda, precio e intensidad de carbono del conjunto de datos citylearn_iquitos_2023_2025 (17 edificios, 26 304 horas, 2023–2025) y las configuraciones de agentes bajo distintos backends y ajustes de hiperparámetros.
+P0461: La muestra computacional corresponde al producto de cuatro algoritmos MADRL (HAPPO, MASAC, MATD3 y MAAC) por tres escenarios (E1, E2 y E3), más una línea base de control basado en reglas. La run de referencia comprende cinco episodios de 8 760 pasos cada uno (43 800 pasos por corrida); el número de configuraciones de hiperparámetros exploradas con Optuna, el número de semillas para el análisis de robustez y la run oficial de 50 episodios se definirán en la etapa de implementación experimental. El muestreo es no probabilístico, intencional y técnicamente conveniente, justificado por la disponibilidad del conjunto de datos calibrado con datos operativos de Electro Oriente S.A. y del MINAM (2019) y por la pertinencia de los cuatro backends para la gestión cooperativa bajo Dec-POMDP y CTDE.
+P0462: 4.5. Tipo de diseño
+P0463: El diseño es no experimental, transversal y de simulación computacional comparativa. Es no experimental porque no se interviene sobre edificios reales, usuarios ni redes eléctricas físicas, sino que se observan y analizan variables sobre un conjunto de datos estructurado; es transversal porque adopta una muestra computacional definida en un único marco de análisis; y es de simulación comparativa porque experimenta con un modelo del sistema cuando la intervención directa sobre el sistema real sería costosa o impracticable. La validez del diseño se asegura manteniendo idénticos el conjunto de datos, el horizonte, la línea base, el número de episodios, las semillas, las reglas de recompensa, la estructura de salida y el protocolo de evaluación.
+P0464: 4.6. Técnicas e instrumentos de recolección de datos
+P0465: La recolección de datos se realiza mediante la técnica documental-computacional y el análisis de fuente secundaria estructurada. Comprende la revisión bibliográfica sistemática y la matriz de 50 antecedentes; el análisis de la documentación oficial de CityLearn v2, MARLlib, los cuatro backends y Optuna; la extracción y el preprocesamiento del conjunto de datos citylearn_iquitos_2023_2025; el registro de métricas de entrenamiento (recompensa acumulada y media por episodio, pesos multiobjetivo, intensidad de carbono, precio de electricidad y carga neta del distrito); el registro de los KPI de evaluación por eje mediante la rutina de evaluación de CityLearn v2; y el registro de los artefactos live_progress.json, results.json, timeseries.csv, trace.csv y episode_summary.csv. Los instrumentos son la ficha técnica del conjunto de datos, la matriz de observaciones y acciones, la matriz de correspondencia conjunto-KPI-objetivo, la lista de verificación de compatibilidad entre CityLearn v2 y v3 y la bitácora de configuración experimental.
+P0466: 4.7. Técnicas e instrumentos de análisis y procesamiento de datos
+P0467: El procesamiento se sustenta en la estadística descriptiva (media, suma, mínimo, máximo, desviación estándar, percentiles y valores acumulados) y en la comparación frente a la línea base (diferencias absolutas, razones, deltas normalizados y porcentajes de mejora), por algoritmo y por eje. La comparación de los cuatro backends por KPI en cada eje (OE.1, OE.2 y OE.3) se complementa con un ranking integrado para el objetivo general y con pruebas no paramétricas de apoyo: Shapiro-Wilk para la normalidad por grupo, Kruskal-Wallis para las diferencias globales entre los cuatro algoritmos, Mann-Whitney U para las comparaciones por pares con tamaños de efecto (Cliff’s delta, Vargha-Delaney A12, d de Cohen y g de Hedges) y la prueba de rangos con signo de Wilcoxon para las diferencias pareadas por KPI. Se añade el análisis de convergencia, estabilidad y robustez del entrenamiento y visualizaciones de curvas de aprendizaje, gráficas de KPI por eje, matrices de comparación y tablas de ranking. Los instrumentos son CityLearn v2, el CityLearn v3 propuesto, los scripts MADRL en Python/PyTorch, los cuatro backends, MARLlib, Optuna, Gymnasium, PettingZoo y el conjunto de datos de Iquitos.
+P0468: 4.8. Etapas de intervención del estudio
+P0469: Fase preparatoria (meses 1–3). Revisión bibliográfica profunda y construcción de la matriz de 50 antecedentes organizada por ejes; diagnóstico del problema y definición de variables; selección del conjunto de datos y definición de KPI por eje.
+P0470: Fase de diseño técnico (meses 4–8). Diseño de la arquitectura del CityLearn v3 propuesto; formulación Dec-POMDP; implementación del esquema CTDE; integración de los cuatro backends; y ajuste de hiperparámetros con Optuna.
+P0471: Fase de evaluación por eje (meses 9–18). Entrenamiento y simulación de los cuatro backends en los tres escenarios (E1, E2 y E3); evaluación de la flexibilidad energética (OE.1), de las emisiones de CO₂ (OE.2) y de los costos energéticos (OE.3) mediante sus KPI respectivos.
+P0472: Fase de determinación y cierre (meses 19–24). Comparación de resultados por eje y ranking integrado de los cuatro backends; determinación del mejor MADRL por eje y en gestión coordinada; discusión de aplicabilidad al SEAI Iquitos; redacción final y preparación de anexos.
+P0473: 
+P0474: CAPÍTULO V. ADMINISTRACIÓN DEL PLAN DE TESIS
+P0475: 5.1. Cronograma
+P0476: El plan se ejecuta en 24 meses, organizados en cuatro fases coherentes con las etapas de intervención descritas en el Capítulo IV.
+P0477: Fase
+P0478: Actividades
+P0479: Meses
+P0480: Preparatoria
+P0481: Revisión bibliográfica, matriz de 50 antecedentes, diagnóstico del problema, selección del conjunto de datos y definición de KPI
+P0482: 1–3
+P0483: Diseño técnico
+P0484: Arquitectura del CityLearn v3 propuesto, formulación Dec-POMDP, esquema CTDE, integración de backends y ajuste con Optuna
+P0485: 4–8
+P0486: Evaluación por eje
+P0487: Entrenamiento E1/E2/E3 × HAPPO/MASAC/MATD3/MAAC y evaluación de KPI (OE.1, OE.2, OE.3)
+P0488: 9–18
+P0489: Determinación y cierre
+P0490: Comparación, ranking, análisis estadístico, discusión del SEAI Iquitos, redacción y sustentación
+P0491: 19–24
+P0492: 5.2. Presupuesto
+P0493: El presupuesto estimado se sustenta en el uso de herramientas de código abierto e infraestructura local ya disponible; el rango refleja el escenario con y sin servicios de cómputo en la nube para la run oficial de 50 episodios.
+P0494: Rubro
+P0495: Descripción
+P0496: Costo (S/)
+P0497: Equipo informático
+P0498: Computadora personal con GPU NVIDIA RTX 4060 Laptop
+P0499: ya disponible
+P0500: Software
+P0501: CityLearn v2, MARLlib, Optuna, Python, PyTorch y backends
+P0502: 0 (código abierto)
+P0503: Servicios de cómputo
+P0504: Instancias GPU en la nube para entrenamiento de 50 episodios
+P0505: 2 000–5 000
+P0506: Revisión bibliográfica
+P0507: Acceso a Scopus, IEEE Xplore y ScienceDirect
+P0508: 500–1 000
+P0509: Asesoría especializada
+P0510: Honorarios de asesor
+P0511: por definir
+P0512: Publicación científica
+P0513: Tasa de publicación en revista indexada (si aplica)
+P0514: 1 500–3 000
+P0515: Materiales de oficina
+P0516: Papel, impresión y empaste
+P0517: 300
+P0518: Contingencia (10 %)
+P0519: —
+P0520: 430–930
+P0521: Total estimado
+P0522: —
+P0523: 4 730–10 230
+P0524: 5.3. Financiamiento
+P0525: El financiamiento proviene de recursos propios del graduando. Las herramientas de código abierto (CityLearn v2, MARLlib, Optuna, Python y PyTorch) tienen costo cero; el conjunto de datos citylearn_iquitos_2023_2025 se genera en el proyecto sin costo de adquisición; y la infraestructura computacional local (NVIDIA RTX 4060 Laptop de 8 GB) ya se encuentra disponible. Se contemplan eventuales servicios de cómputo en la nube para el entrenamiento de 50 episodios, con financiamiento propio o institucional, y el apoyo institucional de la UNI queda por definir.
+P0526: 
+P0527: REFERENCIAS
+P0528: Ahmed, A., et al. (2025). Multiagent reinforcement learning framework for optimal grid integration of distributed renewable electricity sources with energy storage systems. International Journal of Low-Carbon Technologies. https://doi.org/10.1093/ijlct/ctaf142
+P0529: Akiba, T., Sano, S., Yanase, T., Ohta, T., & Koyama, M. (2019). Optuna: A next-generation hyperparameter optimization framework. En Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (pp. 2623–2631). ACM. https://doi.org/10.1145/3292500.3330701
+P0530: Chen, L., He, H., Jing, R., Xie, M., & Ye, K. (2024). Energy management in integrated energy system with electric vehicles as mobile energy storage: An approach using bi-level deep reinforcement learning. Energy, 307. https://doi.org/10.1016/j.energy.2024.132599
+P0531: Chen, X., et al. (2024). SOC-boundary and battery aging aware hierarchical coordination of multiple EV aggregates among multi-stakeholders with multi-agent constrained deep reinforcement learning. arXiv. https://arxiv.org/abs/2407.13790
+P0532: Chen, Y., et al. (2025). Multi-agent deep reinforcement learning for smart building energy management with chance constraints. Energy and Buildings. https://doi.org/10.1016/j.enbuild.2025.115380
+P0533: Dolatyabi, P., et al. (2025). Heterogeneous multi-agent proximal policy optimization for power distribution system restoration. arXiv. https://arxiv.org/abs/2511.14730
+P0534: Electro Oriente S.A. (2024). Pliego tarifario del Sistema Eléctrico Aislado de Iquitos. Electro Oriente S.A.
+P0535: Fang, X., Zhao, Q., Wang, J., Han, Y., & Li, Y. (2021). Multi-agent deep reinforcement learning for distributed energy management and strategy optimization of microgrid market. Sustainable Cities and Society, 74, 103163. https://doi.org/10.1016/j.scs.2021.103163
+P0536: Felicetti, R., Iarlori, S., Monteriù, A., et al. (2024). Peak shaving and self-consumption maximization in home energy management systems: A combined integer programming and reinforcement learning approach. Computers & Electrical Engineering, 117, 109217. https://doi.org/10.1016/j.compeleceng.2024.109217
+P0537: Gao, J., Li, Y., Wang, B., & Wu, H. (2023). Multi-microgrid collaborative optimization scheduling using an improved multi-agent soft actor-critic algorithm. Energies, 16(7), 3248. https://doi.org/10.3390/en16073248
+P0538: Haarnoja, T., Zhou, A., Abbeel, P., & Levine, S. (2018). Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor. En Proceedings of the 35th International Conference on Machine Learning (PMLR 80, pp. 1861–1870).
+P0539: Hesse, H. C., Schimpe, M., Kucevic, D., & Jossen, A. (2017). Lithium-ion battery storage for the grid—A review of stationary battery storage system design tailored for applications in modern power grids. Energies, 10(12), 2107. https://doi.org/10.3390/en10122107
+P0540: Hribar, J., Mohorčič, M., & Čampa, A. (2025). Improving energy autonomy of positive energy districts using multi-agent deep reinforcement learning. Scientific Reports, 15, 27798. https://doi.org/10.1038/s41598-025-12554-x
+P0541: Hu, S., Zhong, Y., Gao, M., Wang, W., Dong, H., Liang, X., Li, Z., Chang, X., & Yang, Y. (2023). MARLlib: A scalable and efficient multi-agent reinforcement learning library. Journal of Machine Learning Research, 24(315), 1–23.
+P0542: Iqbal, S., & Sha, F. (2019). Actor-attention-critic for multi-agent reinforcement learning. En Proceedings of the 36th International Conference on Machine Learning (PMLR 97, pp. 2961–2970).
+P0543: Kathirgamanathan, A., Twardowski, K., Mangina, E., & Finn, D. P. (2020). A centralised soft actor critic deep reinforcement learning approach to district demand side management through CityLearn. En Proceedings of the 1st International Workshop on Reinforcement Learning for Energy Management in Buildings & Cities. ACM. https://doi.org/10.1145/3427773.3427869
+P0544: Kim, J., et al. (2025). Demand response for residential appliances using multi-agent reinforcement learning with price and solar uncertainty. Energy Reports, 13. https://doi.org/10.1016/j.egyr.2025.005
+P0545: Kuba, J. G., Chen, R., Wen, M., Wen, Y., Sun, F., Wang, J., & Yang, Y. (2021). Trust region policy optimisation in multi-agent reinforcement learning. arXiv. https://arxiv.org/abs/2109.11251
+P0546: Li, Y., Wu, J., & Pan, Y. (2024). Deep reinforcement learning for online scheduling of photovoltaic systems with battery energy storage systems. Intelligent and Converged Networks, 5(1), 28–41. https://doi.org/10.23919/ICN.2024.0003
+P0547: Liu, J., et al. (2022). Multi-agent joint optimization for V2G services in power-transportation networks. IEEE Transactions on Sustainable Energy.
+P0548: Liu, Y., Zhang, Q., & Guo, Y. (2022). Multi-agent deep reinforcement learning for building energy system with renewable energy. Applied Energy, 313, 118703. https://doi.org/10.1016/j.apenergy.2022.118703
+P0549: Lowe, R., Wu, Y., Tamar, A., Harb, J., Abbeel, P., & Mordatch, I. (2017). Multi-agent actor-critic for mixed cooperative-competitive environments. En Advances in Neural Information Processing Systems 30 (pp. 6382–6393).
+P0550: Lund, H., Østergaard, P. A., Connolly, D., & Mathiesen, B. V. (2017). Smart energy and smart energy systems. Energy, 137, 556–565. https://doi.org/10.1016/j.energy.2016.12.003
+P0551: Ma, Q., Ye, Y., Liu, Z., Liu, X., & Strbac, G. (2025). Carbon cap based multi-energy sharing among heterogeneous microgrids using multi-agent safe reinforcement learning method with credit assignment and sequential update. Applied Energy, 393, 126018. https://doi.org/10.1016/j.apenergy.2025.126018
+P0552: Ministerio del Ambiente del Perú. (2019). INFOCARBONO — Reporte anual de gases de efecto invernadero (RAGEI 2019): Energía. MINAM. https://infocarbono.minam.gob.pe/
+P0553: Nweye, K., & Nagy, Z. (2024). Applications in CityLearn Gym environment for multi-objective control benchmarking in grid-interactive buildings and districts. arXiv. https://arxiv.org/abs/2408.15170
+P0554: Nweye, K., Kaspar, K., Buscemi, G., Fonseca, T., Pinto, G., Ghose, D., Duddukuru, S., Pratapa, P., Li, H., Mohammadi, J., Ferreira, L. L., Hong, T., Ouf, M., Capozzoli, A., & Nagy, Z. (2024). CityLearn v2: Energy-flexible, resilient, occupant-centric, and carbon-aware management of grid-interactive communities. Journal of Building Performance Simulation. https://doi.org/10.1080/19401493.2024.2418813
+P0555: Nweye, K., Kaspar, K., Buscemi, G., Pinto, G., Li, H., Hong, T., Ouf, M., Capozzoli, A., & Nagy, Z. (2023c). CityLearn v2: An OpenAI Gym environment for demand response control benchmarking in grid-interactive communities. En Proceedings of the 10th ACM International Conference on Systems for Energy-Efficient Buildings, Cities, and Transportation (BuildSys ’23). ACM. https://doi.org/10.1145/3600100.3626257
+P0556: Nweye, K., Liu, B., Stone, P., & Nagy, Z. (2022). Real-world challenges for multi-agent reinforcement learning in grid-interactive buildings. Energy and AI, 10, 100202. https://doi.org/10.1016/j.egyai.2022.100202
+P0557: Nweye, K., Sankaranarayanan, S., & Nagy, Z. (2023a). MERLIN: Multi-agent offline and transfer learning for occupant-centric operation of grid-interactive communities. Applied Energy. https://doi.org/10.48550/arXiv.2301.01148
+P0558: Nweye, K., et al. (2023b). Heterogeneous multi-agent reinforcement learning for grid-interactive communities. En Proceedings of the 10th ACM International Conference on Systems for Energy-Efficient Buildings, Cities, and Transportation. ACM. https://doi.org/10.1145/3600100.3626276
+P0559: Oliehoek, F. A., & Amato, C. (2016). A concise introduction to decentralized POMDPs. Springer. https://doi.org/10.1007/978-3-319-28929-8
+P0560: Oliehoek, F. A., et al. (2013). Incremental clustering and expansion for faster optimal planning in Dec-POMDPs. Journal of Artificial Intelligence Research, 46. https://doi.org/10.1613/jair.3745
+P0561: Ren, J., Gao, H., Wang, S., Zhao, L., Kang, Q., Ashan, A., Sun, Y., & Xiao, G. (2025). Multi-agent reinforcement learning-based joint design of low-carbon P2P market and bidding strategy in microgrids. arXiv. https://arxiv.org/abs/2604.02728
+P0562: Rezazadeh, F., & Bartzoudis, D. (2022). A federated DRL approach for smart micro-grid energy control with distributed energy resources. En 2022 IEEE International Workshop on Computer Aided Modeling and Design of Communication Links and Networks (CAMAD). IEEE.
+P0563: Sarkar, S., Naug, A., Luna, R., Guillen, A., Gundecha, V., Ghorbanpour, S., Mousavi, S., Markovikj, D., & Babu, A. R. (2024). Carbon footprint reduction for sustainable data centers in real-time. En Proceedings of the AAAI Conference on Artificial Intelligence, 38.
+P0564: Shojaeighadikolaei, A., Ghasemi, A., Jones, K., Dafalla, Y., Bardas, A. G., Ahmadi, R., & Hashemi, M. (2022). Distributed energy management and demand response in smart grids: A multi-agent deep reinforcement learning framework. arXiv. https://arxiv.org/abs/2211.15858
+P0565: Shojaeighadikolaei, A., Talata, Z., & Hashemi, M. (2024). Centralized vs. decentralized multi-agent reinforcement learning for enhanced control of electric vehicle charging networks. arXiv. https://arxiv.org/abs/2404.12520
+P0566: Sutton, R. S., & Barto, A. G. (2018). Reinforcement learning: An introduction (2.ª ed.). MIT Press.
+P0567: Vázquez-Canteli, J. R., & Nagy, Z. (2019a). CityLearn v1.0: An OpenAI Gym environment for demand response with deep reinforcement learning. En Proceedings of the 6th ACM International Conference on Systems for Energy-Efficient Buildings, Cities, and Transportation (pp. 356–357). ACM. https://doi.org/10.1145/3360322.3360998
+P0568: Vázquez-Canteli, J. R., & Nagy, Z. (2019b). Reinforcement learning for demand response: A review of algorithms and modeling techniques. Applied Energy, 235, 1072–1089. https://doi.org/10.1016/j.apenergy.2018.11.028
+P0569: Vázquez-Canteli, J. R., Dey, S., Henze, G., & Nagy, Z. (2020). CityLearn: Standardizing research in multi-agent reinforcement learning for demand response and urban energy management. arXiv. https://arxiv.org/abs/2012.10504
+P0570: Wang, Y., et al. (2025). Cooperative multi-agent reinforcement learning for grid-aware EV charging management with cross-site redirection. Sustainable Energy, Grids and Networks. https://doi.org/10.1016/j.segan.2025.101962
+P0571: Wu, J., Wang, Z., Han, J., Li, Q., Sun, R., Li, C., Cheng, Y., Zhou, B., Guo, J., & Long, B. (2025). A novel data-driven multi-agent reinforcement learning approach for voltage control under weak grid support. Sensors, 25(23), 7399. https://doi.org/10.3390/s25237399
+P0572: Xie, J., Ajagekar, A., & You, F. (2023). Multi-agent attention-based deep reinforcement learning for demand response in grid-responsive buildings. Applied Energy, 342, 121162. https://doi.org/10.1016/j.apenergy.2023.121162
+P0573: Xiong, S., Liu, D., Chen, Y., & Zhang, Y. (2024). A deep reinforcement learning approach based energy management strategy for home energy system considering the time-of-use price and real-time control of energy storage system. Energy Reports, 11, 3501–3508. https://doi.org/10.1016/j.egyr.2024.001501
+P0574: Yao, Y., Wang, X., & Sun, J. (2023). Multi-agent reinforcement learning for smart community energy management. Energies, 17(20), 5211. https://doi.org/10.3390/en17205211
+P0575: Ye, T., Huang, Y., Yang, W., Cai, G., Yang, Y., & Pan, F. (2025). Safe multi-agent deep reinforcement learning for decentralized low-carbon operation in active distribution networks and multi-microgrids. Applied Energy, 387. https://doi.org/10.1016/j.apenergy.2025.125339
+P0576: Zhang, Y., Chen, X., Gu, Y., Li, Z., & Kai, W. (2023). Deep reinforcement learning-based battery conditioning hierarchical V2G coordination for multi-stakeholder benefits. arXiv. https://arxiv.org/abs/2308.00218
+P0577: Zhao, Y., et al. (2024). Energy management based on safe multi-agent reinforcement learning for smart buildings in distribution networks. Energy and Buildings. https://doi.org/10.1016/j.enbuild.2024.114529
+P0578: Zhong, Y., Kuba, J. G., Feng, X., Hu, S., Ji, J., & Yang, Y. (2023). Heterogeneous-agent reinforcement learning. Journal of Machine Learning Research, 25.
+P0579: Zhu, Y., et al. (2024). An overview: Attention mechanisms in multi-agent reinforcement learning. Neurocomputing, 598, 128015. https://doi.org/10.1016/j.neucom.2024.128015
+P0580: Nota. Las referencias se presentan en norma APA (7.ª edición). Las fuentes con datos secundarios aún por confirmar (autores secundarios, volumen o página) se completarán mediante verificación en Scopus e IEEE Xplore durante la fase de redacción final.
+P0581: 
+P0582: ANEXOS
+P0583: Anexo 1. Matriz de consistencia
+P0584: Campo
+P0585: Contenido
+P0586: Problema general
+P0587: ¿Cuál es el mejor MADRL que gestiona de manera coordinada la flexibilidad energética, las emisiones de CO₂ y los costos energéticos en comunidades inteligentes?
+P0588: PE.1 / OE.1
+P0589: Flexibilidad energética: determinar el mejor MADRL que la optimiza en comunidades inteligentes.
+P0590: PE.2 / OE.2
+P0591: Emisiones de CO₂: determinar el mejor MADRL que las reduce en comunidades inteligentes.
+P0592: PE.3 / OE.3
+P0593: Costos energéticos: determinar el mejor MADRL que los optimiza en comunidades inteligentes.
+P0594: Variable independiente
+P0595: Capa MADRL cooperativa sobre CityLearn v2 (CityLearn v3 propuesto): HAPPO, MASAC, MATD3 y MAAC bajo Dec-POMDP y CTDE.
+P0596: Variable dependiente
+P0597: Desempeño coordinado en flexibilidad energética, emisiones de CO₂ y costos energéticos.
+P0598: Metodología
+P0599: Cuantitativa, aplicada, comparativa, no experimental, basada en simulación computacional.
+P0600: Técnicas
+P0601: Simulación, comparación de algoritmos, evaluación de KPI, análisis multicriterio y pruebas no paramétricas (Kruskal-Wallis, Mann-Whitney U, Wilcoxon, Shapiro-Wilk).
+P0602: Instrumentos
+P0603: CityLearn v2, CityLearn v3 propuesto, backends MADRL, MARLlib, Optuna, Python/PyTorch y conjunto de datos citylearn_iquitos_2023_2025.
+P0604: Resultados esperados
+P0605: Ranking de los cuatro backends por eje (OE.1, OE.2, OE.3) y determinación del mejor MADRL en gestión coordinada (O.G.) con significancia estadística.
+P0606: Anexo 2. Matriz de operacionalización de variables
+P0607: Dimensión
+P0608: Indicadores
+P0609: VI — Formulación del problema
+P0610: Tipo de modelo (Dec-POMDP), estado global (≈680D), observaciones locales (≈40D por edificio), espacio de acción (2–5D por edificio: HVAC, BESS, EV) y función de recompensa multiobjetivo (flex + CO₂ + costo).
+P0611: VI — Esquema de entrenamiento
+P0612: CTDE implementado, backend utilizado (HAPPO/MASAC/MATD3/MAAC), perfil de hiperparámetros y ajuste con Optuna.
+P0613: VI — Cooperación entre agentes
+P0614: Cooperación total; team_reward como agregación; team_reward_ratio por algoritmo (HAPPO 0,75; MAAC 0,80; MASAC 0,55; MATD3 0,65).
+P0615: VD — OE.1 Flexibilidad
+P0616: peak_average, ramping_average, one_minus_load_factor_average, autoconsumo PV, autosuficiencia, reducción de importación y utilización de renovables.
+P0617: VD — OE.2 Emisiones de CO₂
+P0618: carbon_emissions, carbon_emissions_control, carbon_emissions_delta, consumo ponderado por intensidad de carbono y emisiones evitadas.
+P0619: VD — OE.3 Costos energéticos
+P0620: electricity_cost, electricity_cost_control, electricity_cost_delta, reducción del cargo por demanda y price_signal_deviation.
+P0621: Anexo 3. Comparación de los backends MADRL
+P0622: Algoritmo
+P0623: Tipo
+P0624: CTDE
+P0625: Fortaleza
+P0626: Backend de referencia
+P0627: HAPPO
+P0628: On-policy
+P0629: Crítico centralizado
+P0630: Convergencia estable, cooperación fuerte
+P0631: HARL
+P0632: MASAC
+P0633: Off-policy
+P0634: Estado global (SMAC)
+P0635: Exploración continua, memoria recurrente
+P0636: MARL/src
+P0637: MATD3
+P0638: Off-policy
+P0639: Críticos duales
+P0640: Robustez frente a sobreestimación
+P0641: marlbenchmark
+P0642: MAAC
+P0643: Off-policy
+P0644: Atención multiagente
+P0645: Coordinación selectiva entre 17 agentes
+P0646: MAAC
+P0647: Anexo 4. KPI por eje y algoritmo (run de referencia)
+P0648: Resultados del run de referencia (5 episodios, semilla 0). Los resultados del run oficial de tesis (50 episodios) quedan por definir en la etapa de implementación experimental.
+P0649: Eje
+P0650: KPI (↓ mejor)
+P0651: HAPPO
+P0652: MASAC
+P0653: MAAC
+P0654: MATD3
+P0655: Mejor
+P0656: OE.1
+P0657: peak_average
+P0658: 1,84
+P0659: 2,13
+P0660: 1,20
+P0661: 4,16
+P0662: MAAC
+P0663: OE.1
+P0664: ramping_average
+P0665: 2,86
+P0666: 4,04
+P0667: 1,91
+P0668: 6,41
+P0669: MAAC
+P0670: OE.2
+P0671: carbon_emissions
+P0672: 1,70
+P0673: 3,78
+P0674: 1,52
+P0675: 1,78
+P0676: MAAC
+P0677: OE.3
+P0678: electricity_cost
+P0679: 1,26
+P0680: 2,56
+P0681: 0,095
+P0682: 1,81
+P0683: MAAC
+P0684: OE.3
+P0685: electricity_cost_delta
+P0686: +8,1
+P0687: +3 700
+P0688: −2 196
+P0689: +23,5
+P0690: MAAC
+P0691: Prueba de Kruskal-Wallis: OE.1 flexibilidad, p = 0,0019; OE.2 CO₂, p = 0,000017; OE.3 costos, p = 6,2×10⁻⁹ (α = 0,05). En los tres ejes se confirman diferencias estadísticamente significativas entre los algoritmos, con MAAC como el de mejor desempeño en el run de referencia. La interpretación final del informe de tesis deberá emplear estos registros sin inferir resultados no observados.

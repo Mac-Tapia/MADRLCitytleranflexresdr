@@ -79,7 +79,7 @@ Generadores/parches documentales y soporte directo del Word:
 `generate_iquitos_dataset.py`, `orchestrate_citylearn_dataset.py`, `fix_solar_pvlib.py`, `verify_solar.py`, `buildingcsv_inputs.py`, `dimension_ev_chargers.py`, `size_bess_optimal.py`, `distill_building_loads.py`, `evaluate_dataset.py`, `deep_dataset_analysis.py`, `check_training_dataset_ready.py`, `audit_citylearn_csv_integrity.py`, `audit_der_sizing.py`, `audit_training_dataset_provenance.py`, etc.
 
 **Evaluación / KPIs / Drive operativo:**  
-`run_complete_drive_kpi_objective_analysis.py`, `run_problem_objective_hypothesis_statistical_analysis.py`, `recalc_drive_kpis_*.py`, `inferential_audit_report.py`, `audit_drive_figure_integrity.py`, `aggregate_colab_drive_kpis.py`, `fetch_*drive*`, `validate_*colab*`, etc.
+`objective_analysis.py`, `hypothesis.py`, `recalc_drive_kpis_*.py`, `inferential_audit_report.py`, `audit_drive_figure_integrity.py`, `aggregate_colab_drive_kpis.py`, `fetch_*drive*`, `validate_*colab*`, etc.
 
 **Notebooks / Colab / infra:**  
 `generate_colab_notebook.py`, `patch_notebook_*.py`, `harden_colab_notebook_launch.py`, `verify_notebook.py`, `verify_workflow_integrity.py`, etc.
@@ -268,8 +268,8 @@ Dataset (conservado en `tools/dataset/`):
 **Referencias rotas corregidas (rutas → `tools/thesis/`):**
 - `agent-skills/madrl-citylearn-thesis-integrated/SKILL.md` (bloqueador previo; actualizado)
 - `agent-skills/madrl-citylearn-thesis-integrated/references/module-b-thesis-report.md`
-- `docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md`
-- `docs/tesis_capitulos/AUDITORIA_CUMPLIMIENTO.md`
+- `docs/chapters/cap4.md`
+- `docs/chapters/auditoria.md`
 - `docs/AUDITORIA_INTEGRAL_TESIS_DOCTORAL_2026-07-07.md`
 - `docs/VALIDACION_REFERENCIAS_UNIFICADAS_2026-07-15.md`
 - `scripts/fetch_and_generate_drive_figures.ps1` → `tools/thesis/generate_drive_thesis_figures.py`

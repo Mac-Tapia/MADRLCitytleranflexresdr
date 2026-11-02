@@ -5,7 +5,7 @@
 Replaces Cap.4 (→ Cap.5), Cap.5 (→ Cap.6), Cap.6 (→ Cap.7/Referencias),
 and inserts Cap.7 before Referencias when missing.
 
-Does not invent numeric results: content comes from docs/tesis_capitulos/*.md.
+Does not invent numeric results: content comes from docs/chapters/*.md.
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ if str(_THESIS_DIR) not in sys.path:
 from generate_borrador_tesis_docx import ACCENT, add_table, heading, p, style_base  # noqa: E402
 from thesis_word_canons import INFORME, TESIS, require_tesis  # noqa: E402
 
-CAPS_DIR = REPO / "docs" / "tesis_capitulos"
+CAPS_DIR = REPO / 'docs' / 'chapters'
 BACKUP_DIR = REPO / "outputs" / "_word_backups"
 
 CAP_RE = {
@@ -331,10 +331,10 @@ def main() -> int:
     require_tesis()
     # Headings without accent to match verify_doctoral_docx anchors (Capitulo N).
     md_map = {
-        4: (CAPS_DIR / "Capitulo_4_Desarrollo_Propuesta.md", "Capitulo 4. Desarrollo e implementacion de la coordinacion energetica multiobjetivo mediante MADRL"),
-        5: (CAPS_DIR / "Capitulo_5_Resultados.md", "Capitulo 5. Resultados, efectos diferenciales y desempeno algoritmico"),
-        6: (CAPS_DIR / "Capitulo_6_Conclusiones.md", "Capitulo 6. Conclusiones"),
-        7: (CAPS_DIR / "Capitulo_7_Recomendaciones.md", "Capitulo 7. Recomendaciones y trabajo futuro"),
+        4: (REPO / 'docs' / 'chapters' / 'cap4.md', "Capitulo 4. Desarrollo e implementacion de la coordinacion energetica multiobjetivo mediante MADRL"),
+        5: (REPO / 'docs' / 'chapters' / 'cap5.md', "Capitulo 5. Resultados, efectos diferenciales y desempeno algoritmico"),
+        6: (REPO / 'docs' / 'chapters' / 'cap6.md', "Capitulo 6. Conclusiones"),
+        7: (REPO / 'docs' / 'chapters' / 'cap7.md', "Capitulo 7. Recomendaciones y trabajo futuro"),
     }
     for n, (path, _t) in md_map.items():
         if not path.exists():

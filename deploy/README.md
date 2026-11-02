@@ -1,6 +1,6 @@
 # deploy/ — Demo de despliegue (Docker + AWS) y camino a producción física
 
-Implementa la Fase 8 de `docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md`:
+Implementa la Fase 8 de `docs/decisions/organizacion.md`:
 un demo de operatividad para el mejor agente MADRL seleccionado
 (checkpoint ganador entre HAPPO/HARL, MASAC, MATD3, MAAC sobre los
 escenarios E1/E2/E3), con un camino claro hacia producción y despliegue
@@ -11,16 +11,16 @@ físico en campo.
 ```
 deploy/
 ├── inference/        # Servicio de inferencia (FastAPI + ONNX Runtime)
-├── plant-adapter/     # Adaptador planta <-> servicio (replay / Modbus / OPC-UA / MQTT)
+├── plant_adapter/     # Adaptador planta <-> servicio (replay / Modbus / OPC-UA / MQTT)
 ├── dashboard/         # Dashboard de monitoreo (Streamlit)
 ├── docker-compose.yml         # Stack local (laptop / servidor on-prem)
 ├── docker-compose.aws.yml     # Variante para ECS Fargate / EC2
 ├── aws/iac/            # Infraestructura como código (Terraform) para AWS
-├── aws/README_DEPLOY_AWS.md   # Guía de despliegue en AWS
+├── aws/deploy.md   # Guía de despliegue en AWS
 ├── aws/README_TRAINING_AWS.md # Manual de entrenamiento AWS desde cero
 ├── aws/iac-training/          # Terraform EC2 GPU para entrenamiento
 ├── aws/training/              # Bootstrap, launcher, monitor y sync S3
-├── edge/README_DESPLIEGUE_FISICO.md  # Puente a despliegue físico (EMS/BMS real)
+├── edge/deploy.md  # Puente a despliegue físico (EMS/BMS real)
 └── .env.example
 ```
 

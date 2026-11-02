@@ -2,7 +2,7 @@
 #
 # Provisiona el mínimo para correr el stack docker-compose.aws.yml en una
 # sola instancia EC2:
-#   - 3 repos ECR (inference, plant-adapter, dashboard)
+#   - 3 repos ECR (inference, plant_adapter, dashboard)
 #   - 2 buckets S3 (modelos, dataset)
 #   - Security group (SSH + dashboard 8501 + inference 8000)
 #   - Instancia EC2 con Docker + Docker Compose vía user_data
@@ -36,7 +36,7 @@ resource "aws_ecr_repository" "inference" {
 }
 
 resource "aws_ecr_repository" "plant_adapter" {
-  name                 = "${var.project_name}/plant-adapter"
+  name                 = "${var.project_name}/plant_adapter"
   image_tag_mutability = "MUTABLE"
 }
 
@@ -63,7 +63,7 @@ resource "aws_cloudwatch_log_group" "inference" {
 }
 
 resource "aws_cloudwatch_log_group" "plant_adapter" {
-  name              = "/${var.project_name}/plant-adapter"
+  name              = "/${var.project_name}/plant_adapter"
   retention_in_days = 14
 }
 
@@ -143,7 +143,7 @@ resource "aws_instance" "demo" {
     chmod +x /usr/local/bin/docker-compose
     # NOTA: el resto del bootstrap (clonar repo, aws s3 sync modelos/dataset,
     # docker login a ECR, docker-compose up) se documenta en
-    # ../README_DEPLOY_AWS.md y se deja como pasos manuales/post-provisioning
+    # ../deploy.md y se deja como pasos manuales/post-provisioning
     # para esta demo.
   EOF
 

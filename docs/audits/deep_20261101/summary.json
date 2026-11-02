@@ -1,0 +1,40 @@
+{
+  "date_local": "2026-11-01",
+  "root": "D:\\MADRLCitytleranflexresdr",
+  "commit": "cb2d7c7c84b5315acb50b3b8828ef4a90065bdc4",
+  "audit_report_delivered": true,
+  "full_semantic_audit_every_file": false,
+  "implementation_ready_for_training": false,
+  "scientific_acceptance": false,
+  "production_acceptance": false,
+  "files_inventory": 3777,
+  "folders_inventory": 240,
+  "csv_rows_structurally_read": 34042062,
+  "findings": 31,
+  "priorities": {
+    "P0": 4,
+    "P1": 19,
+    "P2": 8
+  },
+  "test_result": {
+    "status": "interrupted_due_to_concurrent_source_edits",
+    "completed_suite": false,
+    "last_visible_progress_percent": 36,
+    "native_training_tests_excluded": 4
+  },
+  "source_drift_count": 6,
+  "osv": {
+    "packages_queried": 236,
+    "flagged_packages": 34,
+    "alias_groups": 237,
+    "exploitability_verified": false
+  },
+  "source_state_stable": false,
+  "post_change_focused_contracts": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "priority_counts_apply_to": "findings at discovery; see per-finding follow_up for concurrent corrections"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "phase": "C-software",
+  "scope": "parent repository only; dependency roots and recorded exclusions are out of the clone criterion",
+  "classification_counts": {
+    "redundant_clone": 0,
+    "distinct_role": 726,
+    "facade": 3,
+    "generated_asset": 0,
+    "protected_unique": 0,
+    "needs_review": 1
+  },
+  "exact_groups": 720,
+  "semantic_candidates": 7,
+  "redundant_clone_groups": [],
+  "needs_review_groups": [
+    "S0007"
+  ],
+  "blocked_unique_content": [
+    "tools/thesis/patch_cap6_conclusiones_desc_inf_docx.py",
+    "tools/thesis/patch_resumen_align_kpi_gains_docx.py"
+  ],
+  "proposed_removals": [],
+  "missing_paths": [],
+  "active_broken_references": 4,
+  "facade_violations": [],
+  "protected_documents": [
+    "docs/auditoria_tesis.docx",
+    "docs/informe.docx",
+    "docs/tesis.docx"
+  ],
+  "protected_note": "protected documents are never removed here; Word consolidation (D-05) needs the authorized Word flow and is not certified by this audit",
+  "repository_layout_verified": false,
+  "reasons": [
+    "4 active broken references in checked indexes",
+    "1 candidate groups need review; not verified",
+    "2 files blocked by unique content"
+  ],
+  "at_utc": "2026-11-01T16:36:46.908146+00:00"
+}

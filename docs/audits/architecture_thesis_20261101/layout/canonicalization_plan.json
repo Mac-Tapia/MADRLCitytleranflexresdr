@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "selection_rule": "canonical = role registry, else the only member covering all capabilities, else the member with most active consumers; never size, mtime or name suffix",
+  "actions": [],
+  "removed_paths": [],
+  "blocked": [
+    {
+      "path": "tools/thesis/patch_cap6_conclusiones_desc_inf_docx.py",
+      "group_id": "S0010",
+      "canonical_path": null,
+      "reasons": [
+        "no registered role, covering member or consumer majority; size/date/name are not admissible tie-breakers"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_resumen_align_kpi_gains_docx.py",
+      "group_id": "S0010",
+      "canonical_path": null,
+      "reasons": [
+        "no registered role, covering member or consumer majority; size/date/name are not admissible tie-breakers"
+      ]
+    }
+  ],
+  "blocked_unique_content": [
+    {
+      "path": "tools/thesis/patch_cap6_conclusiones_desc_inf_docx.py",
+      "group_id": "S0010",
+      "canonical_path": null,
+      "reasons": [
+        "no registered role, covering member or consumer majority; size/date/name are not admissible tie-breakers"
+      ],
+      "unique_capabilities": [],
+      "divergent_capabilities": [
+        "main",
+        "patch_doc"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_resumen_align_kpi_gains_docx.py",
+      "group_id": "S0010",
+      "canonical_path": null,
+      "reasons": [
+        "no registered role, covering member or consumer majority; size/date/name are not admissible tie-breakers"
+      ],
+      "unique_capabilities": [],
+      "divergent_capabilities": [
+        "main",
+        "patch_doc"
+      ]
+    }
+  ],
+  "at_utc": "2026-11-02T01:44:11.912876+00:00"
+}

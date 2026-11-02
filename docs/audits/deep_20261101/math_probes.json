@@ -1,0 +1,8 @@
+{
+  "hphi_2d_actual": 0.0,
+  "hphi_2d_expected": 0.81,
+  "hphi_7d_ideal_actual": 0.0,
+  "hphi_7d_expected": 1.0,
+  "legacy_iqm": 1.0,
+  "fractional_iqm": 17.333333333333332
+}

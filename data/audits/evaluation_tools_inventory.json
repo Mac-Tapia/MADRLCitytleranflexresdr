@@ -7,14 +7,14 @@
   "current_results_layout": "<results_root>/<run_id>/{evidence.json, experiment.json} and <results_root>/<run_id>/<E1|E1_s<seed>>/{data, figures, figures/tables, checkpoints}; resolved by uc3m/application/evaluation/results_catalog.py (argument, then MADRL_RESULTS_ROOT, then outputs/campaign); only status=verified runs count",
   "derived_outputs_convention": "<results_root>/resumen_comparativo/{estadistica/analisis_cuantitativo_completo_50_episodios, multiobjetivo, performance_comparison} (no evidence.json there, so the catalog ignores it)",
   "counts": {
-    "total": 52,
+    "total": 49,
     "adapted": 6,
-    "obsolete_old_campaign": 30,
+    "obsolete_old_campaign": 27,
     "needs_owner_decision": 16
   },
   "files": [
     {
-      "path": "tools/eval/run_complete_drive_kpi_objective_analysis.py",
+      "path": "tools/eval/objective_analysis.py",
       "classification": "adapted",
       "locates_data_via": "--results-root/--seed -> campaign_layout(root, seed)[(ALGO, E*)]/data/{results.json, building_kpis.csv, building_behavior_summary.csv, timeseries.csv, trace.csv}; episode_summary.csv of the same run only when results.json does not cover episodes 0..49; output default <root>/resumen_comparativo/estadistica/analisis_cuantitativo_completo_50_episodios; exit 2 naming missing/unverified treatments"
     },
@@ -24,12 +24,12 @@
       "locates_data_via": "--results-root/--seed -> campaign_layout(...)[(ALGO, E*)]/figures/tables/core_kpis.csv and data/results.json; output default <root>/resumen_comparativo; exit 2 and no ranking when a treatment or its core_kpis.csv is missing; no longer writes outputs/latest_colab_output_root.txt"
     },
     {
-      "path": "tools/eval/analyze_colab_drive_multiobjective_buildings.py",
+      "path": "tools/eval/building_analysis.py",
       "classification": "adapted",
       "locates_data_via": "--results-root/--seed -> campaign_layout(...)[(ALGO, E*)]/data/{results.json, building_behavior_summary.csv}; schema from the MATD3/E1 run data/building_observation_action_schema.csv; output default <root>/resumen_comparativo/multiobjetivo; exit 2 on missing treatments or files"
     },
     {
-      "path": "tools/eval/generate_madrl_performance_comparison_figures.py",
+      "path": "tools/eval/performance_figures.py",
       "classification": "adapted",
       "locates_data_via": "--results-root/--seed -> campaign_layout(...) confirms one verified run per treatment and supplies run_id; reads derived tables from <root>/resumen_comparativo/{estadistica/analisis_cuantitativo_completo_50_episodios, multiobjetivo} (overridable); writes only under <root>/resumen_comparativo/performance_comparison (job figures in jobs/, verified run folders are not modified)"
     },
@@ -54,7 +54,7 @@
       "reason": "Orchestrates CityLearn/scripts/generate_thesis_objective_evidence.py, which expects the algorithm-first layout <root>/<ALGO>/<E*>; adapting requires changing the external CityLearn script or adding a layout bridge."
     },
     {
-      "path": "tools/eval/run_problem_objective_hypothesis_statistical_analysis.py",
+      "path": "tools/eval/hypothesis.py",
       "classification": "needs_owner_decision",
       "reason": "Thesis hypothesis analysis with DEFAULT_RUN_ID=madrl_v3_20260627_164047; scientifically relevant for the new campaign but outside the allowed files of this task."
     },
@@ -124,21 +124,6 @@
       "reason": "Convergence/learning/heterogeneity metrics computed from the retired full_data mirror; the analysis applies to the new campaign but is outside this task's allowed files."
     },
     {
-      "path": "tools/colab/generate_colab_notebook.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Generates the legacy tutorial notebook (75 episodes, algorithm-first {OUTPUT_ROOT}/{algorithm}/{scenario}_seed_0 layout); superseded by tools/colab/build_modular_colab_notebook.py."
-    },
-    {
-      "path": "tools/colab/harden_colab_notebook_launch.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Patches the legacy tutorial notebook launch cells (thesis_objective_evidence outputs, latest_*_output_root pointers) of the retired campaign."
-    },
-    {
-      "path": "tools/colab/validate_colab_resume_from_drive.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Validates the retired run's resume plan against outputs/_drive_madrl/kpis exports of Drive folder 1ihH6RqL2KpevfCQEUXj7PP1aS2QYssAX."
-    },
-    {
       "path": "tools/drive/analyze_drive_folder_sizes.py",
       "classification": "obsolete_old_campaign",
       "reason": "Measures Google Drive folder sizes of the retired run (default run id madrl_v3_20260627_164047); the new campaign is located through the results catalog, not Drive folder ids."
@@ -194,7 +179,7 @@
       "reason": "Audits presence of retired KPI extracts in outputs/_drive_madrl/kpis per algorithm/scenario/building."
     },
     {
-      "path": "tools/eval/compute_drive50_district_building_kpi_rankings.py",
+      "path": "tools/eval/kpi_rankings.py",
       "classification": "obsolete_old_campaign",
       "reason": "drive50 rankings from outputs/_drive_madrl/kpi_recalc_20260728 tables, a dated recalculation of the retired run."
     },
@@ -219,7 +204,7 @@
       "reason": "Regenerates per-job thesis figures from the retired full_data Drive mirror into outputs/madrl_v3_20260627_164047; the modular campaign writes its figures directly in <run_id>/<E*>/figures."
     },
     {
-      "path": "tools/thesis/patch_cap5_hipotesis_stats_exactas_docx.py",
+      "path": "tools/thesis/patch_cap5_stats.py",
       "classification": "obsolete_old_campaign",
       "reason": "Dated Word patch inserting exact hypothesis statistics of the retired run madrl_v3_20260627_164047."
     },
@@ -229,12 +214,12 @@
       "reason": "Word patch inserting the KPI catalog from outputs/thesis_objective_evidence of the retired run."
     },
     {
-      "path": "tools/thesis/patch_integral_word_eval_v2_anchors_20260729.py",
+      "path": "tools/thesis/patch_anchors.py",
       "classification": "obsolete_old_campaign",
       "reason": "Dated (2026-07-29) Word patch with values from outputs/_drive_madrl/kpi_recalc_20260728."
     },
     {
-      "path": "tools/thesis/patch_topsis_medida_formal_cap5_6_7_docx.py",
+      "path": "tools/thesis/patch_topsis.py",
       "classification": "obsolete_old_campaign",
       "reason": "Word patch citing TOPSIS results of the retired run madrl_v3_20260627_164047."
     },
@@ -249,7 +234,7 @@
       "reason": "Validates Word claims against the retired run's ground truth under outputs/_drive_madrl."
     },
     {
-      "path": "tools/training/prune_citylearn_v3_training_artifacts.ps1",
+      "path": "tools/training/prune_artifacts.ps1",
       "classification": "obsolete_old_campaign",
       "reason": "Prunes the legacy algorithm-first output root (default outputs/citylearn_v3_madrl_full_20260615_074011_v4)."
     },
@@ -273,5 +258,13 @@
       "classification": "obsolete_old_campaign",
       "reason": "Downloads retired Drive artifacts (OAuth) or falls back to the retired outputs/_drive_madrl/full_data mirror to build thesis figures."
     }
-  ]
+  ],
+  "retired_since_inventory": {
+    "paths": [
+      "tools/colab/generate_colab_notebook.py",
+      "tools/colab/harden_colab_notebook_launch.py",
+      "tools/colab/validate_colab_resume_from_drive.py"
+    ],
+    "evidence": "data/maintenance/layout/consolidation_notebook_tools.json"
+  }
 }

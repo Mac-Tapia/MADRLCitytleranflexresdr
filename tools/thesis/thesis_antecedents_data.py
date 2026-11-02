@@ -1,6 +1,6 @@
 """Structured antecedents for Cap. 2 tables and Cap. 5 discussion contrast.
 
-Sources: docs/tesis_capitulos/Referencias_APA.md, MODULO_A_Matriz_50_investigaciones.csv,
+Sources: docs/chapters/referencias.md, MODULO_A_Matriz_50_investigaciones.csv,
 agent-skills/madrl-citylearn-thesis-plan/scripts/build_biblio_matrix.py,
 tools/thesis/thesis_references_apa.py. Entries marked [PV] when quantitative data is incomplete.
 """
@@ -372,7 +372,7 @@ def audit_json_payload() -> dict:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source_files": [
-            "docs/tesis_capitulos/Referencias_APA.md",
+            "docs/chapters/referencias.md",
             "outputs/_archive/plan_tesis/MODULO_A_Matriz_50_investigaciones.csv",
             "agent-skills/madrl-citylearn-thesis-plan/scripts/build_biblio_matrix.py",
             "tools/thesis/thesis_references_apa.py",

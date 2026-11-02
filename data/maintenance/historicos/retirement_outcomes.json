@@ -1,0 +1,65 @@
+﻿[
+    {
+        "target_id":  "R-01",
+        "status":  "already_absent",
+        "reasons":  [
+
+                    ],
+        "exit_code":  0,
+        "at_utc":  "2026-11-01T08:23:16.6411280Z"
+    },
+    {
+        "target_id":  "R-02",
+        "status":  "already_absent",
+        "reasons":  [
+
+                    ],
+        "exit_code":  0,
+        "at_utc":  "2026-11-01T08:23:16.6746274Z"
+    },
+    {
+        "target_id":  "R-03",
+        "status":  "already_absent",
+        "reasons":  [
+
+                    ],
+        "exit_code":  0,
+        "at_utc":  "2026-11-01T08:23:16.6746274Z"
+    },
+    {
+        "target_id":  "R-04",
+        "status":  "already_absent",
+        "reasons":  [
+
+                    ],
+        "exit_code":  0,
+        "at_utc":  "2026-11-01T08:23:16.6746274Z"
+    },
+    {
+        "target_id":  "R-05",
+        "status":  "already_absent",
+        "reasons":  [
+
+                    ],
+        "exit_code":  0,
+        "at_utc":  "2026-11-01T08:23:16.6746274Z"
+    },
+    {
+        "target_id":  "R-06",
+        "status":  "deleted",
+        "reasons":  [
+
+                    ],
+        "exit_code":  0,
+        "at_utc":  "2026-11-01T08:23:16.6746274Z"
+    },
+    {
+        "target_id":  "R-07",
+        "status":  "deleted",
+        "reasons":  [
+
+                    ],
+        "exit_code":  0,
+        "at_utc":  "2026-11-01T08:23:50.3930641Z"
+    }
+]

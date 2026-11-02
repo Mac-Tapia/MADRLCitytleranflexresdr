@@ -1,0 +1,41 @@
+{
+  "hpo_and_sensitivity": {
+    "confirm_hyperparameters": null,
+    "hpo_candidates": 8,
+    "confirm_weights": [
+      0.6,
+      0.15,
+      0.25
+    ],
+    "sensitivity_weights": [
+      0.55,
+      0.16874999999999998,
+      0.28125
+    ],
+    "identical_native_arguments": true,
+    "sensitivity_requires": [
+      "configuration_freeze",
+      "derived_scenario_catalog"
+    ],
+    "note": "DAG arguments before materialization: this check alone is not evidence that A02 persists in the new run_stage. See 23 focused contract tests."
+  },
+  "stage_integrity": {
+    "error": "PermissionError",
+    "learner_calls": 0
+  },
+  "freeze_and_derived_catalog": {
+    "error": "PermissionError",
+    "learner_calls": 0
+  },
+  "nonfinite_statistics": {
+    "input": "144 synthetic rows with NaN and invalid report hashes",
+    "coverage_complete": true,
+    "decisions": {
+      "scientifically_complete": true,
+      "algorithm_difference": "not_detected",
+      "winner_forced": false
+    },
+    "warning_count": 0,
+    "rejects_invalid_data": false
+  }
+}

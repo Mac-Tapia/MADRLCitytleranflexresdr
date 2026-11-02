@@ -5,17 +5,20 @@ from pathlib import Path
 
 from uc3m.application.training.persistence import write_json_atomic
 from uc3m.application.training.runner import read_manifest
+from uc3m.application.training.layout import iter_evidence_paths, normalize_scenario_dir
 from uc3m.adapters.algorithms.evidence import checkpoint_bundle, finite_kpis
 
 
 def audit(output_root):
     rows = []
-    for path in sorted(Path(output_root).glob('*/evidence.json')):
+    for path in sorted(iter_evidence_paths(output_root)):
+        known_run_id = path.parent.name
         try:
             manifest = read_manifest(path)
+            known_run_id = manifest.identity.run_id
             spec = json.loads((path.parent/'experiment.json').read_text(encoding='utf-8'))
             algorithm = spec['algorithm']
-            native = path.parent/spec['scenario_id']
+            native = path.parent/normalize_scenario_dir(spec['scenario_id'], spec['seed'])
             # Smoke uses canonical 17-building dataset, not a universal agent count.
             checkpoints = checkpoint_bundle(native/'checkpoints', algorithm, 17)
             result = json.loads((native/'results.json').read_text(encoding='utf-8'))
@@ -27,7 +30,7 @@ def audit(output_root):
                          'checkpoint_files': len(checkpoints),
                          'episode_time_steps': spec['episode_time_steps']})
         except (OSError, ValueError, TypeError, KeyError):
-            rows.append({'run_id': path.parent.name, 'status': 'incomplete_or_invalid'})
+            rows.append({'run_id': known_run_id, 'status': 'incomplete_or_invalid'})
     algorithms = {row.get('algorithm') for row in rows if row['status'] == 'verified_smoke'}
     return {'schema_version': 1, 'runs': rows,
             'four_algorithm_smoke_verified': algorithms >= {'HAPPO', 'MASAC', 'MATD3', 'MAAC'},

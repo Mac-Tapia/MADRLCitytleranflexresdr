@@ -4,7 +4,10 @@ Set-Location -LiteralPath $projectRoot
 & powershell -ExecutionPolicy Bypass -File scripts/verify_project_context.ps1
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $python = Join-Path $projectRoot '.venv39-citylearn-v3/Scripts/python.exe'
-$report = Join-Path $projectRoot 'outputs/orchestration-tests.xml'
+# The shared report of earlier runs was retired (R-07); each run writes its own.
+$reportDir = Join-Path $projectRoot 'outputs/quality_reports'
+New-Item -ItemType Directory -Force -Path $reportDir | Out-Null
+$report = Join-Path $reportDir ("orchestration_gates_junit_{0}.xml" -f (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ'))
 & $python -m pytest tests CityLearn/tests/test_incremental_resume_persistence.py CityLearn/tests/test_citylearn_v3_job_completion.py CityLearn/tests/test_internal_refactor_parity.py --junitxml=$report
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 [xml]$junit = Get-Content -LiteralPath $report -Raw

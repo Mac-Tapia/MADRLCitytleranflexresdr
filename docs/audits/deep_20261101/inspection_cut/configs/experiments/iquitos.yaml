@@ -1,0 +1,38 @@
+schema_version: 1
+# Fresh campaign: new dataset, no prior-run inputs, every attempt from zero.
+campaign_id: fresh_iquitos_20261101_v1
+storage_alias: iquitos_v1
+dataset_root: data/campaigns/iquitos_v1
+scenario_catalog: configs/scenarios.yaml      # single E1/E2/E3 weight table
+algorithm_config: configs/algorithms/native.yaml
+kpi_catalog: configs/evaluation/kpis.yaml
+algorithms: [HAPPO, MASAC, MATD3, MAAC]
+scenarios: [E1, E2, E3]
+seeds:
+  development: [901, 902, 903]
+  confirmatory: [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012]
+splits: [train_2023, validation_2024, test_2025]
+stages:
+  pilot:
+    episodes: 2
+    episode_time_steps: 168
+    seeds: [901]
+    scenarios: [E1]
+  hpo:
+    episodes: 10
+    episode_time_steps: 8760
+    seeds: development
+    grid: true
+  confirm:
+    episodes: 50
+    episode_time_steps: 8760
+    seeds: confirmatory
+  sensitivity:
+    episodes: 50
+    episode_time_steps: 8760
+    seeds: [1001, 1002, 1003]
+    dominance: [0.55, 0.65]          # the centre 0.60 is the confirmatory run itself
+    secondary_to_residual: [5, 3]
+# Long stages run only on Colab resources the owner authorizes (no AWS).
+resource_authorization:
+  authorized_stages: []

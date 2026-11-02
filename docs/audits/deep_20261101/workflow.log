@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "D:\MADRLCitytleranflexresdr\tools\ops\verify_workflow_integrity.py", line 381, in <module>
+    raise SystemExit(main())
+  File "D:\MADRLCitytleranflexresdr\tools\ops\verify_workflow_integrity.py", line 360, in main
+    validate_training_scripts(errors)
+  File "D:\MADRLCitytleranflexresdr\tools\ops\verify_workflow_integrity.py", line 261, in validate_training_scripts
+    notebook = json.loads(notebook_path.read_text(encoding="utf-8"))
+  File "C:\Users\Lenovo Legion\AppData\Roaming\uv\python\cpython-3.9-windows-x86_64-none\lib\pathlib.py", line 1194, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "C:\Users\Lenovo Legion\AppData\Roaming\uv\python\cpython-3.9-windows-x86_64-none\lib\pathlib.py", line 1180, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "C:\Users\Lenovo Legion\AppData\Roaming\uv\python\cpython-3.9-windows-x86_64-none\lib\pathlib.py", line 1038, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\MADRLCitytleranflexresdr\\CityLearn\\examples\\madrl_citylearn_v3_tutorial.ipynb'

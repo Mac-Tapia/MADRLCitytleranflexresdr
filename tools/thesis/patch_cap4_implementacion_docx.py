@@ -2,7 +2,7 @@
 """Parche Cap. IV: narrativa de implementación + validación UC3M/schema en Word canónico.
 
 Fuente de verdad:
-- docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md (§§4.1.1, 4.6.1, 4.7.1, 4.10–4.12)
+- docs/chapters/cap4.md (§§4.1.1, 4.6.1, 4.7.1, 4.10–4.12)
 
 No regenera toda la tesis: inserta/actualiza secciones al final de Cap. IV
 (antes de Cap. V) y corrige el tipográfico de §4.7 si aparece corrupto.
@@ -32,7 +32,7 @@ if str(_THESIS_DIR) not in sys.path:
 
 from thesis_word_canons import DOCS, TESIS, existing_canons  # noqa: E402
 
-REPORT = DOCS / "CAP4_IMPLEMENTACION_PATCH_REPORT_2026-07-29.json"
+REPORT = DOCS / 'audits' / 'word' / 'cap4_implementacion.json'
 MARKER = "4.11 mapa de contribucion por carpetas"
 VALIDATION_MARKER = "4.12 validacion implementada"
 
@@ -390,7 +390,7 @@ def main() -> int:
 
     report = {
         "timestamp": datetime.now().isoformat(timespec="seconds"),
-        "source_md": "docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md",
+        "source_md": "docs/chapters/cap4.md",
         "pytest_summary": {
             "command": r".\.venv39-citylearn-v3\Scripts\python.exe -B -m pytest tests/uc3m/ tests/citylearn_v3/ -v --tb=line",
             "passed": 184,

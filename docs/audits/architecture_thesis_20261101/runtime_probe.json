@@ -1,0 +1,1106 @@
+{
+  "config": {
+    "schema_version": 1,
+    "campaign_id": "fresh_iquitos_20261101_v1",
+    "storage_alias": "iquitos_v1",
+    "dataset_root": "data/campaigns/iquitos_v1",
+    "scenario_catalog": "configs/scenarios.yaml",
+    "algorithm_config": "configs/algorithms/native.yaml",
+    "kpi_catalog": "configs/evaluation/kpis.yaml",
+    "algorithms": [
+      "HAPPO",
+      "MASAC",
+      "MATD3",
+      "MAAC"
+    ],
+    "training_phases": [
+      [
+        "HAPPO",
+        "MASAC"
+      ],
+      [
+        "MATD3",
+        "MAAC"
+      ]
+    ],
+    "scenarios": [
+      "E1",
+      "E2",
+      "E3"
+    ],
+    "seeds": {
+      "development": [
+        901,
+        902,
+        903
+      ],
+      "confirmatory": [
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006,
+        1007,
+        1008,
+        1009,
+        1010,
+        1011,
+        1012
+      ]
+    },
+    "splits": [
+      "train_2023",
+      "validation_2024",
+      "test_2025"
+    ],
+    "stages": {
+      "pilot": {
+        "episodes": 3,
+        "episode_time_steps": 8760,
+        "seeds": [
+          901
+        ],
+        "scenarios": [
+          "E1"
+        ]
+      },
+      "hpo": {
+        "episodes": 10,
+        "episode_time_steps": 8760,
+        "seeds": "development",
+        "grid": true
+      },
+      "confirm": {
+        "episodes": 50,
+        "episode_time_steps": 8760,
+        "seeds": "confirmatory"
+      },
+      "sensitivity": {
+        "episodes": 50,
+        "episode_time_steps": 8760,
+        "seeds": [
+          1001,
+          1002,
+          1003
+        ],
+        "dominance": [
+          0.55,
+          0.65
+        ],
+        "secondary_to_residual": [
+          5,
+          3
+        ]
+      }
+    },
+    "supervision": {
+      "max_constraint_dominance_ratio": 1.0
+    },
+    "resource_authorization": {
+      "authorized_stages": []
+    },
+    "_path": "D:\\MADRLCitytleranflexresdr\\configs\\experiments\\iquitos.yaml",
+    "_root": "D:\\MADRLCitytleranflexresdr",
+    "_algorithm_config": {
+      "schema_version": 1,
+      "runtime_flags": [
+        "--cuda"
+      ],
+      "hyperparameter_grid": {
+        "learning_rate": [
+          0.0001,
+          0.0003
+        ],
+        "hidden_dimension": [
+          128,
+          256
+        ],
+        "gamma": [
+          0.99,
+          0.9999
+        ]
+      },
+      "algorithms": {
+        "HAPPO": {
+          "mapping": {
+            "learning_rate": [
+              "--actor-lr",
+              "--critic-lr"
+            ],
+            "hidden_dimension": [
+              "--hidden-size"
+            ],
+            "gamma": [
+              "--gamma"
+            ]
+          },
+          "fixed_flags": {},
+          "fixed": {},
+          "optimizer_owners": {
+            "per_agent": [
+              "actor_agent{i}"
+            ],
+            "shared": [
+              "critic"
+            ]
+          },
+          "runtime_requirements": {
+            "min_ram_gib": 8,
+            "min_vram_gib": 4,
+            "applies_from_episode_time_steps": 1000
+          }
+        },
+        "MASAC": {
+          "mapping": {
+            "learning_rate": [
+              "--actor-lr",
+              "--critic-lr"
+            ],
+            "hidden_dimension": [
+              "--rnn-hidden-dim"
+            ],
+            "gamma": [
+              "--gamma"
+            ]
+          },
+          "fixed_flags": {
+            "buffer_size": "--buffer-size",
+            "critic_batch_size": "--critic-batch-size",
+            "critic_train_steps": "--critic-train-steps"
+          },
+          "fixed": {
+            "buffer_size": 50,
+            "critic_batch_size": 32,
+            "critic_train_steps": 1
+          },
+          "optimizer_owners": {
+            "per_agent": [],
+            "shared": [
+              "masac_policy",
+              "masac_critic_q1",
+              "masac_critic_q2",
+              "masac_alpha"
+            ]
+          },
+          "runtime_requirements": {
+            "min_ram_gib": 72,
+            "min_vram_gib": 82,
+            "applies_from_episode_time_steps": 1000
+          },
+          "declared_limitations": [
+            "one QMIX critic update per episode (author critic_train_steps=1) over a 32-episode batch; the update budget per environment step differs from the other backends (declared confound).",
+            "with rnn_hidden_dim 256 the estimated critic update (103 GiB) exceeds every target GPU (80 GB = 74.5 GiB, 96 GB = 89.4 GiB): such candidates are refused before training, not shrunk."
+          ]
+        },
+        "MATD3": {
+          "mapping": {
+            "learning_rate": [
+              "--lr"
+            ],
+            "hidden_dimension": [
+              "--hidden-size"
+            ],
+            "gamma": [
+              "--gamma"
+            ]
+          },
+          "fixed_flags": {
+            "batch_size": "--batch-size",
+            "buffer_size": "--buffer-size"
+          },
+          "fixed": {
+            "batch_size": 256,
+            "buffer_size": 744600
+          },
+          "optimizer_owners": {
+            "per_agent": [
+              "policy_{i}/actor",
+              "policy_{i}/critic"
+            ],
+            "shared": []
+          },
+          "runtime_requirements": {
+            "min_ram_gib": 40,
+            "min_vram_gib": 4,
+            "applies_from_episode_time_steps": 1000
+          }
+        },
+        "MAAC": {
+          "mapping": {
+            "learning_rate": [
+              "--pi-lr",
+              "--q-lr"
+            ],
+            "hidden_dimension": [
+              "--hidden-size"
+            ],
+            "gamma": [
+              "--gamma"
+            ]
+          },
+          "fixed_flags": {
+            "batch_size": "--batch-size",
+            "buffer_length": "--buffer-length"
+          },
+          "fixed": {
+            "batch_size": 256,
+            "buffer_length": 43800
+          },
+          "optimizer_owners": {
+            "per_agent": [
+              "maac_agent{i}_policy"
+            ],
+            "shared": [
+              "maac_critic"
+            ]
+          },
+          "runtime_requirements": {
+            "min_ram_gib": 8,
+            "min_vram_gib": 4,
+            "applies_from_episode_time_steps": 1000
+          }
+        }
+      }
+    }
+  },
+  "resources": {
+    "ram_gib": 0.6709823608398438,
+    "vram_gib": 6.9326171875
+  },
+  "environments": [
+    {
+      "algorithm": "MATD3",
+      "scenario": "E1",
+      "contract": {
+        "agents": [
+          "Building_1",
+          "Building_2",
+          "Building_3",
+          "Building_4",
+          "Building_5",
+          "Building_6",
+          "Building_7",
+          "Building_8",
+          "Building_9",
+          "Building_10",
+          "Building_11",
+          "Building_12",
+          "Building_13",
+          "Building_14",
+          "Building_15",
+          "Building_16",
+          "Building_17"
+        ],
+        "citylearn_observation_dims": {
+          "Building_1": 49,
+          "Building_2": 63,
+          "Building_3": 77,
+          "Building_4": 63,
+          "Building_5": 42,
+          "Building_6": 245,
+          "Building_7": 315,
+          "Building_8": 140,
+          "Building_9": 91,
+          "Building_10": 63,
+          "Building_11": 42,
+          "Building_12": 42,
+          "Building_13": 98,
+          "Building_14": 49,
+          "Building_15": 77,
+          "Building_16": 98,
+          "Building_17": 98
+        },
+        "ev_type_code_dims": {
+          "Building_1": 4,
+          "Building_2": 6,
+          "Building_3": 8,
+          "Building_4": 6,
+          "Building_5": 3,
+          "Building_6": 32,
+          "Building_7": 42,
+          "Building_8": 17,
+          "Building_9": 10,
+          "Building_10": 6,
+          "Building_11": 3,
+          "Building_12": 3,
+          "Building_13": 11,
+          "Building_14": 4,
+          "Building_15": 8,
+          "Building_16": 11,
+          "Building_17": 11
+        },
+        "observation_dims": {
+          "Building_1": 53,
+          "Building_2": 69,
+          "Building_3": 85,
+          "Building_4": 69,
+          "Building_5": 45,
+          "Building_6": 277,
+          "Building_7": 357,
+          "Building_8": 157,
+          "Building_9": 101,
+          "Building_10": 69,
+          "Building_11": 45,
+          "Building_12": 45,
+          "Building_13": 109,
+          "Building_14": 53,
+          "Building_15": 85,
+          "Building_16": 109,
+          "Building_17": 109
+        },
+        "max_observation_dim": 357,
+        "observation_padding": "CityLearnV3BackendAdapter.padded_observations: CityLearn observations of the agent, then its EV-type codes, then trailing zeros up to max_observation_dim",
+        "observation_names_sha256": "cf888e499e7307ad9f0a611f85d6d2a8a61ea2ad6c122354f95495ba739cd144",
+        "normalize_observations": true,
+        "state_dim": 1652,
+        "action_dims": {
+          "Building_1": 6,
+          "Building_2": 8,
+          "Building_3": 10,
+          "Building_4": 8,
+          "Building_5": 5,
+          "Building_6": 34,
+          "Building_7": 44,
+          "Building_8": 19,
+          "Building_9": 12,
+          "Building_10": 8,
+          "Building_11": 5,
+          "Building_12": 5,
+          "Building_13": 13,
+          "Building_14": 6,
+          "Building_15": 10,
+          "Building_16": 13,
+          "Building_17": 13
+        },
+        "max_action_dim": 44,
+        "action_names_by_agent": {
+          "Building_1": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_1_1",
+            "electric_vehicle_storage_charger_1_2",
+            "electric_vehicle_storage_charger_1_3",
+            "electric_vehicle_storage_charger_1_4",
+            "washing_machine_1"
+          ],
+          "Building_2": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_2_1",
+            "electric_vehicle_storage_charger_2_2",
+            "electric_vehicle_storage_charger_2_3",
+            "electric_vehicle_storage_charger_2_4",
+            "electric_vehicle_storage_charger_2_5",
+            "electric_vehicle_storage_charger_2_6",
+            "washing_machine_2"
+          ],
+          "Building_3": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_3_1",
+            "electric_vehicle_storage_charger_3_2",
+            "electric_vehicle_storage_charger_3_3",
+            "electric_vehicle_storage_charger_3_4",
+            "electric_vehicle_storage_charger_3_5",
+            "electric_vehicle_storage_charger_3_6",
+            "electric_vehicle_storage_charger_3_7",
+            "electric_vehicle_storage_charger_3_8",
+            "washing_machine_3"
+          ],
+          "Building_4": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_4_1",
+            "electric_vehicle_storage_charger_4_2",
+            "electric_vehicle_storage_charger_4_3",
+            "electric_vehicle_storage_charger_4_4",
+            "electric_vehicle_storage_charger_4_5",
+            "electric_vehicle_storage_charger_4_6",
+            "washing_machine_4"
+          ],
+          "Building_5": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_5_1",
+            "electric_vehicle_storage_charger_5_2",
+            "electric_vehicle_storage_charger_5_3",
+            "washing_machine_5"
+          ],
+          "Building_6": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_6_1",
+            "electric_vehicle_storage_charger_6_2",
+            "electric_vehicle_storage_charger_6_3",
+            "electric_vehicle_storage_charger_6_4",
+            "electric_vehicle_storage_charger_6_5",
+            "electric_vehicle_storage_charger_6_6",
+            "electric_vehicle_storage_charger_6_7",
+            "electric_vehicle_storage_charger_6_8",
+            "electric_vehicle_storage_charger_6_9",
+            "electric_vehicle_storage_charger_6_10",
+            "electric_vehicle_storage_charger_6_11",
+            "electric_vehicle_storage_charger_6_12",
+            "electric_vehicle_storage_charger_6_13",
+            "electric_vehicle_storage_charger_6_14",
+            "electric_vehicle_storage_charger_6_15",
+            "electric_vehicle_storage_charger_6_16",
+            "electric_vehicle_storage_charger_6_17",
+            "electric_vehicle_storage_charger_6_18",
+            "electric_vehicle_storage_charger_6_19",
+            "electric_vehicle_storage_charger_6_20",
+            "electric_vehicle_storage_charger_6_21",
+            "electric_vehicle_storage_charger_6_22",
+            "electric_vehicle_storage_charger_6_23",
+            "electric_vehicle_storage_charger_6_24",
+            "electric_vehicle_storage_charger_6_25",
+            "electric_vehicle_storage_charger_6_26",
+            "electric_vehicle_storage_charger_6_27",
+            "electric_vehicle_storage_charger_6_28",
+            "electric_vehicle_storage_charger_6_29",
+            "electric_vehicle_storage_charger_6_30",
+            "electric_vehicle_storage_charger_6_31",
+            "electric_vehicle_storage_charger_6_32",
+            "washing_machine_6"
+          ],
+          "Building_7": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_7_1",
+            "electric_vehicle_storage_charger_7_2",
+            "electric_vehicle_storage_charger_7_3",
+            "electric_vehicle_storage_charger_7_4",
+            "electric_vehicle_storage_charger_7_5",
+            "electric_vehicle_storage_charger_7_6",
+            "electric_vehicle_storage_charger_7_7",
+            "electric_vehicle_storage_charger_7_8",
+            "electric_vehicle_storage_charger_7_9",
+            "electric_vehicle_storage_charger_7_10",
+            "electric_vehicle_storage_charger_7_11",
+            "electric_vehicle_storage_charger_7_12",
+            "electric_vehicle_storage_charger_7_13",
+            "electric_vehicle_storage_charger_7_14",
+            "electric_vehicle_storage_charger_7_15",
+            "electric_vehicle_storage_charger_7_16",
+            "electric_vehicle_storage_charger_7_17",
+            "electric_vehicle_storage_charger_7_18",
+            "electric_vehicle_storage_charger_7_19",
+            "electric_vehicle_storage_charger_7_20",
+            "electric_vehicle_storage_charger_7_21",
+            "electric_vehicle_storage_charger_7_22",
+            "electric_vehicle_storage_charger_7_23",
+            "electric_vehicle_storage_charger_7_24",
+            "electric_vehicle_storage_charger_7_25",
+            "electric_vehicle_storage_charger_7_26",
+            "electric_vehicle_storage_charger_7_27",
+            "electric_vehicle_storage_charger_7_28",
+            "electric_vehicle_storage_charger_7_29",
+            "electric_vehicle_storage_charger_7_30",
+            "electric_vehicle_storage_charger_7_31",
+            "electric_vehicle_storage_charger_7_32",
+            "electric_vehicle_storage_charger_7_33",
+            "electric_vehicle_storage_charger_7_34",
+            "electric_vehicle_storage_charger_7_35",
+            "electric_vehicle_storage_charger_7_36",
+            "electric_vehicle_storage_charger_7_37",
+            "electric_vehicle_storage_charger_7_38",
+            "electric_vehicle_storage_charger_7_39",
+            "electric_vehicle_storage_charger_7_40",
+            "electric_vehicle_storage_charger_7_41",
+            "electric_vehicle_storage_charger_7_42",
+            "washing_machine_7"
+          ],
+          "Building_8": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_8_1",
+            "electric_vehicle_storage_charger_8_2",
+            "electric_vehicle_storage_charger_8_3",
+            "electric_vehicle_storage_charger_8_4",
+            "electric_vehicle_storage_charger_8_5",
+            "electric_vehicle_storage_charger_8_6",
+            "electric_vehicle_storage_charger_8_7",
+            "electric_vehicle_storage_charger_8_8",
+            "electric_vehicle_storage_charger_8_9",
+            "electric_vehicle_storage_charger_8_10",
+            "electric_vehicle_storage_charger_8_11",
+            "electric_vehicle_storage_charger_8_12",
+            "electric_vehicle_storage_charger_8_13",
+            "electric_vehicle_storage_charger_8_14",
+            "electric_vehicle_storage_charger_8_15",
+            "electric_vehicle_storage_charger_8_16",
+            "electric_vehicle_storage_charger_8_17",
+            "washing_machine_8"
+          ],
+          "Building_9": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_9_1",
+            "electric_vehicle_storage_charger_9_2",
+            "electric_vehicle_storage_charger_9_3",
+            "electric_vehicle_storage_charger_9_4",
+            "electric_vehicle_storage_charger_9_5",
+            "electric_vehicle_storage_charger_9_6",
+            "electric_vehicle_storage_charger_9_7",
+            "electric_vehicle_storage_charger_9_8",
+            "electric_vehicle_storage_charger_9_9",
+            "electric_vehicle_storage_charger_9_10",
+            "washing_machine_9"
+          ],
+          "Building_10": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_10_1",
+            "electric_vehicle_storage_charger_10_2",
+            "electric_vehicle_storage_charger_10_3",
+            "electric_vehicle_storage_charger_10_4",
+            "electric_vehicle_storage_charger_10_5",
+            "electric_vehicle_storage_charger_10_6",
+            "washing_machine_10"
+          ],
+          "Building_11": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_11_1",
+            "electric_vehicle_storage_charger_11_2",
+            "electric_vehicle_storage_charger_11_3",
+            "washing_machine_11"
+          ],
+          "Building_12": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_12_1",
+            "electric_vehicle_storage_charger_12_2",
+            "electric_vehicle_storage_charger_12_3",
+            "washing_machine_12"
+          ],
+          "Building_13": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_13_1",
+            "electric_vehicle_storage_charger_13_2",
+            "electric_vehicle_storage_charger_13_3",
+            "electric_vehicle_storage_charger_13_4",
+            "electric_vehicle_storage_charger_13_5",
+            "electric_vehicle_storage_charger_13_6",
+            "electric_vehicle_storage_charger_13_7",
+            "electric_vehicle_storage_charger_13_8",
+            "electric_vehicle_storage_charger_13_9",
+            "electric_vehicle_storage_charger_13_10",
+            "electric_vehicle_storage_charger_13_11",
+            "washing_machine_13"
+          ],
+          "Building_14": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_14_1",
+            "electric_vehicle_storage_charger_14_2",
+            "electric_vehicle_storage_charger_14_3",
+            "electric_vehicle_storage_charger_14_4",
+            "washing_machine_14"
+          ],
+          "Building_15": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_15_1",
+            "electric_vehicle_storage_charger_15_2",
+            "electric_vehicle_storage_charger_15_3",
+            "electric_vehicle_storage_charger_15_4",
+            "electric_vehicle_storage_charger_15_5",
+            "electric_vehicle_storage_charger_15_6",
+            "electric_vehicle_storage_charger_15_7",
+            "electric_vehicle_storage_charger_15_8",
+            "washing_machine_15"
+          ],
+          "Building_16": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_16_1",
+            "electric_vehicle_storage_charger_16_2",
+            "electric_vehicle_storage_charger_16_3",
+            "electric_vehicle_storage_charger_16_4",
+            "electric_vehicle_storage_charger_16_5",
+            "electric_vehicle_storage_charger_16_6",
+            "electric_vehicle_storage_charger_16_7",
+            "electric_vehicle_storage_charger_16_8",
+            "electric_vehicle_storage_charger_16_9",
+            "electric_vehicle_storage_charger_16_10",
+            "electric_vehicle_storage_charger_16_11",
+            "washing_machine_16"
+          ],
+          "Building_17": [
+            "electrical_storage",
+            "electric_vehicle_storage_charger_17_1",
+            "electric_vehicle_storage_charger_17_2",
+            "electric_vehicle_storage_charger_17_3",
+            "electric_vehicle_storage_charger_17_4",
+            "electric_vehicle_storage_charger_17_5",
+            "electric_vehicle_storage_charger_17_6",
+            "electric_vehicle_storage_charger_17_7",
+            "electric_vehicle_storage_charger_17_8",
+            "electric_vehicle_storage_charger_17_9",
+            "electric_vehicle_storage_charger_17_10",
+            "electric_vehicle_storage_charger_17_11",
+            "washing_machine_17"
+          ]
+        },
+        "action_transform": "per agent: first action_dims[agent] entries, clipped to the CityLearn action space (CityLearnV3BackendAdapter._continuous_action_for_agent)"
+      },
+      "reward_aggregation": "team_mean",
+      "observed_axis_weights": {
+        "flex": 0.6,
+        "carbon": 0.15,
+        "cost": 0.25
+      },
+      "team_reward": -0.32549562935977594,
+      "local_rewards": [
+        -0.9044479522460547,
+        -0.004616830428976591,
+        -0.676849623004629,
+        -0.22389146923583375,
+        -0.5979071428345177,
+        -0.8457114932115095,
+        -0.005387976296386079,
+        -0.0048081830637834635,
+        -0.03758614410171726,
+        -0.09546298005807047,
+        -0.6111782250729432,
+        -0.9044479522460547,
+        -0.005034611207293634,
+        -0.01930793285791467,
+        -0.023337777730233822,
+        -0.26134539610591073,
+        -0.31210400941436117
+      ],
+      "reward_vectors": [
+        [
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376,
+          -0.8326183557510376
+        ],
+        [
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895,
+          -0.34627726674079895
+        ],
+        [
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784,
+          -0.3254956007003784
+        ]
+      ],
+      "all_agents_share_payoff": true,
+      "discrete_actions": 89,
+      "bact_is_appended": false,
+      "seconds": 31.8525769
+    }
+  ],
+  "datasets": [
+    {
+      "root": "data/campaigns/iquitos_v1",
+      "acceptance": {
+        "campaign_id": "fresh_iquitos_20261101_v1",
+        "dataset_hash": "6adc312c54062275bbe7bba886c60a0cf516f6419d4e4c781d42f3dc77033cbd",
+        "source_manifest_hash": "1e8cb4fbddbf9aa536f252200c5aafdb94a8c2b1e9624d0b6fe0f55ff219e331",
+        "balance_checks": 1836,
+        "balance_failures": [],
+        "balance_failure_count": 0,
+        "modeled_monthly_targets": 22,
+        "measured_monthly_targets": 590,
+        "dataset_verified": true,
+        "limitations": [
+          "B01: measured monthly energy only for 2024-01..2025-10 (study workbook, sheet 8.ELOR) with the peak split from same-year Office peers; 2025-11/12 are modeled from B01 2025 months. B_01.csv is project-generated and excluded.",
+          "B01 2023 (training year) is a declared backcast: 2024 measured monthly profile x 0.98 (original method). It uses validation-year information; its months carry cross_year_leakage_declared and a sensitivity excluding modeled buildings is required.",
+          "Missing months are modeled within the same year; hourly shapes are generated, not measured.",
+          "Weather is NASA POWER reanalysis for one grid point, not a local station.",
+          "PEN/USD uses the annual official average (World Bank); monthly variation is not represented.",
+          "TotalFacturado is assumed to be in PEN; the peak/off-peak price ratio 0.38/0.26 is a project assumption.",
+          "Carbon intensity is a modeled diesel-system factor, not an hourly measurement.",
+          "EV sessions, controlled machines, PV and BESS sizes are modeled with the project tools."
+        ],
+        "checked_at": "2026-11-01T10:07:06.095957+00:00"
+      },
+      "splits_exist": true,
+      "normalizer_exists": true,
+      "csv_ranges": {
+        "carbon_intensity.csv": {
+          "min": 0.6715,
+          "max": 0.79,
+          "unique": 10915,
+          "rows": 26304
+        },
+        "pricing.csv": {
+          "min": 0.102124,
+          "max": 0.299103,
+          "unique": 72,
+          "rows": 26304
+        }
+      }
+    },
+    {
+      "root": "data/campaigns/iquitos_v2",
+      "acceptance": {
+        "campaign_id": "fresh_iquitos_20261101_v2",
+        "dataset_hash": "e5c9ccc2df70335baa6e3d591b84acba68e420879668b9b709eb89b26bf81989",
+        "source_manifest_hash": "f23f7a2475dee6d9b9366fdaf9833f5b594d29d017720d06bed6a057403306a6",
+        "balance_checks": 1836,
+        "balance_failures": [],
+        "balance_failure_count": 0,
+        "modeled_monthly_targets": 22,
+        "measured_monthly_targets": 590,
+        "gates": {
+          "hourly_balance": true,
+          "citylearn_balance": true,
+          "microgrids_optimal": true,
+          "ev_pilot_only": true
+        },
+        "dataset_verified": true,
+        "limitations": [
+          "B01: measured monthly energy only for 2024-01..2025-10 (study workbook, sheet 8.ELOR) with the peak split from same-year Office peers; 2025-11/12 are modeled from B01 2025 months. B_01.csv is project-generated and excluded.",
+          "B01 2023 (training year) is a declared backcast: 2024 measured monthly profile x 0.98 (original method). It uses validation-year information; its months carry cross_year_leakage_declared and a sensitivity excluding modeled buildings is required.",
+          "Missing months are modeled within the same year; hourly shapes are generated from registry schedules, not measured.",
+          "TOU registers differing from the printed total by >2 % are scaled to the printed total (owner rule); printed totals outside 0.5..2 x the registers are treated as transcription errors and the registers kept (flagged).",
+          "Weather is NASA POWER reanalysis for one grid point, not a local station.",
+          "PEN/USD uses the annual official average (World Bank); monthly variation is not represented.",
+          "TotalFacturado is assumed to be in PEN and includes non-energy charges; the peak/off-peak price ratio 0.38/0.26 is a project assumption.",
+          "Carbon intensity is one constant: IPCC 2006 gas/diesel oil factor over an assumed 0.40 plant efficiency.",
+          "PV and BESS are a declared design scenario sized by the MicroGrids LP with assumed economics; export is credited at the purchase price (net billing, not available in Iquitos today) and nothing is curtailed; the PV bound is the covered built area, not a roof survey.",
+          "EV: only a declared 2-motorcycle pilot at B01; all other buildings have no EV and no charger.",
+          "Controlled machine energy, cooling design COP and schedules are assumptions carried from the earlier tools."
+        ],
+        "checked_at": "2026-11-01T18:33:28.031238+00:00"
+      },
+      "splits_exist": true,
+      "normalizer_exists": true,
+      "csv_ranges": {
+        "carbon_intensity.csv": {
+          "min": 0.6669,
+          "max": 0.6669,
+          "unique": 1,
+          "rows": 26304
+        },
+        "pricing.csv": {
+          "min": 0.101239,
+          "max": 0.301876,
+          "unique": 72,
+          "rows": 26304
+        }
+      }
+    },
+    {
+      "root": "data/campaigns/iquitos_v3",
+      "acceptance": {
+        "campaign_id": "fresh_iquitos_20261101_v3",
+        "dataset_hash": "9619f5e5ef68e0159a6cc806b251798cf46a9671f855c3b520a14857541e5872",
+        "source_manifest_hash": "adf40df93a221ea305d575a3766eab3bad158871355a0b529819a3353b466ed8",
+        "balance_checks": 1836,
+        "balance_failures": [],
+        "balance_failure_count": 0,
+        "modeled_monthly_targets": 22,
+        "measured_monthly_targets": 590,
+        "gates": {
+          "hourly_balance": true,
+          "citylearn_balance": true,
+          "microgrids_optimal": true,
+          "ev_pilot_only": true,
+          "tariff_history_complete": true,
+          "bess_verified": true
+        },
+        "dataset_verified": true,
+        "limitations": [
+          "B01: measured monthly energy only for 2024-01..2025-10 (study workbook, sheet 8.ELOR) with the peak split from same-year Office peers; 2025-11/12 are modeled from B01 2025 months. B_01.csv is project-generated and excluded.",
+          "B01 2023 (training year) is a declared backcast: 2024 measured monthly profile x 0.98 (original method). It uses validation-year information; its months carry cross_year_leakage_declared and a sensitivity excluding modeled buildings is required.",
+          "Missing months are modeled within the same year; hourly shapes are generated from registry schedules, not measured.",
+          "TOU registers differing from the printed total by >2 % are scaled to the printed total (owner rule); printed totals outside 0.5..2 x the registers are treated as transcription errors and the registers kept (flagged).",
+          "Weather is NASA POWER reanalysis for one grid point, not a local station.",
+          "PEN/USD uses the annual official average (World Bank); monthly variation is not represented.",
+          "Prices are the official Osinergmin sheets (sector IQUITOS, without IGV); recomputed bills differ from TotalFacturado (audit/tariff_bill_validation.json) because public lighting, rural-electrification contributions and multi-month demand averaging are not reproducible from a bill.",
+          "CityLearn has no demand charge: the peak-block demand charge only enters the MicroGrids sizing.",
+          "Carbon intensity is one constant: IPCC 2006 gas/diesel oil factor over an assumed 0.40 plant efficiency.",
+          "PV and BESS are a declared design scenario sized by the MicroGrids LP with assumed economics and the official tariff; export is credited at the energy charge (net billing, not available in Iquitos today) and nothing is curtailed; the PV bound is the covered built area x 0.63 (user decision), not a roof survey.",
+          "EV: only a declared 2-motorcycle pilot at B01; all other buildings have no EV and no charger.",
+          "Controlled machine energy, cooling design COP and schedules are assumptions carried from the earlier tools."
+        ],
+        "checked_at": "2026-11-02T01:32:14.641243+00:00"
+      },
+      "splits_exist": true,
+      "normalizer_exists": true,
+      "csv_ranges": {
+        "carbon_intensity.csv": {
+          "min": 0.6669,
+          "max": 0.6669,
+          "unique": 1,
+          "rows": 26304
+        },
+        "pricing_1.csv": {
+          "min": 0.071506995,
+          "max": 0.110415115,
+          "unique": 34,
+          "rows": 26304
+        }
+      }
+    }
+  ],
+  "dag_budget": {
+    "pilot": {
+      "treatments": 4,
+      "episodes": 12,
+      "env_steps": 105120
+    },
+    "hpo": {
+      "treatments": 288,
+      "episodes": 2880,
+      "env_steps": 25228800
+    },
+    "confirm": {
+      "treatments": 144,
+      "episodes": 7200,
+      "env_steps": 63072000
+    },
+    "sensitivity": {
+      "treatments": 72,
+      "episodes": 3600,
+      "env_steps": 31536000
+    }
+  },
+  "hpo_candidates": {
+    "HAPPO": {
+      "c1": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c2": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c3": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c4": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      },
+      "c5": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c6": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c7": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c8": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      }
+    },
+    "MASAC": {
+      "c1": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c2": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c3": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c4": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      },
+      "c5": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c6": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c7": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c8": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      }
+    },
+    "MATD3": {
+      "c1": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c2": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c3": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c4": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      },
+      "c5": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c6": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c7": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c8": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      }
+    },
+    "MAAC": {
+      "c1": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c2": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c3": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c4": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      },
+      "c5": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c6": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c7": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c8": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      }
+    }
+  },
+  "phase_budgets": [
+    {
+      "workers": 0,
+      "reasons": [
+        "insufficient_resources:MASAC:ram",
+        "insufficient_resources:MASAC:vram"
+      ],
+      "bounds": {
+        "cpu": 32,
+        "ram": 0,
+        "vram": 0
+      },
+      "measured": {
+        "ram_gib": 0.6709823608398438,
+        "vram_gib": 6.9326171875,
+        "cpu_count": 32
+      },
+      "share": null,
+      "algorithms": {},
+      "adjustments": []
+    },
+    {
+      "workers": 0,
+      "reasons": [
+        "insufficient_resources:MATD3:ram"
+      ],
+      "bounds": {
+        "cpu": 32,
+        "ram": 0,
+        "vram": 1
+      },
+      "measured": {
+        "ram_gib": 0.6709823608398438,
+        "vram_gib": 6.9326171875,
+        "cpu_count": 32
+      },
+      "share": null,
+      "algorithms": {},
+      "adjustments": []
+    }
+  ],
+  "historical_cache_exists": true,
+  "production_campaign_manifest_exists": false
+}

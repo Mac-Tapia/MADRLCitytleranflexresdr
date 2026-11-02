@@ -49,5 +49,5 @@ def audit(path: str) -> None:
 
 
 if __name__ == "__main__":
-    audit("docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx")
-    audit("docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx")
+    audit("docs/tesis.docx")
+    audit("docs/informe.docx")

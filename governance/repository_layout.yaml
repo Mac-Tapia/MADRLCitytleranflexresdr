@@ -1,0 +1,187 @@
+schema_version: 1
+# Registry of the repository tree, canonical sources and forbidden inputs.
+# The fresh campaign reads roots only from here; it never searches for the
+# newest folder or follows a global pointer.
+
+fresh_roots:
+  dataset: data/campaigns/{storage_alias}
+  artifacts: outputs/campaigns/{storage_alias}
+  # layout.treatment_path is the only implementation of the relative path.
+  attempt: outputs/campaigns/{storage_alias}/{stage}/{algorithm}/{scenario}/{candidate}/seed_{seed}/try_{attempt}
+  maintenance: data/maintenance
+
+approved_raw_roots:
+  - CityLearn/data/buildingcsv
+  - data/campaigns/{storage_alias}/raw
+
+# Retired by T0 (closed list R-01..R-07). Any read of these paths by the fresh
+# profile fails with retired_historical_input, even when the path is absent.
+retired_historical_roots:
+  R-01: outputs/_drive_madrl
+  R-02: outputs/citylearn_v3_madrl_full_20260615_074011_v4
+  R-03: outputs/madrl_v3_20260627_164047
+  R-04: outputs/modular_smoke
+  R-05: outputs/thesis_objective_evidence
+  R-06: outputs/dataset_cache
+  R-07: outputs/orchestration-tests.xml
+
+# Prior hourly dataset and prior-run roots: never an input role of a new campaign.
+forbidden_input_roots:
+  - CityLearn/data/datasets/citylearn_iquitos_2023_2025
+  - outputs/modular_training
+  - outputs/citylearn_v3_madrl
+  - outputs/colab_delivery
+  - data/dataset_audit
+
+# Owner decision 2026-11-01: training is launched only through the fresh
+# campaign CLI and runs on Colab; no AWS deployment. The existing notebooks in
+# examples_madrl_v3/ are kept, not recreated: they are reconnected to the CLI.
+launch:
+  canonical: uc3m.application.training.cli
+  # Parent code allowed to start a native CityLearn trainer, and why.
+  native_bridges:
+    uc3m/adapters/algorithms/native.py: "Adapter that builds the native trainer command for the fresh CLI; never an entrypoint itself."
+  # Files that name trainer scripts without starting them.
+  mentions_only:
+    tools/figures/generate_architecture_pngs.py: "Renders trainer file names as diagram labels; subprocess only runs the image renderer."
+  # Removed launch paths (recoverable from git cb2d7c7). Native launchers that
+  # live inside the CityLearn dependency are protected and are not listed here.
+  retired:
+    - scripts/LANZAR_ENTRENAMIENTO_V4.bat
+    - scripts/restart_happo_masac_v3.ps1
+    - scripts/launch_citylearn_v3_multiseed_campaign.ps1
+    - scripts/run_3madrl_parallel.ps1
+    - scripts/run_citylearn_v3_full_training_visible.ps1
+    - scripts/training_launcher_window.ps1
+    - scripts/training_resume_window.ps1
+    - scripts/monitor_citylearn_training_visible.ps1
+    - scripts/training/launch_full_campaign.py
+    - uc3m/train.py
+    - deploy/aws/training
+    - deploy/aws/iac-training
+    - deploy/aws/README_TRAINING_AWS.md
+    - uc3m/application/training/colab.py
+    - tests/unit/application/training/test_colab.py
+    - uc3m/configs
+    - tools/colab/clean_tutorial_notebook.py
+    - tools/colab/generate_colab_notebook.py
+    - tools/colab/harden_colab_notebook_launch.py
+    - tools/colab/patch_monitor_artifact_truth.py
+    - tools/colab/patch_monitor_panel.py
+    - tools/colab/patch_notebook_a100.py
+    - tools/colab/patch_notebook_final.py
+    - tools/colab/patch_output_layout_simple.py
+    - tools/colab/patch_tutorial_notebook.py
+    - tools/colab/test_notebook_cells.py
+    - tools/colab/validate_colab_resume_from_drive.py
+    - tools/colab/validate_colab_two_phase.py
+    - tools/colab/validate_notebook_sync.py
+    - tools/colab/verify_notebook.py
+  # Kept clients that still start training the old way. Each one is rewired to
+  # the canonical CLI once it exists (T6); until then the launch gate is open.
+  clients_to_reconnect:
+    examples_madrl_v3/madrl_citylearn_v3_cli.ipynb: "calls CityLearn native trainers directly"
+    examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb: "calls CityLearn native trainers directly"
+    examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb: "calls native trainers and the multiseed launcher"
+
+forbidden_pointer_names:
+  - latest_colab_output_root.txt
+  - latest_visible_training_output_root.txt
+
+# T12 (design section 12): real tree, one canonical file per responsibility and
+# duplicate consolidation. Read by tools/ops/audit_repository_layout.py and
+# tools/ops/audit_duplicate_files.py. CityLearn/ and external/ are excluded by
+# the auditors themselves (protected dependencies), whatever this block says.
+consolidation:
+  # Not walked at all; every exclusion is reported in excluded_scope.
+  scan_exclusions:
+    outputs: "runtime results; governed by T0 retirement and fresh_roots, not by the clone criterion"
+    build: "generated setuptools build tree"
+    uc3m.egg-info: "generated packaging metadata"
+    .superpowers: "agent scratch and pytest temp trees of agent sessions; not project content"
+    tools/skills/notebooklm-mcp/data/browser_state: "gitignored browser profile of a local MCP client (runtime state, may hold session data)"
+  # Mentions inside these roots are records, not active consumers.
+  record_roots: [governance, data/maintenance, docs/audits, docs/design, docs/plans]
+  # Paths produced by a run; an index may name them before they exist.
+  runtime_reference_roots: [outputs, data/campaigns, data/maintenance]
+  # Per-run artifact names written relative to an attempt directory (README run
+  # contract); data/ holds no files at depth 1, so these cannot hide a repo file.
+  runtime_reference_patterns: ["data/*.json", "data/*.csv"]
+  protected:
+    - pattern: "docs/*.docx"
+      reason: "approved Word document; consolidation only through the authorized Word flow (design 12.3, D-05)"
+  # Equal bytes under these roots are distinct data identities, never merged by hash.
+  data_identity_roots:
+    data/campaigns: "assets, splits and campaigns keep their identity by provenance"
+    data/maintenance/dataset_builds: "failed build attempts kept as evidence; never reused or concatenated"
+    data/dataset_audit: "prior audit trail; forbidden input, kept as historical trace"
+    data/audits: "immutable audit records (governance/naming.yaml immutable_roots)"
+  evidence_snapshot_roots:
+    docs/audits/deep_20261101: "audit cut: inspection_cut/ keeps originals matched by hash to files.csv and recheck/ reproduces the checks (report.md, lines 21-23)"
+  per_package_files:
+    "tools/skills/*/LICENSE.txt": "each skill package ships its own license file"
+    "tools/skills/*/*-mcp.cmd": "per-package MCP launcher; resolves its own package through %~dp0"
+    "docs/contributions/*/CHANGES.md": "one change log per external submodule; identity is the submodule (governance/naming.yaml exceptions)"
+  # D-03: bridges kept only while a caller needs them; no logic of their own.
+  facades:
+    tools/check_training_dataset_ready.py:
+      canonical: tools/dataset/check_training_dataset_ready.py
+      reason: "CityLearn launch scripts (protected dependency) call the old path"
+    scripts/generate_borrador_tesis_docx.py:
+      canonical: tools/thesis/generate_borrador_tesis_docx.py
+      reason: "compatibility entrypoint after consolidation into tools/thesis/"
+    scripts/thesis_doctoral_sections.py:
+      canonical: tools/thesis/thesis_doctoral_sections.py
+      reason: "compatibility import shim after consolidation into tools/thesis/"
+  generated_assets: {}
+  # One path per logical role.
+  canonical_sources:
+    launch.cli: uc3m/application/training/cli.py
+    campaign.use_cases: uc3m/application/training/fresh_campaign.py
+    notebook.campaign: examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb
+    notebook.campaign_generator: tools/colab/build_modular_colab_notebook.py
+    config.objective_policies: configs/objective_policies.yaml
+    config.scenarios: configs/scenarios.yaml
+    config.experiment: configs/experiments/iquitos.yaml
+    config.native_algorithms: configs/algorithms/native.yaml
+    config.kpis: configs/evaluation/kpis.yaml
+    layout.registry: governance/repository_layout.yaml
+    naming.registry: governance/naming.yaml
+    maintenance.historical_retirement: scripts/maintenance/retire_historical_outputs.ps1
+    maintenance.consolidation: scripts/maintenance/consolidate_repository.ps1
+    figure.plano: docs/architecture/plano.png
+    figure.citylearn_v2_environment: docs/architecture/_refs/citylearn_v2_environment.jpg
+  required_paths_by_phase:
+    A:
+      - AGENTS.md
+      - README.md
+      - governance/repository_layout.yaml
+      - governance/naming.yaml
+      - scripts/verify_project_context.ps1
+      - tools/ops/historical_inventory.py
+      - scripts/maintenance/retire_historical_outputs.ps1
+    B:
+      - configs/objective_policies.yaml
+      - configs/scenarios.yaml
+      - configs/experiments/iquitos.yaml
+      - configs/algorithms/native.yaml
+      - configs/evaluation/kpis.yaml
+      - uc3m/application/training/cli.py
+      - uc3m/application/training/fresh_campaign.py
+      - tools/colab/build_modular_colab_notebook.py
+      - examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb
+    C-software:
+      - tools/ops/audit_repository_layout.py
+      - tools/ops/audit_duplicate_files.py
+      - scripts/maintenance/consolidate_repository.ps1
+      - tests/fresh_training/test_repository_layout.py
+      - tests/fresh_training/test_duplicate_consolidation.py
+      - scripts/quality/run_fresh_training_gates.ps1
+      - docs/00_INDEX.md
+      - docs/architecture/runbook.md
+  checked_indexes:
+    - README.md
+    - docs/00_INDEX.md
+    - scripts/README.md
+    - tools/README.md
+    - docs/architecture/runbook.md

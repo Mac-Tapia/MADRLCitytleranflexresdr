@@ -13,9 +13,14 @@ corridas oficiales — 4 algoritmos x 3 escenarios E1/E2/E3):
     "n_agents": 17, "central_agent": false, "action_space": {...},
     "normalization": {"mean": [...], "std": [...]}}``.
 
-Si los archivos no existen, ``ModelBundle.load`` cae a un modo "stub"
-(política aleatoria dentro del espacio de acciones) para permitir levantar
-el stack de demo end-to-end sin un checkpoint real.
+Sin un modelo cargable ``ModelBundle.load`` devuelve ``None`` (servicio vivo
+pero no listo). La política "stub" (aleatoria dentro del espacio de acciones)
+existe solo con ``allow_stub=True`` (opt-in explícito del demo) y nunca es
+elegible para controlar una planta. Un modelo real tampoco lo es mientras sus
+metadatos no declaren ``acceptance.operational_acceptance: true``, que solo
+puede venir de una validación operacional independiente (SIL/HIL/piloto).
+Observaciones con forma distinta a la declarada o con NaN/Inf se rechazan, y
+una salida no finita del modelo nunca se recorta a un setpoint.
 """
 from __future__ import annotations
 
@@ -43,6 +48,7 @@ class ModelMetadata:
     action_high: np.ndarray
     norm_mean: np.ndarray | None = None
     norm_std: np.ndarray | None = None
+    operational_acceptance: bool = False
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "ModelMetadata":
@@ -63,6 +69,7 @@ class ModelMetadata:
             action_high=high,
             norm_mean=mean,
             norm_std=std,
+            operational_acceptance=(d.get("acceptance") or {}).get("operational_acceptance") is True,
         )
 
 
@@ -73,9 +80,17 @@ class ModelBundle:
         self.session = session
         self.metadata = metadata
         self.is_stub = is_stub
+        self.last_clipped = 0
+
+    @property
+    def control_eligible(self) -> bool:
+        """Only a real model with independent operational acceptance may drive a plant."""
+        return (not self.is_stub and self.session is not None
+                and self.metadata.operational_acceptance)
 
     @classmethod
-    def load(cls, model_path: str | os.PathLike, metadata_path: str | os.PathLike) -> "ModelBundle":
+    def load(cls, model_path: str | os.PathLike, metadata_path: str | os.PathLike, *,
+             allow_stub: bool = False) -> "ModelBundle | None":
         model_path = Path(model_path)
         metadata_path = Path(metadata_path)
 
@@ -94,10 +109,25 @@ class ModelBundle:
                             model_path, metadata.algorithm, metadata.scenario)
                 return cls(session=session, metadata=metadata, is_stub=False)
             except Exception:
-                logger.exception("Failed to load ONNX model from %s — falling back to stub policy.", model_path)
+                logger.exception("Failed to load ONNX model from %s.", model_path)
 
-        logger.warning("No usable model at %s — serving stub (random) policy for demo purposes.", model_path)
+        if not allow_stub:
+            logger.warning("No usable model at %s — service is not ready (no stub without opt-in).", model_path)
+            return None
+        logger.warning("No usable model at %s — serving opt-in stub (random) policy, never control-eligible.",
+                       model_path)
         return cls(session=None, metadata=metadata, is_stub=True)
+
+    def validate_observations(self, observations: np.ndarray) -> np.ndarray:
+        """Refuse observations that do not match the declared shape or are not finite."""
+        meta = self.metadata
+        x = np.asarray(observations, dtype=np.float32)
+        expected = (1 if meta.central_agent else meta.n_agents, meta.obs_dim)
+        if x.ndim != 2 or x.shape != expected:
+            raise ValueError(f"observations must have shape {expected}, got {x.shape}")
+        if not np.all(np.isfinite(x)):
+            raise ValueError("observations must be finite (no NaN/Inf)")
+        return x
 
     def act(self, observations: np.ndarray) -> np.ndarray:
         """Compute actions for a batch of observations.
@@ -108,6 +138,7 @@ class ModelBundle:
         declared action space.
         """
         meta = self.metadata
+        observations = self.validate_observations(observations)
         if self.session is not None:
             x = observations.astype(np.float32)
             if meta.norm_mean is not None and meta.norm_std is not None:
@@ -115,6 +146,8 @@ class ModelBundle:
             input_name = self.session.get_inputs()[0].name
             outputs = self.session.run(None, {input_name: x})
             actions = np.asarray(outputs[0], dtype=np.float32)
+            if not np.all(np.isfinite(actions)):
+                raise ValueError("model produced non-finite actions; nothing is clipped into a setpoint")
         else:
             n = observations.shape[0]
             rng = np.random.default_rng(0)
@@ -124,4 +157,6 @@ class ModelBundle:
                 size=(n, meta.action_dim),
             ).astype(np.float32)
 
-        return np.clip(actions, meta.action_low, meta.action_high)
+        clipped = np.clip(actions, meta.action_low, meta.action_high)
+        self.last_clipped = int(np.count_nonzero(clipped != actions))
+        return clipped

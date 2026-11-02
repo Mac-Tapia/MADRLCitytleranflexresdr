@@ -1,11 +1,14 @@
 # Rol de cada submódulo en el flujo requerido (SPEC-001/FR-001.2).
 # runtime: el entrenamiento o la evaluación lo importa o lo ejecuta; su licencia
 #   debe ser permitida por governance/open_source_policy.yaml.
-# reference_only: se conserva como referencia científica sin importarlo;
-#   tests/contract/test_dependency_roles.py falla si el código de ejecución lo usa.
+# reference_only: el entrenamiento y la evaluación no lo importan ni lo ejecutan;
+#   tests/contract/test_dependency_roles.py falla si uc3m/ o CityLearn/{citylearn,scripts} lo usan.
+#   Puede declarar build_time (herramienta de construcción del dataset en tools/dataset/,
+#   autorizada por el usuario); sus salidas son datos, no se distribuye su código y se
+#   cumplen las obligaciones de su licencia (aviso, atribución, registro de cambios).
 # Un submódulo ausente aquí se trata como runtime (fallo cerrado).
 schema_version: "1.0"
-reviewed: "2026-10-31"
+reviewed: "2026-11-01"
 submodules:
   CityLearn:
     role: runtime
@@ -30,10 +33,28 @@ submodules:
     license_evidence: "Sin licencia declarada: la API de GitHub devuelve license=null para JohannesAck/MATD3implementation y el árbol fijado no tiene LICENSE (2026-10-31). Requiere decisión del propietario."
   external/MicroGrids:
     role: reference_only
-    evidence: "Referencia de optimización PV/BESS citada en tools/dataset/dimension_ev_chargers.py; ningún import ni ruta en uc3m/ o CityLearn/."
+    evidence: "No lo importan uc3m/ ni CityLearn/; el constructor del dataset lo ejecuta (build_time)."
+    build_time:
+      authorized_by: "usuario (2026-11-01, relayed by coordinator)"
+      used_by: ["tools/dataset/size_der_microgrids.py", "tools/dataset/build_fresh_campaign_dataset.py"]
+      use: "Formulación LP para dimensionar FV y BESS por edificio (data/campaigns/iquitos_v2, iquitos_v3)."
+      license: "EUPL-1.1"
+      obligations: "Se conservan external/MicroGrids/LICENSE y la atribución (Balderrama et al.); las modificaciones del fork están documentadas en docs/contributions/MicroGrids/CHANGES.md (solver-configurable, datos-configurables, exportacion-red, tarifa-horaria-demanda) y marcadas MADRL-IQUITOS-MOD en el código; el código no se incluye en paquetes ni imágenes."
   external/evcc:
     role: reference_only
-    evidence: "Referencia de gestión de carga EV; sin referencias en uc3m/ ni CityLearn/."
+    evidence: "No lo importan uc3m/ ni CityLearn/; el constructor solo cita valores de su plantilla y de core/loadpoint.go (build_time)."
+    build_time:
+      authorized_by: "usuario (2026-11-01, relayed by coordinator)"
+      used_by: ["configs/dataset/ev_pilot.yaml"]
+      use: "Se leen templates/definition/vehicle/niu-e-scooter.yaml (capacidad 4 kWh) y los valores por defecto 6-16 A de core/loadpoint.go; no se ejecuta ni se importa código."
+      license: "MIT"
+      obligations: "Se citan los archivos de origen en provenance.json; no se copia código."
   external/prosumpy:
     role: reference_only
-    evidence: "Referencia de autoconsumo PV y despacho de batería citada en tools/dataset/dimension_ev_chargers.py; ningún import ni ruta en uc3m/ o CityLearn/."
+    evidence: "No lo importan uc3m/ ni CityLearn/; el constructor del dataset lo ejecuta para verificar BESS (build_time)."
+    build_time:
+      authorized_by: "usuario (2026-11-01, relayed by coordinator)"
+      used_by: ["tools/dataset/size_der_microgrids.py"]
+      use: "prosumpy.dispatch.dispatch_max_sc (importado vía sys.path, sin instalar ni modificar) para verificar autoconsumo, importación y pico con y sin BESS."
+      license: "EUPL-1.1"
+      obligations: "Se conservan external/prosumpy/LICENSE y la atribución; sin modificaciones; el código no se incluye en paquetes ni imágenes."

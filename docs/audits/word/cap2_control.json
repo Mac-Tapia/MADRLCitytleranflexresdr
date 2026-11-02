@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-07-29T17:34:27",
+  "figure": "D:\\MADRLCitytleranflexresdr\\docs\\architecture\\CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png",
+  "marker": "Figura 2.1. Control por edificio CityLearn v3 propuesto",
+  "results": [
+    {
+      "doc": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "status": "ok",
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx.pre_cap2_control_fig_20260729_173425.bak",
+      "inserted": {
+        "caption": "Figura 2.1. Control por edificio CityLearn v3 propuesto (simbología CityLearn v2): Electro Oriente S.A. (B01), comunidad inteligente Iquitos (B02–B17), red pública/SEAI, Actor–Crítico CTDE y formulación Dec-POMDP.",
+        "figure": "D:\\MADRLCitytleranflexresdr\\docs\\architecture\\CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png",
+        "anchor_preview": "Esta formalizacion enlaza directamente el problema general y los objetivos especificos. OE.1 evalua la respuesta del Dec"
+      }
+    },
+    {
+      "doc": "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "status": "ok",
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx.pre_cap2_control_fig_20260729_173426.bak",
+      "inserted": {
+        "caption": "Figura 2.1. Control por edificio CityLearn v3 propuesto (simbología CityLearn v2): Electro Oriente S.A. (B01), comunidad inteligente Iquitos (B02–B17), red pública/SEAI, Actor–Crítico CTDE y formulación Dec-POMDP.",
+        "figure": "D:\\MADRLCitytleranflexresdr\\docs\\architecture\\CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png",
+        "anchor_preview": "Esta formalización enlaza directamente el problema general y los objetivos específicos. OE.1 evalúa la respuesta del Dec"
+      }
+    }
+  ]
+}

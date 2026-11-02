@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-01",
+  "scope": "Minimal incident record kept before retirement. Not evidence of the new campaign.",
+  "source_of_historical_bytes": "git tag archive/resultados-historicos-2026-11-01 (commit 387a237); files no longer present on disk",
+  "records": [
+    {
+      "id": "H-01",
+      "file": "outputs/_drive_madrl/outputs/madrl_v3_20260627_164047/HAPPO/E1/data/results.json",
+      "sha256_verified": "5574ac8b5b19e8995935f7ea2863290911b355f70035f3636479aee995cfb9fc",
+      "literal_fields": {"algorithm": "HAPPO", "backend": "external/HARL", "status": "completed_with_salvage",
+                         "salvage_reason": "NameError: name 'VecEnvWrapper' is not defined"},
+      "established": "A name error while resolving a vectorization/wrapper interface.",
+      "not_established": ["phase of the exception (no full traceback found)", "OOM", "non-convergence", "NaN gradients"],
+      "regression_tests": ["tests/fresh_training/test_real_learning.py::test_happo_vector_env_report_reload_close",
+                           "tests/fresh_training/test_campaign_contract.py::test_salvage_is_not_training_complete"]
+    },
+    {
+      "id": "H-02",
+      "files": {
+        "E1": {"results": "56e09a32e4edbd1ae2f5ae02a566628257d82fbb07b5d711fadf2e945acee759", "summary": "1066e13ac6bf01b56547f940c2866121db7718e0fbf13f8e54fbd73793b17007"},
+        "E2": {"results": "94efe30b2fc27628c440b398d451d79be7dba5b72cd8ba7e17aa2b1820da3d4e", "summary": "10ff8f35147a6c2bf74b65c5e9d38040336183ef80376b1f88337ee70fc1efa5"},
+        "E3": {"results": "a7d233c8edea5789eb23878e171b79bbdfa0594c296927ac4282c2994df32c49", "summary": "43d15c28e84c490b8b80bd45dbc03e673859ba09cb574f8c0474cdbcf26c7159"}
+      },
+      "counters_per_treatment": {"episodes_declared": 50, "episodes_recorded": 50, "job_resume.completed_episodes": 49,
+                                 "job_resume.remaining_episodes": 1, "job_resume.target_episodes": 50,
+                                 "training_summary.episodes": 1},
+      "established": "49 prior + 1 resumed episodes are labelled 50; the summary describes only the resumed segment.",
+      "not_established": "That the algorithm did or did not learn.",
+      "regression_tests": ["tests/fresh_training/test_fresh_isolation.py::test_retry_starts_at_zero",
+                           "tests/fresh_training/test_campaign_contract.py::test_episode_claim_cannot_replace_trajectory"]
+    },
+    {
+      "id": "H-03",
+      "file": "external/HARL/harl/envs/env_wrappers.py",
+      "sha256_verified": "033e724cd0e264563dc6e76f7121497cfaacc88f5b84e581ae7ad90da4656e55",
+      "submodule_commit": "591d1125882c5a9552c01dea9e1733762f4ff591",
+      "established": "Current code defines a VecEnvWrapper compatibility class (line 10) and ShareVecEnv.unwrapped returns self (line 157). No patch is repeated.",
+      "regression_tests": ["tests/fresh_training/test_real_learning.py::test_happo_current_wrapper_contract"]
+    },
+    {
+      "id": "H-06b",
+      "file": "CityLearn/scripts/citylearn_v3_training_common.py",
+      "established": "_csv_read_cache (line ~7371) loads and rewrites a pickle in outputs/dataset_cache keyed only by the schema bytes hash (not CSV contents), TTL 24 h. A changed CSV behind an unchanged schema would be served stale, and every native launch regenerates R-06.",
+      "correction": "The fresh native entrypoint redirects the cache into each attempt root (empty at start).",
+      "regression_tests": ["tests/fresh_training/test_real_learning.py::test_native_cache_redirected_per_attempt"]
+    }
+  ],
+  "planned_corrections": {
+    "H-04": "T5 test_placeholder_training_rejected",
+    "H-05": "T4 test_total_never_averages_daily_value",
+    "H-06": "T4/T7 test_no_estimated_savings_as_measured_kpi",
+    "H-07": "T3 test_no_predicted_fields_in_effective_actor_input",
+    "H-08": "T6 test_resolved_config_matches_backend",
+    "H-09": "T6 test_all_treatments_force_no_resume",
+    "H-10": "T9 test_nested_native_report_extracts_new_kpis",
+    "H-11": "T8/T9 seed-count and common-reference tests",
+    "H-12": "T0 test_retired_inputs_not_opened (implemented, passing) and T10 test_skips_xfail_xpass_fail_new_acceptance"
+  }
+}

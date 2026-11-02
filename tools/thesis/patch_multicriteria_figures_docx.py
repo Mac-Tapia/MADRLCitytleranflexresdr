@@ -28,7 +28,7 @@ from thesis_word_canons import CANONS  # noqa: E402
 
 BACKUP_DIR = REPO / "outputs" / "_word_backups"
 FIG_DIR = REPO / "outputs" / "madrl_multicriteria_selection" / "figures"
-REPORT = REPO / "docs" / "MULTICRITERIA_FIGURES_PATCH_REPORT_2026-07-29.json"
+REPORT = REPO / 'docs' / 'audits' / 'word' / 'multicriterio.json'
 STAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 GREY = RGBColor(0x55, 0x55, 0x55)
 

@@ -1,0 +1,17 @@
+﻿{
+    "schema_version":  1,
+    "command":  "python -B -m pytest tests/fresh_training -q -p no:cacheprovider -rfEs",
+    "started_utc":  "2026-11-01T16:44:58.0266373Z",
+    "duration_seconds":  2499,
+    "exit_code":  1,
+    "counters":  {
+                     "skipped":  0,
+                     "errors":  6,
+                     "tests":  362,
+                     "failures":  24
+                 },
+    "junit":  "data/maintenance/gates/fresh_profile_20261101T164458Z.xml",
+    "junit_sha256":  "0e0fbdb1f9ba6e5b7512c5f87afcc98de3fdf2839a015e3b8b11824914b9e99d",
+    "software_acceptance":  false,
+    "scientific_acceptance":  false
+}

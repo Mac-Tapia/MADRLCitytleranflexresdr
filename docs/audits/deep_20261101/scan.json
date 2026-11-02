@@ -1,0 +1,33 @@
+{
+  "commit": "cb2d7c7c84b5315acb50b3b8828ef4a90065bdc4",
+  "files": 3777,
+  "folders": 240,
+  "inspection_counts": {
+    "metadata_only": 52,
+    "text_rules_automatic": 233,
+    "JSON_parsed": 101,
+    "JSONC_text_rules_not_strict_JSON": 6,
+    "sensitive_metadata_only": 1,
+    "CSV_all_rows_structural": 3039,
+    "AST_and_text_review_automatic": 340,
+    "notebook_cells_rules_automatic": 5
+  },
+  "signals_by_rule": {
+    "unfinished_marker": 8,
+    "old_path_reference": 196,
+    "csv_quality_signal": 1,
+    "network_exposure_review": 19,
+    "no_explicit_timeout": 38,
+    "silent_broad_exception": 15,
+    "notebook_execution_cell": 38,
+    "long_function": 23,
+    "security_sensitive_call": 5,
+    "unsafe_call_option": 1
+  },
+  "csv_rows_read": 34042062,
+  "read_errors": 0,
+  "tracked_missing": 209,
+  "duration_seconds": 105.31,
+  "scientific_acceptance": false,
+  "semantic_review_of_every_file": false
+}

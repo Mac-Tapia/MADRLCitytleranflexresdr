@@ -1,0 +1,1521 @@
+[
+  {
+    "old_path": "data/audits/objective_weight_sensitivity_dry_run.json",
+    "head_blob": "8ee9fbfca8f8d7eff238133eb75968fb9f3c034f",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "data/dataset_audit/iquitos_citylearn_v3_dataset_evaluation.json",
+    "head_blob": "ae63204dbd8d98ffca3c098b7f990f3a9590a667",
+    "exact_current_paths": [
+      "data/dataset_audit/dataset_evaluation.json"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "data/dataset_audit/training_dataset_ready_manifest.audit_postcheck.json",
+    "head_blob": "65435da9cb86839101f234ee7ac8830c82cadfd8",
+    "exact_current_paths": [
+      "data/dataset_audit/ready_postcheck.json"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "data/dataset_audit/training_dataset_ready_manifest.audit_precheck.json",
+    "head_blob": "f4f3a0474a37634db52d3521b6c0bb3abe20d5dd",
+    "exact_current_paths": [
+      "data/dataset_audit/ready_precheck.json"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "data/dataset_audit/training_dataset_ready_manifest.audit_supervision.json",
+    "head_blob": "4375d5b69745caa5ac6ef26f0fd86ff063b7fcce",
+    "exact_current_paths": [
+      "data/dataset_audit/ready_supervision.json"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/README_DEPLOY_AWS.md",
+    "head_blob": "eaa42c2ab13029d3f0a011d2a7b220f5e2864b74",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/README_TRAINING_AWS.md",
+    "head_blob": "1e3543273852f3003ee448c2616ed6ac632bff2c",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/iac-training/main.tf",
+    "head_blob": "9e8c7a090c0e31f55159bed9c3a4ba86ace0eaae",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/iac-training/outputs.tf",
+    "head_blob": "22c704af5358284b8b3d190230dc8f4eefabb10e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/iac-training/variables.tf",
+    "head_blob": "f4ea1e35d1ff85e8d67d6ea1bd02c6c7e1accb6f",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/training/Dockerfile",
+    "head_blob": "083c6a49e40b494db7574922630757c9d87cc44d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/training/bootstrap_ubuntu_gpu.sh",
+    "head_blob": "5cc6f9816df8240e7fe0f1b245b49b63346ac844",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/training/check_aws_training_ready.sh",
+    "head_blob": "423653d9e956f4d3a9b747e74e7a3a320c1ec087",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/training/docker-compose.yml",
+    "head_blob": "0b865591f50400a100ec2365ce5352d4e30db350",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/training/rotate_training_log.py",
+    "head_blob": "febe408ef18503738ca16131ee1661de34b90436",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/training/run_aws_training.sh",
+    "head_blob": "026c60a27da56100553d0a51ab23e4f7ec32fa09",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/training/sync_outputs_s3.sh",
+    "head_blob": "48db34d03677b5c925f6dc3226605ca15af7a6fa",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/aws/training/tail_aws_training.sh",
+    "head_blob": "d35306a1543cf9553aaa3813c933f77282d679fb",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/edge/README_DESPLIEGUE_FISICO.md",
+    "head_blob": "ed7a55058bf9b6a37932efc53c25250b631e0ebb",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/plant-adapter/Dockerfile",
+    "head_blob": "640e51eda3b1412f6033a93a026c50dde26e2fdb",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/plant-adapter/modbus_adapter.py",
+    "head_blob": "6faa00e9f07eed22b715d82680b1d5924f7ed999",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/plant-adapter/replay_adapter.py",
+    "head_blob": "15b514a031799949832e9e0076b7790e7721f7da",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "deploy/plant-adapter/requirements.txt",
+    "head_blob": "c5a9b113710e6b0e6d39abdea941c7c17da93015",
+    "exact_current_paths": [
+      "deploy/plant_adapter/requirements.txt"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP2_CONTROL_EDIFICIO_ACTOR_CRITIC_FIGURE_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "afe7808caa7ba71517f417ba9da78e2fb16991e9",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP2_DECPOMDP_DISTRICT_BUILDING_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "c5a617b47c73ca6fc83281c9f304058411e4907d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP2_MADRL_ADECUACIONES_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "c4b89d3312d39559e0f54668e7226610b4c99c93",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP2_MODELADO_MATEMATICO_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "2edcf93b83aab4e9e28b98e69168e14dfef64e31",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP36_DECPOMDP_CROSSREF_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "b4ce2db924aa42796ae08d7a7dd7c826cc7fa0b6",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP3_CUASIEXPERIMENTAL_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "3986b57d181a2ce895fbd74323d248246a756ec7",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP4_DECPOMDP_IMPL_ALIGN_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "35948a5b481775a279c60875575fc996b9e9f117",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP4_IMPLEMENTACION_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "c16a9a146abec2cd9d2db96a082635bc8a0b975e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP5_DISTRICT_BUILDING_KPI_RANKINGS_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "2eb056a61e6d3701df528ccb3e2f65c3cc8e671e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP5_KPI_CATALOG_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "3b5ddf336a083b5fabf873b80896a82d148651d5",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CAP6_DECPOMDP_XREF_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "c6133bc64e6dea49ea4a38b13506902144d553d9",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CIERRE_FIGURAS_WORD_VERIFICACION_2026-07-29.md",
+    "head_blob": "de2def07afe77b6525621fb1871f6f05b8547515",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CIERRE_MULTICRITERIA_REAL_DRIVE_50EP_2026-07-29.json",
+    "head_blob": "37b06c8a15eaa9b57bf0f55e9b4389532a6095f9",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/CITYLEARN_ASSETS_INTEGRATION_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "1d90e0b93a7c47f1e3f8cc034ef0cd8fd4f787ec",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/COMPLETE_FIGURES_CATALOG_WORD_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "b5a3dc1a0ffbde182ee8d92fa492f74c57c63f42",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/ESTRATEGIA_3PILARES_MADRL.md",
+    "head_blob": "29898d03fd15ae2180de226f2bd00051b4478ce6",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/HISTORIA_CREACION_PROYECTO_MADRL_CITYLEARN.md",
+    "head_blob": "bbe1c1d52c85619a94528a5c86526f0309fa8f34",
+    "exact_current_paths": [
+      "docs/historia.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/IMPACT_CRITERIA_CONTROL_RECURSOS_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "38faa1547d7d39edbdf970666adffd84f6de965e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/Informe_tesis_MADRL_auditoria_IV_V_VI_VII_final.docx",
+    "head_blob": "60f27a0f8696b8b21725894abff5069ebbe9f9f9",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+    "head_blob": "4edb7113785afc6d52b22f371dd068becfe815a2",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_auditoria.json",
+    "head_blob": "d50a54d7cff1c49f3e8c6c560873577b5a67f538",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/LISTA_EJECUCION_COLAB_A100.md",
+    "head_blob": "9eb41fa2b2530b9f58b63ce81f77033c4688fe35",
+    "exact_current_paths": [
+      "docs/colab_checklist.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/MANUAL_EJECUCION_DESDE_CERO_COLAB_A100.md",
+    "head_blob": "55bd6f405a8888b1d3e0b04a1c5942170e0a6a8f",
+    "exact_current_paths": [
+      "docs/colab.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/MANUAL_INSTALACION_DEPENDENCIAS.md",
+    "head_blob": "9c787bd82950018b201372b3de406e52be1a4f6f",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/MULTICRITERIA_FIGURES_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "43f65b547c9ac9517b2ff6fa72f2d784dac3df28",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/PERFORMANCE_COMPARISON_WORD_PATCH_REPORT_2026-07-29.json",
+    "head_blob": "6c3834915738bb9a389cecc29490ffab77183d99",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/SCALABLEDCPOMDP.pdf",
+    "head_blob": "41589291e83ace9378fbe1485d3c7f5f602f3e88",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.json",
+    "head_blob": "faa01572962b43af1c2e7b8f69ed5894a4afb480",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.md",
+    "head_blob": "04574e7b70eaa81c484464544dd68802f6bb2bdc",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "head_blob": "98170bebe676d7e8da4cc0ffa7718cbbc2d591fc",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.md",
+    "head_blob": "dda6fdf3b91689287e052caa10d36e9f8a117c19",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/VEREDICTO_METODOLOGICO_2026-07-18.md",
+    "head_blob": "1d698de61013780b0c92b29a6caad9487ea0e710",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/analisis_scripts_vs_tools_tesis_ADDENDUM_2026-07-29.md",
+    "head_blob": "123936e44b5086648239ef52ba1bb22884b08709",
+    "exact_current_paths": [
+      "docs/analisis_tesis_adenda.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png",
+    "head_blob": "bdee7b4572c922d8b23a533f507bb9f61ccea26c",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf",
+    "head_blob": "04132420b2add4d7b162dd63d0b0f58e34d7a307",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md",
+    "head_blob": "aed9576bc0570fb11b99d85927b67b213b79e5a0",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf",
+    "head_blob": "0975bf99aedce7649d3ead16d1214a048abbd12b",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/ARQUITECTURA_PROYECTO_DEFENSA.md",
+    "head_blob": "738316b14a8bf506ff8714f3b950b3d937ae8ef2",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md",
+    "head_blob": "9227bd543de9b71ffdf7d794e746625d96ce145b",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png",
+    "head_blob": "c03638e9a3999876b07405a230d61175b005d25e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.svg",
+    "head_blob": "59c74ac4ac6b37cb52c2b4e9b82729dfe7f3fbc9",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_ilustrada.png",
+    "head_blob": "fd79667b98f69607037f941096b0b83f0c0bfdb7",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_simbologia_v2.png",
+    "head_blob": "aaa25610697d72ee25d4d4d1ec87fe17d1cd7e7d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md",
+    "head_blob": "e9224961e66f9f20cdbae66103840d31ddc59749",
+    "exact_current_paths": [
+      "docs/architecture/coordinacion.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf",
+    "head_blob": "2574e3d08b6238dcb0446b5f774bf8e2ac2792ea",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/DATASET_CONSTRUCTION_PIPELINE.pdf",
+    "head_blob": "29a43c4294d6acb104cde56ec8be353b37db2f0b",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/ENTRENAMIENTO_MODULAR_COLAB.md",
+    "head_blob": "f6f7655a2d6e48b7429197d7f797ffef5666ea7a",
+    "exact_current_paths": [
+      "docs/architecture/colab.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/ENTRENAMIENTO_MODULAR_LOCAL.md",
+    "head_blob": "7026b5bf3bc33d429667e82b32c10d6936e507eb",
+    "exact_current_paths": [
+      "docs/architecture/local.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md",
+    "head_blob": "cfe868c5ffe52893259a83ad87a5a713203b50a2",
+    "exact_current_paths": [
+      "docs/architecture/operacion.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf",
+    "head_blob": "f77d5a274c9fda4d7cc3a31f0bde6f8bdf3b5b54",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png",
+    "head_blob": "ba62054de95b6ebc519c2cdd7a952969893b1678",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf",
+    "head_blob": "ad2241118eac608f7020d40608df5db9300bf743",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.png",
+    "head_blob": "4fdf871ae6ac3831c748c3fb1b0a8970ab36c52e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.png",
+    "head_blob": "4fdf871ae6ac3831c748c3fb1b0a8970ab36c52e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/_refs/citylearn_v2_environment_docs.jpg",
+    "head_blob": "d0e3ed49cf55ab8d0cce342afe0320cdf7297f81",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/architecture/_refs/citylearn_v2_environment_jsdelivr.jpg",
+    "head_blob": "d0e3ed49cf55ab8d0cce342afe0320cdf7297f81",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md",
+    "head_blob": "1ac21ac96d4d793116770e46b52b21b376705cb3",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md",
+    "head_blob": "0e5eeaa9fa677b831dd42c9c55eaa7a08d6065e2",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/HANDOFF_AUDITOR_LOCAL.md",
+    "head_blob": "1a1b93626f34fa271fe1c0b055152bf17d39cddd",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_DER_IQUITOS.md",
+    "head_blob": "ffee8dcd82c35f9d43c99ff5d1e77c89a83cc1ed",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_EV_IQUITOS.md",
+    "head_blob": "50ebba1357d1bba87000d5a3ad2306e4204daf5f",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_AUDITORIA_PARAMETROS_EDIFICIOS_IQUITOS.md",
+    "head_blob": "1488794c40963a7ac5f311185eabdcf1a469e200",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_CORRECCION_TRAZABILIDAD_MADRL_V4_2026-06-17.md",
+    "head_blob": "206c2ee3de94d832d4380c1f585e2ae5c1b0b3fd",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md",
+    "head_blob": "dc588ad79cfc71cd1a596fa269da11bc0ea96a16",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
+    "head_blob": "414c1bcde4507999e45f0cdc8ae07ecef3325f2c",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md",
+    "head_blob": "64e187e213578b8ba8046f8cbc5783d8cd7dc292",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_VALIDACION_INTEGRAL_CREACION_DATASET_CITYLEARN_IQUITOS.md",
+    "head_blob": "556cd447af8a3dcaeaba3079ae156e2c4ea27218",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md",
+    "head_blob": "0d0412da562c8133aee9c6922022717fcb9dd719",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/audits/MATRIZ_LEVANTAMIENTO_OBSERVACIONES_JURADO_2026-10-31.md",
+    "head_blob": "23e14c1637e8f151332cc3dbb83d4d2980fe56b5",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/decisions/ADR-OPEN-ARTIFACT-STORE.md",
+    "head_blob": "821cc248eb0dc26394b073a00d3a71a28648026e",
+    "exact_current_paths": [
+      "docs/decisions/artifact_store.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/decisions/ADR-SIMULATOR-PORT-DEFERRED.md",
+    "head_blob": "7894b82febacb6ffa4d59dd7bbd37308b09cf9e4",
+    "exact_current_paths": [
+      "docs/decisions/simulator.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md",
+    "head_blob": "4afea2bb0bd92a4aa7664a0089f55d2be0f8e309",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md",
+    "head_blob": "7c0dade4292bb04e50b038544bee8edce1a28151",
+    "exact_current_paths": [
+      "docs/decisions/recompensas.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md",
+    "head_blob": "7e8120fc836a3b4bc882ca487a6caf84e3fd5b0d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md",
+    "head_blob": "d4f30976c3adb6d8902f4bdfb3b12553d1151e11",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/failures/agent-auto-publish-unscoped.md",
+    "head_blob": "ad272d4cffef86d8e61d89cdb622470ebc5ea481",
+    "exact_current_paths": [
+      "docs/failures/agent_publish.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/superpowers/plans/2026-10-31-foundation-open-source-spec-kit-plan.md",
+    "head_blob": "615512984243ba6a6b67c031cdb9ce3c96200d3f",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/superpowers/plans/2026-10-31-jury-observations-remediation-plan.md",
+    "head_blob": "6472d6193805a461bb4848f70b2c1ad2c794c0eb",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md",
+    "head_blob": "55283552312f1339d5feea806605eff23fea8d81",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/superpowers/plans/2026-10-31-multiobjective-domain-plan.md",
+    "head_blob": "bfa8a27d8ca181ab03c272d90394babb3e198ed0",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/superpowers/plans/2026-10-31-orchestration-artifacts-plan.md",
+    "head_blob": "8383fa913ca0f0b7ee7d8b5688a82207276f8091",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/superpowers/plans/2026-10-31-thesis-agents-plan.md",
+    "head_blob": "ccb9a8f38c9888e3a2e5862eac22f8babeb2594a",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md",
+    "head_blob": "a32b76644cfdac4851cc0c449a9ba17fc8ea5e6b",
+    "exact_current_paths": [
+      "docs/design/modernizacion.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/00_INDICE.md",
+    "head_blob": "8f987553fd89c5af072d116df12da08640372bf1",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/AUDITORIA_CUMPLIMIENTO.md",
+    "head_blob": "285d702b8cce933f0791f8a0b4cb4408c485ee46",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/AUDITORIA_FINAL_CAP4_7_MATRIZ.md",
+    "head_blob": "4395490de97e4829b741c63c6e4d23145b1af7f4",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Capitulo_1_Introduccion.md",
+    "head_blob": "db1cea9e712fc237c55a9c53532ce31b03cda75b",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Capitulo_1_PG_PE_OE_H_EXACTO.md",
+    "head_blob": "a59ff0394b3ceed805816f5aefbd6acaa5a6bda1",
+    "exact_current_paths": [
+      "docs/chapters/cap1_objetivos.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Capitulo_2_Marco_Teorico.md",
+    "head_blob": "3f74e353844db6b8ab519d74a1a529bcbc547bed",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Capitulo_3_Metodologia.md",
+    "head_blob": "bdab323f607af464113e72a62206504d4cf5d465",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md",
+    "head_blob": "06748fa4eae8f58ba6d81aa2181a46426e82083f",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Capitulo_5_Resultados.md",
+    "head_blob": "c22f4726775fe0b7759a7c37d5073208c1c7553e",
+    "exact_current_paths": [
+      "docs/chapters/cap5.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Capitulo_6_Conclusiones.md",
+    "head_blob": "f674d25d1541aa44be82a32e791abc14c315d1fa",
+    "exact_current_paths": [
+      "docs/chapters/cap6.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Capitulo_7_Recomendaciones.md",
+    "head_blob": "9f718aa625a7a6dda68f0d5f93cca0933e372b50",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/tesis_capitulos/Referencias_APA.md",
+    "head_blob": "c77ec865a9bf11ae507f586a38349532b55d02ad",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md",
+    "head_blob": "471c9376eae083e99655e7ad884d31ca83319a8c",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "docs/thesis/Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx",
+    "head_blob": "c148f71d495775992a71168707fb0f2ff43002f3",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "examples_madrl_v3/madrl_citylearn_v3_load_environment.ipynb",
+    "head_blob": "e8cad65e5f513bf0d8148f280dfa7416bc600809",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/LANZAR_ENTRENAMIENTO_V4.bat",
+    "head_blob": "aed9db2a7fb57003bbe5810c15111b66a33d5bc8",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/launch_citylearn_v3_multiseed_campaign.ps1",
+    "head_blob": "fd3f22614836121409fe6f5ed07c3e27ade13fdd",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/monitor_citylearn_training_visible.ps1",
+    "head_blob": "ddf7558560f207b939002461175212745d0bda2f",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/regenerate_multicriteria_drive_50ep_closure.py",
+    "head_blob": "bc8af92461895a91629be51de96bfdbcd90300e3",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/restart_happo_masac_v3.ps1",
+    "head_blob": "02988c6f0e8b26251af43b23a838aeddea570b9c",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/run_3madrl_parallel.ps1",
+    "head_blob": "7758cf8f7ea88297107b9ecf02fda7d6cc8d1108",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/run_citylearn_v3_full_training_visible.ps1",
+    "head_blob": "9dc42391f4e21cd107292bf61f0102b2508fc34f",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/training/launch_full_campaign.py",
+    "head_blob": "e5b3777b9a894f1c4d0fa0426f3ae21786f243d3",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/training_launcher_window.ps1",
+    "head_blob": "f677fdce70bfeecef66e6a3065d08a06e4dd4c2c",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "scripts/training_resume_window.ps1",
+    "head_blob": "bf8e96df8adf45ccf18be8a4444598bb67246856",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/001-open-source-provenance/plan.md",
+    "head_blob": "74bda81d8fcc9a4cd886bbe2fb68515ae454d821",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/001-open-source-provenance/spec.md",
+    "head_blob": "9107f79007e2425b75ad234e7d8dbbd9a1a19c08",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/001-open-source-provenance/tasks.md",
+    "head_blob": "1af270208cc422d6a8679043ebd631fb86392007",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/002-multiobjective-policy/plan.md",
+    "head_blob": "e80c751312967f1aaac9ed417672ea403314d4ff",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/002-multiobjective-policy/spec.md",
+    "head_blob": "3f1dd68fd08fbc59caaff33d3dc587332f70aae1",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/002-multiobjective-policy/tasks.md",
+    "head_blob": "c1c47e92b701bf7ec316554f00d5be385ca15c61",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/003-modular-orchestration/plan.md",
+    "head_blob": "40bb4543a0dea633de3a7b96643aac3e4e39c622",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/003-modular-orchestration/spec.md",
+    "head_blob": "427cabce37844e91a2762ca27cc0e341f1c5aea5",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/003-modular-orchestration/tasks.md",
+    "head_blob": "1243eb2940c44299bc528335106f2a7b8d68f75c",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/004-execution-manifests/plan.md",
+    "head_blob": "e33351b818c1dc18ac849c70c98bd828c06c4ecc",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/004-execution-manifests/spec.md",
+    "head_blob": "dd6e28e889942629d014f105c64e1fa85c2664f7",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/004-execution-manifests/tasks.md",
+    "head_blob": "3ffdd82d3e2ad32c7eac0bd93abf6e4371df1a0b",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/005-scientific-evaluation/plan.md",
+    "head_blob": "31ccbee29710ef7d43d6d9168cc1dee23b0d6004",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/005-scientific-evaluation/spec.md",
+    "head_blob": "b0c7b9d1204da84a49ed804dc56530d87f594b5d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/005-scientific-evaluation/tasks.md",
+    "head_blob": "ef39cceabb352db528bfdd4b79ef76b7bc720b57",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/006-thesis-evidence/plan.md",
+    "head_blob": "d98f41650266e0874700845fb1312b2d3c8b242e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/006-thesis-evidence/spec.md",
+    "head_blob": "3fac0c12325a65a1eeeb95979df046efc3b68a48",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/006-thesis-evidence/tasks.md",
+    "head_blob": "be7ea2cbdb54696ad292c729f741b4cafb956456",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/007-local-agent-harness/plan.md",
+    "head_blob": "162f137cc5ed24673578443d4c10023a72ab20ec",
+    "exact_current_paths": [
+      "specs/007-agents/plan.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/007-local-agent-harness/spec.md",
+    "head_blob": "2b5e0aaba2f00de3c5c5a27102f44c3b4b05621d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/007-local-agent-harness/tasks.md",
+    "head_blob": "a3bf758cc5d7d2fb470510e15fcd5169abadd3db",
+    "exact_current_paths": [
+      "specs/007-agents/tasks.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/008-artifacts-data/plan.md",
+    "head_blob": "816bdecede67878b711767bbc9ddc0e6a4594060",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/008-artifacts-data/spec.md",
+    "head_blob": "139c476c8676a2af76642fb0f4e303bf99370636",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/008-artifacts-data/tasks.md",
+    "head_blob": "deaa31e60667273a01842b0b869d42817891d087",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/009-jury-observations/plan.md",
+    "head_blob": "23c4ad383e411860081b0e9062d61d95e5682c75",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/009-jury-observations/spec.md",
+    "head_blob": "95f444086c0583c00ab35cf69bdad33af24af0de",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/009-jury-observations/tasks.md",
+    "head_blob": "3e737f08e3b97cbf7e64043474aa8999d9102b6e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/010-local-training-panel/plan.md",
+    "head_blob": "c3045e9a423aa51206456395a66159d34aecf640",
+    "exact_current_paths": [
+      "specs/010-panel/plan.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/010-local-training-panel/spec.md",
+    "head_blob": "d5d7e212b0024a8da1669f0b1799955fad7af67c",
+    "exact_current_paths": [
+      "specs/010-panel/spec.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/010-local-training-panel/tasks.md",
+    "head_blob": "d7c366897d227638423b9d9f7722092fa81f82d0",
+    "exact_current_paths": [
+      "specs/010-panel/tasks.md"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/011-dataset-to-delivery-pipeline/plan.md",
+    "head_blob": "24127c521782253ad16879883bb8b71597d88456",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/011-dataset-to-delivery-pipeline/spec.md",
+    "head_blob": "555c0400d2a7411d99e590510fe25cdfcf96adf8",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/011-dataset-to-delivery-pipeline/tasks.md",
+    "head_blob": "ba54c616215e418efb21f000fdabbb8becacea86",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/012-repository-hygiene/plan.md",
+    "head_blob": "451a583be8716024daaca5e19df4311673e5e811",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/012-repository-hygiene/spec.md",
+    "head_blob": "271bdfd42c16622f85cd7b39f20e0a66488368df",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "specs/012-repository-hygiene/tasks.md",
+    "head_blob": "09a8cf091123b759736ea7ed50c8d740ec8b1e80",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tests/ops/test_local_launcher_dataset_gate.py",
+    "head_blob": "67cc159829b54433dbd026124220a38d27e12ef2",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tests/unit/application/training/test_colab.py",
+    "head_blob": "ab91ab99b61c72dfb7ee63b1ea20f121395a319e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/clean_tutorial_notebook.py",
+    "head_blob": "acb865787d330625448f5fdc2f8991b3a6893fe0",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/generate_colab_notebook.py",
+    "head_blob": "7e93ede8acf52155b1586b0d65ff919f3022f105",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/harden_colab_notebook_launch.py",
+    "head_blob": "27447c7418052099ef483761b5ca5b41b8523064",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/patch_monitor_artifact_truth.py",
+    "head_blob": "dea577ee912616bd97f96bad269b119fa1b04b59",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/patch_monitor_panel.py",
+    "head_blob": "1dcfa540a86a163ab9f53a04b1bdcfa0cb075eae",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/patch_notebook_a100.py",
+    "head_blob": "208102e05a13e536ad740dd5649d24585ec24689",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/patch_notebook_final.py",
+    "head_blob": "ded5a708debdf13379bbadcdc68b6a1f491bc6c6",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/patch_output_layout_simple.py",
+    "head_blob": "e62e22aee6c83a06b2bcd876cad6116053f0179d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/patch_tutorial_notebook.py",
+    "head_blob": "73750e99a9e61f4feea1ca50697d44c2aecb4ca4",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/test_notebook_cells.py",
+    "head_blob": "6837bd29887024e941e2f9298d9980278153973a",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/validate_colab_resume_from_drive.py",
+    "head_blob": "a2747d216b33a323627f8429cf6fc4f87d22e2a1",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/validate_colab_two_phase.py",
+    "head_blob": "0de72fb05d2a083978592cc30fd304f6ec24d396",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/validate_notebook_sync.py",
+    "head_blob": "810189bc02cab14514d0be0de67189b88e43dd69",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/colab/verify_notebook.py",
+    "head_blob": "be2228b82ef68c66a98d288d43584e4d08affed9",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/eval/analyze_colab_drive_multiobjective_buildings.py",
+    "head_blob": "fcffb14fc40fc263d9b391605e6824ad07fbcc4e",
+    "exact_current_paths": [
+      "tools/eval/building_analysis.py"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/eval/compute_drive50_district_building_kpi_rankings.py",
+    "head_blob": "2f317ec9648dea15f52612141157405b5451b7c7",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/eval/generate_madrl_performance_comparison_figures.py",
+    "head_blob": "5d6e87f9ae720729b7f10485ccc9cc6471e8140e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/eval/run_complete_drive_kpi_objective_analysis.py",
+    "head_blob": "c861dbb8dfbd5adc369a984d95db1a9fbca7a009",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/eval/run_problem_objective_hypothesis_statistical_analysis.py",
+    "head_blob": "8351270987f1acb4d47c5b175559e7dab2ad267c",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/figures/generate_citylearn_v3_building_control_figure.py",
+    "head_blob": "706fdedf51a3d10898d96310d7608866e4de3177",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_cap1_cap3_friedman_protocol_docx.py",
+    "head_blob": "b7838e14d1c26d00759f38474607064952a0abf0",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_cap2_control_edificio_actor_critic_figure_docx.py",
+    "head_blob": "eb88583f4898d3ec41d44b48b3e9cfc5ce8a613e",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_cap2_decpomdp_district_building_docx.py",
+    "head_blob": "44f6b50a1fdfa705b82467125963cb97b024f884",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_cap3_multiobjective_hierarchy_docx.py",
+    "head_blob": "db0dc39c57eaf165f4bca38edec897a22884f1e1",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_cap5_district_building_kpi_rankings_docx.py",
+    "head_blob": "33384909777485b270a99e3475045e1d6b10e161",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_cap5_hipotesis_stats_exactas_docx.py",
+    "head_blob": "2b25c4310994c55844d625aab9e4d4ffe156f48d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_citylearn_assets_integration_docx.py",
+    "head_blob": "a8bdb5ea7dedb3939459bb6832f4d58bb3e2a801",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_h0g_remove_exploratoria_verdict_docx.py",
+    "head_blob": "aecc64f7470e188e00ebfffb18a51288ec2e4ab7",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_impact_criteria_control_recursos_docx.py",
+    "head_blob": "b9a36cf2eb8a75f957dc1579ea425fc4ad787fe6",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_integral_word_eval_v2_anchors_20260729.py",
+    "head_blob": "c439cbdd3da17ac76f71511aa9f00d4440444433",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/thesis/patch_topsis_medida_formal_cap5_6_7_docx.py",
+    "head_blob": "a407d36d0b523dc8ef253cc2a4d3668f1ed79567",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "tools/training/prune_citylearn_v3_training_artifacts.ps1",
+    "head_blob": "dc727f38dc15a93cf9e3ab7c60434b64b8eb7934",
+    "exact_current_paths": [
+      "tools/training/prune_artifacts.ps1"
+    ],
+    "status": "bytes_preserved_at_new_path",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "uc3m/application/training/colab.py",
+    "head_blob": "3eca98600599772e7ccebee662658ca8df64a055",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "uc3m/configs/algorithms/happo.yaml",
+    "head_blob": "e4b658a57c9a532e8c39dc36891f292c394b73e2",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "uc3m/configs/algorithms/maac.yaml",
+    "head_blob": "baef5bf7a22e3701aa4f89a370c0de992994c637",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "uc3m/configs/algorithms/masac.yaml",
+    "head_blob": "9e1f60882eb778dc90b0c609cc1dacccdd31243d",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "uc3m/configs/algorithms/matd3.yaml",
+    "head_blob": "3ec65fc2abdf37b2d6de672fbc28a72c5495a4b1",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "uc3m/configs/base.yaml",
+    "head_blob": "8e65b2963a6f2c8e87a8d379d78dcd2a756887d6",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "uc3m/configs/iquitos.yaml",
+    "head_blob": "26b42c188175bb62412ce03418073ad4bd6b1120",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  },
+  {
+    "old_path": "uc3m/train.py",
+    "head_blob": "39564677dcc08fc8ac6348c875e5c8025f4f8548",
+    "exact_current_paths": [],
+    "status": "not_proven_by_exact_bytes",
+    "note": "retirement/rewriting may be intentional; absence is not proof of lost capability"
+  }
+]

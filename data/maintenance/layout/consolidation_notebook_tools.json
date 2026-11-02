@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "group": "D-06 notebook generators",
+  "canonical_path": "tools/colab/build_modular_colab_notebook.py",
+  "removed": [
+    {
+      "path": "tools/colab/clean_tutorial_notebook.py",
+      "sha256": "d2b87a0bfa73e21ea911e80b17c10678e0ce7b86de441d07422c3cfee534c97b"
+    },
+    {
+      "path": "tools/colab/generate_colab_notebook.py",
+      "sha256": "df8eea22668c1cc92a005aaef726e6205bbb0d79dd8bc8d85389f2155c5d9117"
+    },
+    {
+      "path": "tools/colab/harden_colab_notebook_launch.py",
+      "sha256": "345d614614dfb1ca295b7e3722a1fb68f035a3f16c7d74cdf73d315842fd4ebe"
+    },
+    {
+      "path": "tools/colab/patch_monitor_artifact_truth.py",
+      "sha256": "19d1f180696d5e98e82c20904efbb696f510fca83c51921cd0978928b2120c0f"
+    },
+    {
+      "path": "tools/colab/patch_monitor_panel.py",
+      "sha256": "67504b853cdb57069b4189717f424f6500af71eebae8663ccddfbcaec4bdbfed"
+    },
+    {
+      "path": "tools/colab/patch_notebook_a100.py",
+      "sha256": "ef4e405e57f14f581274a8db333a34c925fe9bc49f3e10ba5b35d5171cefb2ad"
+    },
+    {
+      "path": "tools/colab/patch_notebook_final.py",
+      "sha256": "c5c67652601c5f6c861b75e7772fbea9133927f7580b268d9a0f1f8611bdfcdf"
+    },
+    {
+      "path": "tools/colab/patch_output_layout_simple.py",
+      "sha256": "8886fcb91971efbe470e615d5e5a0bc7c99789db2e402689d380e38723e87396"
+    },
+    {
+      "path": "tools/colab/patch_tutorial_notebook.py",
+      "sha256": "2487115cfffa88283f585433a41d9fc46dc297e42aecc069572d2cbcd8e10e44"
+    },
+    {
+      "path": "tools/colab/test_notebook_cells.py",
+      "sha256": "cfd33e5277b4aa18d2f2ba3def64a269677cbccbebec813794d3ed5e48cc4ccf"
+    },
+    {
+      "path": "tools/colab/validate_colab_resume_from_drive.py",
+      "sha256": "d8a03308dd28d0e3be865dd33aee3406ba9bc36d1764cdee767459c87b5c3830"
+    },
+    {
+      "path": "tools/colab/validate_colab_two_phase.py",
+      "sha256": "06c56dd3e7e49ce1b482bf48a87cba4617c52c6876c5e5dbcf1665fa5738f328"
+    },
+    {
+      "path": "tools/colab/validate_notebook_sync.py",
+      "sha256": "9c36e3cc514b1346df0b2e5cb5285ac3841f4009d726471f7cfe6c0455c9ee52"
+    },
+    {
+      "path": "tools/colab/verify_notebook.py",
+      "sha256": "b01b9b792b109e21d7c6958ad321f94fe5a97226dd216ac6a252994a631b191a"
+    }
+  ],
+  "reason": "old generators/patchers of notebooks that launch training by the retired path; owner decision: single launch path and Colab notebook as CLI client",
+  "consumers": "only historical docs and a stale allowlist entry in tests/contract/test_weight_single_source.py (removed)",
+  "at_utc": "2026-11-01T13:52:35.7843338Z"
+}

@@ -1,7 +1,8 @@
 """Servicio de inferencia FastAPI para el agente MADRL ganador (demo Fase 8).
 
 Endpoints:
-- GET  /health              -> liveness/readiness probe
+- GET  /health              -> liveness probe (+ ready / operational_ready flags)
+- GET  /ready               -> 200 solo con un modelo real cargado; 503 si no hay modelo o es stub
 - GET  /model/info          -> metadatos del modelo cargado (algoritmo, escenario, dims)
 - POST /act                 -> {"observations": [[...], ...]} -> {"actions": [[...], ...]}
 - GET  /analytics/summary   -> estadísticas agregadas desde MongoDB (si está disponible)
@@ -10,6 +11,11 @@ Endpoints:
 Persistencia opcional: si ``MONGODB_URI`` apunta a un MongoDB accesible y
 ``pymongo`` está instalado, cada ``/act`` se registra en la colección
 ``inferences``. Si no, la persistencia queda desactivada sin afectar al servicio.
+
+Cercado del demo: sin modelo el servicio vive pero no está listo; la política
+stub solo existe con ``INFERENCE_DEMO_STUB=1`` y nunca es ``control_eligible``.
+``operational_ready`` es siempre falso aquí: la aceptación operacional (SIL/HIL,
+piloto, seguridad OT) es independiente de este servicio.
 
 Ejecutar localmente:
     uvicorn app:app --host 0.0.0.0 --port 8000
@@ -30,8 +36,8 @@ from mongo_store import MongoStore
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "info").upper())
 logger = logging.getLogger("inference.app")
 
-MODEL_PATH = os.environ.get("MODEL_PATH", "/models/winning_agent.onnx")
-MODEL_METADATA_PATH = os.environ.get("MODEL_METADATA_PATH", "/models/winning_agent.metadata.json")
+DEFAULT_MODEL_PATH = "/models/winning_agent.onnx"
+DEFAULT_MODEL_METADATA_PATH = "/models/winning_agent.metadata.json"
 
 app = FastAPI(title="MADRL Iquitos — Inference Service", version="0.1.0")
 _bundle: ModelBundle | None = None
@@ -42,7 +48,11 @@ _store = MongoStore()
 @app.on_event("startup")
 def _load_model() -> None:
     global _bundle
-    _bundle = ModelBundle.load(MODEL_PATH, MODEL_METADATA_PATH)
+    _bundle = ModelBundle.load(
+        os.environ.get("MODEL_PATH", DEFAULT_MODEL_PATH),
+        os.environ.get("MODEL_METADATA_PATH", DEFAULT_MODEL_METADATA_PATH),
+        allow_stub=os.environ.get("INFERENCE_DEMO_STUB") == "1",
+    )
 
 
 @app.on_event("shutdown")
@@ -59,11 +69,27 @@ class ActResponse(BaseModel):
     algorithm: str
     scenario: str
     is_stub: bool
+    control_eligible: bool
+    clipped_actions: int
+
+
+def _ready() -> bool:
+    return _bundle is not None and not _bundle.is_stub
 
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "model_loaded": _bundle is not None and not _bundle.is_stub}
+    return {"status": "ok", "model_loaded": _ready(), "ready": _ready(),
+            "stub": _bundle is not None and _bundle.is_stub,
+            "operational_ready": False,
+            "operational_note": "operational acceptance is an independent SIL/HIL/pilot step, not this service"}
+
+
+@app.get("/ready")
+def ready() -> dict:
+    if not _ready():
+        raise HTTPException(status_code=503, detail="No accepted model loaded (stub or missing)")
+    return {"ready": True, "control_eligible": _bundle.control_eligible}
 
 
 @app.get("/model/info")
@@ -87,14 +113,15 @@ def act(request: ActRequest) -> ActResponse:
     if _bundle is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
 
-    obs = np.asarray(request.observations, dtype=np.float32)
-    if obs.ndim != 2:
-        raise HTTPException(status_code=422, detail="observations must be a 2D array (n_agents, obs_dim)")
+    try:
+        obs = _bundle.validate_observations(np.asarray(request.observations, dtype=np.float32))
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     started = time.perf_counter()
     try:
         actions = _bundle.act(obs)
-    except Exception as exc:  # pragma: no cover - defensive
+    except Exception as exc:
         logger.exception("Inference failed")
         raise HTTPException(status_code=500, detail=f"Inference failed: {exc}") from exc
     latency_ms = (time.perf_counter() - started) * 1000.0
@@ -116,6 +143,8 @@ def act(request: ActRequest) -> ActResponse:
         algorithm=_bundle.metadata.algorithm,
         scenario=_bundle.metadata.scenario,
         is_stub=_bundle.is_stub,
+        control_eligible=_bundle.control_eligible,
+        clipped_actions=_bundle.last_clipped,
     )
 
 

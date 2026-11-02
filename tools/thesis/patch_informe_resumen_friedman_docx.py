@@ -12,7 +12,7 @@ from docx.oxml.ns import qn
 from docx.shared import Pt
 
 REPO = Path(__file__).resolve().parents[2]
-INFORME = REPO / "docs" / "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx"
+INFORME = REPO / 'docs' / 'informe.docx'
 BACKUP_DIR = REPO / "outputs" / "_word_backups"
 
 SUBS = [

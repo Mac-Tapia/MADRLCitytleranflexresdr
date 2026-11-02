@@ -1,0 +1,18 @@
+﻿id,status,current_evidence,findings
+J-01,parcial; sin cierre vigente,"El código nuevo intenta separar inferencia y ranking, pero A05/A14 permiten decisiones inválidas; README/Word siguen en campañas retiradas.","A05,A14,A17,A19"
+J-02,pendiente experimental,12 semillas configuradas; no se acreditó entrenamiento independiente de las 144 celdas. El mínimo 3 del JSON contradice el mínimo 10 del Markdown.,"A18,A27"
+J-03,parcial,"Tres ejes frescos definidos; UC3M público anuncia 7 ejes, transferencia y N sin límite sin validación equivalente; HPHI falla.","A12,A15,A19"
+J-04,pendiente experimental/documental,La antigua cobertura 49/50 ya no es aceptación vigente; mantenerla identificada como historia y obtener nueva evidencia homogénea de HAPPO.,"A04,A06,A19,A27"
+J-05,parcial documental,"Hay formulación del aporte en capítulos, pero cap1 conserva prompt de maestría profesionalizante mientras tesis.docx se presenta doctoral; requiere conciliación editorial.","A17,A19"
+J-06,parcial documental; operación pendiente,cap7.md §7.6 propone seguridad/privacidad sin afirmar implementación; no está trasladado como sección sustantiva a ambos Word. Demo y dependencias requieren controles/triage.,"A19,A25,A30"
+J-07,parcial,Remoto/README existen; no hay URL Github en texto ni relaciones de ambos Word; falta entrega reproducible de campaña nueva.,"A10,A19,A24,A27,A29"
+J-08,pendiente documental,No se halló encabezado de introducción general en la extracción de ambos Word; Capítulo 1 no equivale a comprobar este requisito.,A19
+J-09,parcial verificado,"Procedencia de 23 fuentes, 590/612 meses medidos y 22 modelados; 12 backcasts declarados. Calidad estructural actual pasa, falta tabla documental y control de alcance.","A09,A16"
+J-10,parcial con defecto,Splits y normalizador train-only verificados por hash; backcast B01 usa 2024 y freeze/test unlock no son barreras suficientes.,"A01,A03,A08,A16"
+J-11,parcial,"Limitaciones de clima, carbono, precios y DER modelados declaradas; sin stress/OOS de políticas nativas ni piloto físico.","A06,A16,A25,A27"
+J-12,pendiente experimental,"IQM fraccional nuevo y familias Holm implementados, pero NaN se acepta y no hay CI de entrenamiento independiente real.","A05,A13,A27"
+J-13,pendiente experimental,Configuraciones de escalabilidad en multicriteria son propuestas; no hay curvas comparables aceptadas para varios tamaños.,A27
+J-14,pendiente analítico,Costos en USD y FX documentados no constituyen costo-beneficio CAPEX/OPEX/tiempo de cómputo; no se inventaron estimaciones.,"A19,A27"
+J-15,parcial,"Runbook nuevo existe, pero persistencia Colab por etapa y catálogo viejo no acreditan recuperación/operación.","A07,A11,A25"
+J-16,pendiente de verificación documental,No hay piloto ni HIL/SIL acreditado. Esta auditoría no asigna TRL superior por código o servicios demo.,"A25,A27"
+J-17,pendiente editorial,"Extracción textual no acredita síntesis por capítulo, índice ni paginación. Requiere revisión documental y render separados.",A19

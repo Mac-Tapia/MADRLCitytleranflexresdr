@@ -1,0 +1,11 @@
+{
+  "at_utc": "2026-11-01T15:24:45.325053+00:00",
+  "scope": "Cold config load only; no training or source edits",
+  "hashes": {
+    "configs/algorithms/native.yaml": "43ddb48b0e2e9daefc18b4d00e6e7dee7eb72a8885484af07e89429d79cd6214",
+    "configs/experiments/iquitos.yaml": "ae92cb7e0b0fe3fe8e1d38d3ebf38ec18e9822c017963b5b875eaaf8cc15b594",
+    "uc3m/domain/campaigns.py": "4ed5f8ad470f19eefa31c1a221d5a44055f15d9a338613e4d0140693067ca5d4",
+    "uc3m/application/training/fresh_campaign.py": "9093882ac80a093f5a8a11e33c3dd190968754162050a11d525afa02f492f318"
+  },
+  "config_load": "accepted"
+}

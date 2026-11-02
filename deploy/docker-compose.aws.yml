@@ -2,7 +2,7 @@
 # Compose o como referencia para tareas ECS. Difiere de docker-compose.yml en:
 #   - Imágenes referenciadas desde ECR en lugar de build local.
 #   - Modelo y dataset montados desde volúmenes EBS / descargados de S3
-#     (ver aws/README_DEPLOY_AWS.md para el script de sincronización).
+#     (ver aws/deploy.md para el script de sincronización).
 #   - mqtt-broker puede sustituirse por AWS IoT Core (fuera de alcance de
 #     esta demo; se deja Mosquitto por simplicidad).
 #
@@ -36,7 +36,7 @@ services:
         awslogs-region: ${AWS_REGION}
         awslogs-stream-prefix: inference
 
-  plant-adapter:
+  plant_adapter:
     image: ${ECR_REGISTRY}/${ECR_REPO_PLANT_ADAPTER}:latest
     restart: unless-stopped
     depends_on:
@@ -54,9 +54,9 @@ services:
     logging:
       driver: awslogs
       options:
-        awslogs-group: /madrl-iquitos/plant-adapter
+        awslogs-group: /madrl-iquitos/plant_adapter
         awslogs-region: ${AWS_REGION}
-        awslogs-stream-prefix: plant-adapter
+        awslogs-stream-prefix: plant_adapter
 
   dashboard:
     image: ${ECR_REGISTRY}/${ECR_REPO_DASHBOARD}:latest

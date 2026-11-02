@@ -1,0 +1,1332 @@
+{
+  "schema_version": 1,
+  "project_root": "D:\\MADRLCitytleranflexresdr",
+  "allowlist_ids": [
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04",
+    "R-05",
+    "R-06",
+    "R-07"
+  ],
+  "targets": [
+    {
+      "target_id": "R-01",
+      "relative_path": "outputs/_drive_madrl",
+      "resolved_path": "D:\\MADRLCitytleranflexresdr\\outputs\\_drive_madrl",
+      "kind": "absent",
+      "files": [],
+      "file_count": 0,
+      "total_bytes": 0,
+      "git_tracked_paths": 0,
+      "decision": "blocked",
+      "reasons": [
+        "active_profile_consumer"
+      ],
+      "covered_by": null
+    },
+    {
+      "target_id": "R-02",
+      "relative_path": "outputs/citylearn_v3_madrl_full_20260615_074011_v4",
+      "resolved_path": "D:\\MADRLCitytleranflexresdr\\outputs\\citylearn_v3_madrl_full_20260615_074011_v4",
+      "kind": "absent",
+      "files": [],
+      "file_count": 0,
+      "total_bytes": 0,
+      "git_tracked_paths": 0,
+      "decision": "already_absent",
+      "reasons": [],
+      "covered_by": null
+    },
+    {
+      "target_id": "R-03",
+      "relative_path": "outputs/madrl_v3_20260627_164047",
+      "resolved_path": "D:\\MADRLCitytleranflexresdr\\outputs\\madrl_v3_20260627_164047",
+      "kind": "absent",
+      "files": [],
+      "file_count": 0,
+      "total_bytes": 0,
+      "git_tracked_paths": 0,
+      "decision": "already_absent",
+      "reasons": [],
+      "covered_by": null
+    },
+    {
+      "target_id": "R-04",
+      "relative_path": "outputs/modular_smoke",
+      "resolved_path": "D:\\MADRLCitytleranflexresdr\\outputs\\modular_smoke",
+      "kind": "absent",
+      "files": [],
+      "file_count": 0,
+      "total_bytes": 0,
+      "git_tracked_paths": 0,
+      "decision": "already_absent",
+      "reasons": [],
+      "covered_by": null
+    },
+    {
+      "target_id": "R-05",
+      "relative_path": "outputs/thesis_objective_evidence",
+      "resolved_path": "D:\\MADRLCitytleranflexresdr\\outputs\\thesis_objective_evidence",
+      "kind": "absent",
+      "files": [],
+      "file_count": 0,
+      "total_bytes": 0,
+      "git_tracked_paths": 0,
+      "decision": "already_absent",
+      "reasons": [],
+      "covered_by": null
+    },
+    {
+      "target_id": "R-06",
+      "relative_path": "outputs/dataset_cache",
+      "resolved_path": "D:\\MADRLCitytleranflexresdr\\outputs\\dataset_cache",
+      "kind": "directory",
+      "files": [
+        {
+          "path": "outputs/dataset_cache/citylearn_csv_37b8999ee1d00c241cc8.meta.json",
+          "bytes": 73,
+          "sha256": "1481680aa39691881c3e6d691eeb488a5d602e2d4a48388124a6ffd9a45728ab",
+          "mtime_utc": "2026-11-01T05:37:19.712327+00:00"
+        },
+        {
+          "path": "outputs/dataset_cache/citylearn_csv_37b8999ee1d00c241cc8.pkl",
+          "bytes": 270391490,
+          "sha256": "31478a51d16a7bc8f7ebd9039f312f9fe0aa8e10d2cee55fb995fd8832a6edb5",
+          "mtime_utc": "2026-11-01T05:37:27.094031+00:00"
+        }
+      ],
+      "file_count": 2,
+      "total_bytes": 270391563,
+      "git_tracked_paths": 0,
+      "decision": "delete",
+      "reasons": [],
+      "covered_by": null
+    },
+    {
+      "target_id": "R-07",
+      "relative_path": "outputs/orchestration-tests.xml",
+      "resolved_path": "D:\\MADRLCitytleranflexresdr\\outputs\\orchestration-tests.xml",
+      "kind": "file",
+      "files": [
+        {
+          "path": "outputs/orchestration-tests.xml",
+          "bytes": 20577,
+          "sha256": "6fa54d63afe4a1bfc9571f9610621869179f4ed4625811e54b1cd84dfe2984da",
+          "mtime_utc": "2026-11-01T05:45:36.913988+00:00"
+        }
+      ],
+      "file_count": 1,
+      "total_bytes": 20577,
+      "git_tracked_paths": 0,
+      "decision": "blocked",
+      "reasons": [
+        "active_profile_consumer"
+      ],
+      "covered_by": null
+    }
+  ],
+  "deletion_order": [
+    "R-06"
+  ],
+  "protected_paths": [
+    ".git",
+    "CityLearn",
+    "CityLearn/data/buildingcsv",
+    "external",
+    "docs",
+    "data/audits",
+    "data/dataset_audit",
+    "data/maintenance",
+    "outputs/README.md"
+  ],
+  "consumers": [
+    {
+      "path": "CityLearn/scripts/prepare_happo_colab_resume.py",
+      "target_id": "R-01",
+      "classification": "dependency",
+      "lines": [
+        49,
+        97,
+        109
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "CityLearn/scripts/regenerate_happo_kpis.py",
+      "target_id": "R-01",
+      "classification": "dependency",
+      "lines": [
+        203
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "CityLearn/tests/test_citylearn_v3_job_completion.py",
+      "target_id": "R-01",
+      "classification": "dependency",
+      "lines": [
+        337
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "data/audits/evaluation_tools_inventory.json",
+      "target_id": "R-01",
+      "classification": "documentary",
+      "lines": [
+        4,
+        5,
+        64,
+        139,
+        149,
+        154,
+        159,
+        164,
+        169,
+        174,
+        179,
+        184,
+        194,
+        199,
+        204,
+        209,
+        214,
+        234,
+        249,
+        259
+      ],
+      "line_count": 23
+    },
+    {
+      "path": "data/audits/repository_hygiene_manifest.json",
+      "target_id": "R-01",
+      "classification": "documentary",
+      "lines": [
+        50,
+        51,
+        61
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "docs/workflow_manifest.json",
+      "target_id": "R-01",
+      "classification": "documentary",
+      "lines": [
+        11,
+        12,
+        207
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "governance/artifact_retention_policy.yaml",
+      "target_id": "R-01",
+      "classification": "active_profile",
+      "lines": [
+        61
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "scripts/fetch_and_generate_drive_figures.ps1",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        25
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tests/fresh_training/test_fresh_isolation.py",
+      "target_id": "R-01",
+      "classification": "fresh_contract_test",
+      "lines": [
+        38
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tests/fresh_training/test_historical_retirement.py",
+      "target_id": "R-01",
+      "classification": "fresh_contract_test",
+      "lines": [
+        29,
+        67,
+        158,
+        166,
+        174
+      ],
+      "line_count": 5
+    },
+    {
+      "path": "tests/unit/evaluation/test_tools_use_results_catalog.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        25
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/colab/validate_colab_resume_from_drive.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        4,
+        16
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/drive/analyze_drive_storage_estimate.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        10,
+        56
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/drive/download_colab_missing_kpis.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        12
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/drive/fetch_colab_building_data_from_drive.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        15
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/drive/fetch_colab_kpis_from_drive.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        13
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/drive/fetch_drive_training_artifacts.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        26
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/drive/validate_drive_kpi_downloads.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        2,
+        13
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/eval/analyze_colab_drive_results.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        14,
+        142
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/eval/analyze_real_drive_training_artifacts.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        4,
+        18,
+        479,
+        566,
+        568
+      ],
+      "line_count": 5
+    },
+    {
+      "path": "tools/eval/audit_colab_drive_episodes.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        1,
+        9
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/eval/audit_drive_figure_integrity.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        12,
+        205
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/eval/audit_drive_kpis_buildings.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        11,
+        61
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/eval/compute_drive50_district_building_kpi_rankings.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        4,
+        5,
+        6,
+        27,
+        28
+      ],
+      "line_count": 5
+    },
+    {
+      "path": "tools/eval/inferential_audit_report.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        20
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/recalc_drive_kpis_deep.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        1,
+        12,
+        14,
+        209,
+        378
+      ],
+      "line_count": 5
+    },
+    {
+      "path": "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        12,
+        13,
+        303
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "tools/eval/run_colab_drive_statistical_analysis.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        28
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/ops/diagnose_madrl_storage.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        67
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/build_multiobjective_thesis_docx.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        112
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/generate_borrador_tesis_docx.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        871
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/generate_drive_thesis_figures.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        3,
+        36,
+        37
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "tools/thesis/madrl_algorithm_analysis.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        16
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        40,
+        270,
+        398,
+        526
+      ],
+      "line_count": 4
+    },
+    {
+      "path": "tools/thesis/patch_integral_word_eval_v2_anchors_20260729.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        6
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/thesis_doctoral_sections.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        48
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/validate_integral_word_50ep_4madrl.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        50
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/training/regenerate_drive_training_figures.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        29
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/training/test_job_resume_state.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        1105
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/training/test_madrl_robustness.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        252
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/training/validate_drive_kpi_skip_plan.py",
+      "target_id": "R-01",
+      "classification": "archival_tool",
+      "lines": [
+        23
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "data/audits/evaluation_tools_inventory.json",
+      "target_id": "R-02",
+      "classification": "documentary",
+      "lines": [
+        94,
+        214,
+        254
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "data/audits/repository_hygiene_manifest.json",
+      "target_id": "R-02",
+      "classification": "documentary",
+      "lines": [
+        71
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tests/fresh_training/test_fresh_isolation.py",
+      "target_id": "R-02",
+      "classification": "fresh_contract_test",
+      "lines": [
+        33
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tests/fresh_training/test_historical_retirement.py",
+      "target_id": "R-02",
+      "classification": "fresh_contract_test",
+      "lines": [
+        30,
+        108,
+        122
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "tools/drive/analyze_drive_storage_estimate.py",
+      "target_id": "R-02",
+      "classification": "archival_tool",
+      "lines": [
+        13
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/figures/generate_architecture_pngs.py",
+      "target_id": "R-02",
+      "classification": "archival_tool",
+      "lines": [
+        299,
+        577
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/ops/diagnose_madrl_storage.py",
+      "target_id": "R-02",
+      "classification": "archival_tool",
+      "lines": [
+        107
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/generate_borrador_tesis_docx.py",
+      "target_id": "R-02",
+      "classification": "archival_tool",
+      "lines": [
+        1063,
+        1074,
+        1184
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "tools/thesis/validate_integral_word_50ep_4madrl.py",
+      "target_id": "R-02",
+      "classification": "archival_tool",
+      "lines": [
+        698
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/training/prune_citylearn_v3_training_artifacts.ps1",
+      "target_id": "R-02",
+      "classification": "archival_tool",
+      "lines": [
+        2
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "CityLearn/scripts/citylearn_v3_training_common.py",
+      "target_id": "R-03",
+      "classification": "dependency",
+      "lines": [
+        3910
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "data/audits/evaluation_tools_inventory.json",
+      "target_id": "R-03",
+      "classification": "documentary",
+      "lines": [
+        4,
+        59,
+        84,
+        104,
+        109,
+        144,
+        169,
+        189,
+        219,
+        224,
+        239,
+        259
+      ],
+      "line_count": 12
+    },
+    {
+      "path": "data/audits/repository_hygiene_manifest.json",
+      "target_id": "R-03",
+      "classification": "documentary",
+      "lines": [
+        81
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "data/dataset_audit/workflow_integrity_manifest.json",
+      "target_id": "R-03",
+      "classification": "documentary",
+      "lines": [
+        20
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "docs/CAP5_DISTRICT_BUILDING_KPI_RANKINGS_PATCH_REPORT_2026-07-29.json",
+      "target_id": "R-03",
+      "classification": "documentary",
+      "lines": [
+        3,
+        4
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "docs/CIERRE_MULTICRITERIA_REAL_DRIVE_50EP_2026-07-29.json",
+      "target_id": "R-03",
+      "classification": "documentary",
+      "lines": [
+        4
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "docs/COMPLETE_FIGURES_CATALOG_WORD_PATCH_REPORT_2026-07-29.json",
+      "target_id": "R-03",
+      "classification": "documentary",
+      "lines": [
+        3
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.json",
+      "target_id": "R-03",
+      "classification": "documentary",
+      "lines": [
+        102,
+        103,
+        142,
+        143,
+        182,
+        183,
+        279,
+        280,
+        299,
+        300,
+        339,
+        340,
+        379,
+        380
+      ],
+      "line_count": 14
+    },
+    {
+      "path": "docs/workflow_manifest.json",
+      "target_id": "R-03",
+      "classification": "documentary",
+      "lines": [
+        8,
+        10,
+        13,
+        14,
+        205,
+        207
+      ],
+      "line_count": 6
+    },
+    {
+      "path": "examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        7243
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tests/fresh_training/test_historical_retirement.py",
+      "target_id": "R-03",
+      "classification": "fresh_contract_test",
+      "lines": [
+        104
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/colab/validate_colab_resume_from_drive.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        17,
+        194
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/drive/analyze_drive_folder_sizes.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        80
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/drive/analyze_drive_storage_estimate.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        11
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/drive/fetch_drive_training_artifacts.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        25
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/analyze_colab_drive_results.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        15
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/audit_colab_drive_episodes.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        109
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/audit_drive_figure_integrity.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        13
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/audit_drive_kpis_buildings.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        62
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/compute_drive50_district_building_kpi_rankings.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        26
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/inferential_audit_report.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        3,
+        15
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/eval/recalc_drive_kpis_deep.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        13,
+        408,
+        434
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        387
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/run_colab_drive_statistical_analysis.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        4,
+        22
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/eval/run_problem_objective_hypothesis_statistical_analysis.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        16
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/build_multiobjective_thesis_docx.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        14
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/build_multiobjective_thesis_pdf.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        10
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/generate_borrador_tesis_docx.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        328,
+        561,
+        816,
+        929
+      ],
+      "line_count": 4
+    },
+    {
+      "path": "tools/thesis/generate_drive_thesis_figures.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        7,
+        8,
+        34
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "tools/thesis/madrl_algorithm_analysis.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        12
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/patch_cap5_hipotesis_stats_exactas_docx.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        5
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        413
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/patch_topsis_medida_formal_cap5_6_7_docx.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        206
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/thesis_doctoral_sections.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        25
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/thesis_word_canons.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        24
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/update_word_quantitative_50episodes.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        44,
+        53,
+        507,
+        1256
+      ],
+      "line_count": 4
+    },
+    {
+      "path": "tools/training/regenerate_drive_training_figures.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        28
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/training/run_citylearn_v2_baseline_comparison.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        11
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/training/test_job_resume_state.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        255,
+        880,
+        960,
+        992,
+        1056,
+        1065,
+        1073,
+        1078,
+        1108,
+        1147
+      ],
+      "line_count": 10
+    },
+    {
+      "path": "tools/training/validate_drive_kpi_skip_plan.py",
+      "target_id": "R-03",
+      "classification": "archival_tool",
+      "lines": [
+        2,
+        74
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "data/audits/evaluation_tools_inventory.json",
+      "target_id": "R-04",
+      "classification": "documentary",
+      "lines": [
+        5,
+        74
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "data/audits/repository_hygiene_manifest.json",
+      "target_id": "R-04",
+      "classification": "documentary",
+      "lines": [
+        101
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tests/unit/evaluation/test_tools_use_results_catalog.py",
+      "target_id": "R-04",
+      "classification": "archival_tool",
+      "lines": [
+        30
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/ops/audit_modular_training.py",
+      "target_id": "R-04",
+      "classification": "archival_tool",
+      "lines": [
+        43
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "CityLearn/scripts/generate_thesis_objective_evidence.py",
+      "target_id": "R-05",
+      "classification": "dependency",
+      "lines": [
+        113,
+        1653
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "CityLearn/tests/test_thesis_statistical_evidence.py",
+      "target_id": "R-05",
+      "classification": "dependency",
+      "lines": [
+        9
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "data/audits/evaluation_tools_inventory.json",
+      "target_id": "R-05",
+      "classification": "documentary",
+      "lines": [
+        5,
+        49,
+        54,
+        79,
+        94,
+        134,
+        229
+      ],
+      "line_count": 7
+    },
+    {
+      "path": "data/audits/repository_hygiene_manifest.json",
+      "target_id": "R-05",
+      "classification": "documentary",
+      "lines": [
+        91
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "docs/workflow_manifest.json",
+      "target_id": "R-05",
+      "classification": "documentary",
+      "lines": [
+        172,
+        173
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        534,
+        946,
+        1083
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "tests/unit/evaluation/test_tools_use_results_catalog.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        29
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/colab/generate_colab_notebook.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        1084
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/colab/harden_colab_notebook_launch.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        430
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/run_colab_drive_statistical_analysis.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        36
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/eval/run_notebook_hypothesis_pipeline.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        4,
+        30,
+        231
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "tools/figures/generate_architecture_pngs.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        433,
+        545
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/ops/verify_workflow_integrity.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        34
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tools/thesis/generate_borrador_tesis_docx.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        830,
+        849
+      ],
+      "line_count": 2
+    },
+    {
+      "path": "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+      "target_id": "R-05",
+      "classification": "archival_tool",
+      "lines": [
+        5,
+        38,
+        264,
+        414,
+        523
+      ],
+      "line_count": 5
+    },
+    {
+      "path": "CityLearn/scripts/citylearn_v3_training_common.py",
+      "target_id": "R-06",
+      "classification": "dependency",
+      "lines": [
+        51
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tests/fresh_training/test_historical_retirement.py",
+      "target_id": "R-06",
+      "classification": "fresh_contract_test",
+      "lines": [
+        136,
+        137,
+        171
+      ],
+      "line_count": 3
+    },
+    {
+      "path": "scripts/quality/run_orchestration_gates.ps1",
+      "target_id": "R-07",
+      "classification": "active_profile",
+      "lines": [
+        7
+      ],
+      "line_count": 1
+    },
+    {
+      "path": "tests/fresh_training/test_historical_retirement.py",
+      "target_id": "R-07",
+      "classification": "fresh_contract_test",
+      "lines": [
+        31,
+        173
+      ],
+      "line_count": 2
+    }
+  ],
+  "processes": [],
+  "regenerators": [
+    {
+      "target_id": "R-06",
+      "path": "CityLearn/scripts/citylearn_v3_training_common.py",
+      "evidence": "_CSV_CACHE_DIR = PROJECT_ROOT / \"outputs\" / \"dataset_cache\"",
+      "protected_dependency": true,
+      "fresh_profile_mitigation": {
+        "verified": false,
+        "reason": "fresh native entrypoint not implemented"
+      }
+    }
+  ],
+  "diagnostic_records": [],
+  "git_status": {
+    "available": true,
+    "head": "cb2d7c7c84b5315acb50b3b8828ef4a90065bdc4",
+    "outputs_status_lines": [
+      "?? outputs/colab_delivery/"
+    ]
+  },
+  "generated_at": "2026-11-01T07:42:24.995374+00:00",
+  "plan_hash": "c01cbe1ec94e649c88ce32c4b7e134f3ed9399c93719c47285c25d2ddc19122b"
+}

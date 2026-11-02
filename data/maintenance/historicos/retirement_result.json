@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "plan_hash": "16e50e4b3bf3f90da2914b84117111c34501fe5cb25d224621be0fa098122a5e",
+  "project_root": "D:\\MADRLCitytleranflexresdr",
+  "targets": [
+    {
+      "target_id": "R-01",
+      "relative_path": "outputs/_drive_madrl",
+      "status": "already_absent",
+      "reasons": [],
+      "exit_code": 0,
+      "at_utc": "2026-11-01T08:23:16.6411280Z",
+      "present_after": false
+    },
+    {
+      "target_id": "R-02",
+      "relative_path": "outputs/citylearn_v3_madrl_full_20260615_074011_v4",
+      "status": "already_absent",
+      "reasons": [],
+      "exit_code": 0,
+      "at_utc": "2026-11-01T08:23:16.6746274Z",
+      "present_after": false
+    },
+    {
+      "target_id": "R-03",
+      "relative_path": "outputs/madrl_v3_20260627_164047",
+      "status": "already_absent",
+      "reasons": [],
+      "exit_code": 0,
+      "at_utc": "2026-11-01T08:23:16.6746274Z",
+      "present_after": false
+    },
+    {
+      "target_id": "R-04",
+      "relative_path": "outputs/modular_smoke",
+      "status": "already_absent",
+      "reasons": [],
+      "exit_code": 0,
+      "at_utc": "2026-11-01T08:23:16.6746274Z",
+      "present_after": false
+    },
+    {
+      "target_id": "R-05",
+      "relative_path": "outputs/thesis_objective_evidence",
+      "status": "already_absent",
+      "reasons": [],
+      "exit_code": 0,
+      "at_utc": "2026-11-01T08:23:16.6746274Z",
+      "present_after": false
+    },
+    {
+      "target_id": "R-06",
+      "relative_path": "outputs/dataset_cache",
+      "status": "deleted",
+      "reasons": [],
+      "exit_code": 0,
+      "at_utc": "2026-11-01T08:23:16.6746274Z",
+      "present_after": false
+    },
+    {
+      "target_id": "R-07",
+      "relative_path": "outputs/orchestration-tests.xml",
+      "status": "deleted",
+      "reasons": [],
+      "exit_code": 0,
+      "at_utc": "2026-11-01T08:23:50.3930641Z",
+      "present_after": false
+    }
+  ],
+  "protected_paths_verified": true,
+  "regenerators": [
+    {
+      "target_id": "R-06",
+      "path": "CityLearn/scripts/citylearn_v3_training_common.py",
+      "evidence": "_CSV_CACHE_DIR = PROJECT_ROOT / \"outputs\" / \"dataset_cache\"",
+      "protected_dependency": true,
+      "fresh_profile_mitigation": {
+        "verified": false,
+        "reason": "fresh native entrypoint not implemented"
+      }
+    }
+  ],
+  "unmitigated_regenerators": [
+    {
+      "target_id": "R-06",
+      "path": "CityLearn/scripts/citylearn_v3_training_common.py",
+      "evidence": "_CSV_CACHE_DIR = PROJECT_ROOT / \"outputs\" / \"dataset_cache\"",
+      "protected_dependency": true,
+      "fresh_profile_mitigation": {
+        "verified": false,
+        "reason": "fresh native entrypoint not implemented"
+      }
+    }
+  ],
+  "historical_retirement_complete": false,
+  "recorded_at": "2026-11-01T08:24:29.402080+00:00",
+  "note": "Hashes identify removed bytes; they are not a backup of ignored files."
+}

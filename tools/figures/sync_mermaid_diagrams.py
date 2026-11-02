@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sync Mermaid diagrams from ARQUITECTURA_PROYECTO_DEFENSA.md into the Colab notebook."""
+"""Sync Mermaid diagrams from defensa.md into the Colab notebook."""
 from __future__ import annotations
 
 import json
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-MD = ROOT / "docs" / "architecture" / "ARQUITECTURA_PROYECTO_DEFENSA.md"
+MD = ROOT / 'docs' / 'architecture' / 'defensa.md'
 NB = ROOT / "CityLearn" / "examples" / "madrl_citylearn_v3_tutorial.ipynb"
 MMD_DIR = ROOT / "outputs" / "defensa_pdf" / "mmd"
 

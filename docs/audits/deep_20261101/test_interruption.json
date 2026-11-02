@@ -1,0 +1,16 @@
+{
+  "status": "interrupted_due_to_concurrent_source_edits",
+  "at_utc": "2026-11-01T15:23:55.828623+00:00",
+  "reason": "Four source/config/test files changed during the audit. Full pytest run no longer corresponds to one revision. No suite acceptance is claimed.",
+  "pid": 7728,
+  "native_training_tests_excluded": 4,
+  "owned_descendants": 0,
+  "terminated_processes": 1,
+  "alive_processes": 0,
+  "changed_file_hashes": {
+    "configs/algorithms/native.yaml": "43ddb48b0e2e9daefc18b4d00e6e7dee7eb72a8885484af07e89429d79cd6214",
+    "configs/experiments/iquitos.yaml": "ae92cb7e0b0fe3fe8e1d38d3ebf38ec18e9822c017963b5b875eaaf8cc15b594",
+    "tests/fresh_training/test_campaign_contract.py": "47b8d901008bff150fa72334a38512108b9d03a9cdac92eaa72a5b46cee110ce",
+    "uc3m/domain/campaigns.py": "4ed5f8ad470f19eefa31c1a221d5a44055f15d9a338613e4d0140693067ca5d4"
+  }
+}

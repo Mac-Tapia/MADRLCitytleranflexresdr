@@ -1,0 +1,95 @@
+{
+  "generated_at": "2026-07-29T21:09:48.781831+00:00",
+  "tesis": {
+    "file": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "removed_previous": true,
+    "patched_54_mentions": 0,
+    "actions": [
+      "insert_heading_5_1_1",
+      "insert_intro",
+      "insert_table_5_1_1",
+      "insert_table_5_1_2",
+      "insert_table_5_1_3"
+    ],
+    "matrix_n": 54,
+    "all_values_n": 58,
+    "verification": {
+      "ok": true,
+      "has_marker": true,
+      "mentions_58": true,
+      "mentions_680": true,
+      "mentions_15300": true,
+      "official_kpi_names_in_cap5": 54,
+      "runtime_extra_names_in_cap5": 4,
+      "expected_official": 54,
+      "expected_runtime_extra": 4,
+      "cap5_range": [
+        455,
+        671
+      ]
+    }
+  },
+  "markdown_updated": true,
+  "sync_cap5_to_informe": {
+    "source": {
+      "source": "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "range": [
+        497,
+        750
+      ],
+      "blocks": 253,
+      "checks": {
+        "Shapiro": 9,
+        "Kruskal": 8,
+        "Wilcoxon": 6,
+        "0,6667": 4,
+        "normalidad": 10,
+        "Mann": 3,
+        "no_param": 2
+      }
+    },
+    "targets": [
+      {
+        "file": "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+        "ok": true,
+        "toc_safe": true,
+        "old_range": [
+          512,
+          765
+        ],
+        "dry_run": false,
+        "backup": null,
+        "new_range": [
+          512,
+          765
+        ],
+        "checks": {
+          "Shapiro": 9,
+          "Kruskal": 8,
+          "Wilcoxon": 6,
+          "0,6667": 4,
+          "normalidad": 10,
+          "Mann": 3,
+          "no_param": 2
+        }
+      }
+    ],
+    "dry_run": false,
+    "report_path": "D:\\MADRLCitytleranflexresdr\\docs\\_cap5_sync_report.json"
+  },
+  "informe_verification": {
+    "ok": true,
+    "has_marker": true,
+    "mentions_58": true,
+    "mentions_680": true,
+    "mentions_15300": true,
+    "official_kpi_names_in_cap5": 54,
+    "runtime_extra_names_in_cap5": 4,
+    "expected_official": 54,
+    "expected_runtime_extra": 4,
+    "cap5_range": [
+      479,
+      695
+    ]
+  }
+}

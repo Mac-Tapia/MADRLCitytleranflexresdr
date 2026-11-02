@@ -4,7 +4,7 @@
 
 Edita solo los 2 Word canónicos. Idempotente (marcador MARKER).
 Sustento: CityLearn/scripts/citylearn_v3_training_common.py + train_*.py +
-docs/tesis_capitulos/Capitulo_2_Marco_Teorico.md §§2.2.4.1–2.2.4.4.
+docs/chapters/cap2.md §§2.2.4.1–2.2.4.4.
 """
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ if str(_THESIS_DIR) not in sys.path:
 
 from thesis_word_canons import DOCS, INFORME, TESIS  # noqa: E402
 
-REPORT = DOCS / "CAP2_MADRL_ADECUACIONES_PATCH_REPORT_2026-07-29.json"
+REPORT = DOCS / 'audits' / 'word' / 'cap2_adecuaciones.json'
 BACKUP_DIR = REPO / "outputs" / "_word_backups"
 MARKER = "2.2.10 Adecuaciones de los cuatro backends MADRL al dominio electrico"
 MARKER_NORM = "2.2.10 adecuaciones de los cuatro backends madrl al dominio electrico"

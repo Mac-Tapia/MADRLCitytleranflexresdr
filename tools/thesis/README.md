@@ -16,9 +16,9 @@ Definidos en `thesis_word_canons.py` y `docs/CANON_WORD_Y_VALIDEZ_50EP_DRIVE_202
 
 
 
-1. `docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx` — fuente de verdad
+1. `docs/tesis.docx` — fuente de verdad
 
-2. `docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx` — informe 50 ep (TOC)
+2. `docs/informe.docx` — informe 50 ep (TOC)
 
 
 
@@ -74,7 +74,7 @@ Reglas duras: editar **solo** estos 2 archivos; backups temporales van a `output
 
 .\.venv39-citylearn-v3\Scripts\python.exe -B tools\thesis\patch_cap4_implementacion_docx.py
 
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\thesis\patch_citylearn_assets_integration_docx.py
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools\thesis\patch_assets.py
 
 .\.venv39-citylearn-v3\Scripts\python.exe -B tools\thesis\update_word_quantitative_50episodes.py
 

@@ -1,0 +1,21 @@
+﻿id,status,findings,evidence
+FR-N01,parcial,"A01,A09,A28",Aislamiento tipado existe; fronteras no impuestas en toda la vía canónica.
+FR-N02,verificado con excepción; parcial integral,"A01,A09,A16",Hash/cierres/CSV verificados; 22 meses modelados y límites de fuente pendientes.
+FR-N03,parcial,"A01,A08,A16",Splits 8760/8784/8760 y normalizador train-only; B01 y diseño requieren delimitación.
+FR-N04,parcial,"A06,A31",Contrato KPI y casos analíticos; el horizonte anual predeterminado incumple días completos.
+FR-N05,pendiente de aceptación nativa,"A04,A06,A15,A27",No se ejecutaron cuatro pruebas reales en esta auditoría.
+FR-N06,parcial; actualización contractual verificada,"A01,A02,A03",23 contratos posteriores pasan; falta aceptación nativa de pesos/hiperparámetros efectivos y toda la identidad.
+FR-N07,parcial,"A04,A07",No-resume e intentos nuevos existen; recuperación persistente no ensayada.
+FR-N08,incompleto,"A06,A08,A31",Baselines cortos operativos; cargadores nativos y contrato anual incompletos.
+FR-N09,incompleto,"A02,A03,A27",DAG y presupuesto; HPO/freeze/sensibilidad efectiva sin cierre.
+FR-N10,no conforme,"A05,A12,A13,A14",Aceptación de NaN e indicadores/decisiones incompatibles.
+FR-N11,incompleto,"A01,A04,A05,A08,A09,A10,A23,A25,A27,A30",Falta el contrato integral de seguridad y promoción nueva; versiones con avisos OSV.
+FR-N12,incompleto,"A06,A07,A10,A11,A17,A19,A27,A29",Runbook existe; entrega reproducible y tesis no acreditadas.
+FR-N13,deriva detectada,A28,R-06 observado presente; no ejecutar limpieza automática.
+FR-N14,parcial,"A04,A27",Salvage se rechaza; no se repitió regresión nativa completa de HAPPO.
+FR-N15,parcial,"A11,A17,A20",Capas/directorios presentes; consumidores e índices desconectados.
+FR-N16,parcial,"A11,A13,A15",Coexisten contratos viejo/nuevo y API placeholder; duplicados no autorizan borrado.
+FR-N17,parcial,"A12,A21,A22,A24,A26","Arquitectura contractual, pero lint/typing/empaquetado con deuda."
+FR-N18,no acreditado,"A21,A23,A24,A27,A29",Árbol sucio y sin Actions del estado auditado; no se publicó.
+FR-N19,inventariado; sin aprobación integral,,Nombres observados en files.csv; no se realizaron renombres.
+FR-N20,no conforme,"A01,A17,A18,A20",209 rutas tracked ausentes por reorganización y referencias antiguas: preservar mapa/custodia.

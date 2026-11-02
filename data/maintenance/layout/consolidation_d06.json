@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "group": "D-06",
+  "canonical_root": "configs/",
+  "removed_root": "uc3m/configs/",
+  "removed_files": [
+    {
+      "path": "uc3m/configs/base.yaml",
+      "sha256": "f075f61e5a644d2ac2a19aa24a8a83ab260298738c90812de5b4cfdce0e3950e",
+      "bytes": 4155
+    },
+    {
+      "path": "uc3m/configs/iquitos.yaml",
+      "sha256": "dfc19f54b888bfd0d57707ae3eadce240e1284bf05a0d68b060ff94835125312",
+      "bytes": 9559
+    },
+    {
+      "path": "uc3m/configs/algorithms/happo.yaml",
+      "sha256": "5f4f81f31b58975c2871ccc6fe20080ad2209ebd7a36308042c66423a29b3643",
+      "bytes": 1146
+    },
+    {
+      "path": "uc3m/configs/algorithms/maac.yaml",
+      "sha256": "40899ce755bb862680c9ea6b43da7b9335afe7360f05d552bfac6257b2a03eb5",
+      "bytes": 1031
+    },
+    {
+      "path": "uc3m/configs/algorithms/masac.yaml",
+      "sha256": "c8a68ccb375e07a2815dea5aa287770366b7a2d9296c57b5db791b074d77c25a",
+      "bytes": 985
+    },
+    {
+      "path": "uc3m/configs/algorithms/matd3.yaml",
+      "sha256": "2956b9664e993cd923727da4f12d0ffeb8ff4cde614fe3ce070411ed86fa5890",
+      "bytes": 953
+    }
+  ],
+  "coverage_verified": "no consumer loads uc3m/configs (grep of uc3m, tools, tests, scripts, notebooks, pyproject); its values configured the retired uc3m/train.py path; fresh campaign values live in configs/experiments/iquitos.yaml and configs/algorithms/native.yaml",
+  "unique_content_migrated": "none required: retired-path defaults (Hydra-style base/iquitos/algorithm files), recoverable from git",
+  "at_utc": "2026-11-01T13:45:39.0811688Z"
+}

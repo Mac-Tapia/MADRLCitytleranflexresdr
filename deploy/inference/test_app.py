@@ -15,6 +15,8 @@ from fastapi.testclient import TestClient
 # importar la app, para no intentar conectar a ningún Mongo durante el test.
 os.environ.pop("MONGODB_URI", None)
 os.environ.setdefault("MODEL_PATH", "/nonexistent/winning_agent.onnx")
+# The stub policy exists only on explicit demo opt-in (P12/A25).
+os.environ["INFERENCE_DEMO_STUB"] = "1"
 
 from app import app  # noqa: E402
 
@@ -28,12 +30,14 @@ def test_health_ok() -> None:
 
 def test_act_stub_returns_actions() -> None:
     with TestClient(app) as client:
-        payload = {"observations": [[0.0] * 29, [0.1] * 29]}
+        # Default stub metadata declares 17 agents x 29 observations.
+        payload = {"observations": [[0.0] * 29] * 17}
         resp = client.post("/act", json=payload)
         assert resp.status_code == 200
         body = resp.json()
         assert body["is_stub"] is True
-        assert len(body["actions"]) == 2
+        assert body["control_eligible"] is False
+        assert len(body["actions"]) == 17
 
 
 def test_analytics_summary_disabled_without_mongo() -> None:

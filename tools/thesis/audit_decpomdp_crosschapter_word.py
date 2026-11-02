@@ -131,8 +131,8 @@ def audit(path: Path) -> dict:
 def main() -> int:
     results = []
     for name in (
-        "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
-        "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+        "tesis.docx",
+        "informe.docx",
     ):
         results.append(audit(DOCS / name))
     # Cross summary

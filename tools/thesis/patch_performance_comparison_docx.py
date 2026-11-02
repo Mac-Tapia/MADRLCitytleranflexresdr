@@ -30,7 +30,7 @@ from thesis_word_canons import CANONS, RUN_ID  # noqa: E402
 
 BACKUP_DIR = REPO / "outputs" / "_word_backups"
 FIG_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "performance_comparison"
-REPORT = REPO / "docs" / "PERFORMANCE_COMPARISON_WORD_PATCH_REPORT_2026-07-29.json"
+REPORT = REPO / 'docs' / 'audits' / 'word' / 'comparacion.json'
 STAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 GREY = RGBColor(0x55, 0x55, 0x55)
 MARKER = "Figura 5.3e. Performance comparison — MATD3"

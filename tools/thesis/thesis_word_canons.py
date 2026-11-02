@@ -1,9 +1,10 @@
 """Rutas canónicas de los 2 Word de tesis vigentes (2026-07-29).
 
-Fuente de verdad: docs/CANON_WORD_Y_VALIDEZ_50EP_DRIVE_2026-07-29.md
-y docs/workflow_manifest.json → canonical_50ep_drive.word_canons.
+Fuente de verdad: docs/workflow_manifest.json → canonical_50ep_drive.word_canons.
+La ubicación actual se registra también en governance/naming.yaml.
 
-Política: exactamente 2 .docx en docs/ raíz (Tesis + Informe).
+Política: exactamente 2 canónicos (Tesis + Informe). El informe previo de
+auditoría se conserva por su contenido único y no es otro canon activo.
 ABRIR_ESTE_WORD_* fue eliminado; no recrear.
 Backups temporales, si existen, van a outputs/_word_backups/ — nunca a docs/.
 """
@@ -16,8 +17,8 @@ _THESIS_DIR = Path(__file__).resolve().parent
 REPO = _THESIS_DIR.parents[1]
 DOCS = REPO / "docs"
 
-TESIS = DOCS / "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx"
-INFORME = DOCS / "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx"
+TESIS = DOCS / 'tesis.docx'
+INFORME = DOCS / 'informe.docx'
 
 CANONS: tuple[Path, ...] = (TESIS, INFORME)
 

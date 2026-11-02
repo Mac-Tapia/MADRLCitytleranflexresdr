@@ -1,0 +1,559 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-11-01T15:42:38.864536+00:00",
+  "plan": "docs/plans/remediacion_auditoria.md",
+  "plan_sha256": "c769e46f0b5efad68fc88b0146b6c6998b3060d21ed20d9da6cef6d537d9e7be",
+  "implementation_executed": false,
+  "implementation_ready_for_training": false,
+  "scientific_acceptance": false,
+  "tasks": [
+    "P00",
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P06",
+    "P07",
+    "P08",
+    "P09",
+    "P10",
+    "P11",
+    "P12",
+    "P13",
+    "P14",
+    "P15",
+    "P16",
+    "P17",
+    "P18"
+  ],
+  "coverage": {
+    "findings": {
+      "A01": {
+        "tasks": [
+          "P01"
+        ],
+        "acceptance": "Identidad completa verificada antes del efecto"
+      },
+      "A02": {
+        "tasks": [
+          "P04"
+        ],
+        "acceptance": "Pesos efectivos, catálogo y recompensa nativa coherentes"
+      },
+      "A03": {
+        "tasks": [
+          "P04"
+        ],
+        "acceptance": "Freeze aceptado determina hiperparámetros reales"
+      },
+      "A04": {
+        "tasks": [
+          "P02"
+        ],
+        "acceptance": "Intento, actualizaciones y checkpoint verificados"
+      },
+      "A05": {
+        "tasks": [
+          "P03"
+        ],
+        "acceptance": "Datos inválidos nunca producen estudio completo"
+      },
+      "A06": {
+        "tasks": [
+          "P05"
+        ],
+        "acceptance": "Cuatro políticas congeladas recargables"
+      },
+      "A07": {
+        "tasks": [
+          "P11"
+        ],
+        "acceptance": "Persistencia por intento y desconexión real"
+      },
+      "A08": {
+        "tasks": [
+          "P05"
+        ],
+        "acceptance": "Test desbloqueado por identidad/freeze válidos"
+      },
+      "A09": {
+        "tasks": [
+          "P01"
+        ],
+        "acceptance": "Rutas Windows/enlaces contenidos"
+      },
+      "A10": {
+        "tasks": [
+          "P09"
+        ],
+        "acceptance": "Evidencia existente, íntegra y de la campaña correcta"
+      },
+      "A11": {
+        "tasks": [
+          "P10"
+        ],
+        "acceptance": "Catálogo y panel consumen intentos nuevos"
+      },
+      "A12": {
+        "tasks": [
+          "P08"
+        ],
+        "acceptance": "HPHI correcto y comparable"
+      },
+      "A13": {
+        "tasks": [
+          "P08"
+        ],
+        "acceptance": "IQM canónico y consumidores coherentes"
+      },
+      "A14": {
+        "tasks": [
+          "P09"
+        ],
+        "acceptance": "Selección descriptiva separada de inferencia"
+      },
+      "A15": {
+        "tasks": [
+          "P02"
+        ],
+        "acceptance": "Ningún placeholder acredita aprendizaje/modelo"
+      },
+      "A16": {
+        "tasks": [
+          "P07",
+          "P16"
+        ],
+        "acceptance": "Procedencia temporal y sensibilidad ejecutada"
+      },
+      "A17": {
+        "tasks": [
+          "P15"
+        ],
+        "acceptance": "Una ruta operativa vigente y material histórico rotulado"
+      },
+      "A18": {
+        "tasks": [
+          "P15",
+          "P17"
+        ],
+        "acceptance": "Proyección actual de J-ID con referencias verificadas"
+      },
+      "A19": {
+        "tasks": [
+          "P17"
+        ],
+        "acceptance": "Tesis/generadores alineados con evidencia nueva"
+      },
+      "A20": {
+        "tasks": [
+          "P15"
+        ],
+        "acceptance": "Verificador actual y errores estructurados"
+      },
+      "A21": {
+        "tasks": [
+          "P14"
+        ],
+        "acceptance": "Lint/tipos y alcance documentados"
+      },
+      "A22": {
+        "tasks": [
+          "P14"
+        ],
+        "acceptance": "Registro y descubrimiento local comprobados"
+      },
+      "A23": {
+        "tasks": [
+          "P14"
+        ],
+        "acceptance": "CI CPU portable separado del guard local"
+      },
+      "A24": {
+        "tasks": [
+          "P13",
+          "P14"
+        ],
+        "acceptance": "Dependencias, metadatos e instalación limpia"
+      },
+      "A25": {
+        "tasks": [
+          "P12",
+          "P18"
+        ],
+        "acceptance": "Demo cercado; operación solo con aceptación independiente"
+      },
+      "A26": {
+        "tasks": [
+          "P12"
+        ],
+        "acceptance": "Identidad de contenido, cuotas y caché remota segura"
+      },
+      "A27": {
+        "tasks": [
+          "P16",
+          "P17"
+        ],
+        "acceptance": "Aceptación nueva y entrega verificables"
+      },
+      "A28": {
+        "tasks": [
+          "P11",
+          "P15"
+        ],
+        "acceptance": "Consumidores de caché aislados y retiro conciliado"
+      },
+      "A29": {
+        "tasks": [
+          "P13"
+        ],
+        "acceptance": "Overlay compatible con permisos/licencias"
+      },
+      "A30": {
+        "tasks": [
+          "P13"
+        ],
+        "acceptance": "Triage y remediación/excepciones vigentes por aplicabilidad"
+      },
+      "A31": {
+        "tasks": [
+          "P06"
+        ],
+        "acceptance": "Horizonte anual y KPI diarios completos"
+      }
+    },
+    "requirements": {
+      "FR-N01": {
+        "tasks": [
+          "P01",
+          "P11"
+        ],
+        "acceptance": "G1: entradas y cachés aisladas"
+      },
+      "FR-N02": {
+        "tasks": [
+          "P01",
+          "P07"
+        ],
+        "acceptance": "G1: hashes, fuentes y calidad por variable"
+      },
+      "FR-N03": {
+        "tasks": [
+          "P06",
+          "P07"
+        ],
+        "acceptance": "G1/G4: temporalidad y sensibilidad"
+      },
+      "FR-N04": {
+        "tasks": [
+          "P06"
+        ],
+        "acceptance": "G2/G4: trazas y KPI con unidades/tiempo válidos"
+      },
+      "FR-N05": {
+        "tasks": [
+          "P02",
+          "P05",
+          "P16"
+        ],
+        "acceptance": "G2: cuatro aprendices nativos reales"
+      },
+      "FR-N06": {
+        "tasks": [
+          "P04"
+        ],
+        "acceptance": "G2/G3: configuración efectiva y freeze"
+      },
+      "FR-N07": {
+        "tasks": [
+          "P02",
+          "P11"
+        ],
+        "acceptance": "G2: intento fallido preservado y reinicio desde cero"
+      },
+      "FR-N08": {
+        "tasks": [
+          "P05",
+          "P06"
+        ],
+        "acceptance": "G2/G4: evaluación congelada y baseline pareado"
+      },
+      "FR-N09": {
+        "tasks": [
+          "P04",
+          "P07",
+          "P16"
+        ],
+        "acceptance": "G3/G4: HPO/sensibilidades nuevas"
+      },
+      "FR-N10": {
+        "tasks": [
+          "P03",
+          "P08",
+          "P09"
+        ],
+        "acceptance": "G4: réplica por semilla y decisión válida"
+      },
+      "FR-N11": {
+        "tasks": [
+          "P01",
+          "P02",
+          "P03",
+          "P12",
+          "P13",
+          "P14",
+          "P16"
+        ],
+        "acceptance": "G1/G2: rechazo adversarial y gate estricto"
+      },
+      "FR-N12": {
+        "tasks": [
+          "P10",
+          "P11",
+          "P17"
+        ],
+        "acceptance": "G5: manifiesto y entrega reproducibles"
+      },
+      "FR-N13": {
+        "tasks": [
+          "P11",
+          "P15"
+        ],
+        "acceptance": "G1: retiro/consumidores con custodia; no borrado implícito"
+      },
+      "FR-N14": {
+        "tasks": [
+          "P02",
+          "P16"
+        ],
+        "acceptance": "G2: HAPPO aprende, reporta, recarga y cierra"
+      },
+      "FR-N15": {
+        "tasks": [
+          "P10",
+          "P15"
+        ],
+        "acceptance": "G1: árbol y consumidores actuales"
+      },
+      "FR-N16": {
+        "tasks": [
+          "P02",
+          "P08",
+          "P10",
+          "P15"
+        ],
+        "acceptance": "G1: una canónica por responsabilidad"
+      },
+      "FR-N17": {
+        "tasks": [
+          "P13",
+          "P14"
+        ],
+        "acceptance": "G1/G2: calidad y paquete portable"
+      },
+      "FR-N18": {
+        "tasks": [
+          "P13",
+          "P14",
+          "P16"
+        ],
+        "acceptance": "G2: checks locales; remoto acreditado aparte"
+      },
+      "FR-N19": {
+        "tasks": [
+          "P15"
+        ],
+        "acceptance": "G1: nombres y excepciones justificadas"
+      },
+      "FR-N20": {
+        "tasks": [
+          "P01",
+          "P15"
+        ],
+        "acceptance": "G1: mapa de rutas e identidades verificables"
+      }
+    },
+    "jury": {
+      "J-01": {
+        "tasks": [
+          "P03",
+          "P09",
+          "P15",
+          "P17"
+        ],
+        "acceptance": "Una decisión inferencial consistente en tablas, texto y Word"
+      },
+      "J-02": {
+        "tasks": [
+          "P16"
+        ],
+        "acceptance": "Semillas independientes reales y cobertura registrada"
+      },
+      "J-03": {
+        "tasks": [
+          "P08",
+          "P15",
+          "P17"
+        ],
+        "acceptance": "Tres ejes evaluados; siete ejes rotulados como extensión"
+      },
+      "J-04": {
+        "tasks": [
+          "P02",
+          "P05",
+          "P16",
+          "P17"
+        ],
+        "acceptance": "HAPPO nuevo homogéneo; historia 49/50 no acredita campaña actual"
+      },
+      "J-05": {
+        "tasks": [
+          "P17"
+        ],
+        "acceptance": "Aporte, alcance y tipo de documento consistentes"
+      },
+      "J-06": {
+        "tasks": [
+          "P12",
+          "P13",
+          "P17",
+          "P18"
+        ],
+        "acceptance": "Propuesta sustantiva de amenazas/privacidad y límites de implementación"
+      },
+      "J-07": {
+        "tasks": [
+          "P13",
+          "P14",
+          "P17"
+        ],
+        "acceptance": "Anexo con URL/revisión, instalación, licencias y evidencia accesible"
+      },
+      "J-08": {
+        "tasks": [
+          "P17"
+        ],
+        "acceptance": "Introducción general y estructura/índice verificados"
+      },
+      "J-09": {
+        "tasks": [
+          "P06",
+          "P07",
+          "P17"
+        ],
+        "acceptance": "Tabla por variable y tratamiento reproducible de faltantes/modelado"
+      },
+      "J-10": {
+        "tasks": [
+          "P01",
+          "P04",
+          "P05",
+          "P07"
+        ],
+        "acceptance": "Matriz de leakage, fit_scope y separación de selección/prueba"
+      },
+      "J-11": {
+        "tasks": [
+          "P07",
+          "P16",
+          "P17",
+          "P18"
+        ],
+        "acceptance": "Amenazas a validez, estrés y frontera de transferencia/piloto"
+      },
+      "J-12": {
+        "tasks": [
+          "P03",
+          "P08",
+          "P09",
+          "P16"
+        ],
+        "acceptance": "IC/IQM y contrastes entre entrenamientos independientes"
+      },
+      "J-13": {
+        "tasks": [
+          "P16"
+        ],
+        "acceptance": "Curvas de tamaños factibles con tiempo, memoria, latencia y KPI"
+      },
+      "J-14": {
+        "tasks": [
+          "P17"
+        ],
+        "acceptance": "Costos medidos/modelados/hipotéticos separados y con fuentes"
+      },
+      "J-15": {
+        "tasks": [
+          "P10",
+          "P11",
+          "P17",
+          "P18"
+        ],
+        "acceptance": "Persistencia, versionado, deriva, fallback y recuperación con alcance"
+      },
+      "J-16": {
+        "tasks": [
+          "P17",
+          "P18"
+        ],
+        "acceptance": "TRL sustentado y ruta a piloto; ninguna elevación por código/demo"
+      },
+      "J-17": {
+        "tasks": [
+          "P17"
+        ],
+        "acceptance": "Síntesis por capítulo, anexos y revisión visual de documentos"
+      }
+    }
+  },
+  "observed_budget_without_training": {
+    "pilot": {
+      "treatments": 4,
+      "episodes": 8,
+      "env_steps": 1344
+    },
+    "hpo": {
+      "treatments": 252,
+      "episodes": 2520,
+      "env_steps": 22075200
+    },
+    "confirm": {
+      "treatments": 144,
+      "episodes": 7200,
+      "env_steps": 63072000
+    },
+    "sensitivity": {
+      "treatments": 72,
+      "episodes": 3600,
+      "env_steps": 31536000
+    }
+  },
+  "resource_authorization": {
+    "authorized_stages": []
+  },
+  "source_hashes": {
+    "AGENTS.md": "9d9c9e1b9036236863f732ff1957c3e181d228c4b880a23d9e667c1800b9c906",
+    "docs/design/entrenamiento.md": "48440c17e64e1a26e80970e26d0cc63b515566d95738b3d24f6d0459c22b8778",
+    "docs/plans/entrenamiento.md": "a801b5ad386f2c42b68dd0cb8dbc4ba7197d356f7705482c022246885c5bbaf0",
+    "docs/audits/deep_20261101/findings.json": "5250bc2409a34b9c7f07ed9ecc6a7f770464d396975df837ddd1fe0dd86c5077",
+    "configs/experiments/iquitos.yaml": "ae92cb7e0b0fe3fe8e1d38d3ebf38ec18e9822c017963b5b875eaaf8cc15b594",
+    "configs/algorithms/native.yaml": "43ddb48b0e2e9daefc18b4d00e6e7dee7eb72a8885484af07e89429d79cd6214",
+    "uc3m/application/training/fresh_campaign.py": "9093882ac80a093f5a8a11e33c3dd190968754162050a11d525afa02f492f318",
+    "uc3m/application/training/cli.py": "b07daebc220bea4952f2c06e31b9f3bee48934249b158d766f024c9a4888cf65"
+  },
+  "validation": {
+    "tasks": 19,
+    "findings": 31,
+    "requirements": 20,
+    "jury_observations": 17,
+    "implementation_checkboxes_completed": 0,
+    "local_document_links_verified": 7,
+    "protocol_mismatch_blocks_hpo": true,
+    "skill_registry": "passed",
+    "spec_consistency_tests": {
+      "passed": 3,
+      "scope": "tests/contract/test_spec_kit_consistency.py",
+      "scientific_acceptance": false
+    }
+  }
+}

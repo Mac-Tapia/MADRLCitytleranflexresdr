@@ -636,8 +636,8 @@ def main():
     print(f"Chrome: {CHROME}")
 
     jobs = [
-        (HTML_ARQUITECTURA, ARCH_DIR / "ARQUITECTURA_CITYLEARN_V3_MADRL.png",     1600, 1080),
-        (HTML_FLUJO,        ARCH_DIR / "FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png",    1600, 1100),
+        (HTML_ARQUITECTURA, ARCH_DIR / "arquitectura.png",     1600, 1080),
+        (HTML_FLUJO,        ARCH_DIR / "trabajo.png",    1600, 1100),
     ]
 
     ok = 0

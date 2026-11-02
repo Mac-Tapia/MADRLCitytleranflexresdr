@@ -1,0 +1,345 @@
+﻿path,line,rule,detail
+pyproject.toml,92,unfinished_marker,
+data/audits/jury_observations_manifest.json,27,old_path_reference,
+data/audits/jury_observations_manifest.json,43,old_path_reference,
+data/audits/jury_observations_manifest.json,51,old_path_reference,
+data/audits/jury_observations_manifest.json,59,old_path_reference,
+data/audits/jury_observations_manifest.json,67,old_path_reference,
+data/audits/jury_observations_manifest.json,75,old_path_reference,
+data/audits/jury_observations_manifest.json,83,old_path_reference,
+data/audits/jury_observations_manifest.json,91,old_path_reference,
+data/audits/jury_observations_manifest.json,115,old_path_reference,
+data/audits/jury_observations_manifest.json,123,old_path_reference,
+data/audits/jury_observations_manifest.json,131,old_path_reference,
+data/audits/jury_observations_manifest.json,139,old_path_reference,
+data/audits/modernization_baseline.json,7,old_path_reference,
+data/audits/modernization_baseline.json,11,old_path_reference,
+data/dataset_audit/training_dataset_validation.csv,0,csv_quality_signal,ragged=18; nonfinite=0
+data/maintenance/names/aliases.json,98,old_path_reference,
+data/maintenance/names/aliases.json,99,old_path_reference,
+data/maintenance/names/aliases.json,100,old_path_reference,
+data/maintenance/names/aliases.json,101,old_path_reference,
+data/maintenance/names/aliases.json,102,old_path_reference,
+data/maintenance/names/aliases.json,103,old_path_reference,
+data/maintenance/names/aliases.json,104,old_path_reference,
+data/maintenance/names/aliases.json,105,old_path_reference,
+data/maintenance/names/aliases.json,106,old_path_reference,
+data/maintenance/names/aliases.json,107,old_path_reference,
+data/maintenance/names/aliases.json,108,old_path_reference,
+data/maintenance/names/aliases.json,109,old_path_reference,
+data/maintenance/names/aliases.json,110,old_path_reference,
+data/maintenance/names/aliases.json,111,old_path_reference,
+data/maintenance/names/aliases.json,112,old_path_reference,
+data/maintenance/names/aliases.json,113,old_path_reference,
+data/maintenance/names/aliases.json,114,old_path_reference,
+data/maintenance/names/aliases.json,115,old_path_reference,
+data/maintenance/names/aliases.json,116,old_path_reference,
+data/maintenance/names/aliases.json,117,old_path_reference,
+data/maintenance/names/aliases.json,118,old_path_reference,
+data/maintenance/names/aliases.json,119,old_path_reference,
+data/maintenance/names/aliases.json,120,old_path_reference,
+data/maintenance/names/aliases.json,121,old_path_reference,
+data/maintenance/names/aliases.json,183,old_path_reference,
+data/maintenance/names/aliases.json,184,old_path_reference,
+data/maintenance/names/aliases.json,200,old_path_reference,
+data/maintenance/names/aliases.json,201,old_path_reference,
+data/maintenance/names/aliases.json,202,old_path_reference,
+data/maintenance/names/inventory.json,1323,old_path_reference,
+data/maintenance/names/inventory.json,1330,old_path_reference,
+data/maintenance/names/inventory.json,1337,old_path_reference,
+data/maintenance/names/inventory.json,1344,old_path_reference,
+data/maintenance/names/inventory.json,1351,old_path_reference,
+data/maintenance/names/inventory.json,1358,old_path_reference,
+data/maintenance/names/inventory.json,1365,old_path_reference,
+data/maintenance/names/inventory.json,1372,old_path_reference,
+data/maintenance/names/inventory.json,1379,old_path_reference,
+data/maintenance/names/inventory.json,1386,old_path_reference,
+data/maintenance/names/inventory.json,1393,old_path_reference,
+data/maintenance/names/inventory.json,1400,old_path_reference,
+data/maintenance/names/inventory.json,1407,old_path_reference,
+data/maintenance/names/inventory.json,1414,old_path_reference,
+data/maintenance/names/inventory.json,1421,old_path_reference,
+data/maintenance/names/inventory.json,1428,old_path_reference,
+data/maintenance/names/inventory.json,1435,old_path_reference,
+data/maintenance/names/inventory.json,1442,old_path_reference,
+data/maintenance/names/inventory.json,1449,old_path_reference,
+data/maintenance/names/inventory.json,1456,old_path_reference,
+data/maintenance/names/inventory.json,1463,old_path_reference,
+data/maintenance/names/inventory.json,1470,old_path_reference,
+data/maintenance/names/inventory.json,1477,old_path_reference,
+data/maintenance/names/inventory.json,1484,old_path_reference,
+data/maintenance/names/inventory.json,4375,old_path_reference,
+data/maintenance/names/inventory.json,4376,old_path_reference,
+data/maintenance/names/inventory.json,5130,old_path_reference,
+data/maintenance/names/inventory.json,5139,old_path_reference,
+data/maintenance/names/inventory.json,5148,old_path_reference,
+data/maintenance/names/inventory.json,5157,old_path_reference,
+data/maintenance/names/inventory.json,5165,old_path_reference,
+data/maintenance/names/inventory.json,5174,old_path_reference,
+data/maintenance/names/inventory.json,5183,old_path_reference,
+data/maintenance/names/inventory.json,5191,old_path_reference,
+data/maintenance/names/inventory.json,5200,old_path_reference,
+data/maintenance/names/inventory.json,5209,old_path_reference,
+data/maintenance/names/inventory.json,5218,old_path_reference,
+data/maintenance/names/inventory.json,5227,old_path_reference,
+data/maintenance/names/inventory.json,5234,old_path_reference,
+data/maintenance/names/inventory.json,5241,old_path_reference,
+data/maintenance/names/inventory.json,5248,old_path_reference,
+data/maintenance/names/inventory.json,5255,old_path_reference,
+data/maintenance/names/inventory.json,5262,old_path_reference,
+data/maintenance/names/inventory.json,5269,old_path_reference,
+data/maintenance/names/inventory.json,5276,old_path_reference,
+data/maintenance/names/inventory.json,5283,old_path_reference,
+data/maintenance/names/inventory.json,5290,old_path_reference,
+data/maintenance/names/inventory.json,5297,old_path_reference,
+data/maintenance/names/inventory.json,5304,old_path_reference,
+data/maintenance/names/map.json,735,old_path_reference,
+data/maintenance/names/map.json,743,old_path_reference,
+data/maintenance/names/map.json,751,old_path_reference,
+data/maintenance/names/map.json,759,old_path_reference,
+data/maintenance/names/map.json,767,old_path_reference,
+data/maintenance/names/map.json,775,old_path_reference,
+data/maintenance/names/map.json,783,old_path_reference,
+data/maintenance/names/map.json,791,old_path_reference,
+data/maintenance/names/map.json,799,old_path_reference,
+data/maintenance/names/map.json,807,old_path_reference,
+data/maintenance/names/map.json,815,old_path_reference,
+data/maintenance/names/map.json,823,old_path_reference,
+data/maintenance/names/map.json,831,old_path_reference,
+data/maintenance/names/map.json,839,old_path_reference,
+data/maintenance/names/map.json,847,old_path_reference,
+data/maintenance/names/map.json,855,old_path_reference,
+data/maintenance/names/map.json,863,old_path_reference,
+data/maintenance/names/map.json,871,old_path_reference,
+data/maintenance/names/map.json,879,old_path_reference,
+data/maintenance/names/map.json,887,old_path_reference,
+data/maintenance/names/map.json,895,old_path_reference,
+data/maintenance/names/map.json,903,old_path_reference,
+data/maintenance/names/map.json,911,old_path_reference,
+data/maintenance/names/map.json,919,old_path_reference,
+data/maintenance/names/map.json,1665,old_path_reference,
+data/maintenance/names/map.json,1673,old_path_reference,
+data/maintenance/names/map.json,1681,old_path_reference,
+data/maintenance/names/map.json,1689,old_path_reference,
+data/maintenance/names/map.json,1697,old_path_reference,
+data/maintenance/names/map.json,1705,old_path_reference,
+data/maintenance/names/map.json,1713,old_path_reference,
+data/maintenance/names/map.json,1721,old_path_reference,
+data/maintenance/names/map.json,1729,old_path_reference,
+data/maintenance/names/map.json,1737,old_path_reference,
+data/maintenance/names/map.json,1745,old_path_reference,
+data/maintenance/names/map.json,1753,old_path_reference,
+data/maintenance/names/map.json,1761,old_path_reference,
+data/maintenance/names/map.json,1769,old_path_reference,
+data/maintenance/names/map.json,1777,old_path_reference,
+data/maintenance/names/map.json,1785,old_path_reference,
+data/maintenance/names/map.json,1793,old_path_reference,
+data/maintenance/names/map.json,1801,old_path_reference,
+data/maintenance/names/map.json,2710,old_path_reference,
+data/maintenance/names/map.json,2711,old_path_reference,
+data/maintenance/names/map.json,2712,old_path_reference,
+data/maintenance/names/map.json,2713,old_path_reference,
+data/maintenance/names/map.json,2714,old_path_reference,
+data/maintenance/names/map.json,2715,old_path_reference,
+data/maintenance/names/map.json,2716,old_path_reference,
+data/maintenance/names/map.json,2717,old_path_reference,
+data/maintenance/names/map.json,2718,old_path_reference,
+data/maintenance/names/map.json,2719,old_path_reference,
+data/maintenance/names/map.json,2720,old_path_reference,
+data/maintenance/names/map.json,2721,old_path_reference,
+data/maintenance/names/map.json,2722,old_path_reference,
+data/maintenance/names/map.json,2723,old_path_reference,
+data/maintenance/names/map.json,2724,old_path_reference,
+data/maintenance/names/map.json,2725,old_path_reference,
+data/maintenance/names/map.json,2726,old_path_reference,
+data/maintenance/names/map.json,2727,old_path_reference,
+data/maintenance/names/map.json,2728,old_path_reference,
+data/maintenance/names/map.json,2729,old_path_reference,
+data/maintenance/names/map.json,2730,old_path_reference,
+data/maintenance/names/map.json,2731,old_path_reference,
+data/maintenance/names/map.json,2732,old_path_reference,
+data/maintenance/names/map.json,2733,old_path_reference,
+data/maintenance/names/map.json,2795,old_path_reference,
+data/maintenance/names/map.json,2796,old_path_reference,
+data/maintenance/names/map.json,2812,old_path_reference,
+data/maintenance/names/map.json,2813,old_path_reference,
+data/maintenance/names/map.json,2814,old_path_reference,
+data/maintenance/names/map.json,2986,old_path_reference,
+data/maintenance/names/map.json,2987,old_path_reference,
+deploy/docker-compose.aws.yml,17,network_exposure_review,
+deploy/docker-compose.aws.yml,31,network_exposure_review,
+deploy/docker-compose.aws.yml,72,network_exposure_review,
+deploy/docker-compose.yml,22,network_exposure_review,
+deploy/docker-compose.yml,40,network_exposure_review,
+deploy/docker-compose.yml,79,network_exposure_review,
+deploy/mosquitto.conf,5,network_exposure_review,
+deploy/aws/deploy.md,32,network_exposure_review,
+deploy/aws/iac/main.tf,114,network_exposure_review,
+deploy/aws/iac/variables.tf,32,network_exposure_review,
+deploy/aws/iac/variables.tf,38,network_exposure_review,
+deploy/dashboard/Dockerfile,20,network_exposure_review,
+deploy/dashboard/app.py,37,no_explicit_timeout,"requests.get(f'{INFERENCE_URL}/health', timeout=5).json"
+deploy/dashboard/app.py,44,no_explicit_timeout,"requests.get(f'{INFERENCE_URL}/model/info', timeout=5).json"
+deploy/inference/Dockerfile,23,network_exposure_review,
+deploy/inference/app.py,15,network_exposure_review,
+deploy/inference/mongo_store.py,294,silent_broad_exception,
+deploy/k8s/README.md,73,network_exposure_review,
+deploy/k8s/README.md,95,network_exposure_review,
+deploy/k8s/ingress.yaml,16,network_exposure_review,
+deploy/k8s/ingress.yaml,17,network_exposure_review,
+deploy/plant_adapter/modbus_adapter.py,37,unfinished_marker,
+deploy/plant_adapter/replay_adapter.py,111,no_explicit_timeout,"requests.get(f'{INFERENCE_URL}/model/info', timeout=10).json"
+docs/instalacion.md,71,unfinished_marker,
+docs/audits/word/activos.json,4,old_path_reference,
+docs/audits/word/cap4_implementacion.json,3,old_path_reference,
+examples_madrl_v3/load_environment.ipynb,3,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_cli.ipynb,4,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_cli.ipynb,8,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_cli.ipynb,10,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_cli.ipynb,12,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_cli.ipynb,14,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb,2,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb,4,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb,5,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb,7,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb,9,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb,3,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb,14,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb,16,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb,18,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb,20,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb,23,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,4,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,17,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,18,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,19,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,20,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,21,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,22,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,24,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,32,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,34,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,38,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,43,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,45,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,47,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,51,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,52,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,54,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,61,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,63,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,68,notebook_execution_cell,cell index (1-based)
+examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb,76,notebook_execution_cell,cell index (1-based)
+governance/naming.yaml,51,old_path_reference,
+governance/naming.yaml,52,old_path_reference,
+governance/naming.yaml,53,old_path_reference,
+governance/naming.yaml,55,old_path_reference,
+governance/naming.yaml,56,old_path_reference,
+governance/naming.yaml,57,old_path_reference,
+governance/naming.yaml,58,old_path_reference,
+governance/naming.yaml,59,old_path_reference,
+governance/naming.yaml,60,old_path_reference,
+governance/naming.yaml,61,old_path_reference,
+governance/naming.yaml,62,old_path_reference,
+governance/naming.yaml,63,old_path_reference,
+governance/naming.yaml,64,old_path_reference,
+governance/naming.yaml,65,old_path_reference,
+governance/naming.yaml,66,old_path_reference,
+governance/naming.yaml,161,old_path_reference,
+governance/naming.yaml,162,old_path_reference,
+governance/naming.yaml,163,old_path_reference,
+governance/naming.yaml,164,old_path_reference,
+governance/naming.yaml,165,old_path_reference,
+governance/naming.yaml,166,old_path_reference,
+governance/naming.yaml,167,old_path_reference,
+governance/naming.yaml,168,old_path_reference,
+governance/naming.yaml,169,old_path_reference,
+governance/naming.yaml,170,old_path_reference,
+governance/naming.yaml,171,old_path_reference,
+governance/naming.yaml,172,old_path_reference,
+scripts/run_madrl_nonparametric_battery.py,421,long_function,220
+tests/contract/test_weight_single_source.py,36,silent_broad_exception,
+tests/contract/test_weight_single_source.py,61,silent_broad_exception,
+tests/fresh_training/test_names.py,35,no_explicit_timeout,subprocess.run
+tests/fresh_training/test_names.py,262,security_sensitive_call,exec
+tests/fresh_training/test_names.py,309,security_sensitive_call,exec
+tests/fresh_training/test_names.py,317,no_explicit_timeout,subprocess.run
+tests/fresh_training/test_names.py,334,security_sensitive_call,exec
+tests/fresh_training/test_names.py,325,old_path_reference,
+tests/fresh_training/test_names.py,330,old_path_reference,
+tests/integration/test_training_panel.py,16,no_explicit_timeout,urllib.request.urlopen
+tests/integration/test_training_panel.py,19,no_explicit_timeout,urllib.request.urlopen
+tests/ops/test_capture_modernization_baseline.py,23,no_explicit_timeout,"subprocess.run(['git', 'branch', '--show-current'], cwd=PROJECT_ROOT, capture_output=True, text=True, check=True).stdout.strip"
+tests/ops/test_capture_modernization_baseline.py,23,no_explicit_timeout,subprocess.run
+tests/ops/test_repository_hygiene.py,37,no_explicit_timeout,subprocess.run
+tests/ops/test_repository_hygiene.py,66,no_explicit_timeout,subprocess.run
+tests/uc3m/test_algorithm_factory.py,51,unfinished_marker,
+tests/uc3m/test_universality.py,172,silent_broad_exception,
+tests/uc3m/test_universality.py,202,silent_broad_exception,
+tests/unit/evaluation/test_tools_use_results_catalog.py,421,no_explicit_timeout,"subprocess.run(['git', '-C', str(REPO), 'ls-files', '--', 'tools', 'scripts', 'uc3m'], check=True, capture_output=True, text=True).stdout.split"
+tests/unit/evaluation/test_tools_use_results_catalog.py,421,no_explicit_timeout,subprocess.run
+tools/dataset/audit_training_dataset_provenance.py,236,long_function,181
+tools/dataset/check_training_dataset_ready.py,234,long_function,158
+tools/dataset/distill_building_loads.py,568,long_function,157
+tools/dataset/evaluate_iquitos_citylearn_v3_dataset.py,68,long_function,152
+tools/dataset/generate_iquitos_dataset.py,996,long_function,238
+tools/dataset/generate_iquitos_dataset.py,1326,long_function,187
+tools/dataset/generate_iquitos_dataset.py,1526,no_explicit_timeout,subprocess.run
+tools/dataset/orchestrate_citylearn_dataset.py,83,no_explicit_timeout,subprocess.run
+tools/dataset/size_bess_optimal.py,653,long_function,176
+tools/drive/download_colab_missing_kpis.py,36,no_explicit_timeout,subprocess.run
+tools/drive/fetch_colab_kpis_from_drive.py,24,no_explicit_timeout,subprocess.run
+tools/drive/fetch_colab_kpis_from_drive.py,61,no_explicit_timeout,subprocess.run
+tools/eval/aggregate_colab_drive_kpis.py,144,long_function,151
+tools/eval/aggregate_multiseed_seed_kpis.py,390,no_explicit_timeout,subprocess.run
+tools/eval/hypothesis.py,662,long_function,166
+tools/eval/objective_analysis.py,1090,long_function,161
+tools/eval/recalc_drive_kpis_deep.py,225,long_function,276
+tools/eval/recalc_drive_kpis_full_evaluate_v2.py,149,long_function,324
+tools/eval/run_colab_drive_statistical_analysis.py,54,no_explicit_timeout,subprocess.run
+tools/eval/run_colab_drive_statistical_analysis.py,286,no_explicit_timeout,subprocess.run
+tools/eval/run_notebook_hypothesis_pipeline.py,58,no_explicit_timeout,subprocess.run
+tools/eval/run_notebook_hypothesis_pipeline.py,158,no_explicit_timeout,subprocess.run
+tools/figures/generate_architecture_pdfs.py,243,silent_broad_exception,
+tools/figures/generate_architecture_pngs.py,628,silent_broad_exception,
+tools/ops/capture_modernization_baseline.py,24,no_explicit_timeout,subprocess.run
+tools/ops/generate_sbom.py,112,no_explicit_timeout,"subprocess.run(['git', 'ls-tree', 'HEAD', submodule['path']], cwd=project_root, capture_output=True, text=True, check=True).stdout.split"
+tools/ops/generate_sbom.py,112,no_explicit_timeout,subprocess.run
+tools/ops/historical_inventory.py,201,no_explicit_timeout,subprocess.run
+tools/ops/historical_inventory.py,211,no_explicit_timeout,subprocess.run
+tools/ops/historical_inventory.py,214,no_explicit_timeout,"subprocess.run(['git', '-C', str(root), 'rev-parse', 'HEAD'], capture_output=True, text=True, check=False).stdout.strip"
+tools/ops/historical_inventory.py,214,no_explicit_timeout,subprocess.run
+tools/skills/docker-build-strategies/references/multi-stage-builds.md,148,network_exposure_review,
+tools/skills/webapp-testing/scripts/with_server.py,88,no_explicit_timeout,subprocess.run
+tools/skills/webapp-testing/scripts/with_server.py,69,unsafe_call_option,shell
+tools/thesis/_patch_notebook_hypothesis_demo.py,22,long_function,345
+tools/thesis/_patch_notebook_hypothesis_pipeline.py,136,long_function,193
+tools/thesis/build_defensa_pdf_pillow.py,28,silent_broad_exception,
+tools/thesis/build_defensa_pdf_pillow.py,41,silent_broad_exception,
+tools/thesis/fix_informe_impact_cap5_sync.py,118,silent_broad_exception,
+tools/thesis/generate_borrador_tesis_docx.py,181,long_function,1096
+tools/thesis/run_thesis_word_pipeline.py,33,no_explicit_timeout,subprocess.run
+tools/thesis/thesis_cap5_structured.py,757,long_function,287
+tools/thesis/thesis_doctoral_sections.py,989,long_function,188
+tools/thesis/thesis_doctoral_sections.py,1398,long_function,207
+tools/thesis/thesis_doctoral_sections.py,1773,long_function,157
+tools/thesis/validate_integral_word_50ep_4madrl.py,437,long_function,445
+tools/training/run_citylearn_v2_baseline_comparison.py,38,no_explicit_timeout,subprocess.run
+tools/training/run_citylearn_v2_baseline_comparison.py,60,no_explicit_timeout,subprocess.run
+tools/training/validate_launch_config.py,76,long_function,155
+uc3m/adapters/algorithms/evidence.py,45,security_sensitive_call,torch.load
+uc3m/adapters/algorithms/native.py,54,no_explicit_timeout,subprocess.run
+uc3m/adapters/citylearn/policy_inference.py,129,unfinished_marker,
+uc3m/algorithms/factory.py,180,unfinished_marker,
+uc3m/algorithms/factory.py,183,unfinished_marker,
+uc3m/algorithms/factory.py,186,unfinished_marker,
+uc3m/application/training/cli.py,34,no_explicit_timeout,subprocess.run
+uc3m/application/training/context.py,19,no_explicit_timeout,subprocess.run
+uc3m/application/training/runner.py,83,silent_broad_exception,
+uc3m/data/adapters/remote_http.py,103,security_sensitive_call,zf.extractall
+uc3m/data/adapters/remote_http.py,91,no_explicit_timeout,urllib.request.urlopen
+uc3m/env/uc3m_env.py,182,silent_broad_exception,
+uc3m/multicriteria/pipeline.py,51,long_function,195
+uc3m/multicriteria/stats_tests.py,468,silent_broad_exception,
+uc3m/multicriteria/stats_tests.py,558,silent_broad_exception,
+uc3m/multicriteria/stats_tests.py,1002,silent_broad_exception,

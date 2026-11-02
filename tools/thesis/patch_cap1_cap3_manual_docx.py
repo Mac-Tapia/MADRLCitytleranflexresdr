@@ -14,8 +14,8 @@ REPO = Path(__file__).resolve().parents[2]
 BACKUP = REPO / "outputs" / "_word_backups"
 REPORT = REPO / "outputs" / "_patch_cap1_cap3_manual_20260806.json"
 CANONS = [
-    REPO / "docs" / "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
-    REPO / "docs" / "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+    REPO / 'docs' / 'tesis.docx',
+    REPO / 'docs' / 'informe.docx',
 ]
 
 CAP3_OLD = (

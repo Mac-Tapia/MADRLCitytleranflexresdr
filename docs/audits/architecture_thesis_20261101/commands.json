@@ -1,0 +1,104 @@
+[
+  {
+    "name": "git_status",
+    "command": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "returncode": 0,
+    "seconds": 0.1646773,
+    "log": "git_status.log"
+  },
+  {
+    "name": "git_head",
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "returncode": 0,
+    "seconds": 0.04062330000000003,
+    "log": "git_head.log"
+  },
+  {
+    "name": "git_tree",
+    "command": [
+      "git",
+      "-c",
+      "core.quotepath=false",
+      "ls-tree",
+      "-r",
+      "HEAD"
+    ],
+    "returncode": 0,
+    "seconds": 0.052012299999999956,
+    "log": "git_tree.log"
+  },
+  {
+    "name": "skills_basic",
+    "command": [
+      "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+      "-B",
+      "tools/skills/validate_skills.py"
+    ],
+    "returncode": 0,
+    "seconds": 0.15769140000000004,
+    "log": "skills_basic.log"
+  },
+  {
+    "name": "skills_discovery",
+    "command": [
+      "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+      "-B",
+      "tools/skills/validate_skills.py",
+      "--check-discovery"
+    ],
+    "returncode": 1,
+    "seconds": 0.15286019999999995,
+    "log": "skills_discovery.log"
+  },
+  {
+    "name": "workflow",
+    "command": [
+      "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+      "-B",
+      "tools/ops/verify_workflow_integrity.py",
+      "--manifest-out",
+      "D:\\MADRLCitytleranflexresdr\\docs\\audits\\architecture_thesis_20261101\\workflow.json"
+    ],
+    "returncode": 1,
+    "seconds": 0.11054839999999999,
+    "log": "workflow.log"
+  },
+  {
+    "name": "lint_ci_scope",
+    "command": [
+      "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "check",
+      "uc3m",
+      "tests",
+      "tools/ops",
+      "scripts/quality",
+      "--output-format",
+      "json"
+    ],
+    "returncode": 1,
+    "seconds": 1.3840392,
+    "log": "lint_ci_scope.log"
+  },
+  {
+    "name": "pip_check",
+    "command": [
+      "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "returncode": 0,
+    "seconds": 1.8769953999999998,
+    "log": "pip_check.log"
+  }
+]

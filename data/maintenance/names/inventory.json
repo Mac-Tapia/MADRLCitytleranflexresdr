@@ -1,0 +1,5617 @@
+{
+  "schema_version": 1,
+  "root": "D:/MADRLCitytleranflexresdr",
+  "created_at": "2026-11-01T09:39:09.444100+00:00",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "sha256": "3fc6e934246656b9aa35c79b7c185b7118da484ac4a7731de74e459ac899581d",
+      "bytes": 935,
+      "mtime_ns": 1783296286077061100,
+      "immutable": false
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "ce284404f0941d49c1eacfa48d0dba687bffbe7b04d6bdbcad1341235fc34fa1",
+      "bytes": 1021,
+      "mtime_ns": 1793507220285848100,
+      "immutable": false
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "4da3fe769cbfca75ea48713da1a1902271cc7b8614557db9f1b56d2577c71c5c",
+      "bytes": 2622,
+      "mtime_ns": 1793519029945092900,
+      "immutable": false
+    },
+    {
+      "path": ".gitmodules",
+      "sha256": "43aa3173935d2a2729d026ecd69c9219493020051dc4a453280561dbceb00e21",
+      "bytes": 991,
+      "mtime_ns": 1782312455054506600,
+      "immutable": false
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "9d9c9e1b9036236863f732ff1957c3e181d228c4b880a23d9e667c1800b9c906",
+      "bytes": 2341,
+      "mtime_ns": 1793495530288047200,
+      "immutable": false
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "b10d8738a5f1e7e3063765d5dc58977822fae85b39380974de50f0b1e8da7b25",
+      "bytes": 711,
+      "mtime_ns": 1793525370266179900,
+      "immutable": false
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "ed7106cce94cee4b0c380f15a3dd9bd590b5886ea198e9fabce9b8ea6f0a31a0",
+      "bytes": 2234,
+      "mtime_ns": 1783296286090952900,
+      "immutable": false
+    },
+    {
+      "path": "README.md",
+      "sha256": "e9709f4aea6f1934318379748c083c1ec272989f00ef578f51033fcc511da6ba",
+      "bytes": 35887,
+      "mtime_ns": 1793523578403962900,
+      "immutable": false
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "6e51d97b8d8735ac7e49c92e72a37e5f4d4ae96c421a62363f787bf164e27119",
+      "bytes": 3298,
+      "mtime_ns": 1783296286093559100,
+      "immutable": false
+    },
+    {
+      "path": "pyrightconfig.json",
+      "sha256": "a88e09322c9e0641d7d84f156d8d3efc6c8069f89a21fa3694250b7f741be8ab",
+      "bytes": 1944,
+      "mtime_ns": 1785456779976494400,
+      "immutable": false
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "216a0bf82f25c7053841ce1e5b3e5cebf2524496856da5de7a0a94cd901efff8",
+      "bytes": 2399,
+      "mtime_ns": 1784981506181478700,
+      "immutable": false
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "013cf609fbf09a5867e2d8eac41eeeacc972ddf19e6452ab6276a56a372998e2",
+      "bytes": 410530,
+      "mtime_ns": 1793511596161458500,
+      "immutable": false
+    },
+    {
+      "path": ".claude/auto_save.sh",
+      "sha256": "aa3abf9658b9276de12c54fdc7e2797aa20c916cf36ed0c1c2d9c12f2c9c893e",
+      "bytes": 2091,
+      "mtime_ns": 1781992805134285400,
+      "immutable": false
+    },
+    {
+      "path": ".claude/settings.json",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "bytes": 3,
+      "mtime_ns": 1793502779003370300,
+      "immutable": false
+    },
+    {
+      "path": ".claude/agents/madrl-auditor.md",
+      "sha256": "e35aa62134c698aa29a8a880b27fc8e7a6728ea41b6f171df497ec4e9181576f",
+      "bytes": 693,
+      "mtime_ns": 1793495530286013900,
+      "immutable": false
+    },
+    {
+      "path": ".claude/agents/madrl-coordinator.md",
+      "sha256": "ab36cba546b9c363b71b0e89ea87f7621f0a9696f3835ea7b5bd489e46f6feaf",
+      "bytes": 650,
+      "mtime_ns": 1793495530286750100,
+      "immutable": false
+    },
+    {
+      "path": ".claude/agents/madrl-implementer.md",
+      "sha256": "dd061e17c91c4495ab9dd580082a93f1d2f9bc1dee87036868b58ea108c6ff47",
+      "bytes": 660,
+      "mtime_ns": 1793495530286013900,
+      "immutable": false
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE.md",
+      "sha256": "1193b0bef5c01a1f8dbc60d99c48400ad13bac6f7fc4e53d53d396d154ba67d6",
+      "bytes": 414,
+      "mtime_ns": 1782289414862268500,
+      "immutable": false
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "sha256": "e4034fdb4c567d8ec0a6f35515a61c5191f4aa0ef34a3cb25d1024521b8afc2b",
+      "bytes": 655,
+      "mtime_ns": 1782289414862268500,
+      "immutable": false
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "10fe4e7a4d56d586d717bf816b7f704583eed7b98674e367437416ab54bfc035",
+      "bytes": 2674,
+      "mtime_ns": 1793512149543173800,
+      "immutable": false
+    },
+    {
+      "path": ".specify/memory/constitution.md",
+      "sha256": "1f6b99bcb5c557be047551ddd04b00c036e3a0ef1ab7c50ab7097c78d403c41d",
+      "bytes": 3193,
+      "mtime_ns": 1793487224370088100,
+      "immutable": false
+    },
+    {
+      "path": "configs/objective_policies.yaml",
+      "sha256": "c20e4fc3472e6f552ec091794158ce2da6beafdc5d1735c9f460b8301e8a5821",
+      "bytes": 522,
+      "mtime_ns": 1793489761108615300,
+      "immutable": false
+    },
+    {
+      "path": "configs/scenarios.yaml",
+      "sha256": "031f29ffb24d3a6e1f69e3c6918c0066eeea08cfd3d29991b1040dbb173168d9",
+      "bytes": 610,
+      "mtime_ns": 1793489761108615300,
+      "immutable": false
+    },
+    {
+      "path": "configs/evaluation/fresh_kpis.yaml",
+      "sha256": "b9a34c03ffc3e34b8789b2c16472e5cc35cfce59f501bcb21cb1274cce9b3210",
+      "bytes": 2489,
+      "mtime_ns": 1793519513119471400,
+      "immutable": false
+    },
+    {
+      "path": "configs/experiments/full_campaign_4x3x3.yaml",
+      "sha256": "757f40a967c8d4136ec4a6481cc608bf1eb375d067177bac593ea3da572ef31e",
+      "bytes": 261,
+      "mtime_ns": 1793506896684092400,
+      "immutable": false
+    },
+    {
+      "path": "configs/experiments/objective_weight_sensitivity.yaml",
+      "sha256": "e1395da8a22176140f0cbd04e9da22c928843e6ac78a5b4ef9b5ad7f34ee8975",
+      "bytes": 271,
+      "mtime_ns": 1793490359111962400,
+      "immutable": false
+    },
+    {
+      "path": "data/audits/evaluation_tools_inventory.json",
+      "sha256": "c2c2fd60fef86bb420f18a4bea546f77977fb44635ab616fa29ec229bf551469",
+      "bytes": 17543,
+      "mtime_ns": 1793517688302113300,
+      "immutable": true
+    },
+    {
+      "path": "data/audits/jury_observations_manifest.json",
+      "sha256": "690d1feb33553d824f9d826c04f309951643dd63e9ce32c66ed18a5ecbbaf3b5",
+      "bytes": 6082,
+      "mtime_ns": 1793507133236526000,
+      "immutable": true
+    },
+    {
+      "path": "data/audits/modernization_baseline.json",
+      "sha256": "323db57cec3a574ea4f0a87c58376d4d59a73ab26613bad936282f89e7397a77",
+      "bytes": 2551,
+      "mtime_ns": 1793512415778008100,
+      "immutable": true
+    },
+    {
+      "path": "data/audits/modular_training_acceptance.json",
+      "sha256": "c73e93f606e10d049d2f3a8f744fdfbedb48089adef7ec0c7bdc408352c7a99a",
+      "bytes": 1073,
+      "mtime_ns": 1793493344636438200,
+      "immutable": true
+    },
+    {
+      "path": "data/audits/objective_policy_drift.json",
+      "sha256": "6972fda9c15da8467b5ef004e5a8a43fc8f5cc34efe88dda852f405ffe22d6f7",
+      "bytes": 2591,
+      "mtime_ns": 1793489931275959400,
+      "immutable": true
+    },
+    {
+      "path": "data/audits/objective_weight_sensitivity_dry_run.json",
+      "sha256": "0e0afb87ae64dd45ec6f2a6a3b40bff54cdfc36e2b739e08705b40cacf02f1d4",
+      "bytes": 22431,
+      "mtime_ns": 1793490396439153800,
+      "immutable": true
+    },
+    {
+      "path": "data/audits/open_source_dependency_manifest.json",
+      "sha256": "fc0b3e6e4e03c642d93c1d62612f0c488d092bd5bd8423f55a9d63851c1afccf",
+      "bytes": 6604,
+      "mtime_ns": 1793512417311391700,
+      "immutable": true
+    },
+    {
+      "path": "data/audits/repository_hygiene_manifest.json",
+      "sha256": "542e2b2772f1e7afd11e61732bb7259495410931a1a35a4c67cd8363d8256910",
+      "bytes": 8090,
+      "mtime_ns": 1793515862555359100,
+      "immutable": true
+    },
+    {
+      "path": "data/audits/sbom.cdx.json",
+      "sha256": "d73a998c45370c14ec80a0da83ef3067857b29fe319d6eda29ba79bb4e1adcd0",
+      "bytes": 67627,
+      "mtime_ns": 1793512424585035000,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/csv_integrity_manifest.json",
+      "sha256": "ab1f093293b22c445b5348883324b06f16e0ae912f6086c6fd444ac0cb736bcd",
+      "bytes": 121876,
+      "mtime_ns": 1782289417846624600,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/der_sizing_audit.csv",
+      "sha256": "1a87166f6d9275b8acffd0753ba20c702e62568dc2ffe6ddae2480691e6fbe39",
+      "bytes": 11281,
+      "mtime_ns": 1782289417846624600,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/der_sizing_audit.json",
+      "sha256": "bdc8b7781f423f3112d7ec8ddb014a95bff7be43aecb703e8d6a0b049162ee04",
+      "bytes": 53385,
+      "mtime_ns": 1782289417847628600,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/ev_charger_sizing_audit.csv",
+      "sha256": "18ae8772242112ca21ecf5fa911b8d8351efc39276584460abdce05cfd00e3fd",
+      "bytes": 11259,
+      "mtime_ns": 1782289417847628600,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/ev_charger_sizing_audit.json",
+      "sha256": "b8b38fdbdb5658d324e7d8b50c4ad0f9000afaab211fdc2ca8d26ccfece04224",
+      "bytes": 38327,
+      "mtime_ns": 1782289417847628600,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/iquitos_citylearn_v3_dataset_evaluation.json",
+      "sha256": "5bcbc25cc5a0cb28e7c74bf7234d30a231d46e7dd650790f84ce2b4e69c60d60",
+      "bytes": 84857,
+      "mtime_ns": 1782289417847628600,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/orphaned_dataset_files_manifest.json",
+      "sha256": "a409c9d10acb7907ebbee3deb096dff8ad83458a047e3942c5245608fb1f0f1b",
+      "bytes": 445,
+      "mtime_ns": 1782289417847628600,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_ready_manifest.audit_postcheck.json",
+      "sha256": "2c2d50f5ed2bbc08459e9d654e86b1e44a871f27efd7ac975080b8defc9efb6a",
+      "bytes": 13712,
+      "mtime_ns": 1782289417847628600,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_ready_manifest.audit_precheck.json",
+      "sha256": "a43b7bf05e9440adbf8470f41a5e6468ac52efd91a799fca98887468ea0f9dab",
+      "bytes": 13712,
+      "mtime_ns": 1782289417850292200,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_ready_manifest.audit_supervision.json",
+      "sha256": "c9c1def9ad1f789144449d99cf024cc59ad46c1252d71c5abdbb909ffaf42b24",
+      "bytes": 13712,
+      "mtime_ns": 1782289417850292200,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_ready_manifest.json",
+      "sha256": "a329bdccad87272b371f972bdf5f448c6e0fcd1e8f314fc5fdfc29ede30f1ee0",
+      "bytes": 13783,
+      "mtime_ns": 1793514912645064300,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_validation.csv",
+      "sha256": "40d45110ea8c856eab1457ae30bcde3ee0e81da67f91f3389e352fa4c6c40d83",
+      "bytes": 7301,
+      "mtime_ns": 1781992809320960900,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_validation.json",
+      "sha256": "13c8dbae370779f59641a7080693fddfdf9cf3e421ef1837d1f0192174aec84d",
+      "bytes": 32809,
+      "mtime_ns": 1782289417850292200,
+      "immutable": true
+    },
+    {
+      "path": "data/dataset_audit/workflow_integrity_manifest.json",
+      "sha256": "bac8264a04d7ea363e4d0ec68c936c9ef49caa39172b05aaac1fc1ceda4c9a21",
+      "bytes": 753,
+      "mtime_ns": 1785340928133380000,
+      "immutable": true
+    },
+    {
+      "path": "data/maintenance/retire_historical_20261101/diagnostics.json",
+      "sha256": "b237fcb73e8b1106807a1eb4c4234c736281f5200bb5e95b4c639f0a86f4a7a0",
+      "bytes": 4216,
+      "mtime_ns": 1793519361776768500,
+      "immutable": true
+    },
+    {
+      "path": "data/maintenance/retire_historical_20261101/historical_inventory.json",
+      "sha256": "eb1612e53dfa10c95f261d200a91faf63b79e932bfeb993eacd0d21b53ca3700",
+      "bytes": 31110,
+      "mtime_ns": 1793518944996375000,
+      "immutable": true
+    },
+    {
+      "path": "data/maintenance/retire_historical_20261101/retirement_outcomes.json",
+      "sha256": "c74221f505f84917860774db713ba81c153bbfcc5ca384721cc7dfc4932dbbb2",
+      "bytes": 1464,
+      "mtime_ns": 1793521469157250900,
+      "immutable": true
+    },
+    {
+      "path": "data/maintenance/retire_historical_20261101/retirement_plan.json",
+      "sha256": "6b07be56a5980a1b71ce9db8d6c16ca0ee4286cf313200a76e334ec359d74e87",
+      "bytes": 38603,
+      "mtime_ns": 1793521367881306700,
+      "immutable": true
+    },
+    {
+      "path": "data/maintenance/retire_historical_20261101/retirement_result.json",
+      "sha256": "d3c7f9e92ee28d0183ab9c743bbc67b3abb0b62b5b1a8dd961655bcf3c58797b",
+      "bytes": 3009,
+      "mtime_ns": 1793521469402080500,
+      "immutable": true
+    },
+    {
+      "path": "deploy/README.md",
+      "sha256": "f937e1b7ad5c6999b0e635ac51b65fd6481a10692de3b2f4e28b31670fbaa4df",
+      "bytes": 3433,
+      "mtime_ns": 1785456779992045100,
+      "immutable": false
+    },
+    {
+      "path": "deploy/docker-compose.aws.yml",
+      "sha256": "4eada5ae03702c68660b8dab5d9a7743ef127e2f537a7b30a30e42e0cac690e3",
+      "bytes": 2557,
+      "mtime_ns": 1782289414894631400,
+      "immutable": false
+    },
+    {
+      "path": "deploy/docker-compose.yml",
+      "sha256": "eb56890b7b949976aed64f266e58b58bfb254039e5b8cceb21bc570e56e13a4e",
+      "bytes": 2491,
+      "mtime_ns": 1783296286085670000,
+      "immutable": false
+    },
+    {
+      "path": "deploy/mosquitto.conf",
+      "sha256": "d22386242a348cddea4483a651f77176cee2c5a389542744f91d6efaeba4668a",
+      "bytes": 251,
+      "mtime_ns": 1782289414896660600,
+      "immutable": false
+    },
+    {
+      "path": "deploy/aws/README_DEPLOY_AWS.md",
+      "sha256": "1443ce0967b31242321c044a46972d636fb08e41fd094d1f25e20146b5af909a",
+      "bytes": 4217,
+      "mtime_ns": 1793523687850904800,
+      "immutable": false
+    },
+    {
+      "path": "deploy/aws/iac/main.tf",
+      "sha256": "841abc51794cbe1412ab096f0c07f98d0f21a33deb69cfdb1dc827e48894bd95",
+      "bytes": 4375,
+      "mtime_ns": 1782289414892630700,
+      "immutable": false
+    },
+    {
+      "path": "deploy/aws/iac/outputs.tf",
+      "sha256": "ac70a18e6f274754bad2fdb534a1f2f998610759fd4fa1c57408bb8d5e4f16a8",
+      "bytes": 702,
+      "mtime_ns": 1782289414892630700,
+      "immutable": false
+    },
+    {
+      "path": "deploy/aws/iac/variables.tf",
+      "sha256": "4cbe426979c40a78e4451519b52b34f5ea288b7ec52a1f80d8428324e89e597f",
+      "bytes": 1534,
+      "mtime_ns": 1782289414893628900,
+      "immutable": false
+    },
+    {
+      "path": "deploy/dashboard/Dockerfile",
+      "sha256": "cd4e364cf22cc67ae64fd63c380552bf9e723623431e2fa3b2c98e7dfbeea7bd",
+      "bytes": 560,
+      "mtime_ns": 1782289414893628900,
+      "immutable": false
+    },
+    {
+      "path": "deploy/dashboard/app.py",
+      "sha256": "56688623afe335b65a06b054b02e8f52bd88b99c7b5f16a120a9eafec9ec1876",
+      "bytes": 3911,
+      "mtime_ns": 1781506970198082800,
+      "immutable": false
+    },
+    {
+      "path": "deploy/dashboard/requirements.txt",
+      "sha256": "a34da704e1ceb9df6c8ad5a041ac3a22b2ed90e32113a100779a48150566e5bd",
+      "bytes": 81,
+      "mtime_ns": 1782289414893628900,
+      "immutable": false
+    },
+    {
+      "path": "deploy/edge/README_DESPLIEGUE_FISICO.md",
+      "sha256": "b2d376184e2e4ee3ba3a34cf73947cb9811ee5670de90b639e212fe7d1e7e066",
+      "bytes": 4241,
+      "mtime_ns": 1782289414895657300,
+      "immutable": false
+    },
+    {
+      "path": "deploy/inference/Dockerfile",
+      "sha256": "0f9a6f1bc65324e0af805766eb425ffa40f601605ee993b6c13e9a3fe0cdada5",
+      "bytes": 770,
+      "mtime_ns": 1782670995855152900,
+      "immutable": false
+    },
+    {
+      "path": "deploy/inference/app.py",
+      "sha256": "439c78534835c2d6eaa5b1d4931d6f68c55ffa96580efc02a196fdffed6120b7",
+      "bytes": 4469,
+      "mtime_ns": 1783296286084739800,
+      "immutable": false
+    },
+    {
+      "path": "deploy/inference/model_loader.py",
+      "sha256": "6d0aa5cf86c522f1f77c91ccea81551b4d6ec6b52be4159e60857a46785db5b7",
+      "bytes": 5397,
+      "mtime_ns": 1785456779975494000,
+      "immutable": false
+    },
+    {
+      "path": "deploy/inference/mongo_store.py",
+      "sha256": "d57a5989e984f00186728be7e79307d4e2a6ee6c286ad484843ce78418e83586",
+      "bytes": 11844,
+      "mtime_ns": 1783296286090952900,
+      "immutable": false
+    },
+    {
+      "path": "deploy/inference/requirements.txt",
+      "sha256": "904615405681b324f53a05ed0ad16df554db132ac9353b4d3b927b8966dc7d0e",
+      "bytes": 125,
+      "mtime_ns": 1783296286116507900,
+      "immutable": false
+    },
+    {
+      "path": "deploy/inference/test_app.py",
+      "sha256": "9b5c7d1944c98a4aa1eac1b5aabb86054a30e66530f59c60443f32abc16e4342",
+      "bytes": 1765,
+      "mtime_ns": 1783296286085670000,
+      "immutable": false
+    },
+    {
+      "path": "deploy/k8s/README.md",
+      "sha256": "47b6e180be6b7603bc90b48f632cf34f281bab29d5b0c6af562a09ac1c549acc",
+      "bytes": 4920,
+      "mtime_ns": 1783296286078020500,
+      "immutable": false
+    },
+    {
+      "path": "deploy/k8s/dashboard.yaml",
+      "sha256": "c2a0071bab0efc26b6bf2b8ee4897a5c5d780143de23c930224c881797ec18bc",
+      "bytes": 1759,
+      "mtime_ns": 1783296286078020500,
+      "immutable": false
+    },
+    {
+      "path": "deploy/k8s/inference.yaml",
+      "sha256": "211f6516b961920deceb70ce835b3c7723202db803537aa3a745f03d525e836d",
+      "bytes": 2151,
+      "mtime_ns": 1783296286084739800,
+      "immutable": false
+    },
+    {
+      "path": "deploy/k8s/ingress.yaml",
+      "sha256": "f86bdd4705d1b536b0c3c8d0bbff52cb8a6208fa1cb791807e47a52ddd33bb87",
+      "bytes": 1625,
+      "mtime_ns": 1783296286094686100,
+      "immutable": false
+    },
+    {
+      "path": "deploy/k8s/kustomization.yaml",
+      "sha256": "ac480391c5236be270527550b5c5a020fb9c2bec322bff34a4d69506c39472eb",
+      "bytes": 464,
+      "mtime_ns": 1783296286115153900,
+      "immutable": false
+    },
+    {
+      "path": "deploy/k8s/mongo.yaml",
+      "sha256": "314028a46f876deeb4a2a21694f3addb8f71235c44c3f56f2111db6aac12511e",
+      "bytes": 2208,
+      "mtime_ns": 1783296286090952900,
+      "immutable": false
+    },
+    {
+      "path": "deploy/k8s/namespace.yaml",
+      "sha256": "d3485ca7a66db985d6a7a807c5763e3807d7301065b15909f1d8c3aaac61503c",
+      "bytes": 116,
+      "mtime_ns": 1783296286080739600,
+      "immutable": false
+    },
+    {
+      "path": "deploy/plant-adapter/Dockerfile",
+      "sha256": "cb21ade8efe20ad509a0663a1b160fd0b03c2e81c9f07871b082d32ce0dae544",
+      "bytes": 650,
+      "mtime_ns": 1782289414897663400,
+      "immutable": false
+    },
+    {
+      "path": "deploy/plant-adapter/modbus_adapter.py",
+      "sha256": "cf33fccaec71bc98e2d8e6217e205a31c699d509e71085e1663c35c062c787ea",
+      "bytes": 5319,
+      "mtime_ns": 1781506970203836800,
+      "immutable": false
+    },
+    {
+      "path": "deploy/plant-adapter/replay_adapter.py",
+      "sha256": "940e8aa83db9c2b2a2f74429744d5acfb7a4a33199e4ccd2736e5715b0296375",
+      "bytes": 5710,
+      "mtime_ns": 1783296286084739800,
+      "immutable": false
+    },
+    {
+      "path": "deploy/plant-adapter/requirements.txt",
+      "sha256": "64b9d46a6f11d3d3c6700b9eec08a29fe091d57eeb4dd7b4ce82d5aa5e1984b2",
+      "bytes": 179,
+      "mtime_ns": 1782289414897663400,
+      "immutable": false
+    },
+    {
+      "path": "docs/00_INDEX.md",
+      "sha256": "0ee1d75a46eb4bee6732bfb0d9c4988da1219d98cd40b4cabf84d05529ce7046",
+      "bytes": 2038,
+      "mtime_ns": 1793524431247159200,
+      "immutable": false
+    },
+    {
+      "path": "docs/CAP2_CONTROL_EDIFICIO_ACTOR_CRITIC_FIGURE_PATCH_REPORT_2026-07-29.json",
+      "sha256": "3992cdac88f74d980cc552eb569794be35e04cff3fd0d651d43a94d14dc79ea6",
+      "bytes": 1940,
+      "mtime_ns": 1785364467250425700,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP2_DECPOMDP_DISTRICT_BUILDING_PATCH_REPORT_2026-07-29.json",
+      "sha256": "d771fcdcbf080524b4204f22e33725c972c8d55bca1f49824c74e98fb3fff165",
+      "bytes": 1048,
+      "mtime_ns": 1785361895455577600,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP2_MADRL_ADECUACIONES_PATCH_REPORT_2026-07-29.json",
+      "sha256": "150858d0b18f51e940f9eceef1a144042e111c172341a4f4d9469b5f85bd6eed",
+      "bytes": 1336,
+      "mtime_ns": 1785364024967222500,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP2_MODELADO_MATEMATICO_PATCH_REPORT_2026-07-29.json",
+      "sha256": "1f9898d3a9a0ab1a1bd15f325080f97a7d2196fcb734fb8c3e42c0c90ea22559",
+      "bytes": 2045,
+      "mtime_ns": 1785349741401908400,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP36_DECPOMDP_CROSSREF_PATCH_REPORT_2026-07-29.json",
+      "sha256": "e28acd511c7d67d3f22f83b55fdf3dbe6805f9ef79c307a92b6e92c0a4390ffc",
+      "bytes": 854,
+      "mtime_ns": 1785363152783860600,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP3_CUASIEXPERIMENTAL_PATCH_REPORT_2026-07-29.json",
+      "sha256": "823f66bc799bcfa26482ae82d8e377ed4331562e77a5ec3fc088bd5d10e7aecf",
+      "bytes": 1162,
+      "mtime_ns": 1785347994450540600,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP4_DECPOMDP_IMPL_ALIGN_PATCH_REPORT_2026-07-29.json",
+      "sha256": "42aa627c2d20dbc0ef92798d7a4010476c629f7031b8b9a61a88604368d575ca",
+      "bytes": 530,
+      "mtime_ns": 1785362256344043000,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP4_IMPLEMENTACION_PATCH_REPORT_2026-07-29.json",
+      "sha256": "b0721968d646c711293ab4587cc1c1e54f499c30647bb58e53bea1016877ba20",
+      "bytes": 991,
+      "mtime_ns": 1785348589507923200,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP5_DISTRICT_BUILDING_KPI_RANKINGS_PATCH_REPORT_2026-07-29.json",
+      "sha256": "bdf1cb56aa441f1f2c04d6a3710d0b98eb33036dc5a03bb84cbfc93c4b7d1c93",
+      "bytes": 2374,
+      "mtime_ns": 1785359578528602400,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP5_KPI_CATALOG_PATCH_REPORT_2026-07-29.json",
+      "sha256": "6909f4a27835d73ec556404149439d3fdb5b352f9942d6609b0e0c75cc6dab24",
+      "bytes": 2218,
+      "mtime_ns": 1785359388775881300,
+      "immutable": true
+    },
+    {
+      "path": "docs/CAP6_DECPOMDP_XREF_PATCH_REPORT_2026-07-29.json",
+      "sha256": "d25b8734914270b3f2cd086f0983bd73041a08d599c45ec5a15ec7f83b37cd3f",
+      "bytes": 485,
+      "mtime_ns": 1785364105969935800,
+      "immutable": true
+    },
+    {
+      "path": "docs/CIERRE_FIGURAS_WORD_VERIFICACION_2026-07-29.md",
+      "sha256": "bb434164bf7cc163b5f1cb26f6b724de0865b78a782059d5b35add56f17553d0",
+      "bytes": 1949,
+      "mtime_ns": 1785456779990045800,
+      "immutable": false
+    },
+    {
+      "path": "docs/CIERRE_MULTICRITERIA_REAL_DRIVE_50EP_2026-07-29.json",
+      "sha256": "a252c41e1a69a8d2e3ecda4339bc000e84f4ff6669d1c700aee7552c964f82c0",
+      "bytes": 5992,
+      "mtime_ns": 1785361774594063100,
+      "immutable": true
+    },
+    {
+      "path": "docs/CITYLEARN_ASSETS_INTEGRATION_PATCH_REPORT_2026-07-29.json",
+      "sha256": "d980268c7508dea49939ba29718bda94073f9b8b6398c580c9c15cc44a968f18",
+      "bytes": 970,
+      "mtime_ns": 1785347988520882700,
+      "immutable": true
+    },
+    {
+      "path": "docs/COMPLETE_FIGURES_CATALOG_WORD_PATCH_REPORT_2026-07-29.json",
+      "sha256": "6a5225ac29c7dd95d7210b371564a5a27710e3da417c3e3105cdeef877bee5ce",
+      "bytes": 1511,
+      "mtime_ns": 1785360484501495100,
+      "immutable": true
+    },
+    {
+      "path": "docs/ESTRATEGIA_3PILARES_MADRL.md",
+      "sha256": "364da877525d848b183ccb01d7a9720a90b48b9d7ad5c20efd8bfcc60cd92c91",
+      "bytes": 30812,
+      "mtime_ns": 1786506919363565600,
+      "immutable": false
+    },
+    {
+      "path": "docs/HISTORIA_CREACION_PROYECTO_MADRL_CITYLEARN.md",
+      "sha256": "a261e9d5e56fc93eedea01e7f6c2dc2a5c57b48c454710b3b15a4cfad5571c15",
+      "bytes": 30440,
+      "mtime_ns": 1782289414899663600,
+      "immutable": false
+    },
+    {
+      "path": "docs/IMPACT_CRITERIA_CONTROL_RECURSOS_PATCH_REPORT_2026-07-29.json",
+      "sha256": "a331d637295fb8937a9b869374bc5d52a63efe14e540f43ea87866f988edc249",
+      "bytes": 754,
+      "mtime_ns": 1785359547102043100,
+      "immutable": true
+    },
+    {
+      "path": "docs/Informe_tesis_MADRL_auditoria_IV_V_VI_VII_final.docx",
+      "sha256": "621780927e1bb019d1386442c60716f0e74083770257253822ae1c703ad157ff",
+      "bytes": 19216746,
+      "mtime_ns": 1786085639613841100,
+      "immutable": false
+    },
+    {
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "sha256": "c7002dabbae51ad7ebc97bdba5b95658911fec7db0fd2f515e9dc8be18d629a5",
+      "bytes": 19463384,
+      "mtime_ns": 1786104607550437300,
+      "immutable": false
+    },
+    {
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_auditoria.json",
+      "sha256": "154b74389d881ab45b5a9ec4dbdcf8138850627a89e9f4332bc493fc9bc1d74c",
+      "bytes": 571,
+      "mtime_ns": 1785456779967459500,
+      "immutable": true
+    },
+    {
+      "path": "docs/LISTA_EJECUCION_COLAB_A100.md",
+      "sha256": "638c693145fe766b553d71d169df222c7628e2485c2d22fd767baac98309ce89",
+      "bytes": 4515,
+      "mtime_ns": 1785346264877149600,
+      "immutable": false
+    },
+    {
+      "path": "docs/MANUAL_EJECUCION_DESDE_CERO_COLAB_A100.md",
+      "sha256": "364c767c65f7a71dd653b8cde7b7c5ef739cdb1ad6693433de4e2e3c34f83e56",
+      "bytes": 11112,
+      "mtime_ns": 1793506261759696600,
+      "immutable": false
+    },
+    {
+      "path": "docs/MANUAL_INSTALACION_DEPENDENCIAS.md",
+      "sha256": "3cf7dde02a36fc3a203ff042e7d364c42fecb03d00ec61925ada9ee1f4adf955",
+      "bytes": 11261,
+      "mtime_ns": 1785334127660030700,
+      "immutable": false
+    },
+    {
+      "path": "docs/MULTICRITERIA_FIGURES_PATCH_REPORT_2026-07-29.json",
+      "sha256": "35010b80106caba91abf1380cff48b5fcaa0bf0c1857a02cafe1e4bc75d06104",
+      "bytes": 1474,
+      "mtime_ns": 1785358863991391300,
+      "immutable": true
+    },
+    {
+      "path": "docs/PERFORMANCE_COMPARISON_WORD_PATCH_REPORT_2026-07-29.json",
+      "sha256": "c82afd414c802d02bc241412cb6ee58db0214b11835a8859c373981fd2aafc09",
+      "bytes": 1926,
+      "mtime_ns": 1785359682789560600,
+      "immutable": true
+    },
+    {
+      "path": "docs/SCALABLEDCPOMDP.pdf",
+      "sha256": "85db34a87e6da778c996b16e389eef38d4e948cfc143446fd6e8ece148a5f879",
+      "bytes": 358575,
+      "mtime_ns": 1781992805145196800,
+      "immutable": false
+    },
+    {
+      "path": "docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.json",
+      "sha256": "48ba10fb6e3de39e81efdc1e7f3af6878aea4761e790f064d7bb8232d4bc19cb",
+      "bytes": 28055,
+      "mtime_ns": 1785362844134433300,
+      "immutable": true
+    },
+    {
+      "path": "docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.md",
+      "sha256": "541bb2cdd22b3e617b55c4351af7a67deeca874acf89332ee619b443eabdfe54",
+      "bytes": 14504,
+      "mtime_ns": 1785362844134433300,
+      "immutable": false
+    },
+    {
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "sha256": "3cb2ac9d80b8558e68a14bc9401e2442f8270298b0f99963bb1357edb602874d",
+      "bytes": 19940454,
+      "mtime_ns": 1786581124720681000,
+      "immutable": false
+    },
+    {
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.md",
+      "sha256": "fcc8be2ddbb13e9dd2b5229ef780e9fe066757d74a8166d792baad1bd4c099b5",
+      "bytes": 7017,
+      "mtime_ns": 1793524431660657600,
+      "immutable": false
+    },
+    {
+      "path": "docs/VEREDICTO_METODOLOGICO_2026-07-18.md",
+      "sha256": "4373aca86db0eda34414f2805085581a5cf3526c11469340ca3687e33213b4e3",
+      "bytes": 2714,
+      "mtime_ns": 1785456779981014800,
+      "immutable": false
+    },
+    {
+      "path": "docs/analisis_reorganizacion_tools_dataset.md",
+      "sha256": "f91d7dcf0e56be65fdb4282c92b32c0453eddbbb047af4de375428422e44f09e",
+      "bytes": 8811,
+      "mtime_ns": 1793524431660657600,
+      "immutable": false
+    },
+    {
+      "path": "docs/analisis_scripts_vs_tools_tesis.md",
+      "sha256": "4c65bfd2c606815ebb9512872afd7b7752773c8490aa488322c6fa3677ecd409",
+      "bytes": 16474,
+      "mtime_ns": 1785456779944905300,
+      "immutable": false
+    },
+    {
+      "path": "docs/analisis_scripts_vs_tools_tesis_ADDENDUM_2026-07-29.md",
+      "sha256": "4d39a8ce24404c190b5ebf73c283a2247e19dbc45825f208c968c11480a5dd76",
+      "bytes": 1492,
+      "mtime_ns": 1785456779949904600,
+      "immutable": false
+    },
+    {
+      "path": "docs/workflow_manifest.json",
+      "sha256": "96c820545219929f730800fd755dd145c8052d462f6cbf724984fd22b7d061d4",
+      "bytes": 12274,
+      "mtime_ns": 1793525140455780500,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/AGENT_HARNESS.md",
+      "sha256": "2a4be5cc95626fd1f469147c073d85621659acd6b1080123ddc1757e98a6d51b",
+      "bytes": 8728,
+      "mtime_ns": 1793496357151778600,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png",
+      "sha256": "6171c8279fcfc8c8b092507a7bf820de82c3d16e7869d45b962ce81148f178a7",
+      "bytes": 506841,
+      "mtime_ns": 1781581860815729500,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf",
+      "sha256": "913449a1aad9eab231c67a7fd2f78b622388cbb823365eca021d7c40a89cfa83",
+      "bytes": 581469,
+      "mtime_ns": 1781581860818260800,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md",
+      "sha256": "1055d2c1aa16bfbabe5c23dcf8a86ad16102a9457cbe0657f5feb0db1c5dc9c2",
+      "bytes": 16017,
+      "mtime_ns": 1785334127628612600,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf",
+      "sha256": "1527ac919c77d28e821ad3e31db9b36cfd7f756c86530a81704d8b03f82d656e",
+      "bytes": 299578,
+      "mtime_ns": 1781581860819261400,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_PROYECTO_DEFENSA.md",
+      "sha256": "0fc7f2d598212ba124e5d8d7b6196f8354a0de7d9dd0cc97e91f42defe060fbc",
+      "bytes": 26266,
+      "mtime_ns": 1793506261747821400,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md",
+      "sha256": "8b6bf9d55a6f22f7ac05593e1f19fe5062be398628770122fc5a63fac0b112d2",
+      "bytes": 32992,
+      "mtime_ns": 1785456779950905100,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png",
+      "sha256": "b323f4f90e12e8f4fe51fbbe988d7b395da35709dab052b21fec84dceec12be7",
+      "bytes": 1549269,
+      "mtime_ns": 1785363986559827200,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.svg",
+      "sha256": "090414e950826eaefe52ca6440136c22e28577554694cb2cf3e837b00de6e86a",
+      "bytes": 22250,
+      "mtime_ns": 1786507082999035800,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_ilustrada.png",
+      "sha256": "48351b307a8aab983cb3ac0dd0fecbc3e1cec659524c272a2a2021c875eb9ca3",
+      "bytes": 1532368,
+      "mtime_ns": 1785362793820543200,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_simbologia_v2.png",
+      "sha256": "e7159fc01bf0ba57c31d5a288213018accd50066a7562034468f9eb6cc3e7739",
+      "bytes": 1452382,
+      "mtime_ns": 1785363494297875400,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md",
+      "sha256": "2e9943243853796aaf23ed0eb65d9f30371eb1441b1fcf368d03dc738b06e00a",
+      "bytes": 22146,
+      "mtime_ns": 1786506919066190100,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf",
+      "sha256": "b4d73c985182716ee7baabba535d3e12d26ca7d9d1674a1cf2d0e392842e0d8a",
+      "bytes": 289042,
+      "mtime_ns": 1781581860821787700,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/DATASET_CONSTRUCTION_PIPELINE.pdf",
+      "sha256": "e8f34ff9ac0e469b51a7b0f99f727af4d593a0b13ef08f55d2613a1163b0a3a4",
+      "bytes": 135994,
+      "mtime_ns": 1781581860822772300,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/ENTRENAMIENTO_MODULAR_COLAB.md",
+      "sha256": "be6c08d748792e9dbf270c52289c5793de9948146990cd91788b8b3870ecb2ea",
+      "bytes": 3574,
+      "mtime_ns": 1793493471182937700,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/ENTRENAMIENTO_MODULAR_LOCAL.md",
+      "sha256": "66857c017afadc0bc2fe69091cfaae16a97cbe5ab97ab6bce4f4396f92b692a7",
+      "bytes": 3515,
+      "mtime_ns": 1793492779715215300,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md",
+      "sha256": "f2945706c17125fe1273efe5131a60a29e150e69620524266d32ebdd2f03ad1e",
+      "bytes": 11996,
+      "mtime_ns": 1785456779946904300,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf",
+      "sha256": "41dbc7ad2b66b3c9d07ea803c4f784b35cbc145ecadb0408505a74cd29a0ed9d",
+      "bytes": 236459,
+      "mtime_ns": 1781581860824775300,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png",
+      "sha256": "11c9a4fa67adbbab485083ea9884cd4ee31b98ca393a25c3e0b4c1ffd35a7057",
+      "bytes": 436773,
+      "mtime_ns": 1781581860828304000,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf",
+      "sha256": "6271071d80133f7acd294e0dc08ccae6d1794c2c6df75204931fdc82c0278dcd",
+      "bytes": 46165,
+      "mtime_ns": 1781506970218634400,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.png",
+      "sha256": "7098b256cd4170cf273fb0d9dc3e205a7782b5533d3a2551dfb27678e2a47ac2",
+      "bytes": 1039078,
+      "mtime_ns": 1781506970225759800,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.png",
+      "sha256": "7098b256cd4170cf273fb0d9dc3e205a7782b5533d3a2551dfb27678e2a47ac2",
+      "bytes": 1039078,
+      "mtime_ns": 1781506970232337800,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/dataset_construction_pipeline.md",
+      "sha256": "76fe281356a7c329be4339654ed8e87cc18413e5f7b4ea8381865886ceeef759",
+      "bytes": 4697,
+      "mtime_ns": 1785334127623225800,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/_refs/citylearn_v2_environment.jpg",
+      "sha256": "9576611b4e684f3ac1c4bb2b530714b1e1ab784851212cd86b9f220bf77201c1",
+      "bytes": 1858713,
+      "mtime_ns": 1785363274879065400,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/_refs/citylearn_v2_environment_docs.jpg",
+      "sha256": "9576611b4e684f3ac1c4bb2b530714b1e1ab784851212cd86b9f220bf77201c1",
+      "bytes": 1858713,
+      "mtime_ns": 1785363237454082600,
+      "immutable": false
+    },
+    {
+      "path": "docs/architecture/_refs/citylearn_v2_environment_jsdelivr.jpg",
+      "sha256": "9576611b4e684f3ac1c4bb2b530714b1e1ab784851212cd86b9f220bf77201c1",
+      "bytes": 1858713,
+      "mtime_ns": 1785363278048561500,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md",
+      "sha256": "60c098b2c61a6532c662272dc152585c00156d50808e99c1f30f3de41cc02e06",
+      "bytes": 3945,
+      "mtime_ns": 1785334127641890400,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md",
+      "sha256": "a3c3e495abf9048fc17c26a462fe41da329ec284970d9f7f6dbd669d85b87fa7",
+      "bytes": 4068,
+      "mtime_ns": 1785456779951905700,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/DIAGNOSTICO_Y_RETIRO_HISTORICOS_2026-11-01.md",
+      "sha256": "fe59fcd4a60cae97703f1dabdbd3a8e175196b9b757836baf38f28f20987d006",
+      "bytes": 20481,
+      "mtime_ns": 1793516257823788500,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/HANDOFF_AUDITOR_LOCAL.md",
+      "sha256": "2fd201f956bf509d528b53fe3705dbb9b6c89a7757224cba39d40ba59bba285f",
+      "bytes": 4118,
+      "mtime_ns": 1793496887675601500,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_DER_IQUITOS.md",
+      "sha256": "451bd8d337068e6564ba769910c55eccaeb5eeb3c986d41fd655cec48e8d2901",
+      "bytes": 10532,
+      "mtime_ns": 1785456779955414300,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_EV_IQUITOS.md",
+      "sha256": "63ca69fe1b454ede20976bb6f7ddcb0b6cc4f558fb150499374dd6aa08b409d6",
+      "bytes": 10966,
+      "mtime_ns": 1782289414909490200,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_AUDITORIA_PARAMETROS_EDIFICIOS_IQUITOS.md",
+      "sha256": "3b4543ceb2f4a4d672e3bde74fc171841a7bffd06647694182c55063f9f4d879",
+      "bytes": 3441,
+      "mtime_ns": 1782289414909490200,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_CORRECCION_TRAZABILIDAD_MADRL_V4_2026-06-17.md",
+      "sha256": "9b3a6cc2fcfff397c717441a948c3943c59c9e61a2d440cdd842194b308fc64c",
+      "bytes": 3580,
+      "mtime_ns": 1785456779983014900,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md",
+      "sha256": "7325bee5ed8d519d67fe20ab25e021b8691a96ba424d506dceb88ae913d0980e",
+      "bytes": 1363,
+      "mtime_ns": 1782289414910566300,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
+      "sha256": "63d5cb3e12e089e735aac13c42cb15580489aab94b3fcb851b399f8fec8b8f43",
+      "bytes": 3807,
+      "mtime_ns": 1785334127647199000,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md",
+      "sha256": "0669bb2d9298ee466447e4e3647444e69d6be38b0e6f14b1d0fd17f392cba439",
+      "bytes": 6279,
+      "mtime_ns": 1785456779999075100,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_VALIDACION_INTEGRAL_CREACION_DATASET_CITYLEARN_IQUITOS.md",
+      "sha256": "f9b26568986512bb4642bf9a86ef74d166bf5de5b8b5501136a9c8cfd75804dc",
+      "bytes": 5922,
+      "mtime_ns": 1785456779966460300,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md",
+      "sha256": "f0fef5fd2033f66b42c419e211f2a90c3c61a441c547abf27701590529a50cbb",
+      "bytes": 11028,
+      "mtime_ns": 1785334127650381800,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/MATRIZ_LEVANTAMIENTO_OBSERVACIONES_JURADO_2026-10-31.md",
+      "sha256": "90e2e398b85d2a5a8a692175556eff7c4e9bea40ea4fd7155f5aae1fa73bf8d8",
+      "bytes": 11595,
+      "mtime_ns": 1793486324036519500,
+      "immutable": false
+    },
+    {
+      "path": "docs/audits/nombres.md",
+      "sha256": "bad7e9d441213738f2cea9ae95a460a899ac228985ea49bd0badce51e64f1b9f",
+      "bytes": 5863,
+      "mtime_ns": 1793525795705150300,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/CityLearn/CHANGES.md",
+      "sha256": "fc2fe4ba23bd5431ddda33f76e70f3be37ef702cc556f290ac6caf48b89cbe6f",
+      "bytes": 4041,
+      "mtime_ns": 1793492817573250100,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/CityLearn/bibliografia.bib",
+      "sha256": "4df8cf60231adfec4b69c9efea44b2ffaef767cc5c8e7d57cedf20109c4392a4",
+      "bytes": 1139,
+      "mtime_ns": 1782289414913753100,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/HARL/CHANGES.md",
+      "sha256": "d32de6fa57ab4964064128cea2877ee6105d278980cef7afb0f267e9af30f801",
+      "bytes": 1133,
+      "mtime_ns": 1782289414914759400,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/HARL/bibliografia.bib",
+      "sha256": "53b73dc469bd6323fda0527679d1943db454c2233a8e0dbbdd10c8c483509e9b",
+      "bytes": 1146,
+      "mtime_ns": 1782289414914759400,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MAAC/CHANGES.md",
+      "sha256": "7f10a0783842d85379e947e5371376b7dd921da58860f06b88184c4fd8841705",
+      "bytes": 1133,
+      "mtime_ns": 1782289414914759400,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MAAC/bibliografia.bib",
+      "sha256": "5e2f757bc3536d2d077f8655014094e0160af133d433a1313bb366c9ece15eaf",
+      "bytes": 1146,
+      "mtime_ns": 1782289414915757900,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MARL/CHANGES.md",
+      "sha256": "2f45229ad5b3a97478bf044ec3d1a0886e509e0ae15ed15bc34be9c39d92fa52",
+      "bytes": 1133,
+      "mtime_ns": 1782289414915757900,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MARL/bibliografia.bib",
+      "sha256": "1b61f7d64394c83a5db951fae6f4be15aba45dcb59a7d82a920f944d686472d0",
+      "bytes": 1146,
+      "mtime_ns": 1782289414915757900,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MARLlib/CHANGES.md",
+      "sha256": "e1072611ab0a7c4c59c604a06f2193b0a77988c157ff569451c5119dc082387c",
+      "bytes": 1142,
+      "mtime_ns": 1782289414916761700,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MARLlib/bibliografia.bib",
+      "sha256": "41a0e219a6f4e4e7ecded0e7e965e7bac79fd5a573de590ded7f2f335bff3572",
+      "bytes": 1149,
+      "mtime_ns": 1782289414916761700,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MATD3implementation/CHANGES.md",
+      "sha256": "af9bb456abbbf3502b861b2755647dd9e6a6b876c863798d0db4010b73f2a173",
+      "bytes": 1178,
+      "mtime_ns": 1782289414917759100,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MATD3implementation/bibliografia.bib",
+      "sha256": "9a5d1b493738668c25ff0137d46c4e101699aa811c6f11966d254b1aa8ddd686",
+      "bytes": 1161,
+      "mtime_ns": 1782289414917759100,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MicroGrids/CHANGES.md",
+      "sha256": "a60cec997ca09ad9bf10ab89a616066eec810c12679ce50e3bc989159c90d493",
+      "bytes": 1151,
+      "mtime_ns": 1782289414918757000,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/MicroGrids/bibliografia.bib",
+      "sha256": "886ea27712f25c63d2dda1f2b4752fa29c1ba329a4fdf023258a32da37047c57",
+      "bytes": 1152,
+      "mtime_ns": 1782289414918757000,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/evcc/CHANGES.md",
+      "sha256": "b195f183797ffed3802a3628a6c44115aa3f74170a9c3fc19adbeb3d1bae6d3b",
+      "bytes": 1133,
+      "mtime_ns": 1782289414918757000,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/evcc/bibliografia.bib",
+      "sha256": "ede201a6a64137cf9e8f162084158d212110a8a5e6f290623c4534844975edc9",
+      "bytes": 1146,
+      "mtime_ns": 1782289414919816300,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/prosumpy/CHANGES.md",
+      "sha256": "b31d2b47ebb0a595889c7e7f2acd3f990c5b417906cea47611e756c5a69ae6d5",
+      "bytes": 1145,
+      "mtime_ns": 1782289414919816300,
+      "immutable": false
+    },
+    {
+      "path": "docs/contributions/prosumpy/bibliografia.bib",
+      "sha256": "d8d61184434024bc866b2a94b52812339f72cdd3a3879bfb1e3d7b542a6a4e24",
+      "bytes": 1150,
+      "mtime_ns": 1782289414920821300,
+      "immutable": false
+    },
+    {
+      "path": "docs/decisions/ADR-OPEN-ARTIFACT-STORE.md",
+      "sha256": "373cd5dd1b2fcdc03aa8496eecb606a1ab1f65ea850c0d04cd90a35d64e7962c",
+      "bytes": 1145,
+      "mtime_ns": 1793492735796963500,
+      "immutable": false
+    },
+    {
+      "path": "docs/decisions/ADR-SIMULATOR-PORT-DEFERRED.md",
+      "sha256": "1d874bc2921f7c0a73ed1ad3b5174153609d4db9ca53bacfe90dd70d06c362bb",
+      "bytes": 2125,
+      "mtime_ns": 1793510918635416800,
+      "immutable": false
+    },
+    {
+      "path": "docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md",
+      "sha256": "c61e008cb595a9a244bcd6860ac60de0cee18c8e9d401e7ca9843db84df451a5",
+      "bytes": 17390,
+      "mtime_ns": 1782289414920821300,
+      "immutable": false
+    },
+    {
+      "path": "docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md",
+      "sha256": "d52ad27bb09db34f0fe0b338076daff30987059b464691dafe7f82420fc1a4f4",
+      "bytes": 28372,
+      "mtime_ns": 1782289414921820600,
+      "immutable": false
+    },
+    {
+      "path": "docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md",
+      "sha256": "daa612c975aa8cb6b29fe549f99374066a4fd585bc9096695bdf750c1d601602",
+      "bytes": 40652,
+      "mtime_ns": 1785456779968966700,
+      "immutable": false
+    },
+    {
+      "path": "docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md",
+      "sha256": "7e4f866c7a806773258aeb167e3428ac1f4cc79119ec62b9614050371305675b",
+      "bytes": 6994,
+      "mtime_ns": 1782289414922820800,
+      "immutable": false
+    },
+    {
+      "path": "docs/failures/agent-auto-publish-unscoped.md",
+      "sha256": "a19954b23079619d64753e332e8ae3ad5f6a445fe02597facc65f0f0d52cc1b0",
+      "bytes": 1181,
+      "mtime_ns": 1793495732668662200,
+      "immutable": false
+    },
+    {
+      "path": "docs/research/license_requests.md",
+      "sha256": "5e970293a02fa70dbd7b63e621505ba2792fe7d4fd42b7f3f9d368d3c7c02768",
+      "bytes": 3050,
+      "mtime_ns": 1793512197697141500,
+      "immutable": false
+    },
+    {
+      "path": "docs/research/repository_registry.yaml",
+      "sha256": "f4bf371ba4901f76f731f21735c042be3ec23e03b064b5f1f94760e29d04349c",
+      "bytes": 1443,
+      "mtime_ns": 1793487789625862400,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-foundation-open-source-spec-kit-plan.md",
+      "sha256": "b6cb9d4c65fd12d0f97446891e2635506d3f678f19223de20c925ef20f878e46",
+      "bytes": 10495,
+      "mtime_ns": 1793495922863045100,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-jury-observations-remediation-plan.md",
+      "sha256": "b87ffcf1c2089252cf4ab4744dad35ad6391ef941ea6fa17472fd2945af23b43",
+      "bytes": 9148,
+      "mtime_ns": 1793495922866337600,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md",
+      "sha256": "79d026dc7dd64c992f2175135bcdb61333e0a1aa60d1ad187176a289d0503c05",
+      "bytes": 11145,
+      "mtime_ns": 1793501764396108600,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-multiobjective-domain-plan.md",
+      "sha256": "4768b6d118d8bebf81831eb62cc4dffe55de24a23a793133c43847999e085021",
+      "bytes": 13044,
+      "mtime_ns": 1793495922864426400,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-orchestration-artifacts-plan.md",
+      "sha256": "0a55e7ae6c479437d5ade9afaadaccbb96d625699fffe38c364deba73343b61b",
+      "bytes": 13524,
+      "mtime_ns": 1793495922865067000,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-post-audit-remediation-plan.md",
+      "sha256": "6ead04a6de59fe0878ed2aedb6c57587868bf2ad206672dad950df21148c9d2b",
+      "bytes": 28539,
+      "mtime_ns": 1793503377736400400,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-thesis-agents-plan.md",
+      "sha256": "148d8da3467960e6792045c4fa5941a87f32426a8ec0be4c6714f2bd162e3aaa",
+      "bytes": 14577,
+      "mtime_ns": 1793496187102568800,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-01-encargo-agente-entrenamiento-nuevo.md",
+      "sha256": "e0f3d0df28795f8d0d0e6a5fdf8aab70617fbac5a70cf32488ae782445b47d61",
+      "bytes": 7548,
+      "mtime_ns": 1793525203849957500,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-01-entrenamiento-nuevo-sin-historicos-plan.md",
+      "sha256": "43c8abd76d74f8c356f5ee9ee7e27f5b3586befd18fda4c59ec465180274f3ea",
+      "bytes": 50389,
+      "mtime_ns": 1793525203849177500,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/plans/renombrar_rutas.md",
+      "sha256": "7ad96897f28562276e58c0aaf5fa6ebf588a07f2b9e758780955961ae3652012",
+      "bytes": 30124,
+      "mtime_ns": 1793524918801868400,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md",
+      "sha256": "492d82e5be75faa13d4526d3c24e48496facef77b3d2774e38dd2fb126f2a5f1",
+      "bytes": 25057,
+      "mtime_ns": 1793486324040522900,
+      "immutable": false
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-01-entrenamiento-nuevo-sin-resultados-historicos-design.md",
+      "sha256": "af9d75befb6d8b36c9ccbb92187ac940866801acec1fdabe00399de06004ced4",
+      "bytes": 55622,
+      "mtime_ns": 1793525949144923600,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/00_INDICE.md",
+      "sha256": "5fdb432aa1e2f500856f1abc74eca9379285e82d139df32fe606dc0bb6089ceb",
+      "bytes": 4955,
+      "mtime_ns": 1793524431660657600,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/AUDITORIA_CUMPLIMIENTO.md",
+      "sha256": "2123e8b4dbbb73fc9f6d919636d93ba4f76eecd3f05b8cff2f4206b7bd385aed",
+      "bytes": 19276,
+      "mtime_ns": 1786507109487696700,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/AUDITORIA_FINAL_CAP4_7_MATRIZ.md",
+      "sha256": "b8fd1671d0acb75da121a3a2151be9e3f448920ceba888c705976f8c88075bf6",
+      "bytes": 5252,
+      "mtime_ns": 1786203851208997400,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_1_Introduccion.md",
+      "sha256": "58954a96ec08c17e35f2de04a0bf84a9f0709063c6b170b9ef2ca4f9e0ef3432",
+      "bytes": 16340,
+      "mtime_ns": 1786203851167957600,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_1_PG_PE_OE_H_EXACTO.md",
+      "sha256": "26cc979bf17c9b8bf170337488c49d6cda863c7e5db5f6c1ec9f9834ab8eeb1e",
+      "bytes": 4777,
+      "mtime_ns": 1786203851194287000,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_2_Marco_Teorico.md",
+      "sha256": "6883817a5df26b87336028be8fcf8eff69fcd29340acd31441091544d576772d",
+      "bytes": 40136,
+      "mtime_ns": 1785456779977494300,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_3_Metodologia.md",
+      "sha256": "2a38a0ee8fd60b9e40e55f4f44f12379a534e59c6a8947b83cf3d97d0514a693",
+      "bytes": 19174,
+      "mtime_ns": 1793486360641394500,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md",
+      "sha256": "b1a54c9ceeb55745808b0d8a1f15c305ed814b7ba73de2c984e7243338349143",
+      "bytes": 24295,
+      "mtime_ns": 1786506918520660800,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_5_Resultados.md",
+      "sha256": "4cc29beb06f91faddc1267e3bed8f5cae080656c35e0ffd1fcd0535ce78f06d3",
+      "bytes": 28700,
+      "mtime_ns": 1793486386147725000,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_6_Conclusiones.md",
+      "sha256": "f6be23672e7b4ccc3d49bc0ed429efa040d8e3f3ff33b8d16b9b322364fe8b8e",
+      "bytes": 9379,
+      "mtime_ns": 1793486360642245200,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_7_Recomendaciones.md",
+      "sha256": "9a0961138182261b7d04b17cb4084d81542c2ee3d213dccba1ec198a2087088f",
+      "bytes": 7214,
+      "mtime_ns": 1793486360642944000,
+      "immutable": false
+    },
+    {
+      "path": "docs/tesis_capitulos/Referencias_APA.md",
+      "sha256": "02207030ba190af4d256e87faaf1a81312b4baba1c9031dfa7b28d0b3a985a42",
+      "bytes": 21167,
+      "mtime_ns": 1793486386149230100,
+      "immutable": false
+    },
+    {
+      "path": "docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md",
+      "sha256": "9aa581c7bc8cf20e9aa3c6598b5ae9497621e908322ba798219c844f3c5517c4",
+      "bytes": 12287,
+      "mtime_ns": 1784384715968497800,
+      "immutable": false
+    },
+    {
+      "path": "docs/thesis/Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx",
+      "sha256": "4d55df2b6fb1171a5e56cc80d92654c18f9a64cf2c71984d62827fe0897af725",
+      "bytes": 28334363,
+      "mtime_ns": 1781506970353995100,
+      "immutable": false
+    },
+    {
+      "path": "examples_madrl_v3/custom_reward_function.py",
+      "sha256": "3622c9e42855a0bc6017448d7d351ebc3dfb9061c7da0ebabacdb6c7aa68aafe",
+      "bytes": 1926,
+      "mtime_ns": 1777781729634532900,
+      "immutable": false
+    },
+    {
+      "path": "examples_madrl_v3/madrl_citylearn_v3_cli.ipynb",
+      "sha256": "ddcb711bcd32ece2282fb1d42429d1e73ebdf3b84ae4a6c64cb0141f44a650f4",
+      "bytes": 21271,
+      "mtime_ns": 1793506261771766100,
+      "immutable": false
+    },
+    {
+      "path": "examples_madrl_v3/madrl_citylearn_v3_load_environment.ipynb",
+      "sha256": "f32c77fff787ae271f44ec4e5846ca28e873a4ed34f3b728b9235c6859f22d71",
+      "bytes": 17757,
+      "mtime_ns": 1793506261783620600,
+      "immutable": false
+    },
+    {
+      "path": "examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb",
+      "sha256": "7079504fcc7e9ba0c393b28afcc3d5620a6828852f4ff5cae4927252e7458dfa",
+      "bytes": 30698,
+      "mtime_ns": 1793517092596562300,
+      "immutable": false
+    },
+    {
+      "path": "examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb",
+      "sha256": "cf89c4feb57d0c5c17737e4f0b31836e5685987fe64230ee503c8a1b75b08c1a",
+      "bytes": 26190,
+      "mtime_ns": 1793506261796393300,
+      "immutable": false
+    },
+    {
+      "path": "examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb",
+      "sha256": "b9c9acaaffd6259863f43070ba6c5a65dd391df309b25013323bc919c1140c12",
+      "bytes": 446439,
+      "mtime_ns": 1793506261810599500,
+      "immutable": false
+    },
+    {
+      "path": "examples_madrl_v3/pyrightconfig.json",
+      "sha256": "ab8e74a7231db106522b6161f530f12670093c6bfa80c98c2e2bea895056766d",
+      "bytes": 1511,
+      "mtime_ns": 1785456779993552600,
+      "immutable": false
+    },
+    {
+      "path": "governance/artifact_retention_policy.yaml",
+      "sha256": "17b502105086554f7533987b0ed139f2fa01f27bef122d6a1de9ca407d58fcc1",
+      "bytes": 5240,
+      "mtime_ns": 1793517386975476900,
+      "immutable": false
+    },
+    {
+      "path": "governance/dependency_roles.yaml",
+      "sha256": "bb7b0aa7e69199ca7f184a91b14d3569789357ca3e4229a724751e5623e15b26",
+      "bytes": 2530,
+      "mtime_ns": 1793509038055268800,
+      "immutable": false
+    },
+    {
+      "path": "governance/naming.yaml",
+      "sha256": "e6bc8ef5e2475810cdf58d51c77bcebe1587109894aa4a71925950a1e9e02026",
+      "bytes": 15568,
+      "mtime_ns": 1793525572048841900,
+      "immutable": true
+    },
+    {
+      "path": "governance/open_source_policy.yaml",
+      "sha256": "2a3cf26831d18de4f5c2dc4c4d86cc7fe9ce3ba17c42e93cd298d008402950fe",
+      "bytes": 1883,
+      "mtime_ns": 1793512346874078100,
+      "immutable": false
+    },
+    {
+      "path": "governance/repository_layout.yaml",
+      "sha256": "92242b380fd1ed88a32eb903987ba1c79ade8ce873f35361c896304e21cac8eb",
+      "bytes": 3646,
+      "mtime_ns": 1793524337648675400,
+      "immutable": false
+    },
+    {
+      "path": "scripts/README.md",
+      "sha256": "3cbd73f66e2359eeb359dbf3712aab0aabbd3453bc6dfa36f04d2674b358e607",
+      "bytes": 2899,
+      "mtime_ns": 1793523598495408300,
+      "immutable": false
+    },
+    {
+      "path": "scripts/activate_citylearn_v3.ps1",
+      "sha256": "0a636717fa1809b6d3aaddb07e32f0336235d1c521257a755284b8074cf5dada",
+      "bytes": 743,
+      "mtime_ns": 1777924028412596200,
+      "immutable": false
+    },
+    {
+      "path": "scripts/fetch_and_generate_drive_figures.ps1",
+      "sha256": "949610196fc8746f6ccd622cafea07e57498186b8bfe1b20f3b08fe3e93d3ae2",
+      "bytes": 1499,
+      "mtime_ns": 1785456779990045800,
+      "immutable": false
+    },
+    {
+      "path": "scripts/generate_borrador_tesis_docx.py",
+      "sha256": "51aeaf53d6c27bdee8e92261284b078f8793cb4690d93ee601895ff119d9da06",
+      "bytes": 578,
+      "mtime_ns": 1786203851208997400,
+      "immutable": false
+    },
+    {
+      "path": "scripts/regenerate_multicriteria_drive_50ep_closure.py",
+      "sha256": "1f0d9357834fd852051320cb5d91267b3466e70788e7977852e15efe723a72f6",
+      "bytes": 13604,
+      "mtime_ns": 1785456779970975000,
+      "immutable": false
+    },
+    {
+      "path": "scripts/run_madrl_multicriteria_selection.py",
+      "sha256": "2457e4065f98f3acb87cdb8d06a93a8c7764435c316d4481ad55136b65709972",
+      "bytes": 3800,
+      "mtime_ns": 1785456779991045400,
+      "immutable": false
+    },
+    {
+      "path": "scripts/run_madrl_nonparametric_battery.py",
+      "sha256": "df070c35a0b79a22d02d94772aed29fff689892dbfeedc6bbf0e262a81ef6240",
+      "bytes": 24668,
+      "mtime_ns": 1793517214953579900,
+      "immutable": false
+    },
+    {
+      "path": "scripts/setup_google_drive_oauth.ps1",
+      "sha256": "179edbda564364376cc4b0c87536b796997ec06b1935d73bef446427bddaeb80",
+      "bytes": 2550,
+      "mtime_ns": 1785456779999075100,
+      "immutable": false
+    },
+    {
+      "path": "scripts/thesis_doctoral_sections.py",
+      "sha256": "c01028f30c1937291e9cf108c67ea0f49a9ec47f9419bac93cd0fc8699331735",
+      "bytes": 334,
+      "mtime_ns": 1785456779985533600,
+      "immutable": false
+    },
+    {
+      "path": "scripts/verify_project_context.ps1",
+      "sha256": "13040d67d6d5b2ab9bd6c656e70db94b7c20ffdc34d2ef0836065254415aa6d2",
+      "bytes": 2751,
+      "mtime_ns": 1782289417939006300,
+      "immutable": false
+    },
+    {
+      "path": "scripts/maintenance/rename_paths.ps1",
+      "sha256": "95ea1a6ab4e90deae2c6350270b8c335356ff7d750c0bdb05ec50bef16338d63",
+      "bytes": 13940,
+      "mtime_ns": 1793525752647675100,
+      "immutable": false
+    },
+    {
+      "path": "scripts/maintenance/retire_historical_outputs.ps1",
+      "sha256": "5de1ec4e6fa180867e3fa668b602c8dbb9d90346fefa770f24c42d058d409d6e",
+      "bytes": 4406,
+      "mtime_ns": 1793517979886011400,
+      "immutable": false
+    },
+    {
+      "path": "scripts/quality/run_foundation_gates.ps1",
+      "sha256": "219814c5c2a6d16b4b6cf26e89a32e8f49a5ea1b729afcc431d62bd010a33482",
+      "bytes": 2744,
+      "mtime_ns": 1793512395556628300,
+      "immutable": false
+    },
+    {
+      "path": "scripts/quality/run_orchestration_gates.ps1",
+      "sha256": "7ed0837dd8f803bebbb8d265125e0ca900a9a95b3d5722cddc4eb44fd0b684cf",
+      "bytes": 1231,
+      "mtime_ns": 1793519263936540000,
+      "immutable": false
+    },
+    {
+      "path": "scripts/skills/register_local_skills.ps1",
+      "sha256": "d0dfb7ae7d1b7939244e23efe62227ae15d561ea7d39749269c8e1cc30171981",
+      "bytes": 2205,
+      "mtime_ns": 1793496032984449000,
+      "immutable": false
+    },
+    {
+      "path": "specs/STATUS.md",
+      "sha256": "5b537d3a674829c4285a321635c2619471b9c11cd8a6cc4d984ce2b489a072b6",
+      "bytes": 11752,
+      "mtime_ns": 1793518387207414500,
+      "immutable": false
+    },
+    {
+      "path": "specs/000-foundation/plan.md",
+      "sha256": "ebc55b32967256f72e3c4eef24563099a7a37810dab991e1b1c09aaf61a58b0a",
+      "bytes": 1059,
+      "mtime_ns": 1793487224371220100,
+      "immutable": false
+    },
+    {
+      "path": "specs/000-foundation/spec.md",
+      "sha256": "5084e144eafb2f599fadf63d4f31672879e0b2c11cf353ddee02340afced778c",
+      "bytes": 1618,
+      "mtime_ns": 1793487224371220100,
+      "immutable": false
+    },
+    {
+      "path": "specs/000-foundation/tasks.md",
+      "sha256": "5b9313afee03b380abd3db2ed73fcf23eb4606efc5cbac052f836bf91ec7d70a",
+      "bytes": 929,
+      "mtime_ns": 1793496187097785200,
+      "immutable": false
+    },
+    {
+      "path": "specs/001-open-source-provenance/plan.md",
+      "sha256": "4151e44f06c0b47ee7edc68e2433b5c74a8cc1237dbbfd28a7b8db555cbbf9f0",
+      "bytes": 1042,
+      "mtime_ns": 1793501507135233200,
+      "immutable": false
+    },
+    {
+      "path": "specs/001-open-source-provenance/spec.md",
+      "sha256": "62b3748e13fbce473ee3292cf2018c72a7e3633080ca601b4fd6b0322868d138",
+      "bytes": 1781,
+      "mtime_ns": 1793501507134727200,
+      "immutable": false
+    },
+    {
+      "path": "specs/001-open-source-provenance/tasks.md",
+      "sha256": "babd5d15635e096421d156c8d2accce9bf4e58a796f5d2ad1815a19c1c564eee",
+      "bytes": 2669,
+      "mtime_ns": 1793512488947454000,
+      "immutable": false
+    },
+    {
+      "path": "specs/002-multiobjective-policy/plan.md",
+      "sha256": "ef0996fff54df8989f21db59bd3df59880a1ea0e7a50479c9dfefab3202fcdaa",
+      "bytes": 1009,
+      "mtime_ns": 1793501507136237600,
+      "immutable": false
+    },
+    {
+      "path": "specs/002-multiobjective-policy/spec.md",
+      "sha256": "175616494e3a132da90d657dcb25b2d4b059d08afa833beba76cf0b9d3c42131",
+      "bytes": 1791,
+      "mtime_ns": 1793501507135233200,
+      "immutable": false
+    },
+    {
+      "path": "specs/002-multiobjective-policy/tasks.md",
+      "sha256": "b2d6b05fa0c4d02a6983ba746c0348d731ac297bffb2ed1d6021c27152dc11be",
+      "bytes": 2396,
+      "mtime_ns": 1793517479936420400,
+      "immutable": false
+    },
+    {
+      "path": "specs/003-modular-orchestration/plan.md",
+      "sha256": "bc06fc6289aa94c221549ff26774a3b265ee555988145238dd3aa8373f525f1b",
+      "bytes": 1027,
+      "mtime_ns": 1793501507136697400,
+      "immutable": false
+    },
+    {
+      "path": "specs/003-modular-orchestration/spec.md",
+      "sha256": "2974e11d274aa5eec5929fcc5e133784923f06c491d666de82a9f84ba58d0d1a",
+      "bytes": 1689,
+      "mtime_ns": 1793501507136697400,
+      "immutable": false
+    },
+    {
+      "path": "specs/003-modular-orchestration/tasks.md",
+      "sha256": "e351e728c29ce7a8d123e78024fcd126b0d2cc021c6ca594d511b009a34a5233",
+      "bytes": 1969,
+      "mtime_ns": 1793510983119743700,
+      "immutable": false
+    },
+    {
+      "path": "specs/004-execution-manifests/plan.md",
+      "sha256": "f564b086e5dec5ca08828600446cdaf8262058ce72c6d2d6c6e3bc288f5fa51d",
+      "bytes": 971,
+      "mtime_ns": 1793501507137796800,
+      "immutable": false
+    },
+    {
+      "path": "specs/004-execution-manifests/spec.md",
+      "sha256": "038cb6b2f2fb165c73eb9ef37f07df5ba2b155f27011964d686383f9bce040fa",
+      "bytes": 1431,
+      "mtime_ns": 1793501507137796800,
+      "immutable": false
+    },
+    {
+      "path": "specs/004-execution-manifests/tasks.md",
+      "sha256": "be0e6c1992da2f9bfbc2b38aee24b18dd3a6e4018d42158d1ef54ac0d269e36f",
+      "bytes": 913,
+      "mtime_ns": 1793501507137796800,
+      "immutable": false
+    },
+    {
+      "path": "specs/005-scientific-evaluation/plan.md",
+      "sha256": "8a1a6c359d812d33a81096363898a1760cc11305782ffac0e49e3bcdfbe59c38",
+      "bytes": 1049,
+      "mtime_ns": 1793501507138801300,
+      "immutable": false
+    },
+    {
+      "path": "specs/005-scientific-evaluation/spec.md",
+      "sha256": "c1e1a34967f8e0d2d8e28122ea242bd84c695f082cba0309a4d15721e1a4fb03",
+      "bytes": 1556,
+      "mtime_ns": 1793501507137796800,
+      "immutable": false
+    },
+    {
+      "path": "specs/005-scientific-evaluation/tasks.md",
+      "sha256": "318bda556a2d67dc8998c27dd7f76619cfdbda3f04f73cc76cd0bda95043a4f7",
+      "bytes": 2666,
+      "mtime_ns": 1793517783982586000,
+      "immutable": false
+    },
+    {
+      "path": "specs/006-thesis-evidence/plan.md",
+      "sha256": "1547e52a5c43c9c9a12b54b5a29c0cbe5fa0fd3e124aebc103e54325f379a5e3",
+      "bytes": 985,
+      "mtime_ns": 1793501507139793500,
+      "immutable": false
+    },
+    {
+      "path": "specs/006-thesis-evidence/spec.md",
+      "sha256": "b2b2cc6f29c9c3ef136d2a66dff324d6314c81d84007728ee0c5ba7861c2432b",
+      "bytes": 1390,
+      "mtime_ns": 1793501507138801300,
+      "immutable": false
+    },
+    {
+      "path": "specs/006-thesis-evidence/tasks.md",
+      "sha256": "ab3c1cb0ec113cd7c36c50b85d6c6107320ac1401ce94a98d7dbd379e5434cf8",
+      "bytes": 1038,
+      "mtime_ns": 1793501507139793500,
+      "immutable": false
+    },
+    {
+      "path": "specs/007-local-agent-harness/plan.md",
+      "sha256": "25a1ccae476afc9ae2c30fb4f625a45529f366b54926c2388d199648184f6058",
+      "bytes": 1171,
+      "mtime_ns": 1793496032988194500,
+      "immutable": false
+    },
+    {
+      "path": "specs/007-local-agent-harness/spec.md",
+      "sha256": "85ea5fbb51b4d3f6e7f068fa3fdd2dd690630a89e1c138b02f0462082b535c51",
+      "bytes": 2021,
+      "mtime_ns": 1793496032987688000,
+      "immutable": false
+    },
+    {
+      "path": "specs/007-local-agent-harness/tasks.md",
+      "sha256": "c8019e98ca9c228e823dc21690926eb576b369a2dbc6ae0339d66ecf72095fa0",
+      "bytes": 1389,
+      "mtime_ns": 1793496187095778100,
+      "immutable": false
+    },
+    {
+      "path": "specs/008-artifacts-data/plan.md",
+      "sha256": "eb27755b32f8d1cab390d01acf25823bb88dcd647ed4b1c3e1c2694057e0ba60",
+      "bytes": 963,
+      "mtime_ns": 1793501507139793500,
+      "immutable": false
+    },
+    {
+      "path": "specs/008-artifacts-data/spec.md",
+      "sha256": "d9f065c8a9fb098bfd28e3d48eccda549d337b1ea348d9329c994b13e6ca0ad3",
+      "bytes": 1347,
+      "mtime_ns": 1793501507139793500,
+      "immutable": false
+    },
+    {
+      "path": "specs/008-artifacts-data/tasks.md",
+      "sha256": "647dec7b148e561ec754d0c941c8b718db937b8b6db4d2fcb60decafc94aa35b",
+      "bytes": 2095,
+      "mtime_ns": 1793517522421514900,
+      "immutable": false
+    },
+    {
+      "path": "specs/009-jury-observations/plan.md",
+      "sha256": "eee7482f14d313221de99baded27331a184338a273ae5e99396a5af579defc0d",
+      "bytes": 985,
+      "mtime_ns": 1793501507140792600,
+      "immutable": false
+    },
+    {
+      "path": "specs/009-jury-observations/spec.md",
+      "sha256": "47d4c53e9b231f65547a0a73ba8797c15784813088d1c33b941887aded660166",
+      "bytes": 1484,
+      "mtime_ns": 1793501507140792600,
+      "immutable": false
+    },
+    {
+      "path": "specs/009-jury-observations/tasks.md",
+      "sha256": "52ab5bda0a45d0a1056661747da1c4b87d6907f66dc19ed21147de92351734b8",
+      "bytes": 1051,
+      "mtime_ns": 1793501507140792600,
+      "immutable": false
+    },
+    {
+      "path": "specs/010-local-training-panel/plan.md",
+      "sha256": "73a3f1ba721faa067f3793fed13f43b9f9052141819cbf0e9ef2a18fee101caf",
+      "bytes": 1915,
+      "mtime_ns": 1793495922862026800,
+      "immutable": false
+    },
+    {
+      "path": "specs/010-local-training-panel/spec.md",
+      "sha256": "c052d45e4962a2d755c6e524a5bf143527c9414122d06dbef719ce51daaf1bcc",
+      "bytes": 1625,
+      "mtime_ns": 1793492107292149000,
+      "immutable": false
+    },
+    {
+      "path": "specs/010-local-training-panel/tasks.md",
+      "sha256": "6e4d577a5bb3a6b5c56dcd45c67c9c76e52fb7d5ba3bbd73cf7358db77840a6a",
+      "bytes": 1362,
+      "mtime_ns": 1793495922862026800,
+      "immutable": false
+    },
+    {
+      "path": "specs/011-dataset-to-delivery-pipeline/plan.md",
+      "sha256": "4975e974d23cb50a4a80d37857b0b1ce4476924811e528550dce6f84f9c10d08",
+      "bytes": 2499,
+      "mtime_ns": 1793514291224298700,
+      "immutable": false
+    },
+    {
+      "path": "specs/011-dataset-to-delivery-pipeline/spec.md",
+      "sha256": "c3ad668a9e56b684731eb650a7bc50b388c0b47ff6655707e02e8b51c120b07f",
+      "bytes": 1743,
+      "mtime_ns": 1793501507141793500,
+      "immutable": false
+    },
+    {
+      "path": "specs/011-dataset-to-delivery-pipeline/tasks.md",
+      "sha256": "2c1262265dd3a03b1392d1f4ffe400d6c94ad3cab56b6adfb6fb1e73668af6cb",
+      "bytes": 3519,
+      "mtime_ns": 1793516853146954800,
+      "immutable": false
+    },
+    {
+      "path": "specs/012-repository-hygiene/plan.md",
+      "sha256": "98fa98e4f72abd7bc7bae2f7f7e5e8752c20cc3d36d637390e54b7b43a8a08ad",
+      "bytes": 1055,
+      "mtime_ns": 1793501507142793600,
+      "immutable": false
+    },
+    {
+      "path": "specs/012-repository-hygiene/spec.md",
+      "sha256": "16a83531e46333a3e8982572d296e1a570154970a69875f34fe9289211a96e49",
+      "bytes": 2141,
+      "mtime_ns": 1793501507142793600,
+      "immutable": false
+    },
+    {
+      "path": "specs/012-repository-hygiene/tasks.md",
+      "sha256": "e6222510ea8b7ef6da2f37bbe0c2cb8cefcf7571a35956f6767b105948e78e69",
+      "bytes": 2266,
+      "mtime_ns": 1793507759772799600,
+      "immutable": false
+    },
+    {
+      "path": "tests/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1779105377541624200,
+      "immutable": false
+    },
+    {
+      "path": "tests/acceptance/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1793505841141332200,
+      "immutable": false
+    },
+    {
+      "path": "tests/acceptance/test_acceptance_gates.py",
+      "sha256": "a2f0a32dc75a7419aca110d4b1596152bba5844d897ad8078482b754b0044d97",
+      "bytes": 1943,
+      "mtime_ns": 1793506113317585300,
+      "immutable": false
+    },
+    {
+      "path": "tests/acceptance/test_model_selection.py",
+      "sha256": "2f9f8b0694f4f66f44f8b7f06268705f6410e9df2ccad865e2592291e947319d",
+      "bytes": 6254,
+      "mtime_ns": 1793517622122044000,
+      "immutable": false
+    },
+    {
+      "path": "tests/acceptance/test_pipeline_smoke.py",
+      "sha256": "0987ecaa95dbcd29b927d5931156c8a4bd62718ec0621d638bffeb2ef87717a7",
+      "bytes": 3210,
+      "mtime_ns": 1793516594504508400,
+      "immutable": false
+    },
+    {
+      "path": "tests/citylearn_v3/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1781506970363689900,
+      "immutable": false
+    },
+    {
+      "path": "tests/citylearn_v3/conftest.py",
+      "sha256": "95db81c972c05a4cb321095b7cc47808e977f68460b1dc838aa411994827aba1",
+      "bytes": 866,
+      "mtime_ns": 1781506970363689900,
+      "immutable": false
+    },
+    {
+      "path": "tests/citylearn_v3/test_schema_smoke.py",
+      "sha256": "7c03e31b5b461ef2f3aeab60bd5d8cc4b8152ca22a9e7bed838941445a2b19d1",
+      "bytes": 1459,
+      "mtime_ns": 1781506970363689900,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_campaign_manifest.py",
+      "sha256": "cebfbdebe7b59e8cad9453249a5192d5519031e23a9bd1de0180363857c99c99",
+      "bytes": 1200,
+      "mtime_ns": 1793506836151489900,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_dataset_pipeline_paths.py",
+      "sha256": "56f52778f57d4c2d2e265eb1b7fe9ffdbd5115158fce62f414226e2f722e7083",
+      "bytes": 922,
+      "mtime_ns": 1793514186181333100,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_dependency_roles.py",
+      "sha256": "8bc026ca68ddf76430865d75498d95f28316391bb77208ec213cc43d904165e6",
+      "bytes": 2662,
+      "mtime_ns": 1793512270968657300,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_foundation_manifests.py",
+      "sha256": "0a0a18ee2d8d5331e4670432007cf6ce86398657db61095249ad22c5a6c1ad82",
+      "bytes": 4271,
+      "mtime_ns": 1793512255585789300,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_import_architecture.py",
+      "sha256": "bf48a20c0a6de5126eb6bbe953c1c2e41ea6081125cf6b0882cd67a15b080288",
+      "bytes": 1679,
+      "mtime_ns": 1793510760999919100,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_jury_observations.py",
+      "sha256": "7b2cbba49a417550589912a37f3bc34388c03273f5329661b6377a26585032d6",
+      "bytes": 1917,
+      "mtime_ns": 1793507073544024900,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_ports_contract.py",
+      "sha256": "21c4d9a37f73283b0e68d207196804f8625675fc96f131a031810e1cb4367ebe",
+      "bytes": 1924,
+      "mtime_ns": 1793510725673137100,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_resume_state_parity.py",
+      "sha256": "03a41b89d24c4e30d49f67888c889db44133b835834ec113d33bc0e615b9f15c",
+      "bytes": 5126,
+      "mtime_ns": 1793515623573377700,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_spec_kit_consistency.py",
+      "sha256": "cac76126fa32d6c89e0a6034033e0dff4cf4d758dda2dff62325976209a2bd86",
+      "bytes": 2806,
+      "mtime_ns": 1793506090341562100,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/test_weight_single_source.py",
+      "sha256": "0f7677fcf9420393d43be8943bebfa28cf6869631234351795b3c0f5fc3e72a2",
+      "bytes": 3487,
+      "mtime_ns": 1793504821561408600,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/multiobjective/test_config_projection.py",
+      "sha256": "a90f09c77ee1fafc1d370491358314a2335291598855e9f540c2217c8e6e58b9",
+      "bytes": 3532,
+      "mtime_ns": 1793489712322556100,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/multiobjective/test_objective_policy_drift.py",
+      "sha256": "9ec3d94b30cda492132bb3f51cd232e2d7b54163c32f711197a80e33cf8b0351",
+      "bytes": 1908,
+      "mtime_ns": 1793489830833730200,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/training/test_backend_contract.py",
+      "sha256": "936edea45f0425445db5d1ef761b357276b94f0b4ee476a4c4b03c652f451cc6",
+      "bytes": 1171,
+      "mtime_ns": 1793492475411272800,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/training/test_native_artifact_kinds.py",
+      "sha256": "9100c3f227ae6bf8da90419595eebea7d1b7e4668038c1fa0e890f9e672012d4",
+      "bytes": 1036,
+      "mtime_ns": 1793516933693460800,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/training/test_real_simulator_matrix.py",
+      "sha256": "2317e6dd269ea48cd548c874c460684b1c552417303d8f29b6f04a236a613fa2",
+      "bytes": 1542,
+      "mtime_ns": 1793492633741039200,
+      "immutable": false
+    },
+    {
+      "path": "tests/contract/training/test_runtime_identity.py",
+      "sha256": "4fd59f2ad758da78bb1d22f15912202fd39e8193d078833026e06aecb45fdaa2",
+      "bytes": 993,
+      "mtime_ns": 1793491922574518000,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1793518341264461200,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/conftest.py",
+      "sha256": "1eb097e56a7836204ddbe22b00ad882a9e29acdc5f45b61387f0f20bcaa1ee05",
+      "bytes": 1491,
+      "mtime_ns": 1793517780476393700,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/factories.py",
+      "sha256": "2c99ef12bcf76ca7860de40c1c9100288a261d5e17f89efdfdb61524d3afdc8f",
+      "bytes": 1180,
+      "mtime_ns": 1793524337648675400,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/test_dataset_provenance.py",
+      "sha256": "647b70587d4227c7e0d95d06dd248de6f14d6c9b8e9432bdd41d8712c9c1ada4",
+      "bytes": 9049,
+      "mtime_ns": 1793525357897687600,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/test_der_sizing_inputs.py",
+      "sha256": "6f089333ef3480d6849ded2dbbeb72429d15c93f4619f8d579fab5f9e9d6774c",
+      "bytes": 1709,
+      "mtime_ns": 1793525753573913600,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/test_fresh_isolation.py",
+      "sha256": "d4ffacbfbb5b9779344a2731423c74b3e3a14b445ebb7d57777631fba27e5da8",
+      "bytes": 5999,
+      "mtime_ns": 1793524337648675400,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/test_historical_retirement.py",
+      "sha256": "3da0a2eec4bf9ce4d43e950556885a064b19fa4573c06061ed8dc7baa0329fe6",
+      "bytes": 8648,
+      "mtime_ns": 1793518975583667700,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/test_kpi_physical_contract.py",
+      "sha256": "c28e1a0289f45895697d4478fbbfd1b09730614f3d552f6d5988083f0df6a089",
+      "bytes": 7742,
+      "mtime_ns": 1793519463114949100,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/test_names.py",
+      "sha256": "3e2d0f43f158fae2bf819912fa2b4cb34756264c55219494724d8b12d82ebbde",
+      "bytes": 17429,
+      "mtime_ns": 1793525666503471700,
+      "immutable": true
+    },
+    {
+      "path": "tests/fresh_training/test_short_layout.py",
+      "sha256": "55690a9273898a5994c9b2e4c5236ad2f771e914591bfc1a3cc071fd0d8553cf",
+      "bytes": 5840,
+      "mtime_ns": 1793524843855783100,
+      "immutable": false
+    },
+    {
+      "path": "tests/fresh_training/test_single_launch_path.py",
+      "sha256": "a04d966262f66466a01011c6558f98304d448a9662aabc5b3d7c7d8b8d93acba",
+      "bytes": 3065,
+      "mtime_ns": 1793522542432104100,
+      "immutable": false
+    },
+    {
+      "path": "tests/integration/test_artifact_restore.py",
+      "sha256": "439212a029b57230566038c24be0aa81eff47c5dbe49cf810fe444fbb176b4bf",
+      "bytes": 11187,
+      "mtime_ns": 1793517352342438900,
+      "immutable": false
+    },
+    {
+      "path": "tests/integration/test_citylearn_objective_adapter.py",
+      "sha256": "6fb4e717ebabbff5b0dcf5a9b9fca35bf8b26e528e79c23c69370836f67fe9b9",
+      "bytes": 1006,
+      "mtime_ns": 1793510660789851800,
+      "immutable": false
+    },
+    {
+      "path": "tests/integration/test_experiment_runner.py",
+      "sha256": "cfc75f3604cee4816d6db338212e213f0e480d1772c43b394d86498ef57e6c32",
+      "bytes": 3328,
+      "mtime_ns": 1793524763724116700,
+      "immutable": false
+    },
+    {
+      "path": "tests/integration/test_training_panel.py",
+      "sha256": "bca10bc9b11baf42a058385576fb46bb41cb7debe015e5ca47d9d75c81f6399a",
+      "bytes": 869,
+      "mtime_ns": 1793492107293151900,
+      "immutable": false
+    },
+    {
+      "path": "tests/ops/test_capture_modernization_baseline.py",
+      "sha256": "c7d222f2c2cd1a63a094b3e2c661bd5ab1ce8c0eab1930aefe15a7f472a6e3e6",
+      "bytes": 2181,
+      "mtime_ns": 1793508436168869700,
+      "immutable": false
+    },
+    {
+      "path": "tests/ops/test_closed_services_and_secrets.py",
+      "sha256": "0763097a88a4e486a7e33c2fea4e14ba63745e81d30dd0bdca1621ceae7b18af",
+      "bytes": 3955,
+      "mtime_ns": 1793508747996717900,
+      "immutable": false
+    },
+    {
+      "path": "tests/ops/test_modular_colab_notebook.py",
+      "sha256": "ab428367a796569898c355f68c6ffcbb5aa1f0ba9418988da94494620e743de0",
+      "bytes": 3295,
+      "mtime_ns": 1793517044714604100,
+      "immutable": false
+    },
+    {
+      "path": "tests/ops/test_open_source_dependency_audit.py",
+      "sha256": "a9ece2c46e0d58648918b4c4bc47a42a97282476e5011ab8c9e3d7d2b04c338d",
+      "bytes": 10763,
+      "mtime_ns": 1793512219581513600,
+      "immutable": false
+    },
+    {
+      "path": "tests/ops/test_repository_hygiene.py",
+      "sha256": "7f9413f4933091bda7d3a35aa25faf699406afc463406f5857e8ffe9642284fc",
+      "bytes": 2850,
+      "mtime_ns": 1793507198644245900,
+      "immutable": false
+    },
+    {
+      "path": "tests/ops/test_sbom.py",
+      "sha256": "ce95caf9ff961233e022e24fb5948c25247e4688dfc28a951b68e030493dfe0e",
+      "bytes": 1911,
+      "mtime_ns": 1793508774860849600,
+      "immutable": false
+    },
+    {
+      "path": "tests/skills/test_skill_registry.py",
+      "sha256": "ff560f3ca10ad8c4aeffbcc6c182341b358d0577547470058528091db250c6cf",
+      "bytes": 4001,
+      "mtime_ns": 1793495882833078000,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1779105376515108500,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/conftest.py",
+      "sha256": "4c2e423d98ab99f014e6eaba77ff9feb8d88c2119b80c9446552e74b3e838af2",
+      "bytes": 1691,
+      "mtime_ns": 1781581831156301800,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_algorithm_factory.py",
+      "sha256": "44c3a885da7eccffd9e9bf06611d268c0c7bcbb1d635ff15ad13469f3f7f1af5",
+      "bytes": 3430,
+      "mtime_ns": 1779106518155235000,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_bact.py",
+      "sha256": "b4212e68ccc21149e052f486c01ee0e76b94545b753b2adbab3fb1a82b482adf",
+      "bytes": 4465,
+      "mtime_ns": 1779106465134578600,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_calibration.py",
+      "sha256": "3871f08d7d4aa5f794289eb28b6bce47efb307c376fd37bb7c799eeca665babf",
+      "bytes": 13874,
+      "mtime_ns": 1785456779960938500,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_data_adapters_remote.py",
+      "sha256": "e8d5d9d3e97a4bae77aea404a23f7d0d8fd45f7c6dbc5858be9812f077b69098",
+      "bytes": 5249,
+      "mtime_ns": 1783296286090952900,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_data_ingestion.py",
+      "sha256": "076dd807e8b02fbeb365cf423afb2bb7616d89090f182ac06aece3e769afc799",
+      "bytes": 4170,
+      "mtime_ns": 1783296286115153900,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_hphi.py",
+      "sha256": "b06ce62e2157ec4c2547b9d86a98bccc95c2950d309c5afaabebb88ad9a57ef2",
+      "bytes": 3385,
+      "mtime_ns": 1779106505578126500,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_kpi_evaluator.py",
+      "sha256": "a8502cf502e3737dbc32d443ddf263bb1cdf12da4eca476300350bdcc08d5f79",
+      "bytes": 7146,
+      "mtime_ns": 1779105612432702600,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_madrl_multicriteria.py",
+      "sha256": "f05dd26c6717357a1cd00d490da52958bcf8c1a9c79ccb76334c6f7f2badd743",
+      "bytes": 11667,
+      "mtime_ns": 1793516089957438900,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_reward_axes.py",
+      "sha256": "03d827556ace9684f45b13e52386aa28d5dcc69b5e4868ac06fcee826a765dd0",
+      "bytes": 4120,
+      "mtime_ns": 1781581831157301100,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_reward_term_telemetry.py",
+      "sha256": "acd4ba788f88e8293332127ea348e7caf1eb4160c4ed875441c82e66aa9d9527",
+      "bytes": 9651,
+      "mtime_ns": 1793517409843380000,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_uc3m_env.py",
+      "sha256": "48bf566433474c9b17550142606d6d226d174c1d1105e74e79600d7dd542e32b",
+      "bytes": 6377,
+      "mtime_ns": 1781581831157301100,
+      "immutable": false
+    },
+    {
+      "path": "tests/uc3m/test_universality.py",
+      "sha256": "e0aae20dbce2762aef3e9de3c6243a0799d3ab2d4c85b6e951d21bb4e5e8372b",
+      "bytes": 12220,
+      "mtime_ns": 1783296286080739600,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/adapters/test_local_artifact_store.py",
+      "sha256": "b679386c5fbf9b4364e2d1cf236255380bfb1cdd4d200bb860e939bc13a2b737",
+      "bytes": 1858,
+      "mtime_ns": 1793490666857708100,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/test_baselines.py",
+      "sha256": "351e7fd881ba42c4a768933cb65599251f174fffc76d75314708303decbdf452",
+      "bytes": 702,
+      "mtime_ns": 1793515409952361700,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/test_campaign_statistical_report.py",
+      "sha256": "def3dc8f2fd24df19fee72ab584fdc95aeb12f1c419201d919d58ca4d437249c",
+      "bytes": 13300,
+      "mtime_ns": 1793517567642098800,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/test_dataset_gate.py",
+      "sha256": "ef4d75f8c4f08eae2b7f7c982a29c5c96b3ac1e910b88bd4cde9a6663b459adb",
+      "bytes": 2902,
+      "mtime_ns": 1793514063482009800,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/test_model_selection.py",
+      "sha256": "1dcd1b0118bd3a900f487177227beb5ed02ccb78c0060bed8daaa63f8dffc78c",
+      "bytes": 1450,
+      "mtime_ns": 1793506975925438800,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/test_results_catalog.py",
+      "sha256": "3dbdcccc08c70711b77b830d1aa6d43fa48dc6e253e13d6cd95991876cff4087",
+      "bytes": 2801,
+      "mtime_ns": 1793516615468638500,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/test_scientific_evaluation.py",
+      "sha256": "9238a9312465ea7cb31f513ad846820ebd225ecc10ffcb96f5e167835f016511",
+      "bytes": 1503,
+      "mtime_ns": 1793506966397295700,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/test_sensitivity.py",
+      "sha256": "b0ed9eedd6dff14fe04f51b0ae5c47ff928bdcef19dd4e8c8c1a15d82d7c590b",
+      "bytes": 2381,
+      "mtime_ns": 1793490310785145200,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_colab.py",
+      "sha256": "62f8108fa8e6de98317d28e1e4c19075868dc4da8b1428ba9ff9b0d87755e13b",
+      "bytes": 2558,
+      "mtime_ns": 1793493360131869500,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_completion.py",
+      "sha256": "0faab12e3f20613d0e091210f2e1601e722aeba890b8746ea71930eb470fec1b",
+      "bytes": 2991,
+      "mtime_ns": 1793505711236745200,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_dataset_identity.py",
+      "sha256": "395044f8642aa364b440194330faca7b6b999e9d418f77e48c6c7237a49260e6",
+      "bytes": 3243,
+      "mtime_ns": 1793518660633636300,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_layout.py",
+      "sha256": "3965264b2fc7b3a2e64c8360042e457a087b1a9505d8f773a45c26943ffda984",
+      "bytes": 1481,
+      "mtime_ns": 1793491215730329900,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_native_evidence.py",
+      "sha256": "cce53773a3b146cf57ae4926e628155eae3d6ba396a377e44d9ccd1b6b176125",
+      "bytes": 879,
+      "mtime_ns": 1793492555302494800,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_persistence.py",
+      "sha256": "5acd135e0a6b57385274ef4efd49965191c471438656db5a1535a66609c16598",
+      "bytes": 1521,
+      "mtime_ns": 1793491585450229500,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_recovery.py",
+      "sha256": "f0bcfa0419913493aae46bc55eef31476a781b122bd9174b3f4a5a62f88a46ff",
+      "bytes": 427,
+      "mtime_ns": 1793492817571327000,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_source_archive.py",
+      "sha256": "f8d697489d3309b423262c8ae4080f2655d0c7edf7c4525bc72a0416cc3ec6c4",
+      "bytes": 484,
+      "mtime_ns": 1793493029673004000,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/application/training/test_training_report.py",
+      "sha256": "611ca9e7001291eb0de1923e11c502b3c17e0d14347aab11a0f74faddfa30774",
+      "bytes": 596,
+      "mtime_ns": 1793492708354691800,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/domain/test_evidence.py",
+      "sha256": "e548f1cf3a62f2800db90d8f25478f2b1a7d944a0578bfe89b16c52f70c4e355",
+      "bytes": 3386,
+      "mtime_ns": 1793490579596868600,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/domain/test_experiments.py",
+      "sha256": "16bbf1ed791fc9ded48f010522bc380c9396372eb40a08d96fdb693d705502e6",
+      "bytes": 1931,
+      "mtime_ns": 1793490484127436300,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/domain/test_objectives.py",
+      "sha256": "3133746408bace7db9ee139062ad228fd4533c2c7b439ccf3f69a097f18d6b5e",
+      "bytes": 3223,
+      "mtime_ns": 1793489247909980100,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/domain/test_pareto.py",
+      "sha256": "ecafa744d81cb93820a660c921d2a4d7992606841ba5522b06c10133eb39ea3a",
+      "bytes": 2223,
+      "mtime_ns": 1793490037916610900,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/domain/test_scenarios.py",
+      "sha256": "c087be8cc79bd1cdd8b51d4f15beeb99bc322b61fec18520d7f971f2daa21bfc",
+      "bytes": 3010,
+      "mtime_ns": 1793489470233732600,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/evaluation/test_tools_use_results_catalog.py",
+      "sha256": "bd9f1ae71f93d7633922af8c8c7bd359b65743c9f747a1b052bb86a152cd0191",
+      "bytes": 17601,
+      "mtime_ns": 1793517711738803200,
+      "immutable": false
+    },
+    {
+      "path": "tests/unit/governance/test_open_source_policy.py",
+      "sha256": "b2ea07b35d02b122935d7fa013684d627793c1b464090b043ee515b26a922cd6",
+      "bytes": 2571,
+      "mtime_ns": 1793487852561960100,
+      "immutable": false
+    },
+    {
+      "path": "tools/README.md",
+      "sha256": "8da991b98f67ee71af44278e9aaa4e361ce880b3b50cc75c21a7d522137bc672",
+      "bytes": 2042,
+      "mtime_ns": 1785456779955414300,
+      "immutable": false
+    },
+    {
+      "path": "tools/check_training_dataset_ready.py",
+      "sha256": "724c91da2350de414c32595f4054bede684bb366d47054691f676a0d9153c5bb",
+      "bytes": 340,
+      "mtime_ns": 1785456779955414300,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/build_modular_colab_notebook.py",
+      "sha256": "bccd818034f415c7c91633769aaaab2c97e061b924abfa3a4250646e412aad71",
+      "bytes": 11285,
+      "mtime_ns": 1793517080947826800,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/clean_tutorial_notebook.py",
+      "sha256": "d2b87a0bfa73e21ea911e80b17c10678e0ce7b86de441d07422c3cfee534c97b",
+      "bytes": 2484,
+      "mtime_ns": 1793506261814530400,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/generate_colab_notebook.py",
+      "sha256": "df8eea22668c1cc92a005aaef726e6205bbb0d79dd8bc8d85389f2155c5d9117",
+      "bytes": 52697,
+      "mtime_ns": 1793506261816527100,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/harden_colab_notebook_launch.py",
+      "sha256": "345d614614dfb1ca295b7e3722a1fb68f035a3f16c7d74cdf73d315842fd4ebe",
+      "bytes": 24511,
+      "mtime_ns": 1793506261816527100,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/patch_monitor_artifact_truth.py",
+      "sha256": "19d1f180696d5e98e82c20904efbb696f510fca83c51921cd0978928b2120c0f",
+      "bytes": 17392,
+      "mtime_ns": 1785346264879176700,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/patch_monitor_panel.py",
+      "sha256": "67504b853cdb57069b4189717f424f6500af71eebae8663ccddfbcaec4bdbfed",
+      "bytes": 12226,
+      "mtime_ns": 1785346264879176700,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/patch_notebook_a100.py",
+      "sha256": "ef4e405e57f14f581274a8db333a34c925fe9bc49f3e10ba5b35d5171cefb2ad",
+      "bytes": 23159,
+      "mtime_ns": 1785346264880468100,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/patch_notebook_final.py",
+      "sha256": "c5c67652601c5f6c861b75e7772fbea9133927f7580b268d9a0f1f8611bdfcdf",
+      "bytes": 23990,
+      "mtime_ns": 1785346264880468100,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/patch_output_layout_simple.py",
+      "sha256": "8886fcb91971efbe470e615d5e5a0bc7c99789db2e402689d380e38723e87396",
+      "bytes": 3303,
+      "mtime_ns": 1785346264880468100,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/patch_tutorial_notebook.py",
+      "sha256": "2487115cfffa88283f585433a41d9fc46dc297e42aecc069572d2cbcd8e10e44",
+      "bytes": 42328,
+      "mtime_ns": 1785346264879176700,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/test_notebook_cells.py",
+      "sha256": "cfd33e5277b4aa18d2f2ba3def64a269677cbccbebec813794d3ed5e48cc4ccf",
+      "bytes": 24066,
+      "mtime_ns": 1793506261817527600,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/validate_colab_resume_from_drive.py",
+      "sha256": "d8a03308dd28d0e3be865dd33aee3406ba9bc36d1764cdee767459c87b5c3830",
+      "bytes": 7658,
+      "mtime_ns": 1785334125640901100,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/validate_colab_two_phase.py",
+      "sha256": "06c56dd3e7e49ce1b482bf48a87cba4617c52c6876c5e5dbcf1665fa5738f328",
+      "bytes": 7354,
+      "mtime_ns": 1793506261817527600,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/validate_notebook_sync.py",
+      "sha256": "9c36e3cc514b1346df0b2e5cb5285ac3841f4009d726471f7cfe6c0455c9ee52",
+      "bytes": 5649,
+      "mtime_ns": 1785334125644947400,
+      "immutable": false
+    },
+    {
+      "path": "tools/colab/verify_notebook.py",
+      "sha256": "b01b9b792b109e21d7c6958ad321f94fe5a97226dd216ac6a252994a631b191a",
+      "bytes": 10912,
+      "mtime_ns": 1793506261819539000,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/README.md",
+      "sha256": "657a06fc08f3863d8c7fbef9dae493abcef4d47aff15dc1c2223dd82eb82fba6",
+      "bytes": 2355,
+      "mtime_ns": 1785456780000082800,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/audit_citylearn_csv_integrity.py",
+      "sha256": "a29eb4cbd5aed0377b677be2f05dbb546b2fa9378056fd1838572f2019089b7b",
+      "bytes": 17497,
+      "mtime_ns": 1785334125381892400,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/audit_der_sizing.py",
+      "sha256": "d9090c643fb12031d898de13aaca83d33db86fcd5805da2bc7079d23f9e605b7",
+      "bytes": 27361,
+      "mtime_ns": 1785456779951905700,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/audit_training_dataset_provenance.py",
+      "sha256": "44ad82542f8056d237de97034217541bc08978e182ca988e25bcc5fcbe8e86a0",
+      "bytes": 24020,
+      "mtime_ns": 1785334125384943300,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/build_fresh_campaign_dataset.py",
+      "sha256": "0786ba1472b6b633fb961b6cae1961da8fd823e2330758f295f15211d151f895",
+      "bytes": 26364,
+      "mtime_ns": 1793525774904282600,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/buildingcsv_inputs.py",
+      "sha256": "d91f8056696e8272ae8fc73907d7d72d96a7b641cbce0a87b08ebfcc9f326000",
+      "bytes": 20149,
+      "mtime_ns": 1785334125386210700,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/check_training_dataset_ready.py",
+      "sha256": "b0cfe429e4243451d202150286e75fe45dde8efe1f003cb802f0e2fd3200f29e",
+      "bytes": 29875,
+      "mtime_ns": 1793514198551460500,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/clean_dataset_orphans.py",
+      "sha256": "55db6998be039d41c7365030ce3c4388ad5f847b12ac032aec26d4854ebc459e",
+      "bytes": 5444,
+      "mtime_ns": 1785334125390193100,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/deep_dataset_analysis.py",
+      "sha256": "bf9a998a0fb2c925288914a824afa113bbf001b7f8e6575672f42a4526e910da",
+      "bytes": 16506,
+      "mtime_ns": 1785334125391331500,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/dimension_ev_chargers.py",
+      "sha256": "df21a59118ce2cb9501e631587606b11e95def00313c2f444363701ae091e242",
+      "bytes": 67193,
+      "mtime_ns": 1793525018981890400,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/distill_building_loads.py",
+      "sha256": "23fabe0f02373e4f4931ad05bd6935c0f4607ca371aa4e39d11b9281b26a814d",
+      "bytes": 41162,
+      "mtime_ns": 1793514220525011700,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/evaluate_dataset.py",
+      "sha256": "4271d097d80c386e2c8bc6d995452392e5847b0f0a53d4fbdc280ee0bbbf383c",
+      "bytes": 19180,
+      "mtime_ns": 1785334125401640700,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/evaluate_iquitos_citylearn_v3_dataset.py",
+      "sha256": "c0095ab83c51e44132ec472d893bf989e9bea5fe5eb7d4c0ecc3bc7844b535fe",
+      "bytes": 17754,
+      "mtime_ns": 1785334125401640700,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/fix_schema_cooling.py",
+      "sha256": "67f45ec4fa589027794b0e1173d0c65c5ef26bd16ebb307f9391607334d5e252",
+      "bytes": 2569,
+      "mtime_ns": 1793525020594289600,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/fix_solar_pvlib.py",
+      "sha256": "8be2870b52b28731047d67ae14d8f216c471d03a4a104cc684c252a2eba1e878",
+      "bytes": 32826,
+      "mtime_ns": 1793525017728992300,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/generate_b01_billing.py",
+      "sha256": "f7541b2bf16d7236efecfc0f4c23bf5d2a19cff20ea633fd5cccf2575aeef539",
+      "bytes": 11369,
+      "mtime_ns": 1785334125417812600,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/generate_iquitos_dataset.py",
+      "sha256": "7242633eac7332bf80d5920234e0f9d0ccd817e7a891ca7d6d0620d69013ca46",
+      "bytes": 92806,
+      "mtime_ns": 1785334125425357100,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/orchestrate_citylearn_dataset.py",
+      "sha256": "9e2c90791b6a923244fcdf05b3b6b6fe408ce1beffaf8cbf164bf8b4c0025857",
+      "bytes": 11268,
+      "mtime_ns": 1785334125427512000,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/size_bess_optimal.py",
+      "sha256": "4dbd1cc82c4cb4bacbd5d7f6757a47aa4c5e011573295f2ae1dae551473fb1ef",
+      "bytes": 40425,
+      "mtime_ns": 1793525022085287000,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/sync_controlled_machines.py",
+      "sha256": "7426301b85c5795694e0f4c23ad86243b8349a82144f1eed203ea37f68281816",
+      "bytes": 3889,
+      "mtime_ns": 1793525051868474100,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/verify_ev_sessions.py",
+      "sha256": "a0a53b7b194985f894e76193d71344f0b20a76adbb3503e6c787e1e57978db29",
+      "bytes": 4676,
+      "mtime_ns": 1781581831166591200,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/verify_solar.py",
+      "sha256": "3146f620e13a2fc7d01862ee9a4f913554d3edf37e9efcb6d99249c40445903b",
+      "bytes": 12060,
+      "mtime_ns": 1785323970381017400,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/dataset_docs/carbon_intensity_metadata.json",
+      "sha256": "e7d73c4c931f080770d57711596b41893d03b4ce43276d2f620cf6b3b5fd99f9",
+      "bytes": 1052,
+      "mtime_ns": 1782289417939006300,
+      "immutable": false
+    },
+    {
+      "path": "tools/dataset/dataset_docs/distillation_report.csv",
+      "sha256": "8c50a53c64a36f6033dc86af8d3c163d3aef50995b581fe76dc8e05b7f822534",
+      "bytes": 399080,
+      "mtime_ns": 1782289417942576200,
+      "immutable": false
+    },
+    {
+      "path": "tools/drive/analyze_drive_folder_sizes.py",
+      "sha256": "c5c08dbdcf4b6afb4f17082fdcd4bde0a826df78381856935dfd3080b836c652",
+      "bytes": 6103,
+      "mtime_ns": 1785334125649472300,
+      "immutable": false
+    },
+    {
+      "path": "tools/drive/analyze_drive_storage_estimate.py",
+      "sha256": "13b25dcc7811b7b2ccf85232cb919a56b1af1cd2e4af5c50c34163fd5ece3108",
+      "bytes": 7709,
+      "mtime_ns": 1785334125649472300,
+      "immutable": false
+    },
+    {
+      "path": "tools/drive/download_colab_missing_kpis.py",
+      "sha256": "448a1ca6e9ba30ec971807a8f053f7f653d3dbe71ead5a8de88ef8e4959f5c84",
+      "bytes": 3431,
+      "mtime_ns": 1785334125651479800,
+      "immutable": false
+    },
+    {
+      "path": "tools/drive/fetch_colab_building_data_from_drive.py",
+      "sha256": "3e22c6c1ce1af4ced88bde6b1b79d7e89ad1632536cbbdad610755e548a4cd12",
+      "bytes": 2712,
+      "mtime_ns": 1785334125651479800,
+      "immutable": false
+    },
+    {
+      "path": "tools/drive/fetch_colab_kpis_from_drive.py",
+      "sha256": "00e198a8a759f6827b5cd75d1a13308f7b437c3072221c6b915735098e056da5",
+      "bytes": 3580,
+      "mtime_ns": 1785334125654373300,
+      "immutable": false
+    },
+    {
+      "path": "tools/drive/fetch_drive_training_artifacts.py",
+      "sha256": "5c49890f84875e9654f346ee5e6eec46fcf3e2565fcecf861d1f426911c26575",
+      "bytes": 6357,
+      "mtime_ns": 1785334125654373300,
+      "immutable": false
+    },
+    {
+      "path": "tools/drive/validate_drive_kpi_downloads.py",
+      "sha256": "e9d0ba2513076746b5a5297692419521be9bcc79294468ebcdf01ab7106572c5",
+      "bytes": 5949,
+      "mtime_ns": 1785334125656396100,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/aggregate_colab_drive_kpis.py",
+      "sha256": "aa031ee635e9c58e6ec65ba50a41eae591d855f6eb952a032ac5d1af308d38ce",
+      "bytes": 10288,
+      "mtime_ns": 1793517147747716200,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/aggregate_multiseed_seed_kpis.py",
+      "sha256": "5f0ba020dfd6517605b23812c0f5a1441bc90bda78ad8f60723d5fa2c38681bb",
+      "bytes": 15497,
+      "mtime_ns": 1786204748118860200,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/analyze_colab_drive_multiobjective_buildings.py",
+      "sha256": "669e02393249dec7d6fb0c5e7724b40b78bbeee52db745910a767d9adda72bbd",
+      "bytes": 28774,
+      "mtime_ns": 1793517739022445400,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/analyze_colab_drive_results.py",
+      "sha256": "c6904add1a18acda05541fc2d0bcafb76c0b4a419b07a759f64ea1b837906eb9",
+      "bytes": 9934,
+      "mtime_ns": 1785334125440475100,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/analyze_real_drive_training_artifacts.py",
+      "sha256": "eff59fadb0de8d95e5f5a2dce5094f05bf60c1280d1313c324affbfb6d0e2420",
+      "bytes": 25800,
+      "mtime_ns": 1784384715973249100,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/audit_colab_drive_episodes.py",
+      "sha256": "8bb06c746b628ce50d465b9766dcd04096a48ff98acc9e5958f46d51ec6945f1",
+      "bytes": 4720,
+      "mtime_ns": 1785334125442227400,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/audit_drive_figure_integrity.py",
+      "sha256": "3cebd301159934803c251ba96854e4b0f68eac6caee2ef3f65ace1144d0e98ea",
+      "bytes": 9368,
+      "mtime_ns": 1785334125443551800,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/audit_drive_kpis_buildings.py",
+      "sha256": "3a56f9145afe7fab9e4695142a64e088c510c11ea86de597a3d82842517c0a5e",
+      "bytes": 4717,
+      "mtime_ns": 1785334125445734100,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/build_campaign_statistical_report.py",
+      "sha256": "1855e3851d40224ec829b42fbfff303574e740d19c4238741ac489dfcc3c9631",
+      "bytes": 20034,
+      "mtime_ns": 1793517576010924600,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/compute_drive50_district_building_kpi_rankings.py",
+      "sha256": "8aa7cb6a42a649bd79b4a65e5794503900f55916d3b0ab8b6838578146105691",
+      "bytes": 24256,
+      "mtime_ns": 1785456779945903900,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/generate_madrl_performance_comparison_figures.py",
+      "sha256": "df20003a1d557abb8db4b4e74a0bdeaf9b4e2eac707bc6e0e3cf4f0666039446",
+      "bytes": 18887,
+      "mtime_ns": 1793517481771235100,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/inferential_audit_report.py",
+      "sha256": "7fb8ef6446694eea98000a46082762ee34553d5e117a79c81c97013de32b1300",
+      "bytes": 9292,
+      "mtime_ns": 1785334125447257400,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/recalc_drive_kpis_deep.py",
+      "sha256": "471f34c004eb58166cdf801cfe1f3d49c9320e94ff7f841dedbc5dfedf999eb7",
+      "bytes": 17863,
+      "mtime_ns": 1785334125457060300,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+      "sha256": "fac99f77a55073f18f02b25041254f118edcf6b54acbfafe9fd7267f79c49abd",
+      "bytes": 18501,
+      "mtime_ns": 1785334125484572500,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/run_colab_drive_statistical_analysis.py",
+      "sha256": "82c96e11ff443893784afa63a75e618f901661231290cfde8d9f1f6a9b342eab",
+      "bytes": 13078,
+      "mtime_ns": 1785334125497298900,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/run_complete_drive_kpi_objective_analysis.py",
+      "sha256": "de1abdfd4cb3d92a1d2fa469a6351e55ea8ded00d2e1d129aa021f7d280e36f7",
+      "bytes": 47477,
+      "mtime_ns": 1793517099121151900,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/run_notebook_hypothesis_pipeline.py",
+      "sha256": "125f95648324ac27ebb944cd3705a1a618d244b469e3d8f2e413d136abc66959",
+      "bytes": 10094,
+      "mtime_ns": 1786203851208997400,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/run_objective_weight_sensitivity.py",
+      "sha256": "a1e0ad3b367046bc75e07bd194f444daedbccc9e82ae201c4fd2bcfbb8790da9",
+      "bytes": 2162,
+      "mtime_ns": 1793490359111962400,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/run_problem_objective_hypothesis_statistical_analysis.py",
+      "sha256": "ede208d8dda27d0838d843f28029d5a8a80085295aba00aef079d336e83db53f",
+      "bytes": 38688,
+      "mtime_ns": 1786204975853020600,
+      "immutable": false
+    },
+    {
+      "path": "tools/eval/select_best_madrl_district_building.py",
+      "sha256": "dd3bd78b10ead59deb77190acbf108cdbf4a8bce4cd294b26d6bb2ea4b4010a5",
+      "bytes": 14002,
+      "mtime_ns": 1786203851190698100,
+      "immutable": false
+    },
+    {
+      "path": "tools/figures/embed_mermaid_svgs.py",
+      "sha256": "193a618a57f5ea5097909dc1ea849c1ba2207e7b997cb77485d0b7e6f99df204",
+      "bytes": 7602,
+      "mtime_ns": 1785346264878145900,
+      "immutable": false
+    },
+    {
+      "path": "tools/figures/extract_mermaid_diagrams.py",
+      "sha256": "1c34d664e46857e73a26cfb4171b71ec7a553c9695dfae507f553b940f808094",
+      "bytes": 997,
+      "mtime_ns": 1781992809410868800,
+      "immutable": false
+    },
+    {
+      "path": "tools/figures/generate_architecture_pdfs.py",
+      "sha256": "0d3971f2a9068121c65143fa31082e096014d74f25ec09abf1c93a36e8604733",
+      "bytes": 7848,
+      "mtime_ns": 1785334125681121700,
+      "immutable": false
+    },
+    {
+      "path": "tools/figures/generate_architecture_pngs.py",
+      "sha256": "458327c20c51988ccc5167588af1aee0816e03780623a0e94563fb01bd8eec90",
+      "bytes": 26767,
+      "mtime_ns": 1786507082410354300,
+      "immutable": false
+    },
+    {
+      "path": "tools/figures/generate_citylearn_v3_building_control_figure.py",
+      "sha256": "2d28b0b9c3889a151312bc5a06ce1ca1f0ceba7af4e55e0da21a3791e8683bd3",
+      "bytes": 26354,
+      "mtime_ns": 1785456779960938500,
+      "immutable": false
+    },
+    {
+      "path": "tools/figures/sync_mermaid_diagrams.py",
+      "sha256": "c7256b809839fe279e89de2d19e4ff7e5ec727015c69d1e9d14fdc296280a939",
+      "bytes": 3446,
+      "mtime_ns": 1785334125684852600,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/audit_closed_services_and_secrets.py",
+      "sha256": "ee2de952c842e83ec7400215431f128f1e5ac622ac361f598987176f823df825",
+      "bytes": 5344,
+      "mtime_ns": 1793508949909676600,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/audit_modular_training.py",
+      "sha256": "af27fed6cb574f446f61454ce85f1edb0e469ed53b6c0af9ea1fd64b38fdf2ec",
+      "bytes": 2914,
+      "mtime_ns": 1793524918801868400,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/audit_names.py",
+      "sha256": "a0823472c56bd7bc4054857605c8b6a34e3912aec353f224084cb73d097bf28a",
+      "bytes": 24178,
+      "mtime_ns": 1793525572048841900,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/audit_objective_policy_drift.py",
+      "sha256": "64c1138d76ca113e90913e753421e92b270bad2b64b4616f203bd2f5502ee3b8",
+      "bytes": 4524,
+      "mtime_ns": 1793524808476563600,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/audit_open_source_dependencies.py",
+      "sha256": "4724e68accf09274896b494330b87080ca95ceedb1f24c2bb9d7af4663b176a3",
+      "bytes": 11677,
+      "mtime_ns": 1793512298739578700,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/capture_modernization_baseline.py",
+      "sha256": "ac6c6d4b27f90872c1d9eda76eab0d87d057553996a68305f8b6516f23e86f90",
+      "bytes": 4595,
+      "mtime_ns": 1793486878197729200,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/diagnose_madrl_storage.py",
+      "sha256": "47ee708ee00d0bcbffe13758d17b67521c7d4842cb723f71660afed695fe2c7f",
+      "bytes": 5969,
+      "mtime_ns": 1785334125677081700,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/generate_sbom.py",
+      "sha256": "88883c2ea03190d2295764f80bab6bc2b6132ae273421be775a2f8de656169c0",
+      "bytes": 5055,
+      "mtime_ns": 1793509217118399200,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/historical_inventory.py",
+      "sha256": "02c2498adcfc36838c98e6c0df06a8cac57add32fdaea9243652c94c48b7df12",
+      "bytes": 23939,
+      "mtime_ns": 1793524495117561600,
+      "immutable": false
+    },
+    {
+      "path": "tools/ops/verify_workflow_integrity.py",
+      "sha256": "7b86e1551c939e3f6510339b29994c8e8ab4addb76d204bf7e79c5d62d3e8bda",
+      "bytes": 19957,
+      "mtime_ns": 1793523674664813000,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/README.md",
+      "sha256": "8e372434bfbf6c7226044f9d8b238b810b68bcace1dd220d10d5d99585ad22c2",
+      "bytes": 3583,
+      "mtime_ns": 1785456779951905700,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/__init__.py",
+      "sha256": "6ca0028474635db710ff6876597feeb722d7367332367234f5ed2859e49bd9aa",
+      "bytes": 272,
+      "mtime_ns": 1785456779999075100,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/_audit_word_cap_ranges.py",
+      "sha256": "f41494833f23f0964009088655db8057a8971b6e612da45db230cbac7bc149ee",
+      "bytes": 1540,
+      "mtime_ns": 1786203851190698100,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/_patch_notebook_hypothesis_demo.py",
+      "sha256": "769ff0feedc7fdb10e8c74c89a16d2f77af345260e0481950bb233b51f96e0b0",
+      "bytes": 17952,
+      "mtime_ns": 1786505318306521600,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/_patch_notebook_hypothesis_pipeline.py",
+      "sha256": "cb466adc5563fbcf6bc74a92a02b7d09e0f563c9e6cd5bb4efc34c35f93d2095",
+      "bytes": 21897,
+      "mtime_ns": 1786505317941047200,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/audit_decpomdp_crosschapter_word.py",
+      "sha256": "f9ce71f408a0dc8c5c233cddbdec010b724a3ca51027184070b1fd2a0fa923d0",
+      "bytes": 6903,
+      "mtime_ns": 1785456779946904300,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/build_defensa_pdf_pillow.py",
+      "sha256": "00f2f602a40d7e90189a500112cfff6c4a8dfbfcaf0bcf966c4840a2d3edf377",
+      "bytes": 10552,
+      "mtime_ns": 1781992809410868800,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/build_multiobjective_thesis_docx.py",
+      "sha256": "72fd8fe5a17aa974a455815930f6b8be4dba7185e9d143f1fd496c6a803aa2e9",
+      "bytes": 8049,
+      "mtime_ns": 1786103395430175900,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/build_multiobjective_thesis_pdf.py",
+      "sha256": "958af5bb2295aa9b81e62a0cdacbd53ead945f403d9f2899f2db990c88e2be93",
+      "bytes": 5731,
+      "mtime_ns": 1786103395445862900,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/checklist_h0g_exploratoria_residuales.py",
+      "sha256": "bd78db8100a869cef433e99782aeb9934106a2a01b90414b17e9fc4a65d04055",
+      "bytes": 7086,
+      "mtime_ns": 1786203851206994400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/fix_informe_impact_cap5_sync.py",
+      "sha256": "cf209794f3de28b24bee2fd8313f12a577fb49e396a36893725a862e0eec7535",
+      "bytes": 14394,
+      "mtime_ns": 1785456779990045800,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/generate_borrador_tesis_docx.py",
+      "sha256": "262d753135e6a3570cbccc929f4ca8fee982e544f4abff2ddd5733716a7d2078",
+      "bytes": 78809,
+      "mtime_ns": 1786506918793444100,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/generate_drive_thesis_figures.py",
+      "sha256": "f6babda52cfbf85ebb939a2bcfa4449f2417e8d301b4cd7e80d81bd77b648d74",
+      "bytes": 20215,
+      "mtime_ns": 1785456780000082800,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/generate_tesis_doctoral_final_docx.py",
+      "sha256": "e99a63ce7164a03622f63dabfe1c4301a190b9e7048eb5baa42c24915bbe7357",
+      "bytes": 6225,
+      "mtime_ns": 1785456779949904600,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/inject_md_chapters_4_7_to_canons.py",
+      "sha256": "9e7b1bd211ae508b4dbc1da9f6f7d7466248f8e7bdb63cd2236af7cbbaef7c30",
+      "bytes": 14688,
+      "mtime_ns": 1786203851208997400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/madrl_algorithm_analysis.py",
+      "sha256": "af7b6537d2dcb8a72ae39d24a602723a1884b6c368fb3eb864fc580e93cea200",
+      "bytes": 6403,
+      "mtime_ns": 1785456779960938500,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap1_cap3_friedman_protocol_docx.py",
+      "sha256": "f58d0bb5c16d3924255f6d555eac699cd655d37a1e0f56460b843732c48ffee4",
+      "bytes": 5772,
+      "mtime_ns": 1786203851167957600,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap1_cap3_manual_docx.py",
+      "sha256": "049fea56b68b0efc7f2ffa88ea72f3709e11616062cf5f5d698e4bec2031a351",
+      "bytes": 5344,
+      "mtime_ns": 1786203851198816500,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap1_h0g_formal_decision_docx.py",
+      "sha256": "f30954dcd08e7f8a34ae08c6c0047b1271b20727156df9f3b2241ba652ef6305",
+      "bytes": 3468,
+      "mtime_ns": 1786203851204389800,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap2_control_edificio_actor_critic_figure_docx.py",
+      "sha256": "684a7ce987b0623910cc72e8d47f9b344805f1e1bb8854064866456a52f43ae9",
+      "bytes": 7509,
+      "mtime_ns": 1785456779984522800,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap2_decpomdp_district_building_docx.py",
+      "sha256": "3e1ecd70c5b9c560a8ca2d520dd8496c3614ce36e66f936aefd9a667e6cc0e15",
+      "bytes": 12763,
+      "mtime_ns": 1785456779999075100,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap2_madrl_adecuaciones_docx.py",
+      "sha256": "a3fc3cc67614f03610144a1051e999b620b118db50c509a5115cdfff37bce081",
+      "bytes": 14998,
+      "mtime_ns": 1785456779960938500,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap2_modelado_matematico_docx.py",
+      "sha256": "0a43192129a38fb2d9ede68843943d51b0d5d93249dab09b2be77159175d9f1e",
+      "bytes": 11611,
+      "mtime_ns": 1785456779946904300,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap36_decpomdp_crossref_docx.py",
+      "sha256": "feadd466530ae45690cc98edf6dcdc9647a3bbedb385fff2934b36be96b053db",
+      "bytes": 4884,
+      "mtime_ns": 1785456779975494000,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap3_cuasiexperimental_docx.py",
+      "sha256": "66e5dfc01765f80c95f92e83a9773eff334d002458946ea99c8212f4094db462",
+      "bytes": 13178,
+      "mtime_ns": 1785456779963946700,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap3_multiobjective_hierarchy_docx.py",
+      "sha256": "3acb66aada9f65aa37db0914b4b53a6b6773f912d42134bfd7302c438e8de28d",
+      "bytes": 6502,
+      "mtime_ns": 1786585151924114300,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap4_decpomdp_impl_align_docx.py",
+      "sha256": "c653ad46bc33b41b0274dbe0cde24d31fcc1b865c279e6a2f08f2c729452d6b4",
+      "bytes": 6862,
+      "mtime_ns": 1785456779967459500,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap4_implementacion_docx.py",
+      "sha256": "d405a46bc6a93159ebf6f9e88bfaf2ea580d40b82d33f9e0de7e4d2ac35d28ed",
+      "bytes": 15923,
+      "mtime_ns": 1785456779974488200,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap5_district_building_kpi_rankings_docx.py",
+      "sha256": "0a5599440fab775d177cecafbccc6088783fa181326a34cab4a8f2f5791c2c47",
+      "bytes": 13650,
+      "mtime_ns": 1786103395430175900,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap5_hipotesis_stats_exactas_docx.py",
+      "sha256": "8fe08edf94f61eeeb66cecd793e788e953c0426f60b2d17cee61d98c7b7b29ed",
+      "bytes": 12920,
+      "mtime_ns": 1786203851190698100,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+      "sha256": "6be8851005532162eadf6c14233e62071da68ab618eee594af5d303f60e826e3",
+      "bytes": 23302,
+      "mtime_ns": 1785456779969977500,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap5_training_usd_apa_docx.py",
+      "sha256": "e2e79e4bf43508c37fb1e207cda918e8631fd0c94b61240bd1267ae62e8970c2",
+      "bytes": 16576,
+      "mtime_ns": 1786203851198816500,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap6_apa_canons_docx.py",
+      "sha256": "e7d46ef18ea9b6e010f9961a2f755f252af6fd3c40fd4a6570bbbdc574b7021e",
+      "bytes": 15957,
+      "mtime_ns": 1785456779976494400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap6_conclusiones_desc_inf_docx.py",
+      "sha256": "94fe62ef7b6b34d00f9aadd5e3d27a8a998993563f13e599f7a1d5be42b7255a",
+      "bytes": 10043,
+      "mtime_ns": 1786203851215599300,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_cap6_decpomdp_xref_docx.py",
+      "sha256": "9cba397e569b960642c66eb26e9d7bd92cf958e2dc6f102ca64b3e247c950382",
+      "bytes": 5244,
+      "mtime_ns": 1785456779944905300,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_citylearn_assets_integration_docx.py",
+      "sha256": "d6c1c0f286c3a1d2f34d2185c746e6dcdd9af0a6f72f7b9b44d43174fe87b644",
+      "bytes": 8687,
+      "mtime_ns": 1785456779963946700,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_complete_figures_catalog_docx.py",
+      "sha256": "ce957086dd44bb81991cc373f2cf8342a50b7cbc0c4548adeba1654acd20fa8a",
+      "bytes": 13293,
+      "mtime_ns": 1785456779955414300,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_h0g_remove_exploratoria_verdict_docx.py",
+      "sha256": "f40cabe0d2db002b6a4666bb0def7c49dea70aa801660b2e5002b880e21e65fb",
+      "bytes": 11515,
+      "mtime_ns": 1786203851208997400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_impact_criteria_control_recursos_docx.py",
+      "sha256": "51ce2a1ad312506233eb71030717d44d641b03056826cc423ed3a57eba74908b",
+      "bytes": 7665,
+      "mtime_ns": 1785456779980008500,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_informe_resumen_friedman_docx.py",
+      "sha256": "998bd0f872230e0b402e6967bf4b5a1c5277edd78863b803e887f6d2039e6300",
+      "bytes": 2386,
+      "mtime_ns": 1785456780001081700,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_integral_word_eval_v2_anchors_20260729.py",
+      "sha256": "8fbe617c728cccbc6853b6f707beb93504fff9c42f366c75c8e008c2597cbe0b",
+      "bytes": 5979,
+      "mtime_ns": 1785456779948905600,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_multicriteria_figures_docx.py",
+      "sha256": "e10f0d690c1c9995a6063f6807b989933d23e6105c6bfab2d2d44776a0ebaa65",
+      "bytes": 6833,
+      "mtime_ns": 1785456779958921900,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_performance_comparison_docx.py",
+      "sha256": "4e55a3a0cee6fc5fbd4681b210764133a271936a0f19d3268e7cf7aae57f2901",
+      "bytes": 7451,
+      "mtime_ns": 1785456779965458300,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_resumen_align_kpi_gains_docx.py",
+      "sha256": "44d1c8bc34807edc36ca71806622936784f9f134a2a1325cf46ff66d236cdefd",
+      "bytes": 6832,
+      "mtime_ns": 1786203851194287000,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_tesis_resumen_h0g_align_docx.py",
+      "sha256": "bf772ceb90b9577dee80cbf7e58458148794b134a3a98f8c0f4ab1f8ca8bdb5c",
+      "bytes": 2922,
+      "mtime_ns": 1786203851208997400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/patch_topsis_medida_formal_cap5_6_7_docx.py",
+      "sha256": "f24f9f38137bdb4ca759234c1765638c46c2b2a6409de93a598949c975f71cb4",
+      "bytes": 27195,
+      "mtime_ns": 1785456779979003400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/rebuild_cap4_7_atomic_docx.py",
+      "sha256": "f7c758dd8c9225c973d0751ef465a743878be88a96f093d547e61e9c971413cb",
+      "bytes": 6801,
+      "mtime_ns": 1786203851167957600,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/replace_cap5_structured_in_tesis.py",
+      "sha256": "c981bfaa487e83f0845024c2b00ad1afdaff968b8839e58ee768ad791453278b",
+      "bytes": 3608,
+      "mtime_ns": 1786203851208997400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/run_thesis_word_pipeline.py",
+      "sha256": "cb5a894d307246851038ec2a38eadda603e012f583e2e9c9117dee90420a0dd6",
+      "bytes": 3409,
+      "mtime_ns": 1785456779993552600,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/sync_cap5_to_canon_words.py",
+      "sha256": "6667628dc9c547228e8c8e80ea4d99d18c1159604ca2e12351d9ce45126af995",
+      "bytes": 7114,
+      "mtime_ns": 1785456779955414300,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/thesis_antecedents_data.py",
+      "sha256": "aaa15395de2f2969c40483dd6d362e937ed2f7f8fa9d1ce410ba40edab57f9aa",
+      "bytes": 17795,
+      "mtime_ns": 1785456779986529900,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/thesis_cap5_structured.py",
+      "sha256": "bceb62debfeea950cad3026e60fe041085fd0377e6cdf8ec1aa8edfb54332c68",
+      "bytes": 45906,
+      "mtime_ns": 1786203851217751500,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/thesis_doctoral_sections.py",
+      "sha256": "2577488e14a8ded025812c9777a6ec32cba60d42d869a9e4d959d1826ef2fcf5",
+      "bytes": 83462,
+      "mtime_ns": 1786203851178288400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/thesis_references_apa.py",
+      "sha256": "e2c0e0f122a5c865df5c06c14564838d5f30ef792abd6aeed5185933ce49abfc",
+      "bytes": 5890,
+      "mtime_ns": 1785456779985533600,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/thesis_word_canons.py",
+      "sha256": "59b8bc47b448a408f7033847707032b7724c17913e6fd993d8e31a19ca03286a",
+      "bytes": 1495,
+      "mtime_ns": 1793524495117561600,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/update_pg_pe_oe_h_exact_docx.py",
+      "sha256": "e62d5e544d5687e0f7cd1d9e1c461d24ac97240a00c3a6fc24c37645ade70638",
+      "bytes": 14539,
+      "mtime_ns": 1785456780001081700,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/update_word_quantitative_50episodes.py",
+      "sha256": "943dd75e74d08ab7a464a90e1f0683dfda7fc13e444a6d9e2dca54cf14c44152",
+      "bytes": 60186,
+      "mtime_ns": 1786203851208997400,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/validate_integral_word_50ep_4madrl.py",
+      "sha256": "f64dc6d3def7dfff2046a1ceedcffca0d71d76a7df0f8af2650417adf29f8cb0",
+      "bytes": 43406,
+      "mtime_ns": 1793525203403000800,
+      "immutable": false
+    },
+    {
+      "path": "tools/thesis/verify_tesis_doctoral_docx.py",
+      "sha256": "3fd7a38438c26523c56f429277c3f989d2ad93327beeed00400d29ac64083948",
+      "bytes": 2695,
+      "mtime_ns": 1785456779987532700,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/prune_citylearn_v3_training_artifacts.ps1",
+      "sha256": "0de0576a20396de453f0d48a98483bb7964eff6d5a48edd91b167fb8cdb3562d",
+      "bytes": 12090,
+      "mtime_ns": 1785456779991045400,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/regenerate_drive_training_figures.py",
+      "sha256": "4c0680c99e00f05e9b28851183491a98851de427e1c760b633843f68f9413636",
+      "bytes": 6412,
+      "mtime_ns": 1785334125659219600,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/repair_citylearn_v3_traceability.py",
+      "sha256": "af6a7ed7658f70a25e75298c2ad553f0eda4ea1ec46aa3fc91aaf935ec0a0273",
+      "bytes": 7506,
+      "mtime_ns": 1785334125661219100,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/run_citylearn_v2_baseline_comparison.py",
+      "sha256": "65fe9c70cc4341da09c06a206a2adc4ebeb315524d4b4402b086efd8165a5cc3",
+      "bytes": 2776,
+      "mtime_ns": 1785334125661782100,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/test_job_resume_state.py",
+      "sha256": "d3c5bd889182e199a0c73450b74257e00cf7a7075c61ce6693def7d20015d29b",
+      "bytes": 57952,
+      "mtime_ns": 1785334125664434300,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/test_launcher_singleton_lock.py",
+      "sha256": "5307a78ab64ddc83632659b5bab6206f7443c2f7e1f4cab72cc037e19a84b237",
+      "bytes": 2614,
+      "mtime_ns": 1785456779986529900,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/test_madrl_robustness.py",
+      "sha256": "4b2329e500610f13604d2b8c339e2e58af3ec3eca6b292227a6cd349e7eab6f3",
+      "bytes": 16140,
+      "mtime_ns": 1785456779981014800,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/validate_drive_kpi_skip_plan.py",
+      "sha256": "8aec59787fcfb7e7579515769ef6469a05e68d532817626a3f025f2ed7396ed0",
+      "bytes": 4240,
+      "mtime_ns": 1785334125669966200,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/validate_launch_config.py",
+      "sha256": "9c62ba4e12ca2232e892144c77774c06bb120197cef6a9a61d07e011de763202",
+      "bytes": 9728,
+      "mtime_ns": 1785334125671485500,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/validate_madrl_run_completion.py",
+      "sha256": "f26b834a4ca3b65871272be5b12c7031c9615d9db7e7961c1e81d6d110094821",
+      "bytes": 4157,
+      "mtime_ns": 1785334125672423700,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/ver_metricas_madrl.py",
+      "sha256": "f0709597a76672386ca2e7f458990ec05eebe50faecc1cb272386b74e49b5488",
+      "bytes": 8084,
+      "mtime_ns": 1785456779984522800,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/verify_artifact_layout.py",
+      "sha256": "5a1720a1e32d0cbf4d14bd2e87eebf849b18d0679b5f07d9aa145f878f877b55",
+      "bytes": 2453,
+      "mtime_ns": 1782524603685575700,
+      "immutable": false
+    },
+    {
+      "path": "tools/training/verify_training_optimization.py",
+      "sha256": "04ab33f41286e78c21b45924212eb3347b2dd3b09fcc55f0003b14801d4d38e4",
+      "bytes": 17767,
+      "mtime_ns": 1793504797450686100,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/__init__.py",
+      "sha256": "90cfd075d0c7dbf89802f2164bdef9fb7ead859a4a410ac61aab5001a7405731",
+      "bytes": 1185,
+      "mtime_ns": 1779102255327435400,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/adapters/__init__.py",
+      "sha256": "97df96bfa98665bb067e751694b671b31f12907bd99846ae439a9d6ab3265d56",
+      "bytes": 151,
+      "mtime_ns": 1793490704499835800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/adapters/local_artifacts.py",
+      "sha256": "2484f1dc2bcbd3d9d44ee9e3e6a48ac57b0c12db31545d616025e5fc77b5095a",
+      "bytes": 3344,
+      "mtime_ns": 1793490704499835800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/adapters/algorithms/__init__.py",
+      "sha256": "744611d1df2605ca632d0f79a330acb4b1a1d5a4dc3f9ff3dcd27d3c845a1dcc",
+      "bytes": 69,
+      "mtime_ns": 1793491944865920100,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/adapters/algorithms/evidence.py",
+      "sha256": "45a20a968df6c970880dbfc83f01190546cb080dc030284a2c313a30afcf60ff",
+      "bytes": 2580,
+      "mtime_ns": 1793510817584292100,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/adapters/algorithms/native.py",
+      "sha256": "755a8dca7b842451afa195bc0af1d556a5728225c75a9ba56e8c1a4dd5f07287",
+      "bytes": 6025,
+      "mtime_ns": 1793516966209009800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/adapters/citylearn/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1793506162040074800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/adapters/citylearn/objectives.py",
+      "sha256": "93d9989dca763e700740828e0e75e022abff4be969186eebf44d75e5c03ec723",
+      "bytes": 789,
+      "mtime_ns": 1793510683547570600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/adapters/citylearn/rbc_baseline.py",
+      "sha256": "409644b5306a63a272a6990abfd6246cf2868746b7ad69f824b893003bebabe3",
+      "bytes": 1569,
+      "mtime_ns": 1793515226848491300,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/algorithms/__init__.py",
+      "sha256": "4dcfa647873d55415c8e8fca55c0bf9e055658dd840ef8e9c396d6b3ec5ffd28",
+      "bytes": 74,
+      "mtime_ns": 1781581831167591400,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/algorithms/factory.py",
+      "sha256": "eb886d3dcd04c43c7f091f5e92923a64f7957f4372956bb056c5a7e49b5742c4",
+      "bytes": 14971,
+      "mtime_ns": 1781581831167591400,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/__init__.py",
+      "sha256": "c27f88104ca53f2e34e9dd94555bd00ec0c5ebffa13f8735ebe88269046efc86",
+      "bytes": 381,
+      "mtime_ns": 1793490359112978700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/configuration.py",
+      "sha256": "7388942089688d8a26b4d36ab2df48490d3538149153a448bc96e33eb1ef1368",
+      "bytes": 6932,
+      "mtime_ns": 1793489761111749700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/sensitivity.py",
+      "sha256": "e8130c02a98a0a8927fbb42259c00ea88d613416d4024fba99d2e5b12d47e953",
+      "bytes": 4102,
+      "mtime_ns": 1793490359110960000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/artifacts/__init__.py",
+      "sha256": "5156fd433aeeaa00c5d86f006f2170a31a7f3c1f0ec264cfce2882a975787ac7",
+      "bytes": 433,
+      "mtime_ns": 1793517468930654300,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/artifacts/backup.py",
+      "sha256": "fd627c7c455db7184033572653a9d1293b1a69f2c750d1d7dbf19017a6fda3ff",
+      "bytes": 10240,
+      "mtime_ns": 1793517467832698000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/artifacts/retention.py",
+      "sha256": "4eb7c38b06e1c0b0efbac1782a9b597ed9398e21aae99d5295efd1b033872343",
+      "bytes": 4694,
+      "mtime_ns": 1793517456500645900,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/dataset/__init__.py",
+      "sha256": "390efffb398e653f1f1373ed2e05659ea23f0768a342129b6768ea8f21b9d058",
+      "bytes": 78,
+      "mtime_ns": 1793524337124258800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/dataset/construction.py",
+      "sha256": "254b2bb5e1c8423dbd2705d133318605651660064a0a010971e59c122e7f3ad3",
+      "bytes": 16881,
+      "mtime_ns": 1793525389509564600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/dataset/provenance.py",
+      "sha256": "a38b53cea7bbad5631494247b38734403a23412b3ffeeafd1841130a2a9f39e6",
+      "bytes": 4135,
+      "mtime_ns": 1793524331841220500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/evaluation/__init__.py",
+      "sha256": "71330597ba760c43b21b519ce9c1e32ca34a1c53b95de68b043e0b43426e2699",
+      "bytes": 62,
+      "mtime_ns": 1793492735795960000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/evaluation/baselines.py",
+      "sha256": "d242b58644f3b01dd0c3454ce2b691df4a34ae91489345b36a7b32b3b7114b55",
+      "bytes": 664,
+      "mtime_ns": 1793515408551648000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/evaluation/kpi_contract.py",
+      "sha256": "ce05f9c6a915fe4af02be0cb39c2377093ed8222ce326d96905c480c1b902219",
+      "bytes": 15956,
+      "mtime_ns": 1793519601245800900,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/evaluation/model_selection.py",
+      "sha256": "bf680889d8dac0646346c3334744cafc7fa8d41fb002aa4263c3a92822dff93f",
+      "bytes": 966,
+      "mtime_ns": 1793507000164641500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/evaluation/results_catalog.py",
+      "sha256": "0dc8e736f1c45f5fcc033cd8209a33e80cbbb2d9e15bdfa236201774812fad09",
+      "bytes": 3368,
+      "mtime_ns": 1793524808476563600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/evaluation/scientific_evaluation.py",
+      "sha256": "be678b83a694b0c7eb56e4ad79bd71a830fafebaa6e0567212ad71e74710829f",
+      "bytes": 1879,
+      "mtime_ns": 1793506998638397700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/evaluation/training_report.py",
+      "sha256": "519d037ece2f08cb05e0652cadb7c4318115e30f0f3cdaeb829d4562677618fe",
+      "bytes": 1406,
+      "mtime_ns": 1793510819052234700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/thesis/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mtime_ns": 1793507146517952000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/thesis/evidence_registry.py",
+      "sha256": "45846d93a823e4c7fcd9f6232f6a746789bc01ec50822383fcc3839120a645b1",
+      "bytes": 1557,
+      "mtime_ns": 1793507163654078100,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/__init__.py",
+      "sha256": "a605620a2ae57a0e28bb17f5f38957111178c09a21e835c3e9187a865fc124f5",
+      "bytes": 45,
+      "mtime_ns": 1793491266361587800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/cli.py",
+      "sha256": "0fae87bf9c2a6711682a85626a951c3471ee0609596cc8decbc93f4d06110b5c",
+      "bytes": 3640,
+      "mtime_ns": 1793524431245616300,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/colab.py",
+      "sha256": "6e15c39780cb465ad70c3115cdbb503f25b50189431687e0b896d6702fdc12e3",
+      "bytes": 6449,
+      "mtime_ns": 1793524431246156700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/completion.py",
+      "sha256": "d52f1dcf9eeafdd05ac16f2d67ac5fd11d184ffade9b56b28f065207bc4fe730",
+      "bytes": 1536,
+      "mtime_ns": 1793491691477260200,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/context.py",
+      "sha256": "2ff0afd54b073d23559253a4d1a580aeb1886738dcda4d1c20b7d4d4a7611ec6",
+      "bytes": 1618,
+      "mtime_ns": 1793493088349913000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/dataset_gate.py",
+      "sha256": "11a88145ff6b06663b60047b26d5709574741410dc9cea2cae348236895a300a",
+      "bytes": 1452,
+      "mtime_ns": 1793513955920807600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/fresh_policy.py",
+      "sha256": "0fe298ecf01ca47678c0de26a6e11d081004421208f2b497300d909594938ead",
+      "bytes": 13347,
+      "mtime_ns": 1793524893518693700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/layout.py",
+      "sha256": "befb327ebe13a00670f0d47bb4a48541df9bf5b99fbd0c5d227cdf5cae15f199",
+      "bytes": 4137,
+      "mtime_ns": 1793524808476563600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/lock.py",
+      "sha256": "c9bf8e11d8ce5f06dfbf9fe72f4cfa0082c9bfc35eb14c349f1102a414a40b70",
+      "bytes": 930,
+      "mtime_ns": 1793492455073691500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/monitor.py",
+      "sha256": "6731944dd71d5d14a5f5792ffcde6beadf197f00e1c70fee38785f11ebdc6d1f",
+      "bytes": 1103,
+      "mtime_ns": 1793524808476563600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/persistence.py",
+      "sha256": "d1d8a0fc34e0b6c7cb539e145cbb61a2ee286a879ad7a3e55d611205afcc4a29",
+      "bytes": 3095,
+      "mtime_ns": 1793491616366829900,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/preflight.py",
+      "sha256": "1501f0d8d8c89c2f8d5b983e011b00683560535fc06cc1e8a0cf9f0d77dfcc06",
+      "bytes": 5881,
+      "mtime_ns": 1793518446772646000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/resume.py",
+      "sha256": "401345c2d690d03c68336d8dc0a07cda38093ad9b1f738e5137ae2adcf6a36d5",
+      "bytes": 1318,
+      "mtime_ns": 1793505695278344200,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/application/training/runner.py",
+      "sha256": "b1bc7a93a8bdd53b298cb77ce320c2ff5dd54bf196bc490c3089b924e9837555",
+      "bytes": 4890,
+      "mtime_ns": 1793524431245081800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/configs/base.yaml",
+      "sha256": "f075f61e5a644d2ac2a19aa24a8a83ab260298738c90812de5b4cfdce0e3950e",
+      "bytes": 4155,
+      "mtime_ns": 1779102868876353500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/configs/iquitos.yaml",
+      "sha256": "dfc19f54b888bfd0d57707ae3eadce240e1284bf05a0d68b060ff94835125312",
+      "bytes": 9559,
+      "mtime_ns": 1783296286101208300,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/configs/algorithms/happo.yaml",
+      "sha256": "5f4f81f31b58975c2871ccc6fe20080ad2209ebd7a36308042c66423a29b3643",
+      "bytes": 1146,
+      "mtime_ns": 1779102914726472900,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/configs/algorithms/maac.yaml",
+      "sha256": "40899ce755bb862680c9ea6b43da7b9335afe7360f05d552bfac6257b2a03eb5",
+      "bytes": 1031,
+      "mtime_ns": 1779102938502953300,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/configs/algorithms/masac.yaml",
+      "sha256": "c8a68ccb375e07a2815dea5aa287770366b7a2d9296c57b5db791b074d77c25a",
+      "bytes": 985,
+      "mtime_ns": 1779102925825085600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/configs/algorithms/matd3.yaml",
+      "sha256": "2956b9664e993cd923727da4f12d0ffeb8ff4cde614fe3ce070411ed86fa5890",
+      "bytes": 953,
+      "mtime_ns": 1779102931846083100,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/data/__init__.py",
+      "sha256": "d87d3e1bce00c8608cdb719694c845def0a1b22c0895aabf30281640ca23afd2",
+      "bytes": 1192,
+      "mtime_ns": 1783296286113789600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/data/contracts.py",
+      "sha256": "f156ab5e3695223bed95f970023b1c1b394ba7448d45ef5bb9f1f8ff5d5177ec",
+      "bytes": 1726,
+      "mtime_ns": 1783296286116507900,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/data/ports.py",
+      "sha256": "47e5f550a297f42753338efb7e1f2ec40a307b8aebb23ebfc7b6f077d55eb53c",
+      "bytes": 1564,
+      "mtime_ns": 1783296286099984600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/data/registry.py",
+      "sha256": "3c7571b1097c7351cc189007463a953be63387df3d6d96b79890cc7cb5986f18",
+      "bytes": 2494,
+      "mtime_ns": 1783296286080739600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/data/adapters/__init__.py",
+      "sha256": "d14ab1db7fee76692b4cf7560673f0551a90202e8c744fd03e73b48a71ace9da",
+      "bytes": 392,
+      "mtime_ns": 1783296286113789600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/data/adapters/local_csv.py",
+      "sha256": "6ce753f3922542fcd194287071ea81ce32d68b0fca0a9e468c373f172db1bdac",
+      "bytes": 2845,
+      "mtime_ns": 1783296286099984600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/data/adapters/remote_http.py",
+      "sha256": "60c7893ab625157a5fdf7cfa8a2db83b5288c18d7b988663937214ce02e9ed29",
+      "bytes": 5287,
+      "mtime_ns": 1783296286080739600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/data/adapters/s3.py",
+      "sha256": "e378e50e14ee8c9f775132da5ac97e45c862e138011d46e8d7c34ae8f69765eb",
+      "bytes": 4883,
+      "mtime_ns": 1783296286116507900,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/domain/__init__.py",
+      "sha256": "c6a25773a47155100c5f8ec0e6498b832f73c91680b7fa9b06b71744f861b832",
+      "bytes": 1106,
+      "mtime_ns": 1793490623685849300,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/domain/campaigns.py",
+      "sha256": "28712da73c5a905e5e9227b9c66dcbc595d296e6245cf8e4f8f49a0f5e2fb52a",
+      "bytes": 10762,
+      "mtime_ns": 1793524337648675400,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/domain/evidence.py",
+      "sha256": "144ceca96be5f45526ac130e2799fea91682b0f2def8bb545ceaa48636ac0bc4",
+      "bytes": 5566,
+      "mtime_ns": 1793510796412781600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/domain/experiments.py",
+      "sha256": "8eabe7ef409024c949165f517eb01071741a9748ae7fbd403a0dfca4f184360a",
+      "bytes": 4294,
+      "mtime_ns": 1793493088347358800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/domain/objectives.py",
+      "sha256": "8f6dd2cec2b4f779f9c441e637e9d7ee4109fb542efec8e8953ed0e2f7b3cb85",
+      "bytes": 4029,
+      "mtime_ns": 1793489277025999800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/domain/pareto.py",
+      "sha256": "1343f20958c1aabb80051d8a4c15a63391676393591ed29200547470206c4b39",
+      "bytes": 5263,
+      "mtime_ns": 1793490102206249600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/domain/scenarios.py",
+      "sha256": "6412c95a42f49112a3ba88356583d64496f7b1fc43fda5858af4dbe91979227c",
+      "bytes": 3779,
+      "mtime_ns": 1793489511350457700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/env/__init__.py",
+      "sha256": "c3b6cb99430b30974d6e910892389ee29006c559644544f4976a5b86faccbab2",
+      "bytes": 807,
+      "mtime_ns": 1786203851194287000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/env/bact.py",
+      "sha256": "2e6403dc925e2957dccc964d3e56180bdcf764146bae2d567a8473c381d987bb",
+      "bytes": 7324,
+      "mtime_ns": 1786203851177284600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/env/uc3m_env.py",
+      "sha256": "e8d1a5e4510271814085ef9b888ca9d9ff0fa7c17e0a83a3d71e2e446e1130c0",
+      "bytes": 15845,
+      "mtime_ns": 1786203851182297700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/env/wrappers.py",
+      "sha256": "787697cb1b77313024783e78d9ce66db0eaf49f12be4c8e1b4c2e0a854a51491",
+      "bytes": 6086,
+      "mtime_ns": 1781526030747628200,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/geography/__init__.py",
+      "sha256": "efc549292024af09e52889eb10416eea7e09f35906642b321ad010a3c9558fba",
+      "bytes": 82,
+      "mtime_ns": 1781581831168687600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/geography/ingest.py",
+      "sha256": "7034480e83d7ca3b5e058a6bd3e868d7791c123f29e140fa7f9224bd36aa100d",
+      "bytes": 13486,
+      "mtime_ns": 1781581831168687600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/governance/__init__.py",
+      "sha256": "747081a874b6fb07aae0379dc547e3743dcc73cfccb31d87804b7ffcd0d13be2",
+      "bytes": 428,
+      "mtime_ns": 1793508863142114300,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/governance/foundation.py",
+      "sha256": "d188803130faaecc939f6670e1a7e678792911005578b1b3aaf78fd0469a6b2c",
+      "bytes": 2819,
+      "mtime_ns": 1793512314887721400,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/governance/open_source.py",
+      "sha256": "3f163528f2a42731751f2c9e0702bac8675a431f066f21e7102c16e6fb1e4b91",
+      "bytes": 3976,
+      "mtime_ns": 1793509405408903700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/kpis/__init__.py",
+      "sha256": "bc576784716de1d47a8b6dc9dd4b364202043c0458fd68dbffbeb6e0036c3604",
+      "bytes": 62,
+      "mtime_ns": 1781581831168687600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/kpis/evaluator.py",
+      "sha256": "de7140d5be50facc9e35c9cf22f1f9e48c5a6f1b1ceb28e6e65cdfe0803d20ce",
+      "bytes": 20522,
+      "mtime_ns": 1781581831169688000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/__init__.py",
+      "sha256": "2ed42e2980e6610498f75521e79aeba9053746f621683579aed7de92ca9b0198",
+      "bytes": 1524,
+      "mtime_ns": 1784981506209234500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/ahp.py",
+      "sha256": "b44cf654d3647536e431733f6804b7634fcbbb7e7bff4cc244b997c0944cd6a1",
+      "bytes": 6640,
+      "mtime_ns": 1784981506209234500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/artifacts.py",
+      "sha256": "6dfe5389b9e97069ef4712885239d0a372b105f173dd67f40b8734ee51e27474",
+      "bytes": 17733,
+      "mtime_ns": 1793517268478151600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/consolidation.py",
+      "sha256": "ec533bafc6bcc50eafe62fda6c0cab77c70fd82f5c690586667b1ca9103be143",
+      "bytes": 6930,
+      "mtime_ns": 1784981506210234500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/criteria.py",
+      "sha256": "5c030c50158d33aa6129581e20a54afbd94da290dc027a07cf5c49f10331a553",
+      "bytes": 13347,
+      "mtime_ns": 1793514453389732500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/pipeline.py",
+      "sha256": "8e0048e5ffc3355827efed87ef896505f6ac8de7a80e67f55a2acd642427c756",
+      "bytes": 9859,
+      "mtime_ns": 1793490179796714300,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/reward.py",
+      "sha256": "eaf548d93aef30737cc4fcb4382124f11f82606425b9cafe674c74d243ae9a8f",
+      "bytes": 3212,
+      "mtime_ns": 1784981506181478700,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/scenarios.py",
+      "sha256": "917356d445d9084b4105f9448fd295a3ae1b8cc7f145c508afdb70ceace1442a",
+      "bytes": 3279,
+      "mtime_ns": 1793514518102072200,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/stats_tests.py",
+      "sha256": "59bebb5d98bb74830dc31312fd9db7bd66def58bcb3c282fa440dd90d994b6ad",
+      "bytes": 66523,
+      "mtime_ns": 1793514476919600500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/multicriteria/topsis.py",
+      "sha256": "546881dcedc37145f1c2c0d214772e609cfd44d1d43aaff0fd241617c7d7f9a4",
+      "bytes": 7229,
+      "mtime_ns": 1784981506209234500,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/ports/__init__.py",
+      "sha256": "eb6ab39aa45906fa8cca3b7bbbd95d7f7172ec0c3b25f1d07d58876da9a2fe77",
+      "bytes": 300,
+      "mtime_ns": 1793510871433665000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/ports/artifact_store.py",
+      "sha256": "b68c73b880a85724695552e92b22fd17c202bb5400b2fd4655edc9b2a0e773b8",
+      "bytes": 677,
+      "mtime_ns": 1793510862124724600,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/ports/learner.py",
+      "sha256": "f2befa5b4f1ed789770e6397df4a993b8e0eb6ef91d0be236a662b7c255baeab",
+      "bytes": 575,
+      "mtime_ns": 1793510846975366900,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/ports/simulator.py",
+      "sha256": "00db47fcde0edd64897a0303d94c7ffb1809de7f87e3cbb5751a3db90d0a132b",
+      "bytes": 634,
+      "mtime_ns": 1793510854134848900,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/presentation/__init__.py",
+      "sha256": "68c8e0fec802e1801f96e8bc5bbbc79f1b09bd902b971623d84061a656ff5a5b",
+      "bytes": 83,
+      "mtime_ns": 1793492133501595800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/presentation/training_panel.py",
+      "sha256": "c0e940aaa92e44cf50a8e744028577edc422838084b1d78b35917d9f8aba6098",
+      "bytes": 3665,
+      "mtime_ns": 1793492133501595800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/reward/__init__.py",
+      "sha256": "5dccc441ecb668a912971317399fe132de05708d8c1a68f209c8cccff8802ba6",
+      "bytes": 98,
+      "mtime_ns": 1781581831169688000,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/reward/axes.py",
+      "sha256": "4c902b62e2e78a4c9c87a2c95a802ab54c04ec28350f80c21260659565016dd5",
+      "bytes": 14027,
+      "mtime_ns": 1781581831170687800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/reward/hphi.py",
+      "sha256": "7fc3fafa50b8f0b5ce7318bf32979bde0e6a8398611905b918115ea1ac02124f",
+      "bytes": 8140,
+      "mtime_ns": 1781581831170687800,
+      "immutable": false
+    },
+    {
+      "path": "uc3m/reward/term_telemetry.py",
+      "sha256": "7bf5f15fa5db6f0ccd20549b9d4af1ce069ef4c76a19e8e0aae6a21f0dea9bc7",
+      "bytes": 5826,
+      "mtime_ns": 1793517409843380000,
+      "immutable": false
+    }
+  ],
+  "directories": [
+    ".claude",
+    ".github",
+    ".specify",
+    "configs",
+    "data",
+    "deploy",
+    "docs",
+    "examples_madrl_v3",
+    "governance",
+    "scripts",
+    "specs",
+    "tests",
+    "tools",
+    "uc3m",
+    ".claude/agents",
+    ".github/workflows",
+    ".specify/memory",
+    "configs/evaluation",
+    "configs/experiments",
+    "data/audits",
+    "data/dataset_audit",
+    "data/maintenance",
+    "data/maintenance/historicos",
+    "data/maintenance/retire_historical_20261101",
+    "deploy/aws",
+    "deploy/dashboard",
+    "deploy/edge",
+    "deploy/inference",
+    "deploy/k8s",
+    "deploy/plant-adapter",
+    "deploy/plant_adapter",
+    "deploy/aws/iac",
+    "docs/architecture",
+    "docs/audits",
+    "docs/chapters",
+    "docs/contributions",
+    "docs/decisions",
+    "docs/design",
+    "docs/failures",
+    "docs/plans",
+    "docs/research",
+    "docs/superpowers",
+    "docs/tesis_capitulos",
+    "docs/thesis",
+    "docs/architecture/_refs",
+    "docs/audits/word",
+    "docs/contributions/CityLearn",
+    "docs/contributions/HARL",
+    "docs/contributions/MAAC",
+    "docs/contributions/MARL",
+    "docs/contributions/MARLlib",
+    "docs/contributions/MATD3implementation",
+    "docs/contributions/MicroGrids",
+    "docs/contributions/evcc",
+    "docs/contributions/prosumpy",
+    "docs/superpowers/plans",
+    "docs/superpowers/specs",
+    "scripts/maintenance",
+    "scripts/quality",
+    "scripts/skills",
+    "specs/000-foundation",
+    "specs/001-open-source-provenance",
+    "specs/001-provenance",
+    "specs/002-multiobjective-policy",
+    "specs/002-objectives",
+    "specs/003-modular-orchestration",
+    "specs/003-orchestration",
+    "specs/004-execution-manifests",
+    "specs/004-manifests",
+    "specs/005-evaluation",
+    "specs/005-scientific-evaluation",
+    "specs/006-evidence",
+    "specs/006-thesis-evidence",
+    "specs/007-agents",
+    "specs/007-local-agent-harness",
+    "specs/008-artifacts",
+    "specs/008-artifacts-data",
+    "specs/009-jury",
+    "specs/009-jury-observations",
+    "specs/010-local-training-panel",
+    "specs/010-panel",
+    "specs/011-dataset-to-delivery-pipeline",
+    "specs/011-pipeline",
+    "specs/012-hygiene",
+    "specs/012-repository-hygiene",
+    "tests/acceptance",
+    "tests/citylearn_v3",
+    "tests/contract",
+    "tests/fresh_training",
+    "tests/integration",
+    "tests/ops",
+    "tests/skills",
+    "tests/uc3m",
+    "tests/unit",
+    "tests/contract/multiobjective",
+    "tests/contract/training",
+    "tests/unit/adapters",
+    "tests/unit/application",
+    "tests/unit/domain",
+    "tests/unit/evaluation",
+    "tests/unit/governance",
+    "tests/unit/application/training",
+    "tools/colab",
+    "tools/dataset",
+    "tools/drive",
+    "tools/eval",
+    "tools/figures",
+    "tools/ops",
+    "tools/thesis",
+    "tools/training",
+    "tools/dataset/dataset_docs",
+    "uc3m/adapters",
+    "uc3m/algorithms",
+    "uc3m/application",
+    "uc3m/configs",
+    "uc3m/data",
+    "uc3m/domain",
+    "uc3m/env",
+    "uc3m/geography",
+    "uc3m/governance",
+    "uc3m/kpis",
+    "uc3m/multicriteria",
+    "uc3m/ports",
+    "uc3m/presentation",
+    "uc3m/reward",
+    "uc3m/adapters/algorithms",
+    "uc3m/adapters/citylearn",
+    "uc3m/application/artifacts",
+    "uc3m/application/dataset",
+    "uc3m/application/evaluation",
+    "uc3m/application/thesis",
+    "uc3m/application/training",
+    "uc3m/configs/algorithms",
+    "uc3m/data/adapters"
+  ],
+  "candidates": [
+    {
+      "path": "data/audits/objective_weight_sensitivity_dry_run.json",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "data/dataset_audit/iquitos_citylearn_v3_dataset_evaluation.json",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_ready_manifest.audit_postcheck.json",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_ready_manifest.audit_precheck.json",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "data/dataset_audit/training_dataset_ready_manifest.audit_supervision.json",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "data/maintenance/retire_historical_20261101",
+      "kind": "directory",
+      "reasons": [
+        "length",
+        "long_identifier"
+      ]
+    },
+    {
+      "path": "deploy/plant-adapter",
+      "kind": "directory",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "deploy/aws/README_DEPLOY_AWS.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "deploy/edge/README_DESPLIEGUE_FISICO.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP2_CONTROL_EDIFICIO_ACTOR_CRITIC_FIGURE_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP2_DECPOMDP_DISTRICT_BUILDING_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP2_MADRL_ADECUACIONES_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP2_MODELADO_MATEMATICO_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP36_DECPOMDP_CROSSREF_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP3_CUASIEXPERIMENTAL_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP4_DECPOMDP_IMPL_ALIGN_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP4_IMPLEMENTACION_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP5_DISTRICT_BUILDING_KPI_RANKINGS_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP5_KPI_CATALOG_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CAP6_DECPOMDP_XREF_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CIERRE_FIGURAS_WORD_VERIFICACION_2026-07-29.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CIERRE_MULTICRITERIA_REAL_DRIVE_50EP_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/CITYLEARN_ASSETS_INTEGRATION_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/COMPLETE_FIGURES_CATALOG_WORD_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/ESTRATEGIA_3PILARES_MADRL.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/HISTORIA_CREACION_PROYECTO_MADRL_CITYLEARN.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/IMPACT_CRITERIA_CONTROL_RECURSOS_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/Informe_tesis_MADRL_auditoria_IV_V_VI_VII_final.docx",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_auditoria.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/LISTA_EJECUCION_COLAB_A100.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/MANUAL_EJECUCION_DESDE_CERO_COLAB_A100.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/MANUAL_INSTALACION_DEPENDENCIAS.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/MULTICRITERIA_FIGURES_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/PERFORMANCE_COMPARISON_WORD_PATCH_REPORT_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/SCALABLEDCPOMDP.pdf",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.json",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/VEREDICTO_METODOLOGICO_2026-07-18.md",
+      "kind": "file",
+      "reasons": [
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/analisis_scripts_vs_tools_tesis_ADDENDUM_2026-07-29.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_PROYECTO_DEFENSA.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.svg",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_ilustrada.png",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_simbologia_v2.png",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/DATASET_CONSTRUCTION_PIPELINE.pdf",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/ENTRENAMIENTO_MODULAR_COLAB.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/ENTRENAMIENTO_MODULAR_LOCAL.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.png",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.png",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/DIAGNOSTICO_Y_RETIRO_HISTORICOS_2026-11-01.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/HANDOFF_AUDITOR_LOCAL.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_DER_IQUITOS.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_EV_IQUITOS.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_AUDITORIA_PARAMETROS_EDIFICIOS_IQUITOS.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_CORRECCION_TRAZABILIDAD_MADRL_V4_2026-06-17.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_VALIDACION_INTEGRAL_CREACION_DATASET_CITYLEARN_IQUITOS.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/audits/MATRIZ_LEVANTAMIENTO_OBSERVACIONES_JURADO_2026-10-31.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-OPEN-ARTIFACT-STORE.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-SIMULATOR-PORT-DEFERRED.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/failures/agent-auto-publish-unscoped.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-foundation-open-source-spec-kit-plan.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-jury-observations-remediation-plan.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-multiobjective-domain-plan.md",
+      "kind": "file",
+      "reasons": [
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-orchestration-artifacts-plan.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-post-audit-remediation-plan.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-thesis-agents-plan.md",
+      "kind": "file",
+      "reasons": [
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-01-encargo-agente-entrenamiento-nuevo.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-01-entrenamiento-nuevo-sin-historicos-plan.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-01-entrenamiento-nuevo-sin-resultados-historicos-design.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/00_INDICE.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/AUDITORIA_CUMPLIMIENTO.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/AUDITORIA_FINAL_CAP4_7_MATRIZ.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_1_Introduccion.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_1_PG_PE_OE_H_EXACTO.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_2_Marco_Teorico.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_3_Metodologia.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_5_Resultados.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_6_Conclusiones.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Capitulo_7_Recomendaciones.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/tesis_capitulos/Referencias_APA.md",
+      "kind": "file",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "docs/thesis/Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "examples_madrl_v3/madrl_citylearn_v3_load_environment.ipynb",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "scripts/regenerate_multicriteria_drive_50ep_closure.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "specs/001-open-source-provenance",
+      "kind": "directory",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "specs/002-multiobjective-policy",
+      "kind": "directory",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "specs/003-modular-orchestration",
+      "kind": "directory",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "specs/004-execution-manifests",
+      "kind": "directory",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "specs/005-scientific-evaluation",
+      "kind": "directory",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "specs/006-thesis-evidence",
+      "kind": "directory",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "specs/007-local-agent-harness",
+      "kind": "directory",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "specs/008-artifacts-data",
+      "kind": "directory",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "specs/009-jury-observations",
+      "kind": "directory",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "specs/010-local-training-panel",
+      "kind": "directory",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "specs/011-dataset-to-delivery-pipeline",
+      "kind": "directory",
+      "reasons": [
+        "length",
+        "style"
+      ]
+    },
+    {
+      "path": "specs/012-repository-hygiene",
+      "kind": "directory",
+      "reasons": [
+        "style"
+      ]
+    },
+    {
+      "path": "tools/eval/analyze_colab_drive_multiobjective_buildings.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/eval/compute_drive50_district_building_kpi_rankings.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/eval/generate_madrl_performance_comparison_figures.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/eval/run_complete_drive_kpi_objective_analysis.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/eval/run_problem_objective_hypothesis_statistical_analysis.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/figures/generate_citylearn_v3_building_control_figure.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_cap1_cap3_friedman_protocol_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_cap2_control_edificio_actor_critic_figure_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_cap2_decpomdp_district_building_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_cap3_multiobjective_hierarchy_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_cap5_district_building_kpi_rankings_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_cap5_hipotesis_stats_exactas_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_citylearn_assets_integration_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_h0g_remove_exploratoria_verdict_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_impact_criteria_control_recursos_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_integral_word_eval_v2_anchors_20260729.py",
+      "kind": "file",
+      "reasons": [
+        "length",
+        "long_identifier"
+      ]
+    },
+    {
+      "path": "tools/thesis/patch_topsis_medida_formal_cap5_6_7_docx.py",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    },
+    {
+      "path": "tools/training/prune_citylearn_v3_training_artifacts.ps1",
+      "kind": "file",
+      "reasons": [
+        "length"
+      ]
+    }
+  ],
+  "excluded": [
+    ".git",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".superpowers",
+    ".venv39-citylearn-v3",
+    ".vscode",
+    "CityLearn",
+    "external",
+    "outputs",
+    ".claude/skills",
+    "data/audits/closed_services_and_secrets.json",
+    "data/maintenance/names",
+    "deploy/.env.example",
+    "scripts/__pycache__",
+    "tests/__pycache__",
+    "tests/acceptance/__pycache__",
+    "tests/citylearn_v3/__pycache__",
+    "tests/contract/__pycache__",
+    "tests/contract/multiobjective/__pycache__",
+    "tests/contract/training/__pycache__",
+    "tests/integration/__pycache__",
+    "tests/ops/__pycache__",
+    "tests/skills/__pycache__",
+    "tests/uc3m/__pycache__",
+    "tests/unit/adapters/__pycache__",
+    "tests/unit/application/__pycache__",
+    "tests/unit/application/training/__pycache__",
+    "tests/unit/domain/__pycache__",
+    "tests/unit/evaluation/__pycache__",
+    "tests/unit/governance/__pycache__",
+    "tools/skills",
+    "tools/colab/__pycache__",
+    "tools/dataset/__pycache__",
+    "tools/drive/__pycache__",
+    "tools/eval/__pycache__",
+    "tools/ops/__pycache__",
+    "tools/thesis/__pycache__",
+    "uc3m/__pycache__",
+    "uc3m/adapters/__pycache__",
+    "uc3m/adapters/algorithms/__pycache__",
+    "uc3m/adapters/citylearn/__pycache__",
+    "uc3m/algorithms/__pycache__",
+    "uc3m/application/__pycache__",
+    "uc3m/application/artifacts/__pycache__",
+    "uc3m/application/evaluation/__pycache__",
+    "uc3m/application/thesis/__pycache__",
+    "uc3m/application/training/__pycache__",
+    "uc3m/data/__pycache__",
+    "uc3m/data/adapters/__pycache__",
+    "uc3m/domain/__pycache__",
+    "uc3m/env/__pycache__",
+    "uc3m/governance/__pycache__",
+    "uc3m/kpis/__pycache__",
+    "uc3m/multicriteria/__pycache__",
+    "uc3m/ports/__pycache__",
+    "uc3m/presentation/__pycache__",
+    "uc3m/reward/__pycache__"
+  ],
+  "blocked_paths": []
+}

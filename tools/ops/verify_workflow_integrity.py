@@ -78,12 +78,12 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
     manifest = load_json(WORKFLOW_MANIFEST)
     technical_reports = manifest.get("technical_reports", [])
     require(
-        "docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md" in technical_reports,
+        "docs/audits/vram.md" in technical_reports,
         "workflow_manifest must reference the CityLearn MADRL VRAM optimization report",
         errors,
     )
     require(
-        "docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md" in technical_reports,
+        "docs/audits/recompensas.md" in technical_reports,
         "workflow_manifest must reference the MADRL multi-objective reward validation report",
         errors,
     )
@@ -112,8 +112,10 @@ def validate_workflow_manifest(errors: list[str]) -> dict[str, Any]:
                 require(project_path(stage[key]).exists(), f"Workflow stage {stage.get('stage')} references missing {key}: {stage[key]}", errors)
 
     training = next((stage for stage in workflow if stage.get("stage") == "training"), {})
-    require(training.get("launcher") == "CityLearn/scripts/launch_citylearn_v3_official_training.ps1", "Training launcher is not canonical", errors)
-    require(training.get("wrapper") == "scripts/run_citylearn_v3_full_training_visible.ps1", "Training wrapper is not canonical", errors)
+    # Owner decision 2026-11-01: the fresh campaign CLI is the only launch path.
+    require(training.get("launcher") == "uc3m/application/training/cli.py", "Training launcher is not the campaign CLI", errors)
+    require("wrapper" not in training and "active_output_pointer" not in training,
+            "Training stage still declares a retired wrapper or a latest-output pointer", errors)
     require(training.get("algorithms") == ["happo", "masac", "matd3", "maac"], "Training algorithms are not HAPPO/MASAC/MATD3/MAAC", errors)
     require(training.get("scenarios") == ["E1", "E2", "E3"], "Training scenarios are not E1/E2/E3", errors)
     require(training.get("episodes") == 50, "Training episodes must be 50", errors)
@@ -313,7 +315,7 @@ def validate_audits(errors: list[str]) -> dict[str, Any]:
     status_expectations = {
         "csv_integrity_manifest.json": ("status", "ok"),
         "training_dataset_ready_manifest.json": ("status", "ready"),
-        "iquitos_citylearn_v3_dataset_evaluation.json": ("ok", True),
+        "dataset_evaluation.json": ("ok", True),
     }
     for filename, (key, expected) in status_expectations.items():
         path = AUDIT_DIR / filename

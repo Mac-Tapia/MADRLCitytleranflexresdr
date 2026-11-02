@@ -1,4 +1,4 @@
-"""Carga referencias APA desde docs/tesis_capitulos/Referencias_APA.md (skill integrado)."""
+"""Carga referencias APA desde docs/chapters/referencias.md (skill integrado)."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-APA_MD = REPO / "docs" / "tesis_capitulos" / "Referencias_APA.md"
+APA_MD = REPO / 'docs' / 'chapters' / 'referencias.md'
 
 # Citadas en Cap. 2-4 del borrador pero ausentes del .md consolidado.
 SUPPLEMENTAL_CITED_IN_TEXT = [
@@ -66,7 +66,7 @@ def parse_apa_markdown(path: Path = APA_MD) -> list[str]:
 
 
 def load_all_thesis_references() -> list[str]:
-    """Referencias consolidadas: Referencias_APA.md + citadas en texto + estadistica RL."""
+    """Referencias consolidadas: referencias.md + citadas en texto + estadistica RL."""
     merged: dict[str, str] = {}
     for ref in parse_apa_markdown() + SUPPLEMENTAL_CITED_IN_TEXT + STATS_METHODOLOGY:
         merged.setdefault(_ref_key(ref), ref)

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "candidate_commit": "cb2d7c7c84b5315acb50b3b8828ef4a90065bdc4",
+  "candidate_files": 915,
+  "candidate_listing_sha256": "2186905232eaa3924119797e220a8392f2a7af207e035197b6a740e304d1e574",
+  "submodules": [
+    "CityLearn",
+    "external/HARL",
+    "external/MAAC",
+    "external/MARL",
+    "external/MARLlib",
+    "external/MATD3implementation",
+    "external/MicroGrids",
+    "external/evcc",
+    "external/prosumpy"
+  ],
+  "required_checks": [
+    "quality-lint",
+    "quality-contracts",
+    "quality-package",
+    "quality-layout",
+    "quality-workflows"
+  ],
+  "workflow": {
+    "present": true,
+    "checks": [
+      "quality-contracts",
+      "quality-layout",
+      "quality-lint",
+      "quality-package",
+      "quality-workflows"
+    ],
+    "pinned": true,
+    "read_only": true,
+    "timeouts": true
+  },
+  "large_files_over_50_mib": [],
+  "blocked_files_over_100_mib": [],
+  "generated_in_candidate_tree": [],
+  "undeclared_runtime_imports": {},
+  "collaboration_files": {
+    "LICENSE": false,
+    "CONTRIBUTING.md": false,
+    "SECURITY.md": false,
+    ".github/CODEOWNERS": false,
+    "README.md": true
+  },
+  "license_declared_in_pyproject": true,
+  "github_local_readiness": true,
+  "local_pass": true,
+  "remote_verified": false,
+  "status_remote": "pending_remote",
+  "workflow_run_url": null,
+  "branch_protection_status": "not_configured_by_this_task",
+  "scientific_acceptance": false
+}

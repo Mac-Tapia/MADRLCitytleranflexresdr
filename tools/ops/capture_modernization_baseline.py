@@ -6,8 +6,9 @@ import argparse
 import hashlib
 import json
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any, Mapping, Sequence
 
 
 EXPECTED_ROOT = "D:/MADRLCitytleranflexresdr"
@@ -15,9 +16,13 @@ EXPECTED_ORIGIN = "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git"
 CANONICAL_FILES = (
     "README.md",
     "pyproject.toml",
-    "docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md",
-    "docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md",
+    "docs/design/modernizacion.md",
+    "docs/plans/modernizacion.md",
 )
+SOURCE_ROOTS = ("uc3m", "tests", "tools", "configs", "scripts", "governance")
+SOURCE_SUFFIXES = frozenset({".py", ".yaml", ".yml", ".toml", ".ps1", ".json", ".cfg", ".ini"})
+TEXT_SUFFIXES = SOURCE_SUFFIXES
+DEPENDENCY_FILES = ("pyproject.toml", "requirements.txt", "uv.lock")
 
 
 def _git(project_root: Path, *args: str) -> str:
@@ -88,8 +93,14 @@ def _submodules(project_root: Path) -> list[dict[str, str]]:
 
 
 def _canonical_hashes(project_root: Path) -> dict[str, dict[str, Any]]:
+    return _file_hashes(project_root, CANONICAL_FILES)
+
+
+def _file_hashes(
+    project_root: Path, names: Sequence[str]
+) -> dict[str, dict[str, Any]]:
     records: dict[str, dict[str, Any]] = {}
-    for relative_name in CANONICAL_FILES:
+    for relative_name in names:
         path = project_root / relative_name
         if not path.is_file():
             continue
@@ -99,6 +110,57 @@ def _canonical_hashes(project_root: Path) -> dict[str, dict[str, Any]]:
             "size_bytes": len(payload),
         }
     return records
+
+
+def hash_sources(
+    project_root: Path, *, roots: Sequence[str] = SOURCE_ROOTS
+) -> dict[str, str]:
+    """Hash source/config/test files; text identity normalizes CRLF to LF."""
+
+    digests: dict[str, str] = {}
+    for root_name in roots:
+        root = project_root / root_name
+        if not root.is_dir():
+            continue
+        for path in sorted(root.rglob("*")):
+            if not path.is_file() or path.suffix.lower() not in SOURCE_SUFFIXES:
+                continue
+            if "__pycache__" in path.parts:
+                continue
+            payload = path.read_bytes()
+            if path.suffix.lower() in TEXT_SUFFIXES:
+                payload = payload.replace(b"\r\n", b"\n")
+            digests[path.relative_to(project_root).as_posix()] = hashlib.sha256(
+                payload
+            ).hexdigest()
+    return digests
+
+
+def _aggregate_digest(digests: Mapping[str, str]) -> str:
+    joined = "".join(
+        f"{name}\0{digest}\n" for name, digest in sorted(digests.items())
+    )
+    return hashlib.sha256(joined.encode("utf-8")).hexdigest()
+
+
+def compare_cut(
+    before: Mapping[str, str], after: Mapping[str, str], *, suite_passed: bool
+) -> dict[str, object]:
+    """An integral suite is accepted only if sources did not change while it ran."""
+
+    changed = sorted(
+        name
+        for name in set(before) | set(after)
+        if before.get(name) != after.get(name)
+    )
+    stable = not changed
+    return {
+        "source_state_stable": stable,
+        "integral_suite_accepted": bool(stable and suite_passed),
+        "changed_paths": changed,
+        "source_digest": _aggregate_digest(after),
+        "source_file_count": len(after),
+    }
 
 
 def capture_baseline(project_root: Path) -> dict[str, object]:
@@ -112,8 +174,10 @@ def capture_baseline(project_root: Path) -> dict[str, object]:
     if origin != EXPECTED_ORIGIN:
         raise ValueError(f"Unexpected origin: {origin}")
 
+    started_at = datetime.now(timezone.utc).isoformat()
+    sources_before = hash_sources(project_root)
     status = _git(project_root, "status", "--porcelain=v1", "--untracked-files=all")
-    return {
+    payload: dict[str, object] = {
         "schema_version": "1.0",
         "repository": {
             "root": EXPECTED_ROOT,
@@ -124,7 +188,23 @@ def capture_baseline(project_root: Path) -> dict[str, object]:
         "working_tree": _working_tree_counts(status),
         "submodules": _submodules(project_root),
         "canonical_files": _canonical_hashes(project_root),
+        "dependency_files": _file_hashes(project_root, DEPENDENCY_FILES),
     }
+    sources_after = hash_sources(project_root)
+    cut = compare_cut(sources_before, sources_after, suite_passed=False)
+    payload["sources"] = {
+        "roots": list(SOURCE_ROOTS),
+        "digest": cut["source_digest"],
+        "file_count": cut["source_file_count"],
+        "files": sources_after,
+        "source_state_stable": cut["source_state_stable"],
+        "changed_paths": cut["changed_paths"],
+    }
+    payload["captured"] = {
+        "started_at": started_at,
+        "finished_at": datetime.now(timezone.utc).isoformat(),
+    }
+    return payload
 
 
 def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:

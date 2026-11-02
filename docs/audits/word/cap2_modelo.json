@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-07-29T13:29:01",
+  "policy": "solo 2 Word canonicos en docs/; sin generar terceros",
+  "canons": [
+    "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+    "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx"
+  ],
+  "backups_moved_from_docs": [
+    "_backup_Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_before_cap2_20260729_130551.docx",
+    "_backup_Tesis_Doctoral_before_cap4_20260729_124928.docx",
+    "_backup_Tesis_Doctoral_before_cap4_20260729_125719.docx",
+    "_backup_Tesis_Doctoral_before_cap4_20260729_125955.docx",
+    "_backup_Tesis_Doctoral_before_cap4_20260729_130451.docx",
+    "_backup_Tesis_Doctoral_before_cap4_20260729_130844.docx",
+    "_backup_Tesis_Doctoral_before_cap4_20260729_130949.docx",
+    "_backup_Tesis_Doctoral_MADRL_CityLearn_Iquitos_before_cap2_20260729_130551.docx",
+    "_backup_Tesis_Doctoral_MADRL_CityLearn_Iquitos_before_cap2_20260729_131312.docx"
+  ],
+  "backup_dir": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups",
+  "results": [
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "ok": true,
+      "skipped": true,
+      "reason": "§§2.2.5–2.2.9 ya presentes"
+    },
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_before_cap2_20260729_132900.docx",
+      "inserted": 12,
+      "anchor_index": 270,
+      "sections": [
+        "2.2.5 CityLearn v3 propuesto y distincion UC3M (7 ejes vs 3 ejes)",
+        "2.2.6 Formalizacion matematica del Meta-Dec-POMDP UC3M",
+        "2.2.7 Operador de recompensa holistico, Pareto y convergencia",
+        "2.2.8 Modelado fisico-matematico de los ejes operacionales",
+        "2.2.9 Arquitectura MARLlib-CTDE y universalidad algoritmica (sustento)"
+      ]
+    }
+  ]
+}

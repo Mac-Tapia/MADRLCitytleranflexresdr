@@ -1,0 +1,91 @@
+{
+  "source": "outputs/colab_delivery/colab_modular_overlay.zip",
+  "restored_own_source_files": [
+    {
+      "path": "configs/experiments/iquitos.yaml",
+      "sha256": "828ba02d7aeafcefbe99943ffa589fec24c39a9554f332d08ffc2ecd2a938fb3",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/__init__.py",
+      "sha256": "90cfd075d0c7dbf89802f2164bdef9fb7ead859a4a410ac61aab5001a7405731",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/algorithms/factory.py",
+      "sha256": "eb886d3dcd04c43c7f091f5e92923a64f7957f4372956bb056c5a7e49b5742c4",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/application/dataset/provenance.py",
+      "sha256": "f3a31432253d3ee4ff30860f20b83b3537dca98b6453c62b58f369e928c80699",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/application/evaluation/kpi_contract.py",
+      "sha256": "ce05f9c6a915fe4af02be0cb39c2377093ed8222ce326d96905c480c1b902219",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/application/evaluation/model_selection.py",
+      "sha256": "bf680889d8dac0646346c3334744cafc7fa8d41fb002aa4263c3a92822dff93f",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/application/evaluation/results_catalog.py",
+      "sha256": "0dc8e736f1c45f5fcc033cd8209a33e80cbbb2d9e15bdfa236201774812fad09",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/application/evaluation/scientific_evaluation.py",
+      "sha256": "be678b83a694b0c7eb56e4ad79bd71a830fafebaa6e0567212ad71e74710829f",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/application/thesis/evidence_registry.py",
+      "sha256": "45846d93a823e4c7fcd9f6232f6a746789bc01ec50822383fcc3839120a645b1",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/application/training/cli.py",
+      "sha256": "cabf75f87ca9505719499caa17a0b9c38a221ac47355026cbdc5b82259b68bbd",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/application/training/monitor.py",
+      "sha256": "6731944dd71d5d14a5f5792ffcde6beadf197f00e1c70fee38785f11ebdc6d1f",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/data/adapters/local_csv.py",
+      "sha256": "6ce753f3922542fcd194287071ea81ce32d68b0fca0a9e468c373f172db1bdac",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/data/adapters/remote_http.py",
+      "sha256": "60c7893ab625157a5fdf7cfa8a2db83b5288c18d7b988663937214ce02e9ed29",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/domain/campaigns.py",
+      "sha256": "28712da73c5a905e5e9227b9c66dcbc595d296e6245cf8e4f8f49a0f5e2fb52a",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/multicriteria/stats_tests.py",
+      "sha256": "59bebb5d98bb74830dc31312fd9db7bd66def58bcb3c282fa440dd90d994b6ad",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/presentation/training_panel.py",
+      "sha256": "c0e940aaa92e44cf50a8e744028577edc422838084b1d78b35917d9f8aba6098",
+      "matches_inventory": true
+    },
+    {
+      "path": "uc3m/reward/hphi.py",
+      "sha256": "7fc3fafa50b8f0b5ce7318bf32979bde0e6a8398611905b918115ea1ac02124f",
+      "matches_inventory": true
+    }
+  ],
+  "note": "Exact byte matches only. Not a full checkout or dependency copy."
+}

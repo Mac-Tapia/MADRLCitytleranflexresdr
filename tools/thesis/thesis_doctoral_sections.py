@@ -1991,7 +1991,7 @@ def verify_doctoral_docx(path: Path) -> dict:
         "has_pe_answers": "Respuesta a PE.1" in text and "Respuesta a PE.2" in text and "Respuesta a PE.3" in text,
         "has_multiobjetivo": "multiobjetivo" in text.lower() or "185" in text,
         "has_drive_figures": "timeseries.csv" in text.lower() or "artefactos drive" in text.lower(),
-        "has_referencias_apa": "Referencias_APA.md" in text or "referencias bibliograficas" in text.lower(),
+        "has_referencias_apa": "referencias.md" in text or "referencias bibliograficas" in text.lower(),
         "complete": (
             all(section_ok.values())
             and n_tables >= required_tables_min

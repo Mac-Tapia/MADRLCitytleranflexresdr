@@ -1,0 +1,487 @@
+ M .github/workflows/ci.yml
+ M .gitignore
+ M .vscode/tasks.json
+ m CityLearn
+ M README.md
+ M data/audits/evaluation_tools_inventory.json
+ D data/audits/objective_weight_sensitivity_dry_run.json
+ D data/dataset_audit/iquitos_citylearn_v3_dataset_evaluation.json
+ D data/dataset_audit/training_dataset_ready_manifest.audit_postcheck.json
+ D data/dataset_audit/training_dataset_ready_manifest.audit_precheck.json
+ D data/dataset_audit/training_dataset_ready_manifest.audit_supervision.json
+ M deploy/README.md
+ D deploy/aws/README_DEPLOY_AWS.md
+ D deploy/aws/README_TRAINING_AWS.md
+ D deploy/aws/iac-training/main.tf
+ D deploy/aws/iac-training/outputs.tf
+ D deploy/aws/iac-training/variables.tf
+ M deploy/aws/iac/main.tf
+ D deploy/aws/training/Dockerfile
+ D deploy/aws/training/bootstrap_ubuntu_gpu.sh
+ D deploy/aws/training/check_aws_training_ready.sh
+ D deploy/aws/training/docker-compose.yml
+ D deploy/aws/training/rotate_training_log.py
+ D deploy/aws/training/run_aws_training.sh
+ D deploy/aws/training/sync_outputs_s3.sh
+ D deploy/aws/training/tail_aws_training.sh
+ M deploy/dashboard/app.py
+ M deploy/docker-compose.aws.yml
+ M deploy/docker-compose.yml
+ D deploy/edge/README_DESPLIEGUE_FISICO.md
+ M deploy/inference/app.py
+ M deploy/inference/model_loader.py
+ M deploy/inference/test_app.py
+ D deploy/plant-adapter/Dockerfile
+ D deploy/plant-adapter/modbus_adapter.py
+ D deploy/plant-adapter/replay_adapter.py
+ D deploy/plant-adapter/requirements.txt
+ M docs/00_INDEX.md
+ D docs/CAP2_CONTROL_EDIFICIO_ACTOR_CRITIC_FIGURE_PATCH_REPORT_2026-07-29.json
+ D docs/CAP2_DECPOMDP_DISTRICT_BUILDING_PATCH_REPORT_2026-07-29.json
+ D docs/CAP2_MADRL_ADECUACIONES_PATCH_REPORT_2026-07-29.json
+ D docs/CAP2_MODELADO_MATEMATICO_PATCH_REPORT_2026-07-29.json
+ D docs/CAP36_DECPOMDP_CROSSREF_PATCH_REPORT_2026-07-29.json
+ D docs/CAP3_CUASIEXPERIMENTAL_PATCH_REPORT_2026-07-29.json
+ D docs/CAP4_DECPOMDP_IMPL_ALIGN_PATCH_REPORT_2026-07-29.json
+ D docs/CAP4_IMPLEMENTACION_PATCH_REPORT_2026-07-29.json
+ D docs/CAP5_DISTRICT_BUILDING_KPI_RANKINGS_PATCH_REPORT_2026-07-29.json
+ D docs/CAP5_KPI_CATALOG_PATCH_REPORT_2026-07-29.json
+ D docs/CAP6_DECPOMDP_XREF_PATCH_REPORT_2026-07-29.json
+ D docs/CIERRE_FIGURAS_WORD_VERIFICACION_2026-07-29.md
+ D docs/CIERRE_MULTICRITERIA_REAL_DRIVE_50EP_2026-07-29.json
+ D docs/CITYLEARN_ASSETS_INTEGRATION_PATCH_REPORT_2026-07-29.json
+ D docs/COMPLETE_FIGURES_CATALOG_WORD_PATCH_REPORT_2026-07-29.json
+ D docs/ESTRATEGIA_3PILARES_MADRL.md
+ D docs/HISTORIA_CREACION_PROYECTO_MADRL_CITYLEARN.md
+ D docs/IMPACT_CRITERIA_CONTROL_RECURSOS_PATCH_REPORT_2026-07-29.json
+ D docs/Informe_tesis_MADRL_auditoria_IV_V_VI_VII_final.docx
+ D docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx
+ D docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_auditoria.json
+ D docs/LISTA_EJECUCION_COLAB_A100.md
+ D docs/MANUAL_EJECUCION_DESDE_CERO_COLAB_A100.md
+ D docs/MANUAL_INSTALACION_DEPENDENCIAS.md
+ D docs/MULTICRITERIA_FIGURES_PATCH_REPORT_2026-07-29.json
+ D docs/PERFORMANCE_COMPARISON_WORD_PATCH_REPORT_2026-07-29.json
+ D docs/SCALABLEDCPOMDP.pdf
+ D docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.json
+ D docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.md
+ D docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx
+ D docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.md
+ D docs/VEREDICTO_METODOLOGICO_2026-07-18.md
+ M docs/analisis_reorganizacion_tools_dataset.md
+ M docs/analisis_scripts_vs_tools_tesis.md
+ D docs/analisis_scripts_vs_tools_tesis_ADDENDUM_2026-07-29.md
+ D docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png
+ D docs/architecture/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf
+ D docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md
+ D docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf
+ D docs/architecture/ARQUITECTURA_PROYECTO_DEFENSA.md
+ D docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md
+ D docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png
+ D docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.svg
+ D docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_ilustrada.png
+ D docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_simbologia_v2.png
+ D docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md
+ D docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf
+ D docs/architecture/DATASET_CONSTRUCTION_PIPELINE.pdf
+ D docs/architecture/ENTRENAMIENTO_MODULAR_COLAB.md
+ D docs/architecture/ENTRENAMIENTO_MODULAR_LOCAL.md
+ D docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md
+ D docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf
+ D docs/architecture/FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png
+ D docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf
+ D docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.png
+ D docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.png
+ D docs/architecture/_refs/citylearn_v2_environment_docs.jpg
+ D docs/architecture/_refs/citylearn_v2_environment_jsdelivr.jpg
+ M docs/architecture/dataset_construction_pipeline.md
+ D docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md
+ D docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md
+ D docs/audits/HANDOFF_AUDITOR_LOCAL.md
+ D docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_DER_IQUITOS.md
+ D docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_EV_IQUITOS.md
+ D docs/audits/INFORME_AUDITORIA_PARAMETROS_EDIFICIOS_IQUITOS.md
+ D docs/audits/INFORME_CORRECCION_TRAZABILIDAD_MADRL_V4_2026-06-17.md
+ D docs/audits/INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md
+ D docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md
+ D docs/audits/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md
+ D docs/audits/INFORME_VALIDACION_INTEGRAL_CREACION_DATASET_CITYLEARN_IQUITOS.md
+ D docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md
+ D docs/audits/MATRIZ_LEVANTAMIENTO_OBSERVACIONES_JURADO_2026-10-31.md
+ M docs/contributions/CityLearn/CHANGES.md
+ M docs/contributions/MicroGrids/CHANGES.md
+ D docs/decisions/ADR-OPEN-ARTIFACT-STORE.md
+ D docs/decisions/ADR-SIMULATOR-PORT-DEFERRED.md
+ D docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md
+ D docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md
+ D docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md
+ D docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md
+ D docs/failures/agent-auto-publish-unscoped.md
+ D docs/superpowers/plans/2026-10-31-foundation-open-source-spec-kit-plan.md
+ D docs/superpowers/plans/2026-10-31-jury-observations-remediation-plan.md
+ D docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md
+ D docs/superpowers/plans/2026-10-31-multiobjective-domain-plan.md
+ D docs/superpowers/plans/2026-10-31-orchestration-artifacts-plan.md
+ D docs/superpowers/plans/2026-10-31-thesis-agents-plan.md
+ D docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md
+ D docs/tesis_capitulos/00_INDICE.md
+ D docs/tesis_capitulos/AUDITORIA_CUMPLIMIENTO.md
+ D docs/tesis_capitulos/AUDITORIA_FINAL_CAP4_7_MATRIZ.md
+ D docs/tesis_capitulos/Capitulo_1_Introduccion.md
+ D docs/tesis_capitulos/Capitulo_1_PG_PE_OE_H_EXACTO.md
+ D docs/tesis_capitulos/Capitulo_2_Marco_Teorico.md
+ D docs/tesis_capitulos/Capitulo_3_Metodologia.md
+ D docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md
+ D docs/tesis_capitulos/Capitulo_5_Resultados.md
+ D docs/tesis_capitulos/Capitulo_6_Conclusiones.md
+ D docs/tesis_capitulos/Capitulo_7_Recomendaciones.md
+ D docs/tesis_capitulos/Referencias_APA.md
+ D docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md
+ D "docs/thesis/Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx"
+ M docs/workflow_manifest.json
+ M examples_madrl_v3/madrl_citylearn_v3_cli.ipynb
+ D examples_madrl_v3/madrl_citylearn_v3_load_environment.ipynb
+ M examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb
+ M examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb
+ M examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb
+ ? external/MAAC
+ m external/MicroGrids
+ M governance/artifact_retention_policy.yaml
+ M governance/dependency_roles.yaml
+ M pyproject.toml
+ D scripts/LANZAR_ENTRENAMIENTO_V4.bat
+ M scripts/README.md
+ D scripts/launch_citylearn_v3_multiseed_campaign.ps1
+ D scripts/monitor_citylearn_training_visible.ps1
+ M scripts/quality/run_orchestration_gates.ps1
+ D scripts/regenerate_multicriteria_drive_50ep_closure.py
+ D scripts/restart_happo_masac_v3.ps1
+ D scripts/run_3madrl_parallel.ps1
+ D scripts/run_citylearn_v3_full_training_visible.ps1
+ D scripts/training/launch_full_campaign.py
+ D scripts/training_launcher_window.ps1
+ D scripts/training_resume_window.ps1
+ D specs/001-open-source-provenance/plan.md
+ D specs/001-open-source-provenance/spec.md
+ D specs/001-open-source-provenance/tasks.md
+ D specs/002-multiobjective-policy/plan.md
+ D specs/002-multiobjective-policy/spec.md
+ D specs/002-multiobjective-policy/tasks.md
+ D specs/003-modular-orchestration/plan.md
+ D specs/003-modular-orchestration/spec.md
+ D specs/003-modular-orchestration/tasks.md
+ D specs/004-execution-manifests/plan.md
+ D specs/004-execution-manifests/spec.md
+ D specs/004-execution-manifests/tasks.md
+ D specs/005-scientific-evaluation/plan.md
+ D specs/005-scientific-evaluation/spec.md
+ D specs/005-scientific-evaluation/tasks.md
+ D specs/006-thesis-evidence/plan.md
+ D specs/006-thesis-evidence/spec.md
+ D specs/006-thesis-evidence/tasks.md
+ D specs/007-local-agent-harness/plan.md
+ D specs/007-local-agent-harness/spec.md
+ D specs/007-local-agent-harness/tasks.md
+ D specs/008-artifacts-data/plan.md
+ D specs/008-artifacts-data/spec.md
+ D specs/008-artifacts-data/tasks.md
+ D specs/009-jury-observations/plan.md
+ D specs/009-jury-observations/spec.md
+ D specs/009-jury-observations/tasks.md
+ D specs/010-local-training-panel/plan.md
+ D specs/010-local-training-panel/spec.md
+ D specs/010-local-training-panel/tasks.md
+ D specs/011-dataset-to-delivery-pipeline/plan.md
+ D specs/011-dataset-to-delivery-pipeline/spec.md
+ D specs/011-dataset-to-delivery-pipeline/tasks.md
+ D specs/012-repository-hygiene/plan.md
+ D specs/012-repository-hygiene/spec.md
+ D specs/012-repository-hygiene/tasks.md
+ M specs/STATUS.md
+ M tests/acceptance/test_acceptance_gates.py
+ M tests/acceptance/test_pipeline_smoke.py
+ M tests/contract/multiobjective/test_objective_policy_drift.py
+ M tests/contract/test_campaign_manifest.py
+ M tests/contract/test_dependency_roles.py
+ M tests/contract/test_import_architecture.py
+ M tests/contract/test_spec_kit_consistency.py
+ M tests/contract/test_weight_single_source.py
+ M tests/integration/test_experiment_runner.py
+ M tests/ops/test_capture_modernization_baseline.py
+ D tests/ops/test_local_launcher_dataset_gate.py
+ M tests/ops/test_modular_colab_notebook.py
+ M tests/uc3m/test_algorithm_factory.py
+ M tests/uc3m/test_data_adapters_remote.py
+ M tests/uc3m/test_data_ingestion.py
+ M tests/uc3m/test_hphi.py
+ M tests/uc3m/test_reward_term_telemetry.py
+ M tests/unit/application/test_campaign_statistical_report.py
+ M tests/unit/application/test_dataset_gate.py
+ M tests/unit/application/test_scientific_evaluation.py
+ D tests/unit/application/training/test_colab.py
+ M tests/unit/domain/test_pareto.py
+ M tests/unit/evaluation/test_tools_use_results_catalog.py
+ M tools/colab/build_modular_colab_notebook.py
+ D tools/colab/clean_tutorial_notebook.py
+ D tools/colab/generate_colab_notebook.py
+ D tools/colab/harden_colab_notebook_launch.py
+ D tools/colab/patch_monitor_artifact_truth.py
+ D tools/colab/patch_monitor_panel.py
+ D tools/colab/patch_notebook_a100.py
+ D tools/colab/patch_notebook_final.py
+ D tools/colab/patch_output_layout_simple.py
+ D tools/colab/patch_tutorial_notebook.py
+ D tools/colab/test_notebook_cells.py
+ D tools/colab/validate_colab_resume_from_drive.py
+ D tools/colab/validate_colab_two_phase.py
+ D tools/colab/validate_notebook_sync.py
+ D tools/colab/verify_notebook.py
+ M tools/dataset/audit_der_sizing.py
+ M tools/dataset/audit_training_dataset_provenance.py
+ M tools/dataset/dimension_ev_chargers.py
+ M tools/dataset/distill_building_loads.py
+ M tools/dataset/evaluate_iquitos_citylearn_v3_dataset.py
+ M tools/dataset/fix_schema_cooling.py
+ M tools/dataset/fix_solar_pvlib.py
+ M tools/dataset/generate_b01_billing.py
+ M tools/dataset/generate_iquitos_dataset.py
+ M tools/dataset/size_bess_optimal.py
+ M tools/dataset/sync_controlled_machines.py
+ D tools/eval/analyze_colab_drive_multiobjective_buildings.py
+ M tools/eval/build_campaign_statistical_report.py
+ D tools/eval/compute_drive50_district_building_kpi_rankings.py
+ D tools/eval/generate_madrl_performance_comparison_figures.py
+ D tools/eval/run_complete_drive_kpi_objective_analysis.py
+ M tools/eval/run_notebook_hypothesis_pipeline.py
+ D tools/eval/run_problem_objective_hypothesis_statistical_analysis.py
+ M tools/eval/select_best_madrl_district_building.py
+ M tools/figures/extract_mermaid_diagrams.py
+ M tools/figures/generate_architecture_pdfs.py
+ M tools/figures/generate_architecture_pngs.py
+ D tools/figures/generate_citylearn_v3_building_control_figure.py
+ M tools/figures/sync_mermaid_diagrams.py
+ M tools/ops/audit_modular_training.py
+ M tools/ops/audit_objective_policy_drift.py
+ M tools/ops/capture_modernization_baseline.py
+ M tools/ops/verify_workflow_integrity.py
+ M tools/thesis/README.md
+ M tools/thesis/_audit_word_cap_ranges.py
+ M tools/thesis/audit_decpomdp_crosschapter_word.py
+ M tools/thesis/build_defensa_pdf_pillow.py
+ M tools/thesis/checklist_h0g_exploratoria_residuales.py
+ M tools/thesis/generate_borrador_tesis_docx.py
+ M tools/thesis/generate_tesis_doctoral_final_docx.py
+ M tools/thesis/inject_md_chapters_4_7_to_canons.py
+ D tools/thesis/patch_cap1_cap3_friedman_protocol_docx.py
+ M tools/thesis/patch_cap1_cap3_manual_docx.py
+ M tools/thesis/patch_cap1_h0g_formal_decision_docx.py
+ D tools/thesis/patch_cap2_control_edificio_actor_critic_figure_docx.py
+ D tools/thesis/patch_cap2_decpomdp_district_building_docx.py
+ M tools/thesis/patch_cap2_madrl_adecuaciones_docx.py
+ M tools/thesis/patch_cap2_modelado_matematico_docx.py
+ M tools/thesis/patch_cap36_decpomdp_crossref_docx.py
+ M tools/thesis/patch_cap3_cuasiexperimental_docx.py
+ D tools/thesis/patch_cap3_multiobjective_hierarchy_docx.py
+ M tools/thesis/patch_cap4_decpomdp_impl_align_docx.py
+ M tools/thesis/patch_cap4_implementacion_docx.py
+ D tools/thesis/patch_cap5_district_building_kpi_rankings_docx.py
+ D tools/thesis/patch_cap5_hipotesis_stats_exactas_docx.py
+ M tools/thesis/patch_cap5_kpi_catalog_docx.py
+ M tools/thesis/patch_cap6_decpomdp_xref_docx.py
+ D tools/thesis/patch_citylearn_assets_integration_docx.py
+ M tools/thesis/patch_complete_figures_catalog_docx.py
+ D tools/thesis/patch_h0g_remove_exploratoria_verdict_docx.py
+ D tools/thesis/patch_impact_criteria_control_recursos_docx.py
+ M tools/thesis/patch_informe_resumen_friedman_docx.py
+ D tools/thesis/patch_integral_word_eval_v2_anchors_20260729.py
+ M tools/thesis/patch_multicriteria_figures_docx.py
+ M tools/thesis/patch_performance_comparison_docx.py
+ M tools/thesis/patch_tesis_resumen_h0g_align_docx.py
+ D tools/thesis/patch_topsis_medida_formal_cap5_6_7_docx.py
+ M tools/thesis/rebuild_cap4_7_atomic_docx.py
+ M tools/thesis/thesis_antecedents_data.py
+ M tools/thesis/thesis_doctoral_sections.py
+ M tools/thesis/thesis_references_apa.py
+ M tools/thesis/thesis_word_canons.py
+ M tools/thesis/update_word_quantitative_50episodes.py
+ M tools/thesis/validate_integral_word_50ep_4madrl.py
+ D tools/training/prune_citylearn_v3_training_artifacts.ps1
+ M uc3m/algorithms/factory.py
+ M uc3m/application/evaluation/model_selection.py
+ M uc3m/application/evaluation/results_catalog.py
+ M uc3m/application/evaluation/scientific_evaluation.py
+ M uc3m/application/thesis/evidence_registry.py
+ M uc3m/application/training/cli.py
+ D uc3m/application/training/colab.py
+ M uc3m/application/training/layout.py
+ M uc3m/application/training/monitor.py
+ M uc3m/application/training/preflight.py
+ M uc3m/application/training/runner.py
+ D uc3m/configs/algorithms/happo.yaml
+ D uc3m/configs/algorithms/maac.yaml
+ D uc3m/configs/algorithms/masac.yaml
+ D uc3m/configs/algorithms/matd3.yaml
+ D uc3m/configs/base.yaml
+ D uc3m/configs/iquitos.yaml
+ M uc3m/data/adapters/local_csv.py
+ M uc3m/data/adapters/remote_http.py
+ M uc3m/domain/evidence.py
+ M uc3m/domain/pareto.py
+ M uc3m/multicriteria/stats_tests.py
+ M uc3m/reward/hphi.py
+ M uc3m/reward/term_telemetry.py
+ D uc3m/train.py
+?? PT_TAPIA_ZAMBRANO_v6_Iquitos_2.docx
+?? configs/algorithms/
+?? configs/dataset/
+?? configs/evaluation/
+?? configs/experiments/iquitos.yaml
+?? data/audits/weight_sensitivity.json
+?? data/campaigns/
+?? data/dataset_audit/dataset_evaluation.json
+?? data/dataset_audit/ready_postcheck.json
+?? data/dataset_audit/ready_precheck.json
+?? data/dataset_audit/ready_supervision.json
+?? data/maintenance/
+?? deploy/aws/deploy.md
+?? deploy/edge/deploy.md
+?? deploy/plant_adapter/
+?? docs/analisis_tesis_adenda.md
+?? docs/architecture/arquitectura.png
+?? docs/architecture/colab.md
+?? docs/architecture/control.png
+?? docs/architecture/control.svg
+?? docs/architecture/control_ilustrado.png
+?? docs/architecture/control_simbolos.png
+?? docs/architecture/coordinacion.md
+?? docs/architecture/coordinacion.pdf
+?? docs/architecture/dataset.pdf
+?? docs/architecture/defensa.md
+?? docs/architecture/entrenamiento.md
+?? docs/architecture/entrenamiento.pdf
+?? docs/architecture/flujo.md
+?? docs/architecture/flujo.pdf
+?? docs/architecture/local.md
+?? docs/architecture/operacion.md
+?? docs/architecture/operacion.pdf
+?? docs/architecture/plano.pdf
+?? docs/architecture/plano.png
+?? docs/architecture/runbook.md
+?? docs/architecture/trabajo.png
+?? docs/auditoria_tesis.docx
+?? docs/audits/architecture_thesis_20261101/
+?? docs/audits/auditoria_entrenamiento.md
+?? docs/audits/creacion_dataset.md
+?? docs/audits/dataset.md
+?? docs/audits/deep_20261101/
+?? docs/audits/der.md
+?? docs/audits/destilacion.md
+?? docs/audits/edificios.md
+?? docs/audits/encargo.md
+?? docs/audits/evaluacion_dataset.md
+?? docs/audits/figuras.md
+?? docs/audits/historicos.md
+?? docs/audits/informe.json
+?? docs/audits/jurado.md
+?? docs/audits/metodologia.md
+?? docs/audits/nombres.md
+?? docs/audits/recompensas.md
+?? docs/audits/tecnica.md
+?? docs/audits/topsis.md
+?? docs/audits/trazabilidad.md
+?? docs/audits/vehiculos.md
+?? docs/audits/vram.md
+?? docs/audits/word/
+?? docs/chapters/
+?? docs/colab.md
+?? docs/colab_checklist.md
+?? docs/decisions/artifact_store.md
+?? docs/decisions/escenarios.md
+?? docs/decisions/organizacion.md
+?? docs/decisions/paralelismo.md
+?? docs/decisions/recompensas.md
+?? docs/decisions/simulator.md
+?? docs/design/
+?? docs/estrategia.md
+?? docs/failures/agent_publish.md
+?? docs/guia_tesis.md
+?? docs/historia.md
+?? docs/informe.docx
+?? docs/instalacion.md
+?? docs/plans/
+?? docs/scalable_decpomdp.pdf
+?? docs/tesis.docx
+?? docs/thesis/aportes.md
+?? docs/thesis/resultados_preliminares.xlsx
+?? examples_madrl_v3/load_environment.ipynb
+?? governance/naming.yaml
+?? governance/repository_layout.yaml
+?? scripts/close_multicriteria.py
+?? scripts/maintenance/
+?? scripts/quality/run_fresh_training_gates.ps1
+?? scripts/quality/verify_ci_checkout.py
+?? specs/001-provenance/
+?? specs/002-objectives/
+?? specs/003-orchestration/
+?? specs/004-manifests/
+?? specs/005-evaluation/
+?? specs/006-evidence/
+?? specs/007-agents/
+?? specs/008-artifacts/
+?? specs/009-jury/
+?? specs/010-panel/
+?? specs/011-pipeline/
+?? specs/012-hygiene/
+?? tests/conftest.py
+?? tests/fresh_training/
+?? tests/ops/test_colab_notebook_cells.py
+?? tests/ops/test_colab_session.py
+?? tests/uc3m/test_reward_kpi_alignment.py
+?? tests/uc3m/test_reward_net_billing.py
+?? tools/colab/colab_session.py
+?? tools/dataset/build_fresh_campaign_dataset.py
+?? tools/dataset/osinergmin_pliegos.py
+?? tools/dataset/size_der_microgrids.py
+?? tools/dataset/split_campaign.py
+?? tools/eval/building_analysis.py
+?? tools/eval/hypothesis.py
+?? tools/eval/kpi_rankings.py
+?? tools/eval/objective_analysis.py
+?? tools/eval/performance_figures.py
+?? tools/eval/report_fresh_campaign.py
+?? tools/figures/building_control.py
+?? tools/ops/audit_duplicate_files.py
+?? tools/ops/audit_github_readiness.py
+?? tools/ops/audit_names.py
+?? tools/ops/audit_repository_layout.py
+?? tools/ops/historical_inventory.py
+?? tools/thesis/patch_anchors.py
+?? tools/thesis/patch_assets.py
+?? tools/thesis/patch_cap2_control.py
+?? tools/thesis/patch_cap2_decpomdp.py
+?? tools/thesis/patch_cap3_hierarchy.py
+?? tools/thesis/patch_cap5_rankings.py
+?? tools/thesis/patch_cap5_stats.py
+?? tools/thesis/patch_criteria.py
+?? tools/thesis/patch_friedman.py
+?? tools/thesis/patch_h0g_verdict.py
+?? tools/thesis/patch_topsis.py
+?? tools/training/prune_artifacts.ps1
+?? uc3m/adapters/algorithms/learning_observer.py
+?? uc3m/adapters/algorithms/native_entrypoint.py
+?? uc3m/adapters/citylearn/fresh_observations.py
+?? uc3m/adapters/citylearn/frozen_adapters.py
+?? uc3m/adapters/citylearn/policy_inference.py
+?? uc3m/application/dataset/
+?? uc3m/application/evaluation/fresh_analysis.py
+?? uc3m/application/evaluation/frozen_evaluation.py
+?? uc3m/application/evaluation/kpi_contract.py
+?? uc3m/application/pipeline.py
+?? uc3m/application/training/drive_sync.py
+?? uc3m/application/training/fresh_acceptance.py
+?? uc3m/application/training/fresh_campaign.py
+?? uc3m/application/training/fresh_policy.py
+?? uc3m/application/training/fresh_tuning.py
+?? uc3m/application/training/integrity.py
+?? uc3m/application/training/phases.py
+?? uc3m/domain/campaigns.py

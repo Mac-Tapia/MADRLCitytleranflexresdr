@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-07-29T16:51:35",
+  "policy": "solo 2 Word canonicos; dims CityLearnEnv 54-327 / 5-44 / ds=1856",
+  "marker": "Tabla 2.A — Dimensiones Dec-POMDP reales por edificio",
+  "results": [
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
+      "ok": true,
+      "skipped_insert": true,
+      "notation_fixes": [
+        "table4:A_i->formula"
+      ],
+      "body_fixes": [],
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Tesis_Doctoral_MADRL_CityLearn_Iquitos_before_cap2_decpomdp_20260729_165133.docx"
+    },
+    {
+      "path": "D:\\MADRLCitytleranflexresdr\\docs\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+      "ok": true,
+      "skipped_insert": true,
+      "notation_fixes": [
+        "table1:A_i->formula"
+      ],
+      "body_fixes": [],
+      "backup": "D:\\MADRLCitytleranflexresdr\\outputs\\_word_backups\\Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_before_cap2_decpomdp_20260729_165134.docx"
+    }
+  ]
+}

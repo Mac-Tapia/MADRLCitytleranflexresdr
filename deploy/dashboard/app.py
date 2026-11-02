@@ -2,7 +2,7 @@
 
 Muestra:
 - Estado/metadatos del servicio de inferencia (`GET /model/info`, `/health`)
-- Últimas acciones recibidas vía MQTT (publicadas por plant-adapter en modo
+- Últimas acciones recibidas vía MQTT (publicadas por plant_adapter en modo
   ``ADAPTER_PUBLISH_MQTT=true``)
 - Formulario manual para invocar `/act` con observaciones de prueba
 
@@ -88,7 +88,7 @@ if st.session_state.mqtt_messages:
 else:
     st.info(
         "No se han recibido mensajes MQTT aún. "
-        "Asegúrate de que plant-adapter corra con ADAPTER_PUBLISH_MQTT=true."
+        "Asegúrate de que plant_adapter corra con ADAPTER_PUBLISH_MQTT=true."
     )
 
 

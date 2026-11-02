@@ -2,8 +2,8 @@
 """Validación integral de los 2 Word canónicos vs ground truth 50 ep / 4 MADRL.
 
 Compara cifras y claims cuantitativos de:
-  - docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx
-  - docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx
+  - docs/tesis.docx
+  - docs/informe.docx
 contra artefactos reales del repo (best_madrl, ranking evaluate_v2, CANON MD).
 
 No inventa números. Emite:
@@ -439,7 +439,8 @@ def run_checks(gt: dict, extracts: dict[str, WordExtract]) -> list[CheckResult]:
 
     # Canon inventory
     docs_root = REPO / "docs"
-    docx_root = sorted(p.name for p in docs_root.glob("*.docx"))
+    # Preserve the prior audit as non-canonical documentary provenance.
+    docx_root = sorted(p.name for p in docs_root.glob("*.docx") if p.name != 'auditoria_tesis.docx')
     if docx_root == [INFORME.name, TESIS.name] or set(docx_root) == {
         INFORME.name,
         TESIS.name,
@@ -449,7 +450,7 @@ def run_checks(gt: dict, extracts: dict[str, WordExtract]) -> list[CheckResult]:
                 id="canon_exactly_2",
                 category="inventory",
                 status="PASS",
-                message=f"Exactamente 2 Word en docs/: {docx_root}",
+                message=f"Exactamente 2 Word canonicos: {docx_root}; auditoria previa separada",
             )
         )
     else:

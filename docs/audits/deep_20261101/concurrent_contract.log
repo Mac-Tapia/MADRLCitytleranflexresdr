@@ -1,0 +1,26 @@
+.......................                                                  [100%]
+============================== warnings summary ===============================
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+tests/fresh_training/test_campaign_contract.py::test_replay_and_batch_are_declared_for_off_policy_backends
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: D:\MADRLCitytleranflexresdr\docs\audits\deep_20261101\concurrent_contract.xml -

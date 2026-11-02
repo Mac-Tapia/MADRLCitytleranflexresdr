@@ -37,7 +37,7 @@ def resolve_quantitative_source() -> Path:
 
 SOURCE_DOCX = resolve_quantitative_source()
 OUTPUT_DOCX = INFORME
-AUDIT_JSON = ROOT / "docs" / "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_auditoria.json"
+AUDIT_JSON = ROOT / 'docs' / 'audits' / 'informe.json'
 ANALYSIS = (
     ROOT
     / "outputs"
@@ -1280,7 +1280,7 @@ add_paragraph_before(
     document,
     annex_b_anchor,
     (
-        "El script de cálculo es tools\\run_complete_drive_kpi_objective_analysis.py y el script de "
+        "El script de cálculo es tools\\objective_analysis.py y el script de "
         "integración documental es tools\\update_word_quantitative_50episodes.py."
     ),
 )

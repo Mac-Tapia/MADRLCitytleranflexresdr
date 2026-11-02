@@ -534,7 +534,7 @@ def build(*, max_chapter: int | None = None):
       "fisico y los KPI evaluate_v2, y agrega el contrato Dec-POMDP/CTDE, objetivos OE.1–OE.3, "
       "recompensa multiobjetivo y adaptadores a backends MADRL oficiales en external/. "
       "Fuentes: CityLearn/CITYLEARN_V3_MADRL.md, CityLearn/citylearn/v3/, "
-      "docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md y Módulo D del "
+      "docs/architecture/flujo.md y Módulo D del "
       "skill agent-skills/madrl-citylearn-thesis-plan.")
     p(doc,
       "Distincion UC3M (7 ejes) vs capa v3 ejecutada (3 ejes). El sustento formal "
@@ -1024,8 +1024,8 @@ def build(*, max_chapter: int | None = None):
     p(doc,
       "Validacion de software (Cap. IV): pytest tests/uc3m/ + tests/citylearn_v3/ en el venv "
       "del proyecto (184 passed el 2026-07-29; ver seccion 4.12 del Word canónico vía "
-      "tools/thesis/patch_cap4_implementacion_docx.py y docs/tesis_capitulos/"
-      "Capitulo_4_Desarrollo_Propuesta.md). La fachada UC3M y el schema smoke no sustituyen "
+      "tools/thesis/patch_cap4_implementacion_docx.py y docs/chapters/"
+      "cap4.md). La fachada UC3M y el schema smoke no sustituyen "
       "las 12 corridas ni la batería estadística del Capitulo 5.")
 
     if max_chapter is not None and max_chapter < 5:
@@ -1034,7 +1034,7 @@ def build(*, max_chapter: int | None = None):
         stats = reference_stats()
         p(
             doc,
-            f"Formato APA (7.a ed.). Fuente consolidada del skill: docs/tesis_capitulos/Referencias_APA.md "
+            f"Formato APA (7.a ed.). Fuente consolidada del skill: docs/chapters/referencias.md "
             f"({stats['from_apa_md']} entradas) + citas en texto y protocolo estadistico RL "
             f"({stats['total_unique']} referencias unicas"
             + (f"; {stats['pv_marked']} con metadatos bibliograficos incompletos)." if int(stats['pv_marked']) else ")."),
@@ -1250,7 +1250,7 @@ def build(*, max_chapter: int | None = None):
     stats = reference_stats()
     p(
         doc,
-        f"Formato APA (7.a ed.). Fuente consolidada del skill: docs/tesis_capitulos/Referencias_APA.md "
+        f"Formato APA (7.a ed.). Fuente consolidada del skill: docs/chapters/referencias.md "
         f"({stats['from_apa_md']} entradas) + citas en texto y protocolo estadistico RL "
         f"({stats['total_unique']} referencias unicas"
         + (f"; {stats['pv_marked']} con metadatos bibliograficos incompletos)." if int(stats['pv_marked']) else ")."),

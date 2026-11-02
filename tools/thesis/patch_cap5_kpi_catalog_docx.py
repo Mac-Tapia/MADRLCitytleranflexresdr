@@ -33,13 +33,13 @@ if str(_THESIS_DIR) not in sys.path:
 from thesis_word_canons import DOCS, INFORME, TESIS, require_tesis  # noqa: E402
 from sync_cap5_to_canon_words import sync as sync_cap5  # noqa: E402
 
-REPORT = DOCS / "CAP5_KPI_CATALOG_PATCH_REPORT_2026-07-29.json"
+REPORT = DOCS / 'audits' / 'word' / 'cap5_kpis.json'
 MARKER = "5.1.1 catalogo de kpis citylearn v3"
 MATRIX_CSV = REPO / "outputs" / "thesis_objective_evidence" / "KPIs_y_metricas.csv"
 ALL_VALUES_CSV = (
     REPO / "outputs" / "_drive_madrl" / "kpi_recalc_20260728" / "tables" / "all_evaluate_v2_kpis_long.csv"
 )
-CAP5_MD = DOCS / "tesis_capitulos" / "Capitulo_5_Resultados.md"
+CAP5_MD = DOCS / 'chapters' / 'cap5.md'
 
 RUNTIME_EXTRA = [
     ("OE1", "flex_composite", "runtime (all_values)"),

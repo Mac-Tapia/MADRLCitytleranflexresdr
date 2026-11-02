@@ -1,0 +1,201 @@
+schema_version: 1
+# Limits are project preferences, not GitHub/PEP requirements.
+directory_limit: 24
+file_limit: 40
+excluded_roots:
+  - CityLearn
+  - external
+  - tools/skills
+  - .agents/skills
+  - .claude/skills
+  - .superpowers
+  - .venv39-citylearn-v3
+  - .vscode
+  - data/maintenance/names
+  - outputs
+excluded_components: [.git, __pycache__, .pytest_cache, .ruff_cache, .tmp, node_modules, build, dist]
+mandatory_names: [README.md, AGENTS.md, CLAUDE.md, Dockerfile, LICENSE, LICENSE.txt, CHANGELOG.md, CHANGES.md, STATUS.md, CODEOWNERS, MANIFEST.in, 00_INDEX.md, ISSUE_TEMPLATE.md, PULL_REQUEST_TEMPLATE.md]
+conventional_paths:
+  .github/*: GitHub client and workflow conventions; existing short names retained.
+  .specify/*: Spec Kit client templates and command names; IDs and paths are tool contracts.
+  .claude/*: Client settings and hooks; do not rename client contracts.
+  deploy/docker-compose.yml: Docker Compose discovery name.
+  deploy/docker-compose.aws.yml: Existing Compose override selected by deployment clients.
+exceptions:
+  docs/architecture/AGENT_HARNESS.md: Stable contract referenced by protected local skills.
+  docs/contributions/HARL: Upstream repository identity used by provenance consumers.
+  docs/contributions/MAAC: Upstream repository identity used by provenance consumers.
+  docs/contributions/MARL: Upstream repository identity used by provenance consumers.
+  docs/contributions/MARLlib: Upstream repository identity used by provenance consumers.
+  docs/contributions/MATD3implementation: Upstream repository identity used by provenance consumers.
+  docs/contributions/MicroGrids: Upstream repository identity used by provenance consumers.
+  docs/contributions/CityLearn: Upstream repository identity used by provenance consumers.
+immutable_roots:
+  - data/audits
+  - data/dataset_audit
+  - data/maintenance/historicos
+  - data/maintenance/retire_historical_20261101
+  - governance/naming.yaml
+immutable_patterns:
+  - tests/fresh_training/test_names.py  # Explicit old-path fixtures, not active file consumers.
+  - docs/*.json
+  - docs/audits/*.json
+  - docs/audits/word/*.json
+mutable_json_paths: [docs/workflow_manifest.json, data/audits/evaluation_tools_inventory.json]
+# Old paths below are explicit provenance. Never rewrite this registry using
+# its own map. Only this closed list is authorized for native movement.
+moves:
+  # Proposed runtime roots: no existing outputs are moved. Update active
+  # clients and examples to create new campaigns with short aliases directly.
+  outputs/fresh_campaigns/: outputs/campaigns/
+  docs/superpowers/plans/: docs/plans/
+  docs/superpowers/specs/: docs/design/
+  docs/tesis_capitulos/: docs/chapters/
+  data/maintenance/retire_historical_20261101/: data/maintenance/historicos/
+  docs/superpowers/plans/renombrar_rutas.md: docs/plans/renombrar_rutas.md
+  docs/superpowers/plans/2026-11-01-entrenamiento-nuevo-sin-historicos-plan.md: docs/plans/entrenamiento.md
+  docs/superpowers/plans/2026-11-01-encargo-agente-entrenamiento-nuevo.md: docs/plans/encargo.md
+  docs/superpowers/specs/2026-11-01-entrenamiento-nuevo-sin-resultados-historicos-design.md: docs/design/entrenamiento.md
+  docs/superpowers/specs/2026-10-31-modernizacion-integral-open-source-design.md: docs/design/modernizacion.md
+  docs/superpowers/plans/2026-10-31-foundation-open-source-spec-kit-plan.md: docs/plans/fundacion.md
+  docs/superpowers/plans/2026-10-31-jury-observations-remediation-plan.md: docs/plans/jurado.md
+  docs/superpowers/plans/2026-10-31-modernizacion-integral-master-plan.md: docs/plans/modernizacion.md
+  docs/superpowers/plans/2026-10-31-multiobjective-domain-plan.md: docs/plans/objetivos.md
+  docs/superpowers/plans/2026-10-31-orchestration-artifacts-plan.md: docs/plans/orquestacion.md
+  docs/superpowers/plans/2026-10-31-post-audit-remediation-plan.md: docs/plans/correcciones.md
+  docs/superpowers/plans/2026-10-31-thesis-agents-plan.md: docs/plans/agentes.md
+  specs/001-open-source-provenance/: specs/001-provenance/
+  specs/002-multiobjective-policy/: specs/002-objectives/
+  specs/003-modular-orchestration/: specs/003-orchestration/
+  specs/004-execution-manifests/: specs/004-manifests/
+  specs/005-scientific-evaluation/: specs/005-evaluation/
+  specs/006-thesis-evidence/: specs/006-evidence/
+  specs/007-local-agent-harness/: specs/007-agents/
+  specs/008-artifacts-data/: specs/008-artifacts/
+  specs/009-jury-observations/: specs/009-jury/
+  specs/010-local-training-panel/: specs/010-panel/
+  specs/011-dataset-to-delivery-pipeline/: specs/011-pipeline/
+  specs/012-repository-hygiene/: specs/012-hygiene/
+  data/audits/objective_weight_sensitivity_dry_run.json: data/audits/weight_sensitivity.json
+  data/dataset_audit/iquitos_citylearn_v3_dataset_evaluation.json: data/dataset_audit/dataset_evaluation.json
+  data/dataset_audit/training_dataset_ready_manifest.audit_postcheck.json: data/dataset_audit/ready_postcheck.json
+  data/dataset_audit/training_dataset_ready_manifest.audit_precheck.json: data/dataset_audit/ready_precheck.json
+  data/dataset_audit/training_dataset_ready_manifest.audit_supervision.json: data/dataset_audit/ready_supervision.json
+  deploy/plant-adapter/: deploy/plant_adapter/
+  deploy/aws/README_DEPLOY_AWS.md: deploy/aws/deploy.md
+  deploy/edge/README_DESPLIEGUE_FISICO.md: deploy/edge/deploy.md
+  docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx: docs/tesis.docx
+  docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx: docs/informe.docx
+  docs/Informe_tesis_MADRL_auditoria_IV_V_VI_VII_final.docx: docs/auditoria_tesis.docx
+  docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS_auditoria.json: docs/audits/informe.json
+  docs/CAP2_CONTROL_EDIFICIO_ACTOR_CRITIC_FIGURE_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap2_control.json
+  docs/CAP2_DECPOMDP_DISTRICT_BUILDING_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap2_decpomdp.json
+  docs/CAP2_MADRL_ADECUACIONES_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap2_adecuaciones.json
+  docs/CAP2_MODELADO_MATEMATICO_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap2_modelo.json
+  docs/CAP3_CUASIEXPERIMENTAL_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap3_diseno.json
+  docs/CAP36_DECPOMDP_CROSSREF_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap36_referencias.json
+  docs/CAP4_DECPOMDP_IMPL_ALIGN_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap4_decpomdp.json
+  docs/CAP4_IMPLEMENTACION_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap4_implementacion.json
+  docs/CAP5_DISTRICT_BUILDING_KPI_RANKINGS_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap5_rankings.json
+  docs/CAP5_KPI_CATALOG_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap5_kpis.json
+  docs/CAP6_DECPOMDP_XREF_PATCH_REPORT_2026-07-29.json: docs/audits/word/cap6_referencias.json
+  docs/CITYLEARN_ASSETS_INTEGRATION_PATCH_REPORT_2026-07-29.json: docs/audits/word/activos.json
+  docs/COMPLETE_FIGURES_CATALOG_WORD_PATCH_REPORT_2026-07-29.json: docs/audits/word/figuras.json
+  docs/IMPACT_CRITERIA_CONTROL_RECURSOS_PATCH_REPORT_2026-07-29.json: docs/audits/word/criterios.json
+  docs/MULTICRITERIA_FIGURES_PATCH_REPORT_2026-07-29.json: docs/audits/word/multicriterio.json
+  docs/PERFORMANCE_COMPARISON_WORD_PATCH_REPORT_2026-07-29.json: docs/audits/word/comparacion.json
+  docs/CIERRE_MULTICRITERIA_REAL_DRIVE_50EP_2026-07-29.json: docs/audits/word/cierre.json
+  docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.json: docs/audits/word/topsis.json
+  docs/TOPSIS_MEDIDA_OBJETIVOS_HE_CAP5_6_7_2026-07-29.md: docs/audits/topsis.md
+  docs/CIERRE_FIGURAS_WORD_VERIFICACION_2026-07-29.md: docs/audits/figuras.md
+  docs/ESTRATEGIA_3PILARES_MADRL.md: docs/estrategia.md
+  docs/HISTORIA_CREACION_PROYECTO_MADRL_CITYLEARN.md: docs/historia.md
+  docs/LISTA_EJECUCION_COLAB_A100.md: docs/colab_checklist.md
+  docs/MANUAL_EJECUCION_DESDE_CERO_COLAB_A100.md: docs/colab.md
+  docs/MANUAL_INSTALACION_DEPENDENCIAS.md: docs/instalacion.md
+  docs/SCALABLEDCPOMDP.pdf: docs/scalable_decpomdp.pdf
+  docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos_skill.md: docs/guia_tesis.md
+  docs/VEREDICTO_METODOLOGICO_2026-07-18.md: docs/audits/metodologia.md
+  docs/analisis_scripts_vs_tools_tesis_ADDENDUM_2026-07-29.md: docs/analisis_tesis_adenda.md
+  docs/architecture/ARQUITECTURA_Y_FLUJO_TRABAJO_CITYLEARN_V3_MADRL.md: docs/architecture/flujo.md
+  docs/architecture/ARQUITECTURA_FLUJO_CITYLEARN_V3_MADRL.pdf: docs/architecture/flujo.pdf
+  docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.md: docs/architecture/entrenamiento.md
+  docs/architecture/ARQUITECTURA_OPERATIVA_ENTRENAMIENTO_VISIBLE_CITYLEARN_V3_MADRL.pdf: docs/architecture/entrenamiento.pdf
+  docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.md: docs/architecture/coordinacion.md
+  docs/architecture/COOPERACION_COORDINACION_CONTROL_DISTRITAL_MADRL.pdf: docs/architecture/coordinacion.pdf
+  docs/architecture/ARQUITECTURA_CITYLEARN_V3_MADRL.png: docs/architecture/arquitectura.png
+  docs/architecture/ARQUITECTURA_PROYECTO_DEFENSA.md: docs/architecture/defensa.md
+  docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.png: docs/architecture/control.png
+  docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC.svg: docs/architecture/control.svg
+  docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_ilustrada.png: docs/architecture/control_ilustrado.png
+  docs/architecture/CITYLEARN_V3_CONTROL_EDIFICIO_ACTOR_CRITIC_simbologia_v2.png: docs/architecture/control_simbolos.png
+  docs/architecture/DATASET_CONSTRUCTION_PIPELINE.pdf: docs/architecture/dataset.pdf
+  docs/architecture/ENTRENAMIENTO_MODULAR_COLAB.md: docs/architecture/colab.md
+  docs/architecture/ENTRENAMIENTO_MODULAR_LOCAL.md: docs/architecture/local.md
+  docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.md: docs/architecture/operacion.md
+  docs/architecture/FLUJO_OPERATIVO_ACTUAL_CITYLEARN_V3_MADRL.pdf: docs/architecture/operacion.pdf
+  docs/architecture/FLUJO_TRABAJO_CITYLEARN_V3_MADRL.png: docs/architecture/trabajo.png
+  docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.pdf: docs/architecture/plano.pdf
+  docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.png: docs/architecture/plano.png
+  docs/audits/AUDITORIA_TECNICA_SKILL_MADRL_CITYLEARN_V3.md: docs/audits/tecnica.md
+  docs/audits/DATASET_IQUITOS_DESTILACION_CITYLEARN_V3.md: docs/audits/destilacion.md
+  docs/audits/DIAGNOSTICO_Y_RETIRO_HISTORICOS_2026-11-01.md: docs/audits/historicos.md
+  docs/audits/HANDOFF_AUDITOR_LOCAL.md: docs/audits/encargo.md
+  docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_DER_IQUITOS.md: docs/audits/der.md
+  docs/audits/INFORME_AUDITORIA_DIMENSIONAMIENTO_EV_IQUITOS.md: docs/audits/vehiculos.md
+  docs/audits/INFORME_AUDITORIA_PARAMETROS_EDIFICIOS_IQUITOS.md: docs/audits/edificios.md
+  docs/audits/INFORME_CORRECCION_TRAZABILIDAD_MADRL_V4_2026-06-17.md: docs/audits/trazabilidad.md
+  docs/audits/INFORME_EVALUACION_FINAL_DATASET_IQUITOS_CITYLEARN_V3.md: docs/audits/evaluacion_dataset.md
+  docs/audits/INFORME_OPTIMIZACION_CITYLEARN_MADRL_VRAM.md: docs/audits/vram.md
+  docs/audits/INFORME_VALIDACION_DATASET_ENTRENAMIENTO_IQUITOS.md: docs/audits/dataset.md
+  docs/audits/INFORME_VALIDACION_INTEGRAL_CREACION_DATASET_CITYLEARN_IQUITOS.md: docs/audits/creacion_dataset.md
+  docs/audits/INFORME_VALIDACION_RECOMPENSAS_MULTI_OBJETIVO_MADRL.md: docs/audits/recompensas.md
+  docs/audits/MATRIZ_LEVANTAMIENTO_OBSERVACIONES_JURADO_2026-10-31.md: docs/audits/jurado.md
+  docs/decisions/ADR-OPEN-ARTIFACT-STORE.md: docs/decisions/artifact_store.md
+  docs/decisions/ADR-SIMULATOR-PORT-DEFERRED.md: docs/decisions/simulator.md
+  docs/decisions/JUSTIFICACION_DISENO_EXPERIMENTAL_ESCENARIOS_PARALELO.md: docs/decisions/escenarios.md
+  docs/decisions/JUSTIFICACION_RECOMPENSAS_MULTIOBJETIVO_MADRL.md: docs/decisions/recompensas.md
+  docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md: docs/decisions/organizacion.md
+  docs/decisions/REGISTRO_CAMBIOS_REORGANIZACION_Y_POLITICA_PARALELISMO_2026-06-13.md: docs/decisions/paralelismo.md
+  docs/failures/agent-auto-publish-unscoped.md: docs/failures/agent_publish.md
+  docs/tesis_capitulos/00_INDICE.md: docs/chapters/indice.md
+  docs/tesis_capitulos/AUDITORIA_CUMPLIMIENTO.md: docs/chapters/auditoria.md
+  docs/tesis_capitulos/AUDITORIA_FINAL_CAP4_7_MATRIZ.md: docs/chapters/auditoria_final.md
+  docs/tesis_capitulos/Capitulo_1_Introduccion.md: docs/chapters/cap1.md
+  docs/tesis_capitulos/Capitulo_1_PG_PE_OE_H_EXACTO.md: docs/chapters/cap1_objetivos.md
+  docs/tesis_capitulos/Capitulo_2_Marco_Teorico.md: docs/chapters/cap2.md
+  docs/tesis_capitulos/Capitulo_3_Metodologia.md: docs/chapters/cap3.md
+  docs/tesis_capitulos/Capitulo_4_Desarrollo_Propuesta.md: docs/chapters/cap4.md
+  docs/tesis_capitulos/Capitulo_5_Resultados.md: docs/chapters/cap5.md
+  docs/tesis_capitulos/Capitulo_6_Conclusiones.md: docs/chapters/cap6.md
+  docs/tesis_capitulos/Capitulo_7_Recomendaciones.md: docs/chapters/cap7.md
+  docs/tesis_capitulos/Referencias_APA.md: docs/chapters/referencias.md
+  docs/thesis/APORTES_SIMULACION_CITYLEARN_MADRL_TESIS.md: docs/thesis/aportes.md
+  docs/thesis/Resultados_Preliminares-GD-Iquitos_V3 (2).xlsx: docs/thesis/resultados_preliminares.xlsx
+  examples_madrl_v3/madrl_citylearn_v3_load_environment.ipynb: examples_madrl_v3/load_environment.ipynb
+  scripts/regenerate_multicriteria_drive_50ep_closure.py: scripts/close_multicriteria.py
+  tools/eval/run_problem_objective_hypothesis_statistical_analysis.py: tools/eval/hypothesis.py
+  tools/eval/analyze_colab_drive_multiobjective_buildings.py: tools/eval/building_analysis.py
+  tools/eval/compute_drive50_district_building_kpi_rankings.py: tools/eval/kpi_rankings.py
+  tools/eval/generate_madrl_performance_comparison_figures.py: tools/eval/performance_figures.py
+  tools/eval/run_complete_drive_kpi_objective_analysis.py: tools/eval/objective_analysis.py
+  tools/figures/generate_citylearn_v3_building_control_figure.py: tools/figures/building_control.py
+  tools/thesis/patch_integral_word_eval_v2_anchors_20260729.py: tools/thesis/patch_anchors.py
+  tools/thesis/patch_cap2_control_edificio_actor_critic_figure_docx.py: tools/thesis/patch_cap2_control.py
+  tools/thesis/patch_cap5_district_building_kpi_rankings_docx.py: tools/thesis/patch_cap5_rankings.py
+  tools/thesis/patch_cap1_cap3_friedman_protocol_docx.py: tools/thesis/patch_friedman.py
+  tools/thesis/patch_cap2_decpomdp_district_building_docx.py: tools/thesis/patch_cap2_decpomdp.py
+  tools/thesis/patch_cap3_multiobjective_hierarchy_docx.py: tools/thesis/patch_cap3_hierarchy.py
+  tools/thesis/patch_cap5_hipotesis_stats_exactas_docx.py: tools/thesis/patch_cap5_stats.py
+  tools/thesis/patch_citylearn_assets_integration_docx.py: tools/thesis/patch_assets.py
+  tools/thesis/patch_h0g_remove_exploratoria_verdict_docx.py: tools/thesis/patch_h0g_verdict.py
+  tools/thesis/patch_impact_criteria_control_recursos_docx.py: tools/thesis/patch_criteria.py
+  tools/thesis/patch_topsis_medida_formal_cap5_6_7_docx.py: tools/thesis/patch_topsis.py
+  tools/training/prune_citylearn_v3_training_artifacts.ps1: tools/training/prune_artifacts.ps1
+  configs/experiments/fresh_iquitos_v1.yaml: configs/experiments/iquitos.yaml
+  configs/algorithms/fresh_native.yaml: configs/algorithms/native.yaml
+  configs/evaluation/fresh_kpis.yaml: configs/evaluation/kpis.yaml
+duplicates:
+  docs/architecture/PLANO_INTEGRADO_CITYLEARN_V3_MADRL.png: docs/architecture/PLANO_REAL_IMPLEMENTADO_CITYLEARN_V3_MADRL.png
+  docs/architecture/_refs/citylearn_v2_docs.jpg: docs/architecture/_refs/citylearn_v2_environment.jpg
+  docs/architecture/_refs/citylearn_v2_jsdelivr.jpg: docs/architecture/_refs/citylearn_v2_environment.jpg

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "group": "D-02",
+  "canonical_path": "docs/architecture/_refs/citylearn_v2_environment.jpg",
+  "sha256": "9576611b4e684f3ac1c4bb2b530714b1e1ab784851212cd86b9f220bf77201c1",
+  "removed_paths": [
+    "docs/architecture/_refs/citylearn_v2_environment_docs.jpg",
+    "docs/architecture/_refs/citylearn_v2_environment_jsdelivr.jpg"
+  ],
+  "coverage_verified": "byte-identical (same SHA-256)",
+  "consumers_updated": "none active (only design text and rename inventory)",
+  "attribution": "CityLearn v2 environment figure, copies fetched from the CityLearn documentation and the jsDelivr CDN of the CityLearn repository (Nweye et al., JBPS 2025)",
+  "recovered_from": "git (tracked before removal)",
+  "at_utc": "2026-11-01T10:50:01.9878203Z"
+}

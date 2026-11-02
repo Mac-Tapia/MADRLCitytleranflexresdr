@@ -15,7 +15,7 @@ Redacción DOCX de tesis: carpeta única **`tools/thesis/`**
 | KPIs / stats de resultados | `tools/eval/` |
 | Colab notebook generate/patch | `tools/colab/` |
 | Fetch / Drive operativo | `tools/drive/` |
-| Helpers entrenamiento / baselines | `tools/training/` (incluye `prune_citylearn_v3_training_artifacts.ps1`) |
+| Helpers entrenamiento / baselines | `tools/training/` (incluye `prune_artifacts.ps1`) |
 | Integridad workflow / storage | `tools/ops/` |
 | Figuras arquitectura (no Word) | `tools/figures/` |
 | Entrenamiento agentes CityLearn v3 | `CityLearn/scripts/` |
@@ -30,18 +30,12 @@ Los únicos `.py` de tesis permitidos aquí son **shims** (<1 KB) que delegan en
 | Archivo | Rol |
 |---------|-----|
 | `verify_project_context.ps1` | Gate de frontera del proyecto |
-| `run_citylearn_v3_full_training_visible.ps1` | Wrapper entrenamiento visible |
-| `monitor_citylearn_training_visible.ps1` | Monitor legacy |
-| `training_launcher_window.ps1` | Ventana lanzador |
-| `training_resume_window.ps1` | Ventana resume |
 | `activate_citylearn_v3.ps1` | Activa `.venv39-citylearn-v3` |
 
-### Reinicio / paralelo / Drive
+### Drive
 
 | Archivo | Rol |
 |---------|-----|
-| `restart_happo_masac_v3.ps1` | Entrypoint canónico 4 MADRL (50 ep) vía `scripts/LANZAR_ENTRENAMIENTO_V4.bat` |
-| `run_3madrl_parallel.ps1` | Lanzamiento paralelo (AWS / VRAM alta) |
 | `setup_google_drive_oauth.ps1` | OAuth Google Drive |
 | `fetch_and_generate_drive_figures.ps1` | Fetch + `tools/thesis/generate_drive_thesis_figures.py` |
 
@@ -62,7 +56,8 @@ Los únicos `.py` de tesis permitidos aquí son **shims** (<1 KB) que delegan en
 ### Legacy
 
 Los one-shots `_archive/` y `scripts/legacy_bat/` fueron **eliminados** (política 2026-07-29 DELETE).
-Launcher Windows canónico: `scripts/LANZAR_ENTRENAMIENTO_V4.bat` → `restart_happo_masac_v3.ps1` (50 ep).
+Los lanzadores locales de entrenamiento (`.bat`/`.ps1`) se retiraron el 2026-11-01: el entrenamiento
+se lanza solo con `python -m uc3m.application.training.cli --config ...` (ver `governance/repository_layout.yaml`, `launch`).
 Detalle: `docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md`.
 
 ## Ejecución
@@ -75,5 +70,5 @@ powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
 
 ## Subdivisión `training/` / `monitoring/` / `setup/`
 
-Propuesta en `docs/decisions/ORGANIZACION_PROYECTO_DIAGNOSTICO_Y_PROPUESTA.md`.
+Propuesta en `docs/decisions/organizacion.md`.
 **No ejecutada**: los `.ps1` usan `$PSScriptRoot\..` y moverlos rompería rutas.

@@ -24,8 +24,8 @@ DEC_PAT = re.compile(
 FORMA_ANY = re.compile(r"(?i)forma\s+exploratoria")
 REJ_ANY = re.compile(r"(?i)rejected\s+(?:only\s+)?exploratorily|only\s+exploratorily")
 CANONS = [
-    "Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
-    "Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
+    "tesis.docx",
+    "informe.docx",
 ]
 
 
@@ -45,10 +45,10 @@ def main() -> int:
         "task": "Alinear decisiones formales H0G/H1G sin calificativo exploratoria",
         "date": "2026-08-07",
         "files_touched": [
-            "docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx",
-            "docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx",
-            "docs/tesis_capitulos/Capitulo_6_Conclusiones.md",
-            "tools/thesis/patch_h0g_remove_exploratoria_verdict_docx.py",
+            "docs/tesis.docx",
+            "docs/informe.docx",
+            "docs/chapters/cap6.md",
+            "tools/thesis/patch_h0g_verdict.py",
             "tools/thesis/patch_tesis_resumen_h0g_align_docx.py",
         ],
         "canons": {},
@@ -115,7 +115,7 @@ def main() -> int:
             "cap6_formal_HG": any("Se rechaza H0G. Se respalda H1G" in t for _, t in texts),
         }
 
-    md = (REPO / "docs" / "tesis_capitulos" / "Capitulo_6_Conclusiones.md").read_text(
+    md = (REPO / 'docs' / 'chapters' / 'cap6.md').read_text(
         encoding="utf-8"
     )
     checklist["cap6_md"] = {

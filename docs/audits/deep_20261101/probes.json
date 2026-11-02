@@ -1,0 +1,45 @@
+{
+  "hpo_and_sensitivity": {
+    "confirm_hyperparameters": null,
+    "hpo_candidates": 8,
+    "confirm_weights": [
+      0.6,
+      0.15,
+      0.25
+    ],
+    "sensitivity_weights": [
+      0.55,
+      0.16874999999999998,
+      0.28125
+    ],
+    "identical_native_arguments": true,
+    "sensitivity_requires": [
+      "configuration_freeze",
+      "derived_scenario_catalog"
+    ],
+    "note": "Declared weights differ, but the commands and global scenario catalog are the same."
+  },
+  "stage_integrity": {
+    "tampered_sha_differs": true,
+    "learner_calls": 4,
+    "rejected_before_learner": false,
+    "result_status": "incomplete"
+  },
+  "freeze_and_derived_catalog": {
+    "learner_calls": 1,
+    "unverified_freeze_accepted": true,
+    "derived_scenario_catalog_provided": false,
+    "result_status": "incomplete"
+  },
+  "nonfinite_statistics": {
+    "input": "144 synthetic rows with NaN and invalid report hashes",
+    "coverage_complete": true,
+    "decisions": {
+      "scientifically_complete": true,
+      "algorithm_difference": "not_detected",
+      "winner_forced": false
+    },
+    "warning_count": 0,
+    "rejects_invalid_data": false
+  }
+}

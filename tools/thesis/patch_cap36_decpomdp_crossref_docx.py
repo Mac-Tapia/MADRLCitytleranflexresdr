@@ -21,7 +21,7 @@ if str(_THESIS_DIR) not in sys.path:
 
 from thesis_word_canons import DOCS, INFORME, TESIS  # noqa: E402
 
-REPORT = DOCS / "CAP36_DECPOMDP_CROSSREF_PATCH_REPORT_2026-07-29.json"
+REPORT = DOCS / 'audits' / 'word' / 'cap36_referencias.json'
 BACKUP_DIR = REPO / "outputs" / "_word_backups"
 
 CAP3_NEEDLE = "permite modelar el problema como Dec-POMDP"

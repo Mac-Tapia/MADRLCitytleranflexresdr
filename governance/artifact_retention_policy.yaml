@@ -13,7 +13,7 @@
 #   promoted  evidence.json status=verified y respaldo verificado por
 #             uc3m.application.artifacts.backup_run.
 #   historical resultados retirados por decisión del propietario
-#             (docs/audits/DIAGNOSTICO_Y_RETIRO_HISTORICOS_2026-11-01.md): no se
+#             (docs/audits/historicos.md): no se
 #             restauran ni se usan; esta política no les aplica.
 #   temporary archivos de trabajo que nunca entran en evidence.json.
 #

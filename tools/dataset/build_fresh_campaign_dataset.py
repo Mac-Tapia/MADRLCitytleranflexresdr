@@ -49,8 +49,10 @@ import requests  # noqa: E402
 
 from uc3m.application.dataset import construction as cn  # noqa: E402
 from uc3m.application.dataset import provenance as pv  # noqa: E402
+from uc3m.application.dataset import tariff_crosscheck as tc  # noqa: E402
 from uc3m.application.training.preflight import hash_files  # noqa: E402
 
+BUSBAR_CSV = ROOT/'data/tariffs/osinergmin/busbar_electro_oriente.csv'
 YEARS = (2023, 2024, 2025)
 BUILDINGS = tuple(range(1, 18))
 LAT, LON, TZ = -3.7491, -73.2538, 'America/Lima'
@@ -350,7 +352,11 @@ def demand_rate_pen_kw(charges) -> float:
 
 
 def energy_rate_ctm(charges) -> np.ndarray:
-    return charges.get('energy_ctm_kwh', charges.get('energy_peak_ctm_kwh'))
+    """One hourly rate per month: a sheet with a real peak/off-peak difference is refused (SPEC-013)."""
+    rate = charges.get('energy_ctm_kwh', charges.get('energy_peak_ctm_kwh'))
+    if not np.isclose(rate, charges.get('energy_offpeak_ctm_kwh', rate), rtol=0.0, atol=1e-9):
+        raise ValueError(f'time-of-use energy charge is not modeled: {charges}')
+    return rate
 
 
 def tariff_signals(index: pd.DatetimeIndex, sheets, details, modes, fx):
@@ -1141,6 +1147,8 @@ def main(argv=None):
     validation = tariff_bill_validation(measured, details, sheets, raw_dir)
     validation['sheet_in_force_on_day_1'] = coverage
     _write_json(audit_dir/'tariff_bill_validation.json', validation)
+    busbar_report = tc.tariff_crosscheck_audit(BUSBAR_CSV, sheets)
+    _write_json(audit_dir/'tariff_crosscheck.json', busbar_report)
     design['tariff_validation'] = validation
     log(f'{len(sheets)} Osinergmin sheets; {len(validation["rows"])} bills recomputed')
     generator_hash = hash_files(ROOT, [ROOT/'tools/dataset'/name for name in (
@@ -1186,6 +1194,7 @@ def main(argv=None):
              'ev_pilot_only': all(not b.get('chargers') for k, b in schema['buildings'].items() if k != 'Building_1')
              and len(schema['buildings']['Building_1'].get('chargers', {})) == 2,
              'tariff_history_complete': len(coverage) == 36,
+             'tariff_crosscheck': tc.tariff_crosscheck_gate(busbar_report),
              'bess_verified': shaving['status'] in ('no_bess_sized', 'checked')}
     acceptance = {'campaign_id': args.campaign_id, 'dataset_hash': manifest.dataset_hash,
                   'source_manifest_hash': sources.manifest_hash, 'balance_checks': len(manifest.balance_checks),

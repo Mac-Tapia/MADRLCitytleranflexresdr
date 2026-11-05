@@ -1,0 +1,511 @@
+{
+  "schema_version": 1,
+  "system": "Electro Oriente",
+  "files": {
+    "2022-12-04": {
+      "path": "raw/pba_2022-12-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/PBA04122022.pdf",
+      "sha256": "eabb49a0a93452de6bbc3ef655223af41fdede76a0469347255eea08ca6defc0",
+      "obtained_at": "2026-11-05T02:25:57.749958+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-01-04": {
+      "path": "raw/pba_2023-01-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/PBA04012023.pdf",
+      "sha256": "f1b50fbec1ddc96796cbb2e62cf48d9b0a7d03e49cc545eb102fb75e17fa587b",
+      "obtained_at": "2026-11-05T02:26:06.122367+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-02-04": {
+      "path": "raw/pba_2023-02-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04022023.pdf",
+      "sha256": "885b6f98a325731f552c2fb43170084316df5c31bc89c9f07f5750ed2c277c36",
+      "obtained_at": "2026-11-05T02:26:11.481839+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-03-04": {
+      "path": "raw/pba_2023-03-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04032023.pdf",
+      "sha256": "c76f454607da37efc6f886519a95dc0774b564ebc2bbf35aab85911272c56931",
+      "obtained_at": "2026-11-05T02:26:16.098516+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-04-04": {
+      "path": "raw/pba_2023-04-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/PBA04042023.pdf",
+      "sha256": "9f7a5eef897ebea8a36ae0212b73a93dcf9d62a82d9c989b0aa647d092d58d36",
+      "obtained_at": "2026-11-05T02:26:22.076713+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-05-04": {
+      "path": "raw/pba_2023-05-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04052023.pdf",
+      "sha256": "96e0956518749747621b5520127505d7414079a6b2d17208d60620a59551edf6",
+      "obtained_at": "2026-11-05T02:26:29.158643+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-06-04": {
+      "path": "raw/pba_2023-06-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04062023.pdf",
+      "sha256": "a91c0ac0829db075d9021bb5e6f93346872f2574f39c7e00330d90b5d4153b4e",
+      "obtained_at": "2026-11-05T02:26:36.888461+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-07-04": {
+      "path": "raw/pba_2023-07-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/PBA04072023.pdf",
+      "sha256": "98ba54da8a8ad15a37959be2cf38e447f5ad07b378ca7f6dbed42adecd40ccc3",
+      "obtained_at": "2026-11-05T02:26:42.760830+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-08-04": {
+      "path": "raw/pba_2023-08-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04082023.pdf",
+      "sha256": "aec01c868280b3ead29640e1c4719e173ec6b9cac1654182b171d6102e4ef9c9",
+      "obtained_at": "2026-11-05T02:26:47.238080+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-09-04": {
+      "path": "raw/pba_2023-09-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04092023.pdf",
+      "sha256": "9dc0da08c8c824a9b111a3ac06826f932d18ead4cbca9b350611040b34025dd4",
+      "obtained_at": "2026-11-05T02:26:52.363382+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-10-04": {
+      "path": "raw/pba_2023-10-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/PBA04102023.pdf",
+      "sha256": "ecff75ad451698a69af6201fd2cb72dc2b86a2d47f042405c7af05a6358fdf06",
+      "obtained_at": "2026-11-05T02:26:58.342379+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-11-04": {
+      "path": "raw/pba_2023-11-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/PBA04112023.pdf",
+      "sha256": "fe45f6062887fe0dc01edf80115172ba4d08bb27c1a0a076d1f29cffba3e110a",
+      "obtained_at": "2026-11-05T02:27:07.398853+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2023-12-04": {
+      "path": "raw/pba_2023-12-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04122023.pdf",
+      "sha256": "11632ee001daf5e13dd8c85655fac05658a1be1d7069fff133041aa834bbcd62",
+      "obtained_at": "2026-11-05T02:27:11.488552+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-01-04": {
+      "path": "raw/pba_2024-01-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/PBA04012024.pdf",
+      "sha256": "2f4e134fbd9a1dc5441e405e1c9de2255f397f074bdc30b3f6da99ff47f06bfc",
+      "obtained_at": "2026-11-05T02:27:17.807530+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-02-04": {
+      "path": "raw/pba_2024-02-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/PBA04022024.pdf",
+      "sha256": "d25df106de577d6958a77707af76f78a3fc72259294f5618be79af51e5fda1c6",
+      "obtained_at": "2026-11-05T02:27:23.848192+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-03-04": {
+      "path": "raw/pba_2024-03-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04032024.pdf",
+      "sha256": "934e2ade11168fcc5899c27ef1dcf082f35d3ef207a407befcf04a8e89bc0aad",
+      "obtained_at": "2026-11-05T02:27:28.184008+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-04-04": {
+      "path": "raw/pba_2024-04-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04042024.pdf",
+      "sha256": "7e193cb95dfd21f48f7dd30caf09e590e68e9b026098ff303f806e086eb4221c",
+      "obtained_at": "2026-11-05T02:27:32.724888+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-05-04": {
+      "path": "raw/pba_2024-05-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04052024.pdf",
+      "sha256": "97d3eaeef292e532465c575ab96e5c9d3d8ebf06fb999185dbb79e08177a1c4a",
+      "obtained_at": "2026-11-05T02:27:38.998847+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-06-04": {
+      "path": "raw/pba_2024-06-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04062024.pdf",
+      "sha256": "e09da539ef80244d0cdc8568c3fecf9541591470cc96ccd1f504ebc331b3d17a",
+      "obtained_at": "2026-11-05T02:27:41.938891+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-07-04": {
+      "path": "raw/pba_2024-07-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04072024.pdf",
+      "sha256": "80d4a0b76be5fa55dc08a33b8916a7cef48478f1693b0450c5a4b433004e4bd6",
+      "obtained_at": "2026-11-05T02:27:45.202970+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-08-04": {
+      "path": "raw/pba_2024-08-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04082024.pdf",
+      "sha256": "9320bedee4bcb9cd327dd5bb24209ab8fafa8d7266a3ca0e9c66aa4b92730e3b",
+      "obtained_at": "2026-11-05T02:27:48.299296+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-09-04": {
+      "path": "raw/pba_2024-09-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04092024.pdf",
+      "sha256": "a623180312b56050fc66b5c084a69b7b55a2b80bdead5207f344b86628dde154",
+      "obtained_at": "2026-11-05T02:27:51.688702+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-10-04": {
+      "path": "raw/pba_2024-10-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04102024.pdf",
+      "sha256": "863b28570b5d1c8acd739474d779de3e2c0ad93b5ae903f2da94544550307ed0",
+      "obtained_at": "2026-11-05T02:27:55.554119+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-11-04": {
+      "path": "raw/pba_2024-11-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04112024.pdf",
+      "sha256": "65f079a8e00a1adba232a572e8314d135e1ab6fd2f7326f2423d7b91cfdb4c79",
+      "obtained_at": "2026-11-05T02:28:02.650566+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2024-12-04": {
+      "path": "raw/pba_2024-12-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04122024.pdf",
+      "sha256": "bc8d9bf867c0f4cbea7ec4be1e20cc8ee015e97573b5f585d382910610097784",
+      "obtained_at": "2026-11-05T02:28:06.763822+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-01-04": {
+      "path": "raw/pba_2025-01-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04012025.pdf",
+      "sha256": "8c12d24401fea73396458a88671be37301c63af62e6569ebe7b3f2ef83331ab8",
+      "obtained_at": "2026-11-05T02:28:13.582961+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-02-04": {
+      "path": "raw/pba_2025-02-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04022025.pdf",
+      "sha256": "18143b195bfc463fa4ed7c15bf297f52e26685cada2b16570a9f83ac8e930e86",
+      "obtained_at": "2026-11-05T02:28:18.221408+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-03-04": {
+      "path": "raw/pba_2025-03-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04032025.pdf",
+      "sha256": "0da32fcb62296ce6efc61abf8b9cb2cd8005128679a2b8cbea452ca29585bf4b",
+      "obtained_at": "2026-11-05T02:28:22.732995+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-04-04": {
+      "path": "raw/pba_2025-04-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04042025.pdf",
+      "sha256": "cbf88d8028b992d14608c382fafe584dbdb8c16ec647e9dd741911cf8bde178f",
+      "obtained_at": "2026-11-05T02:28:27.048782+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-05-04": {
+      "path": "raw/pba_2025-05-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04052025.pdf",
+      "sha256": "5eab89f49ebce5735bfb125b352bf5df87c32f7bfea6ad5015f93ee44b6555d1",
+      "obtained_at": "2026-11-05T02:28:34.668040+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-06-04": {
+      "path": "raw/pba_2025-06-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04062025.pdf",
+      "sha256": "95163b7649099e2d97a51d88312004e5989ef324fe72040bc2a4b121b63751fb",
+      "obtained_at": "2026-11-05T02:28:39.780004+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-07-04": {
+      "path": "raw/pba_2025-07-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04072025.pdf",
+      "sha256": "ca1fddd639066b5b765f8bc58487e8913bfc394d254da7e49a2c9ad3055dec8a",
+      "obtained_at": "2026-11-05T02:28:44.691083+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-08-04": {
+      "path": "raw/pba_2025-08-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04082025.pdf",
+      "sha256": "c21b7f4a2f39d32d959f836e70835fdaba52da5578ab1214b508b36e7b4956ac",
+      "obtained_at": "2026-11-05T02:28:49.278729+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-09-04": {
+      "path": "raw/pba_2025-09-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04092025.pdf",
+      "sha256": "a5bd3aaaf001ba510a1ba79add1c014c7409e38221b2f87f898a095a1e5bc883",
+      "obtained_at": "2026-11-05T02:28:53.662188+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-10-04": {
+      "path": "raw/pba_2025-10-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04102025.pdf",
+      "sha256": "fa388f5927b57028b1ee725b3adf7085b22ce36b0b8f1bedcbd152acc4715b6e",
+      "obtained_at": "2026-11-05T02:28:58.518316+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-11-04": {
+      "path": "raw/pba_2025-11-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04112025.pdf",
+      "sha256": "66906b8e8df099b6ef8743f338a57ac1a709a95980c64994bd8c6ad2baacc530",
+      "obtained_at": "2026-11-05T02:29:06.325834+00:00",
+      "source_type": "official_tariff_sheet"
+    },
+    "2025-12-04": {
+      "path": "raw/pba_2025-12-04.pdf",
+      "source_uri": "https://www.osinergmin.gob.pe/seccion/centro_documental/gart/PliegosTarifarios/1%20PBA04122025.pdf",
+      "sha256": "caf3de03757f34b4fce776566bbeaddb980b609bd7a621c5d5967953719141a4",
+      "obtained_at": "2026-11-05T02:29:10.793849+00:00",
+      "source_type": "official_tariff_sheet"
+    }
+  },
+  "missing": [
+    "2023-05-01",
+    "2023-05-26",
+    "2023-11-01",
+    "2024-05-01",
+    "2024-11-01",
+    "2025-01-01",
+    "2025-05-01",
+    "2025-11-01"
+  ],
+  "crosscheck": {
+    "tariff": "MT3",
+    "ratio_band": [
+      1.005,
+      1.03
+    ],
+    "rows": [
+      {
+        "valid_from": "2022-12-04",
+        "sheet_energy_ctm_kwh": 41.76,
+        "efectivo_energy_ctm_kwh": 40.83,
+        "ratio": 1.0227773695811904
+      },
+      {
+        "valid_from": "2023-01-04",
+        "sheet_energy_ctm_kwh": 40.9,
+        "efectivo_energy_ctm_kwh": 39.99,
+        "ratio": 1.0227556889222305
+      },
+      {
+        "valid_from": "2023-02-04",
+        "sheet_energy_ctm_kwh": 41.39,
+        "efectivo_energy_ctm_kwh": 40.47,
+        "ratio": 1.0227328885594267
+      },
+      {
+        "valid_from": "2023-03-04",
+        "sheet_energy_ctm_kwh": 40.81,
+        "efectivo_energy_ctm_kwh": 39.9,
+        "ratio": 1.0228070175438597
+      },
+      {
+        "valid_from": "2023-04-04",
+        "sheet_energy_ctm_kwh": 40.79,
+        "efectivo_energy_ctm_kwh": 39.88,
+        "ratio": 1.0228184553660982
+      },
+      {
+        "valid_from": "2023-06-04",
+        "sheet_energy_ctm_kwh": 37.11,
+        "efectivo_energy_ctm_kwh": 36.29,
+        "ratio": 1.0225957564067236
+      },
+      {
+        "valid_from": "2023-07-04",
+        "sheet_energy_ctm_kwh": 36.31,
+        "efectivo_energy_ctm_kwh": 35.5,
+        "ratio": 1.0228169014084507
+      },
+      {
+        "valid_from": "2023-08-04",
+        "sheet_energy_ctm_kwh": 33.53,
+        "efectivo_energy_ctm_kwh": 32.79,
+        "ratio": 1.022567856053675
+      },
+      {
+        "valid_from": "2023-09-04",
+        "sheet_energy_ctm_kwh": 35.1,
+        "efectivo_energy_ctm_kwh": 34.32,
+        "ratio": 1.0227272727272727
+      },
+      {
+        "valid_from": "2023-10-04",
+        "sheet_energy_ctm_kwh": 35.53,
+        "efectivo_energy_ctm_kwh": 34.74,
+        "ratio": 1.0227403569372482
+      },
+      {
+        "valid_from": "2023-11-04",
+        "sheet_energy_ctm_kwh": 32.06,
+        "efectivo_energy_ctm_kwh": 31.7,
+        "ratio": 1.0113564668769717
+      },
+      {
+        "valid_from": "2023-12-04",
+        "sheet_energy_ctm_kwh": 32.09,
+        "efectivo_energy_ctm_kwh": 31.73,
+        "ratio": 1.0113457295934447
+      },
+      {
+        "valid_from": "2024-01-04",
+        "sheet_energy_ctm_kwh": 30.98,
+        "efectivo_energy_ctm_kwh": 30.64,
+        "ratio": 1.0110966057441253
+      },
+      {
+        "valid_from": "2024-02-04",
+        "sheet_energy_ctm_kwh": 27.58,
+        "efectivo_energy_ctm_kwh": 27.27,
+        "ratio": 1.0113678034470113
+      },
+      {
+        "valid_from": "2024-04-04",
+        "sheet_energy_ctm_kwh": 26.75,
+        "efectivo_energy_ctm_kwh": 26.45,
+        "ratio": 1.011342155009452
+      },
+      {
+        "valid_from": "2024-05-04",
+        "sheet_energy_ctm_kwh": 31.09,
+        "efectivo_energy_ctm_kwh": 30.75,
+        "ratio": 1.0110569105691056
+      },
+      {
+        "valid_from": "2024-06-04",
+        "sheet_energy_ctm_kwh": 29.86,
+        "efectivo_energy_ctm_kwh": 29.53,
+        "ratio": 1.0111750761937013
+      },
+      {
+        "valid_from": "2024-07-04",
+        "sheet_energy_ctm_kwh": 30.24,
+        "efectivo_energy_ctm_kwh": 29.91,
+        "ratio": 1.0110330992978935
+      },
+      {
+        "valid_from": "2024-08-04",
+        "sheet_energy_ctm_kwh": 30.24,
+        "efectivo_energy_ctm_kwh": 29.91,
+        "ratio": 1.0110330992978935
+      },
+      {
+        "valid_from": "2024-09-04",
+        "sheet_energy_ctm_kwh": 29.62,
+        "efectivo_energy_ctm_kwh": 29.29,
+        "ratio": 1.01126664390577
+      },
+      {
+        "valid_from": "2024-10-04",
+        "sheet_energy_ctm_kwh": 29.1,
+        "efectivo_energy_ctm_kwh": 28.78,
+        "ratio": 1.011118832522585
+      },
+      {
+        "valid_from": "2024-11-04",
+        "sheet_energy_ctm_kwh": 29.42,
+        "efectivo_energy_ctm_kwh": 29.09,
+        "ratio": 1.0113441045032658
+      },
+      {
+        "valid_from": "2024-12-04",
+        "sheet_energy_ctm_kwh": 29.42,
+        "efectivo_energy_ctm_kwh": 29.09,
+        "ratio": 1.0113441045032658
+      },
+      {
+        "valid_from": "2025-02-04",
+        "sheet_energy_ctm_kwh": 30.35,
+        "efectivo_energy_ctm_kwh": 30.01,
+        "ratio": 1.0113295568143952
+      },
+      {
+        "valid_from": "2025-03-04",
+        "sheet_energy_ctm_kwh": 29.71,
+        "efectivo_energy_ctm_kwh": 29.38,
+        "ratio": 1.0112321307011574
+      },
+      {
+        "valid_from": "2025-04-04",
+        "sheet_energy_ctm_kwh": 28.79,
+        "efectivo_energy_ctm_kwh": 28.47,
+        "ratio": 1.0112399016508606
+      },
+      {
+        "valid_from": "2025-05-04",
+        "sheet_energy_ctm_kwh": 35.1,
+        "efectivo_energy_ctm_kwh": 34.71,
+        "ratio": 1.0112359550561798
+      },
+      {
+        "valid_from": "2025-06-04",
+        "sheet_energy_ctm_kwh": 35.1,
+        "efectivo_energy_ctm_kwh": 34.71,
+        "ratio": 1.0112359550561798
+      },
+      {
+        "valid_from": "2025-07-04",
+        "sheet_energy_ctm_kwh": 35.1,
+        "efectivo_energy_ctm_kwh": 34.71,
+        "ratio": 1.0112359550561798
+      },
+      {
+        "valid_from": "2025-08-04",
+        "sheet_energy_ctm_kwh": 34.86,
+        "efectivo_energy_ctm_kwh": 34.47,
+        "ratio": 1.0113141862489121
+      },
+      {
+        "valid_from": "2025-09-04",
+        "sheet_energy_ctm_kwh": 34.84,
+        "efectivo_energy_ctm_kwh": 34.45,
+        "ratio": 1.0113207547169811
+      },
+      {
+        "valid_from": "2025-10-04",
+        "sheet_energy_ctm_kwh": 34.84,
+        "efectivo_energy_ctm_kwh": 34.45,
+        "ratio": 1.0113207547169811
+      },
+      {
+        "valid_from": "2025-11-04",
+        "sheet_energy_ctm_kwh": 34.63,
+        "efectivo_energy_ctm_kwh": 34.25,
+        "ratio": 1.011094890510949
+      },
+      {
+        "valid_from": "2025-12-04",
+        "sheet_energy_ctm_kwh": 35.13,
+        "efectivo_energy_ctm_kwh": 34.74,
+        "ratio": 1.0112262521588946
+      }
+    ],
+    "failures": [],
+    "pdf_only": [
+      "2023-05-04",
+      "2024-03-04",
+      "2025-01-04"
+    ],
+    "sheet_only": [
+      "2023-05-01",
+      "2023-05-26",
+      "2023-11-01",
+      "2024-05-01",
+      "2024-11-01",
+      "2025-01-01",
+      "2025-05-01",
+      "2025-11-01"
+    ]
+  },
+  "limitations": [
+    "La banda de contraste es criterio del proyecto, derivado de lo observado; no es una norma.",
+    "La causa del escalón de la razón MT3/efectivo en 2023-11 no está identificada.",
+    "Punta igual a fuera de punta en todas las vigencias: no hay señal horaria oficial para este sistema.",
+    "Una vigencia sin PDF no hereda valores: consta en sheet_only.",
+    "La fila de Electro Oriente se atribuye a Iquitos porque el pliego rotula el sector como aislado y la razón con el pliego es estable; el PDF no nombra Iquitos."
+  ]
+}

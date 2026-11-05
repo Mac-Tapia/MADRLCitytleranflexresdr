@@ -50,3 +50,10 @@ Registro detallado de decisiones (`Ruling:`) de `-ff`: `.superpowers/sdd/remedia
 3. P10 restante: columnas de fase/semilla/aceptación en `uc3m/presentation/training_panel.py` (respetar loopback, solo GET, `no-store`, 404 ante traversal).
 4. `deploy/docker-compose.aws.yml` sigue publicando puertos en todas las interfaces: decisión del usuario (infraestructura pública).
 5. Requieren autorización del usuario: P16 (campañas), ensayo real de desconexión/restauración en Colab (P11), P17 (Word), P18 (operación).
+
+## Entrada propia de la sesión `-e0`: módulo 1, 2026-11-04
+
+- **Orden del propietario (2026-11-04):** «desbloquea y termina». Se toma como cesión de `tools/dataset/build_fresh_campaign_dataset.py` para el cambio acotado de SPEC-013. El resto de la reserva del Revisor A no cambia.
+- **Hecho, sin commits:** SPEC-013 y su plan; `uc3m/domain/tariffs.py`, `uc3m/adapters/osinergmin/`, `uc3m/application/dataset/tariff_crosscheck.py`, `tools/dataset/ingest_osinergmin_pba.py`, `data/tariffs/osinergmin/`. En el constructor: importación, `BUSBAR_CSV`, rechazo en `energy_rate_ctm`, `audit/tariff_crosscheck.json` y puerta `tariff_crosscheck`.
+- **Efecto para otras sesiones:** una construcción nueva requiere `data/tariffs/osinergmin/busbar_electro_oriente.csv`; sin él, `dataset_verified` es falso. `iquitos_v1` a `iquitos_v4` no se tocaron y `authorized_stages` sigue vacío.
+- **Sin ejecutar:** el constructor completo con la puerta nueva.

@@ -25,6 +25,17 @@ Integridad del workflow (fuera de esta carpeta):
   --manifest-out data\dataset_audit\workflow_integrity_manifest.json
 ```
 
+## Tarifas oficiales (módulo 1, SPEC-013)
+
+`ingest_osinergmin_pba.py` descarga los PDF de tarifas en barra de Osinergmin y los
+contrasta con los pliegos. Escribe solo en `data/tariffs/osinergmin/`. Salida: 0
+correcto, 2 fuente rechazada, 3 fallos de contraste.
+
+```powershell
+.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\ingest_osinergmin_pba.py
+.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\ingest_osinergmin_pba.py --offline
+```
+
 ## Orden del pipeline (orchestrate)
 
 1. `generate_iquitos_dataset.py` — base (edificios, weather, pricing, carbon, schema)

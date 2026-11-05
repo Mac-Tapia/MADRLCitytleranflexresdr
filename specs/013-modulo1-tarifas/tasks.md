@@ -20,4 +20,6 @@
 .\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/ingest_osinergmin_pba.py --offline
 ```
 
+**Puerta completa (2026-11-05):** `-Scope Repository` aprobada sobre `0e7657bc`: 1 577 pruebas, 0 fallos, 0 omitidas, `software_acceptance=true`, `scientific_acceptance=false` (`data/maintenance/gates/Repository_profile_20261105T155129670Z.json`).
+
 **Pendiente fuera de este módulo:** decisión D04 (recompensar la factura), localizar PDF de las 8 vigencias `sheet_only` si existen y causa del escalón de 2023-11.

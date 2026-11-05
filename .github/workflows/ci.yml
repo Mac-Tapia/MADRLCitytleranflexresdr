@@ -65,7 +65,7 @@ jobs:
       - name: Fresh pure contracts (strict profile, skips fail)
         run: >-
           python -B -m pytest -q -p no:cacheprovider -rfEs
-          --deselect tests/fresh_training/test_seed_statistics.py::test_catalog_kpi_rules_equal_citylearn_v3
+          -k "not test_catalog_kpi_rules_equal_citylearn_v3"
           tests/fresh_training/test_security_and_acceptance.py
           tests/fresh_training/test_seed_statistics.py
           tests/fresh_training/test_short_layout.py

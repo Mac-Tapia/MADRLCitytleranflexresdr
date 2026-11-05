@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from uc3m.application.evaluation import kpi_contract as kc
+from uc3m.application.evaluation.bill_cost import BillRate, bill_measures
 
 REPO = Path(__file__).resolve().parents[2]
 UNITS = {'net_power': 'kW', 'carbon_intensity': 'kgCO2/kWh', 'price': 'USD/kWh',
@@ -59,6 +60,15 @@ def test_total_never_averages_daily_value(catalog):
     control = _trace({'B1': [1.0]*24 + [3.0]*24})
     report = kc.compute_fresh_kpis(control, control, catalog)
     assert _value(report, 'energy_cost_total')['value'] == pytest.approx((24*1 + 24*3)*0.2)
+
+
+def test_cost_uses_each_building_tariff_including_export_credit(catalog):
+    tariffs = {'B1': {'price': [0.1]*24}, 'B2': {'price': [0.4]*24}}
+    control = _trace({'B1': [1.0]*24, 'B2': [-1.0]*24}, price=0.1, extra=tariffs)
+    baseline = _trace({'B1': [2.0]*24, 'B2': [2.0]*24}, price=0.1, extra=tariffs)
+    cost = _value(kc.compute_fresh_kpis(control, baseline, catalog), 'energy_cost_total')
+    assert cost['value'] == pytest.approx(24*(0.1-0.4))
+    assert cost['baseline'] == pytest.approx(24*(2*0.1+2*0.4))
     with pytest.raises(ValueError):
         kc.KpiDefinition('bad_total', 'energy_cost', 'USD', 'minimize', 'district', 'total',
                          aggregation='daily_mean')
@@ -114,7 +124,8 @@ def test_missing_not_zero(catalog):
     broken = kc.compute_fresh_kpis(no_price, no_price, catalog)
     assert _value(broken, 'energy_cost_total')['availability'] == 'unavailable'
     result = kc.validate_kpi_report(broken, catalog)
-    assert not result.passed and any('energy_cost_total' in r for r in result.reasons)
+    # energy_cost_total is a diagnostic now; without the official table the primary bill fails closed.
+    assert not result.passed and any('bill_cost_total' in r for r in result.reasons)
 
 
 @pytest.mark.parametrize('bad', [True, float('nan'), float('inf'), None])
@@ -158,9 +169,10 @@ def test_no_estimated_savings_as_measured_kpi(catalog):
 
 
 def test_flexibility_primaries_and_axis_gain(catalog):
-    control = _trace({'B1': [2.0, 4.0]*12})
-    baseline = _trace({'B1': [2.0, 6.0]*12})
-    report = kc.compute_fresh_kpis(control, baseline, catalog)
+    control = _trace({'Building_1': [2.0, 4.0]*12})
+    baseline = _trace({'Building_1': [2.0, 6.0]*12})
+    rates = {(1, 2023, 1): BillRate('MT3', 0.2, 10.0, 1.0)}
+    report = kc.compute_fresh_kpis(control, baseline, catalog, extra_measures=bill_measures(rates))
     assert _value(report, 'district_daily_peak')['value'] == pytest.approx(4.0)
     assert _value(report, 'district_ramping')['value'] == pytest.approx(2.0)  # kW/h, 23 steps of 2
     assert _value(report, 'one_minus_load_factor')['value'] == pytest.approx(1 - 3.0/4.0)
@@ -168,6 +180,7 @@ def test_flexibility_primaries_and_axis_gain(catalog):
                                                  'one_minus_load_factor')]
     assert report.axis_gains['flexibility'] == pytest.approx(sum(gains)/3)
     assert report.axis_gains['co2_emissions'] == pytest.approx(_value(report, 'co2_total')['gain'])
+    assert report.axis_gains['energy_cost'] == pytest.approx(_value(report, 'bill_cost_total')['gain'])
     assert kc.validate_kpi_report(report, catalog).passed
     balance = report.balance_checks['energy']
     assert balance['passed'] and math.isclose(balance['import_minus_export_kwh'], balance['net_kwh'])

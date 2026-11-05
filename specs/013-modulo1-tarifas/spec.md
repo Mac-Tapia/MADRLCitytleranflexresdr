@@ -7,7 +7,7 @@
 
 ## Propósito
 
-El módulo 1 es la entrada tarifaria de la primera etapa del flujo de SPEC-011 (dataset). Incorpora los PDF oficiales de tarifas en barra de Osinergmin (PBA) como fuente trazable y los contrasta con los pliegos de usuario final que ya usa el dataset. No cambia ningún dataset ni el precio que ve el simulador.
+El módulo 1 es la entrada tarifaria de la primera etapa del flujo de SPEC-011 (dataset). Incorpora los PDF oficiales de tarifas en barra de Osinergmin (PBA) como fuente trazable, los contrasta con los pliegos de usuario final que ya usa el dataset y entrega las tarifas con las que se evalúa la factura. No cambia ningún dataset ni el precio que ve el simulador.
 
 "Módulo 1" es el nombre que el propietario usó el 2026-11-04. El repositorio no lo definía; este SPEC fija su alcance.
 
@@ -53,9 +53,9 @@ tools/dataset/build_fresh_campaign_dataset.py
 | Constructor | `tools/dataset/build_fresh_campaign_dataset.py` | Desbloqueado por el propietario el 2026-11-04 ([traspaso](../../docs/plans/traspaso_sesiones.md)); añade la puerta y no cambia el precio |
 | Procedencia | `uc3m/application/dataset/provenance.py` | Se reutiliza `official_tariff_sheet`; no se añade tipo |
 | Raíces permitidas | `governance/repository_layout.yaml`, `fresh_policy.py:174` | Se registra la raíz cruda nueva |
-| Simulador | `CityLearn/citylearn/scenario_manager.py:332-334` | Sin cambios; el aplanado lo gobierna D02 |
-| Evaluación | `tools/dataset/compare_campaign_baselines.py`, `kpi_contract.py` | Sin cambios; consumidores futuros de la decisión D02 |
-| Puertas | SPEC-011, puerta D01 (S7, S10) | El contraste aporta evidencia a D02; no cumple S7 por sí solo |
+| Simulador | `CityLearn/citylearn/scenario_manager.py:332-334` | Sin cambios: sigue aplanando el precio; la factura no depende de él |
+| Evaluación | `uc3m/application/evaluation/bill_cost.py`, `kpi_contract.py`, `uc3m/adapters/citylearn/frozen_adapters.py`, `tools/dataset/compare_campaign_baselines.py` | Consumen `bill_tariffs.csv` y calculan la factura de D02 |
+| Puertas | SPEC-011, puerta D01 (S7, S10) | El contraste y la factura aportan evidencia; no cumplen S7 por sí solos |
 
 ## Arquitectura
 
@@ -78,25 +78,42 @@ Sigue el monolito modular de puertos y adaptadores (`uc3m/`), con la herramienta
 - **FR-013.6** — Cobertura: declara `pdf_only` y `sheet_only`; nunca interpola una vigencia sin PDF.
 - **FR-013.7** — Artefactos: `data/tariffs/osinergmin/busbar_electro_oriente.csv` y `pba_manifest.json` se versionan; los PDF no. `--offline` regenera ambos desde los PDF y verifica hashes, sin red.
 - **FR-013.8** — Conexión: el constructor escribe `audit/tariff_crosscheck.json`, añade la puerta `tariff_crosscheck` y falla si un pliego usado tiene punta distinta de fuera de punta (D3-035). Sin el CSV de barra, la puerta falla. Afecta solo a construcciones nuevas y no depende de D02, porque no cambia el precio.
+- **FR-013.9** — Tabla de factura: `tools/dataset/build_bill_tariffs.py` genera `data/tariffs/osinergmin/bill_tariffs.csv` con energía, potencia y cargo fijo por edificio y mes (17 × 36 = 612), con las reglas del constructor y sin red. Debe coincidir con `pricing_N.csv` y con la potencia que dimensionó `iquitos_v4`.
+- **FR-013.10** — Costo evaluado: el eje `energy_cost` usa `bill_cost_total` (`uc3m/application/evaluation/bill_cost.py`), calculado desde la traza física y la tabla oficial, no desde el precio aplanado del simulador. Una tarifa ausente deja el KPI no disponible, nunca en cero. `energy_cost_total` queda como diagnóstico y `peak_billing` deja de estar pendiente.
 
 ## Fuera de alcance
 
 - Modificar `iquitos_v1` a `iquitos_v4`, reconectar la configuración o autorizar etapas.
-- Cambiar el precio del simulador, la recompensa o el KPI de costo (D02).
+- Cambiar el precio que ve el simulador o la recompensa. Por eso el término `cost_peak_billing` sigue con peso 0 (D04).
 - Inventar una tarifa horaria: las fuentes oficiales revisadas no la dan para este sistema.
 - Dimensionamiento FV, tratado aparte, y la corrección general de `csv_integrity` (D3-005).
 
-## Decisión del propietario que este módulo informa (D02)
+## Decisión D02 (propietario, 2026-11-04): factura con cargo por potencia
 
-| Opción para el costo evaluado | Precio de energía | Consecuencia |
-|---|---|---|
-| Factura del usuario (vigente) | Pliego / efectivo | Refleja lo que paga el edificio; costo y CO₂ casi colineales |
-| Costo del sistema aislado | En barra | Otra magnitud, unas 2,3 veces mayor en 2025; no es lo que factura el edificio |
-| Factura con cargo por potencia | Pliego + potencia | Único camino oficial con incentivo temporal claro; el componente sigue `unverified` en `tariff_bill_validation` |
+Por edificio y mes, sin IGV:
+
+```text
+energía = Σ P(t)·dt × tarifa de energía        net billing: la exportación se acredita
+potencia = máx(0, máx P(t) en 18:00-23:00) × tarifa de potencia
+fijo = cargo fijo, una vez por mes calendario de la traza
+```
+
+**No se modela:** energía reactiva, alumbrado público, aporte de electrificación rural ni el promedio de varios meses de la potencia de distribución. Un mes parcial paga potencia y cargo fijo completos, así que solo un split completo es un resultado científico.
+
+**Evidencia** (`iquitos_v4`, `validation_2024`, una semilla, RBC frente a sin almacenamiento; `data/maintenance/integracion/c20261101i01/D02/bill_baselines_validation_2024.json`):
+
+| Medida | Sin almacenamiento | RBC | Diferencia |
+|---|---|---|---|
+| Factura, USD | 161 272 | 153 534 | −4,80 % |
+| Potencia, USD | 640 210 | 624 740 | −15 469 USD |
+| Energía de la factura, USD | −479 719 | −471 988 | +7 732 USD |
+| CO₂, kg | −3 833 739 | −3 768 035 | +1,71 % |
+
+La factura y el CO₂ se mueven en sentidos opuestos, lo que apoya S7 sin cumplirlo: es una sola semilla, con RBC y no con una política aprendida. El porcentaje sale inflado porque el crédito por exportación deja una base pequeña. El cargo por potencia sigue `unverified` frente a las facturas reales (`tariff_bill_validation.json`).
 
 ## Criterios de aceptación
 
-1. `tests/fresh_training/test_tariff_busbar.py` pasa, sin red y sin omisiones.
+1. `tests/fresh_training/test_tariff_busbar.py` y `tests/fresh_training/test_bill_cost.py` pasan, sin red y sin omisiones.
 2. `--offline` sobre los PDF reales termina con salida 0 y cero fallos, reporta 37 vigencias y reproduce las listas `pdf_only` y `sheet_only` de arriba.
 3. Las huellas de `data/campaigns/` son idénticas antes y después.
 4. Ningún estado científico cambia: `scientific_acceptance=false`, `authorized_stages=[]`.
@@ -104,8 +121,8 @@ Sigue el monolito modular de puertos y adaptadores (`uc3m/`), con la herramienta
 ## Dependencias
 
 - Requiere: SPEC-001 (procedencia).
-- Informa: D02 y S7 de la puerta D01; SPEC-011.
-- Lo que cambie el precio del simulador sigue dependiendo de D02, fuera de este módulo.
+- Informa: S7 de la puerta D01; SPEC-005 (eje de costo del análisis por semilla); SPEC-011.
+- Recompensar la factura durante el entrenamiento depende de D04, fuera de este módulo.
 
 ## Fuentes
 

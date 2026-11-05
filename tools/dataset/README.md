@@ -4,7 +4,37 @@ Carpeta **única** para generación, sincronización DER, auditoría y gate
 del dataset `citylearn_iquitos_2023_2025`. No mezclar aquí scripts de
 tesis, KPIs Drive, Colab ni entrenamiento.
 
-## Entrada canónica
+## Campaña actual v1
+
+El constructor de campañas es `build_fresh_campaign_dataset.py`; su destino
+gestionado está bajo `data/campaigns/`. El contrato y las autorizaciones se
+describen en [el runbook](../../docs/architecture/runbook.md). La construcción
+no habilita por sí sola el entrenamiento ni la aceptación científica.
+
+## Tarifas oficiales (módulo 1, SPEC-013)
+
+`ingest_osinergmin_pba.py` descarga los PDF de tarifas en barra de Osinergmin y los
+contrasta con los pliegos. Escribe solo en `data/tariffs/osinergmin/`. Salida: 0
+correcto, 2 fuente rechazada, 3 fallos de contraste.
+
+```powershell
+.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\ingest_osinergmin_pba.py
+.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\ingest_osinergmin_pba.py --offline
+```
+
+`build_bill_tariffs.py` genera, sin red, `data/tariffs/osinergmin/bill_tariffs.csv`: energía,
+potencia y cargo fijo por edificio y mes (17 × 36 = 612), con las reglas del constructor. La
+evaluación calcula la factura con esa tabla, no con el precio aplanado del simulador.
+
+```powershell
+.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\build_bill_tariffs.py
+```
+
+## Orquestador heredado
+
+La orden siguiente modifica `CityLearn/`, una dependencia protegida. Su uso
+requiere autorización expresa del usuario para esos archivos en la sesión;
+no es la entrada predeterminada de la campaña actual.
 
 ```powershell
 .venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\orchestrate_citylearn_dataset.py `
@@ -23,17 +53,6 @@ Integridad del workflow (fuera de esta carpeta):
 ```powershell
 .venv39-citylearn-v3\Scripts\python.exe -B tools\ops\verify_workflow_integrity.py `
   --manifest-out data\dataset_audit\workflow_integrity_manifest.json
-```
-
-## Tarifas oficiales (módulo 1, SPEC-013)
-
-`ingest_osinergmin_pba.py` descarga los PDF de tarifas en barra de Osinergmin y los
-contrasta con los pliegos. Escribe solo en `data/tariffs/osinergmin/`. Salida: 0
-correcto, 2 fuente rechazada, 3 fallos de contraste.
-
-```powershell
-.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\ingest_osinergmin_pba.py
-.venv39-citylearn-v3\Scripts\python.exe -B tools\dataset\ingest_osinergmin_pba.py --offline
 ```
 
 ## Orden del pipeline (orchestrate)

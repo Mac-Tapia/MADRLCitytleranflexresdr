@@ -261,3 +261,13 @@ Expected: todas aprobadas. `iquitos_v1` a `iquitos_v4` no se reconstruyen.
 - [ ] **Step 5: Commit, si está autorizado**
 
 `git add tools/dataset/build_fresh_campaign_dataset.py tests/fresh_training/test_tariff_busbar.py`; el constructor tiene cambios sin confirmar del Revisor A: pedir confirmación antes.
+
+### Task 5: Factura con cargo por potencia (decisión D02)
+
+Añadida después de este plan, por decisión del propietario del 2026-11-04. Requisitos FR-013.9 y FR-013.10 de [SPEC-013](../../specs/013-modulo1-tarifas/spec.md), donde están las fórmulas y la evidencia.
+
+**Files:** `tools/dataset/build_bill_tariffs.py`, `data/tariffs/osinergmin/bill_tariffs.csv`, `uc3m/application/evaluation/bill_cost.py`, `configs/evaluation/kpis.yaml`, `tests/fresh_training/test_bill_cost.py`.
+
+- [x] Tabla de 612 tarifas, coherente con `pricing_N.csv` y con la potencia que dimensionó `iquitos_v4`.
+- [x] Eje `energy_cost` sobre `bill_cost_total`; una tarifa ausente deja el KPI no disponible, nunca en cero.
+- [x] `peak_billing` definido como KPI; el término de recompensa sigue con peso 0 (D04).

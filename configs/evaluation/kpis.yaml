@@ -51,10 +51,19 @@ definitions:
      window: total, aggregation: sum, axis: co2_emissions, primary: true,
      convention: building_level_net_consumption_times_intensity_export_displaces_generation,
      citylearn_v3_name: carbon_emissions}
-  - {name: energy_cost_total, quantity: energy_cost, unit: USD, sense: minimize, level: district,
+  # Owner decision D02 (2026-11-04): the evaluated cost is the bill with capacity charge, from
+  # data/tariffs/osinergmin/bill_tariffs.csv (uc3m/application/evaluation/bill_cost.py).
+  - {name: bill_cost_total, quantity: bill_cost, unit: USD, sense: minimize, level: district,
      window: total, aggregation: sum, axis: energy_cost, primary: true,
-     convention: building_level_net_consumption_times_price_net_billing, citylearn_v3_name: electricity_cost}
+     convention: official_monthly_energy_net_billing_plus_peak_block_capacity_plus_fixed_without_igv}
   # Diagnostics: reported, never stacked as statistical replicas of the primaries.
+  - {name: energy_cost_total, quantity: energy_cost, unit: USD, sense: minimize, level: district,
+     window: total, aggregation: sum,
+     convention: building_level_net_consumption_times_simulator_price_net_billing, citylearn_v3_name: electricity_cost}
+  - {name: bill_energy_cost, quantity: bill_energy_cost, unit: USD, sense: minimize, level: district,
+     window: total, aggregation: sum, convention: official_monthly_energy_rate_net_billing}
+  - {name: bill_demand_charge, quantity: bill_demand_charge, unit: USD, sense: minimize, level: district,
+     window: total, aggregation: sum, convention: monthly_max_import_in_18_to_23_times_official_demand_rate}
   - {name: import_energy, quantity: import_energy, unit: kWh, sense: minimize, level: district,
      window: total, aggregation: sum, citylearn_v3_name: grid_import}
   - {name: export_energy, quantity: export_energy, unit: kWh, sense: exposure, level: district,
@@ -69,11 +78,11 @@ definitions:
      level: district, window: episode, aggregation: mean,
      convention: citylearn_v3_objectives_price_signal_deviation, citylearn_v3_name: price_signal_deviation}
 primary_endpoints: [district_daily_peak, district_ramping, one_minus_load_factor, co2_total,
-                    energy_cost_total]
+                    bill_cost_total]
 axes:
   flexibility: [district_daily_peak, district_ramping, one_minus_load_factor]
   co2_emissions: [co2_total]
-  energy_cost: [energy_cost_total]
+  energy_cost: [bill_cost_total]
 citylearn_v3_kpis:
   # OE1 Flexibilidad energetica
   - {name: grid_import, axis: flexibility, objective: OE1, sense: minimize, ratio_to_baseline: true, source: citylearn_v2.evaluate_v2, citylearn_v2_names: [district_energy_grid_ratio_to_baseline_import_total_ratio]}
@@ -148,7 +157,7 @@ thesis_indicators:
   - {name: ci_weighted_consumption, axis: co2_emissions, dimension: 3, source: 'tesis.docx.txt:491,578', formula: "sum_t sum_i max(0, P_i_net(t)) * CI(t) dt (import weighted by hourly CI, literal reading)", value_from: trace:ci_weighted_consumption, reward_term: carbon_ci_import, definition_status: defined_literal_reading}
   - {name: electricity_cost_total, axis: energy_cost, dimension: 1, source: 'tesis.docx.txt:492,583; cap2.md:337-343', formula: "sum_t sum_i price_t * P_i_net(t) dt (p_exp = p_imp)", value_from: trace:energy_cost_total, citylearn_v3_name: electricity_cost_control, reward_term: cost_net, definition_status: defined}
   - {name: electricity_cost_delta, axis: energy_cost, dimension: 2, source: 'tesis.docx.txt:492,588', formula: "electricity_cost_total(control) - electricity_cost_total(baseline)", value_from: trace:energy_cost_total.delta, citylearn_v3_name: electricity_cost_delta, reward_term: cost_delta, definition_status: defined}
-  - {name: peak_billing, axis: energy_cost, dimension: 3, source: 'tesis.docx.txt:492,593,646,974; cap2.md:340 (p_pot * max_t P_net)', formula: null, value_from: null, reward_term: cost_peak_billing, definition_status: pending_owner, pending: "billing period (month?) and demand charge p_pot have no value in the repository; 15-min window = 1 hourly step"}
+  - {name: peak_billing, axis: energy_cost, dimension: 3, source: 'tesis.docx.txt:492,593,646,974; cap2.md:340 (p_pot * max_t P_net)', formula: "sum_i sum_month p_pot(i, month) * max(0, max_t P_i_net(t), t in 18:00-23:00); monthly period and p_pot from the Osinergmin sheets (owner decision D02, 2026-11-04); 15-min window = 1 hourly step", value_from: trace:bill_demand_charge, reward_term: cost_peak_billing, definition_status: defined, pending: "the reward term keeps weight 0: the KPI is evaluated, not yet rewarded (D04)"}
   - {name: price_signal_deviation, axis: energy_cost, dimension: 3, source: 'tesis.docx.txt:492,593; CityLearn/citylearn/v3/objectives.py:360', formula: "CityLearn v3 price_signal_deviation over the episode", value_from: trace:price_signal_deviation, citylearn_v3_name: price_signal_deviation, reward_term: cost_price_signal, definition_status: defined_per_episode_reward_pending_owner}
   - {name: PAR, axis: flexibility, dimension: null, source: 'cap2.md:351 (cited only)', formula: null, definition_status: pending_owner, pending: "no formula in the thesis"}
   - {name: DPR, axis: flexibility, dimension: null, source: 'cap2.md:351 (cited only)', formula: null, definition_status: pending_owner, pending: "no formula in the thesis"}

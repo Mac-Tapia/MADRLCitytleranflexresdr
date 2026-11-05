@@ -86,7 +86,7 @@ def test_layer_a_has_the_nine_thesis_indicators_with_sources(payload):
     assert {(indicators[n]['axis'], indicators[n]['dimension']) for n in CORE} == {
         (a, d) for a in ('flexibility', 'co2_emissions', 'energy_cost') for d in (1, 2, 3)}
     pending = {n for n, r in indicators.items() if r['definition_status'] == 'pending_owner'}
-    assert pending == {'peak_billing', 'PAR', 'DPR', 'dso_excess'}
+    assert pending == {'PAR', 'DPR', 'dso_excess'}
     for name in pending:
         assert indicators[name]['formula'] is None or name == 'dso_excess'
 
@@ -130,7 +130,8 @@ def test_layer_a_values_come_from_the_trace(payload, catalog):
     assert rows['carbon_emissions_delta']['value'] == pytest.approx(values['co2_total']['delta'])
     assert rows['ci_weighted_consumption']['value'] == pytest.approx(sum(p*c for p, c in zip(FLAT, CARBON)))
     assert rows['electricity_cost_delta']['value'] == pytest.approx(values['energy_cost_total']['delta'])
-    assert rows['peak_billing']['available'] is False and rows['peak_billing']['definition_status'] == 'pending_owner'
+    # The synthetic building B1 has no official rate: unavailable, never zero.
+    assert rows['peak_billing']['available'] is False and rows['peak_billing']['definition_status'] == 'defined'
     assert rows['price_signal_deviation']['available'] is True
     assert len(report.comparable_kpi_gains) == 26 and not any(r['available'] for r in report.comparable_kpi_gains)
     as_dict = report.as_dict()

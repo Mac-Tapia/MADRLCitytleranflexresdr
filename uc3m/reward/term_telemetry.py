@@ -167,7 +167,7 @@ def verify_reward_decomposition(
 THESIS_INDICATORS = ("peak_average", "ramping_average", "one_minus_load_factor_average", "flex_composite",
                      "carbon_emissions_total", "carbon_emissions_delta", "ci_weighted_consumption",
                      "electricity_cost_total", "electricity_cost_delta", "peak_billing", "price_signal_deviation")
-PENDING_INDICATORS = {"peak_billing": "pending_owner: billing period and p_pot undefined (tesis ~593, 974)"}
+PENDING_INDICATORS = {"peak_billing": "reward term pending D04 (weight 0); the KPI is evaluated from data/tariffs/osinergmin/bill_tariffs.csv"}
 
 
 def _daily_peak(series, steps_per_day):
@@ -196,6 +196,15 @@ def _ratio(control, baseline):
     if control is None or baseline is None or baseline == 0:
         return None
     return control / baseline
+
+
+def exogenous_signals(component) -> dict:
+    """Series values of one building step; a missing signal is an error, never a zero."""
+    for name in ("net", "price", "carbon_intensity"):
+        if name not in component:
+            raise ValueError(f"reward component without {name}")
+    return {"net": float(component["net"]), "baseline": float(component.get("baseline_net", component["net"])),
+            "price": float(component["price"]), "carbon": float(component["carbon_intensity"])}
 
 
 def thesis_indicators_from_series(net, baseline, price, carbon, steps_per_day=24) -> dict:
@@ -286,10 +295,8 @@ class RewardTelemetryRecorder:
             self._saturated += math.fsum(flags)
         for index, component in enumerate(components):
             series = self._series.setdefault(index, {"net": [], "baseline": [], "price": [], "carbon": []})
-            series["net"].append(float(component.get("net", 0.0)))
-            series["baseline"].append(float(component.get("baseline_net", component.get("net", 0.0))))
-            series["price"].append(float(component.get("price", 0.0)))
-            series["carbon"].append(float(component.get("carbon_intensity", 0.0)))
+            for key, value in exogenous_signals(component).items():
+                series[key].append(value)
         for agent, action in (actions or {}).items():
             raw = action.tolist() if hasattr(action, "tolist") else action
             values = [float(v) for v in (raw if isinstance(raw, (list, tuple)) else [raw])]
@@ -326,9 +333,19 @@ class RewardTelemetryRecorder:
         first = self._series[min(self._series)]
         district = {key: [math.fsum(v[key][t] for v in self._series.values()) for t in range(len(first["net"]))]
                     for key in ("net", "baseline")}
-        return {"district": thesis_indicators_from_series(district["net"], district["baseline"], first["price"],
-                                                          first["carbon"], self.steps_per_day),
-                "buildings": buildings, "pending": dict(PENDING_INDICATORS)}
+        aggregate = thesis_indicators_from_series(district["net"], district["baseline"], first["price"],
+                                                  first["carbon"], self.steps_per_day)
+        # Shape ratios use the district flow. Settlements use each building's
+        # actual tariff/intensity before aggregation, including signed exports.
+        for key in ("electricity_cost_total", "electricity_cost_delta", "carbon_emissions_total",
+                    "carbon_emissions_delta", "ci_weighted_consumption"):
+            aggregate[key] = math.fsum(row[key] for row in buildings.values())
+        unavailable = {}
+        if any(v["price"] != first["price"] for v in self._series.values()):
+            aggregate["price_signal_deviation"] = None
+            unavailable["district.price_signal_deviation"] = "heterogeneous_building_prices"
+        return {"district": aggregate, "buildings": buildings, "pending": dict(PENDING_INDICATORS),
+                "unavailable": unavailable}
 
     def close_episode(self, citylearn_v3=None):
         """Close the running episode; returns its summary, or None if it had no step.

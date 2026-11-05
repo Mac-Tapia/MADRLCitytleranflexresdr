@@ -15,6 +15,8 @@ Conventions (project derivations, not standards):
   price, export credited at the purchase price; CO2 = building net consumption
   x carbon intensity, exported energy displaces thermal generation (negative);
   the same convention as citylearn.v3.reward (fresh_kpi_aligned_v6_net_billing);
+- the cost axis is the bill with capacity charge (owner decision D02, 2026-11-04),
+  uc3m.application.evaluation.bill_cost; energy_cost_total stays as a diagnostic;
 - throughput and export are exposures, without a gain.
 """
 from __future__ import annotations
@@ -385,13 +387,21 @@ def _quantity(trace: PhysicalTrace, quantity: str) -> float:
         intensity = _require(trace, 'carbon_intensity', district=True)
         return sum(p[t]*intensity[t]*dt for p in power.values() for t in range(len(intensity)))
     if quantity == 'energy_cost':
-        price = _require(trace, 'price', district=True)
-        return sum(p[t]*price[t]*dt for p in power.values() for t in range(len(price)))
+        shared_price = trace.district_series.get('price')
+        cost = 0.0
+        for building, p in power.items():
+            price = trace.series_by_building[building].get('price', shared_price)
+            if price is None:
+                raise _Unavailable('missing_price')
+            cost += sum(value*price[t]*dt for t, value in enumerate(p))
+        return cost
     if quantity == 'ci_weighted_import':
         intensity = _require(trace, 'carbon_intensity', district=True)
         return sum(max(p[t], 0.0)*intensity[t]*dt for p in power.values() for t in range(len(intensity)))
     if quantity == 'price_signal_deviation':   # CityLearn v3 formula: injected as an extra measure
         raise _Unavailable('requires_injected_citylearn_rule')
+    if quantity in ('bill_cost', 'bill_energy_cost', 'bill_demand_charge'):   # bill_cost.bill_measures
+        raise _Unavailable('requires_injected_bill_tariffs')
     if quantity == 'import_energy':
         return sum(max(v, 0.0)*dt for p in power.values() for v in p)
     if quantity == 'export_energy':

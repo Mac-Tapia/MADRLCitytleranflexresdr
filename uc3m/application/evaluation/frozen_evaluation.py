@@ -20,7 +20,8 @@ from pathlib import Path
 from typing import Dict, Optional
 
 from uc3m.application.evaluation.kpi_contract import compute_fresh_kpis, load_kpi_catalog, load_thesis_indicators
-from uc3m.application.training.fresh_policy import read_attempt
+from uc3m.application.training.attempt_trust import read_trusted_attempt
+from uc3m.application.dataset.provenance import contained_path
 
 REPO = Path(__file__).resolve().parents[3]
 DEFAULT_CATALOG = REPO/'configs/evaluation/kpis.yaml'
@@ -30,6 +31,7 @@ def _run_record(run) -> Dict[str, object]:
     record = {field.name: getattr(run, field.name) for field in dataclasses.fields(run)
               if field.name not in ('trace', 'citylearn_v3_report')}
     record['trace_exogenous_hash'] = run.trace.exogenous_hash
+    record['trace_hash'] = run.trace.trace_hash()
     return record
 
 
@@ -40,25 +42,34 @@ def evaluate_frozen(attempt_root: Path, split_id: str, campaign_root: Path, *, a
     injected by a composition root: load_native_policy, run_frozen_episode, rbc_policy and
     extra_measures (CityLearn v3 rules such as price_signal_deviation)."""
     attempt_root, campaign_root = Path(attempt_root), Path(campaign_root)
-    folder = attempt_root/'evaluation'/split_id
+    if split_id not in ('train_2023', 'validation_2024', 'test_2025'):
+        raise ValueError('unknown frozen evaluation split')
+    folder = contained_path(attempt_root, f'evaluation/{split_id}')
     if (folder/'kpi_report.json').exists():
         raise FileExistsError(f'{folder} already holds an evaluation; it is never overwritten')
     if not (attempt_root/'attempt.json').is_file():
         raise FileNotFoundError(f'{attempt_root} has no attempt.json: not an attempt of a campaign stage')
-    record = read_attempt(attempt_root)
-    treatment = json.loads((attempt_root/'resolved_treatment.json').read_text(encoding='utf-8'))
-    evidence = json.loads((attempt_root/'learning_evidence.json').read_text(encoding='utf-8'))
-    if treatment.get('treatment_id') != record['treatment_id']:
-        raise PermissionError(f'{attempt_root}: resolved treatment and attempt record disagree')
+    trusted = read_trusted_attempt(attempt_root)
+    record, treatment, evidence = trusted.record, trusted.resolved, trusted.evidence
     algorithm, scenario = str(treatment['algorithm']), str(treatment['scenario'])
-    run_seed = int(record['seed'] if seed is None else seed)
+    if seed is not None and (type(seed) is not int or seed != record['seed']):
+        raise PermissionError('evaluation seed must equal the bound attempt seed')
+    run_seed = record['seed']
     split_dir = campaign_root/'splits'/split_id
+    access = {}
+    if split_id == 'test_2025':
+        from uc3m.application.evaluation.test_access import verify_test_unlock
+        verify_test_unlock(trusted.manifest_path)
+        access['manifest_path'] = trusted.manifest_path
 
     policy = adapters.load_native_policy(algorithm, attempt_root)   # fails closed on unverified or tampered models
+    catalog = getattr(policy, 'scenario_catalog_path', None)
+    if catalog is not None:
+        access['scenario_catalog'] = catalog
     control = adapters.run_frozen_episode(split_dir, policy, campaign_root, steps=steps, seed=run_seed,
-                                          scenario=scenario)
+                                          scenario=scenario, **access)
     baseline = adapters.run_frozen_episode(split_dir, adapters.rbc_policy(), campaign_root, steps=steps, seed=run_seed,
-                                  scenario=scenario)
+                                  scenario=scenario, **access)
     if (control.ev_connection_hash != baseline.ev_connection_hash
             or control.initial_storage_kwh != baseline.initial_storage_kwh
             or control.trace.exogenous_hash != baseline.trace.exogenous_hash):
@@ -73,12 +84,20 @@ def evaluate_frozen(attempt_root: Path, split_id: str, campaign_root: Path, *, a
                                 citylearn_v3_report=control.citylearn_v3_report,
                                 extra_measures=adapters.extra_measures)
     folder.mkdir(parents=True, exist_ok=True)
-    raw = json.dumps(report.as_dict(), indent=2, default=str).encode('utf-8')
+    payload = report.as_dict()
+    payload['bill_tariffs_sha256'] = getattr(adapters, 'bill_tariffs_sha256', None)
+    raw = json.dumps(payload, indent=2, default=str).encode('utf-8')
     (folder/'kpi_report.json').write_bytes(raw)
     digest = hashlib.sha256(raw).hexdigest()
-    (folder/'evaluation_manifest.json').write_text(json.dumps({'files': {'kpi_report.json': digest}}, indent=2),
-                                                   encoding='utf-8')
     (folder/'frozen_runs.json').write_text(json.dumps({'control': _run_record(control),
                                                        'baseline': _run_record(baseline)}, indent=2, default=str),
                                            encoding='utf-8')
+    expected_rows = {'train_2023': 8760, 'validation_2024': 8784, 'test_2025': 8760}[split_id]
+    # The physical run metadata is hashed with the KPIs; final scientific
+    # readback demands the complete split, while short diagnostics stay usable.
+    (folder/'evaluation_manifest.json').write_text(json.dumps({
+        'schema_version': 2, 'split': split_id, 'expected_full_split_rows': expected_rows,
+        'files': {'kpi_report.json': digest,
+                  'frozen_runs.json': hashlib.sha256((folder/'frozen_runs.json').read_bytes()).hexdigest()}},
+        indent=2), encoding='utf-8')
     return {'folder': str(folder), 'kpi_report_sha256': digest, 'axis_gains': dict(report.axis_gains)}

@@ -20,29 +20,17 @@ SPLIT = CAMPAIGN/'splits/validation_2024'
 STEPS = 48  # two complete days (baselines)
 NATIVE_STEPS = 24  # one complete day per native policy
 SEED = 2024  # exogenous evaluation seed, shared by every policy of a comparison
-SDD = REPO/'.superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan'
-ATTEMPTS = {
-    'HAPPO': SDD/'real_learning_tmp2/test_real_optimizer_updates_an0/attempt',
-    'MASAC': SDD/'real_learning_tmp2/test_real_optimizer_updates_an1/attempt',
-    'MAAC': SDD/'real_learning_tmp2/test_real_optimizer_updates_an3/attempt',
-}
+ATTEMPTS = {}
 NATIVE = ('HAPPO', 'MASAC', 'MATD3', 'MAAC')
 
 
-def _matd3_attempt() -> Path:
-    """The verified MATD3 micro-training of this campaign (produced on GPU)."""
-    for evidence in sorted(SDD.glob('real_learning*/*/attempt/learning_evidence.json')):
-        try:
-            record = json.loads(evidence.read_text(encoding='utf-8'))
-        except (OSError, ValueError):
-            continue
-        if record.get('algorithm') == 'MATD3' and record.get('verified') is True:
-            return evidence.parent
-    return SDD/'real_learning_cuda/test_real_optimizer_updates_an0/attempt'
+@pytest.fixture(scope='module', autouse=True)
+def _bind_native_attempts(native_attempts):
+    ATTEMPTS.update(native_attempts)
 
 
 def attempt_for(algorithm: str) -> Path:
-    return ATTEMPTS[algorithm] if algorithm in ATTEMPTS else _matd3_attempt()
+    return ATTEMPTS[algorithm]
 
 
 _POLICIES, _RUNS, _BASELINES = {}, {}, {}
@@ -68,12 +56,12 @@ def native_run(algorithm):
     return _RUNS[algorithm]
 
 
-def baselines(scenario=None, seed=None, steps=STEPS):
+def baselines(scenario=None, seed=None, steps=STEPS, scenario_catalog=None):
     from uc3m.adapters.citylearn import policy_inference as pi
-    key = (scenario, seed, steps)
+    key = (scenario, seed, steps, str(scenario_catalog) if scenario_catalog is not None else None)
     if key not in _BASELINES:
         _BASELINES[key] = tuple(pi.run_frozen_episode(SPLIT, policy, CAMPAIGN, steps=steps, seed=seed,
-                                                      scenario=scenario)
+                                                      scenario=scenario, scenario_catalog=scenario_catalog)
                                 for policy in (pi.RbcPolicy(), pi.NoStorageReferencePolicy()))
     return _BASELINES[key]
 
@@ -103,8 +91,11 @@ def test_baseline_same_ev_services_and_initial_energy(runs):
 def test_baseline_kpi_from_physical_trace(runs):
     from uc3m.application.evaluation import kpi_contract as kc
     rbc, reference = runs
+    from uc3m.application.evaluation.bill_cost import bill_measures, load_bill_tariffs
     catalog = kc.load_kpi_catalog(REPO/'configs/evaluation/kpis.yaml')
-    report = kc.compute_fresh_kpis(rbc.trace, reference.trace, catalog)
+    # The primary cost is the official bill (D02); it is unavailable without its tariff table.
+    measures = bill_measures(load_bill_tariffs(REPO/'data/tariffs/osinergmin/bill_tariffs.csv'))
+    report = kc.compute_fresh_kpis(rbc.trace, reference.trace, catalog, extra_measures=measures)
     result = kc.validate_kpi_report(report, catalog)
     assert result.passed, result.reasons
     assert rbc.trace.currency == 'USD' and 'World Bank' in rbc.trace.currency_provenance
@@ -252,7 +243,8 @@ def test_recurrent_state_resets(algorithm):
 def test_same_ev_services_and_initial_energy(algorithm):
     run, _ = native_run(algorithm)
     policy = native_policy(algorithm)
-    rbc, reference = baselines(scenario=policy.scenario, seed=SEED, steps=NATIVE_STEPS)
+    rbc, reference = baselines(scenario=policy.scenario, seed=SEED, steps=NATIVE_STEPS,
+                              scenario_catalog=policy.scenario_catalog_path)
     assert run.ev_connection_hash == rbc.ev_connection_hash == reference.ev_connection_hash
     assert run.initial_storage_kwh == rbc.initial_storage_kwh == reference.initial_storage_kwh
     assert run.trace.exogenous_hash == rbc.trace.exogenous_hash == reference.trace.exogenous_hash
@@ -273,6 +265,14 @@ def test_test_split_locked_until_freeze():
 def _copy_attempt(algorithm, destination):
     source = attempt_for(algorithm)
     evidence = json.loads((source/'learning_evidence.json').read_text(encoding='utf-8'))
+    campaign = next(p for p in source.parents if (p/'campaign_manifest.json').is_file())
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    for name in ('campaign_manifest.json', 'campaign.json'):
+        shutil.copyfile(campaign/name, destination.parent/name)
+    shutil.copytree(campaign/'stages', destination.parent/'stages', dirs_exist_ok=True)
+    destination.mkdir(exist_ok=True)
+    for name in ('attempt.json', 'resolved_treatment.json', 'completion.json'):
+        shutil.copyfile(source/name, destination/name)
     for relative in evidence['checkpoint_files']:
         relative = Path(relative.replace('\\', '/'))
         (destination/relative).parent.mkdir(parents=True, exist_ok=True)
@@ -315,12 +315,12 @@ def test_no_model_fails_closed(tmp_path):
     incomplete = tmp_path/'incomplete'
     evidence = _copy_attempt('HAPPO', incomplete)
     (incomplete/Path(evidence['checkpoint_files'][-2].replace('\\', '/'))).unlink()  # critic_agent.pt
-    with pytest.raises(PermissionError, match='incomplete'):
+    with pytest.raises(PermissionError, match='missing|incomplete|untrusted_checkpoint'):
         pi.load_native_policy('HAPPO', incomplete)
 
     no_files = tmp_path/'no_files'
     _copy_attempt('HAPPO', no_files)
     record = json.loads((no_files/'learning_evidence.json').read_text(encoding='utf-8'))
     (no_files/'learning_evidence.json').write_text(json.dumps(dict(record, checkpoint_files=[])), encoding='utf-8')
-    with pytest.raises(PermissionError, match='incomplete'):
+    with pytest.raises(PermissionError, match='no_checkpoint|incomplete|untrusted_checkpoint'):
         pi.load_native_policy('HAPPO', no_files)

@@ -52,8 +52,6 @@ DEFAULT_SOLVER = 'appsi_highs'
 ECONOMICS_PATH = ROOT/'configs/dataset/der_economics.yaml'
 HOURS_2023 = 8760
 MIN_BESS_KWH = 1.0  # below this the LP result is reported as no battery
-# kWp is bounded with a reference array's yield; the real array selects its own inverter.
-PV_RATIO_MARGIN = 0.02
 
 
 def load_economics(path: Path = ECONOMICS_PATH) -> dict:
@@ -102,7 +100,25 @@ def binding_pv_bound(pv_kwp_lp: float, roof_kwp: float, load_kwp: float):
 def pv_to_load_gate(rows: Mapping, max_ratio: float) -> bool:
     """Every building at or under the limit. Missing values fail: an unmeasured ratio is not a pass."""
     ratios = [row.get('pv_to_load_ratio_2023') for row in rows.values()]
-    return bool(ratios) and all(r is not None and r <= float(max_ratio)*(1.0 + PV_RATIO_MARGIN) for r in ratios)
+    return bool(ratios) and all(r is not None and r <= float(max_ratio) for r in ratios)
+
+
+def fit_pv_modules(n_modules: int, annual_load_kwh: float, annual_pv_kwh, max_ratio: float) -> int:
+    """The largest count up to n_modules whose real array output stays within max_ratio of the load.
+
+    The LP bound uses a reference array's yield per kWp; each real array selects its own inverter, and
+    small arrays yield more per kWp (B14 reached 1.165 in the first iquitos_v5 build). annual_pv_kwh(n)
+    is the design-year output of the real n-module array. Never adds modules beyond the LP's choice.
+    """
+    limit = float(max_ratio)*float(annual_load_kwh)
+    if limit <= 0:
+        return 0
+    n = int(n_modules)
+    while n > 0 and annual_pv_kwh(n) > limit:
+        n = min(int(n*limit/annual_pv_kwh(n)), n - 1)
+    while n < int(n_modules) and annual_pv_kwh(n + 1) <= limit:
+        n += 1
+    return n
 
 
 # ── MicroGrids LP ────────────────────────────────────────────────────────────
@@ -356,4 +372,4 @@ def write_json(path: Path, payload) -> None:
 
 
 __all__ = ['load_economics', 'pv_ac_w_per_kw', 'roof_bound_kwp', 'load_bound_kwp', 'binding_pv_bound',
-           'pv_to_load_gate', 'solve_microgrids', 'prosumpy_check', 'round_pv', 'round_bess', 'sensitivity', 'write_json']
+           'pv_to_load_gate', 'fit_pv_modules', 'solve_microgrids', 'prosumpy_check', 'round_pv', 'round_bess', 'sensitivity', 'write_json']

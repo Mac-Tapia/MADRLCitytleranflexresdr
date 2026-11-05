@@ -722,7 +722,13 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
         # the same LP without it shows how much of the BESS/PV decision depends on it.
         no_demand = sd.solve_microgrids(load, per_kwp, price, pv_bound, economics, workroot/f'B{building:02d}_nodemand',
                                         tariff={**tariff, 'demand_charge': {m: 0.0 for m in range(1, 13)}})
-        n_modules, kwp = sd.round_pv(lp['pv_kwp'], module, pv_bound)
+        n_lp, _ = sd.round_pv(lp['pv_kwp'], module, pv_bound)
+        # Fitted with each real array's own inverter: the LP bound used a reference array's yield.
+        n_modules = sd.fit_pv_modules(
+            n_lp, load.sum(),
+            lambda n: float(sd.pv_ac_w_per_kw(weather_design, n, module).to_numpy(float).sum())*n*module_kwp/1000.0,
+            max_ratio)
+        kwp = n_modules*module_kwp
         if n_modules:
             solar = sd.pv_ac_w_per_kw(weather_full, n_modules, module).to_numpy(float)
         else:
@@ -771,7 +777,7 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
             'roof_bound_binding': lp['pv_kwp'] >= roof - 1e-3,
             'load_bound_kwp': load_bound, 'max_pv_to_load_ratio': max_ratio,
             'binding_pv_bound': sd.binding_pv_bound(lp['pv_kwp'], roof, load_bound),
-            'pv_kwp_lp': lp['pv_kwp'], 'pv_modules': n_modules, 'pv_kwp': kwp, 'module_kwp': module_kwp,
+            'pv_kwp_lp': lp['pv_kwp'], 'pv_modules_lp': n_lp, 'pv_modules': n_modules, 'pv_kwp': kwp, 'module_kwp': module_kwp,
             'bess_kwh_lp': lp['bess_kwh'], 'bess_kwh': bess,
             'bess_kw': round(bess/float(bess_cfg['max_discharge_time_h']['value']), 3) if bess else 0.0,
             'annual_load_kwh_2023': annual_load, 'peak_load_kw_2023': float(load.max()),

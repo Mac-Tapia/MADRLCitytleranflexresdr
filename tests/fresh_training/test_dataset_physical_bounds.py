@@ -56,10 +56,33 @@ def test_the_gate_fails_closed_on_missing_values():
     assert sd.pv_to_load_gate(_rows(None), 1.0) is False
 
 
-def test_the_gate_allows_only_the_measured_inverter_difference():
-    # kWp comes from a reference array; the real array picks another inverter, within this margin.
-    assert sd.pv_to_load_gate(_rows(1.0 + sd.PV_RATIO_MARGIN), 1.0) is True
-    assert sd.pv_to_load_gate(_rows(1.0 + 2*sd.PV_RATIO_MARGIN), 1.0) is False
+def test_the_gate_is_strict_because_the_capacity_is_fitted_with_the_real_array():
+    # A 2 % margin was assumed in the first iquitos_v5 build; small arrays reached 1.165 and it failed.
+    assert sd.pv_to_load_gate(_rows(1.0), 1.0) is True
+    assert sd.pv_to_load_gate(_rows(1.0 + 1e-6), 1.0) is False
+
+
+def _yield(per_module_kwh, saturation=None):
+    """Annual kWh of n modules; with saturation, small arrays yield more per module, as a smaller inverter does."""
+    def annual(n):
+        bonus = 1.0 + (saturation/(1.0 + n) if saturation else 0.0)
+        return n*per_module_kwh*bonus
+    return annual
+
+
+def test_modules_are_removed_until_the_real_array_respects_the_limit():
+    annual = _yield(100.0, saturation=20.0)
+    n = sd.fit_pv_modules(108, 10_000.0, annual, 1.0)
+    assert annual(n) <= 10_000.0 and annual(n + 1) > 10_000.0
+
+
+def test_an_array_within_the_limit_is_kept():
+    assert sd.fit_pv_modules(50, 10_000.0, _yield(100.0), 1.0) == 50
+
+
+def test_fitting_never_adds_modules_and_can_reach_zero():
+    assert sd.fit_pv_modules(0, 10_000.0, _yield(100.0), 1.0) == 0
+    assert sd.fit_pv_modules(5, 0.0, _yield(100.0), 1.0) == 0
 
 
 def test_the_builder_applies_the_bound_and_both_gates():

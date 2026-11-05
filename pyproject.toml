@@ -38,7 +38,7 @@ dependencies = [
 # Full training stack — install with: pip install uc3m[train]
 train = [
     "torch>=2.0",
-    "gym>=0.20",
+    "gym==0.20.0",
     # uc3m/env/wrappers.py; same versions as requirements.txt, CityLearn needs gymnasium<=0.28.1.
     "gymnasium==0.28.1",
     "pettingzoo==1.12.0",
@@ -76,6 +76,12 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr"
 Repository = "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr"
+
+# uv cannot build gym==0.20.0 (invalid metadata) and pettingzoo pulls gym in, so a lock would pin a
+# version the project does not run. gym stays out of uv.lock (the marker never holds); requirements.txt
+# and the Colab notebook pin it, as they do for other packages outside the lock.
+[tool.uv]
+override-dependencies = ["gym==0.20.0; python_version < '3'"]
 
 # Import name -> local checkout or vendored package, never a PyPI homonym.
 [tool.uc3m.local-dependencies]

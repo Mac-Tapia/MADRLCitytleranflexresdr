@@ -146,6 +146,20 @@ def test_c2_base_deps_pinned_to_lock(cells):
             assert version in locked[name.lower()], (requirement, sorted(locked[name.lower()]))
 
 
+@pytest.mark.parametrize('name', ['numpy', 'gymnasium', 'pettingzoo'])
+def test_lock_resolves_the_simulator_stack_to_the_pinned_versions(name):
+    # CityLearn needs numpy==1.23.5; a lock on another version describes an environment that cannot run it.
+    pinned = re.search(rf'^{name}==(\S+)', (REPO/'requirements.txt').read_text(encoding='utf-8'), re.M).group(1)
+    lock = (REPO/'uv.lock').read_text(encoding='utf-8')
+    assert re.findall(rf'\nname = "{name}"\nversion = "([^"]+)"', lock) == [pinned]
+
+
+def test_gym_stays_out_of_the_lock_so_it_cannot_pin_a_version_the_project_does_not_run():
+    # uv cannot build gym==0.20.0; see [tool.uv] in pyproject.toml. requirements.txt pins it instead.
+    assert re.search(r'^gym==0\.20\.0$', (REPO/'requirements.txt').read_text(encoding='utf-8'), re.M)
+    assert '\nname = "gym"\n' not in (REPO/'uv.lock').read_text(encoding='utf-8')
+
+
 def test_c2_messages_reference_existing_markers(cells):
     source = cells['C2']
     for stale in ('celda 1.2', '1.2b', 'Celda 1.3'):

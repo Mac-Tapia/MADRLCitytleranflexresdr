@@ -16,6 +16,7 @@ import yaml
 
 from uc3m.application.training import fresh_campaign as fc
 from uc3m.application.training import integrity
+from uc3m.domain.campaigns import canonical_hash
 
 REPO = Path(__file__).resolve().parents[2]
 CONFIG = REPO/'configs/experiments/iquitos.yaml'
@@ -52,8 +53,19 @@ def _synthetic_root(root: Path):
               'scenario_catalog': 'configs/scenarios.yaml', 'kpi_catalog': 'configs/evaluation/kpis.yaml',
               'dataset_root': 'data/campaigns/x', 'splits': ['train_2023', 'validation_2024', 'test_2025']}
     manifest = {'inputs': integrity.campaign_inputs(config, root)}
+    manifest['identity'] = {'input_manifest_sha256': canonical_hash(manifest['inputs'])}
     manifest_path = _write(root/'outputs/campaigns/x/campaign_manifest.json', json.dumps(manifest))
     return manifest_path
+
+
+def test_expected_input_hashes_cannot_be_rebound_without_changing_frozen_identity(tmp_path):
+    manifest_path = _synthetic_root(tmp_path)
+    (tmp_path/'uc3m/module.py').write_text('VALUE = 2\n', encoding='utf-8')
+    manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+    manifest['inputs']['source']['sha256'] = integrity.source_snapshot(tmp_path, scope='fresh')
+    manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+    result = integrity.verify_campaign_inputs(manifest_path, tmp_path)
+    assert not result.accepted and 'input_manifest_mismatch' in result.reasons
 
 
 _TAMPER = {
@@ -176,7 +188,11 @@ def _counting_learner():
 
 def test_prepared_manifest_records_every_input(tmp_path):
     manifest = fc.prepare_campaign(CONFIG, REPO, artifact_root=tmp_path/'campaign')
-    assert set(manifest['inputs']) == set(INPUTS)
+    prices = manifest['endpoint_applicability']['price_files']
+    assert set(manifest['inputs']) == set(INPUTS) | {f'endpoint_price:{i}' for i in range(len(prices))}
+    assert canonical_hash(manifest['inputs']) == manifest['identity']['input_manifest_sha256']
+    for index, price in enumerate(prices):
+        assert manifest['inputs'][f'endpoint_price:{index}']['sha256'] == price['sha256']
     result = integrity.verify_campaign_inputs(tmp_path/'campaign/campaign_manifest.json', REPO)
     assert result.accepted, result.reasons
 

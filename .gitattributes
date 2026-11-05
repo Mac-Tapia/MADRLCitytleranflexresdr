@@ -15,6 +15,7 @@ tools/skills/madrl-agent-coordination/** text=auto eol=lf
 tools/skills/madrl-spec-conformance/** text=auto eol=lf
 tools/skills/madrl-experiment-evidence-audit/** text=auto eol=lf
 tools/skills/madrl-scientific-literature-audit/** text=auto eol=lf
+tools/skills/task-coordination-strategies/** text=auto eol=lf
 
 # Native smoke manifests contain byte hashes; preserve their original bytes.
 outputs/modular_smoke/** -text

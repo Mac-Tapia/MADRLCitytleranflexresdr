@@ -261,6 +261,13 @@ def main() -> int:
     args = parser.parse_args()
     args.dataset_dir = _project_path(args.dataset_dir)
     args.manifest_out = _project_path(args.manifest_out)
+    # Several stages have no destination argument and always write the default
+    # dataset, so another directory would mix two datasets in one build.
+    if args.dataset_dir != _project_path(DEFAULT_DATASET_DIR):
+        parser.error(
+            f"--dataset-dir must be {DEFAULT_DATASET_DIR.as_posix()}: "
+            "not every stage can target another dataset directory."
+        )
 
     manifest = {
         "started_at": _utc_now(),

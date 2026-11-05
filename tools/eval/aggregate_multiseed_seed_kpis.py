@@ -237,10 +237,15 @@ def write_seed_unit_poh(
     out_dir.mkdir(parents=True, exist_ok=True)
     usable = [r for r in rows if r.get("has_kpis") and r.get("score") != ""]
     by_scope: Dict[str, Dict[str, List[float]]] = {"E1": {}, "E2": {}, "E3": {}}
+    by_seed: Dict[str, Dict[str, Dict[int, float]]] = {"E1": {}, "E2": {}, "E3": {}}
     for row in usable:
         scen = str(row["scenario"]).upper()
         algo = str(row["algorithm"]).upper()
-        by_scope.setdefault(scen, {}).setdefault(algo, []).append(float(row["score"]))
+        by_seed.setdefault(scen, {}).setdefault(algo, {})[int(row["seed"])] = float(row["score"])
+    for scen, algo_map in by_seed.items():
+        # Friedman pairs blocks: keep only seeds measured by every algorithm, in seed order.
+        common = set.intersection(*(set(s) for s in algo_map.values())) if algo_map else set()
+        by_scope[scen] = {algo: [scores[s] for s in sorted(common)] for algo, scores in algo_map.items()}
 
     omnibus_rows: List[Dict[str, Any]] = []
     decision_rows: List[Dict[str, Any]] = []
@@ -261,8 +266,7 @@ def write_seed_unit_poh(
             )
             continue
         n = min(lengths)
-        # Align by sorting seed-indexed order already collected; truncate to common n.
-        groups = [np.asarray(algo_map[a][:n], dtype=float) for a in algos]
+        groups = [np.asarray(algo_map[a], dtype=float) for a in algos]
         try:
             kw_h, kw_p = stats.kruskal(*groups)
         except Exception:

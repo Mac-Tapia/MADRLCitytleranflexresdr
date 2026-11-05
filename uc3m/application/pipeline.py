@@ -18,15 +18,23 @@ code 0 means done, 2 means refused with a reason.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import hashlib
 import json
 import sys
+import uuid
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Sequence
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 VALIDATION_SPLIT = 'validation_2024'
+
+
+def _validate_stage_split(stage, split):
+    if stage not in ('pilot', 'hpo', 'confirm', 'sensitivity') or split not in (
+            'train_2023', 'validation_2024', 'test_2025'):
+        raise ValueError('unknown stage or split')
 
 
 def _read(path: Path):
@@ -69,15 +77,16 @@ def evaluate_stage(manifest_path: Path, *, project_root: Path = PROJECT_ROOT, st
                    split: str = VALIDATION_SPLIT, evaluate: Callable = default_evaluate,
                    workers: int = 1) -> Dict[str, object]:
     """Frozen evaluation of every accepted attempt of ``stage`` on ``split``; existing ones are kept."""
-    from uc3m.application.evaluation.results_catalog import discover_attempts
+    from uc3m.application.evaluation.results_catalog import discover_attempts, read_evaluation_report
     if isinstance(workers, bool) or not isinstance(workers, int) or workers < 1:
         raise ValueError('workers must be a positive integer')
+    _validate_stage_split(stage, split)
     campaign_root = _campaign_root(Path(manifest_path), Path(project_root))
     pending, existing = [], []
     for attempt in discover_attempts(manifest_path):
         if attempt.stage != stage:
             continue
-        if (attempt.attempt_root/'evaluation'/split/'kpi_report.json').exists():
+        if read_evaluation_report(attempt, split, require_full_split=(stage == 'hpo' or split == 'test_2025')) is not None:
             existing.append(attempt.treatment_id)
         else:
             pending.append(attempt)
@@ -95,7 +104,7 @@ def evaluate_stage(manifest_path: Path, *, project_root: Path = PROJECT_ROOT, st
 
 def _validation_rows(manifest_path: Path, campaign_id: str) -> Dict[str, List[dict]]:
     """One validation row per listed HPO treatment; unaccepted or unevaluated ones stay infeasible."""
-    from uc3m.application.evaluation.results_catalog import discover_attempts
+    from uc3m.application.evaluation.results_catalog import discover_attempts, read_evaluation_report
     from uc3m.application.training.fresh_tuning import VALIDATION_SPLIT as SELECTION_SPLIT, validation_row
     rows: Dict[str, List[dict]] = {}
     for attempt in discover_attempts(manifest_path, accepted_only=False):
@@ -105,8 +114,9 @@ def _validation_rows(manifest_path: Path, campaign_id: str) -> Dict[str, List[di
         completion = _read(attempt.attempt_root/'completion.json') if attempt.accepted else {}
         folder = attempt.attempt_root/'evaluation'/SELECTION_SPLIT
         report, digest = {}, ''
-        if attempt.accepted and (folder/'kpi_report.json').is_file():
-            report = _read(folder/'kpi_report.json')
+        measurement = read_evaluation_report(attempt, SELECTION_SPLIT, require_full_split=True) if attempt.accepted else None
+        if measurement is not None:
+            report, _ = measurement
             digest = hashlib.sha256((folder/'evaluation_manifest.json').read_bytes()).hexdigest()
         rows.setdefault(attempt.algorithm, []).append(validation_row(
             treatment, completion, report, evaluation_manifest_sha256=digest, split=SELECTION_SPLIT,
@@ -134,42 +144,77 @@ def freeze_hpo(manifest_path: Path, config_path: Path, project_root: Path = PROJ
     if blocked:
         return {'status': 'refused', 'reason': 'hpo_selection_blocked', 'blocked': blocked}
     written = write_configuration_freezes(manifest_path, freezes)
+    from uc3m.application.evaluation.test_access import write_test_unlock
+    write_test_unlock(manifest_path)
     return {'status': 'ok', 'frozen': {f.algorithm: f.freeze_hash() for f in freezes}, 'manifest': written}
 
 
 def analyze_stage(manifest_path: Path, *, stage: str = 'confirm', split: str = VALIDATION_SPLIT,
                   protocol=None) -> Path:
     """Seed table and scientific report of ``stage`` on ``split``, hashed in analysis_manifest.json."""
-    from uc3m.application.evaluation.fresh_analysis import FrozenProtocol, analyze_campaign
+    from uc3m.application.training.lock import run_lock
+    from uc3m.application.dataset.provenance import contained_path
+    _validate_stage_split(stage, split)
+    with run_lock(contained_path(Path(manifest_path).parent, '.analysis.lock')):
+        return _analyze_stage(manifest_path, stage=stage, split=split, protocol=protocol)
+
+
+def _analyze_stage(manifest_path, *, stage, split, protocol):
+    from uc3m.application.evaluation.fresh_analysis import analyze_campaign
+    from uc3m.application.evaluation.analysis_acceptance import protocol_for_stage
     from uc3m.application.evaluation.results_catalog import build_seed_table
+    from uc3m.application.training.persistence import write_json_atomic
     manifest_path = Path(manifest_path)
     folder = manifest_path.parent/'analysis'/f'{stage}_{split}'
     if folder.exists():
         raise FileExistsError(f'{folder} exists; an analysis is never overwritten')
-    table = build_seed_table(manifest_path, stage=stage, split=split)
-    report = analyze_campaign(table, protocol or FrozenProtocol.default())
-    staging = folder.with_name(folder.name + '.partial')
+    table = build_seed_table(manifest_path, stage=stage, split=split,
+                             require_full_split=(stage == 'confirm' and split == 'test_2025'))
+    protocol = protocol or protocol_for_stage(manifest_path, stage, split)
+    report = analyze_campaign(table, protocol)
+    staging = folder.with_name(folder.name + '.partial_' + uuid.uuid4().hex)
     staging.mkdir(parents=True)
-    payloads = {'seed_table.json': {'stage': stage, 'split': split, 'rows': [dict(r) for r in table.rows]},
-                'scientific_report.json': report.as_dict()}
+    manifest = _read(manifest_path)
+    complete = report.decisions.get('scientifically_complete') is True
+    scientific = complete and stage == 'confirm' and split == 'test_2025'
+    payloads = {'seed_table.json': {'campaign_id': manifest['campaign_id'], 'stage': stage, 'split': split,
+                                    'rows': [dict(r) for r in table.rows]},
+                'scientific_report.json': {**report.as_dict(), 'campaign_id': manifest['campaign_id'],
+                                           'status': ('scientifically_complete' if scientific else
+                                                      'analysis_complete' if complete else 'incomplete')}}
     digests = {}
     for name, payload in payloads.items():
         path = staging/name
         path.write_text(json.dumps(payload, indent=2, default=str), encoding='utf-8')
         digests[name] = hashlib.sha256(path.read_bytes()).hexdigest()
     (staging/'analysis_manifest.json').write_text(json.dumps(
-        {'campaign_id': _read(manifest_path)['campaign_id'], 'stage': stage, 'split': split, 'files': digests},
+        {'campaign_id': manifest['campaign_id'], 'spec_hash': manifest['spec_hash'],
+         'stage': stage, 'split': split, 'protocol': dataclasses.asdict(protocol), 'files': digests},
         indent=2), encoding='utf-8')
+    manifest.setdefault('analyses', {})[f'{stage}:{split}'] = {
+        'path': (folder/'analysis_manifest.json').relative_to(manifest_path.parent).as_posix(),
+        'sha256': hashlib.sha256((staging/'analysis_manifest.json').read_bytes()).hexdigest()}
+    # Register before publication: a cut leaves a missing, rejected reference;
+    # a fresh staging can be produced without overwriting a published analysis.
+    write_json_atomic(manifest_path, manifest)
     staging.rename(folder)
     return folder
 
 
 def deliver(manifest_path: Path, destination: Path, *, stage: str = 'confirm',
-            split: str = VALIDATION_SPLIT) -> Dict[str, object]:
-    from tools.eval.report_fresh_campaign import build_fresh_delivery
+            split: str = VALIDATION_SPLIT, gate_report: Optional[Path] = None,
+            analysis_manifest: Optional[Path] = None) -> Dict[str, object]:
+    from uc3m.application.evaluation.fresh_delivery import build_fresh_delivery
+    _validate_stage_split(stage, split)
     from uc3m.application.evaluation.results_catalog import build_seed_table
     rows = [dict(r) for r in build_seed_table(manifest_path, stage=stage, split=split).rows]
-    return build_fresh_delivery(Path(manifest_path), Path(destination), seed_rows=rows)
+    if analysis_manifest is None:
+        record = (_read(manifest_path).get('analyses') or {}).get(f'{stage}:{split}')
+        if record:
+            from uc3m.application.dataset.provenance import contained_path
+            analysis_manifest = contained_path(manifest_path.parent, record['path'])
+    return build_fresh_delivery(Path(manifest_path), Path(destination), seed_rows=rows,
+                                gate_report=gate_report, analysis_manifest=analysis_manifest)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -180,6 +225,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument('--split', default=VALIDATION_SPLIT)
     parser.add_argument('--config', type=Path)
     parser.add_argument('--destination', type=Path)
+    parser.add_argument('--gate-report', type=Path)
+    parser.add_argument('--analysis-manifest', type=Path)
     parser.add_argument('--workers', type=int, default=1)
     parser.add_argument('--project-root', type=Path, default=PROJECT_ROOT)
     return parser
@@ -204,7 +251,9 @@ def _run(args) -> Dict[str, object]:
         return {'status': 'ok', 'analysis': str(folder), 'decisions': report.get('decisions')}
     if args.destination is None:
         raise ValueError('deliver needs --destination')
-    return {'status': 'ok', 'delivery': deliver(args.manifest, args.destination, stage=args.stage, split=args.split)}
+    delivery = deliver(args.manifest, args.destination, stage=args.stage, split=args.split,
+                       gate_report=args.gate_report, analysis_manifest=args.analysis_manifest)
+    return {'status': 'refused' if delivery['state'] == 'rejected' else 'ok', 'delivery': delivery}
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -214,7 +263,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     except (FileNotFoundError, FileExistsError, PermissionError, ValueError, KeyError) as refused:
         report = {'status': 'refused', 'reason': f'{type(refused).__name__}: {refused}'}
     print(json.dumps(report, default=str))
-    return 0 if report['status'] in ('ok', 'incomplete') else 2
+    return 0 if report['status'] == 'ok' else 2
 
 
 if __name__ == '__main__':

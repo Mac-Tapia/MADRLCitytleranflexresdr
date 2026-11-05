@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import stat
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +24,7 @@ CANONICAL_FILES = (
 SOURCE_ROOTS = ("uc3m", "tests", "tools", "configs", "scripts", "governance")
 SOURCE_SUFFIXES = frozenset({".py", ".yaml", ".yml", ".toml", ".ps1", ".json", ".cfg", ".ini"})
 TEXT_SUFFIXES = SOURCE_SUFFIXES
+SOURCE_EXCLUDED_DIRS = frozenset({'__pycache__', '.git', 'node_modules', 'browser_state'})
 DEPENDENCY_FILES = ("pyproject.toml", "requirements.txt", "uv.lock")
 
 
@@ -122,18 +125,27 @@ def hash_sources(
         root = project_root / root_name
         if not root.is_dir():
             continue
-        for path in sorted(root.rglob("*")):
-            if not path.is_file() or path.suffix.lower() not in SOURCE_SUFFIXES:
-                continue
-            if "__pycache__" in path.parts:
-                continue
-            payload = path.read_bytes()
-            if path.suffix.lower() in TEXT_SUFFIXES:
-                payload = payload.replace(b"\r\n", b"\n")
-            digests[path.relative_to(project_root).as_posix()] = hashlib.sha256(
-                payload
-            ).hexdigest()
+        for directory, dirs, names in os.walk(root, followlinks=False):
+            base = Path(directory)
+            dirs[:] = sorted(name for name in dirs if name not in SOURCE_EXCLUDED_DIRS
+                             and not (base.name == 'notebooklm-mcp' and name == 'data')
+                             and not _linked(base/name))
+            for name in sorted(names):
+                path = base/name
+                if (path.suffix.lower() not in SOURCE_SUFFIXES or _linked(path)
+                        or any(marker in name.casefold() for marker in
+                               ('secret', 'credential', 'password', 'auth_info', 'state.json'))):
+                    continue
+                payload = path.read_bytes()
+                if path.suffix.lower() in TEXT_SUFFIXES:
+                    payload = payload.replace(b"\r\n", b"\n")
+                digests[path.relative_to(project_root).as_posix()] = hashlib.sha256(payload).hexdigest()
     return digests
+
+
+def _linked(path: Path) -> bool:
+    info = path.lstat()
+    return stat.S_ISLNK(info.st_mode) or bool(getattr(info, 'st_file_attributes', 0) & 0x400)
 
 
 def _aggregate_digest(digests: Mapping[str, str]) -> str:

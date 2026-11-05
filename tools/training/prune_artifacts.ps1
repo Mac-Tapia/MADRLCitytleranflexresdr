@@ -96,11 +96,30 @@ foreach ($algorithm in $Algorithms) {
 }
 
 $Candidates = New-Object System.Collections.Generic.List[object]
+$KeptMirrors = @{}
+$MirrorProperties = @{
+    "artifact_audit.json" = "artifact_audit_json_root"
+    "checkpoint_manifest.json" = "checkpoint_manifest_root"
+    "results.json" = "results_json_root"
+    "training_summary.json" = "training_summary_json_root"
+    "timeseries.csv" = "timeseries_csv_root"
+    "trace.csv" = "trace_csv_root"
+}
+
+function Test-SameContent {
+    param(
+        [string]$Left,
+        [string]$Right
+    )
+
+    return (Get-FileHash -LiteralPath $Left -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $Right -Algorithm SHA256).Hash
+}
 
 function Add-Candidate {
     param(
         [string]$Path,
-        [string]$Reason
+        [string]$Reason,
+        [string]$Canonical = ""
     )
 
     if (-not (Test-Path -LiteralPath $Path)) {
@@ -121,6 +140,7 @@ function Add-Candidate {
         Path = $item.FullName
         Type = if ($item.PSIsContainer) { "directory" } else { "file" }
         Reason = $Reason
+        Canonical = $Canonical
         MB = [math]::Round([double]$bytes / 1MB, 3)
     }) | Out-Null
 }
@@ -145,7 +165,13 @@ foreach ($run in $RunDirs) {
             $rootMirror = Join-Path $run.Path $mirrorName
             $canonical = Join-Path $run.Path (Join-Path "data" $mirrorName)
             if ((Test-Path -LiteralPath $rootMirror -PathType Leaf) -and (Test-Path -LiteralPath $canonical -PathType Leaf)) {
-                Add-Candidate -Path $rootMirror -Reason "duplicate_root_mirror_canonical_data_exists"
+                if (Test-SameContent -Left $rootMirror -Right $canonical) {
+                    Add-Candidate -Path $rootMirror -Reason "duplicate_root_mirror_identical_sha256" -Canonical $canonical
+                }
+                else {
+                    $KeptMirrors[$rootMirror] = $true
+                    Write-Host "Keeping root mirror with different content: $rootMirror"
+                }
             }
         }
     }
@@ -179,21 +205,29 @@ if (-not $Apply) {
     exit 0
 }
 
+$DeletedCount = 0
 foreach ($candidate in $Candidates) {
     Assert-UnderPath -Path $candidate.Path -Parent $OutputRootPath
+    # A mirror may have changed since the listing above: compare again right before removing it.
+    if ($candidate.Canonical -and -not (Test-SameContent -Left $candidate.Path -Right $candidate.Canonical)) {
+        $KeptMirrors[$candidate.Path] = $true
+        Write-Host "Keeping root mirror changed since listing: $($candidate.Path)"
+        continue
+    }
     if ($candidate.Type -eq "directory") {
         Remove-Item -LiteralPath $candidate.Path -Recurse -Force
     }
     else {
         Remove-Item -LiteralPath $candidate.Path -Force
     }
+    $DeletedCount++
 }
 
 if (-not $KeepStatisticalComparison) {
     foreach ($run in $RunDirs) {
         foreach ($relativeJson in @("data\results.json", "data\training_summary.json", "results.json", "training_summary.json")) {
             $jsonPath = Join-Path $run.Path $relativeJson
-            if (-not (Test-Path -LiteralPath $jsonPath -PathType Leaf)) {
+            if ((-not (Test-Path -LiteralPath $jsonPath -PathType Leaf)) -or $KeptMirrors.ContainsKey($jsonPath)) {
                 continue
             }
 
@@ -211,6 +245,10 @@ if (-not $KeepStatisticalComparison) {
 
 if (-not $KeepRootMirrors) {
     foreach ($run in $RunDirs) {
+        # A kept mirror still exists: its reference and the run's write policy stay as they are.
+        $keptProperties = @($MirrorProperties.Keys |
+            Where-Object { $KeptMirrors.ContainsKey((Join-Path $run.Path $_)) } |
+            ForEach-Object { $MirrorProperties[$_] })
         foreach ($relativeJson in @("data\results.json", "data\training_summary.json")) {
             $jsonPath = Join-Path $run.Path $relativeJson
             if (-not (Test-Path -LiteralPath $jsonPath -PathType Leaf)) {
@@ -226,6 +264,9 @@ if (-not $KeepRootMirrors) {
                 "timeseries_csv_root",
                 "trace_csv_root"
             )) {
+                if ($keptProperties -contains $propertyName) {
+                    continue
+                }
                 if ($payload.PSObject.Properties.Name -contains $propertyName) {
                     $payload.$propertyName = $null
                 }
@@ -235,6 +276,9 @@ if (-not $KeepRootMirrors) {
             }
 
             foreach ($policyName in @("artifact_write_policy")) {
+                if ($keptProperties.Count -gt 0) {
+                    continue
+                }
                 if ($payload.$policyName) {
                     if ($payload.$policyName.PSObject.Properties.Name -contains "root_timeseries_csv") {
                         $payload.$policyName.root_timeseries_csv = $false
@@ -282,4 +326,4 @@ if (-not $KeepRootMirrors) {
     }
 }
 
-Write-Host ("Deleted {0} derived/obsolete artifact paths ({1} MB)." -f $Candidates.Count, $totalMb)
+Write-Host ("Deleted {0} of {1} derived/obsolete artifact paths (listed total {2} MB)." -f $DeletedCount, $Candidates.Count, $totalMb)

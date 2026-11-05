@@ -302,7 +302,8 @@ def test_recorder_dominance_is_hand_computable():
     breakdown = {"axis_weights": {"flex": 0.6, "carbon": 0.15, "cost": 0.25},
                  "components": [{"flex": -1.0, "carbon": -1.0, "cost": -1.0, "weighted_flex": -0.6,
                                  "weighted_carbon": -0.15, "weighted_cost": -0.25, "ev": -0.5,
-                                 "bess_cycle": -0.5, "sat_peak": 1.0, "sat_ramp": 0.0}]}
+                                 "bess_cycle": -0.5, "sat_peak": 1.0, "sat_ramp": 0.0,
+                                 "net": 1.0, "price": 0.1, "carbon_intensity": 0.5}]}
     recorder = RewardTelemetryRecorder()
     recorder.record_step(breakdown)
     episode = recorder.close_episode()

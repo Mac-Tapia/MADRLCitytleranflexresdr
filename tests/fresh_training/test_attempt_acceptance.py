@@ -242,6 +242,8 @@ def _stage_learner(algorithm_config, n_agents, mutate=None):
             'nonfinite_events': 0, 'checkpoint_files': ['native/checkpoints/model.pt'],
             'checkpoint_bundle_hash': _bundle_hash([checkpoint]), 'verified': True, 'exit_code': 0,
             'salvage': None, 'effective_axis_weights': weights,
+            'native_arguments': list(treatment['native_arguments']) + ['--no-resume', '--output-dir',
+                                                                      str(attempt_root/'native')],
             'supervision': {'constraint_dominance_ratio': 0.1}}
         if mutate:
             mutate(evidence)

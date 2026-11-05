@@ -15,6 +15,7 @@ import threading
 from pathlib import Path
 
 import pytest
+import yaml
 
 from uc3m.adapters.algorithms.native_entrypoint import _bundle_hash
 from uc3m.application.thesis.evidence_registry import EvidenceRegistry
@@ -24,6 +25,30 @@ from uc3m.presentation.training_panel import make_server
 
 HERE = Path(__file__).resolve().parent
 CAMPAIGN_ID = 'fresh_test_20261101_v1'
+OWNERS = ('policy_0/actor', 'policy_0/critic')
+
+
+def _planned_row():
+    return {'treatment_id': 'confirm-MATD3-E1-s1001', 'stage': 'confirm', 'algorithm': 'MATD3',
+            'scenario': 'E1', 'seed': 1001, 'episodes': 1, 'episode_time_steps': 24,
+            'native_arguments': [], 'hyperparameters': None, 'weights': [0.6, 0.15, 0.25],
+            'dataset_hash': '2'*64}
+
+
+def _identity():
+    stage_hash = hashlib.sha256(json.dumps({'stage': 'confirm', 'treatments': [_planned_row()]}).encode()).hexdigest()
+    return {'config_sha256': '1'*64, 'dataset_hash': '2'*64, 'source_sha256': '3'*64,
+            'algorithm_config_sha256': '4'*64, 'normalizer_sha256': '5'*64,
+            'source_git_head': 'd'*40, 'test_source_sha256': '6'*64,
+            'optimizer_owners_sha256': canonical_hash({'MATD3': list(OWNERS)}),
+            'input_policy_sha256': canonical_hash(_input_policy()),
+            'stage_plan_sha256': canonical_hash({'confirm': {'path': 'stages/confirm.json',
+                                                           'sha256': stage_hash, 'treatments': 1}})}
+
+
+def _input_policy():
+    layout = yaml.safe_load((HERE.parents[1]/'governance/repository_layout.yaml').read_text(encoding='utf-8'))
+    return {'retired_roots': list(layout['retired_historical_roots'].values()) + layout['forbidden_input_roots']}
 
 
 def _sha(path):
@@ -35,11 +60,14 @@ def _campaign(tmp_path, *, train=True):
     root = tmp_path/'outputs/campaigns/test_v1'
     (root/'stages').mkdir(parents=True)
     stage = root/'stages/confirm.json'
-    stage.write_text(json.dumps({'stage': 'confirm', 'treatments': [{'treatment_id': 'confirm-MATD3-E1-s1001'}]}),
+    row = _planned_row()
+    stage.write_text(json.dumps({'stage': 'confirm', 'treatments': [row]}),
                      encoding='utf-8')
-    identity = {'config_sha256': '1'*64, 'dataset_hash': '2'*64}
+    identity = _identity()
     manifest = {'schema_version': 1, 'campaign_id': CAMPAIGN_ID, 'storage_alias': 'test_v1', 'status': 'planned',
                 'spec_hash': canonical_hash(identity), 'identity': identity,
+                'optimizer_owners': {'MATD3': list(OWNERS)},
+                'input_policy': _input_policy(),
                 'stages': {'confirm': {'path': 'stages/confirm.json', 'sha256': _sha(stage), 'treatments': 1}}}
     (root/'campaign_manifest.json').write_text(json.dumps(manifest), encoding='utf-8')
     (root/'campaign.json').write_text(json.dumps({'schema_version': 1, 'campaign_id': CAMPAIGN_ID,
@@ -49,29 +77,38 @@ def _campaign(tmp_path, *, train=True):
         checkpoint = attempt/'native/E1_s1001/checkpoints/models/actor_agent0.pt'
         checkpoint.parent.mkdir(parents=True)
         checkpoint.write_bytes(b'fresh weights')
-        evidence = {'campaign_id': CAMPAIGN_ID, 'attempt_id': 'try_01', 'verified': True, 'exit_code': 0,
+        from uc3m.application.training.fresh_campaign import _treatment_key
+        key = _treatment_key(row, manifest)
+        (attempt/'attempt.json').write_text(json.dumps({
+            'attempt_id': 'a001', 'treatment_id': key.treatment_id, 'seed': 1001,
+            'initial_episode': 0, 'fresh_start': True, 'treatment': key.as_dict()}), encoding='utf-8')
+        (attempt/'resolved_treatment.json').write_text(json.dumps(row), encoding='utf-8')
+        evidence = {'campaign_id': CAMPAIGN_ID, 'attempt_id': 'a001', 'verified': True, 'exit_code': 0,
                     'salvage': None, 'checkpoint_bundle_hash': _bundle_hash([checkpoint]),
                     'checkpoint_files': [str(checkpoint.relative_to(attempt))],
-                    'successful_optimizer_updates_by_owner': {'actor_agent0': 4}}
+                    'successful_optimizer_updates_by_owner': {owner: 4 for owner in OWNERS},
+                    'attempted_optimizer_steps_by_owner': {owner: 4 for owner in OWNERS},
+                    'initial_parameter_hashes': {owner: 'a'*64 for owner in OWNERS},
+                    'final_parameter_hashes': {owner: 'b'*64 for owner in OWNERS},
+                    'env_steps': 24, 'completed_episodes': 1, 'nonfinite_events': 0,
+                    'effective_axis_weights': {'flex': 0.6, 'carbon': 0.15, 'cost': 0.25},
+                    'supervision': {'constraint_dominance_ratio': 0.1}}
         (attempt/'learning_evidence.json').write_text(json.dumps(evidence), encoding='utf-8')
         (attempt/'completion.json').write_text(json.dumps({'training_complete': True, 'reasons': []}),
                                                encoding='utf-8')
         result = {'campaign_id': CAMPAIGN_ID, 'stage': 'confirm', 'planned_treatments': 1,
                   'completed_treatments': 1, 'status': 'training_complete',
                   'treatments': [{'treatment_id': 'confirm-MATD3-E1-s1001', 'training_complete': True,
-                                  'attempts': [{'attempt_id': 'try_01', 'training_complete': True,
+                                  'attempts': [{'attempt_id': 'a001', 'training_complete': True,
                                                 'path': attempt.relative_to(root).as_posix()}]}]}
         (root/'stages/confirm_result.json').write_text(json.dumps(result), encoding='utf-8')
     return root/'campaign_manifest.json'
 
 
 def _passed_gate(tmp_path, **counters):
-    totals = {'tests': 10, 'failures': 0, 'errors': 0, 'skipped': 0, **counters}
-    path = tmp_path/'gate.json'
-    path.write_text(json.dumps({'exit_code': 0, 'counters': totals,
-                                'software_acceptance': not any(totals[k] for k in ('failures', 'errors', 'skipped'))}),
-                    encoding='utf-8')
-    return path
+    from tests.fresh_training.gate_fixture import synthetic_gate
+    return synthetic_gate(tmp_path, context={'git_head': 'd'*40, 'source_sha256': '3'*64, 'test_source_sha256': '6'*64},
+                          campaign_id=CAMPAIGN_ID, spec_hash=canonical_hash(_identity()), **counters)
 
 
 def test_skips_xfail_xpass_fail_new_acceptance(tmp_path):

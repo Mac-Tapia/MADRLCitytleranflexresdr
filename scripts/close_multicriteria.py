@@ -5,7 +5,8 @@
 2) Sustituye en los 2 Word canónicos cualquier media cuyo SHA coincida con
    las figuras MC previas (o con las nuevas si ya estaban) por los PNG nuevos.
 3) Actualiza notas hybrid/ilustrativo → real Drive 50 ep.
-4) Aplica anclas evaluate_v2 0,8805 / 0,8679.
+4) Escribe el ranking evaluate_v2 que publica la ejecución actual; sin él no
+   toca ningún Word (la cifra nunca es una constante de este script).
 
 Uso:
   py -3.11 scripts/close_multicriteria.py
@@ -14,6 +15,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 import shutil
 import sys
@@ -73,24 +75,38 @@ NOTE_REPLACEMENTS = [
     ),
 ]
 
+# The left-hand texts identify earlier wording to replace; {ranking} always comes
+# from the current run through format_evaluate_v2_ranking.
 EVAL_V2_REPLACEMENTS = [
     (
         "ranking evaluate_v2 4/4 lidera MAAC 0,9538).",
-        "ranking evaluate_v2 4/4: MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000).",
+        "ranking evaluate_v2 4/4: {ranking}).",
     ),
     (
         "ranking evaluate_v2 4/4 lidera MAAC 0,9538 con HAPPO en score 0,0000)",
-        "ranking evaluate_v2 4/4: MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000)",
+        "ranking evaluate_v2 4/4: {ranking})",
     ),
     (
         "y el ranking evaluate_v2 4/4 (0,9538).",
-        "y el ranking evaluate_v2 4/4 (MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000).",
+        "y el ranking evaluate_v2 4/4 ({ranking}).",
     ),
     (
         "El ranking evaluate_v2 4/4 sitúa a MAAC primero (0,9538).",
-        "El ranking evaluate_v2 4/4 sitúa a MAAC 0,9538 > MATD3 0,8805 > MASAC 0,8679 > HAPPO 0,0000.",
+        "El ranking evaluate_v2 4/4 sitúa a {ranking}.",
     ),
 ]
+
+
+def format_evaluate_v2_ranking(regen: dict) -> str | None:
+    """Ranking text of the current run, or None if it does not cover its algorithms."""
+    scores = regen.get("evaluate_v2_ranking")
+    if not isinstance(scores, dict) or set(scores) != set(regen["algorithms"]):
+        return None
+    for score in scores.values():
+        if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(score):
+            return None
+    ordered = sorted(scores.items(), key=lambda item: (-item[1], item[0]))
+    return " > ".join(f"{algo} {score:.4f}".replace(".", ",") for algo, score in ordered)
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -141,6 +157,7 @@ def regenerate_artefacts() -> dict:
             a: result["provenance"][a] for a in list(result["provenance"])[:1]
         },
         "decision_matrix": result["decision_matrix"],
+        "evaluate_v2_ranking": (result.get("extras") or {}).get("evaluate_v2_ranking"),
     }
 
 
@@ -180,10 +197,12 @@ def replace_media_in_docx(docx_path: Path, old_to_new: dict[str, Path]) -> dict:
     }
 
 
-def patch_text(docx_path: Path) -> list[dict]:
+def patch_text(docx_path: Path, ranking_text: str) -> list[dict]:
     doc = Document(str(docx_path))
     changes: list[dict] = []
-    pairs = NOTE_REPLACEMENTS + EVAL_V2_REPLACEMENTS
+    pairs = NOTE_REPLACEMENTS + [
+        (old, new.format(ranking=ranking_text)) for old, new in EVAL_V2_REPLACEMENTS
+    ]
     for old, new in pairs:
         for i, p in enumerate(doc.paragraphs):
             text = p.text or ""
@@ -195,15 +214,16 @@ def patch_text(docx_path: Path) -> list[dict]:
     return changes
 
 
-def verify_no_illustrative(docx_path: Path) -> dict:
+def verify_no_illustrative(docx_path: Path, ranking_text: str) -> dict:
     doc = Document(str(docx_path))
-    blob = "\n".join(p.text or "" for p in doc.paragraphs)
+    texts = [p.text or "" for p in doc.paragraphs]
+    blob = "\n".join(texts)
+    mentions = [text for text in texts if "evaluate_v2 4/4" in text]
     return {
         "has_hybrid_illustrative": bool(
             re.search(r"hybrid_real_c1c3_plus_illustrative", blob, flags=re.I)
         ),
-        "has_08805": bool(re.search(r"0[,.]8805", blob)),
-        "has_08679": bool(re.search(r"0[,.]8679", blob)),
+        "has_current_ranking": bool(mentions) and all(ranking_text in text for text in mentions),
         "has_real_drive_note": "real_drive_50ep" in blob or "100% reales" in blob or "100% desde Drive" in blob,
     }
 
@@ -212,6 +232,10 @@ def main() -> int:
     print("[1/4] Regenerando artefactos multicriterio real-only…")
     regen = regenerate_artefacts()
     print(f"  source={regen['source']} algos={regen['algorithms']} winner={regen['topsis_winner']}")
+    ranking_text = format_evaluate_v2_ranking(regen)
+    if ranking_text is None:
+        print("[REFUSED] La ejecución actual no publica un ranking evaluate_v2 de sus algoritmos; no se toca Word.")
+        return 2
 
     # Map both old and (if needed) current on-disk hashes → new files.
     old_to_new: dict[str, Path] = {}
@@ -236,8 +260,8 @@ def main() -> int:
     }
     for path in CANONS:
         media_info = replace_media_in_docx(path, old_to_new)
-        text_changes = patch_text(path)
-        checks = verify_no_illustrative(path)
+        text_changes = patch_text(path, ranking_text)
+        checks = verify_no_illustrative(path, ranking_text)
         # If no media replaced, try matching by scanning current media against
         # figure filenames via second pass using ANY previous known hashes from
         # selection_report if present — already covered by old_hashes.
@@ -247,8 +271,7 @@ def main() -> int:
             "text_changes": text_changes,
             "checks": checks,
             "ok": media_info["n_replaced"] >= 3
-            and checks["has_08805"]
-            and checks["has_08679"]
+            and checks["has_current_ranking"]
             and not checks["has_hybrid_illustrative"],
         }
         report["docs"][path.name] = entry
@@ -271,11 +294,10 @@ def main() -> int:
         forced = force_replace_mc_images_by_caption(path)
         entry["media"]["fallback"] = forced
         entry["media"]["n_replaced"] = entry["media"]["n_replaced"] + forced.get("n_replaced", 0)
-        entry["checks"] = verify_no_illustrative(path)
+        entry["checks"] = verify_no_illustrative(path, ranking_text)
         entry["ok"] = (
             entry["media"]["n_replaced"] >= 3
-            and entry["checks"]["has_08805"]
-            and entry["checks"]["has_08679"]
+            and entry["checks"]["has_current_ranking"]
             and not entry["checks"]["has_hybrid_illustrative"]
         )
         print(f"  {name} after fallback: replaced_total={entry['media']['n_replaced']} ok={entry['ok']}")

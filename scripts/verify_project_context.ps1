@@ -57,9 +57,9 @@ if (Test-Path -LiteralPath $skillsRoot) {
         ".codex/skills"
     )
 
+    . (Join-Path $PSScriptRoot 'quality/skill_instruction_paths.ps1')
     $globalReferences = @(
-        Get-ChildItem -LiteralPath $skillsRoot -Recurse -File |
-            Where-Object { $_.FullName -notmatch "\\__pycache__\\" } |
+        Get-LocalSkillInstructionFiles -Root $skillsRoot |
             Select-String -SimpleMatch -Pattern $globalReferencePatterns -List
     )
 

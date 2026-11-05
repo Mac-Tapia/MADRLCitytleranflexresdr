@@ -58,7 +58,7 @@ Los únicos `.py` de tesis permitidos aquí son **shims** (<1 KB) que delegan en
 Los one-shots `_archive/` y `scripts/legacy_bat/` fueron **eliminados** (política 2026-07-29 DELETE).
 Los lanzadores locales de entrenamiento (`.bat`/`.ps1`) se retiraron el 2026-11-01: el entrenamiento
 se lanza solo con `python -m uc3m.application.training.cli --config ...` (ver `governance/repository_layout.yaml`, `launch`).
-Detalle: `docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md`.
+Diagnóstico y límites actuales: `docs/audits/architecture_thesis_20261101/informe.md`.
 
 ## Ejecución
 

@@ -123,7 +123,7 @@ def test_assets_identical_across_splits(tmp_path):
     assert seen == {139.624}
 
 
-@pytest.mark.parametrize('alias', ['iquitos_v2', 'iquitos_v3'])
+@pytest.mark.parametrize('alias', ['iquitos_v2', 'iquitos_v3', 'iquitos_v4'])
 def test_real_assets_do_not_depend_on_the_env_seed(alias):
     # CityLearn draws unset device parameters from the env seed; the campaign
     # freezes them so seeds only change the learner, never the physical system.
@@ -139,7 +139,7 @@ def test_real_assets_do_not_depend_on_the_env_seed(alias):
     assert draws[0] == draws[1]
 
 
-@pytest.mark.parametrize('alias', ['iquitos_v2', 'iquitos_v3'])
+@pytest.mark.parametrize('alias', ['iquitos_v2', 'iquitos_v3', 'iquitos_v4'])
 def test_real_campaign_splits_reset_and_step(alias):
     root = REPO/'data/campaigns'/alias
     manifest_path = root/'split_manifest.json'

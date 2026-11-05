@@ -88,7 +88,16 @@ foreach ($decision in $decisions) {
             }
             $cursor = if ($cursor.PSIsContainer) { $cursor.Parent } else { $cursor.Directory }
         }
-        $hash = (Get-FileHash -LiteralPath $full -Algorithm SHA256).Hash.ToLowerInvariant()
+        # .NET SHA-256 also works when Windows PowerShell is launched by Python
+        # with a PowerShell 7 PSModulePath where Get-FileHash is unavailable.
+        $hashStream = [IO.File]::OpenRead($full)
+        $hashAlgorithm = [Security.Cryptography.SHA256]::Create()
+        try {
+            $hash = ([BitConverter]::ToString($hashAlgorithm.ComputeHash($hashStream))).Replace('-', '').ToLowerInvariant()
+        } finally {
+            $hashStream.Dispose()
+            $hashAlgorithm.Dispose()
+        }
         if ($hash -ne $decision.sha256) { throw "Target '$full' changed since verification." }
         Remove-Item -LiteralPath $full -Force -ErrorAction Stop
         $outcomes += [pscustomobject]@{ path = $decision.path; status = 'deleted'; reasons = $reasons; sha256 = $hash; at_utc = $now }

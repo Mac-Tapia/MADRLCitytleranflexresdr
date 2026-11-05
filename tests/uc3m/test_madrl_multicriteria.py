@@ -188,6 +188,7 @@ def test_wilcoxon_and_kruskal_small_fixtures():
 def test_pipeline_illustrative_end_to_end(tmp_path):
     result = run_selection_pipeline(
         prefer_real=False,
+        allow_illustrative_fill=True,
         output_dir=tmp_path,
         make_plots=False,
         sensitivity_samples=12,

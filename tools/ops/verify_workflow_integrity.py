@@ -9,11 +9,14 @@ from __future__ import annotations
 
 import json
 import argparse
+import sys
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 WORKFLOW_MANIFEST = ROOT / "docs" / "workflow_manifest.json"
 DATASET_DIR = ROOT / "CityLearn" / "data" / "datasets" / "citylearn_iquitos_2023_2025"
 SCHEMA_PATH = DATASET_DIR / "schema.json"
@@ -354,27 +357,15 @@ def main() -> int:
     args = parser.parse_args()
     manifest_out = args.manifest_out if args.manifest_out.is_absolute() else ROOT / args.manifest_out
 
-    errors: list[str] = []
-    manifest = validate_workflow_manifest(errors)
-    schema_summary = validate_schema(errors)
-    validate_training_scripts(errors)
-    validate_active_defaults(errors)
-    audit_summary = validate_audits(errors)
-    latest_pointer = validate_latest_pointer()
-
-    report = {
-        "ok": not errors,
-        "project_root": str(ROOT),
-        "workflow_manifest": manifest.get("purpose"),
-        "schema_summary": schema_summary,
-        "audit_summary": audit_summary,
-        "latest_output_pointer": latest_pointer,
-        "errors": errors,
-    }
+    # Schema 2 and the validators below are retained as historical diagnostics;
+    # the active workflow no longer consults old runs, pointers or the old notebook.
+    from tools.ops.fresh_workflow import verify
+    report = verify(ROOT)
     manifest_out.parent.mkdir(parents=True, exist_ok=True)
-    manifest_out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    manifest_out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding='utf-8')
     print(json.dumps(report, indent=2, ensure_ascii=False))
-    return 0 if not errors else 1
+    return 0 if report['ok'] else 1
+
 
 
 if __name__ == "__main__":

@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 from typing import Any, Dict, Mapping, Optional, Sequence
 
 from uc3m.multicriteria.ahp import (
     DEFAULT_AHP_PAIRWISE,
+    NonPositiveAutomaticAHP,
     ahp_priority_weights,
     ahp_rank_alternatives,
     default_weights_or_ahp,
@@ -25,7 +27,7 @@ from uc3m.multicriteria.consolidation import (
     plot_pareto_cost_co2_flex,
     save_consolidation_bundle,
 )
-from uc3m.multicriteria.criteria import CRITERION_SPECS, criteria_manifest
+from uc3m.multicriteria.criteria import CRITERION_SPECS, criteria_manifest, mean_std_report
 from uc3m.multicriteria.scenarios import DEFAULT_PROTOCOL, list_scenarios
 from uc3m.multicriteria.stats_tests import (
     kruskal_wallis,
@@ -54,13 +56,14 @@ def run_selection_pipeline(
     run_dir: Optional[Path] = None,
     scenario: str = "E1",
     prefer_real: bool = True,
-    allow_illustrative_fill: bool = True,
+    allow_illustrative_fill: bool = False,
     use_ahp_weights: bool = True,
     output_dir: Optional[Path] = None,
     make_plots: bool = False,
     sensitivity_samples: int = 48,
     seed_curves: Optional[Mapping[str, Sequence[Sequence[float]]]] = None,
     degradation: Optional[Mapping[str, float]] = None,
+    episode_index_origin: int = 1,
 ) -> Dict[str, Any]:
     """Run metrics load → AHP weights → TOPSIS → sensitivity → stats gates."""
 
@@ -70,9 +73,23 @@ def run_selection_pipeline(
         scenario=scenario,
         prefer_real=prefer_real,
         allow_illustrative_fill=allow_illustrative_fill,
+        episode_index_origin=episode_index_origin,
     )
     decision_matrix = loaded["decision_matrix"]
-    criteria_kind = _criteria_kind()
+    criteria_kind = loaded.get("criteria_kind") or _criteria_kind()
+    active_manifest = criteria_manifest()
+    if (loaded.get("criterion_units") or {}).get("C3") == "kWh":
+        active_manifest["criteria"]["C3"].update(
+            name="illustrative_flexibility_activated", kind="benefit", unit="kWh", higher_is_better=True
+        )
+    active_frame = decision_matrix_frame(decision_matrix)
+    active_frame.attrs["criteria_kind"] = dict(criteria_kind)
+    active_frame.attrs["criterion_units"] = {
+        cid: spec["unit"] for cid, spec in active_manifest["criteria"].items()
+    }
+    active_frame.attrs["orientation"] = {
+        cid: "min" if kind == "cost" else "max" for cid, kind in criteria_kind.items()
+    }
 
     ahp_info = ahp_priority_weights(
         DEFAULT_AHP_PAIRWISE,
@@ -85,11 +102,17 @@ def run_selection_pipeline(
         weights=weights,
         criteria_kind=criteria_kind,
     )
-    ahp_only = ahp_rank_alternatives(
-        decision_matrix,
-        criteria_kind=criteria_kind,
-        criteria_pairwise=DEFAULT_AHP_PAIRWISE,
-    )
+    try:
+        ahp_only = ahp_rank_alternatives(
+            decision_matrix,
+            criteria_kind=criteria_kind,
+            criteria_pairwise=DEFAULT_AHP_PAIRWISE,
+        )
+    except NonPositiveAutomaticAHP as exc:
+        # Signed deltas remain valid TOPSIS/Pareto inputs. AHP cannot silently
+        # replace them by epsilon or invent an additive utility transformation.
+        ahp_only = {"status": "unavailable_nonpositive_automatic_scores", "reason": str(exc),
+                    "ranking": [], "method": "ahp_only"}
     sensitivity = weight_sweep_sensitivity(
         decision_matrix,
         base_weights=weights,
@@ -97,13 +120,13 @@ def run_selection_pipeline(
         n_samples=sensitivity_samples,
         criteria_kind=criteria_kind,
     )
-    pareto_quality = pareto_quality_from_decision_matrix(decision_matrix)
+    pareto_quality = pareto_quality_from_decision_matrix(decision_matrix, criteria_kind=criteria_kind)
     pareto_front = pareto_quality["front"]
     topsis_winner = str(topsis["ranking"][0]["algorithm"])
     topsis_second = (
         str(topsis["ranking"][1]["algorithm"]) if len(topsis["ranking"]) > 1 else topsis_winner
     )
-    ahp_winner = str(ahp_only["ranking"][0]["algorithm"])
+    ahp_winner = str(ahp_only["ranking"][0]["algorithm"]) if ahp_only["ranking"] else None
 
     seed_samples = loaded.get("seed_metric_samples") or {}
     stats_block: Dict[str, object] = {}
@@ -151,7 +174,24 @@ def run_selection_pipeline(
         ax = plot_learning_curves(seed_curves, title=lc_title)
         figures["learning_curves"] = ax.figure
         fig_axes.append(ax)
-        ax2, _front = plot_pareto_cost_co2_flex(decision_matrix)
+        # The legacy plot helper maximizes its marker criterion. Adapt the raw
+        # ratio to a preference solely for drawing; retain raw values in tables.
+        cost_ratio = criteria_kind["C3"] == "cost"
+        plot_points = {
+            algo: dict(values, C3_preference=(-1 if cost_ratio else 1) * float(values["C3"]))
+            for algo, values in decision_matrix.items()
+        }
+        ax2, _front = plot_pareto_cost_co2_flex(
+            plot_points, flex_key="C3_preference",
+            title=("Pareto: cost vs CO2 avoided (larger marker = lower flexibility ratio)"
+                   if cost_ratio else "Illustrative Pareto (larger marker = activated flexibility kWh)"),
+        )
+        loaded["extras"]["pareto_plot_front"] = _front
+        loaded["extras"]["pareto_plot_transform"] = (
+            "C3_preference=-C3_ratio_to_baseline" if cost_ratio else "C3_preference=C3_illustrative_kWh"
+        )
+        if set(_front) != set(pareto_front):
+            raise RuntimeError("Pareto plot and decision criteria have inconsistent orientation")
         figures["pareto_cost_co2_flex"] = ax2.figure
         fig_axes.append(ax2)
         deg = degradation or {
@@ -176,6 +216,19 @@ def run_selection_pipeline(
             else:
                 seed_metrics[algo][cid] = [float(value)]
     master = master_table_from_seed_metrics(seed_metrics, scenario=scenario)
+    # The shared table helper historically emits std=0 for n=1. At this boundary
+    # report seed uncertainty honestly, including the per-seed episodic C4 scalar.
+    for cid in CRITERION_SPECS:
+        count = master[f"{cid}_n"]
+        master[f"{cid}_n_seeds"] = count
+        master.loc[count < 2, f"{cid}_std"] = float("nan")
+        master[f"{cid}_uncertainty_status"] = [
+            "estimated" if n > 1 else "insufficient_replicas" for n in count
+        ]
+        master[f"{cid}_mean_pm_std"] = [
+            mean_std_report(mean, std)
+            for mean, std in zip(master[f"{cid}_mean"], master[f"{cid}_std"])
+        ]
 
     saved_paths: Dict[str, str] = {}
     if output_dir is not None:
@@ -198,6 +251,8 @@ def run_selection_pipeline(
             },
             "topsis_ranking": topsis["ranking"],
             "ahp_ranking": ahp_only["ranking"],
+            "ahp_only_status": ahp_only.get("status", "ok"),
+            "ahp_only_reason": ahp_only.get("reason"),
             "pareto_front": pareto_front,
             "pareto_quality": pareto_quality,
             "ranking_consistency": ranking_consistency,
@@ -210,10 +265,17 @@ def run_selection_pipeline(
             "provenance": loaded["provenance"],
             "protocol": DEFAULT_PROTOCOL.as_dict(),
             "scenarios": list_scenarios(),
-            "criteria_manifest": criteria_manifest(),
+            "criteria_manifest": active_manifest,
+            "criterion_sampling": loaded.get("extras", {}).get("seed_metric_replication", {}),
+            "episode_curve_index": loaded.get("extras", {}).get("episode_curve_index", {}),
+            "seed_metric_summary": [
+                {key: (None if isinstance(value, float) and not math.isfinite(value) else value)
+                 for key, value in row.items()}
+                for row in master.to_dict(orient="records")
+            ],
         }
         report_path.write_text(
-            json.dumps(serializable, indent=2, ensure_ascii=False),
+            json.dumps(serializable, indent=2, ensure_ascii=False, allow_nan=False),
             encoding="utf-8",
         )
         saved_paths["selection_report"] = str(report_path)
@@ -225,7 +287,7 @@ def run_selection_pipeline(
 
     return {
         "decision_matrix": decision_matrix,
-        "decision_matrix_frame": decision_matrix_frame(decision_matrix),
+        "decision_matrix_frame": active_frame,
         "master_table": master,
         "weights": weights,
         "ahp": ahp_info,

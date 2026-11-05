@@ -1,8 +1,7 @@
 """Carga del modelo MADRL ganador exportado a ONNX para el servicio de inferencia.
 
-Contrato esperado (producido por un futuro `tools/training/export_winning_model_onnx.py`
-una vez seleccionado el mejor agente vía KPIEvaluator/HPHI sobre las 12
-corridas oficiales — 4 algoritmos x 3 escenarios E1/E2/E3):
+Contrato de una extensión futura de exportación ONNX. La campaña actual
+conserva checkpoints nativos; este servicio no constituye su exportador:
 
 - ``MODEL_PATH`` (.onnx): grafo de inferencia del actor (observaciones -> acciones).
   Entrada: tensor float32 de forma ``(n_agents, obs_dim)`` o ``(1, bact_dim)``
@@ -51,13 +50,35 @@ class ModelMetadata:
     operational_acceptance: bool = False
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "ModelMetadata":
+    def from_dict(cls, d: dict[str, Any], *, require_complete=False) -> "ModelMetadata":
+        if not isinstance(d, dict):
+            raise ValueError('metadata must be a mapping')
+        if require_complete and not all(k in d for k in
+                ('algorithm', 'scenario', 'obs_dim', 'action_dim', 'n_agents', 'action_space')):
+            raise ValueError('real model metadata is incomplete')
+        for name, default in (('obs_dim', 29), ('action_dim', 1), ('n_agents', 17)):
+            if type(d.get(name, default)) is not int or d.get(name, default) <= 0:
+                raise ValueError(f'{name} must be a positive integer')
+        if type(d.get('central_agent', False)) is not bool:
+            raise ValueError('central_agent must be boolean')
         action_space = d.get("action_space", {})
         low = np.asarray(action_space.get("low", [-1.0]), dtype=np.float32)
         high = np.asarray(action_space.get("high", [1.0]), dtype=np.float32)
         norm = d.get("normalization") or {}
         mean = np.asarray(norm["mean"], dtype=np.float32) if "mean" in norm else None
         std = np.asarray(norm["std"], dtype=np.float32) if "std" in norm else None
+        action_dim, obs_dim = d.get('action_dim', 1), d.get('obs_dim', 29)
+        if (low.shape not in ((1,), (action_dim,)) or high.shape not in ((1,), (action_dim,))
+                or not np.all(np.isfinite(low)) or not np.all(np.isfinite(high)) or np.any(low > high)):
+            raise ValueError('invalid action bounds')
+        if (mean is None) != (std is None):
+            raise ValueError('normalization needs both mean and std')
+        if mean is not None and (mean.shape != (obs_dim,) or std.shape != (obs_dim,)
+                or not np.all(np.isfinite(mean)) or not np.all(np.isfinite(std)) or np.any(std <= 0)):
+            raise ValueError('invalid normalization')
+        if require_complete and (not isinstance(d['algorithm'], str) or not d['algorithm'].strip()
+                                 or not isinstance(d['scenario'], str) or not d['scenario'].strip()):
+            raise ValueError('missing algorithm or scenario')
         return cls(
             algorithm=d.get("algorithm", "unknown"),
             scenario=d.get("scenario", "unknown"),
@@ -73,6 +94,12 @@ class ModelMetadata:
         )
 
 
+@dataclass(frozen=True)
+class InferenceResult:
+    actions: np.ndarray
+    clipped_actions: int
+
+
 class ModelBundle:
     """Wraps an ONNX Runtime session (or a stub policy) for /act."""
 
@@ -80,7 +107,6 @@ class ModelBundle:
         self.session = session
         self.metadata = metadata
         self.is_stub = is_stub
-        self.last_clipped = 0
 
     @property
     def control_eligible(self) -> bool:
@@ -94,11 +120,18 @@ class ModelBundle:
         model_path = Path(model_path)
         metadata_path = Path(metadata_path)
 
-        if metadata_path.is_file():
-            metadata = ModelMetadata.from_dict(json.loads(metadata_path.read_text(encoding="utf-8")))
-        else:
-            logger.warning("Metadata file not found at %s — using stub metadata.", metadata_path)
-            metadata = ModelMetadata.from_dict({})
+        try:
+            if metadata_path.is_file():
+                metadata = ModelMetadata.from_dict(json.loads(metadata_path.read_text(encoding="utf-8")),
+                                                   require_complete=model_path.is_file())
+            elif model_path.is_file():
+                logger.error('Real model requires an explicit metadata file')
+                return None
+            else:
+                metadata = ModelMetadata.from_dict({})
+        except (OSError, ValueError, TypeError, KeyError):
+            logger.exception('Invalid model metadata; service remains unready')
+            return None
 
         if model_path.is_file():
             try:
@@ -130,6 +163,9 @@ class ModelBundle:
         return x
 
     def act(self, observations: np.ndarray) -> np.ndarray:
+        return self.act_with_diagnostics(observations).actions
+
+    def act_with_diagnostics(self, observations: np.ndarray) -> InferenceResult:
         """Compute actions for a batch of observations.
 
         ``observations`` shape: ``(n_agents, obs_dim)`` for decentralized
@@ -157,6 +193,7 @@ class ModelBundle:
                 size=(n, meta.action_dim),
             ).astype(np.float32)
 
+        if actions.shape != (observations.shape[0], meta.action_dim):
+            raise ValueError('model produced actions with an undeclared shape')
         clipped = np.clip(actions, meta.action_low, meta.action_high)
-        self.last_clipped = int(np.count_nonzero(clipped != actions))
-        return clipped
+        return InferenceResult(clipped, int(np.count_nonzero(clipped != actions)))

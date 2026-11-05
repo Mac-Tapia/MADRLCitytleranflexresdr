@@ -18,7 +18,9 @@ Decisiones de diseño:
 from __future__ import annotations
 
 from pathlib import Path
+import os
 
+from uc3m.application.dataset.provenance import contained_path
 from uc3m.data.contracts import DatasetManifest, DatasetValidationError
 from uc3m.data.adapters.local_csv import LocalCsvDatasetAdapter
 
@@ -43,9 +45,11 @@ class S3DatasetAdapter:
         self._bucket = str(bucket)
         self._prefix = str(prefix).lstrip("/")
         self._region = region_name
-        self._name = name or (self._prefix.rstrip("/").split("/")[-1] or self._bucket)
+        self._name = name if name is not None else (self._prefix.rstrip("/").split("/")[-1] or self._bucket)
         root = Path(cache_dir).expanduser() if cache_dir else _DEFAULT_CACHE_ROOT
-        self._cache_dir = (root / self._name).resolve()
+        if self._name in ("", ".") or "/" in self._name or "\\" in self._name:
+            raise DatasetValidationError("S3 dataset name must be a single relative component")
+        self._cache_dir = contained_path(root, self._name)
 
     @property
     def uri(self) -> str:
@@ -83,22 +87,44 @@ class S3DatasetAdapter:
 
         client = self._make_client()
         paginator = client.get_paginator("list_objects_v2")
-        downloaded = 0
+        # Validate the entire listing before any mkdir or download. S3 keys are
+        # flat identifiers: a valid S3 key can be an unsafe filesystem path.
+        pending = []
+        destinations = set()
         for page in paginator.paginate(Bucket=self._bucket, Prefix=self._prefix):
             for obj in page.get("Contents", []):
                 key = obj["Key"]
+                if not isinstance(key, str) or not key.startswith(self._prefix):
+                    raise DatasetValidationError("S3 key is outside the requested prefix")
+                rel = key[len(self._prefix):] if self._prefix else key
+                # With prefix 'data' the normal key 'data/schema.json' has one delimiter.
+                if self._prefix and not self._prefix.endswith('/') and rel.startswith('/'):
+                    rel = rel[1:]
+                if not rel and key.endswith('/'):
+                    continue
+                dest = contained_path(self._cache_dir, rel)
                 if key.endswith("/"):
                     continue
-                rel = key[len(self._prefix):].lstrip("/") if self._prefix else key
-                dest = self._cache_dir / rel
-                dest.parent.mkdir(parents=True, exist_ok=True)
-                client.download_file(self._bucket, key, str(dest))
-                downloaded += 1
+                identity = str(dest).casefold()
+                if identity in destinations or dest.exists():
+                    raise DatasetValidationError("S3 keys collide with another destination or an existing file")
+                destinations.add(identity)
+                pending.append((key, rel))
 
-        if downloaded == 0:
+        if not pending:
             raise DatasetValidationError(
                 f"No se encontraron objetos en {self.uri}"
             )
+        for _, rel in pending:
+            dest = contained_path(self._cache_dir, rel)
+            if any(str(parent).casefold() in destinations or parent.is_file()
+                   for parent in dest.parents):
+                raise DatasetValidationError("S3 keys collide as files and directories")
+        for key, rel in pending:
+            dest = contained_path(self._cache_dir, rel)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest = contained_path(self._cache_dir, rel)
+            client.download_file(self._bucket, key, str(dest))
 
         found = self._find_schema_dir(self._cache_dir)
         if found is None:
@@ -120,14 +146,18 @@ class S3DatasetAdapter:
 
     @staticmethod
     def _find_schema_dir(root: Path) -> Path | None:
+        root = contained_path(root, '.')
         if not root.exists():
             return None
-        direct = root / "schema.json"
-        if direct.is_file():
-            return root.resolve()
-        for schema in sorted(root.rglob("schema.json")):
-            return schema.parent.resolve()
-        return None
+        schemas = []
+        for directory, dirs, files in os.walk(root, followlinks=False):
+            for name in sorted(dirs + files):
+                candidate = contained_path(root, (Path(directory)/name).relative_to(root).as_posix())
+                if name == 'schema.json' and candidate.is_file():
+                    schemas.append(candidate)
+        if root/'schema.json' in schemas:
+            return root
+        return min(schemas).parent if schemas else None
 
 
 __all__ = ["S3DatasetAdapter"]

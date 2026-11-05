@@ -28,6 +28,7 @@ import contextlib
 import hashlib
 import importlib
 import json
+import os
 import sys
 import tempfile
 from dataclasses import dataclass, field
@@ -51,6 +52,23 @@ _HARL_OPTIMIZER_KEYS = frozenset({'lr', 'critic_lr', 'opti_eps', 'weight_decay'}
 
 class FrozenPolicyRejected(PermissionError):
     """The attempt cannot provide a trustworthy frozen policy."""
+
+
+@contextlib.contextmanager
+def _scenario_catalog_context(path):
+    """Frozen evaluations are serial in a worker; restore its previous catalog."""
+    if path is None:
+        yield
+        return
+    previous = os.environ.get('UC3M_SCENARIO_CATALOG')
+    os.environ['UC3M_SCENARIO_CATALOG'] = str(path)
+    try:
+        yield
+    finally:
+        if previous is None:
+            os.environ.pop('UC3M_SCENARIO_CATALOG', None)
+        else:
+            os.environ['UC3M_SCENARIO_CATALOG'] = previous
 
 
 @dataclass(frozen=True)
@@ -125,17 +143,25 @@ def _physical_trace(core, taken: int, campaign_root: Path, split_id: str):
         power = [float(v) for v in building.net_electricity_consumption[:taken]]
         balance = [abs(float(v)) for v in building.electrical_storage.energy_balance[:taken]]
         throughput += sum(balance)
-        series[building.name] = {'net_power': power, 'battery_throughput': balance}
+        series[building.name] = {
+            'net_power': power, 'battery_throughput': balance,
+            'price': [float(v) for v in building.pricing.electricity_pricing[:taken]]}
         for charger in building.electric_vehicle_chargers or []:
             states = charger.charger_simulation.electric_vehicle_charger_state[:taken]
             connection.update((charger.charger_id + ':' + ','.join(str(s) for s in states)).encode('utf-8'))
     first = core.buildings[0]
-    district = {'carbon_intensity': [float(v) for v in first.carbon_intensity.carbon_intensity[:taken]],
-                'price': [float(v) for v in first.pricing.electricity_pricing[:taken]]}
+    carbon = [float(v) for v in first.carbon_intensity.carbon_intensity[:taken]]
+    if any([float(v) for v in b.carbon_intensity.carbon_intensity[:taken]] != carbon for b in core.buildings):
+        raise ValueError('buildings differ in carbon intensity; the trace has one district carbon series')
+    district = {'carbon_intensity': carbon}
+    prices = [s['price'] for s in series.values()]
+    if all(price == prices[0] for price in prices):
+        district['price'] = prices[0]  # with several tariffs no single district price exists
     provenance = json.loads((campaign_root/'provenance.json').read_text(encoding='utf-8'))
     currency_note = (f"bills {provenance['billing_currency']} converted with World Bank PA.NUS.FCRF "
                      f"annual PEN per USD {provenance['pen_per_usd']}")
-    exogenous = hashlib.sha256(json.dumps(district, sort_keys=True).encode('utf-8')).hexdigest()
+    signals = {'district': district, 'building_prices': {b: s['price'] for b, s in series.items()}}
+    exogenous = hashlib.sha256(json.dumps(signals, sort_keys=True).encode('utf-8')).hexdigest()
     trace = PhysicalTrace(stamps, 3600, tuple(series), series, district, UNITS, 'USD', currency_note, exogenous)
     return trace, connection.hexdigest(), throughput
 
@@ -230,19 +256,33 @@ class NoStorageReferencePolicy(RbcPolicy):
 
 
 def run_frozen_episode(split_dir: Path, policy, campaign_root: Path, *, steps: Optional[int] = None,
-                       seed: Optional[int] = None, scenario: Optional[str] = None) -> FrozenRun:
+                       seed: Optional[int] = None, scenario: Optional[str] = None,
+                       manifest_path: Optional[Path] = None, scenario_catalog: Optional[Path] = None) -> FrozenRun:
     """Run one frozen episode of ``policy`` on a split; ``steps`` actions (default: the whole split)."""
     split_dir, campaign_root = Path(split_dir), Path(campaign_root)
-    if split_dir.name == 'test_2025' and not (campaign_root/'test_unlock.json').is_file():
-        raise PermissionError('the test split opens only after the signed configuration freeze')
+    if split_dir.name == 'test_2025':
+        from uc3m.application.evaluation.test_access import verify_test_unlock
+        from uc3m.application.training.integrity import verify_campaign_inputs
+        from uc3m.application.dataset.provenance import contained_path
+        if manifest_path is None:
+            raise PermissionError('test split requires an explicit frozen campaign manifest')
+        verify_test_unlock(manifest_path)
+        integrity = verify_campaign_inputs(manifest_path, REPO_ROOT)
+        manifest = json.loads(Path(manifest_path).read_text(encoding='utf-8'))
+        recorded = contained_path(REPO_ROOT, manifest['inputs']['split_manifest']['path']).parent
+        if not integrity.accepted or recorded != campaign_root.resolve():
+            raise PermissionError('test dataset differs from the frozen campaign inputs')
     from uc3m.application.training.integrity import verify_split_input
     split_sha256 = verify_split_input(campaign_root, split_dir)  # before any environment is built
     rows =int(_split_record(campaign_root, split_dir.name)['rows'])
-    # CityLearn ends an episode of N time steps after N - 1 actions.
-    horizon = rows - 1 if steps is None else int(steps)
-    if not 0 < horizon < rows:
-        raise ValueError(f'{split_dir.name}: steps must be in [1, {rows - 1}], got {horizon}')
+    horizon = rows if steps is None else steps
+    if type(horizon) is not int or not 0 < horizon <= rows:
+        raise ValueError(f'{split_dir.name}: steps must be an integer in [1, {rows}], got {horizon}')
     scenario = policy.resolve_scenario(scenario)
+    catalog = scenario_catalog or getattr(policy, 'scenario_catalog_path', None)
+    if scenario is not None and catalog is None:
+        # CityLearn would apply its legacy composite tariff instead of the declared policy.
+        raise ValueError(f'{policy.name}: scenario {scenario} requires its scenario catalog')
     normalizer = campaign_root/'normalizer.json'
     spec = load_normalizer(normalizer)
     common = _common()
@@ -250,8 +290,9 @@ def run_frozen_episode(split_dir: Path, policy, campaign_root: Path, *, steps: O
     import torch
     with tempfile.TemporaryDirectory(prefix='frozen_eval_') as scratch, \
             attempt_isolation(common, Path(scratch)), frozen_observation_limits(spec), \
+            _scenario_catalog_context(catalog), \
             _optimizer_step_counter() as optimizer_steps:
-        policy.build_env(common, split_dir/'schema.json', scenario, seed, horizon + 1)
+        policy.build_env(common, split_dir/'schema.json', scenario, seed, horizon)
         core = _citylearn_env(policy.adapter)
         observations = policy.reset(seed)
         tracker = core.episode_tracker
@@ -269,12 +310,12 @@ def run_frozen_episode(split_dir: Path, policy, campaign_root: Path, *, steps: O
                 break
         after = policy.parameter_hash()
         trace, connection, throughput = _physical_trace(core, taken, campaign_root, split_dir.name)
-        final = sum(_storage_kwh(b, taken) for b in core.buildings)
+        final = sum(_storage_kwh(b, taken - 1) for b in core.buildings)
         from citylearn.v3.objectives import evaluate_objectives
         citylearn_v3_report = evaluate_objectives(core)
         updates = int(optimizer_steps[0])
     contract = {**policy.contract(), 'split': split_dir.name, 'split_sha256': split_sha256, 'scenario': scenario, 'seed': seed,
-                'episode_time_steps': horizon + 1, 'normalizer_sha256': _sha256_file(normalizer),
+                'episode_time_steps': horizon, 'normalizer_sha256': _sha256_file(normalizer),
                 'parameter_hash_before': before, 'parameter_hash_after': after,
                 'grad_enabled_during_act': grad_seen, 'torch_grad_enabled_after': torch.is_grad_enabled(),
                 'trace_record_interval': 0}
@@ -771,12 +812,20 @@ def load_native_policy(algorithm: str, attempt_root: Path) -> NativeFrozenPolicy
     """
     if algorithm not in NATIVE_POLICIES:
         raise ValueError(f'no native policy loader for {algorithm!r}; random or placeholder policies are refused')
+    if not Path(attempt_root).is_dir():
+        raise FileNotFoundError(f'no native attempt at {attempt_root}')
+    from uc3m.application.training.attempt_trust import read_trusted_attempt
+    from uc3m.application.training.integrity import verify_campaign_inputs
+    context = read_trusted_attempt(attempt_root, algorithm=algorithm)
+    integrity = verify_campaign_inputs(context.manifest_path, REPO_ROOT)
+    if not integrity.accepted:
+        raise FrozenPolicyRejected(f'campaign inputs changed: {integrity.reasons}')
     attempt_root = Path(attempt_root).resolve()
     native = attempt_root/'native'
     evidence_file = attempt_root/'learning_evidence.json'
     if not native.is_dir() or not evidence_file.is_file():
         raise FileNotFoundError(f'no verified native model in {attempt_root}')
-    evidence = json.loads(evidence_file.read_text(encoding='utf-8'))
+    evidence = context.evidence
     if evidence.get('verified') is not True:
         raise FrozenPolicyRejected(f'{attempt_root}: learning not verified; the policy is not loadable')
     if evidence.get('algorithm') != algorithm:
@@ -804,4 +853,21 @@ def load_native_policy(algorithm: str, attempt_root: Path) -> NativeFrozenPolicy
         raise FrozenPolicyRejected(f'{algorithm}: data/results.json with hyperparameters missing in {job}')
     if str(results.get('algorithm', algorithm)).upper() != algorithm:
         raise FrozenPolicyRejected(f'{algorithm}: results.json is for {results.get("algorithm")}')
-    return NATIVE_POLICIES[algorithm](algorithm, attempt_root, evidence, files, args, results, job, common)
+    from uc3m.application.dataset.provenance import contained_path
+    from uc3m.application.configuration import load_scenario_catalog
+    from uc3m.application.training.fresh_campaign import catalog_sha256
+    import yaml
+    derived = 'derived_scenario_catalog' in context.resolved.get('requires', [])
+    base = context.manifest_path.parent if derived else REPO_ROOT
+    catalog = contained_path(base, context.resolved['scenario_catalog'])
+    definition = yaml.safe_load(catalog.read_text(encoding='utf-8'))
+    contained_path(catalog.parent, definition['objective_policies_file'])  # before following the reference
+    if catalog_sha256(catalog) != context.resolved['scenario_catalog_sha256']:
+        raise FrozenPolicyRejected('resolved reward catalog changed')
+    loaded_weights = load_scenario_catalog(catalog)[context.resolved['scenario']].objective_policy.weights
+    from uc3m.domain.objectives import CANONICAL_AXES
+    if any(abs(float(loaded_weights[a])-v) > 1e-12 for a, v in zip(CANONICAL_AXES, context.resolved['weights'])):
+        raise FrozenPolicyRejected('resolved reward weights differ from the native attempt')
+    policy = NATIVE_POLICIES[algorithm](algorithm, attempt_root, evidence, files, args, results, job, common)
+    policy.scenario_catalog_path = catalog
+    return policy

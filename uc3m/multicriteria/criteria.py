@@ -47,16 +47,16 @@ CRITERION_SPECS: Mapping[str, SelectionCriterion] = {
     ),
     "C3": SelectionCriterion(
         id="C3",
-        name="flexibility_activated",
+        name="flexibility_composite_ratio_to_baseline",
         dimension="technical_performance",
-        kind="benefit",
-        unit="kWh",
+        kind="cost",
+        unit="ratio_to_baseline",
         default_weight=0.15,
-        higher_is_better=True,
+        higher_is_better=False,
     ),
     "C4": SelectionCriterion(
         id="C4",
-        name="inter_seed_variance",
+        name="episodic_reward_variance_per_seed",
         dimension="training_stability",
         kind="cost",
         unit="reward^2",
@@ -65,7 +65,7 @@ CRITERION_SPECS: Mapping[str, SelectionCriterion] = {
     ),
     "C5": SelectionCriterion(
         id="C5",
-        name="steps_to_90pct_asymptotic",
+        name="steps_to_90pct_initial_to_tail_progress",
         dimension="sample_compute_efficiency",
         kind="cost",
         unit="steps",
@@ -94,7 +94,7 @@ class MetricAggregate:
 
     name: str
     mean: float
-    std: float
+    std: Optional[float]
     n: int
     unit: str = ""
     values: Tuple[float, ...] = field(default_factory=tuple)
@@ -105,9 +105,11 @@ class MetricAggregate:
         return payload
 
 
-def mean_std_report(mean: float, std: float, *, digits: int = 4) -> str:
+def mean_std_report(mean: float, std: Optional[float], *, digits: int = 4) -> str:
     """Format ``mean ± std`` for tables."""
 
+    if std is None or not np.isfinite(std):
+        return f"{mean:.{digits}g} ± not estimable"
     return f"{mean:.{digits}g} ± {std:.{digits}g}"
 
 
@@ -123,7 +125,7 @@ def aggregate_seed_values(
     if arr.size == 0:
         return MetricAggregate(name=name, mean=float("nan"), std=float("nan"), n=0, unit=unit)
     mean = float(np.mean(arr))
-    std = float(np.std(arr, ddof=1)) if arr.size > 1 else 0.0
+    std = float(np.std(arr, ddof=1)) if arr.size > 1 else None
     return MetricAggregate(
         name=name,
         mean=mean,
@@ -240,19 +242,29 @@ def steps_to_fraction_of_asymptotic(
     fraction: float = 0.90,
     asymptotic_window: int = 10,
 ) -> float:
-    """First step index where reward reaches ``fraction`` of asymptotic mean."""
+    """First zero-based index attaining a fraction of initial-to-tail progress.
+
+    Project descriptive definition: target = initial + fraction*(tail_mean-initial).
+    The crossing follows the sign of the displacement, so a deteriorating curve
+    describes progress toward its lower tail, never better performance. Constants
+    reach their target at zero. Missing/nonfinite observations make it unavailable
+    (NaN); episodes are never dropped or reindexed. This is not a convergence test.
+    """
 
     arr = np.asarray(step_rewards, dtype=float)
-    if arr.size == 0:
+    if not np.isfinite(fraction) or not 0 <= fraction <= 1:
+        raise ValueError("fraction must be finite and between zero and one")
+    if arr.ndim != 1:
+        raise ValueError("step_rewards must be a one-dimensional trajectory")
+    if arr.size == 0 or not np.all(np.isfinite(arr)):
         return float("nan")
     window = max(1, min(int(asymptotic_window), int(arr.size)))
     asymptotic = float(np.mean(arr[-window:]))
-    target = fraction * asymptotic
-    # If rewards increase toward a less-negative / higher asymptote.
-    if asymptotic >= arr[0]:
-        hits = np.where(arr >= target)[0]
-    else:
-        hits = np.where(arr <= target)[0]
+    displacement = asymptotic - arr[0]
+    if displacement == 0:
+        return 0.0
+    progress = (arr - arr[0]) / displacement
+    hits = np.where(progress >= fraction)[0]
     if hits.size == 0:
         return float(arr.size)
     return float(hits[0])

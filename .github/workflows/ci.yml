@@ -2,9 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, main, 'fix/**', 'feat/**', 'audit/**', 'refactor/**']
   pull_request:
-    branches: [master]
+    branches: [master, main]
+  workflow_dispatch:
 
 # Portable CPU checks of the candidate commit (T13, docs/design/entrenamiento.md §13.3).
 # They do not run native learners, GPU, CityLearn simulations or the campaign dataset:

@@ -248,7 +248,7 @@ def scan_consumers(root: Path, allowlist: Sequence[Tuple[str, str]]) -> List[Map
         for name in files:
             relative = rel_dir + name
             path = current_path/name
-            if Path(name).suffix not in SCAN_SUFFIXES or relative in SELF_PATHS:
+            if Path(name).suffix not in SCAN_SUFFIXES or relative in SELF_PATHS or _is_reparse(path):
                 continue
             try:
                 if path.stat().st_size > SCAN_MAX_BYTES:
@@ -321,13 +321,14 @@ def _inspect_target(root: Path, target_id: str, relative: str):
         reasons.append('outside_outputs')
     for ancestor in [root/Path(*Path(relative).parts[:i]) for i in range(1, len(Path(relative).parts))]:
         if _is_reparse(ancestor):
-            reasons.append('reparse_point_ancestor')
+            # Everything below this ancestor belongs to its link target: no lstat, walk or hash.
+            return 'reparse_point_ancestor', (), 0, reasons + ['reparse_point_ancestor']
     if not os.path.lexists(path):
         return 'absent', (), 0, reasons
     if _is_reparse(path):
         return 'reparse_point', (), 0, reasons + ['reparse_point']
     if path.resolve() != expected:
-        reasons.append('resolved_path_mismatch')
+        return 'resolved_path_mismatch', (), 0, reasons + ['resolved_path_mismatch']
     files = []
     total = 0
     if path.is_file():

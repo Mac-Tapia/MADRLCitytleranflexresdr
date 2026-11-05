@@ -168,11 +168,12 @@ def _learned(treatment, attempt_root=None, **overrides):
     """Evidence a correct learner writes, including runtime weights and supervision.
 
     With ``attempt_root`` the evidence is bound to that attempt (campaign, attempt id,
-    every declared optimizer updated, parameters changed, a real checkpoint bundle), as
+    every declared optimizer updated, parameters changed, a contained synthetic checkpoint bundle), as
     run_stage requires; without it only the metadata checks of attempt_completion apply.
     """
     payload = {'verified': True, 'exit_code': 0, 'salvage': None, 'reasons': [],
                'env_steps': treatment['episodes']*treatment['episode_time_steps'],
+               'completed_episodes': treatment['episodes'],
                'successful_optimizer_updates_by_owner': {'a': 1}, 'checkpoint_files': ['x.pt'],
                'effective_axis_weights': dict(zip(AXES, treatment['weights'])),
                'supervision': {'constraint_dominance_ratio': 0.2, 'saturation_fraction': 0.0}}
@@ -192,6 +193,7 @@ def _learned(treatment, attempt_root=None, **overrides):
             initial_parameter_hashes={o: 'a'*64 for o in owners},
             final_parameter_hashes={o: 'b'*64 for o in owners}, nonfinite_events=0,
             checkpoint_files=['native/checkpoints/model.pt'],
+            native_arguments=list(treatment['native_arguments']) + ['--no-resume', '--output-dir', str(attempt_root/'native')],
             checkpoint_bundle_hash=hashlib.sha256(
                 checkpoint.name.encode('utf-8') + b'\0' + checkpoint.read_bytes()).hexdigest())
     payload.update(overrides)
@@ -226,6 +228,8 @@ def _record_calls():
 
 
 def _restrict_stage(campaign, stage, keep):
+    """Construct a smaller synthetic contract before any attempt; never promote it as the full protocol."""
+    from uc3m.domain.campaigns import canonical_hash
     rows_path = campaign/'stages'/f'{stage}.json'
     rows = json.loads(rows_path.read_text(encoding='utf-8'))
     rows['treatments'] = [row for row in rows['treatments'] if keep(row)]
@@ -233,6 +237,13 @@ def _restrict_stage(campaign, stage, keep):
     manifest_path = campaign/'campaign_manifest.json'
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     manifest['stages'][stage]['sha256'] = fc._sha256(rows_path)
+    manifest['stages'][stage]['treatments'] = len(rows['treatments'])
+    manifest['identity']['stage_plan_sha256'] = canonical_hash(manifest['stages'])
+    manifest['spec_hash'] = canonical_hash(manifest['identity'])
+    claim_path = campaign/'campaign.json'
+    claim = json.loads(claim_path.read_text(encoding='utf-8'))
+    claim['spec_hash'] = manifest['spec_hash']
+    claim_path.write_text(json.dumps(claim), encoding='utf-8')
     manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
     return rows['treatments']
 

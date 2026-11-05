@@ -8,7 +8,6 @@ identical-interest game whose global optimum is a Nash equilibrium.
 The backends are exercised through their own environment adapters with the
 fresh micro-trained policies of this campaign (no mocks).
 """
-import json
 from pathlib import Path
 
 import numpy as np
@@ -21,7 +20,6 @@ REPO = Path(__file__).resolve().parents[2]
 CAMPAIGN = REPO/'data/campaigns/iquitos_v1'
 SCHEMA = CAMPAIGN/'splits/validation_2024/schema.json'
 AXIS_KEYS = {'flexibility': 'flex', 'co2_emissions': 'carbon', 'energy_cost': 'cost'}
-WORKSPACE = REPO/'.superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan'
 
 
 def _matrix():
@@ -70,14 +68,6 @@ def test_local_reward_applies_the_scenario_row_and_team_mean_pays_everyone(scena
         assert all(float(r) == pytest.approx(team, rel=1e-6, abs=1e-9) for r in rewards.values())
 
 
-def _verified_attempt(algorithm):
-    for path in sorted(WORKSPACE.glob('**/attempt/learning_evidence.json')):
-        evidence = json.loads(path.read_text(encoding='utf-8'))
-        if evidence.get('algorithm') == algorithm and evidence.get('verified'):
-            return path.parent
-    raise AssertionError(f'no verified fresh {algorithm} attempt in {WORKSPACE}')
-
-
 def _received(algorithm, step_result):
     """The reward exactly as the backend adapter hands it to the learner."""
     if algorithm == 'HAPPO':                      # (obs, state, [[r] per agent], dones, infos, avail)
@@ -88,9 +78,9 @@ def _received(algorithm, step_result):
 
 
 @pytest.mark.parametrize('algorithm', ['HAPPO', 'MASAC', 'MATD3', 'MAAC'])
-def test_each_backend_learns_from_the_team_payoff(algorithm, monkeypatch):
+def test_each_backend_learns_from_the_team_payoff(algorithm, monkeypatch, native_attempts):
     monkeypatch.setenv('UC3M_SCENARIO_CATALOG', str(REPO/'configs/scenarios.yaml'))
-    policy = pi.load_native_policy(algorithm, _verified_attempt(algorithm))
+    policy = pi.load_native_policy(algorithm, native_attempts[algorithm])
     env = policy.build_env(pi._common(), SCHEMA, policy.resolve_scenario('E1'), 2024, 6)
     observations = policy.reset(2024)
     captured = []

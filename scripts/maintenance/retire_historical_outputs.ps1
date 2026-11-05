@@ -31,6 +31,18 @@ function Assert-Context {
     if ($LASTEXITCODE -ne 0) { throw 'Project context check failed; nothing removed.' }
 }
 
+function Assert-NoReparseAncestor([string]$Path, [string]$Boundary) {
+    $current = [IO.Path]::GetDirectoryName($Path)
+    while ($current) {
+        if ((Get-Item -LiteralPath $current -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Ancestor '$current' is a reparse point."
+        }
+        if ($current -ieq $Boundary) { return }
+        $current = [IO.Path]::GetDirectoryName($current)
+    }
+    throw "Path '$Path' is outside '$Boundary'."
+}
+
 if (-not $ProjectRoot) { $ProjectRoot = $repo }
 $root = (Resolve-Path -LiteralPath $ProjectRoot).Path.TrimEnd('\')
 if ($root -ne $repo.TrimEnd('\')) {
@@ -79,6 +91,7 @@ foreach ($decision in $verdict.decisions) {
         if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
             throw "Target '$full' is a reparse point."
         }
+        Assert-NoReparseAncestor -Path $full -Boundary $root
         if ($item.PSIsContainer) {
             Remove-Item -LiteralPath $full -Recurse -Force -ErrorAction Stop
         } else {

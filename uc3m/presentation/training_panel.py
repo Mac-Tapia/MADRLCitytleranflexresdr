@@ -1,6 +1,7 @@
 """Loopback-only training monitor: python -m uc3m.presentation.training_panel."""
 import argparse
 import json
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -45,6 +46,48 @@ def make_server(output_root: Path, *, port: int = 8765):
             self.send_header('Content-Length', str(len(payload)))
             self.end_headers()
             self.wfile.write(payload)
+
+        def _reject_write(self):
+            # Closing a Windows socket with an unread body can reset the
+            # connection before the client receives its rejection response.
+            try:
+                length = int(self.headers.get('Content-Length', '0'))
+            except ValueError:
+                self.send_error(400, 'Invalid Content-Length')
+                return
+            if length < 0 or length > 4096:
+                self.send_error(413, 'Request body too large')
+                return
+            if length:
+                deadline = time.monotonic() + 2.0
+                try:
+                    remaining = length
+                    while remaining:
+                        budget = deadline - time.monotonic()
+                        if budget <= 0:
+                            self.close_connection = True
+                            return
+                        self.connection.settimeout(budget)
+                        chunk = self.rfile.read1(remaining)
+                        if not chunk:
+                            self.close_connection = True
+                            return
+                        remaining -= len(chunk)
+                except OSError:
+                    self.close_connection = True
+                    return
+            self.send_response(405)
+            self.send_header('Allow', 'GET')
+            self.send_header('Cache-Control', 'no-store')
+            self.send_header('Content-Length', '0')
+            self.send_header('Connection', 'close')
+            self.end_headers()
+            self.close_connection = True
+
+        do_POST = _reject_write
+        do_PUT = _reject_write
+        do_DELETE = _reject_write
+        do_PATCH = _reject_write
 
         def log_message(self, *args):
             pass

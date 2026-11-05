@@ -18,30 +18,12 @@ from uc3m.application.evaluation.frozen_evaluation import evaluate_frozen
 
 REPO = Path(__file__).resolve().parents[2]
 CAMPAIGN = REPO/'data/campaigns/iquitos_v1'
-WORKSPACE = REPO/'.superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan'
-TREATMENT = 'confirm/happo/e1/c1/seed_1001'
 ADAPTERS = citylearn_frozen_adapters()   # this test is a composition root
 
 
-def _verified(algorithm):
-    for path in sorted(WORKSPACE.glob('**/attempt/learning_evidence.json')):
-        evidence = json.loads(path.read_text(encoding='utf-8'))
-        if evidence.get('algorithm') == algorithm and evidence.get('verified'):
-            return path.parent
-    raise AssertionError(f'no verified fresh {algorithm} attempt')
-
-
 @pytest.fixture(scope='module')
-def attempt(tmp_path_factory):
-    root = tmp_path_factory.mktemp('campaign')/'try_01'
-    shutil.copytree(_verified('HAPPO'), root)
-    evidence = json.loads((root/'learning_evidence.json').read_text(encoding='utf-8'))
-    (root/'attempt.json').write_text(json.dumps({'treatment_id': TREATMENT, 'attempt_id': evidence['attempt_id'],
-                                                 'seed': 1001, 'initial_episode': 0, 'fresh_start': True}),
-                                     encoding='utf-8')
-    (root/'resolved_treatment.json').write_text(json.dumps({'treatment_id': TREATMENT, 'algorithm': 'HAPPO',
-                                                            'scenario': 'E1', 'seed': 1001}), encoding='utf-8')
-    return root
+def attempt(native_attempts):
+    return native_attempts['HAPPO']
 
 
 def test_writes_the_report_the_seed_table_reads(attempt):
@@ -49,10 +31,15 @@ def test_writes_the_report_the_seed_table_reads(attempt):
     folder = attempt/'evaluation/validation_2024'
     raw = (folder/'kpi_report.json').read_bytes()
     manifest = json.loads((folder/'evaluation_manifest.json').read_text(encoding='utf-8'))
-    assert manifest == {'files': {'kpi_report.json': hashlib.sha256(raw).hexdigest()}}
+    assert manifest['schema_version'] == 2 and manifest['split'] == 'validation_2024'
+    assert manifest['expected_full_split_rows'] == 8784
+    assert manifest['files'] == {'kpi_report.json': hashlib.sha256(raw).hexdigest(),
+        'frozen_runs.json': hashlib.sha256((folder/'frozen_runs.json').read_bytes()).hexdigest()}
     report = json.loads(raw)
-    assert report['context'] == {'campaign_id': 'fresh_iquitos_20261101_v1', 'treatment_id': TREATMENT,
-                                 'algorithm': 'HAPPO', 'scenario': 'E1', 'seed': 1001, 'split': 'validation_2024'}
+    identity = json.loads((attempt/'attempt.json').read_text(encoding='utf-8'))
+    assert report['context'] == {'campaign_id': 'fresh_iquitos_20261101_v1',
+                                 'treatment_id': identity['treatment_id'],
+                                 'algorithm': 'HAPPO', 'scenario': 'E1', 'seed': 901, 'split': 'validation_2024'}
     assert set(report['axis_gains']) == {'flexibility', 'co2_emissions', 'energy_cost'}
     # Layer B: the 26 comparable CityLearn v3 KPI gains come from evaluate_objectives of the control run.
     gains = report['comparable_kpi_gains']

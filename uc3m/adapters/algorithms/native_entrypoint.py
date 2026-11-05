@@ -185,7 +185,7 @@ def measure_runtime_resources() -> dict:
     try:
         import psutil
         ram = psutil.virtual_memory().available/GIB
-    except Exception:  # noqa: BLE001 - fall back to the OS interfaces
+    except (ImportError, OSError, RuntimeError):  # optional psutil; OS fallback stays available
         meminfo = Path('/proc/meminfo')
         if meminfo.is_file():
             for line in meminfo.read_text().splitlines():
@@ -204,14 +204,14 @@ def measure_runtime_resources() -> dict:
             status.dwLength = ctypes.sizeof(_Status)
             if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)):
                 ram = status.ullAvailPhys/GIB
-    vram = None
+    vram, torch_error = None, None
     try:
         import torch
         if torch.cuda.is_available():
             vram = torch.cuda.mem_get_info()[0]/GIB
-    except Exception:  # noqa: BLE001 - no CUDA is reported as None
-        vram = None
-    return {'ram_gib': ram, 'vram_gib': vram}
+    except Exception as exc:  # noqa: BLE001 - resource failure is recorded and refuses the native launch
+        torch_error = f'{type(exc).__name__}: {exc}'
+    return {'ram_gib': ram, 'vram_gib': vram, 'torch_import_error': torch_error}
 
 
 def check_runtime_resources(algorithm: str, requirements, *, episode_time_steps: int,
@@ -226,6 +226,8 @@ def check_runtime_resources(algorithm: str, requirements, *, episode_time_steps:
     measured = measure()
     enforced = int(episode_time_steps) >= int(requirements.get('applies_from_episode_time_steps', 0))
     reasons = []
+    if measured.get('torch_import_error'):
+        reasons.append('torch_import_failed')
     if enforced:
         for key, what in (('min_ram_gib', 'ram'), ('min_vram_gib', 'vram')):
             need = float(requirements.get(key, 0) or 0)
@@ -266,7 +268,8 @@ def main(argv=None) -> int:
     common = load_native_common(root)
     observer = LearningObserver(args.campaign_id, args.attempt_id)
     common.install_finite_optimizer_step_guard = observer.wrap_guard_installer(common.install_finite_optimizer_step_guard)
-    record = {'algorithm': args.algorithm, 'native_arguments': native, 'stage': 'train', 'exit_code': None,
+    record = {'campaign_id': args.campaign_id, 'attempt_id': args.attempt_id,
+              'algorithm': args.algorithm, 'native_arguments': native, 'stage': 'train', 'exit_code': None,
               'error': None, 'salvage': None}
     limits = contextlib.nullcontext()
     if args.normalizer is not None:
@@ -302,6 +305,16 @@ def main(argv=None) -> int:
     finally:
         sys.argv = saved_argv
 
+    if record['exit_code'] != 0:
+        # A failed Torch DLL initialization cannot safely be imported again to
+        # inspect checkpoints (it previously aborted with duplicate C10 registration).
+        # Partial artifacts/logs remain; no completed trajectory is certified.
+        failed = {**record, 'verified': False, 'reasons': [f"native_exit_code:{record['exit_code']}"],
+                  'env_steps': None, 'completed_episodes': None,
+                  'env_steps_source': 'not_certified_after_native_failure', 'runtime_resources': resources}
+        (attempt_root/'learning_evidence.json').write_text(json.dumps(failed, indent=2), encoding='utf-8')
+        return 1
+
     stage = 'evidence'
     try:
         job = job_directory(output, native)
@@ -314,15 +327,19 @@ def main(argv=None) -> int:
         episodes = common.infer_trustable_completed_episodes(
             job, algorithm=args.algorithm.lower(), episode_time_steps=episode_steps, rollout_threads=1,
             live_progress=common.read_live_progress_json(job))
-        evidence = observer.finalize(env_steps=int(episodes or 0)*episode_steps,
+        runtime = supervisor.report()
+        observed_episode_steps = [e['steps'] for e in runtime['supervision'].get('episodes_detail', [])]
+        observed_steps = int(runtime['supervision'].get('steps', 0))
+        evidence = observer.finalize(env_steps=observed_steps,
                                      checkpoint_bundle_hash=_bundle_hash(bundle) if bundle else None)
         reasons = list(evidence.reasons)
+        if sum(count == episode_steps for count in observed_episode_steps) < int(episodes or 0):
+            reasons.append('observed_episodes_shorter_than_native_report')
         if record['salvage']:
             reasons.append('completed_with_salvage')
         if record['exit_code'] != 0:
             reasons.append(f'native_exit_code:{record["exit_code"]}')
         stage = 'supervision'
-        runtime = supervisor.report()
         (attempt_root/'supervision.json').write_text(json.dumps(runtime, indent=2, default=str), encoding='utf-8')
         if runtime['reward_aggregation'] != ['team_mean']:
             reasons.append(f"reward_aggregation:{runtime['reward_aggregation']}")
@@ -333,9 +350,12 @@ def main(argv=None) -> int:
                                     'thesis_indicators_district': (e.get('thesis_indicators') or {}).get('district'),
                                     'comparable_kpi_gains': (e.get('citylearn_v3') or {}).get('gains')}
                                    for e in runtime['supervision'].get('episodes_detail', [])]
-        result = {**evidence.as_dict(), 'verified': evidence.verified and not record['salvage']
+        result = {**evidence.as_dict(), 'verified': evidence.verified and not reasons and not record['salvage']
                   and record['exit_code'] == 0 and runtime['reward_aggregation'] == ['team_mean'],
                   'reasons': reasons, 'completed_episodes': episodes,
+                  'env_steps_source': 'observed_native_interactions_including_internal_evaluation',
+                  'trajectory_episode_steps': observed_episode_steps,
+                  'native_reported_training_steps': int(episodes or 0)*episode_steps,
                   'checkpoint_files': [str(Path(p).relative_to(attempt_root)) for p in bundle],
                   'effective_axis_weights': runtime['effective_axis_weights'],
                   'axis_weights_source': runtime['axis_weights_source'],

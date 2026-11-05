@@ -38,6 +38,24 @@ DEFAULT_AHP_PAIRWISE = np.asarray(
 )
 
 
+class NonPositiveAutomaticAHP(ValueError):
+    """Raw quantitative values do not define a positive AHP ratio scale."""
+
+
+def _validate_pairwise(pairwise: np.ndarray) -> np.ndarray:
+    """Saaty judgments are finite, strictly positive reciprocal comparisons."""
+    matrix = np.asarray(pairwise, dtype=float)
+    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1] or not matrix.shape[0]:
+        raise ValueError("pairwise must be a nonempty square matrix")
+    if not np.all(np.isfinite(matrix)) or np.any(matrix <= 0):
+        raise ValueError("pairwise must contain finite strictly positive judgments")
+    if not np.allclose(np.diag(matrix), 1.0, rtol=1e-10, atol=1e-12):
+        raise ValueError("pairwise diagonal must be one")
+    if not np.allclose(matrix, 1.0 / matrix.T, rtol=1e-10, atol=1e-12):
+        raise ValueError("pairwise judgments must be reciprocal")
+    return matrix
+
+
 def _principal_eigen(matrix: np.ndarray) -> Tuple[float, np.ndarray]:
     values, vectors = np.linalg.eig(matrix)
     idx = int(np.argmax(np.real(values)))
@@ -56,15 +74,21 @@ def consistency_ratio(
 ) -> Dict[str, float]:
     """Compute λ_max, CI and CR for a Saaty pairwise matrix."""
 
-    matrix = np.asarray(pairwise, dtype=float)
-    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
-        raise ValueError("pairwise must be a square matrix")
+    matrix = _validate_pairwise(pairwise)
     n = int(matrix.shape[0])
     if weights is None:
         lam, weights = _principal_eigen(matrix)
     else:
         weights = np.asarray(weights, dtype=float)
-        lam = float(np.mean((matrix @ weights) / np.clip(weights, 1e-12, None)))
+        if weights.shape != (n,) or not np.all(np.isfinite(weights)) or np.any(weights <= 0):
+            raise ValueError("weights must be a finite strictly positive vector of pairwise order")
+        weights = weights / np.sum(weights)
+        lam = float(np.mean((matrix @ weights) / weights))
+    # A positive reciprocal matrix has lambda_max >= n. Only numerical roundoff
+    # may make CI negative; a substantive negative value is never consistency.
+    if not np.isfinite(lam) or lam < n - 1e-10 * max(n, 1):
+        raise ValueError("invalid principal eigenvalue for positive reciprocal judgments")
+    lam = max(lam, float(n))
     ci = (lam - n) / max(n - 1, 1)
     ri = float(_SAATY_RI.get(n, 1.49))
     cr = 0.0 if ri <= 0 else ci / ri
@@ -85,7 +109,7 @@ def ahp_priority_weights(
 ) -> Dict[str, Any]:
     """Derive normalized priority weights from an AHP pairwise matrix."""
 
-    matrix = np.asarray(pairwise if pairwise is not None else DEFAULT_AHP_PAIRWISE, dtype=float)
+    matrix = _validate_pairwise(pairwise if pairwise is not None else DEFAULT_AHP_PAIRWISE)
     if len(labels) != matrix.shape[0]:
         raise ValueError("labels length must match pairwise order")
     lam, weights = _principal_eigen(matrix)
@@ -138,11 +162,16 @@ def ahp_rank_alternatives(
                 [float(decision_matrix[a][cid]) for a in alternatives],
                 dtype=float,
             )
+            if not np.all(np.isfinite(values)) or np.any(values <= 0):
+                raise NonPositiveAutomaticAHP(
+                    f"automatic AHP criterion {cid} requires finite strictly positive values; "
+                    "provide positive reciprocal alternative_pairwise judgments for this criterion"
+                )
             kind = str(criteria_kind.get(cid, "benefit")).lower()
             # Benefit: larger better; cost: invert so smaller becomes preferred.
-            scores = values if kind == "benefit" else 1.0 / np.clip(values, 1e-12, None)
+            scores = values if kind == "benefit" else 1.0 / values
             # Build consistent ratio pairwise from scores.
-            pairwise = np.outer(scores, 1.0 / np.clip(scores, 1e-12, None))
+            pairwise = np.outer(scores, 1.0 / scores)
             local = cast(
                 Dict[str, float],
                 ahp_priority_weights(

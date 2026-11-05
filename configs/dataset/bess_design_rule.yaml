@@ -1,0 +1,51 @@
+# Declared BESS sizing rule of campaign iquitos_v4 (tools/dataset/build_fresh_campaign_dataset.py
+# --bess-design-rule). Net billing and the MicroGrids LP's PV are kept; only the battery changes.
+#
+# With export credited at the purchase price the LP has no economic reason to install a
+# battery, so the LP alone leaves almost no storage to control (iquitos_v3: 44.3 kWh in one
+# building). This rule is a design scenario, NOT an economic optimum and NOT a measured
+# installation.
+schema_version: 1
+rule: peak_block_shaving
+status: design_rule
+origin: user_decision
+source: owner decision 2026-11-02, scenario A of the dataset substitution gate (D01, S6)
+formula: >-
+  shaved_kw = shave_fraction x largest monthly peak-block net import of the design year (after PV, without BESS);
+  capacity_kwh = shaved_kw x peak-block hours / (discharge_efficiency x (soc_ceiling - minimum_soc_fraction));
+  nominal_power_kw = capacity_kwh / max_discharge_time_h (configs/dataset/der_economics.yaml)
+formula_origin: >-
+  Project design rule. The two papers below were consulted only as context on behind-the-meter peak shaving; neither
+  gives this formula or this percentage, and their full texts were not read for it.
+context_references:
+  - Neubauer and Simpson, NREL/TP-5400-63162 (2015), https://www.nrel.gov/docs/fy15osti/63162.pdf
+  - >-
+    Wu, Kintner-Meyer, Yang and Balducci, Analytical sizing methods for behind-the-meter battery storage (2017),
+    https://www.osti.gov/biblio/1361985-analytical-sizing-methods-behind-meter-battery-storage
+shave_fraction_of_peak_block:
+  value: 0.20
+  status: assumption_pending_user_verification
+  source: none; no consulted reference gives this percentage
+  reason: >-
+    Chosen to put battery power in the order of iquitos_v1 (20.1 % of the district peak) for the comparison of the
+    substitution gate; the resulting ratio is measured on the built dataset, not assumed. Change this value and
+    rebuild under a new alias to study another scenario.
+  reference_to_verify: owner decision or a local storage study for Iquitos
+# Unset curves are drawn by CityLearn from the env seed, so each training seed would get a different battery.
+# These fix one curve for every split and seed. Values are the midpoints of CityLearn's own draw ranges
+# (citylearn/energy_model.py, Battery.capacity_power_curve and power_efficiency_curve), not a measured product.
+capacity_power_curve:
+  value: [[0.0, 0.975], [0.8, 0.925], [1.0, 0.25]]
+  status: design_rule
+  source: midpoints of the CityLearn default draw; [state of charge, fraction of nominal power available]
+power_efficiency_factors:
+  value: [[0.0, 0.875], [0.3, 0.925], [0.7, 0.99], [0.8, 1.0], [1.0, 0.965]]
+  status: design_rule
+  source: midpoints of the CityLearn default draw; [normalized power, factor of the battery efficiency]
+soc_ceiling:
+  value: 0.88
+  status: design_rule
+  source: >-
+    Highest state of charge from which capacity_power_curve still allows the sustained shaved_kw, given
+    nominal_power = capacity / 5 h, discharge efficiency 0.95 and minimum state of charge 0.20. The usable window of
+    the sizing is 0.20 to 0.88, because above 0.88 the available power falls below the power to sustain.

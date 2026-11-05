@@ -52,6 +52,7 @@ Write-Host "      (Si falla, autoriza manualmente la URL que aparezca en consola
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 & $VenvPython $AuthScript check
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Write-Host ""
 Write-Host "Listo. Recarga MCP en Cursor (Settings -> MCP) y prueba:"
 Write-Host "  python tools/drive/analyze_drive_folder_sizes.py --scan-outputs"

@@ -31,11 +31,16 @@ def test_report_requires_campaign_id(tmp_path):
         build_fresh_delivery(manifest, tmp_path/'delivery', gate_report=_passed_gate(tmp_path))
 
 
-def test_delivery_contains_no_prior_result_reference(tmp_path):
+def test_delivery_contains_no_prior_result_input_reference(tmp_path):
     manifest = _campaign(tmp_path)
     delivery = build_fresh_delivery(manifest, tmp_path/'delivery', gate_report=_passed_gate(tmp_path))
     for row in delivery['files']:
         text = (tmp_path/'delivery'/row['path']).read_text(encoding='utf-8')
+        if row['path'] == 'campaign_manifest.json':
+            payload = json.loads(text)
+            policy = payload.pop('input_policy')
+            assert policy['retired_roots']  # declared prohibitions are preserved, not consumed results
+            text = json.dumps(payload)
         assert 'outputs/madrl_v3_' not in text and 'outputs/_drive_madrl' not in text
     stage = manifest.parent/'stages/confirm_result.json'
     stage.write_text(stage.read_text(encoding='utf-8').replace('"status"', '"source": "outputs/_drive_madrl/x", '

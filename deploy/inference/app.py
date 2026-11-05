@@ -120,13 +120,13 @@ def act(request: ActRequest) -> ActResponse:
 
     started = time.perf_counter()
     try:
-        actions = _bundle.act(obs)
+        result = _bundle.act_with_diagnostics(obs)
     except Exception as exc:
         logger.exception("Inference failed")
-        raise HTTPException(status_code=500, detail=f"Inference failed: {exc}") from exc
+        raise HTTPException(status_code=500, detail="Inference failed") from exc
     latency_ms = (time.perf_counter() - started) * 1000.0
 
-    actions_list = actions.tolist()
+    actions_list = result.actions.tolist()
 
     # Persistencia no bloqueante: nunca tumba el request si Mongo falla.
     _store.record_inference(
@@ -144,7 +144,7 @@ def act(request: ActRequest) -> ActResponse:
         scenario=_bundle.metadata.scenario,
         is_stub=_bundle.is_stub,
         control_eligible=_bundle.control_eligible,
-        clipped_actions=_bundle.last_clipped,
+        clipped_actions=result.clipped_actions,
     )
 
 

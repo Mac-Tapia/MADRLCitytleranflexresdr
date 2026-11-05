@@ -37,9 +37,11 @@ def native_learner(project_root: Path, campaign_id: str, dataset_root: Path):
         scenario_catalog = treatment.get('scenario_catalog_path')
         if not scenario_catalog or not Path(scenario_catalog).is_file():
             raise PermissionError(f"{treatment['treatment_id']}: no resolved scenario catalog")
+        from uc3m.application.training.fresh_policy import read_attempt
+        attempt_id = read_attempt(attempt_root)['attempt_id']
         command = [sys.executable, '-B', '-m', 'uc3m.adapters.algorithms.native_entrypoint',
                    '--algorithm', treatment['algorithm'], '--campaign-id', campaign_id,
-                   '--attempt-id', Path(attempt_root).name, '--attempt-root', str(attempt_root),
+                   '--attempt-id', attempt_id, '--attempt-root', str(attempt_root),
                    '--normalizer', str(dataset_root/'normalizer.json'), '--'] + list(treatment['native_arguments'])
         env = dict(os.environ, UC3M_SCENARIO_CATALOG=str(scenario_catalog),
                    PYTHONPATH=os.pathsep.join([str(project_root), str(project_root/'CityLearn'),

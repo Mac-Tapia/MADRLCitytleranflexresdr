@@ -5,7 +5,6 @@ mock learner. The native micro-training of the four backends lives in
 test_real_learning.py and needs the fresh campaign splits.
 """
 import json
-import math
 from pathlib import Path
 
 import pytest

@@ -110,9 +110,29 @@ def _statistic(name):
 def bootstrap_ci(values: Sequence[float], *, statistic='mean', resamples=10000, seed=7001, level=0.95):
     """Percentile CI resampling whole seeds (blocks), never hours or episodes."""
     data = np.asarray(values, dtype=float)
+    if (data.ndim != 1 or not data.size or not np.all(np.isfinite(data))
+            or type(resamples) is not int or resamples <= 0
+            or isinstance(level, bool) or not isinstance(level, (int, float)) or not 0 < level < 1
+            or statistic not in ('mean', 'median', 'iqm')):
+        raise ValueError('invalid finite seed vector or confidence protocol')
     rng = np.random.default_rng(seed)
-    stat = _statistic(statistic)
-    draws = np.array([stat(data[rng.integers(0, len(data), len(data))]) for _ in range(resamples)])
+    # Same seed draws and percentile rule as the scalar reference; bounded
+    # batches avoid 10,000 Python/NumPy calls for every endpoint/algorithm.
+    draws = np.empty(resamples, dtype=float)
+    batch = max(1, min(resamples, 1_000_000//data.size))
+    n = data.size
+    indices = np.arange(n, dtype=float)
+    cut = 0.25*n
+    weights = np.maximum(0.0, np.minimum(indices+1, n-cut)-np.maximum(indices, cut))
+    for start in range(0, resamples, batch):
+        stop = min(resamples, start+batch)
+        samples = data[rng.integers(0, n, size=(stop-start, n))]
+        if statistic == 'mean':
+            draws[start:stop] = np.mean(samples, axis=1)
+        elif statistic == 'median':
+            draws[start:stop] = np.median(samples, axis=1)
+        else:
+            draws[start:stop] = np.sum(np.sort(samples, axis=1)*weights, axis=1)/weights.sum()
     alpha = (1 - level)/2
     return float(np.quantile(draws, alpha)), float(np.quantile(draws, 1 - alpha))
 
@@ -160,6 +180,7 @@ class FrozenProtocol:
     # endpoints; every comparable KPI is analysed in its own per-objective families.
     confirmatory_endpoints: Tuple[Tuple[str, str], ...] = (('E1', 'flexibility'), ('E2', 'co2_emissions'),
                                                            ('E3', 'energy_cost'))
+    not_applicable_endpoints: Tuple[Tuple[str, str], ...] = ()
 
     @classmethod
     def default(cls) -> 'FrozenProtocol':
@@ -189,24 +210,40 @@ def kendall_w(matrix) -> Optional[float]:
     """Kendall's W of a seeds x algorithms matrix (concordance of the Friedman ranks)."""
     from scipy.stats import rankdata
     data = np.asarray(matrix, dtype=float)
+    if data.ndim != 2 or not np.all(np.isfinite(data)):
+        raise ValueError('Kendall W requires a finite seeds x algorithms matrix')
     n, k = data.shape
     if n < 2 or k < 2 or np.all(data == data.flat[0]):
         return 0.0
     ranks = np.apply_along_axis(rankdata, 1, data)
     spread = np.sum((ranks.sum(axis=0) - n*(k + 1)/2.0)**2)
-    return float(12.0*spread/(n**2*(k**3 - k)))
+    # Each tied group of size t reduces the available rank variation by t^3-t.
+    # This gives W = corrected Friedman chi-square / (n*(k-1)).
+    ties = 0
+    for row in data:
+        counts = np.unique(row, return_counts=True)[1]
+        ties += int(np.sum(counts**3 - counts))
+    denominator = n**2*(k**3 - k) - n*ties
+    if denominator == 0:  # every seed ties all algorithms, even at different levels
+        return 0.0
+    return float(12.0*spread/denominator)
 
 
 def describe(values) -> Dict[str, object]:
     """Descriptive statistics of one algorithm's seed values (seeds are the replicas)."""
     from scipy import stats
     x = np.asarray(values, dtype=float)
+    if x.ndim != 1 or not x.size or not np.all(np.isfinite(x)):
+        raise ValueError('descriptive statistics require a nonempty finite vector')
     q1, median, q3 = (float(v) for v in np.percentile(x, [25, 50, 75]))
-    mean, std = float(np.mean(x)), float(np.std(x, ddof=1))
+    mean = float(np.mean(x))
+    std = float(np.std(x, ddof=1)) if x.size > 1 else None
     constant = bool(np.all(x == x[0]))
-    return {'n': int(x.size), 'mean': mean, 'median': median, 'std': std, 'variance': float(np.var(x, ddof=1)),
+    return {'n': int(x.size), 'mean': mean, 'median': median, 'std': std,
+            'variance': float(np.var(x, ddof=1)) if x.size > 1 else None,
+            'uncertainty_status': 'estimated' if x.size > 1 else 'insufficient_replicas',
             'min': float(np.min(x)), 'max': float(np.max(x)), 'q1': q1, 'q3': q3, 'iqr': q3 - q1,
-            'cv': std/abs(mean) if abs(mean) > 1e-12 else None,
+            'cv': std/abs(mean) if std is not None and abs(mean) > 1e-12 else None,
             'skewness': None if constant else float(stats.skew(x, bias=False)),
             'kurtosis_excess': None if constant else float(stats.kurtosis(x, bias=False)),
             'iqm': iqm(x)}
@@ -274,6 +311,10 @@ def _p_or_none(test, *args):
 
 def _check_protocol(table: SeedTable, protocol: FrozenProtocol) -> None:
     endpoints = set(protocol.endpoints)
+    structural_na = set(protocol.not_applicable_endpoints)
+    if (not structural_na <= {('E3', 'price_signal_deviation')}
+            or not structural_na <= endpoints or structural_na & set(protocol.confirmatory_endpoints)):
+        raise ValueError('invalid structural endpoint inapplicability')
     for row in table.rows:
         problems = []
         if row['algorithm'] not in protocol.algorithms:
@@ -284,6 +325,8 @@ def _check_protocol(table: SeedTable, protocol: FrozenProtocol) -> None:
             problems.append(f"split {row['split']}")
         if (row['scenario'], row['endpoint']) not in endpoints:
             problems.append(f"endpoint {row['scenario']}/{row['endpoint']}")
+        if (row['scenario'], row['endpoint']) in structural_na and row['value'] is not None:
+            problems.append('a structurally undefined endpoint cannot have a numeric value')
         if problems:
             raise ValueError(f"seed row outside the frozen protocol ({', '.join(problems)}): it is not an "
                              'extra replica')
@@ -291,11 +334,13 @@ def _check_protocol(table: SeedTable, protocol: FrozenProtocol) -> None:
 
 def analyze_campaign(table: SeedTable, protocol: FrozenProtocol) -> ScientificReport:
     _check_protocol(table, protocol)
-    missing = [f'{a}/{s}/seed_{seed}' for a in protocol.algorithms for s in sorted({s for s, _ in protocol.endpoints})
+    applicable = tuple(e for e in protocol.endpoints if e not in protocol.not_applicable_endpoints)
+    missing = [f'{a}/{s}/seed_{seed}' for a in protocol.algorithms for s in sorted({s for s, _ in applicable})
                for seed in protocol.seeds if any(table.values(a, s, axis, protocol.split).get(seed) is None
-                                                 for scen, axis in protocol.endpoints if scen == s)]
+                                                 for scen, axis in applicable if scen == s)]
     coverage = {'complete': not missing, 'missing': missing, 'expected_seeds': len(protocol.seeds),
-                'replication_unit': 'independent training seed'}
+                'replication_unit': 'independent training seed',
+                'not_applicable_endpoints': [list(e) for e in protocol.not_applicable_endpoints]}
     report = ScientificReport(coverage, limitations=[
         'n=12 seeds per cell: limited power; absence of significance is not evidence of equivalence.',
         'One district and modeled climate/loads: no external geographic validation.'])
@@ -308,7 +353,7 @@ def analyze_campaign(table: SeedTable, protocol: FrozenProtocol) -> ScientificRe
     confirmatory = set(protocol.confirmatory_endpoints)
     kpi_family = {kpi: OBJECTIVE_OF_AXIS[axis] for axis, (_, kpis) in comparable_kpis().items() for kpi in kpis}
     batteries = []
-    for scenario, endpoint in protocol.endpoints:
+    for scenario, endpoint in applicable:
         name = 'confirmatory' if (scenario, endpoint) in confirmatory else f'kpi_{kpi_family.get(endpoint, "other")}'
         family = families.setdefault(name, {'omnibus': [], 'pairwise': [], 'versus_baseline': []})
         matrix = np.array([[table.values(a, scenario, endpoint, protocol.split)[seed] for a in protocol.algorithms]

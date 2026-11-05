@@ -100,7 +100,7 @@ def discover_attempts(manifest_path: Path, *, accepted_only: bool = True) -> Lis
     complete attempt, or its last one when none completed.
     """
     from uc3m.application.dataset.provenance import contained_path
-    from uc3m.application.training.fresh_acceptance import treatment_trust_reasons
+    from uc3m.application.training.attempt_trust import load_trust_contract, select_trusted_attempt
 
     if manifest_path is None:
         raise TypeError("discover_attempts needs the campaign manifest path")
@@ -110,9 +110,10 @@ def discover_attempts(manifest_path: Path, *, accepted_only: bool = True) -> Lis
     manifest = _read_json(manifest_path)
     artifacts = manifest_path.parent
     campaign_id = manifest["campaign_id"]
+    contract = load_trust_contract(artifacts, campaign_id)
     found: List[FreshAttempt] = []
     for stage in sorted(manifest.get("stages") or {}):
-        result_path = artifacts / "stages" / f"{stage}_result.json"
+        result_path = contained_path(artifacts, f"stages/{stage}_result.json")
         if not result_path.is_file():
             continue
         result = _read_json(result_path)
@@ -122,8 +123,9 @@ def discover_attempts(manifest_path: Path, *, accepted_only: bool = True) -> Lis
             attempts = treatment.get("attempts") or []
             if not attempts:
                 continue
-            chosen = next((a for a in attempts if a.get("training_complete")), attempts[-1])
-            reasons = tuple(treatment_trust_reasons(artifacts, campaign_id, treatment))
+            trusted, found_reasons = select_trusted_attempt(artifacts, campaign_id, treatment, contract=contract)
+            chosen = trusted or attempts[-1]
+            reasons = tuple(found_reasons)
             try:
                 root = contained_path(artifacts, str(chosen["path"]))
                 record = _read_json(root / "attempt.json")
@@ -143,7 +145,53 @@ def discover_attempts(manifest_path: Path, *, accepted_only: bool = True) -> Lis
     return found
 
 
-def build_seed_table(manifest_path: Path, *, stage: str = "confirm", split: str = "validation_2024"):
+def read_evaluation_report(attempt: FreshAttempt, split: str, *, require_full_split=False):
+    """Read one candidate's physical evidence; candidate IDs are not seed replicas."""
+    from uc3m.application.dataset.provenance import contained_path
+    if split not in ('train_2023', 'validation_2024', 'test_2025'):
+        raise ValueError('unknown evaluation split')
+    folder = contained_path(attempt.attempt_root, f"evaluation/{split}")
+    report_path = contained_path(folder, 'kpi_report.json')
+    if not report_path.is_file():
+        return None
+    evaluation = _read_json(contained_path(folder, 'evaluation_manifest.json'))
+    recorded = (evaluation.get('files') or {}).get('kpi_report.json')
+    digest = hashlib.sha256(report_path.read_bytes()).hexdigest()
+    if digest != recorded:
+        raise ValueError(f"{report_path}: sha256 differs from evaluation_manifest.json")
+    report = _read_json(report_path)
+    expected = {"campaign_id": attempt.campaign_id, "treatment_id": attempt.treatment_id,
+                "algorithm": attempt.algorithm, "scenario": attempt.scenario,
+                "seed": attempt.seed, "split": split}
+    context = report.get("context") or {}
+    mismatched = sorted(k for k, v in expected.items() if context.get(k) != v)
+    if mismatched:
+        raise ValueError(f"{report_path}: report context does not match the attempt ({mismatched})")
+    if require_full_split or evaluation.get('schema_version') == 2:
+        runs_path = contained_path(folder, 'frozen_runs.json')
+        if (evaluation.get('schema_version') != 2 or evaluation.get('split') != split
+                or not runs_path.is_file()
+                or hashlib.sha256(runs_path.read_bytes()).hexdigest() != evaluation['files'].get('frozen_runs.json')):
+            raise ValueError('physical evaluation evidence missing or changed; full split unverified')
+        runs = _read_json(runs_path)
+        expected_rows = {'train_2023': 8760, 'validation_2024': 8784, 'test_2025': 8760}[split]
+        if evaluation.get('expected_full_split_rows') != expected_rows:
+            raise ValueError('physical split horizon differs from v1 protocol')
+        control, baseline = runs['control'], runs['baseline']
+        if (control['trace_hash'] != report['trace_hash']
+                or baseline['trace_hash'] != report['baseline_trace_hash']
+                or control['split'] != split or baseline['split'] != split
+                or control['completed_steps'] != baseline['completed_steps']
+                or control['training_updates'] != 0 or baseline['training_updates'] != 0):
+            raise ValueError('physical frozen run differs from the KPI report')
+        if require_full_split and (type(control['completed_steps']) is not int
+                                   or control['completed_steps'] != expected_rows):
+            raise ValueError('scientific evaluation requires the full physical split horizon')
+    return report, digest
+
+
+def build_seed_table(manifest_path: Path, *, stage: str = "confirm", split: str = "validation_2024",
+                     require_full_split: bool = False):
     """Seed rows from the hash-verified KPI reports of the accepted attempts of one stage.
 
     Layout: ``<attempt_root>/evaluation/<split>/kpi_report.json`` with its sha256 in
@@ -152,28 +200,18 @@ def build_seed_table(manifest_path: Path, *, stage: str = "confirm", split: str 
     a changed report or a report whose context is not this attempt is refused.
     """
     from uc3m.application.evaluation.fresh_analysis import SeedTable, rows_from_kpi_report
+    if stage not in ('pilot', 'hpo', 'confirm', 'sensitivity') or split not in (
+            'train_2023', 'validation_2024', 'test_2025'):
+        raise ValueError('unknown stage or split')
 
     rows = []
     for attempt in discover_attempts(manifest_path):
         if attempt.stage != stage:
             continue
-        folder = attempt.attempt_root / "evaluation" / split
-        report_path = folder / "kpi_report.json"
-        if not report_path.is_file():
-            continue
-        recorded = (_read_json(folder / "evaluation_manifest.json").get("files") or {}).get("kpi_report.json")
-        digest = hashlib.sha256(report_path.read_bytes()).hexdigest()
-        if digest != recorded:
-            raise ValueError(f"{report_path}: sha256 differs from evaluation_manifest.json")
-        report = _read_json(report_path)
-        expected = {"campaign_id": attempt.campaign_id, "treatment_id": attempt.treatment_id,
-                    "algorithm": attempt.algorithm, "scenario": attempt.scenario,
-                    "seed": attempt.seed, "split": split}
-        context = report.get("context") or {}
-        mismatched = sorted(k for k, v in expected.items() if context.get(k) != v)
-        if mismatched:
-            raise ValueError(f"{report_path}: report context does not match the attempt ({mismatched})")
-        rows.extend(rows_from_kpi_report(report, report_sha256=digest))
+        measurement = read_evaluation_report(attempt, split, require_full_split=require_full_split)
+        if measurement is not None:
+            report, digest = measurement
+            rows.extend(rows_from_kpi_report(report, report_sha256=digest))
     return SeedTable.from_rows(rows)
 
 

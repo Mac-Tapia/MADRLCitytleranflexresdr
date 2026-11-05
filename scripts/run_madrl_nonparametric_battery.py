@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """Run the full non-parametric MADRL comparison battery (OE.1/OE.2/OE.3 + OG).
 
-Implements the methodology sections 1–8 against **per-seed** KPIs (canonical
-``n_seeds=12``) or illustrative synthetic seeds:
+Implements the methodology sections 1–8 against **per-seed** KPIs (``--n-seeds``,
+default the empirical protocol's value) or illustrative synthetic seeds:
 
   OE (per scenario): Shapiro → Fligner → KW → ε² → Dunn-Holm → Cliff δ → winner rule
   OG (global): Friedman → Kendall W → Nemenyi → TOPSIS (+ Friedman validation)
@@ -46,12 +46,14 @@ if str(REPO) not in sys.path:
 from uc3m.application.evaluation.results_catalog import (  # noqa: E402
     AmbiguousCampaign,
     campaign_layout,
+    discover_runs,
     resolve_results_root,
 )
 from uc3m.multicriteria.scenarios import DEFAULT_PROTOCOL  # noqa: E402
 
-# Canonical campaign: 12 independent seeds (0..11).
+# Default of the empirical protocol. A confirmatory reading declares its own n and ids.
 N_SEEDS = int(DEFAULT_PROTOCOL.n_seeds)
+CONFIRMATORY_ALGORITHMS = ("HAPPO", "MASAC", "MATD3", "MAAC")
 
 # Default OE metric mapping from district_episode_kpis.csv
 # E1 flexibility → reward_mean (higher better)
@@ -111,32 +113,53 @@ def _illustrative_oe_groups(
     return out
 
 
-def _aggregate_seed_values(
-    sub: pd.DataFrame,
-    *,
-    metric: str,
-    seed_col: str = "seed",
-    episode_col: str = "episode",
-) -> List[float]:
-    """One finite value per seed (last episode when available, else mean)."""
+def _declared_seed_ids(seeds: Sequence[int]) -> List[int]:
+    """Sorted, unique, non-negative integer seed identities."""
 
-    if seed_col not in sub.columns:
-        return []
-    values: List[float] = []
-    for _, g in sub.groupby(seed_col, sort=True):
-        g = g.copy()
-        if episode_col in g.columns:
-            g = g.sort_values(episode_col)
-            raw = g[metric].astype(float).to_numpy()
-            finite = raw[np.isfinite(raw)]
-            if finite.size:
-                values.append(float(finite[-1]))
-            continue
-        raw = g[metric].astype(float).to_numpy()
-        finite = raw[np.isfinite(raw)]
-        if finite.size:
-            values.append(float(np.mean(finite)))
-    return values
+    ids = []
+    for seed in seeds:
+        if isinstance(seed, bool) or int(seed) != seed or seed < 0:
+            raise ValueError(f"invalid seed id: {seed!r}")
+        ids.append(int(seed))
+    if len(set(ids)) != len(ids):
+        raise ValueError(f"duplicate seed ids: {ids}")
+    return sorted(ids)
+
+
+def _pairing_eligible(
+    seed_ids: Mapping[str, Mapping[str, Sequence[int]]],
+    missing: Sequence[str],
+    expected_n_seeds: int,
+) -> bool:
+    """Paired tests need every algorithm of an objective measured on the same seeds."""
+
+    if missing or not seed_ids:
+        return False
+    return all(
+        by_algo
+        and len({tuple(sorted(ids)) for ids in by_algo.values()}) == 1
+        and all(len(ids) == int(expected_n_seeds) for ids in by_algo.values())
+        for by_algo in seed_ids.values()
+    )
+
+
+def _validated_episode_rows(df: pd.DataFrame, csv_path: Path) -> pd.DataFrame:
+    """Seed and episode must identify exactly one row; nothing is averaged or filled."""
+
+    seeds = pd.to_numeric(df["seed"], errors="coerce")
+    if seeds.isna().any() or (seeds != seeds.round()).any() or (seeds < 0).any():
+        raise ValueError(f"{csv_path}: seed must be a non-negative integer in every row")
+    df = df.assign(seed=seeds.astype(int))
+    key = ["algorithm", "scenario", "seed"]
+    if "episode" in df.columns:
+        episodes = pd.to_numeric(df["episode"], errors="coerce")
+        if not np.isfinite(episodes.to_numpy(dtype=float)).all():
+            raise ValueError(f"{csv_path}: episode must be finite in every row")
+        df = df.assign(episode=episodes)
+        key.append("episode")
+    if df.duplicated(key).any():
+        raise ValueError(f"{csv_path}: duplicate rows for the same {'/'.join(key[2:])}")
+    return df
 
 
 def load_oe_groups_from_episodes(
@@ -147,12 +170,15 @@ def load_oe_groups_from_episodes(
     max_seeds: Optional[int] = None,
     expected_n_seeds: int = N_SEEDS,
     allow_episode_fallback: bool = False,
+    seeds: Optional[Sequence[int]] = None,
 ) -> Tuple[Dict[str, Dict[str, List[float]]], Dict[str, object]]:
     """Load per-algorithm **seed** samples for OE.1/OE.2/OE.3.
 
-    Prefer a ``seed`` column (aggregate episodes → one score per seed). Without
-    ``seed``, only ``allow_episode_fallback=True`` keeps episode-level samples
-    (not the canonical design).
+    Each seed contributes the metric of the final episode of its scenario. A seed
+    without that value is reported in ``meta['missing']``, never filled from an
+    earlier episode. Without ``seed``, only ``allow_episode_fallback=True`` keeps
+    episode-level samples (not the canonical design, and not usable by the paired
+    battery).
     """
 
     specs = specs or DEFAULT_OE_SPECS
@@ -178,6 +204,8 @@ def load_oe_groups_from_episodes(
             "--allow-episode-fallback (not recommended)."
         )
 
+    if max_seeds is not None:
+        expected_n_seeds = min(int(expected_n_seeds), int(max_seeds))
     groups: Dict[str, Dict[str, List[float]]] = {}
     meta: Dict[str, Any] = {
         "source_csv": str(csv_path),
@@ -186,12 +214,20 @@ def load_oe_groups_from_episodes(
         "expected_n_seeds": int(expected_n_seeds),
         "n": {},
         "coverage": {},
+        "missing": [],
+        "seed_ids": {},
+        "selection": {},
     }
-    if not has_seed:
+    if has_seed:
+        df = _validated_episode_rows(df, csv_path)
+    else:
         meta["warning"] = (
             "No seed column; using episode samples. Canonical unit is "
             f"{expected_n_seeds} independent training seeds."
         )
+    declared = None if seeds is None else _declared_seed_ids(seeds)
+    if declared is not None and has_seed and not set(df["seed"]) <= set(declared):
+        raise ValueError(f"{csv_path}: seeds outside the declared list {declared}")
 
     for oe_name, spec in specs.items():
         scen = str(spec["scenario"]).upper()
@@ -200,16 +236,37 @@ def load_oe_groups_from_episodes(
             raise ValueError(f"metric '{metric}' not in {csv_path}")
         sub = df[df["scenario"] == scen]
         by_algo: Dict[str, List[float]] = {}
+        final = None
+        if has_seed:
+            meta["seed_ids"][oe_name] = {}
+            if "episode" in sub.columns and not sub.empty:
+                final = sub["episode"].max()
+                final = int(final) if float(final).is_integer() else float(final)
+                meta["selection"][oe_name] = {"final_episode": final, "rule": "same final episode for every seed"}
+            universe = declared if declared is not None else sorted(int(s) for s in sub["seed"].unique())
+            if max_seeds is not None:
+                universe = universe[: int(max_seeds)]
         for algo in algorithms:
             algo_sub = sub.loc[sub["algorithm"] == algo]
             if has_seed:
-                vals_list = _aggregate_seed_values(algo_sub, metric=metric)
+                vals_list, ids = [], []
+                for seed in universe:
+                    rows = algo_sub.loc[algo_sub["seed"] == seed]
+                    if final is not None:
+                        rows = rows.loc[rows["episode"] == final]
+                    value = float(rows[metric].iloc[0]) if len(rows) else float("nan")
+                    if not np.isfinite(value):
+                        meta["missing"].append(f"{algo}/{scen}/seed={seed}:no_{metric}")
+                        continue
+                    vals_list.append(value)
+                    ids.append(int(seed))
+                meta["seed_ids"][oe_name][algo] = ids
             else:
                 vals = algo_sub[metric].astype(float).to_numpy()
                 vals = vals[np.isfinite(vals)]
                 vals_list = [float(v) for v in vals]
-            if max_seeds is not None and len(vals_list) > max_seeds:
-                vals_list = vals_list[: int(max_seeds)]
+                if max_seeds is not None and len(vals_list) > max_seeds:
+                    vals_list = vals_list[: int(max_seeds)]
             if vals_list:
                 by_algo[algo] = vals_list
             n = len(vals_list)
@@ -220,6 +277,7 @@ def load_oe_groups_from_episodes(
                 "complete": n >= int(expected_n_seeds),
             }
         groups[oe_name] = by_algo
+    meta["pairing_eligible"] = has_seed and _pairing_eligible(meta["seed_ids"], meta["missing"], expected_n_seeds)
     return groups, meta
 
 
@@ -283,11 +341,16 @@ def load_oe_groups_from_run_root(
     """Load one KPI value per ``{algo}/{E*}_seed_{k}/data/results.json`` job."""
 
     specs = specs or DEFAULT_OE_SPECS
-    seed_set = set(int(s) for s in (seeds if seeds is not None else range(expected_n_seeds)))
     if algorithms is None:
         algorithms = ["HAPPO", "MASAC", "MATD3", "MAAC"]
     else:
         algorithms = [str(a).upper() for a in algorithms]
+    if seeds is None:
+        found = {int(match.group("seed")) for algo in algorithms
+                 for folder in (run_root / algo, run_root / algo.lower()) if folder.is_dir()
+                 for child in folder.iterdir() for match in [_SEED_DIR_RE.match(child.name)] if match}
+        seeds = sorted(found) or range(expected_n_seeds)
+    seed_list = _declared_seed_ids(seeds)
 
     groups: Dict[str, Dict[str, List[float]]] = {name: {} for name in specs}
     meta: Dict[str, Any] = {
@@ -298,6 +361,7 @@ def load_oe_groups_from_run_root(
         "n": {},
         "coverage": {},
         "missing": [],
+        "seed_ids": {name: {} for name in specs},
     }
 
     for algo in algorithms:
@@ -305,7 +369,8 @@ def load_oe_groups_from_run_root(
             scen = str(spec["scenario"]).upper()
             metric = str(spec["metric"])
             values: List[float] = []
-            for seed in sorted(seed_set):
+            ids: List[int] = []
+            for seed in seed_list:
                 candidates = [
                     run_root / algo / f"{scen}_seed_{seed}" / "data" / "results.json",
                     run_root / algo.lower() / f"{scen}_seed_{seed}" / "data" / "results.json",
@@ -324,8 +389,13 @@ def load_oe_groups_from_run_root(
                 if val is None:
                     meta["missing"].append(f"{algo}/{scen}/seed={seed}:no_{metric}")
                     continue
+                if "seed" in payload and payload["seed"] != seed:
+                    meta["missing"].append(f"{algo}/{scen}/seed={seed}:declares_seed_{payload['seed']}")
+                    continue
                 values.append(float(val))
+                ids.append(seed)
             groups[oe_name][algo] = values
+            meta["seed_ids"][oe_name][algo] = ids
             n = len(values)
             meta["n"][f"{oe_name}:{algo}"] = n
             meta["coverage"][f"{oe_name}:{algo}"] = {
@@ -333,6 +403,7 @@ def load_oe_groups_from_run_root(
                 "expected": int(expected_n_seeds),
                 "complete": n >= int(expected_n_seeds),
             }
+    meta["pairing_eligible"] = _pairing_eligible(meta["seed_ids"], meta["missing"], expected_n_seeds)
     return groups, meta
 
 
@@ -347,7 +418,11 @@ def load_oe_groups_from_results_root(
     """One KPI value per verified campaign run located through the results catalog."""
 
     specs = specs or DEFAULT_OE_SPECS
-    seed_list = sorted(int(s) for s in (seeds if seeds is not None else range(expected_n_seeds)))
+    if seeds is None:
+        seeds = sorted({run.seed for run in discover_runs(results_root)})
+        if not seeds:
+            raise NoCampaignData(f"{results_root}: no verified campaign runs")
+    seed_list = _declared_seed_ids(seeds)
     if algorithms is None:
         algorithms = ["HAPPO", "MASAC", "MATD3", "MAAC"]
     else:
@@ -369,6 +444,7 @@ def load_oe_groups_from_results_root(
         "coverage": {},
         "missing": [],
         "run_ids": {},
+        "seed_ids": {name: {} for name in specs},
     }
 
     for algo in algorithms:
@@ -376,6 +452,7 @@ def load_oe_groups_from_results_root(
             scen = str(spec["scenario"]).upper()
             metric = str(spec["metric"])
             values: List[float] = []
+            ids: List[int] = []
             for seed in seed_list:
                 scenario_dir = layouts[seed].get((algo, scen))
                 path = scenario_dir / "data" / "results.json" if scenario_dir is not None else None
@@ -392,8 +469,10 @@ def load_oe_groups_from_results_root(
                     meta["missing"].append(f"{algo}/{scen}/seed={seed}:no_{metric}")
                     continue
                 values.append(float(val))
+                ids.append(seed)
                 meta["run_ids"][f"{algo}/{scen}/seed={seed}"] = scenario_dir.parent.name
             groups[oe_name][algo] = values
+            meta["seed_ids"][oe_name][algo] = ids
             n = len(values)
             meta["n"][f"{oe_name}:{algo}"] = n
             meta["coverage"][f"{oe_name}:{algo}"] = {
@@ -401,7 +480,65 @@ def load_oe_groups_from_results_root(
                 "expected": int(expected_n_seeds),
                 "complete": n >= int(expected_n_seeds),
             }
+    meta["pairing_eligible"] = _pairing_eligible(meta["seed_ids"], meta["missing"], expected_n_seeds)
     return groups, meta
+
+
+def run_nonparametric_battery(
+    oe_groups: Mapping[str, Mapping[str, Sequence[float]]],
+    *,
+    sampling: Optional[Mapping[str, Any]] = None,
+    expected_n_seeds: int = N_SEEDS,
+    oe_higher_is_better: Optional[Mapping[str, bool]] = None,
+    topsis_weights: Optional[Mapping[str, float]] = None,
+    alpha: float = 0.05,
+    complementary: bool = False,
+    page_order: Optional[Sequence[str]] = None,
+) -> Dict[str, Any]:
+    """Battery on samples aligned by seed identity; lists are never paired by position."""
+
+    from uc3m.multicriteria.stats_tests import run_full_methodology_battery
+
+    seed_ids = (sampling or {}).get("seed_ids")
+    if not seed_ids:
+        raise ValueError("paired statistics need seed IDs; positional lists are not paired")
+    if sampling.get("missing"):
+        raise ValueError(f"missing seed measurements: {list(sampling['missing'])}")
+    aligned_groups: Dict[str, Dict[str, List[float]]] = {}
+    aligned_ids: Dict[str, List[int]] = {}
+    for oe_name, by_algo in oe_groups.items():
+        by_seed = {}
+        for algo, values in by_algo.items():
+            ids = _declared_seed_ids(seed_ids.get(oe_name, {}).get(algo, ()))
+            stored = seed_ids[oe_name][algo]
+            if len(stored) != len(values):
+                raise ValueError(f"{oe_name}/{algo}: one value per seed id is required")
+            by_seed[algo] = (ids, dict(zip(stored, values)))
+        reference = next(iter(by_seed.values()))[0] if by_seed else []
+        if any(ids != reference for ids, _ in by_seed.values()):
+            raise ValueError(f"{oe_name}: algorithms were not measured on the same seed set")
+        if len(reference) != int(expected_n_seeds):
+            raise ValueError(f"{oe_name}: {len(reference)} seed ids, expected {expected_n_seeds}")
+        aligned_groups[oe_name] = {algo: [float(row[s]) for s in reference] for algo, (_, row) in by_seed.items()}
+        aligned_ids[oe_name] = reference
+    if oe_higher_is_better is None:
+        oe_higher_is_better = {
+            name: bool(DEFAULT_OE_SPECS[name]["higher_is_better"])
+            for name in aligned_groups
+            if name in DEFAULT_OE_SPECS
+        }
+    battery = run_full_methodology_battery(
+        aligned_groups,
+        oe_higher_is_better=dict(oe_higher_is_better),
+        topsis_weights=dict(topsis_weights or DEFAULT_TOPSIS_WEIGHTS),
+        alpha=alpha,
+        complementary=complementary,
+        page_order=page_order,
+        expected_n_seeds=int(expected_n_seeds),
+    )
+    battery["sampling"] = {"aligned_seed_ids": aligned_ids, "unit": sampling.get("unit", "seed")}
+    battery["scientific_acceptance"] = False
+    return battery
 
 
 def _json_default(obj):
@@ -449,8 +586,20 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument(
         "--n-seeds",
         type=int,
-        default=N_SEEDS,
+        default=None,
         help=f"Expected independent seeds per algorithm/scenario (default: {N_SEEDS})",
+    )
+    parser.add_argument(
+        "--seeds",
+        type=int,
+        nargs="+",
+        default=None,
+        help="Declared seed ids; without it the ids found in the source are used and reported",
+    )
+    parser.add_argument(
+        "--confirmatory-v1",
+        action="store_true",
+        help="Confirmatory reading: requires explicit --n-seeds and --seeds",
     )
     parser.add_argument(
         "--allow-episode-fallback",
@@ -515,26 +664,39 @@ def main(argv: Optional[List[str]] = None) -> int:
         args.illustrative_only = True
         args.complementary = False
 
-    from uc3m.multicriteria.stats_tests import (
-        format_full_report,
-        run_full_methodology_battery,
-    )
+    from uc3m.multicriteria.stats_tests import format_full_report
 
-    n_seeds = int(args.n_seeds)
+    if args.confirmatory_v1:
+        if args.n_seeds is None or args.seeds is None:
+            parser.error("--confirmatory-v1 requires explicit --n-seeds and --seeds")
+        if args.illustrative_only:
+            parser.error("--confirmatory-v1 cannot use illustrative data")
+        if len(args.seeds) != args.n_seeds:
+            parser.error("--seeds must list exactly --n-seeds ids")
+        if args.max_seeds is not None:
+            parser.error("--confirmatory-v1 cannot be reduced with --max-seeds")
+    n_seeds = N_SEEDS if args.n_seeds is None else int(args.n_seeds)
     meta: Dict[str, object] = {}
+    try:
+        declared_seeds = None if args.seeds is None else _declared_seed_ids(args.seeds)
+    except ValueError as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        return 2
     if args.illustrative_only:
         oe_groups = _illustrative_oe_groups(n_per_algo=n_seeds)
         meta = {
             "source": "illustrative_synthetic",
-            "unit": "seed",
+            "unit": "illustrative_draw",
             "n_per_algo": n_seeds,
             "expected_n_seeds": n_seeds,
+            "seed_ids": {oe: {algo: list(range(n_seeds)) for algo in by_algo} for oe, by_algo in oe_groups.items()},
+            "pairing_eligible": True,
         }
     elif args.run_root is not None:
         oe_groups, meta = load_oe_groups_from_run_root(
             Path(args.run_root),
             expected_n_seeds=n_seeds,
-            seeds=range(n_seeds),
+            seeds=declared_seeds,
         )
         meta["source"] = "run_root_results_json"
     elif args.episodes_csv is not None:
@@ -548,6 +710,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                 max_seeds=args.max_seeds,
                 expected_n_seeds=n_seeds,
                 allow_episode_fallback=bool(args.allow_episode_fallback),
+                seeds=declared_seeds,
+                algorithms=CONFIRMATORY_ALGORITHMS if args.confirmatory_v1 else None,
             )
         except ValueError as exc:
             print(f"[error] {exc}", file=sys.stderr)
@@ -559,7 +723,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             oe_groups, meta = load_oe_groups_from_results_root(
                 results_root,
                 expected_n_seeds=n_seeds,
-                seeds=range(n_seeds),
+                seeds=declared_seeds,
             )
         except (NoCampaignData, AmbiguousCampaign) as exc:
             print(f"[error] {exc}", file=sys.stderr)
@@ -585,16 +749,23 @@ def main(argv: Optional[List[str]] = None) -> int:
         "OE.3": args.topsis_weight_oe3 / w_sum,
     }
 
-    battery = run_full_methodology_battery(
-        oe_groups,
-        oe_higher_is_better=hib,
-        topsis_weights=topsis_weights,
-        alpha=args.alpha,
-        complementary=bool(args.complementary),
-        page_order=args.page_order,
-        expected_n_seeds=n_seeds,
-    )
+    expected = meta.get("expected_n_seeds", n_seeds)
+    try:
+        battery = run_nonparametric_battery(
+            oe_groups,
+            sampling=meta,
+            oe_higher_is_better=hib,
+            topsis_weights=topsis_weights,
+            alpha=args.alpha,
+            complementary=bool(args.complementary),
+            page_order=args.page_order,
+            expected_n_seeds=expected,
+        )
+    except ValueError as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        return 2
     battery["meta"] = meta
+    battery["confirmatory_v1"] = bool(args.confirmatory_v1)
     battery["oe_specs"] = {
         k: {kk: vv for kk, vv in v.items() if kk != "label"}
         for k, v in DEFAULT_OE_SPECS.items()

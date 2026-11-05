@@ -25,6 +25,7 @@ ROOT_ALLOWED = {
     "CityLearn",
     "Dockerfile",
     "README.md",
+    "PT_TAPIA_ZAMBRANO_v6_Iquitos_2.docx",  # owner-supplied canonical research plan; preserve bytes
     "cspell.json",
     "pyproject.toml",
     "pyrightconfig.json",

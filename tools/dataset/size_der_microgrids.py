@@ -267,13 +267,44 @@ def prosumpy_check(demand_kwh: np.ndarray, pv_kwh: np.ndarray, bess_kwh: float, 
 def round_pv(pv_kwp_lp: float, module_params: dict, roof_kwp: float) -> tuple[int, float]:
     module_kwp = float(module_params['Vmpo']*module_params['Impo']/1000.0)
     n = int(round(pv_kwp_lp/module_kwp))
-    while n > 0 and n*module_kwp > roof_kwp + 1e-9:
-        n -= 1
+    if n > 0 and n*module_kwp > roof_kwp + 1e-9:
+        # Search the original multiplication predicate. Dividing the roof by
+        # module_kwp can lose panel counts above 2**53, where adjacent counts
+        # may produce the same floating-point power. Zero is the same fallback
+        # as in the old decrement loop when no positive count fits.
+        lower, upper = 0, n
+        while lower + 1 < upper:
+            middle = (lower + upper)//2
+            if middle*module_kwp <= roof_kwp + 1e-9:
+                lower = middle
+            else:
+                upper = middle
+        n = lower
     return n, n*module_kwp
 
 
 def round_bess(bess_kwh_lp: float) -> float:
     return 0.0 if bess_kwh_lp < MIN_BESS_KWH else round(bess_kwh_lp, 1)
+
+
+def bess_design_rule(block_peak_kw: float, block_hours: int, economics: Mapping, rule: Mapping) -> dict:
+    """Declared peak-shaving size (configs/dataset/bess_design_rule.yaml), not an LP optimum."""
+    bess = economics['bess']
+    shaved = float(rule['shave_fraction_of_peak_block']['value'])*max(0.0, float(block_peak_kw))
+    window = float(rule['soc_ceiling']['value']) - float(_v(bess['minimum_soc_fraction']))
+    usable = float(_v(bess['discharge_efficiency']))*window
+    capacity = round_bess(shaved*int(block_hours)/usable)
+    if not capacity:
+        return {'shaved_kw': 0.0, 'capacity_kwh': 0.0, 'nominal_power_kw': 0.0}
+    return {'shaved_kw': shaved, 'capacity_kwh': capacity,
+            'nominal_power_kw': round(capacity/float(_v(bess['max_discharge_time_h'])), 3)}
+
+
+def bess_rule_curves(efficiency: float, rule: Mapping) -> dict:
+    """Schema attributes that stop CityLearn from drawing the battery curves from the env seed."""
+    return {'capacity_power_curve': [list(point) for point in rule['capacity_power_curve']['value']],
+            'power_efficiency_curve': [[float(x), float(factor)*float(efficiency)]
+                                       for x, factor in rule['power_efficiency_factors']['value']]}
 
 
 def sensitivity(base: Mapping[int, Mapping], scaled: Mapping[float, Mapping[int, Mapping]], threshold: float) -> dict:

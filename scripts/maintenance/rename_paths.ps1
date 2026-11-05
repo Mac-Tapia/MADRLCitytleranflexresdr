@@ -11,6 +11,20 @@ if (-not $Root) { $Root = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path 
 & (Join-Path $PSScriptRoot '../verify_project_context.ps1')
 if (-not $?) { throw 'Project context verification failed' }
 $Root = [IO.Path]::GetFullPath($Root).TrimEnd('\', '/')
+# Only this repository or a disposable tree under the system temp directory.
+$repository = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path.TrimEnd('\', '/')
+if ($Root -ine $repository) {
+    $temp = (Resolve-Path -LiteralPath ([IO.Path]::GetTempPath())).Path.TrimEnd('\', '/')
+    if (-not $Root.StartsWith($temp + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Root '$Root' is neither this repository nor a disposable temp tree."
+    }
+    for ($current = $Root; $current -ine $temp; $current = [IO.Path]::GetDirectoryName($current)) {
+        if ((Test-Path -LiteralPath $current) -and
+            ((Get-Item -LiteralPath $current -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw "Linked path rejected: $current"
+        }
+    }
+}
 $map = Get-Content -LiteralPath $Manifest -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($map.schema_version -ne 1 -or [IO.Path]::GetFullPath($map.root).TrimEnd('\', '/') -ne $Root) {
     throw 'Manifest root/schema mismatch'

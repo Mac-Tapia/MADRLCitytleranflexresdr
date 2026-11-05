@@ -200,6 +200,24 @@
         "SKILL.md": "e21f279bf73c37e907b2a32ea0a823f4135c5789f7388a765e8b3747a4709f9a",
         "LICENSE.txt": "747933dcfce17fd71e8eedcc2c52471477ea2baeb3aec4f841a3ecd73d4a7317"
       }
+    },
+    {
+      "name": "task-coordination-strategies",
+      "path": "tools/skills/task-coordination-strategies",
+      "license": "MIT",
+      "status": "installed",
+      "source": {
+        "repo": "https://github.com/wshobson/agents",
+        "commit": "7e2fb559cf4b824b27f1fec49fe88f7511066d26",
+        "path": "plugins/agent-teams/skills/task-coordination-strategies"
+      },
+      "local_adaptation": null,
+      "sha256": {
+        "LICENSE.txt": "f89abb55d9f073f38f1703e4518f0613c788c6174be7f13b8dfe48a1c076c746",
+        "SKILL.md": "e6e0c3f64b01f50d549a04d89c9a94128c5f0d24969c6e412952ff8cd9de36d7",
+        "references/task-decomposition.md": "c8b382e0b0a1eda3277ecdc39a7fa7f1394fecc3f16271f1b23c2199c597ba9d",
+        "references/dependency-graphs.md": "0631ea5ef35a6d348b3f8959b039682cdf817a404bda16a319afe0168fe4319f"
+      }
     }
   ],
   "legacy_skills": [

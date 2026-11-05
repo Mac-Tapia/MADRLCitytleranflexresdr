@@ -358,7 +358,7 @@ def test_multicriteria_reads_episode_curves_through_the_catalog(tmp_path: Path) 
     _campaign(root)
 
     assert resolve_run_dir(run_dir=root) == root
-    series = load_episode_reward_series(root, scenario="E1")
+    series = load_episode_reward_series(root, scenario="E1", episode_index_origin=0)
     assert set(series) == set(ALGORITHMS)
     assert all(len(values) == 50 for values in series.values())
 
@@ -382,7 +382,7 @@ def test_multicriteria_real_only_matrix_reads_campaign_summaries(tmp_path: Path)
         ),
     )
 
-    loaded = load_decision_matrix(run_dir=root, allow_illustrative_fill=False)
+    loaded = load_decision_matrix(run_dir=root, allow_illustrative_fill=False, episode_index_origin=0)
 
     assert set(loaded["decision_matrix"]) == set(ALGORITHMS)
     assert loaded["extras"]["run_dir"] == str(root)
@@ -407,8 +407,8 @@ def _inventory() -> dict:
 
 def test_inventory_classifies_every_listed_file() -> None:
     inventory = _inventory()
-    assert inventory["schema_version"] == "1.0"
-    allowed = {"adapted", "obsolete_old_campaign", "needs_owner_decision"}
+    assert inventory["schema_version"] == "1.1"
+    allowed = {"adapted", "obsolete_old_campaign", "needs_owner_decision", "retirement_guard"}
     for entry in inventory["files"]:
         assert entry["classification"] in allowed, entry
         assert (REPO / entry["path"]).is_file(), entry["path"]

@@ -57,7 +57,14 @@ def contained_path(root: Path, relative: str) -> Path:
     parts = text.replace('\\', '/').split('/')
     if '..' in parts:
         raise ValueError(f'{text}: parent traversal is not allowed')
+    # Refuse Windows aliases on every platform: ADS, device names and trailing dots/spaces.
+    for part in (p for p in parts if p not in ('', '.')):
+        if ':' in part or '\x00' in part or part.endswith((' ', '.')) or PureWindowsPath(part).is_reserved():
+            raise ValueError(f'{text}: ambiguous Windows path component')
     base = Path(os.path.abspath(root))
+    for ancestor in (*reversed(base.parents), base):
+        if os.path.lexists(ancestor) and _is_link(ancestor):
+            raise ValueError(f'{text}: root reached through a link or junction ({ancestor.name})')
     current = base
     for part in (p for p in parts if p not in ('', '.')):
         current = current/part
@@ -112,9 +119,12 @@ def audit_raw_sources(entries: Sequence[Mapping[str, object]], *, root: Path) ->
         source_type = str(entry['source_type'])
         if source_type not in SOURCE_TYPES:
             raise ValueError(f'{relative}: source type {source_type} is not a raw source')
-        if relative.startswith(FORBIDDEN_PREFIXES):
-            raise ValueError(f'{relative}: prior-run, prior-dataset or cache paths are not raw sources')
         path = contained_path(root, str(entry['path']))
+        canonical_parts = tuple(part.casefold() for part in path.relative_to(root.resolve()).parts)
+        forbidden_parts = [tuple(p.casefold() for p in prefix.strip('/').split('/'))
+                           for prefix in FORBIDDEN_PREFIXES]
+        if any(canonical_parts[:len(prefix)] == prefix for prefix in forbidden_parts):
+            raise ValueError(f'{relative}: prior-run, prior-dataset or cache paths are not raw sources')
         measured, role = SOURCE_TYPES[source_type]
         generated_by = entry.get('generated_by')
         if measured and generated_by:

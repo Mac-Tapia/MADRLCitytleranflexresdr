@@ -410,6 +410,15 @@ def _capability_delta(member: Features, others: Sequence[Features]) -> Tuple[Lis
     return [f'line: {line[:100]}' for line in unique_lines[:CAPABILITY_LIST_LIMIT]], [], len(unique_lines)
 
 
+def _scannable_text(root: Path, rel: str, size: int, rules: Rules) -> Optional[str]:
+    """Text of a file the consumer and feature scans may read, else None."""
+    if os.path.splitext(rel)[1].lower() not in TEXT_SUFFIXES or size > MAX_TEXT_BYTES:
+        return None
+    if rules.special_reason(rel) and not any(under(rel, r) for r in rules.evidence_snapshots):
+        return None  # data identity / per-package bytes are neither consumers nor code
+    return read_text(root/rel)
+
+
 def find_duplicate_candidates(root: Path, registry_path: Path) -> DuplicateInventory:
     root = Path(root)
     registry = load_registry(registry_path)
@@ -435,16 +444,12 @@ def find_duplicate_candidates(root: Path, registry_path: Path) -> DuplicateInven
     features: Dict[str, Features] = {}
     sizes = dict(walk.files)
     for rel in sorted(hashes):
-        suffix = os.path.splitext(rel)[1].lower()
-        if suffix not in TEXT_SUFFIXES or sizes.get(rel, 0) > MAX_TEXT_BYTES:
-            continue
-        if rules.special_reason(rel) and not any(under(rel, r) for r in rules.evidence_snapshots):
-            continue  # data identity / per-package bytes are neither consumers nor code
-        text = read_text(root/rel)
+        text = _scannable_text(root, rel, sizes.get(rel, 0), rules)
         if text is None:
             continue
         if not rules.is_record(rel):
             index.add(rel, text)
+        suffix = os.path.splitext(rel)[1].lower()
         if suffix in SEMANTIC_SUFFIXES and rules.protected_reason(rel) is None:
             features[rel] = Features(normalized_lines(rel, text),
                                      python_capabilities(text) if suffix == '.py' else None)
@@ -704,13 +709,43 @@ def _is_reparse(path: Path) -> bool:
     return stat.S_ISLNK(info.st_mode) or bool(getattr(info, 'st_file_attributes', 0) & FILE_ATTRIBUTE_REPARSE_POINT)
 
 
+def _current_consumer_index(root: Path, registry: Mapping, rules: Rules) -> _ConsumerIndex:
+    """Rebuild the inventory's active-consumer index from the tree as it is now."""
+    index = _ConsumerIndex()
+    for rel, size in walk_tree(root, scan_exclusions(registry)).files:
+        if size == 0 or rules.is_record(rel):
+            continue
+        text = _scannable_text(root, rel, size, rules)
+        if text is not None:
+            index.add(rel, text)
+    return index
+
+
+def _new_consumers(row: Mapping, rel: str, planned: Mapping[str, Mapping], index: _ConsumerIndex,
+                   root: Path) -> List[str]:
+    """Current consumers of ``rel``; only the canonical or an unchanged group member is exempt."""
+    canonical = norm(str(row.get('canonical_path', '')))
+    found: List[str] = []
+    for consumer in sorted(index.of(rel)):
+        sibling = planned.get(consumer)
+        if consumer == canonical or (sibling is not None and sibling.get('group_id') == row.get('group_id')
+                                     and sha256_file(root/consumer) == sibling.get('sha256')):
+            continue
+        found.append(consumer)
+    return found
+
+
 def verify_plan(plan: Mapping, root: Path, registry_path: Optional[Path] = None) -> List[dict]:
     """Fresh go/no-go for each removed path of a plan (no deletion here)."""
     root = Path(root).resolve()
     registry_path = Path(registry_path) if registry_path else root/'governance/repository_layout.yaml'
-    rules = load_rules(load_registry(registry_path))
+    registry = load_registry(registry_path)
+    rules = load_rules(registry)
     decisions: List[dict] = []
-    for row in plan.get('removed_paths') or []:
+    rows = plan.get('removed_paths') or []
+    planned = {norm(str(row.get('path', ''))): row for row in rows}
+    index = _current_consumer_index(root, registry, rules) if rows else _ConsumerIndex()
+    for row in rows:
         raw = str(row.get('path', ''))
         rel = norm(raw)
         reasons: List[str] = []
@@ -748,6 +783,9 @@ def verify_plan(plan: Mapping, root: Path, registry_path: Optional[Path] = None)
                 reasons.append('canonical file is missing')
             elif sha256_file(root/canonical) != row.get('canonical_sha256'):
                 reasons.append('canonical changed since the plan (sha256 mismatch)')
+            consumers = _new_consumers(row, rel, planned, index, root)
+            if consumers:
+                reasons.append('active consumers not updated: ' + ', '.join(consumers))
         decisions.append({'path': raw, 'absolute_path': str(target) if not reasons else None,
                           'sha256': row.get('sha256'), 'decision': 'blocked' if reasons else 'delete',
                           'reasons': reasons})

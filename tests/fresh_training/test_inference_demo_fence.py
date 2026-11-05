@@ -137,9 +137,51 @@ def test_out_of_bounds_output_is_reported(service, tmp_path):
     meta = model_loader.ModelMetadata.from_dict({'obs_dim': 3, 'action_dim': 1, 'n_agents': 2,
                                                  'action_space': {'low': [-1.0], 'high': [1.0]}})
     bundle = model_loader.ModelBundle(session=_Session([[3.0], [0.5]]), metadata=meta, is_stub=False)
-    actions = bundle.act(np.zeros((2, 3), dtype=np.float32))
-    assert actions.tolist() == [[1.0], [0.5]]
-    assert bundle.last_clipped == 1
+    result = bundle.act_with_diagnostics(np.zeros((2, 3), dtype=np.float32))
+    assert result.actions.tolist() == [[1.0], [0.5]]
+    assert result.clipped_actions == 1
+
+
+def test_clipping_diagnostics_belong_to_each_result(service):
+    loader = sys.modules['model_loader']
+    meta = loader.ModelMetadata.from_dict({'obs_dim': 3, 'action_dim': 1, 'n_agents': 2})
+    session = _Session([[3.0], [0.5]])
+    bundle = loader.ModelBundle(session=session, metadata=meta, is_stub=False)
+    first = bundle.act_with_diagnostics(np.zeros((2, 3), dtype=np.float32))
+    session.outputs = np.zeros((2, 1), dtype=np.float32)
+    second = bundle.act_with_diagnostics(np.zeros((2, 3), dtype=np.float32))
+    assert first.clipped_actions == 1 and second.clipped_actions == 0
+    assert not hasattr(bundle, 'last_clipped')
+
+
+@pytest.mark.parametrize('bad', [{'obs_dim': -1}, {'action_dim': True},
+    {'action_space': {'low': [2], 'high': [-2]}},
+    {'normalization': {'mean': [0, 0, 0], 'std': [1, 0, 1]}}])
+def test_invalid_metadata_does_not_load_a_real_model(service, tmp_path, bad):
+    loader = sys.modules['model_loader']
+    path, metadata = tmp_path/'actor.onnx', tmp_path/'meta.json'
+    path.write_bytes(b'not a model')
+    metadata.write_text(json.dumps({'algorithm': 'matd3', 'scenario': 'E1', 'obs_dim': 3,
+        'action_dim': 1, 'n_agents': 2, **bad}), encoding='utf-8')
+    assert loader.ModelBundle.load(path, metadata) is None
+
+
+def test_malformed_metadata_keeps_service_alive_but_unready(service, tmp_path):
+    path = tmp_path/'metadata.json'
+    path.write_text('{broken', encoding='utf-8')
+    assert sys.modules['model_loader'].ModelBundle.load(tmp_path/'missing.onnx', path) is None
+
+
+def test_inference_errors_do_not_disclose_internal_paths(service, monkeypatch, tmp_path):
+    _metadata(tmp_path, monkeypatch)
+    monkeypatch.setenv('INFERENCE_DEMO_STUB', '1')
+    with TestClient(service.app) as client:
+        def fail(_observations):
+            raise RuntimeError('private/checkpoint/path.onnx')
+        monkeypatch.setattr(service._bundle, 'act_with_diagnostics', fail)
+        response = client.post('/act', json={'observations': [[0.0, 0.0, 0.0]]*2})
+        assert response.status_code == 500
+        assert response.json() == {'detail': 'Inference failed'}
 
 
 def test_real_model_without_operational_acceptance_is_not_control_eligible(service):

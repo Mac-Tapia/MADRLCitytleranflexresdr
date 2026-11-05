@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
-from uc3m.application.dataset.provenance import RawSourceManifest
+from uc3m.application.dataset.provenance import RawSourceManifest, contained_path
 
 PEAK_HOURS = frozenset({18, 19, 20, 21, 22})
 MONTHS = {'ene': 1, 'feb': 2, 'mar': 3, 'abr': 4, 'may': 5, 'jun': 6, 'jul': 7, 'ago': 8,
@@ -376,8 +376,18 @@ class DatasetBuildManifest:
 
 
 def hash_directory(root: Path) -> Tuple[Dict[str, str], str]:
+    root = contained_path(Path(root), '.')
     files = {}
-    for path in sorted(Path(root).rglob('*')):
+    # os.walk without following links still lists junctions/symlinks. Validate
+    # every listed entry before descending or reading a linked regular file.
+    paths = []
+    for directory, dirs, names in os.walk(root, followlinks=False):
+        for name in sorted(dirs + names):
+            path = contained_path(root, (Path(directory)/name).relative_to(root).as_posix())
+            if path.is_file():
+                paths.append(path)
+    for path in sorted(paths):
+        path = contained_path(root, path.relative_to(root).as_posix())
         if path.is_file():
             payload = path.read_bytes()
             if path.suffix.casefold() in {'.csv', '.json', '.txt'}:
@@ -399,11 +409,14 @@ def build_dataset(sources: RawSourceManifest, config: DatasetBuildConfig, output
         relative = output.relative_to(root).as_posix()
     except ValueError as exc:
         raise ValueError(f'dataset output must live inside the project root: {output}') from exc
-    if relative.startswith(FORBIDDEN_OUTPUT_PREFIXES) or not relative.startswith('data/campaigns/'):
+    output = contained_path(root, relative)
+    components = tuple(part.casefold() for part in output.relative_to(root.resolve()).parts)
+    if len(components) < 3 or components[:2] != ('data', 'campaigns'):
         raise ValueError(f'{relative}: a fresh dataset is written only under data/campaigns/<campaign>/')
     if output.exists():
         raise FileExistsError(f'{relative} already exists; a built dataset is never overwritten')
     output.mkdir(parents=True)
+    output = contained_path(root, relative)
     targets_path = output/'monthly_targets.csv'
     write_monthly_targets(targets_path, targets)
     generator(GeneratorRequest(output, tuple(config.buildings), tuple(config.years),

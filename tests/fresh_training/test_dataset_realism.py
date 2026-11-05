@@ -124,9 +124,10 @@ def test_depot_sessions_are_overnight_and_respect_year_boundaries():
 
 # ── built dataset (integration) ──────────────────────────────────────────────
 # Every realism gate holds in each fresh campaign: iquitos_v2 (bill-average price) and
-# iquitos_v3 (official Osinergmin tariff, PV bound = covered area x 0.63).
+# iquitos_v3 (official Osinergmin tariff, PV bound = covered area x 0.63) and iquitos_v4
+# (v3 plus the declared BESS rule, configs/dataset/bess_design_rule.yaml).
 
-@pytest.fixture(params=['iquitos_v2', 'iquitos_v3'])
+@pytest.fixture(params=['iquitos_v2', 'iquitos_v3', 'iquitos_v4'])
 def campaign(request, monkeypatch):
     root = REPO/'data/campaigns'/request.param
     module = sys.modules[__name__]

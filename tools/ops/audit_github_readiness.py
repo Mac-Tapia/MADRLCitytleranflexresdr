@@ -17,7 +17,7 @@ import json
 import re
 import subprocess
 import sysconfig
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Iterable, List, Optional, Sequence, Set
 
 import yaml
@@ -71,10 +71,24 @@ def _guarded(node, parents) -> bool:
     return False
 
 
+def _backend_context(node, parents) -> bool:
+    while node in parents:
+        node = parents[node]
+        if isinstance(node, ast.With) and any(
+                isinstance(item.context_expr, ast.Call)
+                and isinstance(item.context_expr.func, ast.Name)
+                and item.context_expr.func.id == '_backend_import_scope' for item in node.items):
+            return True
+    return False
+
+
 def undeclared_runtime_imports(root: Path) -> dict:
     """Unguarded third-party imports of uc3m/ whose distribution pyproject does not declare."""
     root = Path(root)
     declared = declared_distributions(root/'pyproject.toml')
+    import tomli
+    metadata = tomli.loads((root/'pyproject.toml').read_text(encoding='utf-8'))
+    namespaces = metadata.get('tool', {}).get('uc3m', {}).get('backend-namespaces', {})
     missing = {}
     for path in sorted((root/'uc3m').rglob('*.py')):
         tree = ast.parse(path.read_text(encoding='utf-8'))
@@ -86,6 +100,13 @@ def undeclared_runtime_imports(root: Path) -> dict:
             for name in names:
                 top = name.split('.')[0]
                 if top == 'uc3m' or top in PLATFORM_STDLIB or is_stdlib(top) or _guarded(node, parents):
+                    continue
+                rule = namespaces.get(top, {})
+                location = rule.get('root') if isinstance(rule, dict) else None
+                if (isinstance(location, str) and location.startswith('external/') and ':' not in location
+                        and '..' not in PurePosixPath(location).parts
+                        and path.relative_to(root).as_posix() in rule.get('consumers', [])
+                        and _backend_context(node, parents)):
                     continue
                 if PACKAGE_IMPORTS.get(top, top).lower().replace('_', '-') not in declared:
                     missing.setdefault(top, path.relative_to(root).as_posix())

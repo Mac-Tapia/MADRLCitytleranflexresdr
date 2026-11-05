@@ -140,8 +140,10 @@ class UC3MEnv:
         return getattr(self._dec.env, "unwrapped", self._dec.env)
 
     # ── API Dec-POMDP ───────────────────────────────────────────────────────
-    def reset(self, seed: Optional[int] = None) -> Observation:
-        obs_dict, _info = self._dec.reset(seed=seed if seed is not None else self._seed)
+    def reset(self, seed: Optional[int] = None, options: Optional[Mapping] = None) -> Observation:
+        obs_dict, _info = self._dec.reset(seed=seed if seed is not None else self._seed, options=options)
+        self.last_terminations = {a: False for a in self.agent_ids}
+        self.last_truncations = {a: False for a in self.agent_ids}
         self._last_obs = {
             a: self._augment(a, obs_dict[a]) for a in self.agent_ids if a in obs_dict
         }
@@ -153,6 +155,8 @@ class UC3MEnv:
     def step(self, actions: Union[Mapping[str, Any], Sequence[Any]]):
         action_dict = self._actions_to_dict(actions)
         obs_dict, reward_dict, terminations, truncations, infos = self._dec.step(action_dict)
+        self.last_terminations = dict(terminations)
+        self.last_truncations = dict(truncations)
 
         augmented = {
             a: self._augment(a, obs_dict[a]) for a in self.agent_ids if a in obs_dict

@@ -733,13 +733,16 @@ def wilcoxon_signed_rank(
             "status": "insufficient_data",
             "alpha": float(alpha),
         }
-    if np.allclose(a, b):
+    differences = a - b
+    nonzero = differences[differences != 0.0]
+    n_effective = int(nonzero.size)
+    if not n_effective:
         return {
             "statistic": 0.0,
             "p_value": 1.0,
             "significant": False,
             "rank_biserial": 0.0,
-            "n": int(a.size),
+            "n": 0,
             "status": "identical_samples",
             "alpha": float(alpha),
         }
@@ -747,12 +750,17 @@ def wilcoxon_signed_rank(
         result = stats.wilcoxon(a, b, alternative=alternative, zero_method="wilcox")
         p = float(result.pvalue)
         W = float(result.statistic)
+        # Bilateral SciPy statistic is min(W+, W-), so it cannot encode direction.
+        # Wilcox removes zero differences before ranking (including tied ranks).
+        ranks = stats.rankdata(np.abs(nonzero), method="average")
+        positive = float(np.sum(ranks[nonzero > 0]))
+        negative = float(np.sum(ranks[nonzero < 0]))
         return {
             "statistic": W,
             "p_value": p,
             "significant": bool(p < alpha),
-            "rank_biserial": rank_biserial_from_wilcoxon(W, int(a.size)),
-            "n": int(a.size),
+            "rank_biserial": (positive - negative) / (positive + negative),
+            "n": n_effective,
             "status": "ok",
             "alpha": float(alpha),
             "alternative": alternative,

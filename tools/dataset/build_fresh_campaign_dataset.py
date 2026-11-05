@@ -125,8 +125,11 @@ def _nasa_year(year: int, raw_dir: Path):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(response.content)
     parameters = response.json()['properties']['parameter']
-    stamps = pd.to_datetime(list(parameters['T2M'].keys()), format='%Y%m%d%H', utc=True)
-    frame = pd.DataFrame({name: list(parameters[name].values()) for name in parameters}, index=stamps)
+    keys = list(parameters['T2M'].keys())
+    if any(set(parameters[name]) != set(keys) for name in parameters):
+        raise ValueError(f'NASA POWER {year}: parameters do not cover the same hours')
+    stamps = pd.to_datetime(keys, format='%Y%m%d%H', utc=True)
+    frame = pd.DataFrame({name: [parameters[name][key] for key in keys] for name in parameters}, index=stamps)
     local = frame.tz_convert(TZ)
     local = local[local.index.year == year]
     expected = pd.date_range(f'{year}-01-01', periods=8784 if year == 2024 else 8760, freq='h', tz=TZ)
@@ -459,7 +462,7 @@ def tariff_bill_validation(measured, details, sheets, raw_dir: Path = None):
                                        'would raise the bill, but with IGV the recomputed bill is already above it',
         'e_sector': 'confirmed from the response: DDLSE=IQUITOS, LBSector=2, LBInter=AISL in every sheet'}
     rng = np.random.default_rng(0)
-    capacity_fit, validated = {}, True
+    capacity_fit, validated = {}, bool(used)  # nothing usable is not a validation
     for building in sorted({r['building'] for r in used}):
         sel = [i for i, r in enumerate(used) if r['building'] == building]
         X = np.column_stack([energy[sel], capacity[sel]])
@@ -524,6 +527,8 @@ REGISTRY_PATH = ROOT/'configs/dataset/building_types.yaml'
 ECONOMICS_PATH = ROOT/'configs/dataset/der_economics.yaml'
 EV_PILOT_PATH = ROOT/'configs/dataset/ev_pilot.yaml'
 EMISSIONS_PATH = ROOT/'configs/dataset/grid_emissions.yaml'
+BESS_RULE_PATH = ROOT/'configs/dataset/bess_design_rule.yaml'
+BESS_RULE_MIN_DELIVERED = 0.9  # of shaved_kw, every building and month: gate on the battery as sized
 DHW_HEATER_EFFICIENCY = 0.85  # distill_building_loads.COP_ACS_DEF, the value the bills are closed with
 DESIGN_YEAR = 2023  # DER sizing uses the training year only
 CITYLEARN_BALANCE_RTOL = 0.005  # monthly energy, no-control CityLearn simulation vs bill
@@ -715,7 +720,6 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
         no_demand = sd.solve_microgrids(load, per_kwp, price, roof, economics, workroot/f'B{building:02d}_nodemand',
                                         tariff={**tariff, 'demand_charge': {m: 0.0 for m in range(1, 13)}})
         n_modules, kwp = sd.round_pv(lp['pv_kwp'], module, roof)
-        bess = sd.round_bess(lp['bess_kwh'])
         if n_modules:
             solar = sd.pv_ac_w_per_kw(weather_full, n_modules, module).to_numpy(float)
         else:
@@ -724,6 +728,15 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
         frame['solar_generation'] = solar
         frame.to_csv(out/f'Building_{building}.csv', index=False, float_format='%.6f')
         pv_2023 = solar[:8760]*kwp/1000.0
+        block_peaks = {str(m): float(max(0.0, (load - pv_2023)[(index_2023.month == m) & (peak_flag == 1)].max()))
+                       for m in range(1, 13)}
+        rule = design.get('bess_rule')
+        rule_size = None
+        if rule:
+            rule_size = sd.bess_design_rule(max(block_peaks.values()), len(PEAK_BLOCK_HOURS), economics, rule)
+            bess = rule_size['capacity_kwh']
+        else:
+            bess = sd.round_bess(lp['bess_kwh'])
         check = sd.prosumpy_check(load, pv_2023, bess, economics)
         config = schema['buildings'][f'Building_{building}']
         config['pv'] = {'type': 'citylearn.energy_model.PV', 'autosize': False, 'attributes': {'nominal_power': kwp}}
@@ -735,6 +748,9 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
                 'depth_of_discharge': 1.0 - float(bess_cfg['minimum_soc_fraction']['value']),
                 'initial_soc': float(bess_cfg['minimum_soc_fraction']['value']), 'loss_coefficient': 0.0,
                 'capacity_loss_coefficient': 1e-5}}
+            if rule:
+                config['electrical_storage']['attributes'].update(sd.bess_rule_curves(
+                    config['electrical_storage']['attributes']['efficiency'], rule))
         else:
             config.pop('electrical_storage', None)
         annual_load = float(load.sum())
@@ -760,15 +776,16 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
             'demand_charge_status': design['tariff_validation']['capacity_component']['status'],
             'without_demand_charge': {k: no_demand.get(k) for k in ('termination_condition', 'pv_kwp', 'bess_kwh',
                                                                     'npc_usd')},
-            'no_bess_monthly_peak_block_max_kw': {str(m): float(max(0.0, (load - pv_2023)[(index_2023.month == m)
-                                                                                         & (peak_flag == 1)].max()))
-                                                  for m in range(1, 13)},
+            'no_bess_monthly_peak_block_max_kw': block_peaks,
             'prosumpy': check}
+        if rule_size:
+            rows[str(building)]['bess_rule'] = rule_size
         log(f'B{building:02d}: PV {kwp:.1f} kWp (bound {roof:.0f}), BESS {bess:.1f} kWh, '
             f'PV/load {rows[str(building)]["pv_to_load_ratio_2023"]:.2f}')
     _write_json(out/'schema.json', schema)
     threshold = float(economics['sensitivity']['material_change_threshold_relative'])
     report = {'solver': os.environ.get('MICROGRIDS_SOLVER', sd.DEFAULT_SOLVER), 'design_year': DESIGN_YEAR,
+              'bess_sizing': design['bess_rule']['rule'] if design.get('bess_rule') else 'microgrids_lp',
               'module': {k: module[k] for k in ('Vmpo', 'Impo', 'Area')}, 'reference_array_modules': reference_modules,
               'economics': economics, 'buildings': rows,
               'sensitivity': {'capex_relative_change': [round(s - 1.0, 2) for s in SENSITIVITY_SCALES],
@@ -875,12 +892,16 @@ def citylearn_balance(campaign_root: Path, targets, log):
     return report
 
 
-def citylearn_peak_shaving(campaign_root: Path, der, log):
+def citylearn_peak_shaving(campaign_root: Path, der, log, design_rule=None):
     """CityLearn train-split check of every sized BESS: no control vs a peak-shaving rule.
 
-    Rule: in the peak block (18:00-23:00) discharge what exceeds the LP's monthly
-    peak-block maximum; from 00:00 to 06:00 recharge evenly; otherwise idle. Recorded:
-    monthly peak-block maximum import with and without the battery.
+    Rule: in the peak block (18:00-23:00) discharge what the no-control run imports above
+    the monthly target (the LP's peak-block maximum, or the no-control maximum minus
+    shaved_kw under a declared design rule); from 00:00 to 06:00 recharge evenly up to the
+    state-of-charge ceiling; otherwise idle. CityLearn scales actions by nominal power.
+    The rule knows the no-control series in advance: this checks what the battery can do,
+    it is not a usable control policy. Recorded: monthly peak-block maximum import with
+    and without the battery.
     """
     sized = {b: row for b, row in der['buildings'].items() if row['bess_kwh'] > 0}
     if not sized:
@@ -895,7 +916,16 @@ def citylearn_peak_shaving(campaign_root: Path, der, log):
         shutil.rmtree(scratch)
     sp.materialize_splits(dataset, scratch, campaign_id='peak_check', fixed_devices=fo.design_device_sizes(dataset))
     index = pd.date_range(f'{DESIGN_YEAR}-01-01', periods=8760, freq='h')
-    results = {}
+    results, uncontrolled = {}, {}
+    ceiling = float(design_rule['soc_ceiling']['value']) if design_rule else 1.0
+
+    def month_target(key, month):
+        block = (index[:len(uncontrolled[key])].month == month) & np.isin(index[:len(uncontrolled[key])].hour, PEAK_BLOCK_HOURS)
+        if 'bess_rule' in sized[key]:
+            return max(0.0, float(uncontrolled[key][block].max()) - sized[key]['bess_rule']['shaved_kw'])
+        targets = sized[key]['lp']['monthly_peak_block_max_kw']
+        return targets[str(month)] if str(month) in targets else targets[month]
+
     for mode in ('no_control', 'rule'):
         env = CityLearnEnv(str(scratch/'train_2023'/'schema.json'))
         env.reset()
@@ -909,16 +939,15 @@ def citylearn_peak_shaving(campaign_root: Path, der, log):
                     value = 1.0 if 'washing_machine' in name else 0.0
                     key = building.name.split('_')[1]
                     if name == 'electrical_storage' and mode == 'rule' and key in sized:
-                        capacity = sized[key]['bess_kwh']
+                        capacity, nominal = sized[key]['bess_kwh'], sized[key]['bess_kw']
                         hour, month = index[t].hour, index[t].month
-                        target = sized[key]['lp']['monthly_peak_block_max_kw'][str(month)] \
-                            if str(month) in sized[key]['lp']['monthly_peak_block_max_kw'] \
-                            else sized[key]['lp']['monthly_peak_block_max_kw'][month]
                         if hour in PEAK_BLOCK_HOURS:
-                            net = float(building.net_electricity_consumption[t - 1]) if t else 0.0
-                            value = -min(1.0, max(0.0, net - target)/capacity)
+                            value = -min(1.0, max(0.0, uncontrolled[key][t] - month_target(key, month))/nominal)
                         elif hour < 6:
-                            value = 1.0/6.0
+                            storage = building.electrical_storage
+                            soc = float(storage.soc[t - 1]) if t else float(storage.soc[0])
+                            needed = max(0.0, ceiling - soc)*capacity/float(storage.round_trip_efficiency)
+                            value = min(1.0, needed/(6 - hour)/nominal)
                     row.append(value)
                 actions.append(row)
             result = env.step(actions)
@@ -928,6 +957,8 @@ def citylearn_peak_shaving(campaign_root: Path, der, log):
             if key not in sized:
                 continue
             net = np.asarray(building.net_electricity_consumption, dtype=float)
+            if mode == 'no_control':
+                uncontrolled[key] = net
             hours = index[:len(net)]
             peaks = {str(m): float(net[(hours.month == m) & np.isin(hours.hour, PEAK_BLOCK_HOURS)].max())
                      for m in range(1, 13)}
@@ -935,6 +966,9 @@ def citylearn_peak_shaving(campaign_root: Path, der, log):
     shutil.rmtree(scratch, ignore_errors=True)
     for key, row in results.items():
         row['reduction_kw'] = {m: row['no_control'][m] - row['rule'][m] for m in row['no_control']}
+        if 'bess_rule' in sized[key]:
+            row['shaved_kw'] = sized[key]['bess_rule']['shaved_kw']
+            row['delivered_fraction_worst_month'] = min(row['reduction_kw'].values())/row['shaved_kw']
     log(f'peak-shaving check on {len(results)} BESS buildings')
     return {'status': 'checked', 'rule': citylearn_peak_shaving.__doc__.split('\n\n')[1].strip(), 'buildings': results}
 
@@ -971,7 +1005,7 @@ def provenance_quantities(design, targets, campaign_root):
                 method='measured bills; missing months modeled without crossing years (quality_flags.csv)'))
     q.append(_q('tou_scaling_rule', 'scale TOU blocks to the printed total when they differ by >2 % '
                 '(ratio 0.5..2), else keep registers', 'user_decision', reason='owner decision 2026-11-01 (d)'))
-    q.append(_q('weather', 'NASA POWER hourly', 'measured', source='raw/weather/nasa_power_<year>_utc.json',
+    q.append(_q('weather', 'NASA POWER hourly', 'model', source='raw/weather/nasa_power_<year>_utc.json',
                 unit='reanalysis', reason='reanalysis, not a local station'))
     q.append(_q('pen_per_usd', 'World Bank PA.NUS.FCRF', 'measured', source='raw/fx/worldbank_pa_nus_fcrf_per.json'))
     for entry in design['tariff_sources']:
@@ -1041,6 +1075,11 @@ def provenance_quantities(design, targets, campaign_root):
                          ('project', ('discount_rate', 'project_years', 'fraction_funded_by_loan'))):
         for name in names:
             q.append(_from_config(f'{group}_{name}', economics[group][name]))
+    rule = design.get('bess_rule')
+    if rule:
+        q.append(_q('bess_design_rule', rule['rule'], 'user_decision', source=rule['source'],
+                    reason=' '.join(rule['formula'].split())))
+        q.append(_from_config('bess_shave_fraction_of_peak_block', rule['shave_fraction_of_peak_block']))
     export = economics['export']
     q.append(_q('export_credit_rule', {'price_ratio_to_purchase': export['price_ratio_to_purchase'],
                                        'curtailment_allowed': export['curtailment_allowed']},
@@ -1059,8 +1098,14 @@ def provenance_quantities(design, targets, campaign_root):
                     source='audit/der_sizing_microgrids.json',
                     reason='MicroGrids LP optimum on pvlib AC per kWp and the 2023 as-billed load; depends on '
                            'assumed economics; upper bound = covered built area (not a roof survey)'))
-        q.append(_q('bess_kwh', row['bess_kwh'], 'model', scope=scope, unit='kWh', assumption=True,
-                    source='audit/der_sizing_microgrids.json', reason='MicroGrids LP optimum; verified with prosumpy'))
+        if rule:
+            q.append(_q('bess_kwh', row['bess_kwh'], 'design_rule', scope=scope, unit='kWh', assumption=True,
+                        source=_rel(BESS_RULE_PATH), reason='declared peak-block shaving rule, not an economic '
+                        f'optimum; the LP optimum was {row["bess_kwh_lp"]:.1f} kWh; capability checked in CityLearn '
+                        '(audit/bess_peak_shaving_check.json)'))
+        else:
+            q.append(_q('bess_kwh', row['bess_kwh'], 'model', scope=scope, unit='kWh', assumption=True,
+                        source='audit/der_sizing_microgrids.json', reason='MicroGrids LP optimum; verified with prosumpy'))
         q.append(_q('energy_price_usd_per_kwh', row['price_usd_per_kwh'], 'derived', scope=scope,
                     source=row['price_source']['source']))
     import yaml as _yaml
@@ -1082,7 +1127,7 @@ def provenance_quantities(design, targets, campaign_root):
     return q
 
 
-def quality_flags(targets, weather_gaps):
+def quality_flags(targets, weather_gaps, bess_method='MicroGrids LP, verified with prosumpy dispatch_max_sc'):
     rows = [{'scope': f'B{t.building_id:02d}', 'period': f'{t.year}-{t.month:02d}', 'variable': 'monthly_energy',
              'status': t.provenance, 'method': t.method, 'fit_scope': t.fit_scope,
              'flags': '|'.join(t.flags), 'inputs': '|'.join(t.inputs)} for t in targets]
@@ -1092,7 +1137,7 @@ def quality_flags(targets, weather_gaps):
                          'method': f'linear, gaps <= {MAX_FILLED_GAP_HOURS} h', 'fit_scope': 'same_year',
                          'flags': f'{count} hours', 'inputs': 'NASA POWER'})
     modeled_layers = [('pv_generation', 'modeled', 'pvlib ModelChain SAPM on observed-year NASA POWER; kWp from the MicroGrids LP'),
-                      ('bess_sizing', 'modeled', 'MicroGrids LP, verified with prosumpy dispatch_max_sc'),
+                      ('bess_sizing', 'modeled', bess_method),
                       ('ev_sessions', 'modeled', 'B01 pilot only: 2 service motorcycles, overnight depot charging'),
                       ('controlled_machines', 'modeled', 'registry cycle energy, subtracted from the bill'),
                       ('carbon_intensity', 'modeled', 'constant IPCC 2006 gas/diesel oil factor / assumed efficiency'),
@@ -1111,9 +1156,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument('--campaign-id', required=True)
     parser.add_argument('--storage-alias', required=True)
+    parser.add_argument('--bess-design-rule', action='store_true',
+                        help=f'size every BESS with {BESS_RULE_PATH.name} instead of the MicroGrids LP optimum')
     args = parser.parse_args(argv)
     from uc3m.application.training.layout import storage_label
     campaign_root = ROOT/'data/campaigns'/storage_label(args.storage_alias)
+    if campaign_root.parent.resolve() != ROOT.resolve()/'data'/'campaigns':
+        raise SystemExit('data/campaigns resolves outside the repository; nothing written')
     if campaign_root.exists():
         raise SystemExit(f'{_rel(campaign_root)} already exists; choose a new campaign alias')
     raw_dir, audit_dir = campaign_root/'raw', campaign_root/'audit'
@@ -1121,6 +1170,25 @@ def main(argv=None):
     log = lambda message: print(f'[{datetime.now().strftime("%H:%M:%S")}] {message}', flush=True)  # noqa: E731
     import size_der_microgrids as sd
     design = {'registry': load_registry(), 'economics': sd.load_economics(ECONOMICS_PATH)}
+    design_inputs = [REGISTRY_PATH, ECONOMICS_PATH, EV_PILOT_PATH, EMISSIONS_PATH]
+    limitations = list(LIMITATIONS)
+    bess_parameter = 'MicroGrids LP with hourly tariff and peak-block demand charge; prosumpy and CityLearn peak-shaving checks'
+    bess_method = 'MicroGrids LP, verified with prosumpy dispatch_max_sc'
+    if args.bess_design_rule:
+        import yaml
+        design['bess_rule'] = yaml.safe_load(BESS_RULE_PATH.read_text(encoding='utf-8'))
+        design_inputs.append(BESS_RULE_PATH)
+        fraction = design['bess_rule']['shave_fraction_of_peak_block']['value']
+        bess_parameter = (f'declared rule {design["bess_rule"]["rule"]}: shave {fraction} of each building peak-block '
+                          'import; prosumpy and CityLearn peak-shaving checks')
+        bess_method = f'declared rule {design["bess_rule"]["rule"]} ({fraction} of the peak block), not an LP optimum'
+        limitations = [text.replace('PV and BESS are a declared design scenario sized by the MicroGrids LP',
+                                    'PV is a declared design scenario sized by the MicroGrids LP') for text in limitations]
+        limitations.append(f'BESS replaces the MicroGrids optimum with a declared design rule ({fraction} of each '
+                           'building peak-block import, owner decision 2026-11-02): it is a scenario, not an economic '
+                           'optimum and larger than what the LP chose. The percentage and the formula are project '
+                           'design choices, not taken from the literature. Battery curves are fixed at the midpoints '
+                           'of the CityLearn default draw, not a measured product.')
 
     entries = stage_billing(raw_dir)
     weather, weather_entries, weather_gaps = stage_weather(raw_dir)
@@ -1131,9 +1199,9 @@ def main(argv=None):
     sources = pv.audit_raw_sources(entries + weather_entries + [fx_entry] + tariff_entries, root=ROOT)
     provenance = {**sources.as_dict(), 'campaign_id': args.campaign_id, 'billing_currency': BILLING_CURRENCY,
                   'dataset_currency': 'USD', 'pen_per_usd': fx, 'time_zone': TZ,
-                  'design_inputs': [_rel(p) for p in (REGISTRY_PATH, ECONOMICS_PATH, EV_PILOT_PATH, EMISSIONS_PATH)],
+                  'design_inputs': [_rel(p) for p in design_inputs],
                   'excluded_inputs': ['CityLearn/data/datasets/citylearn_iquitos_2023_2025', 'outputs/', '.cache/weather'],
-                  'limitations': LIMITATIONS}
+                  'limitations': limitations}
     _write_json(campaign_root/'provenance.json', provenance)
     log(f'{len(sources.sources)} raw sources audited')
 
@@ -1156,7 +1224,7 @@ def main(argv=None):
         'buildingcsv_inputs.py', 'fix_solar_pvlib.py', 'dimension_ev_chargers.py', 'sync_controlled_machines.py',
         'fix_schema_cooling.py', 'size_der_microgrids.py', 'osinergmin_pliegos.py')]
         + [ROOT/'uc3m/application/dataset/construction.py']
-        + [REGISTRY_PATH, ECONOMICS_PATH, EV_PILOT_PATH, EMISSIONS_PATH]
+        + design_inputs
         + [MICROGRIDS/name for name in ('Model_Creation.py', 'Constraints.py', 'Initialize.py', 'Model_Resolution.py')],
         normalize_newlines=True)
     config = cn.DatasetBuildConfig(campaign_id=args.campaign_id, years=YEARS, buildings=BUILDINGS,
@@ -1164,8 +1232,7 @@ def main(argv=None):
                                        'seed_policy': 'fixed per building id in the generators',
                                        'pv_capacity': 'MicroGrids LP (export credited, no curtailment) on pvlib '
                                                       'SAPM AC per kWp, bound = covered built area x 0.63',
-                                       'bess': 'MicroGrids LP with hourly tariff and peak-block demand charge; '
-                                               'prosumpy and CityLearn peak-shaving checks',
+                                       'bess': bess_parameter,
                                        'ev': 'B01 pilot only (configs/dataset/ev_pilot.yaml)',
                                        'carbon': 'constant (configs/dataset/grid_emissions.yaml)',
                                        'tou_rule': 'scale to printed total (0.5..2), else keep registers',
@@ -1177,12 +1244,12 @@ def main(argv=None):
                                 generator=make_generator(weather, measured, targets, tariffs, fx,
                                                          raw_dir, audit_dir, log, design),
                                 targets=targets, generator_hash=generator_hash,
-                                balance=balance_checks, limitations=LIMITATIONS)
-    quality_flags(targets, weather_gaps).to_csv(campaign_root/'quality_flags.csv', index=False)
+                                balance=balance_checks, limitations=limitations)
+    quality_flags(targets, weather_gaps, bess_method).to_csv(campaign_root/'quality_flags.csv', index=False)
     failed = [c for c in manifest.balance_checks if not c['passed']]
     simulated = citylearn_balance(campaign_root, targets, log)
     _write_json(audit_dir/'citylearn_balance.json', simulated)
-    shaving = citylearn_peak_shaving(campaign_root, design['der'], log)
+    shaving = citylearn_peak_shaving(campaign_root, design['der'], log, design.get('bess_rule'))
     _write_json(audit_dir/'bess_peak_shaving_check.json', shaving)
     provenance['quantities'] = provenance_quantities(design, targets, campaign_root)
     _write_json(campaign_root/'provenance.json', provenance)
@@ -1196,12 +1263,17 @@ def main(argv=None):
              'tariff_history_complete': len(coverage) == 36,
              'tariff_crosscheck': tc.tariff_crosscheck_gate(busbar_report),
              'bess_verified': shaving['status'] in ('no_bess_sized', 'checked')}
+    if args.bess_design_rule:
+        gates['bess_rule_shaves_peak'] = (
+            shaving['status'] == 'checked' and len(shaving['buildings']) == len(BUILDINGS)
+            and all(row['delivered_fraction_worst_month'] >= BESS_RULE_MIN_DELIVERED
+                    for row in shaving['buildings'].values()))
     acceptance = {'campaign_id': args.campaign_id, 'dataset_hash': manifest.dataset_hash,
                   'source_manifest_hash': sources.manifest_hash, 'balance_checks': len(manifest.balance_checks),
                   'balance_failures': failed[:50], 'balance_failure_count': len(failed),
                   'modeled_monthly_targets': sum(t.provenance == 'modeled' for t in targets),
                   'measured_monthly_targets': sum(t.provenance == 'measured' for t in targets),
-                  'gates': gates, 'dataset_verified': all(gates.values()), 'limitations': LIMITATIONS,
+                  'gates': gates, 'dataset_verified': all(gates.values()), 'limitations': limitations,
                   'checked_at': datetime.now(timezone.utc).isoformat()}
     _write_json(campaign_root/'dataset_acceptance.json', acceptance)
     log(f'dataset_hash={manifest.dataset_hash} gates={gates} dataset_verified={acceptance["dataset_verified"]}')

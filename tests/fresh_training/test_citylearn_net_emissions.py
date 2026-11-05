@@ -34,7 +34,6 @@ def test_export_reduces_district_emissions_and_cost_is_net(monkeypatch):
     for building in core.buildings:
         net = np.asarray(building.net_electricity_consumption, dtype=float)
         ci = np.asarray(building.carbon_intensity.carbon_intensity[:net.size], dtype=float)
-        price = np.asarray(building.pricing.electricity_pricing[:net.size], dtype=float)
         emission = np.asarray(building.net_electricity_consumption_emission, dtype=float)
         np.testing.assert_allclose(emission, net*ci, rtol=1e-5, atol=1e-6)
         exported += int((net < 0).sum())

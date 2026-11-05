@@ -68,7 +68,8 @@ def validation_row(treatment: Mapping[str, object], completion: Mapping[str, obj
             'scenario': treatment['scenario'], 'seed': int(treatment['seed']),
             'effective_hyperparameters': dict(treatment['effective_hyperparameters']),
             'training_complete': bool(completion.get('training_complete')),
-            'energy_balance_passed': all(bool(c.get('passed')) for c in (kpi_report.get('balance_checks') or {}).values()),
+            'energy_balance_passed': bool(kpi_report.get('balance_checks')) and all(
+                c.get('passed') is True for c in kpi_report['balance_checks'].values()),
             'axis_gains': {axis: gains.get(axis) for axis in AXES},
             'trace_hash': kpi_report.get('trace_hash'), 'baseline_trace_hash': kpi_report.get('baseline_trace_hash'),
             'evaluation_manifest_sha256': evaluation_manifest_sha256}

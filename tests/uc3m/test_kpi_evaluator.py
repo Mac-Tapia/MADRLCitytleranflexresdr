@@ -172,8 +172,8 @@ class TestKPIEvaluatorIntegration:
         assert kpis.n_agents == 17
         assert kpis.algorithm == "test"
 
-    def test_compute_episode_kpi_ranges(self, uc3m_env):
-        """Los KPIs están dentro de rangos físicamente razonables."""
+    def test_compute_episode_kpi_availability_and_ranges(self, uc3m_env):
+        """Available ratios have valid ranges; missing evidence stays absent."""
         ev = KPIEvaluator(n_agents=17)
         uc3m_env.reset()
         zero_actions = {
@@ -184,8 +184,16 @@ class TestKPIEvaluatorIntegration:
 
         kpis = ev.compute_episode(uc3m_env, episode_idx=0)
         assert 0.0 <= kpis.self_sufficiency <= 1.0 + 1e-6
-        assert 0.0 <= kpis.self_consumption <= 1.0 + 1e-6
+        # The first simulated interval has no PV production, so its PV
+        # self-consumption denominator is zero rather than a measured zero ratio.
+        assert all(np.allclose(np.asarray(b.solar_generation)[:1], 0.)
+                   for b in uc3m_env.citylearn.buildings)
+        assert kpis.self_consumption is None
+        assert kpis.metric_status['self_consumption'] == 'unavailable'
         assert 0.0 <= kpis.renewable_fraction <= 1.0 + 1e-6
-        assert 0.0 <= kpis.resilience_score <= 1.0 + 1e-6
+        assert kpis.resilience_score is None
+        assert kpis.metric_status['resilience_score'] == 'unavailable'
+        assert kpis.energy_saved_kwh is None and kpis.cost_saved_usd is None
+        assert kpis.time_steps == uc3m_env.citylearn.time_step == 1
         assert kpis.hphi >= 0.0
         assert kpis.throughput_kwh >= 0.0

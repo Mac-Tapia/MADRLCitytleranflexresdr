@@ -27,7 +27,7 @@ from uc3m.domain.pareto import (
     non_dominated_indices,
     sparsity,
 )
-from uc3m.multicriteria.criteria import ALGORITHMS, CRITERION_IDS
+from uc3m.multicriteria.criteria import ALGORITHMS, CRITERION_IDS, CRITERION_SPECS
 
 # Section 3.2 illustrative decision matrix (methodology text).
 ILLUSTRATIVE_DECISION_MATRIX: Dict[str, Dict[str, float]] = {
@@ -56,6 +56,8 @@ ILLUSTRATIVE_SEED_SPREAD: Dict[str, Dict[str, Tuple[float, ...]]] = {
 
 def pareto_quality_from_decision_matrix(
     decision_matrix: Mapping[str, Mapping[str, float]],
+    *,
+    criteria_kind: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, Any]:
     """Compute scale-independent Pareto metrics for cost, CO2, and flexibility."""
 
@@ -76,6 +78,7 @@ def pareto_quality_from_decision_matrix(
     if not np.all(np.isfinite(raw)):
         raise ValueError("Pareto criteria must be finite")
 
+    kinds = criteria_kind or {cid: CRITERION_SPECS[cid].kind for cid in ("C1", "C2", "C3")}
     normalized = np.empty_like(raw)
     for axis in range(3):
         values = raw[:, axis]
@@ -84,7 +87,7 @@ def pareto_quality_from_decision_matrix(
         span = maximum - minimum
         if np.isclose(span, 0.0):
             normalized[:, axis] = 1.0
-        elif axis == 0:
+        elif kinds[f"C{axis + 1}"] == "cost":
             normalized[:, axis] = (maximum - values) / span
         else:
             normalized[:, axis] = (values - minimum) / span
@@ -94,7 +97,7 @@ def pareto_quality_from_decision_matrix(
     front_points = normalized[list(front_indices)]
     return {
         "objective_order": ["C1_cost", "C2_co2", "C3_flexibility"],
-        "orientation": ["min", "max", "max"],
+        "orientation": ["min" if kinds[cid] == "cost" else "max" for cid in ("C1", "C2", "C3")],
         "normalization": "benefit_minmax_with_constant_axis_equal_to_one",
         "reference_point": [0.0, 0.0, 0.0],
         "front": [algorithms[index] for index in front_indices],
@@ -169,10 +172,6 @@ def decision_matrix_from_district_objectives(
         # CO2 avoided proxy: -(control - baseline) so reductions become positive.
         co2_delta = _safe_float(row.get("carbon_emissions_delta_kg"))
         flex = _safe_float(row.get("flex_composite"))
-        if flex is None:
-            flex = _safe_float(row.get("grid_import_delta"))
-            if flex is not None:
-                flex = abs(flex)
         if cost is not None:
             matrix[algo]["C1"] = cost
             provenance[algo]["C1"] = "district_objectives.electricity_cost_delta_eur"
@@ -181,7 +180,10 @@ def decision_matrix_from_district_objectives(
             provenance[algo]["C2"] = "district_objectives.-carbon_emissions_delta_kg"
         if flex is not None:
             matrix[algo]["C3"] = flex
-            provenance[algo]["C3"] = "district_objectives.flex_composite_or_|grid_import_delta|"
+            provenance[algo]["C3"] = "district_objectives.flex_composite.ratio_to_baseline.lower_is_better"
+        else:
+            # A signed energy delta (kWh) is not the dimensionless flex ratio.
+            provenance[algo]["C3"] = "unavailable:missing_comparable_flex_composite_ratio_to_baseline"
     return matrix, provenance
 
 
@@ -224,6 +226,11 @@ def merge_with_illustrative(
                 out[algo][cid] = float(partial[algo][cid])
                 prov[algo].setdefault(cid, "real_or_partial")
             else:
+                if cid == "C3" and partial:
+                    # Legacy demonstration C3 is activated energy (kWh), not the
+                    # real composite ratio. Explicit fill cannot equate the units.
+                    prov[algo][cid] = "unavailable:illustrative_kWh_not_comparable_to_real_ratio"
+                    continue
                 # Prefer same-algo illustrative fill; if algo missing there, skip.
                 if algo not in base:
                     continue
@@ -253,9 +260,17 @@ def load_episode_reward_series(
     scenario: str = "E1",
     algorithms: Optional[Sequence[str]] = None,
     seed: int = 0,
+    episode_index_origin: int = 1,
+    episode_metadata: Optional[Dict[str, object]] = None,
 ) -> Dict[str, list[float]]:
-    """Load per-episode reward_mean from each verified run's episode_summary.csv."""
+    """Load a complete indexed curve; legacy one-based origin defaults to 1.
 
+    Native producers using zero-based IDs must explicitly pass origin=0. Never
+    infer an origin from the minimum observed ID: that hides missing first rows.
+    """
+
+    if type(episode_index_origin) is not int or episode_index_origin not in (0, 1):
+        raise ValueError("episode_index_origin must explicitly be zero or one")
     algos = list(algorithms or ALGORITHMS)
     layout = campaign_layout(Path(run_dir), seed=seed)
     out: Dict[str, list[float]] = {}
@@ -274,11 +289,33 @@ def load_episode_reward_series(
                 break
         if col is None:
             continue
-        if "episode" in frame.columns:
-            frame = frame.sort_values("episode")
-        series = [float(x) for x in frame[col].tolist() if np.isfinite(float(x))]
-        if series:
+        if "episode" not in frame.columns:
+            raise ValueError(f"{path}: episode IDs are required; row position is not an episode ID")
+        raw_ids = frame["episode"]
+        ids = pd.to_numeric(raw_ids, errors="coerce").to_numpy(dtype=float)
+        if (not ids.size or any(isinstance(v, (bool, np.bool_)) for v in raw_ids)
+                or not np.all(np.isfinite(ids)) or np.any(ids != np.floor(ids))
+                or np.any(ids < episode_index_origin) or len(np.unique(ids)) != len(ids)):
+            raise ValueError(f"{path}: episode IDs must be unique finite integers from the declared origin")
+        # A verified run's completed count, when recorded, also catches a missing
+        # final row; continuity alone only detects initial/internal missing rows.
+        evidence = json.loads((scenario_dir.parent / "evidence.json").read_text(encoding="utf-8"))
+        expected = evidence.get("completed_episodes")
+        if expected is not None and (type(expected) is not int or expected <= 0):
+            raise ValueError(f"{path}: completed_episodes must be a positive integer when declared")
+        count = expected if expected is not None else len(ids)
+        ordered_ids = np.sort(ids).astype(int).tolist()
+        if ordered_ids != list(range(episode_index_origin, episode_index_origin + count)):
+            raise ValueError(f"{path}: episode coverage is not continuous and complete from the declared origin")
+        frame = frame.assign(episode=ids).sort_values("episode")
+        series = pd.to_numeric(frame[col], errors="coerce").tolist()
+        if series and np.any(np.isfinite(series)):
             out[algo] = series
+            if episode_metadata is not None:
+                episode_metadata[algo] = {
+                    "episode_ids": ordered_ids, "episode_index_origin": episode_index_origin,
+                    "expected_completed_episodes": expected,
+                }
     return out
 
 
@@ -291,25 +328,26 @@ def training_stability_from_episode_rewards(
     """Derive C4/C5/C6 from a single real 50-ep training curve (no invention).
 
     - C4: sample variance of episodic reward (stability proxy; campaign is 1 seed).
-    - C5: env-steps to 90% of asymptotic episodic reward (episode_idx * steps/ep).
+    - C5: env-steps to 90% of initial-to-tail progress (episode_idx * steps/ep).
     - C6: |mean(last F) - mean(first F)| early–late gap (F≈20% of episodes).
     """
 
     from uc3m.multicriteria.criteria import steps_to_fraction_of_asymptotic
 
     arr = np.asarray(list(rewards), dtype=float)
-    arr = arr[np.isfinite(arr)]
-    if arr.size == 0:
+    if arr.size == 0 or not np.all(np.isfinite(arr)):
         return {}
 
-    c4 = float(np.var(arr, ddof=1)) if arr.size > 1 else 0.0
     ep_to_90 = steps_to_fraction_of_asymptotic(arr.tolist(), fraction=0.90)
     c5 = float(ep_to_90) * float(steps_per_episode)
     n_edge = max(1, int(round(arr.size * float(early_late_fraction))))
     early = float(np.mean(arr[:n_edge]))
     late = float(np.mean(arr[-n_edge:]))
     c6 = abs(late - early)
-    return {"C4": c4, "C5": c5, "C6": c6}
+    metrics = {"C5": c5, "C6": c6}
+    if arr.size > 1:
+        metrics["C4"] = float(np.var(arr, ddof=1))
+    return metrics
 
 
 def load_real_c4c6_from_drive(
@@ -317,10 +355,15 @@ def load_real_c4c6_from_drive(
     *,
     scenario: str = "E1",
     algorithms: Optional[Sequence[str]] = None,
+    episode_index_origin: int = 1,
+    episode_metadata: Optional[Dict[str, object]] = None,
 ) -> Tuple[Dict[str, Dict[str, float]], Dict[str, Dict[str, str]], Dict[str, list[float]]]:
     """Fill C4–C6 + learning curves from real episode_summary tables."""
 
-    series = load_episode_reward_series(run_dir, scenario=scenario, algorithms=algorithms)
+    series = load_episode_reward_series(
+        run_dir, scenario=scenario, algorithms=algorithms,
+        episode_index_origin=episode_index_origin, episode_metadata=episode_metadata,
+    )
     partial: Dict[str, Dict[str, float]] = {}
     provenance: Dict[str, Dict[str, str]] = {}
     for algo, rewards in series.items():
@@ -329,8 +372,8 @@ def load_real_c4c6_from_drive(
             continue
         partial[algo] = metrics
         provenance[algo] = {
-            "C4": "drive_episode_summary.reward_mean_variance",
-            "C5": "drive_episode_summary.episodes_to_90pct_asymptotic*8760",
+            "C4": "drive_episode_summary.episodic_reward_sample_variance_per_selected_seed",
+            "C5": "drive_episode_summary.initial_to_tail_progress_90pct_index*8760",
             "C6": "drive_episode_summary.early_late_reward_gap_abs",
         }
     return partial, provenance, series
@@ -342,9 +385,10 @@ def load_decision_matrix(
     run_dir: Optional[Path] = None,
     scenario: str = "E1",
     prefer_real: bool = True,
-    allow_illustrative_fill: bool = True,
+    allow_illustrative_fill: bool = False,
+    episode_index_origin: int = 1,
 ) -> Dict[str, Any]:
-    """Load a decision matrix from run artefacts when present, else illustrative.
+    """Load real run artefacts; illustrative values require explicit opt-in.
 
     When ``prefer_real`` and campaign artefacts exist, C1–C3 come from district
     objectives and C4–C6 from episode_summary (50 ep). Set
@@ -379,11 +423,15 @@ def load_decision_matrix(
             if missing:
                 extras["algorithms_missing_real_c1c3"] = missing
 
+            episode_metadata: Dict[str, object] = {}
             c456, prov456, learning_curves = load_real_c4c6_from_drive(
                 resolved,
                 scenario=scenario,
                 algorithms=[a for a in partial if {"C1", "C2", "C3"}.issubset(partial[a])],
+                episode_index_origin=episode_index_origin,
+                episode_metadata=episode_metadata,
             )
+            extras["episode_curve_index"] = episode_metadata
             for algo, vals in c456.items():
                 partial.setdefault(algo, {}).update(vals)
                 provenance.setdefault(algo, {}).update(prov456.get(algo, {}))
@@ -396,9 +444,18 @@ def load_decision_matrix(
             extras["learning_curve_episodes"] = {
                 a: len(v) for a, v in learning_curves.items()
             }
-            # Real seed samples = episodic rewards (single campaign seed).
+            # One criterion scalar per actual selected seed (currently seed=0).
+            # Episodes remain in learning_curves; they never add seed replicas.
             seed_metric_samples = {
-                "C4": {a: list(learning_curves[a]) for a in learning_curves},
+                cid: {a: [float(values[cid])] for a, values in c456.items() if cid in values}
+                for cid in ("C4", "C5", "C6")
+            }
+            extras["seed_metric_replication"] = {
+                "unit": "independent_training_seed",
+                "selected_seed": 0,
+                "max_n_seeds_per_algorithm": 1,
+                "C4_definition": "sample_variance_of_episodic_rewards_within_selected_seed",
+                "other_runs_are_not_inferred_replicas": True,
             }
 
         report = resolved / "resumen_comparativo" / "best_madrl_report.json"
@@ -417,6 +474,11 @@ def load_decision_matrix(
             provenance=provenance,
             require_real_technical=require_real_technical,
         )
+        if partial:
+            matrix = {a: vals for a, vals in matrix.items() if set(CRITERION_IDS).issubset(vals)}
+            provenance = {a: provenance[a] for a in matrix}
+            if not matrix:
+                raise FileNotFoundError("missing comparable real C3 ratio; illustrative kWh fill is prohibited")
         if not partial:
             source = "illustrative"
         elif source.startswith("real_drive") and any(
@@ -453,11 +515,20 @@ def load_decision_matrix(
 
     extras["algorithms_ranked"] = list(matrix.keys())
     extras["learning_curves"] = learning_curves
+    criteria_kind = {cid: spec.kind for cid, spec in CRITERION_SPECS.items()}
+    criterion_units = {cid: spec.unit for cid, spec in CRITERION_SPECS.items()}
+    if source == "illustrative":
+        # Preserve the historical demonstration without inventing a baseline
+        # that could turn its kWh values into ratios.
+        criteria_kind["C3"] = "benefit"
+        criterion_units["C3"] = "kWh"
     return {
         "decision_matrix": matrix,
         "provenance": provenance,
         "source": source,
         "scenario": scenario,
+        "criteria_kind": criteria_kind,
+        "criterion_units": criterion_units,
         "extras": extras,
         "seed_metric_samples": {
             cid: {

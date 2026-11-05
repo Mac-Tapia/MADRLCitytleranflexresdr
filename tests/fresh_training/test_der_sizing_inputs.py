@@ -6,6 +6,7 @@ covered built area as an upper bound only; EV only as the B01 pilot; controlled
 machines inside the bills; heat pumps calibrated with CityLearn's own COP.
 """
 import sys
+import time
 from pathlib import Path
 
 import pytest
@@ -39,3 +40,24 @@ def test_campaign_v2_der_chain_order():
     # The earlier mass-EV sizing and rule-based BESS are not part of the chain.
     assert 'ev.main()' not in BUILDER and 'sb.apply_results(' not in BUILDER
     assert 'machine_elec=machine_baseline(' in BUILDER
+
+
+@pytest.mark.parametrize('pv_request,roof,expected_panels', [
+    (10.1, 100.0, 25), (10.1, 4.0, 10), (1e9, 4.0, 10),
+    (10.1, 3.9999999996, 10), (10.1, 3.999999998, 9),
+    (10.1, 0.0, 0), (0.2, 10.0, 0), (0.6, 10.0, 1),
+    (1.0000000000000004e16, 1e16, 25000000000000002),
+])
+def test_pv_panel_rounding_and_tolerance(pv_request, roof, expected_panels):
+    module = {'Vmpo': 40.0, 'Impo': 10.0}
+    panels, power = sd.round_pv(pv_request, module, roof)
+    assert panels == expected_panels
+    assert power == pytest.approx(expected_panels*0.4)
+    assert power <= roof + 1e-9
+
+
+def test_oversized_lp_request_does_not_decrement_billions_of_panels():
+    module = {'Vmpo': 40.0, 'Impo': 10.0}
+    started = time.perf_counter()
+    assert sd.round_pv(1e9, module, 4.0) == (10, pytest.approx(4.0))
+    assert time.perf_counter() - started < 1.0

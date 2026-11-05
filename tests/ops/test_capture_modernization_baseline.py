@@ -104,3 +104,23 @@ def test_stable_cut_with_passing_suite_is_accepted(tmp_path: Path) -> None:
     assert cut["integral_suite_accepted"] is True
     assert re.fullmatch(r"[0-9a-f]{64}", cut["source_digest"])
     assert compare_cut(before, after, suite_passed=False)["integral_suite_accepted"] is False
+
+
+def test_source_inventory_never_opens_browser_state_or_linked_files(tmp_path, monkeypatch):
+    from tools.ops.capture_modernization_baseline import hash_sources
+
+    code = tmp_path/'tools/skills/example/scripts/run.py'
+    code.parent.mkdir(parents=True)
+    code.write_text('VALUE = 1\n', encoding='utf-8')
+    private = tmp_path/'tools/skills/notebooklm-mcp/data/auth_info.json'
+    private.parent.mkdir(parents=True)
+    private.write_text('{"synthetic": true}', encoding='utf-8')
+    original = Path.read_bytes
+
+    def guarded_read(path):
+        assert path != private, 'browser authentication state must never be read'
+        return original(path)
+
+    monkeypatch.setattr(Path, 'read_bytes', guarded_read)
+    hashes = hash_sources(tmp_path, roots=('tools',))
+    assert set(hashes) == {'tools/skills/example/scripts/run.py'}

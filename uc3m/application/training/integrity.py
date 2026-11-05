@@ -23,6 +23,7 @@ import yaml
 from uc3m.application.dataset.construction import hash_directory
 from uc3m.application.dataset.provenance import contained_path
 from uc3m.application.training.preflight import source_snapshot
+from uc3m.domain.campaigns import canonical_hash
 
 TEXT_SUFFIXES = {'.yaml', '.yml', '.json', '.csv', '.txt', '.toml', '.py'}
 FIXED_INPUTS = ('config', 'algorithm_config', 'scenario_catalog', 'objective_policies', 'kpi_catalog', 'dataset',
@@ -115,6 +116,8 @@ def verify_campaign_inputs(manifest_path: Path, project_root: Path) -> Integrity
         return IntegrityResult(False, (), ('inputs_unrecorded',))
     checks: List[str] = []
     reasons: List[str] = [f'{name}_unrecorded' for name in FIXED_INPUTS if name not in inputs]
+    if canonical_hash(inputs) != (manifest.get('identity') or {}).get('input_manifest_sha256'):
+        reasons.append('input_manifest_mismatch')
     if not any(str(name).startswith('split:') for name in inputs):
         reasons.append('splits_unrecorded')
     verified: Dict[str, str] = {}

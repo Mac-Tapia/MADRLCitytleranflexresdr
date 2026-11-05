@@ -344,6 +344,9 @@ def attempt_completion(evidence: Optional[Mapping[str, object]], *, target_episo
         reasons.append('interrupted_or_failed')
     if int(evidence.get('env_steps') or 0) < target_episodes*episode_time_steps:
         reasons.append('trajectory_shorter_than_target')
+    completed = evidence.get('completed_episodes')
+    if type(completed) is not int or completed < target_episodes:
+        reasons.append('completed_episodes_shorter_than_target')
     if expected_owners is not None:
         from uc3m.application.training.fresh_acceptance import attempt_evidence_reasons
         reasons.extend(attempt_evidence_reasons(
@@ -364,7 +367,7 @@ def attempt_completion(evidence: Optional[Mapping[str, object]], *, target_episo
     if max_constraint_dominance_ratio is not None:
         supervision = evidence.get('supervision')
         ratio = supervision.get('constraint_dominance_ratio') if isinstance(supervision, Mapping) else None
-        if ratio is None or not math.isfinite(float(ratio)):
+        if ratio is None or not math.isfinite(float(ratio)) or float(ratio) < 0:
             reasons.append('supervision_unrecorded')
         elif float(ratio) > float(max_constraint_dominance_ratio):
             reasons.append('constraint_terms_dominate_weighted_axes')
@@ -402,6 +405,9 @@ def prepare_campaign(config_path: Path, project_root: Path, *, artifact_root: Op
         path.write_text(json.dumps({'stage': stage, 'treatments': rows}, indent=2), encoding='utf-8')
         stages[stage] = {'path': f'stages/{stage}.json', 'sha256': _sha256(path), 'treatments': len(rows)}
     normalizer = root/config['dataset_root']/'normalizer.json'
+    from uc3m.application.evaluation.endpoint_applicability import classify_endpoint_applicability
+    applicability = classify_endpoint_applicability(root/config['dataset_root'], root,
+        tariff_policy=load_scenario_catalog(root/config['scenario_catalog'])['E3'].tariff_policy)
     identity = {'config_sha256': _sha256(config['_path']),
                 'algorithm_config_sha256': _sha256(root/config['algorithm_config']),
                 'scenario_catalog_sha256': _sha256(root/config['scenario_catalog']),
@@ -409,12 +415,34 @@ def prepare_campaign(config_path: Path, project_root: Path, *, artifact_root: Op
                 'normalizer_sha256': _sha256(normalizer) if normalizer.is_file() else None,
                 'source_sha256': source_snapshot(root, scope='fresh')}
     inputs = campaign_inputs(config, root)
+    from uc3m.application.training.integrity import _file_sha256
+    for index, price in enumerate(applicability['price_files']):
+        path = root/price['path']
+        if _file_sha256(path) != price['sha256']:
+            raise ValueError('price changed while applicability was being frozen')
+        inputs[f'endpoint_price:{index}'] = {'kind': 'file', 'path': price['path'], 'sha256': price['sha256']}
+    identity['input_manifest_sha256'] = canonical_hash(inputs)
     if inputs['dataset']['sha256'] != identity['dataset_hash']:
         raise ValueError('the dataset tree does not match the hash its acceptance recorded')
     algorithms = config['_algorithm_config']['algorithms']
+    identity['algorithm_contract_sha256'] = canonical_hash(config['_algorithm_config'])
+    identity['endpoint_applicability_sha256'] = canonical_hash(applicability)
+    identity['supervision_sha256'] = canonical_hash(config['supervision'])
+    from uc3m.application.training.gate_report import git_head, test_source_digest
+    n_agents = schema_agent_count(root, {'inputs': inputs})
+    owners = {name: list(expected_optimizer_owners(name, config['_algorithm_config'], n_agents=n_agents))
+              for name in config['algorithms']}
+    layout = yaml.safe_load((root/'governance/repository_layout.yaml').read_text(encoding='utf-8'))
+    input_policy = {'retired_roots': list((layout.get('retired_historical_roots') or {}).values())
+                    + list(layout.get('forbidden_input_roots') or [])}
+    identity.update(optimizer_owners_sha256=canonical_hash(owners), source_git_head=git_head(root),
+                    test_source_sha256=test_source_digest(root), stage_plan_sha256=canonical_hash(stages),
+                    input_policy_sha256=canonical_hash(input_policy))
     manifest = {'schema_version': 1, 'campaign_id': config['campaign_id'], 'storage_alias': config['storage_alias'],
                 'status': 'planned', 'spec_hash': canonical_hash(identity), 'identity': identity,
-                'inputs': inputs,
+                'inputs': inputs, 'optimizer_owners': owners, 'input_policy': input_policy,
+                'algorithm_contract': config['_algorithm_config'],
+                'endpoint_applicability': applicability,
                 'scenario_catalog': config['scenario_catalog'], 'algorithm_config': config['algorithm_config'],
                 'supervision': dict(config['supervision']),
                 'training_phases': [list(phase) for phase in config['training_phases']],
@@ -455,29 +483,90 @@ def _is_candidate(manifest, freeze: ConfigurationFreeze) -> bool:
     return dict(freeze.hyperparameters) in [dict(v) for v in candidates.values()]
 
 
-def write_configuration_freezes(manifest_path: Path, freezes: Sequence[ConfigurationFreeze]) -> Dict[str, object]:
-    """Store the per-algorithm freezes next to the manifest and bind their hashes into it."""
-    manifest_path = Path(manifest_path)
-    manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
-    target = manifest_path.parent/FREEZES_FILE
-    if target.exists():
-        raise FileExistsError(f'{target} exists; a configuration freeze is never overwritten')
+def _freeze_publication_rows(manifest, freezes: Sequence[ConfigurationFreeze]) -> Dict[str, dict]:
+    """Validate selection inputs before publishing either member of the pair."""
     by_algorithm = {}
     for freeze in freezes:
+        # Recheck the domain contract rather than trusting an arbitrary row-like object.
+        freeze = ConfigurationFreeze.from_dict(freeze.as_dict())
         if freeze.campaign_id != manifest['campaign_id']:
             raise ValueError(f'{freeze.algorithm}: freeze belongs to another campaign')
         if freeze.algorithm in by_algorithm:
             raise ValueError(f'{freeze.algorithm}: one freeze per algorithm')
+        if set(freeze.hyperparameters) != set(HYPERPARAMETERS):
+            raise ValueError(f'{freeze.algorithm}: frozen hyperparameters must set {HYPERPARAMETERS}')
         if not _is_candidate(manifest, freeze):
             raise ValueError(f'{freeze.algorithm}: frozen hyperparameters are not an HPO candidate of this campaign')
+        labels = (manifest.get('hpo_candidates_by_algorithm') or {}).get(freeze.algorithm) or {}
+        if len(set(freeze.candidates)) != len(freeze.candidates) or set(freeze.candidates) - set(labels):
+            raise ValueError(f'{freeze.algorithm}: invalid HPO candidate labels')
+        if not isinstance(freeze.selection_rule, str) or not freeze.selection_rule.strip():
+            raise ValueError(f'{freeze.algorithm}: a freeze needs a nonempty selection rule')
+        if not isinstance(freeze.frozen_at, str) or not freeze.frozen_at.strip():
+            raise ValueError(f'{freeze.algorithm}: a freeze needs its original frozen_at')
         by_algorithm[freeze.algorithm] = {**freeze.as_dict(), 'freeze_hash': freeze.freeze_hash()}
-    target.write_text(json.dumps({'schema_version': 1, 'campaign_id': manifest['campaign_id'],
-                                  'freezes': by_algorithm}, indent=2), encoding='utf-8')
-    record = {'path': FREEZES_FILE, 'sha256': _sha256(target),
-              'freeze_hashes': {name: row['freeze_hash'] for name, row in by_algorithm.items()}}
-    manifest['configuration_freezes'] = record
-    manifest_path.write_text(json.dumps(manifest, indent=2), encoding='utf-8')
-    return record
+    if not by_algorithm:
+        raise ValueError('configuration freeze publication requires a nonempty selection')
+    return by_algorithm
+
+
+def _freeze_selection(rows):
+    # frozen_at contributes to freeze_hash. A retry may have a fresh timestamp,
+    # but it cannot change any selection/evidence or replace the original bytes.
+    return {algorithm: {key: value for key, value in row.items()
+                        if key not in ('frozen_at', 'freeze_hash')}
+            for algorithm, row in rows.items()}
+
+
+def write_configuration_freezes(manifest_path: Path, freezes: Sequence[ConfigurationFreeze]) -> Dict[str, object]:
+    """Atomically publish an immutable freeze and recover its manifest link on retry.
+
+    The pair is serialized by an OS-owned lock. A crash after freeze publication
+    leaves a verified orphan; only the identical selection may bind that orphan.
+    """
+    from uc3m.application.dataset.provenance import contained_path
+    from uc3m.application.training.lock import run_lock
+    from uc3m.application.training.persistence import write_json_atomic
+
+    manifest_path = Path(manifest_path)
+    manifest_path = contained_path(manifest_path.parent, manifest_path.name)
+    target = contained_path(manifest_path.parent, FREEZES_FILE)
+    lock_path = contained_path(manifest_path.parent, '.configuration_freezes.lock')
+    with run_lock(lock_path):
+        # Read after acquiring the lock so no stale manifest replaces a peer's update.
+        manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+        requested = _freeze_publication_rows(manifest, freezes)
+        registered = 'configuration_freezes' in manifest
+        if registered and not target.is_file():
+            raise PermissionError('registered configuration freeze is missing; not recreated')
+        if target.exists():
+            try:
+                payload = json.loads(target.read_text(encoding='utf-8'))
+                if (set(payload) != {'schema_version', 'campaign_id', 'freezes'}
+                        or payload['schema_version'] != 1 or payload['campaign_id'] != manifest['campaign_id']
+                        or not isinstance(payload['freezes'], dict)):
+                    raise ValueError('invalid freeze publication identity')
+                stored = _freeze_publication_rows(manifest, [ConfigurationFreeze.from_dict(row)
+                                                            for row in payload['freezes'].values()])
+                if stored != payload['freezes']:
+                    raise ValueError('stored content or freeze_hash does not verify')
+            except (OSError, KeyError, TypeError, ValueError, AttributeError) as exc:
+                raise PermissionError(f'configuration freeze is invalid; preserved: {exc}') from exc
+            if _freeze_selection(stored) != _freeze_selection(requested):
+                raise FileExistsError('configuration freeze already holds different selection or evidence')
+        else:
+            payload = {'schema_version': 1, 'campaign_id': manifest['campaign_id'], 'freezes': requested}
+            write_json_atomic(target, payload)
+            stored = requested
+        record = {'path': FREEZES_FILE, 'sha256': _sha256(target),
+                  'freeze_hashes': {name: row['freeze_hash'] for name, row in stored.items()}}
+        if registered:
+            if manifest['configuration_freezes'] != record:
+                raise PermissionError('registered configuration freeze content or digest changed; preserved')
+            return record
+        manifest['configuration_freezes'] = record
+        write_json_atomic(manifest_path, manifest)
+        return record
 
 
 def load_configuration_freezes(artifacts: Path, manifest: Mapping[str, object]) -> Dict[str, ConfigurationFreeze]:
@@ -485,7 +574,8 @@ def load_configuration_freezes(artifacts: Path, manifest: Mapping[str, object]) 
     record = manifest.get('configuration_freezes')
     if not isinstance(record, Mapping) or not {'path', 'sha256', 'freeze_hashes'} <= set(record):
         raise PermissionError('no configuration freeze recorded in the campaign manifest')
-    path = Path(artifacts)/record['path']
+    from uc3m.application.dataset.provenance import contained_path
+    path = contained_path(Path(artifacts), record['path'])
     if not path.is_file() or _sha256(path) != record['sha256']:
         raise PermissionError('configuration freeze file missing or modified after it was recorded')
     payload = json.loads(path.read_text(encoding='utf-8'))
@@ -545,19 +635,8 @@ def write_derived_scenario_catalog(base_catalog: Path, scenario: str, weights: S
 # --- Stage execution -------------------------------------------------------------------------------
 
 def _treatment_key(treatment: Mapping[str, object], manifest: Mapping[str, object]):
-    from uc3m.domain.campaigns import TreatmentKey
-    identity = manifest['identity']
-    config_hash = canonical_hash({'native_arguments': treatment['native_arguments'],
-                                  'hyperparameters': treatment['hyperparameters'],
-                                  'effective_hyperparameters': treatment.get('effective_hyperparameters'),
-                                  'configuration_freeze_hash': treatment.get('configuration_freeze_hash'),
-                                  'scenario_catalog_sha256': treatment.get('scenario_catalog_sha256'),
-                                  'weights': treatment['weights'],
-                                  'algorithm_config': identity['algorithm_config_sha256']})
-    normalizer = identity.get('normalizer_sha256') or canonical_hash({'normalizer': None})
-    return TreatmentKey(manifest['campaign_id'], treatment['stage'], treatment['algorithm'], treatment['scenario'],
-                        int(treatment['seed']), config_hash, canonical_hash({'contract': normalizer}), normalizer,
-                        treatment['dataset_hash'], identity['source_sha256'])
+    from uc3m.domain.campaigns import treatment_key_from_resolved
+    return treatment_key_from_resolved(treatment, manifest)
 
 
 def _materialize(row, manifest, artifacts: Path, root: Path, algorithm_config, freezes, stage):
@@ -643,7 +722,7 @@ def _apply_frozen_buffer(row: Mapping[str, object], buffer: Mapping[str, object]
     if arguments.count(flag) != 1:
         raise ValueError(f"{row['treatment_id']}: {flag} must appear exactly once to apply the phase buffer")
     arguments[arguments.index(flag) + 1] = str(int(buffer['effective']))
-    row.update(native_arguments=arguments, phase_buffer=dict(buffer))
+    row.update(native_arguments=arguments, phase_buffer=dict(buffer), phase_buffer_sha256=canonical_hash(buffer))
     return row
 
 
@@ -674,6 +753,10 @@ def run_stage(manifest_path: Path, stage: str, learner, project_root: Path, *, a
         raise PermissionError(f"campaign inputs refused: {', '.join(integrity.reasons)}")
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     artifacts = manifest_path.parent
+    from uc3m.application.training.attempt_trust import load_trust_contract
+    trust = load_trust_contract(artifacts, manifest['campaign_id'])
+    if trust.reasons:
+        raise PermissionError('campaign contract refused: ' + ', '.join(trust.reasons))
     stage_path = artifacts/manifest['stages'][stage]['path']
     if _sha256(stage_path) != manifest['stages'][stage]['sha256']:
         raise PermissionError(f'{stage} manifest was modified after preparation')
@@ -727,6 +810,9 @@ def run_stage(manifest_path: Path, stage: str, learner, project_root: Path, *, a
         for _ in range(0 if reused else max_attempts):
             with _ATTEMPT_LOCK:
                 identity, attempt_root = create_attempt(roots, key)
+            if row.get('phase_buffer') is not None:
+                from uc3m.application.training.budget_evidence import persist_buffer_proof
+                persist_buffer_proof(attempt_root, row, manifest, budget_path)
             returned = learner(row, attempt_root)
             # Only the evidence the child process persisted inside the attempt counts; a value
             # returned in memory proves nothing and is never written here.

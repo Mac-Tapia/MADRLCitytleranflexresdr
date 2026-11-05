@@ -170,6 +170,23 @@ class TreatmentKey:
                 f"{self.fingerprint()[:12]}")
 
 
+def treatment_key_from_resolved(treatment: Mapping[str, object], manifest: Mapping[str, object]) -> TreatmentKey:
+    """One pure identity rule shared by launch and persisted-evidence readback."""
+    identity = manifest['identity']
+    config_hash = canonical_hash({'native_arguments': treatment['native_arguments'],
+                                  'hyperparameters': treatment['hyperparameters'],
+                                  'effective_hyperparameters': treatment.get('effective_hyperparameters'),
+                                  'configuration_freeze_hash': treatment.get('configuration_freeze_hash'),
+                                  'scenario_catalog_sha256': treatment.get('scenario_catalog_sha256'),
+                                  'phase_buffer_sha256': treatment.get('phase_buffer_sha256'),
+                                  'weights': treatment['weights'],
+                                  'algorithm_config': identity['algorithm_config_sha256']})
+    normalizer = identity.get('normalizer_sha256') or canonical_hash({'normalizer': None})
+    return TreatmentKey(manifest['campaign_id'], treatment['stage'], treatment['algorithm'], treatment['scenario'],
+                        int(treatment['seed']), config_hash, canonical_hash({'contract': normalizer}), normalizer,
+                        treatment['dataset_hash'], identity['source_sha256'])
+
+
 @dataclass(frozen=True)
 class AttemptIdentity:
     treatment_id: str

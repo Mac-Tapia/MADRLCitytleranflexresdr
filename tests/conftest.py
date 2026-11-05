@@ -18,6 +18,11 @@ _REPO = Path(__file__).resolve().parents[1]
 @pytest.fixture(scope='session', autouse=True)
 def _native_csv_cache_outside_repository(tmp_path_factory):
     scripts = str(_REPO/'CityLearn/scripts')
+    # CI checks out no submodules: without the native module nothing can write this cache. A test that
+    # needs the module still fails at its own import, so this cannot hide a broken local environment.
+    if not (_REPO/'CityLearn/scripts/citylearn_v3_training_common.py').is_file():
+        yield None
+        return
     if scripts not in sys.path:
         sys.path.append(scripts)  # appended: never shadow modules of the suite
     import citylearn_v3_training_common as common

@@ -1,0 +1,155 @@
+{
+  "scope": "analytical synthetic trace under the real default horizon; no annual run",
+  "results": [
+    {
+      "split": "train_2023",
+      "rows": 8760,
+      "default_actions": 8759,
+      "passed": false,
+      "reasons": [
+        "district_daily_peak: unavailable (incomplete_days)",
+        "one_minus_load_factor: unavailable (incomplete_days)"
+      ],
+      "daily_primaries": {
+        "district_daily_peak": {
+          "name": "district_daily_peak",
+          "value": null,
+          "baseline": null,
+          "delta": null,
+          "gain": null,
+          "unit": "kW",
+          "sense": "minimize",
+          "level": "district",
+          "window": "daily",
+          "aggregation": "daily_mean",
+          "axis": "flexibility",
+          "primary": true,
+          "citylearn_v3_name": "peak_average",
+          "provenance": "trace",
+          "convention": "daily_peak_of_absolute_district_net_power",
+          "availability": "unavailable",
+          "cause": "incomplete_days"
+        },
+        "one_minus_load_factor": {
+          "name": "one_minus_load_factor",
+          "value": null,
+          "baseline": null,
+          "delta": null,
+          "gain": null,
+          "unit": "1",
+          "sense": "minimize",
+          "level": "district",
+          "window": "daily",
+          "aggregation": "daily_mean",
+          "axis": "flexibility",
+          "primary": true,
+          "citylearn_v3_name": "one_minus_load_factor_average",
+          "provenance": "trace",
+          "convention": "one_minus_mean_over_max_of_absolute_district_net_power",
+          "availability": "unavailable",
+          "cause": "incomplete_days"
+        }
+      }
+    },
+    {
+      "split": "validation_2024",
+      "rows": 8784,
+      "default_actions": 8783,
+      "passed": false,
+      "reasons": [
+        "district_daily_peak: unavailable (incomplete_days)",
+        "one_minus_load_factor: unavailable (incomplete_days)"
+      ],
+      "daily_primaries": {
+        "district_daily_peak": {
+          "name": "district_daily_peak",
+          "value": null,
+          "baseline": null,
+          "delta": null,
+          "gain": null,
+          "unit": "kW",
+          "sense": "minimize",
+          "level": "district",
+          "window": "daily",
+          "aggregation": "daily_mean",
+          "axis": "flexibility",
+          "primary": true,
+          "citylearn_v3_name": "peak_average",
+          "provenance": "trace",
+          "convention": "daily_peak_of_absolute_district_net_power",
+          "availability": "unavailable",
+          "cause": "incomplete_days"
+        },
+        "one_minus_load_factor": {
+          "name": "one_minus_load_factor",
+          "value": null,
+          "baseline": null,
+          "delta": null,
+          "gain": null,
+          "unit": "1",
+          "sense": "minimize",
+          "level": "district",
+          "window": "daily",
+          "aggregation": "daily_mean",
+          "axis": "flexibility",
+          "primary": true,
+          "citylearn_v3_name": "one_minus_load_factor_average",
+          "provenance": "trace",
+          "convention": "one_minus_mean_over_max_of_absolute_district_net_power",
+          "availability": "unavailable",
+          "cause": "incomplete_days"
+        }
+      }
+    },
+    {
+      "split": "test_2025",
+      "rows": 8760,
+      "default_actions": 8759,
+      "passed": false,
+      "reasons": [
+        "district_daily_peak: unavailable (incomplete_days)",
+        "one_minus_load_factor: unavailable (incomplete_days)"
+      ],
+      "daily_primaries": {
+        "district_daily_peak": {
+          "name": "district_daily_peak",
+          "value": null,
+          "baseline": null,
+          "delta": null,
+          "gain": null,
+          "unit": "kW",
+          "sense": "minimize",
+          "level": "district",
+          "window": "daily",
+          "aggregation": "daily_mean",
+          "axis": "flexibility",
+          "primary": true,
+          "citylearn_v3_name": "peak_average",
+          "provenance": "trace",
+          "convention": "daily_peak_of_absolute_district_net_power",
+          "availability": "unavailable",
+          "cause": "incomplete_days"
+        },
+        "one_minus_load_factor": {
+          "name": "one_minus_load_factor",
+          "value": null,
+          "baseline": null,
+          "delta": null,
+          "gain": null,
+          "unit": "1",
+          "sense": "minimize",
+          "level": "district",
+          "window": "daily",
+          "aggregation": "daily_mean",
+          "axis": "flexibility",
+          "primary": true,
+          "citylearn_v3_name": "one_minus_load_factor_average",
+          "provenance": "trace",
+          "convention": "one_minus_mean_over_max_of_absolute_district_net_power",
+          "availability": "unavailable",
+          "cause": "incomplete_days"
+        }
+      }
+    }
+  ]
+}

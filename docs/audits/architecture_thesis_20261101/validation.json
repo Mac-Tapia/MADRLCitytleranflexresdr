@@ -1,0 +1,22 @@
+{
+  "pytest_exit_code": 1,
+  "tests": {
+    "tests": 1093,
+    "failures": 5,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 1088,
+    "duration_seconds": 3621.601
+  },
+  "excluded_native_microtrainings": 4,
+  "excluded_file": "tests/fresh_training/test_real_learning.py",
+  "fresh_profile_acceptance": false,
+  "scientific_acceptance": false,
+  "findings": {
+    "P0": 4,
+    "P1": 15,
+    "P2": 4
+  },
+  "source_drift": 0,
+  "thesis_unchanged": true
+}

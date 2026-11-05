@@ -1,0 +1,1155 @@
+--- a/uc3m/data/adapters/s3.py
++++ b/uc3m/data/adapters/s3.py
+@@ -18,7 +18,9 @@
+ from __future__ import annotations
+ 
+ from pathlib import Path
++import os
+ 
++from uc3m.application.dataset.provenance import contained_path
+ from uc3m.data.contracts import DatasetManifest, DatasetValidationError
+ from uc3m.data.adapters.local_csv import LocalCsvDatasetAdapter
+ 
+@@ -43,9 +45,11 @@
+         self._bucket = str(bucket)
+         self._prefix = str(prefix).lstrip("/")
+         self._region = region_name
+-        self._name = name or (self._prefix.rstrip("/").split("/")[-1] or self._bucket)
++        self._name = name if name is not None else (self._prefix.rstrip("/").split("/")[-1] or self._bucket)
+         root = Path(cache_dir).expanduser() if cache_dir else _DEFAULT_CACHE_ROOT
+-        self._cache_dir = (root / self._name).resolve()
++        if self._name in ("", ".") or "/" in self._name or "\\" in self._name:
++            raise DatasetValidationError("S3 dataset name must be a single relative component")
++        self._cache_dir = contained_path(root, self._name)
+ 
+     @property
+     def uri(self) -> str:
+@@ -83,22 +87,44 @@
+ 
+         client = self._make_client()
+         paginator = client.get_paginator("list_objects_v2")
+-        downloaded = 0
++        # Validate the entire listing before any mkdir or download. S3 keys are
++        # flat identifiers: a valid S3 key can be an unsafe filesystem path.
++        pending = []
++        destinations = set()
+         for page in paginator.paginate(Bucket=self._bucket, Prefix=self._prefix):
+             for obj in page.get("Contents", []):
+                 key = obj["Key"]
++                if not isinstance(key, str) or not key.startswith(self._prefix):
++                    raise DatasetValidationError("S3 key is outside the requested prefix")
++                rel = key[len(self._prefix):] if self._prefix else key
++                # With prefix 'data' the normal key 'data/schema.json' has one delimiter.
++                if self._prefix and not self._prefix.endswith('/') and rel.startswith('/'):
++                    rel = rel[1:]
++                if not rel and key.endswith('/'):
++                    continue
++                dest = contained_path(self._cache_dir, rel)
+                 if key.endswith("/"):
+                     continue
+-                rel = key[len(self._prefix):].lstrip("/") if self._prefix else key
+-                dest = self._cache_dir / rel
+-                dest.parent.mkdir(parents=True, exist_ok=True)
+-                client.download_file(self._bucket, key, str(dest))
+-                downloaded += 1
++                identity = str(dest).casefold()
++                if identity in destinations or dest.exists():
++                    raise DatasetValidationError("S3 keys collide with another destination or an existing file")
++                destinations.add(identity)
++                pending.append((key, rel))
+ 
+-        if downloaded == 0:
++        if not pending:
+             raise DatasetValidationError(
+                 f"No se encontraron objetos en {self.uri}"
+             )
++        for _, rel in pending:
++            dest = contained_path(self._cache_dir, rel)
++            if any(str(parent).casefold() in destinations or parent.is_file()
++                   for parent in dest.parents):
++                raise DatasetValidationError("S3 keys collide as files and directories")
++        for key, rel in pending:
++            dest = contained_path(self._cache_dir, rel)
++            dest.parent.mkdir(parents=True, exist_ok=True)
++            dest = contained_path(self._cache_dir, rel)
++            client.download_file(self._bucket, key, str(dest))
+ 
+         found = self._find_schema_dir(self._cache_dir)
+         if found is None:
+@@ -120,14 +146,18 @@
+ 
+     @staticmethod
+     def _find_schema_dir(root: Path) -> Path | None:
++        root = contained_path(root, '.')
+         if not root.exists():
+             return None
+-        direct = root / "schema.json"
+-        if direct.is_file():
+-            return root.resolve()
+-        for schema in sorted(root.rglob("schema.json")):
+-            return schema.parent.resolve()
+-        return None
++        schemas = []
++        for directory, dirs, files in os.walk(root, followlinks=False):
++            for name in sorted(dirs + files):
++                candidate = contained_path(root, (Path(directory)/name).relative_to(root).as_posix())
++                if name == 'schema.json' and candidate.is_file():
++                    schemas.append(candidate)
++        if root/'schema.json' in schemas:
++            return root
++        return min(schemas).parent if schemas else None
+ 
+ 
+ __all__ = ["S3DatasetAdapter"]
+--- a/uc3m/application/dataset/provenance.py
++++ b/uc3m/application/dataset/provenance.py
+@@ -57,7 +57,14 @@
+     parts = text.replace('\\', '/').split('/')
+     if '..' in parts:
+         raise ValueError(f'{text}: parent traversal is not allowed')
++    # Refuse Windows aliases on every platform: ADS, device names and trailing dots/spaces.
++    for part in (p for p in parts if p not in ('', '.')):
++        if ':' in part or '\x00' in part or part.endswith((' ', '.')) or PureWindowsPath(part).is_reserved():
++            raise ValueError(f'{text}: ambiguous Windows path component')
+     base = Path(os.path.abspath(root))
++    for ancestor in (*reversed(base.parents), base):
++        if os.path.lexists(ancestor) and _is_link(ancestor):
++            raise ValueError(f'{text}: root reached through a link or junction ({ancestor.name})')
+     current = base
+     for part in (p for p in parts if p not in ('', '.')):
+         current = current/part
+@@ -112,9 +119,12 @@
+         source_type = str(entry['source_type'])
+         if source_type not in SOURCE_TYPES:
+             raise ValueError(f'{relative}: source type {source_type} is not a raw source')
+-        if relative.startswith(FORBIDDEN_PREFIXES):
++        path = contained_path(root, str(entry['path']))
++        canonical_parts = tuple(part.casefold() for part in path.relative_to(root.resolve()).parts)
++        forbidden_parts = [tuple(p.casefold() for p in prefix.strip('/').split('/'))
++                           for prefix in FORBIDDEN_PREFIXES]
++        if any(canonical_parts[:len(prefix)] == prefix for prefix in forbidden_parts):
+             raise ValueError(f'{relative}: prior-run, prior-dataset or cache paths are not raw sources')
+-        path = contained_path(root, str(entry['path']))
+         measured, role = SOURCE_TYPES[source_type]
+         generated_by = entry.get('generated_by')
+         if measured and generated_by:
+--- a/uc3m/application/dataset/construction.py
++++ b/uc3m/application/dataset/construction.py
+@@ -19,7 +19,7 @@
+ from pathlib import Path
+ from typing import Callable, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
+ 
+-from uc3m.application.dataset.provenance import RawSourceManifest
++from uc3m.application.dataset.provenance import RawSourceManifest, contained_path
+ 
+ PEAK_HOURS = frozenset({18, 19, 20, 21, 22})
+ MONTHS = {'ene': 1, 'feb': 2, 'mar': 3, 'abr': 4, 'may': 5, 'jun': 6, 'jul': 7, 'ago': 8,
+@@ -376,8 +376,18 @@
+ 
+ 
+ def hash_directory(root: Path) -> Tuple[Dict[str, str], str]:
++    root = contained_path(Path(root), '.')
+     files = {}
+-    for path in sorted(Path(root).rglob('*')):
++    # os.walk without following links still lists junctions/symlinks. Validate
++    # every listed entry before descending or reading a linked regular file.
++    paths = []
++    for directory, dirs, names in os.walk(root, followlinks=False):
++        for name in sorted(dirs + names):
++            path = contained_path(root, (Path(directory)/name).relative_to(root).as_posix())
++            if path.is_file():
++                paths.append(path)
++    for path in sorted(paths):
++        path = contained_path(root, path.relative_to(root).as_posix())
+         if path.is_file():
+             payload = path.read_bytes()
+             if path.suffix.casefold() in {'.csv', '.json', '.txt'}:
+@@ -399,11 +409,14 @@
+         relative = output.relative_to(root).as_posix()
+     except ValueError as exc:
+         raise ValueError(f'dataset output must live inside the project root: {output}') from exc
+-    if relative.startswith(FORBIDDEN_OUTPUT_PREFIXES) or not relative.startswith('data/campaigns/'):
++    output = contained_path(root, relative)
++    components = tuple(part.casefold() for part in output.relative_to(root.resolve()).parts)
++    if len(components) < 3 or components[:2] != ('data', 'campaigns'):
+         raise ValueError(f'{relative}: a fresh dataset is written only under data/campaigns/<campaign>/')
+     if output.exists():
+         raise FileExistsError(f'{relative} already exists; a built dataset is never overwritten')
+     output.mkdir(parents=True)
++    output = contained_path(root, relative)
+     targets_path = output/'monthly_targets.csv'
+     write_monthly_targets(targets_path, targets)
+     generator(GeneratorRequest(output, tuple(config.buildings), tuple(config.years),
+--- a/uc3m/geography/ingest.py
++++ b/uc3m/geography/ingest.py
+@@ -6,8 +6,7 @@
+ Jerarquía de fuentes (§4.6.1 — prioridad):
+   1° PVGIS-ERA5 (pvlib) — Europa + LAT hasta 2023
+   2° NASA POWER REST API — global, hourly, sin key
+-  3° ERA5 (cdsapi) — reanálisis global histórico (requiere key)
+-  4° NREL NSRDB (pvlib) — Américas (requiere key)
++Sin proveedor válido, falla; el modo de demostración sintética exige permiso y semilla.
+ 
+ Salida estándar (DataFrame compatible weather.csv de CityLearn v2):
+   outdoor_dry_bulb_temperature [°C]
+@@ -20,9 +19,12 @@
+ from __future__ import annotations
+ 
+ import logging
++import hashlib
++import json
+ from pathlib import Path
+ import numpy as np
+ import pandas as pd
++from uc3m.application.dataset.provenance import contained_path
+ 
+ logger = logging.getLogger(__name__)
+ 
+@@ -55,13 +57,21 @@
+         alt_m: float = 0.0,
+         cache_dir: str | Path = _CACHE_DIR,
+         skip_cache: bool = False,
++        *,
++        allow_synthetic: bool = False,
++        synthetic_seed: int | None = None,
+     ):
++        if allow_synthetic and (isinstance(synthetic_seed, bool) or
++                                not isinstance(synthetic_seed, int) or synthetic_seed < 0):
++            raise ValueError('Synthetic weather requires an explicit nonnegative integer seed')
+         self.lat      = lat
+         self.lon      = lon
+         self.tz       = tz
+         self.alt_m    = alt_m
+-        self.cache_dir = Path(cache_dir)
++        self.cache_dir = contained_path(Path(cache_dir), '.')
+         self.skip_cache = skip_cache
++        self.allow_synthetic = allow_synthetic
++        self.synthetic_seed = synthetic_seed
+         self.cache_dir.mkdir(parents=True, exist_ok=True)
+ 
+     # ═══════════════════════════════════════════════════════════════════════
+@@ -74,14 +84,18 @@
+ 
+         Returns
+         -------
+-        DataFrame con 16 columnas CityLearn v2 (medidas + predicciones).
++        DataFrame con 16 columnas CityLearn v2: reanálisis o demostración explícita.
++        ``attrs['weather_provenance']`` conserva la fuente, hash y elegibilidad.
++        Las columnas predicted son desplazamientos históricos, no pronósticos validados.
+         """
+         frames = [self._get_year(y) for y in sorted(years)]
++        provenance = [dict(frame.attrs['weather_provenance']) for frame in frames]
+         df = pd.concat(frames, axis=0)
+         df = df.sort_index()
+ 
+-        # Verificar sin NaN
+-        df = df.ffill().bfill().fillna(0.0)
++        # Missing observations are an error, never an implicit imputed measurement.
++        if not np.isfinite(df.to_numpy(dtype=float)).all():
++            raise RuntimeError('Incomplete weather: missing values require an explicit imputation protocol')
+ 
+         # Añadir columnas de predicción (_1, _2, _3)
+         df = self._add_predictions(df)
+@@ -91,7 +105,11 @@
+             f"lat={self.lat:.4f} lon={self.lon:.4f} "
+             f"años={years}"
+         )
+-        return df.reset_index(drop=True)
++        df = df.reset_index(drop=True)
++        df.attrs['weather_provenance'] = provenance
++        df.attrs['scientific_eligible'] = all(p['scientific_eligible'] for p in provenance)
++        df.attrs['prediction_method'] = 'historical_shift_not_validated_forecast'
++        return df
+ 
+     def get_full_index(self, years: list[int]) -> pd.DatetimeIndex:
+         """Índice horario completo para los años dados, con timezone."""
+@@ -108,36 +126,114 @@
+     # ═══════════════════════════════════════════════════════════════════════
+ 
+     def _get_year(self, year: int) -> pd.DataFrame:
+-        """Retorna DataFrame horario para un año. Usa caché si disponible."""
+-        cache_file = self.cache_dir / f"{year}_{self.lat:.4f}_{self.lon:.4f}.parquet"
++        """Return proven reanalysis or explicitly seeded, ineligible synthetic weather.
++
++        Cache data and provenance are immutable. Unproven legacy caches are
++        preserved and rejected; use a fresh cache_dir to retrieve new evidence.
++        """
++        filename = f"{year}_{self.lat:.4f}_{self.lon:.4f}.parquet"
++        cache_file = contained_path(self.cache_dir, filename)
+ 
+         if not self.skip_cache and cache_file.exists():
+-            logger.debug(f"[Ingester] Cargando caché {cache_file}")
+-            return pd.read_parquet(cache_file)
++            return self._read_cache(cache_file, year, synthetic=False)
+ 
+         df: pd.DataFrame | None = None
++        source = ''
++        errors = []
+ 
+         # 1° PVGIS-ERA5 (solo hasta ~2023)
+         if year <= 2023:
+             try:
+                 df = self._from_pvgis(year)
++                self._validate_frame(df, year)
++                source = 'PVGIS_ERA5'
+                 logger.info(f"[Ingester] PVGIS-ERA5 OK para {year}")
+             except Exception as e:
++                df = None
++                errors.append(f'PVGIS_ERA5: {e}')
+                 logger.warning(f"[Ingester] PVGIS falló ({e}), intentando NASA POWER...")
+ 
+         # 2° NASA POWER (fallback universal)
+         if df is None:
+             try:
+                 df = self._from_nasa_power(year)
++                self._validate_frame(df, year)
++                source = 'NASA_POWER'
+                 logger.info(f"[Ingester] NASA POWER OK para {year}")
+             except Exception as e:
++                df = None
++                errors.append(f'NASA_POWER: {e}')
+                 logger.error(f"[Ingester] NASA POWER falló: {e}")
+-                df = self._synthetic_fallback(year)
+-                logger.warning(f"[Ingester] Usando datos sintéticos para {year}")
++                if not self.allow_synthetic:
++                    raise RuntimeError(f'No proven weather available for {year}: {"; ".join(errors)}') from e
++
++        if df is None:
++            cache_file = contained_path(self.cache_dir, f'synthetic/seed_{self.synthetic_seed}/{filename}')
++            if not self.skip_cache and cache_file.exists():
++                return self._read_cache(cache_file, year, synthetic=True)
++            df = self._synthetic_fallback(year)
++            source = 'synthetic'
+ 
+         assert df is not None
+-        df.to_parquet(cache_file)
++        self._validate_frame(df, year)
++        metadata = self._provenance(year, source)
++        metadata['provider_errors'] = errors
++        self._write_cache(cache_file, df, metadata)
++        df.attrs['weather_provenance'] = metadata
+         return df
++
++    def _provenance(self, year: int, source: str) -> dict:
++        synthetic = source == 'synthetic'
++        return {'schema_version': 1, 'year': year, 'latitude': self.lat,
++                'longitude': self.lon, 'timezone': self.tz, 'altitude_m': self.alt_m,
++                'source': source, 'source_type': 'synthetic' if synthetic else 'weather_reanalysis',
++                'measured': False, 'scientific_eligible': not synthetic,
++                'eligibility_scope': 'weather_source_only_not_campaign_acceptance',
++                'seed': self.synthetic_seed if synthetic else None}
++
++    def _validate_frame(self, df: pd.DataFrame, year: int) -> None:
++        required = ['outdoor_dry_bulb_temperature', 'outdoor_relative_humidity',
++                    'diffuse_solar_irradiance', 'direct_solar_irradiance']
++        n_hours = 8784 if self._is_leap(year) else 8760
++        if (not isinstance(df, pd.DataFrame) or list(df.columns) != required or len(df) != n_hours
++                or not np.isfinite(df.to_numpy(dtype=float)).all()):
++            raise RuntimeError(f'Incomplete weather frame for {year}: missing columns, hours or values')
++        if not isinstance(df.index, pd.DatetimeIndex) or df.index.has_duplicates:
++            raise RuntimeError(f'Invalid weather time index for {year}')
++
++    def _read_cache(self, path: Path, year: int, *, synthetic: bool) -> pd.DataFrame:
++        proof = contained_path(self.cache_dir, str(path.relative_to(self.cache_dir)) + '.provenance.json')
++        if not proof.is_file():
++            raise RuntimeError(f'Untrusted legacy weather cache without provenance; preserved: {path}')
++        try:
++            metadata = json.loads(proof.read_text(encoding='utf-8'))
++            source = metadata['source']
++            if source not in (('synthetic',) if synthetic else ('PVGIS_ERA5', 'NASA_POWER')):
++                raise ValueError('unapproved weather source')
++            expected = self._provenance(year, source)
++            if any(metadata.get(key) != value for key, value in expected.items()):
++                raise ValueError('weather identity or eligibility mismatch')
++            if hashlib.sha256(path.read_bytes()).hexdigest() != metadata['sha256']:
++                raise ValueError('weather content hash mismatch')
++            df = pd.read_parquet(path)
++            self._validate_frame(df, year)
++        except Exception as exc:
++            raise RuntimeError(f'Invalid weather provenance; cache preserved: {path}: {exc}') from exc
++        df.attrs['weather_provenance'] = metadata
++        return df
++
++    def _write_cache(self, path: Path, df: pd.DataFrame, metadata: dict) -> None:
++        proof = contained_path(self.cache_dir, str(path.relative_to(self.cache_dir)) + '.provenance.json')
++        if path.exists() or proof.exists():
++            raise RuntimeError(f'Weather cache is immutable; use a fresh cache_dir: {path}')
++        path.parent.mkdir(parents=True, exist_ok=True)
++        # Exclusive creation prevents truncating legacy data. A crash leaves an
++        # unproven file, which _read_cache rejects without deleting it.
++        with path.open('xb') as stream:
++            df.to_parquet(stream)
++        metadata['sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
++        with proof.open('x', encoding='utf-8') as stream:
++            json.dump(metadata, stream, sort_keys=True, indent=2)
+ 
+     # ═══════════════════════════════════════════════════════════════════════
+     # Fuentes de datos
+@@ -202,21 +298,22 @@
+ 
+         # Reemplazar valores faltantes NASA (-999)
+         df = pd.DataFrame(df.replace(-999.0, np.nan).replace(-999, np.nan))
+-        df = pd.DataFrame(df.clip(lower=0), index=df.index)
++        nonnegative = ['RH2M', 'GHI', 'DHI', 'DNI', 'WS']
++        df[nonnegative] = df[nonnegative].clip(lower=0)
+ 
+         return self._normalize_columns(df)
+ 
+     def _normalize_columns(self, df: pd.DataFrame) -> pd.DataFrame:
+         """Mapea columnas internas → nombres estándar CityLearn v2."""
+         result = pd.DataFrame(index=df.index)
+-        result["outdoor_dry_bulb_temperature"] = self._column(df, "T2M", 25.0)
++        result["outdoor_dry_bulb_temperature"] = self._column(df, "T2M", float('nan'))
+         result["outdoor_relative_humidity"] = self._column(
+-            df, "RH2M", 70.0 if "RH" not in df.columns else "RH"
+-        )
+-        result["diffuse_solar_irradiance"] = self._column(df, "DHI", 0.0).clip(
++            df, "RH2M", float('nan') if "RH" not in df.columns else "RH"
++        )
++        result["diffuse_solar_irradiance"] = self._column(df, "DHI", float('nan')).clip(
+             lower=0
+         )
+-        result["direct_solar_irradiance"] = self._column(df, "DNI", 0.0).clip(
++        result["direct_solar_irradiance"] = self._column(df, "DNI", float('nan')).clip(
+             lower=0
+         )
+         return result.astype(np.float32)
+@@ -250,9 +347,12 @@
+ 
+     def _synthetic_fallback(self, year: int) -> pd.DataFrame:
+         """
+-        Genera datos sintéticos basados en clima promedio estimado.
+-        Solo se usa si todas las APIs fallan.
++        Generate a deterministic demo fixture, never a measured climate source.
++        Requires explicit permission and a seed; scientifically ineligible.
+         """
++        if not self.allow_synthetic or self.synthetic_seed is None:
++            raise RuntimeError('Synthetic weather requires explicit opt-in and seed')
++        rng = np.random.default_rng(np.random.SeedSequence([self.synthetic_seed, year]))
+         n_hours = 8784 if self._is_leap(year) else 8760
+         idx     = pd.date_range(f"{year}-01-01", periods=n_hours, freq="h", tz=self.tz)
+         hours   = np.arange(n_hours) % 24
+@@ -261,12 +361,12 @@
+         # Temperatura con ciclo diurno
+         t_mean = 26.5 + 3.0 * np.sin(2 * np.pi * doy / 365)
+         t_diurnal = 2.5 * np.sin(2 * np.pi * (hours - 6) / 24)
+-        t = t_mean + t_diurnal + np.random.normal(0, 0.5, n_hours)
++        t = t_mean + t_diurnal + rng.normal(0, 0.5, n_hours)
+ 
+         # Irradiancia con modelo simplificado coseno cenital
+         solar_angle = np.maximum(0, np.cos(2 * np.pi * (hours - 12) / 24))
+         ghi_clear   = 900 * solar_angle ** 1.2
+-        cloud_factor = 0.65 + 0.2 * np.random.rand(n_hours)   # nubosidad tropical
++        cloud_factor = 0.65 + 0.2 * rng.random(n_hours)   # demo tropical, not observation
+         ghi  = ghi_clear * cloud_factor
+         dhi  = ghi  * 0.35
+         dni  = (ghi - dhi).clip(0)
+--- a/uc3m/application/evaluation/fresh_analysis.py
++++ b/uc3m/application/evaluation/fresh_analysis.py
+@@ -210,12 +210,23 @@
+     """Kendall's W of a seeds x algorithms matrix (concordance of the Friedman ranks)."""
+     from scipy.stats import rankdata
+     data = np.asarray(matrix, dtype=float)
++    if data.ndim != 2 or not np.all(np.isfinite(data)):
++        raise ValueError('Kendall W requires a finite seeds x algorithms matrix')
+     n, k = data.shape
+     if n < 2 or k < 2 or np.all(data == data.flat[0]):
+         return 0.0
+     ranks = np.apply_along_axis(rankdata, 1, data)
+     spread = np.sum((ranks.sum(axis=0) - n*(k + 1)/2.0)**2)
+-    return float(12.0*spread/(n**2*(k**3 - k)))
++    # Each tied group of size t reduces the available rank variation by t^3-t.
++    # This gives W = corrected Friedman chi-square / (n*(k-1)).
++    ties = 0
++    for row in data:
++        counts = np.unique(row, return_counts=True)[1]
++        ties += int(np.sum(counts**3 - counts))
++    denominator = n**2*(k**3 - k) - n*ties
++    if denominator == 0:  # every seed ties all algorithms, even at different levels
++        return 0.0
++    return float(12.0*spread/denominator)
+ 
+ 
+ def describe(values) -> Dict[str, object]:
+--- a/uc3m/multicriteria/ahp.py
++++ b/uc3m/multicriteria/ahp.py
+@@ -38,6 +38,24 @@
+ )
+ 
+ 
++class NonPositiveAutomaticAHP(ValueError):
++    """Raw quantitative values do not define a positive AHP ratio scale."""
++
++
++def _validate_pairwise(pairwise: np.ndarray) -> np.ndarray:
++    """Saaty judgments are finite, strictly positive reciprocal comparisons."""
++    matrix = np.asarray(pairwise, dtype=float)
++    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1] or not matrix.shape[0]:
++        raise ValueError("pairwise must be a nonempty square matrix")
++    if not np.all(np.isfinite(matrix)) or np.any(matrix <= 0):
++        raise ValueError("pairwise must contain finite strictly positive judgments")
++    if not np.allclose(np.diag(matrix), 1.0, rtol=1e-10, atol=1e-12):
++        raise ValueError("pairwise diagonal must be one")
++    if not np.allclose(matrix, 1.0 / matrix.T, rtol=1e-10, atol=1e-12):
++        raise ValueError("pairwise judgments must be reciprocal")
++    return matrix
++
++
+ def _principal_eigen(matrix: np.ndarray) -> Tuple[float, np.ndarray]:
+     values, vectors = np.linalg.eig(matrix)
+     idx = int(np.argmax(np.real(values)))
+@@ -56,15 +74,21 @@
+ ) -> Dict[str, float]:
+     """Compute λ_max, CI and CR for a Saaty pairwise matrix."""
+ 
+-    matrix = np.asarray(pairwise, dtype=float)
+-    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
+-        raise ValueError("pairwise must be a square matrix")
++    matrix = _validate_pairwise(pairwise)
+     n = int(matrix.shape[0])
+     if weights is None:
+         lam, weights = _principal_eigen(matrix)
+     else:
+         weights = np.asarray(weights, dtype=float)
+-        lam = float(np.mean((matrix @ weights) / np.clip(weights, 1e-12, None)))
++        if weights.shape != (n,) or not np.all(np.isfinite(weights)) or np.any(weights <= 0):
++            raise ValueError("weights must be a finite strictly positive vector of pairwise order")
++        weights = weights / np.sum(weights)
++        lam = float(np.mean((matrix @ weights) / weights))
++    # A positive reciprocal matrix has lambda_max >= n. Only numerical roundoff
++    # may make CI negative; a substantive negative value is never consistency.
++    if not np.isfinite(lam) or lam < n - 1e-10 * max(n, 1):
++        raise ValueError("invalid principal eigenvalue for positive reciprocal judgments")
++    lam = max(lam, float(n))
+     ci = (lam - n) / max(n - 1, 1)
+     ri = float(_SAATY_RI.get(n, 1.49))
+     cr = 0.0 if ri <= 0 else ci / ri
+@@ -85,7 +109,7 @@
+ ) -> Dict[str, Any]:
+     """Derive normalized priority weights from an AHP pairwise matrix."""
+ 
+-    matrix = np.asarray(pairwise if pairwise is not None else DEFAULT_AHP_PAIRWISE, dtype=float)
++    matrix = _validate_pairwise(pairwise if pairwise is not None else DEFAULT_AHP_PAIRWISE)
+     if len(labels) != matrix.shape[0]:
+         raise ValueError("labels length must match pairwise order")
+     lam, weights = _principal_eigen(matrix)
+@@ -138,11 +162,16 @@
+                 [float(decision_matrix[a][cid]) for a in alternatives],
+                 dtype=float,
+             )
++            if not np.all(np.isfinite(values)) or np.any(values <= 0):
++                raise NonPositiveAutomaticAHP(
++                    f"automatic AHP criterion {cid} requires finite strictly positive values; "
++                    "provide positive reciprocal alternative_pairwise judgments for this criterion"
++                )
+             kind = str(criteria_kind.get(cid, "benefit")).lower()
+             # Benefit: larger better; cost: invert so smaller becomes preferred.
+-            scores = values if kind == "benefit" else 1.0 / np.clip(values, 1e-12, None)
++            scores = values if kind == "benefit" else 1.0 / values
+             # Build consistent ratio pairwise from scores.
+-            pairwise = np.outer(scores, 1.0 / np.clip(scores, 1e-12, None))
++            pairwise = np.outer(scores, 1.0 / scores)
+             local = cast(
+                 Dict[str, float],
+                 ahp_priority_weights(
+--- a/uc3m/multicriteria/criteria.py
++++ b/uc3m/multicriteria/criteria.py
+@@ -47,16 +47,16 @@
+     ),
+     "C3": SelectionCriterion(
+         id="C3",
+-        name="flexibility_activated",
++        name="flexibility_composite_ratio_to_baseline",
+         dimension="technical_performance",
+-        kind="benefit",
+-        unit="kWh",
++        kind="cost",
++        unit="ratio_to_baseline",
+         default_weight=0.15,
+-        higher_is_better=True,
++        higher_is_better=False,
+     ),
+     "C4": SelectionCriterion(
+         id="C4",
+-        name="inter_seed_variance",
++        name="episodic_reward_variance_per_seed",
+         dimension="training_stability",
+         kind="cost",
+         unit="reward^2",
+@@ -65,7 +65,7 @@
+     ),
+     "C5": SelectionCriterion(
+         id="C5",
+-        name="steps_to_90pct_asymptotic",
++        name="steps_to_90pct_initial_to_tail_progress",
+         dimension="sample_compute_efficiency",
+         kind="cost",
+         unit="steps",
+@@ -94,7 +94,7 @@
+ 
+     name: str
+     mean: float
+-    std: float
++    std: Optional[float]
+     n: int
+     unit: str = ""
+     values: Tuple[float, ...] = field(default_factory=tuple)
+@@ -105,9 +105,11 @@
+         return payload
+ 
+ 
+-def mean_std_report(mean: float, std: float, *, digits: int = 4) -> str:
++def mean_std_report(mean: float, std: Optional[float], *, digits: int = 4) -> str:
+     """Format ``mean ± std`` for tables."""
+ 
++    if std is None or not np.isfinite(std):
++        return f"{mean:.{digits}g} ± not estimable"
+     return f"{mean:.{digits}g} ± {std:.{digits}g}"
+ 
+ 
+@@ -123,7 +125,7 @@
+     if arr.size == 0:
+         return MetricAggregate(name=name, mean=float("nan"), std=float("nan"), n=0, unit=unit)
+     mean = float(np.mean(arr))
+-    std = float(np.std(arr, ddof=1)) if arr.size > 1 else 0.0
++    std = float(np.std(arr, ddof=1)) if arr.size > 1 else None
+     return MetricAggregate(
+         name=name,
+         mean=mean,
+@@ -240,19 +242,29 @@
+     fraction: float = 0.90,
+     asymptotic_window: int = 10,
+ ) -> float:
+-    """First step index where reward reaches ``fraction`` of asymptotic mean."""
++    """First zero-based index attaining a fraction of initial-to-tail progress.
++
++    Project descriptive definition: target = initial + fraction*(tail_mean-initial).
++    The crossing follows the sign of the displacement, so a deteriorating curve
++    describes progress toward its lower tail, never better performance. Constants
++    reach their target at zero. Missing/nonfinite observations make it unavailable
++    (NaN); episodes are never dropped or reindexed. This is not a convergence test.
++    """
+ 
+     arr = np.asarray(step_rewards, dtype=float)
+-    if arr.size == 0:
++    if not np.isfinite(fraction) or not 0 <= fraction <= 1:
++        raise ValueError("fraction must be finite and between zero and one")
++    if arr.ndim != 1:
++        raise ValueError("step_rewards must be a one-dimensional trajectory")
++    if arr.size == 0 or not np.all(np.isfinite(arr)):
+         return float("nan")
+     window = max(1, min(int(asymptotic_window), int(arr.size)))
+     asymptotic = float(np.mean(arr[-window:]))
+-    target = fraction * asymptotic
+-    # If rewards increase toward a less-negative / higher asymptote.
+-    if asymptotic >= arr[0]:
+-        hits = np.where(arr >= target)[0]
+-    else:
+-        hits = np.where(arr <= target)[0]
++    displacement = asymptotic - arr[0]
++    if displacement == 0:
++        return 0.0
++    progress = (arr - arr[0]) / displacement
++    hits = np.where(progress >= fraction)[0]
+     if hits.size == 0:
+         return float(arr.size)
+     return float(hits[0])
+--- a/uc3m/multicriteria/artifacts.py
++++ b/uc3m/multicriteria/artifacts.py
+@@ -27,7 +27,7 @@
+     non_dominated_indices,
+     sparsity,
+ )
+-from uc3m.multicriteria.criteria import ALGORITHMS, CRITERION_IDS
++from uc3m.multicriteria.criteria import ALGORITHMS, CRITERION_IDS, CRITERION_SPECS
+ 
+ # Section 3.2 illustrative decision matrix (methodology text).
+ ILLUSTRATIVE_DECISION_MATRIX: Dict[str, Dict[str, float]] = {
+@@ -56,6 +56,8 @@
+ 
+ def pareto_quality_from_decision_matrix(
+     decision_matrix: Mapping[str, Mapping[str, float]],
++    *,
++    criteria_kind: Optional[Mapping[str, str]] = None,
+ ) -> Dict[str, Any]:
+     """Compute scale-independent Pareto metrics for cost, CO2, and flexibility."""
+ 
+@@ -76,6 +78,7 @@
+     if not np.all(np.isfinite(raw)):
+         raise ValueError("Pareto criteria must be finite")
+ 
++    kinds = criteria_kind or {cid: CRITERION_SPECS[cid].kind for cid in ("C1", "C2", "C3")}
+     normalized = np.empty_like(raw)
+     for axis in range(3):
+         values = raw[:, axis]
+@@ -84,7 +87,7 @@
+         span = maximum - minimum
+         if np.isclose(span, 0.0):
+             normalized[:, axis] = 1.0
+-        elif axis == 0:
++        elif kinds[f"C{axis + 1}"] == "cost":
+             normalized[:, axis] = (maximum - values) / span
+         else:
+             normalized[:, axis] = (values - minimum) / span
+@@ -94,7 +97,7 @@
+     front_points = normalized[list(front_indices)]
+     return {
+         "objective_order": ["C1_cost", "C2_co2", "C3_flexibility"],
+-        "orientation": ["min", "max", "max"],
++        "orientation": ["min" if kinds[cid] == "cost" else "max" for cid in ("C1", "C2", "C3")],
+         "normalization": "benefit_minmax_with_constant_axis_equal_to_one",
+         "reference_point": [0.0, 0.0, 0.0],
+         "front": [algorithms[index] for index in front_indices],
+@@ -169,10 +172,6 @@
+         # CO2 avoided proxy: -(control - baseline) so reductions become positive.
+         co2_delta = _safe_float(row.get("carbon_emissions_delta_kg"))
+         flex = _safe_float(row.get("flex_composite"))
+-        if flex is None:
+-            flex = _safe_float(row.get("grid_import_delta"))
+-            if flex is not None:
+-                flex = abs(flex)
+         if cost is not None:
+             matrix[algo]["C1"] = cost
+             provenance[algo]["C1"] = "district_objectives.electricity_cost_delta_eur"
+@@ -181,7 +180,10 @@
+             provenance[algo]["C2"] = "district_objectives.-carbon_emissions_delta_kg"
+         if flex is not None:
+             matrix[algo]["C3"] = flex
+-            provenance[algo]["C3"] = "district_objectives.flex_composite_or_|grid_import_delta|"
++            provenance[algo]["C3"] = "district_objectives.flex_composite.ratio_to_baseline.lower_is_better"
++        else:
++            # A signed energy delta (kWh) is not the dimensionless flex ratio.
++            provenance[algo]["C3"] = "unavailable:missing_comparable_flex_composite_ratio_to_baseline"
+     return matrix, provenance
+ 
+ 
+@@ -224,6 +226,11 @@
+                 out[algo][cid] = float(partial[algo][cid])
+                 prov[algo].setdefault(cid, "real_or_partial")
+             else:
++                if cid == "C3" and partial:
++                    # Legacy demonstration C3 is activated energy (kWh), not the
++                    # real composite ratio. Explicit fill cannot equate the units.
++                    prov[algo][cid] = "unavailable:illustrative_kWh_not_comparable_to_real_ratio"
++                    continue
+                 # Prefer same-algo illustrative fill; if algo missing there, skip.
+                 if algo not in base:
+                     continue
+@@ -253,9 +260,17 @@
+     scenario: str = "E1",
+     algorithms: Optional[Sequence[str]] = None,
+     seed: int = 0,
++    episode_index_origin: int = 1,
++    episode_metadata: Optional[Dict[str, object]] = None,
+ ) -> Dict[str, list[float]]:
+-    """Load per-episode reward_mean from each verified run's episode_summary.csv."""
+-
++    """Load a complete indexed curve; legacy one-based origin defaults to 1.
++
++    Native producers using zero-based IDs must explicitly pass origin=0. Never
++    infer an origin from the minimum observed ID: that hides missing first rows.
++    """
++
++    if type(episode_index_origin) is not int or episode_index_origin not in (0, 1):
++        raise ValueError("episode_index_origin must explicitly be zero or one")
+     algos = list(algorithms or ALGORITHMS)
+     layout = campaign_layout(Path(run_dir), seed=seed)
+     out: Dict[str, list[float]] = {}
+@@ -274,11 +289,33 @@
+                 break
+         if col is None:
+             continue
+-        if "episode" in frame.columns:
+-            frame = frame.sort_values("episode")
+-        series = [float(x) for x in frame[col].tolist() if np.isfinite(float(x))]
+-        if series:
++        if "episode" not in frame.columns:
++            raise ValueError(f"{path}: episode IDs are required; row position is not an episode ID")
++        raw_ids = frame["episode"]
++        ids = pd.to_numeric(raw_ids, errors="coerce").to_numpy(dtype=float)
++        if (not ids.size or any(isinstance(v, (bool, np.bool_)) for v in raw_ids)
++                or not np.all(np.isfinite(ids)) or np.any(ids != np.floor(ids))
++                or np.any(ids < episode_index_origin) or len(np.unique(ids)) != len(ids)):
++            raise ValueError(f"{path}: episode IDs must be unique finite integers from the declared origin")
++        # A verified run's completed count, when recorded, also catches a missing
++        # final row; continuity alone only detects initial/internal missing rows.
++        evidence = json.loads((scenario_dir.parent / "evidence.json").read_text(encoding="utf-8"))
++        expected = evidence.get("completed_episodes")
++        if expected is not None and (type(expected) is not int or expected <= 0):
++            raise ValueError(f"{path}: completed_episodes must be a positive integer when declared")
++        count = expected if expected is not None else len(ids)
++        ordered_ids = np.sort(ids).astype(int).tolist()
++        if ordered_ids != list(range(episode_index_origin, episode_index_origin + count)):
++            raise ValueError(f"{path}: episode coverage is not continuous and complete from the declared origin")
++        frame = frame.assign(episode=ids).sort_values("episode")
++        series = pd.to_numeric(frame[col], errors="coerce").tolist()
++        if series and np.any(np.isfinite(series)):
+             out[algo] = series
++            if episode_metadata is not None:
++                episode_metadata[algo] = {
++                    "episode_ids": ordered_ids, "episode_index_origin": episode_index_origin,
++                    "expected_completed_episodes": expected,
++                }
+     return out
+ 
+ 
+@@ -291,25 +328,26 @@
+     """Derive C4/C5/C6 from a single real 50-ep training curve (no invention).
+ 
+     - C4: sample variance of episodic reward (stability proxy; campaign is 1 seed).
+-    - C5: env-steps to 90% of asymptotic episodic reward (episode_idx * steps/ep).
++    - C5: env-steps to 90% of initial-to-tail progress (episode_idx * steps/ep).
+     - C6: |mean(last F) - mean(first F)| early–late gap (F≈20% of episodes).
+     """
+ 
+     from uc3m.multicriteria.criteria import steps_to_fraction_of_asymptotic
+ 
+     arr = np.asarray(list(rewards), dtype=float)
+-    arr = arr[np.isfinite(arr)]
+-    if arr.size == 0:
++    if arr.size == 0 or not np.all(np.isfinite(arr)):
+         return {}
+ 
+-    c4 = float(np.var(arr, ddof=1)) if arr.size > 1 else 0.0
+     ep_to_90 = steps_to_fraction_of_asymptotic(arr.tolist(), fraction=0.90)
+     c5 = float(ep_to_90) * float(steps_per_episode)
+     n_edge = max(1, int(round(arr.size * float(early_late_fraction))))
+     early = float(np.mean(arr[:n_edge]))
+     late = float(np.mean(arr[-n_edge:]))
+     c6 = abs(late - early)
+-    return {"C4": c4, "C5": c5, "C6": c6}
++    metrics = {"C5": c5, "C6": c6}
++    if arr.size > 1:
++        metrics["C4"] = float(np.var(arr, ddof=1))
++    return metrics
+ 
+ 
+ def load_real_c4c6_from_drive(
+@@ -317,10 +355,15 @@
+     *,
+     scenario: str = "E1",
+     algorithms: Optional[Sequence[str]] = None,
++    episode_index_origin: int = 1,
++    episode_metadata: Optional[Dict[str, object]] = None,
+ ) -> Tuple[Dict[str, Dict[str, float]], Dict[str, Dict[str, str]], Dict[str, list[float]]]:
+     """Fill C4–C6 + learning curves from real episode_summary tables."""
+ 
+-    series = load_episode_reward_series(run_dir, scenario=scenario, algorithms=algorithms)
++    series = load_episode_reward_series(
++        run_dir, scenario=scenario, algorithms=algorithms,
++        episode_index_origin=episode_index_origin, episode_metadata=episode_metadata,
++    )
+     partial: Dict[str, Dict[str, float]] = {}
+     provenance: Dict[str, Dict[str, str]] = {}
+     for algo, rewards in series.items():
+@@ -329,8 +372,8 @@
+             continue
+         partial[algo] = metrics
+         provenance[algo] = {
+-            "C4": "drive_episode_summary.reward_mean_variance",
+-            "C5": "drive_episode_summary.episodes_to_90pct_asymptotic*8760",
++            "C4": "drive_episode_summary.episodic_reward_sample_variance_per_selected_seed",
++            "C5": "drive_episode_summary.initial_to_tail_progress_90pct_index*8760",
+             "C6": "drive_episode_summary.early_late_reward_gap_abs",
+         }
+     return partial, provenance, series
+@@ -343,6 +386,7 @@
+     scenario: str = "E1",
+     prefer_real: bool = True,
+     allow_illustrative_fill: bool = False,
++    episode_index_origin: int = 1,
+ ) -> Dict[str, Any]:
+     """Load real run artefacts; illustrative values require explicit opt-in.
+ 
+@@ -379,11 +423,15 @@
+             if missing:
+                 extras["algorithms_missing_real_c1c3"] = missing
+ 
++            episode_metadata: Dict[str, object] = {}
+             c456, prov456, learning_curves = load_real_c4c6_from_drive(
+                 resolved,
+                 scenario=scenario,
+                 algorithms=[a for a in partial if {"C1", "C2", "C3"}.issubset(partial[a])],
++                episode_index_origin=episode_index_origin,
++                episode_metadata=episode_metadata,
+             )
++            extras["episode_curve_index"] = episode_metadata
+             for algo, vals in c456.items():
+                 partial.setdefault(algo, {}).update(vals)
+                 provenance.setdefault(algo, {}).update(prov456.get(algo, {}))
+@@ -396,9 +444,18 @@
+             extras["learning_curve_episodes"] = {
+                 a: len(v) for a, v in learning_curves.items()
+             }
+-            # Real seed samples = episodic rewards (single campaign seed).
++            # One criterion scalar per actual selected seed (currently seed=0).
++            # Episodes remain in learning_curves; they never add seed replicas.
+             seed_metric_samples = {
+-                "C4": {a: list(learning_curves[a]) for a in learning_curves},
++                cid: {a: [float(values[cid])] for a, values in c456.items() if cid in values}
++                for cid in ("C4", "C5", "C6")
++            }
++            extras["seed_metric_replication"] = {
++                "unit": "independent_training_seed",
++                "selected_seed": 0,
++                "max_n_seeds_per_algorithm": 1,
++                "C4_definition": "sample_variance_of_episodic_rewards_within_selected_seed",
++                "other_runs_are_not_inferred_replicas": True,
+             }
+ 
+         report = resolved / "resumen_comparativo" / "best_madrl_report.json"
+@@ -417,6 +474,11 @@
+             provenance=provenance,
+             require_real_technical=require_real_technical,
+         )
++        if partial:
++            matrix = {a: vals for a, vals in matrix.items() if set(CRITERION_IDS).issubset(vals)}
++            provenance = {a: provenance[a] for a in matrix}
++            if not matrix:
++                raise FileNotFoundError("missing comparable real C3 ratio; illustrative kWh fill is prohibited")
+         if not partial:
+             source = "illustrative"
+         elif source.startswith("real_drive") and any(
+@@ -453,11 +515,20 @@
+ 
+     extras["algorithms_ranked"] = list(matrix.keys())
+     extras["learning_curves"] = learning_curves
++    criteria_kind = {cid: spec.kind for cid, spec in CRITERION_SPECS.items()}
++    criterion_units = {cid: spec.unit for cid, spec in CRITERION_SPECS.items()}
++    if source == "illustrative":
++        # Preserve the historical demonstration without inventing a baseline
++        # that could turn its kWh values into ratios.
++        criteria_kind["C3"] = "benefit"
++        criterion_units["C3"] = "kWh"
+     return {
+         "decision_matrix": matrix,
+         "provenance": provenance,
+         "source": source,
+         "scenario": scenario,
++        "criteria_kind": criteria_kind,
++        "criterion_units": criterion_units,
+         "extras": extras,
+         "seed_metric_samples": {
+             cid: {
+--- a/uc3m/multicriteria/pipeline.py
++++ b/uc3m/multicriteria/pipeline.py
+@@ -3,11 +3,13 @@
+ from __future__ import annotations
+ 
+ import json
++import math
+ from pathlib import Path
+ from typing import Any, Dict, Mapping, Optional, Sequence
+ 
+ from uc3m.multicriteria.ahp import (
+     DEFAULT_AHP_PAIRWISE,
++    NonPositiveAutomaticAHP,
+     ahp_priority_weights,
+     ahp_rank_alternatives,
+     default_weights_or_ahp,
+@@ -25,7 +27,7 @@
+     plot_pareto_cost_co2_flex,
+     save_consolidation_bundle,
+ )
+-from uc3m.multicriteria.criteria import CRITERION_SPECS, criteria_manifest
++from uc3m.multicriteria.criteria import CRITERION_SPECS, criteria_manifest, mean_std_report
+ from uc3m.multicriteria.scenarios import DEFAULT_PROTOCOL, list_scenarios
+ from uc3m.multicriteria.stats_tests import (
+     kruskal_wallis,
+@@ -61,6 +63,7 @@
+     sensitivity_samples: int = 48,
+     seed_curves: Optional[Mapping[str, Sequence[Sequence[float]]]] = None,
+     degradation: Optional[Mapping[str, float]] = None,
++    episode_index_origin: int = 1,
+ ) -> Dict[str, Any]:
+     """Run metrics load → AHP weights → TOPSIS → sensitivity → stats gates."""
+ 
+@@ -70,9 +73,23 @@
+         scenario=scenario,
+         prefer_real=prefer_real,
+         allow_illustrative_fill=allow_illustrative_fill,
++        episode_index_origin=episode_index_origin,
+     )
+     decision_matrix = loaded["decision_matrix"]
+-    criteria_kind = _criteria_kind()
++    criteria_kind = loaded.get("criteria_kind") or _criteria_kind()
++    active_manifest = criteria_manifest()
++    if (loaded.get("criterion_units") or {}).get("C3") == "kWh":
++        active_manifest["criteria"]["C3"].update(
++            name="illustrative_flexibility_activated", kind="benefit", unit="kWh", higher_is_better=True
++        )
++    active_frame = decision_matrix_frame(decision_matrix)
++    active_frame.attrs["criteria_kind"] = dict(criteria_kind)
++    active_frame.attrs["criterion_units"] = {
++        cid: spec["unit"] for cid, spec in active_manifest["criteria"].items()
++    }
++    active_frame.attrs["orientation"] = {
++        cid: "min" if kind == "cost" else "max" for cid, kind in criteria_kind.items()
++    }
+ 
+     ahp_info = ahp_priority_weights(
+         DEFAULT_AHP_PAIRWISE,
+@@ -85,11 +102,17 @@
+         weights=weights,
+         criteria_kind=criteria_kind,
+     )
+-    ahp_only = ahp_rank_alternatives(
+-        decision_matrix,
+-        criteria_kind=criteria_kind,
+-        criteria_pairwise=DEFAULT_AHP_PAIRWISE,
+-    )
++    try:
++        ahp_only = ahp_rank_alternatives(
++            decision_matrix,
++            criteria_kind=criteria_kind,
++            criteria_pairwise=DEFAULT_AHP_PAIRWISE,
++        )
++    except NonPositiveAutomaticAHP as exc:
++        # Signed deltas remain valid TOPSIS/Pareto inputs. AHP cannot silently
++        # replace them by epsilon or invent an additive utility transformation.
++        ahp_only = {"status": "unavailable_nonpositive_automatic_scores", "reason": str(exc),
++                    "ranking": [], "method": "ahp_only"}
+     sensitivity = weight_sweep_sensitivity(
+         decision_matrix,
+         base_weights=weights,
+@@ -97,13 +120,13 @@
+         n_samples=sensitivity_samples,
+         criteria_kind=criteria_kind,
+     )
+-    pareto_quality = pareto_quality_from_decision_matrix(decision_matrix)
++    pareto_quality = pareto_quality_from_decision_matrix(decision_matrix, criteria_kind=criteria_kind)
+     pareto_front = pareto_quality["front"]
+     topsis_winner = str(topsis["ranking"][0]["algorithm"])
+     topsis_second = (
+         str(topsis["ranking"][1]["algorithm"]) if len(topsis["ranking"]) > 1 else topsis_winner
+     )
+-    ahp_winner = str(ahp_only["ranking"][0]["algorithm"])
++    ahp_winner = str(ahp_only["ranking"][0]["algorithm"]) if ahp_only["ranking"] else None
+ 
+     seed_samples = loaded.get("seed_metric_samples") or {}
+     stats_block: Dict[str, object] = {}
+@@ -151,7 +174,24 @@
+         ax = plot_learning_curves(seed_curves, title=lc_title)
+         figures["learning_curves"] = ax.figure
+         fig_axes.append(ax)
+-        ax2, _front = plot_pareto_cost_co2_flex(decision_matrix)
++        # The legacy plot helper maximizes its marker criterion. Adapt the raw
++        # ratio to a preference solely for drawing; retain raw values in tables.
++        cost_ratio = criteria_kind["C3"] == "cost"
++        plot_points = {
++            algo: dict(values, C3_preference=(-1 if cost_ratio else 1) * float(values["C3"]))
++            for algo, values in decision_matrix.items()
++        }
++        ax2, _front = plot_pareto_cost_co2_flex(
++            plot_points, flex_key="C3_preference",
++            title=("Pareto: cost vs CO2 avoided (larger marker = lower flexibility ratio)"
++                   if cost_ratio else "Illustrative Pareto (larger marker = activated flexibility kWh)"),
++        )
++        loaded["extras"]["pareto_plot_front"] = _front
++        loaded["extras"]["pareto_plot_transform"] = (
++            "C3_preference=-C3_ratio_to_baseline" if cost_ratio else "C3_preference=C3_illustrative_kWh"
++        )
++        if set(_front) != set(pareto_front):
++            raise RuntimeError("Pareto plot and decision criteria have inconsistent orientation")
+         figures["pareto_cost_co2_flex"] = ax2.figure
+         fig_axes.append(ax2)
+         deg = degradation or {
+@@ -176,6 +216,19 @@
+             else:
+                 seed_metrics[algo][cid] = [float(value)]
+     master = master_table_from_seed_metrics(seed_metrics, scenario=scenario)
++    # The shared table helper historically emits std=0 for n=1. At this boundary
++    # report seed uncertainty honestly, including the per-seed episodic C4 scalar.
++    for cid in CRITERION_SPECS:
++        count = master[f"{cid}_n"]
++        master[f"{cid}_n_seeds"] = count
++        master.loc[count < 2, f"{cid}_std"] = float("nan")
++        master[f"{cid}_uncertainty_status"] = [
++            "estimated" if n > 1 else "insufficient_replicas" for n in count
++        ]
++        master[f"{cid}_mean_pm_std"] = [
++            mean_std_report(mean, std)
++            for mean, std in zip(master[f"{cid}_mean"], master[f"{cid}_std"])
++        ]
+ 
+     saved_paths: Dict[str, str] = {}
+     if output_dir is not None:
+@@ -198,6 +251,8 @@
+             },
+             "topsis_ranking": topsis["ranking"],
+             "ahp_ranking": ahp_only["ranking"],
++            "ahp_only_status": ahp_only.get("status", "ok"),
++            "ahp_only_reason": ahp_only.get("reason"),
+             "pareto_front": pareto_front,
+             "pareto_quality": pareto_quality,
+             "ranking_consistency": ranking_consistency,
+@@ -210,10 +265,17 @@
+             "provenance": loaded["provenance"],
+             "protocol": DEFAULT_PROTOCOL.as_dict(),
+             "scenarios": list_scenarios(),
+-            "criteria_manifest": criteria_manifest(),
++            "criteria_manifest": active_manifest,
++            "criterion_sampling": loaded.get("extras", {}).get("seed_metric_replication", {}),
++            "episode_curve_index": loaded.get("extras", {}).get("episode_curve_index", {}),
++            "seed_metric_summary": [
++                {key: (None if isinstance(value, float) and not math.isfinite(value) else value)
++                 for key, value in row.items()}
++                for row in master.to_dict(orient="records")
++            ],
+         }
+         report_path.write_text(
+-            json.dumps(serializable, indent=2, ensure_ascii=False),
++            json.dumps(serializable, indent=2, ensure_ascii=False, allow_nan=False),
+             encoding="utf-8",
+         )
+         saved_paths["selection_report"] = str(report_path)
+@@ -225,7 +287,7 @@
+ 
+     return {
+         "decision_matrix": decision_matrix,
+-        "decision_matrix_frame": decision_matrix_frame(decision_matrix),
++        "decision_matrix_frame": active_frame,
+         "master_table": master,
+         "weights": weights,
+         "ahp": ahp_info,
+--- a/uc3m/multicriteria/stats_tests.py
++++ b/uc3m/multicriteria/stats_tests.py
+@@ -733,13 +733,16 @@
+             "status": "insufficient_data",
+             "alpha": float(alpha),
+         }
+-    if np.allclose(a, b):
++    differences = a - b
++    nonzero = differences[differences != 0.0]
++    n_effective = int(nonzero.size)
++    if not n_effective:
+         return {
+             "statistic": 0.0,
+             "p_value": 1.0,
+             "significant": False,
+             "rank_biserial": 0.0,
+-            "n": int(a.size),
++            "n": 0,
+             "status": "identical_samples",
+             "alpha": float(alpha),
+         }
+@@ -747,12 +750,17 @@
+         result = stats.wilcoxon(a, b, alternative=alternative, zero_method="wilcox")
+         p = float(result.pvalue)
+         W = float(result.statistic)
++        # Bilateral SciPy statistic is min(W+, W-), so it cannot encode direction.
++        # Wilcox removes zero differences before ranking (including tied ranks).
++        ranks = stats.rankdata(np.abs(nonzero), method="average")
++        positive = float(np.sum(ranks[nonzero > 0]))
++        negative = float(np.sum(ranks[nonzero < 0]))
+         return {
+             "statistic": W,
+             "p_value": p,
+             "significant": bool(p < alpha),
+-            "rank_biserial": rank_biserial_from_wilcoxon(W, int(a.size)),
+-            "n": int(a.size),
++            "rank_biserial": (positive - negative) / (positive + negative),
++            "n": n_effective,
+             "status": "ok",
+             "alpha": float(alpha),
+             "alternative": alternative,

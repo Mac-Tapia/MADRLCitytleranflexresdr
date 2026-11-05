@@ -1,0 +1,34 @@
+[
+  {
+    "name": "skills",
+    "command": [
+      "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "tools/skills/validate_skills.py"
+    ],
+    "exit_code": 0,
+    "seconds": 0.23399999999674037,
+    "log": "skills.log"
+  },
+  {
+    "name": "spec_consistency",
+    "command": [
+      "D:\\MADRLCitytleranflexresdr\\.venv39-citylearn-v3\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "tests/contract/test_spec_kit_consistency.py",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=docs\\audits\\integracion_claude_20261101\\spec_consistency.xml"
+    ],
+    "exit_code": 0,
+    "seconds": 4.235000000000582,
+    "log": "spec_consistency.log"
+  }
+]

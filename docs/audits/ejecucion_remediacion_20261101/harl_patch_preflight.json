@@ -1,0 +1,8 @@
+{
+  "target": "external/HARL/harl/common/valuenorm.py",
+  "applied": false,
+  "candidate_compiles": true,
+  "candidate_path": ".superpowers/sdd/remediacion_integrada/harl_valuenorm_candidate.py.txt",
+  "before_sha256_lf": "feb28cb31486e3e992315b2762ea18e29a0fa16a8d5c01dc5bde16a75b7986d6",
+  "after_sha256_lf": "56ebe5bb8350037124479dda27ca14b50089bc546dabbbc621c8227afd4751c2"
+}

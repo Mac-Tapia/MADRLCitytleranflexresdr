@@ -1,0 +1,13 @@
+{
+  "parent": "canonical Python launched by current PowerShell session",
+  "command": [
+    "powershell",
+    "-NoProfile",
+    "-Command",
+    "Get-Command Get-FileHash | Select-Object -ExpandProperty Source"
+  ],
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "Get-Command : El término 'Get-FileHash' no se reconoce como nombre de un cmdlet, función, archivo de script o programa \nejecutable. Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta \nes correcta e inténtelo de nuevo.\nEn línea: 1 Carácter: 1\n+ Get-Command Get-FileHash | Select-Object -ExpandProperty Source\n+ ~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [Get-Command], CommandNotFoundException\n    + FullyQualifiedErrorId : CommandNotFoundException,Microsoft.PowerShell.Commands.GetCommandCommand\n \n",
+  "scope": "read-only launch probe; direct PowerShell command previously resolved module Microsoft.PowerShell.Utility; cause beyond inherited launch environment not established"
+}

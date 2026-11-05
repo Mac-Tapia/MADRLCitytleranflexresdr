@@ -1,0 +1,80 @@
+{
+  "scope": "JUnit elapsed including fixture phases; not a CPU/GPU profile",
+  "tests": [
+    {
+      "class": "tests.fresh_training.test_der_sizing_inputs",
+      "name": "test_pv_bound_is_covered_area_and_capacity_comes_from_microgrids",
+      "seconds": 140.358
+    },
+    {
+      "class": "tests.fresh_training.test_historical_retirement",
+      "name": "test_protected_primary_and_new_paths_survive",
+      "seconds": 136.029
+    },
+    {
+      "class": "tests.fresh_training.test_historical_retirement",
+      "name": "test_only_allowlisted_historical_roots_can_be_deleted",
+      "seconds": 135.849
+    },
+    {
+      "class": "tests.fresh_training.test_names",
+      "name": "test_execute_verify_preserves_word_bytes_and_resolves_links",
+      "seconds": 133.358
+    },
+    {
+      "class": "tests.fresh_training.test_historical_retirement",
+      "name": "test_reparse_point_escape_rejected",
+      "seconds": 127.211
+    },
+    {
+      "class": "tests.fresh_training.test_frozen_evaluation_writer",
+      "name": "test_writes_the_report_the_seed_table_reads",
+      "seconds": 114.571
+    },
+    {
+      "class": "tests.fresh_training.test_historical_retirement",
+      "name": "test_changed_inventory_blocks_delete",
+      "seconds": 113.91
+    },
+    {
+      "class": "tests.fresh_training.test_frozen_evaluation",
+      "name": "test_same_ev_services_and_initial_energy[HAPPO]",
+      "seconds": 95.937
+    },
+    {
+      "class": "tests.fresh_training.test_names",
+      "name": "test_exact_duplicates_consolidated_only_after_hash_match",
+      "seconds": 86.218
+    },
+    {
+      "class": "tests.fresh_training.test_repository_layout",
+      "name": "test_real_repository_inventory_and_plan_serialize",
+      "seconds": 80.507
+    },
+    {
+      "class": "tests.fresh_training.test_seed_statistics",
+      "name": "test_every_kpi_gets_descriptives_normality_and_the_full_nonparametric_battery",
+      "seconds": 66.563
+    },
+    {
+      "class": "tests.fresh_training.test_seed_statistics",
+      "name": "test_detected_difference_is_reported_with_holm",
+      "seconds": 65.761
+    },
+    {
+      "class": "tests.fresh_training.test_learning_observer",
+      "name": "test_supervision_records_every_kpi_layer_per_episode",
+      "seconds": 65.28
+    },
+    {
+      "class": "tests.fresh_training.test_seed_statistics",
+      "name": "test_negative_results_can_be_scientifically_complete",
+      "seconds": 65.028
+    },
+    {
+      "class": "tests.fresh_training.test_statistical_input_gate",
+      "name": "test_valid_all_zero_gains_no_difference_complete",
+      "seconds": 61.179
+    }
+  ]
+}

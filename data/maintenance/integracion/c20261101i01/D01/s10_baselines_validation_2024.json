@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "split": "validation_2024",
+  "seed": 0,
+  "policies": [
+    "no_storage_reference",
+    "rbc"
+  ],
+  "scientific_acceptance": false,
+  "campaigns": {
+    "iquitos_v1": {
+      "split_manifest_sha256": "6276f39c59cf41c573e0ca59a041d7af4469e385ecd2f57fbf47a9a85d64977f",
+      "runs": {
+        "no_storage_reference": {
+          "net_mwh": -10371.077755885306,
+          "import_mwh": 13246.176466955934,
+          "export_mwh": 23617.254222841242,
+          "cost_usd": -1281888.3005515668,
+          "co2_kg": -6809554.060086239,
+          "district_peak_kw": 4467.5982847213745,
+          "battery_throughput_kwh": 0.0,
+          "hourly_cost_co2_pearson": 0.9993376168281861,
+          "distinct_price_series": 1,
+          "max_values_per_building_price": 1,
+          "price_min": 0.12360222637653351,
+          "price_max": 0.12360222637653351,
+          "carbon_values": 4167,
+          "completed_steps": 8784,
+          "training_updates": 0,
+          "split_sha256": "fc61066bc522b3dbe28ebb2517f9581bc53a484287dcd33840abf350e9f7d285",
+          "exogenous_hash": "39e007d19afc041c5ea72f96cad349a3675ca184e9e246593991e6aac13da11e",
+          "seconds": 3272.5863378047943
+        },
+        "rbc": {
+          "net_mwh": -10175.422370601316,
+          "import_mwh": 13730.899843154382,
+          "export_mwh": 23906.3222137557,
+          "cost_usd": -1257704.8593279072,
+          "co2_kg": -6623456.272930275,
+          "district_peak_kw": 4250.878364801407,
+          "battery_throughput_kwh": 1789201.2300099053,
+          "hourly_cost_co2_pearson": 0.9993720990025605,
+          "distinct_price_series": 1,
+          "max_values_per_building_price": 1,
+          "price_min": 0.12360222637653351,
+          "price_max": 0.12360222637653351,
+          "carbon_values": 4167,
+          "completed_steps": 8784,
+          "training_updates": 0,
+          "split_sha256": "fc61066bc522b3dbe28ebb2517f9581bc53a484287dcd33840abf350e9f7d285",
+          "exogenous_hash": "39e007d19afc041c5ea72f96cad349a3675ca184e9e246593991e6aac13da11e",
+          "seconds": 2933.3413677215576
+        }
+      },
+      "rbc_vs_no_storage": {
+        "cost_usd": 24183.441223659553,
+        "cost_percent": 1.8865482439658727,
+        "co2_kg": 186097.7871559644,
+        "co2_percent": 2.7328924260512824,
+        "net_mwh": 195.65538528398974,
+        "peak_percent": -4.850926742028767,
+        "cost_and_co2_same_direction": true
+      }
+    },
+    "iquitos_v4": {
+      "split_manifest_sha256": "1bcc7aeb77802b9366ec08a775ce7d6809fb0cb16fbcdb7a5fc35a68eb169992",
+      "runs": {
+        "no_storage_reference": {
+          "net_mwh": -5748.596780607878,
+          "import_mwh": 17212.652549305527,
+          "export_mwh": 22961.249329913408,
+          "cost_usd": -477559.89648256055,
+          "co2_kg": -3833739.0729252626,
+          "district_peak_kw": 5394.952022790909,
+          "battery_throughput_kwh": 0.0,
+          "hourly_cost_co2_pearson": 0.9999927219599417,
+          "distinct_price_series": 2,
+          "max_values_per_building_price": 1,
+          "price_min": 0.07833393663167953,
+          "price_max": 0.08529781550168991,
+          "carbon_values": 1,
+          "completed_steps": 8784,
+          "training_updates": 0,
+          "split_sha256": "9d89d85da372ce8ac9f0019b250b6734ad3bf3c906817fb51ed5876b0e288226",
+          "exogenous_hash": "67f729ee6ecc704fb7ad6bfa7c5c5845d7741d8cd4996104232dc33d0f743d52",
+          "seconds": 852.595000743866
+        },
+        "rbc": {
+          "net_mwh": -5650.075311980473,
+          "import_mwh": 17349.76772255798,
+          "export_mwh": 22999.843034538455,
+          "cost_usd": -469829.2885123353,
+          "co2_kg": -3768035.107555313,
+          "district_peak_kw": 5286.217640638351,
+          "battery_throughput_kwh": 897393.2601929747,
+          "hourly_cost_co2_pearson": 0.9999938272581911,
+          "distinct_price_series": 2,
+          "max_values_per_building_price": 1,
+          "price_min": 0.07833393663167953,
+          "price_max": 0.08529781550168991,
+          "carbon_values": 1,
+          "completed_steps": 8784,
+          "training_updates": 0,
+          "split_sha256": "9d89d85da372ce8ac9f0019b250b6734ad3bf3c906817fb51ed5876b0e288226",
+          "exogenous_hash": "67f729ee6ecc704fb7ad6bfa7c5c5845d7741d8cd4996104232dc33d0f743d52",
+          "seconds": 809.6984813213348
+        }
+      },
+      "rbc_vs_no_storage": {
+        "cost_usd": 7730.6079702252755,
+        "cost_percent": 1.6187724361204983,
+        "co2_kg": 65703.96536994958,
+        "co2_percent": 1.7138350868468313,
+        "net_mwh": 98.52146862740483,
+        "peak_percent": -2.01548376506798,
+        "cost_and_co2_same_direction": true
+      }
+    }
+  },
+  "percent_note": "rbc_vs_no_storage recomputed from the recorded totals after the sign fix of paired_delta (D3-004)"
+}

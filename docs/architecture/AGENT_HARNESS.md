@@ -1,6 +1,6 @@
 # Harness local de agentes y estado de adopción
 
-Fecha: 2026-10-31. Ámbito: este repositorio. Estado integral: **parcial**, no aceptación científica ni despliegue productivo.
+Revisión actual: 2026-11-01. Ámbito: este repositorio. Estado integral: **parcial**, no aceptación científica ni despliegue productivo. La sección de instalación conserva resultados del 2026-10-31; no describe la suite actual. Remediación vigente: [plan integrado](../plans/remediacion_integrada.md) y [contrato v1 frente al PT](../decisions/contrato_v1_pt.md).
 
 ## Decisiones y límites
 
@@ -16,12 +16,13 @@ Selección tras consultar skills.sh y `npx skills find` para backend, frontend, 
 | Despliegue | docker-build-strategies, docker-compose-patterns | Contenedores solicitados; no nube de pago ni publicación automática |
 | Harness | harness-engineering | Instrucciones, restricciones y checks específicos, no plantillas ciegas |
 | Proyecto | madrl-agent-coordination, madrl-spec-conformance, madrl-experiment-evidence-audit, madrl-scientific-literature-audit | Contratos, evidencias y revisión independiente |
+| Coordinación | task-coordination-strategies | Descomposición por archivos, plantilla de encargo y DAG de dependencias. Complementa a madrl-agent-coordination; no usa Agent Teams experimental ni `~/.claude/teams` |
 
 Docker publica guías Apache-2.0, pero esto no concede licencia a Docker Desktop ni implica aceptar sus condiciones comerciales. Los skills de Docker pueden usarse con Docker Engine/Moby y Compose abiertos; no se instala Desktop. Codex, Claude y Colab son clientes/servicios elegidos por el usuario, no componentes que se conviertan en open source por instalar skills. No se compra ni exige una suscripción nueva. El núcleo de entrenamiento sigue local/abierto; Colab es el destino opcional expresamente solicitado.
 
 ## Coordinación
 
-Flujo: coordinador → implementador acotado → auditor independiente → verificación del coordinador principal. Cada encargo incluye requisito, entradas, archivos permitidos, salida y comando de aceptación. Un escritor por archivo; tareas dependientes no se ejecutan en paralelo. Compartir solo el contexto necesario y reutilizar trabajadores para correcciones. Ningún skill habilita delegación universal.
+Flujo: coordinador → implementador acotado → auditor independiente → verificación del coordinador principal. Cada encargo incluye requisito, entradas, archivos permitidos, salida y comando de aceptación. En el plan vigente, [remediacion_integrada.md](../plans/remediacion_integrada.md) («Coordinación de agentes y descomposición») aplica `task-coordination-strategies`: olas del DAG, archivos con varios escritores y un encargo ya relleno por tarea en `coordination.briefs` del JSON. Un escritor por archivo; tareas dependientes no se ejecutan en paralelo. Compartir solo el contexto necesario y reutilizar trabajadores para correcciones. Ningún skill habilita delegación universal.
 
 Claude tiene tres perfiles en `.claude/agents/`. El auditor solo dispone de lectura/búsqueda: no shell, escrituras ni MCP. Por ello informa evidencia suministrada y pide al principal ejecutar pruebas. El implementador conserva permisos normales, sin bypass; el coordinador no tiene herramientas de escritura ni shell. Codex utiliza las mismas instrucciones en AGENTS y skills con las herramientas efectivamente disponibles; no se afirma haber configurado roles nativos TOML ni nuevos modelos.
 
@@ -40,7 +41,7 @@ Los enlaces son junctions locales Windows ignorados por Git. Tras clonar se rege
 
 ## Riesgos y pendientes
 
-- `.claude/settings.json` ya contenía un Stop hook que ejecuta `.claude/auto_save.sh`: agrega todo, cambia README y publica. No se instaló ni modificó ese hook. Riesgo alto de incluir trabajo concurrente no revisado; no usarlo como puerta de aceptación. Su desactivación o sustitución requiere decisión explícita del usuario.
+- El corte de instalación encontró un Stop hook automático. En la revisión del 2026-11-01, `.claude/settings.json` contiene `{}` y ese hook no está habilitado allí. No se interpreta ningún mecanismo de guardado como autorización para agregar todo ni publicar trabajo concurrente. Esta ejecución no modificó dicha configuración.
 - Los cuatro skills legados en `agent-skills/` quedan inventariados pero no promovidos, pendientes de licencia, comandos/rutas y duplicados globales. No mover el dataset skill homónimo de un global activo sin resolver esa colisión.
 - Los dos MCP legados no son skills, no se arrancan y no forman parte de la ruta requerida. No se inspeccionan ni borran secretos.
 - No se ejecutaron builds Docker ni pruebas Playwright por instalar instrucciones. Falta ensayo de descubrimiento/invocación en ambas aplicaciones y evaluación de eficiencia contra una línea base: éxito por tarea, hallazgos escapados, tiempo/tokens, conflictos y retrabajo.
@@ -57,6 +58,13 @@ Los enlaces son junctions locales Windows ignorados por Git. Tras clonar se rege
 - Se intentó instalar harness con el instalador oficial; la descarga del repositorio completo quedó detenida. Se canceló únicamente ese proceso y se recuperó el `SKILL.md` del commit fijado y su licencia por descarga selectiva, sin ejecutar código remoto.
 - Suite general `python -m pytest`: **307 aprobadas, 15 advertencias, sin omisiones**, en 313.65 s. Advertencias: deprecaciones Matplotlib/Pyparsing y p-valor t no estimable en una prueba corta sin grados de libertad; no se silenciaron ni se consideran evidencia estadística de tesis.
 - Se fijaron finales de línea LF únicamente en los once skills nuevos mediante `.gitattributes`, para que un checkout Windows no invalide sus hashes auditados. No se normalizaron conectores ni archivos heredados.
+
+### Ampliación 2026-11-02
+
+- Se instaló `task-coordination-strategies` desde wshobson/agents@7e2fb559cf4b824b27f1fec49fe88f7511066d26 (MIT), con `SKILL.md`, dos referencias y la licencia original. Se leyeron completos antes de copiarlos; no contienen scripts ni URLs ejecutables. Se registró con hashes en `registry.yaml` y con regla LF en `.gitattributes`.
+- Se descartaron `team-communication-protocols` (depende de Agent Teams experimental y de `~/.claude/teams`, fuera del repositorio), `obra/superpowers` (duplicaría el plugin global activo, prohibido por AGENTS) y SYMBaiEX/skills (sin trayectoria).
+- `validate_skills.py --check-discovery`: OK, con 12 skills y 24 enlaces locales (12 por cliente). `pytest tests/skills`: 9 aprobadas. La guarda de contexto da OK.
+- Pendiente: comprobar el catálogo en una sesión nueva de Codex y medir el efecto con los campos de acta definidos en el plan. Instalar la skill no demuestra que la coordinación mejore.
 
 ## Fundamento científico (APA, fuentes primarias)
 

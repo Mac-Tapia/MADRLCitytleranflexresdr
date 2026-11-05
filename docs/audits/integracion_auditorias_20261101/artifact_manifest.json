@@ -1,0 +1,75 @@
+{
+  "scope": "integrity of integration deliverable only",
+  "files": [
+    {
+      "path": "docs/audits/integracion_claude_20261101/claude_dictamen_inicial.md",
+      "bytes": 11473,
+      "sha256": "117a27c2170777e5d4c836864a003d133d87dcfc6fa1e9177401ad631cfbd63a"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/claude_inventory.json",
+      "bytes": 116596,
+      "sha256": "ab5228bd13908c88b0653ff0515f925226e7523890e85c9d5d471fa04f41ed01"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/claude_ledger.csv",
+      "bytes": 2875136,
+      "sha256": "4a33ef84a828fd295ebd9c2ffc57420a35f254616e9d5419de7f291a0e9a7b67"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/claude_revision_original.md",
+      "bytes": 9512,
+      "sha256": "2d267b2f8408301bf061a80e35646616d897498fcaf3552c288493609549fc43"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/commands.json",
+      "bytes": 817,
+      "sha256": "74b8ea5e1e6723d5634742c6fee5a5aa95bd4623018e45a948952bb057ea1be2"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/coverage_validation.json",
+      "bytes": 424,
+      "sha256": "1d98c2cd613e8ed385195ccd8ed48fb2acb81f5e40b0d9c109313214fc788f78"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/integrar_plan.py",
+      "bytes": 62075,
+      "sha256": "28e1ea05a6c563da0cfb5c238eed8296283bc26212ae321c979ac1b904d575b3"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/README.md",
+      "bytes": 1732,
+      "sha256": "dd25d9e6f46b7f368c95211268f2261167273e18d5ecf482559f412992a4e4af"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/skills.log",
+      "bytes": 37,
+      "sha256": "9c0177c508cc78088f43fbd851ff9ece2c190e8c79f7c606c60bd5358197d821"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/spec_consistency.log",
+      "bytes": 2393,
+      "sha256": "b5f1e369d788569e96bd82b034663edc52c0db8b5584a80661014190336acfe5"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/spec_consistency.xml",
+      "bytes": 646,
+      "sha256": "183fc8683885ebe1e7b45c06d122a89c02eab7abb9cdb7abf582680ce83c308a"
+    },
+    {
+      "path": "docs/audits/integracion_claude_20261101/validation.json",
+      "bytes": 1683,
+      "sha256": "8c352dddc621f18a58e133c24ffea747d479ed61e071d857cc20c08baac0c337"
+    },
+    {
+      "path": "docs/plans/remediacion_integrada.json",
+      "bytes": 95394,
+      "sha256": "82e8c2c8c7ec8b843ab8a5332313721049e0b3a9b633a6f7925df802a391a822"
+    },
+    {
+      "path": "docs/plans/remediacion_integrada.md",
+      "bytes": 83372,
+      "sha256": "10da412ac5386ca5da22104f52d5b3fa8b8bee3bed8b64865c4f81b98db4989a"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+python.exe C:\Users\Lenovo Legion\AppData\Local\uv\cache\archive-v0\GoYrO0HAOte2pqW5\Scripts\bandit 1.9.4

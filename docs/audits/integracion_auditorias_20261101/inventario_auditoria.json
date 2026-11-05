@@ -1,0 +1,2668 @@
+{
+ "archivos": 14734,
+ "bytes": 7766938852,
+ "no_legibles": [],
+ "enlaces_no_seguidos": [
+  ".claude/skills/architecture-patterns",
+  ".claude/skills/docker-build-strategies",
+  ".claude/skills/docker-compose-patterns",
+  ".claude/skills/fastapi-templates",
+  ".claude/skills/frontend-design",
+  ".claude/skills/harness-engineering",
+  ".claude/skills/madrl-agent-coordination",
+  ".claude/skills/madrl-experiment-evidence-audit",
+  ".claude/skills/madrl-scientific-literature-audit",
+  ".claude/skills/madrl-spec-conformance",
+  ".claude/skills/webapp-testing",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_ancurrent",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_ancurrent",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_assets_identical_across_scurrent",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_doescurrent",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_no_predicted_fields_in_efcurrent",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_ancurrent",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_scaler_shared_with_inferecurrent",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_lengths_8760_8784_8current",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_schema_self_containcurrent"
+ ],
+ "contenido_omitido": {
+  ".git": 5144,
+  ".venv39-citylearn-v3": 52365,
+  "submodule_.git": 9
+ },
+ "carpetas_vacias": [
+  ".claude/skills",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/backend_results/linear_mix/msac/clamp2-5_rewardscale10_20_32_32_1_1_2_0.0005_2_1.0/citylearn_v3_E1",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an2/attempt/native/E1_s901/checkpoints/offpolicy_run/models",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an2/attempt/native/E1_s901/figures/tables",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an2/attempt/native/E1_s901/checkpoints/offpolicy_run/models",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an2/attempt/native/E1_s901/figures/tables",
+  "build/bdist.win-amd64",
+  "CityLearn/pytest-cache-files-824c2k9x",
+  "CityLearn/pytest-cache-files-j4i1gads",
+  "CityLearn/pytest-cache-files-jl3fg5f8",
+  "CityLearn/pytest-cache-files-joedmo3t",
+  "CityLearn/render_logs",
+  "external/HARL/harl/envs/lag/JSBSim/data",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Crashpad/attachments",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Crashpad/reports",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/blob_storage/a96bb87e-401e-4050-98df-655a20df6f08",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Download Service/Files",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons Maskable",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons Monochrome",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Temp",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/OriginTrials",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/PrivacySandboxAttestationsPreloaded",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/RecoveryImproved",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Safe Browsing",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/WidevineCdm"
+ ],
+ "por_ambito": {
+  "ignorado": {
+   "archivos": 6287,
+   "bytes": 5976741268,
+   "archivos_texto": 4972,
+   "lineas_texto": 54076852,
+   "archivos_codigo_doc": 240,
+   "lineas_codigo_doc": 61565
+  },
+  "sin_versionar": {
+   "archivos": 19,
+   "bytes": 308952,
+   "archivos_texto": 19,
+   "lineas_texto": 2143,
+   "archivos_codigo_doc": 5,
+   "lineas_codigo_doc": 231
+  },
+  "submodulo:CityLearn": {
+   "archivos": 1609,
+   "bytes": 1283380250,
+   "archivos_texto": 1056,
+   "lineas_texto": 12842589,
+   "archivos_codigo_doc": 174,
+   "lineas_codigo_doc": 65040
+  },
+  "submodulo:external/HARL": {
+   "archivos": 1285,
+   "bytes": 257356172,
+   "archivos_texto": 621,
+   "lineas_texto": 260409,
+   "archivos_codigo_doc": 275,
+   "lineas_codigo_doc": 84968
+  },
+  "submodulo:external/MAAC": {
+   "archivos": 28,
+   "bytes": 106596,
+   "archivos_texto": 17,
+   "lineas_texto": 1617,
+   "archivos_codigo_doc": 17,
+   "lineas_codigo_doc": 1617
+  },
+  "submodulo:external/MARL": {
+   "archivos": 73,
+   "bytes": 420010,
+   "archivos_texto": 49,
+   "lineas_texto": 6609,
+   "archivos_codigo_doc": 49,
+   "lineas_codigo_doc": 6609
+  },
+  "submodulo:external/MARLlib": {
+   "archivos": 2013,
+   "bytes": 103733441,
+   "archivos_texto": 1893,
+   "lineas_texto": 1885149,
+   "archivos_codigo_doc": 424,
+   "lineas_codigo_doc": 46582
+  },
+  "submodulo:external/MATD3implementation": {
+   "archivos": 29,
+   "bytes": 159068,
+   "archivos_texto": 28,
+   "lineas_texto": 3942,
+   "archivos_codigo_doc": 28,
+   "lineas_codigo_doc": 3942
+  },
+  "submodulo:external/MicroGrids": {
+   "archivos": 42,
+   "bytes": 2974545,
+   "archivos_texto": 21,
+   "lineas_texto": 4631,
+   "archivos_codigo_doc": 13,
+   "lineas_codigo_doc": 3142
+  },
+  "submodulo:external/evcc": {
+   "archivos": 2306,
+   "bytes": 11278772,
+   "archivos_texto": 1935,
+   "lineas_texto": 281747,
+   "archivos_codigo_doc": 1881,
+   "lineas_codigo_doc": 218430
+  },
+  "submodulo:external/prosumpy": {
+   "archivos": 24,
+   "bytes": 2772599,
+   "archivos_texto": 16,
+   "lineas_texto": 71174,
+   "archivos_codigo_doc": 11,
+   "lineas_codigo_doc": 1027
+  },
+  "versionado": {
+   "archivos": 1019,
+   "bytes": 127707179,
+   "archivos_texto": 974,
+   "lineas_texto": 471483,
+   "archivos_codigo_doc": 773,
+   "lineas_codigo_doc": 140917
+  }
+ },
+ "por_raiz": {
+  ".superpowers": {
+   "archivos": 967,
+   "MiB": 2882.4,
+   "codigo_doc": 122,
+   "lineas_codigo_doc": 36729
+  },
+  "data": {
+   "archivos": 4284,
+   "MiB": 2280.0,
+   "codigo_doc": 1,
+   "lineas_codigo_doc": 110
+  },
+  "CityLearn": {
+   "archivos": 1609,
+   "MiB": 1223.9,
+   "codigo_doc": 174,
+   "lineas_codigo_doc": 65040
+  },
+  "outputs": {
+   "archivos": 6,
+   "MiB": 398.5,
+   "codigo_doc": 1,
+   "lineas_codigo_doc": 20
+  },
+  "external": {
+   "archivos": 5952,
+   "MiB": 361.9,
+   "codigo_doc": 1548,
+   "lineas_codigo_doc": 201380
+  },
+  "tools": {
+   "archivos": 769,
+   "MiB": 149.3,
+   "codigo_doc": 209,
+   "lineas_codigo_doc": 61184
+  },
+  "docs": {
+   "archivos": 268,
+   "MiB": 104.5,
+   "codigo_doc": 122,
+   "lineas_codigo_doc": 22760
+  },
+  "tests": {
+   "archivos": 311,
+   "MiB": 2.7,
+   "codigo_doc": 122,
+   "lineas_codigo_doc": 15186
+  },
+  "uc3m": {
+   "archivos": 275,
+   "MiB": 1.8,
+   "codigo_doc": 103,
+   "lineas_codigo_doc": 16488
+  },
+  "build": {
+   "archivos": 103,
+   "MiB": 0.7,
+   "codigo_doc": 103,
+   "lineas_codigo_doc": 16488
+  },
+  "(raiz)": {
+   "archivos": 13,
+   "MiB": 0.5,
+   "codigo_doc": 4,
+   "lineas_codigo_doc": 776
+  },
+  "examples_madrl_v3": {
+   "archivos": 7,
+   "MiB": 0.2,
+   "codigo_doc": 6,
+   "lineas_codigo_doc": 5149
+  },
+  "deploy": {
+   "archivos": 34,
+   "MiB": 0.1,
+   "codigo_doc": 22,
+   "lineas_codigo_doc": 2200
+  },
+  "scripts": {
+   "archivos": 20,
+   "MiB": 0.1,
+   "codigo_doc": 18,
+   "lineas_codigo_doc": 2086
+  },
+  ".pytest_cache": {
+   "archivos": 5,
+   "MiB": 0.1,
+   "codigo_doc": 1,
+   "lineas_codigo_doc": 8
+  },
+  "specs": {
+   "archivos": 40,
+   "MiB": 0.1,
+   "codigo_doc": 40,
+   "lineas_codigo_doc": 1076
+  },
+  "configs": {
+   "archivos": 11,
+   "MiB": 0.1,
+   "codigo_doc": 11,
+   "lineas_codigo_doc": 1534
+  },
+  "uc3m.egg-info": {
+   "archivos": 5,
+   "MiB": 0.0
+  },
+  "governance": {
+   "archivos": 5,
+   "MiB": 0.0,
+   "codigo_doc": 5,
+   "lineas_codigo_doc": 624
+  },
+  ".ruff_cache": {
+   "archivos": 35,
+   "MiB": 0.0
+  },
+  ".vscode": {
+   "archivos": 6,
+   "MiB": 0.0
+  },
+  ".github": {
+   "archivos": 3,
+   "MiB": 0.0,
+   "codigo_doc": 3,
+   "lineas_codigo_doc": 183
+  },
+  ".claude": {
+   "archivos": 5,
+   "MiB": 0.0,
+   "codigo_doc": 4,
+   "lineas_codigo_doc": 100
+  },
+  ".specify": {
+   "archivos": 1,
+   "MiB": 0.0,
+   "codigo_doc": 1,
+   "lineas_codigo_doc": 39
+  }
+ },
+ "sueltos_raiz": [
+  ".dockerignore",
+  ".gitattributes",
+  ".gitignore",
+  ".gitmodules",
+  "AGENTS.md",
+  "CLAUDE.md",
+  "Dockerfile",
+  "PT_TAPIA_ZAMBRANO_v6_Iquitos_2.docx",
+  "README.md",
+  "pyproject.toml",
+  "pyrightconfig.json",
+  "requirements.txt",
+  "uv.lock"
+ ],
+ "mayores_propios": [
+  [
+   "outputs/dataset_cache/citylearn_csv_37b8999ee1d00c241cc8.pkl",
+   269.9,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/checkpoints/offpolicy_run/models/training_state.pt",
+   259.4,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/checkpoints/checkpoint_episode_1.pt",
+   144.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/checkpoints/checkpoint_episode_2.pt",
+   144.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/checkpoints/checkpoint_episode_1.pt",
+   144.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/checkpoints/checkpoint_episode_2.pt",
+   144.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/checkpoints/checkpoint_latest.pt",
+   144.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/checkpoints/checkpoint_latest.pt",
+   144.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/checkpoints/model.pt",
+   144.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/checkpoints/model.pt",
+   144.0,
+   "ignorado"
+  ],
+  [
+   "outputs/dataset_cache/citylearn_csv_a4e6ff5f4a723b07daeb.pkl",
+   90.2,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native_cache/citylearn_csv_f7a3f1324d9864459cc5.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native_cache/citylearn_csv_f7a3f1324d9864459cc5.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an2/attempt/native_cache/citylearn_csv_f7a3f1324d9864459cc5.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native_cache/citylearn_csv_f7a3f1324d9864459cc5.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an2/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+   90.0,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/checkpoints/model.pt",
+   72.2,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/checkpoints/training_state.pt",
+   71.8,
+   "ignorado"
+  ],
+  [
+   ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/checkpoints/training_state.pt",
+   71.8,
+   "ignorado"
+  ],
+  [
+   "outputs/colab_delivery/colab_modular_overlay.zip",
+   38.4,
+   "ignorado"
+  ]
+ ],
+ "vacios": [
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/checkpoints/progress.txt",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/checkpoints/progress.txt",
+  ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an2/attempt/native/E1_s901/checkpoints/offpolicy_run/logs/events.out.tfevents.1793539145.MAC",
+  "docs/audits/deep_20261101/read_errors.csv",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Crashpad/metadata",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Account Web Data-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Affiliation Database-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/AutofillAiModelCache/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/AutofillAiModelCache/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/AutofillAiModelCache/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/AutofillStrikeDatabase/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/AutofillStrikeDatabase/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/AutofillStrikeDatabase/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/BrowsingTopicsSiteData-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/BudgetDatabase/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/BudgetDatabase/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/BudgetDatabase/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/ClientCertificates/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/ClientCertificates/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/ClientCertificates/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Download Service/EntryDB/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Download Service/EntryDB/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Download Service/EntryDB/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension Rules/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension Scripts/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension State/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Favicons-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Feature Engagement Tracker/AvailabilityDB/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Feature Engagement Tracker/AvailabilityDB/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Feature Engagement Tracker/AvailabilityDB/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Feature Engagement Tracker/EventDB/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Feature Engagement Tracker/EventDB/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Feature Engagement Tracker/EventDB/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GCM Store/Encryption/000003.log",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GCM Store/Encryption/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GCM Store/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/History-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Local Storage/leveldb/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Login Data For Account-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Login Data-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Network Action Predictor-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Network/Cookies-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Network/Device Bound Sessions-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Network/NetworkDataMigrated",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Network/Reporting and NEL-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Network/Trust Tokens-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/PersistentOriginTrials/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/PersistentOriginTrials/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/PersistentOriginTrials/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Safe Browsing Network/NetworkDataMigrated",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Safe Browsing Network/Safe Browsing Cookies-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SegmentInfoDB/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SegmentInfoDB/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SegmentInfoDB/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SignalDB/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SignalDB/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SignalDB/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SignalStorageConfigDB/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SignalStorageConfigDB/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Segmentation Platform/SignalStorageConfigDB/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/ServerCertificate-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Service Worker/Database/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Session Storage/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Shared Dictionary/db-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Shortcuts-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Site Characteristics Database/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Sync Data/LevelDB/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Top Sites-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Data-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/WebStorage/QuotaManager-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/chrome_cart_db/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/chrome_cart_db/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/chrome_cart_db/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/commerce_subscription_db/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/commerce_subscription_db/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/commerce_subscription_db/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/discount_infos_db/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/discount_infos_db/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/discount_infos_db/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/discounts_db/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/discounts_db/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/discounts_db/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/heavy_ad_intervention_opt_out.db-journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/optimization_guide_hint_cache_store/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/optimization_guide_hint_cache_store/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/optimization_guide_hint_cache_store/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/parcel_tracking_db/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/parcel_tracking_db/LOG",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/parcel_tracking_db/LOG.old",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/shared_proto_db/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/shared_proto_db/metadata/LOCK",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/GPUPersistentCache/DawnGraphiteCache/WAYLUSJ7BONJ44JCR3QBYGU7DQX7EQ7H/cache.journal",
+  "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/first_party_sets.db-journal"
+ ],
+ "temporales": [
+  "external/MAAC/.git_commit_msg.tmp",
+  "external/evcc/packaging/gokrazy/config.tmpl.json"
+ ],
+ "caches": {
+  "submodulo:CityLearn": 67,
+  "ignorado": 438,
+  "submodulo:external/HARL": 82,
+  "submodulo:external/MAAC": 8,
+  "submodulo:external/MARL": 23,
+  "submodulo:external/MicroGrids": 3,
+  "submodulo:external/prosumpy": 4
+ },
+ "duplicados": {
+  "grupos": 1090,
+  "grupos_solo_datos": 905,
+  "MiB_redundantes": 2309.5,
+  "no_datos": [
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/artifact_audit.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/artifact_audit.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/checkpoint_manifest.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/checkpoint_manifest.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/job_launcher_complete.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/job_launcher_complete.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/statistical_comparison/result_matd3_E1.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/training_summary.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/training_summary.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/tables/building_observation_action_schema.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/figures/tables/building_observation_action_schema.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/tables/building_observation_action_schema.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/figures/tables/building_observation_action_schema.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/figures/tables/building_observation_action_schema.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/tables/building_observation_action_schema.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/figures/tables/building_observation_action_schema.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/figures/tables/building_observation_action_schema.md"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an0/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native_cache/citylearn_csv_f7a3f1324d9864459cc5.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native_cache/citylearn_csv_f7a3f1324d9864459cc5.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an2/attempt/native_cache/citylearn_csv_f7a3f1324d9864459cc5.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native_cache/citylearn_csv_f7a3f1324d9864459cc5.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an2/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native_cache/citylearn_csv_d395fe920c140fe6af23.pkl"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/artifact_audit.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/artifact_audit.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/checkpoint_manifest.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/checkpoint_manifest.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/job_launcher_complete.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/job_launcher_complete.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/statistical_comparison/result_maac_E1.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/training_summary.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_cuda/test_real_optimizer_updates_an1/attempt/native/E1_s901/training_summary.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/artifact_audit.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/artifact_audit.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/checkpoint_manifest.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/checkpoint_manifest.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/checkpoints/logs/summary.json",
+    ".vscode/codex-terminal-bridge/commands.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/statistical_comparison/result_happo_E1.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/training_summary.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/training_summary.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/citylearn_v2_district_timeseries.png",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/figures/citylearn_v2_district_timeseries.png"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/tables/building_kpis.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/tables/citylearn_kpi_frame.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/tables/district_kpis.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/figures/tables/building_kpis.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/figures/tables/citylearn_kpi_frame.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/figures/tables/district_kpis.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/figures/tables/building_kpis.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/figures/tables/citylearn_kpi_frame.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/figures/tables/district_kpis.md"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/artifact_audit.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/artifact_audit.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/checkpoint_manifest.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/checkpoint_manifest.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/statistical_comparison/result_masac_E1.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/training_summary.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an1/attempt/native/E1_s901/training_summary.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/artifact_audit.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/artifact_audit.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/checkpoint_manifest.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/checkpoint_manifest.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/statistical_comparison/result_maac_E1.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/training_summary.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp/test_real_optimizer_updates_an3/attempt/native/E1_s901/training_summary.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_assets_identical_across_s0/dataset/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_does0/a/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_does0/b/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_no_predicted_fields_in_ef0/dataset/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_scaler_shared_with_infere0/dataset/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_lengths_8760_8784_80/dataset/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_schema_self_contain0/dataset/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_schema_self_contain0/dataset2/schema.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_assets_identical_across_s0/splits/test_2025/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_assets_identical_across_s0/splits/train_2023/schema.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_does0/sa/test_2025/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_does0/sa/train_2023/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_does0/sb/test_2025/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_does0/sb/train_2023/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_no_predicted_fields_in_ef0/splits/test_2025/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_no_predicted_fields_in_ef0/splits/train_2023/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_scaler_shared_with_infere0/splits/test_2025/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_scaler_shared_with_infere0/splits/train_2023/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_lengths_8760_8784_80/splits/test_2025/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_lengths_8760_8784_80/splits/train_2023/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_schema_self_contain0/splits/test_2025/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_schema_self_contain0/splits/train_2023/schema.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_does0/sa/validation_2024/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_heldout_perturbation_does0/sb/validation_2024/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_no_predicted_fields_in_ef0/splits/validation_2024/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_scaler_shared_with_infere0/splits/validation_2024/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_lengths_8760_8784_80/splits/validation_2024/schema.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_split_schema_self_contain0/splits/validation_2024/schema.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/artifact_audit.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/artifact_audit.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/checkpoint_manifest.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/checkpoint_manifest.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/job_launcher_complete.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/job_launcher_complete.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/statistical_comparison/result_happo_E1.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/data/training_summary.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/training_summary.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/axis_baseline_comparison.png",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/figures/axis_baseline_comparison.png"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an0/attempt/native/E1_s901/figures/tables/axis_baseline_comparison.md",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/figures/tables/axis_baseline_comparison.md"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/artifact_audit.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/artifact_audit.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/checkpoint_manifest.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/checkpoint_manifest.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/backend_results/linear_mix/msac/clamp2-5_rewardscale10_20_32_32_1_1_2_0.0005_2_1.0/citylearn_v3_E1/episode_rewards_901.npy",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/backend_results/linear_mix/msac/clamp2-5_rewardscale10_20_32_32_1_1_2_0.0005_2_1.0/citylearn_v3_E1/win_rates_901.npy"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/job_launcher_complete.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/job_launcher_complete.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/statistical_comparison/result_masac_E1.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/data/training_summary.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an1/attempt/native/E1_s901/training_summary.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/artifact_audit.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/artifact_audit.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/checkpoint_manifest.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/checkpoint_manifest.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/job_launcher_complete.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/job_launcher_complete.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/results.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/statistical_comparison/result_maac_E1.json"
+   ],
+   [
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/data/training_summary.json",
+    ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/real_learning_tmp2/test_real_optimizer_updates_an3/attempt/native/E1_s901/training_summary.json"
+   ],
+   [
+    "build/lib/uc3m/__init__.py",
+    "docs/audits/deep_20261101/inspection_cut/uc3m/__init__.py",
+    "uc3m/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/__init__.py",
+    "uc3m/adapters/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/algorithms/__init__.py",
+    "uc3m/adapters/algorithms/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/algorithms/evidence.py",
+    "uc3m/adapters/algorithms/evidence.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/algorithms/learning_observer.py",
+    "uc3m/adapters/algorithms/learning_observer.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/algorithms/native.py",
+    "uc3m/adapters/algorithms/native.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/algorithms/native_entrypoint.py",
+    "uc3m/adapters/algorithms/native_entrypoint.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/citylearn/fresh_observations.py",
+    "uc3m/adapters/citylearn/fresh_observations.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/citylearn/frozen_adapters.py",
+    "uc3m/adapters/citylearn/frozen_adapters.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/citylearn/objectives.py",
+    "uc3m/adapters/citylearn/objectives.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/citylearn/policy_inference.py",
+    "uc3m/adapters/citylearn/policy_inference.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/citylearn/rbc_baseline.py",
+    "uc3m/adapters/citylearn/rbc_baseline.py"
+   ],
+   [
+    "build/lib/uc3m/adapters/local_artifacts.py",
+    "uc3m/adapters/local_artifacts.py"
+   ],
+   [
+    "build/lib/uc3m/algorithms/__init__.py",
+    "uc3m/algorithms/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/algorithms/factory.py",
+    "uc3m/algorithms/factory.py"
+   ],
+   [
+    "build/lib/uc3m/application/__init__.py",
+    "uc3m/application/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/application/artifacts/__init__.py",
+    "uc3m/application/artifacts/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/application/artifacts/backup.py",
+    "uc3m/application/artifacts/backup.py"
+   ],
+   [
+    "build/lib/uc3m/application/artifacts/retention.py",
+    "uc3m/application/artifacts/retention.py"
+   ],
+   [
+    "build/lib/uc3m/application/configuration.py",
+    "uc3m/application/configuration.py"
+   ],
+   [
+    "build/lib/uc3m/application/dataset/__init__.py",
+    "uc3m/application/dataset/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/application/dataset/construction.py",
+    "uc3m/application/dataset/construction.py"
+   ],
+   [
+    "build/lib/uc3m/application/dataset/provenance.py",
+    "uc3m/application/dataset/provenance.py"
+   ],
+   [
+    "build/lib/uc3m/application/dataset/splits.py",
+    "uc3m/application/dataset/splits.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/__init__.py",
+    "uc3m/application/evaluation/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/baselines.py",
+    "uc3m/application/evaluation/baselines.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/fresh_analysis.py",
+    "uc3m/application/evaluation/fresh_analysis.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/frozen_evaluation.py",
+    "uc3m/application/evaluation/frozen_evaluation.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/kpi_contract.py",
+    "uc3m/application/evaluation/kpi_contract.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/model_selection.py",
+    "uc3m/application/evaluation/model_selection.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/results_catalog.py",
+    "uc3m/application/evaluation/results_catalog.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/scientific_evaluation.py",
+    "uc3m/application/evaluation/scientific_evaluation.py"
+   ],
+   [
+    "build/lib/uc3m/application/evaluation/training_report.py",
+    "uc3m/application/evaluation/training_report.py"
+   ],
+   [
+    "build/lib/uc3m/application/pipeline.py",
+    "uc3m/application/pipeline.py"
+   ],
+   [
+    "build/lib/uc3m/application/sensitivity.py",
+    "uc3m/application/sensitivity.py"
+   ],
+   [
+    "build/lib/uc3m/application/thesis/evidence_registry.py",
+    "uc3m/application/thesis/evidence_registry.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/__init__.py",
+    "uc3m/application/training/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/cli.py",
+    "uc3m/application/training/cli.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/completion.py",
+    "uc3m/application/training/completion.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/context.py",
+    "uc3m/application/training/context.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/dataset_gate.py",
+    "uc3m/application/training/dataset_gate.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/drive_sync.py",
+    "uc3m/application/training/drive_sync.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/fresh_acceptance.py",
+    "uc3m/application/training/fresh_acceptance.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/fresh_campaign.py",
+    "uc3m/application/training/fresh_campaign.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/fresh_policy.py",
+    "uc3m/application/training/fresh_policy.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/fresh_tuning.py",
+    "uc3m/application/training/fresh_tuning.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/integrity.py",
+    "uc3m/application/training/integrity.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/layout.py",
+    "uc3m/application/training/layout.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/lock.py",
+    "uc3m/application/training/lock.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/monitor.py",
+    "docs/audits/deep_20261101/inspection_cut/uc3m/application/training/monitor.py",
+    "uc3m/application/training/monitor.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/persistence.py",
+    "uc3m/application/training/persistence.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/phases.py",
+    "uc3m/application/training/phases.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/preflight.py",
+    "uc3m/application/training/preflight.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/resume.py",
+    "uc3m/application/training/resume.py"
+   ],
+   [
+    "build/lib/uc3m/application/training/runner.py",
+    "uc3m/application/training/runner.py"
+   ],
+   [
+    "build/lib/uc3m/data/__init__.py",
+    "uc3m/data/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/data/adapters/__init__.py",
+    "uc3m/data/adapters/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/data/adapters/local_csv.py",
+    "uc3m/data/adapters/local_csv.py"
+   ],
+   [
+    "build/lib/uc3m/data/adapters/remote_http.py",
+    "uc3m/data/adapters/remote_http.py"
+   ],
+   [
+    "build/lib/uc3m/data/adapters/s3.py",
+    "uc3m/data/adapters/s3.py"
+   ],
+   [
+    "build/lib/uc3m/data/contracts.py",
+    "uc3m/data/contracts.py"
+   ],
+   [
+    "build/lib/uc3m/data/ports.py",
+    "uc3m/data/ports.py"
+   ],
+   [
+    "build/lib/uc3m/data/registry.py",
+    "uc3m/data/registry.py"
+   ],
+   [
+    "build/lib/uc3m/domain/__init__.py",
+    "uc3m/domain/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/domain/campaigns.py",
+    "uc3m/domain/campaigns.py"
+   ],
+   [
+    "build/lib/uc3m/domain/evidence.py",
+    "uc3m/domain/evidence.py"
+   ],
+   [
+    "build/lib/uc3m/domain/experiments.py",
+    "uc3m/domain/experiments.py"
+   ],
+   [
+    "build/lib/uc3m/domain/objectives.py",
+    "uc3m/domain/objectives.py"
+   ],
+   [
+    "build/lib/uc3m/domain/pareto.py",
+    "uc3m/domain/pareto.py"
+   ],
+   [
+    "build/lib/uc3m/domain/scenarios.py",
+    "uc3m/domain/scenarios.py"
+   ],
+   [
+    "build/lib/uc3m/env/__init__.py",
+    "uc3m/env/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/env/bact.py",
+    "uc3m/env/bact.py"
+   ],
+   [
+    "build/lib/uc3m/env/uc3m_env.py",
+    "uc3m/env/uc3m_env.py"
+   ],
+   [
+    "build/lib/uc3m/env/wrappers.py",
+    "uc3m/env/wrappers.py"
+   ],
+   [
+    "build/lib/uc3m/geography/__init__.py",
+    "uc3m/geography/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/geography/ingest.py",
+    "uc3m/geography/ingest.py"
+   ],
+   [
+    "build/lib/uc3m/governance/__init__.py",
+    "uc3m/governance/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/governance/foundation.py",
+    "uc3m/governance/foundation.py"
+   ],
+   [
+    "build/lib/uc3m/governance/open_source.py",
+    "uc3m/governance/open_source.py"
+   ],
+   [
+    "build/lib/uc3m/kpis/__init__.py",
+    "uc3m/kpis/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/kpis/evaluator.py",
+    "uc3m/kpis/evaluator.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/__init__.py",
+    "uc3m/multicriteria/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/ahp.py",
+    "uc3m/multicriteria/ahp.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/artifacts.py",
+    "uc3m/multicriteria/artifacts.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/consolidation.py",
+    "uc3m/multicriteria/consolidation.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/criteria.py",
+    "uc3m/multicriteria/criteria.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/pipeline.py",
+    "uc3m/multicriteria/pipeline.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/reward.py",
+    "uc3m/multicriteria/reward.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/scenarios.py",
+    "uc3m/multicriteria/scenarios.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/stats_tests.py",
+    "uc3m/multicriteria/stats_tests.py"
+   ],
+   [
+    "build/lib/uc3m/multicriteria/topsis.py",
+    "uc3m/multicriteria/topsis.py"
+   ],
+   [
+    "build/lib/uc3m/ports/__init__.py",
+    "uc3m/ports/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/ports/artifact_store.py",
+    "uc3m/ports/artifact_store.py"
+   ],
+   [
+    "build/lib/uc3m/ports/learner.py",
+    "uc3m/ports/learner.py"
+   ],
+   [
+    "build/lib/uc3m/ports/simulator.py",
+    "uc3m/ports/simulator.py"
+   ],
+   [
+    "build/lib/uc3m/presentation/__init__.py",
+    "uc3m/presentation/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/presentation/training_panel.py",
+    "docs/audits/deep_20261101/inspection_cut/uc3m/presentation/training_panel.py",
+    "uc3m/presentation/training_panel.py"
+   ],
+   [
+    "build/lib/uc3m/reward/__init__.py",
+    "uc3m/reward/__init__.py"
+   ],
+   [
+    "build/lib/uc3m/reward/axes.py",
+    "uc3m/reward/axes.py"
+   ],
+   [
+    "build/lib/uc3m/reward/hphi.py",
+    "uc3m/reward/hphi.py"
+   ],
+   [
+    "build/lib/uc3m/reward/term_telemetry.py",
+    "uc3m/reward/term_telemetry.py"
+   ],
+   [
+    "data/campaigns/iquitos_v1/raw/thesis/resultados_preliminares.xlsx",
+    "data/campaigns/iquitos_v2/raw/thesis/resultados_preliminares.xlsx",
+    "data/campaigns/iquitos_v3/raw/thesis/resultados_preliminares.xlsx",
+    "data/maintenance/dataset_builds/failed/iquitos_v1_try_01/raw/thesis/resultados_preliminares.xlsx",
+    "data/maintenance/dataset_builds/failed/iquitos_v2_try_01/raw/thesis/resultados_preliminares.xlsx",
+    "data/maintenance/dataset_builds/failed/iquitos_v2_try_02/raw/thesis/resultados_preliminares.xlsx",
+    "data/maintenance/dataset_builds/failed/iquitos_v2_try_03/raw/thesis/resultados_preliminares.xlsx",
+    "data/maintenance/dataset_builds/failed/iquitos_v3_try_01/raw/thesis/resultados_preliminares.xlsx",
+    "docs/thesis/resultados_preliminares.xlsx"
+   ],
+   [
+    "docs/audits/architecture_thesis_20261101/pip_check.log",
+    "docs/audits/deep_20261101/pip_check.log"
+   ],
+   [
+    "docs/audits/architecture_thesis_20261101/skills_discovery.log",
+    "docs/audits/deep_20261101/skills.log"
+   ],
+   [
+    "docs/audits/architecture_thesis_20261101/workflow.log",
+    "docs/audits/deep_20261101/workflow.log"
+   ],
+   [
+    "docs/audits/deep_20261101/auditoria_tesis.docx.txt",
+    "docs/audits/deep_20261101/recheck/auditoria_tesis.docx.txt"
+   ],
+   [
+    "docs/audits/deep_20261101/dataset_checks.json",
+    "docs/audits/deep_20261101/recheck/dataset_checks.json"
+   ],
+   [
+    "docs/audits/deep_20261101/informe.docx.txt",
+    "docs/audits/deep_20261101/recheck/informe.docx.txt"
+   ],
+   [
+    "docs/audits/deep_20261101/jury_paths.json",
+    "docs/audits/deep_20261101/recheck/jury_paths.json"
+   ],
+   [
+    "docs/audits/deep_20261101/recheck/tesis.docx.txt",
+    "docs/audits/deep_20261101/tesis.docx.txt"
+   ],
+   [
+    "docs/audits/deep_20261101/recheck/word_checks.json",
+    "docs/audits/deep_20261101/word_checks.json"
+   ],
+   [
+    "tools/skills/architecture-patterns/LICENSE.txt",
+    "tools/skills/fastapi-templates/LICENSE.txt"
+   ],
+   [
+    "tools/skills/docker-build-strategies/LICENSE.txt",
+    "tools/skills/docker-compose-patterns/LICENSE.txt"
+   ],
+   [
+    "tools/skills/google-drive-mcp/google-drive-mcp.cmd",
+    "tools/skills/notebooklm-mcp/notebooklm-mcp.cmd"
+   ],
+   [
+    "tools/skills/madrl-agent-coordination/LICENSE.txt",
+    "tools/skills/madrl-experiment-evidence-audit/LICENSE.txt",
+    "tools/skills/madrl-scientific-literature-audit/LICENSE.txt",
+    "tools/skills/madrl-spec-conformance/LICENSE.txt"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/CertificateRevocation/10604/LICENSE",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/FirstPartySetsPreloaded/2025.7.24.0/LICENSE",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/TrustTokenKeyCommitments/2026.3.23.1/LICENSE"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Cache/Cache_Data/f_000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Cache/Cache_Data/f_000002",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/es-ES-3-0.bdic"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Cache/Cache_Data/f_000003",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Cache/Cache_Data/f_000009"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Code Cache/js/index",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Code Cache/wasm/index",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Service Worker/ScriptCache/index",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Shared Dictionary/cache/index"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/DawnGraphiteCache/data_0",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/DawnWebGPUCache/data_0",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GPUCache/data_0",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/ShaderCache/data_0"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/DawnGraphiteCache/data_2",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/DawnWebGPUCache/data_2",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GPUCache/data_2",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/GrShaderCache/data_2",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/ShaderCache/data_2"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/DawnGraphiteCache/data_3",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/DawnWebGPUCache/data_3",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GPUCache/data_3",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/ShaderCache/data_3"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension Rules/000003.log",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension Scripts/000003.log"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension Rules/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension Scripts/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension State/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GCM Store/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GCM Store/Encryption/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Local Storage/leveldb/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Service Worker/Database/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Session Storage/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Site Characteristics Database/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Sync Data/LevelDB/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/shared_proto_db/CURRENT",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/shared_proto_db/metadata/CURRENT"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension Rules/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension Scripts/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Extension State/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GCM Store/Encryption/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/GCM Store/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Local Storage/leveldb/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Service Worker/Database/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Session Storage/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Site Characteristics Database/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Sync Data/LevelDB/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/shared_proto_db/MANIFEST-000001",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/shared_proto_db/metadata/MANIFEST-000001"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Login Data",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Login Data For Account"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/SharedStorage",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/GPUPersistentCache/DawnGraphiteCache/WAYLUSJ7BONJ44JCR3QBYGU7DQX7EQ7H/cache.db"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Icons/192.png",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/aghbiahbpaijignceidepookljebhfak/Trusted Icons/Icons/192.png"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Icons/192.png",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/agimnkijcaahngcdmfeangaknmldooml/Trusted Icons/Icons/192.png"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Icons/192.png",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fhihpiojkbmbpdjeoajapmgkhlnakfjf/Trusted Icons/Icons/192.png"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Icons/192.png",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/fmgjjmmmlfnkbppncabfkddbjimcfncm/Trusted Icons/Icons/192.png"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Icons/192.png",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/kefjledonklijopmnomlcbpllchaibag/Trusted Icons/Icons/192.png"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Icons/192.png",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/mpnpojknpmmopombnjdcgaaiekajbnjb/Trusted Icons/Icons/192.png"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Icons/192.png",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/Default/Web Applications/Manifest Resources/pommaclcbfghclhalboakcipcmmndhcj/Trusted Icons/Icons/192.png"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/hyphen-data/120.0.6050.0/hyph-as.hyb",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/hyphen-data/120.0.6050.0/hyph-bn.hyb"
+   ],
+   [
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/hyphen-data/120.0.6050.0/hyph-hi.hyb",
+    "tools/skills/notebooklm-mcp/data/browser_state/browser_profile/hyphen-data/120.0.6050.0/hyph-mr.hyb"
+   ]
+  ]
+ },
+ "mismo_nombre": {
+  "CHANGES.md": [
+   "docs/contributions/CityLearn/CHANGES.md",
+   "docs/contributions/evcc/CHANGES.md",
+   "docs/contributions/HARL/CHANGES.md",
+   "docs/contributions/MAAC/CHANGES.md",
+   "docs/contributions/MARL/CHANGES.md",
+   "docs/contributions/MARLlib/CHANGES.md",
+   "docs/contributions/MATD3implementation/CHANGES.md",
+   "docs/contributions/MicroGrids/CHANGES.md",
+   "docs/contributions/prosumpy/CHANGES.md"
+  ],
+  "actor_critic.py": [
+   "external/off-policy/offpolicy/algorithms/maddpg/algorithm/actor_critic.py",
+   "external/off-policy/offpolicy/algorithms/matd3/algorithm/actor_critic.py"
+  ],
+  "agent_q_function.py": [
+   "external/off-policy/offpolicy/algorithms/mqmix/algorithm/agent_q_function.py",
+   "external/off-policy/offpolicy/algorithms/qmix/algorithm/agent_q_function.py"
+  ],
+  "app.py": [
+   "deploy/dashboard/app.py",
+   "deploy/inference/app.py"
+  ],
+  "base_runner.py": [
+   "external/off-policy/offpolicy/runner/mlp/base_runner.py",
+   "external/off-policy/offpolicy/runner/rnn/base_runner.py"
+  ],
+  "campaigns.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/domain/campaigns.py",
+   "uc3m/domain/campaigns.py"
+  ],
+  "check_training_dataset_ready.py": [
+   "tools/check_training_dataset_ready.py",
+   "tools/dataset/check_training_dataset_ready.py"
+  ],
+  "cli.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/application/training/cli.py",
+   "uc3m/application/training/cli.py"
+  ],
+  "colab.md": [
+   "docs/colab.md",
+   "docs/architecture/colab.md"
+  ],
+  "collect.py": [
+   "docs/audits/architecture_thesis_20261101/collect.py",
+   "docs/audits/deep_20261101/collect.py"
+  ],
+  "deploy.md": [
+   "deploy/aws/deploy.md",
+   "deploy/edge/deploy.md"
+  ],
+  "encargo.md": [
+   "docs/audits/encargo.md",
+   "docs/plans/encargo.md"
+  ],
+  "entrenamiento.md": [
+   "docs/architecture/entrenamiento.md",
+   "docs/design/entrenamiento.md",
+   "docs/plans/entrenamiento.md"
+  ],
+  "evidence.py": [
+   "docs/audits/architecture_thesis_20261101/evidence.py",
+   "uc3m/adapters/algorithms/evidence.py",
+   "uc3m/domain/evidence.py"
+  ],
+  "evidence_registry.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/application/thesis/evidence_registry.py",
+   "uc3m/application/thesis/evidence_registry.py"
+  ],
+  "factory.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/algorithms/factory.py",
+   "uc3m/algorithms/factory.py"
+  ],
+  "finalize.py": [
+   "docs/audits/architecture_thesis_20261101/finalize.py",
+   "docs/audits/deep_20261101/finalize.py"
+  ],
+  "generate_borrador_tesis_docx.py": [
+   "scripts/generate_borrador_tesis_docx.py",
+   "tools/thesis/generate_borrador_tesis_docx.py"
+  ],
+  "horizon_probe.py": [
+   "docs/audits/architecture_thesis_20261101/horizon_probe.py",
+   "docs/audits/deep_20261101/horizon_probe.py"
+  ],
+  "hphi.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/reward/hphi.py",
+   "uc3m/reward/hphi.py"
+  ],
+  "iquitos.yaml": [
+   "configs/experiments/iquitos.yaml",
+   "docs/audits/deep_20261101/inspection_cut/configs/experiments/iquitos.yaml"
+  ],
+  "jurado.md": [
+   "docs/audits/jurado.md",
+   "docs/plans/jurado.md"
+  ],
+  "kpi_contract.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/application/evaluation/kpi_contract.py",
+   "uc3m/application/evaluation/kpi_contract.py"
+  ],
+  "local_csv.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/data/adapters/local_csv.py",
+   "uc3m/data/adapters/local_csv.py"
+  ],
+  "model_selection.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/application/evaluation/model_selection.py",
+   "uc3m/application/evaluation/model_selection.py"
+  ],
+  "modernizacion.md": [
+   "docs/design/modernizacion.md",
+   "docs/plans/modernizacion.md"
+  ],
+  "monitor.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/application/training/monitor.py",
+   "uc3m/application/training/monitor.py"
+  ],
+  "mpe_runner.py": [
+   "external/off-policy/offpolicy/runner/mlp/mpe_runner.py",
+   "external/off-policy/offpolicy/runner/rnn/mpe_runner.py"
+  ],
+  "objectives.py": [
+   "uc3m/adapters/citylearn/objectives.py",
+   "uc3m/domain/objectives.py"
+  ],
+  "pipeline.py": [
+   "uc3m/application/pipeline.py",
+   "uc3m/multicriteria/pipeline.py"
+  ],
+  "provenance.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/application/dataset/provenance.py",
+   "uc3m/application/dataset/provenance.py"
+  ],
+  "r_actor_critic.py": [
+   "external/off-policy/offpolicy/algorithms/r_maddpg/algorithm/r_actor_critic.py",
+   "external/off-policy/offpolicy/algorithms/r_matd3/algorithm/r_actor_critic.py"
+  ],
+  "recompensas.md": [
+   "docs/audits/recompensas.md",
+   "docs/decisions/recompensas.md"
+  ],
+  "remote_http.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/data/adapters/remote_http.py",
+   "uc3m/data/adapters/remote_http.py"
+  ],
+  "results_catalog.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/application/evaluation/results_catalog.py",
+   "uc3m/application/evaluation/results_catalog.py"
+  ],
+  "scenarios.py": [
+   "uc3m/domain/scenarios.py",
+   "uc3m/multicriteria/scenarios.py"
+  ],
+  "scientific_evaluation.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/application/evaluation/scientific_evaluation.py",
+   "uc3m/application/evaluation/scientific_evaluation.py"
+  ],
+  "smac_runner.py": [
+   "external/off-policy/offpolicy/runner/mlp/smac_runner.py",
+   "external/off-policy/offpolicy/runner/rnn/smac_runner.py"
+  ],
+  "stats_tests.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/multicriteria/stats_tests.py",
+   "uc3m/multicriteria/stats_tests.py"
+  ],
+  "test_model_selection.py": [
+   "tests/acceptance/test_model_selection.py",
+   "tests/unit/application/test_model_selection.py"
+  ],
+  "thesis_doctoral_sections.py": [
+   "scripts/thesis_doctoral_sections.py",
+   "tools/thesis/thesis_doctoral_sections.py"
+  ],
+  "training_panel.py": [
+   "docs/audits/deep_20261101/inspection_cut/uc3m/presentation/training_panel.py",
+   "uc3m/presentation/training_panel.py"
+  ]
+ },
+ "nombres_sospechosos": [
+  "PT_TAPIA_ZAMBRANO_v6_Iquitos_2.docx",
+  "docs/architecture/_refs/citylearn_v2_environment.jpg",
+  "docs/audits/architecture_thesis_20261101/git_status_final.log",
+  "docs/audits/architecture_thesis_20261101/legacy_default_probe.json",
+  "docs/chapters/auditoria_final.md",
+  "examples_madrl_v3/madrl_citylearn_v3_cli.ipynb",
+  "examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb",
+  "examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb",
+  "examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb",
+  "scripts/activate_citylearn_v3.ps1",
+  "scripts/generate_borrador_tesis_docx.py",
+  "tools/dataset/evaluate_iquitos_citylearn_v3_dataset.py",
+  "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+  "tools/thesis/generate_borrador_tesis_docx.py",
+  "tools/thesis/generate_tesis_doctoral_final_docx.py",
+  "tools/training/repair_citylearn_v3_traceability.py",
+  "tools/training/run_citylearn_v2_baseline_comparison.py",
+  "uc3m/application/artifacts/__pycache__/backup.cpython-39.pyc",
+  "uc3m/application/artifacts/backup.py"
+ ],
+ "python_huerfano": [
+  "examples_madrl_v3/custom_reward_function.py",
+  "external/off-policy/offpolicy/envs/mpe/scenarios/simple_adversary.py",
+  "external/off-policy/offpolicy/envs/mpe/scenarios/simple_crypto.py",
+  "external/off-policy/offpolicy/envs/mpe/scenarios/simple_crypto_display.py",
+  "external/off-policy/offpolicy/envs/mpe/scenarios/simple_push.py",
+  "external/off-policy/offpolicy/envs/mpe/scenarios/simple_tag.py",
+  "external/off-policy/offpolicy/envs/mpe/scenarios/simple_world_comm.py",
+  "external/off-policy/offpolicy/utils/mlp_nstep_buffer.py",
+  "tools/drive/analyze_drive_storage_estimate.py",
+  "tools/drive/fetch_colab_building_data_from_drive.py",
+  "tools/drive/fetch_colab_kpis_from_drive.py",
+  "tools/drive/validate_drive_kpi_downloads.py",
+  "tools/eval/analyze_colab_drive_results.py",
+  "tools/eval/analyze_real_drive_training_artifacts.py",
+  "tools/eval/audit_colab_drive_episodes.py",
+  "tools/eval/audit_drive_kpis_buildings.py",
+  "tools/eval/recalc_drive_kpis_deep.py",
+  "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+  "tools/eval/select_best_madrl_district_building.py",
+  "tools/figures/embed_mermaid_svgs.py",
+  "tools/figures/extract_mermaid_diagrams.py",
+  "tools/thesis/_audit_word_cap_ranges.py",
+  "tools/thesis/audit_decpomdp_crosschapter_word.py",
+  "tools/thesis/checklist_h0g_exploratoria_residuales.py",
+  "tools/thesis/fix_informe_impact_cap5_sync.py",
+  "tools/thesis/patch_cap1_cap3_manual_docx.py",
+  "tools/thesis/patch_cap1_h0g_formal_decision_docx.py",
+  "tools/thesis/patch_cap2_madrl_adecuaciones_docx.py",
+  "tools/thesis/patch_cap2_modelado_matematico_docx.py",
+  "tools/thesis/patch_cap36_decpomdp_crossref_docx.py",
+  "tools/thesis/patch_cap4_decpomdp_impl_align_docx.py",
+  "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+  "tools/thesis/patch_cap5_training_usd_apa_docx.py",
+  "tools/thesis/patch_cap6_apa_canons_docx.py",
+  "tools/thesis/patch_cap6_conclusiones_desc_inf_docx.py",
+  "tools/thesis/patch_cap6_decpomdp_xref_docx.py",
+  "tools/thesis/patch_complete_figures_catalog_docx.py",
+  "tools/thesis/patch_informe_resumen_friedman_docx.py",
+  "tools/thesis/patch_multicriteria_figures_docx.py",
+  "tools/thesis/patch_performance_comparison_docx.py",
+  "tools/thesis/patch_resumen_align_kpi_gains_docx.py",
+  "tools/thesis/validate_integral_word_50ep_4madrl.py",
+  "tools/training/regenerate_drive_training_figures.py",
+  "tools/training/repair_citylearn_v3_traceability.py",
+  "tools/training/run_citylearn_v2_baseline_comparison.py",
+  "tools/training/test_job_resume_state.py",
+  "tools/training/test_launcher_singleton_lock.py",
+  "tools/training/validate_drive_kpi_skip_plan.py"
+ ],
+ "retirados_activos": {
+  "madrl_v3": [
+   "README.md",
+   "docs/architecture/colab.md",
+   "docs/architecture/runbook.md",
+   "docs/chapters/auditoria_final.md",
+   "docs/chapters/cap1.md",
+   "docs/chapters/cap3.md",
+   "docs/chapters/cap4.md",
+   "docs/chapters/cap5.md",
+   "docs/chapters/cap6.md",
+   "docs/chapters/cap7.md",
+   "docs/chapters/indice.md",
+   "docs/colab.md",
+   "docs/colab_checklist.md",
+   "docs/design/entrenamiento.md",
+   "docs/guia_tesis.md",
+   "examples_madrl_v3/load_environment.ipynb",
+   "examples_madrl_v3/madrl_citylearn_v3_cli.ipynb",
+   "examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb",
+   "examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb",
+   "governance/naming.yaml",
+   "governance/repository_layout.yaml",
+   "outputs/README.md",
+   "tests/fresh_training/test_colab_client.py",
+   "tests/fresh_training/test_delivery_contract.py",
+   "tests/fresh_training/test_historical_retirement.py",
+   "tests/fresh_training/test_single_launch_path.py",
+   "tests/fresh_training/test_tutorial_notebooks.py",
+   "tests/ops/test_modular_colab_notebook.py",
+   "tests/unit/evaluation/test_tools_use_results_catalog.py",
+   "tools/colab/build_modular_colab_notebook.py",
+   "tools/drive/analyze_drive_folder_sizes.py",
+   "tools/drive/analyze_drive_storage_estimate.py",
+   "tools/drive/fetch_drive_training_artifacts.py",
+   "tools/eval/aggregate_multiseed_seed_kpis.py",
+   "tools/eval/analyze_colab_drive_results.py",
+   "tools/eval/audit_colab_drive_episodes.py",
+   "tools/eval/audit_drive_figure_integrity.py",
+   "tools/eval/audit_drive_kpis_buildings.py",
+   "tools/eval/hypothesis.py",
+   "tools/eval/inferential_audit_report.py",
+   "tools/eval/kpi_rankings.py",
+   "tools/eval/recalc_drive_kpis_deep.py",
+   "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+   "tools/eval/run_colab_drive_statistical_analysis.py",
+   "tools/eval/run_notebook_hypothesis_pipeline.py",
+   "tools/figures/embed_mermaid_svgs.py",
+   "tools/ops/historical_inventory.py",
+   "tools/thesis/_patch_notebook_hypothesis_demo.py",
+   "tools/thesis/_patch_notebook_hypothesis_pipeline.py",
+   "tools/thesis/build_multiobjective_thesis_docx.py",
+   "tools/thesis/build_multiobjective_thesis_pdf.py",
+   "tools/thesis/generate_borrador_tesis_docx.py",
+   "tools/thesis/generate_drive_thesis_figures.py",
+   "tools/thesis/madrl_algorithm_analysis.py",
+   "tools/thesis/patch_cap4_implementacion_docx.py",
+   "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+   "tools/thesis/patch_cap5_stats.py",
+   "tools/thesis/patch_topsis.py",
+   "tools/thesis/thesis_doctoral_sections.py",
+   "tools/thesis/thesis_word_canons.py",
+   "tools/thesis/update_word_quantitative_50episodes.py",
+   "tools/training/regenerate_drive_training_figures.py",
+   "tools/training/run_citylearn_v2_baseline_comparison.py",
+   "tools/training/test_job_resume_state.py",
+   "tools/training/test_madrl_robustness.py",
+   "tools/training/validate_drive_kpi_skip_plan.py",
+   "tools/training/validate_madrl_run_completion.py"
+  ],
+  "iquitos_v4": [
+   "tests/fresh_training/test_security_and_acceptance.py",
+   "tests/fresh_training/test_tuning_protocol.py"
+  ],
+  "modular_training": [
+   "configs/experiments/full_campaign_4x3x3.yaml",
+   "docs/architecture/local.md",
+   "governance/repository_layout.yaml",
+   "scripts/quality/run_orchestration_gates.ps1",
+   "tests/integration/test_experiment_runner.py",
+   "tools/ops/audit_modular_training.py",
+   "uc3m/presentation/training_panel.py"
+  ],
+  "outputs/campaign/": [],
+  "uc3m/train.py": [
+   "docs/architecture/runbook.md",
+   "docs/decisions/organizacion.md",
+   "governance/repository_layout.yaml",
+   "tests/fresh_training/test_single_launch_path.py"
+  ],
+  "--resume": [
+   "docs/architecture/entrenamiento.md",
+   "docs/architecture/local.md",
+   "tests/fresh_training/test_campaign_contract.py",
+   "tests/fresh_training/test_colab_client.py",
+   "tests/fresh_training/test_learning_observer.py",
+   "tests/fresh_training/test_tutorial_notebooks.py",
+   "uc3m/adapters/algorithms/native_entrypoint.py",
+   "uc3m/application/training/fresh_campaign.py"
+  ],
+  "deploy/aws/training": [
+   "docs/architecture/defensa.md",
+   "docs/instalacion.md",
+   "governance/repository_layout.yaml"
+  ],
+  "workflow_manifest": [
+   "README.md",
+   "docs/00_INDEX.md",
+   "docs/analisis_reorganizacion_tools_dataset.md",
+   "docs/architecture/entrenamiento.md",
+   "docs/architecture/flujo.md",
+   "docs/architecture/operacion.md",
+   "docs/chapters/cap1.md",
+   "docs/chapters/cap4.md",
+   "docs/decisions/organizacion.md",
+   "docs/decisions/paralelismo.md",
+   "docs/estrategia.md",
+   "governance/naming.yaml",
+   "tests/citylearn_v3/test_schema_smoke.py",
+   "tests/ops/test_closed_services_and_secrets.py",
+   "tools/ops/verify_workflow_integrity.py",
+   "tools/thesis/thesis_word_canons.py"
+  ],
+  "fresh_kpi_aligned_v5": [
+   "examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb"
+  ],
+  "orchestration_acceptance": [],
+  "train_multiseed": [],
+  "_v4_": [
+   "tests/fresh_training/test_security_and_acceptance.py",
+   "tests/fresh_training/test_tuning_protocol.py",
+   "tools/eval/inferential_audit_report.py",
+   "tools/training/prune_artifacts.ps1"
+  ]
+ },
+ "referencias_rotas_total": 170,
+ "referencias_rotas": {
+  "docs/plans/jurado.md": [
+   "configs/experiments/madrl_4x3_multiseed.yaml",
+   "data/audits/jury_observations_acceptance.json",
+   "docs/audits/RESPUESTA_OBSERVACIONES_JURADO.md",
+   "docs/chapters/Anexo_Reproducibilidad.md",
+   "docs/operations/MADRL_DEPLOYMENT_RUNBOOK.md",
+   "docs/research/data_quality_and_validity_matrix.yaml",
+   "docs/thesis/SECURITY_PRIVACY_DEPLOYMENT.md",
+   "docs/thesis/TRL_TRANSFER_ROADMAP.md",
+   "scripts/launch_citylearn_v3_multiseed_campaign.ps1",
+   "tests/acceptance/test_happo_coverage_contract.py",
+   "tests/acceptance/test_jury_observations_manifest.py",
+   "tests/acceptance/test_jury_response_acceptance.py",
+   "tests/eval/test_scalability_and_economics_contracts.py",
+   "tests/integration/test_multiseed_campaign_manifest.py",
+   "tests/thesis/test_data_validity_controls.py",
+   "tests/thesis/test_executed_vs_future_axes.py",
+   "tests/thesis/test_hypothesis_decision_consistency.py",
+   "tests/thesis/test_intro_contribution_reproducibility.py",
+   "tests/thesis/test_security_privacy_claims.py",
+   "tools/eval/analyze_deployment_economics.py",
+   "tools/eval/benchmark_scalability.py",
+   "tools/eval/build_rliable_report.py"
+  ],
+  "docs/plans/agentes.md": [
+   "data/audits/thesis_agent_acceptance.json",
+   "docs/audits/INFORME_VALIDACION_TESIS_Y_AGENTES_OPEN_SOURCE.md",
+   "docs/research/multiobjective_sources.yaml",
+   "docs/thesis/evidence_registry.yaml",
+   "scripts/quality/run_thesis_agent_gates.ps1",
+   "tests/acceptance/test_thesis_agent_acceptance.py",
+   "tests/connectors/test_connector_registry.py",
+   "tests/skills/test_migrated_skills.py",
+   "tests/skills/test_project_skills.py",
+   "tests/thesis/test_apa_reference_integrity.py",
+   "tests/thesis/test_cap313_multiobjective_consistency.py",
+   "tests/unit/application/thesis/test_evidence_registry.py",
+   "tests/unit/application/thesis/test_multiobjective_view.py",
+   "tools/connectors/README.md",
+   "tools/connectors/registry.yaml",
+   "tools/skills/experiment-evidence-audit/SKILL.md",
+   "tools/skills/scientific-literature-audit/SKILL.md",
+   "tools/skills/spec-conformance/SKILL.md",
+   "tools/thesis/build_multiobjective_evidence.py",
+   "uc3m/application/thesis/multiobjective_view.py"
+  ],
+  "README.md": [
+   "data/artifact_audit.json",
+   "data/building_behavior_summary.csv",
+   "data/building_kpis.csv",
+   "data/building_observation_action_schema.csv",
+   "data/building_trace_sample.csv",
+   "data/checkpoint_manifest.json",
+   "data/results.json",
+   "data/timeseries.csv",
+   "data/trace.csv",
+   "data/training_summary.json",
+   "docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx",
+   "docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3.docx"
+  ],
+  "docs/analisis_tesis_adenda.md": [
+   "tools/audit_der_sizing.py",
+   "tools/audit_training_dataset_provenance.py",
+   "tools/dimension_ev_chargers.py",
+   "tools/distill_building_loads.py",
+   "tools/fix_schema_cooling.py",
+   "tools/fix_solar_pvlib.py",
+   "tools/generate_iquitos_dataset.py",
+   "tools/orchestrate_citylearn_dataset.py",
+   "tools/size_bess_optimal.py",
+   "tools/verify_solar.py"
+  ],
+  "docs/plans/orquestacion.md": [
+   "data/audits/orchestration_acceptance.json",
+   "tests/acceptance/test_local_tracking_offline.py",
+   "tests/unit/application/evaluation/test_training_report.py",
+   "tests/unit/application/training/test_resume.py",
+   "uc3m/adapters/citylearn/simulator.py",
+   "uc3m/adapters/matplotlib_figures.py",
+   "uc3m/application/evaluation/tables.py",
+   "uc3m/train.py"
+  ],
+  "docs/architecture/flujo.md": [
+   "data/artifact_audit.json",
+   "data/checkpoint_manifest.json",
+   "data/results.json",
+   "data/timeseries.csv",
+   "data/trace.csv",
+   "data/training_summary.json",
+   "docs/operacion.md"
+  ],
+  "docs/analisis_scripts_vs_tools_tesis.md": [
+   "docs/ABRIR_ESTE_WORD_FINAL_INDICES_AUTOMATICOS.docx",
+   "docs/AUDITORIA_INTEGRAL_TESIS_DOCTORAL_2026-07-07.md",
+   "docs/VALIDACION_REFERENCIAS_UNIFICADAS_2026-07-15.md",
+   "scripts/_tmp_dump_abrir_este_64.py",
+   "scripts/_tmp_extract_a2.py",
+   "scripts/_tmp_post_patch_status.py"
+  ],
+  "docs/architecture/entrenamiento.md": [
+   "data/artifact_audit.json",
+   "data/checkpoint_manifest.json",
+   "data/results.json",
+   "data/timeseries.csv",
+   "data/trace.csv",
+   "data/training_summary.json"
+  ],
+  "docs/plans/correcciones.md": [
+   "data/audits/best_model_selection.json",
+   "data/audits/final_acceptance.json",
+   "data/audits/orchestration_acceptance.json",
+   "data/audits/scientific_evaluation.json",
+   "scripts/training/launch_full_campaign.py",
+   "specs/NNN-nombre/spec.md"
+  ],
+  "docs/plans/modernizacion.md": [
+   "configs/experiments/madrl_4x3_multiseed.yaml",
+   "data/audits/modernization_acceptance_manifest.json",
+   "docs/audits/INFORME_ACEPTACION_MODERNIZACION_OPEN_SOURCE.md",
+   "tests/acceptance/test_modernization_acceptance.py",
+   "tests/integration/test_resume_trajectory_parity.py",
+   "tools/ops/build_modernization_acceptance.py"
+  ],
+  "docs/plans/remediacion_auditoria.md": [
+   "docs/jury_status.json",
+   "tests/fresh_training/test_attempt_persistence.py",
+   "tests/fresh_training/test_current_references.py",
+   "tests/fresh_training/test_dependency_acceptance.py",
+   "uc3m/application/training/acceptance.py",
+   "uc3m/ports/policy.py"
+  ],
+  "docs/estrategia.md": [
+   "data/checkpoint_manifest.json",
+   "data/results.json",
+   "data/timeseries.csv",
+   "data/trace.csv",
+   "data/training_summary.json"
+  ],
+  "docs/decisions/paralelismo.md": [
+   "docs/dataset_construction_pipeline.md",
+   "docs/resultados_preliminares.xlsx",
+   "docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md",
+   "scripts/run_citylearn_v3_full_training_visible.ps1"
+  ],
+  "deploy/README.md": [
+   "data/checkpoint_manifest.json",
+   "deploy/aws/README_TRAINING_AWS.md",
+   "tools/training/export_winning_model_onnx.py"
+  ],
+  "docs/chapters/auditoria.md": [
+   "docs/Borrador_Tesis_MADRL_CityLearn_Iquitos.docx",
+   "docs/INTEGRACION_CITYLEARN_THESIS_2026-07-29.md",
+   "docs/informedetesis.txt"
+  ],
+  "docs/decisions/organizacion.md": [
+   "docs/operacion.md",
+   "scripts/monitor_citylearn_training_visible.ps1",
+   "uc3m/train.py"
+  ],
+  "specs/006-evidence/spec.md": [
+   "docs/research/multiobjective_sources.yaml",
+   "docs/thesis/evidence_registry.yaml",
+   "tools/thesis/build_multiobjective_evidence.py"
+  ],
+  "specs/006-evidence/tasks.md": [
+   "docs/research/multiobjective_sources.yaml",
+   "scripts/quality/run_thesis_agent_gates.ps1",
+   "tests/thesis/test_cap313_multiobjective_consistency.py"
+  ],
+  "specs/011-pipeline/tasks.md": [
+   "scripts/LANZAR_ENTRENAMIENTO_V4.bat",
+   "scripts/restart_happo_masac_v3.ps1",
+   "tests/ops/test_local_launcher_dataset_gate.py"
+  ],
+  "docs/instalacion.md": [
+   "deploy/aws/README_TRAINING_AWS.md",
+   "deploy/aws/training/requirements-training-aws.txt"
+  ],
+  "docs/architecture/defensa.md": [
+   "deploy/aws/README_TRAINING_AWS.md",
+   "docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md"
+  ],
+  "docs/chapters/cap3.md": [
+   "docs/INTEGRACION_CITYLEARN_THESIS_2026-07-29.md",
+   "scripts/run_citylearn_v3_full_training_visible.ps1"
+  ],
+  "docs/contributions/CityLearn/CHANGES.md": [
+   "scripts/train_citylearn_v3_masac.py",
+   "tests/test_kpi_v2.py"
+  ],
+  "docs/plans/entrenamiento.md": [
+   "docs/architecture/FRESH_TRAINING_RUNBOOK.md",
+   "uc3m/train.py"
+  ],
+  "docs/plans/objetivos.md": [
+   "data/audits/algorithm_scenario_contract_matrix.json",
+   "tests/contract/multiobjective/test_algorithm_scenario_matrix.py"
+  ],
+  "specs/003-orchestration/spec.md": [
+   "data/audits/orchestration_acceptance.json",
+   "uc3m/adapters/matplotlib_figures.py"
+  ],
+  "specs/004-manifests/tasks.md": [
+   "data/audits/historical_runs_manifest.json",
+   "tests/integration/test_resume_trajectory_parity.py"
+  ],
+  "specs/009-jury/tasks.md": [
+   "scripts/quality/run_jury_observations_gates.ps1",
+   "tests/thesis/test_hypothesis_decision_consistency.py"
+  ],
+  "tools/thesis/README.md": [
+   "docs/AUDITORIA_TOOLS_2026-07-29.md",
+   "docs/CANON_WORD_Y_VALIDEZ_50EP_DRIVE_2026-07-29.md"
+  ],
+  "docs/architecture/dataset_construction_pipeline.md": [
+   "docs/operacion.md"
+  ],
+  "docs/architecture/runbook.md": [
+   "uc3m/train.py"
+  ],
+  "docs/chapters/cap5.md": [
+   "docs/AUDITORIA_CAP5_CONTRADICCIONES_STATS_2026-08-06.md"
+  ],
+  "docs/decisions/escenarios.md": [
+   "docs/recompensas.md"
+  ],
+  "docs/design/entrenamiento.md": [
+   "data/maintenance/github_readiness_20261101/github_readiness.json"
+  ],
+  "docs/plans/cuaderno_colab.md": [
+   "uc3m/viejo.py"
+  ],
+  "scripts/README.md": [
+   "docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md"
+  ],
+  "specs/STATUS.md": [
+   "data/audits/orchestration_acceptance.json"
+  ],
+  "specs/003-orchestration/tasks.md": [
+   "tests/integration/test_training_interruption.py"
+  ],
+  "specs/005-evaluation/spec.md": [
+   "configs/experiments/madrl_4x3_multiseed.yaml"
+  ],
+  "specs/005-evaluation/tasks.md": [
+   "configs/experiments/madrl_4x3_multiseed.yaml"
+  ],
+  "specs/012-hygiene/tasks.md": [
+   "scripts/LANZAR_ENTRENAMIENTO_V4.bat"
+  ],
+  "tools/README.md": [
+   "docs/AUDITORIA_TOOLS_2026-07-29.md"
+  ],
+  "tools/dataset/README.md": [
+   "docs/AUDITORIA_TOOLS_2026-07-29.md"
+  ]
+ },
+ "marcadores": {
+  "pending_owner": 9,
+  "TODO": 2,
+  "placeholder": 12,
+  "NotImplementedError": 53,
+  "PLACEHOLDER": 2
+ },
+ "marcadores_rutas": [
+  "configs/evaluation/kpis.yaml:6",
+  "configs/evaluation/kpis.yaml:151",
+  "configs/evaluation/kpis.yaml:153",
+  "configs/evaluation/kpis.yaml:154",
+  "configs/evaluation/kpis.yaml:155",
+  "deploy/plant_adapter/modbus_adapter.py:37",
+  "deploy/plant_adapter/modbus_adapter.py:59",
+  "deploy/plant_adapter/modbus_adapter.py:81",
+  "deploy/plant_adapter/modbus_adapter.py:131",
+  "external/off-policy/offpolicy/config.py:87",
+  "external/off-policy/offpolicy/algorithms/base/mlp_policy.py:19",
+  "external/off-policy/offpolicy/algorithms/base/mlp_policy.py:30",
+  "external/off-policy/offpolicy/algorithms/base/recurrent_policy.py:21",
+  "external/off-policy/offpolicy/algorithms/base/recurrent_policy.py:32",
+  "external/off-policy/offpolicy/algorithms/base/recurrent_policy.py:43",
+  "external/off-policy/offpolicy/algorithms/base/trainer.py:16",
+  "external/off-policy/offpolicy/algorithms/base/trainer.py:26",
+  "external/off-policy/offpolicy/algorithms/base/trainer.py:31",
+  "external/off-policy/offpolicy/algorithms/base/trainer.py:36",
+  "external/off-policy/offpolicy/envs/env_wrappers.py:126",
+  "external/off-policy/offpolicy/envs/env_wrappers.py:132",
+  "external/off-policy/offpolicy/envs/env_wrappers.py:178",
+  "external/off-policy/offpolicy/envs/env_wrappers.py:270",
+  "external/off-policy/offpolicy/envs/env_wrappers.py:357",
+  "external/off-policy/offpolicy/envs/mpe/rendering.py:174",
+  "external/off-policy/offpolicy/envs/mpe/rendering.py:185",
+  "external/off-policy/offpolicy/envs/mpe/scenario.py:6",
+  "external/off-policy/offpolicy/envs/mpe/scenario.py:10",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:10",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:14",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:18",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:22",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:26",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:30",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:34",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:38",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:42",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:46",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:49",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:52",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:55",
+  "external/off-policy/offpolicy/envs/starcraft2/multiagentenv.py:59",
+  "external/off-policy/offpolicy/runner/mlp/base_runner.py:114",
+  "external/off-policy/offpolicy/runner/mlp/base_runner.py:314",
+  "external/off-policy/offpolicy/runner/mlp/base_runner.py:317",
+  "external/off-policy/offpolicy/runner/mlp/base_runner.py:350",
+  "external/off-policy/offpolicy/runner/rnn/base_runner.py:130",
+  "external/off-policy/offpolicy/runner/rnn/base_runner.py:341",
+  "external/off-policy/offpolicy/runner/rnn/base_runner.py:345",
+  "external/off-policy/offpolicy/runner/rnn/base_runner.py:378",
+  "external/off-policy/offpolicy/scripts/train/train_mpe.py:23",
+  "external/off-policy/offpolicy/scripts/train/train_mpe.py:41",
+  "external/off-policy/offpolicy/scripts/train/train_mpe.py:161",
+  "external/off-policy/offpolicy/scripts/train/train_smac.py:24",
+  "external/off-policy/offpolicy/scripts/train/train_smac.py:42",
+  "external/off-policy/offpolicy/scripts/train/train_smac.py:161",
+  "external/off-policy/offpolicy/utils/mlp_buffer.py:130",
+  "external/off-policy/offpolicy/utils/rec_buffer.py:118",
+  "external/off-policy/offpolicy/utils/util.py:226",
+  "tests/fresh_training/test_kpi_catalog_complete.py:88"
+ ],
+ "python_no_parsea": [],
+ "tests_sin_asercion": [
+  "tests/fresh_training/test_tutorial_notebooks.py:87 test_every_code_cell_compiles",
+  "tests/ops/test_colab_notebook_cells.py:76 test_every_code_cell_compiles",
+  "tests/uc3m/test_kpi_evaluator.py:86 test_reset_pareto_clears",
+  "tests/uc3m/test_reward_axes.py:121 test_set_baseline"
+ ],
+ "funciones_stub": [
+  "uc3m/algorithms/factory.py:327 load",
+  "uc3m/data/ports.py:32 fetch",
+  "uc3m/data/ports.py:36 schema_path",
+  "uc3m/data/ports.py:40 describe",
+  "uc3m/presentation/training_panel.py:49 log_message"
+ ],
+ "modulos_mas_grandes": [
+  [
+   2005,
+   "tools/thesis/thesis_doctoral_sections.py"
+  ],
+  [
+   1915,
+   "uc3m/multicriteria/stats_tests.py"
+  ],
+  [
+   1883,
+   "tools/dataset/generate_iquitos_dataset.py"
+  ],
+  [
+   1638,
+   "external/off-policy/offpolicy/envs/starcraft2/StarCraft2_Env.py"
+  ],
+  [
+   1575,
+   "tools/training/test_job_resume_state.py"
+  ],
+  [
+   1439,
+   "tools/thesis/update_word_quantitative_50episodes.py"
+  ],
+  [
+   1318,
+   "tools/dataset/dimension_ev_chargers.py"
+  ],
+  [
+   1280,
+   "tools/thesis/generate_borrador_tesis_docx.py"
+  ],
+  [
+   1254,
+   "tools/eval/objective_analysis.py"
+  ],
+  [
+   1228,
+   "tools/dataset/build_fresh_campaign_dataset.py"
+  ],
+  [
+   1193,
+   "tools/thesis/validate_integral_word_50ep_4madrl.py"
+  ],
+  [
+   1043,
+   "tools/thesis/thesis_cap5_structured.py"
+  ],
+  [
+   1041,
+   "tools/dataset/distill_building_loads.py"
+  ],
+  [
+   978,
+   "tools/eval/hypothesis.py"
+  ],
+  [
+   960,
+   "tools/dataset/size_bess_optimal.py"
+  ],
+  [
+   807,
+   "uc3m/adapters/citylearn/policy_inference.py"
+  ],
+  [
+   798,
+   "uc3m/application/training/fresh_campaign.py"
+  ],
+  [
+   796,
+   "tools/ops/audit_duplicate_files.py"
+  ],
+  [
+   795,
+   "tools/dataset/fix_solar_pvlib.py"
+  ],
+  [
+   763,
+   "tools/eval/building_analysis.py"
+  ]
+ ],
+ "funciones_mas_largas": [
+  [
+   1096,
+   "tools/thesis/generate_borrador_tesis_docx.py:181 build"
+  ],
+  [
+   445,
+   "tools/thesis/validate_integral_word_50ep_4madrl.py:437 run_checks"
+  ],
+  [
+   345,
+   "tools/thesis/_patch_notebook_hypothesis_demo.py:22 main"
+  ],
+  [
+   324,
+   "tools/eval/recalc_drive_kpis_full_evaluate_v2.py:149 main"
+  ],
+  [
+   287,
+   "tools/thesis/thesis_cap5_structured.py:757 add_chapter_5_structured"
+  ],
+  [
+   276,
+   "tools/eval/recalc_drive_kpis_deep.py:225 main"
+  ],
+  [
+   239,
+   "external/off-policy/offpolicy/envs/starcraft2/StarCraft2_Env.py:66 __init__"
+  ],
+  [
+   238,
+   "tools/dataset/generate_iquitos_dataset.py:1055 build"
+  ],
+  [
+   232,
+   "external/off-policy/offpolicy/algorithms/r_maddpg/r_maddpg.py:333 cent_train_policy_on_batch"
+  ],
+  [
+   220,
+   "scripts/run_madrl_nonparametric_battery.py:421 main"
+  ],
+  [
+   218,
+   "external/off-policy/offpolicy/algorithms/r_maddpg/r_maddpg.py:114 shared_train_policy_on_batch"
+  ],
+  [
+   207,
+   "tools/thesis/thesis_doctoral_sections.py:1398 _add_per_algorithm_analysis_section"
+  ],
+  [
+   196,
+   "external/off-policy/offpolicy/envs/starcraft2/StarCraft2_Env.py:904 get_obs_agent"
+  ],
+  [
+   195,
+   "uc3m/multicriteria/pipeline.py:51 run_selection_pipeline"
+  ],
+  [
+   193,
+   "tools/thesis/_patch_notebook_hypothesis_pipeline.py:136 patch_cell_50_multiseed"
+  ],
+  [
+   191,
+   "external/off-policy/offpolicy/config.py:4 get_config"
+  ],
+  [
+   188,
+   "tools/thesis/thesis_doctoral_sections.py:989 build_pe_answer"
+  ],
+  [
+   187,
+   "tools/dataset/generate_iquitos_dataset.py:1385 run"
+  ],
+  [
+   186,
+   "tools/dataset/distill_building_loads.py:618 calibrate_building"
+  ],
+  [
+   181,
+   "tools/dataset/audit_training_dataset_provenance.py:236 build_validation"
+  ]
+ ],
+ "tareas": {
+  "docs/plans/agentes.md": {
+   "abiertas": 46,
+   "cerradas": 0
+  },
+  "docs/plans/correcciones.md": {
+   "abiertas": 61,
+   "cerradas": 0
+  },
+  "docs/plans/cuaderno_colab.md": {
+   "abiertas": 30,
+   "cerradas": 0
+  },
+  "docs/plans/encargo.md": {
+   "abiertas": 0,
+   "cerradas": 0
+  },
+  "docs/plans/entrenamiento.md": {
+   "abiertas": 84,
+   "cerradas": 0
+  },
+  "docs/plans/fundacion.md": {
+   "abiertas": 30,
+   "cerradas": 0
+  },
+  "docs/plans/jurado.md": {
+   "abiertas": 36,
+   "cerradas": 0
+  },
+  "docs/plans/modernizacion.md": {
+   "abiertas": 17,
+   "cerradas": 0
+  },
+  "docs/plans/objetivos.md": {
+   "abiertas": 37,
+   "cerradas": 0
+  },
+  "docs/plans/orquestacion.md": {
+   "abiertas": 53,
+   "cerradas": 0
+  },
+  "docs/plans/remediacion_auditoria.md": {
+   "abiertas": 103,
+   "cerradas": 0
+  },
+  "docs/plans/renombrar_rutas.md": {
+   "abiertas": 22,
+   "cerradas": 0
+  },
+  "docs/plans/traspaso_sesiones.md": {
+   "abiertas": 0,
+   "cerradas": 0
+  },
+  "specs/000-foundation/tasks.md": {
+   "abiertas": 2,
+   "cerradas": 5
+  },
+  "specs/001-provenance/tasks.md": {
+   "abiertas": 1,
+   "cerradas": 9
+  },
+  "specs/002-objectives/tasks.md": {
+   "abiertas": 2,
+   "cerradas": 5
+  },
+  "specs/003-orchestration/tasks.md": {
+   "abiertas": 3,
+   "cerradas": 5
+  },
+  "specs/004-manifests/tasks.md": {
+   "abiertas": 2,
+   "cerradas": 3
+  },
+  "specs/005-evaluation/tasks.md": {
+   "abiertas": 4,
+   "cerradas": 4
+  },
+  "specs/006-evidence/tasks.md": {
+   "abiertas": 5,
+   "cerradas": 0
+  },
+  "specs/007-agents/tasks.md": {
+   "abiertas": 4,
+   "cerradas": 7
+  },
+  "specs/008-artifacts/tasks.md": {
+   "abiertas": 1,
+   "cerradas": 3
+  },
+  "specs/009-jury/tasks.md": {
+   "abiertas": 5,
+   "cerradas": 0
+  },
+  "specs/010-panel/tasks.md": {
+   "abiertas": 3,
+   "cerradas": 6
+  },
+  "specs/011-pipeline/tasks.md": {
+   "abiertas": 1,
+   "cerradas": 6
+  },
+  "specs/012-hygiene/tasks.md": {
+   "abiertas": 1,
+   "cerradas": 9
+  }
+ },
+ "tools_por_subcarpeta": {
+  "(suelto)": 2,
+  "colab": 2,
+  "dataset": 27,
+  "drive": 7,
+  "eval": 21,
+  "figures": 6,
+  "ops": 13,
+  "skills": 70,
+  "thesis": 59,
+  "training": 13
+ },
+ "tools_sueltos": [
+  "tools/README.md",
+  "tools/check_training_dataset_ready.py"
+ ],
+ "scripts_sueltos": [
+  "scripts/README.md",
+  "scripts/activate_citylearn_v3.ps1",
+  "scripts/close_multicriteria.py",
+  "scripts/fetch_and_generate_drive_figures.ps1",
+  "scripts/generate_borrador_tesis_docx.py",
+  "scripts/run_madrl_multicriteria_selection.py",
+  "scripts/run_madrl_nonparametric_battery.py",
+  "scripts/setup_google_drive_oauth.ps1",
+  "scripts/thesis_doctoral_sections.py",
+  "scripts/verify_project_context.ps1"
+ ],
+ "docs_sueltos": [
+  "docs/00_INDEX.md",
+  "docs/analisis_reorganizacion_tools_dataset.md",
+  "docs/analisis_scripts_vs_tools_tesis.md",
+  "docs/analisis_tesis_adenda.md",
+  "docs/auditoria_tesis.docx",
+  "docs/colab.md",
+  "docs/colab_checklist.md",
+  "docs/estrategia.md",
+  "docs/guia_tesis.md",
+  "docs/historia.md",
+  "docs/informe.docx",
+  "docs/instalacion.md",
+  "docs/scalable_decpomdp.pdf",
+  "docs/tesis.docx",
+  "docs/workflow_manifest.json"
+ ],
+ "tests_sueltos": [
+  "tests/__init__.py",
+  "tests/conftest.py"
+ ],
+ "data_sueltos": [],
+ "configs_sueltos": [
+  "configs/objective_policies.yaml",
+  "configs/scenarios.yaml"
+ ],
+ "ignorado_en_disco": [
+  [
+   ".superpowers/sdd",
+   2882.4,
+   967
+  ],
+  [
+   "data/maintenance",
+   1410.6,
+   2782
+  ],
+  [
+   "data/campaigns",
+   857.7,
+   1433
+  ],
+  [
+   "outputs/dataset_cache",
+   360.1,
+   4
+  ],
+  [
+   "tools/skills",
+   145.6,
+   507
+  ],
+  [
+   "outputs/colab_delivery",
+   38.4,
+   1
+  ],
+  [
+   "build/lib",
+   0.7,
+   103
+  ],
+  [
+   "tests/fresh_training",
+   0.7,
+   45
+  ],
+  [
+   "tests/uc3m",
+   0.6,
+   29
+  ],
+  [
+   "tests/unit",
+   0.3,
+   46
+  ],
+  [
+   "tools/dataset",
+   0.3,
+   11
+  ],
+  [
+   "uc3m/application",
+   0.3,
+   63
+  ],
+  [
+   "uc3m/multicriteria",
+   0.3,
+   20
+  ],
+  [
+   "tests/contract",
+   0.2,
+   31
+  ],
+  [
+   "tests/ops",
+   0.2,
+   15
+  ],
+  [
+   "tools/eval",
+   0.2,
+   10
+  ],
+  [
+   "tools/ops",
+   0.2,
+   15
+  ],
+  [
+   ".pytest_cache/v",
+   0.1,
+   2
+  ],
+  [
+   "external/off-policy",
+   0.1,
+   33
+  ],
+  [
+   "tools/colab",
+   0.1,
+   4
+  ],
+  [
+   "uc3m/adapters",
+   0.1,
+   19
+  ],
+  [
+   "uc3m/data",
+   0.1,
+   16
+  ],
+  [
+   "uc3m/domain",
+   0.1,
+   13
+  ],
+  [
+   "uc3m/env",
+   0.1,
+   6
+  ],
+  [
+   "uc3m/reward",
+   0.1,
+   7
+  ],
+  [
+   ".pytest_cache/.gitignore",
+   0.0,
+   1
+  ],
+  [
+   ".pytest_cache/CACHEDIR.TAG",
+   0.0,
+   1
+  ],
+  [
+   ".pytest_cache/README.md",
+   0.0,
+   1
+  ],
+  [
+   ".ruff_cache/.gitignore",
+   0.0,
+   1
+  ],
+  [
+   ".ruff_cache/CACHEDIR.TAG",
+   0.0,
+   1
+  ],
+  [
+   ".ruff_cache/0.15.17",
+   0.0,
+   25
+  ],
+  [
+   ".ruff_cache/0.16.9",
+   0.0,
+   8
+  ],
+  [
+   ".vscode/launch.json",
+   0.0,
+   1
+  ],
+  [
+   ".vscode/codex-terminal-bridge",
+   0.0,
+   2
+  ],
+  [
+   "deploy/inference",
+   0.0,
+   3
+  ],
+  [
+   "deploy/plant_adapter",
+   0.0,
+   1
+  ],
+  [
+   "scripts/quality",
+   0.0,
+   1
+  ],
+  [
+   "scripts/__pycache__",
+   0.0,
+   1
+  ],
+  [
+   "tests/acceptance",
+   0.0,
+   6
+  ],
+  [
+   "tests/citylearn_v3",
+   0.0,
+   6
+  ]
+ ]
+}

@@ -1,0 +1,26 @@
+{
+  "target": "CityLearn/citylearn/internal/kpi.py",
+  "applied": false,
+  "candidate_compiles": true,
+  "scope": "analytical synthetic settlement probe, not native annual acceptance",
+  "before_sha256_lf": "b2692a3bb5e562bc0c335c6539f1eab3e97e206305e9eba0d43be08902b7d46f",
+  "after_sha256_lf": "d7c353c8c21d67e2837504420239b15c7783f4d2f0f7d992f8d019c61ab73094",
+  "cases": [
+    {
+      "horizon": 24,
+      "original_terminal_rejected": true,
+      "candidate_terminal_total": 7.200000000000003,
+      "expected_total": 7.199999999999999,
+      "intermediate_behavior_equal": true,
+      "short_pricing_still_rejected": true
+    },
+    {
+      "horizon": 48,
+      "original_terminal_rejected": true,
+      "candidate_terminal_total": 14.399999999999997,
+      "expected_total": 14.399999999999999,
+      "intermediate_behavior_equal": true,
+      "short_pricing_still_rejected": true
+    }
+  ]
+}

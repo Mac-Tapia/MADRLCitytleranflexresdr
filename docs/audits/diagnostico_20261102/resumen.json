@@ -1,0 +1,3103 @@
+{
+  "schema_version": 1,
+  "ruff_available": true,
+  "ruff_rules": "F,E9,B006,B008,B012,B023,PLE",
+  "total": {
+    "archivos": 1549,
+    "lineas": 3096112,
+    "leidos_hasta_eof": 1540,
+    "revision": {
+      "caducada_archivo_cambio": 10,
+      "fuera_de_alcance": 790,
+      "pendiente": 430,
+      "revisado": 78,
+      "revisado_con_hallazgos": 163,
+      "sin_lote": 78
+    },
+    "senales": {
+      "duplicado": 11,
+      "except_pass": 16,
+      "marcador": 5,
+      "modulo_grande": 19,
+      "ruff": 44,
+      "sin_consumidor": 4,
+      "sin_prueba": 130,
+      "vacio": 29
+    }
+  },
+  "por_carpeta": {
+    "(raiz)": {
+      "archivos": 14,
+      "lineas": 656,
+      "leidos_hasta_eof": 13,
+      "revision": {
+        "pendiente": 3,
+        "revisado": 3,
+        "revisado_con_hallazgos": 5,
+        "sin_lote": 3
+      },
+      "senales": {}
+    },
+    ".claude": {
+      "archivos": 5,
+      "lineas": 101,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "revisado": 3,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    ".github": {
+      "archivos": 3,
+      "lineas": 184,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 1,
+        "revisado": 2
+      },
+      "senales": {}
+    },
+    ".specify": {
+      "archivos": 1,
+      "lineas": 39,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    ".vscode": {
+      "archivos": 3,
+      "lineas": 177,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado": 2,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    "configs": {
+      "archivos": 12,
+      "lineas": 1585,
+      "leidos_hasta_eof": 12,
+      "revision": {
+        "revisado": 3,
+        "revisado_con_hallazgos": 8,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "data": {
+      "archivos": 461,
+      "lineas": 2642845,
+      "leidos_hasta_eof": 461,
+      "revision": {
+        "fuera_de_alcance": 437,
+        "sin_lote": 24
+      },
+      "senales": {}
+    },
+    "deploy": {
+      "archivos": 30,
+      "lineas": 2089,
+      "leidos_hasta_eof": 30,
+      "revision": {
+        "pendiente": 2,
+        "revisado": 3,
+        "revisado_con_hallazgos": 24,
+        "sin_lote": 1
+      },
+      "senales": {
+        "except_pass": 1,
+        "marcador": 1,
+        "sin_prueba": 2
+      }
+    },
+    "docs": {
+      "archivos": 326,
+      "lineas": 325503,
+      "leidos_hasta_eof": 326,
+      "revision": {
+        "fuera_de_alcance": 225,
+        "pendiente": 73,
+        "sin_lote": 28
+      },
+      "senales": {
+        "duplicado": 1,
+        "marcador": 3
+      }
+    },
+    "examples_madrl_v3": {
+      "archivos": 7,
+      "lineas": 5193,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "revisado": 2,
+        "revisado_con_hallazgos": 5
+      },
+      "senales": {
+        "sin_consumidor": 1,
+        "sin_prueba": 1
+      }
+    },
+    "external": {
+      "archivos": 127,
+      "lineas": 13224,
+      "leidos_hasta_eof": 119,
+      "revision": {
+        "fuera_de_alcance": 127
+      },
+      "senales": {
+        "marcador": 1,
+        "modulo_grande": 1,
+        "ruff": 11,
+        "vacio": 22
+      }
+    },
+    "governance": {
+      "archivos": 5,
+      "lineas": 624,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 4
+      },
+      "senales": {}
+    },
+    "outputs": {
+      "archivos": 1,
+      "lineas": 20,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "scripts": {
+      "archivos": 19,
+      "lineas": 2375,
+      "leidos_hasta_eof": 19,
+      "revision": {
+        "pendiente": 19
+      },
+      "senales": {
+        "modulo_grande": 1,
+        "sin_prueba": 1
+      }
+    },
+    "specs": {
+      "archivos": 40,
+      "lineas": 1078,
+      "leidos_hasta_eof": 40,
+      "revision": {
+        "pendiente": 40
+      },
+      "senales": {}
+    },
+    "tests": {
+      "archivos": 157,
+      "lineas": 19239,
+      "leidos_hasta_eof": 157,
+      "revision": {
+        "caducada_archivo_cambio": 4,
+        "pendiente": 40,
+        "revisado": 31,
+        "revisado_con_hallazgos": 68,
+        "sin_lote": 14
+      },
+      "senales": {
+        "except_pass": 2,
+        "vacio": 5
+      }
+    },
+    "tools": {
+      "archivos": 226,
+      "lineas": 62400,
+      "leidos_hasta_eof": 226,
+      "revision": {
+        "pendiente": 220,
+        "sin_lote": 6
+      },
+      "senales": {
+        "duplicado": 8,
+        "except_pass": 10,
+        "modulo_grande": 14,
+        "ruff": 33,
+        "sin_consumidor": 3,
+        "sin_prueba": 120
+      }
+    },
+    "uc3m": {
+      "archivos": 112,
+      "lineas": 18780,
+      "leidos_hasta_eof": 112,
+      "revision": {
+        "caducada_archivo_cambio": 6,
+        "pendiente": 32,
+        "revisado": 28,
+        "revisado_con_hallazgos": 45,
+        "sin_lote": 1
+      },
+      "senales": {
+        "duplicado": 2,
+        "except_pass": 3,
+        "modulo_grande": 3,
+        "sin_prueba": 6,
+        "vacio": 2
+      }
+    }
+  },
+  "por_modulo": {
+    ".": {
+      "archivos": 14,
+      "lineas": 656,
+      "leidos_hasta_eof": 13,
+      "revision": {
+        "pendiente": 3,
+        "revisado": 3,
+        "revisado_con_hallazgos": 5,
+        "sin_lote": 3
+      },
+      "senales": {}
+    },
+    ".claude": {
+      "archivos": 2,
+      "lineas": 69,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    ".claude/agents": {
+      "archivos": 3,
+      "lineas": 32,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado": 3
+      },
+      "senales": {}
+    },
+    ".github": {
+      "archivos": 2,
+      "lineas": 66,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "revisado": 2
+      },
+      "senales": {}
+    },
+    ".github/workflows": {
+      "archivos": 1,
+      "lineas": 118,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    ".specify/memory": {
+      "archivos": 1,
+      "lineas": 39,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    ".vscode": {
+      "archivos": 3,
+      "lineas": 177,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado": 2,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    "configs": {
+      "archivos": 2,
+      "lineas": 50,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "configs/algorithms": {
+      "archivos": 1,
+      "lineas": 71,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado": 1
+      },
+      "senales": {}
+    },
+    "configs/dataset": {
+      "archivos": 5,
+      "lineas": 1228,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "revisado": 2,
+        "revisado_con_hallazgos": 2,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "configs/evaluation": {
+      "archivos": 1,
+      "lineas": 159,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    "configs/experiments": {
+      "archivos": 3,
+      "lineas": 77,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado_con_hallazgos": 3
+      },
+      "senales": {}
+    },
+    "data/audits": {
+      "archivos": 10,
+      "lineas": 5604,
+      "leidos_hasta_eof": 10,
+      "revision": {
+        "sin_lote": 10
+      },
+      "senales": {}
+    },
+    "data/campaigns/iquitos_v1": {
+      "archivos": 6,
+      "lineas": 33995,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "fuera_de_alcance": 6
+      },
+      "senales": {}
+    },
+    "data/campaigns/iquitos_v2": {
+      "archivos": 6,
+      "lineas": 25349,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "fuera_de_alcance": 6
+      },
+      "senales": {}
+    },
+    "data/campaigns/iquitos_v3": {
+      "archivos": 6,
+      "lineas": 26613,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "fuera_de_alcance": 6
+      },
+      "senales": {}
+    },
+    "data/campaigns/iquitos_v4": {
+      "archivos": 6,
+      "lineas": 26639,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "fuera_de_alcance": 6
+      },
+      "senales": {}
+    },
+    "data/dataset_audit": {
+      "archivos": 14,
+      "lineas": 11617,
+      "leidos_hasta_eof": 14,
+      "revision": {
+        "sin_lote": 14
+      },
+      "senales": {}
+    },
+    "data/maintenance/gates": {
+      "archivos": 9,
+      "lineas": 149,
+      "leidos_hasta_eof": 9,
+      "revision": {
+        "fuera_de_alcance": 9
+      },
+      "senales": {}
+    },
+    "data/maintenance/github_readiness": {
+      "archivos": 1,
+      "lineas": 56,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "data/maintenance/historicos": {
+      "archivos": 5,
+      "lineas": 3126,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "fuera_de_alcance": 5
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01": {
+      "archivos": 11,
+      "lineas": 0,
+      "leidos_hasta_eof": 11,
+      "revision": {
+        "fuera_de_alcance": 11
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01": {
+      "archivos": 7,
+      "lineas": 1606,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "fuera_de_alcance": 7
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded": {
+      "archivos": 1,
+      "lineas": 1271,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves": {
+      "archivos": 1,
+      "lineas": 952,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit": {
+      "archivos": 3,
+      "lineas": 14436,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B01": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B01_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B01_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B01_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B02": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B02_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B02_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B02_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B03": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B03_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B03_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B03_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B04": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B04_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B04_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B04_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B05": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B05_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B05_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B05_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B06": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B06_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B06_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B06_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B07": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B07_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B07_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B07_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B08": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B08_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B08_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B08_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B09": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B09_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B09_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B09_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B10": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B10_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B10_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B10_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B11": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B11_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B11_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B11_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B12": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B12_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B12_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B12_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B13": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B13_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B13_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B13_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B14": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B14_capex0.70": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B14_capex1.30": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/audit/microgrids_runs/B14_nodemand": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/dataset": {
+      "archivos": 57,
+      "lineas": 1396856,
+      "leidos_hasta_eof": 57,
+      "revision": {
+        "fuera_de_alcance": 57
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/raw/buildingcsv": {
+      "archivos": 18,
+      "lineas": 1013489,
+      "leidos_hasta_eof": 18,
+      "revision": {
+        "fuera_de_alcance": 18
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/raw/fx": {
+      "archivos": 1,
+      "lineas": 1,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/raw/osinergmin": {
+      "archivos": 42,
+      "lineas": 35410,
+      "leidos_hasta_eof": 42,
+      "revision": {
+        "fuera_de_alcance": 42
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/raw/thesis": {
+      "archivos": 1,
+      "lineas": 0,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/D01/discarded/iquitos_v4_uncontrolled_battery_curves/raw/weather": {
+      "archivos": 6,
+      "lineas": 3,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "fuera_de_alcance": 6
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I00": {
+      "archivos": 1,
+      "lineas": 559,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I01": {
+      "archivos": 2,
+      "lineas": 0,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I06": {
+      "archivos": 2,
+      "lineas": 0,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I07": {
+      "archivos": 5,
+      "lineas": 32,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "fuera_de_alcance": 5
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I08": {
+      "archivos": 2,
+      "lineas": 0,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I09": {
+      "archivos": 4,
+      "lineas": 0,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "fuera_de_alcance": 4
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I10": {
+      "archivos": 5,
+      "lineas": 0,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "fuera_de_alcance": 5
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I11": {
+      "archivos": 2,
+      "lineas": 222,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I12": {
+      "archivos": 9,
+      "lineas": 78,
+      "leidos_hasta_eof": 9,
+      "revision": {
+        "fuera_de_alcance": 9
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I13": {
+      "archivos": 20,
+      "lineas": 157,
+      "leidos_hasta_eof": 20,
+      "revision": {
+        "fuera_de_alcance": 20
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I13/incident_s3": {
+      "archivos": 3,
+      "lineas": 48,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I13/r008_before": {
+      "archivos": 2,
+      "lineas": 183,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "data/maintenance/integracion/c20261101i01/I15": {
+      "archivos": 5,
+      "lineas": 131,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "fuera_de_alcance": 5
+      },
+      "senales": {}
+    },
+    "data/maintenance/layout": {
+      "archivos": 3,
+      "lineas": 122,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "data/maintenance/names": {
+      "archivos": 10,
+      "lineas": 9183,
+      "leidos_hasta_eof": 10,
+      "revision": {
+        "fuera_de_alcance": 10
+      },
+      "senales": {}
+    },
+    "data/maintenance/remediacion/c20261101a/P00": {
+      "archivos": 2,
+      "lineas": 701,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "data/maintenance/repository_layout": {
+      "archivos": 5,
+      "lineas": 34257,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "fuera_de_alcance": 5
+      },
+      "senales": {}
+    },
+    "deploy": {
+      "archivos": 5,
+      "lineas": 231,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "revisado_con_hallazgos": 4,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "deploy/aws": {
+      "archivos": 1,
+      "lineas": 109,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    "deploy/aws/iac": {
+      "archivos": 3,
+      "lineas": 0,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "deploy/dashboard": {
+      "archivos": 3,
+      "lineas": 136,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado_con_hallazgos": 3
+      },
+      "senales": {}
+    },
+    "deploy/edge": {
+      "archivos": 1,
+      "lineas": 89,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado": 1
+      },
+      "senales": {}
+    },
+    "deploy/inference": {
+      "archivos": 6,
+      "lineas": 751,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "pendiente": 2,
+        "revisado_con_hallazgos": 4
+      },
+      "senales": {
+        "except_pass": 1,
+        "sin_prueba": 1
+      }
+    },
+    "deploy/k8s": {
+      "archivos": 7,
+      "lineas": 441,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 6
+      },
+      "senales": {}
+    },
+    "deploy/plant_adapter": {
+      "archivos": 4,
+      "lineas": 332,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "revisado_con_hallazgos": 4
+      },
+      "senales": {
+        "marcador": 1,
+        "sin_prueba": 1
+      }
+    },
+    "docs": {
+      "archivos": 15,
+      "lineas": 2834,
+      "leidos_hasta_eof": 15,
+      "revision": {
+        "pendiente": 11,
+        "sin_lote": 4
+      },
+      "senales": {
+        "marcador": 1
+      }
+    },
+    "docs/architecture": {
+      "archivos": 23,
+      "lineas": 2736,
+      "leidos_hasta_eof": 23,
+      "revision": {
+        "pendiente": 10,
+        "sin_lote": 13
+      },
+      "senales": {}
+    },
+    "docs/architecture/_refs": {
+      "archivos": 1,
+      "lineas": 0,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/audits": {
+      "archivos": 20,
+      "lineas": 1705,
+      "leidos_hasta_eof": 20,
+      "revision": {
+        "fuera_de_alcance": 20
+      },
+      "senales": {}
+    },
+    "docs/audits/addendum_auditoria_20261101": {
+      "archivos": 7,
+      "lineas": 3873,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "fuera_de_alcance": 7
+      },
+      "senales": {}
+    },
+    "docs/audits/architecture_thesis_20261101": {
+      "archivos": 52,
+      "lineas": 22706,
+      "leidos_hasta_eof": 52,
+      "revision": {
+        "fuera_de_alcance": 52
+      },
+      "senales": {}
+    },
+    "docs/audits/architecture_thesis_20261101/layout": {
+      "archivos": 5,
+      "lineas": 42752,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "fuera_de_alcance": 5
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101": {
+      "archivos": 52,
+      "lineas": 104485,
+      "leidos_hasta_eof": 52,
+      "revision": {
+        "fuera_de_alcance": 52
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/configs/experiments": {
+      "archivos": 1,
+      "lineas": 38,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m": {
+      "archivos": 1,
+      "lineas": 40,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/algorithms": {
+      "archivos": 1,
+      "lineas": 384,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/application/dataset": {
+      "archivos": 1,
+      "lineas": 103,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/application/evaluation": {
+      "archivos": 4,
+      "lineas": 506,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "fuera_de_alcance": 4
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/application/thesis": {
+      "archivos": 1,
+      "lineas": 45,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/application/training": {
+      "archivos": 2,
+      "lineas": 95,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/data/adapters": {
+      "archivos": 2,
+      "lineas": 219,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/domain": {
+      "archivos": 1,
+      "lineas": 252,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/multicriteria": {
+      "archivos": 1,
+      "lineas": 1900,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/presentation": {
+      "archivos": 1,
+      "lineas": 68,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/inspection_cut/uc3m/reward": {
+      "archivos": 1,
+      "lineas": 222,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/deep_20261101/recheck": {
+      "archivos": 8,
+      "lineas": 10454,
+      "leidos_hasta_eof": 8,
+      "revision": {
+        "fuera_de_alcance": 8
+      },
+      "senales": {}
+    },
+    "docs/audits/diagnostico_20261102": {
+      "archivos": 1,
+      "lineas": 274,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "docs/audits/ejecucion_remediacion_20261101": {
+      "archivos": 25,
+      "lineas": 93028,
+      "leidos_hasta_eof": 25,
+      "revision": {
+        "fuera_de_alcance": 25
+      },
+      "senales": {}
+    },
+    "docs/audits/integracion_auditorias_20261101": {
+      "archivos": 15,
+      "lineas": 18532,
+      "leidos_hasta_eof": 15,
+      "revision": {
+        "fuera_de_alcance": 15
+      },
+      "senales": {}
+    },
+    "docs/audits/revision_semantica_20261102": {
+      "archivos": 5,
+      "lineas": 1038,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "fuera_de_alcance": 5
+      },
+      "senales": {}
+    },
+    "docs/audits/word": {
+      "archivos": 18,
+      "lineas": 1243,
+      "leidos_hasta_eof": 18,
+      "revision": {
+        "fuera_de_alcance": 18
+      },
+      "senales": {}
+    },
+    "docs/chapters": {
+      "archivos": 12,
+      "lineas": 2378,
+      "leidos_hasta_eof": 12,
+      "revision": {
+        "pendiente": 12
+      },
+      "senales": {}
+    },
+    "docs/contributions/CityLearn": {
+      "archivos": 2,
+      "lineas": 232,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/contributions/HARL": {
+      "archivos": 2,
+      "lineas": 55,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/contributions/MAAC": {
+      "archivos": 2,
+      "lineas": 55,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/contributions/MARL": {
+      "archivos": 2,
+      "lineas": 55,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/contributions/MARLlib": {
+      "archivos": 2,
+      "lineas": 55,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/contributions/MATD3implementation": {
+      "archivos": 2,
+      "lineas": 55,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/contributions/MicroGrids": {
+      "archivos": 2,
+      "lineas": 58,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/contributions/evcc": {
+      "archivos": 2,
+      "lineas": 55,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/contributions/prosumpy": {
+      "archivos": 2,
+      "lineas": 55,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {}
+    },
+    "docs/decisions": {
+      "archivos": 7,
+      "lineas": 1202,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "pendiente": 7
+      },
+      "senales": {}
+    },
+    "docs/design": {
+      "archivos": 2,
+      "lineas": 721,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "docs/failures": {
+      "archivos": 1,
+      "lineas": 17,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "docs/history": {
+      "archivos": 2,
+      "lineas": 885,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "docs/plans": {
+      "archivos": 16,
+      "lineas": 9750,
+      "leidos_hasta_eof": 16,
+      "revision": {
+        "pendiente": 16
+      },
+      "senales": {
+        "marcador": 2
+      }
+    },
+    "docs/research": {
+      "archivos": 2,
+      "lineas": 83,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "docs/thesis": {
+      "archivos": 2,
+      "lineas": 260,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "sin_lote": 1
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "examples_madrl_v3": {
+      "archivos": 7,
+      "lineas": 5193,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "revisado": 2,
+        "revisado_con_hallazgos": 5
+      },
+      "senales": {
+        "sin_consumidor": 1,
+        "sin_prueba": 1
+      }
+    },
+    "external": {
+      "archivos": 10,
+      "lineas": 100,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 10
+      },
+      "senales": {}
+    },
+    "external/off-policy": {
+      "archivos": 6,
+      "lineas": 655,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "fuera_de_alcance": 6
+      },
+      "senales": {}
+    },
+    "external/off-policy/.github/ISSUE_TEMPLATE": {
+      "archivos": 3,
+      "lineas": 68,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "external/off-policy/offpolicy": {
+      "archivos": 2,
+      "lineas": 207,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "marcador": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms": {
+      "archivos": 1,
+      "lineas": 0,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/base": {
+      "archivos": 4,
+      "lineas": 109,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "fuera_de_alcance": 4
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/maddpg": {
+      "archivos": 2,
+      "lineas": 435,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "ruff": 1,
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/maddpg/algorithm": {
+      "archivos": 3,
+      "lineas": 248,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/matd3": {
+      "archivos": 2,
+      "lineas": 6,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/matd3/algorithm": {
+      "archivos": 3,
+      "lineas": 16,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/mqmix": {
+      "archivos": 2,
+      "lineas": 251,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "ruff": 1,
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/mqmix/algorithm": {
+      "archivos": 4,
+      "lineas": 303,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "fuera_de_alcance": 4
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/mvdn": {
+      "archivos": 2,
+      "lineas": 7,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "ruff": 1,
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/mvdn/algorithm": {
+      "archivos": 3,
+      "lineas": 41,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/qmix": {
+      "archivos": 2,
+      "lineas": 232,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "ruff": 1,
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/qmix/algorithm": {
+      "archivos": 4,
+      "lineas": 367,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "fuera_de_alcance": 4
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/r_maddpg": {
+      "archivos": 2,
+      "lineas": 580,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/r_maddpg/algorithm": {
+      "archivos": 3,
+      "lineas": 310,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/r_matd3": {
+      "archivos": 2,
+      "lineas": 8,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/r_matd3/algorithm": {
+      "archivos": 3,
+      "lineas": 16,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/utils": {
+      "archivos": 3,
+      "lineas": 172,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "external/off-policy/offpolicy/algorithms/vdn": {
+      "archivos": 2,
+      "lineas": 8,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {
+        "ruff": 1,
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/algorithms/vdn/algorithm": {
+      "archivos": 3,
+      "lineas": 45,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/envs": {
+      "archivos": 2,
+      "lineas": 507,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "external/off-policy/offpolicy/envs/mpe": {
+      "archivos": 7,
+      "lineas": 1292,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "fuera_de_alcance": 7
+      },
+      "senales": {
+        "ruff": 1,
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/envs/mpe/scenarios": {
+      "archivos": 10,
+      "lineas": 1322,
+      "leidos_hasta_eof": 10,
+      "revision": {
+        "fuera_de_alcance": 10
+      },
+      "senales": {
+        "ruff": 2
+      }
+    },
+    "external/off-policy/offpolicy/envs/starcraft2": {
+      "archivos": 4,
+      "lineas": 2164,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "fuera_de_alcance": 4
+      },
+      "senales": {
+        "modulo_grande": 1,
+        "ruff": 1,
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/runner/mlp": {
+      "archivos": 3,
+      "lineas": 892,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "external/off-policy/offpolicy/runner/rnn": {
+      "archivos": 3,
+      "lineas": 816,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "fuera_de_alcance": 3
+      },
+      "senales": {}
+    },
+    "external/off-policy/offpolicy/scripts": {
+      "archivos": 16,
+      "lineas": 179,
+      "leidos_hasta_eof": 16,
+      "revision": {
+        "fuera_de_alcance": 16
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "external/off-policy/offpolicy/scripts/sweep_config": {
+      "archivos": 2,
+      "lineas": 101,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "external/off-policy/offpolicy/scripts/train": {
+      "archivos": 2,
+      "lineas": 384,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "fuera_de_alcance": 2
+      },
+      "senales": {}
+    },
+    "external/off-policy/offpolicy/utils": {
+      "archivos": 7,
+      "lineas": 1383,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "fuera_de_alcance": 7
+      },
+      "senales": {
+        "ruff": 2,
+        "vacio": 1
+      }
+    },
+    "governance": {
+      "archivos": 5,
+      "lineas": 624,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 4
+      },
+      "senales": {}
+    },
+    "outputs": {
+      "archivos": 1,
+      "lineas": 20,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "fuera_de_alcance": 1
+      },
+      "senales": {}
+    },
+    "scripts": {
+      "archivos": 10,
+      "lineas": 1576,
+      "leidos_hasta_eof": 10,
+      "revision": {
+        "pendiente": 10
+      },
+      "senales": {
+        "modulo_grande": 1,
+        "sin_prueba": 1
+      }
+    },
+    "scripts/maintenance": {
+      "archivos": 3,
+      "lineas": 508,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "scripts/quality": {
+      "archivos": 5,
+      "lineas": 250,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "pendiente": 5
+      },
+      "senales": {}
+    },
+    "scripts/skills": {
+      "archivos": 1,
+      "lineas": 41,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "specs": {
+      "archivos": 1,
+      "lineas": 160,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "specs/000-foundation": {
+      "archivos": 3,
+      "lineas": 66,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/001-provenance": {
+      "archivos": 3,
+      "lineas": 73,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/002-objectives": {
+      "archivos": 3,
+      "lineas": 71,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/003-orchestration": {
+      "archivos": 3,
+      "lineas": 72,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/004-manifests": {
+      "archivos": 3,
+      "lineas": 67,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/005-evaluation": {
+      "archivos": 3,
+      "lineas": 71,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/006-evidence": {
+      "archivos": 3,
+      "lineas": 67,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/007-agents": {
+      "archivos": 3,
+      "lineas": 43,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/008-artifacts": {
+      "archivos": 3,
+      "lineas": 66,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/009-jury": {
+      "archivos": 3,
+      "lineas": 68,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/010-panel": {
+      "archivos": 3,
+      "lineas": 99,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/011-pipeline": {
+      "archivos": 3,
+      "lineas": 82,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "specs/012-hygiene": {
+      "archivos": 3,
+      "lineas": 73,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "tests": {
+      "archivos": 2,
+      "lineas": 30,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "tests/acceptance": {
+      "archivos": 4,
+      "lineas": 248,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 3
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "tests/citylearn_v3": {
+      "archivos": 3,
+      "lineas": 72,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "tests/contract": {
+      "archivos": 10,
+      "lineas": 729,
+      "leidos_hasta_eof": 10,
+      "revision": {
+        "revisado": 3,
+        "revisado_con_hallazgos": 7
+      },
+      "senales": {
+        "except_pass": 1
+      }
+    },
+    "tests/contract/multiobjective": {
+      "archivos": 2,
+      "lineas": 166,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    "tests/contract/training": {
+      "archivos": 4,
+      "lineas": 106,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 3
+      },
+      "senales": {}
+    },
+    "tests/fresh_training": {
+      "archivos": 62,
+      "lineas": 8703,
+      "leidos_hasta_eof": 62,
+      "revision": {
+        "caducada_archivo_cambio": 2,
+        "pendiente": 30,
+        "revisado": 6,
+        "revisado_con_hallazgos": 22,
+        "sin_lote": 2
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "tests/integration": {
+      "archivos": 4,
+      "lineas": 353,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "revisado": 2,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "tests/ops": {
+      "archivos": 9,
+      "lineas": 1150,
+      "leidos_hasta_eof": 9,
+      "revision": {
+        "pendiente": 3,
+        "revisado": 1,
+        "revisado_con_hallazgos": 5
+      },
+      "senales": {}
+    },
+    "tests/remediation": {
+      "archivos": 17,
+      "lineas": 2677,
+      "leidos_hasta_eof": 17,
+      "revision": {
+        "pendiente": 5,
+        "sin_lote": 12
+      },
+      "senales": {}
+    },
+    "tests/skills": {
+      "archivos": 1,
+      "lineas": 102,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado": 1
+      },
+      "senales": {}
+    },
+    "tests/uc3m": {
+      "archivos": 16,
+      "lineas": 2904,
+      "leidos_hasta_eof": 16,
+      "revision": {
+        "caducada_archivo_cambio": 2,
+        "pendiente": 1,
+        "revisado": 2,
+        "revisado_con_hallazgos": 11
+      },
+      "senales": {
+        "except_pass": 1,
+        "vacio": 1
+      }
+    },
+    "tests/unit/adapters": {
+      "archivos": 1,
+      "lineas": 57,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado": 1
+      },
+      "senales": {}
+    },
+    "tests/unit/application": {
+      "archivos": 7,
+      "lineas": 669,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 6
+      },
+      "senales": {}
+    },
+    "tests/unit/application/training": {
+      "archivos": 8,
+      "lineas": 256,
+      "leidos_hasta_eof": 8,
+      "revision": {
+        "revisado": 6,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "tests/unit/domain": {
+      "archivos": 5,
+      "lineas": 478,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "revisado": 2,
+        "revisado_con_hallazgos": 3
+      },
+      "senales": {}
+    },
+    "tests/unit/evaluation": {
+      "archivos": 1,
+      "lineas": 449,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "tests/unit/governance": {
+      "archivos": 1,
+      "lineas": 90,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado": 1
+      },
+      "senales": {}
+    },
+    "tools": {
+      "archivos": 2,
+      "lineas": 64,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/colab": {
+      "archivos": 2,
+      "lineas": 722,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/dataset": {
+      "archivos": 26,
+      "lineas": 13149,
+      "leidos_hasta_eof": 26,
+      "revision": {
+        "pendiente": 25,
+        "sin_lote": 1
+      },
+      "senales": {
+        "modulo_grande": 5,
+        "sin_consumidor": 2,
+        "sin_prueba": 13
+      }
+    },
+    "tools/dataset/dataset_docs": {
+      "archivos": 2,
+      "lineas": 645,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/drive": {
+      "archivos": 7,
+      "lineas": 974,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "pendiente": 7
+      },
+      "senales": {
+        "ruff": 1,
+        "sin_prueba": 7
+      }
+    },
+    "tools/eval": {
+      "archivos": 21,
+      "lineas": 8803,
+      "leidos_hasta_eof": 21,
+      "revision": {
+        "pendiente": 21
+      },
+      "senales": {
+        "modulo_grande": 2,
+        "ruff": 2,
+        "sin_prueba": 14
+      }
+    },
+    "tools/figures": {
+      "archivos": 6,
+      "lineas": 1671,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "pendiente": 6
+      },
+      "senales": {
+        "except_pass": 2,
+        "ruff": 1,
+        "sin_prueba": 5
+      }
+    },
+    "tools/ops": {
+      "archivos": 14,
+      "lineas": 4153,
+      "leidos_hasta_eof": 14,
+      "revision": {
+        "pendiente": 14
+      },
+      "senales": {
+        "modulo_grande": 1,
+        "sin_prueba": 3
+      }
+    },
+    "tools/skills": {
+      "archivos": 3,
+      "lineas": 417,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "tools/skills/architecture-patterns": {
+      "archivos": 2,
+      "lineas": 185,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "tools/skills/architecture-patterns/references": {
+      "archivos": 2,
+      "lineas": 735,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-build-strategies": {
+      "archivos": 3,
+      "lineas": 389,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "tools/skills/docker-build-strategies/agents": {
+      "archivos": 1,
+      "lineas": 6,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-build-strategies/assets": {
+      "archivos": 4,
+      "lineas": 68,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "sin_lote": 4
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-build-strategies/checks": {
+      "archivos": 1,
+      "lineas": 155,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-build-strategies/references": {
+      "archivos": 2,
+      "lineas": 360,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-build-strategies/scripts": {
+      "archivos": 1,
+      "lineas": 34,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-compose-patterns": {
+      "archivos": 3,
+      "lineas": 394,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "tools/skills/docker-compose-patterns/agents": {
+      "archivos": 1,
+      "lineas": 6,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-compose-patterns/assets": {
+      "archivos": 3,
+      "lineas": 272,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-compose-patterns/checks": {
+      "archivos": 1,
+      "lineas": 90,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-compose-patterns/references": {
+      "archivos": 2,
+      "lineas": 275,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/skills/docker-compose-patterns/scripts": {
+      "archivos": 1,
+      "lineas": 23,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "tools/skills/fastapi-templates": {
+      "archivos": 2,
+      "lineas": 177,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "tools/skills/fastapi-templates/references": {
+      "archivos": 1,
+      "lineas": 430,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {}
+    },
+    "tools/skills/frontend-design": {
+      "archivos": 2,
+      "lineas": 248,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/skills/harness-engineering": {
+      "archivos": 2,
+      "lineas": 248,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/skills/madrl-agent-coordination": {
+      "archivos": 2,
+      "lineas": 37,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "tools/skills/madrl-experiment-evidence-audit": {
+      "archivos": 2,
+      "lineas": 35,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "tools/skills/madrl-scientific-literature-audit": {
+      "archivos": 2,
+      "lineas": 33,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "tools/skills/madrl-spec-conformance": {
+      "archivos": 2,
+      "lineas": 36,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "tools/skills/notebooklm-mcp": {
+      "archivos": 8,
+      "lineas": 437,
+      "leidos_hasta_eof": 8,
+      "revision": {
+        "pendiente": 7,
+        "sin_lote": 1
+      },
+      "senales": {
+        "sin_prueba": 1
+      }
+    },
+    "tools/skills/notebooklm-mcp/scripts": {
+      "archivos": 11,
+      "lineas": 2136,
+      "leidos_hasta_eof": 11,
+      "revision": {
+        "pendiente": 11
+      },
+      "senales": {
+        "except_pass": 5,
+        "ruff": 6,
+        "sin_prueba": 8
+      }
+    },
+    "tools/skills/task-coordination-strategies": {
+      "archivos": 2,
+      "lineas": 184,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/skills/task-coordination-strategies/references": {
+      "archivos": 2,
+      "lineas": 195,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/skills/webapp-testing": {
+      "archivos": 2,
+      "lineas": 300,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 2
+      },
+      "senales": {}
+    },
+    "tools/skills/webapp-testing/examples": {
+      "archivos": 3,
+      "lineas": 108,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "pendiente": 3
+      },
+      "senales": {
+        "ruff": 1,
+        "sin_prueba": 3
+      }
+    },
+    "tools/skills/webapp-testing/scripts": {
+      "archivos": 1,
+      "lineas": 106,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "pendiente": 1
+      },
+      "senales": {
+        "sin_prueba": 1
+      }
+    },
+    "tools/thesis": {
+      "archivos": 59,
+      "lineas": 20076,
+      "leidos_hasta_eof": 59,
+      "revision": {
+        "pendiente": 59
+      },
+      "senales": {
+        "except_pass": 3,
+        "modulo_grande": 5,
+        "ruff": 19,
+        "sin_prueba": 53
+      }
+    },
+    "tools/training": {
+      "archivos": 13,
+      "lineas": 4024,
+      "leidos_hasta_eof": 13,
+      "revision": {
+        "pendiente": 13
+      },
+      "senales": {
+        "modulo_grande": 1,
+        "ruff": 3,
+        "sin_consumidor": 1,
+        "sin_prueba": 12
+      }
+    },
+    "uc3m": {
+      "archivos": 1,
+      "lineas": 40,
+      "leidos_hasta_eof": 1,
+      "revision": {
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {
+        "duplicado": 1
+      }
+    },
+    "uc3m/adapters": {
+      "archivos": 2,
+      "lineas": 106,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "revisado": 2
+      },
+      "senales": {}
+    },
+    "uc3m/adapters/algorithms": {
+      "archivos": 5,
+      "lineas": 650,
+      "leidos_hasta_eof": 5,
+      "revision": {
+        "pendiente": 1,
+        "revisado": 2,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "uc3m/adapters/citylearn": {
+      "archivos": 6,
+      "lineas": 1135,
+      "leidos_hasta_eof": 6,
+      "revision": {
+        "caducada_archivo_cambio": 2,
+        "pendiente": 1,
+        "revisado": 2,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {
+        "modulo_grande": 1,
+        "vacio": 1
+      }
+    },
+    "uc3m/algorithms": {
+      "archivos": 2,
+      "lineas": 404,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "uc3m/application": {
+      "archivos": 4,
+      "lineas": 567,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "pendiente": 1,
+        "revisado_con_hallazgos": 3
+      },
+      "senales": {}
+    },
+    "uc3m/application/artifacts": {
+      "archivos": 3,
+      "lineas": 344,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "uc3m/application/dataset": {
+      "archivos": 4,
+      "lineas": 789,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "pendiente": 2,
+        "revisado": 1,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    "uc3m/application/evaluation": {
+      "archivos": 13,
+      "lineas": 1843,
+      "leidos_hasta_eof": 13,
+      "revision": {
+        "pendiente": 8,
+        "revisado": 1,
+        "revisado_con_hallazgos": 4
+      },
+      "senales": {
+        "sin_prueba": 1
+      }
+    },
+    "uc3m/application/thesis": {
+      "archivos": 2,
+      "lineas": 90,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {
+        "vacio": 1
+      }
+    },
+    "uc3m/application/training": {
+      "archivos": 24,
+      "lineas": 4001,
+      "leidos_hasta_eof": 24,
+      "revision": {
+        "pendiente": 10,
+        "revisado": 3,
+        "revisado_con_hallazgos": 10,
+        "sin_lote": 1
+      },
+      "senales": {
+        "duplicado": 1,
+        "except_pass": 1,
+        "modulo_grande": 1,
+        "sin_prueba": 2
+      }
+    },
+    "uc3m/data": {
+      "archivos": 4,
+      "lineas": 203,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "revisado": 4
+      },
+      "senales": {}
+    },
+    "uc3m/data/adapters": {
+      "archivos": 4,
+      "lineas": 528,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "pendiente": 1,
+        "revisado": 1,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {
+        "sin_prueba": 2
+      }
+    },
+    "uc3m/domain": {
+      "archivos": 7,
+      "lineas": 1031,
+      "leidos_hasta_eof": 7,
+      "revision": {
+        "pendiente": 1,
+        "revisado": 4,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "uc3m/env": {
+      "archivos": 4,
+      "lineas": 769,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "caducada_archivo_cambio": 2,
+        "revisado": 1,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {
+        "except_pass": 1
+      }
+    },
+    "uc3m/geography": {
+      "archivos": 2,
+      "lineas": 414,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    "uc3m/governance": {
+      "archivos": 3,
+      "lineas": 205,
+      "leidos_hasta_eof": 3,
+      "revision": {
+        "revisado": 1,
+        "revisado_con_hallazgos": 2
+      },
+      "senales": {}
+    },
+    "uc3m/kpis": {
+      "archivos": 2,
+      "lineas": 436,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "caducada_archivo_cambio": 1,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {}
+    },
+    "uc3m/multicriteria": {
+      "archivos": 10,
+      "lineas": 4102,
+      "leidos_hasta_eof": 10,
+      "revision": {
+        "pendiente": 5,
+        "revisado_con_hallazgos": 5
+      },
+      "senales": {
+        "except_pass": 1,
+        "modulo_grande": 1
+      }
+    },
+    "uc3m/ports": {
+      "archivos": 4,
+      "lineas": 73,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "revisado": 3,
+        "revisado_con_hallazgos": 1
+      },
+      "senales": {
+        "sin_prueba": 1
+      }
+    },
+    "uc3m/presentation": {
+      "archivos": 2,
+      "lineas": 112,
+      "leidos_hasta_eof": 2,
+      "revision": {
+        "pendiente": 1,
+        "revisado": 1
+      },
+      "senales": {}
+    },
+    "uc3m/reward": {
+      "archivos": 4,
+      "lineas": 938,
+      "leidos_hasta_eof": 4,
+      "revision": {
+        "caducada_archivo_cambio": 1,
+        "revisado_con_hallazgos": 3
+      },
+      "senales": {}
+    }
+  }
+}

@@ -1,0 +1,1009 @@
+--- a/uc3m/env/wrappers.py
++++ b/uc3m/env/wrappers.py
+@@ -1,171 +1,143 @@
+-"""
+-Wrappers de compatibilidad para UC3MEnv
+-========================================
+-  • HARLWrapper   — adapta UC3MEnv a la interfaz vectorizada HARL
+-  • PettingZooWrapper — adapta UC3MEnv a PettingZoo AEC API
+-
+-Uso típico:
+-    env   = UC3MEnv.from_iquitos(harl_mode=True)
+-    harl  = HARLWrapper(env, n_threads=4)
+-    # ó
+-    pz    = PettingZooWrapper(env)
+-    pz.reset(); pz.step({"agent_0": act})
+-"""
+-
+-from __future__ import annotations
+-
+-import numpy as np
+-from typing import Dict, List, Optional, Any
+-
+-from uc3m.env.uc3m_env import UC3MEnv
+-
+-
+-class HARLWrapper:
+-    """
+-    Wrapper que expone UC3MEnv como un entorno vectorizado compatible
+-    con el runner de HARL (share_obs + obs separados).
+-
+-    HARL espera:
+-      obs        : list[ndarray(n_threads, obs_dim)]    por agente
+-      share_obs  : list[ndarray(n_threads, share_obs_dim)] por agente
+-      rewards    : ndarray(n_threads, n_agents)
+-      dones      : ndarray(n_threads, n_agents)
+-      infos      : list[dict]
+-    """
+-
+-    def __init__(self, env: UC3MEnv, n_threads: int = 1):
+-        self.env       = env
+-        self.n_threads = n_threads
+-        self.n_agents  = env.n_agents
+-
+-    def reset(self):
+-        obs_list = self.env.reset()
+-        if not isinstance(obs_list, list):
+-            obs_list = list(obs_list.values())
+-
+-        # Expandir a (n_threads, obs_dim)
+-        obs       = [np.expand_dims(o, 0).repeat(self.n_threads, 0) for o in obs_list]
+-        share_obs = obs   # CTDE: agentes comparten observaciones globales
+-
+-        return obs, share_obs, [{}] * self.n_threads
+-
+-    def step(self, actions):
+-        """
+-        actions: list[ndarray(n_threads, act_dim)] por agente
+-        """
+-        # Extraer primera thread para env single-thread
+-        acts_list = [a[0] for a in actions]
+-        obs_list, rews, done, info = self.env.step(acts_list)
+-        if not isinstance(obs_list, list):
+-            obs_list = list(obs_list.values())
+-        if isinstance(rews, dict):
+-            rews_list = [rews[aid] for aid in self.env.agent_ids]
+-        else:
+-            rews_list = list(rews)
+-
+-        obs       = [np.expand_dims(o, 0) for o in obs_list]
+-        share_obs = obs
+-        rewards   = np.array([[rews_list[i]] for i in range(self.n_agents)])   # (n_agents, 1)
+-        dones     = np.array([[done]] * self.n_agents)
+-        infos     = [info]
+-
+-        return obs, share_obs, rewards, dones, infos
+-
+-    @property
+-    def observation_space(self):
+-        """Espacio de observación CityLearn para compatibilidad."""
+-        return self.env.citylearn.observation_space
+-
+-    @property
+-    def action_space(self):
+-        return self.env.citylearn.action_space
+-
+-
+-class PettingZooWrapper:
+-    """
+-    Wrapper que expone UC3MEnv como un entorno PettingZoo AEC
+-    (Agent Environment Cycle API).
+-
+-    Cumple con la interfaz estándar requerida por MARLlib / PettingZoo v1.24+.
+-    """
+-
+-    metadata = {"name": "uc3m_env_v1", "is_parallelizable": True}
+-
+-    def __init__(self, env: UC3MEnv):
+-        self.env = env
+-        self.possible_agents = list(env.agent_ids)
+-        self.agents          = list(env.agent_ids)
+-        self._observations: Dict[str, np.ndarray] = {}
+-        self._rewards:      Dict[str, float]       = {}
+-        self._dones:        Dict[str, bool]        = {}
+-        self._infos:        Dict[str, Any]         = {}
+-        self._agent_idx: int = 0
+-
+-    # ── AEC API ────────────────────────────────────────────────────────────
+-
+-    def reset(self, seed=None, options=None):
+-        self.agents    = list(self.possible_agents)
+-        obs_list = self.env.reset()
+-        if not isinstance(obs_list, list):
+-            obs_list = list(obs_list.values())
+-
+-        for i, aid in enumerate(self.agents):
+-            self._observations[aid] = obs_list[i]
+-            self._rewards[aid]      = 0.0
+-            self._dones[aid]        = False
+-            self._infos[aid]        = {}
+-
+-        self._agent_idx = 0
+-        return self._observations.copy(), self._infos.copy()
+-
+-    def step(self, actions: Dict[str, np.ndarray]):
+-        """Ejecuta un paso completo (todas las acciones simultáneas)."""
+-        acts_list = [actions.get(aid, np.zeros(self.env.action_dimension))
+-                     for aid in self.agents]
+-        obs_list, rews, done, info = self.env.step(acts_list)
+-        if not isinstance(obs_list, list):
+-            obs_list = list(obs_list.values())
+-        if not isinstance(rews, dict):
+-            rews_dict = {aid: rews[i] for i, aid in enumerate(self.agents)}
+-        else:
+-            rews_dict = rews
+-
+-        for i, aid in enumerate(self.agents):
+-            self._observations[aid] = obs_list[i]
+-            self._rewards[aid]      = rews_dict.get(aid, 0.0)
+-            self._dones[aid]        = bool(done)
+-            self._infos[aid]        = info
+-
+-        if done:
+-            self.agents = []
+-
+-        return (
+-            self._observations.copy(),
+-            self._rewards.copy(),
+-            {aid: bool(done) for aid in self.agents or self.possible_agents},
+-            {aid: False for aid in self.possible_agents},
+-            self._infos.copy(),
+-        )
+-
+-    def observe(self, agent: str) -> np.ndarray:
+-        return self._observations.get(agent, np.zeros(self.env.observation_dimension or 1))
+-
+-    @property
+-    def observation_spaces(self) -> Dict[str, Any]:
+-        import gym.spaces as gs
+-        dim = self.env.observation_dimension or 128
+-        sp  = gs.Box(low=-np.inf, high=np.inf, shape=(dim,), dtype=np.float32)
+-        return {aid: sp for aid in self.possible_agents}
+-
+-    @property
+-    def action_spaces(self) -> Dict[str, Any]:
+-        import gym.spaces as gs
+-        dim = self.env.action_dimension
+-        sp  = gs.Box(low=-1.0, high=1.0, shape=(dim,), dtype=np.float32)
+-        return {aid: sp for aid in self.possible_agents}
+-
+-    def render(self): self.env.render()
+-    def close(self):  self.env.close()
+-
+-    def __repr__(self) -> str:
+-        return f"PettingZooWrapper({self.env})"
++"""Single-environment HARL adapter and PettingZoo Parallel API adapter.
++
++HARLWrapper wraps one real rollout thread. Parallel training needs a real
++vector-environment owner, not repeated observations.
++"""
++from __future__ import annotations
++
++import numpy as np
++from gymnasium.spaces import Box
++from pettingzoo import ParallelEnv
++
++from uc3m.env.uc3m_env import UC3MEnv
++
++
++def _ordered(env, values):
++    return [values[a] for a in env.agent_ids] if isinstance(values, dict) else list(values)
++
++
++class HARLWrapper:
++    """A vector API with exactly one real CityLearn rollout environment.
++
++    Pass directly as runner.envs; do not wrap again in DummyVecEnv. Actor
++    observations/actions are zero-padded to uniform dimensions; only declared
++    live action coordinates reach CityLearn. The critic gets concatenated local
++    observations. This encoding alone does not prove a Markov state.
++    """
++    def __init__(self, env: UC3MEnv, n_threads: int = 1):
++        if type(n_threads) is not int or n_threads != 1:
++            raise ValueError('single environment: n_threads must be 1')
++        self.env, self.n_threads, self.num_envs, self.n_agents = env, 1, 1, env.n_agents
++        self.observation_lengths = tuple(env.observation_dimensions)
++        self.action_lengths = tuple(env.action_dimensions)
++        self._obs_dim, self._act_dim = max(self.observation_lengths), max(self.action_lengths)
++        self.observation_space = [Box(-np.inf, np.inf, shape=(self._obs_dim,), dtype=np.float32)
++                                  for _ in env.agent_ids]
++        state_dim = sum(self.observation_lengths)
++        self.share_observation_space = [Box(-np.inf, np.inf, shape=(state_dim,), dtype=np.float32)
++                                        for _ in env.agent_ids]
++        self.action_space = []
++        for agent, dim in zip(env.agent_ids, self.action_lengths):
++            actual = env._dec.action_space(agent)
++            low, high = np.zeros(self._act_dim, np.float32), np.zeros(self._act_dim, np.float32)
++            low[:dim], high[:dim] = actual.low, actual.high
++            self.action_space.append(Box(low, high, dtype=np.float32))
++
++    def _observations(self, values):
++        local = [np.asarray(o, dtype=np.float32).reshape(-1) for o in _ordered(self.env, values)]
++        if tuple(len(o) for o in local) != self.observation_lengths:
++            raise ValueError('observation shape changed after environment construction')
++        obs = np.zeros((1, self.n_agents, self._obs_dim), dtype=np.float32)
++        for i, value in enumerate(local):
++            obs[0, i, :len(value)] = value
++        state = np.concatenate(local)
++        shared = np.broadcast_to(state, (1, self.n_agents, len(state))).copy()
++        return obs, shared
++
++    @staticmethod
++    def _available():
++        return np.asarray([None], dtype=object)  # continuous actions, HARL vector convention
++
++    def reset(self, seed=None, options=None):
++        obs, shared = self._observations(self.env.reset(seed=seed, options=options))
++        return obs, shared, self._available()
++
++    def step(self, actions):
++        actions = np.asarray(actions)
++        if actions.shape != (1, self.n_agents, self._act_dim) or not np.isfinite(actions).all():
++            raise ValueError(f'action shape must be (1, {self.n_agents}, {self._act_dim}) with finite values')
++        values, rewards, done, raw_infos = self.env.step(
++            [actions[0, i, :dim] for i, dim in enumerate(self.action_lengths)])
++        obs, shared = self._observations(values)
++        dones = np.asarray([[self.env.last_terminations[a] or self.env.last_truncations[a]
++                             for a in self.env.agent_ids]], dtype=bool)
++        infos = [[dict(info, observation_length=self.observation_lengths[i],
++                       action_length=self.action_lengths[i],
++                       bad_transition=bool(self.env.last_truncations[self.env.agent_ids[i]]))
++                  for i, info in enumerate(_ordered(self.env, raw_infos))]]
++        if done and np.all(dones):
++            # Match HARL's vector environment: preserve terminal evidence and
++            # return fresh observations so the runner can continue next episode.
++            infos[0][0].update(original_obs=obs[0].copy(), original_state=shared[0].copy(),
++                               original_avail_actions=None)
++            obs, shared, _ = self.reset()
++        rewards = np.asarray(_ordered(self.env, rewards), dtype=np.float32).reshape(1, self.n_agents, 1)
++        return obs, shared, rewards, dones, infos, self._available()
++
++    def close(self):
++        self.env.close()
++
++
++class PettingZooWrapper(ParallelEnv):
++    """Simultaneous actions, forwarding seed/options and actual ending causes."""
++    metadata = {'name': 'uc3m_env_v1', 'api': 'parallel', 'is_parallelizable': True}
++
++    def __init__(self, env: UC3MEnv):
++        self.env = env
++        self.possible_agents = list(env.agent_ids)
++        self.agents = list(self.possible_agents)
++        self._observations = {}
++        self.observation_spaces = {
++            a: Box(-np.inf, np.inf, shape=(d,), dtype=np.float64)
++            for a, d in zip(env.agent_ids, env.observation_dimensions)}
++        self.action_spaces = {a: env._dec.action_space(a) for a in env.agent_ids}
++
++    def reset(self, seed=None, options=None):
++        values = self.env.reset(seed=seed, options=options)
++        self.agents = list(self.possible_agents)
++        self._observations = dict(zip(self.agents, _ordered(self.env, values)))
++        return self._observations.copy(), {a: {} for a in self.agents}
++
++    def step(self, actions):
++        if not self.agents:
++            return {}, {}, {}, {}, {}
++        if set(actions) != set(self.agents):
++            raise ValueError('actions must contain exactly the active agents')
++        current = list(self.agents)
++        values, rewards, done, infos = self.env.step(actions)
++        self._observations = dict(zip(current, _ordered(self.env, values)))
++        reward_dict = dict(zip(current, _ordered(self.env, rewards)))
++        info_dict = dict(zip(current, _ordered(self.env, infos)))
++        terms = {a: self.env.last_terminations[a] for a in current}
++        truncs = {a: self.env.last_truncations[a] for a in current}
++        if done:
++            self.agents = []
++        return self._observations.copy(), reward_dict, terms, truncs, info_dict
++
++    def observation_space(self, agent):
++        return self.observation_spaces[agent]
++
++    def action_space(self, agent):
++        return self.action_spaces[agent]
++
++    def observe(self, agent):
++        return self._observations[agent]
++
++    def state(self):
++        return np.concatenate([self._observations[a] for a in self.possible_agents])
++
++    def render(self):
++        return self.env._dec.render()
++
++    def close(self):
++        self.env.close()
+--- a/uc3m/env/uc3m_env.py
++++ b/uc3m/env/uc3m_env.py
+@@ -140,8 +140,10 @@
+         return getattr(self._dec.env, "unwrapped", self._dec.env)
+ 
+     # ── API Dec-POMDP ───────────────────────────────────────────────────────
+-    def reset(self, seed: Optional[int] = None) -> Observation:
+-        obs_dict, _info = self._dec.reset(seed=seed if seed is not None else self._seed)
++    def reset(self, seed: Optional[int] = None, options: Optional[Mapping] = None) -> Observation:
++        obs_dict, _info = self._dec.reset(seed=seed if seed is not None else self._seed, options=options)
++        self.last_terminations = {a: False for a in self.agent_ids}
++        self.last_truncations = {a: False for a in self.agent_ids}
+         self._last_obs = {
+             a: self._augment(a, obs_dict[a]) for a in self.agent_ids if a in obs_dict
+         }
+@@ -153,6 +155,8 @@
+     def step(self, actions: Union[Mapping[str, Any], Sequence[Any]]):
+         action_dict = self._actions_to_dict(actions)
+         obs_dict, reward_dict, terminations, truncations, infos = self._dec.step(action_dict)
++        self.last_terminations = dict(terminations)
++        self.last_truncations = dict(truncations)
+ 
+         augmented = {
+             a: self._augment(a, obs_dict[a]) for a in self.agent_ids if a in obs_dict
+--- a/uc3m/adapters/citylearn/rbc_baseline.py
++++ b/uc3m/adapters/citylearn/rbc_baseline.py
+@@ -1,49 +1,68 @@
+-"""CityLearn RBC baseline adapter — isolates CityLearn imports from the domain."""
+-from __future__ import annotations
+-
+-from pathlib import Path
+-from typing import Any, Dict
+-
+-from citylearn.citylearn import CityLearnEnv
+-from citylearn.agents.rbc import BasicElectricVehicleRBC_ReferenceController
+-
+-
+-def run_rbc_baseline(
+-    schema_path: Path,
+-    episode_time_steps: int = 8760,
+-) -> Dict[str, Any]:
+-    """Run CityLearn EV-aware RBC over the given schema and return KPIs.
+-
+-    Uses ``BasicElectricVehicleRBC_ReferenceController`` which applies
+-    hour-of-use rules for battery charge/discharge and max-rate EV
+-    charging on connection — the standard uncoordinated baseline.
+-    """
+-    env = CityLearnEnv(
+-        schema=str(schema_path),
+-        central_agent=False,
+-    )
+-    agent = BasicElectricVehicleRBC_ReferenceController(env)
+-
+-    observations = env.reset()
+-    done = False
+-    step = 0
+-
+-    while not done and step < episode_time_steps:
+-        actions = agent.predict(observations)
+-        observations, rewards, done, truncated, info = env.step(actions)
+-        step += 1
+-
+-    kpis: Dict[str, Any] = {}
+-    eval_data = env.evaluate()
+-    for row in eval_data.to_dict("records"):
+-        name = row.get("name") or row.get("cost_function")
+-        if name and "value" in row:
+-            kpis[str(name)] = float(row["value"])
+-
+-    kpis["_meta"] = {
+-        "agent": "BasicElectricVehicleRBC_ReferenceController",
+-        "schema": str(schema_path),
+-        "episode_time_steps": episode_time_steps,
+-        "total_steps": step,
+-    }
+-    return kpis
++"""CityLearn RBC baseline adapter — isolates CityLearn imports from the domain."""
++from __future__ import annotations
++
++import math
++from pathlib import Path
++from typing import Any, Dict
++
++from citylearn.citylearn import CityLearnEnv
++from citylearn.agents.rbc import BasicElectricVehicleRBC_ReferenceController
++
++
++def run_rbc_baseline(
++    schema_path: Path,
++    episode_time_steps: int = 8760,
++) -> Dict[str, Any]:
++    """Run CityLearn EV-aware RBC over the given schema and return KPIs.
++
++    Uses ``BasicElectricVehicleRBC_ReferenceController`` which applies
++    hour-of-use rules for battery charge/discharge and max-rate EV
++    charging on connection — the standard uncoordinated baseline.
++    """
++    if type(episode_time_steps) is not int or episode_time_steps < 1:
++        raise ValueError('episode_time_steps must be a positive integer')
++    env = CityLearnEnv(
++        schema=str(schema_path),
++        central_agent=False,
++        episode_time_steps=episode_time_steps,
++        random_episode_split=False,
++        rolling_episode_split=False,
++    )
++    try:
++        agent = BasicElectricVehicleRBC_ReferenceController(env)
++
++        observations, _ = env.reset()
++        done = False
++        truncated = False
++        step = 0
++
++        while not (done or truncated) and step < episode_time_steps:
++            actions = agent.predict(observations)
++            observations, rewards, done, truncated, info = env.step(actions)
++            step += 1
++
++        kpis: Dict[str, Any] = {}
++        eval_data = env.evaluate()
++        for row in eval_data.to_dict("records"):
++            if str(row.get('level', '')).casefold() != 'district':
++                continue
++            name = row.get('cost_function')
++            if name and 'value' in row:
++                name = str(name)
++                if name in kpis:
++                    raise ValueError(f'duplicate district KPI: {name}')
++                value = row['value']
++                kpis[name] = float(value) if value is not None and math.isfinite(float(value)) else None
++
++        kpis["_meta"] = {
++            "agent": "BasicElectricVehicleRBC_ReferenceController",
++            "schema": str(schema_path),
++            "kpi_level": "district",
++            "episode_time_steps": episode_time_steps,
++            "total_steps": step,
++            "terminated": bool(done),
++            "truncated": bool(truncated),
++        }
++        return kpis
++    finally:
++        env.close()
+--- a/uc3m/reward/term_telemetry.py
++++ b/uc3m/reward/term_telemetry.py
+@@ -326,9 +326,19 @@
+         first = self._series[min(self._series)]
+         district = {key: [math.fsum(v[key][t] for v in self._series.values()) for t in range(len(first["net"]))]
+                     for key in ("net", "baseline")}
+-        return {"district": thesis_indicators_from_series(district["net"], district["baseline"], first["price"],
+-                                                          first["carbon"], self.steps_per_day),
+-                "buildings": buildings, "pending": dict(PENDING_INDICATORS)}
++        aggregate = thesis_indicators_from_series(district["net"], district["baseline"], first["price"],
++                                                  first["carbon"], self.steps_per_day)
++        # Shape ratios use the district flow. Settlements use each building's
++        # actual tariff/intensity before aggregation, including signed exports.
++        for key in ("electricity_cost_total", "electricity_cost_delta", "carbon_emissions_total",
++                    "carbon_emissions_delta", "ci_weighted_consumption"):
++            aggregate[key] = math.fsum(row[key] for row in buildings.values())
++        unavailable = {}
++        if any(v["price"] != first["price"] for v in self._series.values()):
++            aggregate["price_signal_deviation"] = None
++            unavailable["district.price_signal_deviation"] = "heterogeneous_building_prices"
++        return {"district": aggregate, "buildings": buildings, "pending": dict(PENDING_INDICATORS),
++                "unavailable": unavailable}
+ 
+     def close_episode(self, citylearn_v3=None):
+         """Close the running episode; returns its summary, or None if it had no step.
+--- a/uc3m/kpis/evaluator.py
++++ b/uc3m/kpis/evaluator.py
+@@ -1,5 +1,5 @@
+ """
+-KPIEvaluator — Evaluador de 35 KPIs holísticos (§4.7 / §4.8)
++KPIEvaluator — indicadores auxiliares de simulación y proxies de recompensa
+ =============================================================
+ Calcula los KPIs de evaluación del framework UC3M al final de cada episodio
+ o experimento completo.
+@@ -22,7 +22,7 @@
+ from __future__ import annotations
+ 
+ import numpy as np
+-from dataclasses import dataclass
++from dataclasses import dataclass, field
+ from typing import Dict
+ 
+ from uc3m.reward.hphi import HPHI, compute_global_score
+@@ -35,42 +35,42 @@
+     """KPIs calculados al final de un episodio de simulación."""
+ 
+     # ── Dimensión 1 — Energéticos ──────────────────────────────────────
+-    energy_saved_kwh:         float = 0.0   # kWh ahorrados vs. baseline RBC
+-    self_sufficiency:         float = 0.0   # fracción cobertura local [0,1]
+-    self_consumption:         float = 0.0   # fracción PV + BESS consumida [0,1]
+-    peak_reduction_kw:        float = 0.0   # reducción demanda punta [kW]
+-    load_factor:              float = 0.0   # carga media / carga pico
++    energy_saved_kwh:         float | None = None  # requires a supplied matched baseline
++    self_sufficiency:         float | None = None
++    self_consumption:         float | None = None
++    peak_reduction_kw:        float | None = None
++    load_factor:              float | None = None
+ 
+     # ── Dimensión 2 — Económicos ───────────────────────────────────────
+-    cost_saved_usd:           float = 0.0   # USD ahorrados vs. sin BESS
+-    cost_total_usd:           float = 0.0   # USD pagados a la red
+-    arbitrage_gain_usd:       float = 0.0   # USD ganados por arbitraje TOU
++    cost_saved_usd:           float | None = None
++    cost_total_usd:           float | None = None
++    arbitrage_gain_usd:       float | None = None  # needs a paired arbitrage experiment
+ 
+     # ── Dimensión 3 — Ambientales ──────────────────────────────────────
+-    co2_avoided_kg:           float = 0.0   # kg CO₂ evitados vs. baseline
+-    co2_total_kg:             float = 0.0   # kg CO₂ emitidos al grid
+-    renewable_fraction:       float = 0.0   # fracción de energía renovable [0,1]
++    co2_avoided_kg:           float | None = None
++    co2_total_kg:             float | None = None
++    renewable_fraction:       float | None = None
+ 
+     # ── Dimensión 4 — Confort ──────────────────────────────────────────
+-    discomfort_hours:         float = 0.0   # horas fuera de banda ASHRAE-55
+-    avg_unmet_setpoint:       float = 0.0   # °C promedio de incumplimiento
+-    avg_indoor_rh:            float = 0.0   # % HR interior promedio
++    discomfort_hours:         float | None = None  # hourly unmet setpoint, no ASHRAE certification
++    avg_unmet_setpoint:       float | None = None
++    avg_indoor_rh:            float | None = None
+ 
+     # ── Dimensión 5 — Resiliencia ──────────────────────────────────────
+-    resilience_score:         float = 0.0   # [0,1] cobertura media en cortes
+-    islanding_hours:          float = 0.0   # horas de islanding exitoso
+-    load_not_served_kwh:      float = 0.0   # kWh no servidos en cortes
++    resilience_score:         float | None = None
++    islanding_hours:          float | None = None
++    load_not_served_kwh:      float | None = None
+ 
+     # ── Dimensión 6 — Degradación BESS ────────────────────────────────
+-    soh_loss_pct:             float = 0.0   # pérdida de SoH en % del episodio
+-    equivalent_cycles:        float = 0.0   # ciclos equivalentes DoD-normaliz.
+-    throughput_kwh:           float = 0.0   # kWh procesados por el BESS
++    soh_loss_pct:             float | None = None
++    equivalent_cycles:        float | None = None
++    throughput_kwh:           float | None = None
+ 
+     # ── Dimensión 7 — Holísticos ───────────────────────────────────────
+     hphi:                     float = 0.0   # HPHI 7D normalizado [0,1]
+     sparsity:                 float = 0.0   # dispersión frontera Pareto
+-    epsilon_coverage:         float = 0.0   # cobertura ε vs. frontera referencia
+-    global_score:             float = 0.0   # Φ = (Π J̃_k)^{1/7}
++    epsilon_coverage:         float | None = None
++    global_score:             float = 0.0   # reward proxy, not a calibrated physical 7D score
+     pareto_front_size:        int   = 0     # |F| puntos no dominados
+ 
+     # ── Metadatos ──────────────────────────────────────────────────────
+@@ -79,29 +79,40 @@
+     episode:      int = 0
+     time_steps:   int = 0
+     dataset:      str = ""
+-
+-    def to_dict(self) -> Dict[str, float]:
+-        """Serializa a dict plano para MLflow / W&B / CSV."""
++    metric_status: dict = field(default_factory=dict)
++    scientific_eligible: bool = False
++
++    def to_dict(self) -> dict:
++        """Payload with None and provenance; use metric_values for scalar logging."""
+         d = {}
+         for k, v in self.__dict__.items():
+-            d[k] = float(v) if isinstance(v, (int, float, np.floating)) else v
++            d[k] = float(v) if isinstance(v, (int, float, np.floating)) and not isinstance(v, bool) else v
+         return d
+ 
+     def summary_line(self) -> str:
++        def fmt(value, digits):
++            return 'N/A' if value is None else f'{value:.{digits}f}'
+         return (
+             f"[Ep {self.episode:>4}] "
+             f"HPHI={self.hphi:.4f}  Φ={self.global_score:.4f}  "
+-            f"CO₂↓={self.co2_avoided_kg:.1f}kg  "
+-            f"Cost↓={self.cost_saved_usd:.2f}USD  "
+-            f"Peak↓={self.peak_reduction_kw:.1f}kW  "
+-            f"SoH↓={self.soh_loss_pct:.4f}%  "
++            f"CO₂↓={fmt(self.co2_avoided_kg, 1)}kg  "
++            f"Cost↓={fmt(self.cost_saved_usd, 2)}USD  "
++            f"Peak↓={fmt(self.peak_reduction_kw, 1)}kW  "
++            f"SoH↓={fmt(self.soh_loss_pct, 4)}%  "
+             f"PF={self.pareto_front_size}"
+         )
+ 
++    def metric_values(self) -> Dict[str, float]:
++        """Available scalars for log_metrics; provenance stays in to_dict."""
++        metadata = {'n_agents', 'episode', 'time_steps', 'scientific_eligible'}
++        return {k: float(v) for k, v in self.__dict__.items()
++                if k not in metadata and isinstance(v, (int, float, np.floating))
++                and not isinstance(v, bool) and np.isfinite(v)}
++
+ 
+ class KPIEvaluator:
+     """
+-    Calcula los 35 KPIs al final de cada episodio.
++    Calcula indicadores disponibles; ausencias son None y modelos requieren opt-in.
+ 
+     Uso típico:
+         evaluator = KPIEvaluator(n_agents=17, baseline_kwh_per_step=..., ...)
+@@ -109,7 +120,7 @@
+         kpis = evaluator.compute_episode(env, episode_idx=ep)
+         # Logging:
+         print(kpis.summary_line())
+-        mlflow.log_metrics(kpis.to_dict())
++        mlflow.log_metrics(kpis.metric_values())
+     """
+ 
+     def __init__(
+@@ -122,7 +133,17 @@
+         hphi_calculator: HPHI | None = None,
+         carbon_intensity_default: float = 0.79,
+         price_default_usd: float = 0.32,
++        *,
++        price_currency: str | None = None,
++        baseline_peak_kw: float | None = None,
++        allow_modeled_estimates: bool = False,
+     ):
++        if type(n_agents) is not int or n_agents < 1:
++            raise ValueError('n_agents must be a positive integer')
++        for value in (baseline_consumption_kwh, baseline_cost_usd, baseline_co2_kg,
++                      baseline_peak_kw, price_default_usd, carbon_intensity_default):
++            if value is not None and not np.isfinite(value):
++                raise ValueError('baselines and modeled rates must be finite')
+         self.n_agents    = n_agents
+         self._hphi       = hphi_calculator if hphi_calculator is not None else HPHI()
+         self._ref_pareto = reference_pareto_front
+@@ -133,6 +154,10 @@
+         self._baseline_co2  = baseline_co2_kg
+         self._ci_default    = carbon_intensity_default
+         self._price_default = price_default_usd
++        self._price_currency = price_currency
++        self._baseline_peak = baseline_peak_kw
++        self._allow_modeled = allow_modeled_estimates
++        self._modeled_metrics = set()
+ 
+         # Acumuladores intra-episodio
+         self._episode: int = 0
+@@ -159,9 +184,13 @@
+         dataset      : nombre del dataset (para trazabilidad)
+         """
+         self._episode = episode_idx
++        self._modeled_metrics = set()
+ 
+         # ── 1. Extraer medias de ejes de recompensa ───────────────────────
+         axis_means = env.episode_axis_means()   # (N, 7)
++        axis_means = np.asarray(axis_means, dtype=float)
++        if axis_means.shape != (self.n_agents, 7) or not np.isfinite(axis_means).all():
++            raise ValueError('reward proxy metrics require one finite seven-axis row per agent')
+         mean_across_agents = axis_means.mean(axis=0)   # (7,)
+ 
+         # ── 2. HPHI y métricas Pareto ─────────────────────────────────────
+@@ -197,7 +226,7 @@
+         # ── 8. KPIs de degradación BESS ───────────────────────────────────
+         deg_kpis = self._degradation_kpis(env)
+ 
+-        return EpisodeKPIs(
++        result = EpisodeKPIs(
+             # Energéticos
+             energy_saved_kwh   = e_kpis["saved_kwh"],
+             self_sufficiency   = e_kpis["self_sufficiency"],
+@@ -237,6 +266,20 @@
+             time_steps         = env.time_steps,
+             dataset            = dataset,
+         )
++        metadata = {'algorithm', 'n_agents', 'episode', 'time_steps', 'dataset', 'metric_status', 'scientific_eligible'}
++        result.metric_status = {name: ('unavailable' if value is None else 'simulation')
++                                for name, value in result.__dict__.items() if name not in metadata}
++        for name in ('hphi', 'global_score', 'sparsity', 'pareto_front_size'):
++            result.metric_status[name] = 'reward_proxy'
++        if self._ref_pareto is None:
++            result.epsilon_coverage = None
++            result.metric_status['epsilon_coverage'] = 'unavailable'
++        for name in ('energy_saved_kwh', 'cost_saved_usd', 'co2_avoided_kg', 'peak_reduction_kw'):
++            if getattr(result, name) is not None:
++                result.metric_status[name] = 'comparison_supplied_baseline'
++        for name in self._modeled_metrics:
++            result.metric_status[name] = 'modeled'
++        return result
+ 
+     def reset_pareto(self) -> None:
+         """Limpia la frontera Pareto acumulada (entre experimentos)."""
+@@ -246,175 +289,131 @@
+     # KPIs por categoría (helpers internos)
+     # ═══════════════════════════════════════════════════════════════════════
+ 
+-    def _energy_kpis(self, env) -> Dict[str, float]:
+-        total_net    = 0.0
+-        total_pv     = 0.0
+-        total_load   = 0.0
+-        bess_charge  = 0.0
+-        bess_disch   = 0.0
+-        peak_kw      = 0.0
+-
+-        def _safe(attr, default=(0.0,)):
+-            v = attr if attr is not None else default
+-            a = np.asarray(v)
+-            return a if a.size > 0 else np.array([0.0])
+-
+-        for bldg in env.citylearn.buildings:
+-            net = _safe(getattr(bldg, "net_electricity_consumption", None))
+-            pv  = _safe(getattr(bldg, "solar_generation", None))
+-            ld  = _safe(getattr(bldg, "energy_consumption", None))
+-            bess = getattr(bldg, "electrical_storage", None)
+-            if bess:
+-                ec = _safe(getattr(bess, "electricity_consumption", None))
+-                bess_charge  += float(np.sum(np.maximum(ec, 0)))
+-                bess_disch   += float(np.sum(np.maximum(-ec, 0)))
+-            total_net  += float(np.sum(net))
+-            total_pv   += float(np.sum(pv))
+-            total_load += float(np.sum(ld))
+-            peak_kw     = max(peak_kw, float(np.max(np.abs(net))) if len(net) else 0.0)
+-
+-        baseline_kwh = self._baseline_kwh or max(total_net * 1.2, _EPS)
+-        saved_kwh    = max(0.0, baseline_kwh - total_net)
+-        ss = min(1.0, (total_pv + bess_disch) / max(total_load, _EPS))
+-        sc = min(1.0, (total_pv - max(0.0, total_pv - total_load)) / max(total_pv, _EPS))
+-        lf = (total_net / env.time_steps) / max(peak_kw, _EPS)
+-
+-        return {
+-            "saved_kwh":       saved_kwh,
+-            "self_sufficiency": ss,
+-            "self_consumption": sc,
+-            "peak_reduction_kw": max(0.0, peak_kw * 0.15),   # estimado ~15% reducción
+-            "load_factor":     min(1.0, lf),
+-        }
+-
+-    def _economic_kpis(self, env) -> Dict[str, float]:
+-        total_cost   = 0.0
+-
+-        def _safe_arr(attr):
+-            v = attr if attr is not None else [0.0]
+-            a = np.asarray(v)
+-            return a if a.size > 0 else np.array([0.0])
+-
+-        for bldg in env.citylearn.buildings:
+-            net = _safe_arr(getattr(bldg, "net_electricity_consumption", None))
+-            # Precio aproximado (no tenemos acceso directo por paso aquí)
+-            # Usar precio promedio ponderado
+-            avg_price = self._price_default
+-            cost = float(np.sum(np.maximum(net, 0))) * avg_price
+-            total_cost += cost
+-
+-        baseline_cost = self._baseline_cost or max(total_cost * 1.15, _EPS)
+-        saved_usd     = max(0.0, baseline_cost - total_cost)
+-        arbitrage_usd = saved_usd * 0.3   # estimado: 30% del ahorro = arbitraje TOU
+-
+-        return {
+-            "saved_usd":    saved_usd,
+-            "total_usd":    total_cost,
+-            "arbitrage_usd": arbitrage_usd,
+-        }
+-
+-    def _environmental_kpis(self, env) -> Dict[str, float]:
+-        def _safe(attr):
+-            v = attr if attr is not None else [0.0]
+-            a = np.asarray(v)
+-            return a if a.size > 0 else np.array([0.0])
+-
+-        total_net = 0.0
+-        total_pv  = 0.0
+-
+-        for bldg in env.citylearn.buildings:
+-            net = _safe(getattr(bldg, "net_electricity_consumption", None))
+-            pv  = _safe(getattr(bldg, "solar_generation", None))
+-            total_net += float(np.sum(np.maximum(net, 0)))
+-            total_pv  += float(np.sum(pv))
+-
+-        ci          = self._ci_default
+-        co2_total   = total_net * ci
+-        baseline_co2= self._baseline_co2 or max(co2_total * 1.2, _EPS)
+-        avoided_kg  = max(0.0, baseline_co2 - co2_total)
+-        ren_frac    = min(1.0, total_pv / max(total_net + total_pv, _EPS))
+-
+-        return {
+-            "avoided_kg":    avoided_kg,
+-            "total_kg":      co2_total,
+-            "renewable_frac": ren_frac,
+-        }
+-
+-    def _comfort_kpis(self, env) -> Dict[str, float]:
+-        unmet_total = 0.0
+-        rh_total    = 0.0
+-        count       = 0
+-
+-        for bldg in env.citylearn.buildings:
+-            raw_unmet = getattr(bldg, "average_unmet_cooling_setpoint_difference", None)
+-            unmet_v = raw_unmet if raw_unmet is not None else [0.0]
+-            unmet = np.asarray(unmet_v)
+-            unmet = unmet if unmet.size > 0 else np.array([0.0])
+-            rh = getattr(bldg, "indoor_relative_humidity", None)
+-            unmet_total += float(np.sum(np.maximum(unmet, 0)))
+-            if rh is not None:
+-                rh_total += float(np.mean(np.asarray(rh)))
+-                count += 1
+-
+-        n_steps = env.time_steps * self.n_agents
+-        avg_rh  = rh_total / max(count, 1)
+-        disc_h  = unmet_total / max(self.n_agents, 1)   # promedio por agente
+-
+-        return {
+-            "discomfort_h": disc_h,
+-            "avg_unmet":    unmet_total / max(n_steps, 1),
+-            "avg_rh":       avg_rh if count > 0 else 70.0,
+-        }
+-
+-    def _resilience_kpis(self, env) -> Dict[str, float]:
+-        # Sin simulación explícita de cortes → proxied por SoC medio del BESS
+-        soc_sum = 0.0
+-        count   = 0
+-        for bldg in env.citylearn.buildings:
+-            bess = getattr(bldg, "electrical_storage", None)
+-            if bess:
+-                soc = getattr(bess, "soc", [0.5])
+-                soc_sum += float(np.mean(np.asarray(soc)))
+-                count += 1
+-        avg_soc = soc_sum / max(count, 1)
+-        # Score resilencia = SoC medio normalizado [0,1]
+-        return {
+-            "score":           avg_soc,
+-            "islanding_h":     0.0,   # requiere simulación de corte explícita
+-            "not_served_kwh":  0.0,
+-        }
+-
+-    def _degradation_kpis(self, env) -> Dict[str, float]:
+-        throughput = 0.0
+-        for bldg in env.citylearn.buildings:
+-            bess = getattr(bldg, "electrical_storage", None)
+-            if bess:
+-                ec_raw = getattr(bess, "electricity_consumption", None)
+-                ec_v = ec_raw if ec_raw is not None else [0.0]
+-                ec = np.asarray(ec_v)
+-                ec = ec if ec.size > 0 else np.array([0.0])
+-                throughput += float(np.sum(np.abs(ec)))
+-
+-        cap_total = sum(
+-            float(getattr(getattr(bldg, "electrical_storage", None), "capacity", 1.0) or 1.0)
+-            for bldg in env.citylearn.buildings
+-        )
+-        equiv_cycles = throughput / (2 * max(cap_total, _EPS))
+-        # SoH loss estimado: modelo lineal simplificado (Hesse et al. 2017)
+-        soh_loss_pct = equiv_cycles * 0.0003   # ~0.03% por ciclo para LFP
+-
+-        return {
+-            "soh_loss_pct":  soh_loss_pct,
+-            "equiv_cycles":  equiv_cycles,
+-            "throughput_kwh": throughput,
+-        }
+-
+-    # ═══════════════════════════════════════════════════════════════════════
+-    # Comparación entre algoritmos
+-    # ═══════════════════════════════════════════════════════════════════════
+-
+     @staticmethod
+-    def compare(kpis_list: list[EpisodeKPIs]) -> Dict[str, Dict[str, float]]:
++    def _series(env, obj, name):
++        """Read only completed intervals, refusing missing/nonfinite signals."""
++        value = getattr(obj, name, None)
++        if value is None:
++            return None
++        arr = np.asarray(value, dtype=float).reshape(-1)
++        count = int(getattr(env.citylearn, 'time_step', env.time_steps))
++        if count <= 0 or arr.size < count:
++            return None
++        arr = arr[:count]
++        return arr if np.all(np.isfinite(arr)) else None
++
++    def _energy_kpis(self, env):
++        nets, pvs, loads, discharges = [], [], [], []
++        for building in env.citylearn.buildings:
++            net = self._series(env, building, 'net_electricity_consumption')
++            if net is None:
++                raise ValueError('energy KPIs require completed finite net consumption')
++            nets.append(net)
++            pv = self._series(env, building, 'solar_generation')
++            pvs.append(None if pv is None else np.abs(pv))
++            load = self._series(env, building, 'net_electricity_consumption_without_storage_and_pv')
++            if load is None:
++                load = self._series(env, building, 'energy_consumption')
++            loads.append(load)
++            storage = getattr(building, 'electrical_storage', None)
++            ec = self._series(env, storage, 'electricity_consumption') if storage else np.zeros_like(net)
++            discharges.append(None if ec is None else np.maximum(-ec, 0))
++        district = np.sum(nets, axis=0)
++        total_net = float(district.sum())
++        peak = float(np.max(np.maximum(district, 0)))
++        valid = all(v is not None for v in pvs+loads+discharges)
++        ss, sc = None, None
++        if valid:
++            pv = np.sum(pvs, axis=0)
++            load = np.sum(loads, axis=0)
++            discharge = np.sum(discharges, axis=0)
++            if float(load.sum()) > 0:
++                ss = float(np.clip(np.minimum(pv+discharge, load).sum()/load.sum(), 0, 1))
++            if float(pv.sum()) > 0:
++                sc = float(np.clip(np.minimum(pv, load).sum()/pv.sum(), 0, 1))
++        return {'saved_kwh': None if self._baseline_kwh is None else self._baseline_kwh-total_net,
++                'self_sufficiency': ss, 'self_consumption': sc,
++                'peak_reduction_kw': None if self._baseline_peak is None else self._baseline_peak-peak,
++                'load_factor': None if peak == 0 else float(np.maximum(district, 0).mean()/peak)}
++
++    def _settlement(self, env, attr, container, fallback, metric, *, currency_ok=True):
++        total, modeled = 0., False
++        for building in env.citylearn.buildings:
++            net = self._series(env, building, 'net_electricity_consumption')
++            rates = self._series(env, getattr(building, container, None), attr) if currency_ok else None
++            if net is None:
++                return None
++            if rates is None:
++                if not self._allow_modeled:
++                    return None
++                rates = np.full_like(net, fallback)
++                modeled = True
++            if len(rates) != len(net):
++                return None
++            total += float(np.sum(net*rates))  # signed net settlement, matching canonical physical convention
++        if modeled:
++            self._modeled_metrics.add(metric)
++        return total
++
++    def _economic_kpis(self, env):
++        total = self._settlement(env, 'electricity_pricing', 'pricing', self._price_default,
++                                 'cost_total_usd', currency_ok=self._price_currency == 'USD')
++        saved = None if total is None or self._baseline_cost is None else self._baseline_cost-total
++        if saved is not None and 'cost_total_usd' in self._modeled_metrics:
++            self._modeled_metrics.add('cost_saved_usd')
++        return {'saved_usd': saved, 'total_usd': total, 'arbitrage_usd': None}
++
++    def _environmental_kpis(self, env):
++        total = self._settlement(env, 'carbon_intensity', 'carbon_intensity', self._ci_default, 'co2_total_kg')
++        avoided = None if total is None or self._baseline_co2 is None else self._baseline_co2-total
++        if avoided is not None and 'co2_total_kg' in self._modeled_metrics:
++            self._modeled_metrics.add('co2_avoided_kg')
++        pvs = [self._series(env, b, 'solar_generation') for b in env.citylearn.buildings]
++        nets = [self._series(env, b, 'net_electricity_consumption') for b in env.citylearn.buildings]
++        renewable = None
++        if all(v is not None for v in pvs+nets):
++            pv = sum(float(np.abs(v).sum()) for v in pvs)
++            imports = sum(float(np.maximum(v, 0).sum()) for v in nets)
++            renewable = pv/(imports+pv) if imports+pv > 0 else None
++        return {'avoided_kg': avoided, 'total_kg': total, 'renewable_frac': renewable}
++
++    def _comfort_kpis(self, env):
++        unmet = [self._series(env, b, 'average_unmet_cooling_setpoint_difference')
++                 for b in env.citylearn.buildings]
++        rhs = [self._series(env, b, 'indoor_relative_humidity') for b in env.citylearn.buildings]
++        valid_unmet = all(v is not None for v in unmet)
++        return {'discomfort_h': (sum(float(np.count_nonzero(v > 0)) for v in unmet)/self.n_agents
++                                 if valid_unmet else None),
++                'avg_unmet': (float(np.mean([np.maximum(v, 0).mean() for v in unmet]))
++                              if valid_unmet else None),
++                'avg_rh': float(np.mean([v.mean() for v in rhs])) if all(v is not None for v in rhs) else None}
++
++    def _resilience_kpis(self, env):
++        # A storage SoC proxy cannot establish service delivered during outages.
++        return {'score': None, 'islanding_h': None, 'not_served_kwh': None}
++
++    def _degradation_kpis(self, env):
++        throughput, capacity, available = 0., 0., True
++        for building in env.citylearn.buildings:
++            storage = getattr(building, 'electrical_storage', None)
++            if storage is None:
++                continue
++            ec = self._series(env, storage, 'electricity_consumption')
++            cap = getattr(storage, 'capacity', None)
++            if ec is None or cap is None or not np.isfinite(cap) or cap <= 0:
++                available = False
++                continue
++            throughput += float(np.abs(ec).sum())
++            capacity += float(cap)
++        cycles = throughput/(2*capacity) if available and capacity > 0 else None
++        loss = cycles*0.0003 if cycles is not None and self._allow_modeled else None
++        if loss is not None:
++            self._modeled_metrics.add('soh_loss_pct')
++        return {'soh_loss_pct': loss, 'equiv_cycles': cycles,
++                'throughput_kwh': throughput if available else None}
++
++    @staticmethod
++    def compare(kpis_list: list[EpisodeKPIs]) -> Dict[str, dict]:
+         """
+         Genera tabla comparativa entre resultados de distintos algoritmos.
+         kpis_list: lista de EpisodeKPIs (uno por algoritmo / run).
+@@ -430,5 +429,7 @@
+                 "SoH_loss_%":    k.soh_loss_pct,
+                 "Resilience":    k.resilience_score,
+                 "PF_size":       float(k.pareto_front_size),
++                "metric_status": dict(k.metric_status),
++                "scientific_eligible": k.scientific_eligible,
+             }
+         return result

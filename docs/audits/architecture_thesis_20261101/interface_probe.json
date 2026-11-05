@@ -1,0 +1,92 @@
+{
+  "scope": "interface cardinality and schema metadata; not learning or physical acceptance",
+  "discrete_actions": {
+    "source": "actual native build_discrete_action_table; defaults of MASAC/MAAC parsers",
+    "metadata": {
+      "mode": "axis",
+      "action_bins": 3,
+      "max_action_dim": 44,
+      "n_discrete_actions": 89,
+      "cartesian_action_count": 984770902183611232881,
+      "growth": "linear",
+      "note": "Axis mode avoids the cartesian explosion from MultiDiscrete-style joint actuator combinations while preserving a single Discrete action id required by the external MASAC/MAAC backends."
+    },
+    "max_nonzero_components": 1,
+    "projection_before_clipping": {
+      "5": {
+        "unique_vectors": 11,
+        "zero_vector_ids": 79
+      },
+      "6": {
+        "unique_vectors": 13,
+        "zero_vector_ids": 77
+      },
+      "8": {
+        "unique_vectors": 17,
+        "zero_vector_ids": 73
+      },
+      "10": {
+        "unique_vectors": 21,
+        "zero_vector_ids": 69
+      },
+      "12": {
+        "unique_vectors": 25,
+        "zero_vector_ids": 65
+      },
+      "13": {
+        "unique_vectors": 27,
+        "zero_vector_ids": 63
+      },
+      "19": {
+        "unique_vectors": 39,
+        "zero_vector_ids": 51
+      },
+      "34": {
+        "unique_vectors": 69,
+        "zero_vector_ids": 21
+      },
+      "44": {
+        "unique_vectors": 89,
+        "zero_vector_ids": 1
+      }
+    }
+  },
+  "datasets": [
+    {
+      "alias": "iquitos_v1",
+      "schema_sha256": "e3326bb0a798648c5b3c9c37ebf0ed69d67fa3c53ddb152d0b7370b598da8bd8",
+      "chargers": 185,
+      "vehicles": 1850,
+      "market_enabled": true,
+      "active_action_types": [
+        "electrical_storage",
+        "electric_vehicle_storage",
+        "washing_machine"
+      ]
+    },
+    {
+      "alias": "iquitos_v2",
+      "schema_sha256": "6c1be34c444d821ba1b65670e351e671feda7d32407100808a0d3192f71c4a13",
+      "chargers": 2,
+      "vehicles": 2,
+      "market_enabled": false,
+      "active_action_types": [
+        "electrical_storage",
+        "electric_vehicle_storage",
+        "washing_machine"
+      ]
+    },
+    {
+      "alias": "iquitos_v3",
+      "schema_sha256": "00bcc48a75ec4c8efc7e08a8b4e89fe2f19799fd9150c552306fbf2ad5ae654b",
+      "chargers": 2,
+      "vehicles": 2,
+      "market_enabled": false,
+      "active_action_types": [
+        "electrical_storage",
+        "electric_vehicle_storage",
+        "washing_machine"
+      ]
+    }
+  ]
+}

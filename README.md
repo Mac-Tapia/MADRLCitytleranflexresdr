@@ -1,620 +1,83 @@
 # CityLearn v3 MADRL para comunidades inteligentes
 
-Proyecto: **Multi-agente de aprendizaje por refuerzo profundo para gestion coordinada de flexibilidad energetica, emisiones de carbono y eficiencia economica en comunidades inteligentes**.
+Proyecto de coordinación de flexibilidad energética, emisiones de CO2 y costo energético en 17 edificios de Iquitos mediante HAPPO, MASAC, MATD3 y MAAC.
 
-Este repositorio integra CityLearn v2 como simulador base y agrega una capa experimental CityLearn v3 para entrenar y evaluar algoritmos MADRL bajo Dec-POMDP, CTDE, tres ejes de investigacion y comparacion contra agentes originales CityLearn v2.
+CityLearn aporta el simulador base y el fork incorpora la capa experimental v3; no son dos instalaciones separadas. El núcleo propio mantiene un monolito modular con dominio, casos de uso, puertos, adaptadores y una CLI nativa. Colab es cliente de esa CLI.
 
-> **"v2" y "v3" no son dos paquetes ni dos instalaciones separadas.** Ambos viven dentro del mismo submodulo `CityLearn/` (fork propio) y se instalan con un solo `-e ./CityLearn` (incluido en `requirements.txt`). "v2" es el simulador base (`CityLearn/citylearn/*.py`: fisica, edificios, DERs, EVs, KPIs) y "v3" es la capa adicional en `CityLearn/citylearn/v3/` (Dec-POMDP, CTDE, recompensa multiobjetivo) que se apoya sobre la v2. No existe un segundo `pip install` para "v3".
+## Estado vigente
 
-## Resumen
+La implementación y sus verificaciones actuales se registran en [el informe de ejecución integrada](docs/audits/ejecucion_remediacion_20261101/informe.md). El plan y los dictámenes originales preservan sus cortes documentales anteriores.
 
-El proyecto conserva CityLearn v2 como fuente oficial de datos, fisica, edificios, DERs, EVs y KPIs, y agrega una capa CityLearn v3 para:
+Corte documental: 2026-11-01. La implementación está en remediación. **No se acredita una campaña nueva científicamente completa, un modelo ganador ni operación física.** Los resultados históricos retirados no son evidencia de la campaña nueva.
 
-- Modelar 17 edificios institucionales/comerciales reales de Iquitos + EV por edificio/tipo/concurrencia como comunidad multiagente.
-- Exponer un entorno Dec-POMDP con observaciones locales y estado global para CTDE.
-- Conectar cuatro backends MADRL oficiales: HAPPO, MASAC, MATD3 y MAAC.
-- Ejecutar tres ejes cientificos: flexibilidad energetica, emisiones de CO2 y costos energeticos.
-- Guardar artefactos reproducibles: checkpoints, JSON, CSV, figuras, tablas y trazas.
-- Comparar CityLearn v3 MADRL contra agentes originales CityLearn v2.
-- Aplicar 4 pruebas estadisticas sobre los resultados de entrenamiento MADRL para demostracion de hipotesis de tesis.
+El propietario decidió conservar el contrato **v1** y documentar sus diferencias con el PT. La fuente metodológica vigente es el [registro de contrato v1](docs/decisions/contrato_v1_pt.md), junto con la configuración ejecutable. Las medidas del adaptador, los controles activos y las variantes de acciones por backend deben declararse: no hay equivalencia automática de capacidad entre los cuatro métodos.
 
-## Estado actual
+- [Plan integrado y criterios de cierre](docs/plans/remediacion_integrada.md).
+- [Auditoría de arquitectura y correspondencia con PT](docs/audits/architecture_thesis_20261101/informe.md).
+- [Integración de los dos informes del Revisor A](docs/audits/integracion_auditorias_20261101/README.md).
+- [Estado de las especificaciones](specs/STATUS.md): distinguir antecedentes de evidencia nueva, y contratos de aceptación nativa/científica.
 
-Actualizado: 2026-06-20.
+La lectura mecánica del árbol no equivale a revisión semántica de cada archivo. Las pruebas focales y sus JUnit se conservan por tarea; no sustituyen una suite integral estable, el ensayo real de Colab ni las etapas experimentales pendientes.
 
-### Cambios actualizados (2026-06-20)
+## Contrato experimental
 
-- ✅ Arquitectura operativa de entrenamiento visible documentada y validada
-- ✅ Manifest de workflow actualizado con estructura completa de artefactos
-- ✅ Scripts de ejecución optimizados para control de entrenamiento en tiempo real
-- ✅ Herramientas de verificación y validación de notebooks mejoradas
-- ✅ Configuración de Iquitos (dataset) validada y sincronizada
-- ✅ Soporte tutorial notebook actualizado con cell patching
+La campaña se declara en [iquitos.yaml](configs/experiments/iquitos.yaml), con dataset `data/campaigns/iquitos_v1`, splits `train_2023`, `validation_2024`, `test_2025` y normalizador ajustado en entrenamiento. Las prioridades E1/E2/E3 proceden exclusivamente de [objective_policies.yaml](configs/objective_policies.yaml); son compensatorias. La tarifa de [scenarios.yaml](configs/scenarios.yaml) es media plana, por lo que no se anuncian resultados de arbitraje TOU.
 
-### Corridas de referencia y definitiva
+La formulación distingue estado latente, observación local, información del crítico, distribución inicial, acciones físicas y decodificación específica de backend. El pago común corresponde al perfil v7; la representación discreta de MASAC/MAAC restringe combinaciones frente a los actores continuos. Las diferencias con el PT, el backcast de B01 y los límites de interpretación quedan explícitos en el contrato.
 
-| Corrida | Sesion | Estado | Descripcion |
-| ------- | ------ | ------ | ----------- |
-| **v3 referencia** | `citylearn_v3_madrl_full_20260613_010234` | COMPLETADA 12/12 | Perfiles `*_unified_comparable_v3`, todas las 12 corridas con artefactos validos |
-| **v4 definitivo** | `citylearn_v3_madrl_full_20260615_074011_v4` | COMPLETADA 12/12 | Penalidad BESS degradacion (LiFePO4 C-rate/Arrhenius) + urgencia EV (SOC); artefactos canónicos reparados y sin duplicados raíz |
+HPO selecciona en validación. La unidad de réplica estadística es la semilla de entrenamiento independiente; horas, edificios, episodios y KPI no añaden réplicas. La selección descriptiva y el ganador inferencial son estados distintos; un estudio completo puede no detectar diferencias.
 
-### Estado v4 definitivo (corrida activa)
+## Árbol por responsabilidad
 
-| Algoritmo | E1 | E2 | E3 |
-| --------- | -- | -- | -- |
-| **HAPPO** | Completado | Completado | Completado |
-| **MASAC** | Completado | Completado | Completado |
-| **MATD3** | Completado | Completado | Completado |
-| **MAAC** | Completado | Completado | Completado |
+| Ruta | Responsabilidad |
+|---|---|
+| `uc3m/domain/` | Identidades, objetivos y contratos puros |
+| `uc3m/application/` | Campaña, integridad, evaluación, análisis, evidencia y entrega |
+| `uc3m/adapters/` | Integración CityLearn, backends nativos y políticas congeladas |
+| `configs/` | Dataset, escenarios, algoritmos, presupuesto y KPI |
+| `tests/` | Contratos, integración, perfil fresh y comprobaciones nativas |
+| `tools/` | Herramientas de dataset, auditoría, tesis y clientes Colab |
+| `scripts/` | Guardas y puntos de entrada de mantenimiento/calidad |
+| `governance/` | Layout, nombres, licencias y políticas de artefactos |
+| `docs/` y `specs/` | Diseño, decisiones, trazabilidad y evidencia documental |
+| `CityLearn/` y `external/` | Dependencias protegidas; cambios requieren encargo explícito |
 
-La corrida v4 finalizó el 2026-06-16 22:44:19 con `official_full_status.json: completed` y 12 jobs con `exit_code=0`. El monitor fue corregido para cerrar automáticamente al detectar `completed` salvo uso explícito de `-KeepOpenOnComplete`.
+Los inventarios completos y sus fronteras están en la auditoría. Carpetas vacías, igualdad de bytes o ausencia de una referencia textual no autorizan eliminar datos, scripts manuales, evidencia o dependencias.
 
-### Resultados v4 regenerados y comparados
+## Flujo de trabajo
 
-Artefactos actualizados desde los checkpoints de `outputs/citylearn_v3_madrl_full_20260615_074011_v4`:
-
-- Evidencia estadistica: `outputs/thesis_objective_evidence/madrl_checkpoint_stats_v4`.
-- Figuras canonicas de entrenamiento regeneradas: 156 PNG bajo `*/figures/` (12 corridas x 13 figuras).
-- Tablas canonicas regeneradas: 144 CSV bajo `*/figures/tables/` (12 corridas x 12 CSV; cada carpeta conserva tambien sus pares Markdown).
-- Figuras comparativas regeneradas: 12 PNG bajo `outputs/comparison_citylearn_v2_vs_v3_madrl/E1..E3`.
-- PNG internos antiguos de MASAC bajo `data/backend_results/` eliminados; quedan 0 PNG fuera de `figures/`.
-
-Resumen descriptivo e inferencial:
-
-| Alcance | Mejor por mediana de gain relativo | Kruskal-Wallis p | Significativo 0.05 | Nota |
-| ------- | ---------------------------------- | ---------------: | ------------------ | ---- |
-| OE1 flexibilidad | MATD3 | 0.4450 | No | Sin diferencia global significativa por eje |
-| OE2 CO2 | MASAC | 0.1655 | No | Sin diferencia global significativa por eje |
-| OE3 costos | MAAC | 0.0774 | No | Tendencia, pero no significativa a 0.05 |
-| ALL global | MATD3 | 0.0459 | Si | Diferencia global significativa entre agentes |
-
-El mejor agente global de la corrida v4 es **MATD3**. Tambien gana el ranking ponderado global en las tres comparativas por escenario: E1 score 0.7486, E2 score 0.7515 y E3 score 0.7333. La comparacion inferencial global detecta diferencia significativa (`Kruskal-Wallis p=0.0459`) y las comparaciones contra HAPPO favorecen a MATD3 (`MWU p=0.0182`, `Wilcoxon p=2.62e-06`). Los warnings esperados de Wilcoxon por muestras pequeñas/ceros quedan suprimidos y documentados en `wilcoxon_status`.
-
-### Tiempos reales corrida v3 (referencia valida)
-
-| Algoritmo | E1 (flex) | E2 (CO2) | E3 (costo) | Total |
-| --------- | --------: | -------: | ---------: | ----: |
-| HAPPO | 66.50 min | 66.15 min | 57.75 min | 190.4 min |
-| MASAC | 125.88 min | 148.33 min | 135.72 min | 409.9 min |
-| MATD3 | 95.13 min | 95.30 min | 80.70 min | 271.1 min |
-| MAAC | 52.33 min | 51.74 min | 54.16 min | 158.2 min |
-
-Hardware: RTX 4060 Laptop, 8,188 MiB VRAM, driver 560.94, PyTorch 2.8.0+cu126, CUDA 12.6, `cuda_memory_fraction=0.812`.
-
-### Cambios aplicados en v3 y v4
-
-**v3 (corrida de referencia) — desde 2026-06-14:**
-
-- **Bug SOC corregido**: penalidad de salida EV tenia signo invertido en v2 (`+25` en lugar de `-25`); en v3 es `-abs(25)*mult` (agente ya no aprende a NO cargar EVs).
-- **ev_weight**: 0.12 → **0.25** (mayor peso al cumplimiento EV).
-- **`_ev_service_constraint_term()`**: nueva restriccion de urgencia por salida — penaliza en proporcion al deficit de SOC y horas restantes.
-- **V2G habilitado**: 31 tomas de camioneta con `bidirectional_v2g`, `max_discharging_power=7.4 kW`.
-- Submodulo CityLearn commits: `afb68187` (reward fix) + `acc0ada6` (V2G schema).
-
-**v4 (corrida definitiva) — desde 2026-06-15:**
-
-- **Penalidad degradacion BESS**: modelo LiFePO4 con ciclo Arrhenius. Penaliza C-rate alto durante carga/descarga de la bateria; incentiva ciclos suaves para prolongar vida util.
-- **Urgencia EV por SOC**: penalizacion proporcional al deficit de carga cuando el EV esta proximo a la hora de salida. Fuerza priorizacion de carga en ventana horaria restante.
-- Perfil activo: `*_unified_comparable_v4`. Las nuevas ejecuciones usan la jerarquía compensatoria cíclica 0.60/0.25/0.15; las corridas v3 históricas conservan sus pesos originales.
-
-### Configuracion fija
-
-- Dataset activo: `citylearn_iquitos_2023_2025` (17 edificios reales de Iquitos, 2023-2025, 222 CSV activos auditados, 185 tomas EV Mode 3, 96 equipos fisicos doble toma, 1,850 EV en pool y 17 maquinas controladas).
-- EV/V2G validado: las 31 tomas de camioneta institucional/logistica son bidireccionales (`max_discharging_power=7.4 kW`, `power_flow_direction=bidirectional_v2g`); moto lineal y mototaxi quedan solo carga.
-- Entorno unico: `.venv39-citylearn-v3` (Python 3.9.25, CityLearn editable, torch 2.8.0+cu126, ray 1.8.0, gymnasium 0.28.1).
-- Recompensa activa: `CityLearnV3MADRLRewardFunction`, perfiles **`*_unified_comparable_v4`**: team_ratio=0.70, peak_weight=0.45, ramp_weight=0.35, ev_weight=0.25, reward_scale=1.00. Suma ponderada jerarquizada y compensatoria `[flex, carbon, cost]`: E1=[0.60,0.15,0.25], E2=[0.25,0.60,0.15], E3=[0.15,0.25,0.60].
-- Horizonte oficial para nuevas ejecuciones AWS/Docker: 75 episodios x 8760 pasos = 657 000 pasos/corrida. 12 corridas totales (4 algoritmos x 3 escenarios).
-- Resultados finales aceptados: solo cuando existan `data/results.json`, `data/timeseries.csv`, `data/trace.csv`, `data/training_summary.json`, `data/checkpoint_manifest.json`, `data/artifact_audit.json` y `figures/figures_manifest.json` por algoritmo/escenario.
-- Contrato de trazabilidad: `data/` es la fuente canónica por corrida; no se escriben espejos raíz ni `statistical_comparison/` salvo flags heredados explícitos. `live_progress.json` es transitorio y se elimina al finalizar correctamente.
-- Cooperacion CTDE: critico centralizado ve estado global s=[o1,...,o17] durante entrenamiento; ejecucion descentralizada. team_reward=mean(rewards_i); mixed_reward_i=0.30*reward_i+0.70*team_reward.
-- Perfil GPU: `local4060_fast` — RTX 4060 Laptop 8 GB, max 2 escenarios concurrentes (HAPPO/MATD3), max 1 para MASAC/MAAC.
-- Validacion cooperativa CTDE: `passed` para 4 MADRL x 3 ejes; `python39_core_ready=true`.
-- Suite de pruebas estadisticas: Shapiro-Wilk, Kruskal-Wallis, Mann-Whitney U y Wilcoxon signed-rank.
-
-## Ejes del proyecto
-
-| Eje | Escenario | Objetivo | KPIs principales |
-| --- | --------- | -------- | ---------------- |
-| OE1 | E1 | Flexibilidad energetica: desplazar cargas y aprovechar almacenamiento, EVs y autoconsumo. | `peak_average`, `ramping_average`, `one_minus_load_factor_average`, KPIs PV/bateria/EV. |
-| OE2 | E2 | Emisiones de CO2: reducir huella ambiental y evitar importacion en horas de alta intensidad de carbono. | `carbon_emissions`, `carbon_emissions_control`, `carbon_emissions_baseline`, `carbon_emissions_delta`. |
-| OE3 | E3 | Costos energeticos: optimizar gasto, reducir picos y aprovechar tarifas dinamicas. | `electricity_cost`, `electricity_cost_delta`, `price_signal_deviation`, KPIs de costo pico/rampa. |
-
-## Arquitectura real implementada
-
-Flujo principal:
-
-```text
-Dataset citylearn_iquitos_2023_2025 (17 edificios Iquitos, 2023-2025)
-  -> CityLearn v2 base (simulador)
-  -> Capa CityLearn v3 (Dec-POMDP, CTDE, recompensa multiobjetivo)
-  -> UC3MEnv wrapper (BACTTensor 29D, RewardAxes 7D, HPHI)
-  -> 4 MADRL: HAPPO, MASAC, MATD3, MAAC
-  -> Launcher oficial -Scenario ALL
-  -> Artefactos por algoritmo/eje/seed
-  -> generate_thesis_objective_evidence.py
-  -> 4 pruebas estadisticas (SW, KW, MWU, Wilcoxon SR)
-  -> Benchmark CityLearn v2
-  -> Comparador CityLearn v2 vs CityLearn v3
-  -> Resultados para tesis
-```
-
-Contrato operativo actualizado: `docs/architecture/operacion.md` y `docs/workflow_manifest.json`.
-
-Componentes principales:
-
-| Componente | Ruta |
-| ---------- | ---- |
-| Simulador base | `CityLearn/` |
-| Capa CityLearn v3 | `CityLearn/citylearn/v3/` |
-| Framework UC3M | `uc3m/` |
-| Adaptador comun MADRL | `CityLearn/scripts/citylearn_v3_training_common.py` |
-| Entrenadores MADRL | `CityLearn/scripts/train_citylearn_v3_*.py` |
-| Launcher oficial (Iquitos) | `CityLearn/scripts/launch_citylearn_v3_iquitos_training.ps1` |
-| Monitor vivo (Iquitos) | `CityLearn/scripts/monitor_citylearn_v3_iquitos_training.ps1` |
-| Launcher oficial (general) | `CityLearn/scripts/launch_citylearn_v3_official_training.ps1` |
-| Evidencia estadistica tesis | `CityLearn/scripts/generate_thesis_objective_evidence.py` |
-| Benchmark v2 | `CityLearn/scripts/benchmark_citylearn_v2_agents.py` |
-| Comparador v2 vs v3 | `CityLearn/scripts/compare_citylearn_v2_vs_v3_madrl.py` |
-| Dataset Iquitos | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/` |
-| Herramientas (dataset/eval/ops/…) | `tools/` (ver `tools/README.md`) |
-| Suite de tests | `tests/uc3m/` |
-
-## Framework UC3M (Universal CityLearn v3 Modified)
-
-El paquete `uc3m/` es un framework universal reutilizable sobre CityLearn v2 que implementa el Meta-Dec-POMDP para N edificios arbitrarios.
-
-| Modulo | Ruta | Descripcion |
-| ------ | ---- | ----------- |
-| `UC3MEnv` | `uc3m/env/uc3m_env.py` | Wrapper universal Dec-POMDP 11-aria; compatible con HARL, MARLlib y RLlib |
-| `BACTTensor` | `uc3m/env/bact.py` | Contexto fijo por edificio: 29D = clima (7) + geografico (8) + fisico (14) |
-| `RewardAxes` | `uc3m/reward/axes.py` | 7 ejes de recompensa con pesos lambda: CO2, costo, flexibilidad, confort, degradacion BESS, resiliencia, ACS |
-| `HPHI` | `uc3m/reward/hphi.py` | Holistic Pareto Hypervolume Index 7D para comparacion integrada de algoritmos |
-| `KPIEvaluator` | `uc3m/kpis/evaluator.py` | Calculo holistico de KPIs normalizados contra baseline RBC |
-| `AlgorithmFactory` | `uc3m/algorithms/factory.py` | Mapeo centralizado de 4 MADRL a sus backends externos |
-
-Instalar todas las dependencias del proyecto (un solo comando, ver `docs/instalacion.md`):
-
-```bash
-pip install -r requirements.txt
-pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu126
-```
-
-Ejecutar tests:
-
-```bash
-pytest tests/ -q --tb=short
-```
-
-## Dataset Iquitos 2023-2025
-
-| Caracteristica | Detalle |
-| -------------- | ------- |
-| Edificios | 17 institucionales/comerciales reales de Iquitos, Peru |
-| Nombres reales | Municipalidad San Juan Bautista, Aeropuerto, Tottus, Hotel Plaza, Mall Aventura, UNAP, PNP, COER, GRL, Hospital Regional, EsSalud, UNAP Economia, Autoridad Portuaria, DREL Colegio, SIMA Iquitos, Selva Amazonica Lab |
-| Rango temporal | 2023-2025 (26,304 pasos horarios) |
-| Cargadores EV | 185 archivos `charger_X_Y.csv`, 96 equipos fisicos modo 3 doble toma, 1,850 EV en pool, 749.4 kW instalados |
-| V2G EV | 31 tomas de camioneta con control bidireccional; 0 tomas no-camioneta con descarga |
-| BESS | 138-6,747 kWh por edificio; total 26,266 kWh / 6,648 kW |
-| Generacion solar PV | 274.1-10,236.1 kWp DC por edificio; total 48,790.9 kWp |
-| Sistema de AC | Por tipo: Chiller agua (B03/B11), Multi-Chiller (B06), Precision AC (B01/B09), Ultra-Freezers -80C (B17) |
-| Factor CO2 | 0.671-0.790 kgCO2/kWh (MINAM RAGEI 2019, diesel ELECTRO ORIENTE) |
-| Tarifas | Punta 18-22h: $0.38/kWh; Fuera punta: $0.26/kWh (Electro Oriente 2024) |
-| Grilla | Sistema aislado diesel ELECTRO ORIENTE + penetracion solar 15% |
-| Archivo central | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json` |
-
-### Edificios del dataset
-
-| ID | Nombre real | Tipo auditado | Area m2 | kWp PV | BESS kWh | BESS kW | EV tomas | EV kW |
-| -- | ----------- | ------------- | ------: | -----: | -------: | ------: | -------: | ----: |
-| B01 | ELECTRO ORIENTE S.A. | Office | 14,000 | 3,360.2 | 6,747 | 1,609 | 4 | 21.8 |
-| B02 | MUNICIPALIDAD DISTRITAL DE SAN JUAN BAUTISTA | Office | 8,000 | 1,920.0 | 244 | 50 | 6 | 24.4 |
-| B03 | AEROPUERTO INTERNACIONAL | Assembly | 6,000 | 1,440.2 | 2,363 | 511 | 8 | 37.8 |
-| B04 | HIPERMERCADOS TOTTUS ORIENTE SAC | Retail | 2,500 | 600.2 | 454 | 409 | 6 | 24.4 |
-| B05 | HOTEL PLAZA S.A. | MultiFamily_Hotel | 1,142 | 274.1 | 234 | 124 | 3 | 14.4 |
-| B06 | MALL AVENTURA S.A. | Commercial_Mall | 20,637 | 4,952.9 | 2,541 | 835 | 32 | 119.6 |
-| B07 | UNAP-FACULTAD DE BIOLOGIA-AULAS | Education | 8,103 | 1,944.9 | 984 | 240 | 42 | 153.2 |
-| B08 | PNP- ESCUELA TECNICA SUPERIOR-IQUITOS | Assembly_Military | 21,000 | 5,040.2 | 601 | 129 | 17 | 73.6 |
-| B09 | GOBIERNO REGIONAL DE LORETO - COER | Office_Critical | 4,480 | 1,075.3 | 138 | 30 | 10 | 37.4 |
-| B10 | GOBIERNO REGIONAL DE LORETO | Office | 14,296 | 3,431.1 | 2,353 | 591 | 6 | 36.6 |
-| B11 | HOSPITAL REGIONAL DE LORETO | Healthcare_Hospital | 42,649 | 10,236.1 | 1,901 | 424 | 3 | 14.4 |
-| B12 | SEGURO SOCIAL DE SALUD - ESSALUD | Healthcare | 18,197 | 4,367.5 | 4,346 | 960 | 3 | 14.4 |
-| B13 | UNAP-FACULTAD DE CIENCIAS AD..CONTABLES Y ECO | Education | 2,723 | 653.8 | 272 | 69 | 11 | 41.4 |
-| B14 | AUTORIDAD PORTUARIA NACIONAL | Industrial_Port | 17,761 | 4,262.9 | 229 | 48 | 4 | 21.8 |
-| B15 | DREL- COLEGIO NACIONAL DE IQUITOS | Education | 9,890 | 2,373.8 | 500 | 104 | 8 | 31.4 |
-| B16 | SIMA - IQUITOS S.R.LTDA | Industrial | 10,294 | 2,470.8 | 1,622 | 357 | 11 | 41.4 |
-| B17 | ASOCIACION CIVIL SELVA AMAZONICA | Laboratory | 1,611 | 386.9 | 737 | 158 | 11 | 41.4 |
-
-### Destilacion desde `buildingcsv`
-
-Los insumos reales estan en `CityLearn/data/buildingcsv/`:
-
-- `building.csv`: nombres oficiales, areas techadas exactas, tipos de uso CityLearn, sistemas de refrigeracion, unidades split estimadas y vehiculos predominantes por edificio.
-- `B_02.csv` a `B_17.csv`: mediciones mensuales reales de facturas electricas (kWh punta/fuera punta, total facturado, tarifa).
-- `Building_1.csv` sintetico porque no existe `B_01.csv` en buildingcsv.
-
-La destilacion aplica: `NSL_residual = E_medido_mes - cooling_demand/COP - dhw_demand/COP`. Balance mensual garantizado con delta < 0.1%. Meses faltantes pronosticados con `calendar_month_mean_overlap_scaled`.
-
-Documentacion completa del pipeline: `docs/architecture/dataset_construction_pipeline.md`.
-
-Regenerar el dataset desde los insumos:
+Desde la raíz verificada y con el entorno canónico existente:
 
 ```powershell
-# Entrada canónica (pipeline completo; ver tools/dataset/README.md)
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/orchestrate_citylearn_dataset.py `
-    --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
-
-# Pasos manuales (subset del orquestador):
-# 1. Generar CSV (usa cache meteorologico, no re-descarga)
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/generate_iquitos_dataset.py --verbose
-
-# 2. Destilar cargas reales B02-B17
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/distill_building_loads.py `
-    --buildingcsv-dir CityLearn/data/buildingcsv `
-    --dataset-dir CityLearn/data/datasets/citylearn_iquitos_2023_2025
-
-# 3. Fix safety factor cooling autosize
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/fix_schema_cooling.py
-
-# 4. Diagnostico de integridad
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/evaluate_dataset.py
-```
-
-## MADRL integrados
-
-| MADRL | Script activo | Wrapper CityLearn v3 | Backend |
-| ----- | ------------- | -------------------- | ------- |
-| HAPPO | `train_citylearn_v3_happo.py` | `CityLearnHARLEnv` | `external/HARL` |
-| MASAC | `train_citylearn_v3_masac.py` | `CityLearnSMACDiscreteEnv` | `external/MARL/src` |
-| MATD3 | `train_citylearn_v3_matd3.py` | `CityLearnOffPolicyVecEnv` | `external/off-policy` |
-| MAAC | `train_citylearn_v3_maac.py` | `CityLearnMAACVecEnv` | `external/MAAC` |
-
-Submodulos externos de referencia adicionales:
-
-| Submodulo | Ruta | Proposito |
-| --------- | ---- | --------- |
-| MicroGrids | `external/MicroGrids` | Modelos de microgrillas (referencia) |
-| evcc | `external/evcc` | Gestor de carga EV (referencia) |
-| prosumpy | `external/prosumpy` | Gestion de prosumidores (referencia) |
-
-## Recompensa
-
-Los cuatro MADRL usan `CityLearnV3MADRLRewardFunction`. La recompensa combina pesos por eje y perfil por algoritmo.
-
-**Perfiles v3 (corrida referencia):**
-
-- Perfiles: `happo_unified_comparable_v3`, `masac_unified_comparable_v3`, `matd3_unified_comparable_v3`, `maac_unified_comparable_v3`.
-- Parametros comunes: `team_ratio=0.70`, `peak_weight=0.45`, `ramp_weight=0.35`, `ev_weight=0.25`, `reward_scale=1.00`.
-- EV/SOC: penalizacion de deficit de SOC a la salida + restriccion de servicio EV.
-
-**Perfiles v4 (corrida definitiva) — extensiones sobre v3:**
-
-- **Penalidad BESS**: modelo Arrhenius LiFePO4. Penaliza C-rate alto (carga/descarga intensa) para reducir degradacion ciclica de la bateria.
-- **Urgencia EV**: penalizacion proporcional al deficit `(SOC_obj - SOC_actual)` ponderada por `1/horas_restantes`. Fuerza carga prioritaria cuando el EV sale en las proximas horas.
-- Perfiles: `happo_unified_comparable_v4`, `masac_unified_comparable_v4`, `matd3_unified_comparable_v4`, `maac_unified_comparable_v4`.
-
-| Escenario | flex | carbon | cost |
-| --------- | ---: | -----: | ---: |
-| E1 | 0.60 | 0.15 | 0.25 |
-| E2 | 0.25 | 0.60 | 0.15 |
-| E3 | 0.15 | 0.25 | 0.60 |
-
-El nivel 0.60 es una mayoría estricta frente a 0.25+0.15 y rota entre OE.1, OE.2 y OE.3. Es una escalarización lineal compensatoria; no es optimización lexicográfica/preemptiva.
-
-## Contrato cooperativo Dec-POMDP/CTDE
-
-- **Cada edificio es un agente** con su propia politica πᵢ(aᵢ|oᵢ) — red neuronal que mapea observacion local a accion local (BESS, EV, lavadora).
-- **MADRL** es el framework que entrena las 17 politicas simultáneamente con mecanismos de coordinacion (critico centralizado, team_reward, QMIX/atencion, actualizacion secuencial HAPPO).
-- El estado global CTDE `s=[o₁,...,o₁₇]` (17 observaciones concatenadas) es accesible solo por el critico durante entrenamiento — nunca en ejecucion.
-- `team_reward = mean(reward_i)` — señal colectiva distrital; `mixed_reward_i = 0.30*reward_i + 0.70*team_reward`.
-- Control distrital es **emergente**: no hay agente distrital, el comportamiento coordinado surge de las 17 politicas aprendidas actuando en el mismo entorno fisico.
-- La ejecucion permanece completamente descentralizada: cada politica actua solo con oᵢ local, sin comunicacion entre edificios.
-- Documentacion completa: `docs/architecture/coordinacion.md`.
-
-Validar el contrato:
-
-```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\validate_citylearn_v3_cooperative_ctde.py `
-  --output outputs\validation\cooperative_ctde_validation.json
-```
-
-## Pruebas estadisticas de demostracion de hipotesis
-
-Los 4 tests se aplican sobre los **KPI-gains de entrenamiento de los 4 MADRL** (HAPPO, MASAC, MATD3, MAAC) por cada eje OE1/OE2/OE3. Cada test tiene su propia funcion, CSV de salida y seccion de p-valor en `hipotesis_estadisticas_madrl.csv`.
-
-| Test | Funcion | CSV de salida | Tipo de muestra | Hipotesis H0 |
-| ---- | ------- | ------------- | --------------- | ------------ |
-| **Shapiro-Wilk** | `statistical_omnibus_rows()` | `analisis_estadistico_madrl.csv` | Por grupo (1 algoritmo) | Los KPI-gains de ALGO siguen distribucion normal |
-| **Kruskal-Wallis** | `statistical_omnibus_rows()` | `analisis_estadistico_madrl.csv` | 4 grupos simultaneos | Las distribuciones de HAPPO, MASAC, MATD3 y MAAC son identicas |
-| **Mann-Whitney U** | `mann_whitney_pairwise_rows()` | `comparaciones_mwu_madrl.csv` | Muestras **independientes** | La distribucion de KPI-gains de A es igual a la de B |
-| **Wilcoxon SR** | `wilcoxon_pairwise_rows()` | `comparaciones_wilcoxon_madrl.csv` | Muestras **pareadas** (mismo KPI/edificio) | La mediana de diferencias d_i = A_i - B_i es cero |
-
-**Flujo de demostracion:**
-
-1. Shapiro-Wilk verifica si los datos son normales por grupo; si alguno rechaza normalidad, justifica los tests no parametricos.
-2. Kruskal-Wallis detecta si hay diferencias globales entre los 4 MADRL en el eje.
-3. Mann-Whitney U identifica que par especifico difiere (muestras independientes).
-4. Wilcoxon signed-rank confirma diferencias sistematicas pareadas (mismo KPI, dos algoritmos).
-
-Todos los resultados se consolidan en `hipotesis_estadisticas_madrl.csv` con columnas `SW_*`, `KW_*`, `MWU_*` y `WC_*` por eje y por algoritmo.
-
-## Evidencia para plan e informe de tesis
-
-```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\generate_thesis_objective_evidence.py
-```
-
-Salida principal en `outputs/thesis_objective_evidence/`:
-
-```text
-Resumen_ejecutivo.csv
-objetivos_especificos_cumplimiento.csv
-Matriz_KPIs.csv / KPIs_y_metricas.csv
-matriz_resultados_madrl.csv
-matriz_baseline_por_eje.csv
-scores_kpi_algoritmo_madrl.csv
-analisis_estadistico_madrl.csv          <- Shapiro-Wilk + Kruskal-Wallis
-comparaciones_mwu_madrl.csv             <- Mann-Whitney U (independiente) + tamanos de efecto
-comparaciones_wilcoxon_madrl.csv        <- Wilcoxon signed-rank (pareado)
-hipotesis_estadisticas_madrl.csv        <- 4 tests unificados por eje
-matriz_operacionalizacion_variables.csv
-Marco_metodologico_MADRL.csv
-matriz_consistencia_objetivos.csv
-Backends_MADRL.csv / MARLlib_Integracion.csv
-CityLearn_v3_Propuesto.csv
-Arquitectura_Propuesta.csv
-Aplicabilidad_SEAI_Iquitos.csv
-CityLearn_CO2_Costos.csv
-Datasets_y_codigo.csv
-thesis_skill_feed.json
-resumen_evidencia_tesis.md
-```
-
-Ademas de los 4 tests no parametricos, `comparaciones_mwu_madrl.csv` incluye tamanos de efecto para cada par MADRL: Cliff's delta, Vargha-Delaney A12, Cohen d, Hedges g y bootstrap CI 95%.
-
-## Validacion previa al entrenamiento
-
-Antes de lanzar una corrida larga, ejecutar solo verificaciones:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1
-
-.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\check_citylearn_v3_training_ready.py `
-  --strict `
-  --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
-  --scenario E1
-
-.\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\run_citylearn_v3_env_smoke.py `
-  --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json `
-  --scenario E1 `
-  --episode-time-steps 4 `
-  --steps 3
-
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\ops\verify_workflow_integrity.py `
-  --manifest-out outputs\dataset_audit\workflow_integrity_manifest.json
-```
-
-Validacion actual:
-
-- `python39_core_ready=true` con schema Iquitos.
-- `pytest tests/uc3m -q -ra`: OK, con 3 skips existentes.
-- `git diff --check`: OK.
-- No hay procesos de entrenamiento ni manifiestos `status: running` despues de la limpieza.
-
-## Lanzamiento del entrenamiento (via unica)
-
-Decision del propietario (2026-11-01): el entrenamiento se lanza solo por la CLI
-de la campana nueva y se ejecuta en Colab con los notebooks existentes de
-`examples_madrl_v3/`, reconectados a esa CLI. No hay despliegue AWS ni
-lanzadores locales `.bat`/`.ps1`; los retirados y los clientes pendientes de
-reconexion estan registrados en `governance/repository_layout.yaml` (`launch`).
-
-```powershell
-# Prepara y revisa el DAG de la campana; no entrena.
+powershell -ExecutionPolicy Bypass -File scripts/verify_project_context.ps1
 .\.venv39-citylearn-v3\Scripts\python.exe -B -m uc3m.application.training.cli --config configs/experiments/iquitos.yaml --stage prepare
 ```
 
-Procedimiento completo (dataset, splits, preparacion, etapas en Colab, fallos):
-`docs/architecture/runbook.md`. Todo intento usa `--no-resume` y empieza desde
-cero; una etapa solo se ejecuta si `configs/experiments/iquitos.yaml` la
-autoriza en `resource_authorization`.
+Preparar produce un DAG y manifiestos; no entrena. Una campaña preparada nunca se sobrescribe. Cambiar fuentes, datos o protocolo exige identidad y verificación coherentes. `resource_authorization.authorized_stages` permanece vacío hasta autorización expresa de etapas y recursos; el presupuesto preparado no es trabajo ejecutado.
 
-### Herramientas de diagnostico y monitoreo
+El cliente es [el cuaderno Colab modular](examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb), generado por `tools/colab/build_modular_colab_notebook.py`. El [runbook](docs/architecture/runbook.md) detalla las etapas; su aceptación de desconexión/restauración real sigue separada de las pruebas locales.
 
-```powershell
-# Verificar integridad del dataset (17 edificios, filas, columnas, chargers)
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/evaluate_dataset.py
+Después del entrenamiento autorizado, `python -m uc3m.application.pipeline` ofrece `status`, `freeze`, `evaluate`, `analyze` y `deliver` con manifiesto explícito. Evaluación fallida o rechazo devuelve salida no cero. La entrega recibe `--gate-report` y `--analysis-manifest`; conserva análisis y hashes, y declara el alcance de sus archivos. Un paquete de metadatos no equivale a exportación ONNX ni a control de planta.
 
-# Ver metricas del ultimo entrenamiento completado
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/training/ver_metricas_madrl.py
-
-# Ver todos los runs disponibles
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/training/ver_metricas_madrl.py --todos
-
-# Ver run especifico
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/training/ver_metricas_madrl.py --run <nombre_run>
-```
-
-## Requisitos
-
-- Python 3.9.
-- PyTorch CUDA para entrenamiento GPU.
-- GPU NVIDIA recomendada.
-- Submodulos Git inicializados.
-
-```text
-.venv39-citylearn-v3
-torch 2.8.0+cu126
-CUDA 12.6
-```
-
-Instalar todas las dependencias (CityLearn + UC3M + stack RL) con un solo comando desde la raiz:
-
-```bash
-pip install -r requirements.txt
-pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu126
-```
-
-Manual completo paso a paso (Windows y AWS): `docs/instalacion.md`.
-
-## Clonar el repositorio
-
-```bash
-git clone --recurse-submodules https://github.com/Mac-Tapia/MADRLCitytleranflexresdr.git
-cd MADRLCitytleranflexresdr
-```
-
-Si ya se clono sin submodulos:
-
-```bash
-git submodule update --init --recursive
-```
-
-## Salidas esperadas por corrida
-
-```text
-outputs/<run_activo>/
-  official_full_status.json
-  official_full_manifest.json
-  logs/
-    E1_happo-00001.log
-    E1_masac-00001.log
-    ...
-  happo/
-    E1_seed_0/
-    E2_seed_0/
-    E3_seed_0/
-  masac/
-    E1_seed_0/
-    E2_seed_0/
-    E3_seed_0/
-  matd3/
-    E1_seed_0/
-    E2_seed_0/
-    E3_seed_0/
-  maac/
-    E1_seed_0/
-    E2_seed_0/
-    E3_seed_0/
-```
-
-Cada corrida contiene:
-
-- `data/results.json`, `data/training_summary.json`, `data/artifact_audit.json`
-- `data/timeseries.csv`, `data/trace.csv`, `data/checkpoint_manifest.json`
-- `data/building_behavior_summary.csv`, `data/building_kpis.csv`
-- `data/building_observation_action_schema.csv`, `data/building_trace_sample.csv`
-- `live_progress.json` solo durante entrenamiento activo; al completar se elimina como estado transitorio
-- `figures/` con retornos, convergencia y comparacion KPI
-- `figures/tables/` con tablas Markdown por edificio
-
-## Benchmark y comparacion
-
-Ejecutar agentes originales CityLearn v2 para linea base (el script apunta por defecto al dataset Iquitos `citylearn_iquitos_2023_2025/schema.json`):
+## Validación
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\benchmark_citylearn_v2_agents.py `
-  --scenario ALL `
-  --episode-time-steps 8760 `
-  --agents baseline hour_rbc `
-  --output-dir outputs\citylearn_v2_original_benchmark
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/skills/validate_skills.py
+.\.venv39-citylearn-v3\Scripts\python.exe -B -m pytest tests/contract/test_spec_kit_consistency.py -q -p no:cacheprovider
+powershell -ExecutionPolicy Bypass -File scripts/quality/run_fresh_training_gates.ps1 -CampaignManifest outputs/campaigns/iquitos_v1/campaign_manifest.json
 ```
 
-Comparar CityLearn v2 contra CityLearn v3 MADRL. Si faltan artefactos v2, el comparador los genera con los agentes originales indicados:
+La última orden ejecuta el perfil fresh completo, incluidos microaprendizajes nativos; usarla sobre un corte estable y con sus dependencias reales. El reporte vincula campaña, especificación, commit, código, pruebas y JUnit. Una omisión, alteración o evidencia incompleta impide promover. La aceptación científica exige además cobertura y análisis verificables de la campaña; los contratos sintéticos son pruebas del verificador.
 
-```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe CityLearn\scripts\compare_citylearn_v2_vs_v3_madrl.py `
-  --v2-root outputs\citylearn_v2_original_benchmark `
-  --v3-root $root `
-  --output-dir outputs\comparison_citylearn_v2_vs_v3_madrl `
-  --scenario ALL `
-  --auto-benchmark-v2 `
-  --v2-agents baseline hour_rbc
-```
+El entrenamiento nativo requiere checkout fijado y dependencias locales declaradas. Los namespaces genéricos de los backends se resuelven en su contexto de importación; no deben instalarse paquetes homónimos de PyPI. La instalación del wheel del núcleo y la aceptación nativa se verifican por separado. Python 3.9 conserva la compatibilidad heredada; su fin de soporte y la migración pendiente se documentan en el plan, sin actualización silenciosa del entorno.
 
-## Sustento cientifico y skills
+## Tesis, historia y fuentes
 
-| Recurso | Ruta | Proposito |
-| ------- | ---- | --------- |
-| Skill dataset Iquitos | `agent-skills/iquitos-citylearn-dataset/` | Generacion, actualizacion y validacion del dataset de Iquitos para entrenamiento MADRL |
-| Skill de tesis integrado | `agent-skills/madrl-citylearn-thesis-integrated/` | Informe de tesis profesionalizante con estructura Guia N. 02, APA, matrices de consistencia |
-| Skill de plan de tesis | `agent-skills/madrl-citylearn-thesis-plan/` | Plan de Tesis bajo Guia N. 01, estructura 5.1, cronograma, presupuesto, metodologia |
-| Sustento capa v3 | `agent-skills/madrl-sustento-doc-capa v3/` | Modelado matematico Dec-POMDP, CTDE y fundamentos de la capa v3 |
+- [PT_TAPIA_ZAMBRANO original](PT_TAPIA_ZAMBRANO_v6_Iquitos_2.docx).
+- [Documento de tesis conservado](docs/tesis.docx).
+- [Diseño del entrenamiento](docs/design/entrenamiento.md).
+- [Observaciones del jurado](data/audits/jury_observations_manifest.json).
+- [Política de componentes y licencias](governance/open_source_policy.yaml).
+- [README anterior preservado literalmente](docs/history/README_pre_integracion_20261101.txt): antecedente con resultados retirados y rutas históricas; no instrucción operativa ni evidencia vigente.
 
-## Documentacion generada
-
-| Documento | Ruta |
-| --------- | ---- |
-| **Historia de creacion del proyecto** | `docs/historia.md` |
-| **Pipeline dataset** | `docs/architecture/dataset_construction_pipeline.md` |
-| **Flujo operativo vigente** | `docs/architecture/operacion.md` |
-| **Manifest machine-readable del flujo** | `docs/workflow_manifest.json` |
-| **Justificacion recompensas multiobjetivo** | `docs/decisions/recompensas.md` |
-| **Justificacion diseno experimental** | `docs/decisions/escenarios.md` |
-| **Cooperacion, coordinacion y control distrital** | `docs/architecture/coordinacion.md` |
-| **Informe optimizacion VRAM** | `docs/audits/vram.md` |
-| **Registro reorganizacion + politica paralelismo** | `docs/decisions/paralelismo.md` |
-| Arquitectura y flujo (MD) | `docs/architecture/flujo.md` |
-| Arquitectura y flujo (PDF) | `docs/architecture/flujo.pdf` |
-| Flujo operativo (PDF) | `docs/architecture/operacion.pdf` |
-| Arquitectura operativa entrenamiento (PDF) | `docs/architecture/entrenamiento.pdf` |
-| Cooperacion/coordinacion/control (PDF) | `docs/architecture/coordinacion.pdf` |
-| Pipeline dataset (PDF) | `docs/architecture/dataset.pdf` |
-| Infografias PNG (arquitectura + flujo) | `docs/architecture/arquitectura.png`, `trabajo.png` |
-| Destilacion dataset Iquitos | `docs/audits/destilacion.md` |
-| Auditoria tecnica skill MADRL | `docs/audits/tecnica.md` |
-| Tutorial notebook | `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb` |
-| Quickstart notebook | `examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb` |
-| Informe de tesis | `docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx` |
-| Plan de tesis | `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3.docx` |
-
-## Reproducibilidad
-
-Cada resultado debe poder rastrearse a:
-
-```text
-dataset -> escenario -> algoritmo -> seed -> hiperparametros
-  -> checkpoint -> timeseries/trace -> KPIs -> comparacion v2 vs v3
-  -> 4 tests estadisticos sobre KPI-gains -> hipotesis_estadisticas_madrl.csv
-```
-
-Los backends externos estan fijados en:
-
-```text
-external/backends.lock.json
-```
-
-## Estado de investigacion
-
-Este repositorio esta orientado a investigacion de tesis. La arquitectura y los artefactos estan preparados para demostrar, con resultados cuantitativos y pruebas estadisticas, si CityLearn v3 MADRL mejora o caracteriza mejor que CityLearn v2 original los tres ejes:
-
-- **OE1** Flexibilidad energetica.
-- **OE2** Emisiones de CO2.
-- **OE3** Costos energeticos.
-
-La demostracion de hipotesis sigue el flujo: Shapiro-Wilk (normalidad) → Kruskal-Wallis (diferencias globales entre 4 MADRL) → Mann-Whitney U (diferencias por par, independiente) → Wilcoxon signed-rank (diferencias por par, pareado), aplicados sobre KPI-gains de entrenamiento de HAPPO, MASAC, MATD3 y MAAC.
-
-## Cambios Recientes
-- **2026-10-31 21:56**: docs/plans/modernizacion.md, specs/STATUS.md
-- **2026-10-31 21:52**: specs/001-provenance/plan.md, specs/001-provenance/spec.md, specs/001-provenance/tasks.md, specs/002-objectives/plan.md (+26 mas)
-- **2026-10-31 21:43**: .vscode/settings.json, data/dataset_audit/ready_postcheck.json, data/dataset_audit/ready_precheck.json, data/dataset_audit/ready_supervision.json
-- **2026-06-20 15:55**: tools/fix_clone_submodule.py
-- **2026-06-20 15:50**: README.md, tools/fix_colab_cell2.py, tools/generate_informe_final.py, tools/patch_notebook_final.py
-- **2026-06-20 15:47**: tools/generate_informe_final.py, tools/patch_notebook_final.py
-- **2026-06-20 11:47**: docs/workflow_manifest.json, scripts/restart_happo_masac_v3.ps1, scripts/restart_masac_matd3_maac.ps1, scripts/run_3madrl_parallel.ps1 (+3 mas)
-- **2026-06-20 11:27**: tools/colab/verify_notebook.py
-- **2026-06-20 11:11**: tools/colab/verify_notebook.py
-- **2026-06-20 11:02**: tools/colab/verify_notebook.py
-- **2026-06-20 10:41**: nb_gpu_cells.txt, tools/colab/patch_notebook_a100.py, tools/colab/verify_notebook.py
-- **2026-06-20 10:30**: nb_cells.txt, nb_cells2.txt, nb_keycells.txt, tools/colab/verify_notebook.py
-
-<!-- auto_save.sh inserta entradas nuevas justo debajo de este encabezado -->
-
-## Licencias y citacion
-
-Este proyecto integra software externo mediante submodulos. Revise las licencias de CityLearn y de los backends en `external/` antes de redistribuir o publicar derivados.
-
-Referencias base:
-
-- CityLearn v2: Nweye et al. (2025), *Journal of Building Performance Simulation*.
-- CityLearn original: Vazquez-Canteli et al. (2020), arXiv.
-- HAPPO/HARL, MASAC, MATD3 y MAAC segun los repositorios externos fijados en `external/backends.lock.json`.
+La metodología se fundamenta en la [tesis de maestría de Costea](https://webthesis.biblio.polito.it/40396/), la [tesis doctoral de Charbonnier](https://ora.ox.ac.uk/objects/uuid%3A4acf19ee-76b3-4e71-a424-259cd9e2d6f5) y los criterios de [reproducibilidad de Pineau et al.](https://www.jmlr.org/papers/v22/20-303.html). Estas fuentes no certifican este repositorio, los coeficientes exactos o un supuesto ganador; la matriz bibliográfica y sus límites están en el plan integrado.

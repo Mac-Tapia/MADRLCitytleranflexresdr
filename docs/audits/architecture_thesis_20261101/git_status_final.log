@@ -1,0 +1,21 @@
+ M docs/audits/architecture_thesis_20261101/collect.py
+ M docs/audits/architecture_thesis_20261101/informe.md
+ M docs/audits/architecture_thesis_20261101/probe.py
+ M docs/audits/architecture_thesis_20261101/pytest.log
+ M docs/audits/architecture_thesis_20261101/thesis.json
+ M docs/audits/architecture_thesis_20261101/tree.txt
+ M external/MAAC
+?? docs/audits/architecture_thesis_20261101/README.md
+?? docs/audits/architecture_thesis_20261101/collection.log
+?? docs/audits/architecture_thesis_20261101/finalize.py
+?? docs/audits/architecture_thesis_20261101/horizon_probe.json
+?? docs/audits/architecture_thesis_20261101/horizon_probe.py
+?? docs/audits/architecture_thesis_20261101/interface_probe.json
+?? docs/audits/architecture_thesis_20261101/interface_probe.py
+?? docs/audits/architecture_thesis_20261101/powershell_launch_probe.json
+?? docs/audits/architecture_thesis_20261101/pytest.xml
+?? docs/audits/architecture_thesis_20261101/runtime_imports.json
+
+STDERR:
+
+EXIT_CODE:0

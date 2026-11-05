@@ -1,0 +1,161 @@
+--- a/uc3m/application/training/fresh_campaign.py
++++ b/uc3m/application/training/fresh_campaign.py
+@@ -483,29 +483,90 @@
+     return dict(freeze.hyperparameters) in [dict(v) for v in candidates.values()]
+ 
+ 
+-def write_configuration_freezes(manifest_path: Path, freezes: Sequence[ConfigurationFreeze]) -> Dict[str, object]:
+-    """Store the per-algorithm freezes next to the manifest and bind their hashes into it."""
+-    manifest_path = Path(manifest_path)
+-    manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+-    target = manifest_path.parent/FREEZES_FILE
+-    if target.exists():
+-        raise FileExistsError(f'{target} exists; a configuration freeze is never overwritten')
++def _freeze_publication_rows(manifest, freezes: Sequence[ConfigurationFreeze]) -> Dict[str, dict]:
++    """Validate selection inputs before publishing either member of the pair."""
+     by_algorithm = {}
+     for freeze in freezes:
++        # Recheck the domain contract rather than trusting an arbitrary row-like object.
++        freeze = ConfigurationFreeze.from_dict(freeze.as_dict())
+         if freeze.campaign_id != manifest['campaign_id']:
+             raise ValueError(f'{freeze.algorithm}: freeze belongs to another campaign')
+         if freeze.algorithm in by_algorithm:
+             raise ValueError(f'{freeze.algorithm}: one freeze per algorithm')
++        if set(freeze.hyperparameters) != set(HYPERPARAMETERS):
++            raise ValueError(f'{freeze.algorithm}: frozen hyperparameters must set {HYPERPARAMETERS}')
+         if not _is_candidate(manifest, freeze):
+             raise ValueError(f'{freeze.algorithm}: frozen hyperparameters are not an HPO candidate of this campaign')
++        labels = (manifest.get('hpo_candidates_by_algorithm') or {}).get(freeze.algorithm) or {}
++        if len(set(freeze.candidates)) != len(freeze.candidates) or set(freeze.candidates) - set(labels):
++            raise ValueError(f'{freeze.algorithm}: invalid HPO candidate labels')
++        if not isinstance(freeze.selection_rule, str) or not freeze.selection_rule.strip():
++            raise ValueError(f'{freeze.algorithm}: a freeze needs a nonempty selection rule')
++        if not isinstance(freeze.frozen_at, str) or not freeze.frozen_at.strip():
++            raise ValueError(f'{freeze.algorithm}: a freeze needs its original frozen_at')
+         by_algorithm[freeze.algorithm] = {**freeze.as_dict(), 'freeze_hash': freeze.freeze_hash()}
+-    target.write_text(json.dumps({'schema_version': 1, 'campaign_id': manifest['campaign_id'],
+-                                  'freezes': by_algorithm}, indent=2), encoding='utf-8')
+-    record = {'path': FREEZES_FILE, 'sha256': _sha256(target),
+-              'freeze_hashes': {name: row['freeze_hash'] for name, row in by_algorithm.items()}}
+-    manifest['configuration_freezes'] = record
+-    manifest_path.write_text(json.dumps(manifest, indent=2), encoding='utf-8')
+-    return record
++    if not by_algorithm:
++        raise ValueError('configuration freeze publication requires a nonempty selection')
++    return by_algorithm
++
++
++def _freeze_selection(rows):
++    # frozen_at contributes to freeze_hash. A retry may have a fresh timestamp,
++    # but it cannot change any selection/evidence or replace the original bytes.
++    return {algorithm: {key: value for key, value in row.items()
++                        if key not in ('frozen_at', 'freeze_hash')}
++            for algorithm, row in rows.items()}
++
++
++def write_configuration_freezes(manifest_path: Path, freezes: Sequence[ConfigurationFreeze]) -> Dict[str, object]:
++    """Atomically publish an immutable freeze and recover its manifest link on retry.
++
++    The pair is serialized by an OS-owned lock. A crash after freeze publication
++    leaves a verified orphan; only the identical selection may bind that orphan.
++    """
++    from uc3m.application.dataset.provenance import contained_path
++    from uc3m.application.training.lock import run_lock
++    from uc3m.application.training.persistence import write_json_atomic
++
++    manifest_path = Path(manifest_path)
++    manifest_path = contained_path(manifest_path.parent, manifest_path.name)
++    target = contained_path(manifest_path.parent, FREEZES_FILE)
++    lock_path = contained_path(manifest_path.parent, '.configuration_freezes.lock')
++    with run_lock(lock_path):
++        # Read after acquiring the lock so no stale manifest replaces a peer's update.
++        manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
++        requested = _freeze_publication_rows(manifest, freezes)
++        registered = 'configuration_freezes' in manifest
++        if registered and not target.is_file():
++            raise PermissionError('registered configuration freeze is missing; not recreated')
++        if target.exists():
++            try:
++                payload = json.loads(target.read_text(encoding='utf-8'))
++                if (set(payload) != {'schema_version', 'campaign_id', 'freezes'}
++                        or payload['schema_version'] != 1 or payload['campaign_id'] != manifest['campaign_id']
++                        or not isinstance(payload['freezes'], dict)):
++                    raise ValueError('invalid freeze publication identity')
++                stored = _freeze_publication_rows(manifest, [ConfigurationFreeze.from_dict(row)
++                                                            for row in payload['freezes'].values()])
++                if stored != payload['freezes']:
++                    raise ValueError('stored content or freeze_hash does not verify')
++            except (OSError, KeyError, TypeError, ValueError, AttributeError) as exc:
++                raise PermissionError(f'configuration freeze is invalid; preserved: {exc}') from exc
++            if _freeze_selection(stored) != _freeze_selection(requested):
++                raise FileExistsError('configuration freeze already holds different selection or evidence')
++        else:
++            payload = {'schema_version': 1, 'campaign_id': manifest['campaign_id'], 'freezes': requested}
++            write_json_atomic(target, payload)
++            stored = requested
++        record = {'path': FREEZES_FILE, 'sha256': _sha256(target),
++                  'freeze_hashes': {name: row['freeze_hash'] for name, row in stored.items()}}
++        if registered:
++            if manifest['configuration_freezes'] != record:
++                raise PermissionError('registered configuration freeze content or digest changed; preserved')
++            return record
++        manifest['configuration_freezes'] = record
++        write_json_atomic(manifest_path, manifest)
++        return record
+ 
+ 
+ def load_configuration_freezes(artifacts: Path, manifest: Mapping[str, object]) -> Dict[str, ConfigurationFreeze]:
+--- a/uc3m/application/evaluation/fresh_delivery.py
++++ b/uc3m/application/evaluation/fresh_delivery.py
+@@ -55,7 +55,7 @@
+ 
+ def build_fresh_delivery(manifest_path: Path, destination: Path, *, gate_report: Optional[Path] = None,
+                          seed_rows: Optional[Sequence[dict]] = None, analysis_manifest: Optional[Path] = None) -> dict:
+-    manifest_path, destination = Path(manifest_path), Path(destination)
++    manifest_path, destination = Path(manifest_path).resolve(), Path(destination).absolute()
+     artifacts = manifest_path.parent
+     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+     campaign_id = manifest.get('campaign_id')
+@@ -63,9 +63,25 @@
+         raise ValueError('a delivery needs the campaign_id of its manifest')
+     if destination.exists():
+         raise FileExistsError(f'{destination} exists; a delivery is never overwritten')
++    # Acceptance resolves this explicit registry entry too. Resolve it here
++    # before collecting inputs, so API/CLI never omit the accepted analysis.
++    analyses = manifest.get('analyses', {})
++    if not isinstance(analyses, dict):
++        raise ValueError('analysis registry must be a mapping')
++    analysis_record = analyses.get('confirm:test_2025')
++    if 'confirm:test_2025' in analyses:
++        if not isinstance(analysis_record, dict) or not {'path', 'sha256'} <= set(analysis_record):
++            raise ValueError('registered analysis needs its explicit path and digest')
++        registered_analysis = contained_path(artifacts, analysis_record['path'])
++        if analysis_manifest is None:
++            analysis_manifest = registered_analysis
++        elif registered_analysis != Path(analysis_manifest).resolve():
++            raise ValueError('delivery analysis differs from the registered confirmatory analysis')
++        if not registered_analysis.is_file() or _sha256(registered_analysis) != analysis_record['sha256']:
++            raise ValueError('registered analysis missing or modified')
+     sources = [manifest_path, artifacts/'campaign.json']
+-    for stage, record in (manifest.get('stages') or {}).items():
+-        sources.append(contained_path(artifacts, record['path']))
++    for stage, stage_record in (manifest.get('stages') or {}).items():
++        sources.append(contained_path(artifacts, stage_record['path']))
+         result = artifacts/'stages'/f'{stage}_result.json'
+         if result.is_file():
+             sources.append(result)
+@@ -77,8 +93,13 @@
+         analysis = json.loads(analysis_manifest.read_text(encoding='utf-8'))
+         if analysis.get('campaign_id') != campaign_id or analysis.get('spec_hash') != manifest.get('spec_hash'):
+             raise ValueError('analysis belongs to another campaign or protocol')
++        if analysis_record is not None and (analysis.get('stage') != 'confirm' or analysis.get('split') != 'test_2025'):
++            raise ValueError('registered analysis is not confirm:test_2025')
++        analysis_files = analysis.get('files')
++        if not isinstance(analysis_files, dict) or set(analysis_files) != {'scientific_report.json', 'seed_table.json'}:
++            raise ValueError('analysis bundle requires scientific_report.json and seed_table.json')
+         sources.append(analysis_manifest)
+-        for name, digest in (analysis.get('files') or {}).items():
++        for name, digest in analysis_files.items():
+             path = contained_path(analysis_manifest.parent, name)
+             if not path.is_file() or _sha256(path) != digest:
+                 raise ValueError('analysis artifact missing or modified')

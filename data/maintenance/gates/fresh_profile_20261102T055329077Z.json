@@ -1,0 +1,28 @@
+﻿{
+    "schema_version":  2,
+    "profile":  "fresh",
+    "git_head":  "d55c6c6286a0f66e4909f76fc3f342ae150d703f",
+    "source_sha256":  "e861e4c43487740686e543fdd9a5a5d16d6e47d86817f0eac2bb6b7c19a3365d",
+    "test_source_sha256":  "4a91096516545f7752e084cd161e215ab3a255325162ac4d1cdbba345b73fc72",
+    "reasons":  [
+                    "junit_unavailable"
+                ],
+    "campaign_id":  null,
+    "spec_hash":  null,
+    "source_state_stable":  false,
+    "campaign_binding_matches":  true,
+    "exit_code":  -1,
+    "counters":  {
+                     "tests":  0,
+                     "failures":  0,
+                     "errors":  0,
+                     "skipped":  0
+                 },
+    "junit":  "fresh_profile_20261102T055329077Z.xml",
+    "junit_sha256":  null,
+    "software_acceptance":  false,
+    "scientific_acceptance":  false,
+    "command":  "python -B -m pytest tests/fresh_training -q -p no:cacheprovider -rfEs",
+    "started_utc":  "2026-11-02T05:53:29.6946992Z",
+    "duration_seconds":  76.957397899999989
+}

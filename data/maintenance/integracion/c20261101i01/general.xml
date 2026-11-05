@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="32.033" timestamp="2026-11-01T23:29:54.511732-05:00" hostname="MAC"><testcase classname="" name="tests.uc3m.test_calibration" time="0.000"><error message="collection failure">tests\uc3m\test_calibration.py:19: in &lt;module&gt;
+    from distill_building_loads import (  # noqa: E402
+tools\dataset\distill_building_loads.py:240: in &lt;module&gt;
+    _DEFAULT_RAW_MEASUREMENTS = load_monthly_measurements(buildings=DEFAULT_BUILDINGS_WITH_MONTHLY_DATA)
+tools\dataset\buildingcsv_inputs.py:503: in load_monthly_measurements
+    records.extend(read_monthly_measurement_file(_monthly_csv_path(buildingcsv_dir, building_id), building_id))
+tools\dataset\buildingcsv_inputs.py:459: in read_monthly_measurement_file
+    for line_number, raw_row in enumerate(reader, start=2):
+E   OSError: [Errno 22] Invalid argument</error></testcase></testsuite></testsuites>

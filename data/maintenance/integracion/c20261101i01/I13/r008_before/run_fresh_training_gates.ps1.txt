@@ -1,0 +1,46 @@
+<#
+.SYNOPSIS
+Strict fresh-profile gate, bound to the tested cut and optional campaign.
+.DESCRIPTION
+No omitted tests, no automatic campaign discovery. Pass -CampaignManifest
+explicitly to bind this gate to a campaign. This script never starts a stage.
+#>
+param([string]$CampaignManifest = '')
+$ErrorActionPreference = 'Stop'
+$root = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+Set-Location -LiteralPath $root
+& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_project_context.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$python = Join-Path $root '.venv39-citylearn-v3/Scripts/python.exe'
+$stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssfffZ')
+$gateDir = Join-Path $root 'data/maintenance/gates'
+New-Item -ItemType Directory -Force -Path $gateDir | Out-Null
+$junit = Join-Path $gateDir "fresh_profile_$stamp.xml"
+$before = Join-Path $gateDir "fresh_profile_$stamp.sources.json"
+$gateJson = Join-Path $gateDir "fresh_profile_$stamp.json"
+& $python -B -m uc3m.application.training.gate_report --capture --project-root $root --output $before
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$started = Get-Date
+& $python -B -m pytest tests/fresh_training -q -p no:cacheprovider -rfEs "--junitxml=$junit"
+$code = $LASTEXITCODE
+$gateArgs = @('-B', '-m', 'uc3m.application.training.gate_report', '--project-root', $root,
+              '--junit', $junit, '--exit-code', [string]$code, '--source-before', $before, '--output', $gateJson)
+if ($CampaignManifest) { $gateArgs += @('--manifest', $CampaignManifest) }
+& $python @gateArgs
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$result = Get-Content -LiteralPath $gateJson -Raw | ConvertFrom-Json
+$result | Add-Member -NotePropertyName command -NotePropertyValue 'python -B -m pytest tests/fresh_training -q -p no:cacheprovider -rfEs'
+$result | Add-Member -NotePropertyName started_utc -NotePropertyValue $started.ToUniversalTime().ToString('o')
+$result | Add-Member -NotePropertyName duration_seconds -NotePropertyValue ((Get-Date) - $started).TotalSeconds
+$result | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $gateJson -Encoding UTF8
+if ($CampaignManifest) {
+    $acceptance = Join-Path $gateDir "campaign_acceptance_$stamp.json"
+    & $python -B -c "import json,sys; from pathlib import Path; from uc3m.application.training.fresh_acceptance import verify_fresh_acceptance; r=verify_fresh_acceptance(Path(sys.argv[1]),gate_report=Path(sys.argv[2])); Path(sys.argv[3]).write_text(json.dumps(r.as_dict(),indent=2),encoding='utf-8'); print('campaign status:',r.status)" $CampaignManifest $gateJson $acceptance
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+if (-not $result.software_acceptance) {
+    Write-Output "Fresh gate rejected: exit=$code; see $gateJson"
+    exit 1
+}
+Write-Output "Fresh software gate passed: $($result.counters.tests) tests; scientific acceptance is separate."
+exit 0

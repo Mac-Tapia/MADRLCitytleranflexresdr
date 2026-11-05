@@ -104,10 +104,14 @@ def main():
         root = etree.fromstring(archive.read('word/document.xml'))
         paragraphs = root.xpath('//w:body/w:p|//w:body/w:tbl//w:p', namespaces=ns)
         texts = [''.join(p.xpath('.//w:t/text()|.//m:t/text()', namespaces=ns)) for p in paragraphs]
+        controls = root.xpath('//w:body/w:sdt//w:p', namespaces=ns)
+        control_texts = [''.join(p.xpath('.//w:t/text()|.//m:t/text()', namespaces=ns)) for p in controls]
         (OUT/'PT_TAPIA_ZAMBRANO.extracted.txt').write_text(
             '\n'.join(f'P{i:04d}: {text}' for i, text in enumerate(texts)), encoding='utf-8')
         write_json('thesis.json', {'path': thesis.relative_to(ROOT).as_posix(), 'sha256': digest(thesis),
                    'paragraphs': len(texts), 'equations': len(root.xpath('//m:oMath', namespaces=ns)),
+                   'content_control_paragraphs': len(controls),
+                   'content_control_nonempty': sum(bool(t.strip()) for t in control_texts),
                    'review': 'full body text including OMML extracted; no edit or visual pagination claim'})
     summary = {'files': len(files), 'folders_and_boundaries': len(folders), 'python_modules': len(modules),
                'errors': len(errors), 'bytes': sum(r.get('bytes', 0) for r in files),

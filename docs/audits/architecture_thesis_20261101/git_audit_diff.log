@@ -1,0 +1,12 @@
+ .../audits/architecture_thesis_20261101/collect.py |   4 +
+ .../audits/architecture_thesis_20261101/informe.md |  50 ++++-
+ docs/audits/architecture_thesis_20261101/probe.py  |   3 -
+ .../audits/architecture_thesis_20261101/pytest.log | 144 +++++++++++++
+ .../architecture_thesis_20261101/thesis.json       |   4 +-
+ docs/audits/architecture_thesis_20261101/tree.txt  | 226 ++++++++++-----------
+ 6 files changed, 305 insertions(+), 126 deletions(-)
+
+STDERR:
+warning: in the working copy of 'docs/audits/architecture_thesis_20261101/informe.md', LF will be replaced by CRLF the next time Git touches it
+
+EXIT_CODE:0

@@ -1,0 +1,16 @@
+[
+  {
+    "target": "external/HARL/harl/common/valuenorm.py",
+    "applied": true,
+    "before_sha256_lf": "feb28cb31486e3e992315b2762ea18e29a0fa16a8d5c01dc5bde16a75b7986d6",
+    "after_sha256_lf": "56ebe5bb8350037124479dda27ca14b50089bc546dabbbc621c8227afd4751c2",
+    "original_bytes_backup": ".superpowers/sdd/remediacion_integrada/approved_before_valuenorm.py.txt"
+  },
+  {
+    "target": "CityLearn/citylearn/internal/kpi.py",
+    "applied": true,
+    "before_sha256_lf": "b2692a3bb5e562bc0c335c6539f1eab3e97e206305e9eba0d43be08902b7d46f",
+    "after_sha256_lf": "d7c353c8c21d67e2837504420239b15c7783f4d2f0f7d992f8d019c61ab73094",
+    "original_bytes_backup": ".superpowers/sdd/remediacion_integrada/approved_before_kpi.py.txt"
+  }
+]

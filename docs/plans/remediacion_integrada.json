@@ -1,0 +1,4384 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-11-02T16:01:51.377189+00:00",
+  "plan": "docs/plans/remediacion_integrada.md",
+  "implementation_executed": false,
+  "implementation_ready_for_training": false,
+  "scientific_acceptance": false,
+  "operational_acceptance": false,
+  "head_observed": "d55c6c6286a0f66e4909f76fc3f342ae150d703f",
+  "audit_source": {
+    "session_id": "865ad199-53fa-4aa9-acc3-c3dfb37f0edd",
+    "lines": [
+      420,
+      657
+    ],
+    "source_kind": "assistant audit responses; not new user authority"
+  },
+  "tasks": [
+    {
+      "id": "I00",
+      "title": "Fijar corte, responsables y cobertura real",
+      "depends_on": [],
+      "files": [
+        "tools/ops/capture_modernization_baseline.py",
+        "docs/plans/traspaso_sesiones.md",
+        "specs/STATUS.md"
+      ],
+      "tests": [
+        "tests/ops/test_capture_modernization_baseline.py"
+      ],
+      "acceptance": "Corte con HEAD, árbol sucio, submódulos, hashes, fuentes e inventario por archivo; cada observación tiene estado y responsable de verificación.",
+      "implementation": "Comparar las tres auditorías sin sumar inventarios de ámbitos distintos. Incorporar el ledger semántico del Revisor A como pendiente; no convertir lectura EOF en revisión humana. Releer cada defecto antes de editar y registrar avances ya presentes. Acordar un escritor por archivo; los nombres de sesiones anteriores no garantizan propiedad vigente.",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G0",
+      "status": "planned"
+    },
+    {
+      "id": "I01",
+      "title": "Cerrar la promoción incorrecta en todas las rutas",
+      "depends_on": [
+        "I00"
+      ],
+      "files": [
+        "uc3m/application/training/fresh_acceptance.py",
+        "uc3m/application/training/fresh_campaign.py",
+        "uc3m/application/evaluation/results_catalog.py",
+        "uc3m/application/training/drive_sync.py"
+      ],
+      "tests": [
+        "tests/fresh_training/test_attempt_acceptance.py",
+        "tests/fresh_training/test_security_and_acceptance.py",
+        "tests/fresh_training/test_campaign_integrity.py",
+        "tests/fresh_training/test_fresh_results_catalog.py"
+      ],
+      "acceptance": "Cero pasos/updates, intento o seed ajenos, owners incompletos, checkpoint alterado, cobertura parcial e informe mínimo rechazan aceptación; caso software válido sin análisis conserva aceptación científica falsa.",
+      "implementation": "Reutilizar attempt_evidence_reasons desde treatment_trust_reasons y todas sus relecturas. Comparar el conjunto exacto de tratamientos planificados/completados, sin aceptar duplicados ni extras. Verificar identidad, hashes, cambios de parámetros y evidencia persistida del hijo. Ligar gate_report a campaña, commit+hash del árbol de fuentes, protocolo y SHA-256 del JUnit: rechazar reporte verde ajeno, alterado o de otro corte. Corregir la fixture que codifica evidencia débil, conservando un caso positivo realmente completo. Exigir informe enlazado a manifiesto de análisis y datos verificados; usar promotion_probe.json como casos adversariales, sin tratarlo como evidencia de aprendizaje. Ejecutar addendum_auditoria_20261101/reproductions.py caso P1 adaptando solo las llamadas si cambian firmas: debe rechazar. gate_report.py no parsea XML no verificado: comprobar el SHA-256 del JUnit antes de parsear o usar parser endurecido, con test de XML de expansión de entidades (C70). La fixture base de test_security_and_acceptance debe pasar el contrato estricto (C73).",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I02",
+      "title": "Congelar el contrato PT–simulador y la tupla",
+      "depends_on": [
+        "I00"
+      ],
+      "files": [
+        "configs/objective_policies.yaml",
+        "configs/scenarios.yaml",
+        "configs/experiments/iquitos.yaml",
+        "configs/algorithms/native.yaml",
+        "docs/design/entrenamiento.md"
+      ],
+      "tests": [
+        "tests/fresh_training/test_campaign_contract.py",
+        "tests/fresh_training/test_temporal_contract.py",
+        "tests/uc3m/test_reward_kpi_alignment.py"
+      ],
+      "acceptance": "Registro D01–D06 resuelto, contrato versionado con dimensiones y acciones por backend; PT y código tienen correspondencia explícita y ninguna equivalencia se infiere solo del nombre del algoritmo.",
+      "implementation": "Documentar M_e=<N,S,{A_i},P,r_e,{O_i},Z,rho_0,gamma,H>, estado físico frente a entrada del crítico e historial local de política. Declarar HVAC activo/inactivo, códigos EV frente a BACT, acciones continuas/discretas y restricciones de decodificación. Conservar pesos vigentes como decisiones del proyecto hasta la resolución metodológica; no reemplazarlos silenciosamente por los del PT. Especificar tarifa, mercado/net billing, términos de recompensa activos y comparación justa de capacidad/actualizaciones.",
+      "scientific_basis": [
+        "L1",
+        "L2",
+        "L4",
+        "L5"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I03",
+      "title": "Conciliar dataset, procedencia temporal y facturación física",
+      "depends_on": [
+        "I00",
+        "I02"
+      ],
+      "files": [
+        "tools/dataset/build_fresh_campaign_dataset.py",
+        "uc3m/application/dataset/construction.py",
+        "uc3m/application/dataset/provenance.py",
+        "uc3m/application/dataset/splits.py",
+        "uc3m/adapters/citylearn/fresh_observations.py",
+        "uc3m/adapters/citylearn/policy_inference.py"
+      ],
+      "tests": [
+        "tests/fresh_training/test_dataset_provenance.py",
+        "tests/fresh_training/test_der_sizing_inputs.py",
+        "tests/fresh_training/test_temporal_contract.py",
+        "tests/fresh_training/test_kpi_physical_contract.py"
+      ],
+      "acceptance": "Dataset elegido con identidad nueva si cambia contenido; splits, normalizador, flota/controles y tabla por variable trazables; factura analítica por edificio y sensibilidad a backcast sin fuga oculta.",
+      "implementation": "Distinguir v1 activo de v2/v3 disponibles, sus EV/cargadores, precios y carbono. Aplicar la puerta de sustitución D01 (S1–S11) antes de reenlazar config o eliminar v1. Mantener precios por edificio en la traza si son heterogéneos; verificar unidades, exportación y liquidación. Tratar B01 2023 derivado de 2024 como amenaza explícita con sensibilidad/exclusión predefinida. No rellenar resultados ni sobrescribir fuentes/splits existentes.",
+      "scientific_basis": [
+        "L1",
+        "L2",
+        "L5",
+        "L6"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I04",
+      "title": "Verificar interfaces y capacidad de los cuatro backends",
+      "depends_on": [
+        "I01",
+        "I02",
+        "I03"
+      ],
+      "files": [
+        "uc3m/adapters/algorithms/native_entrypoint.py",
+        "uc3m/env/wrappers.py",
+        "uc3m/algorithms/factory.py",
+        "uc3m/adapters/citylearn/policy_inference.py"
+      ],
+      "tests": [
+        "tests/fresh_training/test_learning_observer.py",
+        "tests/fresh_training/test_real_learning.py",
+        "tests/uc3m/test_algorithm_factory.py"
+      ],
+      "acceptance": "Cuatro aprendices reales con owners/updates/cambios de parámetros, recarga consistente y contrato actor/crítico/acción registrado; placeholder y modo ilustrativo inelegibles.",
+      "implementation": "Comprobar wrapper heredado local/share_obs y número de entornos sin atribuir sus defectos al wrapper HAPPO nativo. Medir entrada de crítico por backend: 1652 común frente a 6069 padded de MATD3 en el corte auditado. Revisar 89 acciones axis y redundancia para agentes pequeños; elegir comparabilidad en D03, enmascarar/explicar acciones según contrato. No copiar entrenadores ni modificar CityLearn/external: si el ajuste exige dependencia protegida, emitir blocked_dependency_interface con parche propuesto y prueba.",
+      "scientific_basis": [
+        "L1",
+        "L2",
+        "L4",
+        "L5"
+      ],
+      "gate": "G2",
+      "status": "planned"
+    },
+    {
+      "id": "I05",
+      "title": "Presupuesto efectivo, recursos y protocolo HPO coherentes",
+      "depends_on": [
+        "I02",
+        "I03",
+        "I04"
+      ],
+      "files": [
+        "uc3m/application/training/phases.py",
+        "uc3m/application/training/fresh_campaign.py",
+        "uc3m/application/training/fresh_tuning.py",
+        "uc3m/adapters/algorithms/native_entrypoint.py",
+        "configs/algorithms/native.yaml",
+        "configs/experiments/iquitos.yaml"
+      ],
+      "tests": [
+        "tests/fresh_training/test_training_phases.py",
+        "tests/fresh_training/test_stage_phases.py",
+        "tests/fresh_training/test_tuning_protocol.py",
+        "tests/fresh_training/test_campaign_contract.py"
+      ],
+      "acceptance": "DAG, freeze, pesos efectivos, replay/batch y presupuesto real coinciden; runtime insuficiente rechaza antes de lanzar; capacidad HPO y costes por backend están declarados.",
+      "implementation": "Recalcular DAG actual: el corte más reciente tiene 288 HPO sin clamp, frente a 252 de planes anteriores. Registrar 119941920 pasos como presupuesto del corte auditado, no compromiso ni ejecución. Medir pico de RAM/VRAM y rendimiento con microejecución autorizada; no asumir que 82 GiB requeridos caben en GPU de 80 GB. Separar reserva por tratamiento de disponibilidad instantánea; evitar que max de fase paralice injustificadamente todos los trabajos. Congelar buffers por etapa y registrar threads/fracción CUDA por ejecución.",
+      "scientific_basis": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "gate": "G2",
+      "status": "planned"
+    },
+    {
+      "id": "I06",
+      "title": "Horizonte anual, inferencia congelada y KPI completos",
+      "depends_on": [
+        "I01",
+        "I03",
+        "I04"
+      ],
+      "files": [
+        "uc3m/adapters/citylearn/policy_inference.py",
+        "uc3m/adapters/citylearn/frozen_adapters.py",
+        "uc3m/application/evaluation/frozen_evaluation.py",
+        "uc3m/application/evaluation/kpi_contract.py"
+      ],
+      "tests": [
+        "tests/fresh_training/test_frozen_evaluation.py",
+        "tests/fresh_training/test_frozen_evaluation_writer.py",
+        "tests/fresh_training/test_kpi_physical_contract.py"
+      ],
+      "acceptance": "2023/2025 y 2024 bisiesto conservan intervalos/timestamps correctos, días completos, SOC/balances y pasos observados; recarga sin updates y test inaccesible antes de unlock válido.",
+      "implementation": "Definir filas/estados/acciones/energía terminal; corregir rows-1 sin inventar última hora ni eliminar días silenciosamente. Comparar políticas y baselines bajo iguales servicios EV/energía inicial/precios. Verificar contexto y hashes del unlock de test, protocolos congelados y manifiestos de evaluación. Separar contador observado de episodios*horizonte.",
+      "scientific_basis": [
+        "L1",
+        "L3",
+        "L5",
+        "L6"
+      ],
+      "gate": "G2",
+      "status": "planned"
+    },
+    {
+      "id": "I07",
+      "title": "Estadística y selección sin resultados ilustrativos promovidos",
+      "depends_on": [
+        "I01",
+        "I02"
+      ],
+      "files": [
+        "uc3m/application/evaluation/fresh_analysis.py",
+        "uc3m/application/evaluation/model_selection.py",
+        "uc3m/application/evaluation/scientific_evaluation.py",
+        "uc3m/domain/pareto.py",
+        "uc3m/reward/hphi.py",
+        "uc3m/application/thesis/evidence_registry.py",
+        "uc3m/multicriteria/pipeline.py"
+      ],
+      "tests": [
+        "tests/fresh_training/test_statistical_input_gate.py",
+        "tests/fresh_training/test_seed_statistics.py",
+        "tests/fresh_training/test_evidence_promotion.py",
+        "tests/uc3m/test_hphi.py",
+        "tests/unit/application/test_model_selection.py"
+      ],
+      "acceptance": "NaN/Inf, réplicas duplicadas o cobertura incompleta rechazan; igualdad legítima no obliga ganador; IQM/hipervolumen únicos y leader descriptivo separado de ganador inferencial.",
+      "implementation": "Revalidar los avances P03/P08/P09 del Revisor A; no reimplementar lo ya correcto. Basar inferencia en semillas independientes y registrar familias de contrastes/IC. Prohibir accepted=True manual y aceptar solo evidencia existente con hash/contexto. Hacer relleno ilustrativo opt-in explícito y excluirlo del catálogo científico; conservar utilidad didáctica rotulada.",
+      "scientific_basis": [
+        "L1",
+        "L3",
+        "L6"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I08",
+      "title": "Enlazar pipeline, análisis, catálogo y entrega",
+      "depends_on": [
+        "I01",
+        "I06",
+        "I07",
+        "I11"
+      ],
+      "files": [
+        "uc3m/application/pipeline.py",
+        "uc3m/application/training/fresh_acceptance.py",
+        "uc3m/application/evaluation/results_catalog.py",
+        "uc3m/presentation/training_panel.py",
+        "tools/eval/report_fresh_campaign.py"
+      ],
+      "tests": [
+        "tests/fresh_training/test_pipeline.py",
+        "tests/fresh_training/test_delivery_contract.py",
+        "tests/fresh_training/test_fresh_results_catalog.py",
+        "tests/integration/test_training_panel.py"
+      ],
+      "acceptance": "analyze→deliver consume gate_report y analysis_manifest explícitos; entrega válida acepta, informe ajeno/alterado rechaza y ausencia no produce paquete aceptado; panel de lectura refleja fase/seed/aceptación.",
+      "implementation": "Resolver análisis en analysis/<stage>_<split> frente a reports/scientific_report.json por referencia tipada única, no copiando un estado mínimo. Acordar esquema canónico con status/campaign_id y hashes frente a as_dict de FreshAnalysis. Propagar gate_report hasta verify_fresh_acceptance. Fijar contrato CLI explícito: resultados fallidos/rechazados de evaluate producen salida no cero y el cuaderno se detiene; incomplete se informa sin fingir hecho. Usar staging por identidad de análisis y publicación atómica; un .partial propio interrumpido debe poder diagnosticarse y recuperarse sin bloquear para siempre ni sobrescribir un resultado completo. Mantener status/freeze/evaluate/analyze/deliver sin segunda vía de entrenamiento y probar análisis válido→entrega, informe ajeno, fallos parciales y reintento.",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G2",
+      "status": "planned"
+    },
+    {
+      "id": "I09",
+      "title": "Colab, Drive y recuperación de intentos",
+      "depends_on": [
+        "I01",
+        "I05",
+        "I08"
+      ],
+      "files": [
+        "tools/colab/colab_session.py",
+        "tools/colab/build_modular_colab_notebook.py",
+        "uc3m/application/training/drive_sync.py",
+        "examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb"
+      ],
+      "tests": [
+        "tests/ops/test_colab_session.py",
+        "tests/ops/test_colab_notebook_cells.py",
+        "tests/fresh_training/test_drive_sync.py"
+      ],
+      "acceptance": "Cuaderno regenerado reproduce C1–C11, propaga rechazos JSON, sincroniza intentos verificados y documenta pérdida potencial del intento activo; ensayo real Colab separado y trazable.",
+      "implementation": "Preservar CLI única y notebook como cliente. Verificar overlay por hash/checkout e identidad config/Drive. Publicar manifiesto atómico por cada intento copiado/verificado, no solo al final de toda la pasada. Simular corte tras copiar y antes del manifiesto: la siguiente ejecución debe verificar/adoptar o aislar explícitamente el residuo; no conflicto eterno. Conflictos/fallos salen no cero y detienen C4/C6. Aplicar contained_path a cada ruta del manifiesto, rechazando sub/../../outside.txt, rutas absolutas/drive y enlaces antes de escribir. Cambiar directory_digest a bloques preservando exactamente su resultado. Reutilizar solo intento completo estrictamente verificado; otro empieza en episodio 0. Registrar ensayo real de desconexión/restauración antes de cerrar P11; no basta una prueba local.",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G2",
+      "status": "planned"
+    },
+    {
+      "id": "I10",
+      "title": "Privacidad, entradas remotas y riesgos aplicables",
+      "depends_on": [
+        "I00",
+        "I01"
+      ],
+      "files": [
+        "uc3m/data/adapters/local_csv.py",
+        "uc3m/data/adapters/remote_http.py",
+        "tools/ops/audit_closed_services_and_secrets.py",
+        "deploy/inference/app.py",
+        "deploy/inference/model_loader.py",
+        "deploy/docker-compose.yml"
+      ],
+      "tests": [
+        "tests/fresh_training/test_inference_demo_fence.py",
+        "tests/uc3m/test_data_ingestion.py",
+        "tests/uc3m/test_data_adapters_remote.py"
+      ],
+      "acceptance": "Estado de navegador excluido de cualquier paquete/imagen/copia de entrega; descargas contenidas y acotadas; avisos Bandit/OSV clasificados por API/exposición sin confundir pip check con seguridad.",
+      "implementation": "No abrir Login Data, state.json ni auth_info.json. Inventariar solo rutas/metadatos y probar exclusiones de Git, Docker y overlay. Diseñar ubicación externa configurable con migración recuperable: el traslado que pueda cerrar sesión requiere decisión explícita. Clasificar MD5 y cada torch.load/urlopen por confianza, timeout y cuotas; distinguir weights_only=False explícito del default variable con versión de torch y probar formatos reales de cada backend antes de cambiarlo. Corregir inferencia con test_action_clipping_is_request_local (last_clipped no compartido), test_missing_metadata_is_not_ready (ONNX sin metadatos→503) y test_internal_error_does_not_leak_details (500 sin texto interno; detalle solo en log local). Reconciliar si los avisos proceden de Ruff o Bandit y no afirmar ejecución sin log. Historial de secretos sigue sin acreditar; preparar análisis acotado sin mostrar valores. No ejecutar consultas externas/actualizaciones en esta entrega. Partir de addendum_auditoria_20261101/bandit.json (C69) y convertir la verificación del overlay sin rutas sensibles (C71) en prueba que regenera el zip y revisa el contexto Docker.",
+      "scientific_basis": [
+        "L3",
+        "L6"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I11",
+      "title": "Gobernanza de dependencias, paquete y promesas de exportación",
+      "depends_on": [
+        "I00",
+        "I02"
+      ],
+      "files": [
+        ".gitmodules",
+        "pyproject.toml",
+        "requirements.txt",
+        "uv.lock",
+        "governance/open_source_policy.yaml",
+        "tools/colab/build_modular_colab_notebook.py",
+        "tools/ops/audit_github_readiness.py",
+        ".gitattributes"
+      ],
+      "tests": [
+        "tests/fresh_training/test_github_readiness.py",
+        "tests/ops/test_open_source_dependency_audit.py"
+      ],
+      "acceptance": "off-policy tiene rol/procedencia/commit/licencia declarados; namespaces locales no se instalan como paquetes homónimos; wheel/checkout elegido funciona en instalación limpia; documentación LFS/ONNX veraz.",
+      "implementation": "Registrar external/off-policy como componente vendorizado o adoptar estrategia explícita sin modificarlo. Conciliar requirements/pyproject/uv.lock, local-dependencies y licencias/excepciones del overlay. Python 3.9 llegó a EOL el 2025-10-31 (PEP 596): documentar exposición/aislamiento y preparar matriz de migración a runtime soportado con cuatro backends, sin cambiar versión ni dependencias protegidas silenciosamente. Verificar si el producto soporta wheel autónomo o exige checkout; resolver import tools del pipeline. Cero archivos LFS no implica pérdida: contrastar reglas/punteros y STATUS. Para ONNX elegir D06: retirar promesa si fuera de alcance o implementar exportador con equivalencia numérica y contrato de cada backend; no exportar un ganador inexistente.",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I12",
+      "title": "Calidad, guardas, CI y documentación del flujo",
+      "depends_on": [
+        "I00",
+        "I01",
+        "I11"
+      ],
+      "files": [
+        "scripts/verify_project_context.ps1",
+        "scripts/maintenance/consolidate_repository.ps1",
+        ".github/workflows/ci.yml",
+        "tools/ops/verify_workflow_integrity.py",
+        "docs/workflow_manifest.json",
+        "tools/skills/registry.yaml",
+        "pyrightconfig.json"
+      ],
+      "tests": [
+        "tests/fresh_training/test_duplicate_consolidation.py",
+        "tests/fresh_training/test_github_readiness.py",
+        "tests/contract/test_spec_kit_consistency.py",
+        "tests/skills"
+      ],
+      "acceptance": "Cinco fallos generales tienen resolución específica; Ruff/skills/workflow/CI portable acreditan su ámbito; guarda más rápida conserva frontera, enlaces y rechazo de rutas ajenas.",
+      "implementation": "Diagnosticar PSModulePath/PowerShell lanzado desde Python antes de corregir Get-FileHash; no desactivar hash ni guarda. Medir repetidamente skills/perfil sin generalizar una muestra de 43 s; C74 sitúa 15 s en Select-String sobre el perfil de navegador: excluir solo directorios de datos no-skill, con test que siga rechazando una referencia global real. Mantener raíz/origin y defensa de junctions. Corregir Ruff, inventario historical_inventory y notebook desaparecido; habilitar tipos por alcance. Regenerar descubrimiento local y comprobar cliente. Verificar triggers CI en rama/PR de entrega, checks reales del mismo commit y protección aplicable; los 324/106 commits de divergencia y runs vacíos son datos reportados por el Revisor A, no actuales confirmados. Conciliar ramas es tarea de integración separada, sin merge/push automático. Incluir prueba de arquitectura y triage de dependencias en perfil portable; mantener SHA/permisos mínimos/no-skip ya adoptados. Revisar cumplimiento automático local con controles de solo lectura, nunca restaurar auto-stage. AGENTS prevalece sobre memorias contradictorias; actualizar documentación/traspaso sin editar memoria global.",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I13",
+      "title": "Cerrar revisión semántica por archivo y deuda de contratos",
+      "depends_on": [
+        "I00",
+        "I02"
+      ],
+      "files": [
+        "uc3m/ports/simulator.py",
+        "uc3m/algorithms/factory.py",
+        "tools/thesis/generate_borrador_tesis_docx.py",
+        "tools/thesis/validate_integral_word_50ep_4madrl.py",
+        "tools/training/verify_training_optimization.py",
+        "deploy/plant_adapter/modbus_adapter.py"
+      ],
+      "tests": [
+        "tests/contract/test_import_architecture.py",
+        "tests/contract",
+        "tests/unit",
+        "tests/uc3m"
+      ],
+      "acceptance": "Cada archivo propio del alcance conciliado tiene revisión a EOF con hash, rol, consumidores, hallazgos y pruebas; registros pendientes siguen visibles. Código ajeno tiene frontera y revisión específica declaradas.",
+      "implementation": "Revisión compartida Revisor A/Revisor B según docs/audits/revision_semantica_20261102/README.md: build_lots.py genera ledger_revisor_a.csv (343 archivos/47966 líneas: L1, L3, L5 limpios y todo cambio en curso del Revisor B) y ledger_revisor_b.csv (333/82565: L2, L4 limpios y lo escrito por el Revisor A), un escritor por registro, con hallazgos R-<A|B>-NNN asignados a la tarea dueña del archivo; el revisor no corrige. Cierre: registros sin pendiente en corte estable y muestreo cruzado ≥10 % sin discrepancias sin explicar. Fronteras de la estimación previa: 773 entradas (722 sin docs/audits), L1 114/18022, L2 219/62182, L3 122/15186, L4 107/15561, L5 160/21883; L6 docs/audits y datos solo si se decide. Registrar por archivo hash, rol, consumidores, hallazgos, pruebas y revisor; el ejecutor no revisa su propio lote implementado. Incluir C72 (options sin usar en wrappers.reset) dentro de H11. Clasificar NotImplementedError/placeholder/TODO/pending_owner como abstracto válido, stub inelegible o deuda. Verificar SimulatorPort diferido y LearnerPort fuera de ruta canónica sin crear capa muerta. Reproducir ciclo fresh_analysis→multicriteria→results_catalog→fresh_analysis y eliminar dependencia inversa con contrato neutral; test_import_architecture debe cubrir imports relativos, puertos/tools y ambos órdenes de importación, además de entrar en CI. REGISTER_MAP vacío impide declarar operación. Clasificar cinco except silenciosos y fijar reporte de fallos. Dividir funciones 1096/445/195/149 líneas y stats_tests de 1916 solo con comportamiento fijado; longitud no demuestra cuello temporal.",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I14",
+      "title": "Paridad anterior, layout, obsoletos y conservación",
+      "depends_on": [
+        "I00",
+        "I11",
+        "I13",
+        "I15"
+      ],
+      "files": [
+        "tools/ops/audit_repository_layout.py",
+        "tools/ops/historical_inventory.py",
+        "governance/repository_layout.yaml",
+        "governance/naming.yaml",
+        "data/audits/evaluation_tools_inventory.json",
+        "README.md",
+        "scripts/README.md",
+        "tools/README.md",
+        "Dockerfile"
+      ],
+      "tests": [
+        "tests/fresh_training/test_repository_layout.py",
+        "tests/ops/test_repository_hygiene.py",
+        "tests/unit/evaluation/test_tools_use_results_catalog.py",
+        "tests/fresh_training/test_historical_retirement.py"
+      ],
+      "acceptance": "Mapa capacidad anterior→reemplazo→prueba o retiro razonado completo; enlaces activos válidos; PT en ubicación aprobada; ningún archivo único, dato/campaña, evidencia o dependencia eliminado por similitud.",
+      "implementation": "Reconciliar 209 rutas antiguas ausentes y 28 traslados exactos con capacidades y consumidores dinámicos. Clasificar 170 enlaces por activo/histórico/futuro antes de corregir los cuatro confirmados. Dar destino documentado a 27 herramientas obsoletas y 16 por decidir; comprobar herramientas manuales y dos scripts únicos. Revisar build/lib, inspection_cut, auditorías, nombres coincidentes y scripts fachada como roles distintos. Inventariar data/maintenance, cachés y temporales con referencias activas; para .git solo diagnóstico y mantenimiento Git autorizado, sin borrar objects ni reescribir historia. Actualizar Dockerfile que apunta a AWS retirado según producto adoptado.",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G1",
+      "status": "planned"
+    },
+    {
+      "id": "I15",
+      "title": "Pruebas independientes del scratch y cobertura real",
+      "depends_on": [
+        "I00",
+        "I01",
+        "I03",
+        "I04"
+      ],
+      "files": [
+        "tests/fresh_training/conftest.py",
+        "tests/fresh_training/test_real_learning.py",
+        "tests/fresh_training/test_frozen_evaluation.py",
+        "tests/fresh_training/test_frozen_evaluation_writer.py",
+        "tests/fresh_training/test_three_level_game.py",
+        "tests/uc3m/test_kpi_evaluator.py",
+        "tests/uc3m/test_reward_axes.py",
+        "pyproject.toml"
+      ],
+      "tests": [
+        "tests/fresh_training",
+        "tests/ops/test_repository_hygiene.py",
+        "deploy/inference/test_app.py",
+        "tools/training/test_job_resume_state.py"
+      ],
+      "acceptance": "Clon/entorno limpio puede generar o recibir explícitamente checkpoints propios con identidad/hash; perfil estricto no omite ni xfail; pruebas fuera de tests tienen selección deliberada y aserciones de comportamiento.",
+      "implementation": "Eliminar dependencia implícita de tres rutas .superpowers mediante fixture nativa común o entrada de artefactos declarada, nunca checkpoints de campaña retirada. Mantener compilación de celdas como comprobación válida; añadir verificación observable a reset_pareto/set_baseline si hoy no verifica efecto. Clasificar cuatro tests exteriores por perfil y coste antes de moverlos/recogerlos. Desglosar duración de fixtures/guardas y simulación; optimizar sin omitir controles necesarios ni sustituir dependencias reales.",
+      "scientific_basis": [
+        "L3"
+      ],
+      "gate": "G2",
+      "status": "planned"
+    },
+    {
+      "id": "I16",
+      "title": "Aceptación nativa y campaña nueva autorizada",
+      "depends_on": [
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "I06",
+        "I07",
+        "I08",
+        "I09",
+        "I10",
+        "I11",
+        "I12",
+        "I13",
+        "I14",
+        "I15"
+      ],
+      "files": [
+        "configs/experiments/iquitos.yaml",
+        "scripts/quality/run_fresh_training_gates.ps1",
+        "uc3m/application/training/cli.py",
+        "docs/architecture/runbook.md"
+      ],
+      "tests": [
+        "tests/fresh_training"
+      ],
+      "acceptance": "G2 con cuatro aprendices y perfil integral sin omisiones; G3/G4 solo con etapas autorizadas, HPO validación, confirmación multisemilla, sensibilidad, baselines y prueba final completos y verificados.",
+      "implementation": "Repetir primero microaprendizaje desde cero y evaluación congelada. Emitir presupuesto medido de tiempo/RAM/VRAM/costo y protocolo prerregistrado. Mantener authorized_stages vacío hasta decisión explícita; ejecutar en orden piloto→HPO→freeze→confirmación/sensibilidad→test. No elevar contratos ni microsmokes a resultados científicos; un resultado sin diferencias o sin ganador es válido. Cubrir escalabilidad/estrés del jurado según alcance factible registrado.",
+      "scientific_basis": [
+        "L1",
+        "L2",
+        "L3",
+        "L5",
+        "L6"
+      ],
+      "gate": "G4",
+      "status": "planned"
+    },
+    {
+      "id": "I17",
+      "title": "Tesis, bibliografía y observaciones J-01–J-17",
+      "depends_on": [
+        "I02",
+        "I06",
+        "I07",
+        "I08",
+        "I13",
+        "I14",
+        "I16"
+      ],
+      "files": [
+        "data/audits/jury_observations_manifest.json",
+        "uc3m/application/thesis/evidence_registry.py",
+        "docs/chapters/",
+        "specs/STATUS.md",
+        "docs/plans/traspaso_sesiones.md"
+      ],
+      "tests": [
+        "tests/contract/test_jury_observations.py",
+        "tests/fresh_training/test_evidence_promotion.py"
+      ],
+      "acceptance": "Cada J-ID tiene evidencia específica y estado verificado; texto, tablas, anexos y Word reflejan el contrato y resultados reales, con preservación literal aprobada y revisión visual en copia nueva.",
+      "implementation": "Reparar rutas de 17 observaciones y separar historia de campaña nueva. Verificar correcciones bibliográficas del PT (autor/año/DOI) sin afirmar que se validaron los 50 antecedentes. Conservar síntesis por capítulo, costos/TRL/amenazas a validez y distinción liderazgo descriptivo/inferencia. La escritura del Word requiere encargo documental explícito; trabajar desde snapshot y nuevo nombre. No actualizar resultados antes de G4 ni cerrar jurado por una única suite.",
+      "scientific_basis": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5",
+        "L6"
+      ],
+      "gate": "G5",
+      "status": "planned"
+    },
+    {
+      "id": "I18",
+      "title": "Frontera operacional y riesgos condicionados",
+      "depends_on": [
+        "I10",
+        "I16",
+        "I17"
+      ],
+      "files": [
+        "deploy/inference/app.py",
+        "deploy/inference/model_loader.py",
+        "deploy/plant_adapter/modbus_adapter.py",
+        "deploy/mosquitto.conf",
+        "deploy/docker-compose.yml",
+        "deploy/docker-compose.aws.yml",
+        "deploy/aws/iac/variables.tf"
+      ],
+      "tests": [
+        "tests/fresh_training/test_inference_demo_fence.py",
+        "deploy/inference/test_app.py"
+      ],
+      "acceptance": "Demo permanece inelegible para planta; cualquier aceptación operacional exige alcance y pruebas independientes de auth, límites, fallback, latencia, recuperación y escritura física autorizada.",
+      "implementation": "Reconciliar REGISTER_MAP, stub, readiness, permisos de escritura, exposición de Compose AWS y MQTT. Inventariar Terraform SSH/HTTP 0.0.0.0/0, auth de /act y /analytics, TLS/auth Mongo, securityContext/NetworkPolicy Kubernetes y usuario root en contenedores. Preparar configuraciones cerradas según alcance y prueba local, sin desplegar ni contratar. Preservar actions_for_plant y loopback ya correctos; una excepción de demo no habilita planta. Preparar protocolo de piloto/fallback RBC sin confundir convergencia con seguridad o TRL.",
+      "scientific_basis": [
+        "L2",
+        "L3"
+      ],
+      "gate": "G6",
+      "status": "planned"
+    }
+  ],
+  "coverage": {
+    "architecture_H": {
+      "H01": {
+        "tasks": [
+          "I02",
+          "I04",
+          "I17"
+        ],
+        "severity": "P0 / divergencia científica",
+        "evidence": "PT §§3.1.4,4.3.2–4.3.5 vs `runtime_probe.json`, schema y políticas. Dimensiones, controles, acciones, recompensa y pesos no coinciden.",
+        "acceptance": "Elegir y congelar contrato experimental; actualizar sus tablas desde el contrato real y probar observación/acción/recompensa por backend. No corregir solo etiquetas.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H02": {
+        "tasks": [
+          "I03"
+        ],
+        "severity": "P0 / integración de dataset",
+        "evidence": "`configs/experiments/iquitos.yaml:3–5` selecciona v1; v2/v3 tienen nuevas aceptaciones, emisiones y tarifas.",
+        "acceptance": "Decidir la identidad de campaña que corresponde al dataset aprobado; crear una identidad nueva y verificar fuentes, splits, normalizador, tamaños y todos los consumidores. No cambiar únicamente el alias.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H03": {
+        "tasks": [
+          "I05"
+        ],
+        "severity": "P0 / viabilidad computacional",
+        "evidence": "`native.yaml:47` pide MASAC RAM≥72 y VRAM≥82 GiB; la grilla incluye hidden=256, cuya estimación declarada llega a 103,3 GiB. Los recursos medidos rechazan ambas fases.",
+        "acceptance": "Acreditar recursos que permitan completar todos los candidatos o aprobar una reformulación comparable de capacidad/presupuesto. Mantener los rechazos explícitos; no reducir silenciosamente.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H04": {
+        "tasks": [
+          "I05"
+        ],
+        "severity": "P1 / cuello de planificación",
+        "evidence": "`phases.py:worker_limit/phase_budget` reserva el máximo de todos los algoritmos de la fase. HAPPO comparte fase con MASAC.",
+        "acceptance": "Si se quiere aprovechar hardware menor, planificar por tratamiento y registrar recursos efectivos sin alterar el requisito científico; probar que un algoritmo inviable no inmovilice los demás sin una razón de protocolo. La barrera de fases es actualmente deliberada.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H05": {
+        "tasks": [
+          "I02",
+          "I03"
+        ],
+        "severity": "P1 / KPI de costo y tarifa",
+        "evidence": "Escenarios `mode: flat`; `scenario_manager.py` reemplaza precios por su media. El PT promete arbitraje TOU.",
+        "acceptance": "Definir si se estudia energía a tarifa plana, TOU o facturación completa. Mantener el mismo contrato en recompensa, baselines y KPI, con pruebas de una factura analítica.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H06": {
+        "tasks": [
+          "I02",
+          "I03"
+        ],
+        "severity": "P1 / divergencia interna net billing",
+        "evidence": "`configs/evaluation/kpis.yaml:27–32` declara venta al precio de compra; schema v1 habilita mercado comunitario y `grid_export_price=0`.",
+        "acceptance": "Elegir liquidación e implementar trazas de importación/exportación/transacciones con reconciliación de la misma factura en recompensa y evaluación. No equiparar costo firmado y factura del mercado.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H07": {
+        "tasks": [
+          "I03",
+          "I06"
+        ],
+        "severity": "P1 / adopción v3 condicionada",
+        "evidence": "`policy_inference.py:133–134` toma precio del primer edificio para todo el distrito; v3 tiene `pricing_i.csv`.",
+        "acceptance": "Admitir precio por edificio en trazas y cálculo. Caso analítico: 1 kWh a .10 + 1 kWh a .20 debe costar .30, no .20. Es un riesgo al migrar, no un error demostrado de precio heterogéneo en la campaña v1 actual.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H08": {
+        "tasks": [
+          "I02"
+        ],
+        "severity": "P1 / términos incompletos",
+        "evidence": "`CityLearn/citylearn/v3/reward.py:157,163–176`: DSO, cargo por potencia y desviación de precio tienen `pending_owner` o peso cero.",
+        "acceptance": "Documentar exclusión del alcance o completar fórmula, datos, ventana y parámetros antes de activar términos. El propio skill exige no inventarlos; no rellenar con constantes arbitrarias.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H09": {
+        "tasks": [
+          "I12",
+          "I14",
+          "I17"
+        ],
+        "severity": "P1 / conflicto documental",
+        "evidence": "README declara v4 definitiva y resultados retirados; `workflow_manifest.json` exige campaña vieja; `local.md` muestra CLI antigua con `--resume`; `entrenamiento.md` conserva lanzador anterior.",
+        "acceptance": "Una guía operativa canónica que delegue en runbook/configuración actual; retirar afirmaciones vigentes de resultados retirados y probar los comandos publicados.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H10": {
+        "tasks": [
+          "I00",
+          "I12",
+          "I14",
+          "I17"
+        ],
+        "severity": "P1 / desalineación de SPEC",
+        "evidence": "STATUS conserva MASAC clamp/252 HPO/v5 y funciones pendientes; código actual tiene 288 HPO, perfil v7, selección y pipeline. SPEC-011 tiene tareas cerradas sobre lanzadores retirados. El test del inventario histórico detecta `tools/ops/historical_inventory.py` fuera de su registro.",
+        "acceptance": "Conciliar requisito→archivo actual→prueba→resultado; preservar historia como historia. Clasificar la referencia de esa herramienta como guarda de retiro, sin confundirla con un consumidor de resultados. No cerrar con solo existencia de código.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H11": {
+        "tasks": [
+          "I04"
+        ],
+        "severity": "P1 / API heredada CTDE",
+        "evidence": "`env/wrappers.py:47–48,67`: `share_obs=obs`; repetir una observación no es construir estado global. Reset repite n_threads, step extrae solo el primer hilo.",
+        "acceptance": "Declarar API no soportada para entrenamiento o corregir y comprobar con estado y hilos reales. No afecta automáticamente a HAPPO canónico, que usa otro wrapper nativo.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H12": {
+        "tasks": [
+          "I16"
+        ],
+        "severity": "P1 / aceptación experimental",
+        "evidence": "No hay `outputs/campaigns/iquitos_v1/campaign_manifest.json` productivo en el probe; `authorized_stages=[]`; no campaña nueva completa.",
+        "acceptance": "Piloto anual, HPO/validación, congelado, confirmación multisemilla, sensibilidad, prueba 2025, estadística y entrega verificadas. Una negativa por falta de autorización es un control correcto, no un defecto.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H13": {
+        "tasks": [
+          "I03"
+        ],
+        "severity": "P1 / diseño temporal",
+        "evidence": "Las aceptaciones v1/v3 declaran B01 2023 retroproyectado desde 2024. No puede llamarse una separación temporal totalmente libre de información futura.",
+        "acceptance": "Mantener excepción visible y ejecutar sensibilidad sin edificios/periodos modelados, o reconstruir con fuente disponible al corte temporal.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H14": {
+        "tasks": [
+          "I09"
+        ],
+        "severity": "P1 / respaldo experimental",
+        "evidence": "Drive copia intentos terminados; una desconexión dentro de un intento obliga a repetirlo. La política nueva rechaza resume.",
+        "acceptance": "Medir duración anual y pérdida máxima por intento; probar sincronización/restauración real en Colab según el protocolo desde cero. No prometer continuidad de optimizador/RNG/replay en esta campaña.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H15": {
+        "tasks": [
+          "I14"
+        ],
+        "severity": "P2 / layout no aceptado",
+        "evidence": "`layout/repository_layout_acceptance.json`: cuatro referencias rotas; un grupo pendiente; dos scripts con contenido único. La allowlist de raíz también rechaza el propio PT suministrado.",
+        "acceptance": "Reparar enlaces, conciliar política de ubicación del PT y los dos scripts mediante equivalencia de capacidades y prueba de regeneración; aceptar layout de nuevo. Sin borrado automático.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H16": {
+        "tasks": [
+          "I12"
+        ],
+        "severity": "P2 / controles de mantenimiento",
+        "evidence": "`workflow.log`: FileNotFoundError antes del informe; descubrimiento skills: 11 entradas ausentes; Ruff: tres incidencias en el ámbito de CI. Consolidación temporal falla al resolver `Get-FileHash` desde PowerShell iniciado por Python.",
+        "acceptance": "Reconectar el verificador al notebook actual, registrar descubrimiento local, resolver lint y compatibilidad del lanzador PowerShell. Conservar el rechazo ante fallos de hash. Repetir comandos y guardar sus códigos por separado.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H17": {
+        "tasks": [
+          "I17"
+        ],
+        "severity": "P2 / vigencia bibliográfica",
+        "evidence": "PT contiene autores/años incorrectos comprobados y referencias incompletas.",
+        "acceptance": "Corregir APA contra fuentes primarias y verificar los porcentajes citados antes de reutilizarlos. No se auditó exhaustivamente la matriz completa de antecedentes.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H18": {
+        "tasks": [
+          "I07"
+        ],
+        "severity": "P1 / vía heredada con relleno",
+        "evidence": "`multicriteria/pipeline.py:57,136` permite relleno y curvas sintéticas por defecto; el script usa `allow_illustrative_fill=not args.real_only`. La API de carga, en un repositorio temporal vacío, devolvió `source=illustrative` y cuatro alternativas. Sí etiqueta su procedencia, pero el usuario no necesita pedir expresamente el modo ilustrativo.",
+        "acceptance": "Exigir modo ilustrativo explícito y prohibir su promoción a tesis. Conservar su utilidad didáctica y las etiquetas de procedencia. Esta ruta es distinta del pipeline fresh; no se afirma que la campaña nueva haya usado esos valores.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H19": {
+        "tasks": [
+          "I15"
+        ],
+        "severity": "P1 / reproducibilidad de pruebas",
+        "evidence": "`test_frozen_evaluation.py:23–27`, `test_three_level_game.py:24` y `test_frozen_evaluation_writer.py:21` buscan checkpoints en una ruta fija de `.superpowers/sdd/…`. `test_real_learning.py` genera sus intentos en `tmp_path`, sin enlazarlos como fixture común a esas pruebas.",
+        "acceptance": "Proveer fixture de microentrenamiento real o entrada de artefactos explícita, con identidad y hashes. Probar desde clon/entorno limpio, sin checkpoints de una sesión previa; no sustituirlos con mocks ni convertir su ausencia en skip. Una aprobación en este workspace no acredita esa reproducción.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H20": {
+        "tasks": [
+          "I01"
+        ],
+        "severity": "P0 / defecto reproducido de promoción",
+        "evidence": "`fresh_acceptance.py:167–246`: la relectura `treatment_trust_reasons` no llama al contrato estricto `attempt_evidence_reasons`; la puerta no compara el conjunto planificado con el completado y acepta un `scientific_report.json` de solo ID/estado. `promotion_probe.json` muestra aceptación científica verdadera con evidencia inválida y dos tratamientos planificados frente a uno informado.",
+        "acceptance": "Una única validación estricta al crear, reutilizar, descubrir, evaluar y promover; comprobar propietarios, cambios de parámetros, intento/semilla/tratamiento, episodios/pasos y hashes; exigir cobertura exacta de etapas/tratamientos y análisis enlazado a tablas/KPI verificados. Las variantes inválidas del probe deben rechazarse; el caso base de software sin análisis científico debe conservar ese estado diferenciado.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H21": {
+        "tasks": [
+          "I08"
+        ],
+        "severity": "P1 / cierre desconectado del pipeline",
+        "evidence": "`pipeline.deliver()` no admite ni transmite `gate_report`, así que su aceptación software resulta falsa. `analyze_stage()` escribe `analysis/<etapa>_<split>/scientific_report.json`, mientras `verify_fresh_acceptance()` busca `reports/scientific_report.json`; el manifiesto de análisis no se consume en esa puerta.",
+        "acceptance": "Conectar por referencia explícita la puerta de software y el manifiesto del análisis con sus hashes, campaña, etapa y split. Probar `analyze → deliver` con un caso completo válido y con datos alterados. Generar un paquete no equivale a entregar una campaña aceptada.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H22": {
+        "tasks": [
+          "I06"
+        ],
+        "severity": "P1 / contrato anual incompatible",
+        "evidence": "`policy_inference.py:242` toma por defecto `rows-1` acciones y `_physical_trace` recorta a ese número; `kpi_contract.py:349–359` exige 24 muestras por día. Reproducción analítica actual: 8.759/8.783/8.759 muestras en 2023/2024/2025, con pico diario y factor de carga no disponibles por `incomplete_days`.",
+        "acceptance": "Unificar filas, estados, decisiones y flujos medidos; preservar todas las horas físicas válidas y verificar días completos. No rellenar con horas sintéticas ni eliminar un día sin cambiar explícitamente el protocolo. Registrar pasos realmente observados, aparte de `episodios × horizonte` derivado en `native_entrypoint.py:317`.",
+        "status": "requires_stable_cut_revalidation"
+      },
+      "H23": {
+        "tasks": [
+          "I11"
+        ],
+        "severity": "P2 / empaquetado y regla de calidad",
+        "evidence": "La llamada actual a `undeclared_runtime_imports` devuelve siete nombres: psutil, offpolicy, common, agent, ac_discrete, utils y tools. Varios son namespaces de backends locales o código propio, no distribuciones PyPI ausentes. A su vez, `pipeline.deliver()` importa `tools.eval.report_fresh_campaign`, y el wheel declara incluir solo `uc3m*`.",
+        "acceptance": "Separar stdlib, dependencias reales, importaciones opcionales y namespaces de backends en el chequeo. Definir si el paquete requiere checkout o soporta ejecución instalada; verificar el caso de uso real desde el wheel. No corregir instalando paquetes homónimos de PyPI.",
+        "status": "requires_stable_cut_revalidation"
+      }
+    },
+    "deep_A": {
+      "A01": {
+        "tasks": [
+          "I01",
+          "I10"
+        ],
+        "title": "La ejecución nueva no impone los hashes que registra",
+        "acceptance": "Perturbar por separado CSV, split, código, normalizador, configuración y stage JSON: 0 llamadas al aprendiz y razón de rechazo específica.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A02": {
+        "tasks": [
+          "I02",
+          "I05"
+        ],
+        "title": "La sensibilidad cambia pesos declarados pero conserva el comando de entrenamiento",
+        "acceptance": "Mismas condiciones y semilla; cambiar solo dominancia debe cambiar los coeficientes observados en la recompensa y su hash efectivo.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A03": {
+        "tasks": [
+          "I02",
+          "I05"
+        ],
+        "title": "El congelado HPO no determina los hiperparámetros confirmatorios",
+        "acceptance": "Elegir un candidato no predeterminado: todos los argumentos confirmatorios coinciden con su freeze; un freeze incompleto se rechaza.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A04": {
+        "tasks": [
+          "I01",
+          "I04"
+        ],
+        "title": "La completitud acepta evidencia de otra campaña y actualizaciones cero",
+        "acceptance": "Rechazar replay entre semillas/campañas, cero actualizaciones, checkpoint ausente o cambiado y episodios incompatibles.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A05": {
+        "tasks": [
+          "I07"
+        ],
+        "title": "NaN y hashes inválidos pueden producir un estudio científicamente completo",
+        "acceptance": "NaN, Inf, booleanos, hashes falsos y reportes de otra campaña nunca producen aceptación; resultados degenerados válidos quedan explícitos.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A06": {
+        "tasks": [
+          "I04",
+          "I06"
+        ],
+        "title": "Falta evaluar checkpoints nativos congelados",
+        "acceptance": "Recargar cada backend propio, comparar acciones antes/después, 0 actualizaciones y trazas completas de validación/prueba con hash.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A07": {
+        "tasks": [
+          "I09"
+        ],
+        "title": "Colab persiste a Drive solo cuando termina toda la etapa",
+        "acceptance": "Cortar un runtime después de un intento completo: evidencia recuperable en Drive con los mismos hashes y reintento nuevo desde episodio 0.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A08": {
+        "tasks": [
+          "I04",
+          "I06"
+        ],
+        "title": "El bloqueo del test se reduce a existencia de un archivo",
+        "acceptance": "Archivo vacío, JSON ajeno, hash alterado o freeze no validado: PermissionError antes de crear CityLearnEnv.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A09": {
+        "tasks": [
+          "I01",
+          "I10"
+        ],
+        "title": "El auditor de fuentes acepta rutas absolutas fuera de su raíz en Windows",
+        "acceptance": "Pruebas de unidad distinta, ruta absoluta, UNC, .. y junction ancestral; ninguna lectura fuera de la raíz permitida.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A10": {
+        "tasks": [
+          "I07"
+        ],
+        "title": "EvidenceRegistry acepta evidencia inexistente",
+        "acceptance": "Archivo ausente/alterado, manifest viejo o campaña ajena nunca pueden incorporarse como evidencia aceptada de tesis.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A11": {
+        "tasks": [
+          "I08"
+        ],
+        "title": "Catálogo y monitor no consumen el contrato de la campaña nueva",
+        "acceptance": "Un intento nuevo real aparece en catálogo/panel con campaña/seed/fase, y un hash roto cambia su estado sin ocultarlo.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A12": {
+        "tasks": [
+          "I07"
+        ],
+        "title": "HPHI mezcla maximización y minimización",
+        "acceptance": "Casos analíticos 2D/3D/7D, ideal=1, nadir=0, monotonía y concordancia contra biblioteca independiente.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A13": {
+        "tasks": [
+          "I07"
+        ],
+        "title": "Hay dos IQM con resultados incompatibles",
+        "acceptance": "Ambas rutas entregan la integral truncada correcta para n=3,5,6,12 y para datos repetidos.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A14": {
+        "tasks": [
+          "I07"
+        ],
+        "title": "La selección antigua puede presentar ganador sin evidencia inferencial",
+        "acceptance": "Campaña incompleta/no significativa/NaN no demuestra superioridad; ausencia de diferencia permite estudio completo sin ganador inferencial.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A15": {
+        "tasks": [
+          "I01",
+          "I04"
+        ],
+        "title": "La API pública de algoritmos conserva aprendizaje de placeholder",
+        "acceptance": "Error de import/configuración nunca produce training_complete ni checkpoint supuesto; todo placeholder queda identificado en manifiesto.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A16": {
+        "tasks": [
+          "I03",
+          "I16"
+        ],
+        "title": "La separación temporal tiene una excepción real y diseño con datos completos",
+        "acceptance": "Experimentos pareados completos con/sin excepción, dimensiones fijadas sin información prohibida o limitación explícita coherente con la hipótesis.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A17": {
+        "tasks": [
+          "I13",
+          "I14"
+        ],
+        "title": "README y arquitectura vigente anuncian resultados retirados y otra ruta operativa",
+        "acceptance": "Desde README existe una sola ruta actual dataset→Colab→evaluación; ninguna salida retirada acredita aceptación.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A18": {
+        "tasks": [
+          "I13",
+          "I14",
+          "I17"
+        ],
+        "title": "Las 17 rutas del manifiesto del jurado dejaron de existir",
+        "acceptance": "Validador que abre cada referencia, verifica campaña/hash y rechaza observación resolved sin prueba/documento consistente.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A19": {
+        "tasks": [
+          "I17"
+        ],
+        "title": "Los Word canónicos no reflejan el retiro de resultados ni cierran J-06/J-07/J-08",
+        "acceptance": "Ambos Word alineados con matriz del jurado y campaña admitida; anexo reproducible, introducción general y propuesta explícita de seguridad/privacidad.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A20": {
+        "tasks": [
+          "I13",
+          "I14"
+        ],
+        "title": "El verificador del flujo falla antes de emitir su informe",
+        "acceptance": "Ejecutar contra checkout nuevo y temporal con archivos ausentes: informe con razones, sin excepción no tratada ni búsqueda de fuentes retiradas.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A21": {
+        "tasks": [
+          "I12"
+        ],
+        "title": "Lint falla y el control de tipos silencia errores relevantes",
+        "acceptance": "Ruff idéntico al CI en verde y evidencia real del alcance de comprobación de tipos.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A22": {
+        "tasks": [
+          "I12"
+        ],
+        "title": "El registro de skills es válido pero falta descubrimiento local",
+        "acceptance": "Validador y -CheckOnly en verde más invocación real en cliente; un enlace correcto no demuestra eficiencia de agentes.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A23": {
+        "tasks": [
+          "I12"
+        ],
+        "title": "CI no acredita las nuevas puertas y su contexto de raíz requiere adaptación explícita",
+        "acceptance": "Cinco checks locales de T13 y evidencia Actions del mismo commit; informar por separado matriz nativa local y CI CPU.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A24": {
+        "tasks": [
+          "I10",
+          "I11",
+          "I12"
+        ],
+        "title": "Metadatos y dependencias no demuestran instalación limpia reproducible",
+        "acceptance": "Build/importación e instalación limpia documentados, versiones y plataforma fijadas; no confundir entorno presente con reconstrucción.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A25": {
+        "tasks": [
+          "I10",
+          "I18"
+        ],
+        "title": "El demo de inferencia carece de controles para operar una planta",
+        "acceptance": "Sin modelo no hay readiness operativa ni acciones hacia planta; pruebas locales de formas/finitud/límites, autenticación y rechazo de políticas stub.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A26": {
+        "tasks": [
+          "I10",
+          "I18"
+        ],
+        "title": "Los adaptadores de datos legados no garantizan identidad de contenido",
+        "acceptance": "CSV alterado cambia manifest; dos URLs/contenidos con igual nombre no colisionan; archivo excesivo se rechaza con motivo registrado.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A27": {
+        "tasks": [
+          "I16",
+          "I17"
+        ],
+        "title": "No está materializada la aceptación nueva completa ni su entrega",
+        "acceptance": "Perfil estricto completo sin skip/xfail/xpass; cuatro aprendices reales, multisemilla y entrega hash-verificada. scientific_acceptance permanece false.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A28": {
+        "tasks": [
+          "I09",
+          "I13",
+          "I14"
+        ],
+        "title": "La raíz de caché retirada existe de nuevo",
+        "acceptance": "Readback actual del retiro y prueba de que el flujo nuevo no consume/regenera la raíz retirada; ningún smoke histórico promueve campaña nueva.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A29": {
+        "tasks": [
+          "I10",
+          "I11"
+        ],
+        "title": "El paquete Colab incluye dependencias bajo excepción de licencia",
+        "acceptance": "Inventario de componentes y permisos compatible con la política aprobada, excepción vigente y manifest con commits/hash reales.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A30": {
+        "tasks": [
+          "I10",
+          "I11"
+        ],
+        "title": "El entorno instalado contiene versiones señaladas por OSV",
+        "acceptance": "Inventario/lock revisados con avisos aplicables resueltos o excepciones razonadas y vigentes; nueva consulta de versiones, instalación limpia y regresiones relevantes. pip check por sí solo no cierra seguridad.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      },
+      "A31": {
+        "tasks": [
+          "I06"
+        ],
+        "title": "El horizonte anual por defecto impide calcular KPI diarios completos",
+        "acceptance": "Evaluaciones anuales de train/validation/test con todos los primarios disponibles, timestamps alineados y balance/SOC terminal verificados; casos analíticos de primer/último intervalo.",
+        "status": "historical_finding_revalidate_preserving_fixes"
+      }
+    },
+    "auditoria_C": {
+      "C01": {
+        "title": "Cobertura semántica pendiente: unos 30 de 773 archivos / 140917 líneas",
+        "tasks": [
+          "I00",
+          "I13"
+        ],
+        "limitation": "alcance declarado; no revisión integral",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C02": {
+        "title": "Estado autenticado de navegador dentro de tools/skills/notebooklm-mcp/data",
+        "tasks": [
+          "I10",
+          "I12"
+        ],
+        "limitation": "metadatos; contenido sensible no abierto",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C03": {
+        "title": "1088/1093 y cinco fallos, con cuatro microaprendizajes excluidos",
+        "tasks": [
+          "I12",
+          "I14",
+          "I15"
+        ],
+        "limitation": "reutiliza el JUnit de nuestra auditoría; no segunda corrida",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C04": {
+        "title": "Tres incidencias Ruff en ámbito CI",
+        "tasks": [
+          "I12"
+        ],
+        "limitation": "coincide con H16",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C05": {
+        "title": "Bandit: un aviso alto MD5 y seis medios torch.load/urlopen",
+        "tasks": [
+          "I10"
+        ],
+        "limitation": "señales estáticas; severidad no implica explotación",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C06": {
+        "title": "reset_pareto y set_baseline sin aserción visible; compilación de celdas válida",
+        "tasks": [
+          "I15"
+        ],
+        "limitation": "candidatos a revisión semántica",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C07": {
+        "title": "Puerta de aceptación, Drive y CI siguen pendientes según el Revisor A",
+        "tasks": [
+          "I01",
+          "I09",
+          "I12"
+        ],
+        "limitation": "no sumar tres P0 nuevos sin reevaluar",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C08": {
+        "title": "170 referencias rotas candidatas y cuatro activas confirmadas",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "clasificar historia/rutas de ejecución/futuro",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C09": {
+        "title": "11 planes con 519 tareas abiertas y specs con 34",
+        "tasks": [
+          "I00",
+          "I12",
+          "I17"
+        ],
+        "limitation": "checkbox no acredita ausencia ni existencia de implementación",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C10": {
+        "title": "external/off-policy copiado sin registro gitmodules/local-dependencies",
+        "tasks": [
+          "I11"
+        ],
+        "limitation": "117 archivos y licencia según inventario; no editar dependencia",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C11": {
+        "title": "Promesa de export_winning_model_onnx.py sin herramienta",
+        "tasks": [
+          "I11"
+        ],
+        "limitation": "decisión de alcance D06, sin ganador real",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C12": {
+        "title": "LFS anunciado con cero archivos LFS observados",
+        "tasks": [
+          "I11",
+          "I14"
+        ],
+        "limitation": "reglas configuradas y uso efectivo son afirmaciones distintas",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C13": {
+        "title": "Rectificación: no se prueba ausencia de docs/failures; no hay notas versionadas",
+        "tasks": [
+          "I00",
+          "I12"
+        ],
+        "limitation": "conservar rectificación; no repetir conclusión retirada",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C14": {
+        "title": "51 carpetas vacías, principalmente scratch/perfil y cuatro caches CityLearn",
+        "tasks": [
+          "I13",
+          "I14"
+        ],
+        "limitation": "vacío no implica defecto ni permiso de borrado",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C15": {
+        "title": "53 NotImplementedError, 14 placeholder, 9 pending_owner y 2 TODO",
+        "tasks": [
+          "I13"
+        ],
+        "limitation": "marcadores sin clasificar; pueden ser abstractos o terceros",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C16": {
+        "title": "SimulatorPort sin consumidores",
+        "tasks": [
+          "I13",
+          "I04"
+        ],
+        "limitation": "contrastar ADR de integración diferida",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C17": {
+        "title": "REGISTER_MAP Modbus vacío",
+        "tasks": [
+          "I13",
+          "I18"
+        ],
+        "limitation": "bloquea afirmar operación, no necesariamente entrenamiento offline",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C18": {
+        "title": "Guarda: 43 s; escaneo de perfil 15 s frente a casi cero sin él",
+        "tasks": [
+          "I12"
+        ],
+        "limitation": "una medición, caché/confusores; requiere perfil repetido",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C19": {
+        "title": "Suite de 60 min; nombres/retiro histórico 1108 s, 31%",
+        "tasks": [
+          "I12",
+          "I15"
+        ],
+        "limitation": "coste de fixtures/guardas, no perfil anual de GPU",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C20": {
+        "title": "directory_digest lee archivo entero; checkpoints 144–259 MiB",
+        "tasks": [
+          "I09"
+        ],
+        "limitation": "cambiar a streaming preservando digest y contrato de Drive",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C21": {
+        "title": ".git 5.6 GiB y blobs históricos retirados de 31 MiB",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "no autoriza reescritura ni borrado de objetos",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C22": {
+        "title": "Memoria MASAC y reserva por fase",
+        "tasks": [
+          "I05"
+        ],
+        "limitation": "ya H03/H04, no defecto independiente",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C23": {
+        "title": "27 herramientas obsoletas presentes y 16 pendientes de decisión",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "clasificación editorial no basta para eliminar",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C24": {
+        "title": "48 scripts sin referencias, 21 de tesis; dos contienen material único",
+        "tasks": [
+          "I13",
+          "I14"
+        ],
+        "limitation": "uso manual/dinámico; preservar archivos únicos",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C25": {
+        "title": "full_campaign, gates, workflow, tutorial v5 y Dockerfile AWS posiblemente antiguos",
+        "tasks": [
+          "I12",
+          "I14"
+        ],
+        "limitation": "candidatos; Dockerfile requiere contrato actual de producto",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C26": {
+        "title": "1090 grupos idénticos/2.3 GiB; 905 solo datos",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "generaciones con procedencia diferente no deduplicables por hash",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C27": {
+        "title": "build/lib/uc3m idéntico a uc3m",
+        "tasks": [
+          "I11",
+          "I14"
+        ],
+        "limitation": "derivado; verificar regeneración/consumidores antes de retirar",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C28": {
+        "title": "inspection_cut conserva 17 archivos versionados/copias de código",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "evidencia de auditoría, no duplicado eliminable por defecto",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C29": {
+        "title": "Basenames repetidos de planes/documentos y test_model_selection",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "rutas con roles distintos; mejorar índices antes de renombrar",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C30": {
+        "title": "Pares scripts/tools son fachadas válidas",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "resultado negativo que debe preservarse",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C31": {
+        "title": "Cuatro tests fuera de tests no recogidos por defecto",
+        "tasks": [
+          "I15"
+        ],
+        "limitation": "selección/perfil deliberado; revisar contrato pytest real",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C32": {
+        "title": "15 archivos en raíz docs mezclan documentos/análisis/manifiestos",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "organización candidata, no pérdida funcional",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C33": {
+        "title": "10 scripts sueltos y solapamientos de función",
+        "tasks": [
+          "I13",
+          "I14"
+        ],
+        "limitation": "clasificar launcher/fachada/herramienta antes de consolidar",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C34": {
+        "title": "Funciones build de 1096 líneas y run_checks de 445",
+        "tasks": [
+          "I13"
+        ],
+        "limitation": "mantenibilidad; no prueba por sí sola cuello temporal",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C35": {
+        "title": "Auditorías ocupan 12 MiB con logs y copias de código",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "política de custodia y paquete; no borrar evidencia",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C36": {
+        "title": ".superpowers/sdd 2.9 GiB con tres tests dependientes",
+        "tasks": [
+          "I15",
+          "I14"
+        ],
+        "limitation": "resolver consumidores antes de limpieza",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C37": {
+        "title": "data/maintenance 1.4 GiB ignorado y sin revisión de custodia",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "inventariar referencias/valor probatorio; preservar",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C38": {
+        "title": "outputs/dataset_cache 360 MiB señalado como regenerable",
+        "tasks": [
+          "I09",
+          "I14"
+        ],
+        "limitation": "verificar generador, identidad y uso activo",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C39": {
+        "title": "tmp_obj de Git 33 MiB",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "solo diagnóstico Git; evitar eliminación de objetos manual",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C40": {
+        "title": "build, egg-info y ruff_cache derivados",
+        "tasks": [
+          "I11",
+          "I14"
+        ],
+        "limitation": "comprobar proceso activo y reconstrucción",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C41": {
+        "title": "external/MAAC/.git_commit_msg.tmp ensucia dependencia",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "dependencia protegida; no borrar como efecto lateral",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C42": {
+        "title": "pytest-cache-files y render_logs vacíos en CityLearn",
+        "tasks": [
+          "I14"
+        ],
+        "limitation": "dependencia protegida; sin permiso de limpieza",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C43": {
+        "title": "Auditoría architecture_thesis de otra sesión sin confirmar",
+        "tasks": [
+          "I00",
+          "I14"
+        ],
+        "limitation": "observación temporal de Git, no invalida evidencia ni autoriza stage",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C44": {
+        "title": "pip-audit no ejecutado; no aceptación de seguridad",
+        "tasks": [
+          "I10",
+          "I11"
+        ],
+        "limitation": "OSV anterior es otro corte y no reemplaza triage actual",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C45": {
+        "title": "Inventario mecánico 14734 archivos/7.2 GiB, 20 enlaces sin seguir",
+        "tasks": [
+          "I00",
+          "I13"
+        ],
+        "limitation": "ámbito más amplio que 4951 propios; no comparar como pérdidas",
+        "source_lines": [
+          657
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C46": {
+        "title": "gate_report sin vínculo a commit/árbol/campaña ni SHA del JUnit",
+        "tasks": [
+          "I01"
+        ],
+        "limitation": "lectura del Revisor A; reporte verde antiguo no acredita corte nuevo",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C47": {
+        "title": "Reporte legítimo carece status/campaign_id y ruta esperada por aceptación",
+        "tasks": [
+          "I08",
+          "I01"
+        ],
+        "limitation": "amplía H21; validar esquema de FreshAnalysis.as_dict",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C48": {
+        "title": "Drive publica manifiesto al final; corte deja conflictos permanentes y salida 0",
+        "tasks": [
+          "I09"
+        ],
+        "limitation": "reproducible con addendum_auditoria_20261101/reproductions.py caso P2 (d55c6c62)",
+        "source_lines": [
+          420
+        ],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C49": {
+        "title": "pipeline evaluate termina con 0 ante tratamientos fallidos",
+        "tasks": [
+          "I08"
+        ],
+        "limitation": "reproducible con reproductions.py caso P4; fijar contrato done/incomplete/rejected",
+        "source_lines": [
+          420
+        ],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C50": {
+        "title": ".partial interrumpido bloquea reintentos de analyze",
+        "tasks": [
+          "I08"
+        ],
+        "limitation": "reproducible con reproductions.py caso P5; recuperación sin sobrescribir completos",
+        "source_lines": [
+          420
+        ],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C51": {
+        "title": "restore Drive permite sub/../../outside.txt fuera de artifacts",
+        "tasks": [
+          "I09",
+          "I10"
+        ],
+        "limitation": "reproducible con reproductions.py caso P3; contención antes de escribir",
+        "source_lines": [
+          420
+        ],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C52": {
+        "title": "AWS/Terraform abiertos, endpoints sin auth, controles K8s ausentes y root",
+        "tasks": [
+          "I10",
+          "I18"
+        ],
+        "limitation": "riesgo condicionado al despliegue; loopback local se preserva",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C53": {
+        "title": "Tres contratos de dependencias y runtime Python 3.9 fuera de soporte",
+        "tasks": [
+          "I11",
+          "I12"
+        ],
+        "limitation": "EOL corroborado en PEP 596; migración sujeta a compatibilidad",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C54": {
+        "title": "CI solo master, sin runs en rama; divergencia 324/106 y sin protección",
+        "tasks": [
+          "I12",
+          "I00"
+        ],
+        "limitation": "snapshot remoto reportado; revalidar sin merge/push automático",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C55": {
+        "title": "LearnerPort solo runner, fuera de la ruta canónica",
+        "tasks": [
+          "I13",
+          "I04"
+        ],
+        "limitation": "contrastar ADR y necesidad, no añadir puertos cosméticos",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C56": {
+        "title": "Ciclo lazy fresh_analysis→multicriteria→results_catalog→fresh_analysis",
+        "tasks": [
+          "I13"
+        ],
+        "limitation": "comprobar ambos órdenes de importación y dependencia inversa",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C57": {
+        "title": "test_import_architecture no cubre relativos/puertos/tools ni está en CI",
+        "tasks": [
+          "I13",
+          "I12"
+        ],
+        "limitation": "ampliar cobertura semántica, no solo contar seis tests verdes",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C58": {
+        "title": "torch.load weights_only=False y default distinto según versión admitida",
+        "tasks": [
+          "I10",
+          "I11"
+        ],
+        "limitation": "probar formatos nativos, especialmente MAAC, antes de cambiar carga",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C59": {
+        "title": "last_clipped compartido entre hilos de inferencia",
+        "tasks": [
+          "I10"
+        ],
+        "limitation": "respuesta debe reflejar recorte de su propia petición",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C60": {
+        "title": "ONNX sin metadatos da ready 200 con dimensiones por defecto",
+        "tasks": [
+          "I10",
+          "I11"
+        ],
+        "limitation": "metadatos/forma/contrato obligatorios antes de readiness",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C61": {
+        "title": "HTTP 500 expone texto interno de excepción",
+        "tasks": [
+          "I10"
+        ],
+        "limitation": "respuesta saneada y detalle solo en registro local",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C62": {
+        "title": "stats_tests 1916 líneas, funciones 195/149 y cinco except silenciosos",
+        "tasks": [
+          "I13"
+        ],
+        "limitation": "mantenibilidad y observabilidad; no perfil de rendimiento",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C63": {
+        "title": "Guarda obligatoria sin enforcement local automático/pre-commit",
+        "tasks": [
+          "I12"
+        ],
+        "limitation": "controles de lectura; no restaurar hook auto-publicador",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C64": {
+        "title": "Sesiones escriben/prueban concurrentemente sin corte estable",
+        "tasks": [
+          "I00",
+          "I12"
+        ],
+        "limitation": "no usar un resultado mezclado como aceptación integral",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C65": {
+        "title": "Memorias contradicen protección de CityLearn y estado del Stop hook",
+        "tasks": [
+          "I00",
+          "I12",
+          "I17"
+        ],
+        "limitation": "AGENTS vigente prevalece; no editar memoria global sin encargo",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C66": {
+        "title": "Controles correctos: descarga, planta, CI, dominio, loopback y no shell=True",
+        "tasks": [
+          "I10",
+          "I12",
+          "I13",
+          "I18"
+        ],
+        "limitation": "preservar regresiones; búsqueda limitada sin secretos no acredita historial limpio",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C67": {
+        "title": "Sin auditoría profunda de dependencias, datos ni historial de secretos",
+        "tasks": [
+          "I00",
+          "I10",
+          "I13"
+        ],
+        "limitation": "fronteras de cobertura; no declarar esas áreas aceptadas",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C68": {
+        "title": "Revisor A reporta CI 36/36, arquitectura 6/6 y readiness 7/8",
+        "tasks": [
+          "I00",
+          "I12"
+        ],
+        "limitation": "resultados de su corte; no sumarlos a nuestra suite ni repetir como actuales",
+        "source_lines": [
+          420
+        ],
+        "source_file": null,
+        "status": "reported_by_audit_revalidate"
+      },
+      "C69": {
+        "title": "Contradicción: dictamen dice Bandit no ejecutado; resumen rotula avisos Bandit",
+        "tasks": [
+          "I00",
+          "I10"
+        ],
+        "limitation": "resuelta: no instalado en el venv, ejecutado vía uvx bandit 1.9.4; log en addendum_auditoria_20261101/bandit.json (1 alto, 7 medios)",
+        "source_lines": [
+          420,
+          657
+        ],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C70": {
+        "title": "gate_report.py:39 nuevo de I01 parsea el JUnit con xml.etree (Bandit B314)",
+        "tasks": [
+          "I01",
+          "I10"
+        ],
+        "limitation": "verificar hash del JUnit antes de parsear o parser endurecido; XML con expansión de entidades rechazado",
+        "source_lines": [],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C71": {
+        "title": "overlay Colab 2683 entradas sin rutas de navegador/credenciales; Dockerfile raíz copia solo CityLearn, uc3m y tests",
+        "tasks": [
+          "I10"
+        ],
+        "limitation": "evidencia positiva de un snapshot; convertir en prueba de regresión regenerando zip e imagen",
+        "source_lines": [],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C72": {
+        "title": "vulture: uc3m/env/wrappers.py:106 options sin usar en reset",
+        "tasks": [
+          "I13",
+          "I04"
+        ],
+        "limitation": "resolver dentro del contrato H11, no como limpieza aislada",
+        "source_lines": [],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C73": {
+        "title": "Fixture _campaign de test_security_and_acceptance codificaba evidencia débil",
+        "tasks": [
+          "I01"
+        ],
+        "limitation": "fixture base pasa attempt_evidence_reasons estricto; cuatro variantes de P1 como casos negativos",
+        "source_lines": [],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      },
+      "C74": {
+        "title": "Guarda: Select-String sobre tools/skills 15 s con perfil de navegador y ~0 s sin él; git 124 ms",
+        "tasks": [
+          "I12"
+        ],
+        "limitation": "una medición; repetir y excluir directorios de datos no-skill sin dejar de rechazar referencias reales",
+        "source_lines": [],
+        "source_file": "docs/audits/addendum_auditoria_20261101/README.md",
+        "status": "reported_by_audit_revalidate"
+      }
+    },
+    "requirements_FR": {
+      "FR-N01": {
+        "tasks": [
+          "I01",
+          "I09",
+          "I10"
+        ],
+        "acceptance": "G1: entradas y cachés aisladas"
+      },
+      "FR-N02": {
+        "tasks": [
+          "I01",
+          "I03",
+          "I10"
+        ],
+        "acceptance": "G1: hashes, fuentes y calidad por variable"
+      },
+      "FR-N03": {
+        "tasks": [
+          "I03",
+          "I06"
+        ],
+        "acceptance": "G1/G4: temporalidad y sensibilidad"
+      },
+      "FR-N04": {
+        "tasks": [
+          "I06"
+        ],
+        "acceptance": "G2/G4: trazas y KPI con unidades/tiempo válidos"
+      },
+      "FR-N05": {
+        "tasks": [
+          "I01",
+          "I04",
+          "I06",
+          "I16"
+        ],
+        "acceptance": "G2: cuatro aprendices nativos reales"
+      },
+      "FR-N06": {
+        "tasks": [
+          "I02",
+          "I05"
+        ],
+        "acceptance": "G2/G3: configuración efectiva y freeze"
+      },
+      "FR-N07": {
+        "tasks": [
+          "I01",
+          "I04",
+          "I09"
+        ],
+        "acceptance": "G2: intento fallido preservado y reinicio desde cero"
+      },
+      "FR-N08": {
+        "tasks": [
+          "I04",
+          "I06"
+        ],
+        "acceptance": "G2/G4: evaluación congelada y baseline pareado"
+      },
+      "FR-N09": {
+        "tasks": [
+          "I02",
+          "I03",
+          "I05",
+          "I16"
+        ],
+        "acceptance": "G3/G4: HPO/sensibilidades nuevas"
+      },
+      "FR-N10": {
+        "tasks": [
+          "I07"
+        ],
+        "acceptance": "G4: réplica por semilla y decisión válida"
+      },
+      "FR-N11": {
+        "tasks": [
+          "I01",
+          "I04",
+          "I07",
+          "I10",
+          "I11",
+          "I12",
+          "I16",
+          "I18"
+        ],
+        "acceptance": "G1/G2: rechazo adversarial y gate estricto"
+      },
+      "FR-N12": {
+        "tasks": [
+          "I08",
+          "I09",
+          "I17"
+        ],
+        "acceptance": "G5: manifiesto y entrega reproducibles"
+      },
+      "FR-N13": {
+        "tasks": [
+          "I09",
+          "I13",
+          "I14"
+        ],
+        "acceptance": "G1: retiro/consumidores con custodia; no borrado implícito"
+      },
+      "FR-N14": {
+        "tasks": [
+          "I01",
+          "I04",
+          "I16"
+        ],
+        "acceptance": "G2: HAPPO aprende, reporta, recarga y cierra"
+      },
+      "FR-N15": {
+        "tasks": [
+          "I08",
+          "I13",
+          "I14"
+        ],
+        "acceptance": "G1: árbol y consumidores actuales"
+      },
+      "FR-N16": {
+        "tasks": [
+          "I01",
+          "I04",
+          "I07",
+          "I08",
+          "I13",
+          "I14"
+        ],
+        "acceptance": "G1: una canónica por responsabilidad"
+      },
+      "FR-N17": {
+        "tasks": [
+          "I10",
+          "I11",
+          "I12"
+        ],
+        "acceptance": "G1/G2: calidad y paquete portable"
+      },
+      "FR-N18": {
+        "tasks": [
+          "I10",
+          "I11",
+          "I12",
+          "I16"
+        ],
+        "acceptance": "G2: checks locales; remoto acreditado aparte"
+      },
+      "FR-N19": {
+        "tasks": [
+          "I13",
+          "I14"
+        ],
+        "acceptance": "G1: nombres y excepciones justificadas"
+      },
+      "FR-N20": {
+        "tasks": [
+          "I01",
+          "I10",
+          "I13",
+          "I14"
+        ],
+        "acceptance": "G1: mapa de rutas e identidades verificables"
+      }
+    },
+    "jury_J": {
+      "J-01": {
+        "tasks": [
+          "I07",
+          "I13",
+          "I14",
+          "I17"
+        ],
+        "acceptance": "Una decisión inferencial consistente en tablas, texto y Word"
+      },
+      "J-02": {
+        "tasks": [
+          "I16"
+        ],
+        "acceptance": "Semillas independientes reales y cobertura registrada"
+      },
+      "J-03": {
+        "tasks": [
+          "I07",
+          "I13",
+          "I14",
+          "I17"
+        ],
+        "acceptance": "Tres ejes evaluados; siete ejes rotulados como extensión"
+      },
+      "J-04": {
+        "tasks": [
+          "I01",
+          "I04",
+          "I06",
+          "I16",
+          "I17"
+        ],
+        "acceptance": "HAPPO nuevo homogéneo; historia 49/50 no acredita campaña actual"
+      },
+      "J-05": {
+        "tasks": [
+          "I17"
+        ],
+        "acceptance": "Aporte, alcance y tipo de documento consistentes"
+      },
+      "J-06": {
+        "tasks": [
+          "I10",
+          "I11",
+          "I17",
+          "I18"
+        ],
+        "acceptance": "Propuesta sustantiva de amenazas/privacidad y límites de implementación"
+      },
+      "J-07": {
+        "tasks": [
+          "I10",
+          "I11",
+          "I12",
+          "I17"
+        ],
+        "acceptance": "Anexo con URL/revisión, instalación, licencias y evidencia accesible"
+      },
+      "J-08": {
+        "tasks": [
+          "I17"
+        ],
+        "acceptance": "Introducción general y estructura/índice verificados"
+      },
+      "J-09": {
+        "tasks": [
+          "I03",
+          "I06",
+          "I17"
+        ],
+        "acceptance": "Tabla por variable y tratamiento reproducible de faltantes/modelado"
+      },
+      "J-10": {
+        "tasks": [
+          "I01",
+          "I02",
+          "I03",
+          "I04",
+          "I05",
+          "I06",
+          "I10"
+        ],
+        "acceptance": "Matriz de leakage, fit_scope y separación de selección/prueba"
+      },
+      "J-11": {
+        "tasks": [
+          "I03",
+          "I16",
+          "I17",
+          "I18"
+        ],
+        "acceptance": "Amenazas a validez, estrés y frontera de transferencia/piloto"
+      },
+      "J-12": {
+        "tasks": [
+          "I07",
+          "I16"
+        ],
+        "acceptance": "IC/IQM y contrastes entre entrenamientos independientes"
+      },
+      "J-13": {
+        "tasks": [
+          "I16"
+        ],
+        "acceptance": "Curvas de tamaños factibles con tiempo, memoria, latencia y KPI"
+      },
+      "J-14": {
+        "tasks": [
+          "I17"
+        ],
+        "acceptance": "Costos medidos/modelados/hipotéticos separados y con fuentes"
+      },
+      "J-15": {
+        "tasks": [
+          "I08",
+          "I09",
+          "I17",
+          "I18"
+        ],
+        "acceptance": "Persistencia, versionado, deriva, fallback y recuperación con alcance"
+      },
+      "J-16": {
+        "tasks": [
+          "I17",
+          "I18"
+        ],
+        "acceptance": "TRL sustentado y ruta a piloto; ninguna elevación por código/demo"
+      },
+      "J-17": {
+        "tasks": [
+          "I17"
+        ],
+        "acceptance": "Síntesis por capítulo, anexos y revisión visual de documentos"
+      }
+    },
+    "legacy_tasks_P": {
+      "P00": {
+        "tasks": [
+          "I00"
+        ]
+      },
+      "P01": {
+        "tasks": [
+          "I01",
+          "I10"
+        ]
+      },
+      "P02": {
+        "tasks": [
+          "I01",
+          "I04"
+        ]
+      },
+      "P03": {
+        "tasks": [
+          "I07"
+        ]
+      },
+      "P04": {
+        "tasks": [
+          "I02",
+          "I05"
+        ]
+      },
+      "P05": {
+        "tasks": [
+          "I04",
+          "I06"
+        ]
+      },
+      "P06": {
+        "tasks": [
+          "I06"
+        ]
+      },
+      "P07": {
+        "tasks": [
+          "I03"
+        ]
+      },
+      "P08": {
+        "tasks": [
+          "I07"
+        ]
+      },
+      "P09": {
+        "tasks": [
+          "I07"
+        ]
+      },
+      "P10": {
+        "tasks": [
+          "I08"
+        ]
+      },
+      "P11": {
+        "tasks": [
+          "I09"
+        ]
+      },
+      "P12": {
+        "tasks": [
+          "I10",
+          "I18"
+        ]
+      },
+      "P13": {
+        "tasks": [
+          "I10",
+          "I11"
+        ]
+      },
+      "P14": {
+        "tasks": [
+          "I12"
+        ]
+      },
+      "P15": {
+        "tasks": [
+          "I13",
+          "I14"
+        ]
+      },
+      "P16": {
+        "tasks": [
+          "I16"
+        ]
+      },
+      "P17": {
+        "tasks": [
+          "I17"
+        ]
+      },
+      "P18": {
+        "tasks": [
+          "I18"
+        ]
+      }
+    }
+  },
+  "coordination": {
+    "skills": [
+      "tools/skills/madrl-agent-coordination/SKILL.md",
+      "tools/skills/task-coordination-strategies/SKILL.md",
+      "tools/skills/task-coordination-strategies/references/task-decomposition.md",
+      "tools/skills/task-coordination-strategies/references/dependency-graphs.md"
+    ],
+    "waves": [
+      [
+        "I00"
+      ],
+      [
+        "I01",
+        "I02"
+      ],
+      [
+        "I03",
+        "I07",
+        "I10",
+        "I11",
+        "I13"
+      ],
+      [
+        "I04",
+        "I12"
+      ],
+      [
+        "I05",
+        "I06",
+        "I15"
+      ],
+      [
+        "I08",
+        "I14"
+      ],
+      [
+        "I09"
+      ],
+      [
+        "I16"
+      ],
+      [
+        "I17"
+      ],
+      [
+        "I18"
+      ]
+    ],
+    "shared_files": {
+      "configs/algorithms/native.yaml": {
+        "tasks": [
+          "I02",
+          "I05"
+        ],
+        "order": [
+          "I02",
+          "I05"
+        ],
+        "unordered_pairs": []
+      },
+      "configs/experiments/iquitos.yaml": {
+        "tasks": [
+          "I02",
+          "I05",
+          "I16"
+        ],
+        "order": [
+          "I02",
+          "I05",
+          "I16"
+        ],
+        "unordered_pairs": []
+      },
+      "deploy/docker-compose.yml": {
+        "tasks": [
+          "I10",
+          "I18"
+        ],
+        "order": [
+          "I10",
+          "I18"
+        ],
+        "unordered_pairs": []
+      },
+      "deploy/inference/app.py": {
+        "tasks": [
+          "I10",
+          "I18"
+        ],
+        "order": [
+          "I10",
+          "I18"
+        ],
+        "unordered_pairs": []
+      },
+      "deploy/inference/model_loader.py": {
+        "tasks": [
+          "I10",
+          "I18"
+        ],
+        "order": [
+          "I10",
+          "I18"
+        ],
+        "unordered_pairs": []
+      },
+      "deploy/plant_adapter/modbus_adapter.py": {
+        "tasks": [
+          "I13",
+          "I18"
+        ],
+        "order": [
+          "I13",
+          "I18"
+        ],
+        "unordered_pairs": []
+      },
+      "docs/plans/traspaso_sesiones.md": {
+        "tasks": [
+          "I00",
+          "I17"
+        ],
+        "order": [
+          "I00",
+          "I17"
+        ],
+        "unordered_pairs": []
+      },
+      "pyproject.toml": {
+        "tasks": [
+          "I11",
+          "I15"
+        ],
+        "order": [
+          "I11",
+          "I15"
+        ],
+        "unordered_pairs": [
+          [
+            "I11",
+            "I15"
+          ]
+        ]
+      },
+      "specs/STATUS.md": {
+        "tasks": [
+          "I00",
+          "I17"
+        ],
+        "order": [
+          "I00",
+          "I17"
+        ],
+        "unordered_pairs": []
+      },
+      "tools/colab/build_modular_colab_notebook.py": {
+        "tasks": [
+          "I09",
+          "I11"
+        ],
+        "order": [
+          "I11",
+          "I09"
+        ],
+        "unordered_pairs": []
+      },
+      "uc3m/adapters/algorithms/native_entrypoint.py": {
+        "tasks": [
+          "I04",
+          "I05"
+        ],
+        "order": [
+          "I04",
+          "I05"
+        ],
+        "unordered_pairs": []
+      },
+      "uc3m/adapters/citylearn/policy_inference.py": {
+        "tasks": [
+          "I03",
+          "I04",
+          "I06"
+        ],
+        "order": [
+          "I03",
+          "I04",
+          "I06"
+        ],
+        "unordered_pairs": []
+      },
+      "uc3m/algorithms/factory.py": {
+        "tasks": [
+          "I04",
+          "I13"
+        ],
+        "order": [
+          "I13",
+          "I04"
+        ],
+        "unordered_pairs": [
+          [
+            "I04",
+            "I13"
+          ]
+        ]
+      },
+      "uc3m/application/evaluation/results_catalog.py": {
+        "tasks": [
+          "I01",
+          "I08"
+        ],
+        "order": [
+          "I01",
+          "I08"
+        ],
+        "unordered_pairs": []
+      },
+      "uc3m/application/thesis/evidence_registry.py": {
+        "tasks": [
+          "I07",
+          "I17"
+        ],
+        "order": [
+          "I07",
+          "I17"
+        ],
+        "unordered_pairs": []
+      },
+      "uc3m/application/training/drive_sync.py": {
+        "tasks": [
+          "I01",
+          "I09"
+        ],
+        "order": [
+          "I01",
+          "I09"
+        ],
+        "unordered_pairs": []
+      },
+      "uc3m/application/training/fresh_acceptance.py": {
+        "tasks": [
+          "I01",
+          "I08"
+        ],
+        "order": [
+          "I01",
+          "I08"
+        ],
+        "unordered_pairs": []
+      },
+      "uc3m/application/training/fresh_campaign.py": {
+        "tasks": [
+          "I01",
+          "I05"
+        ],
+        "order": [
+          "I01",
+          "I05"
+        ],
+        "unordered_pairs": []
+      }
+    },
+    "briefs": {
+      "I00": {
+        "objective": "Fijar corte, responsables y cobertura real",
+        "wave": 0,
+        "owned_files": [
+          "tools/ops/capture_modernization_baseline.py",
+          "docs/plans/traspaso_sesiones.md",
+          "specs/STATUS.md"
+        ],
+        "contract_inputs": [],
+        "acceptance": "Corte con HEAD, árbol sucio, submódulos, hashes, fuentes e inventario por archivo; cada observación tiene estado y responsable de verificación.",
+        "tests": [
+          "tests/ops/test_capture_modernization_baseline.py"
+        ],
+        "shared_with": {
+          "docs/plans/traspaso_sesiones.md": [
+            "I17"
+          ],
+          "specs/STATUS.md": [
+            "I17"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I01": {
+        "objective": "Cerrar la promoción incorrecta en todas las rutas",
+        "wave": 1,
+        "owned_files": [
+          "uc3m/application/training/fresh_acceptance.py",
+          "uc3m/application/training/fresh_campaign.py",
+          "uc3m/application/evaluation/results_catalog.py",
+          "uc3m/application/training/drive_sync.py"
+        ],
+        "contract_inputs": [
+          "I00"
+        ],
+        "acceptance": "Cero pasos/updates, intento o seed ajenos, owners incompletos, checkpoint alterado, cobertura parcial e informe mínimo rechazan aceptación; caso software válido sin análisis conserva aceptación científica falsa.",
+        "tests": [
+          "tests/fresh_training/test_attempt_acceptance.py",
+          "tests/fresh_training/test_security_and_acceptance.py",
+          "tests/fresh_training/test_campaign_integrity.py",
+          "tests/fresh_training/test_fresh_results_catalog.py"
+        ],
+        "shared_with": {
+          "uc3m/application/training/fresh_acceptance.py": [
+            "I08"
+          ],
+          "uc3m/application/training/fresh_campaign.py": [
+            "I05"
+          ],
+          "uc3m/application/evaluation/results_catalog.py": [
+            "I08"
+          ],
+          "uc3m/application/training/drive_sync.py": [
+            "I09"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I02": {
+        "objective": "Congelar el contrato PT–simulador y la tupla",
+        "wave": 1,
+        "owned_files": [
+          "configs/objective_policies.yaml",
+          "configs/scenarios.yaml",
+          "configs/experiments/iquitos.yaml",
+          "configs/algorithms/native.yaml",
+          "docs/design/entrenamiento.md"
+        ],
+        "contract_inputs": [
+          "I00"
+        ],
+        "acceptance": "Registro D01–D06 resuelto, contrato versionado con dimensiones y acciones por backend; PT y código tienen correspondencia explícita y ninguna equivalencia se infiere solo del nombre del algoritmo.",
+        "tests": [
+          "tests/fresh_training/test_campaign_contract.py",
+          "tests/fresh_training/test_temporal_contract.py",
+          "tests/uc3m/test_reward_kpi_alignment.py"
+        ],
+        "shared_with": {
+          "configs/experiments/iquitos.yaml": [
+            "I05",
+            "I16"
+          ],
+          "configs/algorithms/native.yaml": [
+            "I05"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I03": {
+        "objective": "Conciliar dataset, procedencia temporal y facturación física",
+        "wave": 2,
+        "owned_files": [
+          "tools/dataset/build_fresh_campaign_dataset.py",
+          "uc3m/application/dataset/construction.py",
+          "uc3m/application/dataset/provenance.py",
+          "uc3m/application/dataset/splits.py",
+          "uc3m/adapters/citylearn/fresh_observations.py",
+          "uc3m/adapters/citylearn/policy_inference.py"
+        ],
+        "contract_inputs": [
+          "I00",
+          "I02"
+        ],
+        "acceptance": "Dataset elegido con identidad nueva si cambia contenido; splits, normalizador, flota/controles y tabla por variable trazables; factura analítica por edificio y sensibilidad a backcast sin fuga oculta.",
+        "tests": [
+          "tests/fresh_training/test_dataset_provenance.py",
+          "tests/fresh_training/test_der_sizing_inputs.py",
+          "tests/fresh_training/test_temporal_contract.py",
+          "tests/fresh_training/test_kpi_physical_contract.py"
+        ],
+        "shared_with": {
+          "uc3m/adapters/citylearn/policy_inference.py": [
+            "I04",
+            "I06"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I04": {
+        "objective": "Verificar interfaces y capacidad de los cuatro backends",
+        "wave": 3,
+        "owned_files": [
+          "uc3m/adapters/algorithms/native_entrypoint.py",
+          "uc3m/env/wrappers.py",
+          "uc3m/algorithms/factory.py",
+          "uc3m/adapters/citylearn/policy_inference.py"
+        ],
+        "contract_inputs": [
+          "I01",
+          "I02",
+          "I03"
+        ],
+        "acceptance": "Cuatro aprendices reales con owners/updates/cambios de parámetros, recarga consistente y contrato actor/crítico/acción registrado; placeholder y modo ilustrativo inelegibles.",
+        "tests": [
+          "tests/fresh_training/test_learning_observer.py",
+          "tests/fresh_training/test_real_learning.py",
+          "tests/uc3m/test_algorithm_factory.py"
+        ],
+        "shared_with": {
+          "uc3m/adapters/algorithms/native_entrypoint.py": [
+            "I05"
+          ],
+          "uc3m/algorithms/factory.py": [
+            "I13"
+          ],
+          "uc3m/adapters/citylearn/policy_inference.py": [
+            "I03",
+            "I06"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I05": {
+        "objective": "Presupuesto efectivo, recursos y protocolo HPO coherentes",
+        "wave": 4,
+        "owned_files": [
+          "uc3m/application/training/phases.py",
+          "uc3m/application/training/fresh_campaign.py",
+          "uc3m/application/training/fresh_tuning.py",
+          "uc3m/adapters/algorithms/native_entrypoint.py",
+          "configs/algorithms/native.yaml",
+          "configs/experiments/iquitos.yaml"
+        ],
+        "contract_inputs": [
+          "I02",
+          "I03",
+          "I04"
+        ],
+        "acceptance": "DAG, freeze, pesos efectivos, replay/batch y presupuesto real coinciden; runtime insuficiente rechaza antes de lanzar; capacidad HPO y costes por backend están declarados.",
+        "tests": [
+          "tests/fresh_training/test_training_phases.py",
+          "tests/fresh_training/test_stage_phases.py",
+          "tests/fresh_training/test_tuning_protocol.py",
+          "tests/fresh_training/test_campaign_contract.py"
+        ],
+        "shared_with": {
+          "uc3m/application/training/fresh_campaign.py": [
+            "I01"
+          ],
+          "uc3m/adapters/algorithms/native_entrypoint.py": [
+            "I04"
+          ],
+          "configs/algorithms/native.yaml": [
+            "I02"
+          ],
+          "configs/experiments/iquitos.yaml": [
+            "I02",
+            "I16"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I06": {
+        "objective": "Horizonte anual, inferencia congelada y KPI completos",
+        "wave": 4,
+        "owned_files": [
+          "uc3m/adapters/citylearn/policy_inference.py",
+          "uc3m/adapters/citylearn/frozen_adapters.py",
+          "uc3m/application/evaluation/frozen_evaluation.py",
+          "uc3m/application/evaluation/kpi_contract.py"
+        ],
+        "contract_inputs": [
+          "I01",
+          "I03",
+          "I04"
+        ],
+        "acceptance": "2023/2025 y 2024 bisiesto conservan intervalos/timestamps correctos, días completos, SOC/balances y pasos observados; recarga sin updates y test inaccesible antes de unlock válido.",
+        "tests": [
+          "tests/fresh_training/test_frozen_evaluation.py",
+          "tests/fresh_training/test_frozen_evaluation_writer.py",
+          "tests/fresh_training/test_kpi_physical_contract.py"
+        ],
+        "shared_with": {
+          "uc3m/adapters/citylearn/policy_inference.py": [
+            "I03",
+            "I04"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I07": {
+        "objective": "Estadística y selección sin resultados ilustrativos promovidos",
+        "wave": 2,
+        "owned_files": [
+          "uc3m/application/evaluation/fresh_analysis.py",
+          "uc3m/application/evaluation/model_selection.py",
+          "uc3m/application/evaluation/scientific_evaluation.py",
+          "uc3m/domain/pareto.py",
+          "uc3m/reward/hphi.py",
+          "uc3m/application/thesis/evidence_registry.py",
+          "uc3m/multicriteria/pipeline.py"
+        ],
+        "contract_inputs": [
+          "I01",
+          "I02"
+        ],
+        "acceptance": "NaN/Inf, réplicas duplicadas o cobertura incompleta rechazan; igualdad legítima no obliga ganador; IQM/hipervolumen únicos y leader descriptivo separado de ganador inferencial.",
+        "tests": [
+          "tests/fresh_training/test_statistical_input_gate.py",
+          "tests/fresh_training/test_seed_statistics.py",
+          "tests/fresh_training/test_evidence_promotion.py",
+          "tests/uc3m/test_hphi.py",
+          "tests/unit/application/test_model_selection.py"
+        ],
+        "shared_with": {
+          "uc3m/application/thesis/evidence_registry.py": [
+            "I17"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I08": {
+        "objective": "Enlazar pipeline, análisis, catálogo y entrega",
+        "wave": 5,
+        "owned_files": [
+          "uc3m/application/pipeline.py",
+          "uc3m/application/training/fresh_acceptance.py",
+          "uc3m/application/evaluation/results_catalog.py",
+          "uc3m/presentation/training_panel.py",
+          "tools/eval/report_fresh_campaign.py"
+        ],
+        "contract_inputs": [
+          "I01",
+          "I06",
+          "I07",
+          "I11"
+        ],
+        "acceptance": "analyze→deliver consume gate_report y analysis_manifest explícitos; entrega válida acepta, informe ajeno/alterado rechaza y ausencia no produce paquete aceptado; panel de lectura refleja fase/seed/aceptación.",
+        "tests": [
+          "tests/fresh_training/test_pipeline.py",
+          "tests/fresh_training/test_delivery_contract.py",
+          "tests/fresh_training/test_fresh_results_catalog.py",
+          "tests/integration/test_training_panel.py"
+        ],
+        "shared_with": {
+          "uc3m/application/training/fresh_acceptance.py": [
+            "I01"
+          ],
+          "uc3m/application/evaluation/results_catalog.py": [
+            "I01"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I09": {
+        "objective": "Colab, Drive y recuperación de intentos",
+        "wave": 6,
+        "owned_files": [
+          "tools/colab/colab_session.py",
+          "tools/colab/build_modular_colab_notebook.py",
+          "uc3m/application/training/drive_sync.py",
+          "examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb"
+        ],
+        "contract_inputs": [
+          "I01",
+          "I05",
+          "I08"
+        ],
+        "acceptance": "Cuaderno regenerado reproduce C1–C11, propaga rechazos JSON, sincroniza intentos verificados y documenta pérdida potencial del intento activo; ensayo real Colab separado y trazable.",
+        "tests": [
+          "tests/ops/test_colab_session.py",
+          "tests/ops/test_colab_notebook_cells.py",
+          "tests/fresh_training/test_drive_sync.py"
+        ],
+        "shared_with": {
+          "tools/colab/build_modular_colab_notebook.py": [
+            "I11"
+          ],
+          "uc3m/application/training/drive_sync.py": [
+            "I01"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I10": {
+        "objective": "Privacidad, entradas remotas y riesgos aplicables",
+        "wave": 2,
+        "owned_files": [
+          "uc3m/data/adapters/local_csv.py",
+          "uc3m/data/adapters/remote_http.py",
+          "tools/ops/audit_closed_services_and_secrets.py",
+          "deploy/inference/app.py",
+          "deploy/inference/model_loader.py",
+          "deploy/docker-compose.yml"
+        ],
+        "contract_inputs": [
+          "I00",
+          "I01"
+        ],
+        "acceptance": "Estado de navegador excluido de cualquier paquete/imagen/copia de entrega; descargas contenidas y acotadas; avisos Bandit/OSV clasificados por API/exposición sin confundir pip check con seguridad.",
+        "tests": [
+          "tests/fresh_training/test_inference_demo_fence.py",
+          "tests/uc3m/test_data_ingestion.py",
+          "tests/uc3m/test_data_adapters_remote.py"
+        ],
+        "shared_with": {
+          "deploy/inference/app.py": [
+            "I18"
+          ],
+          "deploy/inference/model_loader.py": [
+            "I18"
+          ],
+          "deploy/docker-compose.yml": [
+            "I18"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I11": {
+        "objective": "Gobernanza de dependencias, paquete y promesas de exportación",
+        "wave": 2,
+        "owned_files": [
+          ".gitmodules",
+          "pyproject.toml",
+          "requirements.txt",
+          "uv.lock",
+          "governance/open_source_policy.yaml",
+          "tools/colab/build_modular_colab_notebook.py",
+          "tools/ops/audit_github_readiness.py",
+          ".gitattributes"
+        ],
+        "contract_inputs": [
+          "I00",
+          "I02"
+        ],
+        "acceptance": "off-policy tiene rol/procedencia/commit/licencia declarados; namespaces locales no se instalan como paquetes homónimos; wheel/checkout elegido funciona en instalación limpia; documentación LFS/ONNX veraz.",
+        "tests": [
+          "tests/fresh_training/test_github_readiness.py",
+          "tests/ops/test_open_source_dependency_audit.py"
+        ],
+        "shared_with": {
+          "pyproject.toml": [
+            "I15"
+          ],
+          "tools/colab/build_modular_colab_notebook.py": [
+            "I09"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I12": {
+        "objective": "Calidad, guardas, CI y documentación del flujo",
+        "wave": 3,
+        "owned_files": [
+          "scripts/verify_project_context.ps1",
+          "scripts/maintenance/consolidate_repository.ps1",
+          ".github/workflows/ci.yml",
+          "tools/ops/verify_workflow_integrity.py",
+          "docs/workflow_manifest.json",
+          "tools/skills/registry.yaml",
+          "pyrightconfig.json"
+        ],
+        "contract_inputs": [
+          "I00",
+          "I01",
+          "I11"
+        ],
+        "acceptance": "Cinco fallos generales tienen resolución específica; Ruff/skills/workflow/CI portable acreditan su ámbito; guarda más rápida conserva frontera, enlaces y rechazo de rutas ajenas.",
+        "tests": [
+          "tests/fresh_training/test_duplicate_consolidation.py",
+          "tests/fresh_training/test_github_readiness.py",
+          "tests/contract/test_spec_kit_consistency.py",
+          "tests/skills"
+        ],
+        "shared_with": {},
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I13": {
+        "objective": "Cerrar revisión semántica por archivo y deuda de contratos",
+        "wave": 2,
+        "owned_files": [
+          "uc3m/ports/simulator.py",
+          "uc3m/algorithms/factory.py",
+          "tools/thesis/generate_borrador_tesis_docx.py",
+          "tools/thesis/validate_integral_word_50ep_4madrl.py",
+          "tools/training/verify_training_optimization.py",
+          "deploy/plant_adapter/modbus_adapter.py"
+        ],
+        "contract_inputs": [
+          "I00",
+          "I02"
+        ],
+        "acceptance": "Cada archivo propio del alcance conciliado tiene revisión a EOF con hash, rol, consumidores, hallazgos y pruebas; registros pendientes siguen visibles. Código ajeno tiene frontera y revisión específica declaradas.",
+        "tests": [
+          "tests/contract/test_import_architecture.py",
+          "tests/contract",
+          "tests/unit",
+          "tests/uc3m"
+        ],
+        "shared_with": {
+          "uc3m/algorithms/factory.py": [
+            "I04"
+          ],
+          "deploy/plant_adapter/modbus_adapter.py": [
+            "I18"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I14": {
+        "objective": "Paridad anterior, layout, obsoletos y conservación",
+        "wave": 5,
+        "owned_files": [
+          "tools/ops/audit_repository_layout.py",
+          "tools/ops/historical_inventory.py",
+          "governance/repository_layout.yaml",
+          "governance/naming.yaml",
+          "data/audits/evaluation_tools_inventory.json",
+          "README.md",
+          "scripts/README.md",
+          "tools/README.md",
+          "Dockerfile"
+        ],
+        "contract_inputs": [
+          "I00",
+          "I11",
+          "I13",
+          "I15"
+        ],
+        "acceptance": "Mapa capacidad anterior→reemplazo→prueba o retiro razonado completo; enlaces activos válidos; PT en ubicación aprobada; ningún archivo único, dato/campaña, evidencia o dependencia eliminado por similitud.",
+        "tests": [
+          "tests/fresh_training/test_repository_layout.py",
+          "tests/ops/test_repository_hygiene.py",
+          "tests/unit/evaluation/test_tools_use_results_catalog.py",
+          "tests/fresh_training/test_historical_retirement.py"
+        ],
+        "shared_with": {},
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I15": {
+        "objective": "Pruebas independientes del scratch y cobertura real",
+        "wave": 4,
+        "owned_files": [
+          "tests/fresh_training/conftest.py",
+          "tests/fresh_training/test_real_learning.py",
+          "tests/fresh_training/test_frozen_evaluation.py",
+          "tests/fresh_training/test_frozen_evaluation_writer.py",
+          "tests/fresh_training/test_three_level_game.py",
+          "tests/uc3m/test_kpi_evaluator.py",
+          "tests/uc3m/test_reward_axes.py",
+          "pyproject.toml"
+        ],
+        "contract_inputs": [
+          "I00",
+          "I01",
+          "I03",
+          "I04"
+        ],
+        "acceptance": "Clon/entorno limpio puede generar o recibir explícitamente checkpoints propios con identidad/hash; perfil estricto no omite ni xfail; pruebas fuera de tests tienen selección deliberada y aserciones de comportamiento.",
+        "tests": [
+          "tests/fresh_training",
+          "tests/ops/test_repository_hygiene.py",
+          "deploy/inference/test_app.py",
+          "tools/training/test_job_resume_state.py"
+        ],
+        "shared_with": {
+          "pyproject.toml": [
+            "I11"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I16": {
+        "objective": "Aceptación nativa y campaña nueva autorizada",
+        "wave": 7,
+        "owned_files": [
+          "configs/experiments/iquitos.yaml",
+          "scripts/quality/run_fresh_training_gates.ps1",
+          "uc3m/application/training/cli.py",
+          "docs/architecture/runbook.md"
+        ],
+        "contract_inputs": [
+          "I01",
+          "I02",
+          "I03",
+          "I04",
+          "I05",
+          "I06",
+          "I07",
+          "I08",
+          "I09",
+          "I10",
+          "I11",
+          "I12",
+          "I13",
+          "I14",
+          "I15"
+        ],
+        "acceptance": "G2 con cuatro aprendices y perfil integral sin omisiones; G3/G4 solo con etapas autorizadas, HPO validación, confirmación multisemilla, sensibilidad, baselines y prueba final completos y verificados.",
+        "tests": [
+          "tests/fresh_training"
+        ],
+        "shared_with": {
+          "configs/experiments/iquitos.yaml": [
+            "I02",
+            "I05"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I17": {
+        "objective": "Tesis, bibliografía y observaciones J-01–J-17",
+        "wave": 8,
+        "owned_files": [
+          "data/audits/jury_observations_manifest.json",
+          "uc3m/application/thesis/evidence_registry.py",
+          "docs/chapters/",
+          "specs/STATUS.md",
+          "docs/plans/traspaso_sesiones.md"
+        ],
+        "contract_inputs": [
+          "I02",
+          "I06",
+          "I07",
+          "I08",
+          "I13",
+          "I14",
+          "I16"
+        ],
+        "acceptance": "Cada J-ID tiene evidencia específica y estado verificado; texto, tablas, anexos y Word reflejan el contrato y resultados reales, con preservación literal aprobada y revisión visual en copia nueva.",
+        "tests": [
+          "tests/contract/test_jury_observations.py",
+          "tests/fresh_training/test_evidence_promotion.py"
+        ],
+        "shared_with": {
+          "uc3m/application/thesis/evidence_registry.py": [
+            "I07"
+          ],
+          "specs/STATUS.md": [
+            "I00"
+          ],
+          "docs/plans/traspaso_sesiones.md": [
+            "I00"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      },
+      "I18": {
+        "objective": "Frontera operacional y riesgos condicionados",
+        "wave": 9,
+        "owned_files": [
+          "deploy/inference/app.py",
+          "deploy/inference/model_loader.py",
+          "deploy/plant_adapter/modbus_adapter.py",
+          "deploy/mosquitto.conf",
+          "deploy/docker-compose.yml",
+          "deploy/docker-compose.aws.yml",
+          "deploy/aws/iac/variables.tf"
+        ],
+        "contract_inputs": [
+          "I10",
+          "I16",
+          "I17"
+        ],
+        "acceptance": "Demo permanece inelegible para planta; cualquier aceptación operacional exige alcance y pruebas independientes de auth, límites, fallback, latencia, recuperación y escritura física autorizada.",
+        "tests": [
+          "tests/fresh_training/test_inference_demo_fence.py",
+          "deploy/inference/test_app.py"
+        ],
+        "shared_with": {
+          "deploy/inference/app.py": [
+            "I10"
+          ],
+          "deploy/inference/model_loader.py": [
+            "I10"
+          ],
+          "deploy/plant_adapter/modbus_adapter.py": [
+            "I13"
+          ],
+          "deploy/docker-compose.yml": [
+            "I10"
+          ]
+        },
+        "out_of_scope": [
+          "archivos de otras tareas no cedidos en el traspaso",
+          "CityLearn/ y external/",
+          "commits, push o stage global",
+          "entrenamiento, Colab o infraestructura de pago",
+          "cambiar dependencias o el stack"
+        ],
+        "reviewer": "el otro agente (auditoría cruzada)"
+      }
+    }
+  },
+  "review_findings": {
+    "I00": [],
+    "I01": [
+      {
+        "id": "R-A-040",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-077",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-096",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-112",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-131",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-133",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-134",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-135",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-136",
+        "severity": "Media"
+      }
+    ],
+    "I02": [
+      {
+        "id": "R-A-002",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-005",
+        "severity": "Alta (validez, condicionada)"
+      },
+      {
+        "id": "R-A-017",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-050",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-072",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-073",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-140",
+        "severity": "Media"
+      }
+    ],
+    "I03": [
+      {
+        "id": "R-A-030",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-032",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-041",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-046",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-047",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-050",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-051",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-072",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-073",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-087",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-088",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-090",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-127",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-128",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-129",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-130",
+        "severity": "Alta"
+      }
+    ],
+    "I04": [
+      {
+        "id": "R-A-022",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-072",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-080",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-082",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-098",
+        "severity": "Baja (latente)"
+      },
+      {
+        "id": "R-A-099",
+        "severity": "Media"
+      }
+    ],
+    "I05": [
+      {
+        "id": "R-A-002",
+        "severity": "Media"
+      }
+    ],
+    "I06": [
+      {
+        "id": "R-A-006",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-008",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-012",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-013",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-016",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-023",
+        "severity": "Media (alta si la tesis lo cita)"
+      },
+      {
+        "id": "R-A-024",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-025",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-031",
+        "severity": "Media (latente)"
+      },
+      {
+        "id": "R-A-086",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-115",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-121",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-140",
+        "severity": "Media"
+      }
+    ],
+    "I07": [
+      {
+        "id": "R-A-001",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-008",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-009",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-010",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-011",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-016",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-021",
+        "severity": "Baja (sospecha)"
+      },
+      {
+        "id": "R-A-039",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-094",
+        "severity": "Baja (sospecha)"
+      },
+      {
+        "id": "R-A-095",
+        "severity": "Baja (sospecha)"
+      },
+      {
+        "id": "R-A-115",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-116",
+        "severity": "Media (sospecha)"
+      },
+      {
+        "id": "R-A-117",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-132",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-138",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-139",
+        "severity": "Media"
+      }
+    ],
+    "I08": [
+      {
+        "id": "R-A-036",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-077",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-085",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-114",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-137",
+        "severity": "Media"
+      }
+    ],
+    "I09": [
+      {
+        "id": "R-A-052",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-053",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-054",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-055",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-068",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-070",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-073",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-083",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-084",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-104",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-105",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-106",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-141",
+        "severity": "Media"
+      }
+    ],
+    "I10": [
+      {
+        "id": "R-A-027",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-028",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-029",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-037",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-059",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-063",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-068",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-089",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-092",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-102",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-103",
+        "severity": "Baja"
+      }
+    ],
+    "I11": [
+      {
+        "id": "R-A-049",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-060",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-061",
+        "severity": "Media"
+      }
+    ],
+    "I12": [
+      {
+        "id": "R-A-038",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-043",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-044",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-051",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-052",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-062",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-070",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-073",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-074",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-075",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-076",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-078",
+        "severity": "Media (sospecha)"
+      },
+      {
+        "id": "R-A-082",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-093",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-106",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-111",
+        "severity": "Baja (sospecha)"
+      }
+    ],
+    "I13": [
+      {
+        "id": "R-A-003",
+        "severity": "Media-baja"
+      },
+      {
+        "id": "R-A-004",
+        "severity": "Confirmación"
+      },
+      {
+        "id": "R-A-006",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-007",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-014",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-015",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-018",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-019",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-020",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-022",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-023",
+        "severity": "Media (alta si la tesis lo cita)"
+      },
+      {
+        "id": "R-A-024",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-025",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-026",
+        "severity": "Baja-media"
+      },
+      {
+        "id": "R-A-030",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-033",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-034",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-035",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-036",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-037",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-038",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-039",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-041",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-042",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-045",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-064",
+        "severity": "Baja (sospecha)"
+      },
+      {
+        "id": "R-A-066",
+        "severity": "Baja (decisión del propietario)"
+      },
+      {
+        "id": "R-A-079",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-080",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-081",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-097",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-107",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-108",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-110",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-113",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-114",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-118",
+        "severity": "Media"
+      }
+    ],
+    "I14": [
+      {
+        "id": "R-A-001",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-003",
+        "severity": "Media-baja"
+      },
+      {
+        "id": "R-A-019",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-026",
+        "severity": "Baja-media"
+      },
+      {
+        "id": "R-A-033",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-055",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-058",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-067",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-079",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-099",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-101",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-109",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-117",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-125",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-126",
+        "severity": "Baja"
+      }
+    ],
+    "I15": [
+      {
+        "id": "R-A-035",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-048",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-074",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-076",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-077",
+        "severity": "Alta"
+      },
+      {
+        "id": "R-A-081",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-084",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-091",
+        "severity": "Baja (sospecha)"
+      },
+      {
+        "id": "R-A-099",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-100",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-101",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-104",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-107",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-108",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-110",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-112",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-113",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-114",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-118",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-119",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-120",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-121",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-122",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-123",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-124",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-125",
+        "severity": "Baja"
+      }
+    ],
+    "I16": [],
+    "I17": [
+      {
+        "id": "R-A-060",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-065",
+        "severity": "Baja"
+      },
+      {
+        "id": "R-A-066",
+        "severity": "Baja (decisión del propietario)"
+      },
+      {
+        "id": "R-A-116",
+        "severity": "Media (sospecha)"
+      },
+      {
+        "id": "R-A-120",
+        "severity": "Media"
+      }
+    ],
+    "I18": [
+      {
+        "id": "R-A-056",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-057",
+        "severity": "Media"
+      },
+      {
+        "id": "R-A-064",
+        "severity": "Baja (sospecha)"
+      },
+      {
+        "id": "R-A-069",
+        "severity": "Baja (sospecha)"
+      },
+      {
+        "id": "R-A-071",
+        "severity": "Baja"
+      }
+    ]
+  },
+  "source_hashes": [
+    {
+      "path": "docs/audits/architecture_thesis_20261101/informe.md",
+      "sha256": "8c3375adea2489b8f6fdb3738a9af5aa577c3b5eef60b7f3c947e372f18df23b"
+    },
+    {
+      "path": "docs/audits/architecture_thesis_20261101/findings.csv",
+      "sha256": "e5535caa3fec6175a61976395d0e33a2d0dc688528ace12ce786cc5cb4fe5b1e"
+    },
+    {
+      "path": "docs/audits/architecture_thesis_20261101/validation.json",
+      "sha256": "155983f278f0029169ccffa0269db274bf85d7b758ade655d903929ea4c143c4"
+    },
+    {
+      "path": "docs/audits/deep_20261101/findings.json",
+      "sha256": "5250bc2409a34b9c7f07ed9ecc6a7f770464d396975df837ddd1fe0dd86c5077"
+    },
+    {
+      "path": "docs/plans/remediacion_auditoria.md",
+      "sha256": "c769e46f0b5efad68fc88b0146b6c6998b3060d21ed20d9da6cef6d537d9e7be"
+    },
+    {
+      "path": "docs/plans/remediacion_cobertura.json",
+      "sha256": "aaf84fecb201546e59a5f7ee6a096a42fe1777753aeb4742bd0f39673bdc4232"
+    },
+    {
+      "path": "docs/plans/cuaderno_colab.md",
+      "sha256": "7d659ca7e95ff074679cf0d99ce0b1441bec74796fde143d844f80775a1d75d5"
+    },
+    {
+      "path": "docs/plans/traspaso_sesiones.md",
+      "sha256": "2f8cc4d6d274de3e0d831530a9db5b75f798f320a288b9274e9b9025f4a812d0"
+    },
+    {
+      "path": "docs/audits/integracion_auditorias_20261101/revision_final_auditoria.md",
+      "sha256": "2d267b2f8408301bf061a80e35646616d897498fcaf3552c288493609549fc43"
+    },
+    {
+      "path": "docs/audits/integracion_auditorias_20261101/dictamen_inicial_auditoria.md",
+      "sha256": "117a27c2170777e5d4c836864a003d133d87dcfc6fa1e9177401ad631cfbd63a"
+    },
+    {
+      "path": "docs/audits/integracion_auditorias_20261101/inventario_auditoria.json",
+      "sha256": "ab5228bd13908c88b0653ff0515f925226e7523890e85c9d5d471fa04f41ed01"
+    },
+    {
+      "path": "docs/audits/integracion_auditorias_20261101/ledger_auditoria.csv",
+      "sha256": "4a33ef84a828fd295ebd9c2ffc57420a35f254616e9d5419de7f291a0e9a7b67"
+    },
+    {
+      "path": "docs/audits/addendum_auditoria_20261101/README.md",
+      "sha256": "c2648c260e9a323c90e610592dc2556eefe7aaf7a4c37f9a69f63773afe585d1"
+    },
+    {
+      "path": "docs/audits/addendum_auditoria_20261101/bandit.json",
+      "sha256": "d4d782cc67dd688756a3800b29e4118896f30e29406f497473f6ed2d216bfbf0"
+    },
+    {
+      "path": "docs/audits/addendum_auditoria_20261101/reproductions.py",
+      "sha256": "fc452b59fbcd63e82da527345a5af418225dbf807fd320640f519e4ffad47ade"
+    },
+    {
+      "path": "tools/skills/madrl-agent-coordination/SKILL.md",
+      "sha256": "b97d479869c44117e58e4961482e58f707003983bd5ef8a52589de8f1acb5f90"
+    },
+    {
+      "path": "tools/skills/task-coordination-strategies/SKILL.md",
+      "sha256": "e6e0c3f64b01f50d549a04d89c9a94128c5f0d24969c6e412952ff8cd9de36d7"
+    },
+    {
+      "path": "tools/skills/task-coordination-strategies/references/task-decomposition.md",
+      "sha256": "c8b382e0b0a1eda3277ecdc39a7fa7f1394fecc3f16271f1b23c2199c597ba9d"
+    },
+    {
+      "path": "tools/skills/task-coordination-strategies/references/dependency-graphs.md",
+      "sha256": "0631ea5ef35a6d348b3f8959b039682cdf817a404bda16a319afe0168fe4319f"
+    },
+    {
+      "path": "docs/audits/revision_semantica_20261102/README.md",
+      "sha256": "fb7f915e237f8be446845445d9c1d7e89c8bcd0710ae879b753867dfc1d5d2a9"
+    },
+    {
+      "path": "docs/audits/revision_semantica_20261102/build_lots.py",
+      "sha256": "0218155e2472ac0244888fa1165668c402c2fc5884f8707e2b76adbfec2e0f20"
+    },
+    {
+      "path": "docs/audits/revision_semantica_20261102/hallazgos_revisor_a.md",
+      "sha256": "5c81b112ea0e1fd081949c558939305d7a014ce87f08c54afa0277517b2be033"
+    }
+  ],
+  "plan_sha256": "f8f34d0b0309c366918d9f10d99566ade1991ada4dfad5c62f0b92ef62389706"
+}

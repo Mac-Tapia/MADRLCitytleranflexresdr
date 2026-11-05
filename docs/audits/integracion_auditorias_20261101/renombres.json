@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-02",
+  "reason": "decisión del usuario: ningún nombre de carpeta, archivo ni etiqueta lleva el nombre de un agente",
+  "roles": {
+    "Revisor A": "sesión de auditoría independiente",
+    "Revisor B": "sesión de implementación"
+  },
+  "renamed": {
+    "docs/audits/integracion_claude_20261101": "docs/audits/integracion_auditorias_20261101",
+    "docs/audits/claude_addendum_20261101": "docs/audits/addendum_auditoria_20261101",
+    "docs/audits/integracion_auditorias_20261101/claude_revision_original.md": "docs/audits/integracion_auditorias_20261101/revision_final_auditoria.md",
+    "docs/audits/integracion_auditorias_20261101/claude_dictamen_inicial.md": "docs/audits/integracion_auditorias_20261101/dictamen_inicial_auditoria.md",
+    "docs/audits/integracion_auditorias_20261101/claude_inventory.json": "docs/audits/integracion_auditorias_20261101/inventario_auditoria.json",
+    "docs/audits/integracion_auditorias_20261101/claude_ledger.csv": "docs/audits/integracion_auditorias_20261101/ledger_auditoria.csv",
+    "docs/audits/revision_semantica_20261102/ledger_claude.csv": "docs/audits/revision_semantica_20261102/ledger_revisor_a.csv",
+    "docs/audits/revision_semantica_20261102/ledger_codex.csv": "docs/audits/revision_semantica_20261102/ledger_revisor_b.csv",
+    "docs/audits/revision_semantica_20261102/hallazgos_claude.md": "docs/audits/revision_semantica_20261102/hallazgos_revisor_a.md"
+  },
+  "unchanged_evidence": "artifact_manifest.json, commands.json, validation.json, spec_consistency.log, bandit.stderr.txt y docs/audits/ejecucion_remediacion_20261101/* conservan rutas antiguas porque son registros históricos con hash; esta tabla las traduce"
+}

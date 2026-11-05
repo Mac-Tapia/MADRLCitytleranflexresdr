@@ -1,0 +1,25 @@
+{
+  "plan_sha256": "f8f34d0b0309c366918d9f10d99566ade1991ada4dfad5c62f0b92ef62389706",
+  "counts": {
+    "architecture_H": 23,
+    "deep_A": 31,
+    "auditoria_C": 74,
+    "requirements_FR": 20,
+    "jury_J": 17,
+    "legacy_tasks_P": 19
+  },
+  "tasks": 19,
+  "coordination": {
+    "waves": 10,
+    "shared_files": 18,
+    "unordered_shared_files": [
+      "pyproject.toml",
+      "uc3m/algorithms/factory.py"
+    ]
+  },
+  "missing_source_ids": [],
+  "unknown_task_ids": [],
+  "dependency_cycles": [],
+  "implementation_executed": false,
+  "scientific_acceptance": false
+}

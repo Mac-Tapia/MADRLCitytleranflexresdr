@@ -2,3 +2,147 @@
 ........................................................................ [ 13%]
 ........................................................................ [ 19%]
 ...........................................................F............ [ 26%]
+.........................................................F.............. [ 32%]
+........................................................................ [ 39%]
+..................................F..................................... [ 46%]
+........................................................................ [ 52%]
+........................................................................ [ 59%]
+...................................................F.................... [ 65%]
+........................................................................ [ 72%]
+........................................................................ [ 79%]
+........................................................................ [ 85%]
+........................................................................ [ 92%]
+......................................................................F. [ 98%]
+.............                                                            [100%]
+================================== FAILURES ===================================
+_________ test_consolidate_execute_only_on_matching_plan_in_temp_copy _________
+tests\fresh_training\test_duplicate_consolidation.py:277: in test_consolidate_execute_only_on_matching_plan_in_temp_copy
+    assert ran.returncode == 0, ran.stdout + ran.stderr
+E   AssertionError: 
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\MADRLCitytleranflexresd...test-5381\\test_consolidate_execute_only_0\\evidence\\canonicalization_plan.json'], returncode=1, stdout='', stderr='').returncode
+______________ test_declared_dependencies_cover_runtime_imports _______________
+tests\fresh_training\test_github_readiness.py:63: in test_declared_dependencies_cover_runtime_imports
+    assert not missing, f'imports without a declared distribution: {missing}'
+E   AssertionError: imports without a declared distribution: {'psutil': 'uc3m/adapters/algorithms/native_entrypoint.py', 'offpolicy': 'uc3m/adapters/citylearn/policy_inference.py', 'common': 'uc3m/adapters/citylearn/policy_inference.py', 'agent': 'uc3m/adapters/citylearn/policy_inference.py', 'ac_discrete': 'uc3m/adapters/citylearn/policy_inference.py', 'utils': 'uc3m/adapters/citylearn/policy_inference.py', 'tools': 'uc3m/application/pipeline.py'}
+E   assert not {'ac_discrete': 'uc3m/adapters/citylearn/policy_inference.py', 'agent': 'uc3m/adapters/citylearn/policy_inference.py', 'common': 'uc3m/adapters/citylearn/policy_inference.py', 'offpolicy': 'uc3m/adapters/citylearn/policy_inference.py', ...}
+________ test_real_repository_indexes_have_no_active_broken_reference _________
+tests\fresh_training\test_repository_layout.py:146: in test_real_repository_indexes_have_no_active_broken_reference
+    assert broken == [], broken
+E   AssertionError: ['README.md:567 -> docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx', 'README.md:568 -> docs/thesis/PLAN_TESIS_MADRL_C...ME.md:61 -> docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md', 'tools/README.md:5 -> docs/AUDITORIA_TOOLS_2026-07-29.md']
+E   assert ['README.md:5...026-07-29.md'] == []
+E     
+E     Left contains 4 more items, first extra item: 'README.md:567 -> docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx'
+E     Use -v to get more diff
+____________________ test_root_contains_only_project_files ____________________
+tests\ops\test_repository_hygiene.py:61: in test_root_contains_only_project_files
+    assert root_entries - ROOT_ALLOWED == set()
+E   AssertionError: assert {'PT_TAPIA_ZA...uitos_2.docx'} == set()
+E     
+E     Extra items in the left set:
+E     'PT_TAPIA_ZAMBRANO_v6_Iquitos_2.docx'
+E     Use -v to get more diff
+___ test_inventory_lists_every_file_still_referencing_the_retired_campaign ____
+tests\unit\evaluation\test_tools_use_results_catalog.py:434: in test_inventory_lists_every_file_still_referencing_the_retired_campaign
+    assert referencing - listed == set()
+E   AssertionError: assert {'tools/ops/h...inventory.py'} == set()
+E     
+E     Extra items in the left set:
+E     'tools/ops/historical_inventory.py'
+E     Use -v to get more diff
+============================== warnings summary ===============================
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+tests/acceptance/test_acceptance_gates.py::test_simulator_port_is_protocol
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/fresh_training/test_dataset_tariff.py::test_microgrids_demand_charge_makes_peak_block_cost_visible
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+tests/fresh_training/test_delivery_contract.py::test_report_values_match_seed_table
+tests/fresh_training/test_seed_statistics.py::test_every_kpi_gets_descriptives_normality_and_the_full_nonparametric_battery
+tests/fresh_training/test_seed_statistics.py::test_negative_results_can_be_scientifically_complete
+tests/fresh_training/test_seed_statistics.py::test_detected_difference_is_reported_with_holm
+tests/fresh_training/test_statistical_input_gate.py::test_unidentified_scipy_error_is_not_p_one
+tests/fresh_training/test_statistical_input_gate.py::test_nan_p_value_with_real_differences_is_not_p_one
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\scipy\stats\_stats_py.py:1736: UserWarning: kurtosistest only valid for n>=20 ... continuing anyway, n=12
+    warnings.warn("kurtosistest only valid for n>=20 ... continuing "
+
+tests/fresh_training/test_delivery_contract.py::test_report_values_match_seed_table
+tests/fresh_training/test_seed_statistics.py::test_every_kpi_gets_descriptives_normality_and_the_full_nonparametric_battery
+tests/fresh_training/test_seed_statistics.py::test_detected_difference_is_reported_with_holm
+tests/uc3m/test_madrl_multicriteria.py::test_full_methodology_battery_smoke
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\scipy\stats\_stats_py.py:8830: RuntimeWarning: p-value cannot be estimated with `distribution='t' because degrees of freedom parameter is undefined (0/0). Try using `distribution='normal'
+    warnings.warn(message, RuntimeWarning)
+
+tests/fresh_training/test_evidence_promotion.py::test_battery_without_difference_has_no_winner
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\scipy\stats\_morestats.py:1813: UserWarning: Input data for shapiro has range zero. The results may not be accurate.
+    warnings.warn("Input data for shapiro has range zero. The results "
+
+tests/fresh_training/test_inference_demo_fence.py: 11 warnings
+  D:\MADRLCitytleranflexresdr\deploy\inference\app.py:48: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+tests/fresh_training/test_inference_demo_fence.py: 22 warnings
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\fastapi\applications.py:4579: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+tests/fresh_training/test_inference_demo_fence.py: 11 warnings
+  D:\MADRLCitytleranflexresdr\deploy\inference\app.py:58: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+tests/fresh_training/test_repository_layout.py::test_real_repository_inventory_and_plan_serialize
+  <unknown>:209: DeprecationWarning: invalid escape sequence \o
+
+tests/fresh_training/test_repository_layout.py::test_real_repository_inventory_and_plan_serialize
+  <unknown>:209: DeprecationWarning: invalid escape sequence \s
+
+tests/fresh_training/test_seed_statistics.py::test_every_kpi_gets_descriptives_normality_and_the_full_nonparametric_battery
+tests/fresh_training/test_seed_statistics.py::test_negative_results_can_be_scientifically_complete
+tests/fresh_training/test_seed_statistics.py::test_detected_difference_is_reported_with_holm
+tests/fresh_training/test_statistical_input_gate.py::test_unidentified_scipy_error_is_not_p_one
+tests/fresh_training/test_statistical_input_gate.py::test_nan_p_value_with_real_differences_is_not_p_one
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\scipy\stats\_morestats.py:3414: UserWarning: Exact p-value calculation does not work if there are zeros. Switching to normal approximation.
+    warnings.warn("Exact p-value calculation does not work if there are "
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: D:\MADRLCitytleranflexresdr\docs\audits\architecture_thesis_20261101\pytest.xml -
+=========================== short test summary info ===========================
+FAILED tests/fresh_training/test_duplicate_consolidation.py::test_consolidate_execute_only_on_matching_plan_in_temp_copy
+FAILED tests/fresh_training/test_github_readiness.py::test_declared_dependencies_cover_runtime_imports
+FAILED tests/fresh_training/test_repository_layout.py::test_real_repository_indexes_have_no_active_broken_reference
+FAILED tests/ops/test_repository_hygiene.py::test_root_contains_only_project_files
+FAILED tests/unit/evaluation/test_tools_use_results_catalog.py::test_inventory_lists_every_file_still_referencing_the_retired_campaign

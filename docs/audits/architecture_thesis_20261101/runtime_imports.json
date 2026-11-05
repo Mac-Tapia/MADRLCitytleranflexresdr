@@ -1,0 +1,12 @@
+{
+  "scope": "actual readiness AST rule; mixed roles require contextual review, not automatic pip installation",
+  "flags": {
+    "psutil": "uc3m/adapters/algorithms/native_entrypoint.py",
+    "offpolicy": "uc3m/adapters/citylearn/policy_inference.py",
+    "common": "uc3m/adapters/citylearn/policy_inference.py",
+    "agent": "uc3m/adapters/citylearn/policy_inference.py",
+    "ac_discrete": "uc3m/adapters/citylearn/policy_inference.py",
+    "utils": "uc3m/adapters/citylearn/policy_inference.py",
+    "tools": "uc3m/application/pipeline.py"
+  }
+}

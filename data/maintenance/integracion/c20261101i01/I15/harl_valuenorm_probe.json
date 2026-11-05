@@ -1,0 +1,65 @@
+{
+  "dependency_modified": false,
+  "torch_version": "2.8.0+cu126",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "comparisons": [
+    {
+      "device": "cpu",
+      "default_dtype": "torch.float32",
+      "original": {
+        "accepted": true,
+        "keys": [
+          "debiasing_term",
+          "running_mean",
+          "running_mean_sq"
+        ],
+        "roundtrip_and_denormalization_equal": true
+      },
+      "candidate": {
+        "accepted": true,
+        "keys": [
+          "debiasing_term",
+          "running_mean",
+          "running_mean_sq"
+        ],
+        "roundtrip_and_denormalization_equal": true
+      }
+    },
+    {
+      "device": "cpu",
+      "default_dtype": "torch.float64",
+      "original": {
+        "accepted": false,
+        "keys": [],
+        "reason": "unregistered_normalizer_state"
+      },
+      "candidate": {
+        "accepted": true,
+        "keys": [
+          "debiasing_term",
+          "running_mean",
+          "running_mean_sq"
+        ],
+        "roundtrip_and_denormalization_equal": true
+      }
+    },
+    {
+      "device": "cuda",
+      "default_dtype": "torch.float32",
+      "original": {
+        "accepted": false,
+        "keys": [],
+        "reason": "unregistered_normalizer_state"
+      },
+      "candidate": {
+        "accepted": true,
+        "keys": [
+          "debiasing_term",
+          "running_mean",
+          "running_mean_sq"
+        ],
+        "roundtrip_and_denormalization_equal": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+...                                                                      [100%]
+============================== warnings summary ===============================
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+tests/contract/test_spec_kit_consistency.py::test_spec_000_has_consistent_constitution_plan_and_tasks
+  D:\MADRLCitytleranflexresdr\.venv39-citylearn-v3\lib\site-packages\matplotlib\_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: D:\MADRLCitytleranflexresdr\docs\audits\integracion_claude_20261101\spec_consistency.xml -
+
+STDERR:

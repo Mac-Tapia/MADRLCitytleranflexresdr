@@ -1,7 +1,5 @@
 """Read-only live simulator probes; no learning or production campaign writes."""
-import collections
 import csv
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -10,7 +8,6 @@ import tempfile
 import time
 
 import numpy as np
-import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = Path(__file__).resolve().parent

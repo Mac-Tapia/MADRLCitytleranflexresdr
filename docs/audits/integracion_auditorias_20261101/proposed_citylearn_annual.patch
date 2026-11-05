@@ -1,0 +1,22 @@
+--- a/CityLearn/citylearn/citylearn.py
++++ b/CityLearn/citylearn/citylearn.py
+@@ -452,7 +452,7 @@
+     def terminated(self) -> bool:
+         """Check if simulation has reached completion."""
+ 
+-        return self.time_step >= self.time_steps - 1
++        return self.time_step >= self.time_steps
+ 
+     @property
+     def truncated(self) -> bool:
+--- a/CityLearn/citylearn/internal/runtime.py
++++ b/CityLearn/citylearn/internal/runtime.py
+@@ -203,7 +203,7 @@
+ 
+         env = self.env
+         current_step = int(env.time_step)
+-        last_action_step = max(env.time_steps - 2, 0)
++        last_action_step = max(env.time_steps - 1, 0)
+         reached_terminal_transition = current_step >= last_action_step
+ 
+         partial_render_time = 0.0

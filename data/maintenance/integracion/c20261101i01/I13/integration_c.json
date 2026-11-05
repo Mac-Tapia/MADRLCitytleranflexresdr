@@ -1,0 +1,35 @@
+{
+  "files": [
+    {
+      "path": "uc3m/env/wrappers.py",
+      "before_sha256": "787697cb1b77313024783e78d9ce66db0eaf49f12be4c8e1b4c2e0a854a51491",
+      "after_sha256": "6ec2224a7284e898e77279683d36001c2b54cd6c4e2fa0a53fdf60f63479ad3b"
+    },
+    {
+      "path": "uc3m/env/uc3m_env.py",
+      "before_sha256": "e8d1a5e4510271814085ef9b888ca9d9ff0fa7c17e0a83a3d71e2e446e1130c0",
+      "after_sha256": "36cc8850ddc765b7ee26f88976fa75754c660400ad29433d73fc490800a714b6"
+    },
+    {
+      "path": "uc3m/adapters/citylearn/rbc_baseline.py",
+      "before_sha256": "409644b5306a63a272a6990abfd6246cf2868746b7ad69f824b893003bebabe3",
+      "after_sha256": "facc3ffdeca14f13662f81f434ef4b0c7af60b932543e25da722d27af1e99fe4"
+    },
+    {
+      "path": "uc3m/reward/term_telemetry.py",
+      "before_sha256": "311a834cf819b38c9d1e26ee20144c8921e2eb2be1addf23de67889ff1b841af",
+      "after_sha256": "6ba5d4772b2fc9a524f74533a41e0355ba68e3497af329351f3c6a20bee79505"
+    },
+    {
+      "path": "uc3m/kpis/evaluator.py",
+      "before_sha256": "de7140d5be50facc9e35c9cf22f1f9e48c5a6f1b1ceb28e6e65cdfe0803d20ce",
+      "after_sha256": "ecf826d21c0fb2c11cfba44ca5a059cd369a63cff7eadbc0e017bad872218361"
+    }
+  ],
+  "review": "independent review; two residuals reproduced and corrected against real consumers",
+  "verification": [
+    "Stage core_final_green02_451ab5fb4f.xml 12 passed",
+    "Stage core_metrics_final02_cec20f8db5.xml 5 passed"
+  ],
+  "canonical_validation": "pending"
+}

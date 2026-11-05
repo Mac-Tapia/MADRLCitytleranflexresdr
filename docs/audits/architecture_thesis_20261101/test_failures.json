@@ -1,0 +1,37 @@
+[
+  {
+    "class": "tests.fresh_training.test_duplicate_consolidation",
+    "name": "test_consolidate_execute_only_on_matching_plan_in_temp_copy",
+    "outcome": "failure",
+    "message": "AssertionError: \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\\\MADRLCitytleranflexresd...test-5381\\\\test_consolidate_execute_only_0\\\\evidence\\\\canonicalization_plan.json'], returncode=1, stdout='', stderr='').returncode",
+    "detail": "tests\\fresh_training\\test_duplicate_consolidation.py:277: in test_consolidate_execute_only_on_matching_plan_in_temp_copy\n    assert ran.returncode == 0, ran.stdout + ran.stderr\nE   AssertionError: \nE   assert 1 == 0\nE    +  where 1 = CompletedProcess(args=['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', 'D:\\\\MADRLCitytleranflexresd...test-5381\\\\test_consolidate_execute_only_0\\\\evidence\\\\canonicalization_plan.json'], returncode=1, stdout='', stderr='').returncode"
+  },
+  {
+    "class": "tests.fresh_training.test_github_readiness",
+    "name": "test_declared_dependencies_cover_runtime_imports",
+    "outcome": "failure",
+    "message": "AssertionError: imports without a declared distribution: {'psutil': 'uc3m/adapters/algorithms/native_entrypoint.py', 'offpolicy': 'uc3m/adapters/citylearn/policy_inference.py', 'common': 'uc3m/adapters/citylearn/policy_inference.py', 'agent': 'uc3m/adapters/citylearn/policy_inference.py', 'ac_discrete': 'uc3m/adapters/citylearn/policy_inference.py', 'utils': 'uc3m/adapters/citylearn/policy_inference.py', 'tools': 'uc3m/application/pipeline.py'}\nassert not {'ac_discrete': 'uc3m/adapters/citylearn/policy_inference.py', 'agent': 'uc3m/adapters/citylearn/policy_inference.py', 'common': 'uc3m/adapters/citylearn/policy_inference.py', 'offpolicy': 'uc3m/adapters/citylearn/policy_inference.py', ...}",
+    "detail": "tests\\fresh_training\\test_github_readiness.py:63: in test_declared_dependencies_cover_runtime_imports\n    assert not missing, f'imports without a declared distribution: {missing}'\nE   AssertionError: imports without a declared distribution: {'psutil': 'uc3m/adapters/algorithms/native_entrypoint.py', 'offpolicy': 'uc3m/adapters/citylearn/policy_inference.py', 'common': 'uc3m/adapters/citylearn/policy_inference.py', 'agent': 'uc3m/adapters/citylearn/policy_inference.py', 'ac_discrete': 'uc3m/adapters/citylearn/policy_inference.py', 'utils': 'uc3m/adapters/citylearn/policy_inference.py', 'tools': 'uc3m/application/pipeline.py'}\nE   assert not {'ac_discrete': 'uc3m/adapters/citylearn/policy_inference.py', 'agent': 'uc3m/adapters/citylearn/policy_inference.py', 'common': 'uc3m/adapters/citylearn/policy_inference.py', 'offpolicy': 'uc3m/adapters/citylearn/policy_inference.py', ...}"
+  },
+  {
+    "class": "tests.fresh_training.test_repository_layout",
+    "name": "test_real_repository_indexes_have_no_active_broken_reference",
+    "outcome": "failure",
+    "message": "AssertionError: ['README.md:567 -> docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx', 'README.md:568 -> docs/thesis/PLAN_TESIS_MADRL_C...ME.md:61 -> docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md', 'tools/README.md:5 -> docs/AUDITORIA_TOOLS_2026-07-29.md']\nassert ['README.md:5...026-07-29.md'] == []\n  \n  Left contains 4 more items, first extra item: 'README.md:567 -> docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx'\n  Use -v to get more diff",
+    "detail": "tests\\fresh_training\\test_repository_layout.py:146: in test_real_repository_indexes_have_no_active_broken_reference\n    assert broken == [], broken\nE   AssertionError: ['README.md:567 -> docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx', 'README.md:568 -> docs/thesis/PLAN_TESIS_MADRL_C...ME.md:61 -> docs/AUDITORIA_INTEGRAL_PROYECTO_2026-07-29.md', 'tools/README.md:5 -> docs/AUDITORIA_TOOLS_2026-07-29.md']\nE   assert ['README.md:5...026-07-29.md'] == []\nE     \nE     Left contains 4 more items, first extra item: 'README.md:567 -> docs/thesis/INFORME_TESIS_MADRL_V1_COMPLETO.docx'\nE     Use -v to get more diff"
+  },
+  {
+    "class": "tests.ops.test_repository_hygiene",
+    "name": "test_root_contains_only_project_files",
+    "outcome": "failure",
+    "message": "AssertionError: assert {'PT_TAPIA_ZA...uitos_2.docx'} == set()\n  \n  Extra items in the left set:\n  'PT_TAPIA_ZAMBRANO_v6_Iquitos_2.docx'\n  Use -v to get more diff",
+    "detail": "tests\\ops\\test_repository_hygiene.py:61: in test_root_contains_only_project_files\n    assert root_entries - ROOT_ALLOWED == set()\nE   AssertionError: assert {'PT_TAPIA_ZA...uitos_2.docx'} == set()\nE     \nE     Extra items in the left set:\nE     'PT_TAPIA_ZAMBRANO_v6_Iquitos_2.docx'\nE     Use -v to get more diff"
+  },
+  {
+    "class": "tests.unit.evaluation.test_tools_use_results_catalog",
+    "name": "test_inventory_lists_every_file_still_referencing_the_retired_campaign",
+    "outcome": "failure",
+    "message": "AssertionError: assert {'tools/ops/h...inventory.py'} == set()\n  \n  Extra items in the left set:\n  'tools/ops/historical_inventory.py'\n  Use -v to get more diff",
+    "detail": "tests\\unit\\evaluation\\test_tools_use_results_catalog.py:434: in test_inventory_lists_every_file_still_referencing_the_retired_campaign\n    assert referencing - listed == set()\nE   AssertionError: assert {'tools/ops/h...inventory.py'} == set()\nE     \nE     Extra items in the left set:\nE     'tools/ops/historical_inventory.py'\nE     Use -v to get more diff"
+  }
+]

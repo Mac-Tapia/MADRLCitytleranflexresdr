@@ -1,0 +1,60 @@
+[
+  {
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit_code": 0,
+    "stdout": "d55c6c6286a0f66e4909f76fc3f342ae150d703f\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "log",
+      "-4",
+      "--format=%H %ad %s",
+      "--date=iso-strict"
+    ],
+    "exit_code": 0,
+    "stdout": "d55c6c6286a0f66e4909f76fc3f342ae150d703f 2026-11-01T21:00:02-05:00 chore(submodules): bump CityLearn and MicroGrids\n7a73c299ce2bba6bb6f449b208166f0bff66f1e6 2026-11-01T21:00:02-05:00 feat(fresh-training): new campaign without historical results\n0af046b40e9e86ce821e0a4eb4788a9a4848141b 2026-11-01T20:59:50-05:00 chore(layout): short names and retirement of historical artifacts\nd94a4a1096b5d641aaa44ebb25806df9b65d39db 2026-11-01T20:54:56-05:00 feat(training): phases with a per-worker resource budget\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "submodule",
+      "status",
+      "external/MAAC"
+    ],
+    "exit_code": 0,
+    "stdout": " 03e3c08419c960e9b9b6926540011e2f46774c97 external/MAAC (heads/chore/integrar-limpieza-diagnosticos)\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "-C",
+      "external/MAAC",
+      "status",
+      "--porcelain=v1",
+      "--untracked-files=normal"
+    ],
+    "exit_code": 0,
+    "stdout": "?? .git_commit_msg.tmp\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--submodule=short",
+      "--",
+      "external/MAAC"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

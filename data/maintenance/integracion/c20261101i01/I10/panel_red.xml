@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.036" timestamp="2026-11-02T06:21:46.758216-05:00" hostname="MAC"><testcase classname="tests.fresh_training.test_panel_http_protocol" name="test_write_methods_return_405_without_aborting_and_never_change_files" time="0.762"><failure message="assert 501 == 405&#10; +  where 501 = &lt;http.client.HTTPResponse object at 0x000001D361E47730&gt;.status">tests\fresh_training\test_panel_http_protocol.py:19: in test_write_methods_return_405_without_aborting_and_never_change_files
+    assert response.status == 405
+E   assert 501 == 405
+E    +  where 501 = &lt;http.client.HTTPResponse object at 0x000001D361E47730&gt;.status</failure></testcase></testsuite></testsuites>

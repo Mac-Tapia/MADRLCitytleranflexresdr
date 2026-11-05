@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "generated_on": "2026-11-01",
   "purpose": "Classify every tool that referenced the retired campaign (outputs/_drive_madrl, outputs/madrl_v3_20260627_164047, outputs/citylearn_v3_madrl_full_20260615_*) after the owner retired it. No file was deleted.",
   "source_command": "git grep -l -E \"_drive_madrl|full_data|madrl_v3_20260627|citylearn_v3_madrl_full_20260615|thesis_objective_evidence|modular_smoke\" -- tools scripts uc3m",
@@ -7,10 +7,11 @@
   "current_results_layout": "<results_root>/<run_id>/{evidence.json, experiment.json} and <results_root>/<run_id>/<E1|E1_s<seed>>/{data, figures, figures/tables, checkpoints}; resolved by uc3m/application/evaluation/results_catalog.py (argument, then MADRL_RESULTS_ROOT, then outputs/campaign); only status=verified runs count",
   "derived_outputs_convention": "<results_root>/resumen_comparativo/{estadistica/analisis_cuantitativo_completo_50_episodios, multiobjetivo, performance_comparison} (no evidence.json there, so the catalog ignores it)",
   "counts": {
-    "total": 49,
+    "total": 50,
     "adapted": 6,
+    "needs_owner_decision": 16,
     "obsolete_old_campaign": 27,
-    "needs_owner_decision": 16
+    "retirement_guard": 1
   },
   "files": [
     {
@@ -257,6 +258,11 @@
       "path": "scripts/fetch_and_generate_drive_figures.ps1",
       "classification": "obsolete_old_campaign",
       "reason": "Downloads retired Drive artifacts (OAuth) or falls back to the retired outputs/_drive_madrl/full_data mirror to build thesis figures."
+    },
+    {
+      "path": "tools/ops/historical_inventory.py",
+      "classification": "retirement_guard",
+      "reason": "References retired roots to prevent their consumption/regeneration; it is a current read-only guard, not a historical-results consumer and not a deletion candidate."
     }
   ],
   "retired_since_inventory": {

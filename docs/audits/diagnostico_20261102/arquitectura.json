@@ -1,0 +1,121 @@
+{
+  "modulos": 112,
+  "aristas": 245,
+  "puntos_de_entrada": [
+    "uc3m.adapters.algorithms.native_entrypoint",
+    "uc3m.application.evaluation.fresh_delivery",
+    "uc3m.application.pipeline",
+    "uc3m.application.training.cli",
+    "uc3m.application.training.drive_sync",
+    "uc3m.application.training.gate_report",
+    "uc3m.presentation.training_panel"
+  ],
+  "violaciones_de_capa": [
+    {
+      "modulo": "uc3m/application/pipeline.py",
+      "linea": 63,
+      "importa": "uc3m.adapters.citylearn.frozen_adapters",
+      "ambito": "funcion"
+    },
+    {
+      "modulo": "uc3m/application/pipeline.py",
+      "linea": 63,
+      "importa": "uc3m.adapters.citylearn.frozen_adapters.citylearn_frozen_adapters",
+      "ambito": "funcion"
+    },
+    {
+      "modulo": "uc3m/application/training/cli.py",
+      "linea": 115,
+      "importa": "uc3m.adapters.algorithms.native_entrypoint",
+      "ambito": "funcion"
+    },
+    {
+      "modulo": "uc3m/application/training/cli.py",
+      "linea": 115,
+      "importa": "uc3m.adapters.algorithms.native_entrypoint.measure_runtime_resources",
+      "ambito": "funcion"
+    }
+  ],
+  "ciclos": [
+    [
+      "uc3m.adapters.citylearn.frozen_adapters",
+      "uc3m.adapters.citylearn.policy_inference",
+      "uc3m.application.evaluation.analysis_acceptance",
+      "uc3m.application.evaluation.fresh_analysis",
+      "uc3m.application.evaluation.fresh_delivery",
+      "uc3m.application.evaluation.frozen_evaluation",
+      "uc3m.application.evaluation.results_catalog",
+      "uc3m.application.evaluation.test_access",
+      "uc3m.application.pipeline",
+      "uc3m.application.training.attempt_trust",
+      "uc3m.application.training.fresh_acceptance",
+      "uc3m.application.training.fresh_campaign",
+      "uc3m.application.training.fresh_tuning",
+      "uc3m.multicriteria",
+      "uc3m.multicriteria.artifacts",
+      "uc3m.multicriteria.pipeline"
+    ]
+  ],
+  "solo_pruebas_lo_alcanzan": [
+    "uc3m.adapters.algorithms.native",
+    "uc3m.adapters.citylearn.objectives",
+    "uc3m.adapters.citylearn.rbc_baseline",
+    "uc3m.adapters.local_artifacts",
+    "uc3m.algorithms.factory",
+    "uc3m.application",
+    "uc3m.application.artifacts",
+    "uc3m.application.evaluation",
+    "uc3m.application.evaluation.baselines",
+    "uc3m.application.evaluation.model_selection",
+    "uc3m.application.evaluation.scientific_evaluation",
+    "uc3m.application.evaluation.training_report",
+    "uc3m.application.thesis.evidence_registry",
+    "uc3m.application.training.dataset_gate",
+    "uc3m.data",
+    "uc3m.data.adapters.s3",
+    "uc3m.data.contracts",
+    "uc3m.env.bact",
+    "uc3m.env.uc3m_env",
+    "uc3m.env.wrappers",
+    "uc3m.geography.ingest",
+    "uc3m.governance.foundation",
+    "uc3m.kpis.evaluator",
+    "uc3m.multicriteria.reward",
+    "uc3m.ports",
+    "uc3m.ports.simulator",
+    "uc3m.reward",
+    "uc3m.reward.axes",
+    "uc3m.reward.hphi"
+  ],
+  "nadie_lo_alcanza": [
+    "uc3m.application.training.gate_pytest"
+  ],
+  "carga_dinamica": {
+    "uc3m/adapters/algorithms/native.py": [
+      [
+        "import_module",
+        68
+      ]
+    ],
+    "uc3m/adapters/algorithms/native_entrypoint.py": [
+      [
+        "import_module",
+        54
+      ],
+      [
+        "load_native_common",
+        268
+      ]
+    ],
+    "uc3m/adapters/citylearn/policy_inference.py": [
+      [
+        "load_native_common",
+        94
+      ],
+      [
+        "import_module",
+        354
+      ]
+    ]
+  }
+}

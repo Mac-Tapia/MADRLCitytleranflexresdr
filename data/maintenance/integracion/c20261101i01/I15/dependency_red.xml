@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="91.691" timestamp="2026-11-02T06:18:51.121443-05:00" hostname="MAC"><testcase classname="tests.fresh_training.test_dependency_persistence_regressions" name="test_harl_valuenorm_registers_state_after_dtype_conversion_and_roundtrip" time="1.220"><failure message="AssertionError: assert set() == {'debiasing_t...ning_mean_sq'}&#10;  &#10;  Extra items in the right set:&#10;  'running_mean'&#10;  'debiasing_term'&#10;  'running_mean_sq'&#10;  Use -v to get more diff">tests\fresh_training\test_dependency_persistence_regressions.py:26: in test_harl_valuenorm_registers_state_after_dtype_conversion_and_roundtrip
+    assert set(norm.state_dict()) == names
+E   AssertionError: assert set() == {'debiasing_t...ning_mean_sq'}
+E     
+E     Extra items in the right set:
+E     'running_mean'
+E     'debiasing_term'
+E     'running_mean_sq'
+E     Use -v to get more diff</failure></testcase><testcase classname="tests.fresh_training.test_dependency_persistence_regressions" name="test_terminal_settlement_includes_every_real_interval_and_rejects_short_prices[24]" time="1.920"><failure message="IndexError: index 24 is out of bounds for axis 0 with size 24">tests\fresh_training\test_dependency_persistence_regressions.py:55: in test_terminal_settlement_includes_every_real_interval_and_rejects_short_prices
+    costs, district = service._condition_settled_cost_totals(condition_by_building=conditions)
+CityLearn\citylearn\internal\kpi.py:549: in _condition_settled_cost_totals
+    grid_import_price = self._to_scalar(building.pricing.electricity_pricing[t], 0.0)
+E   IndexError: index 24 is out of bounds for axis 0 with size 24</failure></testcase><testcase classname="tests.fresh_training.test_dependency_persistence_regressions" name="test_terminal_settlement_includes_every_real_interval_and_rejects_short_prices[48]" time="0.011"><failure message="IndexError: index 48 is out of bounds for axis 0 with size 48">tests\fresh_training\test_dependency_persistence_regressions.py:55: in test_terminal_settlement_includes_every_real_interval_and_rejects_short_prices
+    costs, district = service._condition_settled_cost_totals(condition_by_building=conditions)
+CityLearn\citylearn\internal\kpi.py:549: in _condition_settled_cost_totals
+    grid_import_price = self._to_scalar(building.pricing.electricity_pricing[t], 0.0)
+E   IndexError: index 48 is out of bounds for axis 0 with size 48</failure></testcase><testcase classname="tests.fresh_training.test_annual_runtime_boundary" name="test_native_runtime_processes_the_last_physical_interval[24]" time="36.841"><failure message="IndexError: index 24 is out of bounds for axis 0 with size 24">tests\fresh_training\test_annual_runtime_boundary.py:29: in test_native_runtime_processes_the_last_physical_interval
+    assert isinstance(evaluate_objectives(core), dict)
+CityLearn\citylearn\v3\objectives.py:536: in evaluate_objectives
+    frame = evaluate_citylearn_v2_kpi_frame(citylearn_env)
+CityLearn\citylearn\madrl_kpis.py:515: in evaluate_citylearn_v2_kpi_frame
+    return env.evaluate_v2()
+CityLearn\citylearn\citylearn.py:1143: in evaluate_v2
+    return self._kpi_service.evaluate_v2(
+CityLearn\citylearn\internal\kpi.py:1384: in evaluate_v2
+    control_cost_totals, district_control_total = self._condition_settled_cost_totals(
+CityLearn\citylearn\internal\kpi.py:549: in _condition_settled_cost_totals
+    grid_import_price = self._to_scalar(building.pricing.electricity_pricing[t], 0.0)
+E   IndexError: index 24 is out of bounds for axis 0 with size 24</failure></testcase><testcase classname="tests.fresh_training.test_annual_runtime_boundary" name="test_native_runtime_processes_the_last_physical_interval[48]" time="41.569"><failure message="IndexError: index 48 is out of bounds for axis 0 with size 48">tests\fresh_training\test_annual_runtime_boundary.py:29: in test_native_runtime_processes_the_last_physical_interval
+    assert isinstance(evaluate_objectives(core), dict)
+CityLearn\citylearn\v3\objectives.py:536: in evaluate_objectives
+    frame = evaluate_citylearn_v2_kpi_frame(citylearn_env)
+CityLearn\citylearn\madrl_kpis.py:515: in evaluate_citylearn_v2_kpi_frame
+    return env.evaluate_v2()
+CityLearn\citylearn\citylearn.py:1143: in evaluate_v2
+    return self._kpi_service.evaluate_v2(
+CityLearn\citylearn\internal\kpi.py:1384: in evaluate_v2
+    control_cost_totals, district_control_total = self._condition_settled_cost_totals(
+CityLearn\citylearn\internal\kpi.py:549: in _condition_settled_cost_totals
+    grid_import_price = self._to_scalar(building.pricing.electricity_pricing[t], 0.0)
+E   IndexError: index 48 is out of bounds for axis 0 with size 48</failure></testcase></testsuite></testsuites>

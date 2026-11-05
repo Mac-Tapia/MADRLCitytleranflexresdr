@@ -1,0 +1,30 @@
+{
+  "files": [
+    {
+      "path": "D:/MADRLCitytleranflexresdr/tests/remediation/conftest.py",
+      "stage_source_sha256": "2910192a40bd5e5203ac15ab87fc80a14be93fd90cc85639e16a0a8575711a7b",
+      "canonical_sha256": "73bd90c31fc17fa590b9affd505a253bade90db5fef152eecfbf142caac469e1"
+    },
+    {
+      "path": "D:/MADRLCitytleranflexresdr/tests/remediation/test_i13_data_security.py",
+      "stage_source_sha256": "9d606d22d52ff841e78460e7bbf8f2fe95ad8d9e421f5932106d1c84c3145976",
+      "canonical_sha256": "0ab3fadad9678873345392d0984fd99ae61597bc46739d2059eec5a67c75ded4"
+    },
+    {
+      "path": "D:/MADRLCitytleranflexresdr/tests/remediation/test_i13_data_sandbox.py",
+      "stage_source_sha256": "f71483813401b08c0f0ad83fc9e89723d9a8f1796fb72dec47965a1b56e3b2b1",
+      "canonical_sha256": "a4a1b50990c9bf19ab261dd2cd2bd114e264c243be1321925945dd76408c27b8"
+    },
+    {
+      "path": "D:/MADRLCitytleranflexresdr/tests/remediation/test_i13_data_contracts.py",
+      "stage_source_sha256": "2f8ccf932932c9c5e3884f36ad5c03ef9be9a83cbe16f1a4e7883ab2b46ea15e",
+      "canonical_sha256": "422d52734aa41498d2cadf09ab6c117d157311a40f63d034127760569f4f539b"
+    },
+    {
+      "path": "D:/MADRLCitytleranflexresdr/tests/remediation/test_i13_stats_contracts.py",
+      "stage_source_sha256": "68df8818f15f6c84feccddc9209f31259fad6294b031cbb11d164aa1feb0f545",
+      "canonical_sha256": "a13101088d511c886542942d318f2b64d554a5bc7b724ad0e5fb364ff65d6e16"
+    }
+  ],
+  "adaptation": "isolation assertion now requires canonical uc3m modules"
+}

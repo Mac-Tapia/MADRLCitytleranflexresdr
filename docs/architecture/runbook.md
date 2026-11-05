@@ -4,6 +4,12 @@ Campaña `fresh_iquitos_20261101_v1`, alias de almacenamiento `iquitos_v1`.
 Plan: `docs/plans/entrenamiento.md`; diseño: `docs/design/entrenamiento.md`.
 Estado vigente: `specs/STATUS.md`.
 
+Remediación actual: [contrato v1 y diferencias con el PT](../decisions/contrato_v1_pt.md), [acta de ejecución](../audits/ejecucion_remediacion_20261101/informe.md). Preparar una campaña nueva congela el contrato de algoritmos, todas las entradas, supervisión y aplicabilidad de KPI; una campaña de un corte anterior no se vuelve válida editando hashes manualmente.
+
+El desbloqueo de test pertenece a los artefactos de la campaña explícita y se genera al revalidar la selección HPO. Se conserva con Drive; un `test_unlock.json` arbitrario junto al dataset no abre el conjunto de prueba. Los KPI finales requieren evidencia física del horizonte completo (8784 pasos de validación en 2024 y 8760 de test en 2025); los diagnósticos cortos no cumplen esa puerta. Las configuraciones HPO que comparten una semilla son candidatos distintos, no réplicas adicionales.
+
+Si el planificador aplica un presupuesto de replay, cada intento conserva `phase_budget.json` con su identidad y la copia íntegra del presupuesto utilizado, escrita antes del aprendiz. La restauración y el reuso de un intento completo no dependen de un resultado final de etapa que aún podría no existir tras un corte. Esta custodia no habilita recortar buffers del contrato canónico: actualmente no declara `phase_buffer` y conserva la capacidad nativa.
+
 ## Reglas que no cambian
 
 - Única vía de lanzamiento: `python -m uc3m.application.training.cli`. Los

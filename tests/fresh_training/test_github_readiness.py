@@ -137,3 +137,8 @@ def test_local_training_guard_remains_strict(tmp_path):
     assert not verify_ci_checkout(REPO, 'someone/fork', head).ok
     assert not verify_ci_checkout(REPO, 'Mac-Tapia/MADRLCitytleranflexresdr', '0'*40).ok
     assert not verify_ci_checkout(tmp_path, 'Mac-Tapia/MADRLCitytleranflexresdr', head).ok
+
+
+def test_ci_pins_a_runner_image_because_a_moving_one_lost_the_project_python():
+    jobs = yaml.safe_load((REPO/'.github/workflows/ci.yml').read_text(encoding='utf-8'))['jobs']
+    assert jobs and all(job['runs-on'] == 'ubuntu-24.04' for job in jobs.values())

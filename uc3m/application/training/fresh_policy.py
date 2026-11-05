@@ -128,7 +128,8 @@ def _is_link(path: Path) -> bool:
 
 
 def _under(relative: str, prefix: str) -> bool:
-    prefix = prefix.strip('/')
+    # Both sides lose their slashes: stripping only the prefix broke absolute POSIX paths.
+    relative, prefix = relative.strip('/'), prefix.strip('/')
     return relative == prefix or relative.startswith(prefix + '/')
 
 

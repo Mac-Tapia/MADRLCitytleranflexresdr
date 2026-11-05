@@ -4,6 +4,7 @@ Every tree is new under tmp_path and every forbidden input is a sentinel file;
 no historical data is loaded.
 """
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -52,12 +53,29 @@ def test_rejects_prior_run_input(project):
         fp.assert_campaign_input(ok, 'not_a_role', spec, project_root=project)
 
 
+@pytest.mark.parametrize('path, prefix, expected', [
+    ('/content/repo/data/x.json', '/content/repo/data', True), ('/content/repo/data', '/content/repo/data', True),
+    ('/content/repo/database/x.json', '/content/repo/data', False), ('/other/data/x.json', '/content/repo/data', False),
+    ('D:/repo/data/x.json', 'D:/repo/data', True), ('D:/repo/database', 'D:/repo/data', False),
+    ('outputs/old/x.csv', 'outputs/old/', True), ('outputs/older/x.csv', 'outputs/old', False)])
+def test_containment_holds_for_absolute_paths_of_every_platform(path, prefix, expected):
+    # Stripping only the prefix's leading slash rejected every valid input on Linux, where Colab trains.
+    assert fp._under(path, prefix) is expected
+
+
+def _directory_link(target, link):
+    if os.name == 'nt':
+        import _winapi
+        _winapi.CreateJunction(str(target), str(link))
+    else:
+        os.symlink(target, link, target_is_directory=True)
+
+
 def test_rejects_symlink_escape(project, tmp_path):
-    import _winapi
     spec = fresh_spec()
     roots = fp.create_campaign_roots(spec, project)
     outside = _write(tmp_path/'elsewhere/schema.json', b'{}')
-    _winapi.CreateJunction(str(outside.parent), str(roots.dataset/'splits'))
+    _directory_link(outside.parent, roots.dataset/'splits')
     with pytest.raises(fp.ForeignCampaignInput) as raised:
         fp.assert_campaign_input(roots.dataset/'splits/schema.json', 'split', spec, project_root=project)
     assert 'link' in str(raised.value)

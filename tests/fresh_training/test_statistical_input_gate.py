@@ -23,7 +23,7 @@ def _rows(value=lambda algorithm, scenario, seed: 0.1*seed % 1 + 0.01*PROTOCOL.a
     for algorithm in PROTOCOL.algorithms:
         for scenario, axis in PROTOCOL.endpoints:
             for seed in PROTOCOL.seeds:
-                rows.append({'campaign_id': 'fresh_iquitos_20261101_v1', 'algorithm': algorithm,
+                rows.append({'campaign_id': 'fresh_iquitos_20261105_v5', 'algorithm': algorithm,
                              'scenario': scenario, 'seed': seed, 'split': PROTOCOL.split, 'endpoint': axis,
                              'value': value(algorithm, scenario, seed), 'kpi_report_sha256': SHA})
     return rows

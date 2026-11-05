@@ -17,7 +17,7 @@ from uc3m.application.evaluation.model_selection import select_best_model
 from uc3m.application.thesis.evidence_registry import EvidenceRegistry
 from uc3m.multicriteria.stats_tests import decide_oe_winner, run_oe_battery
 
-CAMPAIGN = 'fresh_iquitos_20261101_v1'
+CAMPAIGN = 'fresh_iquitos_20261105_v5'
 
 
 def _sha(path):

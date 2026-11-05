@@ -19,7 +19,7 @@ import pytest
 
 from uc3m.application.training import fresh_acceptance as fa
 
-CAMPAIGN = 'fresh_iquitos_20261101_v1'
+CAMPAIGN = 'fresh_iquitos_20261105_v5'
 TREATMENT = 'confirm_MASAC_E1_s1001'
 MASAC_OWNERS = ('masac_policy', 'masac_critic_q1', 'masac_critic_q2', 'masac_alpha')
 

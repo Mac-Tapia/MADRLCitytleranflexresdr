@@ -15,7 +15,7 @@ from uc3m.application.training.fresh_tuning import (SelectionBlocked, build_weig
                                                     select_hyperparameters, validation_row)
 
 REPO = Path(__file__).resolve().parents[2]
-CAMPAIGN_ID = 'fresh_iquitos_20261101_v1'
+CAMPAIGN_ID = 'fresh_iquitos_20261105_v5'
 
 
 @pytest.fixture(scope='module')

@@ -84,3 +84,11 @@ Registro detallado de decisiones (`Ruling:`) de `-ff`: `.superpowers/sdd/remedia
 - **Dependencias:** `gymnasium` y `pettingzoo` se declaran en los extras `train` y `all`. `uv.lock` se regeneró porque fijaba `numpy` 2.x contra `numpy<2.0` y no tenía `pypdf`. Ahora fija `numpy` 1.23.5, como `CityLearn`. `gym` queda fuera del bloqueo a propósito: `uv` no puede construir `gym==0.20.0`, que siguen fijando `requirements.txt` y el notebook (`[tool.uv]` en `pyproject.toml`).
 - **Cierre del módulo 1 (2026-11-05):** puerta `-Scope Repository` aprobada sobre `0e7657bc`, 1 577 pruebas en 1 h 45 min (`data/maintenance/gates/Repository_profile_20261105T155129670Z.json`). El tiempo depende de la carga del equipo: 61 min con menos procesos concurrentes y más del doble compartiendo memoria con otro proyecto. Siguiente: módulo 2.
 - **Publicación:** se excluyen `data/maintenance/integracion/*/D01/discarded/` (facturas crudas; el repositorio es público) y `external/MAAC/.git_commit_msg.tmp`.
+
+## Entrada propia de la sesión `-e0`: módulo 2, 2026-11-05
+
+- **Hecho:** SPEC-014. `iquitos_v5` (`fresh_iquitos_20261105_v5`) es la campaña activa en `configs/experiments/iquitos.yaml`; `iquitos_v1` a `iquitos_v4` no se tocaron.
+- **Efecto para otras sesiones:** las pruebas leen `data/campaigns/iquitos_v5`, que no se versiona salvo sus JSON. Una copia sin ese dataset debe reconstruirlo con el runbook (unos 50 min con red) y `split_campaign.py`.
+- **Decisión que acota otras del propietario:** `pv.max_pv_to_load_ratio = 1.0` (D-M2-1). El área de 0,63 y el crédito de exportación 1:1 siguen; subir el valor relaja el límite.
+- **Defecto de Linux corregido:** `fresh_policy._under` rechazaba toda entrada de campaña en rutas absolutas POSIX. Afectaba a Colab.
+- **Pendiente:** entrenar sin B01 (fuga de 2023), D04 y los supuestos económicos sin fuente.

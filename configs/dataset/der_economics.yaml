@@ -32,6 +32,15 @@ pv:
     origin: user_decision
     source: user decision 2026-11-01 (campaign v3) "usa las areas existentes"; factor of the base generator (fix_solar_pvlib.AREA_UTIL_FACTOR = 0.70 roof use x 0.90 packing)
     reason: area techada usada como techo disponible; Area_Techada_m2 is covered built area, not a roof survey
+  max_pv_to_load_ratio:
+    value: 1.0
+    status: design_rule
+    origin: delegated_recommendation
+    source: SPEC-014 D-M2-1, chosen under the owner's delegation of 2026-11-04; project criterion, no norm behind it
+    reason: >-
+      With export credited 1:1 and only the area bound, the LP fills the roof and a building becomes an exporting
+      plant (B14 produced 66 times its load in iquitos_v4), a scheme that does not exist in Iquitos today. The area
+      fraction and the export credit above stay as the owner decided. Raise this value to relax the limit.
 bess:
   capex_usd_per_wh:
     value: 0.40

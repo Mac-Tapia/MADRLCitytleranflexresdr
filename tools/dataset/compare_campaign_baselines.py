@@ -8,6 +8,7 @@ evidence for the owner's decision; it does not accept or retire a dataset.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import hashlib
 import json
 import math
@@ -19,6 +20,8 @@ SPLITS = ('train_2023', 'validation_2024')
 POLICIES = ('no_storage_reference', 'rbc')
 SCENARIO_CATALOG = REPO/'configs/scenarios.yaml'
 BILL_TARIFFS = REPO/'data/tariffs/osinergmin/bill_tariffs.csv'
+# B01 2023 is a declared backcast from 2024; the dataset's limitations require a sensitivity without it.
+MODELED_BUILDINGS = ('Building_1',)
 
 
 def hourly_cost_co2(trace):
@@ -46,6 +49,16 @@ def pearson(x, y):
 def load_rates():
     from uc3m.application.evaluation.bill_cost import load_bill_tariffs
     return load_bill_tariffs(BILL_TARIFFS)
+
+
+def without_buildings(trace, names):
+    """The same episode summarized without some buildings: the policy still ran on all of them."""
+    unknown = set(names) - set(trace.building_ids)
+    if unknown:
+        raise ValueError(f'buildings not in the trace: {sorted(unknown)}')
+    kept = tuple(b for b in trace.building_ids if b not in names)
+    return dataclasses.replace(trace, building_ids=kept,
+                               series_by_building={b: trace.series_by_building[b] for b in kept})
 
 
 def summarize_trace(trace) -> dict:
@@ -99,7 +112,7 @@ def _run_campaign(name: str, split: str, seed: int, log) -> dict:
     root = REPO/'data/campaigns'/name
     split_dir = root/'splits'/split
     classes = {'no_storage_reference': pi.NoStorageReferencePolicy, 'rbc': pi.RbcPolicy}
-    runs = {}
+    runs, measured_only = {}, {}
     for policy_name in POLICIES:
         started = time.time()
         # Without the catalog CityLearn applies its legacy amplified tariff instead of the declared policy.
@@ -111,10 +124,14 @@ def _run_campaign(name: str, split: str, seed: int, log) -> dict:
                              'split_sha256': run.contract['split_sha256'],
                              'exogenous_hash': run.trace.exogenous_hash,
                              'seconds': time.time() - started}
+        measured_only[policy_name] = summarize_trace(without_buildings(run.trace, MODELED_BUILDINGS))
         log(f'{name} {policy_name}: {runs[policy_name]}')
     manifest = (root/'split_manifest.json').read_bytes()
     return {'split_manifest_sha256': hashlib.sha256(manifest).hexdigest(), 'runs': runs,
-            'rbc_vs_no_storage': paired_delta(runs['rbc'], runs['no_storage_reference'])}
+            'rbc_vs_no_storage': paired_delta(runs['rbc'], runs['no_storage_reference']),
+            'sensitivity_without_modeled': {
+                'excluded': list(MODELED_BUILDINGS), 'runs': measured_only,
+                'rbc_vs_no_storage': paired_delta(measured_only['rbc'], measured_only['no_storage_reference'])}}
 
 
 def main(argv=None) -> int:

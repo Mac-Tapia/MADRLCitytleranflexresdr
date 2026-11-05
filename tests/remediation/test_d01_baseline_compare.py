@@ -107,3 +107,18 @@ def test_test_split_stays_sealed(tmp_path):
                    "--output", str(tmp_path / "out.json")])
     assert error.value.code == 2
     assert not (tmp_path / "out.json").exists()
+
+
+def test_the_sensitivity_summary_leaves_out_the_modeled_building():
+    trace = _trace((1.0, 1.0, 1.0), (2.0, 2.0, 2.0))
+    assert tool.MODELED_BUILDINGS == ('Building_1',)
+    reduced = tool.without_buildings(trace, tool.MODELED_BUILDINGS)
+    assert reduced.building_ids == ('Building_2',) and set(reduced.series_by_building) == {'Building_2'}
+    assert reduced.exogenous_hash == trace.exogenous_hash
+    assert tool.summarize_trace(reduced)['net_mwh'] == pytest.approx(6.0/1000.0)
+    assert tool.summarize_trace(trace)['net_mwh'] == pytest.approx(9.0/1000.0)
+
+
+def test_the_sensitivity_refuses_an_unknown_building():
+    with pytest.raises(ValueError):
+        tool.without_buildings(_trace((1.0, 1.0, 1.0), (1.0, 1.0, 1.0)), ('Building_99',))

@@ -52,6 +52,8 @@ DEFAULT_SOLVER = 'appsi_highs'
 ECONOMICS_PATH = ROOT/'configs/dataset/der_economics.yaml'
 HOURS_2023 = 8760
 MIN_BESS_KWH = 1.0  # below this the LP result is reported as no battery
+# kWp is bounded with a reference array's yield; the real array selects its own inverter.
+PV_RATIO_MARGIN = 0.02
 
 
 def load_economics(path: Path = ECONOMICS_PATH) -> dict:
@@ -80,6 +82,27 @@ def roof_bound_kwp(area_m2: float, module_params: dict, usable_fraction: float =
     """Upper bound: modules packed on area x usable_fraction (covered built area unless a roof survey exists)."""
     n = int(float(area_m2)*float(usable_fraction)//float(module_params['Area']))
     return n*float(module_params['Vmpo']*module_params['Impo']/1000.0)
+
+
+def load_bound_kwp(annual_load_kwh: float, pv_kwh_per_kwp, max_ratio: float) -> float:
+    """Upper bound: the capacity whose annual output is max_ratio of the building's annual load (SPEC-014)."""
+    annual_per_kwp = float(np.sum(pv_kwh_per_kwp))
+    if annual_per_kwp <= 0 or float(max_ratio) <= 0:
+        raise ValueError('the load bound needs a positive PV yield and a positive ratio')
+    return float(annual_load_kwh)*float(max_ratio)/annual_per_kwp
+
+
+def binding_pv_bound(pv_kwp_lp: float, roof_kwp: float, load_kwp: float):
+    """Which bound limited the LP: 'area', 'load' or None. A tie is reported as the physical one."""
+    if pv_kwp_lp < min(roof_kwp, load_kwp) - 1e-3:
+        return None
+    return 'area' if roof_kwp <= load_kwp else 'load'
+
+
+def pv_to_load_gate(rows: Mapping, max_ratio: float) -> bool:
+    """Every building at or under the limit. Missing values fail: an unmeasured ratio is not a pass."""
+    ratios = [row.get('pv_to_load_ratio_2023') for row in rows.values()]
+    return bool(ratios) and all(r is not None and r <= float(max_ratio)*(1.0 + PV_RATIO_MARGIN) for r in ratios)
 
 
 # ── MicroGrids LP ────────────────────────────────────────────────────────────
@@ -332,5 +355,5 @@ def write_json(path: Path, payload) -> None:
     Path(path).write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str), encoding='utf-8')
 
 
-__all__ = ['load_economics', 'pv_ac_w_per_kw', 'roof_bound_kwp', 'solve_microgrids', 'prosumpy_check',
-           'round_pv', 'round_bess', 'sensitivity', 'write_json']
+__all__ = ['load_economics', 'pv_ac_w_per_kw', 'roof_bound_kwp', 'load_bound_kwp', 'binding_pv_bound',
+           'pv_to_load_gate', 'solve_microgrids', 'prosumpy_check', 'round_pv', 'round_bess', 'sensitivity', 'write_json']

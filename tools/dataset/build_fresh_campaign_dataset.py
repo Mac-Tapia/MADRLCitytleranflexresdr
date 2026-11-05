@@ -700,26 +700,29 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
     base, scaled = {}, {s: {} for s in SENSITIVITY_SCALES}
     rows = {}
     weather_full = pd.concat([weather_frames[y] for y in YEARS])
+    max_ratio = float(economics['pv']['max_pv_to_load_ratio']['value'])
     for building in request.buildings:
         load = as_billed_load(out, building, schema, t_out)['total'][:8760]
         roof = sd.roof_bound_kwp(inventory[building].area_techada_m2, module, usable)
+        load_bound = sd.load_bound_kwp(load.sum(), per_kwp[:8760], max_ratio)
+        pv_bound = min(roof, load_bound)
         energy = signals[building]['energy_usd_kwh'][:8760]
         tariff = {'energy_price': energy, 'period_month': index_2023.month.to_numpy(), 'peak_period': peak_flag,
                   'demand_charge': {m: signals[building]['demand_usd_kw_month'][(DESIGN_YEAR, m)] for m in range(1, 13)}}
         price = float(energy.mean())
-        lp = sd.solve_microgrids(load, per_kwp, price, roof, economics, workroot/f'B{building:02d}', tariff=tariff)
+        lp = sd.solve_microgrids(load, per_kwp, price, pv_bound, economics, workroot/f'B{building:02d}', tariff=tariff)
         if lp['termination_condition'] != 'optimal':
             raise RuntimeError(f'B{building:02d}: MicroGrids LP {lp["termination_condition"]}')
         base[building] = lp
         for scale in SENSITIVITY_SCALES:
-            scaled[scale][building] = sd.solve_microgrids(load, per_kwp, price, roof, economics,
+            scaled[scale][building] = sd.solve_microgrids(load, per_kwp, price, pv_bound, economics,
                                                           workroot/f'B{building:02d}_capex{scale:.2f}', capex_scale=scale,
                                                           tariff=tariff)
         # The demand charge is not verified against the bills (audit/tariff_bill_validation.json):
         # the same LP without it shows how much of the BESS/PV decision depends on it.
-        no_demand = sd.solve_microgrids(load, per_kwp, price, roof, economics, workroot/f'B{building:02d}_nodemand',
+        no_demand = sd.solve_microgrids(load, per_kwp, price, pv_bound, economics, workroot/f'B{building:02d}_nodemand',
                                         tariff={**tariff, 'demand_charge': {m: 0.0 for m in range(1, 13)}})
-        n_modules, kwp = sd.round_pv(lp['pv_kwp'], module, roof)
+        n_modules, kwp = sd.round_pv(lp['pv_kwp'], module, pv_bound)
         if n_modules:
             solar = sd.pv_ac_w_per_kw(weather_full, n_modules, module).to_numpy(float)
         else:
@@ -766,6 +769,8 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
             'roof_bound_kwp': roof, 'usable_area_fraction': usable,
             'roof_bound_basis': f'Area_Techada_m2 x {usable} (user decision: covered area used as available roof)',
             'roof_bound_binding': lp['pv_kwp'] >= roof - 1e-3,
+            'load_bound_kwp': load_bound, 'max_pv_to_load_ratio': max_ratio,
+            'binding_pv_bound': sd.binding_pv_bound(lp['pv_kwp'], roof, load_bound),
             'pv_kwp_lp': lp['pv_kwp'], 'pv_modules': n_modules, 'pv_kwp': kwp, 'module_kwp': module_kwp,
             'bess_kwh_lp': lp['bess_kwh'], 'bess_kwh': bess,
             'bess_kw': round(bess/float(bess_cfg['max_discharge_time_h']['value']), 3) if bess else 0.0,
@@ -780,7 +785,7 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
             'prosumpy': check}
         if rule_size:
             rows[str(building)]['bess_rule'] = rule_size
-        log(f'B{building:02d}: PV {kwp:.1f} kWp (bound {roof:.0f}), BESS {bess:.1f} kWh, '
+        log(f'B{building:02d}: PV {kwp:.1f} kWp (area {roof:.0f}, load {load_bound:.0f}), BESS {bess:.1f} kWh, '
             f'PV/load {rows[str(building)]["pv_to_load_ratio_2023"]:.2f}')
     _write_json(out/'schema.json', schema)
     threshold = float(economics['sensitivity']['material_change_threshold_relative'])
@@ -1231,7 +1236,8 @@ def main(argv=None):
                                    generation_seed=0, currency='USD', time_zone=TZ, parameters={
                                        'seed_policy': 'fixed per building id in the generators',
                                        'pv_capacity': 'MicroGrids LP (export credited, no curtailment) on pvlib '
-                                                      'SAPM AC per kWp, bound = covered built area x 0.63',
+                                                      'SAPM AC per kWp, bound = min(covered built area x 0.63, '
+                                                      'capacity at the declared PV/load ratio)',
                                        'bess': bess_parameter,
                                        'ev': 'B01 pilot only (configs/dataset/ev_pilot.yaml)',
                                        'carbon': 'constant (configs/dataset/grid_emissions.yaml)',
@@ -1262,6 +1268,9 @@ def main(argv=None):
              and len(schema['buildings']['Building_1'].get('chargers', {})) == 2,
              'tariff_history_complete': len(coverage) == 36,
              'tariff_crosscheck': tc.tariff_crosscheck_gate(busbar_report),
+             'pv_to_load_bounded': sd.pv_to_load_gate(design['der']['buildings'],
+                                                      design['economics']['pv']['max_pv_to_load_ratio']['value']),
+             'csv_integrity': json.loads((audit_dir/'csv_integrity_manifest.json').read_text(encoding='utf-8'))['status'] == 'ok',
              'bess_verified': shaving['status'] in ('no_bess_sized', 'checked')}
     if args.bess_design_rule:
         gates['bess_rule_shaves_peak'] = (
@@ -1299,7 +1308,8 @@ LIMITATIONS = [
     'Carbon intensity is one constant: IPCC 2006 gas/diesel oil factor over an assumed 0.40 plant efficiency.',
     'PV and BESS are a declared design scenario sized by the MicroGrids LP with assumed economics and the '
     'official tariff; export is credited at the energy charge (net billing, not available in Iquitos today) and '
-    'nothing is curtailed; the PV bound is the covered built area x 0.63 (user decision), not a roof survey.',
+    'nothing is curtailed; the PV bound is the lower of the covered built area x 0.63 (user decision), not a roof '
+    'survey, and the capacity at PV/load = 1.0 (SPEC-014, a project criterion with no norm behind it).',
     'EV: only a declared 2-motorcycle pilot at B01; all other buildings have no EV and no charger.',
     'Controlled machine energy, cooling design COP and schedules are assumptions carried from the earlier tools.',
 ]

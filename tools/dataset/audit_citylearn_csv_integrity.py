@@ -65,6 +65,9 @@ PRICING_COLUMNS = [
 ]
 WEATHER_COLUMNS = 16
 VALID_CHARGER_STATES = {1, 2, 3}
+# Departure time is a countdown in hours (dimension_ev_chargers). A vehicle parked from Friday to Monday
+# legitimately starts near 61; more than a week means the generator lost a departure.
+MAX_DEPARTURE_COUNTDOWN_H = 168.0
 
 
 def _project_path(path: Path | str) -> Path:
@@ -175,7 +178,7 @@ def _check_charger(path: Path, issues: list[str]) -> dict[str, Any]:
             issues.append(f"{_rel(path)} contiene estados EV invalidos: {invalid}")
 
     checks = {
-        "electric_vehicle_departure_time": (-1.0, 24.0),
+        "electric_vehicle_departure_time": (-1.0, MAX_DEPARTURE_COUNTDOWN_H),
         "electric_vehicle_estimated_arrival_time": (-1.0, 24.0),
         "electric_vehicle_required_soc_departure": (-0.1, 100.0),
         "electric_vehicle_estimated_soc_arrival": (-0.1, 100.0),
@@ -282,7 +285,7 @@ def _check_support(path: Path, expected_columns: list[str] | int, issues: list[s
         maximum = float(numeric.max().max())
         entry["numeric_min"] = minimum
         entry["numeric_max"] = maximum
-        if minimum < 0.0 and path.name in {"pricing.csv", "carbon_intensity.csv"}:
+        if minimum < 0.0 and (path.name == "carbon_intensity.csv" or path.name.startswith("pricing")):
             issues.append(f"{_rel(path)} tiene valores negativos")
     return entry
 
@@ -309,10 +312,12 @@ def audit(dataset_dir: Path) -> dict[str, Any]:
     buildings = _schema_buildings(schema)
     files: dict[str, Any] = {}
 
+    # Campaigns declare one tariff per building; only schemas that declare none use the shared file.
+    pricing_files = sorted({str(b["pricing"]) for b in buildings.values() if b.get("pricing")}) or ["pricing.csv"]
     for name, expected in {
         "weather.csv": WEATHER_COLUMNS,
         "carbon_intensity.csv": ["carbon_intensity"],
-        "pricing.csv": PRICING_COLUMNS,
+        **{pricing: PRICING_COLUMNS for pricing in pricing_files},
     }.items():
         path = dataset_dir / name
         if not path.exists():

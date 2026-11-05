@@ -1,6 +1,6 @@
 # Runbook de la campaña nueva (sin resultados históricos)
 
-Campaña `fresh_iquitos_20261101_v1`, alias de almacenamiento `iquitos_v1`.
+Campaña `fresh_iquitos_20261105_v5`, alias de almacenamiento `iquitos_v5`.
 Plan: `docs/plans/entrenamiento.md`; diseño: `docs/design/entrenamiento.md`.
 Estado vigente: `specs/STATUS.md`.
 
@@ -28,10 +28,10 @@ Si el planificador aplica un presupuesto de replay, cada intento conserva `phase
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/verify_project_context.ps1
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/build_fresh_campaign_dataset.py --campaign-id fresh_iquitos_20261101_v1 --storage-alias iquitos_v1
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/build_fresh_campaign_dataset.py --campaign-id fresh_iquitos_20261105_v5 --storage-alias iquitos_v5 --bess-design-rule
 ```
 
-Escribe `data/campaigns/iquitos_v1/{raw,dataset,audit}`, `provenance.json`,
+Escribe `data/campaigns/iquitos_v5/{raw,dataset,audit}`, `provenance.json`,
 `quality_flags.csv`, `dataset_build_manifest.json` y `dataset_acceptance.json`.
 Solo continuar si `dataset_verified=true`. Si la raíz existe, el constructor se
 niega: un intento fallido se mueve a `data/maintenance/dataset_builds/failed/`.
@@ -39,7 +39,7 @@ niega: un intento fallido se mueve a `data/maintenance/dataset_builds/failed/`.
 ## 2. Splits y normalizador congelados (T3)
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/split_campaign.py --storage-alias iquitos_v1
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/split_campaign.py --storage-alias iquitos_v5
 ```
 
 Escribe `splits/{train_2023,validation_2024,test_2025}`, `split_manifest.json`
@@ -52,7 +52,7 @@ Escribe `splits/{train_2023,validation_2024,test_2025}`, `split_manifest.json`
 .\.venv39-citylearn-v3\Scripts\python.exe -B -m uc3m.application.training.cli --config configs/experiments/iquitos.yaml --stage prepare
 ```
 
-Crea `outputs/campaigns/iquitos_v1/campaign_manifest.json` y
+Crea `outputs/campaigns/iquitos_v5/campaign_manifest.json` y
 `stages/{pilot,hpo,confirm,sensitivity}.json`. Presupuesto: piloto 4
 tratamientos × 3 episodios de 8760 pasos / 105 120 pasos (mide RAM, VRAM y tiempo
 reales; no cuenta como confirmación); HPO 288 / 25 228 800 (capacidad nativa sin

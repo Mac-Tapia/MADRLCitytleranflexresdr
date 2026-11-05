@@ -125,7 +125,7 @@ def test_no_active_broken_reference_after_move(tmp_path):
 def test_retired_mentions_and_runtime_paths_are_not_broken_links(tmp_path):
     root, registry = make_tree(tmp_path, {
         'README.md': ('El script `scripts/old_launcher.ps1` fue retirado.\n'
-                      'Escribe `outputs/campaigns/iquitos_v1/campaign_manifest.json`.\n'
+                      'Escribe `outputs/campaigns/iquitos_v5/campaign_manifest.json`.\n'
                       'Usa `scripts/missing_tool.py`.\n'),
         'scripts/keep.ps1': 'Write-Output ok\n',
     }, {'checked_indexes': ['README.md'], 'required_paths_by_phase': {'A': ['README.md']},

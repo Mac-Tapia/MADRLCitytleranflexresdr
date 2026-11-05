@@ -1,8 +1,8 @@
 """Delivery of a fresh campaign: its own manifests, acceptance and statistics, with hashes (T11).
 
-    python tools/eval/report_fresh_campaign.py --manifest outputs/campaigns/iquitos_v1/campaign_manifest.json \
-        --destination outputs/campaigns/iquitos_v1/delivery --gate-report data/maintenance/gates/fresh_profile_X.json \
-        [--seed-rows outputs/campaigns/iquitos_v1/reports/seed_rows.json]
+    python tools/eval/report_fresh_campaign.py --manifest outputs/campaigns/iquitos_v5/campaign_manifest.json \
+        --destination outputs/campaigns/iquitos_v5/delivery --gate-report data/maintenance/gates/fresh_profile_X.json \
+        [--seed-rows outputs/campaigns/iquitos_v5/reports/seed_rows.json]
 
 Nothing is looked up by name or date: every input is an explicit path of the
 campaign. A file that names a retired historical root stops the delivery. The

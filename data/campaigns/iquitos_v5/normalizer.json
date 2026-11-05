@@ -1,0 +1,6243 @@
+{
+  "schema_version": 1,
+  "fit_scope": "train_2023",
+  "train_split_sha256": "3dedf79d94c9e3f26dd596a93d2e1988b6eae5397b522affe31aceff8c3ce964",
+  "bounds": {
+    "Building_1": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.8833179473876953,
+        50.34939193725586
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.1795330047607422
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        282.2496643066406,
+        948.5942993164062
+      ],
+      "solar_generation": [
+        0.0,
+        1402.1628191905431
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -1142.5563448183555,
+        1236.6833896120556
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "electric_vehicle_charger_charger_1_1_connected_state": [
+        0.0,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_1_departure_time": [
+        -1.0,
+        24.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_1_required_soc_departure": [
+        -0.1,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_1_soc": [
+        -0.1,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_1_battery_capacity": [
+        -1.0,
+        100.0
+      ],
+      "electric_vehicle_charger_charger_1_1_incoming_state": [
+        0.0,
+        1.0
+      ],
+      "incoming_electric_vehicle_at_charger_charger_1_1_estimated_arrival_time": [
+        -1.0,
+        24.0
+      ],
+      "electric_vehicle_charger_charger_1_2_connected_state": [
+        0.0,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_2_departure_time": [
+        -1.0,
+        24.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_2_required_soc_departure": [
+        -0.1,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_2_soc": [
+        -0.1,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_2_battery_capacity": [
+        -1.0,
+        100.0
+      ],
+      "electric_vehicle_charger_charger_1_2_incoming_state": [
+        0.0,
+        1.0
+      ],
+      "incoming_electric_vehicle_at_charger_charger_1_2_estimated_arrival_time": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_1_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_1_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -960.4563448183554,
+        1054.5833896120557
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -960.4563448183554,
+        1054.5833896120557
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        1153.122314453125
+      ]
+    },
+    "Building_2": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.902801513671875,
+        50.2254753112793
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9330459833145142
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        6.810951232910156
+      ],
+      "solar_generation": [
+        0.0,
+        29.887464539531255
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -38.78746453953126,
+        45.000701904296875
+      ],
+      "electricity_pricing": [
+        0.09331664443016052,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_1": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_2": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_3": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_2_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_2_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -29.88746453953126,
+        36.100701904296876
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -29.88746453953126,
+        36.100701904296876
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        36.10070037841797
+      ]
+    },
+    "Building_3": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        2.992328643798828,
+        45.2110595703125
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.2110589742660522
+      ],
+      "indoor_relative_humidity": [
+        45.80915832519531,
+        82.5
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        503.4382805770313
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -558.2382805770313,
+        297.8262634277344
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_3_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_3_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -503.4382805770313,
+        243.02626342773436
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -503.4382805770313,
+        243.02626342773436
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        243.02626037597656
+      ]
+    },
+    "Building_4": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        1.7829208374023438,
+        44.023101806640625
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.0197190046310425
+      ],
+      "indoor_relative_humidity": [
+        44.28709411621094,
+        97.9000015258789
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        240.94253857939455
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -323.34253857939456,
+        521.2910766601562
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_4_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_4_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -240.94253857939455,
+        438.8910766601563
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -240.94253857939455,
+        438.8910766601563
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        438.8910827636719
+      ]
+    },
+    "Building_5": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        1.9419116973876953,
+        44.07019233703613
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.0701930522918701
+      ],
+      "indoor_relative_humidity": [
+        44.14799880981445,
+        81.80000305175781
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        115.04558696153907
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -159.00558696153908,
+        482.3610534667969
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_5_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_5_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -115.04558696153907,
+        438.4010534667969
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -115.04558696153907,
+        438.4010534667969
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        438.40106201171875
+      ]
+    },
+    "Building_6": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        1.8894424438476562,
+        44.1008358001709
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9918299913406372
+      ],
+      "indoor_relative_humidity": [
+        44.28709411621094,
+        97.9000015258789
+      ],
+      "non_shiftable_load": [
+        0.0,
+        385.19775390625
+      ],
+      "solar_generation": [
+        0.0,
+        2055.7488674989686
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -2795.8888674989685,
+        4187.306640625
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_6_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_6_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -2055.7488674989686,
+        3447.166640625
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -2055.7488674989686,
+        3447.166640625
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        3473.00732421875
+      ]
+    },
+    "Building_7": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.34332847595214844,
+        50.26905822753906
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9729840159416199
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        32.51694869995117
+      ],
+      "solar_generation": [
+        0.0,
+        110.47954026867187
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -126.03954026867187,
+        112.12966918945312
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_7_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_7_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -110.47954026867187,
+        96.56966918945312
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -110.47954026867187,
+        96.56966918945312
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        104.6875
+      ]
+    },
+    "Building_8": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.036884307861328125,
+        50.5864143371582
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9433789849281311
+      ],
+      "indoor_relative_humidity": [
+        46.2056999206543,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        8.117177963256836
+      ],
+      "solar_generation": [
+        0.0,
+        57.381453246937504
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -62.4214532469375,
+        54.372535705566406
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_8_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_8_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -57.381453246937504,
+        49.33253570556641
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -57.381453246937504,
+        49.33253570556641
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        49.33253479003906
+      ]
+    },
+    "Building_9": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        3.0052947998046875,
+        45.203203201293945
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.2032040357589722
+      ],
+      "indoor_relative_humidity": [
+        47.87537384033203,
+        83.375
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        29.887464539531255
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -32.06746453953126,
+        13.14836311340332
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_9_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_9_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -29.88746453953126,
+        10.96836311340332
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -29.88746453953126,
+        10.96836311340332
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        10.968362808227539
+      ]
+    },
+    "Building_10": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.8934288024902344,
+        50.61682319641113
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9179440140724182
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        4.30338716506958,
+        188.6281280517578
+      ],
+      "solar_generation": [
+        0.0,
+        723.3255488232423
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -694.7718514660646,
+        535.2908487468871
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_10_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_10_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -661.0318514660646,
+        501.55084874688714
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -661.0318514660646,
+        501.55084874688714
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        527.2755126953125
+      ]
+    },
+    "Building_11": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        1.0155277252197266,
+        43.15001678466797
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.1500170230865479
+      ],
+      "indoor_relative_humidity": [
+        44.29750061035156,
+        77.38999938964844
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        560.254895726625
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -598.694895726625,
+        537.74951171875
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_11_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_11_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -560.2548957266249,
+        499.30951171875
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -560.2548957266249,
+        499.30951171875
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        499.30950927734375
+      ]
+    },
+    "Building_12": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.9432735443115234,
+        43.110116958618164
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.110116958618164
+      ],
+      "indoor_relative_humidity": [
+        44.29750061035156,
+        77.38999938964844
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        1358.5626767418753
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -1440.4026767418752,
+        698.06396484375
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_12_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_12_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -1358.5626767418753,
+        616.22396484375
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -1358.5626767418753,
+        616.22396484375
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        616.2239990234375
+      ]
+    },
+    "Building_13": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.09068489074707031,
+        50.74827003479004
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.204503059387207
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        38.80609268378907
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -44.62609268378907,
+        35.17604446411133
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_13_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_13_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -38.80609268378907,
+        29.356044464111328
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -38.80609268378907,
+        29.356044464111328
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        29.35604476928711
+      ]
+    },
+    "Building_14": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        4.972541809082031,
+        47.15119552612305
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.151196002960205
+      ],
+      "indoor_relative_humidity": [
+        47.88639831542969,
+        91.91500091552734
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        26.77179185729297
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -29.01179185729297,
+        11.717327117919922
+      ],
+      "electricity_pricing": [
+        0.09331664443016052,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_1": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_2": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_3": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_14_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_14_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -26.771791857292968,
+        9.477327117919922
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -26.771791857292968,
+        9.477327117919922
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        9.477327346801758
+      ]
+    },
+    "Building_15": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        -0.3530597686767578,
+        50.820383071899414
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.8593389987945557
+      ],
+      "indoor_relative_humidity": [
+        46.2056999206543,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        26.875736236572266
+      ],
+      "solar_generation": [
+        0.0,
+        99.11639628210939
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -108.3163962821094,
+        74.38577270507812
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_15_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_15_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -99.11639628210939,
+        65.18577270507812
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -99.11639628210939,
+        65.18577270507812
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        65.18577575683594
+      ]
+    },
+    "Building_16": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        2.936267852783203,
+        45.34514808654785
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9604330062866211
+      ],
+      "indoor_relative_humidity": [
+        46.191001892089844,
+        95.80000305175781
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        398.8457600530078
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -436.98576005300777,
+        220.04129028320312
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_16_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_16_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -398.8457600530078,
+        181.90129028320314
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -398.8457600530078,
+        181.90129028320314
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        181.9012908935547
+      ]
+    },
+    "Building_17": {
+      "month": [
+        1.0,
+        12.0
+      ],
+      "day_type": [
+        1.0,
+        7.0
+      ],
+      "hour": [
+        0.0,
+        23.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.8889102935791016,
+        43.167823791503906
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.1678240299224854
+      ],
+      "indoor_relative_humidity": [
+        44.29750061035156,
+        77.38999938964844
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        160.7114158064297
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -175.3914158064297,
+        96.37017822265625
+      ],
+      "electricity_pricing": [
+        0.09331664443016052,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_1": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_2": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_3": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_17_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_17_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -160.7114158064297,
+        81.69017822265624
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -160.7114158064297,
+        81.69017822265624
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        81.69017791748047
+      ]
+    }
+  },
+  "periodic_bounds": {
+    "Building_1": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.8833179473876953,
+        50.34939193725586
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.1795330047607422
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        282.2496643066406,
+        948.5942993164062
+      ],
+      "solar_generation": [
+        0.0,
+        1402.1628191905431
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -1142.5563448183555,
+        1236.6833896120556
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "electric_vehicle_charger_charger_1_1_connected_state": [
+        0.0,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_1_departure_time": [
+        -1.0,
+        24.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_1_required_soc_departure": [
+        -0.1,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_1_soc": [
+        -0.1,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_1_battery_capacity": [
+        -1.0,
+        100.0
+      ],
+      "electric_vehicle_charger_charger_1_1_incoming_state": [
+        0.0,
+        1.0
+      ],
+      "incoming_electric_vehicle_at_charger_charger_1_1_estimated_arrival_time": [
+        -1.0,
+        24.0
+      ],
+      "electric_vehicle_charger_charger_1_2_connected_state": [
+        0.0,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_2_departure_time": [
+        -1.0,
+        24.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_2_required_soc_departure": [
+        -0.1,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_2_soc": [
+        -0.1,
+        1.0
+      ],
+      "connected_electric_vehicle_at_charger_charger_1_2_battery_capacity": [
+        -1.0,
+        100.0
+      ],
+      "electric_vehicle_charger_charger_1_2_incoming_state": [
+        0.0,
+        1.0
+      ],
+      "incoming_electric_vehicle_at_charger_charger_1_2_estimated_arrival_time": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_1_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_1_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -960.4563448183554,
+        1054.5833896120557
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -960.4563448183554,
+        1054.5833896120557
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        1153.122314453125
+      ]
+    },
+    "Building_2": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.902801513671875,
+        50.2254753112793
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9330459833145142
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        6.810951232910156
+      ],
+      "solar_generation": [
+        0.0,
+        29.887464539531255
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -38.78746453953126,
+        45.000701904296875
+      ],
+      "electricity_pricing": [
+        0.09331664443016052,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_1": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_2": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_3": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_2_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_2_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -29.88746453953126,
+        36.100701904296876
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -29.88746453953126,
+        36.100701904296876
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        36.10070037841797
+      ]
+    },
+    "Building_3": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        2.992328643798828,
+        45.2110595703125
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.2110589742660522
+      ],
+      "indoor_relative_humidity": [
+        45.80915832519531,
+        82.5
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        503.4382805770313
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -558.2382805770313,
+        297.8262634277344
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_3_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_3_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -503.4382805770313,
+        243.02626342773436
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -503.4382805770313,
+        243.02626342773436
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        243.02626037597656
+      ]
+    },
+    "Building_4": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        1.7829208374023438,
+        44.023101806640625
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.0197190046310425
+      ],
+      "indoor_relative_humidity": [
+        44.28709411621094,
+        97.9000015258789
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        240.94253857939455
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -323.34253857939456,
+        521.2910766601562
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_4_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_4_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -240.94253857939455,
+        438.8910766601563
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -240.94253857939455,
+        438.8910766601563
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        438.8910827636719
+      ]
+    },
+    "Building_5": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        1.9419116973876953,
+        44.07019233703613
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.0701930522918701
+      ],
+      "indoor_relative_humidity": [
+        44.14799880981445,
+        81.80000305175781
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        115.04558696153907
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -159.00558696153908,
+        482.3610534667969
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_5_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_5_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -115.04558696153907,
+        438.4010534667969
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -115.04558696153907,
+        438.4010534667969
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        438.40106201171875
+      ]
+    },
+    "Building_6": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        1.8894424438476562,
+        44.1008358001709
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9918299913406372
+      ],
+      "indoor_relative_humidity": [
+        44.28709411621094,
+        97.9000015258789
+      ],
+      "non_shiftable_load": [
+        0.0,
+        385.19775390625
+      ],
+      "solar_generation": [
+        0.0,
+        2055.7488674989686
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -2795.8888674989685,
+        4187.306640625
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_6_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_6_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -2055.7488674989686,
+        3447.166640625
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -2055.7488674989686,
+        3447.166640625
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        3473.00732421875
+      ]
+    },
+    "Building_7": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.34332847595214844,
+        50.26905822753906
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9729840159416199
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        32.51694869995117
+      ],
+      "solar_generation": [
+        0.0,
+        110.47954026867187
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -126.03954026867187,
+        112.12966918945312
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_7_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_7_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -110.47954026867187,
+        96.56966918945312
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -110.47954026867187,
+        96.56966918945312
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        104.6875
+      ]
+    },
+    "Building_8": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.036884307861328125,
+        50.5864143371582
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9433789849281311
+      ],
+      "indoor_relative_humidity": [
+        46.2056999206543,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        8.117177963256836
+      ],
+      "solar_generation": [
+        0.0,
+        57.381453246937504
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -62.4214532469375,
+        54.372535705566406
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_8_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_8_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -57.381453246937504,
+        49.33253570556641
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -57.381453246937504,
+        49.33253570556641
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        49.33253479003906
+      ]
+    },
+    "Building_9": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        3.0052947998046875,
+        45.203203201293945
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.2032040357589722
+      ],
+      "indoor_relative_humidity": [
+        47.87537384033203,
+        83.375
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        29.887464539531255
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -32.06746453953126,
+        13.14836311340332
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_9_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_9_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -29.88746453953126,
+        10.96836311340332
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -29.88746453953126,
+        10.96836311340332
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        10.968362808227539
+      ]
+    },
+    "Building_10": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.8934288024902344,
+        50.61682319641113
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9179440140724182
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        4.30338716506958,
+        188.6281280517578
+      ],
+      "solar_generation": [
+        0.0,
+        723.3255488232423
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -694.7718514660646,
+        535.2908487468871
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_10_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_10_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -661.0318514660646,
+        501.55084874688714
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -661.0318514660646,
+        501.55084874688714
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        527.2755126953125
+      ]
+    },
+    "Building_11": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        1.0155277252197266,
+        43.15001678466797
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.1500170230865479
+      ],
+      "indoor_relative_humidity": [
+        44.29750061035156,
+        77.38999938964844
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        560.254895726625
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -598.694895726625,
+        537.74951171875
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_11_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_11_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -560.2548957266249,
+        499.30951171875
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -560.2548957266249,
+        499.30951171875
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        499.30950927734375
+      ]
+    },
+    "Building_12": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.9432735443115234,
+        43.110116958618164
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.110116958618164
+      ],
+      "indoor_relative_humidity": [
+        44.29750061035156,
+        77.38999938964844
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        1358.5626767418753
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -1440.4026767418752,
+        698.06396484375
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_12_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_12_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -1358.5626767418753,
+        616.22396484375
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -1358.5626767418753,
+        616.22396484375
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        616.2239990234375
+      ]
+    },
+    "Building_13": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.09068489074707031,
+        50.74827003479004
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.204503059387207
+      ],
+      "indoor_relative_humidity": [
+        46.43614959716797,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        38.80609268378907
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -44.62609268378907,
+        35.17604446411133
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_13_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_13_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -38.80609268378907,
+        29.356044464111328
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -38.80609268378907,
+        29.356044464111328
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        29.35604476928711
+      ]
+    },
+    "Building_14": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        4.972541809082031,
+        47.15119552612305
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.151196002960205
+      ],
+      "indoor_relative_humidity": [
+        47.88639831542969,
+        91.91500091552734
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        26.77179185729297
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -29.01179185729297,
+        11.717327117919922
+      ],
+      "electricity_pricing": [
+        0.09331664443016052,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_1": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_2": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_3": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_14_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_14_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -26.771791857292968,
+        9.477327117919922
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -26.771791857292968,
+        9.477327117919922
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        9.477327346801758
+      ]
+    },
+    "Building_15": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        -0.3530597686767578,
+        50.820383071899414
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.8593389987945557
+      ],
+      "indoor_relative_humidity": [
+        46.2056999206543,
+        98.0
+      ],
+      "non_shiftable_load": [
+        0.0,
+        26.875736236572266
+      ],
+      "solar_generation": [
+        0.0,
+        99.11639628210939
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -108.3163962821094,
+        74.38577270507812
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_15_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_15_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -99.11639628210939,
+        65.18577270507812
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -99.11639628210939,
+        65.18577270507812
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        65.18577575683594
+      ]
+    },
+    "Building_16": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        2.936267852783203,
+        45.34514808654785
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        0.9604330062866211
+      ],
+      "indoor_relative_humidity": [
+        46.191001892089844,
+        95.80000305175781
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        398.8457600530078
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -436.98576005300777,
+        220.04129028320312
+      ],
+      "electricity_pricing": [
+        0.0857066959142685,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_1": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_2": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "electricity_pricing_predicted_3": [
+        0.0828445553779602,
+        0.11041511595249176
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_16_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_16_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -398.8457600530078,
+        181.90129028320314
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -398.8457600530078,
+        181.90129028320314
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        181.9012908935547
+      ]
+    },
+    "Building_17": {
+      "month_cos": [
+        -1.0,
+        1.0
+      ],
+      "month_sin": [
+        -1.0,
+        1.0
+      ],
+      "day_type_cos": [
+        -0.9009688679024191,
+        1.0
+      ],
+      "day_type_sin": [
+        -0.9749279121818236,
+        0.9749279121818236
+      ],
+      "hour_cos": [
+        -1.0,
+        1.0
+      ],
+      "hour_sin": [
+        -1.0,
+        1.0
+      ],
+      "daylight_savings_status": [
+        0.0,
+        0.0
+      ],
+      "outdoor_dry_bulb_temperature": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_1": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_2": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_dry_bulb_temperature_predicted_3": [
+        18.8700008392334,
+        31.889999389648438
+      ],
+      "outdoor_relative_humidity": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_1": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_2": [
+        67.52999877929688,
+        100.0
+      ],
+      "outdoor_relative_humidity_predicted_3": [
+        67.52999877929688,
+        100.0
+      ],
+      "diffuse_solar_irradiance": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_1": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_2": [
+        0.0,
+        527.5700073242188
+      ],
+      "diffuse_solar_irradiance_predicted_3": [
+        0.0,
+        527.5700073242188
+      ],
+      "direct_solar_irradiance": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_1": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_2": [
+        0.0,
+        833.4299926757812
+      ],
+      "direct_solar_irradiance_predicted_3": [
+        0.0,
+        833.4299926757812
+      ],
+      "carbon_intensity": [
+        0.6668999791145325,
+        0.6668999791145325
+      ],
+      "indoor_dry_bulb_temperature": [
+        0.8889102935791016,
+        43.167823791503906
+      ],
+      "average_unmet_cooling_setpoint_difference": [
+        0.0,
+        1.1678240299224854
+      ],
+      "indoor_relative_humidity": [
+        44.29750061035156,
+        77.38999938964844
+      ],
+      "non_shiftable_load": [
+        0.0,
+        0.0
+      ],
+      "solar_generation": [
+        0.0,
+        160.7114158064297
+      ],
+      "cooling_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "heating_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "dhw_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "electrical_storage_soc": [
+        0.0,
+        1.0
+      ],
+      "net_electricity_consumption": [
+        -175.3914158064297,
+        96.37017822265625
+      ],
+      "electricity_pricing": [
+        0.09331664443016052,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_1": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_2": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "electricity_pricing_predicted_3": [
+        0.09022286534309387,
+        0.11654997617006302
+      ],
+      "power_outage": [
+        0.0,
+        1.0
+      ],
+      "hvac_mode": [
+        1.0,
+        1.0
+      ],
+      "comfort_band": [
+        0.0,
+        2.0
+      ],
+      "washing_machine_17_start_time_step": [
+        -1.0,
+        24.0
+      ],
+      "washing_machine_17_end_time_step": [
+        -1.0,
+        24.0
+      ],
+      "net_electricity_consumption_without_storage": [
+        -160.7114158064297,
+        81.69017822265624
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load": [
+        -160.7114158064297,
+        81.69017822265624
+      ],
+      "net_electricity_consumption_without_storage_and_partial_load_and_pv": [
+        0.0,
+        81.69017791748047
+      ]
+    }
+  },
+  "out_of_range_policy": "clip_and_record",
+  "train_fit_hash": "41604b82c0c92c2484d8d3de3a26975489486dc025b81c289e27b37fe08d94e0"
+}

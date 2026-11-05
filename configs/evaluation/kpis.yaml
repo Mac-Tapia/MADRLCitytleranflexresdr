@@ -27,9 +27,9 @@ schema_version: 1
 # bidirectional district net power |P|; cost = net consumption x price (p_exp = p_imp);
 # CO2 = net consumption x carbon intensity (xi_disp = xi; Building emission no longer
 # clipped at zero; CostFunction.carbon_emissions/cost no longer clip exporting steps,
-# so the evaluate_v2 ratios follow the same convention). Still pending owner: the
-# iquitos_v1 schema settles cost through the community market with grid_export_price 0
-# (see CHANGES.md).
+# so the evaluate_v2 ratios follow the same convention). The iquitos_v1 schema settled cost
+# through the community market with grid_export_price 0 (see CHANGES.md); the active campaign
+# (iquitos_v5) disables it and settles exports at the hourly purchase price.
 currency: USD
 tolerances:
   balance_atol: 1.0e-6

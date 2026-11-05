@@ -5,18 +5,18 @@ with negative net consumption has negative emissions: Building no longer clips
 net_electricity_consumption_emission at zero (building.py update). Real
 simulator, 24 steps, PV scaled x50 so that buildings export at midday.
 
-Cost is NOT net billing in this dataset: the iquitos_v1 schema enables the
-community market (local trade at 0.8 x price, grid_export_price 0.0), so
-internal/runtime.py settles the building cost and exported energy to the grid
-earns nothing. That is a dataset/runtime setting outside this change; the test
-records it so it cannot be forgotten.
+Cost is net billing in the active campaign. The iquitos_v1 schema enabled the
+community market (local trade at 0.8 x price, grid_export_price 0.0), so exported
+energy earned nothing there, against the owner's net billing. iquitos_v4 and
+iquitos_v5 disable the market and settle exports at the hourly purchase price;
+the test binds that so the contradiction cannot return.
 """
 from pathlib import Path
 
 import numpy as np
 
 REPO = Path(__file__).resolve().parents[2]
-SCHEMA = REPO/'data/campaigns/iquitos_v1/splits/train_2023/schema.json'
+SCHEMA = REPO/'data/campaigns/iquitos_v5/splits/train_2023/schema.json'
 
 
 def test_export_reduces_district_emissions_and_cost_is_net(monkeypatch):
@@ -45,8 +45,8 @@ def test_export_reduces_district_emissions_and_cost_is_net(monkeypatch):
                                      for b in core.buildings)
 
 
-def test_dataset_settles_cost_through_the_community_market_without_export_credit():
+def test_dataset_settles_exports_by_net_billing_not_through_the_community_market():
     import json
     market = json.loads(SCHEMA.read_text(encoding='utf-8'))['community_market']
-    # Documented contradiction with the owner's net billing (pending owner decision).
-    assert market['enabled'] is True and float(market['grid_export_price']) == 0.0
+    # iquitos_v1 had the market on with grid_export_price 0.0, which contradicted the owner's net billing.
+    assert market == {'enabled': False, 'export_settlement': 'net_billing_at_hourly_purchase_price'}

@@ -44,7 +44,7 @@ def test_notebook_verifies_the_fresh_dataset_and_syncs_attempts_to_drive():
     code = _code(notebook)
     assert notebook['metadata']['expected_dataset_sha256'] == 'f'*64
     assert "CAMPAIGN['storage_alias']" in code and 'dataset_acceptance.json' in code and 'dataset_verified' in code
-    assert 'iquitos_v1' not in code                    # the alias comes from configs/experiments/iquitos.yaml
+    assert 'iquitos_v5' not in code                    # the alias comes from configs/experiments/iquitos.yaml
     assert 'uc3m.application.training.drive_sync' in code and 'MyDrive' in code
     assert "'--restore'" in code and "'--sync'" in code and 'run_stage_with_sync' in code
     assert code.index("'--restore'") < code.index("'--stage', 'prepare'") < code.index("'--execute'")
@@ -56,17 +56,17 @@ def test_notebook_verifies_the_fresh_dataset_and_syncs_attempts_to_drive():
 def test_committed_notebook_is_the_built_client():
     committed = json.loads(NOTEBOOK.read_text(encoding='utf-8'))
     assert "'-m', 'uc3m.application.training.cli'" in _code(committed)
-    acceptance = json.loads((REPO/'data/campaigns/iquitos_v1/dataset_acceptance.json').read_text(encoding='utf-8'))
+    acceptance = json.loads((REPO/'data/campaigns/iquitos_v5/dataset_acceptance.json').read_text(encoding='utf-8'))
     assert committed['metadata']['expected_dataset_sha256'] == acceptance['dataset_hash']
 
 
 def test_bundle_carries_the_frozen_campaign_and_no_retired_root():
     paths = {p.relative_to(REPO).as_posix() for p in builder.bundle_paths(REPO, builder.campaign_from_config(builder.CAMPAIGN_CONFIG)[1])}
-    assert 'data/campaigns/iquitos_v1/splits/train_2023/schema.json' in paths
-    assert 'data/campaigns/iquitos_v1/normalizer.json' in paths
+    assert 'data/campaigns/iquitos_v5/splits/train_2023/schema.json' in paths
+    assert 'data/campaigns/iquitos_v5/normalizer.json' in paths
     assert 'configs/experiments/iquitos.yaml' in paths and 'uc3m/application/training/cli.py' in paths
     assert 'uc3m/application/training/drive_sync.py' in paths
-    assert not any(p.startswith(('outputs/', 'CityLearn/data/datasets/', 'data/campaigns/iquitos_v1/raw/'))
+    assert not any(p.startswith(('outputs/', 'CityLearn/data/datasets/', 'data/campaigns/iquitos_v5/raw/'))
                    for p in paths)
 
 
@@ -95,7 +95,7 @@ def test_bundle_alias_and_dataset_come_from_the_campaign_config(tmp_path):
     assert builder.campaign_identity(root)['campaign_id'] == 'fresh_other_v9'
     paths = {p.relative_to(root).as_posix() for p in builder.bundle_paths(root, dataset_root)}
     assert 'data/campaigns/other_v9/splits/train_2023/schema.json' in paths
-    assert not any('iquitos_v1' in p for p in paths)
+    assert not any('iquitos_v5' in p for p in paths)
 
 
 def test_overlay_is_applied_and_verified_through_the_session_module():

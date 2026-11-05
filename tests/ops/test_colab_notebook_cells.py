@@ -88,8 +88,8 @@ def test_bundle_alias_comes_from_config():
 
 
 def test_no_literal_alias_in_cells_or_generator(cells):
-    assert not any('iquitos_v1' in source for source in cells.values())
-    assert 'iquitos_v1' not in Path(builder.__file__).read_text(encoding='utf-8')
+    assert not any('iquitos_v5' in source for source in cells.values())
+    assert 'iquitos_v5' not in Path(builder.__file__).read_text(encoding='utf-8')
 
 
 def test_manifest_lists_every_bundled_file_with_sha256(tmp_path):

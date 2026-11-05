@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parents[2]
-CAMPAIGN = REPO/'data/campaigns/iquitos_v1'
+CAMPAIGN = REPO/'data/campaigns/iquitos_v5'
 EPISODE_STEPS = 168
 EPISODES = 2
 EXTRA = {'MATD3': ['--batch-size', '64'], 'MAAC': ['--batch-size', '64'], 'MASAC': [], 'HAPPO': []}

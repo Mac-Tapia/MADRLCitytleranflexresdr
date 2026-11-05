@@ -263,14 +263,14 @@ def test_confirm_refuses_without_valid_freeze_and_marker_is_not_a_freeze(tmp_pat
 def test_freeze_hash_binds_hyperparameters():
     from uc3m.domain.campaigns import ConfigurationFreeze, canonical_hash
     hyper = {'learning_rate': 0.0001, 'hidden_dimension': 128, 'gamma': 0.99}
-    good = fc.freeze_configuration('fresh_iquitos_20261101_v1', 'MATD3', hyper, [_validation_hash('x')],
+    good = fc.freeze_configuration('fresh_iquitos_20261105_v5', 'MATD3', hyper, [_validation_hash('x')],
                                    selection_rule='rule')
     assert good.config_hash == ConfigurationFreeze.config_hash_for('MATD3', hyper)
     with pytest.raises(ValueError):
-        ConfigurationFreeze('fresh_iquitos_20261101_v1', 'MATD3', canonical_hash({'other': 1}),
+        ConfigurationFreeze('fresh_iquitos_20261105_v5', 'MATD3', canonical_hash({'other': 1}),
                             (_validation_hash('x'),), 'rule', 'now', hyperparameters=hyper)
     with pytest.raises(ValueError):
-        ConfigurationFreeze('fresh_iquitos_20261101_v1', 'MATD3', good.config_hash,
+        ConfigurationFreeze('fresh_iquitos_20261105_v5', 'MATD3', good.config_hash,
                             (_validation_hash('x'),), 'rule', 'now')
 
 
@@ -327,7 +327,7 @@ def test_tampered_freeze_file_is_refused(tmp_path):
 def test_freeze_must_be_an_hpo_candidate(tmp_path):
     fc.prepare_campaign(CONFIG, REPO, artifact_root=tmp_path/'campaign')
     manifest_path = tmp_path/'campaign/campaign_manifest.json'
-    invented = fc.freeze_configuration('fresh_iquitos_20261101_v1', 'MATD3',
+    invented = fc.freeze_configuration('fresh_iquitos_20261105_v5', 'MATD3',
                                        {'learning_rate': 0.01, 'hidden_dimension': 64, 'gamma': 0.95},
                                        [_validation_hash('x')], selection_rule='rule')
     with pytest.raises(ValueError):

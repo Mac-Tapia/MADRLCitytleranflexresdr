@@ -15,6 +15,8 @@ from citylearn.citylearn import CityLearnEnv
 from citylearn.internal.runtime import CityLearnRuntimeService
 
 REPO = Path(__file__).resolve().parents[2]
+# A simulator speed test, not a campaign test: it needs the 1850-EV fleet of iquitos_v1. The active
+# campaign (iquitos_v5) has a two-motorcycle pilot, which cannot show the indexed step is faster.
 SCHEMA = REPO/'data/campaigns/iquitos_v1/splits/train_2023/schema.json'
 STEPS = 4
 

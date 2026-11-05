@@ -17,7 +17,7 @@ import yaml
 from uc3m.adapters.citylearn import policy_inference as pi
 
 REPO = Path(__file__).resolve().parents[2]
-CAMPAIGN = REPO/'data/campaigns/iquitos_v1'
+CAMPAIGN = REPO/'data/campaigns/iquitos_v5'
 SCHEMA = CAMPAIGN/'splits/validation_2024/schema.json'
 AXIS_KEYS = {'flexibility': 'flex', 'co2_emissions': 'carbon', 'energy_cost': 'cost'}
 

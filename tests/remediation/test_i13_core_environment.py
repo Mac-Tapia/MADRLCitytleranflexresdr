@@ -9,7 +9,7 @@ from uc3m.env.uc3m_env import UC3MEnv
 from uc3m.env.wrappers import HARLWrapper, PettingZooWrapper
 
 ROOT = Path.cwd()
-SCHEMA = ROOT/'data/campaigns/iquitos_v1/splits/validation_2024/schema.json'
+SCHEMA = ROOT/'data/campaigns/iquitos_v5/splits/validation_2024/schema.json'
 
 
 @pytest.fixture

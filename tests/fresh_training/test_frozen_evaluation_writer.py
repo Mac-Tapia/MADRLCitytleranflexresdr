@@ -17,7 +17,7 @@ from uc3m.adapters.citylearn.frozen_adapters import citylearn_frozen_adapters
 from uc3m.application.evaluation.frozen_evaluation import evaluate_frozen
 
 REPO = Path(__file__).resolve().parents[2]
-CAMPAIGN = REPO/'data/campaigns/iquitos_v1'
+CAMPAIGN = REPO/'data/campaigns/iquitos_v5'
 ADAPTERS = citylearn_frozen_adapters()   # this test is a composition root
 
 
@@ -37,7 +37,7 @@ def test_writes_the_report_the_seed_table_reads(attempt):
         'frozen_runs.json': hashlib.sha256((folder/'frozen_runs.json').read_bytes()).hexdigest()}
     report = json.loads(raw)
     identity = json.loads((attempt/'attempt.json').read_text(encoding='utf-8'))
-    assert report['context'] == {'campaign_id': 'fresh_iquitos_20261101_v1',
+    assert report['context'] == {'campaign_id': 'fresh_iquitos_20261105_v5',
                                  'treatment_id': identity['treatment_id'],
                                  'algorithm': 'HAPPO', 'scenario': 'E1', 'seed': 901, 'split': 'validation_2024'}
     assert set(report['axis_gains']) == {'flexibility', 'co2_emissions', 'energy_cost'}

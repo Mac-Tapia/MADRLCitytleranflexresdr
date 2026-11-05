@@ -8,7 +8,7 @@ from uc3m.adapters.citylearn.fresh_observations import frozen_observation_limits
 from uc3m.adapters.algorithms.native_entrypoint import attempt_isolation
 
 ROOT = Path(__file__).resolve().parents[2]
-DATA = ROOT/'data/campaigns/iquitos_v1'
+DATA = ROOT/'data/campaigns/iquitos_v5'
 
 
 @pytest.mark.parametrize('intervals', [24, 48])

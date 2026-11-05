@@ -39,6 +39,9 @@ dependencies = [
 train = [
     "torch>=2.0",
     "gym>=0.20",
+    # uc3m/env/wrappers.py; same versions as requirements.txt, CityLearn needs gymnasium<=0.28.1.
+    "gymnasium==0.28.1",
+    "pettingzoo==1.12.0",
     "pvlib>=0.10",
     "stable-baselines3==2.2.1",
 ]
@@ -52,6 +55,8 @@ dataset = [
 # All extras
 all = [
     "torch>=2.0",
+    "gymnasium==0.28.1",
+    "pettingzoo==1.12.0",
     "pvlib>=0.10",
     "pypdf>=6.10,<7",
     "requests>=2.28",
@@ -72,12 +77,20 @@ dev = [
 Homepage = "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr"
 Repository = "https://github.com/Mac-Tapia/MADRLCitytleranflexresdr"
 
-# Import name -> local checkout; installed editable, never from PyPI.
+# Import name -> local checkout or vendored package, never a PyPI homonym.
 [tool.uc3m.local-dependencies]
 citylearn = "CityLearn"
 harl = "external/HARL"
 marllib = "external/MARLlib"
 algorithms = "external/MAAC"
+offpolicy = "external/off-policy"
+
+# Generic names exist only inside the native adapter's scoped import context.
+[tool.uc3m.backend-namespaces]
+common = { root = "external/MARL/src", consumers = ["uc3m/adapters/citylearn/policy_inference.py"] }
+agent = { root = "external/MARL/src", consumers = ["uc3m/adapters/citylearn/policy_inference.py"] }
+ac_discrete = { root = "external/MARL/src", consumers = ["uc3m/adapters/citylearn/policy_inference.py"] }
+utils = { root = "external/MAAC", consumers = ["uc3m/adapters/citylearn/policy_inference.py"] }
 
 [tool.setuptools]
 packages = { find = { where = ["."], include = ["uc3m*"] } }

@@ -133,3 +133,7 @@ data/tariffs/osinergmin/raw/
 data/maintenance/dataset_builds/
 data/maintenance/gates/*.xml
 outputs/colab_delivery/
+# Raw bills and preliminary spreadsheets discarded in D01: not for a public repository.
+data/maintenance/integracion/*/D01/discarded/
+data/maintenance/gates/*.progress.jsonl
+data/maintenance/gates/*.hang.txt

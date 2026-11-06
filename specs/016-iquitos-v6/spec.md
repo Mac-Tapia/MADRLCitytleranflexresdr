@@ -51,6 +51,12 @@ No existe ningún perfil horario medido. B01 no tiene factura medida: `B_01.csv`
 - **FR-016.7** — Tarifa de potencia por edificio y mes dentro del dataset, para que la recompensa de D-V6-8 no lea archivos del proyecto.
 - **FR-016.8** — Contraste de picos: por edificio y mes, el pico generado frente al pico medido por factor de carga y máxima demanda.
 - **FR-016.9** — Todas las puertas de `iquitos_v5` siguen vigentes, más las nuevas de FR-016.1 a FR-016.8.
+- **FR-016.10** — Adecuación a los 4 MADRL (HAPPO, MASAC, MATD3 y MAAC), decidida por el propietario el 2026-11-06 para cerrar este spec completo antes de entrenar:
+  - **Acciones:** cada agente controla su aire acondicionado, sus cargadores y su BESS. Los espacios de acción continuos (HAPPO, MATD3, MAAC) y discretos (MASAC por ejes) representan los mismos equipos, con la equivalencia declarada (D03).
+  - **Observaciones:** incluyen lo que la recompensa necesita para ser markoviana con la factura: el pico del mes en el bloque de 18:00 a 23:00 hasta la hora actual, si la hora está en ese bloque y la tarifa de potencia del edificio, además de temperatura interior y confort para el aire acondicionado.
+  - **Recompensa:** la misma para los 4 algoritmos y los 3 escenarios, con el costo de la factura (D-V6-8) y el CO2, de modo que E2 y E3 queden separados.
+  - **Recursos:** las dimensiones nuevas recalculan los requisitos de memoria por la regla de SPEC-015, verificada por `tests/fresh_training/test_runtime_requirements.py`; las reservas ajustadas de Colab no cambian salvo que dejen de cubrir la estimación.
+  - **Prueba de humo:** los 4 algoritmos completan un episodio corto real sobre `iquitos_v6` y guardan su estado de entrenamiento, sin entrenar la campaña.
 
 ## Criterios de aceptación
 
@@ -58,7 +64,8 @@ No existe ningún perfil horario medido. B01 no tiene factura medida: `B_01.csv`
 2. Ningún edificio con carga base 0 en ninguna hora.
 3. Para cada edificio, la suma de componentes reproduce cada factura mensual.
 4. Cada valor lleva origen `measured`, `cited`, `design_rule` o `assumption`, y cada `cited` nombra la norma y el artículo.
-5. Puerta `-Scope Repository` aprobada, CI en verde.
+5. Los 4 MADRL completan la prueba de humo de FR-016.10 sobre `iquitos_v6`.
+6. Puerta `-Scope Repository` aprobada, CI en verde.
 
 ## D-V6-12: por qué no se controla por piso
 

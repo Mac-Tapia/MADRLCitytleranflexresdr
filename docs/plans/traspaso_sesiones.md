@@ -92,3 +92,4 @@ Registro detallado de decisiones (`Ruling:`) de `-ff`: `.superpowers/sdd/remedia
 - **Decisión que acota otras del propietario:** `pv.max_pv_to_load_ratio = 1.0` (D-M2-1). El área de 0,63 y el crédito de exportación 1:1 siguen; subir el valor relaja el límite.
 - **Defecto de Linux corregido:** `fresh_policy._under` rechazaba toda entrada de campaña en rutas absolutas POSIX. Afectaba a Colab.
 - **Pendiente:** entrenar sin B01 (fuga de 2023), D04 y los supuestos económicos sin fuente.
+- **Cierre del módulo 2 (2026-11-06):** puerta aprobada sobre `f27b8592`, 1 612 pruebas en 46 min. S6, S8 y S9 cumplen; S10 y S11 parciales (tabla de `remediacion_integrada.md`).

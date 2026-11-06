@@ -81,3 +81,5 @@ Los valores de `iquitos_v4` reproducen exactamente la evidencia D02. El −4,8 %
 **Reconexión:** configuración, pruebas, cuadernos, runbook y README apuntan a `iquitos_v5`. Se conservan con su nombre las líneas que registran medidas sobre `iquitos_v1`, y la prueba de velocidad de deriva EV sigue en `iquitos_v1`, la única con flota de 1 850 vehículos. La prueba de facturación neta ahora exige el crédito por exportación que `iquitos_v1` no tenía.
 
 **Defecto encontrado de paso:** `fresh_policy._under` rechazaba toda entrada de campaña en Linux, donde entrena Colab. Lo destapó el primer CI que llegó a ejecutarse; corregido con prueba.
+
+**Puerta completa (2026-11-06):** `-Scope Repository` aprobada sobre `f27b8592`: 1 612 pruebas, 0 fallos, 0 omitidas, `software_acceptance=true`, `scientific_acceptance=false` (`data/maintenance/gates/Repository_profile_20261106T000821675Z.json`). Una corrida anterior sobre `98a94e95` se rechazó por un identificador de campaña viejo en tres pruebas (`Repository_profile_20261105T214556131Z.json`); corregido en `f27b8592`.

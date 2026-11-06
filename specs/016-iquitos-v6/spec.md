@@ -57,6 +57,20 @@ No existe ningún perfil horario medido. B01 no tiene factura medida: `B_01.csv`
   - **Recompensa:** la misma para los 4 algoritmos y los 3 escenarios, con el costo de la factura (D-V6-8) y el CO2, de modo que E2 y E3 queden separados.
   - **Recursos:** las dimensiones nuevas recalculan los requisitos de memoria por la regla de SPEC-015, verificada por `tests/fresh_training/test_runtime_requirements.py`; las reservas ajustadas de Colab no cambian salvo que dejen de cubrir la estimación.
   - **Prueba de humo:** los 4 algoritmos completan un episodio corto real sobre `iquitos_v6` y guardan su estado de entrenamiento, sin entrenar la campaña.
+- **FR-016.11** — Conformidad con la tupla de CityLearn v3 (propietario, 2026-11-06), `M_e = <N, S, {A_i}, P, r_e, {O_i}, Z, rho_0, gamma, H>` por escenario, definida en `docs/audits/architecture_thesis_20261101/informe.md` §5, con los ejes y KPI de `CityLearn/citylearn/v3/objectives.py` y `configs/evaluation/kpis.yaml`:
+
+  | Elemento | En `iquitos_v6` |
+  |---|---|
+  | `N` | 17 agentes, uno por edificio; los cargadores pertenecen al edificio, no son agentes |
+  | `S` | Estado del simulador, incluido el pico del mes en el bloque de 18:00 a 23:00, que la recompensa con factura necesita |
+  | `A_i` | Aire acondicionado, cargadores y BESS del edificio i, con el mapa de decodificación `D_i^(b)` de cada backend declarado |
+  | `O_i`, `Z` | Observación local: incluye el pico del mes, la pertenencia al bloque, la tarifa de potencia, la temperatura interior y el confort; normalización declarada |
+  | `r_e` | `(1/N) Σ_i scale·[w_flex·F_i + w_co2·C_i + w_cost·K_i + p_EV,i + p_BESS,i]`, con `K_i` = factura del edificio (D-V6-8) |
+  | Ejes y pesos | OE1 flexibilidad (E1), OE2 CO2 (E2), OE3 costo (E3), con los pesos de `configs/objective_policies.yaml` |
+  | `rho_0` | Estado inicial declarado: estado de carga del BESS y de los vehículos, inicio del split y semilla |
+  | `gamma`, `H` | Del tratamiento congelado; `H` cubre días completos para los KPI diarios |
+
+  **Correspondencia obligatoria**, verificada por una prueba de contrato: cada término de recompensa pertenece a un eje y a un KPI del catálogo; cada eje tiene al menos un KPI primario que la evaluación mide; cada acción corresponde a un equipo del edificio y cada observación que la recompensa usa está en `O_i`. Un término sin KPI, un KPI sin eje o una observación faltante hacen fallar la prueba.
 
 ## Criterios de aceptación
 
@@ -65,7 +79,8 @@ No existe ningún perfil horario medido. B01 no tiene factura medida: `B_01.csv`
 3. Para cada edificio, la suma de componentes reproduce cada factura mensual.
 4. Cada valor lleva origen `measured`, `cited`, `design_rule` o `assumption`, y cada `cited` nombra la norma y el artículo.
 5. Los 4 MADRL completan la prueba de humo de FR-016.10 sobre `iquitos_v6`.
-6. Puerta `-Scope Repository` aprobada, CI en verde.
+6. La prueba de contrato de FR-016.11 pasa: recompensa, ejes, KPI, acciones y observaciones corresponden a la tupla de v3.
+7. Puerta `-Scope Repository` aprobada, CI en verde.
 
 ## D-V6-12: por qué no se controla por piso
 

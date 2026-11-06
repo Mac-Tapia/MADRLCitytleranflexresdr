@@ -50,10 +50,12 @@ class NativeBackend:
         env = dict(os.environ)
         env['UC3M_SCENARIO_CATALOG'] = str(catalog_path)
         env['PYTHONPATH'] = os.pathsep.join([str(self.project_root), str(self.project_root/'CityLearn'), env.get('PYTHONPATH', '')])
+        from uc3m.adapters.process_tree import run_child
         with (run_root/'backend.log').open('a', encoding='utf-8') as stream:
-            process = subprocess.run(self.command(spec, run_root, resume), cwd=self.project_root,
-                                     env=env, stdout=stream, stderr=subprocess.STDOUT, check=False)
-        return self._collect(spec, run_root, process.returncode)
+            # A cancellable tree that ends with its launcher (SPEC-003 FR-003.5).
+            return_code = run_child(self.command(spec, run_root, resume), cwd=self.project_root,
+                                    env=env, stdout=stream, stderr=subprocess.STDOUT)
+        return self._collect(spec, run_root, return_code)
 
     def recover(self, spec, run_root):
         """Index durable native artifacts after an interrupted matching run."""

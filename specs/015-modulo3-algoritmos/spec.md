@@ -53,7 +53,11 @@ Con las cifras de `v1`, el guardián rechazaría MASAC en cualquier entorno disp
   - que ningún algoritmo declare `phase_buffer`.
 
   Valores: MASAC, búfer 50 y lote del crítico 32; MATD3, búfer 744 600; MAAC, búfer 10⁶, lote 1 024 y 4 actualizaciones cada 100 pasos.
-- **FR-015.4 a FR-015.7** — Pendientes del módulo según la hoja de ruta: conformidad de `NativeBackend` y cancelación de hijos (SPEC-003), `save_training_state` en los cuatro lanzadores (SPEC-004), descomposición de la recompensa en los registros (SPEC-002) y D03. Se detallan al empezar cada uno.
+- **FR-015.4** — Conformidad de `NativeBackend` y cancelación de hijos (SPEC-003). **Hecho el 2026-11-06.**
+  - La conformidad con `LearnerPort` ya estaba verificada en `tests/contract/test_ports_contract.py` (FR-003.2).
+  - La cancelación (FR-003.5) se implementa con `uc3m/adapters/process_tree.py`. Un intento interrumpido, por Ctrl+C, SIGTERM o la muerte del padre, termina su árbol completo; la etapa no lanza un intento de reemplazo y el relanzamiento empieza ese tratamiento desde cero.
+  - Verificado por `tests/integration/test_training_interruption.py`, en Windows, en Linux y en el CI. El defecto se reprodujo antes del arreglo.
+- **FR-015.5 a FR-015.7** — Pendientes del módulo según la hoja de ruta: `save_training_state` en los cuatro lanzadores (SPEC-004), descomposición de la recompensa en los registros (SPEC-002) y D03. Se detallan al empezar cada uno.
 
 ## Fuera de alcance
 

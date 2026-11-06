@@ -70,6 +70,13 @@ jobs:
           tests/fresh_training/test_seed_statistics.py
           tests/fresh_training/test_short_layout.py
           tests/fresh_training/test_fresh_isolation.py
+      # Colab is Linux: the POSIX process-group path of FR-003.5 is proven here. The two tests
+      # that prepare a campaign need the dataset and run in the complete local gate.
+      - name: Training children end with their launcher (SPEC-003 FR-003.5)
+        run: >-
+          python -B -m pytest -q -p no:cacheprovider -rfEs
+          -k "not cancelled_stage and not cli_reports"
+          tests/integration/test_training_interruption.py
 
   package:
     name: quality-package

@@ -50,8 +50,11 @@ def native_learner(project_root: Path, campaign_id: str, dataset_root: Path):
         # resources against it, limits torch threads and the CUDA memory fraction.
         for name, value in _execution_env(treatment.get('execution') or {}).items():
             env[name] = value
+        # The attempt is a cancellable process tree (SPEC-003 FR-003.5): it ends with this CLI,
+        # and a cancelled attempt raises instead of being recorded as an ordinary exit.
+        from uc3m.adapters.process_tree import run_child
         with (Path(attempt_root)/'child.log').open('w', encoding='utf-8') as log:
-            subprocess.run(command, cwd=project_root, env=env, stdout=log, stderr=subprocess.STDOUT, check=False)
+            run_child(command, cwd=project_root, env=env, stdout=log, stderr=subprocess.STDOUT)
         evidence = Path(attempt_root)/'learning_evidence.json'
         return json.loads(evidence.read_text(encoding='utf-8')) if evidence.is_file() else None
     return learn
@@ -96,13 +99,21 @@ def main(argv=None):
     # Buffers are frozen only for a launch the campaign authorizes on these resources.
     budget = _stage_budget(manifest, artifacts, config, measured, args.stage, freeze=authorized)
     learner = native_learner(root, config['campaign_id'], root/config['dataset_root'])
+    from uc3m.adapters.process_tree import cancellation_scope
     try:
-        result = fc.run_stage(manifest_path, args.stage, learner, root, authorized=authorized,
-                              workers=[phase['workers'] for phase in budget['phases']],
-                              execution=budget['execution'])
+        # An interrupt or termination ends every training child first, so the stage stops at once
+        # instead of waiting on workers blocked on children; no replacement attempt starts.
+        with cancellation_scope():
+            result = fc.run_stage(manifest_path, args.stage, learner, root, authorized=authorized,
+                                  workers=[phase['workers'] for phase in budget['phases']],
+                                  execution=budget['execution'])
     except PermissionError as refused:
         print(json.dumps({'status': 'not_authorized', 'stage': args.stage, 'reason': str(refused)}))
         return 2
+    except KeyboardInterrupt as stopped:
+        print(json.dumps({'status': 'cancelled', 'stage': args.stage, 'reason': str(stopped),
+                          'action': 'relaunch the stage: verified attempts are reused, the rest start from zero'}))
+        return 130
     print(json.dumps({**{key: result[key] for key in ('stage', 'planned_treatments', 'completed_treatments',
                                                        'failed_attempts', 'phases', 'stopped_at_phase', 'status',
                                                        'budget_sha256')},

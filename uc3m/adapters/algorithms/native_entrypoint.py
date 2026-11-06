@@ -279,6 +279,9 @@ def _bundle_hash(files) -> str:
 
 
 def main(argv=None) -> int:
+    # Under the CLI this process ends its tree when the CLI disappears (SPEC-003 FR-003.5).
+    from uc3m.adapters.process_tree import exit_with_parent
+    exit_with_parent()
     argv = list(sys.argv[1:] if argv is None else argv)
     native = argv[argv.index('--') + 1:] if '--' in argv else []
     own = argv[:argv.index('--')] if '--' in argv else argv

@@ -1,6 +1,6 @@
 # SPEC-015 — Módulo 3: contrato de algoritmos y recursos
 
-**Estado:** `in_progress` (FR-015.1 a FR-015.3 implementados)
+**Estado:** `in_progress` (FR-015.1 a FR-015.3 implementados; FR-015.3 ampliado a los 4 por D-M3-5)
 **Ámbito:** `D:\MADRLCitytleranflexresdr` · **Exclusión:** `D:\madrl_lima`
 **Estado conciliado:** [STATUS](../STATUS.md) · **Hoja de ruta:** [hoja_ruta_modulos.md](../../docs/plans/hoja_ruta_modulos.md)
 **Revisión:** 2026-11-06
@@ -29,13 +29,30 @@ Con las cifras de `v1`, el guardián rechazaría MASAC en cualquier entorno disp
 - **D-M3-2: requisitos por candidato.** El requisito de VRAM de MASAC depende de `rnn_hidden_dim` (39 GiB con 128, 71 GiB con 256); el guardián usa el del intento y rechaza un candidato sin requisito declarado. Una fase reserva el mayor, porque puede ejecutar cualquiera; leerlo como 0 habría planificado unos 20 trabajadores en una GPU de 80 GB en lugar de 1. Con el margen, ningún candidato cabe en una A100 de 40 GB (37,25 GiB): MASAC necesita la de 80 GB.
 - **D-M3-4 (propietario, 2026-11-06): los ajustes de Colab no cambian.** La campaña oficial de 50 episodios y su plan de recursos en Colab ya están ajustados y solo pueden mejorarse. Por eso la regla D-M3-3 se aplica a MASAC, que antes no podía ejecutarse en ningún entorno, y las reservas de HAPPO, MAAC (8 GiB) y MATD3 (40 GiB) se conservan: fijan el paralelismo de cada fase. Bajar MATD3 a 8 GiB habría llevado la fase 2 de 2 a unos 10 trabajadores. Una prueba exige que cada reserva cubra la estimación del dataset activo. Las pruebas locales no modifican esos ajustes.
 - **D04 (propietario, 2026-11-06): el costo de la recompensa es la factura con cargo por potencia.** En `iquitos_v5` el costo de energía y el CO2 horarios tienen correlación 1,000, así que E2 y E3 enseñarían lo mismo. Se implementa en el módulo 3b junto con la reconstrucción `iquitos_v6`, que lleva la tarifa de potencia al dataset ([hoja de ruta](../../docs/plans/hoja_ruta_modulos.md)).
+- **D-M3-5 (propietario, 2026-11-06): los 4 MADRL conservan la capacidad nativa de sus autores.** La comparación con el código de `external/` dio:
+
+  | Algoritmo | Autor | Proyecto |
+  |---|---|---|
+  | HAPPO (`HARL/.../happo.yaml`) | `ppo_epoch` 5, `critic_epoch` 5, 1 minilote, ancho 128, 20 entornos × 200 pasos | igual; ancho 128/256; 1 entorno × 8 760 pasos |
+  | MASAC (`MARL/.../arguments.py`) | lote del crítico 32 episodios, 1 actualización, `rnn` 64, búfer 5 000 episodios | igual; `rnn` 128/256; búfer 50, que guarda toda la etapa más larga |
+  | MATD3 (`off-policy/.../config.py`) | búfer 5 000, lote 32, ancho 64 | búfer 43 800 por política, lote 256, ancho 128/256 |
+  | MAAC (`MAAC/main.py`) | búfer 10⁶, lote 1 024, 4 actualizaciones cada 100 pasos, 12 entornos | **antes:** búfer 43 800, lote 256, 1 actualización por paso; **ahora:** igual que el autor, con 1 entorno |
+
+  MAAC era el único por debajo de su autor y pasa a su esquema (elección del propietario). Su búfer queda acotado sin pérdida a la corrida: 50 × 8 760 + 8 760 = 446 760 transiciones, unos 2,3 GiB sobre `iquitos_v5`, dentro de su reserva de 8 GiB. Hay **una sola reducción**, declarada y elegida por el propietario: 1 entorno en paralelo en HAPPO y MAAC, frente a 20 y 12 del autor. Cada copia es el distrito entero y el plan de Colab no cambia. Con episodios de 8 760 pasos, HAPPO reúne más muestras por actualización que su autor (8 760 frente a 4 000). Ningún algoritmo declara `phase_buffer`: la memoria insuficiente rechaza la fase y nunca encoge un búfer.
 - **D-M3-3: regla del requisito.** `requisito = max(piso, techo(1,10 × estimación))`. El margen de 10 % reproduce el que tenían las cifras anteriores (72 frente a 65,3 GiB). El piso es de 8 GiB de RAM y 4 GiB de VRAM, el ya declarado para HAPPO y MAAC, que no tienen estimador. Es regla de diseño, no una medida.
 
 ## Requisitos funcionales
 
 - **FR-015.1** — Requisitos ligados al dataset activo: una prueba mide las dimensiones de MASAC y MATD3 con sus entornos reales sobre el split `train_2023` de la campaña configurada, calcula las estimaciones con las funciones del proyecto y exige que MASAC cumpla D-M3-3 exactamente y que las demás reservas cubran su estimación. Un cambio de dataset que deje cifras viejas hace fallar la puerta.
 - **FR-015.2** — Requisito por candidato: `runtime_requirements` de MASAC declara la VRAM por `rnn_hidden_dim` para cada valor de la rejilla de HPO. El guardián toma el del argumento nativo del intento; un valor sin requisito declarado se rechaza, nunca se aprueba por omisión.
-- **FR-015.3** — Capacidad nativa sin cambios: búfer de MASAC 50, lote del crítico 32, búfer de MATD3 744 600 y de MAAC 5 × 8 760.
+- **FR-015.3** — Capacidad nativa de los 4 (D-M3-5), verificada por `tests/fresh_training/test_author_capacity.py`. La prueba lee los valores del autor en `external/`, sin copiarlos a mano, y exige:
+  - que cada valor del proyecto iguale o supere al del autor, o sea una cota sin pérdida que guarda toda la corrida;
+  - que MAAC tenga exactamente el esquema de su autor;
+  - que la única reducción, 1 entorno en paralelo, esté declarada;
+  - que la reserva de MAAC cubra su búfer sobre el dataset activo;
+  - que ningún algoritmo declare `phase_buffer`.
+
+  Valores: MASAC, búfer 50 y lote del crítico 32; MATD3, búfer 744 600; MAAC, búfer 10⁶, lote 1 024 y 4 actualizaciones cada 100 pasos.
 - **FR-015.4 a FR-015.7** — Pendientes del módulo según la hoja de ruta: conformidad de `NativeBackend` y cancelación de hijos (SPEC-003), `save_training_state` en los cuatro lanzadores (SPEC-004), descomposición de la recompensa en los registros (SPEC-002) y D03. Se detallan al empezar cada uno.
 
 ## Fuera de alcance

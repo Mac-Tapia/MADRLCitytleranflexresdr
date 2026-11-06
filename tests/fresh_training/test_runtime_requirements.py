@@ -100,7 +100,8 @@ def test_native_capacity_is_unchanged():
     algorithms = NATIVE['algorithms']
     assert algorithms['MASAC']['fixed'] == {'buffer_size': 50, 'critic_batch_size': 32, 'critic_train_steps': 1}
     assert algorithms['MATD3']['fixed']['buffer_size'] == 744600
-    assert int(algorithms['MAAC']['fixed']['buffer_length']) == 5*EPISODE
+    assert algorithms['MAAC']['fixed'] == {'batch_size': 1024, 'buffer_length': 1000000,
+                                           'steps_per_update': 100, 'num_updates': 4}
 
 
 def _masac_check(native_args, ram=500.0, vram=200.0, steps=EPISODE):

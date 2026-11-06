@@ -25,7 +25,11 @@ algorithms:
     fixed: {}
     optimizer_owners: {per_agent: ['actor_agent{i}'], shared: [critic]}
     # On-policy rollout of one 8760-step episode: ~1.2 GiB float32 (obs + state).
+    # Author update of external/HARL happo.yaml kept (ppo_epoch 5, critic_epoch 5, one
+    # minibatch); bound by tests/fresh_training/test_author_capacity.py.
     runtime_requirements: {min_ram_gib: 8, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
+    declared_limitations:
+      - "one parallel environment instead of the author's 20 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; one 8760-step episode gives 8760 steps per update, more than the author's 20 x 200 = 4000."
   MASAC:
     # MASAC keeps its native QMIX mixing architecture; parameter counts differ.
     mapping: {learning_rate: [--actor-lr, --critic-lr], hidden_dimension: [--rnn-hidden-dim], gamma: [--gamma]}
@@ -67,10 +71,18 @@ algorithms:
     runtime_requirements: {min_ram_gib: 40, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
   MAAC:
     mapping: {learning_rate: [--pi-lr, --q-lr], hidden_dimension: [--hidden-size], gamma: [--gamma]}
-    # buffer_length counts transitions: 43800 = 5 x 8760-step episodes (native default
-    # 50000; the launcher caps it at run_steps + one episode).
-    fixed_flags: {batch_size: --batch-size, buffer_length: --buffer-length}
-    fixed: {batch_size: 256, buffer_length: 43800}
+    # Author schema of external/MAAC/main.py (owner 2026-11-06, SPEC-015 D-M3-5): buffer_length
+    # 1e6 transitions, batch_size 1024, 4 updates every 100 steps. The launcher keeps
+    # min(1e6, run_steps + one episode), a lossless bound: 50 x 8760 + 8760 = 446760 holds the
+    # whole run. Before 2026-11-06 it was 43800 transitions, batch 256 and 1 update per step.
+    fixed_flags: {batch_size: --batch-size, buffer_length: --buffer-length,
+                  steps_per_update: --steps-per-update, num_updates: --num-updates}
+    fixed: {batch_size: 1024, buffer_length: 1000000, steps_per_update: 100, num_updates: 4}
     optimizer_owners: {per_agent: ['maac_agent{i}_policy'], shared: [maac_critic]}
-    # Replay float32 upper bound 17 x 43800 x (2 x 357 + 89 + 2) x 4 B = 2.2 GiB.
+    # Replay float32 upper bound on the active dataset, bound by
+    # tests/fresh_training/test_author_capacity.py: 17 x 446760 x (2 x obs + actions + 1) x 4 B
+    # + done bytes, about 2.3 GiB on iquitos_v5, inside the 8 GiB reservation.
     runtime_requirements: {min_ram_gib: 8, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
+    declared_limitations:
+      - "one parallel environment instead of the author's 12 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; the schedule of 4 updates per 100 environment steps is the author's."
+      - "4 updates per 100 environment steps differ from the update budget of the other backends (declared confound, as MASAC)."

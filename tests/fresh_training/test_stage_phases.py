@@ -145,7 +145,11 @@ def test_a_40_gb_gpu_still_refuses_masac_with_its_reason(tmp_path, monkeypatch, 
 
 # --- Phase budget: buffers sized to the parallel share, frozen per stage ------------------------------
 
-MAAC_RULE = {'MAAC': {'key': 'buffer_length', 'flag': '--buffer-length', 'native': 43800,
+# The native value is the configured one (MAAC's author 1e6 since SPEC-015 D-M3-5): a frozen budget
+# whose native differs from the configuration is refused as phase_buffer_mismatch.
+MAAC_NATIVE = int(yaml.safe_load((REPO/'configs/algorithms/native.yaml').read_text(encoding='utf-8'))
+                  ['algorithms']['MAAC']['fixed']['buffer_length'])
+MAAC_RULE = {'MAAC': {'key': 'buffer_length', 'flag': '--buffer-length', 'native': MAAC_NATIVE,
                       'ram_gib_per_unit': 2.2/43800, 'base_ram_gib': 5.8, 'min_value': 8760},
              'MATD3': {'key': 'buffer_size', 'flag': '--buffer-size', 'native': 744600,
                        'ram_gib_per_unit': 35.8/744600, 'base_ram_gib': 4.2, 'min_value': 148920}}
@@ -196,7 +200,7 @@ def test_relaunch_keeps_frozen_buffers_and_only_refits_workers(tmp_path, monkeyp
 def test_run_stage_applies_frozen_buffer_once_and_keeps_execution_out_of_identity(tmp_path):
     manifest_path = _prepared(tmp_path)
     (manifest_path.parent/'stages/pilot_budget.json').write_text(json.dumps(
-        {'stage': 'pilot', 'buffers': {'MAAC': {'key': 'buffer_length', 'flag': '--buffer-length', 'native': 43800,
+        {'stage': 'pilot', 'buffers': {'MAAC': {'key': 'buffer_length', 'flag': '--buffer-length', 'native': MAAC_NATIVE,
                                                 'effective': 8760, 'reduced': True}}}), encoding='utf-8')
     algorithm_config = fc.load_algorithm_config(REPO/'configs/algorithms/native.yaml')
     good = _stage_learner(algorithm_config, 17)

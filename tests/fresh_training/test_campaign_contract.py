@@ -393,7 +393,8 @@ def test_replay_and_batch_are_declared_for_off_policy_backends(dag):
     for algorithm, flag in (('MATD3', '--buffer-size'), ('MAAC', '--buffer-length')):
         for treatment in (t for t in dag.treatments if t.algorithm == algorithm):
             args = treatment.native_arguments
-            assert args[args.index('--batch-size') + 1] == '256'
+            # MATD3 256; MAAC its author's 1024 (SPEC-015 D-M3-5): the configured value reaches the launcher.
+            assert args[args.index('--batch-size') + 1] == str(native['algorithms'][algorithm]['fixed']['batch_size'])
             assert flag in args
     import sys
     if str(REPO/'CityLearn/scripts') not in sys.path:

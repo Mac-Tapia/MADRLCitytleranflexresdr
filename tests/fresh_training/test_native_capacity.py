@@ -100,7 +100,7 @@ def test_native_config_has_no_clamps_and_declares_runtime_requirements():
     assert masac['fixed']['buffer_size'] >= 50
 
 
-def test_off_policy_replay_holds_five_episodes():
+def test_off_policy_replay_holds_five_episodes_or_the_whole_run():
     if str(SCRIPTS) not in sys.path:
         sys.path.insert(0, str(SCRIPTS))
     from citylearn_v3_training_common import effective_matd3_per_policy_buffer_size
@@ -109,7 +109,9 @@ def test_off_policy_replay_holds_five_episodes():
     assert total == 5*EPISODE*AGENTS == 744600
     per_policy = effective_matd3_per_policy_buffer_size(total, num_agents=AGENTS)
     assert per_policy == 5*EPISODE
-    assert int(native['MAAC']['fixed']['buffer_length']) == 5*EPISODE
+    # MAAC keeps its author's 1e6 transitions (SPEC-015 D-M3-5); the launcher's lossless bound
+    # still holds the whole 50-episode run.
+    assert int(native['MAAC']['fixed']['buffer_length']) >= 50*EPISODE + EPISODE
 
 
 def test_the_estimators_reproduce_the_historical_iquitos_v1_numbers():

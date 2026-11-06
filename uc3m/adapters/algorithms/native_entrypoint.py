@@ -19,6 +19,7 @@ import argparse
 import contextlib
 import importlib
 import json
+import math
 import runpy
 import sys
 import traceback
@@ -214,18 +215,45 @@ def measure_runtime_resources() -> dict:
     return {'ram_gib': ram, 'vram_gib': vram, 'torch_import_error': torch_error}
 
 
+# SPEC-015 D-M3-3: requirement = max(floor, ceil(1.10 x estimate)). The 10 % margin is the one the
+# earlier fixed numbers carried (72 GiB for a 65.3 GiB replay); the floor is the one already declared
+# for HAPPO and MAAC, which have no estimator. A design rule, not a measurement.
+REQUIREMENT_MARGIN = 1.10
+RAM_FLOOR_GIB = 8
+VRAM_FLOOR_GIB = 4
+
+
+def requirement_from_estimate(estimate_gib: float, floor_gib: int) -> int:
+    return max(int(floor_gib), math.ceil(REQUIREMENT_MARGIN*float(estimate_gib)))
+
+
+def _candidate_requirements(algorithm: str, requirements: dict, native_args) -> List[str]:
+    """Resolve a per-candidate VRAM requirement in place; a candidate without one is refused."""
+    by_candidate = requirements.pop('min_vram_gib_by_rnn_hidden_dim', None)
+    if by_candidate is None:
+        return []
+    value = _option(list(native_args or ()), '--rnn-hidden-dim')
+    declared = {int(k): float(v) for k, v in by_candidate.items()}
+    if value is None or not str(value).isdigit() or int(value) not in declared:
+        return [f'unsupported_candidate:{algorithm}:rnn_hidden_dim={value}']
+    requirements['min_vram_gib'] = declared[int(value)]
+    return []
+
+
 def check_runtime_resources(algorithm: str, requirements, *, episode_time_steps: int,
-                            measure=measure_runtime_resources) -> dict:
+                            measure=measure_runtime_resources, native_args=()) -> dict:
     """Refuse before training when measured RAM/VRAM is below the declared requirement.
 
     Requirements bind from ``applies_from_episode_time_steps`` (year-long stages);
     shorter smokes are measured and recorded but not refused here (the native
-    launchers still refuse their own allocations with the measured numbers).
+    launchers still refuse their own allocations with the measured numbers). A
+    requirement declared per candidate uses the attempt's own native argument.
     """
     requirements = dict(requirements or {})
+    candidate = _candidate_requirements(algorithm, requirements, native_args)
     measured = measure()
     enforced = int(episode_time_steps) >= int(requirements.get('applies_from_episode_time_steps', 0))
-    reasons = []
+    reasons = list(candidate) if enforced else []
     if measured.get('torch_import_error'):
         reasons.append('torch_import_failed')
     if enforced:
@@ -277,7 +305,8 @@ def main(argv=None) -> int:
         limits = frozen_observation_limits(load_normalizer(args.normalizer))
     script = trainer_script(root, args.algorithm)
     resources = check_runtime_resources(args.algorithm, _runtime_requirements(root, args.algorithm),
-                                        episode_time_steps=int(_option(native, '--episode-time-steps', '8760')))
+                                        episode_time_steps=int(_option(native, '--episode-time-steps', '8760')),
+                                        native_args=native)
     (attempt_root/'runtime_resources.json').write_text(json.dumps(resources, indent=2), encoding='utf-8')
     if not resources['accepted']:
         refused = {**record, 'verified': False, 'reasons': resources['reasons'], 'runtime_resources': resources}

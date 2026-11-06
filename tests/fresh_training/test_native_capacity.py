@@ -90,8 +90,10 @@ def test_native_config_has_no_clamps_and_declares_runtime_requirements():
     for name, row in native['algorithms'].items():
         assert 'native_clamps' not in row, name
         requirements = row['runtime_requirements']
-        assert set(requirements) >= {'min_ram_gib', 'min_vram_gib'}, name
-        assert requirements['min_ram_gib'] > 0 and requirements['min_vram_gib'] >= 0
+        # MASAC declares VRAM per candidate (SPEC-015); every other backend has one value.
+        vram = 'min_vram_gib_by_rnn_hidden_dim' if name == 'MASAC' else 'min_vram_gib'
+        assert set(requirements) >= {'min_ram_gib', vram}, name
+        assert requirements['min_ram_gib'] > 0
         assert row['optimizer_owners'], name          # owned by another session, kept
     masac = native['algorithms']['MASAC']
     assert masac['fixed']['critic_batch_size'] == 32 and masac['fixed']['critic_train_steps'] == 1
@@ -101,23 +103,27 @@ def test_native_config_has_no_clamps_and_declares_runtime_requirements():
 def test_off_policy_replay_holds_five_episodes():
     if str(SCRIPTS) not in sys.path:
         sys.path.insert(0, str(SCRIPTS))
-    from citylearn_v3_training_common import effective_matd3_per_policy_buffer_size, estimate_matd3_replay_ram_gib
+    from citylearn_v3_training_common import effective_matd3_per_policy_buffer_size
     native = _native()['algorithms']
     total = int(native['MATD3']['fixed']['buffer_size'])
     assert total == 5*EPISODE*AGENTS == 744600
     per_policy = effective_matd3_per_policy_buffer_size(total, num_agents=AGENTS)
     assert per_policy == 5*EPISODE
-    ram = estimate_matd3_replay_ram_gib(per_policy_buffer=per_policy, num_agents=AGENTS, obs_dim=OBS,
-                                        share_obs_dim=JOINT_OBS, act_dim=ACT)
-    assert native['MATD3']['runtime_requirements']['min_ram_gib'] >= ram
     assert int(native['MAAC']['fixed']['buffer_length']) == 5*EPISODE
 
 
-def test_masac_requirement_covers_its_replay_estimate():
-    masac = _masac()
-    replay = masac.estimate_replay_buffer_gib(buffer_size=50, episode_limit=EPISODE, n_agents=AGENTS,
-                                              n_actions=N_DISCRETE, obs_shape=OBS, state_shape=STATE)
-    assert _native()['algorithms']['MASAC']['runtime_requirements']['min_ram_gib'] >= replay
+def test_the_estimators_reproduce_the_historical_iquitos_v1_numbers():
+    # With the v1 dims above the estimators give the numbers that were declared then; the current
+    # requirements are bound to the ACTIVE dataset in test_runtime_requirements.py.
+    if str(SCRIPTS) not in sys.path:
+        sys.path.insert(0, str(SCRIPTS))
+    from citylearn_v3_training_common import effective_matd3_per_policy_buffer_size, estimate_matd3_replay_ram_gib
+    per_policy = effective_matd3_per_policy_buffer_size(744600, num_agents=AGENTS)
+    assert estimate_matd3_replay_ram_gib(per_policy_buffer=per_policy, num_agents=AGENTS, obs_dim=OBS,
+                                         share_obs_dim=JOINT_OBS, act_dim=ACT) == pytest.approx(35.8, abs=0.05)
+    replay = _masac().estimate_replay_buffer_gib(buffer_size=50, episode_limit=EPISODE, n_agents=AGENTS,
+                                                 n_actions=N_DISCRETE, obs_shape=OBS, state_shape=STATE)
+    assert replay == pytest.approx(65.3, abs=0.05)
 
 
 # --- pre-launch resource check ----------------------------------------------------------------------
@@ -129,16 +135,17 @@ def _requirements():
 def test_resource_check_refuses_insufficient_ram_and_vram():
     from uc3m.adapters.algorithms import native_entrypoint as ne
     requirements = _requirements()['MASAC']
-    low_ram = ne.check_runtime_resources('MASAC', requirements, episode_time_steps=EPISODE,
-                                         measure=lambda: {'ram_gib': 12.0, 'vram_gib': 200.0})
+    candidate = ['--rnn-hidden-dim', '128']
+    low_ram = ne.check_runtime_resources('MASAC', requirements, episode_time_steps=EPISODE, native_args=candidate,
+                                         measure=lambda: {'ram_gib': 4.0, 'vram_gib': 200.0})
     assert not low_ram['accepted'] and 'insufficient_resources:MASAC:ram' in low_ram['reasons']
-    low_vram = ne.check_runtime_resources('MASAC', requirements, episode_time_steps=EPISODE,
+    low_vram = ne.check_runtime_resources('MASAC', requirements, episode_time_steps=EPISODE, native_args=candidate,
                                           measure=lambda: {'ram_gib': 500.0, 'vram_gib': 8.0})
     assert 'insufficient_resources:MASAC:vram' in low_vram['reasons']
-    no_gpu = ne.check_runtime_resources('MASAC', requirements, episode_time_steps=EPISODE,
+    no_gpu = ne.check_runtime_resources('MASAC', requirements, episode_time_steps=EPISODE, native_args=candidate,
                                         measure=lambda: {'ram_gib': 500.0, 'vram_gib': None})
     assert 'insufficient_resources:MASAC:vram' in no_gpu['reasons']
-    ok = ne.check_runtime_resources('MASAC', requirements, episode_time_steps=EPISODE,
+    ok = ne.check_runtime_resources('MASAC', requirements, episode_time_steps=EPISODE, native_args=candidate,
                                     measure=lambda: {'ram_gib': 500.0, 'vram_gib': 200.0})
     assert ok['accepted'] and ok['reasons'] == [] and ok['measured']['ram_gib'] == 500.0
 

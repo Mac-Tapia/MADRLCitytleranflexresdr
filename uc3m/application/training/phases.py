@@ -40,6 +40,15 @@ def group_by_phase(treatments: Sequence[Mapping[str, Any]],
     return groups
 
 
+def requirement_ceiling(requirement: Mapping[str, Any], what: str) -> float:
+    """The most a worker of this algorithm may need. A per-candidate VRAM requirement reserves its
+    largest candidate: any candidate of the grid may run in the phase, and none may count as zero."""
+    by_candidate = requirement.get(f'min_{what}_gib_by_rnn_hidden_dim')
+    if by_candidate:
+        return max(float(v) for v in by_candidate.values())
+    return float(requirement.get(f'min_{what}_gib', 0) or 0)
+
+
 def worker_limit(algorithms_in_phase: Sequence[str], runtime_requirements: Mapping[str, Mapping[str, Any]],
                  measured: Mapping[str, Any], *, episode_time_steps: int) -> Dict[str, Any]:
     """Concurrent treatments of one phase that fit the measured RAM, VRAM and CPUs.
@@ -57,7 +66,7 @@ def worker_limit(algorithms_in_phase: Sequence[str], runtime_requirements: Mappi
             requirement = dict(runtime_requirements.get(algorithm) or {})
             if int(episode_time_steps) < int(requirement.get('applies_from_episode_time_steps', 0)):
                 continue
-            value = float(requirement.get(f'min_{what}_gib', 0) or 0)
+            value = requirement_ceiling(requirement, what)
             if value > need:
                 need, heaviest = value, algorithm
         if need <= 0:

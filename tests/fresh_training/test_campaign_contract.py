@@ -398,14 +398,11 @@ def test_replay_and_batch_are_declared_for_off_policy_backends(dag):
     import sys
     if str(REPO/'CityLearn/scripts') not in sys.path:
         sys.path.insert(0, str(REPO/'CityLearn/scripts'))
-    from citylearn_v3_training_common import effective_matd3_per_policy_buffer_size, estimate_matd3_replay_ram_gib
+    from citylearn_v3_training_common import effective_matd3_per_policy_buffer_size
     total = int(native['algorithms']['MATD3']['fixed']['buffer_size'])
     per_policy = effective_matd3_per_policy_buffer_size(total, num_agents=17)
     assert per_policy == 5*8760   # five 8760-step episodes per policy, the MAAC horizon
-    # Measured iquitos_v1 dims: padded obs 357, joint obs 6069, action 44 (see test_native_capacity.py).
-    ram = estimate_matd3_replay_ram_gib(per_policy_buffer=per_policy, num_agents=17, obs_dim=357,
-                                        share_obs_dim=6069, act_dim=44)
-    assert native['algorithms']['MATD3']['runtime_requirements']['min_ram_gib'] >= ram
+    # The requirement is bound to the active dataset's measured dims in test_runtime_requirements.py.
     assert int(native['algorithms']['MAAC']['fixed']['buffer_length']) >= 5*8760
 
 

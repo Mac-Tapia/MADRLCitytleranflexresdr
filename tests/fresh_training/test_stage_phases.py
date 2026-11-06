@@ -121,16 +121,26 @@ def test_prepare_prints_the_plan_per_phase(tmp_path, monkeypatch, capsys):
     assert report['measured_resources']['cpu_count'] == 8
 
 
-def test_pilot_on_an_80_gb_gpu_reports_masac_vram_refusal(tmp_path, monkeypatch, capsys):
-    # A100 80 GB exposes ~74.5 GiB: MASAC (82 GiB VRAM for T=8760) does not fit, so phase 1
-    # has no worker and the plan says why; this is the measurement the pilot is for.
+def test_pilot_on_an_80_gb_gpu_fits_one_masac_worker_and_keeps_phase_two(tmp_path, monkeypatch, capsys):
+    # A100 80 GB exposes ~74.5 GiB. On iquitos_v1, MASAC needed 82 GiB and phase 1 had no worker.
+    # On iquitos_v5 its largest candidate needs 71 GiB (SPEC-015): one worker fits. Phase 2 keeps
+    # the tuned Colab plan of two workers (owner 2026-11-06: not to be changed).
     from uc3m.application.training import cli
     monkeypatch.setattr(cli, '_artifact_root', lambda root, cfg: tmp_path/'campaign')
     monkeypatch.setattr(cli, '_measured_resources', lambda: {'ram_gib': 83.0, 'vram_gib': 74.5, 'cpu_count': 12})
     assert cli.main(['--config', str(CONFIG), '--stage', 'prepare']) == 0
     pilot = json.loads(capsys.readouterr().out.strip().splitlines()[-1])['phase_plan']['pilot']
-    assert pilot[0]['workers'] == 0 and 'insufficient_resources:MASAC:vram' in pilot[0]['reasons']
+    assert pilot[0]['workers'] == 1 and pilot[0]['reasons'] == []
     assert pilot[1]['workers'] == 2
+
+
+def test_a_40_gb_gpu_still_refuses_masac_with_its_reason(tmp_path, monkeypatch, capsys):
+    from uc3m.application.training import cli
+    monkeypatch.setattr(cli, '_artifact_root', lambda root, cfg: tmp_path/'campaign')
+    monkeypatch.setattr(cli, '_measured_resources', lambda: {'ram_gib': 83.0, 'vram_gib': 37.25, 'cpu_count': 12})
+    assert cli.main(['--config', str(CONFIG), '--stage', 'prepare']) == 0
+    pilot = json.loads(capsys.readouterr().out.strip().splitlines()[-1])['phase_plan']['pilot']
+    assert pilot[0]['workers'] == 0 and 'insufficient_resources:MASAC:vram' in pilot[0]['reasons']
 
 
 # --- Phase budget: buffers sized to the parallel share, frozen per stage ------------------------------
@@ -160,7 +170,8 @@ def test_first_execute_freezes_buffers_and_records_adjustments(tmp_path, monkeyp
     assert matd3['native'] == 744600 and 148920 <= matd3['effective'] < 744600 and matd3['reduced'] is True
     assert {'algorithm': 'MATD3', 'key': 'buffer_size', 'native': 744600,
             'effective': matd3['effective']} in budget['adjustments']
-    assert budget['phases'][1]['workers'] == 1 and budget['phases'][0]['workers'] == 0  # MASAC needs 72 GiB
+    # Phase 1 fits one worker: MASAC's largest candidate needs 9 GiB RAM and 71 GiB VRAM here.
+    assert budget['phases'][1]['workers'] == 1 and budget['phases'][0]['workers'] == 1
     assert 'HAPPO' not in frozen['buffers'] and 'MASAC' not in frozen['buffers']
     execution = budget['execution']['MATD3']
     assert execution['torch_threads'] >= 1 and 0 < execution['cuda_memory_fraction'] <= 1

@@ -57,7 +57,14 @@ Con las cifras de `v1`, el guardián rechazaría MASAC en cualquier entorno disp
   - La conformidad con `LearnerPort` ya estaba verificada en `tests/contract/test_ports_contract.py` (FR-003.2).
   - La cancelación (FR-003.5) se implementa con `uc3m/adapters/process_tree.py`. Un intento interrumpido, por Ctrl+C, SIGTERM o la muerte del padre, termina su árbol completo; la etapa no lanza un intento de reemplazo y el relanzamiento empieza ese tratamiento desde cero.
   - Verificado por `tests/integration/test_training_interruption.py`, en Windows, en Linux y en el CI. El defecto se reprodujo antes del arreglo.
-- **FR-015.5 a FR-015.7** — Pendientes del módulo según la hoja de ruta: `save_training_state` en los cuatro lanzadores (SPEC-004), descomposición de la recompensa en los registros (SPEC-002) y D03. Se detallan al empezar cada uno.
+- **FR-015.5** — Estado de entrenamiento en los 4 lanzadores (SPEC-004). Cada lanzador escribe `training_state.pt` con:
+  - el esquema `madrl.training_state.v1`;
+  - exactamente los optimizadores que declara `native.yaml`, que son los que se observan actualizándose, cada uno con sus momentos: HAPPO 18, MASAC 4, MATD3 34 y MAAC 18;
+  - el RNG de torch, CUDA, numpy y python;
+  - ninguna réplica.
+
+  Lo verifica `test_every_launcher_saves_its_training_state` sobre una corrida real corta de cada algoritmo. La reanudación con igualdad de trayectoria (FR-004.4) queda sustituida por la regla aprobada de no reanudar: cada intento empieza en el episodio 0.
+- **FR-015.6 y FR-015.7** — Pendientes del módulo según la hoja de ruta: descomposición de la recompensa en los registros (SPEC-002) y D03. Se detallan al empezar cada uno.
 
 ## Fuera de alcance
 

@@ -51,3 +51,25 @@ def test_real_optimizer_updates_and_policy_reload(algorithm, native_attempts):
     assert evidence['effective_axis_weights'] == {'flex': 0.60, 'carbon': 0.15, 'cost': 0.25}
     assert evidence['axis_weights_source']['kind'] == 'scenario_catalog'
     assert evidence['supervision']['constraint_dominance_ratio'] is not None
+
+
+@pytest.mark.parametrize('algorithm', ['HAPPO', 'MASAC', 'MATD3', 'MAAC'])
+def test_every_launcher_saves_its_training_state(algorithm, native_attempts):
+    # SPEC-015 FR-015.5: the four launchers write training_state.pt next to their weights, with the
+    # optimizers native.yaml declares (the same ones observed updating) and the RNG states. The
+    # campaign never resumes (remediacion_integrada.md: every attempt starts at episode zero), so
+    # the replay is not stored; the state serves inference, audit and backup.
+    import torch
+    from uc3m.application.training import fresh_campaign as fc
+    attempt_root = native_attempts[algorithm]
+    evidence = json.loads((attempt_root/'learning_evidence.json').read_text(encoding='utf-8'))
+    states = sorted((attempt_root/'native').rglob('training_state.pt'))
+    assert len(states) == 1, states
+    payload = torch.load(states[0], map_location='cpu', weights_only=False)
+    assert payload['schema'] == 'madrl.training_state.v1'
+    declared = set(fc.expected_optimizer_owners(
+        algorithm, fc.load_algorithm_config(REPO/'configs/algorithms/native.yaml'), n_agents=17))
+    assert set(payload['optimizer_states']) == declared == set(evidence['successful_optimizer_updates_by_owner'])
+    assert all(payload['optimizer_states'][owner]['state'] for owner in declared), 'an optimizer saved no moments'
+    assert {'torch', 'numpy', 'python'} <= set(payload['rng_states'])
+    assert payload['replay'] is None

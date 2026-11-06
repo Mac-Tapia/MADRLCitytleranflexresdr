@@ -51,6 +51,12 @@ def test_real_optimizer_updates_and_policy_reload(algorithm, native_attempts):
     assert evidence['effective_axis_weights'] == {'flex': 0.60, 'carbon': 0.15, 'cost': 0.25}
     assert evidence['axis_weights_source']['kind'] == 'scenario_catalog'
     assert evidence['supervision']['constraint_dominance_ratio'] is not None
+    # SPEC-015 FR-015.6: every step of the real run reconciles its terms with the reward received.
+    reconciliation = evidence['supervision']['reward_reconciliation']
+    assert reconciliation['steps'] == reconciliation['returned_checked'] >= EPISODES*EPISODE_STEPS
+    assert reconciliation['unreconciled_steps'] == 0 and reconciliation['aggregation'] == 'team_mean'
+    supervision = json.loads((attempt_root/'supervision.json').read_text(encoding='utf-8'))['supervision']
+    assert all(len(e['building_reward_terms']) == 17 for e in supervision['episodes_detail'])
 
 
 @pytest.mark.parametrize('algorithm', ['HAPPO', 'MASAC', 'MATD3', 'MAAC'])

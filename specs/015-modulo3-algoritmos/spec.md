@@ -39,6 +39,15 @@ Con las cifras de `v1`, el guardián rechazaría MASAC en cualquier entorno disp
   | MAAC (`MAAC/main.py`) | búfer 10⁶, lote 1 024, 4 actualizaciones cada 100 pasos, 12 entornos | **antes:** búfer 43 800, lote 256, 1 actualización por paso; **ahora:** igual que el autor, con 1 entorno |
 
   MAAC era el único por debajo de su autor y pasa a su esquema (elección del propietario). Su búfer queda acotado sin pérdida a la corrida: 50 × 8 760 + 8 760 = 446 760 transiciones, unos 2,3 GiB sobre `iquitos_v5`, dentro de su reserva de 8 GiB. Hay **una sola reducción**, declarada y elegida por el propietario: 1 entorno en paralelo en HAPPO y MAAC, frente a 20 y 12 del autor. Cada copia es el distrito entero y el plan de Colab no cambia. Con episodios de 8 760 pasos, HAPPO reúne más muestras por actualización que su autor (8 760 frente a 4 000). Ningún algoritmo declara `phase_buffer`: la memoria insuficiente rechaza la fase y nunca encoge un búfer.
+- **D-M3-6 (propietario, 2026-11-06): D03, los 4 conservan su interfaz de acción nativa, con máscaras.**
+  - **Interfaces:** HAPPO y MATD3 actúan en continuo sobre todos sus equipos a la vez. MASAC y MAAC actúan en discreto en modo `axis`: un equipo por paso, a −1, 0 o +1.
+  - **Defecto medido en `iquitos_v5`:** las acciones se rellenan hasta 4 dimensiones, pero 16 edificios tienen solo 2 equipos, batería y lavadora. En ellos, 2 de las 4 salidas continuas no actúan, y 4 de las 9 acciones discretas mueven equipos que no existen y equivalen a no hacer nada.
+  - **Lo que fija la decisión:**
+    - ningún agente puede elegir un equipo que su edificio no tiene;
+    - se registra por backend el mapa acción → equipo (`D_i^(b)` de la tupla);
+    - la diferencia entre continuo y discreto se declara como confusión;
+    - la tesis compara cada algoritmo con su interfaz nativa.
+  - **Coherencia con D-M3-5:** las acciones pertenecen a la operación de cada equipo, un equipo por acción y no agrupados (propietario, 2026-11-06; SPEC-016 D-V6-13).
 - **D-M3-3: regla del requisito.** `requisito = max(piso, techo(1,10 × estimación))`. El margen de 10 % reproduce el que tenían las cifras anteriores (72 frente a 65,3 GiB). El piso es de 8 GiB de RAM y 4 GiB de VRAM, el ya declarado para HAPPO y MAAC, que no tienen estimador. Es regla de diseño, no una medida.
 
 ## Requisitos funcionales
@@ -64,7 +73,20 @@ Con las cifras de `v1`, el guardián rechazaría MASAC en cualquier entorno disp
   - ninguna réplica.
 
   Lo verifica `test_every_launcher_saves_its_training_state` sobre una corrida real corta de cada algoritmo. La reanudación con igualdad de trayectoria (FR-004.4) queda sustituida por la regla aprobada de no reanudar: cada intento empieza en el episodio 0.
-- **FR-015.6 y FR-015.7** — Pendientes del módulo según la hoja de ruta: descomposición de la recompensa en los registros (SPEC-002) y D03. Se detallan al empezar cada uno.
+- **FR-015.6** — Descomposición de la recompensa en los registros de entrenamiento (SPEC-002 FR-002.5).
+  - **Por episodio:** cada intento registra los términos escalados de cada edificio: flex, CO₂, costo, EV, BESS y total.
+  - **Por paso:** comprueba que la suma de los términos iguala la recompensa con la que aprendió el agente.
+  - **Efecto en el intento:** si algún paso no cuadra, el intento queda sin verificar.
+  - **Verificación:** simulador real, un caso falsificado y la corrida real de los 4 algoritmos.
+- **FR-015.7** — D03, según D-M3-6. Pendiente de implementar.
+  - **Equipos reales:** se derivan por edificio de `action_names` del esquema, nunca de un relleno fijo.
+  - **Discretos:**
+    - MASAC recibe `avail_actions` por agente, la máscara que su backend SMAC ya admite, y nunca elige acciones de equipos inexistentes;
+    - MAAC recibe por agente un espacio discreto del tamaño real, que su backend admite heterogéneo.
+  - **Continuos:** una salida que no corresponde a ningún equipo queda declarada como inerte y se registra, sin cambiar la capacidad nativa.
+  - **Registro:** cada intento guarda el mapa acción → equipo de su backend.
+  - **Prueba:** sobre el dataset activo, ningún agente discreto puede seleccionar una acción sin equipo, y el mapa coincide con `action_names` en los 17 edificios.
+  - **Generalidad:** el mismo mecanismo sirve para `iquitos_v6`, con aire acondicionado, cada cargador y BESS.
 
 ## Fuera de alcance
 

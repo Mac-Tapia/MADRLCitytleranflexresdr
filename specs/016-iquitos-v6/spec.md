@@ -39,6 +39,7 @@ No existe ningún perfil horario medido. B01 no tiene factura medida: `B_01.csv`
 | D-V6-10 | **Tensión de carga** de 220 V, la nominal de baja tensión en Perú |
 | D-V6-11 | **Sin entrenar** hasta cerrar todos los módulos |
 | D-V6-12 | **Un agente por edificio:** cada agente controla todo el aire acondicionado, los cargadores y el BESS de su edificio; no se divide por pisos |
+| D-V6-13 | **Acciones según la operación de cada equipo** (propietario, 2026-11-06): cada equipo controlable es una acción propia con su sentido físico: el BESS carga o descarga, cada cargador fija la potencia hacia su vehículo y el aire acondicionado enfría dentro del límite de confort. Los cargadores no se agrupan. Los 4 MADRL conservan su interfaz nativa con máscaras (SPEC-015 D-M3-6) |
 
 ## Requisitos funcionales
 

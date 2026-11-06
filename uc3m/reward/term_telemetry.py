@@ -246,6 +246,41 @@ def _abs_sum(values) -> float:
     return math.fsum(abs(float(v)) for v in values)
 
 
+REWARD_TERMS = SIMPLEX_AXES + SERVICE_TERMS + ("total",)
+# The terms are rebuilt in float64 from the same breakdown: they must equal local_reward exactly
+# up to rounding. The returned reward passes through float32 in CityLearnDecPOMDPEnv.
+TERM_TOLERANCE = 1e-9
+RETURNED_REWARD_TOLERANCE = 1e-5
+
+
+def _empty_reconciliation() -> dict:
+    return {"steps": 0, "returned_checked": 0, "unreconciled_steps": 0, "max_abs_term_error": 0.0,
+            "max_abs_returned_error": 0.0, "aggregations": []}
+
+
+def _reconciliation_report(record: Mapping[str, Any]) -> dict:
+    aggregations = list(record["aggregations"])
+    return {**{k: v for k, v in record.items() if k != "aggregations"},
+            "aggregation": aggregations[0] if len(aggregations) == 1 else (aggregations or None),
+            "term_tolerance": TERM_TOLERANCE, "returned_reward_tolerance": RETURNED_REWARD_TOLERANCE}
+
+
+def _aggregate(locals_: Sequence[float], aggregation: str = None):
+    """Reward each agent receives from the local rewards (CityLearnDecPOMDPEnv._aggregate_rewards)."""
+    if not locals_:
+        return []
+    mean = math.fsum(locals_) / len(locals_)
+    if aggregation in (None, "team_mean"):
+        return [mean] * len(locals_)
+    if aggregation == "individual":
+        return list(locals_)
+    if aggregation == "team_sum":
+        return [math.fsum(locals_)] * len(locals_)
+    if aggregation == "mixed":
+        return [0.7 * v + 0.3 * mean for v in locals_]
+    return None
+
+
 class RewardTelemetryRecorder:
     """Accumulate reward breakdowns and actions into episode supervision summaries.
 
@@ -260,6 +295,7 @@ class RewardTelemetryRecorder:
         self.steps_per_day = int(steps_per_day)
         self.episodes: List[dict] = []
         self._weights = None
+        self._attempt_reconciliation = _empty_reconciliation()
         self._reset_episode()
 
     def _reset_episode(self) -> None:
@@ -274,13 +310,59 @@ class RewardTelemetryRecorder:
         self._count = 0
         self._actions: dict = {}
         self._series: dict = {}
+        self._building_terms: dict = {}
+        self._reconciliation = _empty_reconciliation()
 
-    def record_step(self, breakdown: Mapping[str, Any], actions: Mapping[str, Sequence[float]] = None) -> None:
+    def _record_terms(self, breakdown: Mapping[str, Any], components: Sequence[Mapping[str, Any]],
+                      returned_rewards: Sequence[float] = None, aggregation: str = None) -> None:
+        """Scaled terms per building and the check that they add up to the reward that was returned."""
+        scale = float(breakdown.get("reward_scale", 1.0))
+        locals_ = []
+        term_error = 0.0
+        for index, component in enumerate(components):
+            terms = _local_terms(component, scale)
+            total = math.fsum(terms[name] for name in REWARD_TERMS[:-1])
+            terms["total"] = total
+            local = float(component.get("local_reward", total))
+            term_error = max(term_error, abs(total - local))
+            locals_.append(local)
+            sums = self._building_terms.setdefault(index, {name: 0.0 for name in REWARD_TERMS})
+            for name in REWARD_TERMS:
+                sums[name] += terms[name]
+        returned_error = None
+        if returned_rewards is not None:
+            expected = _aggregate(locals_, aggregation)
+            values = [float(v) for v in returned_rewards]
+            if expected is not None and len(values) == len(expected):
+                returned_error = max((abs(a - b) for a, b in zip(values, expected)), default=0.0)
+                scale_ref = max([1.0] + [abs(v) for v in expected])
+                mismatch = returned_error > RETURNED_REWARD_TOLERANCE*scale_ref
+            else:
+                mismatch = True
+        else:
+            mismatch = False
+        for record in (self._reconciliation, self._attempt_reconciliation):
+            record["steps"] += 1
+            record["max_abs_term_error"] = max(record["max_abs_term_error"], term_error)
+            if term_error > TERM_TOLERANCE:
+                record["unreconciled_steps"] += 1
+            if returned_rewards is not None:
+                record["returned_checked"] += 1
+                if returned_error is not None:
+                    record["max_abs_returned_error"] = max(record["max_abs_returned_error"], returned_error)
+                if mismatch and term_error <= TERM_TOLERANCE:
+                    record["unreconciled_steps"] += 1
+            if aggregation is not None and aggregation not in record["aggregations"]:
+                record["aggregations"].append(aggregation)
+
+    def record_step(self, breakdown: Mapping[str, Any], actions: Mapping[str, Sequence[float]] = None, *,
+                    returned_rewards: Sequence[float] = None, aggregation: str = None) -> None:
         components = (breakdown or {}).get("components") or []
         if not components:
             return
         self._weights = {axis: float(breakdown["axis_weights"][axis]) for axis in SIMPLEX_AXES}
         self._steps += 1
+        self._record_terms(breakdown, components, returned_rewards, aggregation)
         for component in components:
             self._count += 1
             for axis in SIMPLEX_AXES:
@@ -371,6 +453,15 @@ class RewardTelemetryRecorder:
             "thesis_indicators": self._episode_indicators(),
             "citylearn_v3": citylearn_v3,
         }
+        steps = max(self._steps, 1)
+        buildings = {f"building_{i}": {name: value / steps for name, value in sums.items()}
+                     for i, sums in sorted(self._building_terms.items())}
+        summary["building_reward_terms"] = buildings
+        summary["reward_terms_mean"] = (
+            {name: math.fsum(row[name] for row in buildings.values()) / len(buildings) for name in REWARD_TERMS}
+            if buildings else {}
+        )
+        summary["reward_reconciliation"] = _reconciliation_report(self._reconciliation)
         self.episodes.append(summary)
         self._reset_episode()
         return summary
@@ -394,6 +485,7 @@ class RewardTelemetryRecorder:
             "saturation_fraction": (math.fsum(saturation) / len(saturation)) if saturation else None,
             "episodes_detail": list(self.episodes),
             "kpi_trend": self.kpi_trend(),
+            "reward_reconciliation": _reconciliation_report(self._attempt_reconciliation),
         }
 
     def kpi_trend(self) -> dict:

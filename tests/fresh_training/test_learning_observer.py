@@ -7,6 +7,7 @@ test_real_learning.py and needs the fresh campaign splits.
 import json
 from pathlib import Path
 
+import numpy as np
 import pytest
 import torch
 
@@ -194,6 +195,58 @@ def test_real_environment_reward_reads_the_derived_catalog(monkeypatch, tmp_path
     assert report['axis_weights_source']['sha256'] == derived['sha256']
     assert report['reward_aggregation'] == ['team_mean']
     assert report['supervision']['steps'] == 3
+
+
+REWARD_TERMS = ('flex', 'carbon', 'cost', 'ev', 'bess_cycle', 'total')
+
+
+def test_supervision_decomposes_the_reward_by_building_and_reconciles_it(monkeypatch):
+    """SPEC-015 FR-015.6 / SPEC-002 FR-002.5: every episode records each building's scaled reward terms
+    and every step checks that the terms add up to the reward the agents received."""
+    from citylearn.v3 import make_citylearn_v3_env
+    monkeypatch.setenv('UC3M_SCENARIO_CATALOG', str(REPO/'configs/scenarios.yaml'))
+    schema = REPO/'data/campaigns/iquitos_v5/splits/train_2023/schema.json'
+    env = make_citylearn_v3_env(schema_path=str(schema), scenario='E2', seed=0, episode_time_steps=24,
+                                madrl_algorithm='MATD3', normalize_observations=True)
+    supervisor = ne.RewardSupervisor()
+    returned = []
+    with supervisor.installed():
+        env.reset()
+        for _ in range(23):
+            rewards = env.step({agent: env.action_space(agent).sample() for agent in env.possible_agents})[1]
+            returned.append(float(np.mean(list(rewards.values()))))
+    report = supervisor.report()['supervision']
+    episode = report['episodes_detail'][0]
+    terms = episode['building_reward_terms']
+    assert len(terms) == 17 and all(set(REWARD_TERMS) == set(row) for row in terms.values())
+    for row in terms.values():
+        parts = sum(row[name] for name in REWARD_TERMS if name != 'total')
+        assert row['total'] == pytest.approx(parts, abs=1e-9)
+    # team_mean: the mean of the buildings' totals is the reward every agent received.
+    district = episode['reward_terms_mean']
+    assert district['total'] == pytest.approx(float(np.mean(returned)), rel=1e-5, abs=1e-6)
+    reconciliation = episode['reward_reconciliation']
+    assert reconciliation['steps'] == reconciliation['returned_checked'] == 23
+    assert reconciliation['unreconciled_steps'] == 0 and reconciliation['aggregation'] == 'team_mean'
+    assert reconciliation['max_abs_term_error'] <= 1e-9
+    attempt = report['reward_reconciliation']
+    assert attempt['steps'] == 23 and attempt['unreconciled_steps'] == 0
+
+
+def test_a_reward_that_does_not_match_its_terms_is_reported():
+    from uc3m.reward.term_telemetry import RewardTelemetryRecorder
+    component = {'weighted_flex': 0.2, 'weighted_carbon': -0.1, 'weighted_cost': 0.05, 'ev': -0.01,
+                 'bess_cycle': -0.02, 'flex': 0.5, 'carbon': -0.4, 'cost': 0.2, 'local_reward': 0.12,
+                 'net': 4.0, 'baseline_net': 5.0, 'price': 0.2, 'carbon_intensity': 0.5}
+    breakdown = {'axis_weights': {'flex': 0.4, 'carbon': 0.25, 'cost': 0.25}, 'reward_scale': 1.0,
+                 'components': [component, dict(component)]}
+    recorder = RewardTelemetryRecorder()
+    recorder.record_step(breakdown, returned_rewards=[0.12, 0.12], aggregation='team_mean')
+    recorder.record_step(breakdown, returned_rewards=[0.50, 0.50], aggregation='team_mean')  # not the terms
+    episode = recorder.close_episode()
+    assert episode['reward_reconciliation']['unreconciled_steps'] == 1
+    assert episode['reward_reconciliation']['max_abs_returned_error'] == pytest.approx(0.38)
+    assert recorder.summary()['reward_reconciliation']['unreconciled_steps'] == 1
 
 
 def test_supervision_records_every_kpi_layer_per_episode(monkeypatch):

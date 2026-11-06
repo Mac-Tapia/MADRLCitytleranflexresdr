@@ -117,7 +117,7 @@ class RewardSupervisor:
         if self._source is None and source:
             self._source = dict(source)
 
-    def _after_step(self, env, actions) -> None:
+    def _after_step(self, env, actions, result=None) -> None:
         aggregation = str(getattr(env, 'reward_aggregation', None))
         if aggregation not in self._aggregations:
             self._aggregations.append(aggregation)
@@ -127,7 +127,11 @@ class RewardSupervisor:
             return
         self.observe_reward(getattr(reward_function, 'axis_weights', None),
                             getattr(reward_function, 'axis_weights_source', None))
-        self.recorder.record_step(getattr(reward_function, '_last_component_breakdown', None), actions=actions)
+        # SPEC-015 FR-015.6: the rewards the agents received, in agent order, reconcile the terms.
+        rewards = result[1] if isinstance(result, tuple) and len(result) > 1 else None
+        returned = list(rewards.values()) if isinstance(rewards, dict) and rewards else None
+        self.recorder.record_step(getattr(reward_function, '_last_component_breakdown', None), actions=actions,
+                                  returned_rewards=returned, aggregation=aggregation)
 
     @contextlib.contextmanager
     def installed(self):
@@ -137,7 +141,7 @@ class RewardSupervisor:
 
         def step(env, actions):
             result = original_step(env, actions)
-            supervisor._after_step(env, actions)
+            supervisor._after_step(env, actions, result)
             return result
 
         def reset(env, *args, **kwargs):
@@ -377,10 +381,16 @@ def main(argv=None) -> int:
             reasons.append(f"reward_aggregation:{runtime['reward_aggregation']}")
         if len(runtime['effective_axis_weights_seen']) > 1:
             reasons.append('inconsistent_runtime_weights')
+        # SPEC-015 FR-015.6: the recorded terms must add up to the reward the agents learned from.
+        reconciliation = runtime['supervision'].get('reward_reconciliation') or {}
+        if (not reconciliation.get('steps') or reconciliation.get('unreconciled_steps')
+                or reconciliation.get('returned_checked') != reconciliation.get('steps')):
+            reasons.append('reward_terms_do_not_reconcile')
         summary = {k: v for k, v in runtime['supervision'].items() if k != 'episodes_detail'}
         summary['episode_kpis'] = [{'episode': e['episode'], 'steps': e['steps'],
                                     'thesis_indicators_district': (e.get('thesis_indicators') or {}).get('district'),
-                                    'comparable_kpi_gains': (e.get('citylearn_v3') or {}).get('gains')}
+                                    'comparable_kpi_gains': (e.get('citylearn_v3') or {}).get('gains'),
+                                    'reward_terms_mean': e.get('reward_terms_mean')}
                                    for e in runtime['supervision'].get('episodes_detail', [])]
         result = {**evidence.as_dict(), 'verified': evidence.verified and not reasons and not record['salvage']
                   and record['exit_code'] == 0 and runtime['reward_aggregation'] == ['team_mean'],

@@ -93,3 +93,23 @@ Registro detallado de decisiones (`Ruling:`) de `-ff`: `.superpowers/sdd/remedia
 - **Defecto de Linux corregido:** `fresh_policy._under` rechazaba toda entrada de campaña en rutas absolutas POSIX. Afectaba a Colab.
 - **Pendiente:** entrenar sin B01 (fuga de 2023), D04 y los supuestos económicos sin fuente.
 - **Cierre del módulo 2 (2026-11-06):** puerta aprobada sobre `f27b8592`, 1 612 pruebas en 46 min. S6, S8 y S9 cumplen; S10 y S11 parciales (tabla de `remediacion_integrada.md`).
+
+## Entrada propia de la sesión `-e0`: módulo 3, pausa del 2026-11-06
+
+El propietario suspendió el equipo. Ninguna prueba ni proceso quedó en marcha.
+
+- **Commits locales, sin publicar desde `ad8bbae0`:**
+  - De esta sesión: `fc1fdd95` (D-M3-5, capacidad del autor), `a2740ac1` (FR-015.4, cancelación de hijos), `646b2f8d` (FR-015.5, estado de entrenamiento) y `a9b5620c` (FR-015.6, recompensa por edificio y cuadre por paso, más las decisiones de D03).
+  - Previos: 13 commits, hasta `a7733a6b`.
+- **En curso, sin commit: FR-015.7 (D03, D-M3-6, interfaz nativa con máscaras).**
+  - **Archivos:**
+    - Submódulo `CityLearn/`, sin commit ni push: `scripts/citylearn_v3_training_common.py`, con `discrete_action_rows_by_agent`, `discrete_action_mask_by_agent` y `discrete_action_map()`; `get_avail_agent_actions` con la máscara; MAAC con un espacio por agente y `global_discrete_index`. También `scripts/train_citylearn_v3_maac.py` y `scripts/train_citylearn_v3_masac.py`, que registran el mapa en los hiperparámetros.
+    - Repositorio principal: `configs/algorithms/native.yaml` (limitación D03 de HAPPO y MATD3), `uc3m/adapters/citylearn/policy_inference.py` (máscara de MASAC y fila global de MAAC), `tests/fresh_training/test_frozen_evaluation.py` y `tests/fresh_training/test_action_masks.py`, que es nuevo.
+  - **Verificado antes de la pausa:** 29 pruebas en verde de `test_frozen_evaluation.py` y `test_action_masks.py`. No se completó la tanda conjunta con `test_real_learning.py`, que se detuvo antes de la suspensión y queda sin resultado.
+- **Al retomar:**
+  1. Ejecutar `verify_project_context.ps1`.
+  2. Repetir la tanda: `test_action_masks`, `test_author_capacity`, `test_campaign_contract`, `test_runtime_requirements`, `test_learning_observer`, `test_real_learning` y `test_frozen_evaluation`. Debe correr sola: un simulador lanzado en paralelo toca la caché antigua y el fixture lo rechaza.
+  3. Commit en CityLearn y push a `origin` (fork Mac-Tapia).
+  4. Commit en el repositorio principal, con la referencia del submódulo actualizada.
+  5. Puerta `-Scope Repository`, CI y push. Con eso se cierra el módulo 3.
+- **Siguiente:** SPEC-016 (`iquitos_v6`), con D-V6-13: una acción por equipo, sin agrupar cargadores.

@@ -303,6 +303,7 @@ PEAK_BLOCK_HOURS = tuple(sorted(cn.PEAK_HOURS))  # 18:00-23:00, the bills' peak 
 B01_TARIFF_ASSUMPTION = 'MT2'  # v5 value; v6 reads configs/dataset/b01_synthetic_bill.yaml (P-V6-19)
 B01_SYNTHETIC_PATH = ROOT/'configs/dataset/b01_synthetic_bill.yaml'
 EV_V6_PATH = ROOT/'configs/dataset/ev_v6.yaml'
+BATTERY_CATALOG_PATH = ROOT/'CityLearn/data/misc/battery_choices.yaml'
 HVAC_NORMS_PATH = ROOT/'configs/dataset/hvac_norms.yaml'
 
 
@@ -693,12 +694,12 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
         _write_json(out/'building_metadata.json', metadata)
         log('loads calibrated with CityLearn heat-pump COP and machines inside the bills')
 
-        design['der'] = size_der(out, audit_dir, weather_frames, inventory, measured, fx, price_audit, request,
-                                 design, log)
-        if design['version'] == 'v6':
+        if design['version'] == 'v6':  # the EV queue first: the dual-function BESS sizes on its charging (D-V6-30)
             write_v6_fleet_and_bills(out, audit_dir, request.buildings, inventory, measured, targets, raw_dir, design,
                                      log)
-        else:
+        design['der'] = size_der(out, audit_dir, weather_frames, inventory, measured, fx, price_audit, request,
+                                 design, log)
+        if design['version'] != 'v6':
             ev.write_pilot(out, audit_dir, ev.load_pilot_config(EV_PILOT_PATH))
         import fix_schema_cooling as fsc
         fsc.configure(out)
@@ -747,6 +748,7 @@ def write_v6_fleet_and_bills(out, audit_dir, buildings, inventory, measured, tar
     fleet = wv.write_ev_fleet(out, schema, plans=plans, registry=design['registry'], rules=rules,
                               inventory=inventory, days=days)
     _write_json(out/'schema.json', schema)
+    design['ev_planned_kwh_h'] = {b: row.pop('planned_kwh_h') for b, row in fleet.items()}
     _write_json(audit_dir/'ev_fleet_v6.json', {str(b): row for b, row in fleet.items()})
 
     index = hourly_index(YEARS, TZ)
@@ -849,7 +851,20 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
                        for m in range(1, 13)}
         rule = design.get('bess_rule')
         rule_size = None
-        if rule:
+        v6_size = None
+        if design['version'] == 'v6':
+            import build_v6_parts as v6
+            from uc3m.application.dataset import bess_sizing as bs
+            ev_kwh = np.asarray(design['ev_planned_kwh_h'][building], dtype=float)[:8760]
+            v6_size = v6.size_v6_bess(load, pv_2023, ev_kwh, peak_flag == 1,
+                                      model=bs.select_catalog_model(bs.load_battery_catalog(BATTERY_CATALOG_PATH)),
+                                      shift_fraction=float(rule['shave_fraction_of_peak_block']['value']),
+                                      ev_charging_power_kw=float(ev_kwh.max()) if len(ev_kwh) else 0.0)
+            bess = v6_size.capacity_kwh
+            rule_size = {'capacity_kwh': bess, 'shaved_kw': v6_size.shaved_kw, 'nominal_power_kw': v6_size.nominal_power_kw,
+                         'sizing_function': v6_size.sizing_function, 'units': v6_size.units, 'model': v6_size.model.name,
+                         'decision': 'D-V6-30 dual-function BESS (surplus + EV, peak shave and shift)'}
+        elif rule:
             rule_size = sd.bess_design_rule(max(block_peaks.values()), len(PEAK_BLOCK_HOURS), economics, rule)
             bess = rule_size['capacity_kwh']
         else:
@@ -868,6 +883,8 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
             if rule:
                 config['electrical_storage']['attributes'].update(sd.bess_rule_curves(
                     config['electrical_storage']['attributes']['efficiency'], rule))
+            if v6_size is not None:   # the catalog model's own parameters (D-V6-30)
+                config['electrical_storage']['attributes'].update(v6.bess_attributes(v6_size))
         else:
             config.pop('electrical_storage', None)
         annual_load = float(load.sum())
@@ -1302,7 +1319,7 @@ def main(argv=None):
     limitations = list(LIMITATIONS)
     bess_parameter = 'MicroGrids LP with hourly tariff and peak-block demand charge; prosumpy and CityLearn peak-shaving checks'
     bess_method = 'MicroGrids LP, verified with prosumpy dispatch_max_sc'
-    if args.bess_design_rule:
+    if args.bess_design_rule or args.dataset_version == 'v6':  # v6: D-V6-30 uses the rule's shave fraction
         import yaml
         design['bess_rule'] = yaml.safe_load(BESS_RULE_PATH.read_text(encoding='utf-8'))
         design_inputs.append(BESS_RULE_PATH)

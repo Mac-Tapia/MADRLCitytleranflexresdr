@@ -71,6 +71,7 @@ class Assignment:
     arrival_soc: float = 0.0
     departure_soc: float = 0.0
     trip_kwh: float = 0.0
+    full_at: int = 0                   # exclusive hour when the battery is full (<= disconnect)
 
 
 @dataclass
@@ -148,7 +149,7 @@ def fifo_queue(sessions: Sequence[Session], *, chargers: int, vehicle_class: Veh
         free_at[charger] = disconnect + gap_h
         left_with[session.vehicle] = soc_out
         result.assignments.append(Assignment(session.vehicle, charger, session.arrival, connect, disconnect,
-                                             soc_in, soc_out, trip))
+                                             soc_in, soc_out, trip, full_at))
         result.waiting_hours.append(connect - session.arrival)
     return result
 
@@ -215,6 +216,20 @@ def delivered_kwh(result: QueueResult, vehicle_class: VehicleClass) -> float:
         / vehicle_class.efficiency
 
 
+def planned_charging_kwh(result: QueueResult, *, hours: int, vehicle_class: VehicleClass) -> np.ndarray:
+    """Grid energy each hour if every session charges at nominal power until full (input of D-V6-30 sizing)."""
+    planned = np.zeros(hours)
+    for a in result.assignments:
+        need = (a.departure_soc - a.arrival_soc)*vehicle_class.battery_kwh/vehicle_class.efficiency
+        for hour in range(a.connect, min(a.full_at, hours)):
+            step = min(vehicle_class.charge_kw, need)
+            planned[hour] += step
+            need -= step
+            if need <= 1e-12:
+                break
+    return planned
+
+
 def load_factor(result: QueueResult, *, chargers: int, hours: int, vehicle_class: VehicleClass) -> float:
     if chargers <= 0 or hours <= 0:
         return 0.0
@@ -261,6 +276,7 @@ class BuildingCharging:
     required_sockets: Mapping = None     # class -> sockets at the P95 of the drawn years (D-V6-43)
     physical_chargers: Mapping = None    # class -> dual-socket units (D-V6-38)
     sockets_by_seed: Mapping = None      # class -> minimum sockets of each drawn year
+    planned_kwh_h: np.ndarray = None     # grid energy of the building's EV charging at nominal power, per hour
 
 
 def building_charging(building: int, plan, *, schedule: Mapping, rules: Mapping, days: Sequence[date],
@@ -280,6 +296,7 @@ def building_charging(building: int, plan, *, schedule: Mapping, rules: Mapping,
     hours = 24*len(days)
     chargers, vehicles, owner, factors, unserved, waits, depleted = [], [], {}, {}, {}, {}, {}
     needed, units_by_class, by_seed = {}, {}, {}
+    planned = np.zeros(24*len(days))
     installed = 0.0
     for index, kind in enumerate(CLASSES):
         spec = vehicle_class(kind, rules)
@@ -300,10 +317,11 @@ def building_charging(building: int, plan, *, schedule: Mapping, rules: Mapping,
         chargers += [(f'B{building:02d}_{kind}_unit_{c//per_unit + 1:02d}_socket_{c % per_unit + 1}', kind, t)
                      for c, t in enumerate(tables)]
         factors[kind] = load_factor(result, chargers=n_sockets, hours=hours, vehicle_class=spec)
+        planned += planned_charging_kwh(result, hours=hours, vehicle_class=spec)
         unserved[kind] = len(result.unserved)
         depleted[kind] = result.depleted
         waits[kind] = float(np.mean(result.waiting_hours)) if result.waiting_hours else 0.0
         installed += n_sockets*spec.charge_kw
     return BuildingCharging(chargers, vehicles, owner, factors, unserved, waits, depleted, installed,
                             coincidence_cap_kw(installed, use_type, rules), int(plan.chargers), needed,
-                            units_by_class, by_seed)
+                            units_by_class, by_seed, planned)

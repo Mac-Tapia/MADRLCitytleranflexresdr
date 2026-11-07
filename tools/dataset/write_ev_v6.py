@@ -56,7 +56,6 @@ def charger_entry(name: str, kind: str, csv_name: str, rules: Mapping) -> dict:
 
 def ev_entry(kind: str, rules: Mapping) -> dict:
     params, common = rules['classes'][kind], rules['battery_and_charger']
-    spec = q.vehicle_class(kind, rules)
     return {'include': True, 'vehicle_class': kind,
             'battery': {'type': 'citylearn.energy_model.Battery', 'autosize': False,
                         'attributes': {'capacity': float(_value(params['battery_kwh'])),
@@ -107,7 +106,8 @@ def write_ev_fleet(dataset_dir: Path, schema: dict, *, plans: Mapping, registry:
                             'load_factor': dict(charging.load_factor), 'unserved': dict(charging.unserved),
                             'depleted': dict(charging.depleted), 'mean_wait_h': dict(charging.mean_wait_h),
                             'installed_kw': charging.installed_kw,
-                            'coincidence_cap_kw': charging.coincidence_cap_kw}
+                            'coincidence_cap_kw': charging.coincidence_cap_kw,
+                            'planned_kwh_h': charging.planned_kwh_h}
     schema['electric_vehicles_def'] = evs
     schema['electric_vehicle_arrival_soc'] = 'endogenous'   # D-V6-41: read by CityLearn/citylearn/internal/runtime.py
     schema['electric_vehicle_discharge_limit'] = 'building_demand'   # D-V6-28: V2B, never exported (v3 layer)

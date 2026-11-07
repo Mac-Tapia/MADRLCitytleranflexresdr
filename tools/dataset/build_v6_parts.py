@@ -72,3 +72,28 @@ def capped_block_flags(results: Mapping) -> list:
              'flag': 'cooling_capped_by_bill',
              'note': 'physical cooling exceeded the bill block; capped and declared (D-V6-19)'}
             for b, result in results.items() for year, month, block in result.capped_blocks]
+
+
+def size_v6_bess(load_kwh_h, pv_kwh_h, ev_kwh_h, peak_block_h, *, model, shift_fraction: float,
+                 ev_charging_power_kw: float):
+    """D-V6-7 and D-V6-30: dual-function BESS of one building from its hourly load, PV and EV charging.
+
+    Surplus = PV above load; block import = load + EV - PV in the peak block; size_bess takes the larger of the
+    surplus-plus-EV energy and the shifted peak energy, and the largest of surplus, EV and shaved power.
+    """
+    import numpy as np
+
+    from uc3m.application.dataset import bess_sizing as bs
+    load, pv, ev = (np.asarray(x, dtype=float) for x in (load_kwh_h, pv_kwh_h, ev_kwh_h))
+    return bs.size_bess(surplus_kwh_h=np.clip(pv - load, 0.0, None), ev_kwh_h=np.clip(ev, 0.0, None),
+                        ev_charging_power_kw=float(ev_charging_power_kw), model=model,
+                        block_import_kwh_h=np.clip(load + ev - pv, 0.0, None),
+                        peak_block_h=np.asarray(peak_block_h, dtype=bool), shift_fraction=float(shift_fraction))
+
+
+def bess_attributes(size) -> dict:
+    """CityLearn Battery attributes of a sized BESS, with the catalog model's own parameters."""
+    return {'capacity': float(size.capacity_kwh), 'nominal_power': float(size.nominal_power_kw),
+            'efficiency': float(size.model.efficiency), 'depth_of_discharge': float(size.model.depth_of_discharge),
+            'loss_coefficient': float(size.model.loss_coefficient), 'initial_soc': 0.0,
+            'capacity_loss_coefficient': 1e-5}

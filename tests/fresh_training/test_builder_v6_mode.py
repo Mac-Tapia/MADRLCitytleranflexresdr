@@ -19,7 +19,8 @@ def test_the_builder_accepts_a_v6_mode_and_keeps_v5_by_default():
 
 def test_the_v6_mode_wires_every_v6_piece():
     for call in ('remove_washing_machines(', 'distill_v6(', 'capped_block_flags(', 'write_ev_fleet(',
-                 'write_synthetic_bill(', 'synthetic_months(', 'write_bill_tariff_files(', 'peak_contrast('):
+                 'write_synthetic_bill(', 'synthetic_months(', 'write_bill_tariff_files(', 'peak_contrast(',
+                 'size_v6_bess(', 'bess_attributes(', "design['ev_planned_kwh_h']"):
         assert call in SOURCE, call
 
 

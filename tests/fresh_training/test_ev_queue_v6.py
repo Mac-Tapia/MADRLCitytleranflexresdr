@@ -264,3 +264,15 @@ def test_sockets_are_the_95th_percentile_of_twenty_seeds():
              for k in range(20)]
     assert q.socket_percentile(needs, 95) == int(np.ceil(np.percentile(needs, 95)))
     assert rules['socket_sizing']['seeds']['value'] == 20 and rules['socket_sizing']['percentile']['value'] == 95
+
+
+def test_planned_charging_is_hourly_grid_energy_that_adds_up_to_the_delivered_energy():
+    # Input of the dual-function BESS (D-V6-30): the energy the queue charges each hour at nominal power.
+    pickup = q.VehicleClass('pickup', battery_kwh=98.4, charge_kw=7.04, session_kwh=10.68, efficiency=0.874,
+                            stays_connected=True)
+    result = q.fifo_queue([q.Session(0, 9, 22), q.Session(1, 9, 22)], chargers=2, vehicle_class=pickup)
+    planned = q.planned_charging_kwh(result, hours=24, vehicle_class=pickup)
+    assert planned.sum() == pytest.approx(q.delivered_kwh(result, pickup))
+    assert np.all(planned <= 2*7.04 + 1e-9) and planned[:9].sum() == 0 and planned[22:].sum() == 0
+    a = result.assignments[0]
+    assert a.full_at < a.disconnect and planned[a.full_at:].sum() == 0        # connected but full: nothing drawn

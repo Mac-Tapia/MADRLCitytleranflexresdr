@@ -61,7 +61,8 @@ Que `iquitos_v6` sea una instancia de un proyecto general y no el proyecto mismo
 |---|---|
 | FR-017.1 Configuración de sitio | Implementado: `configs/sites/iquitos.yaml`, `uc3m/application/dataset/site.py`; ninguna copia del bloque horario ni mapa de vehículos queda en el código (`tests/fresh_training/test_site_config.py`) |
 | FR-017.3 Contrato de backend | Implementado: `CityLearn/citylearn/v3/backend_contract.py` (registro, verificación del contrato y episodio de humo); un backend de referencia se registra y da un episodio sin editar la capa (`tests/fresh_training/test_v3_backend_contract.py`) |
-| FR-017.2, FR-017.4 y FR-017.5 | Pendientes |
+| FR-017.4 Puerta de operatividad | Implementado: `operational_gate` en `backend_contract.py` carga el dataset en v3, verifica el contrato y da pasos con el adaptador nativo de cada backend registrado; el constructor (`tools/dataset/build_fresh_campaign_dataset.py`) la añade a sus puertas (`v3_operational`, registro en `audit/v3_operational_gate.json`) y `dataset_verified` depende de ella. Probado sobre `iquitos_v5`; falla cerrada con un dataset roto |
+| FR-017.2 y FR-017.5 | Pendientes |
 
 ## Fuera de alcance
 

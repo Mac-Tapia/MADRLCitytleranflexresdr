@@ -1278,6 +1278,14 @@ def main(argv=None):
                                                       design['economics']['pv']['max_pv_to_load_ratio']['value']),
              'csv_integrity': json.loads((audit_dir/'csv_integrity_manifest.json').read_text(encoding='utf-8'))['status'] == 'ok',
              'bess_verified': shaving['status'] in ('no_bess_sized', 'checked')}
+    # SPEC-017 FR-017.4: the dataset only counts as created if the CityLearn v3 layer loads it, meets the
+    # backend contract and every registered MADRL backend's own adapter steps on it.
+    from citylearn.v3.backend_contract import operational_gate
+    operational = operational_gate(campaign_root/'dataset'/'schema.json', steps=2, seed=0)
+    _write_json(audit_dir/'v3_operational_gate.json',
+                {'passed': operational.passed, 'failures': operational.failures, 'backends': operational.backends,
+                 'n_agents': operational.contract.n_agents if operational.contract else 0})
+    gates['v3_operational'] = operational.passed
     if args.bess_design_rule:
         gates['bess_rule_shaves_peak'] = (
             shaving['status'] == 'checked' and len(shaving['buildings']) == len(BUILDINGS)

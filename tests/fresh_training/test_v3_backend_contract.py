@@ -65,3 +65,26 @@ def test_an_invalid_backend_declaration_is_rejected():
                                             uses_global_state=True, adapter='x:y'))
     with pytest.raises(ValueError, match='already registered'):
         bc.register_backend(bc.registered_backends()['HAPPO'])
+
+
+def test_operational_gate_runs_every_native_adapter_on_a_built_dataset():
+    # FR-017.4: the dataset loads in v3, meets the contract and every registered backend's own adapter steps.
+    result = bc.operational_gate(SCHEMA, steps=2, seed=0)
+    assert result.passed, result.failures
+    assert set(result.backends) >= {'HAPPO', 'MASAC', 'MATD3', 'MAAC'}
+    assert all(r['steps'] == 2 and np.isfinite(r['reward']) for r in result.backends.values())
+    assert result.contract.n_agents == 17
+
+
+def test_operational_gate_fails_closed_on_a_broken_dataset(tmp_path):
+    broken = tmp_path/'schema.json'
+    broken.write_text('{"buildings": {}}', encoding='utf-8')
+    result = bc.operational_gate(broken, steps=1, seed=0)
+    assert not result.passed and result.failures
+
+
+def test_every_dataset_build_ends_with_the_operational_gate():
+    # FR-017.4: the builder's dataset_verified includes the v3 operational gate and records its result.
+    builder = (REPO/'tools/dataset/build_fresh_campaign_dataset.py').read_text(encoding='utf-8')
+    assert "'v3_operational'" in builder and 'operational_gate(' in builder
+    assert "v3_operational_gate.json" in builder

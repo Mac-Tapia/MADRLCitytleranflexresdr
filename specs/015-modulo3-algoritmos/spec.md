@@ -48,6 +48,16 @@ Con las cifras de `v1`, el guardián rechazaría MASAC en cualquier entorno disp
     - la diferencia entre continuo y discreto se declara como confusión;
     - la tesis compara cada algoritmo con su interfaz nativa.
   - **Coherencia con D-M3-5:** las acciones pertenecen a la operación de cada equipo, un equipo por acción y no agrupados (propietario, 2026-11-06; SPEC-016 D-V6-13).
+- **D-M3-7 (propietario, 2026-11-07): los 4 MADRL compiten con las mismas acciones, observaciones, dataset y función de recompensa.** Sustituye la interfaz nativa de D-M3-6 en lo que respecta a la forma de la acción. El proyecto selecciona el mejor MADRL, así que la comparación no puede depender de la interfaz.
+  - **Acciones:**
+    - los 4 actúan sobre la misma rejilla de niveles por equipo;
+    - MASAC y MAAC eligen un nivel;
+    - HAPPO y MATD3 dan un valor continuo que el entorno redondea al nivel más cercano;
+    - el mapa acción → equipo y las máscaras de D-M3-6 se mantienen.
+  - **Iguales para los 4:** observaciones (`O_i` y estado global de la capa v3), dataset y KPI de evaluación.
+  - **Recompensa:** misma función y pesos de la capa v3. MASAC la recibe sumada para el equipo, porque su algoritmo de tipo QMIX aprende un valor de equipo; los demás la reciben por agente. Se declara. Confirma P-017-1.
+  - **Pendiente del propietario (P-M3-1):** el número de niveles de la rejilla; se propuso 11 (−1 a +1 cada 0,2).
+  - **Pendiente del propietario (P-M3-2):** con varios equipos por edificio, el modo `axis` de MASAC y MAAC (un equipo por paso) no puede fijar un nivel en cada equipo a la vez, y una elección conjunta es inviable (11^28 combinaciones en B06). La propuesta es una salida discreta por equipo (multi-discreta), lo que cambia la cabeza de acción de sus implementaciones originales; el resto del algoritmo queda nativo.
 - **D-M3-3: regla del requisito.** `requisito = max(piso, techo(1,10 × estimación))`. El margen de 10 % reproduce el que tenían las cifras anteriores (72 frente a 65,3 GiB). El piso es de 8 GiB de RAM y 4 GiB de VRAM, el ya declarado para HAPPO y MAAC, que no tienen estimador. Es regla de diseño, no una medida.
 
 ## Requisitos funcionales

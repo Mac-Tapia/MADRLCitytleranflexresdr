@@ -20,8 +20,9 @@ from pathlib import Path
 from typing import Callable, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 from uc3m.application.dataset.provenance import RawSourceManifest, contained_path
+from uc3m.application.dataset.site import load_default_site
 
-PEAK_HOURS = frozenset({18, 19, 20, 21, 22})
+PEAK_HOURS = load_default_site().peak_block_hours  # site configuration (SPEC-017 FR-017.1)
 MONTHS = {'ene': 1, 'feb': 2, 'mar': 3, 'abr': 4, 'may': 5, 'jun': 6, 'jul': 7, 'ago': 8,
           'set': 9, 'sep': 9, 'oct': 10, 'nov': 11, 'dic': 12}
 PARTIAL_LOAD_FACTOR_RATIO = 0.5  # of the building's same-year median load factor

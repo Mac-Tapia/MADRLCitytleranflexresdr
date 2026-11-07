@@ -66,7 +66,12 @@ T_TARGET = 8.5
 COP_ACS_DEF = 0.85
 COP_CLIP_LOW = 1.5
 COP_CLIP_HIGH = 5.0
-PEAK_HOURS = {18, 19, 20, 21, 22}
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+from uc3m.application.dataset.site import load_default_site  # noqa: E402  (SPEC-017 FR-017.1)
+
+PEAK_HOURS = set(load_default_site().peak_block_hours)  # site configuration
 
 # The eta values are COP_design / 14.44, matching the previous engineering
 # convention in this repository. They are only fallbacks when schema.json does

@@ -18,36 +18,32 @@ from typing import Mapping
 import yaml
 
 CLASSES = ('moto', 'mototaxi', 'pickup')
-TOKEN_CLASS = {'Motos': 'moto', 'Bicycles': 'moto', 'Motokars': 'mototaxi', 'Taxis': 'mototaxi',
-               'Pickups': 'pickup', 'Cars': 'pickup', 'Ambulances': 'pickup', 'Staff': 'pickup',
-               'Trucks': 'pickup', 'Military': 'pickup', 'Emergency': 'pickup', 'Cranes': 'pickup',
-               'Vehicles': 'pickup', 'Medical': 'pickup', 'Heavy': 'pickup', 'Cargo': 'pickup',
-               'Industrial': 'pickup'}
 
 
 def load_ev_rules(path: Path) -> dict:
     return yaml.safe_load(Path(path).read_text(encoding='utf-8'))
 
 
-def named_classes(vehicle_type: str) -> list[str]:
-    """Classes named by the predominant type, in order; Students and Buses add none (D-V6-24)."""
+def named_classes(vehicle_type: str, rules: Mapping) -> list[str]:
+    """Classes named by the predominant type, in order (D-V6-24); the token map is site configuration."""
+    tokens = rules['vehicle_type_tokens']
     named: list[str] = []
     for token in str(vehicle_type).split('_'):
-        kind = TOKEN_CLASS.get(token)
+        kind = tokens.get(token)
         if kind and kind not in named:
             named.append(kind)
     return named
 
 
-def space_class(vehicle_type: str) -> str:
+def space_class(vehicle_type: str, rules: Mapping) -> str:
     """Parking space of the first named class: a motorcycle space, or a car space for pickups."""
-    named = named_classes(vehicle_type)
+    named = named_classes(vehicle_type, rules)
     return 'moto' if named and named[0] in ('moto', 'mototaxi') else 'car'
 
 
 def fleet_split(vehicle_type: str, vehicles: int, rules: Mapping) -> dict[str, int]:
     share = rules['fleet_split']['named_share']
-    named = named_classes(vehicle_type) or ['pickup']
+    named = named_classes(vehicle_type, rules) or ['pickup']
     others = [c for c in CLASSES if c not in named]
     weights = {c: share/len(named) if c in named else (1 - share)/len(others) for c in CLASSES}
     raw = {c: weights[c]*vehicles for c in CLASSES}
@@ -70,7 +66,7 @@ class EvPlan:
 def ev_plan(*, parking_m2: float, use_type: str, vehicle_type: str, rules: Mapping) -> EvPlan:
     if parking_m2 < 0:
         raise ValueError(f'parking area must be non-negative, got {parking_m2}')
-    kind = space_class(vehicle_type)
+    kind = space_class(vehicle_type, rules)
     use = 'private' if use_type in rules['private_use_types'] else 'public'
     spaces = int(parking_m2//rules['space_m2'][f'{kind}_{use}']['value'])
     points = rules['charging_points']

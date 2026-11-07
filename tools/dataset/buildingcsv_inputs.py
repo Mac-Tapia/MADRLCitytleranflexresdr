@@ -57,7 +57,13 @@ MONTHS = {
 
 ACTIVE_TOTAL_TOLERANCE_KWH = 1.0
 ACTIVE_TOTAL_TOLERANCE_RATIO = 0.02
-PEAK_HOURS_LOCAL = (18, 19, 20, 21, 22)
+import sys as _sys  # noqa: E402
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
+from uc3m.application.dataset.site import load_default_site  # noqa: E402  (SPEC-017 FR-017.1)
+
+PEAK_HOURS_LOCAL = tuple(sorted(load_default_site().peak_block_hours))  # site configuration
 DEFAULT_TARIFF_PEAK_TO_OFFPEAK_RATIO = 0.38 / 0.26
 PRICING_COLUMNS = [
     "electricity_pricing",

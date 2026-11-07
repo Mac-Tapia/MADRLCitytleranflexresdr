@@ -35,14 +35,14 @@ def test_space_areas_derive_from_the_a010_dimensions(rules):
 
 
 def test_named_classes_follow_the_predominant_type(rules):
-    assert es.named_classes('Motos_Motokars') == ['moto', 'mototaxi']
-    assert es.named_classes('Mixed_Motos_Trucks') == ['moto', 'pickup']
-    assert es.named_classes('Motos_Taxis_Buses') == ['moto', 'mototaxi']          # buses are heavy, left out
-    assert es.named_classes('Bicycles_Motos') == ['moto'] and es.named_classes('Motos_Students') == ['moto']
+    assert es.named_classes('Motos_Motokars', rules) == ['moto', 'mototaxi']
+    assert es.named_classes('Mixed_Motos_Trucks', rules) == ['moto', 'pickup']
+    assert es.named_classes('Motos_Taxis_Buses', rules) == ['moto', 'mototaxi']          # buses are heavy, left out
+    assert es.named_classes('Bicycles_Motos', rules) == ['moto'] and es.named_classes('Motos_Students', rules) == ['moto']
     for light in ('Military_Vehicles', 'Emergency_Trucks', 'Heavy_Cargo_Trucks', 'Heavy_Industrial_Cranes',
                   'Emergency_Ambulances', 'Medical_Pickups', 'Ambulances_Staff'):
-        assert es.named_classes(light) == ['pickup'], light
-    assert es.space_class('Motos_Cars') == 'moto' and es.space_class('Medical_Pickups') == 'car'
+        assert es.named_classes(light, rules) == ['pickup'], light
+    assert es.space_class('Motos_Cars', rules) == 'moto' and es.space_class('Medical_Pickups', rules) == 'car'
 
 
 @pytest.mark.parametrize('vehicle_type, n, expected', [

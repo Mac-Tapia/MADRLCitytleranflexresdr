@@ -60,7 +60,13 @@ TAN_PHI        = math.tan(math.acos(PF))         # ~0.4260
 FC_EST         = 0.68                            # factor de carga estimado 24h utility
 PEAK_FRAC      = 0.151                           # fraccion consumo en horas punta 18-22
 OFFPEAK_FRAC   = 1.0 - PEAK_FRAC
-PEAK_HOURS     = {18, 19, 20, 21, 22}
+import sys as _sys  # noqa: E402
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
+from uc3m.application.dataset.site import load_default_site  # noqa: E402  (SPEC-017 FR-017.1)
+
+PEAK_HOURS = set(load_default_site().peak_block_hours)  # site configuration
 TARIFA_CODE    = "MT3  "
 
 YEARS_ALL      = [2023, 2024, 2025]

@@ -1,0 +1,26 @@
+# SPEC-017 FR-017.1: site configuration of Iquitos, the first site of the project.
+# Every site value lives here (or in the files it points to), never in the code. Each value declares its origin.
+schema_version: 1
+name: iquitos
+
+peak_block:
+  hours: [18, 19, 20, 21, 22]   # 18:00-23:00 local time
+  origin: assumption
+  note: "Capacity-charge block of the Osinergmin tariffs used by the bills and the D04 bill (18:00-23:00). The block is not printed on the tariff sheets (tools/dataset/osinergmin_pliegos.py); to verify against the Osinergmin tariff resolution."
+
+time_zone:
+  utc_offset_hours: -5
+  origin: cited
+  source: "Peru official time, UTC-5 without daylight saving; NASA POWER files are in UTC and are shifted by this offset"
+
+elevation_m:
+  value: 115.02
+  origin: measured
+  source: "NASA POWER point elevation of the Iquitos weather files (geometry.coordinates)"
+
+files:   # site-specific configurations, each with its own origins
+  hvac_norms: configs/dataset/hvac_norms.yaml
+  ev_fleet: configs/dataset/ev_v6.yaml
+  building_types: configs/dataset/building_types.yaml
+  grid_emissions: configs/dataset/grid_emissions.yaml
+  bill_tariffs: data/tariffs/osinergmin/bill_tariffs.csv

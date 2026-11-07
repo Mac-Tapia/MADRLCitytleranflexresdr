@@ -15,7 +15,13 @@ BUILDINGCSV = Path("CityLearn/data/buildingcsv/building.csv")
 DISTILLATION_REPORT = Path("tools/dataset/dataset_docs/distillation_report.csv")
 PRICING = BASE / "pricing.csv"
 EXPECTED_ROWS = 26304
-PEAK_HOURS = {18, 19, 20, 21, 22}
+import sys as _sys  # noqa: E402
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in _sys.path:
+    _sys.path.insert(0, str(_REPO_ROOT))
+from uc3m.application.dataset.site import load_default_site  # noqa: E402  (SPEC-017 FR-017.1)
+
+PEAK_HOURS = set(load_default_site().peak_block_hours)  # site configuration
 COLS  = ['month','hour','day_type','daylight_savings_status',
          'indoor_dry_bulb_temperature','average_unmet_cooling_setpoint_difference',
          'indoor_relative_humidity','non_shiftable_load','dhw_demand',

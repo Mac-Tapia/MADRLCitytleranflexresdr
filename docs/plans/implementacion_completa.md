@@ -88,7 +88,31 @@ Necesita su propio plan TDD detallado antes de ejecutarse: `docs/plans/modulo3b_
   - la potencia de cada edificio cae en el rango de W/m² de su tipo;
   - deja de depender de la demanda modelada (B11 deja de ser 4,7 W/m² y B04 de ser 175,6 W/m²);
   - cada valor de `hvac_norms.yaml` tiene origen y, si es `cited`, la norma y el artículo.
-- **Decisión del propietario:** confirmar los 18 000 BTU/h por split cuando ninguna norma dé otro valor.
+- **Diseño fijado por D-V6-16 y D-V6-17 (2026-11-07):**
+  - `capacity_kw_th = splits × 5,275 + [sistema grande] × (carga_aire_exterior + ganancia_ocupantes)`;
+  - `carga_aire_exterior = ρ · Vbz · (h_ext − h_int)`, con `Vbz = Rp·Pz + Ra·Az` y `Pz = Rd/100 · Az` (EM.030, Tabla N° 01);
+  - `h_ext`: percentil 99 de la entalpía horaria de NASA POWER 2023; `h_int`: 24 °C y 50 % de HR;
+  - potencia eléctrica = térmica ÷ COP del equipo.
+- **Correspondencia tipo → fila de la Tabla N° 01** (`Rp` l/s·persona, `Ra` l/s·m², `Rd` personas/100 m²):
+
+  | Tipo | Fila | Rp | Ra | Rd |
+  |---|---|---|---|---|
+  | Office, Office_Critical | Ambiente de oficinas | 2,5 | 0,3 | 5 |
+  | Retail | Supermercados | 3,8 | 0,3 | 8 |
+  | Commercial_Mall | Áreas comunes de centros comerciales | 3,8 | 0,3 | 40 |
+  | MultiFamily_Hotel | Hoteles, salas de estar | 2,5 | 0,3 | 10 |
+  | Education | Aulas de más de 9 años | 5 | 0,6 | 35 |
+  | Assembly (aeropuerto) | Áreas de espera de transporte | 3,8 | 0,3 | 100 |
+  | Assembly_Military | Aulas de más de 9 años | 5 | 0,6 | 35 |
+  | Laboratory | Laboratorios universitarios | 5 | 0,9 | 25 |
+  | Industrial, Industrial_Port | Manufactura en general | 5,0 | 0,9 | 7 |
+  | Healthcare, Healthcare_Hospital | No está en la Tabla N° 01; EM.030 art. 13.5 remite a MINSA y ASHRAE 170. Se usan las renovaciones de la NTS 110, Tabla 6: áreas generales, 2-3 renovaciones/h; se toma 3 | — | — | — |
+
+- **Supuestos declarados (`assumption`):**
+  - la fracción del área techada que es zona ocupada: 1,0 por defecto, que sobredimensiona, por ejemplo, el aeropuerto;
+  - la ganancia por ocupante, pendiente de una fuente primaria (ASHRAE Fundamentals es de pago);
+  - la altura de techo para convertir renovaciones a caudal en los hospitales;
+  - la correspondencia de tipos, en particular el uso de la fila de aulas para la escuela militar.
 
 ### Tarea 3b.2: reparto calibrado refrigeración y carga base (FR-016.1 y FR-016.2, D-V6-14 y D-V6-15)
 
@@ -105,14 +129,14 @@ Necesita su propio plan TDD detallado antes de ejecutarse: `docs/plans/modulo3b_
   - un edificio que no cumple los criterios de ASHRAE G14 queda marcado y la puerta falla;
   - el lector de facturas descarta las filas vacías (`B_04.csv`) y registra en `quality_flags` cada mes en que `totalEnergiaActiva` difiere de punta + fuera de punta.
 - **Forma horaria de la carga base:** los edificios de referencia del DOE y ASHRAE 90.1 por tipo, que reemplazan los 11 horarios `assumption` de `configs/dataset/building_types.yaml`.
-- **Por confirmar:** las cifras de CV(RMSE) y NMBE en el texto de ASHRAE G14 antes de fijarlas en una prueba.
+- **Criterio de calibración:** mensual, NMBE ±5 % y CV(RMSE) ≤ 15 %, según ASHRAE Guideline 14 vía FEMP M&V 4.0, Tabla 4-2 (verificado en FEMP; el texto de G14 no se abrió).
 
 ### Tarea 3b.2b: control del aire acondicionado con confort (FR-016.4)
 
 - **Pruebas:**
   - la dinámica térmica de cada edificio se valida antes de habilitar el control;
   - el límite de confort sale de una norma para clima cálido y húmedo.
-- **Decisión del propietario:** el valor de confort, que se le propone con la norma.
+- **Límite de confort:** 24 °C (D-V6-17).
 
 ### Tarea 3b.3: cargadores, vehículos, BESS y tarifa de potencia (FR-016.5 a FR-016.7)
 

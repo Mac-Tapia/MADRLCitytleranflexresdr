@@ -23,12 +23,36 @@ ev_share:
   origin: assumption_pending_user_verification
   note: "5 % of the parked vehicles electric by 2030, attributed to MINEM only in the press (Andina 2021). The official NDC measure (MINAM Informe 00232-2023, para 3.5) gives 171 359 light EVs and excludes motorcycles. Same share for every vehicle class."
 
-charger_kw:
-  moto: {value: 3.52, origin: cited, source: "D.S. 036-2023-EM, annex 5: mode 2, 220 V single-phase 16 A (V x I computed). 220 V is the nominal low voltage of CNE-Suministro 2011, rule 017.A"}
-  car: {value: 7.04, origin: cited, source: "D.S. 036-2023-EM, annex 6: mode 3, 220 V single-phase 32 A (V x I computed)"}
+fleet_split:
+  named_share: 0.80
+  origin: design_rule
+  source: "D-V6-26 (owner 2026-11-07): the classes named by the predominant inventory type share 80 % of the building's EVs, the others 20 %, largest-remainder rounding"
 
-daily_energy_kwh:
-  moto: {value: 4.145, origin: cited, source: "Abaya et al. (2019), Proc. EASTS 12, tables 2.4 and 2.5: e-tricycle 3.51 (low demand) and 4.78 (high demand) kWh/day, mean taken; Philippines, not Peru"}
-  car: {value: 8.64, origin: assumption_pending_user_verification, note: "0.216 kWh/km (Chuquiguanga and Jimenez 2018, Cuenca, Ecuador, abstract) x 40 km/day; the daily distance has no Peruvian source"}
+# D-V6-23, D-V6-27 and D-V6-28. Sources audited: docs/audits/cargadores_vehiculos_20261107/clases_vehiculo.md
+classes:
+  moto:
+    v2g: false
+    battery_kwh: {value: 2.7, origin: cited, source: "Super Soco CPx official sheet: 60 V x 45 Ah per pack (V x Ah computed), one pack"}
+    charge_kw: {value: 0.6, origin: cited, source: "Super Soco CPx official sheet: 60 V 10 A on-board charger (V x A computed); the vehicle limits the mode 2 socket of D.S. 036-2023-EM"}
+    discharge_kw: {value: 0.0, origin: design_rule, source: "D-V6-23: motorcycles only charge"}
+    kwh_per_km: {value: 0.039, origin: cited, source: "Super Soco CPx official sheet: 140 km with 2 packs (5.4 kWh), computed"}
+    km_per_day: {value: 40.0, origin: assumption_pending_user_verification, note: "No Peruvian or Latin American source for e-motorcycle daily distance"}
+    penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; no official source per class (the MINEM 5 % is press-only, the NDC excludes motorcycles)"}
+  mototaxi:
+    v2g: false
+    battery_kwh: {value: 8.6, origin: cited, source: "Piaggio Ape E-City MAXX official page (Piaggio India): 8.6 kWh Li-ion, 51.2 V"}
+    charge_kw: {value: 3.52, origin: cited, source: "D.S. 036-2023-EM annex 5, mode 2 at 220 V 16 A (V x A computed); below the 4.8 kW on-board charger of Abaya et al. (2019) table 1.1"}
+    discharge_kw: {value: 0.0, origin: design_rule, source: "D-V6-23: mototaxis only charge"}
+    kwh_per_km: {value: 0.125, origin: cited, source: "Abaya et al. (2019), Proc. EASTS 12, table 2.5: 7.99 km/kWh, e-trike in public transport, high demand"}
+    km_per_day: {value: 38.25, origin: cited, source: "Abaya et al. (2019) table 2.5: 4.78 kWh/day at 0.125 kWh/km (computed), within the 34-45 km/day reported"}
+    penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; no official source per class"}
+  pickup:
+    v2g: true
+    battery_kwh: {value: 98.4, origin: cited, source: "Maxus eTerron 9 datasheet, Maxus Espana, Dec 2024: 98.40 kWh net"}
+    charge_kw: {value: 7.04, origin: cited, source: "D.S. 036-2023-EM annex 6, mode 3 Type 2 at 220 V 32 A single-phase (V x A computed); the eTerron 9 accepts 11 kW AC three-phase"}
+    discharge_kw: {value: 7.04, origin: design_rule, source: "D-V6-28 V2B behind the meter, limited by the same 32 A single-phase connection; Ford Intelligent Backup Power gives 7.2 kW continuous (V2H) as plausibility"}
+    kwh_per_km: {value: 0.267, origin: cited, source: "Maxus eTerron 9 datasheet: 26.7 kWh/100 km WLTP combined"}
+    km_per_day: {value: 40.0, origin: assumption_pending_user_verification, note: "No Peruvian source for the daily distance of pickups"}
+    penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; the NDC (MINAM 2023) gives 171 359 light EVs by 2030 but no share"}
 
 heavy_vehicle_types: [Military_Vehicles, Emergency_Trucks, Heavy_Cargo_Trucks, Heavy_Industrial_Cranes]

@@ -2,9 +2,12 @@
 
 Spaces = parking area / area per space (RNE A.010 dimensions with half the aisle); charging points =
 1 per 10 spaces when there are more than 20 (EPBD 2024 art. 14(2)); EVs = share of the spaces
-(declared assumption), and none where there is no charging point; charger power by vehicle class
-(D.S. 036-2023-EM at 220 V). Heavy-vehicle buildings count their parking as light spaces and leave
-the heavy fleet out of electrification, declared.
+(declared assumption), and none where there is no charging point. Heavy-vehicle buildings count their
+parking as light spaces and leave the heavy fleet out of electrification, declared.
+
+D-V6-23 and D-V6-26: three classes, electric motorcycles, mototaxis and V2G pickups, in every building;
+the classes named by the predominant inventory type share 80 % of the EVs and the others 20 %, with
+largest-remainder rounding. Only the pickups discharge to the building.
 """
 from __future__ import annotations
 
@@ -14,32 +17,60 @@ from typing import Mapping
 
 import yaml
 
-MOTO_PREFIXES = ('Motos', 'Mixed_Motos', 'Bicycles_Motos')
+CLASSES = ('moto', 'mototaxi', 'pickup')
+TOKEN_CLASS = {'Motos': 'moto', 'Bicycles': 'moto', 'Motokars': 'mototaxi', 'Taxis': 'mototaxi',
+               'Pickups': 'pickup', 'Cars': 'pickup', 'Ambulances': 'pickup', 'Staff': 'pickup',
+               'Trucks': 'pickup', 'Military': 'pickup', 'Emergency': 'pickup', 'Cranes': 'pickup',
+               'Vehicles': 'pickup', 'Medical': 'pickup', 'Heavy': 'pickup', 'Cargo': 'pickup',
+               'Industrial': 'pickup'}
 
 
 def load_ev_rules(path: Path) -> dict:
     return yaml.safe_load(Path(path).read_text(encoding='utf-8'))
 
 
-def vehicle_class(vehicle_type: str) -> str:
-    return 'moto' if str(vehicle_type).startswith(MOTO_PREFIXES) else 'car'
+def named_classes(vehicle_type: str) -> list[str]:
+    """Classes named by the predominant type, in order; Students and Buses add none (D-V6-24)."""
+    named: list[str] = []
+    for token in str(vehicle_type).split('_'):
+        kind = TOKEN_CLASS.get(token)
+        if kind and kind not in named:
+            named.append(kind)
+    return named
+
+
+def space_class(vehicle_type: str) -> str:
+    """Parking space of the first named class: a motorcycle space, or a car space for pickups."""
+    named = named_classes(vehicle_type)
+    return 'moto' if named and named[0] in ('moto', 'mototaxi') else 'car'
+
+
+def fleet_split(vehicle_type: str, vehicles: int, rules: Mapping) -> dict[str, int]:
+    share = rules['fleet_split']['named_share']
+    named = named_classes(vehicle_type) or ['pickup']
+    others = [c for c in CLASSES if c not in named]
+    weights = {c: share/len(named) if c in named else (1 - share)/len(others) for c in CLASSES}
+    raw = {c: weights[c]*vehicles for c in CLASSES}
+    counts = {c: int(raw[c]) for c in CLASSES}
+    for kind in sorted(CLASSES, key=lambda c: -(raw[c] - counts[c]))[:vehicles - sum(counts.values())]:
+        counts[kind] += 1
+    return counts
 
 
 @dataclass(frozen=True)
 class EvPlan:
-    vehicle_class: str
+    space_class: str
     spaces: int
     chargers: int
     vehicles: int
-    charger_kw: float
-    daily_kwh_per_vehicle: float
+    fleet: Mapping[str, int]
     note: str = ''
 
 
 def ev_plan(*, parking_m2: float, use_type: str, vehicle_type: str, rules: Mapping) -> EvPlan:
     if parking_m2 < 0:
         raise ValueError(f'parking area must be non-negative, got {parking_m2}')
-    kind = vehicle_class(vehicle_type)
+    kind = space_class(vehicle_type)
     use = 'private' if use_type in rules['private_use_types'] else 'public'
     spaces = int(parking_m2//rules['space_m2'][f'{kind}_{use}']['value'])
     points = rules['charging_points']
@@ -47,9 +78,8 @@ def ev_plan(*, parking_m2: float, use_type: str, vehicle_type: str, rules: Mappi
     vehicles = min(round(rules['ev_share']['value']*spaces), chargers) if chargers else 0
     note = 'heavy vehicles excluded from electrification; light spaces only' \
         if vehicle_type in rules['heavy_vehicle_types'] else ''
-    return EvPlan(vehicle_class=kind, spaces=spaces, chargers=chargers, vehicles=vehicles,
-                  charger_kw=rules['charger_kw'][kind]['value'],
-                  daily_kwh_per_vehicle=rules['daily_energy_kwh'][kind]['value'], note=note)
+    return EvPlan(space_class=kind, spaces=spaces, chargers=chargers, vehicles=vehicles,
+                  fleet=fleet_split(vehicle_type, vehicles, rules), note=note)
 
 
 def district_ev_plan(inventory: Mapping[int, object], rules: Mapping) -> dict[int, EvPlan]:

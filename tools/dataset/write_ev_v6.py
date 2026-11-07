@@ -64,7 +64,12 @@ def ev_entry(kind: str, rules: Mapping) -> dict:
                                        'initial_soc': round(spec.arrival_soc, 6),
                                        'depth_of_discharge': float(_value(common['battery_depth_of_discharge'])),
                                        'efficiency': float(_value(common['battery_efficiency'])),
-                                       'capacity_loss_coefficient': float(_value(common['capacity_loss_coefficient']))}}}
+                                       'capacity_loss_coefficient': float(_value(common['capacity_loss_coefficient'])),
+                                       # P-V6-22: flat curves (no taper near full), the assumption of the queue's
+                                       # charging time; without them CityLearn draws random curves.
+                                       'capacity_power_curve': [[0.0, 1.0], [1.0, 1.0]],
+                                       'power_efficiency_curve': [[0.0, float(_value(common['battery_efficiency']))],
+                                                                  [1.0, float(_value(common['battery_efficiency']))]]}}}
 
 
 def write_ev_fleet(dataset_dir: Path, schema: dict, *, plans: Mapping, registry: Mapping, rules: Mapping,
@@ -83,12 +88,14 @@ def write_ev_fleet(dataset_dir: Path, schema: dict, *, plans: Mapping, registry:
                                        use_type=inventory[building].tipo_uso_citylearn)
         chargers = {}
         for name, kind, table in charging.chargers:
-            csv_name = f'{name}.csv'
+            csv_name = f'charger_{name}.csv'   # the integrity audit reads charger_*.csv
             pd.DataFrame({c: table[c] for c in q.CHARGER_COLUMNS}).to_csv(dataset_dir/csv_name, index=False)
             chargers[name] = charger_entry(name, kind, csv_name, rules)
             unit, socket = name.rsplit('_unit_', 1)[1].split('_socket_')
             chargers[name]['hardware'].update({'physical_charger_id': f'B{building:02d}_{kind}_unit_{unit}',
-                                               'socket_count_per_physical_unit': 2, 'outlet_index': int(socket)})
+                                               'socket_count_per_physical_unit':
+                                                   int(_value(rules['charging_unit']['sockets_per_unit'])),
+                                               'outlet_index': int(socket)})
         schema['buildings'][f'Building_{building}']['chargers'] = chargers
         for ev, kind in charging.vehicle_class.items():
             evs[ev] = ev_entry(kind, rules)

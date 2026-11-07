@@ -105,12 +105,26 @@ arrivals:
   pickup: {kind: opening, window_h: 2}
   mototaxi: {kind: stops, stops: [[12, 14], [18, 20]]}
 
-# Rules the implementation chose for the queue (SPEC-016 P-V6-14 to P-V6-16), pending the owner.
+# Rules the implementation chose for the queue (SPEC-016 P-V6-15, P-V6-16), pending the owner.
 queue_rules:
   origin: implementation_rule
-  note: "P-V6-14 chargers split by class in proportion to its EVs; P-V6-15 a day is open when its day factor is at least open_day_min_factor, a vehicle arrives having used one session's energy and asks for a full battery; P-V6-16 the charger is released when the charging time at nominal power ends; seed of the arrival draw"
-  open_day_min_factor: 0.5
+  note: "P-V6-15: a vehicle starts full before its first trip and asks for a full battery; one free hour between sessions of a socket so CityLearn sees each departure and the next arrival (EV2Gym keeps the port free in t-1 and t-2; CityLearn kpi.py detects a departure only on a 1 -> other transition); seed of the draws"
+  free_hours_between_sessions: 1
   seed: 0
+
+# D-V6-43 (owner 2026-11-07): sockets per class = 95th percentile over 20 drawn years of the fewest that
+# serve every session (planning practice at 95 %: University of Twente master thesis; Graber et al. 2017).
+socket_sizing:
+  seeds: {value: 20, origin: design_rule, source: "D-V6-43"}
+  percentile: {value: 95, origin: design_rule, source: "D-V6-43"}
+
+# D-V6-40 (owner 2026-11-07): daily km lognormal around km_per_day, truncated to the autonomy
+# (battery x depth of discharge / kWh per km). Method: Ploetz, Jakobsson and Sprei (2017), Transp. Res. B 101;
+# He and Yamamoto (2020), Sustainability 12(2):690. P-V6-21: sigma_ln from the 34-45 km/day range of
+# Abaya et al. (2019) read as a 95 % interval, (ln 45 - ln 34) / (2 x 1.96); applied to every class.
+daily_km:
+  distribution: lognormal
+  sigma_ln: {value: 0.0716, origin: implementation_rule, note: "P-V6-21; no measured dispersion for motorcycles or pickups in Peru"}
 
 demand_factor:
   # D-V6-27 (FC). D.S. 036-2023-EM art. 13.3.1: with a charge-management system (SGC) the demand factor of the

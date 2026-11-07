@@ -51,7 +51,9 @@ def test_every_charger_gets_its_csv_and_schema_entry_and_old_ones_are_replaced(w
     for b in (6, 11):
         chargers = schema['buildings'][f'Building_{b}']['chargers']
         assert 'old_charger' not in chargers and len(chargers) == report[b]['chargers']
-        assert 0 < report[b]['chargers'] <= PLANS[b].vehicles and report[b]['epbd_points'] == PLANS[b].chargers
+        # physical units never outnumber the vehicles (sockets may: a pickup keeps its socket, D-V6-42)
+        assert 0 < sum(report[b]['physical_chargers'].values()) <= PLANS[b].vehicles
+        assert report[b]['epbd_points'] == PLANS[b].chargers
         for name, entry in chargers.items():
             frame = pd.read_csv(out/entry['charger_simulation'])
             assert list(frame.columns) == list(q.CHARGER_COLUMNS) and len(frame) == 8760, name
@@ -105,9 +107,29 @@ def test_citylearn_v3_loads_and_steps_the_written_fleet(tmp_path):
         assert all(np.isfinite(float(r)) for r in rewards.values())
         b6 = next(b for b in env.env.buildings if b.name == 'Building_6')
         written = schema['buildings']['Building_6']['chargers']
-        assert len(b6.electric_vehicle_chargers) == len(written) < PLANS[6].vehicles
+        assert len(b6.electric_vehicle_chargers) == len(written)
         pickups = [c for c in b6.electric_vehicle_chargers if c.max_discharging_power > 0]
         assert len(pickups) == sum(1 for e in written.values() if e['hardware']['vehicle_class'] == 'pickup')
         assert all(c.max_discharging_power == pytest.approx(6.6) for c in pickups)
     finally:
         env.close()
+
+
+def test_charger_csv_names_follow_the_pattern_the_integrity_audit_reads(written):
+    # The CSV integrity audit and the orphan cleaner only see charger_*.csv (failure of iquitos_v6_trial2).
+    out, schema, _ = written
+    referenced = {e['charger_simulation'] for b in (6, 11) for e in schema['buildings'][f'Building_{b}']['chargers'].values()}
+    assert referenced and all(name.startswith('charger_') and name.endswith('.csv') for name in referenced)
+    assert referenced <= {p.name for p in out.glob('charger_*.csv')}
+
+
+def test_ev_battery_curves_are_fixed_so_the_departure_soc_is_reachable(written):
+    # Without curves CityLearn draws random ones that cut the power near full (energy_model.py); P-V6-22 fixes
+    # them flat at the class power and battery efficiency, the assumption the queue's charging time uses.
+    _, schema, _ = written
+    for ev in schema['electric_vehicles_def'].values():
+        attributes = ev['battery']['attributes']
+        assert attributes['capacity_power_curve'] == [[0.0, 1.0], [1.0, 1.0]]
+        assert attributes['power_efficiency_curve'] == [[0.0, 0.92], [1.0, 0.92]]
+    hardware = next(iter(schema['buildings']['Building_6']['chargers'].values()))['hardware']
+    assert hardware['socket_count_per_physical_unit'] == RULES['charging_unit']['sockets_per_unit']['value']

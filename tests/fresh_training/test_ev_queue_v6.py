@@ -13,8 +13,8 @@ import pytest
 from uc3m.application.dataset import ev_queue as q
 
 DAYS = [date(2023, 1, 2) + timedelta(days=d) for d in range(7)]     # Monday .. Sunday
-OFFICE = {'occupied_hours': [7, 17], 'day_factors_weekday_saturday_sunday': [1.0, 0.08, 0.03]}
-H24 = {'occupied_hours': [0, 24], 'day_factors_weekday_saturday_sunday': [1.0, 0.98, 0.95]}
+OFFICE = {'occupied_hours': [7, 17], 'day_factors_weekday_saturday_sunday': [1.0, 0.0, 0.0]}
+H24 = {'occupied_hours': [0, 24], 'day_factors_weekday_saturday_sunday': [1.0, 1.0, 1.0]}
 MOTO = q.VehicleClass('moto', battery_kwh=2.7, charge_kw=0.6, session_kwh=1.56)
 TAXI = q.VehicleClass('mototaxi', battery_kwh=8.6, charge_kw=3.52, session_kwh=4.78/2)
 OPENING = {'kind': 'opening', 'window_h': 2}
@@ -22,7 +22,7 @@ STOPS = {'kind': 'stops', 'stops': [[12, 14], [18, 20]]}
 
 
 def test_opening_arrivals_fall_in_the_first_two_hours_and_leave_at_closing():
-    sessions = q.class_sessions(MOTO, vehicles=3, schedule=OFFICE, rule=OPENING, days=DAYS, open_day_min_factor=0.5,
+    sessions = q.class_sessions(MOTO, vehicles=3, schedule=OFFICE, rule=OPENING, days=DAYS,
                                 rng=np.random.default_rng(0))
     assert len(sessions) == 3*5                                       # weekdays only: Saturday 0.08, Sunday 0.03
     for s in sessions:
@@ -30,9 +30,9 @@ def test_opening_arrivals_fall_in_the_first_two_hours_and_leave_at_closing():
 
 
 def test_a_24_hour_building_receives_vehicles_every_day_and_mototaxis_stop_twice():
-    assert len(q.class_sessions(MOTO, vehicles=1, schedule=H24, rule=OPENING, days=DAYS, open_day_min_factor=0.5,
+    assert len(q.class_sessions(MOTO, vehicles=1, schedule=H24, rule=OPENING, days=DAYS,
                                 rng=np.random.default_rng(0))) == 7
-    stops = q.class_sessions(TAXI, vehicles=1, schedule=H24, rule=STOPS, days=DAYS, open_day_min_factor=0.5,
+    stops = q.class_sessions(TAXI, vehicles=1, schedule=H24, rule=STOPS, days=DAYS,
                              rng=np.random.default_rng(0))
     assert len(stops) == 14
     assert {(s.arrival % 24 in (12, 13), s.departure % 24) for s in stops} <= {(True, 14), (False, 20)}
@@ -66,7 +66,8 @@ def test_charger_table_follows_citylearn_charger_simulation():
     assert table['electric_vehicle_estimated_soc_arrival'][10] == pytest.approx(arrival_soc)
     assert table['electric_vehicle_required_soc_departure'][7] == pytest.approx(100.0)
     assert list(table['electric_vehicle_departure_time'][7:10]) == [2, 1, 0]
-    assert table['electric_vehicle_estimated_arrival_time'][6] == 1 and table['electric_vehicle_id'][13] == 'NONE'
+    # estimated arrival 0 steps on the incoming row, as CityLearn's reference dataset (charger_10_1.csv)
+    assert table['electric_vehicle_estimated_arrival_time'][6] == 0 and table['electric_vehicle_id'][13] == 'NONE'
 
 
 def test_a_truncated_connection_asks_only_the_soc_it_can_reach_at_nominal_power():
@@ -204,3 +205,62 @@ def test_every_physical_charger_has_two_sockets():
             assert len(sockets) == 2*units, (building, kind)
             assert units == -(-charging.required_sockets[kind]//2)
             assert all(f'_unit_{u:02d}_socket_' in ' '.join(sockets) for u in range(1, units + 1))
+
+
+def test_daily_presence_is_bernoulli_with_the_day_factor():
+    # D-V6-39: each vehicle comes each day with probability = the building's day factor (fixed seed).
+    office = {'occupied_hours': [7, 17], 'day_factors_weekday_saturday_sunday': [1.0, 0.25, 0.0]}
+    year = [date(2023, 1, 2) + timedelta(days=d) for d in range(364)]                # 52 full weeks
+    sessions = q.class_sessions(MOTO, vehicles=20, schedule=office, rule=OPENING, days=year,
+                                rng=np.random.default_rng(1))
+    by_kind = {0: 0, 1: 0, 2: 0}
+    for s in sessions:
+        by_kind[q._day_kind(year[s.arrival//24])] += 1
+    assert by_kind[0] == 20*52*5 and by_kind[2] == 0
+    assert abs(by_kind[1]/(20*52) - 0.25) < 0.05
+
+
+def test_daily_km_are_lognormal_around_the_class_mean_and_never_exceed_autonomy():
+    # D-V6-40 and P-V6-21: lognormal km with sigma_ln from the 34-45 km/day range of Abaya et al. (2019).
+    km = q.draw_daily_km(np.random.default_rng(0), mean_km=40.0, sigma_ln=0.0716, max_km=50.0, size=20000)
+    assert abs(km.mean() - 40.0) < 0.2 and km.max() <= 50.0 and km.std() > 1.0
+    capped = q.draw_daily_km(np.random.default_rng(0), mean_km=40.0, sigma_ln=0.5, max_km=45.0, size=5000)
+    assert capped.max() == pytest.approx(45.0)
+
+
+def test_charging_time_uses_the_power_that_reaches_the_battery():
+    lossy = q.VehicleClass('moto', battery_kwh=2.7, charge_kw=0.6, session_kwh=1.56, efficiency=0.95*0.92)
+    assert lossy.charging_hours(1 - 1.56/2.7) == int(np.ceil(1.56/(0.6*0.95*0.92) - 1e-9))   # 3 h -> 3 h
+    result = q.fifo_queue([q.Session(0, 7, 17)], chargers=1, vehicle_class=lossy)
+    assert result.assignments[0].departure_soc == pytest.approx(1.0)
+
+
+def test_a_socket_rests_one_hour_between_sessions_so_citylearn_sees_each_departure():
+    sessions = [q.Session(vehicle=v, arrival=7, departure=17) for v in range(2)]
+    result = q.fifo_queue(sessions, chargers=1, vehicle_class=MOTO, gap_h=1)
+    first, second = result.assignments
+    assert second.connect == first.disconnect + 1
+    table = q.charger_tables(result, chargers=1, hours=24, vehicle_class=MOTO, ids=['a', 'b'])[0]
+    assert table['electric_vehicle_charger_state'][first.disconnect] == 2            # incoming, not 1
+    assert table['electric_vehicle_estimated_arrival_time'][first.disconnect] == 0.0
+
+
+def test_a_bidirectional_pickup_stays_connected_until_it_leaves():
+    # D-V6-42: the pickup keeps its socket while parked, so it can discharge through V2L (V2B).
+    pickup = q.VehicleClass('pickup', battery_kwh=98.4, charge_kw=7.04, session_kwh=10.68, stays_connected=True)
+    a = q.fifo_queue([q.Session(0, 9, 22)], chargers=1, vehicle_class=pickup).assignments[0]
+    assert (a.connect, a.disconnect) == (9, 22) and a.departure_soc == pytest.approx(1.0)
+
+
+def test_sockets_are_the_95th_percentile_of_twenty_seeds():
+    # D-V6-43: per class, the minimum serving every session in each of 20 drawn years; P95 of those.
+    rules, registry, inventory, plans = _district()
+    schedule = registry['schedules'][registry['buildings'][6]['schedule']]
+    spec = q.vehicle_class('moto', rules)
+    needs = [q.required_chargers(q.class_sessions(spec, vehicles=21, schedule=schedule, rule=rules['arrivals']['moto'],
+                                                   days=YEAR[:28], rng=np.random.default_rng([k, 6, 0]),
+                                                   km=rules['daily_km'], kwh_per_km=0.039, mean_km=40.0,
+                                                   max_km=2.7*0.8/0.039), spec, gap_h=1)
+             for k in range(20)]
+    assert q.socket_percentile(needs, 95) == int(np.ceil(np.percentile(needs, 95)))
+    assert rules['socket_sizing']['seeds']['value'] == 20 and rules['socket_sizing']['percentile']['value'] == 95

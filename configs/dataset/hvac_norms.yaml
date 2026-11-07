@@ -1,0 +1,59 @@
+# SPEC-016 FR-016.3, D-V6-16 and D-V6-17: air-conditioning capacity of iquitos_v6.
+# Every value declares its origin: measured, cited (with source), design_rule or assumption.
+# Audit of the sources: docs/audits/normas_climatizacion_20261107/README.md
+schema_version: 1
+
+split_unit:
+  btu_per_h: 18000
+  origin: assumption
+  note: "Typical split, used because no Peruvian norm gives a capacity (EM.050 has no figures). 1 BTU/h = 0.29307107 W, so 5.275 kW thermal. Replace with the nameplate when the owner has it."
+
+indoor_design:
+  t_c: 24.0
+  rh_pct: 50.0
+  origin: cited
+  source: "MINSA NTS 110 (RM 660-2014/MINSA) and NTS 119 (RM 862-2015/MINSA), section 6.2.5.10, Table 6, general areas: 24 C, 45-60 % RH. 50 % is the midpoint (design_rule, D-V6-17)."
+
+outdoor_design:
+  percentile: 99.0
+  year: 2023
+  origin: measured
+  source: "NASA POWER hourly T2M and RH2M of the design year, data/campaigns/<dataset>/raw/weather/nasa_power_2023_utc.json; elevation 115.02 m from the same file."
+
+air_density_kg_m3:
+  value: 1.2
+  origin: assumption
+  note: "Standard air density used to convert the outdoor-air flow to a mass flow."
+
+occupied_fraction:
+  value: 1.0
+  origin: assumption
+  note: "Fraction of the roofed area that is ventilated occupied zone. 1.0 oversizes buildings with large unoccupied areas, for example the airport; the bill calibration flags them."
+
+occupant_gain_w:
+  value: 130.0
+  origin: assumption
+  note: "Sensible + latent gain per seated occupant doing light work (75 + 55 W), the typical value of ASHRAE Fundamentals ch. 18 Table 1, which was not opened."
+
+ceiling_height_m:
+  value: 3.0
+  origin: assumption
+  note: "Converts the NTS 110 air changes per hour to a flow in health buildings."
+
+use_types:
+  # EM.030 as amended by RM 232-2020-VIVIENDA (El Peruano 2020-09-23), art. 6, Table 01:
+  # rp l/s per person, ra l/s per m2, rd people per 100 m2 (Rd column sourced from ASHRAE 62.1-2016).
+  Office: {row: "Ambiente de oficinas, zonas de trabajo", rp: 2.5, ra: 0.3, rd: 5, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  Office_Critical: {row: "Ambiente de oficinas, zonas de trabajo", rp: 2.5, ra: 0.3, rd: 5, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  Retail: {row: "Supermercados", rp: 3.8, ra: 0.3, rd: 8, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  Commercial_Mall: {row: "Areas comunes de centros comerciales", rp: 3.8, ra: 0.3, rd: 40, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  MultiFamily_Hotel: {row: "Hoteles, salas de estar", rp: 2.5, ra: 0.3, rd: 10, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  Education: {row: "Aulas (mas de 9 anos)", rp: 5.0, ra: 0.6, rd: 35, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  Assembly: {row: "Areas de espera transporte publico y privado", rp: 3.8, ra: 0.3, rd: 100, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01 (airport)"}
+  Assembly_Military: {row: "Aulas (mas de 9 anos)", rp: 5.0, ra: 0.6, rd: 35, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01; the row choice for a military school is an assumption"}
+  Laboratory: {row: "Laboratorios universitarios", rp: 5.0, ra: 0.9, rd: 25, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  Industrial: {row: "Manufactura en general", rp: 5.0, ra: 0.9, rd: 7, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  Industrial_Port: {row: "Manufactura en general", rp: 5.0, ra: 0.9, rd: 7, origin: cited, source: "EM.030 RM 232-2020-VIVIENDA, art. 6, Table 01"}
+  # Health care is not in Table 01; EM.030 art. 13.5 refers to the MINSA norms.
+  Healthcare: {air_changes_per_hour: 3, rd: 5, origin: cited, source: "NTS 110 MINSA, section 6.2.5.10, Table 6, general and treatment areas: 2-3 air changes per hour (3 taken); rd from the office row of EM.030 Table 01 (assumption)"}
+  Healthcare_Hospital: {air_changes_per_hour: 3, rd: 5, origin: cited, source: "NTS 110 MINSA, section 6.2.5.10, Table 6, general and treatment areas: 2-3 air changes per hour (3 taken); rd from the office row of EM.030 Table 01 (assumption)"}

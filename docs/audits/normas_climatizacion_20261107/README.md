@@ -32,3 +32,35 @@
 - **Condiciones exteriores de diseño de Iquitos:** ninguna norma peruana revisada las da.
 - **Textos primarios de ASHRAE 62.1 y Guideline 14:** no se abrieron.
 - **Versiones del MINSA:** no se contrastaron con El Peruano ni con modificaciones posteriores, como la RM 533-2016.
+
+## Capacidad resultante con D-V6-16 (tarea 3b.1)
+
+Condiciones de cálculo:
+- **Presión:** 99,95 kPa, con la elevación de NASA POWER de 115 m.
+- **Entalpía exterior:** percentil 99 de 2023, 85,5 kJ/kg.
+- **Entalpía interior:** 24 °C y 50 % de HR, 48,1 kJ/kg.
+
+| Edificio | Tipo | Área (m²) | Splits (kW) | Aire exterior (kW) | Ocupantes (kW) | Total (kW térmicos) | W/m² |
+|---|---|---|---|---|---|---|---|
+| B01 | Office | 14 000 | 264 | 267 | 91 | 622 | 44,4 |
+| B02 | Office | 8 000 | 211 | 0 | 0 | 211 | 26,4 |
+| B03 | Assembly | 6 000 | 158 | 1 105 | 780 | 2 043 | 340,5 |
+| B04 | Retail | 2 500 | 58 | 68 | 26 | 152 | 60,7 |
+| B05 | MultiFamily_Hotel | 1 142 | 237 | 28 | 15 | 280 | 245,6 |
+| B06 | Commercial_Mall | 20 637 | 712 | 1 687 | 1 073 | 3 472 | 168,2 |
+| B07 | Education | 8 103 | 90 | 0 | 0 | 90 | 11,1 |
+| B08 | Assembly_Military | 21 000 | 158 | 0 | 0 | 158 | 7,5 |
+| B09 | Office_Critical | 4 480 | 142 | 86 | 29 | 257 | 57,4 |
+| B10 | Office | 14 296 | 433 | 273 | 93 | 798 | 55,8 |
+| B11 | Healthcare_Hospital | 42 649 | 633 | 4 789 | 277 | 5 699 | 133,6 |
+| B12 | Healthcare | 18 197 | 343 | 2 043 | 118 | 2 504 | 137,6 |
+| B13 | Education | 2 723 | 69 | 0 | 0 | 69 | 25,2 |
+| B14 | Industrial_Port | 17 761 | 116 | 0 | 0 | 116 | 6,5 |
+| B15 | Education | 9 890 | 53 | 0 | 0 | 53 | 5,3 |
+| B16 | Industrial | 10 294 | 132 | 578 | 94 | 803 | 78,1 |
+| B17 | Laboratory | 1 611 | 84 | 156 | 52 | 292 | 181,4 |
+
+**Lectura:**
+- **Sobredimensionado previsible:** B03, el aeropuerto, con la fracción ocupada en 1,0 (6 000 personas en 6 000 m²) y B05, el hotel (45 splits en 1 142 m²).
+- **Edificios sin sistema grande:** su capacidad son solo los splits del inventario.
+- **Control:** la calibración con las facturas (D-V6-14, tarea 3b.2) acepta o marca cada valor. Ninguno se usa sin pasar por ella.

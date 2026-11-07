@@ -78,6 +78,18 @@ classes:
     km_per_day: {value: 40.0, origin: assumption_pending_user_verification, note: "No Peruvian source for the daily distance of pickups"}
     penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; the NDC (MINAM 2023) gives 171 359 light EVs by 2030 but no share"}
 
+# D-V6-34 (owner 2026-11-07): battery and charger parameters of every class, carried from the B01 pilot
+# (configs/dataset/ev_pilot.yaml) until datasheets per class exist. D-V6-35: the agent modulates the charging
+# power between the minimum and the maximum of each class (in mode 2 a declared modelling assumption).
+battery_and_charger:
+  battery_efficiency: {value: 0.92, origin: assumption, source: "D-V6-34; ev_pilot.yaml battery_efficiency, carried from the earlier light-EV battery, no datasheet"}
+  battery_depth_of_discharge: {value: 0.80, origin: assumption, source: "D-V6-34; ev_pilot.yaml battery_depth_of_discharge"}
+  capacity_loss_coefficient: {value: 1.0e-5, origin: cited, source: "lower end of the CityLearn Battery default range (1e-5, 1e-4), CityLearn/citylearn/energy_model.py"}
+  charger_efficiency: {value: 0.95, origin: assumption, source: "D-V6-34; ev_pilot.yaml charger efficiency, carried from the earlier dataset, no nameplate"}
+  min_current_a: {value: 6, origin: cited, source: "D-V6-34; external/evcc/core/loadpoint.go NewLoadpoint default minCurrent 6 A"}
+  supply_voltage_v: {value: 220, origin: cited, source: "CNE-Suministro 2011, 220 V low-voltage supply; D.S. 036-2023-EM annexes 5 and 6"}
+  min_power_rule: "min charging power = supply_voltage_v x min_current_a (1.32 kW) when the class maximum reaches it, else 0 (motorcycle: 0 to 0.6 kW)"
+
 # D-V6-29: arrival rules by class (owner 2026-11-07). Opening hours come from the building's schedule in
 # configs/dataset/building_types.yaml (occupied_hours).
 arrivals:

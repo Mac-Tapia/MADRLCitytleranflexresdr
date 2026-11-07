@@ -619,11 +619,12 @@ class MasacFrozenPolicy(NativeFrozenPolicy):
         if not deterministic:
             raise ValueError('frozen MASAC evaluation is greedy')
         n_actions = self.backend_args.n_actions
-        available = np.ones(n_actions, dtype=np.float32)
 
         def compute():
             actions = []
             for index in range(self.backend_args.n_agents):
+                # D03: the same per-building mask the agent was trained with.
+                available = self.env.get_avail_agent_actions(index)
                 action = int(self.agents_backend.choose_action(observations[index], self._last_action[index], index,
                                                                available, 0, None, True))
                 self._last_action[index] = np.eye(n_actions)[action]
@@ -764,7 +765,9 @@ class MaacFrozenPolicy(NativeFrozenPolicy):
 
     def _build_networks(self):
         sizes = [(int(p['num_in_pol']), int(p['num_out_pol'])) for p in self.model.init_dict['agent_init_params']]
-        expected = [(int(self.adapter.max_observation_dim), int(self.adapter.n_discrete_actions))]*len(self.agents)
+        # D03: each MAAC agent has the actions of its real equipment only.
+        expected = [(int(self.adapter.max_observation_dim), len(self.adapter.discrete_action_rows_by_agent[agent]))
+                    for agent in self.adapter.agents]
         if sizes != expected:
             raise FrozenPolicyRejected(f'MAAC agent sizes {sizes[:1]}x{len(sizes)} differ from the env {expected[:1]}'
                                        f'x{len(expected)}')
@@ -784,7 +787,9 @@ class MaacFrozenPolicy(NativeFrozenPolicy):
             torch_obs = [torch.Tensor(np.vstack(obs[:, i])) for i in range(self.model.nagents)]
             return [a.data.cpu().numpy() for a in self.model.step(torch_obs, explore=not deterministic)]
         agent_actions = self._no_grad_act(compute)
-        self._record(obs[0], np.asarray([a[0] for a in agent_actions]))
+        # D03: agents have action spaces of their own size; the history records each agent's row of
+        # the shared table (the equipment it moved), which is uniform across agents.
+        self._record(obs[0], np.asarray([self.env.global_discrete_index(i, a[0]) for i, a in enumerate(agent_actions)]))
         return [[a[i] for a in agent_actions] for i in range(self.env.num_envs)]
 
     def step(self, actions):

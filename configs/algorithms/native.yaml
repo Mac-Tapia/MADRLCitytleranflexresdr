@@ -30,6 +30,7 @@ algorithms:
     runtime_requirements: {min_ram_gib: 8, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
     declared_limitations:
       - "one parallel environment instead of the author's 20 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; one 8760-step episode gives 8760 steps per update, more than the author's 20 x 200 = 4000."
+      - "continuous actions are padded to the largest equipment count (D03, SPEC-015 D-M3-6): an output with no equipment in its building is inert, cut before the simulator; the equipment of every output is the building's action_names."
   MASAC:
     # MASAC keeps its native QMIX mixing architecture; parameter counts differ.
     mapping: {learning_rate: [--actor-lr, --critic-lr], hidden_dimension: [--rnn-hidden-dim], gamma: [--gamma]}
@@ -69,6 +70,8 @@ algorithms:
     fixed: {batch_size: 256, buffer_size: 744600}
     optimizer_owners: {per_agent: ['policy_{i}/actor', 'policy_{i}/critic'], shared: []}
     runtime_requirements: {min_ram_gib: 40, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
+    declared_limitations:
+      - "continuous actions are padded to the largest equipment count (D03, SPEC-015 D-M3-6): an output with no equipment in its building is inert, cut before the simulator; the equipment of every output is the building's action_names."
   MAAC:
     mapping: {learning_rate: [--pi-lr, --q-lr], hidden_dimension: [--hidden-size], gamma: [--gamma]}
     # Author schema of external/MAAC/main.py (owner 2026-11-06, SPEC-015 D-M3-5): buffer_length

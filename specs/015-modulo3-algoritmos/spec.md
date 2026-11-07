@@ -1,6 +1,6 @@
 # SPEC-015 — Módulo 3: contrato de algoritmos y recursos
 
-**Estado:** `in_progress` (FR-015.1 a FR-015.3 implementados; FR-015.3 ampliado a los 4 por D-M3-5)
+**Estado:** `implemented` (FR-015.1 a FR-015.7, 2026-11-06; FR-015.3 ampliado a los 4 por D-M3-5). Sin aceptación científica.
 **Ámbito:** `D:\MADRLCitytleranflexresdr` · **Exclusión:** `D:\madrl_lima`
 **Estado conciliado:** [STATUS](../STATUS.md) · **Hoja de ruta:** [hoja_ruta_modulos.md](../../docs/plans/hoja_ruta_modulos.md)
 **Revisión:** 2026-11-06
@@ -78,7 +78,7 @@ Con las cifras de `v1`, el guardián rechazaría MASAC en cualquier entorno disp
   - **Por paso:** comprueba que la suma de los términos iguala la recompensa con la que aprendió el agente.
   - **Efecto en el intento:** si algún paso no cuadra, el intento queda sin verificar.
   - **Verificación:** simulador real, un caso falsificado y la corrida real de los 4 algoritmos.
-- **FR-015.7** — D03, según D-M3-6. Pendiente de implementar.
+- **FR-015.7** — D03, según D-M3-6. **Hecho el 2026-11-06** (CityLearn `387f9c42`; `tests/fresh_training/test_action_masks.py`, 13 pruebas). Mapa discreto en MASAC y MAAC, `continuous_action_map()` en HAPPO y MATD3.
   - **Equipos reales:** se derivan por edificio de `action_names` del esquema, nunca de un relleno fijo.
   - **Discretos:**
     - MASAC recibe `avail_actions` por agente, la máscara que su backend SMAC ya admite, y nunca elige acciones de equipos inexistentes;

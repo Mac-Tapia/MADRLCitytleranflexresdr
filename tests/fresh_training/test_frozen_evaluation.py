@@ -173,9 +173,12 @@ def _rebuild_actions(algorithm, policy, history):
                 net.load_state_dict(params['policy'])
                 net.eval()
                 nets.append(net)
+            # D03: each agent's one-hot over its own actions is recorded as its row of the shared table.
+            rows = [policy.adapter.discrete_action_rows_by_agent[agent] for agent in policy.adapter.agents]
             for step in history:
                 obs = np.asarray(step['observations'], dtype=np.float32)
-                rebuilt.append(np.asarray([net(torch.tensor(obs[i][None]), sample=False).numpy()[0]
+                rebuilt.append(np.asarray([rows[i][int(np.argmax(net(torch.tensor(obs[i][None]), sample=False)
+                                                                 .numpy()[0]))]
                                            for i, net in enumerate(nets)]))
     return rebuilt
 

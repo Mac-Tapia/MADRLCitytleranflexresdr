@@ -13,6 +13,8 @@ import numpy as np
 
 EXCLUDED_FLAGS = ('partial_month_suspect', 'printed_total_implausible')
 REPORTED_BANDS = (0.1, 0.2, 0.3, 0.5)
+BELOW_NOTE = ('the bill maximum demand is a 15-minute value and the dataset is hourly, so an hourly peak below it '
+              'is expected and reported, not corrected (SPEC-016 D-V6-48)')
 _TOL = 1e-9
 
 
@@ -46,8 +48,11 @@ def summarize(rows: Sequence, *, threshold: Optional[float]) -> dict:
                'threshold': threshold}
     if threshold is None:
         return {**summary, 'status': 'threshold_pending_owner', 'passed': None, 'outside': []}
-    outside = [r for r in counted if abs(r['ratio'] - 1.0) > threshold + _TOL]
-    return {**summary, 'status': 'checked', 'passed': not outside, 'outside': outside}
+    # D-V6-48: only a generated peak above (1 + threshold) x the bill's fails; below is expected (hourly vs 15 min)
+    outside = [r for r in counted if r['ratio'] > 1.0 + threshold + _TOL]
+    below = [r for r in counted if r['ratio'] < 1.0 - threshold - _TOL]
+    return {**summary, 'status': 'checked', 'passed': not outside, 'outside': outside, 'below': below,
+            'below_note': BELOW_NOTE}
 
 
 def _scaled(base: np.ndarray, block: np.ndarray, alpha: float) -> np.ndarray:

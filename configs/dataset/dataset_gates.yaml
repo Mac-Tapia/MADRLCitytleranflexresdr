@@ -4,4 +4,4 @@ peak_contrast:
   threshold:
     value: 0.5
     origin: implementation_rule
-    note: "D-V6-47: +/-50 % between the generated monthly peak and the bill-implied peak, E / (load factor x hours); chosen under the owner's delegation of 2026-11-07, not an owner decision. Months outside are re-distilled (FR-016.8) and the gate passes only if every measured month ends inside."
+    note: "D-V6-47: +/-50 % between the generated monthly peak and the bill-implied peak, E / (load factor x hours); chosen under the owner's delegation of 2026-11-07, not an owner decision. D-V6-48 (owner 2026-11-07): only generated peaks above (1 + threshold) x the bill-implied peak are re-distilled and fail the gate; peaks below are expected (15-minute bill maximum vs hourly data) and reported."

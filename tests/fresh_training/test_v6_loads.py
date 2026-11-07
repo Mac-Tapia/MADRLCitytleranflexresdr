@@ -121,6 +121,24 @@ def test_redistillation_rewrites_only_the_base_of_months_outside_the_threshold(t
     new = pd.read_csv(tmp_path/'Building_3.csv')['non_shiftable_load'].to_numpy()
     jan_implied = peak/1.6
     assert [(r['month'], r['status']) for r in rows] == [(1, 'resolved')]
-    assert float((new + other)[month == 1].max()) == pytest.approx(1.5*jan_implied, rel=1e-6)
+    # just inside the edge, so the 6-decimal CSV does not push it out (trial4 left 31 months at 1.5000001)
+    assert float((new + other)[month == 1].max()) == pytest.approx(1.5*(1 - 1e-3)*jan_implied, rel=1e-6)
     assert np.allclose(new[month == 2], base[month == 2])
     assert new[month == 1].sum() == pytest.approx(base[month == 1].sum())
+
+
+def test_redistillation_leaves_low_peaks_alone(tmp_path):
+    # D-V6-48: a generated peak below the bill's (15-minute maximum demand vs hourly data) is not reshaped.
+    from uc3m.application.dataset import construction as cn
+    hours = 744
+    t = np.arange(hours)
+    base = 10.0 + 8.0*np.sin(2*np.pi*(t % 24)/24)
+    pd.DataFrame({'month': 1, 'hour': t % 24, 'day_type': 1, 'non_shiftable_load': base,
+                  'cooling_demand': 0.0, 'dhw_demand': 0.0}).to_csv(tmp_path/'Building_3.csv', index=False)
+    energy = float((base + 1.0).sum())
+    peak = float((base + 1.0).max())
+    target = [cn.MonthlyRecord(3, 2023, 1, energy, 0.2*energy, 0.8*energy, 'measured', 'billing', 'measured',
+                               ('x',), (), energy/(hours*peak*3.0), 1.0)]                  # bill peak 3x higher
+    rows = v6.redistill_peaks(tmp_path, buildings=(3,), targets=target, threshold=0.5, peak_hours={18, 19, 20, 21, 22},
+                              other_kw=lambda b: np.ones(hours), years=np.full(hours, 2023))
+    assert rows == [] and np.allclose(pd.read_csv(tmp_path/'Building_3.csv')['non_shiftable_load'], base)

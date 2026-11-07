@@ -128,9 +128,9 @@ def redistill_peaks(dataset_dir: Path, *, buildings, targets, threshold: float, 
                 continue
             implied = t.energy_kwh/(t.load_factor*int(mask.sum()))
             ratio = float((base[mask] + other[mask]).max())/implied
-            if abs(ratio - 1.0) <= threshold + 1e-9:
+            if ratio <= 1.0 + threshold + 1e-9:      # D-V6-48: only peaks above the bill's are corrected
                 continue
-            target = implied*(1.0 + threshold if ratio > 1.0 else 1.0 - threshold)
+            target = implied*(1.0 + threshold)*(1.0 - 1e-3)   # just inside the edge (6-decimal CSV rounding)
             new, status = pc.reshape_month(base[mask], other[mask], np.isin(hour[mask], list(peak_hours)),
                                            target_peak_kw=target)
             base[mask] = new

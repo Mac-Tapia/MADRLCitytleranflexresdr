@@ -79,3 +79,14 @@ def test_a_peak_the_base_cannot_reach_is_declared_unresolved_not_forced():
     flat_floor = float((np.where(block, base[block].mean(), base[~block].mean()) + other).max())
     new, status = pc.reshape_month(base, other, block, target_peak_kw=0.5*flat_floor)
     assert status == 'unresolved' and new[block].sum() == pytest.approx(base[block].sum())
+
+
+def test_only_peaks_above_the_bill_fail_and_low_ones_are_reported():
+    # D-V6-48: the bill's maximum demand is a 15-minute value and the dataset is hourly, so an hourly peak below it
+    # is expected; only a generated peak above (1 + threshold) x the bill-implied peak fails the gate.
+    rows = [{'building_id': 3, 'year': 2023, 'month': m, 'ratio': r, 'synthetic': False}
+            for m, r in ((1, 1.05), (2, 1.6), (3, 0.3))]
+    summary = pc.summarize(rows, threshold=0.5)
+    assert summary['passed'] is False and [(f['month']) for f in summary['outside']] == [2]
+    assert [f['month'] for f in summary['below']] == [3] and '15-minute' in summary['below_note']
+    assert pc.summarize([rows[0], rows[2]], threshold=0.5)['passed'] is True

@@ -58,6 +58,42 @@ No existe ningún perfil horario medido. B01 no tiene factura medida: `B_01.csv`
 | D-V6-29 | **Llegadas por horario del edificio y clase** (propietario, 2026-11-07, `assumption`): motos y camionetas del personal llegan en las 2 primeras horas tras la apertura del edificio (`configs/dataset/building_types.yaml`) y salen al cierre; los mototaxis hacen 2 paradas cortas al día, de 12 a 14 h y de 18 a 20 h. Horas sorteadas con semilla fija; el SOC requerido a la salida cubre el siguiente recorrido. La cola FIFO por clase genera el CSV horario de cada cargador en el formato de CityLearn (`ChargerSimulation`). |
 | D-V6-30 | **El BESS también recorta picos y traslada de punta a valle** (propietario, 2026-11-07), amplía D-V6-7. Recorte = 20 % del mayor bloque horario de importación de 18:00 a 23:00 del año (`assumption_pending_user_verification`, la fracción de la regla v4); energía trasladada = recorte × horas del bloque. Energía = máx(excedente + vehículos; energía trasladada) y potencia = máx(excedente, vehículos, recorte): una sola batería cumple ambas funciones y los MADRL aprenden su control según los tres ejes (flexibilidad, CO₂ y costo con factura). |
 
+## Reglas propuestas por la implementación, pendientes de confirmar (2026-11-07)
+
+Estas reglas las fijó la implementación, no el propietario. Están en el código y en la configuración citados, declaradas, y no cuentan como decisión hasta que el propietario las confirme o las cambie.
+
+| ID | Regla | Dónde está | Origen |
+|---|---|---|---|
+| P-V6-1 | El agua caliente (DHW) queda dentro de la carga base y nunca supera el 50 % de ella en cada hora | `tools/dataset/distill_building_loads.py`, `calibrate_building_physical` | implementación |
+| P-V6-2 | La forma horaria de la carga base es el horario de `building_types.yaml` con un mínimo de 0,05 (consumo nocturno) | mismo archivo | implementación |
+| P-V6-3 | El COP usa el objetivo de refrigerante del esquema (8,5 °C por defecto), no el setpoint de la sala | `physical_cop_params` | implementación, por la fórmula de CityLearn |
+| P-V6-4 | La batería es el primer modelo del catálogo de CityLearn que declara eficiencia, profundidad de descarga y pérdidas (PowerPlus LiFe2433P), con unidades en paralelo | `uc3m/application/dataset/bess_sizing.py` | implementación |
+| P-V6-5 | Sin punto de carga no hay vehículo eléctrico en el edificio | `uc3m/application/dataset/ev_sizing.py` | implementación; revisar con la cola de D-V6-27 |
+| P-V6-6 | La descarga V2B de la camioneta es de 7,04 kW, el mismo límite de la conexión monofásica de 32 A | `configs/dataset/ev_v6.yaml` | implementación |
+| P-V6-7 | Asignación de filas de EM.030: la escuela militar como aulas; los edificios de salud con `rd` de oficina y 3 de las 2-3 renovaciones por hora de la NTS 110 | `configs/dataset/hvac_norms.yaml` | implementación |
+| P-V6-8 | Asignación de filas del factor de demanda: el aeropuerto como parqueo público; el laboratorio como parqueo privado; la escuela militar como educación | `configs/dataset/ev_v6.yaml` | implementación |
+| P-V6-9 | Factor de demanda en el extremo inferior de cada rango (0,6 y 0,5) | `configs/dataset/ev_v6.yaml` | implementación, por el «como mínimo» del decreto |
+| P-V6-10 | Valores de cálculo: densidad del aire 1,2 kg/m³; altura de techo 3 m; ganancia por ocupante 130 W; fracción ocupada 1,0; HR interior 50 % (punto medio de 45-60 %); diseño exterior en el percentil 99 | `configs/dataset/hvac_norms.yaml` | implementación (`assumption`) |
+| P-V6-11 | Recorrido diario de 40 km para motos y camionetas; 38,25 km para mototaxis, deducido de 4,78 kWh/día ÷ 0,125 kWh/km | `configs/dataset/ev_v6.yaml` | implementación |
+| P-V6-12 | Potencia de carga de la moto de 0,6 kW, la del cargador a bordo del Super Soco CPx | `configs/dataset/ev_v6.yaml` | implementación |
+| P-V6-13 | Tolerancia de cierre de 1e-3 kWh por bloque, por la escritura del CSV con 6 decimales | `tests/fresh_training/test_distill_physical.py` | implementación |
+
+## Estado de cada decisión en el código (2026-11-07)
+
+| Decisión | En el código | Pendiente |
+|---|---|---|
+| D-V6-14 a D-V6-19 (refrigeración física con tope en la factura) | `hvac_capacity.py`, `cooling_calibration.py`, `calibrate_building_physical` | Conectarlo al constructor del dataset |
+| D-V6-15 (punta + fuera de punta) | Destilación de v6 | — |
+| D-V6-17 (24 °C) | `hvac_norms.yaml` | Control con confort en v3 (FR-016.4) |
+| D-V6-8 (recompensa con factura) | Oráculo `bill_tariff.incremental_bill_cost` y archivos horarios de tarifa | Recompensa en `citylearn/v3/reward.py` |
+| D-V6-21, D-V6-23, D-V6-24 y D-V6-26 (cargadores y 3 clases, 80/20) | `ev_sizing.py`, `ev_v6.yaml` | — |
+| D-V6-27 (cola, modo, tiempo, PE, FC y factor de carga) | Solo el FC (`coincidence_cap_kw`) | Cola FIFO, PE por clase en el conteo y factor de carga informado |
+| D-V6-28 (V2B detrás del medidor) | Parámetros de la camioneta | Límite de la descarga a la demanda del edificio en v3 |
+| D-V6-29 (llegadas) | — | Generador de sesiones en el formato `ChargerSimulation` de CityLearn |
+| D-V6-30 (BESS con doble función) | `bess_sizing.py` | Conectarlo al constructor |
+| D-V6-20 (facturas posiblemente parciales) | Recorte declarado | Verificación del propietario |
+| D-V6-25 (capa v3) | Regla registrada | Toda la integración de 3b.4 y 3b.5 |
+
 ## Requisitos funcionales
 
 - **FR-016.1** — Reparto refrigeración y carga base según D-V6-14, por edificio: refrigeración del modelo físico de FR-016.3 calibrado con las facturas (criterios de ASHRAE Guideline 14 para simulación calibrada) y carga base como resto. La suma de componentes reproduce cada factura mensual (punta + fuera de punta, D-V6-15). Los meses recortados se declaran sin bloquear (D-V6-19).

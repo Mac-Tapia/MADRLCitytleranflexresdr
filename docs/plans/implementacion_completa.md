@@ -182,6 +182,16 @@ Necesita su propio plan TDD detallado antes de ejecutarse: `docs/plans/modulo3b_
 
 ---
 
+## Módulo 3c: SPEC-017, universalidad (antes de cerrar 3b)
+
+Cada tarea con prueba en rojo primero:
+
+1. **FR-017.1:** configuración de sitio. Sacar de los módulos de dataset el `PEAK_HOURS` de `construction.py` y el `TOKEN_CLASS` de `ev_sizing`; prueba de que no quedan constantes de sitio.
+2. **FR-017.3:** contrato de backend en la capa v3, con un backend mínimo de referencia registrado sin editar la capa.
+3. **FR-017.4:** puerta de operatividad: cargar en v3 y dar un episodio corto con cada backend al final de cada construcción.
+4. **FR-017.5:** origen `implementation_rule` y prueba de que ningún valor queda sin origen.
+5. **Criterio 1:** sitio sintético de prueba con 2 edificios, otro clima, otra tarifa y otro bloque horario.
+
 ## Módulo 4: estadística y selección (SPEC-005 y SPEC-009)
 
 ### Tarea 4.1: reproducir los tres defectos y conciliar

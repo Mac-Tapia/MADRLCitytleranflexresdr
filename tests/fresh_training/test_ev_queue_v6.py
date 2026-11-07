@@ -58,7 +58,7 @@ def test_charger_table_follows_citylearn_charger_simulation():
     sessions = [q.Session(vehicle=0, arrival=7, departure=17), q.Session(vehicle=1, arrival=8, departure=17)]
     result = q.fifo_queue(sessions, chargers=1, vehicle_class=MOTO)
     table = q.charger_tables(result, chargers=1, hours=24, vehicle_class=MOTO, ids=['moto_a', 'moto_b'])[0]
-    assert list(table) == list(q.CHARGER_COLUMNS)
+    assert list(table) == list(q.CHARGER_COLUMNS) + [q.TRIP_COLUMN]
     state = table['electric_vehicle_charger_state']
     assert state[6] == 2 and list(state[7:13]) == [1]*6 and state[13] == 3 and state[0] == 3
     assert table['electric_vehicle_id'][7] == 'moto_a' and table['electric_vehicle_id'][10] == 'moto_b'

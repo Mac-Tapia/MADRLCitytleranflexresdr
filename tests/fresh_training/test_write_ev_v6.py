@@ -56,7 +56,7 @@ def test_every_charger_gets_its_csv_and_schema_entry_and_old_ones_are_replaced(w
         assert report[b]['epbd_points'] == PLANS[b].chargers
         for name, entry in chargers.items():
             frame = pd.read_csv(out/entry['charger_simulation'])
-            assert list(frame.columns) == list(q.CHARGER_COLUMNS) and len(frame) == 8760, name
+            assert list(frame.columns) == list(q.CHARGER_COLUMNS) + [q.TRIP_COLUMN] and len(frame) == 8760, name
     assert 'EV_OLD' not in schema['electric_vehicles_def']
     assert sum(report[6]['class_chargers'].values()) == report[6]['chargers'] and set(report[6]['load_factor']) == set(es.CLASSES)
 
@@ -133,3 +133,82 @@ def test_ev_battery_curves_are_fixed_so_the_departure_soc_is_reachable(written):
         assert attributes['power_efficiency_curve'] == [[0.0, 0.92], [1.0, 0.92]]
     hardware = next(iter(schema['buildings']['Building_6']['chargers'].values()))['hardware']
     assert hardware['socket_count_per_physical_unit'] == RULES['charging_unit']['sockets_per_unit']['value']
+
+
+def test_citylearn_v3_carries_the_real_soc_between_sessions(tmp_path):
+    # D-V6-41: with electric_vehicle_arrival_soc = endogenous, a vehicle arrives with its last real SOC minus the
+    # trip energy written by the queue (electric_vehicle_trip_kwh), not with the fixed SOC of the CSV, and no
+    # random drift while away. With zero actions nothing charges, so each arrival is emptier than the last.
+    from citylearn.v3.environment import make_citylearn_v3_env
+    split = tmp_path/'train_2023'
+    shutil.copytree(SPLIT, split)
+    schema = json.loads((split/'schema.json').read_text(encoding='utf-8'))
+    wv.write_ev_fleet(split, schema, plans={6: PLANS[6]}, registry=REGISTRY, rules=RULES, inventory=INVENTORY,
+                      days=YEAR, keep_others=True)
+    assert schema['electric_vehicle_arrival_soc'] == 'endogenous'
+    (split/'schema.json').write_text(json.dumps(schema), encoding='utf-8')
+    connections = []                                  # (hour, EV, trip kWh) of every moto connection
+    for entry in schema['buildings']['Building_6']['chargers'].values():
+        if entry['hardware']['vehicle_class'] != 'moto':
+            continue
+        frame = pd.read_csv(split/entry['charger_simulation'])
+        assert 'electric_vehicle_trip_kwh' in frame.columns
+        on = frame['electric_vehicle_charger_state'].to_numpy() == 1
+        connections += [(t, frame['electric_vehicle_id'][t], float(frame['electric_vehicle_trip_kwh'][t]))
+                        for t in range(1, 400) if on[t] and not on[t - 1]]
+    connections.sort()
+    ev_id = next(e for _, e, _ in connections if sum(1 for _, x, _ in connections if x == e) >= 2)
+    (t1, _, _), (t2, _, trip) = [c for c in connections if c[1] == ev_id][:2]
+    same = [t1, t2]
+    capacity = RULES['classes']['moto']['battery_kwh']['value']
+    env = make_citylearn_v3_env(schema_path=split/'schema.json', scenario='E1', seed=0, episode_time_steps=same[1] + 2)
+    try:
+        env.reset()
+        zero = {a: np.zeros(env.action_space(a).shape, dtype=np.float32) for a in env.possible_agents}
+        ev = next(v for v in env.env.electric_vehicles if v.name == ev_id)
+        for _ in range(same[1] + 1):
+            env.step(zero)
+        soc = [float(x) for x in ev.battery.soc]
+        # the arrival SOC is set on the step before the connection (the battery recomputes it on connecting)
+        first_trip = next(trip_kwh for t, e, trip_kwh in connections if e == ev_id and t == same[0])
+        assert soc[same[0] - 1] == pytest.approx(1.0 - first_trip/capacity, abs=1e-6)      # full before trip 1
+        left = soc[same[1] - 2]                                                        # last real SOC, no drift
+        assert left == pytest.approx(soc[same[0]], abs=0.02)                           # zero action: no charge
+        assert soc[same[1] - 1] == pytest.approx(max(0.0, left - trip/capacity), abs=1e-6)
+        assert soc[same[1] - 1] < soc[same[0] - 1]
+    finally:
+        env.close()
+
+
+def test_pickup_discharge_never_exceeds_the_building_demand(tmp_path):
+    # D-V6-28 and D-V6-32: V2B behind the meter, so the EV discharge of each hour is capped at the building's own
+    # demand and never exported; schema electric_vehicle_discharge_limit = building_demand (v3 layer).
+    from citylearn.v3.environment import make_citylearn_v3_env
+    split = tmp_path/'train_2023'
+    shutil.copytree(SPLIT, split)
+    schema = json.loads((split/'schema.json').read_text(encoding='utf-8'))
+    wv.write_ev_fleet(split, schema, plans={11: PLANS[11]}, registry=REGISTRY, rules=RULES, inventory=INVENTORY,
+                      days=YEAR, keep_others=True)
+    assert schema['electric_vehicle_discharge_limit'] == 'building_demand'
+    (split/'schema.json').write_text(json.dumps(schema), encoding='utf-8')
+    env = make_citylearn_v3_env(schema_path=split/'schema.json', scenario='E1', seed=0, episode_time_steps=72)
+    try:
+        env.reset()
+        b11 = next(b for b in env.env.buildings if b.name == 'Building_11')
+        agent = env.possible_agents[[b.name for b in env.env.buildings].index('Building_11')]
+        names = list(b11.active_actions)
+        action = np.zeros(env.action_space(agent).shape, dtype=np.float32)
+        for i, n in enumerate(names):
+            action[i] = -1.0 if 'electric_vehicle' in n else 0.0                # every charger discharges fully
+        others = {a: np.zeros(env.action_space(a).shape, dtype=np.float32) for a in env.possible_agents}
+        discharged = False
+        for _ in range(70):
+            env.step({**others, agent: action})
+            t = env.env.time_step - 1
+            ev_kw = sum(min(float(c.electricity_consumption[t]), 0.0) for c in b11.electric_vehicle_chargers)
+            discharged |= ev_kw < -1e-6
+            rest = float(b11.net_electricity_consumption[t]) - ev_kw              # building without EV discharge
+            assert -ev_kw <= max(rest, 0.0) + 1e-6, (t, ev_kw, rest)
+        assert discharged
+    finally:
+        env.close()

@@ -25,6 +25,7 @@ import numpy as np
 CHARGER_COLUMNS = ('electric_vehicle_charger_state', 'electric_vehicle_id', 'electric_vehicle_departure_time',
                    'electric_vehicle_required_soc_departure', 'electric_vehicle_estimated_arrival_time',
                    'electric_vehicle_estimated_soc_arrival')
+TRIP_COLUMN = 'electric_vehicle_trip_kwh'   # D-V6-41: trip energy before each connection, read by the v3 layer
 CONNECTED, INCOMING, AWAY = 1, 2, 3
 
 
@@ -69,6 +70,7 @@ class Assignment:
     disconnect: int                    # exclusive
     arrival_soc: float = 0.0
     departure_soc: float = 0.0
+    trip_kwh: float = 0.0
 
 
 @dataclass
@@ -146,7 +148,7 @@ def fifo_queue(sessions: Sequence[Session], *, chargers: int, vehicle_class: Veh
         free_at[charger] = disconnect + gap_h
         left_with[session.vehicle] = soc_out
         result.assignments.append(Assignment(session.vehicle, charger, session.arrival, connect, disconnect,
-                                             soc_in, soc_out))
+                                             soc_in, soc_out, trip))
         result.waiting_hours.append(connect - session.arrival)
     return result
 
@@ -188,6 +190,7 @@ def charger_tables(result: QueueResult, *, chargers: int, hours: int, vehicle_cl
         required = np.full(hours, -0.1)
         eta = np.full(hours, -1.0)
         arrival = np.full(hours, -0.1)
+        trips = np.zeros(hours)
         own = sorted((a for a in result.assignments if a.charger == charger), key=lambda a: a.connect)
         for a in own:
             soc_in, soc_out = 100.0*a.arrival_soc, 100.0*a.departure_soc
@@ -195,12 +198,14 @@ def charger_tables(result: QueueResult, *, chargers: int, hours: int, vehicle_cl
                 state[pos], ev_id[pos] = CONNECTED, ids[a.vehicle]
                 departure[pos] = float(a.disconnect - 1 - pos)
                 required[pos], arrival[pos] = soc_out, soc_in
+            if a.connect < hours:
+                trips[a.connect] = a.trip_kwh
         for a in own:
             pre = a.connect - 1
             if 0 <= pre < hours and state[pre] == AWAY:
                 state[pre], ev_id[pre], eta[pre] = INCOMING, ids[a.vehicle], 0.0
                 arrival[pre] = 100.0*a.arrival_soc
-        tables.append(dict(zip(CHARGER_COLUMNS, (state, ev_id, departure, required, eta, arrival))))
+        tables.append({**dict(zip(CHARGER_COLUMNS, (state, ev_id, departure, required, eta, arrival))), TRIP_COLUMN: trips})
     return tables
 
 

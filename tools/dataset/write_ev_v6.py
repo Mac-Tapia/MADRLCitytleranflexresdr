@@ -61,7 +61,7 @@ def ev_entry(kind: str, rules: Mapping) -> dict:
             'battery': {'type': 'citylearn.energy_model.Battery', 'autosize': False,
                         'attributes': {'capacity': float(_value(params['battery_kwh'])),
                                        'nominal_power': float(_value(params['charge_kw'])),
-                                       'initial_soc': round(spec.arrival_soc, 6),
+                                       'initial_soc': 1.0,   # full before its first trip (P-V6-15, D-V6-41)
                                        'depth_of_discharge': float(_value(common['battery_depth_of_discharge'])),
                                        'efficiency': float(_value(common['battery_efficiency'])),
                                        'capacity_loss_coefficient': float(_value(common['capacity_loss_coefficient'])),
@@ -89,7 +89,8 @@ def write_ev_fleet(dataset_dir: Path, schema: dict, *, plans: Mapping, registry:
         chargers = {}
         for name, kind, table in charging.chargers:
             csv_name = f'charger_{name}.csv'   # the integrity audit reads charger_*.csv
-            pd.DataFrame({c: table[c] for c in q.CHARGER_COLUMNS}).to_csv(dataset_dir/csv_name, index=False)
+            pd.DataFrame({c: table[c] for c in q.CHARGER_COLUMNS + (q.TRIP_COLUMN,)}).to_csv(dataset_dir/csv_name,
+                                                                                         index=False)
             chargers[name] = charger_entry(name, kind, csv_name, rules)
             unit, socket = name.rsplit('_unit_', 1)[1].split('_socket_')
             chargers[name]['hardware'].update({'physical_charger_id': f'B{building:02d}_{kind}_unit_{unit}',
@@ -108,4 +109,6 @@ def write_ev_fleet(dataset_dir: Path, schema: dict, *, plans: Mapping, registry:
                             'installed_kw': charging.installed_kw,
                             'coincidence_cap_kw': charging.coincidence_cap_kw}
     schema['electric_vehicles_def'] = evs
+    schema['electric_vehicle_arrival_soc'] = 'endogenous'   # D-V6-41: read by CityLearn/citylearn/internal/runtime.py
+    schema['electric_vehicle_discharge_limit'] = 'building_demand'   # D-V6-28: V2B, never exported (v3 layer)
     return report

@@ -56,8 +56,8 @@ Con las cifras de `v1`, el guardián rechazaría MASAC en cualquier entorno disp
     - el mapa acción → equipo y las máscaras de D-M3-6 se mantienen.
   - **Iguales para los 4:** observaciones (`O_i` y estado global de la capa v3), dataset y KPI de evaluación.
   - **Recompensa:** misma función y pesos de la capa v3. MASAC la recibe sumada para el equipo, porque su algoritmo de tipo QMIX aprende un valor de equipo; los demás la reciben por agente. Se declara. Confirma P-017-1.
-  - **Pendiente del propietario (P-M3-1):** el número de niveles de la rejilla; se propuso 11 (−1 a +1 cada 0,2).
-  - **Pendiente del propietario (P-M3-2):** con varios equipos por edificio, el modo `axis` de MASAC y MAAC (un equipo por paso) no puede fijar un nivel en cada equipo a la vez, y una elección conjunta es inviable (11^28 combinaciones en B06). La propuesta es una salida discreta por equipo (multi-discreta), lo que cambia la cabeza de acción de sus implementaciones originales; el resto del algoritmo queda nativo.
+  - **Niveles de la rejilla (P-M3-1, elegido bajo la delegación del propietario del 2026-11-07, «haz lo adecuado»):** 11 niveles, de −1 a +1 cada 0,2.
+  - **Cabeza de acción de MASAC y MAAC (P-M3-2, elegida bajo la misma delegación):** con varios equipos por edificio, el modo `axis` de MASAC y MAAC (un equipo por paso) no puede fijar un nivel en cada equipo a la vez, y una elección conjunta es inviable (11^28 combinaciones en B06). Se usa una salida discreta por equipo (multi-discreta), lo que cambia la cabeza de acción de sus implementaciones originales; el resto del algoritmo queda nativo. Se declara como desviación de D-M3-5.
 - **D-M3-3: regla del requisito.** `requisito = max(piso, techo(1,10 × estimación))`. El margen de 10 % reproduce el que tenían las cifras anteriores (72 frente a 65,3 GiB). El piso es de 8 GiB de RAM y 4 GiB de VRAM, el ya declarado para HAPPO y MAAC, que no tienen estimador. Es regla de diseño, no una medida.
 
 ## Requisitos funcionales

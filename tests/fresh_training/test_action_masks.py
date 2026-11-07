@@ -137,3 +137,10 @@ def test_frozen_masac_evaluation_uses_the_same_mask():
     source = (REPO/'uc3m/adapters/citylearn/policy_inference.py').read_text(encoding='utf-8')
     assert 'get_avail_agent_actions' in source
     assert 'available = np.ones(n_actions' not in source
+
+
+def test_the_interface_difference_is_declared_as_a_confound_for_all_four():
+    # D-M3-6: the difference between continuous and discrete interfaces is declared as a confound.
+    native = yaml.safe_load((REPO/'configs/algorithms/native.yaml').read_text(encoding='utf-8'))['algorithms']
+    for name in ('HAPPO', 'MASAC', 'MATD3', 'MAAC'):
+        assert any('D03' in item and 'confound' in item for item in native[name]['declared_limitations']), name

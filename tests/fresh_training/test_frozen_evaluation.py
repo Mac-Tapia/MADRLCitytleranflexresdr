@@ -149,6 +149,9 @@ def _rebuild_actions(algorithm, policy, history):
                         inputs = np.hstack((inputs, np.eye(agents)[index]))
                     out, hidden[:, index, :] = net(torch.tensor(inputs, dtype=torch.float32).unsqueeze(0),
                                                    hidden[:, index, :])
+                    # D03: the native agent sets unavailable actions to -inf before choosing.
+                    available = torch.tensor(policy.env.get_avail_agent_actions(index)).unsqueeze(0)
+                    out = out.masked_fill(available == 0, float('-inf'))
                     action = int(torch.softmax(out/args.temp, dim=1).argmax(dim=1)[0])
                     last[index] = np.eye(n_actions)[action]
                     actions.append(action)
@@ -193,6 +196,11 @@ def test_loaded_actions_match_saved_policy(algorithm):
         np.testing.assert_allclose(np.asarray(record['actions'], dtype=np.float64),
                                    np.asarray(expected, dtype=np.float64), rtol=0, atol=1e-6,
                                    err_msg=f'{algorithm} step {step}')
+    if algorithm in ('MASAC', 'MAAC'):  # D03: every recorded action moves real equipment only
+        rows = policy.adapter.discrete_action_rows_by_agent
+        for step, record in enumerate(history):
+            for agent, action in zip(policy.agents, record['actions']):
+                assert int(action) in rows[agent], f'{algorithm} step {step} {agent} chose row {action}'
     contract = run.contract
     assert contract['algorithm'] == algorithm and contract['deterministic'] is True
     assert contract['agents'] == list(policy.agents) and len(contract['agents']) == 17
@@ -282,6 +290,21 @@ def _copy_attempt(algorithm, destination):
         shutil.copyfile(source/relative, destination/relative)
     (destination/'learning_evidence.json').write_text(json.dumps(evidence), encoding='utf-8')
     return evidence
+
+
+@pytest.mark.parametrize('algorithm', ('MASAC', 'MAAC'))
+def test_policy_without_its_trained_action_map_is_rejected(algorithm):
+    from uc3m.adapters.citylearn import policy_inference as pi
+    missing = pi.load_native_policy(algorithm, ATTEMPTS[algorithm])
+    missing.hyperparameters.pop('discrete_action_map', None)
+    with pytest.raises(pi.FrozenPolicyRejected, match='action map'):
+        pi.run_frozen_episode(SPLIT, missing, CAMPAIGN, steps=NATIVE_STEPS, seed=SEED)
+    altered = pi.load_native_policy(algorithm, ATTEMPTS[algorithm])
+    mapping = altered.hyperparameters['discrete_action_map']
+    first = sorted(mapping)[0]
+    mapping[first] = mapping[first][:1]  # trained without the actions of its real equipment
+    with pytest.raises(pi.FrozenPolicyRejected, match='action map'):
+        pi.run_frozen_episode(SPLIT, altered, CAMPAIGN, steps=NATIVE_STEPS, seed=SEED)
 
 
 def test_no_model_fails_closed(tmp_path):

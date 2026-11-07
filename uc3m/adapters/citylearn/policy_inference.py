@@ -548,6 +548,19 @@ class HappoFrozenPolicy(NativeFrozenPolicy):
                 'action_selection': 'HARL actor.act(deterministic=True)', 'masks': 'ones'}
 
 
+def require_trained_action_map(hyperparameters, adapter):
+    """D03: a discrete policy is evaluated only with the action map it was trained with.
+
+    An attempt trained before the per-building masks has no map; one trained on other equipment
+    has a different map. Both are rejected instead of being evaluated under a mask they never saw.
+    """
+    trained = hyperparameters.get('discrete_action_map')
+    if not trained:
+        raise FrozenPolicyRejected('trained action map missing: the attempt predates the D03 masks')
+    if json.loads(json.dumps(trained)) != json.loads(json.dumps(adapter.discrete_action_map())):
+        raise FrozenPolicyRejected('trained action map differs from the equipment of the evaluation env')
+
+
 MASAC_TOP_LEVEL = ('common', 'agent', 'network', 'policy', 'ac_discrete')
 
 
@@ -564,6 +577,7 @@ class MasacFrozenPolicy(NativeFrozenPolicy):
         observed = {k: env_info[k] for k in expected}
         if observed != expected:
             raise FrozenPolicyRejected(f'MASAC env {observed} differs from the trained {expected}')
+        require_trained_action_map(hyper, self.adapter)
         with _backend_import_scope(common.EXTERNAL_ROOT/'MARL'/'src', MASAC_TOP_LEVEL):
             from common.arguments import get_common_args, get_mixer_args
             from agent.agent_msac_mcsac import Agents
@@ -771,6 +785,7 @@ class MaacFrozenPolicy(NativeFrozenPolicy):
         if sizes != expected:
             raise FrozenPolicyRejected(f'MAAC agent sizes {sizes[:1]}x{len(sizes)} differ from the env {expected[:1]}'
                                        f'x{len(expected)}')
+        require_trained_action_map(self.hyperparameters, self.adapter)
 
     def reset(self, seed):
         if seed is not None:

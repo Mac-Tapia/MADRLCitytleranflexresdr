@@ -3,7 +3,7 @@
 **Estado:** `draft`, todas las decisiones del propietario cerradas
 **Ámbito:** `D:\MADRLCitytleranflexresdr` · **Exclusión:** `D:\madrl_lima`
 **Estado conciliado:** [STATUS](../STATUS.md) · **Hoja de ruta:** [hoja_ruta_modulos.md](../../docs/plans/hoja_ruta_modulos.md) (módulo 3b)
-**Revisión:** 2026-11-06
+**Revisión:** 2026-11-07 (D-V6-14 y D-V6-15)
 
 ## Propósito
 
@@ -31,7 +31,7 @@ No existe ningún perfil horario medido. B01 no tiene factura medida: `B_01.csv`
 | D-V6-2 | **Aire acondicionado en los 17 edificios**, controlable dentro de un límite de confort tomado de una norma de confort para clima cálido y húmedo |
 | D-V6-3 | **Capacidad del aire acondicionado** según tipo de edificio, personas, potencia por área techada, pisos y oficinas: RNE EM.050 y EM.030 para todos; NTS 110 y 119 del MINSA (ASHRAE 170) y RM 666-2025/MINSA para B11 y B12, con valores de los PDF oficiales; 18 000 BTU/h por split solo donde ninguna norma dé cifra |
 | D-V6-4 | **Personas** = área × densidad por defecto de ASHRAE 62.1 (Tabla 6.2.2.1); sin pisos en el inventario, el área techada es el área total, declarado |
-| D-V6-5 | **Carga base en todos los edificios**, nunca 0: cantidad desde las facturas reales (parte que no depende de la temperatura), forma desde horarios de funcionamiento de los edificios de referencia del DOE y ASHRAE 90.1 por tipo, ajustados a las horas de cada edificio |
+| D-V6-5 | **Carga base en todos los edificios**, nunca 0: cantidad = factura real − refrigeración calibrada (D-V6-14), forma desde horarios de funcionamiento de los edificios de referencia del DOE y ASHRAE 90.1 por tipo, ajustados a las horas de cada edificio |
 | D-V6-6 | **Cargadores** por tipo de edificio, área y plazas de estacionamiento y vehículos estacionados: 1 punto por cada 10 plazas (EPBD 2024, art. 14, existentes) y 5 % de los vehículos estacionados eléctricos (meta MINEM 2030). Escenario a 2030; sustituye el piloto de 2 motos en B01 |
 | D-V6-7 | **BESS** para almacenar el excedente solar y cargar los vehículos, dimensionado en el **día de mayor excedente** del año de diseño; parámetros de un modelo del catálogo comercial de CityLearn |
 | D-V6-8 | **Recompensa con la factura (D04):** costo horario = energía + aumento del cargo por potencia cuando supera el pico del mes en el bloque de 18:00 a 23:00 |
@@ -40,10 +40,12 @@ No existe ningún perfil horario medido. B01 no tiene factura medida: `B_01.csv`
 | D-V6-11 | **Sin entrenar** hasta cerrar todos los módulos |
 | D-V6-12 | **Un agente por edificio:** cada agente controla todo el aire acondicionado, los cargadores y el BESS de su edificio; no se divide por pisos |
 | D-V6-13 | **Acciones según la operación de cada equipo** (propietario, 2026-11-06): cada equipo controlable es una acción propia con su sentido físico: el BESS carga o descarga, cada cargador fija la potencia hacia su vehículo y el aire acondicionado enfría dentro del límite de confort. Los cargadores no se agrupan. Los 4 MADRL conservan su interfaz nativa con máscaras (SPEC-015 D-M3-6) |
+| D-V6-14 | **Refrigeración por modelo físico calibrado** (propietario, 2026-11-07), sustituye la regresión con punto de cambio. En Iquitos la temperatura media mensual solo varía 1,94 °C y la regresión atribuye entre −17 % y +9 % a la refrigeración ([auditoría](../../docs/audits/cambio_punto_iquitos_20261107/README.md)). La refrigeración horaria sale del inventario y las normas de D-V6-3 (capacidad instalada × curva de carga parcial con la temperatura horaria y el horario de uso) y se calibra contra las 36 facturas con los criterios de simulación calibrada de ASHRAE Guideline 14 (CV(RMSE) y NMBE mensuales, cifras a confirmar en el texto de la guía). La factura fija el total; carga base = factura − refrigeración, mayor que 0. |
+| D-V6-15 | **Energía medida = punta + fuera de punta** (propietario, 2026-11-07). `totalEnergiaActiva` no coincide en B02, B09, B11, B16 y B17; queda como campo de auditoría y cada discrepancia se registra en `quality_flags`. |
 
 ## Requisitos funcionales
 
-- **FR-016.1** — Reparto refrigeración y carga base por regresión con punto de cambio del consumo mensual facturado frente a la temperatura (ASHRAE Guideline 14), por edificio. La suma de componentes reproduce cada factura mensual.
+- **FR-016.1** — Reparto refrigeración y carga base según D-V6-14, por edificio: refrigeración del modelo físico de FR-016.3 calibrado con las facturas (criterios de ASHRAE Guideline 14 para simulación calibrada) y carga base como resto. La suma de componentes reproduce cada factura mensual (punta + fuera de punta, D-V6-15). Un edificio cuyo modelo calibrado no cumple los criterios queda marcado y bloquea la puerta.
 - **FR-016.2** — Carga base mayor que 0 en todas las horas de los 17 edificios, con la forma horaria de D-V6-5.
 - **FR-016.3** — Potencia del aire acondicionado desde el inventario y las normas de D-V6-3, contrastada con el rango de W/m² del tipo; deja de autodimensionarse desde la demanda modelada.
 - **FR-016.4** — Aire acondicionado controlable con límite de confort, con la dinámica térmica de cada edificio validada.

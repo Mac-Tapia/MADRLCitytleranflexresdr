@@ -75,24 +75,44 @@ El código ya está escrito y sin commit (ver traspaso, sesión `-e0`).
 
 Necesita su propio plan TDD detallado antes de ejecutarse: `docs/plans/modulo3b_iquitos_v6.md`. Tareas y su orden, con dependencias reales:
 
-### Tarea 3b.1: reparto refrigeración y carga base (FR-016.1 y FR-016.2)
+**Reordenado el 2026-11-07 (D-V6-14):** la regresión con punto de cambio no identifica la refrigeración en Iquitos ([auditoría](../audits/cambio_punto_iquitos_20261107/README.md)). La capacidad del aire acondicionado (antes 3b.2) va primero, porque el reparto calibrado la consume.
 
-- **Archivos:** nuevo `uc3m/application/dataset/change_point.py` (regresión con punto de cambio, ASHRAE Guideline 14) y modificación de `tools/dataset/distill_building_loads.py`.
-- **Pruebas:** `tests/fresh_training/test_change_point_split.py`:
-  - la suma de componentes reproduce cada factura mensual con tolerancia 1e-6;
-  - la carga base es mayor que 0 en las 8 760 horas de los 17 edificios;
-  - un caso analítico con pendiente y punto de cambio conocidos se recupera.
-- La forma horaria de la carga base usa los edificios de referencia DOE/ASHRAE 90.1 por tipo y reemplaza los 11 horarios `assumption` de `configs/dataset/building_types.yaml`.
+### Tarea 3b.1: aire acondicionado por norma (FR-016.3)
 
-### Tarea 3b.2: aire acondicionado por norma y su control (FR-016.3 y FR-016.4)
-
-- **Archivos:** nuevo `configs/dataset/hvac_norms.yaml` (RNE EM.050 y EM.030; NTS 110 y 119 del MINSA para B11 y B12, con artículo citado), y modificación del dimensionado en `tools/dataset/fix_schema_cooling.py`.
+- **Archivos:**
+  - nuevo `configs/dataset/hvac_norms.yaml`: RNE EM.050 y EM.030; NTS 110 y 119 del MINSA para B11 y B12, con artículo citado; origen `cited`, `design_rule` o `assumption` por valor;
+  - nuevo `uc3m/application/dataset/hvac_capacity.py`;
+  - modificación del dimensionado en `tools/dataset/fix_schema_cooling.py`.
+- **Interfaz producida:** `hvac_capacity_kw(inventory: BuildingInventory, norms: dict) -> CapacityEstimate`, con `kw`, `w_per_m2`, `source` y `components`.
 - **Pruebas:**
   - la potencia de cada edificio cae en el rango de W/m² de su tipo;
   - deja de depender de la demanda modelada (B11 deja de ser 4,7 W/m² y B04 de ser 175,6 W/m²);
+  - cada valor de `hvac_norms.yaml` tiene origen y, si es `cited`, la norma y el artículo.
+- **Decisión del propietario:** confirmar los 18 000 BTU/h por split cuando ninguna norma dé otro valor.
+
+### Tarea 3b.2: reparto calibrado refrigeración y carga base (FR-016.1 y FR-016.2, D-V6-14 y D-V6-15)
+
+- **Archivos:**
+  - nuevo `uc3m/application/dataset/cooling_calibration.py`;
+  - modificación de `tools/dataset/distill_building_loads.py`, que reemplaza el reparto residual `_allocate_residual_energy_block`.
+- **Interfaces:**
+  - **consume** `hvac_capacity_kw` de 3b.1;
+  - **produce** `calibrate_cooling(capacity_kw, hourly_temp_c, schedule, monthly_bill_kwh) -> CalibrationResult`, con la serie horaria de refrigeración eléctrica, `cv_rmse_pct`, `nmbe_pct` y `passed`.
+- **Pruebas** (`tests/fresh_training/test_cooling_calibration.py`):
+  - la refrigeración más la carga base reproduce cada factura mensual (punta + fuera de punta) con tolerancia 1e-6;
+  - la carga base es mayor que 0 en las 8 760 horas de los 17 edificios;
+  - un caso sintético con capacidad y factura conocidas recupera la fracción de refrigeración;
+  - un edificio que no cumple los criterios de ASHRAE G14 queda marcado y la puerta falla;
+  - el lector de facturas descarta las filas vacías (`B_04.csv`) y registra en `quality_flags` cada mes en que `totalEnergiaActiva` difiere de punta + fuera de punta.
+- **Forma horaria de la carga base:** los edificios de referencia del DOE y ASHRAE 90.1 por tipo, que reemplazan los 11 horarios `assumption` de `configs/dataset/building_types.yaml`.
+- **Por confirmar:** las cifras de CV(RMSE) y NMBE en el texto de ASHRAE G14 antes de fijarlas en una prueba.
+
+### Tarea 3b.2b: control del aire acondicionado con confort (FR-016.4)
+
+- **Pruebas:**
   - la dinámica térmica de cada edificio se valida antes de habilitar el control;
   - el límite de confort sale de una norma para clima cálido y húmedo.
-- **Decisión del propietario:** confirmar el valor de confort y los 18 000 BTU/h por split cuando ninguna norma dé otro.
+- **Decisión del propietario:** el valor de confort, que se le propone con la norma.
 
 ### Tarea 3b.3: cargadores, vehículos, BESS y tarifa de potencia (FR-016.5 a FR-016.7)
 

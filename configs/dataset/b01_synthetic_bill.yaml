@@ -1,0 +1,20 @@
+# SPEC-016 D-V6-36: synthetic bill of B01 (Electro Oriente S.A.), which has no distributor bill.
+# Every value declares its origin (SPEC-017 FR-017.5).
+schema_version: 1
+building_id: 1
+building_id_origin: design_rule
+peers:
+  value: [9, 11, 12, 17]
+  origin: design_rule
+  source: "D-V6-36 (owner 2026-11-07): the load factor of B01 is the median of the measured bills of the same month of the 24 h buildings B09, B11, B12 and B17"
+load_factor_bounds:
+  value: [0.0, 1.0]
+  origin: cited
+  source: "definition of the load factor, average power / maximum demand, between 0 and 1; a peer value outside it is a mis-keyed bill and is left out"
+reactive_rule:
+  origin: implementation_rule
+  note: "P-V6-18: reactive kvarh of B01 = its active energy x the median reactive/active ratio of the same peers and month (no reactive data for B01)"
+tariff:
+  value: MT3
+  origin: implementation_rule
+  note: "P-V6-19: MT3, the label of the generated B_01.csv and of tools/dataset/generate_b01_billing.py; the v5 builder constant B01_TARIFF_ASSUMPTION = MT2 cites that same label, so MT2 looks like a transcription error; pending owner confirmation"

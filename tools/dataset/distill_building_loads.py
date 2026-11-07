@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
@@ -801,6 +802,126 @@ def calibrate_building(
         df_out.to_csv(csv_path, index=False, float_format="%.6f")
 
     return report
+
+
+@dataclass(frozen=True)
+class PhysicalDistillation:
+    """Result of the iquitos_v6 distillation of one building (SPEC-016 D-V6-14 to D-V6-19)."""
+
+    report: pd.DataFrame
+    capacity: object
+    design_cop: float
+    nominal_power_kw: float
+    capped_blocks: list
+    declarations: list
+
+
+def physical_cop_params(schema: dict, bldg_id: int) -> tuple[float, float]:
+    """Efficiency and refrigerant target of CityLearn's heat-pump COP for one building.
+
+    The target is the refrigerant temperature of the COP formula, not the room setpoint.
+    """
+    eta, _ = get_cop_params(schema, bldg_id, DEFAULT_INVENTORY)
+    attributes = (schema.get("buildings", {}).get(f"Building_{bldg_id}", {})
+                  .get("cooling_device", {}) or {}).get("attributes", {}) or {}
+    return float(eta), float(attributes.get("target_cooling_temperature", T_TARGET))
+
+
+def calibrate_building_physical(
+    bldg_id: int,
+    schema: dict,
+    weather: pd.DataFrame,
+    *,
+    norms: dict,
+    dataset_dir: Path,
+    measurements: pd.DataFrame,
+    inventory: dict[int, BuildingInventory] | None = None,
+    write: bool = True,
+) -> PhysicalDistillation:
+    """iquitos_v6 distillation: physical cooling with each bill block as ceiling, base as the rest.
+
+    Cooling = capacity (D-V6-16) x part load / CityLearn COP, cut to bill x (1 - floor) per block
+    (peak and off-peak, D-V6-15) and declared when cut (D-V6-19). Base = block - cooling, spread with
+    the use schedule. DHW stays modelled inside the base and never exceeds half of it. The washing
+    machines are not subtracted: their energy is base load in v6 (D-V6-1).
+    """
+    from uc3m.application.dataset import cooling_calibration as cc
+    from uc3m.application.dataset import hvac_capacity as hc
+
+    inventory = DEFAULT_INVENTORY if inventory is None else inventory
+    meta = inventory[bldg_id]
+    csv_path = dataset_dir / f"Building_{bldg_id}.csv"
+    frame = build_month_year_index(pd.read_csv(csv_path))
+    t_out = weather["outdoor_dry_bulb_temperature"].to_numpy(dtype=float)
+    rh_out = weather["outdoor_relative_humidity"].to_numpy(dtype=float)
+    if len(frame) != len(t_out):
+        raise ValueError(f"B{bldg_id}: Building CSV rows={len(frame)} != weather rows={len(t_out)}")
+
+    pressure = hc.station_pressure_kpa(float(norms.get("site_elevation_m", {}).get("value", 0.0)))
+    indoor = norms["indoor_design"]
+    h_in = hc.moist_air_enthalpy_kj_per_kg(indoor["t_c"], indoor["rh_pct"], pressure)
+    h_out = np.array([hc.moist_air_enthalpy_kj_per_kg(t, rh, pressure) for t, rh in zip(t_out, rh_out)])
+    percentile = norms["outdoor_design"]["percentile"]
+    h_design = float(np.percentile(h_out, percentile))
+    capacity = hc.hvac_capacity_kw(area_m2=meta.area_techada_m2, use_type=meta.tipo_uso_citylearn,
+                                   split_units=meta.split_units, has_large_system=meta.has_large_refrigeration,
+                                   norms=norms, outdoor_enthalpy=h_design, indoor_enthalpy=h_in)
+
+    eta, t_target = physical_cop_params(schema, bldg_id)
+    cop = citylearn_cooling_cop(t_out, eta, t_target)
+    design_cop = float(citylearn_cooling_cop(np.array([np.percentile(t_out, percentile)]), eta, t_target)[0])
+    _, cop_dhw = get_cop_params(schema, bldg_id, inventory)
+
+    schedule = np.clip(operational_factor(meta, frame["hour"].to_numpy(dtype=int),
+                                          frame["day_type"].to_numpy(dtype=int)), 0.0, 1.0)
+    plr = cc.part_load_ratio(h_out, indoor_enthalpy=h_in, design_enthalpy=h_design, schedule=schedule)
+    base_shape = np.maximum(schedule, 0.05)  # base never stops: night load (assumption, D-V6-5)
+
+    bills = measurements[(measurements["building_id"] == bldg_id)]
+    peak = np.isin(frame["hour"].to_numpy(dtype=int), list(PEAK_HOURS))
+    labels = np.full(len(frame), -1)
+    bill_kwh: dict[int, float] = {}
+    block_names: dict[int, tuple[int, int, str]] = {}
+    for m in bills.itertuples(index=False):
+        month = (frame["_year"].to_numpy(dtype=int) == int(m.year)) & (frame["_month"].to_numpy(dtype=int) == int(m.month))
+        if not month.any():
+            continue
+        for block, mask, energy in (("peak", month & peak, m.energia_punta_kwh),
+                                    ("offpeak", month & ~peak, m.energia_fuera_punta_kwh)):
+            label = len(bill_kwh)
+            labels[mask] = label
+            bill_kwh[label] = float(energy)
+            block_names[label] = (int(m.year), int(m.month), block)
+    if (labels < 0).any():
+        raise ValueError(f"B{bldg_id}: {int((labels < 0).sum())} hours have no measured bill block")
+
+    result = cc.calibrate_cooling(capacity_kw_th=capacity.kw_thermal, cop_h=cop, plr_h=plr, month_h=labels,
+                                  bill_kwh=bill_kwh, base_shape_h=base_shape,
+                                  base_floor_fraction=norms["base_floor_fraction"]["value"])
+    dhw_model = frame["dhw_demand"].to_numpy(dtype=float)/cop_dhw if "dhw_demand" in frame else np.zeros(len(frame))
+    dhw_elec = np.minimum(dhw_model, 0.5*result.base_kwh)
+    nsl = result.base_kwh - dhw_elec
+
+    if write:
+        out = pd.read_csv(csv_path)
+        out["non_shiftable_load"] = nsl
+        out["cooling_demand"] = result.cooling_kwh*cop
+        if "dhw_demand" in out.columns:
+            out["dhw_demand"] = dhw_elec*cop_dhw
+        out.to_csv(csv_path, index=False, float_format="%.6f")
+
+    rows = {}
+    for entry in result.monthly:
+        year, month, block = block_names[entry["month"]]
+        row = rows.setdefault((year, month), {"building_id": bldg_id, "year": year, "mes": month, "capped": False})
+        row[f"E_{block}_medido_kWh"] = entry["bill_kwh"]
+        row[f"E_{block}_cooling_kWh"] = entry["cooling_kwh"]
+        row[f"E_{block}_cooling_fisico_kWh"] = entry["physical_cooling_kwh"]
+        row["capped"] = row["capped"] or entry["capped"]
+    return PhysicalDistillation(report=pd.DataFrame(list(rows.values())), capacity=capacity, design_cop=design_cop,
+                                nominal_power_kw=capacity.kw_thermal/design_cop,
+                                capped_blocks=[block_names[b] for b in result.capped_months],
+                                declarations=list(result.declarations))
 
 
 def _missing_months(measurements: pd.DataFrame, building_id: int) -> list[str]:

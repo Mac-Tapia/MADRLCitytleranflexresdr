@@ -20,6 +20,16 @@ outdoor_design:
   origin: measured
   source: "NASA POWER hourly T2M and RH2M of the design year, data/campaigns/<dataset>/raw/weather/nasa_power_2023_utc.json; elevation 115.02 m from the same file."
 
+site_elevation_m:
+  value: 115.02
+  origin: measured
+  source: "NASA POWER point elevation of the Iquitos weather files (geometry.coordinates), used for the station pressure."
+
+base_floor_fraction:
+  value: 0.30
+  origin: design_rule
+  source: "D-V6-18: cooling never exceeds 70 % of a bill block; RM 666-2025-MINSA puts climate systems at 60-70 % of a health facility's electricity, the most cooling-intensive type."
+
 air_density_kg_m3:
   value: 1.2
   origin: assumption

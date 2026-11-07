@@ -33,6 +33,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from buildingcsv_inputs import load_building_inventory  # noqa: E402
 from size_bess_optimal import BUILDING_OPERATION_WINDOWS  # noqa: E402
+from uc3m.application.dataset.site import load_default_site  # noqa: E402  (SPEC-017 FR-017.1)
+from site_time import hourly_index  # noqa: E402
+
+_SITE = load_default_site()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 log = logging.getLogger(__name__)
@@ -55,8 +59,8 @@ def configure(dataset_dir: Path, audit_dir: Path) -> None:
     EV_AUDIT_JSON = OUT_DIR / "ev_charger_sizing_audit.json"
     EV_DATASET_LOG = BASE / "ev_charger_sizing_log.json"
     EV_AUDIT_MD = OUT_DIR / "ev_charger_sizing_audit.md"
-TOTAL_H = 26304    # 2023 (8760) + 2024 bisiesto (8784) + 2025 (8760)
-YEARS   = [2023, 2024, 2025]
+YEARS   = list(_SITE.years)
+TOTAL_H = len(hourly_index(YEARS, _SITE.time_zone_name))   # Iquitos 2023-2025: 26 304 h
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SECCIÓN 1 — Especificaciones EV para escenario Iquitos 2023-2025
@@ -494,13 +498,8 @@ def get_profile(ev_type, bldg_type):
 # ══════════════════════════════════════════════════════════════════════════════
 
 def _make_index():
-    """Índice horario 2023-2025 tz=America/Lima (26 304 filas)."""
-    parts = [
-        pd.date_range('2023-01-01', periods=8760,  freq='h', tz='America/Lima'),
-        pd.date_range('2024-01-01', periods=8784,  freq='h', tz='America/Lima'),
-        pd.date_range('2025-01-01', periods=8760,  freq='h', tz='America/Lima'),
-    ]
-    return parts[0].append(parts[1]).append(parts[2])
+    """Hourly local index of the site's years (Iquitos: 2023-2025, 26 304 rows)."""
+    return hourly_index(_SITE.years, _SITE.time_zone_name)
 
 FULL_INDEX = _make_index()
 
@@ -589,7 +588,7 @@ def generate_charger_csv(bldg_id, charger_idx, ev_type, bldg_type, seed):
     arr_eta = np.full(n_rows, -1.0)     # CityLearn sentinel: sin llegada estimada
     arr_soc = np.full(n_rows, -0.1)     # CityLearn sentinel: sin SOC estimado
 
-    dates = pd.date_range('2023-01-01', '2025-12-31', freq='D', tz='America/Lima')
+    dates = pd.date_range(f'{min(_SITE.years)}-01-01', f'{max(_SITE.years)}-12-31', freq='D', tz=_SITE.time_zone_name)
 
     for dt in dates:
         dow = dt.dayofweek   # 0=lun…6=dom
@@ -829,7 +828,7 @@ def generate_depot_charger_csv(pilot: dict, vehicle_index: int) -> pd.DataFrame:
     name = pilot_ev_id(vehicle_index)
     start = 0
     for year in YEARS:
-        hours = 8784 if year == 2024 else 8760
+        hours = len(hourly_index((year,), _SITE.time_zone_name))
         days = pd.date_range(f"{year}-01-01", periods=hours // 24, freq="D")
         work_days = [i for i, day in enumerate(days) if day.dayofweek in working]
         for k, day in enumerate(work_days):

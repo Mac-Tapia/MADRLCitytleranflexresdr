@@ -16,7 +16,7 @@ REPO = Path(__file__).resolve().parents[3]
 DEFAULT_SITE = REPO/'configs/sites/iquitos.yaml'
 ORIGINS = frozenset({'measured', 'cited', 'design_rule', 'assumption', 'assumption_pending_user_verification',
                      'implementation_rule'})
-_DECLARED = ('peak_block', 'time_zone', 'elevation_m')
+_DECLARED = ('peak_block', 'time_zone', 'elevation_m', 'campaign_years', 'location')
 # Older configurations use other words for the same origins (FR-017.5). An owner decision is a design rule; a
 # pick made under the owner's delegation is an implementation rule; an upstream example value is an assumption
 # (the builder already records it so, tools/dataset/build_fresh_campaign_dataset.py::_from_config).
@@ -33,6 +33,10 @@ class SiteConfig:
     utc_offset_hours: float
     elevation_m: float
     files: Mapping[str, str] = field(default_factory=dict)
+    years: tuple = ()
+    latitude: float = 0.0
+    longitude: float = 0.0
+    time_zone_name: str = 'UTC'
 
 
 def load_site(path: Path) -> SiteConfig:
@@ -48,7 +52,10 @@ def load_site(path: Path) -> SiteConfig:
         raise ValueError(f'peak block hours of {path} must be within 0-23, got {sorted(hours)}')
     return SiteConfig(name=str(raw['name']), peak_block_hours=hours,
                       utc_offset_hours=float(raw['time_zone']['utc_offset_hours']),
-                      elevation_m=float(raw['elevation_m']['value']), files=dict(raw.get('files') or {}))
+                      elevation_m=float(raw['elevation_m']['value']), files=dict(raw.get('files') or {}),
+                      years=tuple(int(y) for y in raw['campaign_years']['years']),
+                      latitude=float(raw['location']['latitude']), longitude=float(raw['location']['longitude']),
+                      time_zone_name=str(raw['location']['time_zone_name']))
 
 
 def load_default_site() -> SiteConfig:
@@ -100,3 +107,23 @@ def unknown_origins(raw, path: str = '') -> list:
         for index, value in enumerate(raw):
             found += unknown_origins(value, f'{path}.{index}')
     return found
+
+
+def site_buildings(registry: Mapping, norms: Mapping) -> tuple:
+    """FR-017.2: the site's buildings, from its registry. A schedule or use type without its row is rejected."""
+    buildings = registry.get('buildings') or {}
+    if not buildings:
+        raise ValueError('the building registry declares no buildings')
+    schedules, use_types = registry.get('schedules') or {}, norms.get('use_types') or {}
+    for building, row in buildings.items():
+        if row.get('schedule') not in schedules:
+            raise ValueError(f"building {building}: schedule {row.get('schedule')!r} is not declared in the registry")
+        if row.get('peer_group') not in use_types:
+            raise ValueError(f"building {building}: use type {row.get('peer_group')!r} has no climate norm row")
+    return tuple(sorted(int(b) for b in buildings))
+
+
+def hours_in_years(years) -> int:
+    """Hours of whole calendar years, leap days included (the pandas index lives in tools/dataset/site_time.py)."""
+    import calendar
+    return sum(8784 if calendar.isleap(int(y)) else 8760 for y in years)

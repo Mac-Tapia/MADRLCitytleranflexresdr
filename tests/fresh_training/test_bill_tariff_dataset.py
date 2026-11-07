@@ -25,14 +25,13 @@ def _calendar(year=2023):
 
 def test_hourly_tariff_file_carries_the_official_rates_and_the_block():
     year, month, hour = _calendar()
-    frame = bt.hourly_bill_tariff(RATES, building=11, year=year, month=month, hour=hour)
-    assert len(frame) == 8760 and list(frame.columns) == list(bt.COLUMNS)
+    table = bt.hourly_bill_tariff(RATES, building=11, year=year, month=month, hour=hour)
+    assert list(table) == list(bt.COLUMNS) and all(len(table[c]) == 8760 for c in bt.COLUMNS)
     for m in (1, 6, 12):
         rate = RATES[(11, 2023, m)]
-        rows = frame[month == m]
-        assert np.allclose(rows['energy_usd_kwh'], rate.energy_usd_kwh)
-        assert np.allclose(rows['demand_usd_kw_month'], rate.demand_usd_kw_month)
-    assert set(hour[frame['peak_block'] == 1]) == {18, 19, 20, 21, 22}
+        assert np.allclose(table['energy_usd_kwh'][month == m], rate.energy_usd_kwh)
+        assert np.allclose(table['demand_usd_kw_month'][month == m], rate.demand_usd_kw_month)
+    assert set(hour[table['peak_block'] == 1]) == {18, 19, 20, 21, 22}
 
 
 def test_missing_rate_is_rejected_never_zero():
@@ -74,3 +73,4 @@ def test_tariff_files_are_written_for_every_building(tmp_path):
     assert sorted(written) == list(range(1, 18))
     frame = pd.read_csv(tmp_path/'bill_tariff_Building_5.csv')
     assert len(frame) == 8760 and list(frame.columns) == list(bt.COLUMNS)
+    assert frame['energy_usd_kwh'].iloc[0] == pytest.approx(RATES[(5, 2023, 1)].energy_usd_kwh)

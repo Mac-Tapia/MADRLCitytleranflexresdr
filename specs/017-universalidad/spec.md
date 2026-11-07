@@ -57,6 +57,7 @@ Que `iquitos_v6` sea una instancia de un proyecto general y no el proyecto mismo
 | P-017-3 | La temperatura exterior de referencia de 28 °C del COP se fijó en `7a73c299` sin fuente registrada; queda como `implementation_rule` | `configs/dataset/building_types.yaml` |
 | P-017-4 | La sensibilidad de ±30 % del capex y el umbral de 10 % de cambio material se fijaron en `7a73c299` sin fuente registrada; quedan como `implementation_rule` | `configs/dataset/der_economics.yaml` |
 | P-017-5 | Equivalencias del vocabulario antiguo: `user_decision` es `design_rule`; `delegated_recommendation` (elegida bajo delegación del propietario) es `implementation_rule`; el `status: repository_example` es `assumption`, como ya lo registra el constructor | `uc3m/application/dataset/site.py` |
+| P-017-6 | La altitud del modelo FV es la elevación medida del sitio (115.02 m) y no los 106 m que tenía `fix_solar_pvlib.py` sin fuente | `tools/dataset/fix_solar_pvlib.py` |
 
 ## Estado en el código (2026-11-07)
 
@@ -66,7 +67,9 @@ Que `iquitos_v6` sea una instancia de un proyecto general y no el proyecto mismo
 | FR-017.3 Contrato de backend | Implementado: `CityLearn/citylearn/v3/backend_contract.py` (registro, verificación del contrato y episodio de humo); un backend de referencia se registra y da un episodio sin editar la capa (`tests/fresh_training/test_v3_backend_contract.py`) |
 | FR-017.4 Puerta de operatividad | Implementado: `operational_gate` en `backend_contract.py` carga el dataset en v3, verifica el contrato y da pasos con el adaptador nativo de cada backend registrado; el constructor (`tools/dataset/build_fresh_campaign_dataset.py`) la añade a sus puertas (`v3_operational`, registro en `audit/v3_operational_gate.json`) y `dataset_verified` depende de ella. Probado sobre `iquitos_v5`; falla cerrada con un dataset roto |
 | FR-017.5 Trazabilidad | Implementado: `undeclared_values`, `unknown_origins` y `declared_origin` en `uc3m/application/dataset/site.py`; una prueba recorre cada número de `configs/dataset/*.yaml` y `configs/sites/*.yaml` y exige un origen propio, del padre o de una clave hermana `<clave>_origin`, dentro del vocabulario permitido. Se declararon los 4 valores que no lo tenían (P-017-3, P-017-4; el piloto B01 como decisión del propietario; la conversión kWh–MJ como definición SI) |
-| FR-017.2 | Pendiente |
+| FR-017.2 Cualquier edificio | Implementado en el constructor `iquitos_v5`: los años (`campaign_years`), el lugar (`location`: latitud, longitud y zona IANA) salen de `configs/sites/iquitos.yaml`; el conjunto de edificios sale del registro con `site_buildings`, que rechaza por su nombre un horario no declarado o un tipo de uso sin fila de norma; el índice horario cuenta los años bisiestos (`hourly_index`). Prueba: `tests/fresh_training/test_any_building.py` |
+| Criterio 1 (sitio sintético) | Pendiente, se demuestra en el constructor `iquitos_v6` (módulo 3b.4). El constructor `iquitos_v5` lee fuentes propias de Iquitos que requieren red (NASA POWER, pliegos de Osinergmin, Banco Mundial y el libro de B01); por eso el sitio sintético de 2 edificios se construye sobre el constructor v6, que recibe el sitio como entrada |
+| Auxiliares del constructor | `tools/dataset/fix_solar_pvlib.py` (FV con pvlib) y `dimension_ev_chargers.py` (piloto VE de B01) leen del sitio el lugar, la zona horaria y los años, y cuentan los bisiestos con el calendario. La altitud de pvlib pasó de 106 m, sin fuente registrada, a la elevación medida del sitio (115.02 m); el efecto sobre la FV solo aparece al reconstruir el dataset (P-017-6) |
 
 ## Fuera de alcance
 

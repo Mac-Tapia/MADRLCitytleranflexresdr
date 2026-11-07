@@ -27,11 +27,14 @@ import time
 import requests
 from pathlib import Path
 
+import calendar
+
 import numpy as np
 import pandas as pd
 import pvlib
 
-from buildingcsv_inputs import load_building_inventory
+from buildingcsv_inputs import load_building_inventory  # also puts the repo root on sys.path
+from uc3m.application.dataset.site import load_default_site  # noqa: E402  (SPEC-017 FR-017.1)
 
 # ─── Paths ───────────────────────────────────────────────────────────────────
 BASE_DIR    = Path(__file__).resolve().parents[2]
@@ -47,10 +50,11 @@ def configure(dataset_dir: Path, weather_dir: Path) -> None:
     CACHE_DIR = Path(weather_dir)
     LOG_PATH = DATASET_DIR / "solar_fix_log.json"
 
-# ─── Configuración Iquitos ────────────────────────────────────────────────────
-LAT, LON, ALT = -3.7491, -73.2538, 106
-TZ = "America/Lima"
-YEARS = [2023, 2024, 2025]
+# ─── Site configuration (SPEC-017 FR-017.1: place, elevation and years come from the site) ──
+_SITE = load_default_site()
+LAT, LON, ALT = _SITE.latitude, _SITE.longitude, _SITE.elevation_m
+TZ = _SITE.time_zone_name
+YEARS = list(_SITE.years)
 LOCATION = pvlib.location.Location(latitude=LAT, longitude=LON, tz=TZ, altitude=ALT)
 TEMP_PARAMS = pvlib.temperature.TEMPERATURE_MODEL_PARAMETERS["sapm"]["open_rack_glass_glass"]
 
@@ -147,7 +151,7 @@ def _download_pvgis(year: int) -> pd.DataFrame:
 def _download_nasa_power(year: int) -> pd.DataFrame:
     """Descarga desde NASA POWER REST API (fallback confiable para cualquier año)."""
     log.info(f"  Descargando NASA POWER para {year}...")
-    n_hours = 8784 if year == 2024 else 8760
+    n_hours = 8784 if calendar.isleap(year) else 8760
     url = (
         "https://power.larc.nasa.gov/api/temporal/hourly/point"
         "?parameters=T2M,RH2M,ALLSKY_SFC_SW_DWN,ALLSKY_SFC_SW_DIFF,ALLSKY_SFC_SW_DNI,WS10M"
@@ -180,7 +184,7 @@ def _download_nasa_power(year: int) -> pd.DataFrame:
 
 def _validate_weather(df: pd.DataFrame, year: int) -> bool:
     """Valida que los datos meteorológicos sean físicamente razonables."""
-    n_expected = 8784 if year == 2024 else 8760
+    n_expected = 8784 if calendar.isleap(year) else 8760
     if len(df) != n_expected:
         log.error(f"  Longitud incorrecta: {len(df)} != {n_expected}")
         return False
@@ -306,7 +310,7 @@ def build_tmy_weather_full() -> pd.DataFrame:
     tmy = get_pvgis_tmy().reset_index(drop=True)
     frames = []
     for year in YEARS:
-        idx = pd.date_range(f"{year}-01-01", periods=8784 if year == 2024 else 8760, freq="h", tz=TZ)
+        idx = pd.date_range(f"{year}-01-01", periods=8784 if calendar.isleap(year) else 8760, freq="h", tz=TZ)
         if len(idx) == 8760:
             values = tmy.copy()
         else:

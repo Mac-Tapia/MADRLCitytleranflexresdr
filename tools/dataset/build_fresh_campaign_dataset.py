@@ -46,20 +46,26 @@ for path in (ROOT, TOOLS):
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 import requests  # noqa: E402
+import yaml  # noqa: E402
 
 from uc3m.application.dataset import construction as cn  # noqa: E402
 from uc3m.application.dataset import provenance as pv  # noqa: E402
 from uc3m.application.dataset import tariff_crosscheck as tc  # noqa: E402
+from uc3m.application.dataset.site import load_default_site, site_buildings  # noqa: E402
+from site_time import hourly_index  # noqa: E402
 from uc3m.application.training.preflight import hash_files  # noqa: E402
 
 BUSBAR_CSV = ROOT/'data/tariffs/osinergmin/busbar_electro_oriente.csv'
-YEARS = (2023, 2024, 2025)
-BUILDINGS = tuple(range(1, 18))
-LAT, LON, TZ = -3.7491, -73.2538, 'America/Lima'
+# SPEC-017 FR-017.2: years, place and building set come from the site configuration and its building registry.
+SITE = load_default_site()
+YEARS = SITE.years
+BUILDINGS = site_buildings(*(yaml.safe_load((ROOT/SITE.files[key]).read_text(encoding='utf-8'))
+                            for key in ('building_types', 'hvac_norms')))
+LAT, LON, TZ = SITE.latitude, SITE.longitude, SITE.time_zone_name
 NASA_PARAMETERS = 'T2M,RH2M,ALLSKY_SFC_SW_DWN,ALLSKY_SFC_SW_DIFF,ALLSKY_SFC_SW_DNI,WS10M'
 NASA_URL = ('https://power.larc.nasa.gov/api/temporal/hourly/point?parameters={p}&community=RE'
             '&longitude={lon}&latitude={lat}&start={start}&end={end}&format=JSON&time-standard=UTC')
-FX_URL = 'https://api.worldbank.org/v2/country/PER/indicator/PA.NUS.FCRF?format=json&date=2023:2025'
+FX_URL = 'https://api.worldbank.org/v2/country/PER/indicator/PA.NUS.FCRF?format=json&date={first}:{last}'
 NASA_FILL = -999.0
 MAX_FILLED_GAP_HOURS = 3
 BUILDINGCSV = ROOT/'CityLearn/data/buildingcsv'
@@ -132,7 +138,7 @@ def _nasa_year(year: int, raw_dir: Path):
     frame = pd.DataFrame({name: [parameters[name][key] for key in keys] for name in parameters}, index=stamps)
     local = frame.tz_convert(TZ)
     local = local[local.index.year == year]
-    expected = pd.date_range(f'{year}-01-01', periods=8784 if year == 2024 else 8760, freq='h', tz=TZ)
+    expected = hourly_index((year,), TZ)
     if not local.index.equals(expected):
         raise ValueError(f'NASA POWER {year}: local hourly index is not complete')
     gaps = {}
@@ -165,7 +171,8 @@ def stage_weather(raw_dir: Path):
 
 
 def stage_exchange_rate(raw_dir: Path):
-    response = requests.get(FX_URL, timeout=120)
+    fx_url = FX_URL.format(first=min(YEARS), last=max(YEARS))
+    response = requests.get(fx_url, timeout=120)
     response.raise_for_status()
     path = raw_dir/'fx'/'worldbank_pa_nus_fcrf_per.json'
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -174,7 +181,7 @@ def stage_exchange_rate(raw_dir: Path):
     missing = [y for y in YEARS if y not in rates]
     if missing:
         raise ValueError(f'official PEN/USD rate missing for {missing}')
-    entry = {'path': _rel(path), 'source_type': 'official_statistic', 'source_uri': FX_URL,
+    entry = {'path': _rel(path), 'source_type': 'official_statistic', 'source_uri': fx_url,
              'obtained_at': datetime.now(timezone.utc).isoformat(), 'available_at': 'annual average',
              'license_or_access_note': 'World Bank WDI, CC BY 4.0',
              'notes': 'PA.NUS.FCRF official exchange rate, PEN per USD, period average'}
@@ -898,7 +905,7 @@ def citylearn_balance(campaign_root: Path, targets, log):
     if callable(close):
         close()
     shutil.rmtree(scratch, ignore_errors=True)
-    log(f'CityLearn no-control balance: {sum(r["passed"] for r in report["buildings"].values())}/17 within '
+    log(f'CityLearn no-control balance: {sum(r["passed"] for r in report["buildings"].values())}/{len(BUILDINGS)} within '
         f'{CITYLEARN_BALANCE_RTOL:.1%} ({elapsed:.0f} s)')
     return report
 
@@ -1220,7 +1227,7 @@ def main(argv=None):
     tariffs = read_tariffs(raw_dir)
     import osinergmin_pliegos as op
     details = bill_details(raw_dir)
-    full_index = pd.date_range('2023-01-01', periods=26304, freq='h', tz=TZ)
+    full_index = hourly_index(YEARS, TZ)
     design['tariff_signals'] = tariff_signals(full_index, sheets, details, tariffs, fx)
     coverage = {f'{y}-{m:02d}': op.sheet_for_month(sheets, y, m).isoformat() for y in YEARS for m in range(1, 13)}
     validation = tariff_bill_validation(measured, details, sheets, raw_dir)

@@ -18,6 +18,18 @@ elevation_m:
   origin: measured
   source: "NASA POWER point elevation of the Iquitos weather files (geometry.coordinates)"
 
+campaign_years:
+  years: [2023, 2024, 2025]
+  origin: design_rule
+  source: "configs/experiments/iquitos.yaml splits train_2023, validation_2024, test_2025 (fresh campaign, owner decision 2026-11-01)"
+
+location:
+  latitude: -3.7491
+  longitude: -73.2538
+  time_zone_name: America/Lima
+  origin: cited
+  source: "NASA POWER point of the Iquitos weather requests (carried from tools/dataset/build_fresh_campaign_dataset.py and fix_solar_pvlib.py); IANA time zone of Peru"
+
 files:   # site-specific configurations, each with its own origins
   hvac_norms: configs/dataset/hvac_norms.yaml
   ev_fleet: configs/dataset/ev_v6.yaml

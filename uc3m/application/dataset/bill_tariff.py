@@ -14,7 +14,6 @@ from pathlib import Path
 from typing import Iterable, Mapping
 
 import numpy as np
-import pandas as pd
 
 from uc3m.application.dataset.construction import PEAK_HOURS
 
@@ -22,7 +21,8 @@ COLUMNS = ('energy_usd_kwh', 'demand_usd_kw_month', 'peak_block')
 
 
 def hourly_bill_tariff(rates: Mapping, *, building: int, year: np.ndarray, month: np.ndarray,
-                       hour: np.ndarray) -> pd.DataFrame:
+                       hour: np.ndarray) -> dict[str, np.ndarray]:
+    """Hourly columns of the tariff file, in ``COLUMNS`` order (the application layer keeps no pandas)."""
     year, month, hour = (np.asarray(a, dtype=int) for a in (year, month, hour))
     energy = np.empty(len(year))
     demand = np.empty(len(year))
@@ -33,8 +33,8 @@ def hourly_bill_tariff(rates: Mapping, *, building: int, year: np.ndarray, month
         rows = (year == y) & (month == m)
         energy[rows] = rate.energy_usd_kwh
         demand[rows] = rate.demand_usd_kw_month
-    return pd.DataFrame({'energy_usd_kwh': energy, 'demand_usd_kw_month': demand,
-                         'peak_block': np.isin(hour, list(PEAK_HOURS)).astype(int)}, columns=list(COLUMNS))
+    return {'energy_usd_kwh': energy, 'demand_usd_kw_month': demand,
+            'peak_block': np.isin(hour, list(PEAK_HOURS)).astype(int)}
 
 
 def incremental_bill_cost(power_kw: float, *, energy_usd_kwh: float, demand_usd_kw_month: float,
@@ -53,6 +53,8 @@ def write_bill_tariff_files(dataset_dir: Path, rates: Mapping, *, buildings: Ite
     written = {}
     for building in buildings:
         path = Path(dataset_dir)/f'bill_tariff_Building_{building}.csv'
-        hourly_bill_tariff(rates, building=building, year=year, month=month, hour=hour).to_csv(path, index=False)
+        table = hourly_bill_tariff(rates, building=building, year=year, month=month, hour=hour)
+        np.savetxt(path, np.column_stack([table[c] for c in COLUMNS]), delimiter=',', header=','.join(COLUMNS),
+                   comments='', fmt=('%.10g', '%.10g', '%d'))
         written[int(building)] = path
     return written

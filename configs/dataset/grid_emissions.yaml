@@ -18,5 +18,6 @@ net_thermal_efficiency:
   reason: net electrical efficiency of medium-speed reciprocating engine plants; plant data not available; network losses not included
 energy_conversion_tj_per_kwh:
   value: 3.6e-6
-  origin: model
+  origin: cited
+  source: SI definition of the kilowatt hour (BIPM SI Brochure, 9th ed., Table 8)
   reason: 1 kWh = 3.6 MJ

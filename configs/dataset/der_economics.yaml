@@ -117,5 +117,7 @@ export:
     building's BESS and the rest is injected and credited at the building's purchase price (net billing).
     No such tariff scheme exists in Iquitos today; the user chose it knowingly as a scenario.
 sensitivity:
+  origin: implementation_rule
+  note: set in 7a73c299 without a recorded source; pending owner confirmation (SPEC-017 P-017-4)
   capex_relative_change: [-0.30, 0.30]
   material_change_threshold_relative: 0.10

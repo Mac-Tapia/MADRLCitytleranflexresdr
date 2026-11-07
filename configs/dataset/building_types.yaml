@@ -6,6 +6,8 @@ source_inventory: CityLearn/data/buildingcsv/building.csv (Nombre_Edificio, Tipo
 peer_group_rule: peer_group keeps the building.csv Tipo_Uso_CityLearn class; it is used only to complete missing monthly targets
   from same-year peers
 reference_outdoor_temperature_c: 28.0
+reference_outdoor_temperature_c_origin: implementation_rule
+reference_outdoor_temperature_c_note: set in 7a73c299 without a recorded source; pending owner confirmation (SPEC-017 P-017-3)
 chilled_water_target_c:
   value: 8.5
   origin: assumption

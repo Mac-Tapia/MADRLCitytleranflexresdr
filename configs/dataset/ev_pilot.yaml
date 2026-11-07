@@ -5,6 +5,7 @@ schema_version: 1
 buildings_without_ev: all except pilot.building_id
 pilot:
   building_id: 1
+  building_id_origin: design_rule
   vehicle_type: electric_service_motorcycle
   vehicle_count:
     value: 2

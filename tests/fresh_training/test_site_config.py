@@ -68,3 +68,30 @@ def test_vehicle_type_map_lives_in_the_fleet_configuration():
     rules = yaml.safe_load((REPO/'configs/dataset/ev_v6.yaml').read_text(encoding='utf-8'))
     assert rules['vehicle_type_tokens']['Motokars'] == 'mototaxi'
     assert rules['vehicle_type_tokens_origin'] in ORIGINS
+
+
+CONFIGS = sorted((REPO/'configs/dataset').glob('*.yaml')) + sorted((REPO/'configs/sites').glob('*.yaml'))
+
+
+@pytest.mark.parametrize('path', CONFIGS, ids=lambda p: p.name)
+def test_every_configuration_value_declares_an_allowed_origin(path):
+    # FR-017.5: each number of a dataset or site configuration has an origin (its own, a parent's or a
+    # sibling <key>_origin), and every declared origin belongs to the allowed vocabulary.
+    raw = yaml.safe_load(path.read_text(encoding='utf-8'))
+    assert st.undeclared_values(raw) == [], path
+    assert st.unknown_origins(raw) == [], path
+
+
+def test_a_configuration_value_without_origin_is_reported():
+    raw = {'schema_version': 1, 'block': {'hours': [17, 18], 'origin': 'assumption'}, 'rate': {'value': 0.2},
+           'factor': 0.5, 'factor_origin': 'cited', 'loose': 3}
+    assert st.undeclared_values(raw) == ['rate.value', 'loose']
+    assert st.unknown_origins({'x': {'value': 1, 'origin': 'invented'}}) == ['x: invented']
+
+
+def test_legacy_origin_words_map_to_the_spec_vocabulary():
+    # Owner decisions are design_rule; a pick made under the owner's delegation is an implementation rule.
+    assert st.declared_origin({'origin': 'user_decision'}) == 'design_rule'
+    assert st.declared_origin({'origin': 'delegated_recommendation'}) == 'implementation_rule'
+    assert st.declared_origin({'status': 'repository_example'}) == 'assumption'
+    assert st.declared_origin({'value': 1}) is None

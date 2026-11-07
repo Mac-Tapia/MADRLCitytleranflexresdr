@@ -80,3 +80,28 @@ Hecho el 2026-11-07: `tools/dataset/write_ev_v6.py`, 4 pruebas en `tests/fresh_t
 ## Preguntas abiertas para el propietario
 
 - **Umbral del contraste de picos (T4).**
+
+
+## Cadena completa hasta los resultados (propietario, 2026-11-07)
+
+Instrucción: todo implementado, sincronizado y vinculado en el proyecto, hasta los resultados. Cada decisión sigue la cadena **spec → configuración → código → prueba → dataset → KPI → resultados**, y una prueba de trazabilidad falla si un eslabón falta.
+
+| # | Tarea | Decisiones | Capa | Estado |
+|---|---|---|---|---|
+| 1 | Nombres de los CSV de cargador `charger_*.csv` (falló la integridad en `iquitos_v6_trial2`) | D-V6-37, D-V6-38 | `tools/dataset/write_ev_v6.py` | pendiente |
+| 2 | Llegadas Bernoulli por el factor del día y km lognormales truncados a la autonomía | D-V6-39, D-V6-40, P-V6-21 | `uc3m/application/dataset/ev_queue.py`, `ev_v6.yaml` | pendiente |
+| 3 | Tiempo de carga con eficiencias y curvas de batería fijas; SOC pedido alcanzable | revisión de código, hallazgo 2 | `ev_queue.py`, `write_ev_v6.py` | pendiente |
+| 4 | Un paso libre entre sesiones de una toma y los detalles del formato `ChargerSimulation` | revisión de código, hallazgos 5 y 6 | `ev_queue.py` | pendiente |
+| 5 | Camioneta conectada hasta su salida | D-V6-42 | `ev_queue.py` | pendiente |
+| 6 | Tomas al percentil 95 de 20 semillas | D-V6-43 | `ev_queue.py` | pendiente |
+| 7 | SOC real de llegada en la capa v3 | D-V6-41 | `CityLearn/citylearn/internal/runtime.py` (fork) | pendiente |
+| 8 | Descarga V2B acotada a la demanda del edificio, sin exportación | D-V6-28, D-V6-32 | capa v3 del fork | pendiente |
+| 9 | BESS de doble función en el constructor | D-V6-7, D-V6-30 | `bess_sizing.py` → constructor | pendiente |
+| 10 | Construcción `iquitos_v6_trial3` con todas sus puertas en verde; después `iquitos_v6` | FR-016.9, FR-017.4 | constructor | pendiente |
+| 11 | Recompensa con factura y observaciones (pico del mes, bloque, tarifa) | D04, D-V6-8 | `CityLearn/citylearn/v3/reward.py` | pendiente |
+| 12 | Misma rejilla de acciones para los 4 MADRL | D-M3-7, P-M3-1, P-M3-2 | capa v3 y adaptadores | pendiente, a confirmar |
+| 13 | Contrato de la tupla de v3: término de recompensa → eje → KPI; los 26 KPI comparables (12/5/9) medidos para los 4; `bill_cost_total` con los archivos de tarifa de v6; `price_signal_deviation` aplicable o no aplicable; V2B en lugar de `ev_v2g_export_total` | FR-016.11 | `tests/fresh_training/test_v3_tuple_contract.py` | pendiente |
+| 14 | Prueba de trazabilidad: cada decisión del propietario de SPEC-015, 016 y 017 aparece en configuración o código | SPEC-017 FR-017.5 | `tests/fresh_training/test_decision_traceability.py` | pendiente |
+| 15 | Prueba de humo de los 4 MADRL sobre `iquitos_v6` y requisitos de memoria recalculados | FR-016.10 | — | pendiente |
+| 16 | Estadística por hipótesis (HE1 a HE3, H-G) y selección del mejor global (OG) | módulo 4 | — | pendiente |
+| 17 | Entrenamiento y resultados | módulo 8 | — | pendiente, necesita autorización |

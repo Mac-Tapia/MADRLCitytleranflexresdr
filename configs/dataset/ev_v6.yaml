@@ -49,6 +49,8 @@ fleet_split:
 classes:
   moto:
     v2g: false
+    charging: {standard: IEC 61851-1, current: AC, mode: 2, connector: "socket base 220 V 16 A (D.S. 036-2023-EM annex 5) with the vehicle's portable off-board charger", category: slow, direction: unidirectional, origin: design_rule,
+               source: "D-V6-33 (owner 2026-11-07): mode 2 at the buildings' parking; D.S. 036-2023-EM arts. 29.3-29.9 allow mode 2 there and art. 4.27 leaves motorcycles out of micromobility (mode 1). Unidirectional in every datasheet reviewed (Vmoto Soco CPx, Motocorp E1). Categories from catalogues, not from the decree (D.S. 036-2023-EM defines none): slow below 3.7 kW, semi-fast 3.7-22 kW AC (changing-transport.org business-model guide; Kia Peru: semi-fast 7.4-22 kW AC, fast from 50 kW DC). Audit: docs/audits/cargadores_vehiculos_20261107/modo_y_cargador.md"}
     battery_kwh: {value: 2.7, origin: cited, source: "Super Soco CPx official sheet: 60 V x 45 Ah per pack (V x Ah computed), one pack"}
     charge_kw: {value: 0.6, origin: cited, source: "Super Soco CPx official sheet: 60 V 10 A on-board charger (V x A computed); the vehicle limits the mode 2 socket of D.S. 036-2023-EM"}
     discharge_kw: {value: 0.0, origin: design_rule, source: "D-V6-23: motorcycles only charge"}
@@ -57,6 +59,8 @@ classes:
     penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; no official source per class (the MINEM 5 % is press-only, the NDC excludes motorcycles)"}
   mototaxi:
     v2g: false
+    charging: {standard: IEC 61851-1, current: AC, mode: 2, connector: "socket base 220 V 16 A (D.S. 036-2023-EM annex 5); on-board (Bajaj RE E-TEC 9.0) or off-board (Piaggio Ape E-City) charger by model", category: slow, direction: unidirectional, origin: design_rule,
+               source: "D-V6-33 (owner 2026-11-07): mode 2; B03 airport, absent from the decree, keeps mode 2 as a declared assumption. Unidirectional in every datasheet reviewed (Bajaj, Mahindra Treo, Piaggio Ape E-City). Categories from catalogues, not from the decree (D.S. 036-2023-EM defines none): slow below 3.7 kW, semi-fast 3.7-22 kW AC (changing-transport.org business-model guide; Kia Peru: semi-fast 7.4-22 kW AC, fast from 50 kW DC). Audit: docs/audits/cargadores_vehiculos_20261107/modo_y_cargador.md"}
     battery_kwh: {value: 8.6, origin: cited, source: "Piaggio Ape E-City MAXX official page (Piaggio India): 8.6 kWh Li-ion, 51.2 V"}
     charge_kw: {value: 3.52, origin: cited, source: "D.S. 036-2023-EM annex 5, mode 2 at 220 V 16 A (V x A computed); below the 4.8 kW on-board charger of Abaya et al. (2019) table 1.1"}
     discharge_kw: {value: 0.0, origin: design_rule, source: "D-V6-23: mototaxis only charge"}
@@ -65,9 +69,11 @@ classes:
     penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; no official source per class"}
   pickup:
     v2g: true
+    charging: {standard: IEC 61851-1, current: AC, mode: 3, connector: "Type 2 AC wallbox (SAVE), 220 V single phase 32 A (D.S. 036-2023-EM annex 6)", category: semi_fast, direction: v2b_through_v2l, origin: design_rule,
+               source: "D-V6-33 (owner 2026-11-07): semi-fast mode 3 only, no DC fast charger. D-V6-32: a Type 2 mode-3 wallbox cannot discharge; the pickup discharges to the building through its V2L outlet and a transfer panel (assumption, no product documents it), without export. Categories from catalogues, not from the decree (D.S. 036-2023-EM defines none): slow below 3.7 kW, semi-fast 3.7-22 kW AC (changing-transport.org business-model guide; Kia Peru: semi-fast 7.4-22 kW AC, fast from 50 kW DC). Audit: docs/audits/cargadores_vehiculos_20261107/modo_y_cargador.md"}
     battery_kwh: {value: 98.4, origin: cited, source: "Maxus eTerron 9 datasheet, Maxus Espana, Dec 2024: 98.40 kWh net"}
     charge_kw: {value: 7.04, origin: cited, source: "D.S. 036-2023-EM annex 6, mode 3 Type 2 at 220 V 32 A single-phase (V x A computed); the eTerron 9 accepts 11 kW AC three-phase"}
-    discharge_kw: {value: 7.04, origin: design_rule, source: "D-V6-28 V2B behind the meter, limited by the same 32 A single-phase connection; Ford Intelligent Backup Power gives 7.2 kW continuous (V2H) as plausibility"}
+    discharge_kw: {value: 6.6, origin: cited, source: "D-V6-32 (owner 2026-11-07): V2L of the Maxus eTerron 9, 6.6 kW (e-mobileo distributor https://www.e-mobileo.de/?p=38297; carz.com.my; paultan, press), to the building only (V2B behind the meter, D-V6-28)"}
     kwh_per_km: {value: 0.267, origin: cited, source: "Maxus eTerron 9 datasheet: 26.7 kWh/100 km WLTP combined"}
     km_per_day: {value: 40.0, origin: assumption_pending_user_verification, note: "No Peruvian source for the daily distance of pickups"}
     penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; the NDC (MINAM 2023) gives 171 359 light EVs by 2030 but no share"}

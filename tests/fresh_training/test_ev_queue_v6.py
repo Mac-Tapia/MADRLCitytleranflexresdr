@@ -120,7 +120,7 @@ def test_every_building_gets_one_table_per_charger_and_a_report_per_class():
         assert sorted(charging.vehicles) == sorted(set(charging.vehicles)) and len(charging.vehicles) == plan.vehicles
         for kind, factor in charging.load_factor.items():
             assert 0.0 <= factor <= 1.0, (building, kind)
-        assert set(charging.unserved) == {'moto', 'mototaxi', 'pickup'}
+        assert set(charging.unserved) == set(charging.depleted) == {'moto', 'mototaxi', 'pickup'}
         assert charging.coincidence_cap_kw <= charging.installed_kw + 1e-9
         used = {t['electric_vehicle_id'][i] for _, _, t in charging.chargers
                 for i in range(0, 24*365, 7) if t['electric_vehicle_id'][i] != 'NONE'}
@@ -134,3 +134,28 @@ def test_the_queue_is_reproducible_with_its_fixed_seed():
                                 use_type=inventory[6].tipo_uso_citylearn) for _ in range(2)]
     first, second = (r.chargers[0][2]['electric_vehicle_id'] for r in runs)
     assert list(first) == list(second)
+
+
+def test_connection_time_depends_on_the_battery_state_at_charging():
+    # D-V6-31: the connection lasts what the battery needs at that moment, (target - SOC) x battery / power.
+    # The SOC carries over: a vehicle that left half charged arrives emptier and stays longer the next time.
+    sessions = [q.Session(vehicle=0, arrival=7, departure=9),            # cut: 2 h of the 3 h it needs
+                q.Session(vehicle=0, arrival=24 + 7, departure=24 + 17)]
+    result = q.fifo_queue(sessions, chargers=1, vehicle_class=MOTO)
+    first, second = result.assignments
+    assert first.arrival_soc == pytest.approx(1 - 1.56/2.7)
+    assert first.departure_soc == pytest.approx(1 - 1.56/2.7 + 2*0.6/2.7)
+    assert second.arrival_soc == pytest.approx(first.departure_soc - 1.56/2.7)
+    needed_h = (1 - second.arrival_soc)*2.7/0.6
+    assert second.disconnect - second.connect == int(np.ceil(needed_h - 1e-9)) > 3
+    assert second.departure_soc == pytest.approx(1.0)
+
+
+def test_an_unserved_vehicle_arrives_emptier_and_never_below_zero():
+    sessions = [q.Session(vehicle=v, arrival=7, departure=8) for v in range(2)] + \
+               [q.Session(vehicle=1, arrival=24 + 7, departure=24 + 17)]
+    result = q.fifo_queue(sessions, chargers=1, vehicle_class=MOTO)
+    assert [s.vehicle for s in result.unserved] == [1]
+    later = result.assignments[-1]
+    assert later.vehicle == 1 and later.arrival_soc == pytest.approx(max(0.0, 1 - 2*1.56/2.7))
+    assert result.depleted == 1                                      # its trip needed more than it had

@@ -4,13 +4,16 @@
   at closing; mototaxis make short stops. Hours are drawn with a fixed seed.
 - Queue (D-V6-27 (1)): the vehicles of a class wait in arrival order (FIFO) for a charger of their class;
   there may be more vehicles than chargers. A vehicle that cannot connect before it leaves is unserved.
-- Charging time (D-V6-27 (2)): a connection lasts the energy of the session / the nominal power of the
-  class's mode, rounded up to whole hours and cut at the departure; the agent decides the power inside it.
+- Charging time (D-V6-27 (2) and D-V6-31): a connection lasts what the battery needs at that moment,
+  (1 - SOC on arrival) x battery / nominal power of the class's mode, rounded up to whole hours and cut at
+  the departure; the agent decides the power inside it. The SOC carries over between sessions: a vehicle
+  arrives with its last departure SOC minus the energy of the trip, so a vehicle that left half charged or
+  unserved arrives emptier and stays longer. A trip that needs more than the battery holds is counted.
 - Load factor (D-V6-27 (5)): delivered energy / (chargers x power x hours).
 
 Implementation rules pending the owner (SPEC-016 P-V6-14 to P-V6-16): a day is open when its day factor is
-at least ``open_day_min_factor``; a vehicle arrives having used one session's energy and asks for a full
-battery (only what nominal power can reach inside a cut connection); the charger is released when the
+at least ``open_day_min_factor``; a vehicle starts full before its first trip and asks for a full battery
+(only what nominal power can reach inside a cut connection); the charger is released when the battery's
 charging time ends.
 """
 from __future__ import annotations
@@ -35,9 +38,8 @@ class VehicleClass:
     charge_kw: float
     session_kwh: float
 
-    @property
-    def charging_hours(self) -> int:
-        return max(1, math.ceil(self.session_kwh/self.charge_kw - 1e-9))
+    def charging_hours(self, arrival_soc: float) -> int:
+        return max(1, math.ceil((1.0 - arrival_soc)*self.battery_kwh/self.charge_kw - 1e-9))
 
     @property
     def arrival_soc(self) -> float:
@@ -61,13 +63,16 @@ class Assignment:
     arrival: int
     connect: int
     disconnect: int     # exclusive
+    arrival_soc: float = 0.0
+    departure_soc: float = 0.0
 
 
-@dataclass(frozen=True)
+@dataclass
 class QueueResult:
     assignments: list = field(default_factory=list)
     unserved: list = field(default_factory=list)
     waiting_hours: list = field(default_factory=list)
+    depleted: int = 0   # trips that needed more energy than the battery held on departure
 
 
 def _day_kind(day: date) -> int:
@@ -101,25 +106,29 @@ def class_sessions(vehicle_class: VehicleClass, *, vehicles: int, schedule: Mapp
 def fifo_queue(sessions: Sequence[Session], *, chargers: int, vehicle_class: VehicleClass) -> QueueResult:
     """FIFO M/D/c queue: each session, in arrival order, takes the charger that frees first."""
     result = QueueResult()
-    if chargers <= 0:
-        result.unserved.extend(sessions)
-        return result
+    trip = vehicle_class.session_kwh/vehicle_class.battery_kwh
+    vehicle_class.arrival_soc                                   # validates that a trip fits the battery
+    left_with = {}                                              # SOC of each vehicle at its last departure
     free_at = [0]*chargers
     for session in sorted(sessions, key=lambda s: (s.arrival, s.vehicle)):
-        charger = min(range(chargers), key=lambda c: (max(free_at[c], session.arrival), c))
-        connect = max(free_at[charger], session.arrival)
+        remaining = left_with.get(session.vehicle, 1.0) - trip
+        if remaining < -1e-12:
+            result.depleted += 1
+        soc_in = max(0.0, remaining)
+        charger = min(range(chargers), key=lambda c: (max(free_at[c], session.arrival), c)) if chargers > 0 else None
+        connect = max(free_at[charger], session.arrival) if charger is not None else session.departure
         if connect >= session.departure:
             result.unserved.append(session)
+            left_with[session.vehicle] = soc_in
             continue
-        disconnect = min(connect + vehicle_class.charging_hours, session.departure)
+        disconnect = min(connect + vehicle_class.charging_hours(soc_in), session.departure)
+        soc_out = min(1.0, soc_in + vehicle_class.charge_kw*(disconnect - connect)/vehicle_class.battery_kwh)
         free_at[charger] = disconnect
-        result.assignments.append(Assignment(session.vehicle, charger, session.arrival, connect, disconnect))
+        left_with[session.vehicle] = soc_out
+        result.assignments.append(Assignment(session.vehicle, charger, session.arrival, connect, disconnect,
+                                             soc_in, soc_out))
         result.waiting_hours.append(connect - session.arrival)
     return result
-
-
-def _required_soc(vehicle_class: VehicleClass, hours: int) -> float:
-    return min(1.0, vehicle_class.arrival_soc + vehicle_class.charge_kw*hours/vehicle_class.battery_kwh)
 
 
 def charger_tables(result: QueueResult, *, chargers: int, hours: int, vehicle_class: VehicleClass,
@@ -136,8 +145,7 @@ def charger_tables(result: QueueResult, *, chargers: int, hours: int, vehicle_cl
         own = sorted((a for a in result.assignments if a.charger == charger), key=lambda a: a.connect)
         for a in own:
             span = range(a.connect, min(a.disconnect, hours))
-            soc_in = 100.0*vehicle_class.arrival_soc
-            soc_out = 100.0*_required_soc(vehicle_class, a.disconnect - a.connect)
+            soc_in, soc_out = 100.0*a.arrival_soc, 100.0*a.departure_soc
             for pos in span:
                 state[pos], ev_id[pos] = CONNECTED, ids[a.vehicle]
                 departure[pos] = float(a.disconnect - 1 - pos)
@@ -146,14 +154,13 @@ def charger_tables(result: QueueResult, *, chargers: int, hours: int, vehicle_cl
             pre = a.connect - 1
             if 0 <= pre < hours and state[pre] == AWAY:
                 state[pre], ev_id[pre], eta[pre] = INCOMING, ids[a.vehicle], 1.0
-                arrival[pre] = 100.0*vehicle_class.arrival_soc
+                arrival[pre] = 100.0*a.arrival_soc
         tables.append(dict(zip(CHARGER_COLUMNS, (state, ev_id, departure, required, eta, arrival))))
     return tables
 
 
 def delivered_kwh(result: QueueResult, vehicle_class: VehicleClass) -> float:
-    return sum(min(vehicle_class.session_kwh, vehicle_class.charge_kw*(a.disconnect - a.connect))
-               for a in result.assignments)
+    return sum((a.departure_soc - a.arrival_soc)*vehicle_class.battery_kwh for a in result.assignments)
 
 
 def load_factor(result: QueueResult, *, chargers: int, hours: int, vehicle_class: VehicleClass) -> float:
@@ -183,6 +190,7 @@ class BuildingCharging:
     load_factor: Mapping    # class -> delivered / (chargers x power x hours)
     unserved: Mapping       # class -> sessions that left without connecting
     mean_wait_h: Mapping    # class -> mean hours in the queue of the served sessions
+    depleted: Mapping       # class -> trips that needed more than the battery held (D-V6-31)
     installed_kw: float
     coincidence_cap_kw: float
 
@@ -194,7 +202,7 @@ def building_charging(building: int, plan, *, schedule: Mapping, rules: Mapping,
 
     queue = rules['queue_rules']
     hours = 24*len(days)
-    chargers, vehicles, owner, factors, unserved, waits = [], [], {}, {}, {}, {}
+    chargers, vehicles, owner, factors, unserved, waits, depleted = [], [], {}, {}, {}, {}, {}
     installed = 0.0
     for index, kind in enumerate(CLASSES):
         spec = vehicle_class(kind, rules)
@@ -210,7 +218,8 @@ def building_charging(building: int, plan, *, schedule: Mapping, rules: Mapping,
         chargers += [(f'B{building:02d}_{kind}_charger_{c + 1:02d}', kind, t) for c, t in enumerate(tables)]
         factors[kind] = load_factor(result, chargers=n_chargers, hours=hours, vehicle_class=spec)
         unserved[kind] = len(result.unserved)
+        depleted[kind] = result.depleted
         waits[kind] = float(np.mean(result.waiting_hours)) if result.waiting_hours else 0.0
         installed += n_chargers*spec.charge_kw
-    return BuildingCharging(chargers, vehicles, owner, factors, unserved, waits, installed,
+    return BuildingCharging(chargers, vehicles, owner, factors, unserved, waits, depleted, installed,
                             coincidence_cap_kw(installed, use_type, rules))

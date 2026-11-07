@@ -158,3 +158,25 @@ def test_chargers_are_split_among_the_classes_by_their_vehicles(rules):
     for plan in plans.values():
         assert sum(plan.class_chargers.values()) == plan.chargers
         assert all(plan.class_chargers[c] == 0 for c in plan.fleet if plan.fleet[c] == 0)
+
+
+MODE_LIMIT_KW = {2: 220*16/1000, 3: 220*32/1000}     # D.S. 036-2023-EM annexes 5 and 6, single phase
+
+
+def test_each_class_declares_its_charging_mode_connector_and_direction(rules):
+    # D-V6-33: motorcycles and mototaxis charge in mode 2 (socket, unidirectional by market technology);
+    # pickups in mode 3 semi-fast (AC, Type 2). D-V6-32: pickups discharge only through V2L at 6.6 kW.
+    classes = rules['classes']
+    for kind, mode in (('moto', 2), ('mototaxi', 2), ('pickup', 3)):
+        equipment = classes[kind]['charging']
+        assert equipment['mode'] == mode and equipment['origin'] in ('design_rule', 'cited'), kind
+        # Owner 2026-11-07: IEC 61851-1 charging modes, alternating current for every class (no DC mode 4).
+        assert equipment['standard'] == 'IEC 61851-1' and equipment['current'] == 'AC', kind
+        assert equipment['connector'] and equipment['category'] and equipment['source'], kind
+        assert classes[kind]['charge_kw']['value'] <= MODE_LIMIT_KW[mode] + 1e-9, kind
+    assert classes['moto']['charging']['direction'] == classes['mototaxi']['charging']['direction'] == 'unidirectional'
+    assert classes['moto']['discharge_kw']['value'] == classes['mototaxi']['discharge_kw']['value'] == 0.0
+    pickup = classes['pickup']
+    assert pickup['charging']['direction'] == 'v2b_through_v2l' and pickup['charging']['category'] == 'semi_fast'
+    assert pickup['discharge_kw']['value'] == pytest.approx(6.6) and pickup['discharge_kw']['origin'] == 'cited'
+    assert classes['moto']['charging']['category'] == classes['mototaxi']['charging']['category'] == 'slow'

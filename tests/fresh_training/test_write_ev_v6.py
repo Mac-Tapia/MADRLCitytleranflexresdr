@@ -212,3 +212,18 @@ def test_pickup_discharge_never_exceeds_the_building_demand(tmp_path):
         assert discharged
     finally:
         env.close()
+
+
+def test_the_integrity_audit_accepts_the_optional_trip_column(written):
+    # iquitos_v6_trial3 failed csv_integrity: the audit demanded exactly CityLearn's 6 columns; the trip energy of
+    # D-V6-41 is an optional column, as CityLearn's own loader reads it (citylearn/internal/loading.py).
+    import audit_citylearn_csv_integrity as integrity
+    out, schema, _ = written
+    entry = next(iter(schema['buildings']['Building_6']['chargers'].values()))
+    issues = []
+    frame = pd.read_csv(out/entry['charger_simulation'])
+    integrity._base_checks(out/entry['charger_simulation'], frame, integrity.CHARGER_COLUMNS, issues)
+    assert not [i for i in issues if 'columnas esperadas' in i]
+    issues = []
+    integrity._base_checks(out/entry['charger_simulation'], frame.assign(stray=1), integrity.CHARGER_COLUMNS, issues)
+    assert [i for i in issues if 'columnas esperadas' in i]                     # an unknown column still fails

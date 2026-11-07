@@ -48,3 +48,56 @@ def summarize(rows: Sequence, *, threshold: Optional[float]) -> dict:
         return {**summary, 'status': 'threshold_pending_owner', 'passed': None, 'outside': []}
     outside = [r for r in counted if abs(r['ratio'] - 1.0) > threshold + _TOL]
     return {**summary, 'status': 'checked', 'passed': not outside, 'outside': outside}
+
+
+def _scaled(base: np.ndarray, block: np.ndarray, alpha: float) -> np.ndarray:
+    out = np.empty_like(base)
+    for mask in (block, ~block):
+        if mask.any():
+            mean = base[mask].mean()
+            out[mask] = mean + alpha*(base[mask] - mean)
+    return out
+
+
+def _alpha_max(base: np.ndarray, block: np.ndarray) -> float:
+    """Largest stretch that keeps the base load non-negative in both blocks."""
+    limit = np.inf
+    for mask in (block, ~block):
+        if mask.any():
+            mean, dev = base[mask].mean(), base[mask] - base[mask].mean()
+            negative = dev < -1e-12
+            if negative.any():
+                limit = min(limit, float(np.min(mean/(-dev[negative]))))
+    return float(limit) if np.isfinite(limit) else 50.0
+
+
+def reshape_month(base_kw: np.ndarray, other_kw: np.ndarray, peak_block: np.ndarray, *,
+                  target_peak_kw: float, steps: int = 2000) -> tuple:
+    """FR-016.8: stretch or flatten the base load of one month so that max(base + other) = target.
+
+    base' = block mean + alpha x (base - block mean) inside each bill block (peak and off-peak), so each block's
+    energy is kept exactly (D-V6-15); alpha is the one closest to 1 that reaches the target, never making the
+    base negative. If no alpha reaches it the month is 'unresolved' and the base is returned unchanged.
+    """
+    base, other = np.asarray(base_kw, dtype=float), np.asarray(other_kw, dtype=float)
+    block = np.asarray(peak_block, dtype=bool)
+
+    def peak(alpha):
+        return float((_scaled(base, block, alpha) + other).max())
+
+    current = peak(1.0)
+    if abs(current - target_peak_kw) <= 1e-9*max(1.0, target_peak_kw):
+        return base.copy(), 'resolved'
+    grid = (np.linspace(1.0, 0.0, steps) if target_peak_kw < current
+            else np.linspace(1.0, _alpha_max(base, block), steps))
+    hit = next((a for a in grid[1:] if (peak(a) <= target_peak_kw) == (target_peak_kw < current)), None)
+    if hit is None:
+        return base.copy(), 'unresolved'
+    lo, hi = 1.0, float(hit)                       # peak(lo) on the original side, peak(hi) past the target
+    for _ in range(100):
+        mid = 0.5*(lo + hi)
+        if (peak(mid) <= target_peak_kw) == (target_peak_kw < current):
+            hi = mid
+        else:
+            lo = mid
+    return _scaled(base, block, hi), 'resolved'

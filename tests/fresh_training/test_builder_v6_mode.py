@@ -20,7 +20,8 @@ def test_the_builder_accepts_a_v6_mode_and_keeps_v5_by_default():
 def test_the_v6_mode_wires_every_v6_piece():
     for call in ('remove_washing_machines(', 'distill_v6(', 'capped_block_flags(', 'write_ev_fleet(',
                  'write_synthetic_bill(', 'synthetic_months(', 'write_bill_tariff_files(', 'peak_contrast(',
-                 'size_v6_bess(', 'bess_attributes(', "design['ev_planned_kwh_h']"):
+                 'size_v6_bess(', 'bess_attributes(', "design['ev_planned_kwh_h']", 'redistill_peaks(',
+                 "gates['peak_contrast']", 'DATASET_GATES_PATH'):
         assert call in SOURCE, call
 
 
@@ -32,3 +33,10 @@ def test_billed_load_of_a_building_without_washing_machines(tmp_path):
                                                                             'target_cooling_temperature': 8.5}}}}}
     parts = bf.as_billed_load(tmp_path, 1, schema, np.full(hours, 28.0))
     assert np.allclose(parts['machines'], 0.0) and np.allclose(parts['total'], 1.0)
+
+
+def test_the_v6_shaving_check_uses_the_catalog_power_in_the_schema():
+    # iquitos_v6_trial3: with bess_kw = capacity / max discharge time (v5) the check normalized its actions by a
+    # power 2.4 times smaller than the schema's and B04/B05 delivered 78 % and 49 % of the shave; with the
+    # catalog power all 17 delivered 100 % (rerun of citylearn_peak_shaving on trial3).
+    assert "round(v6_size.nominal_power_kw, 3) if v6_size is not None" in SOURCE

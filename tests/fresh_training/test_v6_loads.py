@@ -97,3 +97,30 @@ def test_the_v6_bess_is_sized_for_surplus_vehicles_and_the_peak_block():
     attributes = v6.bess_attributes(size)
     assert attributes['capacity'] == size.capacity_kwh and attributes['nominal_power'] == size.nominal_power_kw
     assert attributes['efficiency'] == model.efficiency and attributes['depth_of_discharge'] == model.depth_of_discharge
+
+
+def test_redistillation_rewrites_only_the_base_of_months_outside_the_threshold(tmp_path):
+    # FR-016.8 and D-V6-47: months whose generated peak is outside +/-threshold of the bill-implied peak get their
+    # base reshaped to the threshold edge; block energies stay; months inside are untouched.
+    from uc3m.application.dataset import construction as cn
+    hours = 24*59                                                    # January and February 2023
+    t = np.arange(hours)
+    month = np.where(t < 744, 1, 2)
+    base = 10.0 + 8.0*np.sin(2*np.pi*(t % 24)/24)
+    pd.DataFrame({'month': month, 'hour': t % 24, 'day_type': 1, 'non_shiftable_load': base,
+                  'cooling_demand': 0.0, 'dhw_demand': 0.0}).to_csv(tmp_path/'Building_3.csv', index=False)
+    other = np.ones(hours)
+    peak = float((base + other).max())
+    energy_jan, energy_feb = float((base + other)[month == 1].sum()), float((base + other)[month == 2].sum())
+    targets = [cn.MonthlyRecord(3, 2023, 1, energy_jan, 0.2*energy_jan, 0.8*energy_jan, 'measured', 'billing', 'measured',
+                                ('x',), (), energy_jan/(744*peak/1.6), 1.0),                 # implied peak/1.6, LF 0.93
+               cn.MonthlyRecord(3, 2023, 2, energy_feb, 0.2*energy_feb, 0.8*energy_feb, 'measured', 'billing', 'measured',
+                                ('x',), (), energy_feb/(672*peak), 1.0)]                    # inside
+    rows = v6.redistill_peaks(tmp_path, buildings=(3,), targets=targets, threshold=0.5, peak_hours={18, 19, 20, 21, 22},
+                              other_kw=lambda b: other, years=np.full(hours, 2023))
+    new = pd.read_csv(tmp_path/'Building_3.csv')['non_shiftable_load'].to_numpy()
+    jan_implied = peak/1.6
+    assert [(r['month'], r['status']) for r in rows] == [(1, 'resolved')]
+    assert float((new + other)[month == 1].max()) == pytest.approx(1.5*jan_implied, rel=1e-6)
+    assert np.allclose(new[month == 2], base[month == 2])
+    assert new[month == 1].sum() == pytest.approx(base[month == 1].sum())

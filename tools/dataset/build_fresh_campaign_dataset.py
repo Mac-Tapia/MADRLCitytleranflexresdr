@@ -304,6 +304,7 @@ B01_TARIFF_ASSUMPTION = 'MT2'  # v5 value; v6 reads configs/dataset/b01_syntheti
 B01_SYNTHETIC_PATH = ROOT/'configs/dataset/b01_synthetic_bill.yaml'
 EV_V6_PATH = ROOT/'configs/dataset/ev_v6.yaml'
 BATTERY_CATALOG_PATH = ROOT/'CityLearn/data/misc/battery_choices.yaml'
+DATASET_GATES_PATH = ROOT/'configs/dataset/dataset_gates.yaml'
 HVAC_NORMS_PATH = ROOT/'configs/dataset/hvac_norms.yaml'
 
 
@@ -679,6 +680,20 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
             design['v6_capped_blocks'] = v6.capped_block_flags(physical)
             _write_json(audit_dir/'cooling_capped_blocks.json', design['v6_capped_blocks'])
             reports = {b: result.report for b, result in physical.items()}
+            # FR-016.8 and D-V6-47: months outside the peak threshold get their base reshaped (block energy kept)
+            import yaml
+            threshold = float(yaml.safe_load(DATASET_GATES_PATH.read_text(encoding='utf-8'))
+                              ['peak_contrast']['threshold']['value'])
+            design['peak_threshold'] = threshold
+
+            def _rest_kw(b):
+                parts = as_billed_load(out, b, schema, t_out)
+                return parts['total'] - parts['non_shiftable']
+            design['v6_redistilled'] = v6.redistill_peaks(out, buildings=request.buildings, targets=targets,
+                                                          threshold=threshold, peak_hours=set(PEAK_BLOCK_HOURS),
+                                                          other_kw=_rest_kw,
+                                                          years=hourly_index(YEARS, TZ).year.to_numpy())
+            _write_json(audit_dir/'peak_redistillation.json', design['v6_redistilled'])
         else:
             reports = {b: dl.calibrate_building(bldg_id=b, schema=schema, t_out=t_out, dataset_dir=out,
                                                 inventory=inventory, measurements=frame,
@@ -786,7 +801,7 @@ def v6_peak_contrast(out, schema, t_out, targets, design):
             t = replace(t, provenance='synthetic', load_factor=b01[(t.year, t.month)].load_factor)
         rows.append(t)
     contrast = pc.peak_contrast(hourly, index.month.to_numpy()[train], rows)
-    return {'rows': contrast, 'summary': pc.summarize(contrast, threshold=None)}
+    return {'rows': contrast, 'summary': pc.summarize(contrast, threshold=design.get('peak_threshold'))}
 
 
 def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx, price_audit, request, design, log):
@@ -904,7 +919,9 @@ def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx
             'binding_pv_bound': sd.binding_pv_bound(lp['pv_kwp'], roof, load_bound),
             'pv_kwp_lp': lp['pv_kwp'], 'pv_modules_lp': n_lp, 'pv_modules': n_modules, 'pv_kwp': kwp, 'module_kwp': module_kwp,
             'bess_kwh_lp': lp['bess_kwh'], 'bess_kwh': bess,
-            'bess_kw': round(bess/float(bess_cfg['max_discharge_time_h']['value']), 3) if bess else 0.0,
+            # v6: the catalog model's nominal power, the one in the schema; the shaving check normalizes with it
+            'bess_kw': (round(v6_size.nominal_power_kw, 3) if v6_size is not None else
+                        round(bess/float(bess_cfg['max_discharge_time_h']['value']), 3)) if bess else 0.0,
             'annual_load_kwh_2023': annual_load, 'peak_load_kw_2023': float(load.max()),
             'annual_pv_kwh_2023': float(pv_2023.sum()),
             'pv_to_load_ratio_2023': float(pv_2023.sum())/annual_load if annual_load else None,
@@ -1431,8 +1448,8 @@ def main(argv=None):
         contrast = v6_peak_contrast(campaign_root/'dataset', schema, dl.load_weather(campaign_root/'dataset'),
                                     targets, design)
         _write_json(audit_dir/'peak_contrast.json', contrast)
-        # FR-016.8: the threshold is the owner's; until then the contrast is recorded, not a gate.
-        pending_decisions['peak_contrast_threshold'] = contrast['summary']
+        # FR-016.8 and D-V6-47: every measured month of the design year inside the threshold after re-distillation
+        gates['peak_contrast'] = bool(contrast['summary']['passed'])
     if args.bess_design_rule:
         gates['bess_rule_shaves_peak'] = (
             shaving['status'] == 'checked' and len(shaving['buildings']) == len(BUILDINGS)

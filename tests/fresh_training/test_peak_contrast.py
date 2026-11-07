@@ -45,3 +45,37 @@ def test_the_gate_needs_the_owners_threshold():
                                        '0.3': pytest.approx(2/3), '0.5': pytest.approx(1.0)}
     decided = pc.summarize(rows, threshold=0.3)
     assert decided['passed'] is False and [(f['building_id'], f['month']) for f in decided['outside']] == [(3, 2)]
+
+
+def _month(hours=720):
+    t = np.arange(hours)
+    block = np.isin(t % 24, [18, 19, 20, 21, 22])
+    base = 10.0 + 8.0*np.sin(2*np.pi*(t % 24)/24)
+    other = np.where((t % 24 >= 10) & (t % 24 < 16), 5.0, 1.0)
+    return base, other, block
+
+
+def test_reshaping_brings_a_high_peak_to_the_threshold_and_keeps_each_block_energy():
+    # FR-016.8: a month outside the threshold is re-distilled; only the base load's shape changes, mean-preserving
+    # inside each bill block (D-V6-15), so the bill energies are reproduced exactly.
+    base, other, block = _month()
+    target = 0.9*float((base + other).max())      # flat base gives 16.7 of 19.0: reachable
+    new, status = pc.reshape_month(base, other, block, target_peak_kw=target)
+    assert status == 'resolved' and float((new + other).max()) == pytest.approx(target, rel=1e-6)
+    assert new[block].sum() == pytest.approx(base[block].sum()) and new[~block].sum() == pytest.approx(base[~block].sum())
+    assert np.all(new >= -1e-12)
+
+
+def test_reshaping_raises_a_low_peak_without_negative_load():
+    base, other, block = _month()
+    target = 1.05*float((base + other).max())     # non-negative stretch tops at 20.5: reachable
+    new, status = pc.reshape_month(base, other, block, target_peak_kw=target)
+    assert status == 'resolved' and float((new + other).max()) == pytest.approx(target, rel=1e-6)
+    assert np.all(new >= -1e-12) and new.sum() == pytest.approx(base.sum())
+
+
+def test_a_peak_the_base_cannot_reach_is_declared_unresolved_not_forced():
+    base, other, block = _month()
+    flat_floor = float((np.where(block, base[block].mean(), base[~block].mean()) + other).max())
+    new, status = pc.reshape_month(base, other, block, target_peak_kw=0.5*flat_floor)
+    assert status == 'unresolved' and new[block].sum() == pytest.approx(base[block].sum())

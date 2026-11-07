@@ -50,6 +50,12 @@ CHARGER_COLUMNS = [
     "electric_vehicle_estimated_arrival_time",
     "electric_vehicle_estimated_soc_arrival",
 ]
+# Optional charger columns that CityLearn's loader reads when present (citylearn/internal/loading.py):
+# the trip energy of the endogenous arrival SOC (SPEC-016 D-V6-41) and the measured current SOC.
+CHARGER_OPTIONAL_COLUMNS = [
+    "electric_vehicle_trip_kwh",
+    "electric_vehicle_current_soc",
+]
 WASHING_MACHINE_COLUMNS = [
     "day_type",
     "hour",
@@ -122,8 +128,12 @@ def _base_checks(path: Path, df: pd.DataFrame, expected_columns: list[str] | int
 
     if len(df) != EXPECTED_ROWS:
         issues.append(f"{_rel(path)} tiene {len(df)} filas; esperado {EXPECTED_ROWS}")
-    if isinstance(expected_columns, list) and df.columns.tolist() != expected_columns:
-        issues.append(f"{_rel(path)} no tiene columnas esperadas: {df.columns.tolist()}")
+    columns = df.columns.tolist()
+    optional = CHARGER_OPTIONAL_COLUMNS if expected_columns is CHARGER_COLUMNS else []
+    if isinstance(expected_columns, list) and not (
+            columns[:len(expected_columns)] == expected_columns
+            and set(columns[len(expected_columns):]) <= set(optional)):
+        issues.append(f"{_rel(path)} no tiene columnas esperadas: {columns}")
     elif isinstance(expected_columns, int) and len(df.columns) != expected_columns:
         issues.append(f"{_rel(path)} tiene {len(df.columns)} columnas; esperado {expected_columns}")
     if nan_cells:

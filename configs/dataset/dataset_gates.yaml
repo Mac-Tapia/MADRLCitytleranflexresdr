@@ -1,0 +1,7 @@
+# Acceptance rules of the dataset gates (SPEC-016). Every value declares its origin (SPEC-017 FR-017.5).
+schema_version: 1
+peak_contrast:
+  threshold:
+    value: 0.5
+    origin: implementation_rule
+    note: "D-V6-47: +/-50 % between the generated monthly peak and the bill-implied peak, E / (load factor x hours); chosen under the owner's delegation of 2026-11-07, not an owner decision. Months outside are re-distilled (FR-016.8) and the gate passes only if every measured month ends inside."

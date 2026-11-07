@@ -97,3 +97,48 @@ def bess_attributes(size) -> dict:
             'efficiency': float(size.model.efficiency), 'depth_of_discharge': float(size.model.depth_of_discharge),
             'loss_coefficient': float(size.model.loss_coefficient), 'initial_soc': 0.0,
             'capacity_loss_coefficient': 1e-5}
+
+
+def redistill_peaks(dataset_dir: Path, *, buildings, targets, threshold: float, peak_hours, other_kw, years) -> list:
+    """FR-016.8 and D-V6-47: reshape the base load of every measured month outside +/-threshold of its bill peak.
+
+    implied peak = E / (load factor x hours); the target is the nearest threshold edge. Only the base load
+    (non_shiftable_load) changes, mean-preserving inside each bill block, so the bills stay reproduced. Synthetic
+    or flagged months and months without a load factor are left as they are. ``other_kw(b)`` gives the hourly
+    electricity of the rest of the building (cooling, DHW) and ``years`` the year of every row.
+    """
+    import numpy as np
+
+    from uc3m.application.dataset import peak_contrast as pc
+    rows = []
+    years = np.asarray(years)
+    for building in buildings:
+        path = Path(dataset_dir)/f'Building_{building}.csv'
+        frame = pd.read_csv(path)
+        base = frame['non_shiftable_load'].to_numpy(dtype=float).copy()
+        other = np.asarray(other_kw(building), dtype=float)[:len(base)]
+        month, hour = frame['month'].to_numpy(dtype=int), frame['hour'].to_numpy(dtype=int)
+        changed = False
+        for t in targets:
+            if (t.building_id != building or t.provenance != 'measured' or not t.load_factor
+                    or not 0 < t.load_factor <= 1 or any(f in t.flags for f in pc.EXCLUDED_FLAGS)):
+                continue
+            mask = (years[:len(base)] == t.year) & (month == t.month)
+            if not mask.any():
+                continue
+            implied = t.energy_kwh/(t.load_factor*int(mask.sum()))
+            ratio = float((base[mask] + other[mask]).max())/implied
+            if abs(ratio - 1.0) <= threshold + 1e-9:
+                continue
+            target = implied*(1.0 + threshold if ratio > 1.0 else 1.0 - threshold)
+            new, status = pc.reshape_month(base[mask], other[mask], np.isin(hour[mask], list(peak_hours)),
+                                           target_peak_kw=target)
+            base[mask] = new
+            changed |= status == 'resolved'
+            rows.append({'building_id': int(building), 'year': t.year, 'month': t.month, 'ratio_before': ratio,
+                         'target_peak_kw': target, 'status': status,
+                         'ratio_after': float((base[mask] + other[mask]).max())/implied})
+        if changed:
+            frame['non_shiftable_load'] = base
+            frame.to_csv(path, index=False, float_format='%.6f')
+    return rows

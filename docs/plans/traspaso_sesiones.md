@@ -112,4 +112,5 @@ El propietario suspendió el equipo. Ninguna prueba ni proceso quedó en marcha.
   3. Commit en CityLearn y push a `origin` (fork Mac-Tapia).
   4. Commit en el repositorio principal, con la referencia del submódulo actualizada.
   5. Puerta `-Scope Repository`, CI y push. Con eso se cierra el módulo 3.
+- **Cierre del módulo 3 (2026-11-06):** FR-015.7 hecho y publicado (CityLearn `387f9c42`, principal `567a8506`), con `continuous_action_map()` para HAPPO y MATD3. Tanda del módulo, 100 pruebas; puerta `Repository` aprobada sobre `567a8506`, 1 660 pruebas en 30 min. Plan de los módulos siguientes: [implementacion_completa.md](implementacion_completa.md).
 - **Siguiente:** SPEC-016 (`iquitos_v6`), con D-V6-13: una acción por equipo, sin agrupar cargadores.

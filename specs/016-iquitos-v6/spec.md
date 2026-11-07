@@ -77,6 +77,9 @@ Estas reglas las fijó la implementación, no el propietario. Están en el códi
 | P-V6-11 | Recorrido diario de 40 km para motos y camionetas; 38,25 km para mototaxis, deducido de 4,78 kWh/día ÷ 0,125 kWh/km | `configs/dataset/ev_v6.yaml` | implementación |
 | P-V6-12 | Potencia de carga de la moto de 0,6 kW, la del cargador a bordo del Super Soco CPx | `configs/dataset/ev_v6.yaml` | implementación |
 | P-V6-13 | Tolerancia de cierre de 1e-3 kWh por bloque, por la escritura del CSV con 6 decimales | `tests/fresh_training/test_distill_physical.py` | implementación |
+| P-V6-14 | Los cargadores de un edificio se reparten entre las clases en proporción a sus vehículos (mayor resto), con uno por clase con vehículos primero si alcanzan; una clase sin vehículos no recibe cargadores | `uc3m/application/dataset/ev_sizing.py` (`charger_split`) | implementación |
+| P-V6-15 | Un día es de apertura si su factor de día es al menos 0,5 (oficina: lunes a viernes; 24 h: todos los días). El vehículo llega habiendo gastado la energía de una sesión (moto 1,56 kWh; mototaxi 2,39 kWh por parada; camioneta 10,68 kWh) y pide batería llena; si la conexión se corta por la salida, pide solo lo que alcanza a potencia nominal. Semilla 0 | `configs/dataset/ev_v6.yaml` (`queue_rules`), `uc3m/application/dataset/ev_queue.py` | implementación |
+| P-V6-16 | El cargador se libera al terminar el tiempo de carga a potencia nominal (D-V6-27 (2)): la camioneta queda conectada unas 2 h al día, lo que limita su descarga V2B a esas horas | `uc3m/application/dataset/ev_queue.py` | implementación; **a revisar**: si la camioneta debe quedar conectada hasta su salida cuando nadie espera, para ampliar el V2B |
 
 ## Estado de cada decisión en el código (2026-11-07)
 
@@ -87,9 +90,9 @@ Estas reglas las fijó la implementación, no el propietario. Están en el códi
 | D-V6-17 (24 °C) | `hvac_norms.yaml` | Control con confort en v3 (FR-016.4) |
 | D-V6-8 (recompensa con factura) | Oráculo `bill_tariff.incremental_bill_cost` y archivos horarios de tarifa | Recompensa en `citylearn/v3/reward.py` |
 | D-V6-21, D-V6-23, D-V6-24 y D-V6-26 (cargadores y 3 clases, 80/20) | `ev_sizing.py`, `ev_v6.yaml` | — |
-| D-V6-27 (cola, modo, tiempo, PE, FC y factor de carga) | Solo el FC (`coincidence_cap_kw`) | Cola FIFO, PE por clase en el conteo y factor de carga informado |
+| D-V6-27 (cola, modo, tiempo, PE, FC y factor de carga) | Cola FIFO por clase (`ev_queue.fifo_queue`), tiempo de carga a potencia nominal, PE por clase en el conteo (`ev_sizing.penetrated_fleet`; el 5 % único se retiró de `ev_v6.yaml`), FC (`coincidence_cap_kw`) y factor de carga informado (`ev_queue.load_factor`). Resultado del distrito en 2023: 398 cargadores, 202 vehículos, ninguna sesión sin atender y factor de carga de 1 % a 5 %; con PE = 5 % nunca se forma cola (hay unos 2 cargadores por vehículo) | Conectar al constructor `iquitos_v6` (3b.4) |
 | D-V6-28 (V2B detrás del medidor) | Parámetros de la camioneta | Límite de la descarga a la demanda del edificio en v3 |
-| D-V6-29 (llegadas) | — | Generador de sesiones en el formato `ChargerSimulation` de CityLearn |
+| D-V6-29 (llegadas) | Reglas en `ev_v6.yaml` (`arrivals`); sesiones (`ev_queue.class_sessions`) y tablas en el formato `ChargerSimulation` de CityLearn (`ev_queue.charger_tables`, SOC en %) | Escribir los CSV en el constructor (3b.4) |
 | D-V6-30 (BESS con doble función) | `bess_sizing.py` | Conectarlo al constructor |
 | D-V6-20 (facturas posiblemente parciales) | Recorte declarado | Verificación del propietario |
 | D-V6-25 (capa v3) | Regla registrada | Toda la integración de 3b.4 y 3b.5 |

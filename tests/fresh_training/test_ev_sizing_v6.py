@@ -68,7 +68,7 @@ def test_chargers_are_one_per_ten_spaces_above_twenty(rules):
     assert tiny.spaces <= 20 and tiny.chargers == 0 and tiny.vehicles == 0
 
 
-def test_vehicles_are_five_percent_of_the_spaces_and_never_exceed_the_chargers_share(rules):
+def test_with_five_percent_per_class_vehicles_are_five_percent_of_the_spaces(rules):
     plan = es.ev_plan(parking_m2=9000.0, use_type='Commercial_Mall', vehicle_type='Motos_Motokars_Massive',
                       rules=rules)
     assert plan.vehicles == round(0.05*plan.spaces) and plan.space_class == 'moto'
@@ -85,7 +85,7 @@ def test_only_pickups_are_bidirectional(rules):
 
 def test_every_rule_value_declares_its_origin():
     raw = yaml.safe_load(RULES_PATH.read_text(encoding='utf-8'))
-    entries = list(raw['space_m2'].values()) + [raw['ev_share'], raw['charging_points'], raw['fleet_split']]
+    entries = list(raw['space_m2'].values()) + [raw['charging_points'], raw['fleet_split']]
     for params in raw['classes'].values():
         entries += [v for k, v in params.items() if isinstance(v, dict)]
     for entry in entries:
@@ -121,3 +121,40 @@ def test_coincidence_factor_caps_the_building_charging_power(rules, use_type, in
 def test_every_inventory_use_type_has_a_demand_factor_row(rules):
     types = {b.tipo_uso_citylearn for b in load_building_inventory().values()}
     assert types <= set(rules['demand_factor']['use_types'])
+
+
+def _with_penetration(rules, **values):
+    changed = {**rules, 'classes': {c: dict(p) for c, p in rules['classes'].items()}}
+    for kind, value in values.items():
+        changed['classes'][kind]['penetration'] = {**rules['classes'][kind]['penetration'], 'value': value}
+    return changed
+
+
+def test_each_class_counts_its_own_penetration_factor(rules):
+    # D-V6-27 (3): PE is per class and replaces the single 5 %; EVs per class = spaces x fleet weight x PE.
+    base = es.ev_plan(parking_m2=9000.0, use_type='Commercial_Mall', vehicle_type='Motos_Motokars_Massive',
+                      rules=rules)
+    more = es.ev_plan(parking_m2=9000.0, use_type='Commercial_Mall', vehicle_type='Motos_Motokars_Massive',
+                      rules=_with_penetration(rules, pickup=0.10))
+    assert abs(more.fleet['pickup'] - 2*base.fleet['pickup']) <= 1 and abs(more.fleet['moto'] - base.fleet['moto']) <= 1
+    assert more.vehicles == round(more.spaces*(0.4*0.05 + 0.4*0.05 + 0.2*0.10))
+    assert 'ev_share' not in rules                                   # the single share is gone
+
+
+def test_vehicles_may_outnumber_the_chargers_and_wait_in_the_queue(rules):
+    plan = es.ev_plan(parking_m2=2000.0, use_type='Healthcare', vehicle_type='Ambulances_Staff',
+                      rules=_with_penetration(rules, moto=0.3, mototaxi=0.3, pickup=0.3))
+    assert plan.vehicles > plan.chargers > 0
+
+
+def test_chargers_are_split_among_the_classes_by_their_vehicles(rules):
+    # P-V6-14: chargers per class in proportion to the class's EVs (largest remainder), at least one per class
+    # with vehicles when there are enough chargers; a class without vehicles gets none.
+    assert es.charger_split(10, {'moto': 21, 'mototaxi': 21, 'pickup': 10}) == {'moto': 4, 'mototaxi': 4, 'pickup': 2}
+    assert es.charger_split(3, {'moto': 9, 'mototaxi': 1, 'pickup': 1}) == {'moto': 1, 'mototaxi': 1, 'pickup': 1}
+    assert es.charger_split(4, {'moto': 3, 'mototaxi': 0, 'pickup': 1}) == {'moto': 3, 'mototaxi': 0, 'pickup': 1}
+    assert es.charger_split(0, {'moto': 3, 'mototaxi': 0, 'pickup': 1}) == {'moto': 0, 'mototaxi': 0, 'pickup': 0}
+    plans = es.district_ev_plan(load_building_inventory(), rules)
+    for plan in plans.values():
+        assert sum(plan.class_chargers.values()) == plan.chargers
+        assert all(plan.class_chargers[c] == 0 for c in plan.fleet if plan.fleet[c] == 0)

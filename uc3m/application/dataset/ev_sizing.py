@@ -41,16 +41,48 @@ def space_class(vehicle_type: str, rules: Mapping) -> str:
     return 'moto' if named and named[0] in ('moto', 'mototaxi') else 'car'
 
 
-def fleet_split(vehicle_type: str, vehicles: int, rules: Mapping) -> dict[str, int]:
+def class_weights(vehicle_type: str, rules: Mapping) -> dict[str, float]:
+    """D-V6-26: the classes named by the predominant type share ``named_share``, the others the rest."""
     share = rules['fleet_split']['named_share']
     named = named_classes(vehicle_type, rules) or ['pickup']
     others = [c for c in CLASSES if c not in named]
-    weights = {c: share/len(named) if c in named else (1 - share)/len(others) for c in CLASSES}
-    raw = {c: weights[c]*vehicles for c in CLASSES}
+    return {c: share/len(named) if c in named else (1 - share)/len(others) for c in CLASSES}
+
+
+def _largest_remainder(raw: Mapping[str, float], total: int) -> dict[str, int]:
     counts = {c: int(raw[c]) for c in CLASSES}
-    for kind in sorted(CLASSES, key=lambda c: -(raw[c] - counts[c]))[:vehicles - sum(counts.values())]:
+    for kind in sorted(CLASSES, key=lambda c: -(raw[c] - counts[c]))[:total - sum(counts.values())]:
         counts[kind] += 1
     return counts
+
+
+def fleet_split(vehicle_type: str, vehicles: int, rules: Mapping) -> dict[str, int]:
+    weights = class_weights(vehicle_type, rules)
+    return _largest_remainder({c: weights[c]*vehicles for c in CLASSES}, vehicles)
+
+
+def penetrated_fleet(vehicle_type: str, spaces: int, rules: Mapping) -> dict[str, int]:
+    """D-V6-27 (3): EVs = sum over classes of spaces x fleet weight x the class's penetration factor.
+
+    The total is rounded once and split by weight x PE (largest remainder); with one PE for every class
+    this is the D-V6-26 split of round(PE x spaces).
+    """
+    weights = class_weights(vehicle_type, rules)
+    shares = {c: weights[c]*float(rules['classes'][c]['penetration']['value']) for c in CLASSES}
+    total, vehicles = sum(shares.values()), int(round(spaces*sum(shares.values())))
+    return _largest_remainder({c: shares[c]/total*vehicles if total else 0.0 for c in CLASSES}, vehicles)
+
+
+def charger_split(chargers: int, fleet: Mapping[str, int]) -> dict[str, int]:
+    """P-V6-14: chargers per class in proportion to its EVs, one per class with EVs first when they suffice."""
+    with_ev = [c for c in CLASSES if fleet.get(c, 0) > 0]
+    total = sum(fleet.get(c, 0) for c in CLASSES)
+    if chargers <= 0 or total == 0:
+        return {c: 0 for c in CLASSES}
+    base = {c: (1 if c in with_ev else 0) for c in CLASSES} if chargers >= len(with_ev) else {c: 0 for c in CLASSES}
+    rest = chargers - sum(base.values())
+    extra = _largest_remainder({c: rest*fleet.get(c, 0)/total for c in CLASSES}, rest)
+    return {c: base[c] + extra[c] for c in CLASSES}
 
 
 @dataclass(frozen=True)
@@ -61,6 +93,7 @@ class EvPlan:
     vehicles: int
     fleet: Mapping[str, int]
     note: str = ''
+    class_chargers: Mapping[str, int] = None
 
 
 def ev_plan(*, parking_m2: float, use_type: str, vehicle_type: str, rules: Mapping) -> EvPlan:
@@ -71,11 +104,12 @@ def ev_plan(*, parking_m2: float, use_type: str, vehicle_type: str, rules: Mappi
     spaces = int(parking_m2//rules['space_m2'][f'{kind}_{use}']['value'])
     points = rules['charging_points']
     chargers = spaces//points['per_spaces'] if spaces > points['minimum_spaces'] else 0
-    vehicles = min(round(rules['ev_share']['value']*spaces), chargers) if chargers else 0
+    # P-V6-5: without a charging point the building has no EV; otherwise EVs may outnumber chargers (queue).
+    fleet = penetrated_fleet(vehicle_type, spaces, rules) if chargers else {c: 0 for c in CLASSES}
     note = 'heavy vehicles excluded from electrification; light spaces only' \
         if vehicle_type in rules['heavy_vehicle_types'] else ''
-    return EvPlan(space_class=kind, spaces=spaces, chargers=chargers, vehicles=vehicles,
-                  fleet=fleet_split(vehicle_type, vehicles, rules), note=note)
+    return EvPlan(space_class=kind, spaces=spaces, chargers=chargers, vehicles=sum(fleet.values()), fleet=fleet,
+                  note=note, class_chargers=charger_split(chargers, fleet))
 
 
 def coincidence_cap_kw(installed_kw: float, use_type: str, rules: Mapping) -> float:

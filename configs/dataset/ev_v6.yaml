@@ -18,10 +18,6 @@ charging_points:
   origin: cited
   source: "Directive (EU) 2024/1275 (EPBD recast), art. 14(2): existing non-residential buildings with more than 20 parking spaces, at least one recharging point for every 10 spaces. Peru sets no minimum (D.S. 036-2023-EM, D.S. 022-2020-EM)."
 
-ev_share:
-  value: 0.05
-  origin: assumption_pending_user_verification
-  note: "5 % of the parked vehicles electric by 2030, attributed to MINEM only in the press (Andina 2021). The official NDC measure (MINAM Informe 00232-2023, para 3.5) gives 171 359 light EVs and excludes motorcycles. Same share for every vehicle class."
 
 # D-V6-24: each word of the inventory's predominant vehicle type names a class; Students and Buses add none.
 vehicle_type_tokens_origin: design_rule
@@ -75,6 +71,22 @@ classes:
     kwh_per_km: {value: 0.267, origin: cited, source: "Maxus eTerron 9 datasheet: 26.7 kWh/100 km WLTP combined"}
     km_per_day: {value: 40.0, origin: assumption_pending_user_verification, note: "No Peruvian source for the daily distance of pickups"}
     penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; the NDC (MINAM 2023) gives 171 359 light EVs by 2030 but no share"}
+
+# D-V6-29: arrival rules by class (owner 2026-11-07). Opening hours come from the building's schedule in
+# configs/dataset/building_types.yaml (occupied_hours).
+arrivals:
+  origin: assumption
+  source: "D-V6-29 (owner 2026-11-07): motorcycles and pickups of the staff arrive in the 2 first hours after opening and leave at closing; mototaxis make 2 short stops, 12-14 h and 18-20 h"
+  moto: {kind: opening, window_h: 2}
+  pickup: {kind: opening, window_h: 2}
+  mototaxi: {kind: stops, stops: [[12, 14], [18, 20]]}
+
+# Rules the implementation chose for the queue (SPEC-016 P-V6-14 to P-V6-16), pending the owner.
+queue_rules:
+  origin: implementation_rule
+  note: "P-V6-14 chargers split by class in proportion to its EVs; P-V6-15 a day is open when its day factor is at least open_day_min_factor, a vehicle arrives having used one session's energy and asks for a full battery; P-V6-16 the charger is released when the charging time at nominal power ends; seed of the arrival draw"
+  open_day_min_factor: 0.5
+  seed: 0
 
 demand_factor:
   # D-V6-27 (FC). D.S. 036-2023-EM art. 13.3.1: with a charge-management system (SGC) the demand factor of the

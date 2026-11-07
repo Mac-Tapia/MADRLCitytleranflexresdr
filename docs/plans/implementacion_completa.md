@@ -269,6 +269,7 @@ Necesita plan detallado propio (`docs/plans/modulo8_campana.md`) y la autorizaci
 |---|---|---|
 | Confort térmico y 18 000 BTU/h por split | 3b.2 | Norma para clima cálido y húmedo; el valor típico solo donde no haya norma |
 | m² por plaza (RNE), 5 % de vehículos eléctricos, potencia por tipo de vehículo | 3b.3 | Usar RNE, MINEM y una fuente citada; declarar el escenario a 2030 |
+| Verificar si las facturas cubren todos los suministros de B11, B09, B03, B14, B02, B12, B16, B17, B08 y B13 (D-V6-20) | 3b, entrenamiento | Revisar los recibos y medidores de cada edificio; mientras tanto, tope declarado del 70 % |
 | Umbral de desviación de picos | 3b.4 | Proponerlo con los datos de facturas en mano |
 | 16 herramientas | 5.2 | Una por una, con recomendación |
 | Borrar ramas `codex/*` y `cursor/*` | 6.2 | Registrar su commit y borrarlas |

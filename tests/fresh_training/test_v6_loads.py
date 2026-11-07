@@ -66,3 +66,14 @@ def test_physical_distillation_fixes_the_cooling_power_and_declares_capped_block
     assert results[11].capped_blocks and not results[4].capped_blocks             # hospital capped, retail not
     flags = v6.capped_block_flags(results)
     assert {f['building_id'] for f in flags} == {11} and all(f['flag'] == 'cooling_capped_by_bill' for f in flags)
+
+
+def test_the_report_carries_the_monthly_closure_against_the_bill(dataset):
+    # write_outputs reads delta_% (v5 contract): generated electricity of each month vs its bill, from the CSV.
+    schema = json.loads((dataset/'schema.json').read_text(encoding='utf-8'))
+    norms = hc.load_hvac_norms(REPO/'configs/dataset/hvac_norms.yaml')
+    results = v6.distill_v6(dataset, schema, pd.read_csv(dataset/'weather.csv'), norms=norms,
+                            measurements=dl._DEFAULT_MEASUREMENTS, buildings=(4,))
+    report = results[4].report
+    assert 'delta_%' in report.columns and len(report) == 12
+    assert report['delta_%'].abs().max() < 1e-3

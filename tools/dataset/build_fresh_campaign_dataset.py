@@ -300,7 +300,10 @@ def hourly_pricing_usd(index: pd.DatetimeIndex, measured, fx):
 # ── official tariff (campaign v3, Osinergmin pliegos for sector Iquitos) ─────
 
 PEAK_BLOCK_HOURS = tuple(sorted(cn.PEAK_HOURS))  # 18:00-23:00, the bills' peak block
-B01_TARIFF_ASSUMPTION = 'MT2'  # label of the project-generated B_01.csv; no B01 bill exists
+B01_TARIFF_ASSUMPTION = 'MT2'  # v5 value; v6 reads configs/dataset/b01_synthetic_bill.yaml (P-V6-19)
+B01_SYNTHETIC_PATH = ROOT/'configs/dataset/b01_synthetic_bill.yaml'
+EV_V6_PATH = ROOT/'configs/dataset/ev_v6.yaml'
+HVAC_NORMS_PATH = ROOT/'configs/dataset/hvac_norms.yaml'
 
 
 def stage_tariffs(raw_dir: Path):
@@ -571,7 +574,9 @@ def as_billed_load(out: Path, building: int, schema, t_out) -> dict:
     cop = dl.citylearn_cooling_cop(t_out, attributes['efficiency'], attributes['target_cooling_temperature'])
     dhw = schema['buildings'][f'Building_{building}'].get('dhw_device')
     dhw_eff = float(dhw['attributes']['efficiency']) if dhw else DHW_HEATER_EFFICIENCY
-    machine = machine_baseline(pd.read_csv(out/f'Washing_Machine_{building}.csv'))
+    machine_csv = out/f'Washing_Machine_{building}.csv'
+    # iquitos_v6 has no washing machines (their energy is base load, SPEC-016 D-V6-1)
+    machine = machine_baseline(pd.read_csv(machine_csv)) if machine_csv.exists() else np.zeros(len(frame))
     parts = {'non_shiftable': frame['non_shiftable_load'].to_numpy(float),
              'cooling': frame['cooling_demand'].to_numpy(float)/cop,
              'dhw': frame['dhw_demand'].to_numpy(float)/dhw_eff, 'machines': machine}
@@ -648,19 +653,36 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
         # purchase price. No local peer market exists in Iquitos, so none is simulated.
         schema['community_market'] = {'enabled': False, 'export_settlement': 'net_billing_at_hourly_purchase_price'}
         _write_json(out/'schema.json', schema)
-        import sync_controlled_machines as scm
-        scm.configure(out)
-        scm.sync_controlled_machines(out, out/'schema.json')
-        log('base files, constant carbon factor, machines and schema written')
+        if design['version'] == 'v6':
+            import build_v6_parts as v6
+            schema = json.loads((out/'schema.json').read_text(encoding='utf-8'))
+            design['v6_removed_machines'] = v6.remove_washing_machines(out, schema)
+            _write_json(out/'schema.json', schema)
+            log('base files, constant carbon factor and schema written (v6: no washing machines)')
+        else:
+            import sync_controlled_machines as scm
+            scm.configure(out)
+            scm.sync_controlled_machines(out, out/'schema.json')
+            log('base files, constant carbon factor, machines and schema written')
 
         frame = measurements_frame(targets, tariffs, raw_dir, fx)
         inventory = dl.load_building_inventory(raw_dir/'buildingcsv')
         schema = dl.load_schema(out)
         t_out = dl.load_weather(out)
-        reports = {b: dl.calibrate_building(bldg_id=b, schema=schema, t_out=t_out, dataset_dir=out,
-                                            inventory=inventory, measurements=frame,
-                                            machine_elec=machine_baseline(pd.read_csv(out/f'Washing_Machine_{b}.csv')))
-                   for b in request.buildings}
+        if design['version'] == 'v6':
+            from uc3m.application.dataset import hvac_capacity as hc
+            physical = v6.distill_v6(out, schema, pd.read_csv(out/'weather.csv'),
+                                     norms=hc.load_hvac_norms(HVAC_NORMS_PATH), measurements=frame,
+                                     buildings=request.buildings, inventory=inventory)
+            _write_json(out/'schema.json', schema)
+            design['v6_capped_blocks'] = v6.capped_block_flags(physical)
+            _write_json(audit_dir/'cooling_capped_blocks.json', design['v6_capped_blocks'])
+            reports = {b: result.report for b, result in physical.items()}
+        else:
+            reports = {b: dl.calibrate_building(bldg_id=b, schema=schema, t_out=t_out, dataset_dir=out,
+                                                inventory=inventory, measurements=frame,
+                                                machine_elec=machine_baseline(pd.read_csv(out/f'Washing_Machine_{b}.csv')))
+                       for b in request.buildings}
         dl.write_outputs(reports, inventory, frame, out, audit_dir/'distillation_report.csv')
         # write_outputs rebuilds a bill-average pricing.csv; the campaign price is the official tariff.
         (out/'pricing.csv').unlink(missing_ok=True)
@@ -673,7 +695,11 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
 
         design['der'] = size_der(out, audit_dir, weather_frames, inventory, measured, fx, price_audit, request,
                                  design, log)
-        ev.write_pilot(out, audit_dir, ev.load_pilot_config(EV_PILOT_PATH))
+        if design['version'] == 'v6':
+            write_v6_fleet_and_bills(out, audit_dir, request.buildings, inventory, measured, targets, raw_dir, design,
+                                     log)
+        else:
+            ev.write_pilot(out, audit_dir, ev.load_pilot_config(EV_PILOT_PATH))
         import fix_schema_cooling as fsc
         fsc.configure(out)
         fsc.main()
@@ -684,6 +710,81 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
         log('orphans moved out of the dataset and CSV integrity audited')
 
     return generate
+
+
+class _Rate:
+    def __init__(self, energy_usd_kwh, demand_usd_kw_month):
+        self.energy_usd_kwh, self.demand_usd_kw_month = energy_usd_kwh, demand_usd_kw_month
+
+
+def v6_bill_rates(signals, buildings, index):
+    """(building, year, month) -> energy and demand rates of the official sheets, as the price signal uses."""
+    rates = {}
+    for building in buildings:
+        energy = signals[building]['energy_usd_kwh']
+        for (year, month), demand in signals[building]['demand_usd_kw_month'].items():
+            first = int(np.argmax((index.year == year) & (index.month == month)))
+            rates[(int(building), year, month)] = _Rate(float(energy[first]), float(demand))
+    return rates
+
+
+def write_v6_fleet_and_bills(out, audit_dir, buildings, inventory, measured, targets, raw_dir, design, log):
+    """SPEC-016 v6: EV queue fleet (D-V6-27 to D-V6-35), bill tariff files (D-V6-8), synthetic B01 bill (D-V6-36)."""
+    from datetime import date as _date
+    from datetime import timedelta as _timedelta
+
+    import write_b01_synthetic_bill as wb
+    import write_ev_v6 as wv
+    from uc3m.application.dataset import b01_synthetic as bs
+    from uc3m.application.dataset import bill_tariff as bt
+    from uc3m.application.dataset import ev_sizing as es
+
+    schema = json.loads((out/'schema.json').read_text(encoding='utf-8'))
+    rules = es.load_ev_rules(EV_V6_PATH)
+    plans = {b: plan for b, plan in es.district_ev_plan(inventory, rules).items() if b in buildings}
+    first, last = _date(min(YEARS), 1, 1), _date(max(YEARS), 12, 31)
+    days = [first + _timedelta(days=d) for d in range((last - first).days + 1)]
+    fleet = wv.write_ev_fleet(out, schema, plans=plans, registry=design['registry'], rules=rules,
+                              inventory=inventory, days=days)
+    _write_json(out/'schema.json', schema)
+    _write_json(audit_dir/'ev_fleet_v6.json', {str(b): row for b, row in fleet.items()})
+
+    index = hourly_index(YEARS, TZ)
+    bt.write_bill_tariff_files(out, v6_bill_rates(design['tariff_signals'], buildings, index), buildings=buildings,
+                               year=index.year.to_numpy(), month=index.month.to_numpy(), hour=index.hour.to_numpy())
+
+    rules_b01 = design['b01_rules']
+    details = bill_details(raw_dir)
+    months = bs.synthetic_months([t for t in targets if t.building_id == rules_b01['building_id']], measured,
+                                 peers=tuple(rules_b01['peers']['value']),
+                                 reactive={k: v['reactive_kvarh'] for k, v in details.items()},
+                                 bounds=tuple(rules_b01['load_factor_bounds']['value']))
+    _, b01_audit = wb.write_synthetic_bill(raw_dir/'buildingcsv'/'B_01_synthetic.csv', months,
+                                           sheets=design['sheets'], tariff=rules_b01['tariff']['value'])
+    _write_json(audit_dir/'b01_synthetic_bill.json', b01_audit)
+    design['b01_synthetic'] = months
+    log(f'v6: {sum(r["chargers"] for r in fleet.values())} chargers, {sum(r["vehicles"] for r in fleet.values())} '
+        'EVs, bill tariff files and synthetic B01 bill written')
+
+
+def v6_peak_contrast(out, schema, t_out, targets, design):
+    """FR-016.8: generated hourly peak of each building against its bill-implied peak (owner threshold pending)."""
+    from dataclasses import replace
+
+    from uc3m.application.dataset import peak_contrast as pc
+    index = hourly_index(YEARS, TZ)
+    train = index.year == YEARS[0]
+    hourly = {b: as_billed_load(out, b, schema, t_out)['total'][:int(train.sum())] for b in BUILDINGS}
+    b01 = {(m.year, m.month): m for m in design.get('b01_synthetic', [])}
+    rows = []
+    for t in targets:
+        if t.year != YEARS[0]:
+            continue
+        if t.building_id == 1 and (t.year, t.month) in b01:
+            t = replace(t, provenance='synthetic', load_factor=b01[(t.year, t.month)].load_factor)
+        rows.append(t)
+    contrast = pc.peak_contrast(hourly, index.month.to_numpy()[train], rows)
+    return {'rows': contrast, 'summary': pc.summarize(contrast, threshold=None)}
 
 
 def size_der(out: Path, audit_dir: Path, weather_frames, inventory, measured, fx, price_audit, request, design, log):
@@ -1176,6 +1277,9 @@ def main(argv=None):
     parser.add_argument('--storage-alias', required=True)
     parser.add_argument('--bess-design-rule', action='store_true',
                         help=f'size every BESS with {BESS_RULE_PATH.name} instead of the MicroGrids LP optimum')
+    parser.add_argument('--dataset-version', choices=('v5', 'v6'), default='v5',
+                        help='v6: SPEC-016 pieces (physical distillation, no washing machines, EV queue fleet, '
+                             'bill tariff files, synthetic B01 bill, peak contrast); v5 is unchanged')
     args = parser.parse_args(argv)
     from uc3m.application.training.layout import storage_label
     campaign_root = ROOT/'data/campaigns'/storage_label(args.storage_alias)
@@ -1187,7 +1291,13 @@ def main(argv=None):
     raw_dir.mkdir(parents=True)
     log = lambda message: print(f'[{datetime.now().strftime("%H:%M:%S")}] {message}', flush=True)  # noqa: E731
     import size_der_microgrids as sd
-    design = {'registry': load_registry(), 'economics': sd.load_economics(ECONOMICS_PATH)}
+    design = {'registry': load_registry(), 'economics': sd.load_economics(ECONOMICS_PATH),
+              'version': args.dataset_version}
+    if args.dataset_version == 'v6':
+        global B01_TARIFF_ASSUMPTION
+        import yaml
+        design['b01_rules'] = yaml.safe_load(B01_SYNTHETIC_PATH.read_text(encoding='utf-8'))
+        B01_TARIFF_ASSUMPTION = design['b01_rules']['tariff']['value']  # P-V6-19: one tariff for bill and price
     design_inputs = [REGISTRY_PATH, ECONOMICS_PATH, EV_PILOT_PATH, EMISSIONS_PATH]
     limitations = list(LIMITATIONS)
     bess_parameter = 'MicroGrids LP with hourly tariff and peak-block demand charge; prosumpy and CityLearn peak-shaving checks'
@@ -1293,6 +1403,19 @@ def main(argv=None):
                 {'passed': operational.passed, 'failures': operational.failures, 'backends': operational.backends,
                  'n_agents': operational.contract.n_agents if operational.contract else 0})
     gates['v3_operational'] = operational.passed
+    pending_decisions = {}
+    if design['version'] == 'v6':
+        # v6 replaces the B01 pilot with the EV queue fleet: every building has the chargers of its plan.
+        fleet = json.loads((audit_dir/'ev_fleet_v6.json').read_text(encoding='utf-8'))
+        gates.pop('ev_pilot_only')
+        gates['ev_fleet_written'] = all(len(schema['buildings'][f'Building_{b}'].get('chargers', {}))
+                                        == fleet[str(b)]['chargers'] for b in BUILDINGS)
+        import distill_building_loads as dl
+        contrast = v6_peak_contrast(campaign_root/'dataset', schema, dl.load_weather(campaign_root/'dataset'),
+                                    targets, design)
+        _write_json(audit_dir/'peak_contrast.json', contrast)
+        # FR-016.8: the threshold is the owner's; until then the contrast is recorded, not a gate.
+        pending_decisions['peak_contrast_threshold'] = contrast['summary']
     if args.bess_design_rule:
         gates['bess_rule_shaves_peak'] = (
             shaving['status'] == 'checked' and len(shaving['buildings']) == len(BUILDINGS)
@@ -1304,6 +1427,7 @@ def main(argv=None):
                   'modeled_monthly_targets': sum(t.provenance == 'modeled' for t in targets),
                   'measured_monthly_targets': sum(t.provenance == 'measured' for t in targets),
                   'gates': gates, 'dataset_verified': all(gates.values()), 'limitations': limitations,
+                  'dataset_version': design['version'], 'pending_owner_decisions': pending_decisions,
                   'checked_at': datetime.now(timezone.utc).isoformat()}
     _write_json(campaign_root/'dataset_acceptance.json', acceptance)
     log(f'dataset_hash={manifest.dataset_hash} gates={gates} dataset_verified={acceptance["dataset_verified"]}')

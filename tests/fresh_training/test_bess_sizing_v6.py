@@ -71,3 +71,31 @@ def test_negative_or_misaligned_series_are_rejected():
         bs.size_bess(surplus_kwh_h=np.zeros(24), ev_kwh_h=np.zeros(23), ev_charging_power_kw=0.0, model=model)
     with pytest.raises(ValueError):
         bs.size_bess(surplus_kwh_h=np.zeros(25), ev_kwh_h=np.zeros(25), ev_charging_power_kw=0.0, model=model)
+
+
+def test_peak_shifting_sizes_the_battery_when_it_needs_more_than_the_surplus():
+    # D-V6-30: energy = max(surplus + uncovered EV; shifted peak-block energy), power = max of the three.
+    model = bs.BatteryModel('unit', capacity_kwh=10.0, nominal_power_kw=5.0, efficiency=0.9, depth_of_discharge=0.8,
+                            loss_coefficient=0.0)
+    hours = np.arange(48)
+    surplus = np.where(hours % 24 == 12, 2.0, 0.0)                      # 2 kWh/day of surplus
+    block = np.isin(hours % 24, [18, 19, 20, 21, 22])
+    block_import = np.where(block, 100.0, 0.0)
+    block_import[24 + 20] = 150.0                                       # largest block peak of the year
+    size = bs.size_bess(surplus_kwh_h=surplus, ev_kwh_h=np.zeros(48), ev_charging_power_kw=0.0, model=model,
+                        block_import_kwh_h=block_import, peak_block_h=block, shift_fraction=0.20)
+    shaved_kw = 0.20*150.0
+    assert size.shaved_kw == pytest.approx(shaved_kw)
+    assert size.required_kwh == pytest.approx(max(2.0/(0.9*0.8), shaved_kw*5/(0.9*0.8)))
+    assert size.required_kw == pytest.approx(shaved_kw) and size.sizing_function == 'peak_shift'
+
+
+def test_surplus_still_sizes_the_battery_when_it_dominates():
+    model = bs.BatteryModel('unit', capacity_kwh=10.0, nominal_power_kw=5.0, efficiency=1.0, depth_of_discharge=1.0,
+                            loss_coefficient=0.0)
+    hours = np.arange(24)
+    surplus = np.where((hours >= 10) & (hours < 15), 20.0, 0.0)        # 100 kWh of surplus
+    block = np.isin(hours, [18, 19, 20, 21, 22])
+    size = bs.size_bess(surplus_kwh_h=surplus, ev_kwh_h=np.zeros(24), ev_charging_power_kw=0.0, model=model,
+                        block_import_kwh_h=np.where(block, 10.0, 0.0), peak_block_h=block, shift_fraction=0.20)
+    assert size.required_kwh == pytest.approx(100.0) and size.sizing_function == 'surplus_ev'

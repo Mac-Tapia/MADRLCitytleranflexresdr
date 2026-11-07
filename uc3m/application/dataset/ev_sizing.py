@@ -82,6 +82,17 @@ def ev_plan(*, parking_m2: float, use_type: str, vehicle_type: str, rules: Mappi
                   fleet=fleet_split(vehicle_type, vehicles, rules), note=note)
 
 
+def coincidence_cap_kw(installed_kw: float, use_type: str, rules: Mapping) -> float:
+    """Combined charging power allowed in a building (D-V6-27 FC, D.S. 036-2023-EM art. 13.3.1)."""
+    table = rules['demand_factor']
+    if use_type not in table['use_types']:
+        raise ValueError(f'no demand-factor row for use type {use_type!r}')
+    first, upper = float(table['use_types'][use_type]), float(table['upper_threshold_kw'])
+    power = max(float(installed_kw), 0.0)
+    return (min(power, first) + table['middle_factor']*max(min(power, upper) - first, 0.0)
+            + table['upper_factor']*max(power - upper, 0.0))
+
+
 def district_ev_plan(inventory: Mapping[int, object], rules: Mapping) -> dict[int, EvPlan]:
     return {bid: ev_plan(parking_m2=b.area_estacionamiento_m2, use_type=b.tipo_uso_citylearn,
                          vehicle_type=b.tipo_vehiculo_predominante, rules=rules)

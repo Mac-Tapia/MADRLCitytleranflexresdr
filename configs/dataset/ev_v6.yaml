@@ -55,4 +55,28 @@ classes:
     km_per_day: {value: 40.0, origin: assumption_pending_user_verification, note: "No Peruvian source for the daily distance of pickups"}
     penetration: {value: 0.05, origin: assumption_pending_user_verification, note: "PE of D-V6-27; the NDC (MINAM 2023) gives 171 359 light EVs by 2030 but no share"}
 
+demand_factor:
+  # D-V6-27 (FC). D.S. 036-2023-EM art. 13.3.1: with a charge-management system (SGC) the demand factor of the
+  # table applies "como minimo"; the lower end of each range is taken (0.6 and 0.5). Factor 1 up to the first
+  # threshold, the middle factor up to 150 kW, the last one above.
+  origin: cited
+  source: "D.S. 036-2023-EM (El Peruano 2023-12-31), art. 13.3.1, demand factor table by installation type"
+  middle_factor: 0.6
+  upper_factor: 0.5
+  upper_threshold_kw: 150.0
+  use_types:   # first threshold (kW) of the table row each inventory type belongs to
+    Office: 40.0             # oficinas, hoteles
+    Office_Critical: 40.0
+    MultiFamily_Hotel: 40.0
+    Commercial_Mall: 100.0   # centros comerciales, deportivos, recreativos
+    Retail: 100.0
+    Education: 20.0          # edificaciones dedicadas a la educacion
+    Assembly_Military: 20.0  # escuela tecnica: educacion
+    Assembly: 20.0           # aeropuerto: via publica, zonas de parqueo publico
+    Healthcare: 20.0         # IPRESS
+    Healthcare_Hospital: 20.0
+    Laboratory: 20.0         # parqueo privado (row choice declared)
+    Industrial: 20.0         # locales industriales
+    Industrial_Port: 20.0
+
 heavy_vehicle_types: [Military_Vehicles, Emergency_Trucks, Heavy_Cargo_Trucks, Heavy_Industrial_Cranes]

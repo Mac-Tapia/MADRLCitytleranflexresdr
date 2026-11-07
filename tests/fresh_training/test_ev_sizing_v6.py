@@ -103,3 +103,21 @@ def test_the_17_buildings_get_a_plan_and_heavy_fleets_are_declared(rules):
     assert totals == {'moto': 72, 'mototaxi': 52, 'pickup': 78}
     assert all(min(p.fleet.values()) >= 0 for p in plans.values())
     assert sum(p.chargers for p in plans.values()) > 2                      # replaces the 2-motorcycle pilot
+
+
+@pytest.mark.parametrize('use_type, installed, expected', [
+    ('Office', 30.0, 30.0),                                      # up to 40 kW: factor 1
+    ('Office', 100.0, 40.0 + 0.6*60.0),                          # 40-150 kW: 0.6
+    ('Commercial_Mall', 366.0, 100.0 + 0.6*50.0 + 0.5*216.0),    # mall: 1 up to 100, 0.6 to 150, 0.5 above
+    ('Healthcare_Hospital', 147.84, 20.0 + 0.6*127.84),          # IPRESS: 1 up to 20 kW
+    ('Education', 10.0, 10.0),
+])
+def test_coincidence_factor_caps_the_building_charging_power(rules, use_type, installed, expected):
+    # D-V6-27 (FC): D.S. 036-2023-EM art. 13.3.1, demand factor with a charge-management system,
+    # lower end of each range ("como minimo").
+    assert es.coincidence_cap_kw(installed, use_type, rules) == pytest.approx(expected)
+
+
+def test_every_inventory_use_type_has_a_demand_factor_row(rules):
+    types = {b.tipo_uso_citylearn for b in load_building_inventory().values()}
+    assert types <= set(rules['demand_factor']['use_types'])

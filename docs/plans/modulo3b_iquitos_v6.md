@@ -20,7 +20,9 @@ Falta unirlas en un dataset. El constructor de `iquitos_v5` (`tools/dataset/buil
 
 ## Tareas, en orden de dependencia
 
-### T1: escritor de cargadores y vehículos (D-V6-27 a D-V6-33)
+### T1: escritor de cargadores y vehículos (D-V6-27 a D-V6-35) — hecho
+
+Hecho el 2026-11-07: `tools/dataset/write_ev_v6.py`, 4 pruebas en `tests/fresh_training/test_write_ev_v6.py` (RED→GREEN), incluida la carga en CityLearn v3.
 
 - **Archivos:** nuevo `tools/dataset/write_ev_v6.py`; parámetros de batería y cargador por clase en `configs/dataset/ev_v6.yaml`.
 - **Produce:** `write_ev_fleet(dataset_dir, schema, plans, *, registry, rules, days, inventory) -> dict`. Escribe un `charger_<edificio>_<n>.csv` por cargador (columnas `ChargerSimulation`), sus entradas `chargers` en el esquema y una entrada en `electric_vehicles_def` por vehículo. Devuelve el informe por clase: factor de carga, sesiones sin atender, recorridos sin energía, potencia instalada y tope de FC.

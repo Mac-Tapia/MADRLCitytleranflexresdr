@@ -50,12 +50,13 @@ def test_every_charger_gets_its_csv_and_schema_entry_and_old_ones_are_replaced(w
     out, schema, report = written
     for b in (6, 11):
         chargers = schema['buildings'][f'Building_{b}']['chargers']
-        assert 'old_charger' not in chargers and len(chargers) == PLANS[b].chargers
+        assert 'old_charger' not in chargers and len(chargers) == report[b]['chargers']
+        assert 0 < report[b]['chargers'] <= PLANS[b].vehicles and report[b]['epbd_points'] == PLANS[b].chargers
         for name, entry in chargers.items():
             frame = pd.read_csv(out/entry['charger_simulation'])
             assert list(frame.columns) == list(q.CHARGER_COLUMNS) and len(frame) == 8760, name
     assert 'EV_OLD' not in schema['electric_vehicles_def']
-    assert report[6]['chargers'] == PLANS[6].chargers and set(report[6]['load_factor']) == set(es.CLASSES)
+    assert sum(report[6]['class_chargers'].values()) == report[6]['chargers'] and set(report[6]['load_factor']) == set(es.CLASSES)
 
 
 def test_every_ev_in_a_csv_exists_with_its_class_battery(written):
@@ -103,9 +104,10 @@ def test_citylearn_v3_loads_and_steps_the_written_fleet(tmp_path):
         _, rewards, _, _, _ = env.step(actions)
         assert all(np.isfinite(float(r)) for r in rewards.values())
         b6 = next(b for b in env.env.buildings if b.name == 'Building_6')
-        assert len(b6.electric_vehicle_chargers) == PLANS[6].chargers
+        written = schema['buildings']['Building_6']['chargers']
+        assert len(b6.electric_vehicle_chargers) == len(written) < PLANS[6].vehicles
         pickups = [c for c in b6.electric_vehicle_chargers if c.max_discharging_power > 0]
-        assert len(pickups) == PLANS[6].class_chargers['pickup']
+        assert len(pickups) == sum(1 for e in written.values() if e['hardware']['vehicle_class'] == 'pickup')
         assert all(c.max_discharging_power == pytest.approx(6.6) for c in pickups)
     finally:
         env.close()

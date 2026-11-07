@@ -90,6 +90,12 @@ battery_and_charger:
   supply_voltage_v: {value: 220, origin: cited, source: "CNE-Suministro 2011, 220 V low-voltage supply; D.S. 036-2023-EM annexes 5 and 6"}
   min_power_rule: "min charging power = supply_voltage_v x min_current_a (1.32 kW) when the class maximum reaches it, else 0 (motorcycle: 0 to 0.6 kW)"
 
+# D-V6-38 (owner 2026-11-07): every physical charger has two sockets; each socket is one CityLearn charger
+# (one action). P-V6-20: each socket charges at its class power; the building total is capped by the
+# demand factor (coincidence_cap_kw). The B01 pilot had the same layout (ev_pilot.yaml sockets_per_unit 2).
+charging_unit:
+  sockets_per_unit: {value: 2, origin: design_rule, source: "D-V6-38 (owner 2026-11-07): dual-socket chargers"}
+
 # D-V6-29: arrival rules by class (owner 2026-11-07). Opening hours come from the building's schedule in
 # configs/dataset/building_types.yaml (occupied_hours).
 arrivals:

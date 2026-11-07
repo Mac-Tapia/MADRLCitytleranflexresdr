@@ -86,11 +86,16 @@ def write_ev_fleet(dataset_dir: Path, schema: dict, *, plans: Mapping, registry:
             csv_name = f'{name}.csv'
             pd.DataFrame({c: table[c] for c in q.CHARGER_COLUMNS}).to_csv(dataset_dir/csv_name, index=False)
             chargers[name] = charger_entry(name, kind, csv_name, rules)
+            unit, socket = name.rsplit('_unit_', 1)[1].split('_socket_')
+            chargers[name]['hardware'].update({'physical_charger_id': f'B{building:02d}_{kind}_unit_{unit}',
+                                               'socket_count_per_physical_unit': 2, 'outlet_index': int(socket)})
         schema['buildings'][f'Building_{building}']['chargers'] = chargers
         for ev, kind in charging.vehicle_class.items():
             evs[ev] = ev_entry(kind, rules)
         report[building] = {'chargers': len(chargers), 'vehicles': len(charging.vehicles),
-                            'class_chargers': dict(plan.class_chargers), 'fleet': dict(plan.fleet),
+                            'class_chargers': {k: sum(1 for _, c, _ in charging.chargers if c == k) for k in plan.fleet},
+                            'epbd_points': charging.epbd_points, 'required_sockets': dict(charging.required_sockets),
+                            'physical_chargers': dict(charging.physical_chargers), 'fleet': dict(plan.fleet),
                             'load_factor': dict(charging.load_factor), 'unserved': dict(charging.unserved),
                             'depleted': dict(charging.depleted), 'mean_wait_h': dict(charging.mean_wait_h),
                             'installed_kw': charging.installed_kw,

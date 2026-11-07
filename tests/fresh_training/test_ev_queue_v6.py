@@ -115,7 +115,9 @@ def test_every_building_gets_one_table_per_charger_and_a_report_per_class():
         schedule = registry['schedules'][registry['buildings'][building]['schedule']]
         charging = q.building_charging(building, plan, schedule=schedule, rules=rules, days=YEAR,
                                        use_type=inventory[building].tipo_uso_citylearn)
-        assert len(charging.chargers) == plan.chargers
+        # D-V6-37: the queue's chargers, never more than the vehicles they serve
+        units = sum(charging.physical_chargers.values())
+        assert (0 < units <= plan.vehicles) if plan.vehicles else not charging.chargers
         assert all(len(t['electric_vehicle_charger_state']) == 24*365 for _, _, t in charging.chargers)
         assert sorted(charging.vehicles) == sorted(set(charging.vehicles)) and len(charging.vehicles) == plan.vehicles
         for kind, factor in charging.load_factor.items():
@@ -159,3 +161,46 @@ def test_an_unserved_vehicle_arrives_emptier_and_never_below_zero():
     later = result.assignments[-1]
     assert later.vehicle == 1 and later.arrival_soc == pytest.approx(max(0.0, 1 - 2*1.56/2.7))
     assert result.depleted == 1                                      # its trip needed more than it had
+
+
+def test_required_chargers_is_the_minimum_that_serves_every_session():
+    # D-V6-37: chargers of a class = the fewest with which the FIFO queue leaves no vehicle unserved, no trip
+    # without energy and every session full over the whole horizon; EPBD points are only reported.
+    sessions = [q.Session(vehicle=v, arrival=7, departure=17) for v in range(7)]   # 7 motos, 3 h each, 10 h day
+    n = q.required_chargers(sessions, MOTO)
+    assert n == 3                                               # 3 chargers serve 3+3+1 in 10 h; 2 serve only 6
+    assert q.fifo_queue(sessions, chargers=n, vehicle_class=MOTO).unserved == []
+    short = q.fifo_queue(sessions, chargers=n - 1, vehicle_class=MOTO)   # the 7th connects at 16 for 1 h
+    assert not q.serves_everyone(short) and q.serves_everyone(q.fifo_queue(sessions, chargers=n, vehicle_class=MOTO))
+    assert q.required_chargers([], MOTO) == 0
+
+
+def test_the_district_has_fewer_chargers_than_vehicles_and_serves_them_all():
+    rules, registry, inventory, plans = _district()
+    chargers = vehicles = 0
+    for building, plan in plans.items():
+        schedule = registry['schedules'][registry['buildings'][building]['schedule']]
+        charging = q.building_charging(building, plan, schedule=schedule, rules=rules, days=YEAR,
+                                       use_type=inventory[building].tipo_uso_citylearn)
+        assert sum(charging.unserved.values()) == 0 and sum(charging.depleted.values()) == 0, building
+        assert charging.epbd_points == plan.chargers
+        chargers += sum(charging.physical_chargers.values())
+        vehicles += len(charging.vehicles)
+    assert 0 < chargers < vehicles
+
+
+def test_every_physical_charger_has_two_sockets():
+    # D-V6-38: chargers are dual-socket units; the queue's sockets are rounded up to whole units and every
+    # socket of a unit is simulated (one action per socket), each at its class power (P-V6-20).
+    rules, registry, inventory, plans = _district()
+    assert rules['charging_unit']['sockets_per_unit']['value'] == 2
+    for building in (1, 6, 11):
+        schedule = registry['schedules'][registry['buildings'][building]['schedule']]
+        charging = q.building_charging(building, plans[building], schedule=schedule, rules=rules, days=YEAR[:28],
+                                       use_type=inventory[building].tipo_uso_citylearn)
+        for kind in ('moto', 'mototaxi', 'pickup'):
+            sockets = [name for name, k, _ in charging.chargers if k == kind]
+            units = charging.physical_chargers[kind]
+            assert len(sockets) == 2*units, (building, kind)
+            assert units == -(-charging.required_sockets[kind]//2)
+            assert all(f'_unit_{u:02d}_socket_' in ' '.join(sockets) for u in range(1, units + 1))

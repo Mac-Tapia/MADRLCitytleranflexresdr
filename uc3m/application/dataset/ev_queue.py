@@ -131,6 +131,24 @@ def fifo_queue(sessions: Sequence[Session], *, chargers: int, vehicle_class: Veh
     return result
 
 
+def serves_everyone(result: QueueResult) -> bool:
+    """D-V6-37: no session without a charger, no trip without energy and every served session leaves full."""
+    return (not result.unserved and result.depleted == 0
+            and all(a.departure_soc >= 1.0 - 1e-9 for a in result.assignments))
+
+
+def required_chargers(sessions: Sequence[Session], vehicle_class: VehicleClass) -> int:
+    """D-V6-37: the fewest chargers of a class with which the FIFO queue serves every session of the horizon."""
+    if not sessions:
+        return 0
+    vehicles = len({s.vehicle for s in sessions})
+    for n in range(1, vehicles + 1):
+        if serves_everyone(fifo_queue(sessions, chargers=n, vehicle_class=vehicle_class)):
+            return n
+    raise ValueError(f'{vehicle_class.name}: even one charger per vehicle leaves sessions unserved; '
+                     'the arrival window is shorter than the charging time')
+
+
 def charger_tables(result: QueueResult, *, chargers: int, hours: int, vehicle_class: VehicleClass,
                    ids: Sequence[str]) -> list:
     """Hourly ChargerSimulation columns of each charger (SOC in percent, as the CityLearn data loader reads)."""
@@ -193,33 +211,47 @@ class BuildingCharging:
     depleted: Mapping       # class -> trips that needed more than the battery held (D-V6-31)
     installed_kw: float
     coincidence_cap_kw: float
+    epbd_points: int = 0      # EPBD 2024 art. 14(2) minimum, reported only (D-V6-37)
+    required_sockets: Mapping = None    # class -> sockets the queue needs (D-V6-37)
+    physical_chargers: Mapping = None   # class -> dual-socket units (D-V6-38)
 
 
 def building_charging(building: int, plan, *, schedule: Mapping, rules: Mapping, days: Sequence[date],
                       use_type: str) -> BuildingCharging:
-    """FIFO queue of every class of a building and its CityLearn charger tables (D-V6-27, D-V6-29)."""
+    """FIFO queue of every class of a building and its CityLearn charger tables (D-V6-27, D-V6-29).
+
+    The chargers of each class are the fewest the queue needs to serve every session (D-V6-37); the EPBD
+    points of the plan are reported, not simulated.
+    """
     from uc3m.application.dataset.ev_sizing import CLASSES, coincidence_cap_kw
 
     queue = rules['queue_rules']
     hours = 24*len(days)
     chargers, vehicles, owner, factors, unserved, waits, depleted = [], [], {}, {}, {}, {}, {}
+    per_unit = int(_value(rules['charging_unit']['sockets_per_unit']))
+    needed, units_by_class = {}, {}
     installed = 0.0
     for index, kind in enumerate(CLASSES):
         spec = vehicle_class(kind, rules)
-        n_vehicles, n_chargers = int(plan.fleet[kind]), int(plan.class_chargers[kind])
+        n_vehicles = int(plan.fleet[kind])
         ids = [f'B{building:02d}_{kind}_{v + 1:02d}' for v in range(n_vehicles)]
         vehicles += ids
         owner.update({i: kind for i in ids})
         rng = np.random.default_rng([int(queue['seed']), int(building), index])
         sessions = class_sessions(spec, vehicles=n_vehicles, schedule=schedule, rule=rules['arrivals'][kind],
                                   days=days, open_day_min_factor=float(queue['open_day_min_factor']), rng=rng)
+        needed[kind] = required_chargers(sessions, spec)
+        units = -(-needed[kind]//per_unit)
+        units_by_class[kind] = units
+        n_chargers = units*per_unit          # every socket of a unit is simulated (D-V6-38)
         result = fifo_queue(sessions, chargers=n_chargers, vehicle_class=spec)
         tables = charger_tables(result, chargers=n_chargers, hours=hours, vehicle_class=spec, ids=ids)
-        chargers += [(f'B{building:02d}_{kind}_charger_{c + 1:02d}', kind, t) for c, t in enumerate(tables)]
+        chargers += [(f'B{building:02d}_{kind}_unit_{c//per_unit + 1:02d}_socket_{c % per_unit + 1}', kind, t)
+                     for c, t in enumerate(tables)]
         factors[kind] = load_factor(result, chargers=n_chargers, hours=hours, vehicle_class=spec)
         unserved[kind] = len(result.unserved)
         depleted[kind] = result.depleted
         waits[kind] = float(np.mean(result.waiting_hours)) if result.waiting_hours else 0.0
         installed += n_chargers*spec.charge_kw
     return BuildingCharging(chargers, vehicles, owner, factors, unserved, waits, depleted, installed,
-                            coincidence_cap_kw(installed, use_type, rules))
+                            coincidence_cap_kw(installed, use_type, rules), int(plan.chargers), needed, units_by_class)

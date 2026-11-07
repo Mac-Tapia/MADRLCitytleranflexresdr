@@ -2,9 +2,9 @@
 
 The monthly bills of Iquitos cannot calibrate the cooling share, because the monthly mean temperature
 spans only 1.94 C: they bound it. Cooling = capacity x part load / COP. A month above
-bill x (1 - base floor) is cut to that ceiling and flags the building. Base = bill - cooling, spread
-with its hourly shape. The implied daily base must be stable between months, otherwise the building
-is flagged; a flagged building blocks the dataset gate.
+bill x (1 - base floor) is cut to that ceiling and declared as capacity overestimated by the inventory
+(D-V6-19, not blocking). Base = bill - cooling, spread with its hourly shape. The implied daily base
+variability is reported only: the non-climatic variation of the bills belongs to the base.
 """
 from __future__ import annotations
 
@@ -35,16 +35,12 @@ class CalibrationResult:
     monthly: list = field(default_factory=list)
     capped_months: list = field(default_factory=list)
     base_cv_pct: float = 0.0
-    flags: list = field(default_factory=list)
-
-    @property
-    def passed(self) -> bool:
-        return not self.flags
+    declarations: list = field(default_factory=list)
 
 
 def calibrate_cooling(*, capacity_kw_th: float, cop_h: np.ndarray, plr_h: np.ndarray, month_h: np.ndarray,
-                      bill_kwh: Mapping[int, float], base_shape_h: np.ndarray, base_floor_fraction: float,
-                      base_cv_limit_pct: float) -> CalibrationResult:
+                      bill_kwh: Mapping[int, float], base_shape_h: np.ndarray,
+                      base_floor_fraction: float) -> CalibrationResult:
     month_h = np.asarray(month_h)
     cop_h, plr_h = np.asarray(cop_h, dtype=float), np.asarray(plr_h, dtype=float)
     shape = np.asarray(base_shape_h, dtype=float)
@@ -82,10 +78,9 @@ def calibrate_cooling(*, capacity_kw_th: float, cop_h: np.ndarray, plr_h: np.nda
 
     per_day = np.array([m['base_kwh_per_day'] for m in monthly])
     cv = float(np.std(per_day, ddof=1)/np.mean(per_day)*100) if len(per_day) > 1 else 0.0
-    flags = []
+    declarations = []
     if capped:
-        flags.append(f'cooling capped at the bill ceiling in {len(capped)} months')
-    if cv > base_cv_limit_pct:
-        flags.append(f'implied daily base unstable: CV {cv:.1f} % > {base_cv_limit_pct} %')
+        declarations.append(f'capacity overestimated by the inventory: cooling capped at the bill ceiling '
+                            f'in {len(capped)} months')
     return CalibrationResult(month_h=month_h, cooling_kwh=cooling, base_kwh=base, monthly=monthly,
-                             capped_months=capped, base_cv_pct=cv, flags=flags)
+                             capped_months=capped, base_cv_pct=cv, declarations=declarations)

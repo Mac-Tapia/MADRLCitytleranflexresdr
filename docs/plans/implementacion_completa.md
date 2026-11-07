@@ -165,6 +165,8 @@ Necesita su propio plan TDD detallado antes de ejecutarse: `docs/plans/modulo3b_
 
 ### Tarea 3b.5: adecuación a los 4 MADRL y tupla de CityLearn v3 (FR-016.10 y FR-016.11)
 
+**Capa obligatoria (D-V6-25):** todo el comportamiento va en `CityLearn/citylearn/dec_pomdp.py`, `CityLearn/citylearn/v3/` (`reward.py`, `objectives.py`, `environment.py`, `marllib_env.py`) y `CityLearn/scripts/citylearn_v3_training_common.py`. Las pruebas usan el entorno v3; `uc3m/application/dataset/bill_tariff.incremental_bill_cost` es el oráculo de la recompensa con factura, y el V2G de las camionetas se ejerce con el cargador de la capa v3 (`max_discharging_power` > 0).
+
 - **Archivos:**
   - recompensa con factura y observaciones (pico del mes, bloque de 18:00 a 23:00, tarifa de potencia, temperatura interior y confort) en `CityLearn/citylearn/v3/`;
   - `configs/evaluation/kpis.yaml` y `configs/objective_policies.yaml`;

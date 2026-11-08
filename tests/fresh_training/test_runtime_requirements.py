@@ -72,8 +72,9 @@ def test_masac_requirements_follow_the_active_dataset_and_every_candidate(masac_
     replay = masac.estimate_replay_buffer_gib(buffer_size=fixed['buffer_size'], episode_limit=EPISODE, **masac_dims)
     assert declared['min_ram_gib'] == ne.requirement_from_estimate(replay, ne.RAM_FLOOR_GIB)
     by_candidate = {int(k): v for k, v in declared['min_vram_gib_by_rnn_hidden_dim'].items()}
-    assert set(by_candidate) == set(GRID)
-    for rnn in GRID:
+    searched = NATIVE['algorithms']['MASAC'].get('hyperparameter_grid_override', {}).get('hidden_dimension', GRID)
+    assert set(by_candidate) == set(searched)                 # D-M3-8: only the candidates MASAC searches
+    for rnn in searched:
         critic = masac.estimate_masac_critic_gpu_gib(
             batch_episodes=fixed['critic_batch_size'], episode_limit=EPISODE, rnn_hidden_dim=rnn,
             qmix_hidden_dim=rnn//2, hyper_hidden_dim=rnn, n_agents=masac_dims['n_agents'],
@@ -113,12 +114,14 @@ def _masac_check(native_args, ram=500.0, vram=200.0, steps=EPISODE):
 def test_the_guard_applies_the_vram_of_the_attempts_candidate():
     by_candidate = {int(k): v for k, v in
                     NATIVE['algorithms']['MASAC']['runtime_requirements']['min_vram_gib_by_rnn_hidden_dim'].items()}
-    small, large = min(GRID), max(GRID)
-    between = (by_candidate[small] + by_candidate[large])/2
-    assert _masac_check(['--rnn-hidden-dim', str(small)], vram=between)['accepted'] is True
-    refused = _masac_check(['--rnn-hidden-dim', str(large)], vram=between)
-    assert refused['accepted'] is False and 'insufficient_resources:MASAC:vram' in refused['reasons']
-    assert refused['requirements']['min_vram_gib'] == by_candidate[large]
+    # D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128; the guard applies its VRAM and refuses a
+    # candidate it has no requirement for (the 256 of the shared grid, 84 GiB, above an 80 GB GPU).
+    (searched,) = by_candidate
+    assert _masac_check(['--rnn-hidden-dim', str(searched)], vram=by_candidate[searched])['accepted'] is True
+    short = _masac_check(['--rnn-hidden-dim', str(searched)], vram=by_candidate[searched] - 1)
+    assert short['accepted'] is False and 'insufficient_resources:MASAC:vram' in short['reasons']
+    assert short['requirements']['min_vram_gib'] == by_candidate[searched]
+    assert _masac_check(['--rnn-hidden-dim', str(max(GRID))])['accepted'] is False
 
 
 @pytest.mark.parametrize('native_args', [['--rnn-hidden-dim', '64'], [], ['--rnn-hidden-dim', 'wide']])

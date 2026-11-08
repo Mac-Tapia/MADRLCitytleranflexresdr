@@ -111,4 +111,5 @@ def write_ev_fleet(dataset_dir: Path, schema: dict, *, plans: Mapping, registry:
     schema['electric_vehicles_def'] = evs
     schema['electric_vehicle_arrival_soc'] = 'endogenous'   # D-V6-41: read by CityLearn/citylearn/internal/runtime.py
     schema['electric_vehicle_discharge_limit'] = 'building_demand'   # D-V6-28: V2B, never exported (v3 layer)
+    schema['electric_vehicle_observation'] = 'class_aggregate'   # D-V6-49: per-class charger observations (v3)
     return report

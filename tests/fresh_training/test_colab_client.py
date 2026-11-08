@@ -56,17 +56,18 @@ def test_notebook_verifies_the_fresh_dataset_and_syncs_attempts_to_drive():
 def test_committed_notebook_is_the_built_client():
     committed = json.loads(NOTEBOOK.read_text(encoding='utf-8'))
     assert "'-m', 'uc3m.application.training.cli'" in _code(committed)
-    acceptance = json.loads((REPO/'data/campaigns/iquitos_v5/dataset_acceptance.json').read_text(encoding='utf-8'))
+    acceptance = json.loads(((lambda c: REPO/c['dataset_root'])(__import__('yaml').safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8')))/'dataset_acceptance.json').read_text(encoding='utf-8'))
     assert committed['metadata']['expected_dataset_sha256'] == acceptance['dataset_hash']
 
 
 def test_bundle_carries_the_frozen_campaign_and_no_retired_root():
     paths = {p.relative_to(REPO).as_posix() for p in builder.bundle_paths(REPO, builder.campaign_from_config(builder.CAMPAIGN_CONFIG)[1])}
-    assert 'data/campaigns/iquitos_v5/splits/train_2023/schema.json' in paths
-    assert 'data/campaigns/iquitos_v5/normalizer.json' in paths
+    active = (lambda c: REPO/c['dataset_root'])(__import__('yaml').safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))).relative_to(REPO).as_posix()
+    assert f'{active}/splits/train_2023/schema.json' in paths
+    assert f'{active}/normalizer.json' in paths
     assert 'configs/experiments/iquitos.yaml' in paths and 'uc3m/application/training/cli.py' in paths
     assert 'uc3m/application/training/drive_sync.py' in paths
-    assert not any(p.startswith(('outputs/', 'CityLearn/data/datasets/', 'data/campaigns/iquitos_v5/raw/'))
+    assert not any(p.startswith(('outputs/', 'CityLearn/data/datasets/', f'{active}/raw/'))
                    for p in paths)
 
 

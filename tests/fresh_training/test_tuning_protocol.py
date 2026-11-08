@@ -56,15 +56,20 @@ def test_equal_hpo_budget_across_algorithms(dag, protocol):
             per_candidate.setdefault(t.candidate, []).append(t.episodes*t.episode_time_steps)
         assert {len(v) for v in per_candidate.values()} == {9}
         assert {sum(v) for v in per_candidate.values()} == {9*10*8760}
-        # The eight declared grid points are all covered; a collapsed point is a native clamp, not a skip.
+        # Every grid point the algorithm searches is covered; a collapsed point is a native clamp, not a skip.
+        # SPEC-015 D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128, 4 of the 8 points.
+        from uc3m.application.training.fresh_campaign import algorithm_candidates
+        searched = set(algorithm_candidates(algorithm, {c: dag.candidates[c] for c in grid},
+                                            dag.config['_algorithm_config']))
         collapsed = dag.collapsed_candidates['hpo'][algorithm]
-        assert set(itertools.chain.from_iterable(collapsed.values())) == grid
+        assert set(itertools.chain.from_iterable(collapsed.values())) == searched
+        assert searched == grid or algorithm == 'MASAC'
         assert protocol.equivalents[algorithm] == collapsed
-    # Native capacity (no rnn_hidden_dim clamp): every algorithm, MASAC included, keeps its 8 distinct
-    # configurations, so the HPO budget is equal across algorithms (288 treatments in total).
+    # Native capacity (no rnn_hidden_dim clamp): no configuration collapses. HAPPO, MATD3 and MAAC keep 8 distinct
+    # configurations; MASAC searches 4 on iquitos_v6 (D-M3-8, 84 GiB for rnn 256): 252 treatments in total.
     for algorithm in ('HAPPO', 'MASAC', 'MATD3', 'MAAC'):
         assert all(len(group) == 1 for group in dag.collapsed_candidates['hpo'][algorithm].values()), algorithm
-    assert len(hpo) == 4*8*9
+    assert len(hpo) == (3*8 + 4)*9            # D-M3-8: MASAC searches 4 of the 8 grid points on iquitos_v6
 
 
 def test_only_new_validation_can_select(protocol):

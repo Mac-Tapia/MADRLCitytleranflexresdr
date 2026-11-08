@@ -165,17 +165,20 @@ def _stage_budget(tmp_path, monkeypatch, measured, rules=MAAC_RULE):
 
 
 def test_first_execute_freezes_buffers_and_records_adjustments(tmp_path, monkeypatch):
-    # 20 GiB hold one phase-2 worker at MATD3's floor; its replay shrinks from 744 600 to what
-    # 20 GiB hold, never below one episode per policy, and the reduction is recorded.
+    # 26 GiB hold one phase-2 worker at MATD3's floor (below its 40 GiB reservation); its replay shrinks from
+    # 744 600 to what 26 GiB hold, never below one episode per policy, and the reduction is recorded. Phase 1
+    # needs MASAC's 25 GiB on iquitos_v6 (D-V6-49, D-M3-8; it was 9 GiB on iquitos_v5, so 20 GiB was enough).
     cli, manifest_path, budget = _stage_budget(tmp_path, monkeypatch,
-                                               {'ram_gib': 20.0, 'vram_gib': 100.0, 'cpu_count': 8})
+                                               {'ram_gib': 26.0, 'vram_gib': 100.0, 'cpu_count': 8})
     frozen = json.loads((manifest_path.parent/'stages/pilot_budget.json').read_text(encoding='utf-8'))
     matd3 = frozen['buffers']['MATD3']
     assert matd3['native'] == 744600 and 148920 <= matd3['effective'] < 744600 and matd3['reduced'] is True
     assert {'algorithm': 'MATD3', 'key': 'buffer_size', 'native': 744600,
             'effective': matd3['effective']} in budget['adjustments']
-    # Phase 1 fits one worker: MASAC's largest candidate needs 9 GiB RAM and 71 GiB VRAM here.
-    assert budget['phases'][1]['workers'] == 1 and budget['phases'][0]['workers'] == 1
+    # Phase 1 fits one worker: MASAC's searched candidate needs 25 GiB RAM and 52 GiB VRAM here.
+    # On iquitos_v6 no single RAM gives one worker in both phases: phase 1 needs MASAC's 25 GiB, which already
+    # holds two phase-2 workers at MATD3's reduced buffer.
+    assert budget['phases'][0]['workers'] == 1 and budget['phases'][1]['workers'] >= 1
     assert 'HAPPO' not in frozen['buffers'] and 'MASAC' not in frozen['buffers']
     execution = budget['execution']['MATD3']
     assert execution['torch_threads'] >= 1 and 0 < execution['cuda_memory_fraction'] <= 1

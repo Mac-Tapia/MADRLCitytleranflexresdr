@@ -22,7 +22,7 @@ import distill_building_loads as dl  # noqa: E402
 from uc3m.application.dataset import hvac_capacity as hc  # noqa: E402
 
 CAMPAIGN = yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))
-SPLIT = REPO/CAMPAIGN['dataset_root']/'splits/train_2023'
+SPLIT = REPO/'data/campaigns/iquitos_v5/splits/train_2023'   # a v5 split: it still has washing machines
 
 
 @pytest.fixture(scope='module')

@@ -15,7 +15,7 @@ import numpy as np
 import pytest
 
 REPO = Path(__file__).resolve().parents[2]
-CAMPAIGN = REPO/'data/campaigns/iquitos_v5'
+CAMPAIGN = (lambda c: REPO/c['dataset_root'])(__import__('yaml').safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8')))   # the active campaign dataset (configs/experiments/iquitos.yaml)
 SPLIT = CAMPAIGN/'splits/validation_2024'
 STEPS = 48  # two complete days (baselines)
 NATIVE_STEPS = 24  # one complete day per native policy

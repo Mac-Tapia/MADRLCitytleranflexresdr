@@ -38,6 +38,7 @@ CAMPAIGN_KEYS = {'schema_version', 'campaign_id', 'storage_alias', 'dataset_root
 STAGE_KEYS = {'episodes', 'episode_time_steps', 'seeds', 'scenarios', 'grid', 'dominance', 'secondary_to_residual'}
 SUPERVISION_KEYS = {'max_constraint_dominance_ratio'}
 ALGORITHM_KEYS = {'mapping', 'fixed_flags', 'fixed', 'native_clamps', 'declared_limitations', 'optimizer_owners',
+                  'hyperparameter_grid_override',
                   'runtime_requirements', 'phase_buffer'}
 OWNER_KEYS = {'per_agent', 'shared'}
 CLAMP_KEYS = {'max', 'when_episode_time_steps_at_least'}
@@ -72,6 +73,11 @@ def load_algorithm_config(path: Path) -> Mapping[str, object]:
         _strict(row.get('fixed') or {}, row.get('fixed_flags') or {}, f'{name}.fixed')
         if set(row.get('fixed_flags') or {}) - set(row.get('fixed') or {}):
             raise ValueError(f'{name}: a declared fixed flag has no value')
+        override = row.get('hyperparameter_grid_override') or {}
+        _strict(override, HYPERPARAMETERS, f'{name}.hyperparameter_grid_override')
+        for hyper, values in override.items():
+            if not values or set(values) - set(payload['hyperparameter_grid'][hyper]):
+                raise ValueError(f'{name}.hyperparameter_grid_override.{hyper} must be a non-empty subset of the grid')
         clamps = row.get('native_clamps') or {}
         _strict(clamps, HYPERPARAMETERS, f'{name}.native_clamps')
         for hyper, clamp in clamps.items():
@@ -220,6 +226,13 @@ class CampaignDag:
         return out
 
 
+def algorithm_candidates(algorithm, candidates, algorithm_config):
+    """SPEC-015 D-M3-8: the grid candidates an algorithm searches (its override narrows the shared grid)."""
+    override = algorithm_config['algorithms'][algorithm].get('hyperparameter_grid_override') or {}
+    return {label: hyper for label, hyper in candidates.items()
+            if all(hyper[name] in values for name, values in override.items())}
+
+
 def _distinct_candidates(algorithm, candidates, algorithm_config, episode_time_steps):
     """Merge grid candidates whose effective native configuration is identical."""
     kept: Dict[str, Tuple[Mapping[str, float], Mapping[str, float], dict]] = {}
@@ -256,7 +269,9 @@ def build_dag(config: Mapping[str, object], project_root: Path) -> CampaignDag:
         steps = int(stage['episode_time_steps'])
         for algorithm in config['algorithms']:
             if stage_name == 'hpo':
-                kept, members = _distinct_candidates(algorithm, candidates, algorithm_config, steps)
+                kept, members = _distinct_candidates(algorithm, algorithm_candidates(algorithm, candidates,
+                                                                                    algorithm_config),
+                                                     algorithm_config, steps)
                 dag.collapsed_candidates.setdefault(stage_name, {})[algorithm] = members
                 dag.candidates_by_algorithm[algorithm] = {label: dict(v[1]) for label, v in kept.items()}
                 variants = [(label, hyper, None) for label, (hyper, _, _) in kept.items()]

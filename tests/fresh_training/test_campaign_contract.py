@@ -28,10 +28,11 @@ def test_144_unique_confirmatory_treatments(dag):
     assert {t.seed for t in confirm} == set(range(1001, 1013))
     budget = dag.budget()
     assert budget['confirm'] == {'treatments': 144, 'episodes': 7200, 'env_steps': 63_072_000}
-    # No native clamp (owner 2026-11-01): 8 distinct configurations for every backend.
-    assert budget['hpo'] == {'treatments': 288, 'episodes': 2880, 'env_steps': 25_228_800}
+    # No native clamp (owner 2026-11-01): 8 distinct configurations for HAPPO, MATD3 and MAAC; MASAC searches
+    # only rnn_hidden_dim 128 on iquitos_v6 (D-M3-8), 4 configurations: 36 HPO treatments fewer.
+    assert budget['hpo'] == {'treatments': 252, 'episodes': 2520, 'env_steps': 22_075_200}
     assert budget['sensitivity'] == {'treatments': 72, 'episodes': 3600, 'env_steps': 31_536_000}
-    assert sum(budget[s]['env_steps'] for s in ('hpo', 'confirm', 'sensitivity')) == 119_836_800
+    assert sum(budget[s]['env_steps'] for s in ('hpo', 'confirm', 'sensitivity')) == 116_683_200
     # Owner decision 2026-11-01: the pilot walks 3 full years (8760 steps) per algorithm so it
     # measures real RAM/VRAM and wall time; 4 treatments x 3 x 8760 = 105 120 steps.
     assert budget['pilot'] == {'treatments': 4, 'episodes': 12, 'env_steps': 105_120}
@@ -412,10 +413,11 @@ def test_masac_grid_has_eight_distinct_native_configurations(dag):
     for algorithm in ('HAPPO', 'MASAC', 'MATD3', 'MAAC'):
         rows = [t for t in hpo if t.algorithm == algorithm and t.scenario == 'E1' and t.seed == 901]
         effective = [tuple(sorted(t.effective_hyperparameters.items())) for t in rows]
-        assert len(rows) == 8 and len(set(effective)) == 8, algorithm
+        expected = 4 if algorithm == 'MASAC' else 8                     # D-M3-8: MASAC only rnn 128 on v6
+        assert len(rows) == expected and len(set(effective)) == expected, algorithm
         assert all(not t.native_clamps for t in rows), algorithm
     masac = [t for t in hpo if t.algorithm == 'MASAC']
-    assert {t.effective_hyperparameters['hidden_dimension'] for t in masac} == {128, 256}
+    assert {t.effective_hyperparameters['hidden_dimension'] for t in masac} == {128}
     for t in masac:
         args = t.native_arguments
         assert args[args.index('--rnn-hidden-dim') + 1] == str(t.hyperparameters['hidden_dimension'])

@@ -46,17 +46,21 @@ algorithms:
     fixed: {buffer_size: 50, critic_batch_size: 32, critic_train_steps: 1}
     optimizer_owners: {per_agent: [], shared: [masac_policy, masac_critic_q1, masac_critic_q2, masac_alpha]}
     # SPEC-015: requirement = max(floor, ceil(1.10 x estimate)) on the ACTIVE dataset, bound by
-    # tests/fresh_training/test_runtime_requirements.py. iquitos_v5 (17 agents, obs 37, state 371,
-    # 9 actions, T 8760): replay 50 ep = 8.09 GiB; critic over 32 x 8760 steps = 35.27 GiB (rnn 128)
-    # / 63.87 GiB (rnn 256). Historical, iquitos_v1 (obs 357, state 1652, 89 actions): 65.3 GiB
+    # tests/fresh_training/test_runtime_requirements.py. iquitos_v6 with class-aggregated charger
+    # observations (SPEC-016 D-V6-49; 17 agents, obs 34, state 548, 87 actions, T 8760): replay 50 ep
+    # = 21.89 GiB; critic over 32 x 8760 steps = 46.87 GiB (rnn 128) / 75.48 GiB (rnn 256). Before,
+    # iquitos_v5 (obs 37, state 371, 9 actions): 8.09 GiB replay, 35.27 / 63.87 GiB critic. Historical, iquitos_v1 (obs 357, state 1652, 89 actions): 65.3 GiB
     # replay and 74.7 / 103.3 GiB critic, declared as 72 / 82 GiB. VRAM is per candidate because the
     # critic batch, not the buffer, fixes it (the buffer samples with replacement).
-    runtime_requirements: {min_ram_gib: 9, min_vram_gib_by_rnn_hidden_dim: {128: 39, 256: 71},
+    # SPEC-015 D-M3-8 (owner 2026-11-07): on iquitos_v6 MASAC searches only rnn_hidden_dim 128; the 256
+    # candidate needs 84 GiB of VRAM, above an 80 GB GPU (74.5 GiB). Native capacity kept.
+    hyperparameter_grid_override: {hidden_dimension: [128]}
+    runtime_requirements: {min_ram_gib: 25, min_vram_gib_by_rnn_hidden_dim: {128: 52},
                            applies_from_episode_time_steps: 1000}
     declared_limitations:
       - "action interfaces differ by backend (D03 confound, SPEC-015 D-M3-6): HAPPO and MATD3 act with one continuous output per equipment, MASAC and MAAC choose discrete per-axis levels of the same equipment; the thesis compares each algorithm with its native interface and declares this difference as a confound."
       - "one QMIX critic update per episode (author critic_train_steps=1) over a 32-episode batch; the update budget per environment step differs from the other backends (declared confound)."
-      - "on iquitos_v5 every candidate needs an 80 GB GPU (74.5 GiB): 39 GiB for rnn_hidden_dim 128 and 71 GiB for 256, above the 37.25 GiB of a 40 GB GPU, where MASAC is refused, not shrunk."
+      - "SPEC-015 D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128 (52 GiB of VRAM, an 80 GB GPU of 74.5 GiB); the 256 candidate of the shared grid needs 84 GiB and is not trainable on an 80 GB GPU, so MASAC's search space is narrower than the other three backends' (declared). Its 87 axis actions set the size; recomputed after the common action grid of D-M3-7."
   MATD3:
     mapping: {learning_rate: [--lr], hidden_dimension: [--hidden-size], gamma: [--gamma]}
     # buffer_size > 16384 is the TOTAL across the 17 per-agent policies (native rule

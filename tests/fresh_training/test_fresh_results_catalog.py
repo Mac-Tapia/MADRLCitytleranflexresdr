@@ -55,7 +55,7 @@ def test_fresh_attempt_is_visible_in_catalog(tmp_path):
     for attempt in attempts:
         assert attempt.accepted and attempt.reasons == () and attempt.stage == 'pilot'
         assert attempt.seed == 901 and attempt.scenario == 'E1'
-        assert attempt.attempt_root.is_dir() and attempt.campaign_id == 'fresh_iquitos_20261105_v5'
+        assert attempt.attempt_root.is_dir() and attempt.campaign_id == __import__('yaml').safe_load((Path(__file__).resolve().parents[2]/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['campaign_id']
 
 
 def test_report_requires_explicit_campaign(tmp_path):

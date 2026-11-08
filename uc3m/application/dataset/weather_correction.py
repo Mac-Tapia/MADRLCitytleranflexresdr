@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import Mapping
 
 import numpy as np
-import pandas as pd
 import yaml
 
 TABLE = Path(__file__).resolve().parents[3]/'configs/dataset/weather_station_correction.yaml'
@@ -19,16 +18,20 @@ def _saturation_kpa(t_c):
     return 0.6112*np.exp(17.67*np.asarray(t_c, dtype=float)/(np.asarray(t_c, dtype=float) + 243.5))
 
 
-def fit_month_hour_deltas(observed: pd.Series, reanalysis: pd.Series):
-    """Mean of station minus reanalysis per [month - 1][hour]; every cell needs data."""
-    both = pd.DataFrame({'observed': observed, 'reanalysis': reanalysis}).dropna()
-    cells = (both['observed'] - both['reanalysis']).groupby([both.index.month, both.index.hour]).mean()
-    if len(cells) != 12*24:
-        raise ValueError(f'the correction needs every month and hour; got {len(cells)} of 288 cells')
-    return [[float(round(cells[(month, hour)], 4)) for hour in range(24)] for month in range(1, 13)]
+def fit_month_hour_deltas(observed, reanalysis):
+    """Mean of station minus reanalysis per [month - 1][hour]; every cell needs data. Two series on one index."""
+    gap = observed.to_numpy(dtype=float) - reanalysis.reindex(observed.index).to_numpy(dtype=float)
+    known = np.isfinite(gap)
+    months, hours = observed.index.month.to_numpy()[known] - 1, observed.index.hour.to_numpy()[known]
+    totals, counts = np.zeros((12, 24)), np.zeros((12, 24))
+    np.add.at(totals, (months, hours), gap[known])
+    np.add.at(counts, (months, hours), 1)
+    if (counts == 0).any():
+        raise ValueError(f'the correction needs every month and hour; got {int((counts > 0).sum())} of 288 cells')
+    return np.round(totals/counts, 4).tolist()
 
 
-def correct_weather(frame: pd.DataFrame, deltas, *, temperature: str = 'T2M', humidity: str = 'RH2M') -> pd.DataFrame:
+def correct_weather(frame, deltas, *, temperature: str = 'T2M', humidity: str = 'RH2M'):
     """A copy with the temperature corrected and the relative humidity recomputed at the same dew point."""
     table = np.asarray(deltas, dtype=float)
     if table.shape != (12, 24):

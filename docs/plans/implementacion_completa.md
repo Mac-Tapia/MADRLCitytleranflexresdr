@@ -14,7 +14,7 @@
 
 - Antes de editar u operar con Git: `powershell -ExecutionPolicy Bypass -File scripts\verify_project_context.ps1`. Si falla, detenerse.
 - No leer ni usar `D:\madrl_lima`.
-- No se entrena hasta cerrar todo: `resource_authorization.authorized_stages=[]` hasta el módulo 8 y con autorización explícita del propietario.
+- No se entrena hasta cerrar todo: `resource_authorization.authorized_stages=[]` se mantiene vacío, porque ese archivo forma parte de la identidad de la campaña. Cada etapa necesita la autorización explícita del propietario y se lanza con `--owner-authorized`.
 - `scientific_acceptance=false` e `implementation_ready_for_training=false` hasta que sus puertas lo acrediten.
 - Los 4 MADRL conservan la capacidad nativa de sus autores (D-M3-5). Ninguna tarea encoge un búfer, un lote o una red.
 - Los ajustes de Colab no cambian salvo para mejorar (D-M3-4).
@@ -262,9 +262,9 @@ Necesita plan detallado propio: `docs/plans/modulo5_flujo.md`.
 
 ## Módulo 8: entrenamiento y evaluación (último; necesita autorización)
 
-Necesita plan detallado propio (`docs/plans/modulo8_campana.md`) y la autorización explícita del propietario para cada etapa en `authorized_stages`.
+Necesita plan detallado propio (`docs/plans/modulo8_campana.md`) y la autorización explícita del propietario para cada etapa, que se lanza con `--owner-authorized` (sección 4 de ese plan).
 
-- **Tarea 8.1: piloto en Colab.** Prueba real del cuaderno: instalación, bloqueo de Drive, desconexión y reanudación (SPEC-008, pendiente 4 de STATUS). Copia de los artefactos fuera de la máquina, con respaldo y restauración que verifican cada SHA-256 contra `evidence.json`.
+- **Tarea 8.1: piloto en Colab.** Prueba real del cuaderno: instalación, bloqueo de Drive, desconexión y reanudación (SPEC-008, pendiente 4 de STATUS). Copia de los artefactos fuera de la máquina, con copia y restauración que verifican cada SHA-256 contra `drive_sync_manifest.json`. Los intentos de la campaña no generan `evidence.json`, y `backup_run` los rechaza.
 - **Tarea 8.2: HPO, congelado y confirmación.** Selección sobre validación con los cargadores nativos (FR-N09) y `configuration_freezes.json` por etapa.
 - **Tarea 8.3: sensibilidad** (escenarios, incluido entrenar sin B01) y evaluación congelada en `test`.
 - **Tarea 8.4: informe estadístico multisemilla** (módulo 4) y selección.
@@ -281,7 +281,7 @@ Necesita plan detallado propio (`docs/plans/modulo8_campana.md`) y la autorizaci
 |---|---|---|
 | Confort térmico y 18 000 BTU/h por split | 3b.2 | Norma para clima cálido y húmedo; el valor típico solo donde no haya norma |
 | m² por plaza (RNE), 5 % de vehículos eléctricos, potencia por tipo de vehículo | 3b.3 | Usar RNE, MINEM y una fuente citada; declarar el escenario a 2030 |
-| Verificar si las facturas cubren todos los suministros de B11, B09, B03, B14, B02, B12, B16, B17, B08 y B13 (D-V6-20) | 3b, entrenamiento | Revisar los recibos y medidores de cada edificio; mientras tanto, tope declarado del 70 % |
+| Facturas de B11, B09, B03, B14, B02, B12, B16, B17, B08 y B13 (D-V6-20) | Ya no bloquea | Cerrada por D-V6-58 (propietario, 2026-11-08): B11 se completa con su segundo suministro y los otros 9 se tratan como completos, bajo el tope de D-V6-19 |
 | Umbral de desviación de picos | 3b.4 | Proponerlo con los datos de facturas en mano |
 | 16 herramientas | 5.2 | Una por una, con recomendación |
 | Borrar ramas `codex/*` y `cursor/*` | 6.2 | Registrar su commit y borrarlas |

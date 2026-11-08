@@ -22,8 +22,9 @@ no se recrearon informes ni resultados para simular su disponibilidad.
 
 ## Manuales operativos
 
-- `colab.md` — guia Colab A100 / VS Code.
-- `colab_checklist.md` — checklist corto.
+- `plans/modulo8_campana.md` — guía vigente de la campaña en Colab.
+- `colab.md` — histórica: vía retirada, no usar en esta campaña.
+- `colab_checklist.md` — histórico: vía retirada, no usar en esta campaña.
 - `instalacion.md` — dependencias Python 3.9 / Windows / AWS.
 
 ## architecture/

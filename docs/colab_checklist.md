@@ -1,3 +1,5 @@
+> **Documento histórico: no usar en esta campaña.** Describe una vía retirada: la lista de ejecución del cuaderno `madrl_citylearn_v3_tutorial.ipynb`. Para llegar al piloto, seguir [el plan del módulo 8](plans/modulo8_campana.md), que usa `examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb`. Este texto se conserva como registro y su contenido no se actualizó.
+
 # Lista de ejecucion Colab A100 - madrl_citylearn_v3_tutorial.ipynb
 
 Usar este listado como checklist rapido para ejecutar el notebook:

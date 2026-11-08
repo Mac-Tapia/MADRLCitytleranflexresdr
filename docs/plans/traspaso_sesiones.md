@@ -163,3 +163,24 @@ El propietario suspendió el equipo. Ninguna prueba ni proceso quedó en marcha.
   - Las fuentes del constructor de `iquitos_v6_trial10` difieren de las actuales solo en comentarios.
   - Sigue abierto: datos medidos para validar el 5R1C con ASHRAE G14.
 - **Espacio liberado (2026-11-08):** por decisión del propietario se borraron los datos de `iquitos_v6`, de `trial1` a `trial9` y los crudos de CU-BEMS. De `iquitos_v6` y `trial7` quedan sus 6 JSON. Corrige lo dicho arriba sobre conservarlos.
+
+## 2026-11-08: preparación del piloto en Colab
+
+- **Dataset activo:** `iquitos_v6_trial13`, 13/13 puertas, hash `a09e83dd…`. Reúne D-V6-56 a D-V6-61: capacidad térmica medida, facturas corregidas, B11 con su segundo suministro, clima de la estación de Iquitos, y temperatura, horario, feriados y ventilación natural por función. Temperatura de 18 a 25 °C en operación (máx. 25,0; mín. global 19,3); fuera de horario el máximo es 34,5 °C. `trial10`, `trial11` y `trial12` quedan como anteriores.
+- **Bloqueos del piloto corregidos:**
+  - El piloto de MASAC lleva `--rnn-hidden-dim 128`, su único candidato (`single_candidate_arguments`).
+  - La autorización de cada etapa es `--owner-authorized`, que deja constancia en `stages/owner_authorizations.jsonl`. `authorized_stages` sigue vacío y no se edita, porque el YAML forma parte de la identidad de la campaña. El registro prueba un lanzamiento, no una decisión: la decisión del propietario se escribe aquí, con fecha y etapa.
+- **Cuaderno:** cifras de requisitos leídas de `native.yaml`; C9 antes de C8; C8 copia a Drive; una copia fallida se avisa; C6 guarda el pico de VRAM de la etapa.
+- **Memoria de MASAC:** 50 GiB de RAM y 74 GiB de VRAM, las mismas formas que `trial10`. El candidato 256 necesitaría 105 GiB (95,07 × 1,10); los 84 GiB citados antes eran de `trial7`. D-M3-8 no cambia.
+- **Límite conocido:** el piloto de 3 episodios no alcanza el lote de 32 episodios del crítico de MASAC, así que su pico de VRAM no es el máximo de la campaña.
+- **Herramientas (tarea 5.2):** 7 más retiradas. Quedan 3 obsoletas con un bloqueo registrado en `retention_blocker` del inventario.
+- **Decisiones del propietario (2026-11-08):**
+  - Retira los cuatro skills legados (ninguno tiene licencia verificable). Tarea 7.1 cerrada.
+  - Las 3 herramientas obsoletas con bloqueo y los duplicados de FR-012.4 quedan como pendientes aceptados y no impiden entrenar.
+  - Acepta los arreglos del piloto: MASAC con ancho 128 y autorización con `--owner-authorized`.
+  - No se esperan confirmaciones externas de facturas: D-V6-20 quedó cerrada por D-V6-58. El propietario pidió después ajustar al lugar (clima, horarios, feriados, 18 a 25 °C, ventilación natural), lo que llevó a `trial13`.
+  - Añadir la barrera: `test_2025` solo se abre tras seleccionar el modelo en validación.
+  - Aún no tiene Colab Pro: no se lanza ninguna etapa hasta que lo tenga y la autorice por escrito.
+- **D5 y D6 sí se corrigen antes del piloto:** `tools/eval` y `uc3m` entran en la identidad de la campaña, y cambiarlos después de prepararla invalidaría los intentos.
+- **Abierto, sin bloquear el piloto:** D7 (entrenar sin B01), D15, D16, FR-012.4. Ver `modulo8_campana.md`, sección 9.
+- **Ninguna etapa está autorizada** y nada se ha ejecutado en Colab.

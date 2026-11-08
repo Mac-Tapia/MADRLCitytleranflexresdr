@@ -1,6 +1,8 @@
 # Runbook de la campaña nueva (sin resultados históricos)
 
-Campaña `fresh_iquitos_20261105_v5`, alias de almacenamiento `iquitos_v5`.
+Campaña `fresh_iquitos_20261108_v6_trial11`, alias de almacenamiento `iquitos_v6_trial13`
+(`configs/experiments/iquitos.yaml`, que manda si este texto se queda atrás).
+Pasos en Colab hasta el piloto: [plan del módulo 8](../plans/modulo8_campana.md).
 Plan: `docs/plans/entrenamiento.md`; diseño: `docs/design/entrenamiento.md`.
 Estado vigente: `specs/STATUS.md`.
 
@@ -26,12 +28,20 @@ Si el planificador aplica un presupuesto de replay, cada intento conserva `phase
 
 ## 1. Dataset nuevo (T2)
 
+El dataset activo ya está construido y no hay que rehacerlo:
+`data/campaigns/iquitos_v6_trial13/dataset_acceptance.json` tiene
+`dataset_verified=true`, 12 de 12 puertas y hash `d4ccd3d3…`.
+
+Un dataset nuevo lleva otro alias y otra campaña. Estas son las opciones del
+constructor; `dataset_build_manifest.json` no guarda la línea exacta usada en
+`iquitos_v6_trial13`:
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/verify_project_context.ps1
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/build_fresh_campaign_dataset.py --campaign-id fresh_iquitos_20261105_v5 --storage-alias iquitos_v5 --bess-design-rule
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/build_fresh_campaign_dataset.py --campaign-id <campaign_id> --storage-alias <alias> --dataset-version v6 --bess-design-rule
 ```
 
-Escribe `data/campaigns/iquitos_v5/{raw,dataset,audit}`, `provenance.json`,
+Escribe `data/campaigns/<alias>/{raw,dataset,audit}`, `provenance.json`,
 `quality_flags.csv`, `dataset_build_manifest.json` y `dataset_acceptance.json`.
 Solo continuar si `dataset_verified=true`. Si la raíz existe, el constructor se
 niega: un intento fallido se mueve a `data/maintenance/dataset_builds/failed/`.
@@ -39,7 +49,7 @@ niega: un intento fallido se mueve a `data/maintenance/dataset_builds/failed/`.
 ## 2. Splits y normalizador congelados (T3)
 
 ```powershell
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/split_campaign.py --storage-alias iquitos_v5
+.\.venv39-citylearn-v3\Scripts\python.exe -B tools/dataset/split_campaign.py --storage-alias <alias>
 ```
 
 Escribe `splits/{train_2023,validation_2024,test_2025}`, `split_manifest.json`
@@ -52,11 +62,12 @@ Escribe `splits/{train_2023,validation_2024,test_2025}`, `split_manifest.json`
 .\.venv39-citylearn-v3\Scripts\python.exe -B -m uc3m.application.training.cli --config configs/experiments/iquitos.yaml --stage prepare
 ```
 
-Crea `outputs/campaigns/iquitos_v5/campaign_manifest.json` y
+Crea `outputs/campaigns/iquitos_v6_trial13/campaign_manifest.json` y
 `stages/{pilot,hpo,confirm,sensitivity}.json`. Presupuesto: piloto 4
 tratamientos × 3 episodios de 8760 pasos / 105 120 pasos (mide RAM, VRAM y tiempo
-reales; no cuenta como confirmación); HPO 288 / 25 228 800 (capacidad nativa sin
-recortes: 8 configuraciones efectivas por algoritmo); confirmación 144 /
+reales, pero no alcanza el lote de 32 episodios de MASAC; no cuenta como
+confirmación); HPO 252 / 22 075 200 (capacidad nativa sin recortes: 8
+configuraciones efectivas en HAPPO, MATD3 y MAAC, y 4 en MASAC por D-M3-8); confirmación 144 /
 63 072 000; sensibilidad 72 / 31 536 000. Cada etapa entrena por fases
 ({HAPPO, MASAC} y luego {MATD3, MAAC}) con trabajadores limitados por los recursos
 medidos: `prepare` no entrena, pero mide la RAM y la VRAM libres y las CPU para
@@ -67,20 +78,36 @@ derivados con hash en `stages/sensitivity_catalogs/`. Cada intento escribe
 `supervision.json` y se rechaza si los términos EV/BESS dominan los ejes
 ponderados (`supervision.max_constraint_dominance_ratio`).
 
-## 4. Ejecutar una etapa (solo con recursos autorizados)
+## 4. Ejecutar una etapa (solo con decisión escrita del propietario)
 
-1. El propietario añade la etapa en `resource_authorization.authorized_stages`
-   de `configs/experiments/iquitos.yaml` y se prepara de nuevo (cambia la
-   identidad de la configuración).
-2. Regenerar el paquete local para Colab:
-   `python -B tools/colab/build_modular_colab_notebook.py` crea
-   `outputs/colab_delivery/colab_modular_overlay.zip`.
-3. En el cuaderno, fijar `RUN_STAGE = 'pilot'` (luego `hpo`, `confirm`,
-   `sensitivity`) y ejecutar. Cada intento terminado se copia a Drive.
+Pasos completos, puertas y limitaciones: [plan del módulo 8](../plans/modulo8_campana.md).
 
-Orden obligatorio: piloto → HPO (selección en validación 2024) → congelado de
-configuración → confirmación → sensibilidad → evaluación congelada en prueba
-2025. `confirm` y `sensitivity` se niegan sin congelado de configuración.
+1. El propietario deja escrita su decisión, con fecha y etapa. No se edita
+   `configs/experiments/iquitos.yaml`, porque entra en la identidad de la campaña:
+   `authorized_stages` sigue en `[]`. Autorizar no requiere ningún commit.
+2. Regenerar el paquete local para Colab una sola vez por campaña, después del
+   último commit:
+   `.\.venv39-citylearn-v3\Scripts\python.exe -B tools/colab/build_modular_colab_notebook.py`
+   crea `outputs/colab_delivery/colab_modular_overlay.zip`. Conservar ese ZIP
+   mientras dure la campaña.
+3. En el cuaderno, fijar `STAGE` en C5 (`pilot`, y luego `hpo`, `confirm`,
+   `sensitivity`) y revisar el plan que imprime.
+4. En C6, poner `EXECUTE_STAGE = True`, escribir en `OWNER_DECISION` dónde y cuándo
+   quedó la decisión, y ejecutarla. C6 pasa `--owner-authorized <texto>` a la CLI,
+   que añade una línea a `stages/owner_authorizations.jsonl`. Al relanzar la misma
+   etapa se repite la misma referencia. Cada
+   intento terminado se copia a Drive. Al terminar, volver a `EXECUTE_STAGE = False`.
+
+Orden obligatorio: piloto → HPO → evaluación de HPO en validación 2024 (C9 con
+`EVAL_STAGE = 'hpo'`) → congelado de configuración (C8) → confirmación →
+evaluación de confirmación en validación 2024 (C9, 144 intentos) → análisis y
+selección sobre esa partición (C10) → sensibilidad y su evaluación en validación
+2024 (C9, 72 intentos; C10 por variante con `ANALYSIS_CANDIDATE`, `p055` o `p065`)
+→ evaluación congelada de confirmación en prueba 2025 (C9, 144 intentos) → análisis
+en prueba 2025 (C10, sin selección). `confirm` y `sensitivity` se niegan sin
+congelado de configuración. `pipeline select` solo acepta validación 2024, y nada
+vuelve de la prueba a la selección. El código no impide abrir la prueba antes de
+seleccionar: ese orden lo mantiene quien ejecuta las celdas.
 
 ## 5. Revisar fallos
 

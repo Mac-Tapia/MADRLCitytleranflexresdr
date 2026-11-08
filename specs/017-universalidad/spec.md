@@ -59,6 +59,8 @@ Que `iquitos_v6` sea una instancia de un proyecto general y no el proyecto mismo
 | P-017-5 | Equivalencias del vocabulario antiguo: `user_decision` es `design_rule`; `delegated_recommendation` (elegida bajo delegación del propietario) es `implementation_rule`; el `status: repository_example` es `assumption`, como ya lo registra el constructor | `uc3m/application/dataset/site.py` |
 | P-017-6 | La altitud del modelo FV es la elevación medida del sitio (115.02 m) y no los 106 m que tenía `fix_solar_pvlib.py` sin fuente | `tools/dataset/fix_solar_pvlib.py` |
 
+**Confirmadas por el propietario el 2026-11-08:** P-017-1 a P-017-6, tal como están implementadas.
+
 ## Estado en el código (2026-11-07)
 
 | Requisito | Estado |

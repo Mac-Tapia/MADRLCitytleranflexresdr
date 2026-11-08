@@ -157,4 +157,9 @@ El propietario suspendió el equipo. Ninguna prueba ni proceso quedó en marcha.
   - Etiquetar las decisiones sin etiqueta.
   - Confirmar las reglas P.
   - Publicar los commits locales (CityLearn, MAAC, MARL y principal).
+- **Cierre del pendiente (2026-11-08):**
+  - Etiquetadas en su código 34 decisiones; solo P-V6-13 queda pendiente, porque es una tolerancia de prueba.
+  - El propietario confirmó P-V6-15 a P-V6-25 y P-017-1 a P-017-6.
+  - Las fuentes del constructor de `iquitos_v6_trial10` difieren de las actuales solo en comentarios.
+  - Sigue abierto: datos medidos para validar el 5R1C con ASHRAE G14.
 

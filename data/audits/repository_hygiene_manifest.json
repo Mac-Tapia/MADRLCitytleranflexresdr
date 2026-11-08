@@ -305,6 +305,37 @@
         ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/ (2.1 GB of working material)"
       ],
       "reason": "Owner confirmed this list on 2026-11-08 (borra la lista). Gitignored and not recoverable. The cache rebuilds itself; tests/fresh_training/conftest.py now removes its scratch at the end of a session."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "files",
+      "paths": [
+        "data/campaigns/iquitos_v1/",
+        "data/campaigns/iquitos_v2/",
+        "data/campaigns/iquitos_v3/",
+        "data/campaigns/iquitos_v4/",
+        "data/campaigns/iquitos_v5/",
+        "data/campaigns/iquitos_v6/",
+        "data/campaigns/iquitos_v6_trial7/",
+        "data/campaigns/iquitos_v6_trial10/"
+      ],
+      "recover_from_commit": "d3ab7653c9df0e80cd582a47f4043809cca9bedc",
+      "reason": "Owner decision 2026-11-08: no obsolete files. Manifests of retired datasets whose data was already deleted; no code, test or configuration reads them. The active dataset is iquitos_v6_trial13."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "files",
+      "paths": [
+        "data/dataset_audit/",
+        "data/maintenance/integracion/",
+        "data/maintenance/remediacion/"
+      ],
+      "recover_from_commit": "d3ab7653c9df0e80cd582a47f4043809cca9bedc",
+      "reason": "Owner decision 2026-11-08: records of the integration of 2026-11-01 and audit trail of the retired dataset citylearn_iquitos_2023_2025 (a forbidden input). No live code or test reads them; records under docs/audits that cite these paths stay as written and resolve through this commit."
     }
   ],
   "branch_renames": {

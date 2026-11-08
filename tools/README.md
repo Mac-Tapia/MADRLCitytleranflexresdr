@@ -38,7 +38,6 @@ Detalle: `tools/dataset/README.md`.
 ## Ops / integridad
 
 ```text
-python -B tools/ops/verify_workflow_integrity.py --manifest-out data/dataset_audit/workflow_integrity_manifest.json
 ```
 
 ## Tesis

@@ -1,6 +1,6 @@
 # Estado conciliado de las especificaciones
 
-> Corte de implementación 2026-11-01: rige [el contrato actual v1](../docs/decisions/contrato_v1_pt.md). La ejecución y sus verificaciones se registran en [remediación integrada](../docs/plans/remediacion_integrada.md) y `data/maintenance/integracion/c20261101i01/`. Las tablas históricas inferiores conservan estados de cortes anteriores y no constituyen aceptación actual. El DAG vigente contiene pilot=4, HPO=252, confirm=144 y sensibilidad=72 tratamientos; 116788320 pasos planificados. `authorized_stages=[]`; aceptación científica y operacional siguen falsas.
+> Corte de implementación 2026-11-01: rige [el contrato actual v1](../docs/decisions/contrato_v1_pt.md). La ejecución y sus verificaciones se registran en [remediación integrada](../docs/plans/remediacion_integrada.md) y `data/maintenance/integracion/c20261101i01/` (retirado el 2026-11-08; recuperable del commit `d3ab7653`). Las tablas históricas inferiores conservan estados de cortes anteriores y no constituyen aceptación actual. El DAG vigente contiene pilot=4, HPO=252, confirm=144 y sensibilidad=72 tratamientos; 116788320 pasos planificados. `authorized_stages=[]`; aceptación científica y operacional siguen falsas.
 
 Revisión: 2026-10-31 (materialización de SPEC-001–012). Este índice concilia los
 planes con archivos y manifiestos existentes; no sustituye pruebas ni acredita la

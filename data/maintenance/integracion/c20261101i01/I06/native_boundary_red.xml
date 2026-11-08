@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="53.267" timestamp="2026-11-01T23:13:52.542198-05:00" hostname="MAC"><testcase classname="tests.fresh_training.test_annual_runtime_boundary" name="test_native_runtime_processes_the_last_physical_interval[24]" time="44.622"><failure message="assert (True and 23 == 24)">tests\fresh_training\test_annual_runtime_boundary.py:25: in test_native_runtime_processes_the_last_physical_interval
-    assert done and taken == intervals
-E   assert (True and 23 == 24)</failure></testcase><testcase classname="tests.fresh_training.test_annual_runtime_boundary" name="test_native_runtime_processes_the_last_physical_interval[48]" time="8.454"><failure message="assert (True and 47 == 48)">tests\fresh_training\test_annual_runtime_boundary.py:25: in test_native_runtime_processes_the_last_physical_interval
-    assert done and taken == intervals
-E   assert (True and 47 == 48)</failure></testcase></testsuite></testsuites>

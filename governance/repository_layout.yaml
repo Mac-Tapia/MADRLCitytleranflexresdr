@@ -117,7 +117,6 @@ consolidation:
   data_identity_roots:
     data/campaigns: "assets, splits and campaigns keep their identity by provenance"
     data/maintenance/dataset_builds: "failed build attempts kept as evidence; never reused or concatenated"
-    data/dataset_audit: "prior audit trail; forbidden input, kept as historical trace"
     data/audits: "immutable audit records (governance/naming.yaml immutable_roots)"
   evidence_snapshot_roots:
     docs/audits/deep_20261101: "audit cut: inspection_cut/ keeps originals matched by hash to files.csv and recheck/ reproduces the checks (report.md, lines 21-23)"

@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="28.392" timestamp="2026-11-02T12:47:44.051890-05:00" hostname="MAC"><testcase classname="tests.remediation.test_frozen_catalog_required" name="test_scenario_without_catalog_is_rejected_before_building_an_environment" time="28.028"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">tests\remediation\test_frozen_catalog_required.py:15: in test_scenario_without_catalog_is_rejected_before_building_an_environment
-    pi.run_frozen_episode(CAMPAIGN / "splits/validation_2024", policy, CAMPAIGN, steps=1, scenario="E1")
-E   Failed: DID NOT RAISE &lt;class 'ValueError'&gt;</failure></testcase></testsuite></testsuites>

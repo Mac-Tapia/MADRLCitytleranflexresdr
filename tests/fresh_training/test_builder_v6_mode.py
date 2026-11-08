@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pytest
 import pandas as pd
 
 REPO = Path(__file__).resolve().parents[2]
@@ -49,3 +50,12 @@ def test_the_v6_shaving_check_uses_the_catalog_power_in_the_schema():
     # power 2.4 times smaller than the schema's and B04/B05 delivered 78 % and 49 % of the shave; with the
     # catalog power all 17 delivered 100 % (rerun of citylearn_peak_shaving on trial3).
     assert "round(v6_size.nominal_power_kw, 3) if v6_size is not None" in SOURCE
+
+
+def test_the_shaving_fraction_is_measured_against_what_each_month_can_shave():
+    """A month whose whole peak-block import is below the rule's shave and goes to 0 delivers all it can."""
+    shaved = 6.84
+    no_control = {'3': 9.15, '4': 6.01}
+    assert bf.delivered_fraction_worst_month(no_control, {'3': 2.31, '4': 0.0}, shaved) == pytest.approx(1.0, abs=1e-3)
+    assert bf.delivered_fraction_worst_month(no_control, {'3': 5.0, '4': 0.0}, shaved) == pytest.approx(4.15/6.84)
+    assert bf.delivered_fraction_worst_month({'1': 9.0}, {'1': 9.0}, shaved) == 0.0

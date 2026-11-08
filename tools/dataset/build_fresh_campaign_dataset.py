@@ -1063,6 +1063,19 @@ def citylearn_balance(campaign_root: Path, targets, log):
     return report
 
 
+def delivered_fraction_worst_month(no_control: dict, rule: dict, shaved_kw: float) -> float:
+    """Worst month of the shaving the battery delivers over what that month can shave: min(shaved_kw, the
+    no-control peak-block import). A month whose whole peak-block import is below shaved_kw and goes to 0 delivers
+    all it can (B02 in April 2023, 6.0 of 6.8 kW, read as 0.88 before 2026-11-08)."""
+    fractions = []
+    for month, peak in no_control.items():
+        possible = min(float(shaved_kw), max(float(peak), 0.0))
+        if possible <= 1e-9:
+            continue
+        fractions.append(min(1.0, (float(peak) - float(rule[month]))/possible))
+    return min(fractions) if fractions else 1.0
+
+
 def citylearn_peak_shaving(campaign_root: Path, der, log, design_rule=None):
     """CityLearn train-split check of every sized BESS: no control vs a peak-shaving rule.
 
@@ -1142,7 +1155,8 @@ def citylearn_peak_shaving(campaign_root: Path, der, log, design_rule=None):
         row['reduction_kw'] = {m: row['no_control'][m] - row['rule'][m] for m in row['no_control']}
         if 'bess_rule' in sized[key]:
             row['shaved_kw'] = sized[key]['bess_rule']['shaved_kw']
-            row['delivered_fraction_worst_month'] = min(row['reduction_kw'].values())/row['shaved_kw']
+            row['delivered_fraction_worst_month'] = delivered_fraction_worst_month(row['no_control'], row['rule'],
+                                                                                  row['shaved_kw'])
     log(f'peak-shaving check on {len(results)} BESS buildings')
     return {'status': 'checked', 'rule': citylearn_peak_shaving.__doc__.split('\n\n')[1].strip(), 'buildings': results}
 

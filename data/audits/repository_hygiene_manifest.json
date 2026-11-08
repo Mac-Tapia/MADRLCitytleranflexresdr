@@ -102,6 +102,33 @@
       "reason": "Smoke runs made with the previous dataset identity; retired with the other historical results.",
       "recover_from_commit": "387a237437fbc20e071508943e9208c1c27e66cb",
       "recover_from_tag": "archive/resultados-historicos-2026-11-01"
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "files",
+      "paths": [
+        "tools/drive/analyze_drive_storage_estimate.py",
+        "tools/drive/download_colab_missing_kpis.py",
+        "tools/drive/fetch_colab_building_data_from_drive.py",
+        "tools/drive/fetch_colab_kpis_from_drive.py",
+        "tools/drive/validate_drive_kpi_downloads.py",
+        "tools/eval/analyze_colab_drive_results.py",
+        "tools/eval/audit_colab_drive_episodes.py",
+        "tools/eval/audit_drive_figure_integrity.py",
+        "tools/eval/audit_drive_kpis_buildings.py",
+        "tools/eval/recalc_drive_kpis_deep.py",
+        "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+        "tools/ops/diagnose_madrl_storage.py",
+        "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+        "tools/thesis/validate_integral_word_50ep_4madrl.py",
+        "tools/training/regenerate_drive_training_figures.py",
+        "tools/training/test_madrl_robustness.py",
+        "tools/training/validate_drive_kpi_skip_plan.py"
+      ],
+      "recover_from_commit": "da1cb22616b2c54a45fa06866c7854b7418c0129",
+      "reason": "Tools of the retired campaign (Drive layout of 2026), classified obsolete_old_campaign, with no reference from code, tests, scripts or configuration (module 5, task 5.2)."
     }
   ],
   "branch_renames": {

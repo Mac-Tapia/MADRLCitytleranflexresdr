@@ -7,10 +7,10 @@
   "current_results_layout": "<results_root>/<run_id>/{evidence.json, experiment.json} and <results_root>/<run_id>/<E1|E1_s<seed>>/{data, figures, figures/tables, checkpoints}; resolved by uc3m/application/evaluation/results_catalog.py (argument, then MADRL_RESULTS_ROOT, then outputs/campaign); only status=verified runs count",
   "derived_outputs_convention": "<results_root>/resumen_comparativo/{estadistica/analisis_cuantitativo_completo_50_episodios, multiobjetivo, performance_comparison} (no evidence.json there, so the catalog ignores it)",
   "counts": {
-    "total": 50,
+    "total": 33,
     "adapted": 6,
     "needs_owner_decision": 16,
-    "obsolete_old_campaign": 27,
+    "obsolete_old_campaign": 10,
     "retirement_guard": 1
   },
   "files": [
@@ -130,74 +130,14 @@
       "reason": "Measures Google Drive folder sizes of the retired run (default run id madrl_v3_20260627_164047); the new campaign is located through the results catalog, not Drive folder ids."
     },
     {
-      "path": "tools/drive/analyze_drive_storage_estimate.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Estimates Drive storage for the retired run from outputs/_drive_madrl/kpis."
-    },
-    {
-      "path": "tools/drive/download_colab_missing_kpis.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Downloads specific retired-run KPI files by hard-coded Drive file ids into outputs/_drive_madrl/kpis."
-    },
-    {
-      "path": "tools/drive/fetch_colab_building_data_from_drive.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Downloads per-building CSVs with gdown into the retired outputs/_drive_madrl/full_data mirror."
-    },
-    {
-      "path": "tools/drive/fetch_colab_kpis_from_drive.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Downloads and renames retired-run KPI files from a fixed Drive folder into outputs/_drive_madrl/kpis."
-    },
-    {
       "path": "tools/drive/fetch_drive_training_artifacts.py",
       "classification": "obsolete_old_campaign",
       "reason": "OAuth download of timeseries/trace/checkpoints of RUN_ID=madrl_v3_20260627_164047 into outputs/_drive_madrl/full_data."
     },
     {
-      "path": "tools/drive/validate_drive_kpi_downloads.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Validates filename/algorithm consistency of the retired outputs/_drive_madrl/kpis mirror; the catalog reads algorithm and scenario from experiment.json instead."
-    },
-    {
-      "path": "tools/eval/analyze_colab_drive_results.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Reads outputs/_drive_madrl/kpis and the retired best_madrl_report.json happo_pending block (HAPPO 49/50), which belongs only to the retired campaign."
-    },
-    {
-      "path": "tools/eval/audit_colab_drive_episodes.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Audits episode counts and filename mapping of the retired outputs/_drive_madrl/kpis mirror."
-    },
-    {
-      "path": "tools/eval/audit_drive_figure_integrity.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Checks figures of outputs/madrl_v3_20260627_164047 against the retired full_data mirror."
-    },
-    {
-      "path": "tools/eval/audit_drive_kpis_buildings.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Audits presence of retired KPI extracts in outputs/_drive_madrl/kpis per algorithm/scenario/building."
-    },
-    {
       "path": "tools/eval/kpi_rankings.py",
       "classification": "obsolete_old_campaign",
       "reason": "drive50 rankings from outputs/_drive_madrl/kpi_recalc_20260728 tables, a dated recalculation of the retired run."
-    },
-    {
-      "path": "tools/eval/recalc_drive_kpis_deep.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Recalculates KPIs from the retired Drive mirror (G: drive and outputs/_drive_madrl) into kpi_recalc tables."
-    },
-    {
-      "path": "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Writes outputs/_drive_madrl/kpi_recalc_20260728 (dated) from retired results.json files, including with/without-HAPPO rankings specific to that run."
-    },
-    {
-      "path": "tools/ops/diagnose_madrl_storage.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Diagnoses on-disk storage of the retired mirrors (outputs/_drive_madrl/kpis, citylearn_v3_madrl_full_20260615_074011_v4)."
     },
     {
       "path": "tools/thesis/generate_drive_thesis_figures.py",
@@ -208,11 +148,6 @@
       "path": "tools/thesis/patch_cap5_stats.py",
       "classification": "obsolete_old_campaign",
       "reason": "Dated Word patch inserting exact hypothesis statistics of the retired run madrl_v3_20260627_164047."
-    },
-    {
-      "path": "tools/thesis/patch_cap5_kpi_catalog_docx.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Word patch inserting the KPI catalog from outputs/thesis_objective_evidence of the retired run."
     },
     {
       "path": "tools/thesis/patch_anchors.py",
@@ -230,29 +165,9 @@
       "reason": "Writes the retired run's 50-episode quantitative results into the canonical Word documents."
     },
     {
-      "path": "tools/thesis/validate_integral_word_50ep_4madrl.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Validates Word claims against the retired run's ground truth under outputs/_drive_madrl."
-    },
-    {
       "path": "tools/training/prune_artifacts.ps1",
       "classification": "obsolete_old_campaign",
       "reason": "Prunes the legacy algorithm-first output root (default outputs/citylearn_v3_madrl_full_20260615_074011_v4)."
-    },
-    {
-      "path": "tools/training/regenerate_drive_training_figures.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Regenerates training figures from retired outputs/_drive_madrl/kpis result JSON files of RUN_ID=madrl_v3_20260627_164047."
-    },
-    {
-      "path": "tools/training/test_madrl_robustness.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Robustness check copies a retired KPI file (outputs/_drive_madrl/kpis/masac_E1_results.json) as its input."
-    },
-    {
-      "path": "tools/training/validate_drive_kpi_skip_plan.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Validates the legacy --skip-completed plan against retired outputs/_drive_madrl/kpis extracts."
     },
     {
       "path": "scripts/fetch_and_generate_drive_figures.ps1",
@@ -269,7 +184,24 @@
     "paths": [
       "tools/colab/generate_colab_notebook.py",
       "tools/colab/harden_colab_notebook_launch.py",
-      "tools/colab/validate_colab_resume_from_drive.py"
+      "tools/colab/validate_colab_resume_from_drive.py",
+      "tools/drive/analyze_drive_storage_estimate.py",
+      "tools/drive/download_colab_missing_kpis.py",
+      "tools/drive/fetch_colab_building_data_from_drive.py",
+      "tools/drive/fetch_colab_kpis_from_drive.py",
+      "tools/drive/validate_drive_kpi_downloads.py",
+      "tools/eval/analyze_colab_drive_results.py",
+      "tools/eval/audit_colab_drive_episodes.py",
+      "tools/eval/audit_drive_figure_integrity.py",
+      "tools/eval/audit_drive_kpis_buildings.py",
+      "tools/eval/recalc_drive_kpis_deep.py",
+      "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+      "tools/ops/diagnose_madrl_storage.py",
+      "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+      "tools/thesis/validate_integral_word_50ep_4madrl.py",
+      "tools/training/regenerate_drive_training_figures.py",
+      "tools/training/test_madrl_robustness.py",
+      "tools/training/validate_drive_kpi_skip_plan.py"
     ],
     "evidence": "data/maintenance/layout/consolidation_notebook_tools.json"
   }

@@ -1,3 +1,9 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-M3-1: MASAC keeps its native capacity
+#   D-M3-2: MASAC VRAM requirement per rnn_hidden_dim candidate
+#   D-M3-4: the Colab plan of the official run is only improved, never changed
+#   FR-015.2: requirement per HPO candidate, unknown candidate refused
+#   FR-015.3: the 4 MADRL keep their authors' capacity
 schema_version: 1
 # Resolved native configuration of the fresh campaign (design section 5).
 # Every hyperparameter maps to flags the native launcher really parses

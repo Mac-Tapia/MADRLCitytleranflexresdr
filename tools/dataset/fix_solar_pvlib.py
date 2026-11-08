@@ -1,3 +1,6 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-V6-9: PV with pvlib SAPM, roof area x 0.63 and PV/load <= 1.0
+#   P-017-6: PV altitude = measured site elevation 115.02 m
 """
 fix_solar_pvlib.py
 ==================

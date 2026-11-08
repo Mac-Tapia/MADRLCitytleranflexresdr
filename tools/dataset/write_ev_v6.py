@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-V6-45: unidirectional charging for motos and mototaxis, bidirectional only for pickups
 """Chargers and EVs of the FIFO queue into a CityLearn schema (SPEC-016 T1, docs/plans/modulo3b_iquitos_v6.md).
 
 For each building it runs the queue (uc3m.application.dataset.ev_queue.building_charging), writes one

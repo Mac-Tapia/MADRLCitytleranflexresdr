@@ -1,3 +1,12 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-V6-10: 220 V charging voltage
+#   D-V6-44: daily km per vehicle class unchanged (assumption)
+#   D-V6-45: unidirectional charging for motos and mototaxis, bidirectional only for pickups
+#   P-V6-8: demand-factor row assignment (airport, laboratory, military school)
+#   P-V6-9: demand factor at the lower end of each range
+#   P-V6-11: daily trip 40 km (motos, pickups), 38.25 km (mototaxis)
+#   P-V6-12: moto charging power 0.6 kW
+#   P-V6-23: one free hour between sessions of a socket
 # SPEC-016 FR-016.5, D-V6-6 and D-V6-21: chargers and vehicles of iquitos_v6 (2030 scenario).
 # Every value declares its origin. Sources audited: docs/audits/cargadores_vehiculos_20261107/README.md
 schema_version: 1

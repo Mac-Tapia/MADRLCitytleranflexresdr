@@ -11,61 +11,18 @@ specs:
   - specs/017-universalidad/spec.md
 
 implemented_without_tag:
-  - D-M3-1
-  - D-M3-2
-  - D-M3-4
-  - FR-015.1
-  - FR-015.2
-  - FR-015.3
-  - FR-015.4
-  - FR-015.5
-  - FR-015.7
-  - D-V6-4
-  - D-V6-9
-  - D-V6-10
-  - D-V6-11
-  - D-V6-12
-  - D-V6-44
-  - D-V6-45
-  - D-V6-46
-  - D-V6-50
-  - FR-016.2
-  - P-V6-1
-  - P-V6-2
-  - P-V6-3
-  - P-V6-4
-  - P-V6-7
-  - P-V6-8
-  - P-V6-9
-  - P-V6-10
-  - P-V6-11
-  - P-V6-12
   - P-V6-13
-  - P-V6-23
-  - P-017-1
-  - P-017-2
-  - P-017-5
-  - P-017-6
 
 decisions:
   # ---------------- SPEC-015 ----------------
   D-M3-1:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/algorithms/native.yaml (MASAC native replay 50 and critic batch 32, tagged D-M3-5) but untagged"
-      implemented_in: [configs/algorithms/native.yaml]
+    code: [configs/algorithms/native.yaml]
   D-M3-2:
-    no_code:
-      kind: pending
-      reason: "implemented in native.yaml (min_vram_gib_by_rnn_hidden_dim) and native_entrypoint.py (guard per candidate) but untagged"
-      implemented_in: [configs/algorithms/native.yaml, uc3m/adapters/algorithms/native_entrypoint.py]
+    code: [configs/algorithms/native.yaml, uc3m/adapters/algorithms/native_entrypoint.py]
   D-M3-3:
     code: [uc3m/adapters/algorithms/native_entrypoint.py]
   D-M3-4:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/algorithms/native.yaml (Colab reservations kept, 'not to be changed') but untagged"
-      implemented_in: [configs/algorithms/native.yaml]
+    code: [configs/algorithms/native.yaml]
   D-M3-5:
     code: [configs/algorithms/native.yaml]
   D-M3-6:
@@ -86,37 +43,19 @@ decisions:
   P-M3-2:
     code: [CityLearn/citylearn/v3/action_grid.py]
   FR-015.1:
-    no_code:
-      kind: pending
-      reason: "implemented by tests/fresh_training/test_runtime_requirements.py with the estimators of native_entrypoint.py but untagged"
-      implemented_in: [uc3m/adapters/algorithms/native_entrypoint.py, tests/fresh_training/test_runtime_requirements.py]
+    code: [uc3m/adapters/algorithms/native_entrypoint.py]
   FR-015.2:
-    no_code:
-      kind: pending
-      reason: "implemented in native.yaml (min_vram_gib_by_rnn_hidden_dim) and native_entrypoint.py but untagged"
-      implemented_in: [configs/algorithms/native.yaml, uc3m/adapters/algorithms/native_entrypoint.py]
+    code: [configs/algorithms/native.yaml, uc3m/adapters/algorithms/native_entrypoint.py]
   FR-015.3:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/algorithms/native.yaml, verified by tests/fresh_training/test_author_capacity.py, but untagged"
-      implemented_in: [configs/algorithms/native.yaml, tests/fresh_training/test_author_capacity.py]
+    code: [configs/algorithms/native.yaml]
   FR-015.4:
-    no_code:
-      kind: pending
-      reason: "implemented in uc3m/adapters/process_tree.py, verified by tests/integration/test_training_interruption.py, but untagged"
-      implemented_in: [uc3m/adapters/process_tree.py, tests/integration/test_training_interruption.py]
+    code: [uc3m/adapters/process_tree.py]
   FR-015.5:
-    no_code:
-      kind: pending
-      reason: "implemented in CityLearn/scripts/checkpoint_state.py (madrl.training_state.v1) but untagged"
-      implemented_in: [CityLearn/scripts/checkpoint_state.py]
+    code: [CityLearn/scripts/checkpoint_state.py]
   FR-015.6:
     code: [uc3m/adapters/algorithms/native_entrypoint.py]
   FR-015.7:
-    no_code:
-      kind: pending
-      reason: "implemented in citylearn_v3_training_common.py (discrete_action_mask_by_agent, continuous_action_map), verified by test_action_masks.py, but untagged"
-      implemented_in: [CityLearn/scripts/citylearn_v3_training_common.py, tests/fresh_training/test_action_masks.py]
+    code: [CityLearn/scripts/citylearn_v3_training_common.py]
 
   # ---------------- SPEC-016 decisions ----------------
   D-V6-1:
@@ -129,10 +68,7 @@ decisions:
       reason: "corrected by D-V6-16: Peruvian norms give no capacity figure"
       superseded_by: D-V6-16
   D-V6-4:
-    no_code:
-      kind: pending
-      reason: "implemented in hvac_norms.yaml (rd from ASHRAE 62.1) and hvac_capacity.py (people = rd/100 x area) but untagged"
-      implemented_in: [configs/dataset/hvac_norms.yaml, uc3m/application/dataset/hvac_capacity.py]
+    code: [configs/dataset/hvac_norms.yaml, uc3m/application/dataset/hvac_capacity.py]
   D-V6-5:
     code: [tools/dataset/distill_building_loads.py]
   D-V6-6:
@@ -144,25 +80,13 @@ decisions:
            CityLearn/citylearn/dec_pomdp.py, CityLearn/citylearn/internal/runtime.py, CityLearn/citylearn/v3/bill.py,
            CityLearn/citylearn/v3/reward.py]
   D-V6-9:
-    no_code:
-      kind: pending
-      reason: "implemented in fix_solar_pvlib.py (pvlib SAPM) and build_fresh_campaign_dataset.py (area x 0.63 bound, pv_to_load gate) but untagged"
-      implemented_in: [tools/dataset/fix_solar_pvlib.py, tools/dataset/build_fresh_campaign_dataset.py]
+    code: [tools/dataset/fix_solar_pvlib.py, tools/dataset/build_fresh_campaign_dataset.py]
   D-V6-10:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/ev_v6.yaml (supply_voltage_v 220) but untagged"
-      implemented_in: [configs/dataset/ev_v6.yaml]
+    code: [configs/dataset/ev_v6.yaml]
   D-V6-11:
-    no_code:
-      kind: pending
-      reason: "enforced by authorized_stages: [] in configs/experiments/iquitos.yaml but untagged"
-      implemented_in: [configs/experiments/iquitos.yaml]
+    code: [configs/experiments/iquitos.yaml]
   D-V6-12:
-    no_code:
-      kind: pending
-      reason: "implemented in CityLearn/citylearn/dec_pomdp.py (central_agent=False, one agent per building) but untagged"
-      implemented_in: [CityLearn/citylearn/dec_pomdp.py]
+    code: [CityLearn/citylearn/dec_pomdp.py]
   D-V6-13:
     no_code:
       kind: pending
@@ -240,20 +164,11 @@ decisions:
   D-V6-43:
     code: [uc3m/application/dataset/ev_queue.py, configs/dataset/ev_v6.yaml]
   D-V6-44:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/ev_v6.yaml (km_per_day 40, 38.25, 40) but untagged"
-      implemented_in: [configs/dataset/ev_v6.yaml]
+    code: [configs/dataset/ev_v6.yaml]
   D-V6-45:
-    no_code:
-      kind: pending
-      reason: "implemented in ev_v6.yaml (direction unidirectional / v2b_through_v2l, discharge_kw 0) and write_ev_v6.py but untagged"
-      implemented_in: [configs/dataset/ev_v6.yaml, tools/dataset/write_ev_v6.py]
+    code: [configs/dataset/ev_v6.yaml, tools/dataset/write_ev_v6.py]
   D-V6-46:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/b01_synthetic_bill.yaml (MT3, tagged P-V6-19, note still says pending owner) but untagged"
-      implemented_in: [configs/dataset/b01_synthetic_bill.yaml]
+    code: [configs/dataset/b01_synthetic_bill.yaml]
   D-V6-47:
     code: [tools/dataset/build_fresh_campaign_dataset.py, tools/dataset/build_v6_parts.py, configs/dataset/dataset_gates.yaml]
   D-V6-48:
@@ -275,32 +190,17 @@ decisions:
   D-V6-53:
     code: [CityLearn/citylearn/v3/thermal_calibration.py, tools/dataset/distill_building_loads.py, tools/dataset/build_fresh_campaign_dataset.py, uc3m/application/evaluation/tuple_contract.py]
   D-V6-50:
-    no_code:
-      kind: pending
-      reason: "implemented in CityLearn/citylearn/v3/bill.py and reward.py (cost axis in thirds, tagged D-V6-8) but untagged"
-      implemented_in: [CityLearn/citylearn/v3/bill.py, CityLearn/citylearn/v3/reward.py]
+    code: [CityLearn/citylearn/v3/bill.py, CityLearn/citylearn/v3/reward.py]
 
   # ---------------- SPEC-016 implementation rules ----------------
   P-V6-1:
-    no_code:
-      kind: pending
-      reason: "implemented in distill_building_loads.py (dhw_elec = min(dhw, 0.5 x base)) but untagged"
-      implemented_in: [tools/dataset/distill_building_loads.py]
+    code: [tools/dataset/distill_building_loads.py]
   P-V6-2:
-    no_code:
-      kind: pending
-      reason: "implemented in distill_building_loads.py (base_shape = max(schedule, 0.05), tagged D-V6-5) but untagged"
-      implemented_in: [tools/dataset/distill_building_loads.py]
+    code: [tools/dataset/distill_building_loads.py]
   P-V6-3:
-    no_code:
-      kind: pending
-      reason: "implemented in distill_building_loads.py (physical_cop_params, T_TARGET 8.5) but untagged"
-      implemented_in: [tools/dataset/distill_building_loads.py]
+    code: [tools/dataset/distill_building_loads.py]
   P-V6-4:
-    no_code:
-      kind: pending
-      reason: "implemented in bess_sizing.py (select_catalog_model) but untagged"
-      implemented_in: [uc3m/application/dataset/bess_sizing.py]
+    code: [uc3m/application/dataset/bess_sizing.py]
   P-V6-5:
     code: [uc3m/application/dataset/ev_sizing.py]
   P-V6-6:
@@ -309,35 +209,17 @@ decisions:
       reason: "the 7.04 kW V2B discharge was replaced by the 6.6 kW V2L outlet"
       superseded_by: D-V6-32
   P-V6-7:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/hvac_norms.yaml (EM.030 row per use type) but untagged"
-      implemented_in: [configs/dataset/hvac_norms.yaml]
+    code: [configs/dataset/hvac_norms.yaml]
   P-V6-8:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/ev_v6.yaml (demand_factor.use_types) but untagged"
-      implemented_in: [configs/dataset/ev_v6.yaml]
+    code: [configs/dataset/ev_v6.yaml]
   P-V6-9:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/ev_v6.yaml (middle_factor 0.6, upper_factor 0.5) but untagged"
-      implemented_in: [configs/dataset/ev_v6.yaml]
+    code: [configs/dataset/ev_v6.yaml]
   P-V6-10:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/hvac_norms.yaml (air density, ceiling height, occupant gain, percentile) but untagged"
-      implemented_in: [configs/dataset/hvac_norms.yaml]
+    code: [configs/dataset/hvac_norms.yaml]
   P-V6-11:
-    no_code:
-      kind: pending
-      reason: "confirmed by D-V6-44; implemented in configs/dataset/ev_v6.yaml (km_per_day) but untagged"
-      implemented_in: [configs/dataset/ev_v6.yaml]
+    code: [configs/dataset/ev_v6.yaml]
   P-V6-12:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/ev_v6.yaml (motorcycle charge_kw 0.6, Super Soco CPx) but untagged"
-      implemented_in: [configs/dataset/ev_v6.yaml]
+    code: [configs/dataset/ev_v6.yaml]
   P-V6-13:
     no_code:
       kind: pending
@@ -371,10 +253,7 @@ decisions:
   P-V6-22:
     code: [tools/dataset/write_ev_v6.py]
   P-V6-23:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/dataset/ev_v6.yaml (free_hours_between_sessions 1, note tagged P-V6-15) but untagged"
-      implemented_in: [configs/dataset/ev_v6.yaml]
+    code: [configs/dataset/ev_v6.yaml]
   P-V6-24:
     code: [CityLearn/citylearn/v3/reward.py]
   P-V6-25:
@@ -384,10 +263,7 @@ decisions:
   FR-016.1:
     code: [uc3m/application/dataset/cooling_calibration.py]
   FR-016.2:
-    no_code:
-      kind: pending
-      reason: "implemented in cooling_calibration.py (30 % base floor; docstring says FR-016.1/2) and distill_building_loads.py (base floor 0.05) but untagged"
-      implemented_in: [uc3m/application/dataset/cooling_calibration.py, tools/dataset/distill_building_loads.py]
+    code: [uc3m/application/dataset/cooling_calibration.py, tools/dataset/distill_building_loads.py]
   FR-016.3:
     code: [uc3m/application/dataset/hvac_capacity.py, tools/dataset/build_v6_parts.py, configs/dataset/hvac_norms.yaml]
   FR-016.4:
@@ -423,26 +299,14 @@ decisions:
   FR-017.5:
     code: [uc3m/application/dataset/site.py, configs/dataset/b01_synthetic_bill.yaml, configs/dataset/dataset_gates.yaml]
   P-017-1:
-    no_code:
-      kind: pending
-      reason: "implemented in CityLearn/citylearn/v3/backend_contract.py (built-in MADRLBackend declarations) but untagged"
-      implemented_in: [CityLearn/citylearn/v3/backend_contract.py]
+    code: [CityLearn/citylearn/v3/backend_contract.py]
   P-017-2:
-    no_code:
-      kind: pending
-      reason: "implemented in configs/sites/iquitos.yaml (peak_block origin assumption) but untagged"
-      implemented_in: [configs/sites/iquitos.yaml]
+    code: [configs/sites/iquitos.yaml]
   P-017-3:
     code: [configs/dataset/building_types.yaml]
   P-017-4:
     code: [configs/dataset/der_economics.yaml]
   P-017-5:
-    no_code:
-      kind: pending
-      reason: "implemented in uc3m/application/dataset/site.py (ORIGIN_ALIASES, STATUS_ORIGINS) but untagged"
-      implemented_in: [uc3m/application/dataset/site.py]
+    code: [uc3m/application/dataset/site.py]
   P-017-6:
-    no_code:
-      kind: pending
-      reason: "implemented in tools/dataset/fix_solar_pvlib.py (altitude = site elevation_m) and configs/sites/iquitos.yaml but untagged"
-      implemented_in: [tools/dataset/fix_solar_pvlib.py, configs/sites/iquitos.yaml]
+    code: [tools/dataset/fix_solar_pvlib.py, configs/sites/iquitos.yaml]

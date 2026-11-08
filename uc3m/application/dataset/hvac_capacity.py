@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-V6-4: occupants = area x ASHRAE 62.1 default density
 """Air-conditioning capacity of iquitos_v6 from the inventory and EM.030 (SPEC-016 D-V6-16, FR-016.3).
 
 Peruvian norms give no AC capacity: EM.050 has no figures. Capacity = splits x 18 000 BTU/h plus,

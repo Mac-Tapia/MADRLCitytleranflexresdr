@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   P-V6-4: BESS model PowerPlus LiFe2433P in parallel units
 """BESS of iquitos_v6: store the solar surplus and charge the vehicles (SPEC-016 D-V6-7, FR-016.6).
 
 On the design-year day with the largest PV surplus:

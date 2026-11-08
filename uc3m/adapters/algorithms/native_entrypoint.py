@@ -1,3 +1,7 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-M3-2: MASAC VRAM requirement per rnn_hidden_dim candidate
+#   FR-015.1: memory requirements bound to the active dataset
+#   FR-015.2: requirement per HPO candidate, unknown candidate refused
 """Child-process entrypoint of one fresh native training attempt (T5).
 
     python -m uc3m.adapters.algorithms.native_entrypoint --algorithm MATD3 \

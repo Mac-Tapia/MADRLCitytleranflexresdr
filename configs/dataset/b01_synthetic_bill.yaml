@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-V6-46: B01 tariff MT3
 # SPEC-016 D-V6-36: synthetic bill of B01 (Electro Oriente S.A.), which has no distributor bill.
 # Every value declares its origin (SPEC-017 FR-017.5).
 schema_version: 1

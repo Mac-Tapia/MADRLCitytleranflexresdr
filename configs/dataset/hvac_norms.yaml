@@ -1,3 +1,7 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-V6-4: occupants = area x ASHRAE 62.1 default density
+#   P-V6-7: EM.030 row assignment of the military school and health buildings
+#   P-V6-10: calculation values (air density, ceiling height, occupant gain, ...)
 # SPEC-016 FR-016.3, D-V6-16 and D-V6-17: air-conditioning capacity of iquitos_v6.
 # Every value declares its origin: measured, cited (with source), design_rule or assumption.
 # Audit of the sources: docs/audits/normas_climatizacion_20261107/README.md

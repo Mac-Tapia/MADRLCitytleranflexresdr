@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   P-017-5: equivalences of the old origin vocabulary
 """Site configuration (SPEC-017 FR-017.1 and FR-017.5): every site value comes from a file, not the code.
 
 The default site is configs/sites/iquitos.yaml; ``UC3M_SITE_CONFIG`` selects another one. A value without

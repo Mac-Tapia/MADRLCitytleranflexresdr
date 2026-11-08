@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   FR-015.4: NativeBackend conformance and child-process cancellation
 """Training children that never outlive their launcher (SPEC-003 FR-003.5).
 
 A training attempt is a child process (``native_entrypoint``) that may start its own children

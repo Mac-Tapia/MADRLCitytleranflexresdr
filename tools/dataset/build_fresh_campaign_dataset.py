@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-V6-9: PV with pvlib SAPM, roof area x 0.63 and PV/load <= 1.0
 """Build the dataset of a fresh campaign from primary sources only (T2).
 
 Writes everything under data/campaigns/<storage_alias>/:

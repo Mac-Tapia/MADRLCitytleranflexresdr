@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   FR-016.2: base load above 0 in every hour
 """Hourly cooling from physics with the bill as ceiling (SPEC-016 D-V6-14 and D-V6-18, FR-016.1/2).
 
 The monthly bills of Iquitos cannot calibrate the cooling share, because the monthly mean temperature

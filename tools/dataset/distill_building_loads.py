@@ -1,3 +1,8 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   FR-016.2: base load above 0 in every hour
+#   P-V6-1: DHW inside the base load, at most half of it
+#   P-V6-2: base load shape from building_types.yaml with a 0.05 floor
+#   P-V6-3: COP with the schema's refrigerant target
 """
 Component-based load distillation for citylearn_iquitos_2023_2025.
 

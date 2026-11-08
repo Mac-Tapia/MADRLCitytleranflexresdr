@@ -1,3 +1,5 @@
+# Decisions implemented here (governance/decision_traceability.yaml):
+#   D-V6-11: no training until every module is closed (authorized_stages empty)
 schema_version: 1
 # Fresh campaign: new dataset, no prior-run inputs, every attempt from zero.
 campaign_id: fresh_iquitos_20261108_v6_trial10

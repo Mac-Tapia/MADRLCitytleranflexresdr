@@ -1,3 +1,5 @@
+> **Resultados históricos retirados (propietario, 2026-11-01).** Las cifras inferenciales de este documento (p-valores, ganadores, rankings) vienen de corridas anteriores que ya no cuentan. La única fuente válida de cifras estadísticas será `tools/eval/build_campaign_statistical_report.py` sobre la campaña nueva (SPEC-009, módulo 4); hasta entonces no se citan.
+
 # Capítulo 1. Introducción
 
 > **Documento de tesis — borrador integral alineado para Perplexity.** Construido a partir de la documentación y el **código real** del proyecto `MADRLCitytleranflexresdr`: Plan de Tesis UNI, `docs/workflow_manifest.json`, `CityLearn/configs/citylearn_v3_madrl_training.yaml`, scripts de entrenamiento `train_citylearn_v3_{happo,masac,matd3,maac}.py`, `reward_function.py` (`CityLearnV3MADRLRewardFunction`), `scenario_manager.py`, y artefactos de `outputs/citylearn_v3_madrl_full_20260615_074011_v4/`. Los datos inexistentes en el proyecto se marcan con `[Pendiente: ...]`. No inventar cifras.

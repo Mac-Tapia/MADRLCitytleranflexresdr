@@ -1,3 +1,5 @@
+> **Resultados históricos retirados (propietario, 2026-11-01).** Las cifras inferenciales de este documento (p-valores, ganadores, rankings) vienen de corridas anteriores que ya no cuentan. La única fuente válida de cifras estadísticas será `tools/eval/build_campaign_statistical_report.py` sobre la campaña nueva (SPEC-009, módulo 4); hasta entonces no se citan.
+
 # Nueva campaña MADRL desde cero: diseño y contrato científico
 
 Fecha: 2026-11-01, America/Lima. Estado: diseño para implementación; no implementado ni entrenado.

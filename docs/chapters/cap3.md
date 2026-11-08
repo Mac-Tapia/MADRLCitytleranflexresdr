@@ -1,3 +1,5 @@
+> **Resultados históricos retirados (propietario, 2026-11-01).** Las cifras inferenciales de este documento (p-valores, ganadores, rankings) vienen de corridas anteriores que ya no cuentan. La única fuente válida de cifras estadísticas será `tools/eval/build_campaign_statistical_report.py` sobre la campaña nueva (SPEC-009, módulo 4); hasta entonces no se citan.
+
 # Capítulo 3. Metodología
 
 Este capítulo describe el enfoque metodológico que sustenta la respuesta al objetivo general y a los objetivos específicos OE.1 (flexibilidad energética), OE.2 (emisiones de CO2) y OE.3 (costos energéticos), en coherencia con el Resumen de la tesis. El estudio compara cuatro algoritmos MADRL (HAPPO, MASAC, MATD3 y MAAC) en CityLearn para el caso del SEAI Iquitos, usando un diseño cuasiexperimental de simulación computacional.

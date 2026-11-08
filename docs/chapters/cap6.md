@@ -1,3 +1,5 @@
+> **Resultados históricos retirados (propietario, 2026-11-01).** Las cifras inferenciales de este documento (p-valores, ganadores, rankings) vienen de corridas anteriores que ya no cuentan. La única fuente válida de cifras estadísticas será `tools/eval/build_campaign_statistical_report.py` sobre la campaña nueva (SPEC-009, módulo 4); hasta entonces no se citan.
+
 # Capítulo 6. Conclusiones
 
 > **Documento de tesis — conclusiones.** Alineado a la corrida canónica Colab/Drive (`madrl_v3_20260627_164047`) y a la Capa A de Cap. 5 (`problemas_objetivos_hipotesis/`). α = 0,05. Semilla de campaña = 0. HAPPO excluido de la contrastación HE. **No** se inventan hallazgos; **no** se cita Kruskal–Wallis ALL como veredicto de H0G/H1G; TOPSIS y evaluate_v2 4/4 son descriptivos y no sustituyen hipótesis.

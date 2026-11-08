@@ -13,6 +13,7 @@ import json
 import os
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 from uc3m.application.training import fresh_campaign as fc
@@ -65,6 +66,10 @@ def main(argv=None):
     parser.add_argument('--config', type=Path, required=True)
     parser.add_argument('--stage', choices=STAGES, required=True)
     parser.add_argument('--execute', action='store_true')
+    parser.add_argument('--owner-authorized', metavar='DECISION', default=None,
+                        help='reference to the written decision of the owner that authorizes this stage (date and '
+                             'where it is written); recorded in the artifacts. The YAML is a hashed input of the '
+                             'campaign, so editing authorized_stages would change its identity')
     args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[3]
     config = fc.load_campaign_config(args.config, root)
@@ -95,7 +100,10 @@ def main(argv=None):
                           'buffer_plan': {name: {'buffers': entry['buffers'], 'adjustments': entry['adjustments']}
                                           for name, entry in plan.items()}}))
         return 0
-    authorized = args.stage in config['resource_authorization'].get('authorized_stages', [])
+    decision = (args.owner_authorized or '').strip()
+    authorized = bool(decision) or args.stage in config['resource_authorization'].get('authorized_stages', [])
+    if decision:
+        _record_owner_authorization(artifacts, args.stage, decision)
     # Buffers are frozen only for a launch the campaign authorizes on these resources.
     budget = _stage_budget(manifest, artifacts, config, measured, args.stage, freeze=authorized)
     learner = native_learner(root, config['campaign_id'], root/config['dataset_root'])
@@ -122,12 +130,27 @@ def main(argv=None):
 
 
 def _measured_resources():
-    """Measured RAM/VRAM (native entrypoint) plus the CPUs this process may use."""
-    from uc3m.adapters.algorithms.native_entrypoint import measure_runtime_resources
-    measured = dict(measure_runtime_resources())
+    """Measured RAM/VRAM (native entrypoint) plus the CPUs this process may use.
+
+    Measured in a child that ends: a CUDA context held here for the whole stage would take VRAM from the trainers,
+    and MASAC fits an 80 GB GPU with about 0.5 GiB to spare.
+    """
+    measured = _probe_resources()
     affinity = getattr(os, 'sched_getaffinity', None)
     measured['cpu_count'] = len(affinity(0)) if affinity else (os.cpu_count() or 1)
     return measured
+
+
+def _probe_resources():
+    code = ('import json; from uc3m.adapters.algorithms.native_entrypoint import measure_runtime_resources as m; '
+            'print(json.dumps(m()))')
+    root = Path(__file__).resolve().parents[3]
+    done = subprocess.run([sys.executable, '-c', code], cwd=root, capture_output=True, text=True,
+                          env=dict(os.environ, PYTHONPATH=os.pathsep.join([str(root), os.environ.get('PYTHONPATH', '')])))
+    lines = done.stdout.strip().splitlines()
+    if done.returncode != 0 or not lines:
+        return {'ram_gib': None, 'vram_gib': None, 'torch_import_error': done.stderr[-500:] or 'resource_probe_failed'}
+    return json.loads(lines[-1])
 
 
 EXECUTION_ENV = {'torch_threads': 'UC3M_TORCH_THREADS', 'cuda_memory_fraction': 'UC3M_CUDA_MEMORY_FRACTION',
@@ -150,6 +173,15 @@ def _buffer_rules(config):
                            'ram_gib_per_unit': float(rule['ram_gib_per_unit']),
                            'base_ram_gib': float(rule['base_ram_gib']), 'min_value': int(rule['min_value'])}
     return rules
+
+
+def _record_owner_authorization(artifacts: Path, stage: str, decision: str) -> None:
+    """One line per authorized launch of a stage, outside the campaign identity (never a hashed input)."""
+    path = artifacts/'stages'/'owner_authorizations.jsonl'
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, 'a', encoding='utf-8') as stream:
+        stream.write(json.dumps({'stage': stage, 'authorized_at': datetime.now(timezone.utc).isoformat(),
+                                 'decision': decision, 'via': '--owner-authorized'}) + '\n')
 
 
 def _stage_budget(manifest, artifacts: Path, config, measured, stage, *, buffer_rules=None, freeze=True):

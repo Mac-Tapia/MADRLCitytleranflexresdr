@@ -12,9 +12,10 @@ import json
 import stat
 import subprocess
 import threading
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath, PureWindowsPath
-from typing import Callable, Dict, List, Optional, Sequence
+from typing import Callable, Dict, List, Optional, Sequence, Tuple
 import zipfile
 
 MANIFEST_NAME = 'colab_bundle_manifest.json'
@@ -133,6 +134,8 @@ class CliResult:
     returncode: int
     report: Optional[dict]
     tail: str
+    sync_problems: List[str] = field(default_factory=list)
+    final_sync_failed: bool = False
 
 
 class CliRefused(RuntimeError):
@@ -186,30 +189,90 @@ def run_cli(argv: Sequence[str], *, cwd: Path, on_line=print, allowed=(0,)) -> C
     return result
 
 
-def run_stage_with_sync(stage_argv: Sequence[str], sync_argv: Sequence[str], *, cwd: Path,
-                        interval_seconds: int = 60, on_line=print, allowed=(0,)) -> CliResult:
-    """Run a stage while finished attempts are synced; always stops the child and syncs a last time."""
-    stop = threading.Event()
+def gpu_memory_mib() -> Optional[Tuple[int, int]]:
+    """(used, total) MiB of the busiest GPU from nvidia-smi; None when it cannot be read."""
+    try:
+        output = subprocess.run(['nvidia-smi', '--query-gpu=memory.used,memory.total', '--format=csv,noheader,nounits'],
+                                capture_output=True, text=True, timeout=30)
+        rows = [tuple(int(value) for value in line.split(',')) for line in output.stdout.splitlines() if line.strip()]
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return None
+    return max(rows) if output.returncode == 0 and rows else None
 
-    def sync():
-        subprocess.run(list(sync_argv), cwd=cwd, capture_output=True, text=True)
+
+def _watch_gpu_peak(stop: threading.Event, path: Path, query, interval_seconds: float) -> None:
+    """Keep the highest GPU memory seen, atomically: Drive sync may copy the file at any moment."""
+    # A relaunch of the stage keeps the peak of the earlier sessions.
+    peak = json.loads(path.read_text(encoding='utf-8'))['peak_used_mib'] if path.is_file() else -1
+    while True:
+        sample = query()
+        if sample and sample[0] > peak:
+            peak = sample[0]
+            # Outside stages/: Drive sync walks that folder and must not meet a file about to be renamed.
+            path.parent.mkdir(parents=True, exist_ok=True)
+            temporary = path.parent.parent/(path.name + '.tmp')
+            temporary.write_text(json.dumps({'peak_used_mib': sample[0], 'total_mib': sample[1],
+                                             'sampled_at': datetime.now(timezone.utc).isoformat(),
+                                             'interval_seconds': interval_seconds}), encoding='utf-8')
+            temporary.replace(path)
+        if stop.wait(interval_seconds):
+            return
+
+
+def run_stage_with_sync(stage_argv: Sequence[str], sync_argv: Sequence[str], *, cwd: Path,
+                        interval_seconds: int = 60, on_line=print, allowed=(0,), gpu_peak_path: Optional[Path] = None,
+                        gpu_query=gpu_memory_mib, gpu_interval_seconds: float = 30,
+                        sync_timeout_seconds: float = 3600) -> CliResult:
+    """Run a stage while finished attempts are synced; always stops the child and syncs a last time.
+
+    A failed copy never stops training, but it is shown and returned in sync_problems: a silent one could lose the
+    attempts of a session. A copy that hangs on Drive is stopped after sync_timeout_seconds, so the next one can run
+    and the cell always ends. gpu_peak_path keeps the GPU memory peak of the stage (SPEC-015: requirements are estimates).
+    """
+    stop = threading.Event()
+    sync_problems: List[str] = []
+
+    def sync() -> bool:
+        child = subprocess.Popen(list(sync_argv), cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        try:
+            output, _ = child.communicate(timeout=sync_timeout_seconds)
+            problem = None if child.returncode == 0 else f'copia a Drive con código {child.returncode}: {output[-500:].strip()}'
+        except subprocess.TimeoutExpired:
+            child.kill()
+            try:
+                child.communicate(timeout=30)
+            except subprocess.TimeoutExpired:
+                pass
+            problem = f'copia a Drive sin terminar en {sync_timeout_seconds} s: se detuvo'
+        if problem:
+            sync_problems.append(problem)
+            on_line('[sync] ' + problem)
+        return problem is None
 
     def keep_syncing():
         while not stop.wait(interval_seconds):
             sync()
     syncer = threading.Thread(target=keep_syncing, daemon=True)
     syncer.start()
+    watcher = None
+    if gpu_peak_path is not None:
+        watcher = threading.Thread(target=_watch_gpu_peak, args=(stop, Path(gpu_peak_path), gpu_query,
+                                                                 gpu_interval_seconds), daemon=True)
+        watcher.start()
     child = subprocess.Popen(list(stage_argv), cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                              text=True, bufsize=1)
     lines: List[str] = []
+    final_ok = False
     try:
         returncode = _stream(child, on_line, lines)
     finally:
         _stop(child)
         stop.set()
         syncer.join()
-        sync()
-    result = CliResult(returncode, _last_json(lines), ''.join(lines)[-4000:])
+        if watcher is not None:
+            watcher.join()
+        final_ok = sync()
+    result = CliResult(returncode, _last_json(lines), ''.join(lines)[-4000:], sync_problems, not final_ok)
     if returncode not in allowed:
         raise CliRefused(returncode, result.report, result.tail)
     return result

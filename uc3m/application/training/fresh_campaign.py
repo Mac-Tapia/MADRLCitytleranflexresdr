@@ -233,6 +233,16 @@ def algorithm_candidates(algorithm, candidates, algorithm_config):
             if all(hyper[name] in values for name, values in override.items())}
 
 
+def single_candidate_arguments(algorithm, algorithm_config) -> List[str]:
+    """SPEC-015 D-M3-8: the pilot has no grid values, but an algorithm that searches a single network width runs with
+    it (MASAC's guard refuses an attempt without its candidate, and the pilot must measure the width it will train)."""
+    row = algorithm_config['algorithms'][algorithm]
+    values = (row.get('hyperparameter_grid_override') or {}).get('hidden_dimension') or ()
+    if len(values) != 1:
+        return []
+    return [token for flag in row['mapping']['hidden_dimension'] for token in (flag, str(values[0]))]
+
+
 def _distinct_candidates(algorithm, candidates, algorithm_config, episode_time_steps):
     """Merge grid candidates whose effective native configuration is identical."""
     kept: Dict[str, Tuple[Mapping[str, float], Mapping[str, float], dict]] = {}
@@ -297,8 +307,11 @@ def build_dag(config: Mapping[str, object], project_root: Path) -> CampaignDag:
                         if algorithm in NUM_ENV_STEPS_BACKENDS:
                             identity += ['--num-env-steps', str(stage['episodes']*steps)]
                         native = identity + resolve_native_arguments(algorithm, effective, algorithm_config)
+                        single = single_candidate_arguments(algorithm, algorithm_config) if stage_name == 'pilot' else []
+                        native += single
                         source = ('grid' if hyper is not None else
-                                  'configuration_freeze' if 'configuration_freeze' in requires else 'native_default')
+                                  'configuration_freeze' if 'configuration_freeze' in requires else
+                                  'single_searched_candidate' if single else 'native_default')
                         dag.treatments.append(Treatment(
                             stage_name, algorithm, scenario, int(seed), label, weights, int(stage['episodes']),
                             steps, hyper, tuple(native), schema,
@@ -410,7 +423,8 @@ def prepare_campaign(config_path: Path, project_root: Path, *, artifact_root: Op
     config = load_campaign_config(config_path, root)
     dag = build_dag(config, root)
     artifact_root = Path(artifact_root or root/'outputs/campaigns'/config['storage_alias'])
-    if artifact_root.exists():
+    # Restoring from an empty Drive folder leaves an empty root: nothing was prepared there yet.
+    if artifact_root.exists() and any(artifact_root.iterdir()):
         raise FileExistsError(f'{artifact_root} already exists; a prepared campaign is never overwritten')
     (artifact_root/'stages').mkdir(parents=True)
     stages = {}

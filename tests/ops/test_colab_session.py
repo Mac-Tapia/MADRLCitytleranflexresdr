@@ -104,6 +104,70 @@ def test_c6_interrupt_terminates_child_and_syncs(tmp_path):
     assert marker.read_text() == 'x'                     # one final sync even when interrupted
 
 
+def test_a_failed_copy_is_shown_and_returned_without_stopping_the_stage(tmp_path):
+    stage = [sys.executable, '-c', "print('{\"status\": \"complete\"}')"]
+    failing = [sys.executable, '-c', "import sys; print('{\"conflicts\": [\"a\"]}'); sys.exit(2)"]
+    seen = []
+    result = cs.run_stage_with_sync(stage, failing, cwd=tmp_path, interval_seconds=3600, on_line=seen.append)
+    assert result.returncode == 0 and result.report == {'status': 'complete'}
+    assert len(result.sync_problems) == 1 and 'código 2' in result.sync_problems[0] and 'conflicts' in result.sync_problems[0]
+    assert any(line.startswith('[sync] ') for line in seen)
+
+
+def test_a_hung_copy_is_stopped_and_reported_and_the_cell_ends(tmp_path):
+    hung = [sys.executable, '-c', 'import time; time.sleep(120)']
+    stage = [sys.executable, '-c', "print('{}')"]
+    result = cs.run_stage_with_sync(stage, hung, cwd=tmp_path, interval_seconds=3600, on_line=lambda line: None,
+                                    sync_timeout_seconds=1)
+    assert result.final_sync_failed is True and 'sin terminar' in result.sync_problems[-1]
+
+
+def test_an_earlier_failure_that_recovered_is_not_a_failed_final_copy(tmp_path):
+    counter = tmp_path/'count'
+    recovers = [sys.executable, '-c', f"import sys,pathlib; p=pathlib.Path(r'{counter}'); n=p.exists(); p.write_text('x'); "
+                                      "sys.exit(0 if n else 2)"]
+    stage = [sys.executable, '-c', 'import time; time.sleep(4)']
+    result = cs.run_stage_with_sync(stage, recovers, cwd=tmp_path, interval_seconds=1, on_line=lambda line: None)
+    assert len(result.sync_problems) == 1 and result.final_sync_failed is False
+
+
+def test_a_good_copy_reports_no_problem(tmp_path):
+    stage = [sys.executable, '-c', "print('{}')"]
+    result = cs.run_stage_with_sync(stage, [sys.executable, '-c', ''], cwd=tmp_path, interval_seconds=3600,
+                                    on_line=lambda line: None)
+    assert result.sync_problems == [] and result.final_sync_failed is False
+
+
+def test_the_stage_keeps_its_gpu_memory_peak(tmp_path):
+    samples = iter([(100, 81920), (900, 81920), (300, 81920)])
+    stage = [sys.executable, '-c', 'import time; time.sleep(1.0)']
+    path = tmp_path/'stages'/'pilot_gpu_memory.json'
+    cs.run_stage_with_sync(stage, [sys.executable, '-c', ''], cwd=tmp_path, interval_seconds=3600,
+                           on_line=lambda line: None, gpu_peak_path=path,
+                           gpu_query=lambda: next(samples, None), gpu_interval_seconds=0.05)
+    row = json.loads(path.read_text(encoding='utf-8'))
+    assert row['peak_used_mib'] == 900 and row['total_mib'] == 81920
+    assert [item.name for item in path.parent.iterdir()] == [path.name]
+
+
+def test_a_relaunch_keeps_the_gpu_memory_peak_of_earlier_sessions(tmp_path):
+    path = tmp_path/'stages'/'pilot_gpu_memory.json'
+    path.parent.mkdir()
+    path.write_text(json.dumps({'peak_used_mib': 5000, 'total_mib': 81920}), encoding='utf-8')
+    stage = [sys.executable, '-c', '']
+    cs.run_stage_with_sync(stage, [sys.executable, '-c', ''], cwd=tmp_path, interval_seconds=3600,
+                           on_line=lambda line: None, gpu_peak_path=path, gpu_query=lambda: (100, 81920),
+                           gpu_interval_seconds=0.05)
+    assert json.loads(path.read_text(encoding='utf-8'))['peak_used_mib'] == 5000
+
+
+def test_gpu_memory_is_absent_without_nvidia_smi(monkeypatch):
+    def missing(*args, **kwargs):
+        raise FileNotFoundError('nvidia-smi')
+    monkeypatch.setattr(cs.subprocess, 'run', missing)
+    assert cs.gpu_memory_mib() is None
+
+
 def test_drive_root_includes_campaign_id():
     assert cs.drive_root(Path('/d'), 'iquitos_v2', 'fresh_x_v1') == Path('/d/iquitos_v2/fresh_x_v1/outputs')
 

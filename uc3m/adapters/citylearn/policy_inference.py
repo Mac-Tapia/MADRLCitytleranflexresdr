@@ -279,13 +279,16 @@ class _RewardTermLedger:
         reward = self.core.reward_function
         rows = decompose_citylearn_v3_breakdown(reward._last_component_breakdown, profile=reward.profile)
         returned = self.core.rewards[-1]
+        if len(rows) != len(returned):
+            raise RuntimeError(f'reward terms of {len(rows)} agents for {len(returned)} rewards at step {self.steps + 1}')
         for row, value in zip(rows, returned):
-            self.max_error = max(self.max_error, abs(row.total - float(value)))
+            error = abs(row.total - float(value))
+            if not error <= self.TOLERANCE:             # also refuses NaN
+                raise RuntimeError(f'reward terms do not reconcile: error {error} at step {self.steps + 1}')
+            self.max_error = max(self.max_error, error)
             for name, part in {**row.axis_contributions, **row.service_terms}.items():
                 self.totals[name] = self.totals.get(name, 0.0) + float(part)
         self.steps += 1
-        if self.max_error > self.TOLERANCE:
-            raise RuntimeError(f'reward terms do not reconcile: error {self.max_error} at step {self.steps}')
 
     def summary(self) -> Dict[str, Any]:
         return {'steps': self.steps, 'totals': dict(self.totals), 'max_reconciliation_error': self.max_error,

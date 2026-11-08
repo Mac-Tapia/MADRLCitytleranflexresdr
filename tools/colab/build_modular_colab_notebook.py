@@ -144,15 +144,14 @@ original sin sobrescribir sus celdas. Cada celda de código empieza con `# [Cn]`
 Cada backend entrena con su capacidad nativa, sin recortes silenciosos. Antes de entrenar,
 la entrada nativa mide RAM y VRAM y rechaza (`insufficient_resources:<algoritmo>:<ram|vram>`)
 si no alcanzan los requisitos de `configs/algorithms/native.yaml` (episodios de 8760 pasos):
-HAPPO 8 GiB RAM / 4 GiB VRAM; MATD3 40 GiB RAM (réplica de 5 episodios por política) /
-4 GiB VRAM; MAAC 8 GiB RAM / 4 GiB VRAM; MASAC 72 GiB RAM (réplica de 50 episodios) /
-82 GiB VRAM.
+__REQUIREMENTS__.
 
-**MASAC con los valores del autor (lote del crítico de 32 episodios) necesita unas 82 GiB
-de VRAM y solo cabe en una GPU de 96 GB.** En A100/H100 de 80 GB (74,5 GiB) el rechazo
-`insufficient_resources:MASAC:vram` es el resultado esperado, no un fallo, y la
-confirmación de los 4 algoritmos queda incompleta en esa GPU. Con `rnn_hidden_dim` 256
-(≈103 GiB estimados) se rechaza en todas. Son estimaciones: el piloto mide la VRAM real.
+**MASAC con los valores del autor (lote del crítico de 32 episodios) es el que fija la GPU:**
+necesita __MASAC_VRAM__ GiB de VRAM con `rnn_hidden_dim` __MASAC_RNN__, su único candidato (D-M3-8). Una A100/H100
+de 80 GB expone unas 74,5 GiB, así que cabe con poco margen. Un rechazo
+`insufficient_resources:MASAC:vram` deja incompleta la campaña: es un fallo que se revisa, no un
+resultado aceptable. Los requisitos son estimaciones. C6 guarda el pico de VRAM de cada etapa, y el piloto
+no llega al lote de 32 episodios, de modo que su pico no es el máximo de la campaña.
 Usar Colab Pro con RAM alta; la disponibilidad de GPU y la duración de la sesión dependen
 de Colab.
 
@@ -249,7 +248,8 @@ if restored['conflicts'] or restored['rejected']:
 C5_MD = '''## Preparar la campaña: no entrena
 
 `prepare` construye el DAG (piloto, HPO, confirmación y sensibilidad) con su presupuesto
-de pasos; no entrena ni consulta la GPU. Un rechazo muestra el JSON con su razón.
+de pasos y mide RAM y VRAM para mostrar el plan de esa máquina; no entrena. Un rechazo muestra
+el JSON con su razón.
 '''
 
 C5 = '''# [C5] Preparar campaña (no entrena)
@@ -268,23 +268,32 @@ se copia a Drive en cuanto escribe su `completion.json`, con hash verificado y s
 el intento en curso; al terminar o si la etapa se interrumpe se hace una última copia.
 Un intento interrumpido no tiene `completion.json`: no se copia y, al relanzar tras C4,
 su tratamiento se repite desde cero en un intento nuevo; los tratamientos con intento
-verificado se reutilizan. Una etapa solo corre si `configs/experiments/iquitos.yaml` la
-autoriza en `resource_authorization`; la etapa es `STAGE` de C5 y solo se lanza con `EXECUTE_STAGE = True`.
-Códigos de la CLI: 0 completa, 1 incompleta, 2 no autorizada o insumos cambiados.
+verificado se reutilizan. Cada etapa necesita la decisión escrita del propietario: es `STAGE`
+de C5 y solo se lanza con `EXECUTE_STAGE = True` y la referencia a esa decisión en `OWNER_DECISION`, que
+queda en `stages/owner_authorizations.jsonl`. Tras lanzar, vuelve a poner `EXECUTE_STAGE = False`. No se edita `configs/experiments/iquitos.yaml`: es
+una entrada de la identidad de la campaña. Si una copia a Drive falla, el entrenamiento sigue y la
+celda lo avisa. Códigos de la CLI: 0 completa, 1 incompleta, 2 no autorizada o insumos cambiados.
 '''
 
 C6 = '''# [C6] Ejecutar etapa autorizada con sincronización
 EXECUTE_STAGE = False  # True para lanzar la etapa STAGE elegida y revisada en C5
+OWNER_DECISION = ''    # dónde y cuándo autorizó el propietario esta etapa, por ejemplo 'traspaso_sesiones.md 2026-12-01 pilot'
 RUN_STAGE = None       # se deriva de STAGE; no escribir aquí otra etapa
 if EXECUTE_STAGE:
     RUN_STAGE = STAGE
 if RUN_STAGE and RUN_STAGE != STAGE:
     raise RuntimeError(f'RUN_STAGE={RUN_STAGE!r} distinto de la etapa revisada en C5 (STAGE={STAGE!r})')
+if RUN_STAGE and not OWNER_DECISION.strip():
+    raise RuntimeError('Escribe en OWNER_DECISION la decisión del propietario que autoriza esta etapa')
 if RUN_STAGE:
-    stage = cs.run_stage_with_sync(CLI + ['--stage', RUN_STAGE, '--execute'], SYNC + ['--sync'],
-                                   cwd=PROJECT_ROOT, interval_seconds=60, allowed=(0, 1, 2))
+    gpu_peak = ARTIFACTS/'stages'/f'{RUN_STAGE}_gpu_memory.json'
+    stage = cs.run_stage_with_sync(CLI + ['--stage', RUN_STAGE, '--execute', '--owner-authorized', OWNER_DECISION], SYNC + ['--sync'],
+                                   cwd=PROJECT_ROOT, interval_seconds=60, allowed=(0, 1, 2), gpu_peak_path=gpu_peak)
     report = stage.report or {}
     print('returncode', stage.returncode, '| estado', report.get('status'))
+    print('Pico de VRAM:', gpu_peak.read_text() if gpu_peak.is_file() else 'sin lectura de nvidia-smi')
+    if stage.sync_problems:
+        print('ATENCIÓN: hubo', len(stage.sync_problems), 'copias a Drive fallidas; la última:', stage.sync_problems[-1])
     result_path = ARTIFACTS/'stages'/f'{RUN_STAGE}_result.json'
     stage_result = json.loads(result_path.read_text()) if result_path.is_file() else None
     for line in cs.stage_result_lines(report, stage_result):          # tal como lo informa run_stage
@@ -293,14 +302,16 @@ if RUN_STAGE:
         stopped = cs.stopped_phase_label(report)                       # report['stopped_at_phase'] por algoritmos
         reasons = [r for phase in report.get('phase_plan') or [] for r in phase.get('reasons') or []]
         raise RuntimeError(f'Etapa detenida en la fase {stopped} por recursos insuficientes '
-                           f'(0 trabajadores): {reasons}. En A100/H100 de 80 GB MASAC es el rechazo esperado.')
+                           f'(0 trabajadores): {reasons}. La etapa queda incompleta: revisar GPU y RAM de esta sesión.')
     if stage.returncode == 2:
         raise RuntimeError(f"Etapa NO ejecutada (código 2): {report.get('status')} {report.get('reason', '')}")
     if stage.returncode == 1:
         raise RuntimeError('Etapa incompleta (código 1): hay tratamientos sin intento verificado; NO es un éxito')
+    if stage.final_sync_failed:
+        raise RuntimeError('La etapa terminó, pero la última copia a Drive falló: vuelve a copiar antes de cerrar la sesión')
     print('Etapa completa:', report['status'])
 else:
-    print(f'Sin entrenamiento: revisa el plan de {STAGE} en C5 y pon EXECUTE_STAGE = True con recursos autorizados.')
+    print(f'Sin entrenamiento: revisa el plan de {STAGE} en C5 y pon EXECUTE_STAGE = True si el propietario autorizó esta etapa.')
 '''
 
 C7_MD = '''## Después del entrenamiento
@@ -318,12 +329,20 @@ for row in status.get('treatments', status if isinstance(status, list) else []):
           row.get('reasons'))
 '''
 
+C8_MD = '''## Congelar la configuración de HPO
+
+Va después de C9 porque el congelado exige los intentos de `hpo` evaluados en `validation_2024`.
+Orden de la campaña: `hpo` en C6, C9 con `EVAL_STAGE = 'hpo'`, C8, y luego `confirm` y
+`sensitivity` en C6, con C9 sobre cada una.
+'''
+
 C8 = '''# [C8] Congelar configuración HPO (validación)
 RUN_FREEZE = False
 if RUN_FREEZE:
     frozen = cs.run_cli([str(PYTHON), '-m', 'uc3m.application.pipeline', 'freeze', '--manifest', str(MANIFEST), '--config', CONFIG,
                                     '--project-root', str(PROJECT_ROOT)], cwd=PROJECT_ROOT).report
     print(json.dumps(frozen, indent=1)[:4000])
+    cs.run_cli(SYNC + ['--sync'], cwd=PROJECT_ROOT, on_line=lambda line: None)
 '''
 
 C9_MD = '''## Evaluación congelada
@@ -331,33 +350,59 @@ C9_MD = '''## Evaluación congelada
 Evalúa con la política congelada cada intento aceptado de la etapa, por defecto en
 `validation_2024`. `test_2025` solo se evalúa con un `test_unlock.json` válido. Los
 procesos en paralelo son `max(1, cpu_count - 1)`, acotados por la RAM disponible y la
-RAM medida de una evaluación (un año de CityLearn con una política, en CPU).
+RAM medida de una evaluación (un año de CityLearn con una política, en CPU). Cada evaluación aparece
+completa o no aparece, y se copia a Drive mientras la celda corre, de modo que un corte conserva lo terminado.
 '''
 
 C9 = '''# [C9] Evaluación congelada
 import os, psutil
 RUN_EVALUATION = False
-EVAL_STAGE, EVAL_SPLIT = 'confirm', 'validation_2024'
+EVAL_STAGE, EVAL_SPLIT = 'hpo', 'validation_2024'   # 'hpo' antes de C8; luego 'confirm' y 'sensitivity'
 EVAL_RAM_GIB = __EVAL_RAM_GIB__   # medido: __EVAL_RAM_MEASUREMENT__
 available = psutil.virtual_memory().available/2**30
 workers = max(1, min((os.cpu_count() or 2) - 1, int(available // EVAL_RAM_GIB)))
 if RUN_EVALUATION:
-    evaluated = cs.run_cli([str(PYTHON), '-m', 'uc3m.application.pipeline', 'evaluate', '--manifest', str(MANIFEST), '--stage', EVAL_STAGE,
-                                       '--split', EVAL_SPLIT, '--workers', str(workers),
-                                       '--project-root', str(PROJECT_ROOT)], cwd=PROJECT_ROOT).report
+    run = cs.run_stage_with_sync([str(PYTHON), '-m', 'uc3m.application.pipeline', 'evaluate', '--manifest', str(MANIFEST), '--stage', EVAL_STAGE,
+                                  '--split', EVAL_SPLIT, '--workers', str(workers),
+                                  '--project-root', str(PROJECT_ROOT)], SYNC + ['--sync'], cwd=PROJECT_ROOT,
+                                 interval_seconds=300, allowed=(0, 2))
+    evaluated = run.report or {}
     print('Evaluados:', len(evaluated.get('evaluated', [])), '| existentes:', len(evaluated.get('existing', [])),
-          '| fallidos:', evaluated.get('failed'))
-    cs.run_cli(SYNC + ['--sync'], cwd=PROJECT_ROOT, on_line=lambda line: None)
+          '| fallidos:', evaluated.get('failed'), '| código', run.returncode)
+    if run.final_sync_failed:
+        raise RuntimeError('La última copia a Drive falló: vuelve a copiar antes de cerrar la sesión')
+    if run.returncode != 0:
+        raise RuntimeError(f'Evaluación incompleta o rechazada: relanza esta celda; lo evaluado se conserva. {evaluated}')
 else:
     print('Sin evaluación; workers previstos:', workers)
 '''
 
+C10_MD = '''## Análisis, selección y prueba
+
+Orden en `confirm`: C9 con `validation_2024`, C10 con esa misma partición y selección, y solo después C9 y C10
+con `test_2025`. La selección nunca se hace mirando la prueba. Un análisis incompleto se rechaza sin publicarse:
+se corrige lo que falta y se relanza. En `sensitivity` se analiza cada variante con `ANALYSIS_CANDIDATE`
+(`p055`, `p065`), sobre `validation_2024`.
+'''
+
 C10 = '''# [C10] Tabla por semilla y análisis
 RUN_ANALYSIS = False
+RUN_SELECTION = False
+ANALYSIS_CANDIDATE = None   # solo en sensitivity: 'p055' o 'p065'
 if RUN_ANALYSIS:
+    candidate = ['--candidate', ANALYSIS_CANDIDATE] if ANALYSIS_CANDIDATE else []
     analysis = cs.run_cli([str(PYTHON), '-m', 'uc3m.application.pipeline', 'analyze', '--manifest', str(MANIFEST), '--stage', EVAL_STAGE,
-                                      '--split', EVAL_SPLIT], cwd=PROJECT_ROOT).report
+                                      '--split', EVAL_SPLIT] + candidate, cwd=PROJECT_ROOT).report
     print(json.dumps(analysis, indent=1)[:4000])
+    if not ANALYSIS_CANDIDATE:
+        statistics = cs.run_cli([str(PYTHON), 'tools/eval/build_campaign_statistical_report.py', '--manifest', str(MANIFEST), '--stage', EVAL_STAGE,
+                                 '--split', EVAL_SPLIT], cwd=PROJECT_ROOT).report
+        print(json.dumps(statistics, indent=1)[:4000])
+if RUN_SELECTION:
+    selection = cs.run_cli([str(PYTHON), '-m', 'uc3m.application.pipeline', 'select', '--manifest', str(MANIFEST), '--stage', EVAL_STAGE,
+                                      '--split', EVAL_SPLIT], cwd=PROJECT_ROOT).report
+    print(json.dumps(selection, indent=1)[:4000])
+if RUN_ANALYSIS or RUN_SELECTION:
     cs.run_cli(SYNC + ['--sync'], cwd=PROJECT_ROOT, on_line=lambda line: None)
 '''
 
@@ -393,16 +438,37 @@ def setup_cell(original) -> str:
     return '# [C2] Instalación Python 3.9 fijada\n' + pin_setup(setup)
 
 
+def runtime_requirements_text(root: Path = ROOT):
+    """Intro requirements read from configs/algorithms/native.yaml, never typed: (phrase, MASAC vram, MASAC rnn)."""
+    import yaml
+    rows = yaml.safe_load((Path(root)/'configs/algorithms/native.yaml').read_text(encoding='utf-8'))['algorithms']
+    parts = []
+    for name, row in rows.items():
+        needed = row['runtime_requirements']
+        vram = needed.get('min_vram_gib', max((needed.get('min_vram_gib_by_rnn_hidden_dim') or {0: 0}).values()))
+        parts.append(f"{name} {needed['min_ram_gib']} GiB RAM / {vram} GiB VRAM")
+    by_rnn = rows['MASAC']['runtime_requirements']['min_vram_gib_by_rnn_hidden_dim']
+    rnn = max(by_rnn)
+    return '; '.join(parts), by_rnn[rnn], rnn
+
+
+def intro(root: Path = ROOT) -> str:
+    phrase, vram, rnn = runtime_requirements_text(root)
+    return (INTRO.replace('__REQUIREMENTS__', phrase).replace('__MASAC_VRAM__', str(vram))
+            .replace('__MASAC_RNN__', str(rnn)))
+
+
 def build_notebook(original, expected_dataset_hash):
     measured = EVAL_RAM_MEASUREMENT or 'pendiente de medición'
     c9 = C9.replace('__EVAL_RAM_GIB__', repr(EVAL_RAM_GIB or 4.0)).replace('__EVAL_RAM_MEASUREMENT__', measured)
-    cells = [cell('markdown', INTRO), cell('code', C1),
+    cells = [cell('markdown', intro()), cell('code', C1),
              cell('markdown', '## Instalación original del proyecto\nSe reutiliza la celda Python 3.9 del tutorial, '
                               'con dependencias fijadas a `uv.lock` y al entorno local.\n'),
              cell('code', setup_cell(original)), cell('code', C3), cell('markdown', C4_MD), cell('code', C4),
              cell('markdown', C5_MD), cell('code', C5), cell('markdown', C6_MD), cell('code', C6),
-             cell('markdown', C7_MD), cell('code', C7), cell('code', C8), cell('markdown', C9_MD),
-             cell('code', c9), cell('code', C10), cell('code', C11), cell('markdown', SOURCES)]
+             cell('markdown', C7_MD), cell('code', C7), cell('markdown', C9_MD), cell('code', c9),
+             cell('markdown', C8_MD), cell('code', C8), cell('markdown', C10_MD), cell('code', C10), cell('code', C11),
+             cell('markdown', SOURCES)]
     return {'nbformat': 4, 'nbformat_minor': 5,
             'metadata': {'kernelspec': {'display_name': 'Python 3', 'language': 'python', 'name': 'python3'},
                          'colab': {'name': DESTINATION.name}, 'accelerator': 'GPU',

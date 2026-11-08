@@ -123,9 +123,44 @@ def test_sources_cite_verifiable_links_only():
     assert 'https://ora.ox.ac.uk/objects/uuid%3A4acf19ee-76b3-4e71-a424-259cd9e2d6f5' in sources
 
 
-def test_masac_refusal_on_80gb_gpus_is_stated_as_expected():
+def test_intro_requirements_come_from_the_native_config_and_a_refusal_is_not_expected():
+    import yaml
     intro = _cells()[0]
-    assert '82 GiB' in intro and '96 GB' in intro and '80 GB' in intro and 'esperado' in intro
+    rows = yaml.safe_load((REPO/'configs/algorithms/native.yaml').read_text(encoding='utf-8'))['algorithms']
+    masac = rows['MASAC']['runtime_requirements']
+    assert f"MASAC {masac['min_ram_gib']} GiB RAM / {masac['min_vram_gib_by_rnn_hidden_dim'][128]} GiB VRAM" in intro
+    for name in rows:
+        assert f"{name} {rows[name]['runtime_requirements']['min_ram_gib']} GiB RAM" in intro
+    assert '80 GB' in intro and 'no un\nresultado aceptable' in intro and 'esperado' not in intro
+    assert 'rechazo esperado' not in _cell('C6')
+
+
+def test_launching_a_stage_records_the_owner_authorization_and_the_gpu_peak():
+    c6 = _cell('C6')
+    assert "'--execute', '--owner-authorized', OWNER_DECISION" in c6 and 'gpu_peak_path=gpu_peak' in c6
+    assert "OWNER_DECISION = ''" in c6 and 'stage.sync_problems' in c6 and 'stage.final_sync_failed' in c6
+    assert c6.index('final_sync_failed') < c6.index('Etapa completa')
+    assert 'owner_authorizations.jsonl' in ''.join(_cells())
+
+
+def test_hpo_is_evaluated_before_the_freeze_that_requires_it_and_the_freeze_reaches_drive():
+    cells = _cells()
+    position = {marker: next(i for i, source in enumerate(cells) if source.startswith(f'# [{marker}] '))
+                for marker in ('C7', 'C8', 'C9', 'C10')}
+    assert position['C7'] < position['C9'] < position['C8'] < position['C10']
+    assert "EVAL_STAGE, EVAL_SPLIT = 'hpo'" in _cell('C9')
+    assert "SYNC + ['--sync']" in _cell('C8')
+
+
+def test_analysis_cell_reports_selects_and_separates_sensitivity_variants():
+    c10 = _cell('C10')
+    assert "'select'" in c10 and 'build_campaign_statistical_report.py' in c10 and "'--candidate'" in c10
+    assert 'RUN_SELECTION = False' in c10
+
+
+def test_evaluation_is_copied_while_it_runs_and_a_failed_treatment_does_not_skip_the_copy():
+    c9 = _cell('C9')
+    assert 'cs.run_stage_with_sync(' in c9 and 'allowed=(0, 2)' in c9 and 'run.final_sync_failed' in c9
 
 
 def test_setup_pins_dependencies_to_lock_then_environment():

@@ -46,6 +46,48 @@ def test_only_finished_attempts_are_copied_verified_and_never_overwritten(tmp_pa
     assert (drive/'pilot/try_01/native.bin').read_bytes() == b'weights-try_01'
 
 
+def _prepared_local(local):
+    (local/'stages').mkdir(parents=True)
+    (local/'campaign_manifest.json').write_text('{"campaign_id": "fresh_x_v1"}', encoding='utf-8')
+    (local/'stages'/'pilot_gpu_memory.json').write_text('{"peak_used_mib": 1}', encoding='utf-8')
+    (local/'stages'/'pilot.json').write_text('{"treatments": []}', encoding='utf-8')
+
+
+def test_a_cut_after_replacing_a_file_does_not_wedge_the_restore(tmp_path):
+    local, drive, fresh = tmp_path/'local', tmp_path/'drive', tmp_path/'fresh'
+    _prepared_local(local)
+    ds.sync_finished_attempts(local, drive)
+    (local/'stages'/'pilot_gpu_memory.json').write_text('{"peak_used_mib": 2}', encoding='utf-8')
+    new_digest = ds._file_digest(local/'stages'/'pilot_gpu_memory.json')
+    # The state a cut leaves: the new bytes are on Drive and only the write-ahead entry names them.
+    manifest = ds._read_manifest(drive)
+    manifest['pending_files']['stages/pilot_gpu_memory.json'] = new_digest
+    ds._write_manifest(drive, manifest)
+    shutil.copy2(local/'stages'/'pilot_gpu_memory.json', drive/'stages'/'pilot_gpu_memory.json')
+    report = ds.restore_finished_attempts(drive, fresh, 'fresh_x_v1')
+    assert report['conflicts'] == []
+    assert (fresh/'stages'/'pilot_gpu_memory.json').read_text(encoding='utf-8') == '{"peak_used_mib": 2}'
+
+
+def test_sync_leaves_no_write_ahead_entry_behind(tmp_path):
+    local, drive = tmp_path/'local', tmp_path/'drive'
+    _prepared_local(local)
+    ds.sync_finished_attempts(local, drive)
+    assert ds._read_manifest(drive)['pending_files'] == {}
+
+
+def test_a_newer_local_stage_log_is_kept_but_a_changed_plan_is_a_conflict(tmp_path):
+    local, drive = tmp_path/'local', tmp_path/'drive'
+    _prepared_local(local)
+    ds.sync_finished_attempts(local, drive)
+    (local/'stages'/'pilot_gpu_memory.json').write_text('{"peak_used_mib": 9}', encoding='utf-8')
+    report = ds.restore_finished_attempts(drive, local, 'fresh_x_v1')
+    assert report['conflicts'] == [] and report['kept_local'] == ['stages/pilot_gpu_memory.json']
+    assert '9' in (local/'stages'/'pilot_gpu_memory.json').read_text(encoding='utf-8')
+    (local/'stages'/'pilot.json').write_text('{"treatments": [1]}', encoding='utf-8')
+    assert ds.restore_finished_attempts(drive, local, 'fresh_x_v1')['conflicts'] == ['stages/pilot.json']
+
+
 def test_restore_verifies_digest_and_trust(tmp_path):
     local, drive, fresh = tmp_path/'local', tmp_path/'drive', tmp_path/'fresh'
     _attempt(local, 'try_01')

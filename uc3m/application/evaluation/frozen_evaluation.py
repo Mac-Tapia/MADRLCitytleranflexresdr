@@ -16,6 +16,7 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 import json
+import shutil
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -83,21 +84,26 @@ def evaluate_frozen(attempt_root: Path, split_id: str, campaign_root: Path, *, a
                                 thesis_indicators=load_thesis_indicators(catalog_path),
                                 citylearn_v3_report=control.citylearn_v3_report,
                                 extra_measures=adapters.extra_measures)
-    folder.mkdir(parents=True, exist_ok=True)
+    staging = attempt_root.parent/f'.evaluating_{attempt_root.name}_{split_id}'
+    if staging.exists():
+        shutil.rmtree(staging)
+    staging.mkdir(parents=True)
     payload = report.as_dict()
     payload['bill_tariffs_sha256'] = getattr(adapters, 'bill_tariffs_sha256', None)
     raw = json.dumps(payload, indent=2, default=str).encode('utf-8')
-    (folder/'kpi_report.json').write_bytes(raw)
+    (staging/'kpi_report.json').write_bytes(raw)
     digest = hashlib.sha256(raw).hexdigest()
-    (folder/'frozen_runs.json').write_text(json.dumps({'control': _run_record(control),
+    (staging/'frozen_runs.json').write_text(json.dumps({'control': _run_record(control),
                                                        'baseline': _run_record(baseline)}, indent=2, default=str),
                                            encoding='utf-8')
     expected_rows = {'train_2023': 8760, 'validation_2024': 8784, 'test_2025': 8760}[split_id]
     # The physical run metadata is hashed with the KPIs; final scientific
     # readback demands the complete split, while short diagnostics stay usable.
-    (folder/'evaluation_manifest.json').write_text(json.dumps({
+    (staging/'evaluation_manifest.json').write_text(json.dumps({
         'schema_version': 2, 'split': split_id, 'expected_full_split_rows': expected_rows,
         'files': {'kpi_report.json': digest,
-                  'frozen_runs.json': hashlib.sha256((folder/'frozen_runs.json').read_bytes()).hexdigest()}},
+                  'frozen_runs.json': hashlib.sha256((staging/'frozen_runs.json').read_bytes()).hexdigest()}},
         indent=2), encoding='utf-8')
+    folder.parent.mkdir(parents=True, exist_ok=True)
+    staging.rename(folder)
     return {'folder': str(folder), 'kpi_report_sha256': digest, 'axis_gains': dict(report.axis_gains)}

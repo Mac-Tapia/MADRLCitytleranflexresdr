@@ -70,7 +70,8 @@ def _calls(source):
 def test_every_code_cell_has_a_marker(notebook):
     markers = [MARKER.match(_source(c)) for c in notebook['cells'] if c['cell_type'] == 'code']
     assert all(markers), 'every code cell starts with # [Cn] <title>'
-    assert [f'C{m.group(1)}' for m in markers] == [f'C{n}' for n in range(1, 12)]
+    # C9 (evaluate) runs before C8 (freeze): the freeze requires HPO evaluated on validation.
+    assert [f'C{m.group(1)}' for m in markers] == ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C9', 'C8', 'C10', 'C11']
 
 
 def test_every_code_cell_compiles(cells):

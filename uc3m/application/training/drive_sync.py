@@ -87,7 +87,7 @@ def finished_attempts(artifacts: Path) -> List[Path]:
 def _read_manifest(drive: Path) -> Dict[str, object]:
     path = contained_path(drive, MANIFEST)
     state = _read(path) if path.is_file() else {}
-    for key in ('attempts', 'files', 'pending_attempts', 'attempt_scopes', 'post_files'):
+    for key in ('attempts', 'files', 'pending_files', 'pending_attempts', 'attempt_scopes', 'post_files'):
         state.setdefault(key, {})
         if not isinstance(state[key], dict):
             raise ValueError(f'invalid Drive manifest {key}')
@@ -96,6 +96,12 @@ def _read_manifest(drive: Path) -> Dict[str, object]:
 
 def _write_manifest(drive: Path, manifest) -> None:
     write_json_atomic(contained_path(drive, MANIFEST), manifest)
+
+
+def _is_stage_log(relative: str) -> bool:
+    """Stage files rewritten on every launch: a local copy newer than Drive is expected, never a conflict."""
+    folder, _, name = relative.rpartition('/')
+    return folder == 'stages' and name.endswith(('_gpu_memory.json', '_result.json', 'owner_authorizations.jsonl'))
 
 
 def _campaign_files(root: Path) -> List[Path]:
@@ -164,8 +170,12 @@ def _sync(artifacts, drive):
             if _file_digest(staging) != digest:
                 report['conflicts'].append(relative)
                 continue
+            # Write-ahead: a cut after the replace leaves bytes the manifest can still recognize.
+            manifest['pending_files'][relative] = digest
+            _write_manifest(drive, manifest)
             staging.replace(target)
         manifest['files'][relative] = digest
+        manifest['pending_files'].pop(relative, None)
         _write_manifest(drive, manifest)
         report['files'].append(relative)
     for attempt in finished_attempts(artifacts):
@@ -266,7 +276,7 @@ def restore_finished_attempts(drive: Path, artifacts: Path, campaign_id: str, *,
 def _restore(drive, artifacts, campaign_id, trust):
     manifest = _read_manifest(drive)
     report = {'restored_complete': [], 'restored_failed': [], 'rejected': {}, 'present': [],
-              'files': [], 'conflicts': []}
+              'files': [], 'conflicts': [], 'kept_local': []}
     if manifest.get('campaign_id') not in (None, campaign_id):
         report['conflicts'].append('foreign_campaign')
         return report
@@ -278,6 +288,8 @@ def _restore(drive, artifacts, campaign_id, trust):
     for relative, digest in sorted(manifest['files'].items()):
         try:
             source, target = contained_path(drive, relative), contained_path(artifacts, relative)
+            if source.is_file() and _file_digest(source) == manifest['pending_files'].get(relative):
+                digest = manifest['pending_files'][relative]
             if not source.is_file() or _file_digest(source) != digest:
                 report['conflicts'].append(relative)
             elif not target.exists():
@@ -290,7 +302,7 @@ def _restore(drive, artifacts, campaign_id, trust):
                 staging.rename(target)
                 report['files'].append(relative)
             elif not target.is_file() or _file_digest(target) != digest:
-                report['conflicts'].append(relative)
+                report['kept_local' if _is_stage_log(relative) else 'conflicts'].append(relative)
         except (OSError, ValueError, TypeError):
             report['conflicts'].append(relative)
     if report['conflicts']:

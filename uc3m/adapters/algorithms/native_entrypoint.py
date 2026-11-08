@@ -24,6 +24,7 @@ import contextlib
 import importlib
 import json
 import math
+import os
 import runpy
 import sys
 import traceback
@@ -280,6 +281,32 @@ def _runtime_requirements(root: Path, algorithm: str):
     return (payload['algorithms'][algorithm] or {}).get('runtime_requirements') or {}
 
 
+def thread_arguments(native, environ) -> List[str]:
+    """The worker's share of CPU threads for the trainer's own flag (never recorded as an identity argument)."""
+    value = environ.get('UC3M_TORCH_THREADS')
+    return ['--torch-threads', str(value)] if value and '--torch-threads' not in native else []
+
+
+def measure_worker_resources(environ, measure=measure_runtime_resources) -> dict:
+    """Measured memory bounded by this worker's share of the machine; the whole-machine value stays recorded."""
+    measured = dict(measure())
+    for what, name in (('ram', 'UC3M_WORKER_RAM_GIB'), ('vram', 'UC3M_WORKER_VRAM_GIB')):
+        have, share = measured.get(f'{what}_gib'), environ.get(name)
+        if have is not None and share:
+            measured[f'machine_{what}_gib'] = have
+            measured[f'{what}_gib'] = min(float(have), float(share))
+    return measured
+
+
+def limit_gpu_memory(environ) -> None:
+    """Hold a parallel worker to its share of the GPU; a sole worker keeps the whole device."""
+    value = environ.get('UC3M_CUDA_MEMORY_FRACTION')
+    if value and float(value) < 1.0:
+        import torch
+        if torch.cuda.is_available():
+            torch.cuda.set_per_process_memory_fraction(float(value))
+
+
 def _bundle_hash(files) -> str:
     """Kept for callers of the adapter; the identity rule lives in the domain."""
     from uc3m.domain.evidence import checkpoint_bundle_hash
@@ -317,7 +344,7 @@ def main(argv=None) -> int:
     script = trainer_script(root, args.algorithm)
     resources = check_runtime_resources(args.algorithm, _runtime_requirements(root, args.algorithm),
                                         episode_time_steps=int(_option(native, '--episode-time-steps', '8760')),
-                                        native_args=native)
+                                        native_args=native, measure=lambda: measure_worker_resources(os.environ))
     (attempt_root/'runtime_resources.json').write_text(json.dumps(resources, indent=2), encoding='utf-8')
     if not resources['accepted']:
         refused = {**record, 'verified': False, 'reasons': resources['reasons'], 'runtime_resources': resources}
@@ -325,7 +352,6 @@ def main(argv=None) -> int:
         return 1
     if resources['measured']['ram_gib'] is not None:
         # The MATD3 launcher refuses (never shrinks) replay above this cap: use the measured RAM.
-        import os
         os.environ.setdefault('MATD3_MAX_REPLAY_RAM_GIB', f"{resources['measured']['ram_gib']:.2f}")
     if str(root/'CityLearn') not in sys.path:
         sys.path.insert(0, str(root/'CityLearn'))
@@ -333,8 +359,9 @@ def main(argv=None) -> int:
     saved_argv = sys.argv
     try:
         with attempt_isolation(common, attempt_root), limits, supervisor.installed():
-            sys.argv = [str(script)] + native
+            sys.argv = [str(script)] + native + thread_arguments(native, os.environ)
             try:
+                limit_gpu_memory(os.environ)
                 runpy.run_path(str(script), run_name='__main__')
                 record['exit_code'] = 0
             except SystemExit as stop:

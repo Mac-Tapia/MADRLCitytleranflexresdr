@@ -175,7 +175,7 @@ def test_first_execute_freezes_buffers_and_records_adjustments(tmp_path, monkeyp
     assert matd3['native'] == 744600 and 148920 <= matd3['effective'] < 744600 and matd3['reduced'] is True
     assert {'algorithm': 'MATD3', 'key': 'buffer_size', 'native': 744600,
             'effective': matd3['effective']} in budget['adjustments']
-    # Phase 1 fits one worker: MASAC's searched candidate needs 25 GiB RAM and 52 GiB VRAM here.
+    # Phase 1 fits one worker: MASAC's searched candidate needs 25 GiB RAM and 53 GiB VRAM here.
     # On iquitos_v6 no single RAM gives one worker in both phases: phase 1 needs MASAC's 25 GiB, which already
     # holds two phase-2 workers at MATD3's reduced buffer.
     assert budget['phases'][0]['workers'] == 1 and budget['phases'][1]['workers'] >= 1

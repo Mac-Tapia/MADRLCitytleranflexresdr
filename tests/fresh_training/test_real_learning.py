@@ -9,9 +9,11 @@ import json
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO = Path(__file__).resolve().parents[2]
-CAMPAIGN = REPO/'data/campaigns/iquitos_v5'
+# SPEC-016 FR-016.10: the micro-training runs on the ACTIVE campaign (it was pinned to iquitos_v5).
+CAMPAIGN = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']
 EPISODE_STEPS = 168
 EPISODES = 2
 EXTRA = {'MATD3': ['--batch-size', '64'], 'MAAC': ['--batch-size', '64'], 'MASAC': [], 'HAPPO': []}

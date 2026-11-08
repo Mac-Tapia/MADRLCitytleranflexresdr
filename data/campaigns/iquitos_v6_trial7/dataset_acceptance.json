@@ -1,0 +1,43 @@
+{
+  "campaign_id": "fresh_iquitos_20261107_v6_trial7",
+  "dataset_hash": "ca01c2f38255766101efac784238d4cb5c7f5204c2ee2e9af0d00e3070f105b9",
+  "source_manifest_hash": "d0cde69a4022b72947f639e8e21a9ab00c8dcde93d30b624c4ff17a85018472f",
+  "balance_checks": 1836,
+  "balance_failures": [],
+  "balance_failure_count": 0,
+  "modeled_monthly_targets": 22,
+  "measured_monthly_targets": 590,
+  "gates": {
+    "hourly_balance": true,
+    "citylearn_balance": true,
+    "microgrids_optimal": true,
+    "tariff_history_complete": true,
+    "tariff_crosscheck": true,
+    "pv_to_load_bounded": true,
+    "csv_integrity": true,
+    "bess_verified": true,
+    "v3_operational": true,
+    "ev_fleet_written": true,
+    "peak_contrast": true,
+    "bess_rule_shaves_peak": true
+  },
+  "dataset_verified": true,
+  "limitations": [
+    "B01: measured monthly energy only for 2024-01..2025-10 (study workbook, sheet 8.ELOR) with the peak split from same-year Office peers; 2025-11/12 are modeled from B01 2025 months. B_01.csv is project-generated and excluded.",
+    "B01 2023 (training year) is a declared backcast: 2024 measured monthly profile x 0.98 (original method). It uses validation-year information; its months carry cross_year_leakage_declared and a sensitivity excluding modeled buildings is required.",
+    "Missing months are modeled within the same year; hourly shapes are generated from registry schedules, not measured.",
+    "TOU registers differing from the printed total by >2 % are scaled to the printed total (owner rule); printed totals outside 0.5..2 x the registers are treated as transcription errors and the registers kept (flagged).",
+    "Weather is NASA POWER reanalysis for one grid point, not a local station.",
+    "PEN/USD uses the annual official average (World Bank); monthly variation is not represented.",
+    "Prices are the official Osinergmin sheets (sector IQUITOS, without IGV); recomputed bills differ from TotalFacturado (audit/tariff_bill_validation.json) because public lighting, rural-electrification contributions and multi-month demand averaging are not reproducible from a bill.",
+    "CityLearn has no demand charge: the peak-block demand charge only enters the MicroGrids sizing.",
+    "Carbon intensity is one constant: IPCC 2006 gas/diesel oil factor over an assumed 0.40 plant efficiency.",
+    "PV is a declared design scenario sized by the MicroGrids LP with assumed economics and the official tariff; export is credited at the energy charge (net billing, not available in Iquitos today) and nothing is curtailed; the PV bound is the lower of the covered built area x 0.63 (user decision), not a roof survey, and the capacity at PV/load = 1.0 (SPEC-014, a project criterion with no norm behind it).",
+    "EV: only a declared 2-motorcycle pilot at B01; all other buildings have no EV and no charger.",
+    "Controlled machine energy, cooling design COP and schedules are assumptions carried from the earlier tools.",
+    "BESS replaces the MicroGrids optimum with a declared design rule (0.2 of each building peak-block import, owner decision 2026-11-02): it is a scenario, not an economic optimum and larger than what the LP chose. The percentage and the formula are project design choices, not taken from the literature. Battery curves are fixed at the midpoints of the CityLearn default draw, not a measured product."
+  ],
+  "dataset_version": "v6",
+  "pending_owner_decisions": {},
+  "checked_at": "2026-11-08T03:53:54.489862+00:00"
+}

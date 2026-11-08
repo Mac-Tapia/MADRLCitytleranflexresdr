@@ -178,3 +178,62 @@ def test_the_schema_references_every_bill_tariff_so_the_split_copies_it(tmp_path
         bt.declare_bill_tariff_files(schema, {3: tmp_path/'bill_tariff_Building_3.csv'})
     source = (REPO/'tools/dataset/build_fresh_campaign_dataset.py').read_text(encoding='utf-8')
     assert 'declare_bill_tariff_files(' in source
+
+
+def test_the_terminal_observation_of_an_episode_keeps_the_bill_state(schema_dir):
+    """After the last step the core time step equals the episode length; the bill observation must not index past
+    the simulation (found by the HAPPO micro-training: IndexError 168 of 168)."""
+    from citylearn.v3.environment import make_citylearn_v3_env
+    env = make_citylearn_v3_env(schema_path=schema_dir/'schema.json', scenario='E3', seed=0, episode_time_steps=3)
+    try:
+        env.reset()
+        zero = {a: np.zeros(env.action_space(a).shape, dtype=np.float32) for a in env.possible_agents}
+        done = False
+        for _ in range(6):
+            observations, _, terminations, truncations, _ = env.step(zero)
+            done = all(terminations.values()) or all(truncations.values())
+            if done:
+                break
+        assert done
+        names = env.observation_names('Building_6')
+        assert all(f in names for f in FIELDS) and len(observations['Building_6']) == len(names)
+    finally:
+        env.close()
+
+
+def test_a_later_episode_reads_its_own_tariff_rows(schema_dir):
+    """CityLearn's time step is relative to the episode start and its series are cut to the episode: the second
+    24-hour episode starts at step 24, so the tracker must read row 24 + t of the year file, not row t."""
+    from citylearn.v3.environment import make_citylearn_v3_env
+    with open(schema_dir/'bill_tariff_Building_6.csv', newline='', encoding='utf-8') as stream:
+        rows = list(csv.DictReader(stream))
+    env = make_citylearn_v3_env(schema_path=schema_dir/'schema.json', scenario='E3', seed=0, episode_time_steps=24)
+    try:
+        base = env.env
+        while hasattr(base, 'env') and not hasattr(base, 'buildings'):
+            base = base.env
+        zero = {a: np.zeros(env.action_space(a).shape, dtype=np.float32) for a in env.possible_agents}
+        env.reset()
+        for _ in range(24):
+            env.step(zero)
+        observations, _ = env.reset()
+        start = base.episode_tracker.episode_start_time_step
+        assert start == 24
+        tracker = base._bill_tracker
+        assert [tracker._row(index, t) for index in (0, 5) for t in (0, 23, 24)] == [24, 47, 47]*2   # 24 = terminal
+        names = env.observation_names('Building_6')
+        index = env.possible_agents.index('Building_6')
+        blocks = 0
+        for t in range(24):
+            seen = dict(zip(names, observations['Building_6']))
+            block = int(rows[start + t]['peak_block'])
+            assert seen['bill_in_peak_block'] == pytest.approx(float(block)), t
+            assert seen['bill_month_block_peak_kw'] == pytest.approx(0.0) or t > 0
+            observations, *_ = env.step(zero)
+            component = base.reward_function._last_component_breakdown['components'][index]
+            blocks += block
+            if block == 0:
+                assert component['raw_cost_peak_billing'] == 0.0, t
+        assert blocks == 5                                   # 18:00 to 22:00 of 2 January
+    finally:
+        env.close()

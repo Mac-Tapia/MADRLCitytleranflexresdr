@@ -114,3 +114,28 @@ El propietario suspendió el equipo. Ninguna prueba ni proceso quedó en marcha.
   5. Puerta `-Scope Repository`, CI y push. Con eso se cierra el módulo 3.
 - **Cierre del módulo 3 (2026-11-06):** FR-015.7 hecho y publicado (CityLearn `387f9c42`, principal `567a8506`), con `continuous_action_map()` para HAPPO y MATD3. Tanda del módulo, 100 pruebas; puerta `Repository` aprobada sobre `567a8506`, 1 660 pruebas en 30 min. Revisión independiente: I-1 a I-3 corregidos en `e5ae4d4f` (puerta 1 663 pruebas); menores M-1 a M-7 diferidos al módulo 3b: sondeo HAPPO sin cerrar y caché no atómica, mapa MAAC con fila global, modos shared/cartesian sin filas válidas, `step_discrete` sin máscara, reanudación MAAC sin tamaños, entropía objetivo de MASAC con 9 acciones, salidas inertes en el crítico MATD3 y el log-prob HAPPO. Plan de los módulos siguientes: [implementacion_completa.md](implementacion_completa.md).
 - **Siguiente:** SPEC-016 (`iquitos_v6`), con D-V6-13: una acción por equipo, sin agrupar cargadores.
+
+
+## Entrada propia de la sesión `-54`: módulo 3b, 2026-11-07
+
+- **Publicado:** principal `24e85aee` y CityLearn `943f9f92`. Incluye D-V6-49 (observación de cargadores por clase), D-M3-8 (MASAC solo con `rnn_hidden_dim` 128) y la campaña activa en `iquitos_v6`.
+- **Commits locales sin publicar:**
+  - Principal: `064c3345` (recompensa con factura, D-V6-50) y `ee3345bc` (puerta de recorte del BESS siempre activa en v6).
+  - CityLearn: `5e62c5f5` (`citylearn/v3/bill.py` y término `cost_peak_billing`), `fa6b2991` (prueba de acciones de Building_1) y `96dfe888` (nombres de KPI de dos términos).
+  - Para publicar: primero CityLearn, después el principal.
+- **Decisiones del propietario de hoy:**
+  - D04 con el eje de costo en tercios (D-V6-50).
+  - Aire acondicionado aplazado como acción (D-V6-51), porque no hay modelo térmico validable.
+  - Reconstruir el dataset como `iquitos_v6_trial7` y activarlo.
+- **Dataset activo:** `iquitos_v6_trial7`, con hash `ca01c2f3…` y 12/12 puertas.
+  - Los splits copian ahora `bill_tariff_Building_<b>.csv`, porque el esquema los referencia.
+  - `iquitos_v6` y `iquitos_v6_trial6` se conservan. `trial6` no tiene la puerta `bess_rule_shaves_peak`: el constructor la omitía sin `--bess-design-rule`.
+- **Memoria de MASAC sobre `trial7`:** obs 37, estado 599 y 87 acciones. Requiere 25 GiB de RAM y 53 GiB de VRAM con `rnn_hidden_dim` 128.
+- **Defecto propio corregido:** el rastreador de factura indexaba con el paso relativo del episodio y guardaba los meses del primer episodio. Lo detectó el microentrenamiento de HAPPO (IndexError 168 de 168); ahora usa la fila inicio + t y relee los meses en cada paso.
+- **Humo de los 4 MADRL:** `test_real_learning.py` corre ahora sobre la campaña activa (antes estaba fijo en `iquitos_v5`). Pasa sobre `trial7`: 8 pruebas, con actualizaciones observadas y `training_state.pt`. Tanda amplia: 224 pruebas en verde. Recorrido anual con acciones cero: 8 760 pasos sin aserciones.
+- **Pruebas nuevas:** `test_v3_bill_reward.py` (7), `test_v3_tuple_contract.py` (7) y `test_decision_traceability.py` (5, de la tarjeta trace-14 con implementador acotado, revisada aquí).
+- **Pendiente del módulo 3b:**
+  - Fila 12, rejilla común de acciones (D-M3-7, a confirmar).
+  - Etiquetar los 35 identificadores implementados sin etiqueta (ver `governance/decision_traceability.yaml`). Las etiquetas en entradas del constructor cambian la huella de fuentes del dataset, así que van antes de la próxima construcción.
+  - Puerta `-Scope Repository`, CI y STATUS final.
+  - Confirmar las reglas P-V6-15 a P-V6-24 y P-017-1 a P-017-6.

@@ -139,3 +139,6 @@ data/maintenance/gates/*.progress.jsonl
 data/maintenance/gates/*.hang.txt
 # CU-BEMS raw files (730 MB, CC BY 4.0, figshare 10.6084/m9.figshare.11726517); derived hourly data is versioned
 data/validation/cubems/raw/
+# SPEC-008 FR-008.4 and SPEC-012 FR-012.3
+*.tmp
+**/source_snapshot.zip

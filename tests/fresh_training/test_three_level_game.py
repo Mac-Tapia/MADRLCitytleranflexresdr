@@ -57,7 +57,7 @@ def test_local_reward_applies_the_scenario_row_and_team_mean_pays_everyone(scena
         locals_ = []
         for c in breakdown['components']:                                                             # level 1
             expected = scale*(row['flex']*c['flex'] + row['carbon']*c['carbon'] + row['cost']*c['cost']
-                              + c['ev'] + c['bess_cycle'])
+                              + c['ev'] + c['bess_cycle'] + c['comfort'])          # comfort: D-V6-53, P-V6-25
             assert c['local_reward'] == pytest.approx(expected, rel=1e-9, abs=1e-12)
             locals_.append(c['local_reward'])
         team = float(np.mean(locals_))

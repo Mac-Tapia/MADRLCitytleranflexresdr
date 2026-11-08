@@ -175,10 +175,12 @@ def test_first_execute_freezes_buffers_and_records_adjustments(tmp_path, monkeyp
     assert matd3['native'] == 744600 and 148920 <= matd3['effective'] < 744600 and matd3['reduced'] is True
     assert {'algorithm': 'MATD3', 'key': 'buffer_size', 'native': 744600,
             'effective': matd3['effective']} in budget['adjustments']
-    # Phase 1 fits one worker: MASAC's searched candidate needs 25 GiB RAM and 53 GiB VRAM here.
-    # On iquitos_v6 no single RAM gives one worker in both phases: phase 1 needs MASAC's 25 GiB, which already
-    # holds two phase-2 workers at MATD3's reduced buffer.
-    assert budget['phases'][0]['workers'] == 1 and budget['phases'][1]['workers'] >= 1
+    # D-M3-10: on iquitos_v6 with the common grid MASAC's searched candidate needs 50 GiB RAM and 74 GiB VRAM, so
+    # 26 GiB refuse phase 1 with the figures while phase 2 still runs; 60 GiB give phase 1 its worker.
+    assert budget['phases'][0]['workers'] == 0 and budget['phases'][1]['workers'] >= 1
+    assert any(r.startswith('insufficient_resources') for r in budget['phases'][0]['reasons'])
+    _, _, roomy = _stage_budget(tmp_path/'roomy', monkeypatch, {'ram_gib': 60.0, 'vram_gib': 100.0, 'cpu_count': 8})
+    assert roomy['phases'][0]['workers'] == 1
     assert 'HAPPO' not in frozen['buffers'] and 'MASAC' not in frozen['buffers']
     execution = budget['execution']['MATD3']
     assert execution['torch_threads'] >= 1 and 0 < execution['cuda_memory_fraction'] <= 1

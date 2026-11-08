@@ -456,7 +456,11 @@ class NativeFrozenPolicy(FrozenController):
 
     def contract(self):
         payload = super().contract()
-        if self.discrete:
+        if self.discrete and self.adapter.discrete_action_mode == 'grid':   # D-M3-9: the grid, not a table
+            payload['discrete_action_table'] = None
+            payload['discrete_action_metadata'] = dict(self.adapter.discrete_action_metadata)
+            payload['grid_action_map'] = self.adapter.grid_action_map()
+        elif self.discrete:
             payload['discrete_action_table'] = np.asarray(self.adapter.discrete_action_table).tolist()
             payload['discrete_action_metadata'] = dict(self.adapter.discrete_action_metadata)
         payload.update({
@@ -800,8 +804,12 @@ class MaacFrozenPolicy(NativeFrozenPolicy):
     def _build_networks(self):
         sizes = [(int(p['num_in_pol']), int(p['num_out_pol'])) for p in self.model.init_dict['agent_init_params']]
         # D03: each MAAC agent has the actions of its real equipment only.
-        expected = [(int(self.adapter.max_observation_dim), len(self.adapter.discrete_action_rows_by_agent[agent]))
-                    for agent in self.adapter.agents]
+        if self.adapter.discrete_action_mode == 'grid':   # D-M3-9: one branch of levels per real equipment
+            from citylearn.v3.action_grid import LEVELS
+            expected = [(int(self.adapter.max_observation_dim), k*LEVELS) for k in self.adapter.action_grid.branches]
+        else:
+            expected = [(int(self.adapter.max_observation_dim), len(self.adapter.discrete_action_rows_by_agent[agent]))
+                        for agent in self.adapter.agents]
         if sizes != expected:
             raise FrozenPolicyRejected(f'MAAC agent sizes {sizes[:1]}x{len(sizes)} differ from the env {expected[:1]}'
                                        f'x{len(expected)}')

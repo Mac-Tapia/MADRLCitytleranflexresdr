@@ -1,8 +1,8 @@
 schema_version: 1
 # Fresh campaign: new dataset, no prior-run inputs, every attempt from zero.
-campaign_id: fresh_iquitos_20261107_v6_trial7
-storage_alias: iquitos_v6_trial7
-dataset_root: data/campaigns/iquitos_v6_trial7   # SPEC-016 with bill tariffs in the splits (D-V6-50), 12/12 gates 2026-11-07
+campaign_id: fresh_iquitos_20261108_v6_trial10
+storage_alias: iquitos_v6_trial10
+dataset_root: data/campaigns/iquitos_v6_trial10   # SPEC-016 with bill tariffs (D-V6-50) and 5R1C air conditioning (D-V6-53), 12/12 gates 2026-11-08
 scenario_catalog: configs/scenarios.yaml      # single E1/E2/E3 weight table
 algorithm_config: configs/algorithms/native.yaml
 kpi_catalog: configs/evaluation/kpis.yaml

@@ -39,8 +39,10 @@ def _scripts():
 def masac_dims():
     _scripts()
     from citylearn_v3_training_common import CityLearnSMACDiscreteEnv
+    # D-M3-9/D-M3-10: the action interface the campaign declares for MASAC (the common grid)
+    mode = NATIVE['algorithms']['MASAC']['fixed'].get('discrete_action_mode', 'axis')
     info = CityLearnSMACDiscreteEnv(schema_path=str(SCHEMA), scenario='E1', seed=0, episode_time_steps=EPISODE,
-                                    action_bins=3, discrete_action_mode='axis', algorithm='MASAC').get_env_info()
+                                    action_bins=3, discrete_action_mode=mode, algorithm='MASAC').get_env_info()
     return {k: int(info[k]) for k in ('n_agents', 'obs_shape', 'state_shape', 'n_actions')}
 
 
@@ -97,12 +99,20 @@ def test_the_tuned_matd3_reservation_covers_the_active_dataset(matd3_dims):
     assert row['runtime_requirements']['min_ram_gib'] >= ne.requirement_from_estimate(replay, ne.RAM_FLOOR_GIB)
 
 
+INTERFACE_KEYS = {'discrete_action_mode', 'action_grid_levels'}   # D-M3-9/D-M3-10: the action grid, not capacity
+
+
 def test_native_capacity_is_unchanged():
     algorithms = NATIVE['algorithms']
-    assert algorithms['MASAC']['fixed'] == {'buffer_size': 50, 'critic_batch_size': 32, 'critic_train_steps': 1}
-    assert algorithms['MATD3']['fixed']['buffer_size'] == 744600
-    assert algorithms['MAAC']['fixed'] == {'batch_size': 1024, 'buffer_length': 1000000,
-                                           'steps_per_update': 100, 'num_updates': 4}
+    capacity = {name: {k: v for k, v in row['fixed'].items() if k not in INTERFACE_KEYS}
+                for name, row in algorithms.items()}
+    assert capacity['MASAC'] == {'buffer_size': 50, 'critic_batch_size': 32, 'critic_train_steps': 1}
+    assert capacity['MATD3']['buffer_size'] == 744600
+    assert capacity['MAAC'] == {'batch_size': 1024, 'buffer_length': 1000000, 'steps_per_update': 100,
+                                'num_updates': 4}
+    # the 4 act on the common grid of 5 levels per equipment
+    assert algorithms['MASAC']['fixed']['discrete_action_mode'] == algorithms['MAAC']['fixed']['discrete_action_mode'] == 'grid'
+    assert algorithms['HAPPO']['fixed']['action_grid_levels'] == algorithms['MATD3']['fixed']['action_grid_levels'] == 5
 
 
 def _masac_check(native_args, ram=500.0, vram=200.0, steps=EPISODE):

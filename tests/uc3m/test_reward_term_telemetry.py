@@ -126,7 +126,7 @@ def test_ev_bess_are_separate_terms_outside_the_simplex(scenario):
     decompositions = decompose_reward_function(reward_function)
 
     assert SIMPLEX_AXES == ("flex", "carbon", "cost")
-    assert set(SERVICE_TERMS) == {"ev", "bess_cycle"}
+    assert set(SERVICE_TERMS) == {"ev", "bess_cycle", "comfort"}
     assert not set(SIMPLEX_AXES) & set(SERVICE_TERMS)
 
     for decomposition in decompositions:
@@ -244,7 +244,7 @@ def test_as_dict_is_auditable_and_json_ready():
         "service_terms",
         "total",
     }
-    assert record["service_terms"].keys() == {"ev", "bess_cycle"}
+    assert record["service_terms"].keys() == {"ev", "bess_cycle", "comfort"}
     assert record["total"] == pytest.approx(rewards[0], abs=ATOL)
     assert all(
         isinstance(value, float) for value in record["axis_contributions"].values()
@@ -282,7 +282,7 @@ def test_recorder_summarizes_dominance_saturation_and_action_spread():
     assert episode["steps"] == 3 and episode["episode"] == 0
     assert set(episode["axis_means"]) == {"flex", "carbon", "cost"}
     assert set(episode["weighted_axis_means"]) == {"flex", "carbon", "cost"}
-    assert set(episode["constraint_means"]) == {"ev", "bess_cycle"}
+    assert set(episode["constraint_means"]) == {"ev", "bess_cycle", "comfort"}
     assert episode["effective_axis_weights"] == pytest.approx(EXPECTED_WEIGHTS["E1"])
     components = reward_function._last_component_breakdown["components"]
     assert episode["constraint_dominance_ratio"] > 0

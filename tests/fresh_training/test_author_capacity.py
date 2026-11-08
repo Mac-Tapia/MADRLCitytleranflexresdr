@@ -84,7 +84,7 @@ def test_every_grid_width_is_at_least_the_authors(author):
 
 def test_happo_keeps_the_author_update(author):
     source = _text(SCRIPTS/'train_citylearn_v3_happo.py')
-    assert ALGORITHMS['HAPPO']['fixed'] == {}
+    assert ALGORITHMS['HAPPO']['fixed'] == {'action_grid_levels': 5}      # D-M3-10: interface, not capacity
     assert _argparse_default(source, '--ppo-epoch') == author['HAPPO']['ppo_epoch']
     assert _argparse_default(source, '--critic-epoch') == author['HAPPO']['critic_epoch']
     # Automatic minibatches are ceil(n_rollout_threads / 8): one copy gives the author's single minibatch.

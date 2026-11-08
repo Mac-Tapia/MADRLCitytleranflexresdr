@@ -139,8 +139,10 @@ def test_frozen_masac_evaluation_uses_the_same_mask():
     assert 'available = np.ones(n_actions' not in source
 
 
-def test_the_interface_difference_is_declared_as_a_confound_for_all_four():
-    # D-M3-6: the difference between continuous and discrete interfaces is declared as a confound.
+def test_the_common_grid_and_the_changed_head_are_declared_for_all_four():
+    # D-M3-7/D-M3-10 replace the D-M3-6 confound: the 4 act on the same grid, and the multi-discrete head of
+    # MASAC and MAAC is declared as a change of their original action head.
     native = yaml.safe_load((REPO/'configs/algorithms/native.yaml').read_text(encoding='utf-8'))['algorithms']
     for name in ('HAPPO', 'MASAC', 'MATD3', 'MAAC'):
-        assert any('D03' in item and 'confound' in item for item in native[name]['declared_limitations']), name
+        assert any('common action grid' in item and 'D-M3-10' in item for item in native[name]['declared_limitations']), name
+        assert not any('D03 confound' in item for item in native[name]['declared_limitations']), name

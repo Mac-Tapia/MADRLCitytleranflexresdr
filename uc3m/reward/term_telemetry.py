@@ -12,8 +12,8 @@ applied afterwards by ``CityLearnDecPOMDPEnv`` (``reward_aggregation='team_mean'
 the former in-reward 0.70/0.30 mixing was removed because team_mean made it
 inert. ``team_reward_ratio`` is still accepted here (default 0) to decompose
 historical breakdowns. Only ``flex``, ``carbon`` and ``cost`` belong to the
-weighted simplex (E1-E3); ``ev`` and ``bess_cycle`` are constraint terms added
-outside it. Because mixing and the central sum are linear, each term can be
+weighted simplex (E1-E3); ``ev``, ``bess_cycle`` and ``comfort`` (SPEC-016 D-V6-53) are constraint
+terms added outside it. Because mixing and the central sum are linear, each term can be
 propagated separately and the per-term contributions add up exactly to the
 reward the environment returned.
 
@@ -37,7 +37,7 @@ from types import MappingProxyType
 from typing import Any, List, Mapping, Sequence
 
 SIMPLEX_AXES = ("flex", "carbon", "cost")
-SERVICE_TERMS = ("ev", "bess_cycle")
+SERVICE_TERMS = ("ev", "bess_cycle", "comfort")   # comfort: SPEC-016 D-V6-53/54, P-V6-25
 
 _WEIGHTED_KEY = {axis: f"weighted_{axis}" for axis in SIMPLEX_AXES}
 _DEFAULT_TEAM_RATIO = 0.0

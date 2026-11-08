@@ -152,6 +152,13 @@ def _rebuild_actions(algorithm, policy, history):
                     # D03: the native agent sets unavailable actions to -inf before choosing.
                     available = torch.tensor(policy.env.get_avail_agent_actions(index)).unsqueeze(0)
                     out = out.masked_fill(available == 0, float('-inf'))
+                    branches = getattr(args, 'action_branches', None)
+                    if branches:            # D-M3-9: greedy level of every branch (softmax per branch)
+                        k, l = branches
+                        levels = torch.softmax(out.view(k, l)/args.temp, dim=1).argmax(dim=1).numpy()
+                        last[index] = policy.adapter.action_grid.onehot(index, levels)
+                        actions.append(levels)
+                        continue
                     action = int(torch.softmax(out/args.temp, dim=1).argmax(dim=1)[0])
                     last[index] = np.eye(n_actions)[action]
                     actions.append(action)
@@ -172,10 +179,17 @@ def _rebuild_actions(algorithm, policy, history):
             hidden = saved['init_dict']['pol_hidden_dim']
             nets = []
             for params, sizes in zip(saved['agent_params'], saved['init_dict']['agent_init_params']):
-                net = backend['DiscretePolicy'](sizes['num_in_pol'], sizes['num_out_pol'], hidden_dim=hidden)
+                net = backend['DiscretePolicy'](sizes['num_in_pol'], sizes['num_out_pol'], hidden_dim=hidden,
+                                                branches=sizes.get('branches'))
                 net.load_state_dict(params['policy'])
                 net.eval()
                 nets.append(net)
+            if policy.adapter.discrete_action_mode == 'grid':   # D-M3-9: the level of each real equipment
+                for step in history:
+                    obs = np.asarray(step['observations'], dtype=np.float32)
+                    rebuilt.append([policy.env.grid_indices(i, net(torch.tensor(obs[i][None]), sample=False)
+                                                            .numpy()[0]).tolist() for i, net in enumerate(nets)])
+                return rebuilt
             # D03: each agent's one-hot over its own actions is recorded as its row of the shared table.
             rows = [policy.adapter.discrete_action_rows_by_agent[agent] for agent in policy.adapter.agents]
             for step in history:
@@ -192,11 +206,24 @@ def test_loaded_actions_match_saved_policy(algorithm):
     policy = native_policy(algorithm)
     assert len(history) == run.completed_steps == NATIVE_STEPS
     rebuilt = _rebuild_actions(algorithm, policy, history)
+    grid = algorithm in ('MASAC', 'MAAC') and policy.adapter.discrete_action_mode == 'grid'
     for step, (record, expected) in enumerate(zip(history, rebuilt)):
+        if grid:   # D-M3-9: one level per equipment, agents may have different equipment counts (MAAC)
+            assert [list(np.asarray(a).reshape(-1)) for a in record['actions']] == \
+                [list(np.asarray(a).reshape(-1)) for a in expected], f'{algorithm} step {step}'
+            continue
         np.testing.assert_allclose(np.asarray(record['actions'], dtype=np.float64),
                                    np.asarray(expected, dtype=np.float64), rtol=0, atol=1e-6,
                                    err_msg=f'{algorithm} step {step}')
-    if algorithm in ('MASAC', 'MAAC'):  # D03: every recorded action moves real equipment only
+    if grid:   # every level is on the grid and a padded branch only takes PAD_LEVEL
+        from citylearn.v3.action_grid import LEVELS, PAD_LEVEL
+        branches = policy.adapter.action_grid.branches
+        for step, record in enumerate(history):
+            for index, action in enumerate(record['actions']):
+                levels = np.asarray(action).reshape(-1)
+                assert all(0 <= v < LEVELS for v in levels[:branches[index]]), (algorithm, step, index)
+                assert all(v == PAD_LEVEL for v in levels[branches[index]:]), (algorithm, step, index)
+    elif algorithm in ('MASAC', 'MAAC'):  # D03: every recorded action moves real equipment only
         rows = policy.adapter.discrete_action_rows_by_agent
         for step, record in enumerate(history):
             for agent, action in zip(policy.agents, record['actions']):
@@ -209,7 +236,11 @@ def test_loaded_actions_match_saved_policy(algorithm):
     assert set(contract['observation_dims']) == set(contract['agents'])
     assert contract['max_observation_dim'] == max(contract['observation_dims'].values())
     assert contract['normalizer_sha256'] and contract['scenario'] == policy.scenario
-    if algorithm in ('MASAC', 'MAAC'):
+    if grid:
+        meta = contract['discrete_action_metadata']
+        assert meta['mode'] == 'grid' and meta['n_actions'] == meta['max_branches']*meta['levels']
+        assert set(contract['grid_action_map']) == set(contract['agents'])
+    elif algorithm in ('MASAC', 'MAAC'):
         table = np.asarray(contract['discrete_action_table'])
         assert table.shape == (contract['discrete_action_metadata']['n_discrete_actions'],
                                contract['max_action_dim'])

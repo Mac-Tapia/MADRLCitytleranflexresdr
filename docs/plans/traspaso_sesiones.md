@@ -139,3 +139,22 @@ El propietario suspendió el equipo. Ninguna prueba ni proceso quedó en marcha.
   - Etiquetar los 35 identificadores implementados sin etiqueta (ver `governance/decision_traceability.yaml`). Las etiquetas en entradas del constructor cambian la huella de fuentes del dataset, así que van antes de la próxima construcción.
   - Puerta `-Scope Repository`, CI y STATUS final.
   - Confirmar las reglas P-V6-15 a P-V6-24 y P-017-1 a P-017-6.
+
+## Entrada propia de la sesión `-54`: módulo 3b, 2026-11-08
+
+- **Decisiones del propietario:**
+  - SPEC-016: D-V6-52 a D-V6-55 (modelo térmico 5R1C anclado a la factura, confort no peor que hoy, re-destilación de picos con la refrigeración).
+  - SPEC-015: D-M3-9 (se confirma la rejilla común) y D-M3-10 (5 niveles en lugar de 11).
+  - Autorización para editar `external/MAAC` y `external/MARL`.
+- **Dataset activo:** `iquitos_v6_trial10`, 12/12 puertas, hash `b8466b46…`.
+  - `trial8` falló `csv_integrity`, `peak_contrast` y `bess_rule_shaves_peak`; `trial9` solo `bess_rule_shaves_peak`. Los defectos se corrigieron en la auditoría de columnas, en la re-destilación y en la métrica de recorte.
+- **Hallazgos del 5R1C:**
+  - Solo 5 de 17 edificios cumplen ASHRAE G14 frente a la física del inventario.
+  - Con la refrigeración facturada, B09, B14 y B16 casi nunca están a 26 °C o menos.
+  - Se declara «calibrado a facturas, no validado».
+- **Memoria de MASAC con la rejilla común:** 50 GiB de RAM y 74 GiB de VRAM, al borde de la A100 (74,5 GiB).
+- **Pendiente:**
+  - Etiquetar las decisiones sin etiqueta.
+  - Confirmar las reglas P.
+  - Publicar los commits locales (CityLearn, MAAC, MARL y principal).
+

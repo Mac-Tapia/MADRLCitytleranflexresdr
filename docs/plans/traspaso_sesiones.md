@@ -162,4 +162,4 @@ El propietario suspendió el equipo. Ninguna prueba ni proceso quedó en marcha.
   - El propietario confirmó P-V6-15 a P-V6-25 y P-017-1 a P-017-6.
   - Las fuentes del constructor de `iquitos_v6_trial10` difieren de las actuales solo en comentarios.
   - Sigue abierto: datos medidos para validar el 5R1C con ASHRAE G14.
-
+- **Espacio liberado (2026-11-08):** por decisión del propietario se borraron los datos de `iquitos_v6`, de `trial1` a `trial9` y los crudos de CU-BEMS. De `iquitos_v6` y `trial7` quedan sus 6 JSON. Corrige lo dicho arriba sobre conservarlos.

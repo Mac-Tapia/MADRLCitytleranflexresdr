@@ -153,6 +153,26 @@
       "path": ".claude/auto_save.sh",
       "recover_from_commit": "6cd518e7ad89f2ddb23aba007ddcc4ded3037a8b",
       "reason": "Owner decision (module 7, task 7.1): legacy auto-publish hook, disabled since 2026-10-31, archived in the Git history."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "untracked_data",
+      "paths": [
+        "data/validation/cubems/raw/",
+        "data/campaigns/iquitos_v6_trial1/",
+        "data/campaigns/iquitos_v6_trial2/",
+        "data/campaigns/iquitos_v6_trial3/",
+        "data/campaigns/iquitos_v6_trial4/",
+        "data/campaigns/iquitos_v6_trial5/",
+        "data/campaigns/iquitos_v6_trial6/",
+        "data/campaigns/iquitos_v6_trial8/",
+        "data/campaigns/iquitos_v6_trial9/",
+        "data/campaigns/iquitos_v6/ (except its 6 JSON)",
+        "data/campaigns/iquitos_v6_trial7/ (except its 6 JSON)"
+      ],
+      "reason": "Owner decision to free storage (about 4.7 GB): superseded trial builds and used validation inputs. Not recoverable from Git; CU-BEMS is re-downloadable from figshare 10.6084/m9.figshare.11726517 and NASA POWER."
     }
   ],
   "branch_renames": {

@@ -72,3 +72,5 @@ Se ajustan a la vez la temperatura medida (con la electricidad medida del aire a
 - **Para Iquitos:** el parámetro que fija la dinámica y que las facturas no identifican es la capacidad térmica. Se adopta la mediana medida en este edificio tropical análogo (2,27 veces la clase media) en lugar de la clase media supuesta (D-V6-56). La envolvente y la apertura siguen calibradas con las facturas.
 
 El alcance sigue siendo el **método en un edificio análogo**: los parámetros de Iquitos no están validados con medición propia.
+
+Los datos crudos se borraron el 2026-11-08 por decisión del propietario, para liberar espacio. Para repetir la validación, hay que descargar los 14 CSV de figshare (`10.6084/m9.figshare.11726517`) y el clima de NASA POWER (13,738 N; 100,532 E; 2018-06-30 a 2019-12-31) en `data/validation/cubems/raw/`.

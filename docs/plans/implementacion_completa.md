@@ -237,7 +237,7 @@ Necesita plan detallado propio: `docs/plans/modulo5_flujo.md`.
 
 ### Tarea 6.2: FR-012.1 a FR-012.5
 
-- **Archivos:** nueva prueba `tests/contract/test_repository_hygiene.py` y `data/audits/repository_hygiene_manifest.json`.
+- **Archivos:** nueva prueba `tests/contract/test_repository_hygiene_rules.py` y `data/audits/repository_hygiene_manifest.json`.
 - **Pruebas:**
   - ninguna rama local o remota `codex/*` ni `cursor/*` (`git branch -a`);
   - la raíz solo tiene los archivos permitidos por FR-012.2;

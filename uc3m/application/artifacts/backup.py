@@ -5,6 +5,11 @@ plus every artifact indexed in ``evidence.json``. The destination is reached onl
 through the injected ``ArtifactStore`` port, whose root is the backup (or the
 restored run) directory. Every step fails closed: nothing is written until the
 whole source has been verified against ``evidence.json``.
+
+A fresh-campaign attempt does not have this layout and is refused here. FR-008.3
+applies to it through ``uc3m.application.training.drive_sync``: a SHA-256 for each
+campaign, evaluation and analysis file and for each attempt snapshot, re-verified on
+copy and on restore, followed by the trust rule of the attempt.
 """
 
 from __future__ import annotations
@@ -24,6 +29,7 @@ from uc3m.ports.artifact_store import ArtifactStore
 BACKUP_MANIFEST = "backup_manifest.json"
 BACKUP_SCHEMA = "uc3m.artifact_backup.v1"
 EVIDENCE = "evidence.json"
+FRESH_ATTEMPT_RECORD = "attempt.json"
 
 
 def _digest(payload: bytes) -> str:
@@ -64,6 +70,11 @@ def _write_checked(store: ArtifactStore, relative_path: str, payload: bytes, *,
 def backup_run(run_root: Path, store: ArtifactStore, policy: RetentionPolicy) -> Dict[str, object]:
     """Copy a verified run into ``store`` and return the written backup manifest."""
     run_root = Path(run_root).resolve()
+    if (run_root / FRESH_ATTEMPT_RECORD).is_file():
+        raise BackupVerificationError(
+            f"{run_root} is a fresh-campaign attempt ({FRESH_ATTEMPT_RECORD}, learning_evidence.json and a "
+            "completion.json without status), not a run of this layout; its hash-verified copy and restore "
+            "are uc3m.application.training.drive_sync and drive_sync_manifest.json")
     evidence_path = run_root / EVIDENCE
     if not evidence_path.is_file():
         raise BackupVerificationError(f"missing {EVIDENCE} in {run_root}")

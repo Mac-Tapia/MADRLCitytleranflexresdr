@@ -11,13 +11,18 @@
 # Estados del ciclo de vida:
 #   active    corrida en curso o parcial (evidence.json status running/partial/blocked).
 #   promoted  evidence.json status=verified y respaldo verificado por
-#             uc3m.application.artifacts.backup_run.
+#             uc3m.application.artifacts.backup_run. En un intento fresco (attempt.json,
+#             sin evidence.json; backup_run lo rechaza): copia verificada por
+#             uc3m.application.training.drive_sync y registrada en drive_sync_manifest.json.
 #   historical resultados retirados por decisión del propietario
 #             (docs/audits/historicos.md): no se
 #             restauran ni se usan; esta política no les aplica.
 #   temporary archivos de trabajo que nunca entran en evidence.json.
 #
-# Reglas:
+# Este archivo entra en la identidad de la campaña (governance en _FRESH_FOLDERS,
+#   uc3m/application/training/preflight.py): no se edita después de preparar, ni un comentario.
+#
+# Reglas (las de evidence.json no aplican a un intento fresco, que sigue drive_sync):
 #   - Solo se respalda una corrida verified cuyo evidence.json verifica todos los hashes.
 #   - Todo artefacto listado en evidence.json se respalda (backup: true); así la
 #     restauración reproduce todos los hashes del contrato de evidencia.

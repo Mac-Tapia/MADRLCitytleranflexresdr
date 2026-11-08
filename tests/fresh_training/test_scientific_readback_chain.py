@@ -13,6 +13,7 @@ import yaml
 
 from tests.fresh_training.test_attempt_acceptance import _stage_learner
 from tests.fresh_training.test_pipeline import synthetic_evaluate
+from tools.eval import build_campaign_statistical_report as report_tool
 from uc3m.application import pipeline
 from uc3m.application.evaluation import fresh_analysis as fa
 from uc3m.application.evaluation.analysis_acceptance import verify_scientific_analysis
@@ -70,11 +71,27 @@ def test_hpo_candidates_remain_distinct_then_complete_test_analysis_reloads(tmp_
     selected = pipeline.freeze_hpo(manifest, config_path)
     assert selected['status'] == 'ok' and (manifest.parent/'test_unlock.json').is_file()
     assert fc.run_stage(manifest, 'confirm', learner, REPO, authorized=True)['status'] == 'training_complete'
+    # The test split stays closed until the candidate is chosen on validation.
+    assert pipeline.main(['evaluate', '--manifest', str(manifest), '--split', 'test_2025']) == 2
+    evaluated = pipeline.evaluate_stage(manifest, stage='confirm', split='validation_2024',
+                                        evaluate=_physical_contract_evaluate)
+    assert len(evaluated['evaluated']) == 144 and not evaluated['failed']
+    pipeline.analyze_stage(manifest, stage='confirm', split='validation_2024')
+    assert pipeline.select_model(manifest, stage='confirm', split='validation_2024')
     evaluated = pipeline.evaluate_stage(manifest, stage='confirm', split='test_2025',
                                         evaluate=_physical_contract_evaluate)
     assert len(evaluated['evaluated']) == 144 and not evaluated['failed']
     folder = pipeline.analyze_stage(manifest, stage='confirm', split='test_2025')
     assert verify_scientific_analysis(manifest, analysis_manifest=folder/'analysis_manifest.json')
+    # D6: the single report tool reads this same analysis, with the 144 confirmatory attempts.
+    arguments = ['--manifest', str(manifest), '--stage', 'confirm', '--split', 'test_2025']
+    assert report_tool.main(arguments + ['--output-dir', str(tmp_path/'report')]) == 0
+    written = json.loads((tmp_path/'report'/report_tool.REPORT_JSON).read_text(encoding='utf-8'))
+    assert written['status'] == 'scientifically_complete' and written['scientific_acceptance'] is False
+    assert written['excluded_attempts'] == [] and len(written['treatments']) == 4*len(written['comparisons'])
+    assert pipeline.main(['select', *arguments]) == 2      # the candidate is never chosen on the test split
     changed = next(manifest.parent.glob('confirm/**/evaluation/test_2025/frozen_runs.json'))
     changed.write_text('{}', encoding='utf-8')
     assert not verify_scientific_analysis(manifest)
+    assert report_tool.main(arguments + ['--output-dir', str(tmp_path/'refused')]) == 2
+    assert not (tmp_path/'refused').exists()

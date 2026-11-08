@@ -1,9 +1,14 @@
-"""Find training results in the modular layout written by the Colab campaign.
+"""Find training results: the attempts of a fresh campaign and the older run layout.
 
-Layout: ``<results_root>/<run_id>/{evidence.json, experiment.json}`` and
+Fresh campaign (``discover_attempts``, ``audit_stage_evaluations``, ``build_seed_table``):
+the campaign manifest is explicit, attempts come from its stage results and the trust
+rule, and evaluations live in ``<attempt_root>/evaluation/<split>/``.
+
+Older run layout (``discover_runs``, ``campaign_layout``):
+``<results_root>/<run_id>/{evidence.json, experiment.json}`` and
 ``<results_root>/<run_id>/<E1|E1_s<seed>>/{data,figures,...}``. Algorithm,
-scenario and seed live in experiment.json, not in the path, so evaluation tools
-resolve directories here instead of hard-coding a campaign folder.
+scenario and seed live in experiment.json, not in the path. A fresh attempt has
+neither file, so this reader does not see it.
 """
 from __future__ import annotations
 
@@ -190,8 +195,60 @@ def read_evaluation_report(attempt: FreshAttempt, split: str, *, require_full_sp
     return report, digest
 
 
+EVALUATION_UNVERIFIED = 'evaluation_unverified'
+
+
+@dataclass(frozen=True)
+class AttemptAudit:
+    """Whether one attempt of a stage counts in its seed table on a split, and why not."""
+    treatment_id: str
+    algorithm: str
+    scenario: str
+    seed: int
+    attempt_id: str
+    included: bool
+    reasons: Tuple[str, ...]
+
+    @property
+    def evaluation_unverified(self) -> bool:
+        return any(reason.startswith(EVALUATION_UNVERIFIED) for reason in self.reasons)
+
+    def as_dict(self) -> Dict[str, object]:
+        return {'treatment_id': self.treatment_id, 'algorithm': self.algorithm, 'scenario': self.scenario,
+                'seed': self.seed, 'attempt_id': self.attempt_id, 'included': self.included,
+                'reasons': list(self.reasons)}
+
+
+def _of_candidate(attempt, candidate: Optional[str]) -> bool:
+    """Sensitivity variants share scenario and seed: the variant is a segment of the treatment id."""
+    return candidate is None or candidate in attempt.treatment_id.split('/')
+
+
+def audit_stage_evaluations(manifest_path: Path, *, stage: str, split: str, require_full_split: bool = False,
+                            candidate: Optional[str] = None) -> List[AttemptAudit]:
+    """Every listed attempt of ``stage`` with the verdict on it for ``split``; it never stops at the first.
+
+    An attempt counts only if the trust rule accepts it and its evaluation verifies with
+    ``read_evaluation_report``, the same reader ``build_seed_table`` uses.
+    """
+    audit = []
+    for attempt in discover_attempts(manifest_path, accepted_only=False):
+        if attempt.stage != stage or not _of_candidate(attempt, candidate):
+            continue
+        reasons = list(attempt.reasons)
+        if attempt.accepted:
+            try:
+                if read_evaluation_report(attempt, split, require_full_split=require_full_split) is None:
+                    reasons.append(f'evaluation_missing:{split}')
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                reasons.append(f'{EVALUATION_UNVERIFIED}:{split}:{exc}')
+        audit.append(AttemptAudit(attempt.treatment_id, attempt.algorithm, attempt.scenario, attempt.seed,
+                                  attempt.attempt_id, not reasons, tuple(reasons)))
+    return audit
+
+
 def build_seed_table(manifest_path: Path, *, stage: str = "confirm", split: str = "validation_2024",
-                     require_full_split: bool = False):
+                     require_full_split: bool = False, candidate: Optional[str] = None):
     """Seed rows from the hash-verified KPI reports of the accepted attempts of one stage.
 
     Layout: ``<attempt_root>/evaluation/<split>/kpi_report.json`` with its sha256 in
@@ -206,7 +263,7 @@ def build_seed_table(manifest_path: Path, *, stage: str = "confirm", split: str 
 
     rows = []
     for attempt in discover_attempts(manifest_path):
-        if attempt.stage != stage:
+        if attempt.stage != stage or not _of_candidate(attempt, candidate):
             continue
         measurement = read_evaluation_report(attempt, split, require_full_split=require_full_split)
         if measurement is not None:

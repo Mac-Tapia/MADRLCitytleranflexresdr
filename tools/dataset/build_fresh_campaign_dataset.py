@@ -767,8 +767,11 @@ def write_v6_fleet_and_bills(out, audit_dir, buildings, inventory, measured, tar
     _write_json(audit_dir/'ev_fleet_v6.json', {str(b): row for b, row in fleet.items()})
 
     index = hourly_index(YEARS, TZ)
-    bt.write_bill_tariff_files(out, v6_bill_rates(design['tariff_signals'], buildings, index), buildings=buildings,
-                               year=index.year.to_numpy(), month=index.month.to_numpy(), hour=index.hour.to_numpy())
+    written = bt.write_bill_tariff_files(out, v6_bill_rates(design['tariff_signals'], buildings, index),
+                                         buildings=buildings, year=index.year.to_numpy(),
+                                         month=index.month.to_numpy(), hour=index.hour.to_numpy())
+    bt.declare_bill_tariff_files(schema, written)          # FR-016.7: the split copies referenced files only
+    _write_json(out/'schema.json', schema)
 
     rules_b01 = design['b01_rules']
     details = bill_details(raw_dir)

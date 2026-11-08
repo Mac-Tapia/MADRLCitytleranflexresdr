@@ -48,6 +48,18 @@ def incremental_bill_cost(power_kw: float, *, energy_usd_kwh: float, demand_usd_
     return cost, peak
 
 
+def declare_bill_tariff_files(schema: dict, written: Mapping[int, Path]) -> dict:
+    """Reference each building's tariff file in the schema (FR-016.7): the split copies only referenced files,
+    and the v3 layer (``citylearn.v3.bill``) reads the tariff from there."""
+    buildings = schema.get('buildings') or {}
+    for building, path in written.items():
+        key = f'Building_{int(building)}'
+        if key not in buildings:
+            raise ValueError(f'{key} has a bill tariff file but is not in the schema')
+        buildings[key]['bill_tariff'] = Path(path).name
+    return schema
+
+
 def write_bill_tariff_files(dataset_dir: Path, rates: Mapping, *, buildings: Iterable[int], year: np.ndarray,
                             month: np.ndarray, hour: np.ndarray) -> dict[int, Path]:
     written = {}

@@ -60,9 +60,6 @@ launch:
     - scripts/monitor_citylearn_training_visible.ps1
     - scripts/training/launch_full_campaign.py
     - uc3m/train.py
-    - deploy/aws/training
-    - deploy/aws/iac-training
-    - deploy/aws/README_TRAINING_AWS.md
     - uc3m/application/training/colab.py
     - tests/unit/application/training/test_colab.py
     - uc3m/configs

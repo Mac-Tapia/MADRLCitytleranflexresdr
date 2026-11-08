@@ -336,6 +336,15 @@
       ],
       "recover_from_commit": "d3ab7653c9df0e80cd582a47f4043809cca9bedc",
       "reason": "Owner decision 2026-11-08: records of the integration of 2026-11-01 and audit trail of the retired dataset citylearn_iquitos_2023_2025 (a forbidden input). No live code or test reads them; records under docs/audits that cite these paths stay as written and resolve through this commit."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "directory",
+      "path": "deploy/",
+      "recover_from_commit": "79183772f7b6d8798eab03a069bda433e9f20077",
+      "reason": "Owner decision 2026-11-08: the demo deployment (AWS, Kubernetes, dashboard, inference, plant adapter) is not used; training runs on Colab and no AWS deployment exists. Its tests went with it; the loopback test of the local training monitor stays."
     }
   ],
   "branch_renames": {

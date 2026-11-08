@@ -15,7 +15,7 @@ LAYOUT = yaml.safe_load((REPO/'governance/repository_layout.yaml').read_text(enc
 LAUNCH = LAYOUT['launch']
 TRAINER = re.compile(r'(train|launch)_citylearn_v3_[a-z0-9_]+\.(py|ps1)')
 STARTS_PROCESS = re.compile(r'subprocess|Popen|check_call|os\.system|Start-Process|^\s*!python|%run')
-SCANNED = ('scripts', 'tools', 'uc3m', 'examples_madrl_v3', 'deploy', '.vscode')
+SCANNED = ('scripts', 'tools', 'uc3m', 'examples_madrl_v3', '.vscode')
 SUFFIXES = {'.py', '.ps1', '.bat', '.cmd', '.sh', '.ipynb', '.json', '.yml', '.yaml', '.tf'}
 
 

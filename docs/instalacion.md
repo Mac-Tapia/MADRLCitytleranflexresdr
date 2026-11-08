@@ -9,7 +9,7 @@ Este manual documenta que dependencias instalar, en que orden y en que archivos 
 Desde 2026-06-16 todas las dependencias del proyecto estan consolidadas en un
 unico archivo en la raiz: **`requirements.txt`**. Windows y AWS instalan a
 partir de ese mismo archivo (antes habia listas duplicadas en el script de
-Windows y en `deploy/aws/training/requirements-training-aws.txt`).
+Windows).
 
 ## 1. Requisitos de sistema
 
@@ -31,7 +31,6 @@ pyproject.toml                                              paquete uc3m (raiz d
 CityLearn/requirements.txt                                  CityLearn v2 base (leido por -e ./CityLearn)
 CityLearn/setup.py                                           instala CityLearn editable
 CityLearn/scripts/setup_citylearn_v3_training_env.ps1        script Windows: crea el venv y corre `pip install -r requirements.txt`
-deploy/aws/training/bootstrap_ubuntu_gpu.sh                  script bash: crea el venv y corre `pip install -r requirements.txt`
 external/HARL/setup.py                                       backend HAPPO (usado via sys.path, no se pip-instala)
 external/MARLlib/requirements.txt                            backend MASAC (usado via sys.path, no se pip-instala el paquete)
 external/off-policy/requirements.txt                         OBSOLETO — no usar (ver nota)
@@ -41,7 +40,7 @@ external/off-policy/requirements.txt                         OBSOLETO — no usa
 
 **Nota sobre `external/HARL` y `external/MARLlib`:** sus paquetes (`harl`, `marllib`) NO se instalan con `pip install -e`. El codigo se usa directamente agregando esas carpetas a `sys.path` en tiempo de ejecucion (ver `CityLearn/scripts/check_citylearn_v3_training_ready.py`). Lo que SI se instala via `requirements.txt` son las dependencias reales que ese codigo necesita para importarse: `ray[rllib]==1.8.0`, `gym==0.20.0`, `icecream`, `supersuit`, `pettingzoo`, etc.
 
-## 3. Instalacion — comando unico (Windows y AWS)
+## 3. Instalacion — comando unico (Windows)
 
 Con el venv Python 3.9 ya creado y activado, **todo el proyecto se instala con un solo comando** desde la raiz:
 
@@ -123,65 +122,6 @@ $Python = ".\.venv39-citylearn-v3\Scripts\python.exe"
     --scenario E1
 ```
 
-## 5. Secuencia de instalacion — AWS Linux
-
-```bash
-bash deploy/aws/training/bootstrap_ubuntu_gpu.sh
-```
-
-Pasos internos del script:
-
-1. `apt-get install`: build-essential, ca-certificates, curl, git, git-lfs, htop, jq, tmux, unzip.
-2. Instala `uv`, crea venv Python 3.9 en `.venv39-citylearn-v3`.
-3. `git submodule update --init --recursive`.
-4. `pip install --upgrade "pip>=23.3,<25" "setuptools>=68,<76" wheel`.
-5. `pip install -r requirements.txt` (mismo archivo que Windows: CityLearn editable, uc3m editable, numpy 1.23.5, ray[rllib]==1.8.0, gym/gymnasium, pvlib, scikit-learn, pandas, scipy, etc.).
-6. `pip install --upgrade torch torchvision --index-url https://download.pytorch.org/whl/cu126` (despues del paso 5, para reemplazar el torch CPU transitorio).
-7. Verifica `nvidia-smi` y reporta `torch.__version__`, `torch.cuda.is_available()`, `torch.cuda.device_count()`.
-
-### 5.1 Entrenamiento AWS con Docker / Docker Compose
-
-Para EC2 Ubuntu con Docker, Compose V2 y NVIDIA Container Toolkit ya
-configurados en el host, el contenedor se construye desde la raiz del repo y
-reutiliza `requirements.txt` como fuente unica de dependencias. No instala
-drivers NVIDIA ni CUDA del host dentro de la imagen; Docker expone la GPU al
-contenedor mediante `--gpus all`/Compose.
-
-```bash
-cd ~/MADRLCitytleranflexresdr
-git submodule update --init --recursive
-docker run --rm --gpus all ubuntu:22.04 nvidia-smi
-docker compose -f deploy/aws/training/docker-compose.yml up -d --build
-docker compose -f deploy/aws/training/docker-compose.yml logs -f
-```
-
-El Compose lanza los 4 MADRL (`happo,masac,matd3,maac`) sobre los 3
-escenarios (`E1,E2,E3`) con `--episodes 75`, `--episode-time-steps 8760`,
-`--cuda`, `--log-chunk-size 10M` y `--log-max-files 100`.
-
-Persistencia y organizacion:
-
-- `outputs/` del host se monta en `/workspace/outputs` dentro del contenedor.
-- Los artefactos quedan en `outputs/aws_citylearn_v3_madrl_<timestamp>/<algoritmo>/<escenario>_seed_0/`.
-- Los logs se ven en `docker compose logs -f` y se guardan rotados en
-  `logs/<escenario>_<algoritmo>-00001.log`, `00002.log`, etc.
-- Si el entrenamiento termina correctamente se crea `outputs/.training_completed`.
-- Si un job falla se crea `outputs/.training_failed` y el contenedor queda
-  inactivo en el siguiente reinicio, evitando bucles infinitos con
-  `restart: unless-stopped`.
-
-Comandos utiles:
-
-```bash
-bash deploy/aws/training/tail_aws_training.sh
-docker exec -it madrl-training nvidia-smi
-docker exec -it madrl-training ps aux | grep python
-docker compose -f deploy/aws/training/docker-compose.yml stop
-docker compose -f deploy/aws/training/docker-compose.yml down
-```
-
-Manual operativo completo: `deploy/aws/README_TRAINING_AWS.md`.
-
 ## 6. Librerias clave y por que la version esta fija
 
 | Libreria | Version fija | Por que no se puede subir |
@@ -203,4 +143,4 @@ Antes de lanzar una corrida larga, confirmar:
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\check_citylearn_v3_training_ready.py --strict --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json --scenario E1
 ```
 
-Documentacion relacionada: `docs/architecture/runbook.md`, `deploy/aws/README_TRAINING_AWS.md`.
+Documentacion relacionada: `docs/architecture/runbook.md`.

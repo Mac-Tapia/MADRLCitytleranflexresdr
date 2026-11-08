@@ -1,8 +1,6 @@
 # Build context = raiz del repo. Usado por:
 #   - Dockerfile (raiz): imagen CPU para tests/inferencia
 #       docker build -t madrl-citylearn:cpu .
-#   - deploy/aws/training/Dockerfile: imagen GPU de entrenamiento
-#       docker build -f deploy/aws/training/Dockerfile -t madrl-training:latest .
 # Excluye artefactos pesados/regenerables que no deben entrar a la imagen.
 
 .git

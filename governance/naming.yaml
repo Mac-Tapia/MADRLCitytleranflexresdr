@@ -19,8 +19,6 @@ conventional_paths:
   .github/*: GitHub client and workflow conventions; existing short names retained.
   .specify/*: Spec Kit client templates and command names; IDs and paths are tool contracts.
   .claude/*: Client settings and hooks; do not rename client contracts.
-  deploy/docker-compose.yml: Docker Compose discovery name.
-  deploy/docker-compose.aws.yml: Existing Compose override selected by deployment clients.
 exceptions:
   docs/architecture/AGENT_HARNESS.md: Stable contract referenced by protected local skills.
   docs/contributions/HARL: Upstream repository identity used by provenance consumers.
@@ -81,9 +79,6 @@ moves:
   data/dataset_audit/training_dataset_ready_manifest.audit_postcheck.json: data/dataset_audit/ready_postcheck.json
   data/dataset_audit/training_dataset_ready_manifest.audit_precheck.json: data/dataset_audit/ready_precheck.json
   data/dataset_audit/training_dataset_ready_manifest.audit_supervision.json: data/dataset_audit/ready_supervision.json
-  deploy/plant-adapter/: deploy/plant_adapter/
-  deploy/aws/README_DEPLOY_AWS.md: deploy/aws/deploy.md
-  deploy/edge/README_DESPLIEGUE_FISICO.md: deploy/edge/deploy.md
   docs/Tesis_Doctoral_MADRL_CityLearn_Iquitos.docx: docs/tesis.docx
   docs/Inforne_tesisV4_FINAL_REVISADO_50_EPISODIOS.docx: docs/informe.docx
   docs/Informe_tesis_MADRL_auditoria_IV_V_VI_VII_final.docx: docs/auditoria_tesis.docx

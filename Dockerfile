@@ -6,7 +6,6 @@
 # en cualquier maquina (Windows/Linux/Mac via Docker).
 #
 # NO es para entrenamiento GPU. El entrenamiento acelerado (CUDA) vive en:
-#   deploy/aws/training/Dockerfile
 #
 # Build (desde la raiz del repo):
 #   docker build -t madrl-citylearn:cpu .

@@ -1,0 +1,1004 @@
+{
+  "dataset": "CU-BEMS (CC BY 4.0), figshare 10.6084/m9.figshare.11726517",
+  "weather": "NASA POWER hourly",
+  "train": "2018-07-01 to 2019-06-30",
+  "test": "2019-07-01 to 2019-12-31",
+  "criteria": {
+    "monthly": {
+      "nmbe_pct": 5.0,
+      "cvrmse_pct": 15.0
+    },
+    "hourly": {
+      "nmbe_pct": 10.0,
+      "cvrmse_pct": 30.0
+    }
+  },
+  "zones": {
+    "floor3_zone1": {
+      "parameters": {
+        "envelope_w_m2k": 1.0447492155898186,
+        "solar_aperture_fraction": 0.014962451625609536,
+        "conditioned_fraction": 0.32773028654946995,
+        "cop": 1.5000000000000002
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4333,
+        "test": 3901,
+        "conditioned_share": 0.2530969152295361
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": 1.6178604188743129,
+            "cvrmse_pct": 57.95262673566175,
+            "n": 4333
+          },
+          "monthly": {
+            "nmbe_pct": 1.8870682107063932,
+            "cvrmse_pct": 9.748217001361144,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -13.765903165253524,
+            "cvrmse_pct": 60.50318848722781,
+            "n": 3901
+          },
+          "monthly": {
+            "nmbe_pct": -16.514849221580747,
+            "cvrmse_pct": 16.607840281934134,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.4869840583142864,
+        "bias_c": 2.133810615234392,
+        "within_1c_share": 0.1745706229172007,
+        "persistence_rmse_c": 0.963700339270431
+      }
+    },
+    "floor3_zone2": {
+      "parameters": {
+        "envelope_w_m2k": 0.5551525728538556,
+        "solar_aperture_fraction": 0.013852416907886116,
+        "conditioned_fraction": 0.22142003967694163,
+        "cop": 1.5000000000000084
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4212,
+        "test": 4408,
+        "conditioned_share": 0.25220417633410674
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.5998181638328907,
+            "cvrmse_pct": 64.41502128618666,
+            "n": 4212
+          },
+          "monthly": {
+            "nmbe_pct": -0.6996217163383271,
+            "cvrmse_pct": 2.5723263553438316,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -9.209820249043435,
+            "cvrmse_pct": 65.38958881304339,
+            "n": 4408
+          },
+          "monthly": {
+            "nmbe_pct": -11.049277088258007,
+            "cvrmse_pct": 14.434266428723605,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 3.398909325632056,
+        "bias_c": 2.6064670887175607,
+        "within_1c_share": 0.19305807622504537,
+        "persistence_rmse_c": 1.0444892667559789
+      }
+    },
+    "floor3_zone4": {
+      "parameters": {
+        "envelope_w_m2k": 0.9497555375174865,
+        "solar_aperture_fraction": 0.0015278282145178186,
+        "conditioned_fraction": 0.2583400630924586,
+        "cop": 1.5000000000048594
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4228,
+        "test": 4410,
+        "conditioned_share": 0.24635332252836303
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.12947212024473614,
+            "cvrmse_pct": 60.724885314495445,
+            "n": 4228
+          },
+          "monthly": {
+            "nmbe_pct": -0.15101508064969763,
+            "cvrmse_pct": 6.926531846593764,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -0.6102273724817393,
+            "cvrmse_pct": 53.7326582649094,
+            "n": 4410
+          },
+          "monthly": {
+            "nmbe_pct": -0.7321067987134636,
+            "cvrmse_pct": 3.554698062787867,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 1.4796662285167586,
+        "bias_c": 0.20641531983956776,
+        "within_1c_share": 0.46870748299319726,
+        "persistence_rmse_c": 1.4327544062339599
+      }
+    },
+    "floor3_zone5": {
+      "parameters": {
+        "envelope_w_m2k": 0.8252639116941256,
+        "solar_aperture_fraction": 0.022755304414277037,
+        "conditioned_fraction": 0.25705852120096706,
+        "cop": 3.4903541093063857
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 3287,
+        "test": 4076,
+        "conditioned_share": 0.24500882792340078
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.0453787722085726,
+            "cvrmse_pct": 75.15215753950098,
+            "n": 3287
+          },
+          "monthly": {
+            "nmbe_pct": -0.05443796001607651,
+            "cvrmse_pct": 10.894439441610949,
+            "n": 6
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -8.93233480669034,
+            "cvrmse_pct": 63.10597060587492,
+            "n": 4076
+          },
+          "monthly": {
+            "nmbe_pct": -10.716172032560296,
+            "cvrmse_pct": 10.947005557839548,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 3.2759923105735527,
+        "bias_c": 2.4638703650298375,
+        "within_1c_share": 0.20804710500490678,
+        "persistence_rmse_c": 1.115540674388994
+      }
+    },
+    "floor4_zone1": {
+      "parameters": {
+        "envelope_w_m2k": 1.743680330268611,
+        "solar_aperture_fraction": 0.024776875306100128,
+        "conditioned_fraction": 0.7045767064167263,
+        "cop": 3.546699800086828
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 2594,
+        "test": 4336,
+        "conditioned_share": 0.25252525252525254
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": 2.340592456631737,
+            "cvrmse_pct": 52.33207451005142,
+            "n": 2594
+          },
+          "monthly": {
+            "nmbe_pct": 2.807628175811605,
+            "cvrmse_pct": 9.708115474421371,
+            "n": 6
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -4.9863772170781875,
+            "cvrmse_pct": 48.189482310945905,
+            "n": 4336
+          },
+          "monthly": {
+            "nmbe_pct": -5.982272666799067,
+            "cvrmse_pct": 9.26749858890294,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.0471826634289223,
+        "bias_c": 1.1686312822181935,
+        "within_1c_share": 0.3505535055350554,
+        "persistence_rmse_c": 1.3562800420756576
+      }
+    },
+    "floor4_zone2": {
+      "parameters": {
+        "envelope_w_m2k": 0.870192746661934,
+        "solar_aperture_fraction": 0.00956013110082149,
+        "conditioned_fraction": 0.2299601533546209,
+        "cop": 1.5000000000000002
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4005,
+        "test": 4335,
+        "conditioned_share": 0.2486810551558753
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": 0.3483901787510221,
+            "cvrmse_pct": 47.66842060832932,
+            "n": 4005
+          },
+          "monthly": {
+            "nmbe_pct": 0.4063537215993968,
+            "cvrmse_pct": 5.891749392284564,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": 6.15620858795584,
+            "cvrmse_pct": 46.43135291361431,
+            "n": 4335
+          },
+          "monthly": {
+            "nmbe_pct": 7.385746164761411,
+            "cvrmse_pct": 9.89496738159356,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.0260669618260674,
+        "bias_c": -0.2000010565575459,
+        "within_1c_share": 0.3748558246828143,
+        "persistence_rmse_c": 1.1828210754479485
+      }
+    },
+    "floor4_zone4": {
+      "parameters": {
+        "envelope_w_m2k": 1.2944767937802413,
+        "solar_aperture_fraction": 0.015018049486702871,
+        "conditioned_fraction": 0.24017731506627457,
+        "cop": 1.5032090551553423
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 4022,
+        "test": 3424,
+        "conditioned_share": 0.25382755842062854
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.5376226944741558,
+            "cvrmse_pct": 40.684179057807796,
+            "n": 4022
+          },
+          "monthly": {
+            "nmbe_pct": -0.6270705279862478,
+            "cvrmse_pct": 5.644693116431088,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -6.626366293260232,
+            "cvrmse_pct": 43.660207412275064,
+            "n": 3424
+          },
+          "monthly": {
+            "nmbe_pct": -7.949317227276794,
+            "cvrmse_pct": 8.756841285858972,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.3992830188827265,
+        "bias_c": 1.6764590824578467,
+        "within_1c_share": 0.32651869158878505,
+        "persistence_rmse_c": 1.5969891974537356
+      }
+    },
+    "floor4_zone5": {
+      "parameters": {
+        "envelope_w_m2k": 0.42943873217410766,
+        "solar_aperture_fraction": 0.008508679753405225,
+        "conditioned_fraction": 0.1403313376533226,
+        "cop": 1.6311903965191867
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 4517,
+        "test": 4336,
+        "conditioned_share": 0.2506494973455326
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.2838085270966619,
+            "cvrmse_pct": 63.83660761452365,
+            "n": 4517
+          },
+          "monthly": {
+            "nmbe_pct": -0.3310366452136232,
+            "cvrmse_pct": 4.744948802733572,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": 1.1022250032936485,
+            "cvrmse_pct": 61.36901097013652,
+            "n": 4336
+          },
+          "monthly": {
+            "nmbe_pct": 1.3223649601322836,
+            "cvrmse_pct": 8.597091358082897,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.2613273928721496,
+        "bias_c": 0.22855813241448356,
+        "within_1c_share": 0.29428044280442806,
+        "persistence_rmse_c": 0.9838884852154641
+      }
+    },
+    "floor5_zone1": {
+      "parameters": {
+        "envelope_w_m2k": 2.1228818708986754,
+        "solar_aperture_fraction": 0.021375358187526713,
+        "conditioned_fraction": 0.26415382179837626,
+        "cop": 1.7799656319876438
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 4551,
+        "test": 3321,
+        "conditioned_share": 0.24542682926829268
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.2039063091635616,
+            "cvrmse_pct": 36.39933103738972,
+            "n": 4551
+          },
+          "monthly": {
+            "nmbe_pct": -0.23783842184353202,
+            "cvrmse_pct": 6.456377033807064,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -16.126690080319786,
+            "cvrmse_pct": 47.24517339933192,
+            "n": 3321
+          },
+          "monthly": {
+            "nmbe_pct": -19.346200927429688,
+            "cvrmse_pct": 19.89674029223765,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.99311941356605,
+        "bias_c": 2.4069405354520463,
+        "within_1c_share": 0.1951219512195122,
+        "persistence_rmse_c": 2.376807261166927
+      }
+    },
+    "floor5_zone2": {
+      "parameters": {
+        "envelope_w_m2k": 0.968047388270138,
+        "solar_aperture_fraction": 0.014368681477501661,
+        "conditioned_fraction": 0.5641513455214731,
+        "cop": 3.4462639337850334
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 4149,
+        "test": 2750,
+        "conditioned_share": 0.24481808957819973
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.9182221766529335,
+            "cvrmse_pct": 57.5214385198563,
+            "n": 4149
+          },
+          "monthly": {
+            "nmbe_pct": -1.071001009130495,
+            "cvrmse_pct": 5.8443693244944,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": 10.171480933987022,
+            "cvrmse_pct": 60.942496363901476,
+            "n": 2750
+          },
+          "monthly": {
+            "nmbe_pct": 12.709727767059235,
+            "cvrmse_pct": 16.38465364329215,
+            "n": 5
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.442529707675902,
+        "bias_c": -0.40568774059969637,
+        "within_1c_share": 0.23527272727272727,
+        "persistence_rmse_c": 1.1875289691828883
+      }
+    },
+    "floor5_zone4": {
+      "parameters": {
+        "envelope_w_m2k": 1.466412097548464,
+        "solar_aperture_fraction": 0.02146202764954493,
+        "conditioned_fraction": 0.6928617658322209,
+        "cop": 4.509543994236392
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 4215,
+        "test": 4273,
+        "conditioned_share": 0.2501178133836004
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.7867104048021922,
+            "cvrmse_pct": 45.048689958074846,
+            "n": 4215
+          },
+          "monthly": {
+            "nmbe_pct": -0.9176110526237732,
+            "cvrmse_pct": 5.027242904917695,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -2.2191857640364194,
+            "cvrmse_pct": 44.60700056173702,
+            "n": 4273
+          },
+          "monthly": {
+            "nmbe_pct": -2.662399695941109,
+            "cvrmse_pct": 8.069997099842245,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.6504713125022072,
+        "bias_c": 1.7687302193539904,
+        "within_1c_share": 0.2742803650830798,
+        "persistence_rmse_c": 1.1053770594230392
+      }
+    },
+    "floor5_zone5": {
+      "parameters": {
+        "envelope_w_m2k": 0.21635450310175827,
+        "solar_aperture_fraction": 0.012273930814980457,
+        "conditioned_fraction": 0.11522236337317342,
+        "cop": 1.5000000000000044
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4588,
+        "test": 4403,
+        "conditioned_share": 0.2535869202535869
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.259369347092205,
+            "cvrmse_pct": 60.267223216483416,
+            "n": 4588
+          },
+          "monthly": {
+            "nmbe_pct": -0.30253161747252694,
+            "cvrmse_pct": 8.6120501186148,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -6.632111726163197,
+            "cvrmse_pct": 54.51615593032342,
+            "n": 4403
+          },
+          "monthly": {
+            "nmbe_pct": -7.956726546055977,
+            "cvrmse_pct": 10.20743719341129,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 3.233810694874493,
+        "bias_c": 2.260366073906413,
+        "within_1c_share": 0.21530774471950942,
+        "persistence_rmse_c": 0.974803225329238
+      }
+    },
+    "floor6_zone1": {
+      "parameters": {
+        "envelope_w_m2k": 0.11977886386140307,
+        "solar_aperture_fraction": 0.005826423399514078,
+        "conditioned_fraction": 0.3484600442242464,
+        "cop": 1.5000000000000002
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4375,
+        "test": 2720,
+        "conditioned_share": 0.24918957011980267
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": 2.192368215974702,
+            "cvrmse_pct": 54.931132349724216,
+            "n": 4375
+          },
+          "monthly": {
+            "nmbe_pct": 2.5571782871128907,
+            "cvrmse_pct": 9.745302995625295,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": 0.9068842250595304,
+            "cvrmse_pct": 49.54650687243941,
+            "n": 2720
+          },
+          "monthly": {
+            "nmbe_pct": 1.2087344156553246,
+            "cvrmse_pct": 3.6280294399334467,
+            "n": 4
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 1.6476017334378326,
+        "bias_c": -0.48840195933296765,
+        "within_1c_share": 0.4801470588235294,
+        "persistence_rmse_c": 1.2190473402863873
+      }
+    },
+    "floor6_zone2": {
+      "parameters": {
+        "envelope_w_m2k": 0.935050990997136,
+        "solar_aperture_fraction": 0.00735860632088029,
+        "conditioned_fraction": 0.9999999629351971,
+        "cop": 5.447475239163336
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 4571,
+        "test": 2215,
+        "conditioned_share": 0.26215738284703805
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.38060369611315986,
+            "cvrmse_pct": 62.08119569331745,
+            "n": 4571
+          },
+          "monthly": {
+            "nmbe_pct": -0.44394050312330896,
+            "cvrmse_pct": 8.076054222302783,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -15.019636353974429,
+            "cvrmse_pct": 65.90826223890686,
+            "n": 2215
+          },
+          "monthly": {
+            "nmbe_pct": -20.017140639698656,
+            "cvrmse_pct": 21.085877596028226,
+            "n": 4
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.128266153205651,
+        "bias_c": 1.656656278190431,
+        "within_1c_share": 0.19683972911963882,
+        "persistence_rmse_c": 1.0030312681368674
+      }
+    },
+    "floor6_zone4": {
+      "parameters": {
+        "envelope_w_m2k": 1.5026219855774716,
+        "solar_aperture_fraction": 0.017653842696990107,
+        "conditioned_fraction": 0.9999990379411916,
+        "cop": 5.889273967584133
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 4605,
+        "test": 2720,
+        "conditioned_share": 0.25160409556313995
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -0.346496953885631,
+            "cvrmse_pct": 54.244952906017595,
+            "n": 4605
+          },
+          "monthly": {
+            "nmbe_pct": -0.40415866195534467,
+            "cvrmse_pct": 1.8913444992715307,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -0.07719098534490436,
+            "cvrmse_pct": 41.14956140932449,
+            "n": 2720
+          },
+          "monthly": {
+            "nmbe_pct": -0.10288347507490057,
+            "cvrmse_pct": 3.6454635327738356,
+            "n": 4
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 1.6834040867449742,
+        "bias_c": 0.9284969123455517,
+        "within_1c_share": 0.4588235294117647,
+        "persistence_rmse_c": 1.257433589889706
+      }
+    },
+    "floor6_zone5": {
+      "parameters": {
+        "envelope_w_m2k": 0.23218488614837546,
+        "solar_aperture_fraction": 0.006996809209208539,
+        "conditioned_fraction": 0.5760975458668365,
+        "cop": 5.999999999999999
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4529,
+        "test": 2718,
+        "conditioned_share": 0.2522423071615841
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": -2.4264097325242404,
+            "cvrmse_pct": 76.94584715172651,
+            "n": 4529
+          },
+          "monthly": {
+            "nmbe_pct": -2.830186313464656,
+            "cvrmse_pct": 9.075674986613867,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -21.122523825163988,
+            "cvrmse_pct": 91.10830340508187,
+            "n": 2718
+          },
+          "monthly": {
+            "nmbe_pct": -28.153003302904366,
+            "cvrmse_pct": 25.843149643228003,
+            "n": 4
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.7433727286973566,
+        "bias_c": 1.9889563419845393,
+        "within_1c_share": 0.20566593083149373,
+        "persistence_rmse_c": 1.062561383720845
+      }
+    },
+    "floor7_zone1": {
+      "parameters": {
+        "envelope_w_m2k": 2.551563299524848,
+        "solar_aperture_fraction": 0.05495478708685736,
+        "conditioned_fraction": 0.3384054904935666,
+        "cop": 1.5000000000000049
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4522,
+        "test": 4408,
+        "conditioned_share": 0.29552071668533036
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": 3.3416169383219603,
+            "cvrmse_pct": 40.55118278112827,
+            "n": 4522
+          },
+          "monthly": {
+            "nmbe_pct": 3.8976909644359212,
+            "cvrmse_pct": 13.647340377435343,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -4.223276269552993,
+            "cvrmse_pct": 32.307919064797645,
+            "n": 4408
+          },
+          "monthly": {
+            "nmbe_pct": -5.066781811230487,
+            "cvrmse_pct": 4.847134401461636,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.544955671600743,
+        "bias_c": 1.7891709926395796,
+        "within_1c_share": 0.33008166969147007,
+        "persistence_rmse_c": 1.5205249722209113
+      }
+    },
+    "floor7_zone2": {
+      "parameters": {
+        "envelope_w_m2k": 2.155441839117418,
+        "solar_aperture_fraction": 0.02246590587922705,
+        "conditioned_fraction": 0.3465124149197283,
+        "cop": 1.5000000000005331
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4599,
+        "test": 4411,
+        "conditioned_share": 0.28479467258601554
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": 1.0391322680846615,
+            "cvrmse_pct": 40.7324233519917,
+            "n": 4599
+          },
+          "monthly": {
+            "nmbe_pct": 1.2120573740875786,
+            "cvrmse_pct": 3.533544809293562,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": 0.5140446068084835,
+            "cvrmse_pct": 40.64877216597757,
+            "n": 4411
+          },
+          "monthly": {
+            "nmbe_pct": 0.6167136837974365,
+            "cvrmse_pct": 7.401669737085387,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 1.5469052701250083,
+        "bias_c": 0.5284725286371516,
+        "within_1c_share": 0.4892314667875765,
+        "persistence_rmse_c": 1.1471848210658189
+      }
+    },
+    "floor7_zone4": {
+      "parameters": {
+        "envelope_w_m2k": 2.2189303311457884,
+        "solar_aperture_fraction": 0.057587590518255266,
+        "conditioned_fraction": 0.25716533693994875,
+        "cop": 1.5000000000027336
+      },
+      "at_bound": [
+        "cop"
+      ],
+      "hours": {
+        "train": 4583,
+        "test": 4243,
+        "conditioned_share": 0.256288239292998
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": 1.1830282631758533,
+            "cvrmse_pct": 39.0203379421293,
+            "n": 4583
+          },
+          "monthly": {
+            "nmbe_pct": 1.3798984840025543,
+            "cvrmse_pct": 4.933565413185978,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -2.6406350360762154,
+            "cvrmse_pct": 37.00969130877348,
+            "n": 4243
+          },
+          "monthly": {
+            "nmbe_pct": -3.168015222164117,
+            "cvrmse_pct": 5.093608525925883,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 2.799475510625428,
+        "bias_c": 1.8419708734179843,
+        "within_1c_share": 0.3191138345510252,
+        "persistence_rmse_c": 1.6013906695836384
+      }
+    },
+    "floor7_zone5": {
+      "parameters": {
+        "envelope_w_m2k": 0.2521463395789665,
+        "solar_aperture_fraction": 0.023805269226200788,
+        "conditioned_fraction": 0.15647756382878167,
+        "cop": 1.7425577655130857
+      },
+      "at_bound": [],
+      "hours": {
+        "train": 4209,
+        "test": 4410,
+        "conditioned_share": 0.2631395753567699
+      },
+      "energy_g14": {
+        "train": {
+          "hourly": {
+            "nmbe_pct": 0.3854419251447243,
+            "cvrmse_pct": 73.76921050069471,
+            "n": 4209
+          },
+          "monthly": {
+            "nmbe_pct": 0.44957540773988086,
+            "cvrmse_pct": 8.271406360260453,
+            "n": 7
+          },
+          "passed": false
+        },
+        "test": {
+          "hourly": {
+            "nmbe_pct": -18.20176404755599,
+            "cvrmse_pct": 84.85773335643105,
+            "n": 4410
+          },
+          "monthly": {
+            "nmbe_pct": -21.83716399610186,
+            "cvrmse_pct": 21.61746521567251,
+            "n": 6
+          },
+          "passed": false
+        }
+      },
+      "temperature_test": {
+        "rmse_c": 5.8105467959984365,
+        "bias_c": 4.282104484614333,
+        "within_1c_share": 0.07006802721088436,
+        "persistence_rmse_c": 1.40017647179533
+      }
+    }
+  },
+  "summary": {
+    "zones": 20,
+    "energy_g14_test_passed": 0,
+    "median_temperature_rmse_c": 2.4647568829950943
+  },
+  "scope": "validates the 5R1C method in an analogous tropical office, not the Iquitos parameters"
+}

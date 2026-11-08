@@ -14,6 +14,8 @@ approved_raw_roots:
   - CityLearn/data/buildingcsv
   - data/campaigns/{storage_alias}/raw
   - data/tariffs/osinergmin/raw
+  # SPEC-016 D-V6-53: open tropical building data to validate the 5R1C method (CU-BEMS, CC BY 4.0)
+  - data/validation/cubems/raw
 
 # Retired by T0 (closed list R-01..R-07). Any read of these paths by the fresh
 # profile fails with retired_historical_input, even when the path is absent.

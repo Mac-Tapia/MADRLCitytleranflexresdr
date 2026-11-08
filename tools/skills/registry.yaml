@@ -220,32 +220,27 @@
       }
     }
   ],
-  "legacy_skills": [
-    {
-      "name": "madrl-citylearn-thesis-plan",
-      "path": "agent-skills/madrl-citylearn-thesis-plan",
-      "status": "pending_license_and_collision_review",
-      "active": false
-    },
-    {
-      "name": "madrl-citylearn-thesis-integrated",
-      "path": "agent-skills/madrl-citylearn-thesis-integrated",
-      "status": "pending_license_and_collision_review",
-      "active": false
-    },
-    {
-      "name": "iquitos-citylearn-dataset",
-      "path": "agent-skills/iquitos-citylearn-dataset",
-      "status": "pending_license_and_collision_review",
-      "active": false
-    },
-    {
-      "name": "madrl-citylearn-literature-review",
-      "path": "agent-skills/madrl-citylearn-literature-review",
-      "status": "pending_license_and_collision_review",
-      "active": false
-    }
-  ],
+  "legacy_skills_review": {
+    "date": "2026-11-08",
+    "requirement": "FR-007.6",
+    "task": "docs/plans/implementacion_completa.md 7.1",
+    "result": "0 of 4 migrated, 4 retired",
+    "owner_decision": "Retired by the owner on 2026-11-08: no license could be verified, and tools/skills/ supersedes them.",
+    "retired": [
+      "madrl-citylearn-thesis-plan",
+      "madrl-citylearn-thesis-integrated",
+      "iquitos-citylearn-dataset",
+      "madrl-citylearn-literature-review"
+    ],
+    "source_paths": [
+      "agent-skills/madrl-citylearn-thesis-plan",
+      "agent-skills/madrl-citylearn-thesis-integrated",
+      "agent-skills/iquitos-citylearn-dataset",
+      "agent-skills/madrl-citylearn-literature-review"
+    ],
+    "recover_from_commit": "034372dab3783808d91d9f1be2e5b0d0a20847f2"
+  },
+  "legacy_skills": [],
   "connectors": [
     {
       "name": "google-drive-mcp",
@@ -282,8 +277,6 @@
   ],
   "pending": [
     "real_client_discovery_and_invocation",
-    "measured_agent_efficiency",
-    "legacy_skills_migration",
-    "legacy_auto_publish_hook_decision"
+    "measured_agent_efficiency"
   ]
 }

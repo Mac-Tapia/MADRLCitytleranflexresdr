@@ -10,7 +10,7 @@ Deriva del [diseño aprobado](../../docs/design/modernizacion.md), sin sustituir
 - FR-007.3: descubrimiento de una única copia mediante enlaces locales de Codex/Claude; rechazar enlaces sobrantes o desviados, sin eliminar contenidos ajenos.
 - FR-007.4: cubrir backend, frontend, arquitectura, despliegue, pruebas y harness sin contratar servicios, instalar runtime/frameworks o autorizar exposición remota implícitamente.
 - FR-007.5: separar implementador, auditor de solo lectura y coordinador. Encargos con requisito, propiedad de archivos y evidencia, no escritura concurrente ni auto-publicación.
-- FR-007.6: mantener pendientes de migración/licencias de skills legados, decisión del hook heredado, invocación real en clientes y medición de eficiencia. La validación estática no cierra esas puertas.
+- FR-007.6: mantener pendientes la invocación real en clientes y la medición de eficiencia (skills legados retirados y hook heredado eliminado por el propietario, 2026-11-08). La validación estática no cierra esas puertas.
 
 ## Aceptación
 

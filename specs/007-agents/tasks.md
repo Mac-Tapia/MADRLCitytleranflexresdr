@@ -9,7 +9,7 @@
 - [x] Cerrar verificación del registro y enlaces tras revisión independiente: se corrigieron inventario unilateral y hashes opcionales; nueve tests de skills y tres de SPEC/panel pasan. Registro y enlaces verificados en Windows PowerShell.
 - [ ] Confirmar descubrimiento e invocación en una nueva sesión real de Codex y Claude.
 - [ ] Medir eficiencia/calidad frente a línea base por tarea comparable.
-- [ ] Resolver licencias/rutas/colisiones de los cuatro skills legados antes de migrar.
+- [x] Skills legados: el propietario retiró los cuatro el 2026-11-08, sin licencia verificable; recuperables del commit fijado en `tools/skills/registry.yaml`.
 - [ ] Decidir con el usuario la sustitución/desactivación del hook automático heredado.
 
 No se consideran completados entrenamiento, evaluación multisemilla, tesis ni jurado por instalar estos skills. Estado global: [STATUS.md](../STATUS.md).

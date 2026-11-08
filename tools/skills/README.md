@@ -10,4 +10,4 @@ La instalación canónica se conserva aquí. Los enlaces locales generados para 
 
 Guía de selección y roles: `docs/architecture/AGENT_HARNESS.md`. Los skills no instalan FastAPI, Docker, Playwright ni una plataforma de agentes: son instrucciones y recursos para tareas autorizadas. Tampoco garantizan mayor velocidad o precisión.
 
-Los directorios google-drive-mcp y notebooklm-mcp son conectores heredados, no skills válidos; no se activan ni se requieren. No se han eliminado credenciales, sesiones o perfiles del usuario. Los cuatro skills en agent-skills siguen pendientes de revisión/migración, sin copia a ubicaciones globales.
+Los directorios google-drive-mcp y notebooklm-mcp son conectores heredados, no skills válidos; no se activan ni se requieren. No se han eliminado credenciales, sesiones o perfiles del usuario. The four legacy skills from the removed `agent-skills/` folder are not migrated: their license cannot be verified. Their pinned source, hashes, reasons and the pending owner decision are in `legacy_skills` and `legacy_skills_review` of the registry.

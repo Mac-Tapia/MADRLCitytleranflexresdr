@@ -42,7 +42,7 @@ Los enlaces son junctions locales Windows ignorados por Git. Tras clonar se rege
 ## Riesgos y pendientes
 
 - El corte de instalación encontró un Stop hook automático. En la revisión del 2026-11-01, `.claude/settings.json` contiene `{}` y ese hook no está habilitado allí. No se interpreta ningún mecanismo de guardado como autorización para agregar todo ni publicar trabajo concurrente. Esta ejecución no modificó dicha configuración.
-- Los cuatro skills legados en `agent-skills/` quedan inventariados pero no promovidos, pendientes de licencia, comandos/rutas y duplicados globales. No mover el dataset skill homónimo de un global activo sin resolver esa colisión.
+- Los cuatro skills legados, retirados del árbol en `ebb210a9`, quedan retirados por decisión del propietario (2026-11-08), sin licencia verificable; `tools/skills/registry.yaml` conserva su commit de recuperación. No mover el dataset skill homónimo de un global activo sin resolver esa colisión.
 - Los dos MCP legados no son skills, no se arrancan y no forman parte de la ruta requerida. No se inspeccionan ni borran secretos.
 - No se ejecutaron builds Docker ni pruebas Playwright por instalar instrucciones. Falta ensayo de descubrimiento/invocación en ambas aplicaciones y evaluación de eficiencia contra una línea base: éxito por tarea, hallazgos escapados, tiempo/tokens, conflictos y retrabajo.
 - Persisten los pendientes científicos y de software de `specs/STATUS.md`; instalar skills no los cierra.

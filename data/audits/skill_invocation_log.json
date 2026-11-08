@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "requirement": "FR-007.6",
+  "task": "docs/plans/implementacion_completa.md 7.2",
+  "updated": "2026-11-08",
+  "gate_closed": false,
+  "note": "No entry: the repository holds no record of a skill invocation with its client, task, tokens or time, and result. Static validation of tools/skills does not close this gate, and entries are added only from a real session with measured values.",
+  "entries_schema": {
+    "required": [
+      "client",
+      "evidence",
+      "result",
+      "skill",
+      "task"
+    ],
+    "one_of_required": [
+      "tokens",
+      "time_seconds"
+    ],
+    "fields": {
+      "skill": "name registered in tools/skills/registry.yaml",
+      "client": "client application and version that ran the session",
+      "task": "task or requirement identifier",
+      "tokens": "measured tokens, or null when time_seconds is present",
+      "time_seconds": "measured elapsed seconds, or null when tokens is present",
+      "result": "observed outcome of the invocation",
+      "evidence": "repository path or commit that lets a reviewer check the record"
+    }
+  },
+  "entries": []
+}

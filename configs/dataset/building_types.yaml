@@ -52,6 +52,7 @@ schedules:
     thermal_time_constant_h: 3.5
     generator_cooling_cop: 3.0
     machine_days: laboral
+    holiday_rule: closed  # D-V6-60
     machine_cycle_profile:
     - 0.6
     - 0.4
@@ -96,6 +97,7 @@ schedules:
     thermal_time_constant_h: 2.0
     generator_cooling_cop: 4.0
     machine_days: todos
+    holiday_rule: unchanged  # D-V6-60
     machine_cycle_profile:
     - 0.4
     - 0.35
@@ -142,6 +144,7 @@ schedules:
     thermal_time_constant_h: 2.0
     generator_cooling_cop: 4.0
     machine_days: todos
+    holiday_rule: unchanged  # D-V6-60
     machine_cycle_profile:
     - 0.4
     - 0.35
@@ -187,6 +190,7 @@ schedules:
     thermal_time_constant_h: 3.0
     generator_cooling_cop: 4.5
     machine_days: todos
+    holiday_rule: like_sunday  # D-V6-60
     machine_cycle_profile:
     - 0.25
     - 0.3
@@ -233,6 +237,7 @@ schedules:
     thermal_time_constant_h: 4.0
     generator_cooling_cop: 2.8
     machine_days: todos
+    holiday_rule: unchanged  # D-V6-60
     machine_cycle_profile:
     - 0.45
     - 0.35
@@ -278,6 +283,7 @@ schedules:
     thermal_time_constant_h: 3.0
     generator_cooling_cop: 2.8
     machine_days: laboral
+    holiday_rule: closed  # D-V6-60
     machine_cycle_profile:
     - 0.6
     - 0.4
@@ -322,6 +328,7 @@ schedules:
     thermal_time_constant_h: 2.5
     generator_cooling_cop: 2.5
     machine_days: laboral
+    holiday_rule: closed  # D-V6-60
     machine_cycle_profile:
     - 0.55
     - 0.45
@@ -366,6 +373,7 @@ schedules:
     thermal_time_constant_h: 5.0
     generator_cooling_cop: 3.5
     machine_days: todos
+    holiday_rule: unchanged  # D-V6-60
     machine_cycle_profile:
     - 0.4
     - 0.35
@@ -411,6 +419,7 @@ schedules:
     thermal_time_constant_h: 2.0
     generator_cooling_cop: 2.5
     machine_days: todos
+    holiday_rule: like_sunday  # D-V6-60
     machine_cycle_profile:
     - 0.4
     - 0.35
@@ -456,6 +465,7 @@ schedules:
     thermal_time_constant_h: 4.0
     generator_cooling_cop: 2.5
     machine_days: laboral
+    holiday_rule: closed  # D-V6-60
     machine_cycle_profile:
     - 0.45
     - 0.35
@@ -501,6 +511,7 @@ schedules:
     thermal_time_constant_h: 5.0
     generator_cooling_cop: 3.5
     machine_days: todos
+    holiday_rule: unchanged  # D-V6-60
     machine_cycle_profile:
     - 0.4
     - 0.35

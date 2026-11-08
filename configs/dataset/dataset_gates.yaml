@@ -5,3 +5,16 @@ peak_contrast:
     value: 0.5
     origin: implementation_rule
     note: "D-V6-47: +/-50 % between the generated monthly peak and the bill-implied peak, E / (load factor x hours); chosen under the owner's delegation of 2026-11-07, not an owner decision. D-V6-48 (owner 2026-11-07): only generated peaks above (1 + threshold) x the bill-implied peak are re-distilled and fail the gate; peaks below are expected (15-minute bill maximum vs hourly data) and reported."
+indoor_temperature:
+  low_c:
+    value: 18.0
+    origin: user_decision
+    note: "D-V6-60 (owner, 2026-11-08): indoor temperature range in operating hours, 18 to 25 C; never below it at any hour."
+  high_c:
+    value: 25.0
+    origin: user_decision
+    note: "D-V6-60 (owner, 2026-11-08): also the cap of the set point of every building function and of the comfort band."
+  off_hours_excess_c:
+    value: 8.0
+    origin: implementation_rule
+    note: "D-V6-61: with the equipment off, no hotter than the outdoor air plus this margin; a detector of a sealed-box model (trial11 reached about 30 C over outdoors), not a literature value. The largest excess of the built data is B01 at 6.9 C, whose base load stays inside its zone."

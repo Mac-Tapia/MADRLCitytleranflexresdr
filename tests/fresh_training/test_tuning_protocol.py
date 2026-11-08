@@ -66,7 +66,7 @@ def test_equal_hpo_budget_across_algorithms(dag, protocol):
         assert searched == grid or algorithm == 'MASAC'
         assert protocol.equivalents[algorithm] == collapsed
     # Native capacity (no rnn_hidden_dim clamp): no configuration collapses. HAPPO, MATD3 and MAAC keep 8 distinct
-    # configurations; MASAC searches 4 on iquitos_v6 (D-M3-8, 84 GiB for rnn 256): 252 treatments in total.
+    # configurations; MASAC searches 4 on iquitos_v6 (D-M3-8, 105 GiB for rnn 256): 252 treatments in total.
     for algorithm in ('HAPPO', 'MASAC', 'MATD3', 'MAAC'):
         assert all(len(group) == 1 for group in dag.collapsed_candidates['hpo'][algorithm].values()), algorithm
     assert len(hpo) == (3*8 + 4)*9            # D-M3-8: MASAC searches 4 of the 8 grid points on iquitos_v6

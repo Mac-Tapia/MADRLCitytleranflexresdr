@@ -125,7 +125,7 @@ def test_the_guard_applies_the_vram_of_the_attempts_candidate():
     by_candidate = {int(k): v for k, v in
                     NATIVE['algorithms']['MASAC']['runtime_requirements']['min_vram_gib_by_rnn_hidden_dim'].items()}
     # D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128; the guard applies its VRAM and refuses a
-    # candidate it has no requirement for (the 256 of the shared grid, 84 GiB, above an 80 GB GPU).
+    # candidate it has no requirement for (the 256 of the shared grid, 105 GiB, above an 80 GB GPU).
     (searched,) = by_candidate
     assert _masac_check(['--rnn-hidden-dim', str(searched)], vram=by_candidate[searched])['accepted'] is True
     short = _masac_check(['--rnn-hidden-dim', str(searched)], vram=by_candidate[searched] - 1)

@@ -59,6 +59,12 @@ occupant_gain_w:
   origin: assumption
   note: "Sensible + latent gain per seated occupant doing light work (75 + 55 W), the typical value of ASHRAE Fundamentals ch. 18 Table 1, which was not opened."
 
+natural_ventilation_ach:
+  value: 5.0
+  origin: assumption
+  assumption: true
+  source: "D-V6-61. Inside the 0.7 to 8 air changes per hour reported for schools by Alibaba (2018), Sustainability 10, 3284, p. 3, https://doi.org/10.3390/su10093284, citing its reference 49. No measurement of a hot-humid building was found."
+  reason: "Windows open when the equipment is off and the air is hotter than outdoors. Changing from 2 to 5 lowers the hottest off-hour by about 1 C in the offline run, so the choice has little weight."
 ceiling_height_m:
   value: 3.0
   origin: assumption

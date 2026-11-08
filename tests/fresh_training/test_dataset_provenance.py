@@ -4,6 +4,7 @@ All inputs are tiny synthetic billing files written under tmp_path; nothing
 is read from the prior hourly dataset or from earlier outputs.
 """
 import json
+from pathlib import Path
 
 import pytest
 
@@ -98,6 +99,78 @@ def test_b06_fit_excludes_heldout_years(tmp_path):
     # The partial September (load factor 0.15) stays measured but is not used to fit.
     assert base[(2023, 9)].provenance == 'measured' and 'partial_month_suspect' in base[(2023, 9)].flags
     assert all('B06:2023-09' not in base[k].inputs for k in modeled)
+
+
+def _shifted_bill(path, offset, rows=24):
+    registers = [1000.0 + 137.0*i for i in range(rows)]
+    totals = [registers[i - offset] if 0 <= i - offset < rows else 5000.0 for i in range(rows)]
+    months = ('ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'set', 'oct', 'nov', 'dic')
+    lines = ['Edificio;Mes;Anio;EnergiaActivaHoraPunta;EnergiaActivaFueraPunta;EnergiaReactiva;FactorCarga;'
+             'totalEnergiaActiva;TotalFacturado;Tarifa']
+    for i, (register, total) in enumerate(zip(registers, totals)):
+        lines.append(f'X;{months[i % 12]};{2023 + i//12};{register*0.2:.2f};{register*0.8:.2f};0;0,5;{total:.2f};100;MT3')
+    path.write_text('\n'.join(lines).replace('.', ','), encoding='utf-8')
+    return registers
+
+
+@pytest.mark.parametrize('offset', [7, -5])
+def test_a_shifted_printed_total_never_moves_energy_between_months(tmp_path, offset):
+    # D-V6-57: B11, January 2023 went from 51 660 to the 83 749 kWh of another row.
+    registers = _shifted_bill(tmp_path/'bill.csv', offset)
+    records = cn.parse_billing_csv(tmp_path/'bill.csv', 11, scale_tou_to_printed_total=True)
+    assert [r.energy_kwh for r in records] == pytest.approx(registers, abs=0.02)
+    assert all('tou_scaled_to_printed_total' not in r.flags for r in records)
+    assert all('printed_total_column_shifted' in r.flags for r in records)
+
+
+def test_the_offset_needs_most_rows_to_agree():
+    registers = [1000.0 + 137.0*i for i in range(24)]
+    assert cn.printed_total_offset(registers, registers) == 0
+    assert cn.printed_total_offset(registers, [1.0]*24) == 0
+    few = registers[:8]
+    assert cn.printed_total_offset(few, [9.0]*3 + few[:5]) == 0                      # too few rows to decide
+    mostly_wrong = [registers[i - 7] if i % 2 and i >= 7 else 9.0 for i in range(24)]
+    assert cn.printed_total_offset(registers, mostly_wrong) == 0
+
+
+def _target(month, energy, factor=0.5, year=2025):
+    return cn.MonthlyRecord(11, year, month, energy, energy*0.2, energy*0.8, 'measured', 'bill', 'measured',
+                            (f'B11:{year}-{month:02d}',), (), factor, 100.0)
+
+
+def test_a_second_supply_adds_measured_months_and_models_the_rest_by_its_ratio():
+    # D-V6-58, with the shape of B11: two months measure both supplies, one month only the bill.
+    other = cn.MonthlyRecord(3, 2025, 2, 50.0, 10.0, 40.0, 'measured', 'bill', 'measured', ('B03',), (), 0.4, 9.0)
+    targets = [_target(2, 100.0), _target(3, 200.0), _target(4, 300.0, year=2023), other]
+    rows = {(2025, 2): (250.0, 2.0), (2025, 3): (500.0, 2.0)}
+    out = cn.add_second_supply(targets, 11, rows, source_label='sheet')
+    assert out[3] == other
+    assert out[0].energy_kwh == pytest.approx(350.0) and out[0].provenance == 'measured'
+    assert 'second_supply_measured' in out[0].flags
+    assert out[2].energy_kwh == pytest.approx(300.0*(1 + 2.5)) and out[2].provenance == 'modeled'
+    assert 'second_supply_modeled' in out[2].flags and 'sheet:ratio=2.500000' in out[2].inputs
+    assert out[2].peak_kwh + out[2].offpeak_kwh == pytest.approx(out[2].energy_kwh)
+    assert out[2].peak_kwh/out[2].energy_kwh == pytest.approx(0.2)
+    assert all(0 < r.load_factor <= 1 for r in out) and out[0].billed_amount is None
+
+
+def test_a_second_supply_needs_a_month_measured_on_both():
+    with pytest.raises(ValueError, match='no month measures both'):
+        cn.add_second_supply([_target(2, 100.0)], 11, {(2025, 9): (10.0, 1.0)}, source_label='sheet')
+
+
+BILLS = Path(__file__).resolve().parents[2]/'CityLearn/data/buildingcsv'
+
+
+@pytest.mark.skipif(not BILLS.is_dir(), reason='source bills not present')
+def test_exactly_the_six_shifted_bills_are_detected():
+    shifted = set()
+    for building in [b for b in range(2, 18)]:
+        records = cn.parse_billing_csv(BILLS/f'B_{building:02d}.csv', building, scale_tou_to_printed_total=True)
+        if any('printed_total_column_shifted' in r.flags for r in records):
+            shifted.add(building)
+            assert not any('tou_scaled_to_printed_total' in r.flags for r in records), building
+    assert shifted == {2, 4, 9, 11, 16, 17}
 
 
 def test_billing_columns_by_header_and_relative_partial_months(tmp_path):

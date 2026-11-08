@@ -82,7 +82,11 @@ class QueueResult:
     depleted: int = 0                  # trips that needed more energy than the battery held on departure
 
 
-def _day_kind(day: date) -> int:
+def _day_kind(day: date, schedule: Optional[Mapping] = None, holidays=frozenset()) -> int:
+    """0 weekday, 1 Saturday, 2 Sunday; a holiday counts as Sunday only for the functions it stops (D-V6-60)."""
+    from uc3m.application.dataset.holidays import runs_as_sunday
+    if schedule is not None and runs_as_sunday(day, schedule, holidays):
+        return 2
     return 0 if day.weekday() < 5 else (1 if day.weekday() == 5 else 2)
 
 
@@ -103,8 +107,10 @@ def class_sessions(vehicle_class: VehicleClass, *, vehicles: int, schedule: Mapp
     if rule['kind'] not in ('opening', 'stops'):
         raise ValueError(f"{vehicle_class.name}: unknown arrival rule {rule['kind']!r}")
     sessions = []
+    from uc3m.application.dataset.holidays import peru_holidays
+    holidays = {holiday for year in {day.year for day in days} for holiday in peru_holidays(year)}
     for d, day in enumerate(days):
-        base, p = 24*d, float(factors[_day_kind(day)])
+        base, p = 24*d, float(factors[_day_kind(day, schedule, holidays)])
         for vehicle in range(vehicles):
             if rng.random() >= p:
                 continue

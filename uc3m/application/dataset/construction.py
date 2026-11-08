@@ -87,6 +87,28 @@ _COLUMNS = {'peak': 'energiaactivahorapunta', 'offpeak': 'energiaactivafuerapunt
 
 TOU_TOTAL_RTOL = 0.02  # printed total vs time-of-use registers
 PLAUSIBLE_PRINTED_TOTAL_RATIO = (0.5, 2.0)  # outside this the printed total is a transcription error
+# D-V6-57: a printed-total column misaligned with its registers. Design rule, not a measurement: the kWh tolerance
+# absorbs rounding of two-decimal totals, and most rows must agree so that coincidences cannot trigger it.
+SHIFTED_TOTAL_MATCH_KWH = 1.0
+SHIFTED_TOTAL_MIN_SHARE = 0.9
+SHIFTED_TOTAL_MIN_ROWS = 12
+SHIFTED_TOTAL_MAX_OFFSET = 12
+
+
+def printed_total_offset(registers: Sequence[float], totals: Sequence[float]) -> int:
+    """D-V6-57: rows between a printed total and the registers it equals; 0 when the column is aligned or unclear."""
+    def share(offset):
+        pairs = [(registers[i], totals[i + offset]) for i in range(len(registers)) if 0 <= i + offset < len(totals)]
+        hits = sum(abs(a - b) <= SHIFTED_TOTAL_MATCH_KWH for a, b in pairs)
+        return len(pairs), (hits/len(pairs) if pairs else 0.0)
+    if share(0)[1] >= 0.5:
+        return 0
+    for distance in range(1, SHIFTED_TOTAL_MAX_OFFSET + 1):
+        for offset in (distance, -distance):
+            rows, agreeing = share(offset)
+            if rows >= SHIFTED_TOTAL_MIN_ROWS and agreeing >= SHIFTED_TOTAL_MIN_SHARE:
+                return offset
+    return 0
 
 
 def parse_billing_csv(path: Path, building_id: int, *,
@@ -98,7 +120,9 @@ def parse_billing_csv(path: Path, building_id: int, *,
     2 % keeps the register split but is scaled to the printed total and flagged.
     A printed total outside 0.5..2 times the registers (e.g. 156.8 kWh printed for
     2 252.8 kWh registered) is treated as a transcription error: registers kept,
-    flagged ``printed_total_implausible``.
+    flagged ``printed_total_implausible``. A printed-total column that equals the
+    registers of other rows at a fixed distance (D-V6-57) says nothing about its own
+    month: registers kept, flagged ``printed_total_column_shifted``.
     """
     records = []
     reader = csv.reader(_read_text(path).splitlines(), delimiter=';')
@@ -111,9 +135,14 @@ def parse_billing_csv(path: Path, building_id: int, *,
         raise ValueError(f'{path}: missing billing columns {sorted(missing)}')
     month_at = header.index('mes')
     year_at = month_at + 1  # the year header is mis-encoded in the source files
-    for row in reader:
-        if len(row) <= max(index.values()) or not row[month_at].strip() or not row[year_at].strip():
-            continue
+    rows = [row for row in reader
+            if len(row) > max(index.values()) and row[month_at].strip() and row[year_at].strip()]
+    numbers = [tuple(_number(row[index[k]]) for k in ('peak', 'offpeak', 'total')) for row in rows]
+    complete = [n for n in numbers if None not in n]
+    shifted = printed_total_offset([p + o for p, o, _ in complete], [t for _, _, t in complete]) != 0
+    # D-V6-57: reactive energy and load factor follow the registers; the printed total and, in several files, the
+    # billed amount do not, so every row of a shifted file is flagged and its amount never validates a tariff.
+    for row in rows:
         month = MONTHS.get(row[month_at].strip().casefold()[:3])
         if month is None:
             raise ValueError(f'{path}: unknown month {row[month_at]!r}')
@@ -122,10 +151,10 @@ def parse_billing_csv(path: Path, building_id: int, *,
         load_factor, amount = _number(row[index['load_factor']]), _number(row[index['amount']])
         if peak is None or offpeak is None or total is None or peak + offpeak <= 0:
             raise ValueError(f'{path}: incomplete energy fields for {year}-{month:02d}')
-        flags = []
+        flags = ['printed_total_column_shifted'] if shifted else []
         if abs(peak + offpeak - total) > TOU_TOTAL_RTOL*max(total, 1.0):
             flags.append('total_mismatch')
-            if scale_tou_to_printed_total:
+            if not shifted and scale_tou_to_printed_total:
                 ratio = total/(peak + offpeak)
                 low, high = PLAUSIBLE_PRINTED_TOTAL_RATIO
                 if low <= ratio <= high:
@@ -145,6 +174,50 @@ def parse_billing_csv(path: Path, building_id: int, *,
     if len(keys) != len(set(keys)):
         raise ValueError(f'{path}: duplicate monthly records')
     return records
+
+
+def add_second_supply(targets: Sequence[MonthlyRecord], building_id: int,
+                      rows: Mapping[Tuple[int, int], Tuple[float, float]], *, source_label: str) -> List[MonthlyRecord]:
+    """D-V6-58: a building's bills cover one supply and a report table measures a second one (kWh, kW by month).
+
+    A measured month adds the table's value. Any other month is modeled with the energy ratio of the months both
+    supplies were measured, because the campaign years must describe the same building. The peak/off-peak split is the
+    bill's, and the load factor combines both supplies by their demand (sum of each maximum, not coincident).
+    """
+    from dataclasses import replace
+    from calendar import monthrange
+    own = {(t.year, t.month): t for t in targets if t.building_id == building_id}
+    overlap = [key for key in rows if key in own and own[key].energy_kwh > 0 and rows[key][0] > 0]
+    if not overlap:
+        raise ValueError(f'B{building_id:02d}: no month measures both supplies')
+    ratio = sum(rows[k][0] for k in overlap)/sum(own[k].energy_kwh for k in overlap)
+    factors = sorted(rows[k][0]/(rows[k][1]*24*monthrange(*k)[1]) for k in overlap if rows[k][1] > 0)
+    typical_factor = factors[len(factors)//2]
+    out = []
+    for target in targets:
+        key = (target.year, target.month)
+        if target.building_id != building_id:
+            out.append(target)
+            continue
+        measured = key in rows and rows[key][0] > 0
+        second = rows[key][0] if measured else target.energy_kwh*ratio
+        second_factor = (rows[key][0]/(rows[key][1]*24*monthrange(*key)[1])
+                         if measured and rows[key][1] > 0 else typical_factor)
+        scale = (target.energy_kwh + second)/target.energy_kwh
+        factor = target.load_factor
+        if factor:
+            factor = (target.energy_kwh + second)/(target.energy_kwh/factor + second/second_factor)
+        both_measured = measured and target.provenance == 'measured'
+        out.append(replace(target, energy_kwh=target.energy_kwh + second, peak_kwh=target.peak_kwh*scale,
+                           offpeak_kwh=target.offpeak_kwh*scale,
+                           provenance='measured' if both_measured else 'modeled',
+                           method=f'{target.method}+second_supply',
+                           fit_scope='measured' if both_measured else target.fit_scope,
+                           inputs=target.inputs + (f'{source_label}:{key[0]}-{key[1]:02d}' if measured
+                                                   else f'{source_label}:ratio={ratio:.6f}',),
+                           flags=target.flags + ('second_supply_measured' if measured else 'second_supply_modeled',),
+                           load_factor=factor, billed_amount=None))
+    return out
 
 
 def energy_only_records(building_id: int, rows: Sequence[Tuple[int, int, float]],

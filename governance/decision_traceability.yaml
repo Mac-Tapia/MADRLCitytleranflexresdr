@@ -185,6 +185,16 @@ decisions:
     code: [CityLearn/citylearn/v3/thermal.py, CityLearn/citylearn/v3/thermal_calibration.py]
   D-V6-56:
     code: [configs/dataset/hvac_norms.yaml, tools/dataset/distill_building_loads.py]
+  D-V6-57:
+    code: [uc3m/application/dataset/construction.py, tools/dataset/build_fresh_campaign_dataset.py]
+  D-V6-58:
+    code: [uc3m/application/dataset/construction.py, tools/dataset/build_fresh_campaign_dataset.py]
+  D-V6-59:
+    code: [uc3m/application/dataset/weather_correction.py, tools/dataset/fit_weather_station_correction.py, tools/dataset/build_fresh_campaign_dataset.py]
+  D-V6-61:
+    code: [CityLearn/citylearn/v3/thermal.py, tools/dataset/build_v6_parts.py, configs/dataset/hvac_norms.yaml, configs/dataset/dataset_gates.yaml]
+  D-V6-60:
+    code: [tools/dataset/build_v6_parts.py, uc3m/application/dataset/holidays.py, uc3m/application/dataset/ev_queue.py, configs/dataset/dataset_gates.yaml, configs/dataset/building_types.yaml]
   D-V6-54:
     code: [tools/dataset/build_v6_parts.py]
   D-V6-55:

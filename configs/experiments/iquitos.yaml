@@ -1,10 +1,11 @@
 # Decisions implemented here (governance/decision_traceability.yaml):
-#   D-V6-11: no training until every module is closed (authorized_stages empty)
+#   D-V6-11: no training until every module is closed; authorized_stages stays empty and each stage is launched
+#   with --owner-authorized <written decision> (this file is a hashed input of the campaign)
 schema_version: 1
 # Fresh campaign: new dataset, no prior-run inputs, every attempt from zero.
-campaign_id: fresh_iquitos_20261108_v6_trial10
-storage_alias: iquitos_v6_trial10
-dataset_root: data/campaigns/iquitos_v6_trial10   # SPEC-016 with bill tariffs (D-V6-50) and 5R1C air conditioning (D-V6-53), 12/12 gates 2026-11-08
+campaign_id: fresh_iquitos_20261108_v6_trial13
+storage_alias: iquitos_v6_trial13
+dataset_root: data/campaigns/iquitos_v6_trial13   # SPEC-016 with bill tariffs (D-V6-50), bill corrections (D-V6-57, D-V6-58), the weather of Iquitos (D-V6-59) and temperature by building function (D-V6-60, D-V6-61), 13/13 gates 2026-11-08
 scenario_catalog: configs/scenarios.yaml      # single E1/E2/E3 weight table
 algorithm_config: configs/algorithms/native.yaml
 kpi_catalog: configs/evaluation/kpis.yaml
@@ -43,9 +44,9 @@ stages:
     dominance: [0.55, 0.65]          # the centre 0.60 is the confirmatory run itself
     secondary_to_residual: [5, 3]
 # Supervision criterion of the project (not a literature value): an attempt is
-# rejected when the EV/BESS constraint terms outweigh the weighted three-axis
+# rejected when the EV/BESS/comfort service terms outweigh the weighted three-axis
 # objective over the whole attempt, i.e. when
-#   sum(|ev| + |bess_cycle|) / sum(|w_flex*flex| + |w_co2*co2| + |w_cost*cost|) > 1.0
+#   sum(|ev| + |bess_cycle| + |comfort|) / sum(|w_flex*flex| + |w_co2*co2| + |w_cost*cost|) > 1.0
 # (computed from the reward breakdown of every training step, see
 # uc3m/reward/term_telemetry.py). A larger ratio means the learner mostly
 # optimizes constraints and the E1/E2/E3 weights stop driving the policy.

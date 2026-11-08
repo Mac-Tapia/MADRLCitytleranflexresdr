@@ -53,6 +53,8 @@ import yaml  # noqa: E402
 from uc3m.application.dataset import construction as cn  # noqa: E402
 from uc3m.application.dataset import provenance as pv  # noqa: E402
 from uc3m.application.dataset import tariff_crosscheck as tc  # noqa: E402
+from uc3m.application.dataset import weather_correction as wc  # noqa: E402
+from uc3m.application.dataset.holidays import peru_holidays, runs_as_sunday  # noqa: E402
 from uc3m.application.dataset.site import load_default_site, site_buildings  # noqa: E402
 from site_time import hourly_index  # noqa: E402
 from uc3m.application.training.preflight import hash_files  # noqa: E402
@@ -75,6 +77,8 @@ MICROGRIDS = ROOT/'external/MicroGrids/MicroGrids'
 GENERATED_BILLS = {1: 'tools/dataset/generate_b01_billing.py'}
 # B01 primary source: measured monthly energy in the study workbook (sheet 8.ELOR).
 REPORT_SOURCE = ROOT/'docs/thesis/resultados_preliminares.xlsx'
+# D-V6-58: the bills of B11 are supply 0104005T; the same sheet book names 0104007T for the same hospital.
+SECOND_SUPPLIES = {11: ('6.H.REGIONAL', '0104007T')}
 REPORT_SHEET = '8.ELOR'
 # Owner decision 2026-11-01: B01 has no 2023 measurement and same-year Office
 # peers do not represent a utility plant; 2023 follows the original B01 method
@@ -166,8 +170,12 @@ def _nasa_year(year: int, raw_dir: Path):
 
 def stage_weather(raw_dir: Path):
     frames, entries, gaps = {}, [], {}
+    table = wc.load_table() if wc.TABLE.is_file() else None
     for year in YEARS:
         frames[year], entry, gaps[year] = _nasa_year(year, raw_dir)
+        if table is not None:   # D-V6-59: the open station record of Iquitos corrects the daily cycle
+            frames[year] = wc.correct_weather(frames[year], table['deltas_c_month_hour'])
+            entry['notes'] = f"{entry.get('notes', '')} Corrected by month and hour with {table['source']}.".strip()
         entries.append(entry)
     return frames, entries, gaps
 
@@ -234,8 +242,25 @@ def monthly_targets(raw_dir: Path, registry=None):
                    if str(row[0]).strip() == 'CONSUMOS ELOR' and int(row[1]) in YEARS]
     records.extend(cn.energy_only_records(1, report_rows, records, inventory,
                                           source_label=f'resultados_preliminares:{REPORT_SHEET}'))
-    return records, cn.complete_monthly_targets(records, inventory, years=YEARS, buildings=BUILDINGS,
-                                                declared_backcasts=DECLARED_BACKCASTS)
+    targets = cn.complete_monthly_targets(records, inventory, years=YEARS, buildings=BUILDINGS,
+                                          declared_backcasts=DECLARED_BACKCASTS)
+    for building, (sheet_name, code) in SECOND_SUPPLIES.items():
+        targets = cn.add_second_supply(targets, building, second_supply_rows(raw_dir, sheet_name, code),
+                                       source_label=f'resultados_preliminares:{sheet_name}')
+    # The bills keep describing their own supply: records still validate tariffs against what was billed.
+    return records, targets
+
+
+def second_supply_rows(raw_dir: Path, sheet_name: str, code: str):
+    """(year, month) -> (kWh, kW) of a supply of a building, from the sheet that names it by its code."""
+    sheet = pd.read_excel(raw_dir/'thesis'/REPORT_SOURCE.name, sheet_name=sheet_name, header=None)
+    rows = {}
+    for row in sheet.itertuples(index=False, name=None):
+        if code in str(row[0]) and int(row[1]) in YEARS:
+            rows[(int(row[1]), int(row[2]))] = (float(row[3]), float(row[4]))
+    if not rows:
+        raise ValueError(f'{sheet_name}: no rows of supply {code}')
+    return rows
 
 
 def measurements_frame(targets, tariffs, raw_dir: Path, fx):
@@ -301,6 +326,7 @@ def hourly_pricing_usd(index: pd.DatetimeIndex, measured, fx):
 
 # ── official tariff (campaign v3, Osinergmin pliegos for sector Iquitos) ─────
 
+PEAK_EDGE_MARGIN_AFTER_SETTLING = 0.02   # D-V6-60: settling the cooling can move a peak a little after the reshape
 PEAK_BLOCK_HOURS = tuple(sorted(cn.PEAK_HOURS))  # 18:00-23:00, the bills' peak block
 B01_TARIFF_ASSUMPTION = 'MT2'  # v5 value; v6 reads configs/dataset/b01_synthetic_bill.yaml (P-V6-19)
 B01_SYNTHETIC_PATH = ROOT/'configs/dataset/b01_synthetic_bill.yaml'
@@ -410,7 +436,8 @@ def pricing_frame(price: np.ndarray) -> pd.DataFrame:
     return frame
 
 
-EXCLUDED_BILL_FLAGS = ('partial_month_suspect', 'printed_total_implausible')
+# D-V6-57: in a file with a shifted printed total the billed amount cannot be tied to its month.
+EXCLUDED_BILL_FLAGS = ('partial_month_suspect', 'printed_total_implausible', 'printed_total_column_shifted')
 PLAUSIBLE_RECONSTRUCTION_RATIO = (0.2, 5.0)  # recomputed/billed outside this: partial or mis-keyed bill
 
 
@@ -624,8 +651,14 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
         weather_full = pd.concat([weather_frames[y] for y in YEARS])
         zero_solar = pd.Series(np.zeros(len(weather_full)), index=weather_full.index)
         for building in request.buildings:
-            gen.BuildingDataGenerator(building, weather_full, zero_solar).build().to_csv(
-                out/f'Building_{building}.csv', index=False, float_format='%.6f')
+            frame = gen.BuildingDataGenerator(building, weather_full, zero_solar).build()
+            # D-V6-60: a holiday runs as Sunday only for the functions it stops
+            schedule = registry['schedules'][registry['buildings'][building]['schedule']]
+            days = weather_full.index
+            holidays = {holiday for year in YEARS for holiday in peru_holidays(year)}
+            as_sunday = np.array([runs_as_sunday(day.date(), schedule, holidays) for day in days])
+            frame.loc[as_sunday, 'day_type'] = 7
+            frame.to_csv(out/f'Building_{building}.csv', index=False, float_format='%.6f')
         sfg = gen.SupportFilesGenerator()
         sfg.build_weather_csv(weather_frames).to_csv(out/'weather.csv', index=False, float_format='%.6f')
         ci_value, ci_derivation = gen.constant_carbon_intensity(EMISSIONS_PATH)
@@ -697,17 +730,42 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
                 attributes = schema['buildings'][f'Building_{b}']['cooling_device']['attributes']
                 return dl.citylearn_cooling_cop(t_out, attributes['efficiency'],
                                                 attributes['target_cooling_temperature'])
-            design['v6_redistilled'] = v6.redistill_peaks(out, buildings=request.buildings, targets=targets,
-                                                          threshold=threshold, peak_hours=set(PEAK_BLOCK_HOURS),
-                                                          other_kw=_rest_kw, cooling_cop=_cooling_cop,
-                                                          years=hourly_index(YEARS, TZ).year.to_numpy())
+            # D-V6-60: first the zone and cooling of each building function; then the peaks, settling the cooling after
+            limits = yaml.safe_load(DATASET_GATES_PATH.read_text(encoding='utf-8'))['indoor_temperature']
+            hvac_norms = hc.load_hvac_norms(HVAC_NORMS_PATH)
+            weather_now = pd.read_csv(out/'weather.csv')
+            calendar_index = hourly_index(YEARS, TZ)
+
+            def _peak_caps(b):
+                return v6.bill_peak_caps(targets, b, years=calendar_index.year.to_numpy(), months=calendar_index.month.to_numpy(),
+                                         threshold=threshold, margin=PEAK_EDGE_MARGIN_AFTER_SETTLING)
+
+            def _hold(fit_zone):
+                return v6.hold_temperature_by_schedule(
+                    out, schema, weather_now, buildings=request.buildings, schedules=dl.BUILDING_SCHEDULES,
+                    cooling_cop=_cooling_cop, max_set_point_c=limits['high_c']['value'],
+                    natural_ach=hvac_norms['natural_ventilation_ach']['value'],
+                    height=hvac_norms['ceiling_height_m']['value'], peak_hours=set(PEAK_BLOCK_HOURS), fit_zone=fit_zone,
+                    peak_caps=_peak_caps)
+            design['v6_thermal_hold'] = _hold(True)
+            _write_json(out/'schema.json', schema)
+            _write_json(audit_dir/'thermal_hold_by_schedule.json', design['v6_thermal_hold'])
+            for _ in range(3):
+                design['v6_redistilled'] = v6.redistill_peaks(out, buildings=request.buildings, targets=targets,
+                                                              threshold=threshold, peak_hours=set(PEAK_BLOCK_HOURS),
+                                                              other_kw=_rest_kw, cooling_cop=_cooling_cop,
+                                                              years=hourly_index(YEARS, TZ).year.to_numpy(),
+                                                              edge_margin=PEAK_EDGE_MARGIN_AFTER_SETTLING)
+                _hold(False)
+            _write_json(out/'schema.json', schema)
             _write_json(audit_dir/'peak_redistillation.json', design['v6_redistilled'])
             # D-V6-53: 5R1C calibration of every building and its indoor temperature on the final loads
             _write_json(audit_dir/'thermal_calibration.json',
                         {str(b): r.thermal['calibration'] for b, r in physical.items() if r.thermal})
             design['v6_thermal'] = v6.write_indoor_temperature(out, schema, pd.read_csv(out/'weather.csv'),
                                                                buildings=request.buildings,
-                                                               band_c=THERMAL_COMFORT_BAND_C)
+                                                               band_c=THERMAL_COMFORT_BAND_C,
+                                                               comfort_limit_c=limits['high_c']['value'])
             _write_json(audit_dir/'thermal_indoor_temperature.json', design['v6_thermal'])
         else:
             reports = {b: dl.calibrate_building(bldg_id=b, schema=schema, t_out=t_out, dataset_dir=out,
@@ -1194,7 +1252,8 @@ def provenance_quantities(design, targets, campaign_root):
                 unit='kWh/month', source='raw/buildingcsv/B_XX.csv and raw/thesis/resultados_preliminares.xlsx',
                 method='measured bills; missing months modeled without crossing years (quality_flags.csv)'))
     q.append(_q('tou_scaling_rule', 'scale TOU blocks to the printed total when they differ by >2 % '
-                '(ratio 0.5..2), else keep registers', 'user_decision', reason='owner decision 2026-11-01 (d)'))
+                '(ratio 0.5..2), else keep registers; a shifted printed-total column is never used',
+                'user_decision', reason='owner decisions 2026-11-01 (d) and 2026-11-08 (D-V6-57)'))
     q.append(_q('weather', 'NASA POWER hourly', 'model', source='raw/weather/nasa_power_<year>_utc.json',
                 unit='reanalysis', reason='reanalysis, not a local station'))
     q.append(_q('pen_per_usd', 'World Bank PA.NUS.FCRF', 'measured', source='raw/fx/worldbank_pa_nus_fcrf_per.json'))
@@ -1440,7 +1499,8 @@ def main(argv=None):
                                        'bess': bess_parameter,
                                        'ev': 'B01 pilot only (configs/dataset/ev_pilot.yaml)',
                                        'carbon': 'constant (configs/dataset/grid_emissions.yaml)',
-                                       'tou_rule': 'scale to printed total (0.5..2), else keep registers',
+                                       'tou_rule': 'scale to printed total (0.5..2), else keep registers; '
+                                                   'registers when the printed column is shifted (D-V6-57)',
                                        'weather': 'NASA POWER hourly UTC->America/Lima, observed years',
                                        'pricing': 'Osinergmin sheets sector IQUITOS, energy charge of each '
                                                   'building tariff per month, no IGV, PEN->USD (World Bank annual)',
@@ -1492,6 +1552,15 @@ def main(argv=None):
         _write_json(audit_dir/'peak_contrast.json', contrast)
         # FR-016.8 and D-V6-47: every measured month of the design year inside the threshold after re-distillation
         gates['peak_contrast'] = bool(contrast['summary']['passed'])
+        # D-V6-60: the owner's range in the operating hours of each building function
+        import build_v6_parts as v6
+        limits = yaml.safe_load(DATASET_GATES_PATH.read_text(encoding='utf-8'))['indoor_temperature']
+        indoor = v6.indoor_temperature_gate(campaign_root/'dataset', schema, buildings=BUILDINGS, schedules=dl.BUILDING_SCHEDULES,
+                                            low_c=limits['low_c']['value'], high_c=limits['high_c']['value'],
+                                            outdoor_c=pd.read_csv(campaign_root/'dataset'/'weather.csv')['outdoor_dry_bulb_temperature'].to_numpy(dtype=float),
+                                            off_hours_excess_c=limits['off_hours_excess_c']['value'])
+        _write_json(audit_dir/'indoor_temperature_gate.json', indoor)
+        gates['indoor_temperature_in_range'] = bool(indoor['passed'])
     if bess_rule_applies(args):          # a v6 build without the flag dropped this gate (trial6, 2026-11-07)
         gates['bess_rule_shaves_peak'] = (
             shaving['status'] == 'checked' and len(shaving['buildings']) == len(BUILDINGS)

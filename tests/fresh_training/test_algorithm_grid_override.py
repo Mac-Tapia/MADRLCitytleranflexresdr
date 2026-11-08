@@ -1,4 +1,4 @@
-"""SPEC-015 D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128 (the 256 candidate needs 84 GiB of VRAM,
+"""SPEC-015 D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128 (the 256 candidate needs 105 GiB of VRAM,
 above an 80 GB GPU), keeping its author's native capacity; the other three keep the shared grid."""
 from pathlib import Path
 

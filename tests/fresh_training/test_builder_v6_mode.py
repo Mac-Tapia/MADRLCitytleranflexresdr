@@ -17,6 +17,15 @@ def test_the_builder_accepts_a_v6_mode_and_keeps_v5_by_default():
     assert "'--dataset-version'" in SOURCE and "choices=('v5', 'v6')" in SOURCE and "default='v5'" in SOURCE
 
 
+def test_a_v6_build_always_sizes_by_the_rule_and_gates_its_peak_shaving():
+    """A v6 build without --bess-design-rule sized the BESS by the rule but dropped bess_rule_shaves_peak."""
+    from argparse import Namespace
+    assert bf.bess_rule_applies(Namespace(bess_design_rule=False, dataset_version='v6'))
+    assert bf.bess_rule_applies(Namespace(bess_design_rule=True, dataset_version='v5'))
+    assert not bf.bess_rule_applies(Namespace(bess_design_rule=False, dataset_version='v5'))
+    assert SOURCE.count('if bess_rule_applies(args):') == 2        # sizing and the gate
+
+
 def test_the_v6_mode_wires_every_v6_piece():
     for call in ('remove_washing_machines(', 'distill_v6(', 'capped_block_flags(', 'write_ev_fleet(',
                  'write_synthetic_bill(', 'synthetic_months(', 'write_bill_tariff_files(', 'peak_contrast(',

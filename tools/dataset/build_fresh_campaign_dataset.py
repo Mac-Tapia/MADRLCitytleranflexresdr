@@ -1308,6 +1308,11 @@ def quality_flags(targets, weather_gaps, bess_method='MicroGrids LP, verified wi
     return pd.DataFrame(rows)
 
 
+def bess_rule_applies(args) -> bool:
+    """The BESS is sized by the declared rule (flag, or always in v6 by D-V6-30); then its peak-shaving gate runs."""
+    return bool(args.bess_design_rule) or args.dataset_version == 'v6'
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument('--campaign-id', required=True)
@@ -1339,7 +1344,7 @@ def main(argv=None):
     limitations = list(LIMITATIONS)
     bess_parameter = 'MicroGrids LP with hourly tariff and peak-block demand charge; prosumpy and CityLearn peak-shaving checks'
     bess_method = 'MicroGrids LP, verified with prosumpy dispatch_max_sc'
-    if args.bess_design_rule or args.dataset_version == 'v6':  # v6: D-V6-30 uses the rule's shave fraction
+    if bess_rule_applies(args):  # v6: D-V6-30 uses the rule's shave fraction
         import yaml
         design['bess_rule'] = yaml.safe_load(BESS_RULE_PATH.read_text(encoding='utf-8'))
         design_inputs.append(BESS_RULE_PATH)
@@ -1453,7 +1458,7 @@ def main(argv=None):
         _write_json(audit_dir/'peak_contrast.json', contrast)
         # FR-016.8 and D-V6-47: every measured month of the design year inside the threshold after re-distillation
         gates['peak_contrast'] = bool(contrast['summary']['passed'])
-    if args.bess_design_rule:
+    if bess_rule_applies(args):          # a v6 build without the flag dropped this gate (trial6, 2026-11-07)
         gates['bess_rule_shaves_peak'] = (
             shaving['status'] == 'checked' and len(shaving['buildings']) == len(BUILDINGS)
             and all(row['delivered_fraction_worst_month'] >= BESS_RULE_MIN_DELIVERED

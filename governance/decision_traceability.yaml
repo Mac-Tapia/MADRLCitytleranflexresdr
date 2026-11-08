@@ -76,6 +76,10 @@ decisions:
       reason: "common level grid for the 4 MADRL not implemented; native.yaml still declares native interfaces (D-M3-6) and only names D-M3-7 as a future recomputation"
   D-M3-8:
     code: [uc3m/application/training/fresh_campaign.py, configs/algorithms/native.yaml]
+  D-M3-9:
+    no_code:
+      kind: pending
+      reason: "owner confirmed D-M3-7 with P-M3-1 and P-M3-2 (2026-11-08); the common 11-level grid is not implemented yet"
   P-M3-1:
     no_code:
       kind: pending
@@ -121,10 +125,7 @@ decisions:
   D-V6-1:
     code: [tools/dataset/build_fresh_campaign_dataset.py, tools/dataset/build_v6_parts.py, tools/dataset/distill_building_loads.py]   # washer out; AC action pending (D-V6-2)
   D-V6-2:
-    no_code:
-      kind: superseded
-      reason: "air-conditioning control deferred by the owner: no thermal dynamics model to validate it"
-      superseded_by: D-V6-51
+    code: [CityLearn/citylearn/v3/thermal.py]
   D-V6-3:
     no_code:
       kind: superseded
@@ -264,7 +265,14 @@ decisions:
     code: [tools/dataset/write_ev_v6.py, configs/algorithms/native.yaml, CityLearn/citylearn/dec_pomdp.py,
            CityLearn/citylearn/v3/charger_aggregate.py, CityLearn/scripts/citylearn_v3_training_common.py]
   D-V6-51:
-    code: [uc3m/application/evaluation/tuple_contract.py]
+    no_code:
+      kind: superseded
+      reason: "air-conditioning deferral replaced by the bill-anchored 5R1C model (2026-11-08)"
+      superseded_by: D-V6-53
+  D-V6-52:
+    code: [CityLearn/citylearn/v3/thermal.py, CityLearn/citylearn/v3/thermal_calibration.py]
+  D-V6-53:
+    code: [CityLearn/citylearn/v3/thermal_calibration.py, tools/dataset/distill_building_loads.py, tools/dataset/build_fresh_campaign_dataset.py, uc3m/application/evaluation/tuple_contract.py]
   D-V6-50:
     no_code:
       kind: pending
@@ -368,6 +376,8 @@ decisions:
       implemented_in: [configs/dataset/ev_v6.yaml]
   P-V6-24:
     code: [CityLearn/citylearn/v3/reward.py]
+  P-V6-25:
+    code: [CityLearn/citylearn/v3/reward.py]
 
   # ---------------- SPEC-016 requirements ----------------
   FR-016.1:
@@ -380,10 +390,7 @@ decisions:
   FR-016.3:
     code: [uc3m/application/dataset/hvac_capacity.py, tools/dataset/build_v6_parts.py, configs/dataset/hvac_norms.yaml]
   FR-016.4:
-    no_code:
-      kind: superseded
-      reason: "deferred by the owner (2026-11-07) until a validable thermal model exists"
-      superseded_by: D-V6-51
+    code: [CityLearn/citylearn/v3/thermal.py]
   FR-016.5:
     code: [uc3m/application/dataset/ev_sizing.py, configs/dataset/ev_v6.yaml]
   FR-016.6:

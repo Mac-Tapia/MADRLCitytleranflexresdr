@@ -8,8 +8,8 @@ the contract fail:
 - ``axis_violations``: every scenario axis has a primary KPI that the evaluation measures, and the E1/E2/E3 weights
   cover exactly those axes;
 - ``action_violations``: every action of an agent is a piece of equipment of its building, and every controllable
-  piece of equipment (D-V6-1: air conditioning, chargers and BESS) has its action, except the ones deferred by
-  ``DEFERRED_ACTIONS`` (D-V6-51: air conditioning, no thermal dynamics model); no washing machine (D-V6-1);
+  piece of equipment (D-V6-1: air conditioning, chargers and BESS) has its action, except the ones an owner
+  decision defers in ``DEFERRED_ACTIONS`` (none since D-V6-53); no washing machine (D-V6-1);
 - ``observation_violations``: every observation the reward reads is in the agent's observation O_i.
 """
 from __future__ import annotations
@@ -22,8 +22,12 @@ REWARD_OBSERVATIONS = ('hour', 'net_electricity_consumption', 'electricity_prici
                        'electrical_storage_soc')
 BILL_OBSERVATIONS = ('bill_month_block_peak_kw', 'bill_in_peak_block', 'bill_demand_usd_kw_month')
 CHARGER_PREFIX = 'electric_vehicle_storage_'
-# Controllable equipment whose action is deferred by an owner decision, with that decision.
-DEFERRED_ACTIONS = {'cooling_device': 'D-V6-51'}
+# Controllable equipment whose action is deferred by an owner decision, with that decision. Empty since D-V6-53:
+# the air conditioning (deferred by D-V6-51) is an action with the ISO 13790 5R1C dynamics of citylearn.v3.thermal.
+DEFERRED_ACTIONS = {}
+# D-V6-53: what the comfort term of the reward reads, required in O_i when the buildings have thermal dynamics.
+THERMAL_OBSERVATIONS = ('indoor_dry_bulb_temperature', 'indoor_dry_bulb_temperature_cooling_set_point',
+                        'occupant_count')
 
 
 def term_violations(terms: Mapping[str, tuple], subweights: Mapping[str, float], catalog: Mapping) -> List[str]:
@@ -102,7 +106,8 @@ def action_violations(agent: str, action_names: Sequence[str], *, chargers: Iter
     return out
 
 
-def observation_violations(agent: str, observation_names: Sequence[str], *, billed: bool) -> List[str]:
-    required = REWARD_OBSERVATIONS + (BILL_OBSERVATIONS if billed else ())
+def observation_violations(agent: str, observation_names: Sequence[str], *, billed: bool,
+                           thermal: bool = False) -> List[str]:
+    required = REWARD_OBSERVATIONS + (BILL_OBSERVATIONS if billed else ()) + (THERMAL_OBSERVATIONS if thermal else ())
     return [f'{agent}: the reward reads {name!r}, which is not in O_i' for name in required
             if name not in observation_names]

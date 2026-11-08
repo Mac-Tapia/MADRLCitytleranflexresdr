@@ -40,13 +40,61 @@ def distill_v6(dataset_dir: Path, schema: dict, weather: pd.DataFrame, *, norms:
     for building in buildings:
         result = dl.calibrate_building_physical(building, schema, weather, norms=norms, dataset_dir=Path(dataset_dir),
                                                 measurements=measurements, inventory=inventory)
-        cooling = schema['buildings'][f'Building_{building}']['cooling_device']
+        config = schema['buildings'][f'Building_{building}']
+        cooling = config['cooling_device']
         cooling['autosize'] = False
         cooling.setdefault('attributes', {})['nominal_power'] = round(float(result.nominal_power_kw), 6)
+        if result.thermal is not None:             # D-V6-53: the air conditioning is an action with 5R1C dynamics
+            config['type'] = result.thermal['type']
+            config['dynamics'] = result.thermal['dynamics']
         result.report['delta_%'] = monthly_closure_pct(dataset_dir, schema, building, weather, result.report,
                                                        inventory)
         results[building] = result
+    if any(r.thermal is not None for r in results.values()):
+        schema.setdefault('actions', {})['cooling_device'] = {'active': True}
+        for name in THERMAL_OBSERVATIONS:
+            schema.setdefault('observations', {})[name] = {'active': True, 'shared_in_central_agent': False}
     return results
+
+
+# D-V6-53 / FR-016.10: what an agent needs to see to keep comfort (the indoor temperature is already observed).
+THERMAL_OBSERVATIONS = ('indoor_dry_bulb_temperature_cooling_set_point', 'occupant_count')
+
+
+def write_indoor_temperature(dataset_dir: Path, schema: dict, weather: pd.DataFrame, *, buildings: Iterable[int],
+                             band_c: float) -> dict:
+    """D-V6-53: indoor temperature without control = the 5R1C model of the schema under the delivered cooling of
+    the final CSV (after the peak re-distillation), the same equations CityLearn runs. Returns the share of
+    occupied hours within the comfort band of every building."""
+    import numpy as np
+    from citylearn.v3 import thermal as th
+
+    report = {}
+    for building in buildings:
+        dynamics = schema['buildings'][f'Building_{building}'].get('dynamics')
+        if not dynamics:
+            continue
+        a = dynamics['attributes']
+        model = th.ISO13790Dynamics(**a)
+        path = Path(dataset_dir)/f'Building_{building}.csv'
+        frame = pd.read_csv(path)
+        inputs = th.ThermalInputs(
+            theta_e=weather['outdoor_dry_bulb_temperature'].to_numpy(dtype=float),
+            rh_e=weather['outdoor_relative_humidity'].to_numpy(dtype=float),
+            irradiance_w_m2=(weather['diffuse_solar_irradiance'] + weather['direct_solar_irradiance']).to_numpy(float),
+            electric_gain_w=frame['non_shiftable_load'].to_numpy(dtype=float)*1000.0*model.electric_gain_fraction,
+            occupants=frame['occupant_count'].to_numpy(dtype=float), pressure_kpa=model.pressure_kpa)
+        theta = th.simulate_delivered(model.params, inputs, frame['cooling_demand'].to_numpy(dtype=float),
+                                      ventilation_m3_s=model.ventilation_m3_s, w_in=model.w_in,
+                                      theta_m0=model.set_point)
+        frame['indoor_dry_bulb_temperature'] = theta
+        frame.to_csv(path, index=False, float_format='%.6f')
+        occupied = inputs.occupants > 0
+        report[int(building)] = {
+            'occupied_hours': int(occupied.sum()),
+            'within_band_share': float(np.mean(theta[occupied] <= model.set_point + band_c)) if occupied.any() else 1.0,
+            'max_occupied_c': float(theta[occupied].max()) if occupied.any() else None}
+    return report
 
 
 def monthly_closure_pct(dataset_dir: Path, schema: dict, building: int, weather: pd.DataFrame,

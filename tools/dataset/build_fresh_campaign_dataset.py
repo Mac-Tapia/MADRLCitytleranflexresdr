@@ -540,6 +540,7 @@ ECONOMICS_PATH = ROOT/'configs/dataset/der_economics.yaml'
 EV_PILOT_PATH = ROOT/'configs/dataset/ev_pilot.yaml'
 EMISSIONS_PATH = ROOT/'configs/dataset/grid_emissions.yaml'
 BESS_RULE_PATH = ROOT/'configs/dataset/bess_design_rule.yaml'
+THERMAL_COMFORT_BAND_C = 2.0  # D-V6-53: CityLearn EnergySimulation.DEFUALT_COMFORT_BAND, above the 24 C set point
 BESS_RULE_MIN_DELIVERED = 0.9  # of shaved_kw, every building and month: gate on the battery as sized
 DHW_HEATER_EFFICIENCY = 0.85  # distill_building_loads.COP_ACS_DEF, the value the bills are closed with
 DESIGN_YEAR = 2023  # DER sizing uses the training year only
@@ -694,6 +695,13 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
                                                           other_kw=_rest_kw,
                                                           years=hourly_index(YEARS, TZ).year.to_numpy())
             _write_json(audit_dir/'peak_redistillation.json', design['v6_redistilled'])
+            # D-V6-53: 5R1C calibration of every building and its indoor temperature on the final loads
+            _write_json(audit_dir/'thermal_calibration.json',
+                        {str(b): r.thermal['calibration'] for b, r in physical.items() if r.thermal})
+            design['v6_thermal'] = v6.write_indoor_temperature(out, schema, pd.read_csv(out/'weather.csv'),
+                                                               buildings=request.buildings,
+                                                               band_c=THERMAL_COMFORT_BAND_C)
+            _write_json(audit_dir/'thermal_indoor_temperature.json', design['v6_thermal'])
         else:
             reports = {b: dl.calibrate_building(bldg_id=b, schema=schema, t_out=t_out, dataset_dir=out,
                                                 inventory=inventory, measurements=frame,
@@ -994,10 +1002,12 @@ def citylearn_balance(campaign_root: Path, targets, log):
     env = CityLearnEnv(str(scratch/'train_2023'/'schema.json'))
     env.reset()
     names = env.action_names
-    actions = [[1.0 if 'washing_machine' in n else 0.0 for n in agent] for agent in names]
+    from citylearn.v3.thermal import as_billed_cooling_action
     started = time.perf_counter()
     done = False
-    while not done:
+    while not done:   # D-V6-53: the air conditioning delivers the data's cooling, as billed
+        actions = [[1.0 if 'washing_machine' in n else (as_billed_cooling_action(b) if n == 'cooling_device' else 0.0)
+                    for n in agent] for b, agent in zip(env.buildings, names)]
         result = env.step(actions)
         done = bool(result[2]) if len(result) < 5 else bool(result[2] or result[3])
     elapsed = time.perf_counter() - started
@@ -1093,6 +1103,9 @@ def citylearn_peak_shaving(campaign_root: Path, der, log, design_rule=None):
                 row = []
                 for name in names:
                     value = 1.0 if 'washing_machine' in name else 0.0
+                    if name == 'cooling_device':           # D-V6-53: as billed
+                        from citylearn.v3.thermal import as_billed_cooling_action
+                        value = as_billed_cooling_action(building)
                     key = building.name.split('_')[1]
                     if name == 'electrical_storage' and mode == 'rule' and key in sized:
                         capacity, nominal = sized[key]['bess_kwh'], sized[key]['bess_kw']

@@ -234,7 +234,14 @@ class RbcPolicy(FrozenController):
         return self._core.observations
 
     def act(self, observations, deterministic: bool = True):
-        return [list(a) for a in self._agent.predict(observations)]
+        actions = [list(a) for a in self._agent.predict(observations)]
+        # SPEC-016 D-V6-53: the reference keeps the air conditioning as billed (the data's uncontrolled cooling)
+        from citylearn.v3.thermal import as_billed_cooling_action
+        for index, (building, names) in enumerate(zip(self._core.buildings, self._core.action_names)):
+            for position, name in enumerate(names):
+                if name == 'cooling_device':
+                    actions[index][position] = as_billed_cooling_action(building)
+        return actions
 
     def step(self, actions):
         self.history.append({'actions': [list(a) for a in actions]})

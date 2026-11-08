@@ -82,6 +82,20 @@ def hvac_capacity_kw(*, area_m2: float, use_type: str, split_units: int, has_lar
                 'ventilation': row['source'] if has_large_system else 'no large system'})
 
 
+
+def zone_occupancy(*, area_m2: float, use_type: str, norms: Mapping) -> tuple:
+    """(design occupants, outdoor-air flow in m3/s) of a building from the same norm rows as its capacity
+    (EM.030 art. 6 Vbz = Rp*Pz + Ra*Az, or the NTS 110 air changes), for any AC system (SPEC-016 D-V6-53)."""
+    row = norms['use_types'][use_type]
+    occupied = float(area_m2)*norms['occupied_fraction']['value']
+    people = row['rd']/100*occupied
+    if 'air_changes_per_hour' in row:
+        flow_l_s = row['air_changes_per_hour']*occupied*norms['ceiling_height_m']['value']*1000/3600
+    else:
+        flow_l_s = row['rp']*people + row['ra']*occupied
+    return people, flow_l_s/1000.0
+
+
 def district_capacity(inventory: Mapping[int, object], norms: Mapping, *, outdoor_enthalpy: float,
                       indoor_enthalpy: float) -> dict[int, CapacityEstimate]:
     return {bid: hvac_capacity_kw(area_m2=b.area_techada_m2, use_type=b.tipo_uso_citylearn,

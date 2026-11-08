@@ -819,6 +819,7 @@ class PhysicalDistillation:
     nominal_power_kw: float
     capped_blocks: list
     declarations: list
+    thermal: dict = None
 
 
 def physical_cop_params(schema: dict, bldg_id: int) -> tuple[float, float]:
@@ -900,9 +901,17 @@ def calibrate_building_physical(
     if (labels < 0).any():
         raise ValueError(f"B{bldg_id}: {int((labels < 0).sum())} hours have no measured bill block")
 
+    floor = norms["base_floor_fraction"]["value"]
     result = cc.calibrate_cooling(capacity_kw_th=capacity.kw_thermal, cop_h=cop, plr_h=plr, month_h=labels,
-                                  bill_kwh=bill_kwh, base_shape_h=base_shape,
-                                  base_floor_fraction=norms["base_floor_fraction"]["value"])
+                                  bill_kwh=bill_kwh, base_shape_h=base_shape, base_floor_fraction=floor)
+    limit = result_capacity_limit(capacity, design_cop, cop)
+    thermal = thermal_v6(meta, frame, weather, schedule=schedule, physical_kwh_th=capacity.kw_thermal*plr,
+                         base_kwh=result.base_kwh, norms=norms, pressure=pressure, max_kwh_th=limit)
+    for _ in range(THERMAL_ITERATIONS):    # the 5R1C ideal load replaces the physical cooling (D-V6-53)
+        result = cc.calibrate_cooling(capacity_kw_th=1.0, cop_h=cop, plr_h=thermal["ideal_kwh_th"], month_h=labels,
+                                      bill_kwh=bill_kwh, base_shape_h=base_shape, base_floor_fraction=floor)
+        thermal = thermal_v6(meta, frame, weather, schedule=schedule, physical_kwh_th=None, base_kwh=result.base_kwh,
+                             norms=norms, pressure=pressure, zone=thermal["zone"], max_kwh_th=limit)
     dhw_model = frame["dhw_demand"].to_numpy(dtype=float)/cop_dhw if "dhw_demand" in frame else np.zeros(len(frame))
     dhw_elec = np.minimum(dhw_model, 0.5*result.base_kwh)
     nsl = result.base_kwh - dhw_elec
@@ -911,6 +920,8 @@ def calibrate_building_physical(
         out = pd.read_csv(csv_path)
         out["non_shiftable_load"] = nsl
         out["cooling_demand"] = result.cooling_kwh*cop
+        out["occupant_count"] = thermal["occupants"]                      # conditioned-zone occupants (D-V6-53)
+        out["indoor_dry_bulb_temperature_cooling_set_point"] = thermal["set_point"]
         if "dhw_demand" in out.columns:
             out["dhw_demand"] = dhw_elec*cop_dhw
         out.to_csv(csv_path, index=False, float_format="%.6f")
@@ -926,7 +937,67 @@ def calibrate_building_physical(
     return PhysicalDistillation(report=pd.DataFrame(list(rows.values())), capacity=capacity, design_cop=design_cop,
                                 nominal_power_kw=capacity.kw_thermal/design_cop,
                                 capped_blocks=[block_names[b] for b in result.capped_months],
-                                declarations=list(result.declarations))
+                                declarations=list(result.declarations), thermal=thermal["schema"])
+
+
+THERMAL_ITERATIONS = 2   # D-V6-53: ideal load with the base it leaves; 2 passes settle the internal gains
+
+
+def result_capacity_limit(capacity, design_cop: float, cop: np.ndarray) -> np.ndarray:
+    """Hourly thermal output limit of the cooling device sized at capacity / design COP (FR-016.3)."""
+    return 0.999*capacity.kw_thermal/design_cop*np.asarray(cop, dtype=float)
+
+
+def thermal_inputs(meta, weather: pd.DataFrame, *, schedule, base_kwh, norms, pressure):
+    """Hourly drivers of the 5R1C model of one building (citylearn.v3.thermal.ThermalInputs) and its flow."""
+    from citylearn.v3 import thermal as th
+    from uc3m.application.dataset import hvac_capacity as hc
+
+    people, flow = hc.zone_occupancy(area_m2=meta.area_techada_m2, use_type=meta.tipo_uso_citylearn, norms=norms)
+    inputs = th.ThermalInputs(
+        theta_e=weather["outdoor_dry_bulb_temperature"].to_numpy(dtype=float),
+        rh_e=weather["outdoor_relative_humidity"].to_numpy(dtype=float),
+        irradiance_w_m2=(weather["diffuse_solar_irradiance"] + weather["direct_solar_irradiance"]).to_numpy(dtype=float),
+        electric_gain_w=np.asarray(base_kwh, dtype=float)*1000.0,
+        occupants=people*np.asarray(schedule, dtype=float), pressure_kpa=pressure)
+    return inputs, flow
+
+
+def thermal_v6(meta, frame: pd.DataFrame, weather: pd.DataFrame, *, schedule, physical_kwh_th, base_kwh, norms,
+               pressure, max_kwh_th, zone=None) -> dict:
+    """SPEC-016 D-V6-53: ISO 13790 5R1C of the conditioned zone, calibrated on the design year against the
+    uncapped physical cooling (capacity x part load) and run at the 24 C set point in occupied hours."""
+    from citylearn.v3 import thermal as th
+    from citylearn.v3 import thermal_calibration as tcal
+
+    set_point = float(norms["indoor_design"]["t_c"])
+    w_in = th.humidity_ratio(set_point, norms["indoor_design"]["rh_pct"], pressure)
+    mass = norms["thermal_mass_class"]["value"]
+    inputs, flow = thermal_inputs(meta, weather, schedule=schedule, base_kwh=base_kwh, norms=norms, pressure=pressure)
+    area = float(meta.area_techada_m2)
+    if zone is None:
+        years = frame["_year"].to_numpy(dtype=int)
+        zone = tcal.calibrate_conditioned_zone(
+            target_kwh=physical_kwh_th, inputs=inputs, month=years*12 + frame["_month"].to_numpy(dtype=int),
+            train=years == int(norms["outdoor_design"]["year"]), floor_area_m2=area, ventilation_m3_s=flow,
+            mass_class=mass, set_point=set_point, w_in=w_in)
+    fraction = zone.conditioned_fraction
+    ideal = tcal.simulate_cooling_kwh(inputs=tcal.zone_inputs(inputs, fraction), envelope_w_m2k=zone.envelope_w_m2k,
+                                      solar_aperture_fraction=zone.solar_aperture_fraction,
+                                      floor_area_m2=area*fraction, ventilation_m3_s=flow*fraction, mass_class=mass,
+                                      set_point=set_point, w_in=w_in)
+    attributes = {"floor_area_m2": round(area*fraction, 6), "envelope_w_m2k": round(zone.envelope_w_m2k, 6),
+                  "solar_aperture_fraction": round(zone.solar_aperture_fraction, 6),
+                  "ventilation_m3_s": round(flow*fraction, 6), "mass_class": mass, "set_point": set_point,
+                  "pressure_kpa": round(pressure, 6), "indoor_rh_pct": float(norms["indoor_design"]["rh_pct"]),
+                  "electric_gain_fraction": round(fraction, 6)}
+    return {"zone": zone, "ideal_kwh_th": np.minimum(ideal, max_kwh_th), "occupants": inputs.occupants*fraction,
+            "set_point": set_point,
+            "schema": {"type": "citylearn.v3.thermal.ISO13790Building",
+                       "dynamics": {"type": "citylearn.v3.thermal.ISO13790Dynamics", "attributes": attributes},
+                       "calibration": {"conditioned_fraction": round(fraction, 6), "statistics": zone.statistics,
+                                       "status": "calibrated to the bill-anchored physics, not validated with "
+                                                 "ASHRAE Guideline 14 (D-V6-53)"}}}
 
 
 def _missing_months(measurements: pd.DataFrame, building_id: int) -> list[str]:

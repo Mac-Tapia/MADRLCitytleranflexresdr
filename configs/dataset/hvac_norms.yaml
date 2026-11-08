@@ -20,6 +20,11 @@ outdoor_design:
   origin: measured
   source: "NASA POWER hourly T2M and RH2M of the design year, data/campaigns/<dataset>/raw/weather/nasa_power_2023_utc.json; elevation 115.02 m from the same file."
 
+thermal_mass_class:
+  value: medium
+  origin: assumption
+  note: "ISO 13790 Table 12 class of the 5R1C model (SPEC-016 D-V6-53): A_m = 2.5 A_f, C_m = 165 000 J/(m2 K). Iquitos buildings are concrete and brick; no inventory value. Replace with the class of each building when known."
+
 site_elevation_m:
   value: 115.02
   origin: measured

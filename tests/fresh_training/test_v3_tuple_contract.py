@@ -58,9 +58,13 @@ def test_actions_and_observations_are_checked_against_the_building():
     assert any('BESS has no action' in v for v in found) and any('air conditioning' in v for v in found)
     assert any('c1 has no action' in v for v in found)
     assert tc.observation_violations('B', ['hour'], billed=True)
-    # D-V6-51: the air conditioning without action is accepted only through the declared deferral.
-    assert tc.DEFERRED_ACTIONS == {'cooling_device': 'D-V6-51'}
-    assert tc.action_violations('B', ['electrical_storage'], chargers=[], has_storage=True, has_cooling=True) == []
+    # D-V6-53: no deferral is left; air conditioning without an action breaks the contract again.
+    assert tc.DEFERRED_ACTIONS == {}
+    assert any('air conditioning has no action' in v for v in tc.action_violations(
+        'B', ['electrical_storage'], chargers=[], has_storage=True, has_cooling=True))
+    assert tc.action_violations('B', ['electrical_storage'], chargers=[], has_storage=True, has_cooling=True,
+                                deferred={'cooling_device': 'D-V6-51'}) == []
+    assert tc.observation_violations('B', list(tc.REWARD_OBSERVATIONS), billed=False, thermal=True)
     assert any('without air conditioning' in v for v in tc.action_violations(
         'B', ['electrical_storage', 'cooling_device'], chargers=[], has_storage=True, has_cooling=False))
 
@@ -95,7 +99,9 @@ def test_every_action_of_the_active_dataset_is_an_equipment_of_its_building(acti
 def test_every_observation_the_reward_reads_is_in_each_agents_observation(active):
     env, core, schema = active
     billed = schema.get('dataset_version', 'v6') == 'v6' or any('bill_tariff' in b for b in schema['buildings'].values())
+    thermal = any(b.get('dynamics') for b in schema['buildings'].values())
+    assert thermal                                             # D-V6-53: every v6 building has its 5R1C dynamics
     violations = []
     for agent in env.possible_agents:
-        violations += tc.observation_violations(agent, env.observation_names(agent), billed=billed)
+        violations += tc.observation_violations(agent, env.observation_names(agent), billed=billed, thermal=thermal)
     assert violations == []

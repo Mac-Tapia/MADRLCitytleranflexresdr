@@ -129,6 +129,30 @@
       ],
       "recover_from_commit": "da1cb22616b2c54a45fa06866c7854b7418c0129",
       "reason": "Tools of the retired campaign (Drive layout of 2026), classified obsolete_old_campaign, with no reference from code, tests, scripts or configuration (module 5, task 5.2)."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "files",
+      "paths": [
+        "tools/eval/run_colab_drive_statistical_analysis.py",
+        "tools/eval/inferential_audit_report.py",
+        "tools/eval/run_notebook_hypothesis_pipeline.py",
+        "tools/eval/analyze_real_drive_training_artifacts.py",
+        "tools/training/run_citylearn_v2_baseline_comparison.py"
+      ],
+      "recover_from_commit": "6cd518e7ad89f2ddb23aba007ddcc4ded3037a8b",
+      "reason": "Owner decision (module 5, task 5.2): tools of the old campaign with no real users."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.6",
+      "kind": "file",
+      "path": ".claude/auto_save.sh",
+      "recover_from_commit": "6cd518e7ad89f2ddb23aba007ddcc4ded3037a8b",
+      "reason": "Owner decision (module 7, task 7.1): legacy auto-publish hook, disabled since 2026-10-31, archived in the Git history."
     }
   ],
   "branch_renames": {

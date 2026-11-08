@@ -408,7 +408,7 @@ def _inventory() -> dict:
 def test_inventory_classifies_every_listed_file() -> None:
     inventory = _inventory()
     assert inventory["schema_version"] == "1.1"
-    allowed = {"adapted", "obsolete_old_campaign", "needs_owner_decision", "retirement_guard"}
+    allowed = {"adapted", "obsolete_old_campaign", "kept_by_owner", "retirement_guard"}
     for entry in inventory["files"]:
         assert entry["classification"] in allowed, entry
         assert (REPO / entry["path"]).is_file(), entry["path"]

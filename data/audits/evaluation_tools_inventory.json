@@ -7,10 +7,10 @@
   "current_results_layout": "<results_root>/<run_id>/{evidence.json, experiment.json} and <results_root>/<run_id>/<E1|E1_s<seed>>/{data, figures, figures/tables, checkpoints}; resolved by uc3m/application/evaluation/results_catalog.py (argument, then MADRL_RESULTS_ROOT, then outputs/campaign); only status=verified runs count",
   "derived_outputs_convention": "<results_root>/resumen_comparativo/{estadistica/analisis_cuantitativo_completo_50_episodios, multiobjetivo, performance_comparison} (no evidence.json there, so the catalog ignores it)",
   "counts": {
-    "total": 33,
+    "total": 28,
     "adapted": 6,
-    "needs_owner_decision": 16,
     "obsolete_old_campaign": 10,
+    "kept_by_owner": 11,
     "retirement_guard": 1
   },
   "files": [
@@ -45,84 +45,59 @@
       "locates_data_via": "resolve_run_dir(repo, run_dir) returns the explicit results root or the catalog default root when it has verified runs; episode_summary_path/load_episode_reward_series use campaign_layout(root, seed)[(ALGO, E*)]/figures/tables/episode_summary.csv; district objectives and best_madrl_report from <root>/resumen_comparativo/; illustrative mode unchanged"
     },
     {
-      "path": "tools/eval/run_colab_drive_statistical_analysis.py",
-      "classification": "needs_owner_decision",
-      "reason": "Its first stage runs CityLearn/scripts/generate_thesis_objective_evidence.py with --output-root=colab=<run>, which only understands <root>/<ALGO>/<E*> (run_dir in that script) and official_full_status.json; CityLearn/ is an external dependency outside this task. Its other inputs are derived tables of retired tools (analysis_real_drive/district_episode_kpis.csv) and its manifest hard-codes retired-campaign claims (HAPPO excluded 49/50, kpi_level_rows=231, Shapiro conclusions). Not edited; owner must decide whether to extend the CityLearn evidence script to the catalog or retire this wrapper."
-    },
-    {
-      "path": "tools/eval/run_notebook_hypothesis_pipeline.py",
-      "classification": "needs_owner_decision",
-      "reason": "Orchestrates CityLearn/scripts/generate_thesis_objective_evidence.py, which expects the algorithm-first layout <root>/<ALGO>/<E*>; adapting requires changing the external CityLearn script or adding a layout bridge."
-    },
-    {
       "path": "tools/eval/hypothesis.py",
-      "classification": "needs_owner_decision",
-      "reason": "Thesis hypothesis analysis with DEFAULT_RUN_ID=madrl_v3_20260627_164047; scientifically relevant for the new campaign but outside the allowed files of this task."
-    },
-    {
-      "path": "tools/eval/inferential_audit_report.py",
-      "classification": "needs_owner_decision",
-      "reason": "Audits Cap. 5.9 inferential tables of the retired run and reads outputs/_drive_madrl/full_data/analysis_real_drive episode tables; needs an owner decision on which new-campaign tables it should audit."
-    },
-    {
-      "path": "tools/eval/analyze_real_drive_training_artifacts.py",
-      "classification": "needs_owner_decision",
-      "reason": "Builds episode-level district KPIs (district_episode_kpis.csv) from timeseries/trace under the retired mirror; the same computation is useful for the new campaign (data/timeseries.csv per run) but it is not in this task's allowed files."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/ops/audit_modular_training.py",
-      "classification": "needs_owner_decision",
-      "reason": "Matches only by its default --runs outputs/modular_smoke; it audits native modular smoke evidence (data/audits/modular_training_acceptance.json), not the retired campaign. Owner must decide whether smoke and campaign audits share the results catalog root."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/ops/verify_workflow_integrity.py",
-      "classification": "needs_owner_decision",
-      "reason": "Lists CityLearn/scripts/generate_thesis_objective_evidence.py as a canonical workflow path; whether that script stays canonical for the modular campaign is an owner decision."
-    },
-    {
-      "path": "tools/training/run_citylearn_v2_baseline_comparison.py",
-      "classification": "needs_owner_decision",
-      "reason": "CityLearn v2 baseline benchmark versus selected MADRL keyed to RUN_ID=madrl_v3_20260627_164047; the comparison is still meaningful but needs the new campaign's selected models."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/training/test_job_resume_state.py",
-      "classification": "needs_owner_decision",
-      "reason": "Uses the retired run id only as tmp_path directory names in tests of the legacy job-resume planner; reads no retired data. Keeping or retiring the legacy planner is an owner decision."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/figures/generate_architecture_pngs.py",
-      "classification": "needs_owner_decision",
-      "reason": "Architecture diagram HTML labels cite outputs/citylearn_v3_madrl_full_20260615_074011_v4 and generate_thesis_objective_evidence.py; documentation text to be rewritten by the owner."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/thesis/build_multiobjective_thesis_docx.py",
-      "classification": "needs_owner_decision",
-      "reason": "Builds the multiobjective Word summary from the retired run's resumen_comparativo; could read <results_root>/resumen_comparativo/multiobjetivo now produced by the adapted tool, but thesis DOCX changes are owner decisions."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/thesis/build_multiobjective_thesis_pdf.py",
-      "classification": "needs_owner_decision",
-      "reason": "PDF counterpart of build_multiobjective_thesis_docx.py keyed to RUN_ID=madrl_v3_20260627_164047; same decision as the DOCX builder."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/thesis/generate_borrador_tesis_docx.py",
-      "classification": "needs_owner_decision",
-      "reason": "Thesis draft generator whose text cites the retired run (madrl_v3_20260627_164047, 50 episodes); rewriting thesis text is an owner decision."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/thesis/thesis_doctoral_sections.py",
-      "classification": "needs_owner_decision",
-      "reason": "Cap. 5 section builder reading the retired run and analysis_real_drive tables; thesis content decision."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/thesis/thesis_word_canons.py",
-      "classification": "needs_owner_decision",
-      "reason": "Canonical Word paths plus RUN_ID of the retired run, imported by other thesis tools; changing the canon is an owner decision."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/thesis/madrl_algorithm_analysis.py",
-      "classification": "needs_owner_decision",
-      "reason": "Convergence/learning/heterogeneity metrics computed from the retired full_data mirror; the analysis applies to the new campaign but is outside this task's allowed files."
+      "classification": "kept_by_owner",
+      "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
       "path": "tools/drive/analyze_drive_folder_sizes.py",
@@ -191,15 +166,20 @@
       "tools/drive/fetch_colab_kpis_from_drive.py",
       "tools/drive/validate_drive_kpi_downloads.py",
       "tools/eval/analyze_colab_drive_results.py",
+      "tools/eval/analyze_real_drive_training_artifacts.py",
       "tools/eval/audit_colab_drive_episodes.py",
       "tools/eval/audit_drive_figure_integrity.py",
       "tools/eval/audit_drive_kpis_buildings.py",
+      "tools/eval/inferential_audit_report.py",
       "tools/eval/recalc_drive_kpis_deep.py",
       "tools/eval/recalc_drive_kpis_full_evaluate_v2.py",
+      "tools/eval/run_colab_drive_statistical_analysis.py",
+      "tools/eval/run_notebook_hypothesis_pipeline.py",
       "tools/ops/diagnose_madrl_storage.py",
       "tools/thesis/patch_cap5_kpi_catalog_docx.py",
       "tools/thesis/validate_integral_word_50ep_4madrl.py",
       "tools/training/regenerate_drive_training_figures.py",
+      "tools/training/run_citylearn_v2_baseline_comparison.py",
       "tools/training/test_madrl_robustness.py",
       "tools/training/validate_drive_kpi_skip_plan.py"
     ],

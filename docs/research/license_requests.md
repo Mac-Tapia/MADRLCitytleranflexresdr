@@ -1,6 +1,6 @@
-# Pedidos de licencia a repositorios de origen (borradores)
+# Pedidos de licencia a repositorios de origen
 
-**Estado:** borradores sin publicar. Publicar un issue en un repositorio ajeno es una acción externa: requiere aprobación explícita del propietario del proyecto.
+**Estado:** publicados el 2026-11-08 con la aprobación del propietario.
 **Motivo:** SPEC-001. HARL, MARL y MATD3implementation no declaran licencia (la API de GitHub devuelve `license=null` y no hay `LICENSE` en el árbol fijado, revisado el 2026-10-31). Mientras tanto rige la excepción acotada de `governance/open_source_policy.yaml`.
 
 Los textos van en inglés porque los repositorios son internacionales. Antes de publicar, comprobar que no exista ya un issue equivalente abierto.
@@ -39,8 +39,8 @@ Los textos van en inglés porque los repositorios son internacionales. Antes de 
 
 | Repositorio | Issue | Fecha | Respuesta |
 |---|---|---|---|
-| PKU-MARL/HARL | sin publicar | — | — |
-| puyuan1996/MARL | sin publicar | — | — |
-| JohannesAck/MATD3implementation | sin publicar | — | — |
+| PKU-MARL/HARL | https://github.com/PKU-MARL/HARL/issues/77 | 2026-11-08 | pendiente |
+| puyuan1996/MARL | https://github.com/puyuan1996/MARL/issues/3 | 2026-11-08 | pendiente |
+| JohannesAck/MATD3implementation | https://github.com/JohannesAck/MATD3implementation/issues/5 | 2026-11-08 | pendiente |
 
 Si se obtiene licencia: añadir el archivo `LICENSE` al fork, volver a ejecutar `scripts/quality/run_foundation_gates.ps1` y retirar la excepción. Si vence la excepción sin respuesta, evaluar la sustitución del backend (SPEC-001, opción B) en una versión posterior a la tesis.

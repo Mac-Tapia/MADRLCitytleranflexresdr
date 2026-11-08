@@ -563,7 +563,7 @@ flowchart TD
         direction LR
         TRAIN_S["CityLearn/scripts/train_citylearn_v3_*.py\n4 scripts de entrenamiento\nuno por algoritmo"]
         COLAB_L["CityLearn/scripts/colab_a100_official_launcher.py\ncolab_a100_live_monitor.py\ncolab_protocol_guard.py · two_phase_happo_masac_v3"]
-        LAUNCH["scripts/ + deploy/aws/training/\nLaunchers locales PS + AWS bash\nMonitoreo + checkpointing"]
+        LAUNCH["scripts/\nLaunchers locales\nMonitoreo + checkpointing"]
         TRAIN_S --- COLAB_L --- LAUNCH
     end
 
@@ -627,4 +627,3 @@ flowchart TD
 | `docs/architecture/flujo.md` | Arquitectura profesional completa |
 | `docs/chapters/cap1_objetivos.md` | Ejes OE1/OE2/OE3 |
 | `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md` | Plan de tesis estructurado |
-| `deploy/aws/README_TRAINING_AWS.md` | Manual completo de entrenamiento AWS |

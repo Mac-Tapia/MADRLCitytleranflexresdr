@@ -327,7 +327,6 @@ Este capítulo fija el **contrato de evaluación**; no reporta tablas de ranking
 | **Hardware canónico** | Google Colab Pro+ (A100 / H100 según runtime del notebook); protocolo `two_phase_happo_masac_v3` |
 | **Semilla** | seed = 0 en las 12 corridas reportadas |
 | **Rutas** | Dataset: `CityLearn/data/datasets/citylearn_iquitos_2023_2025/`; run: `outputs/madrl_v3_20260627_164047/`; auditoría DER: `data/dataset_audit/der_sizing_audit.csv` |
-| **Ops** | `deploy/` (Docker/AWS) opcional; no sustituye la evidencia Colab |
 
 ---
 

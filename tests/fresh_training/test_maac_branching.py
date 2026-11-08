@@ -7,7 +7,6 @@ multi-discrete action space MAAC keeps its original single-categorical head.
 import sys
 from pathlib import Path
 
-import numpy as np
 import pytest
 import torch
 from gymnasium import spaces

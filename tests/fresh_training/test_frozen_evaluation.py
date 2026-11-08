@@ -154,8 +154,8 @@ def _rebuild_actions(algorithm, policy, history):
                     out = out.masked_fill(available == 0, float('-inf'))
                     branches = getattr(args, 'action_branches', None)
                     if branches:            # D-M3-9: greedy level of every branch (softmax per branch)
-                        k, l = branches
-                        levels = torch.softmax(out.view(k, l)/args.temp, dim=1).argmax(dim=1).numpy()
+                        k, levels_per_branch = branches
+                        levels = torch.softmax(out.view(k, levels_per_branch)/args.temp, dim=1).argmax(dim=1).numpy()
                         last[index] = policy.adapter.action_grid.onehot(index, levels)
                         actions.append(levels)
                         continue

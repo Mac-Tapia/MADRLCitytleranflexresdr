@@ -103,7 +103,7 @@ El orden es: `hpo` en C6, C9 con `EVAL_STAGE='hpo'` y C8. Después, `confirm` en
 
 La sección 4 de `docs/architecture/runbook.md` fija el mismo orden. El código no impide abrir `test_2025` antes de seleccionar, porque `test_unlock.json` se escribe al congelar: este orden depende de quien ejecuta las celdas. El código tampoco fija cuándo va la sensibilidad, que aquí conserva su lugar anterior, antes de test.
 
-El módulo 8 pide además «entrenar sin B01» (tarea 8.3). Ninguna etapa de la configuración lo hace, y por eso no tiene cifras en esta tabla (D7).
+«Entrenar sin B01» (tarea 8.3, D7) queda cerrado: el propietario decidió el 2026-11-08 que los 17 edificios, incluido B01, entrenan en todas las etapas; no hay campaña sin B01 y la sensibilidad sin B01 queda solo en la evaluación (D-M2-4).
 
 ## 4. Autorizar una etapa
 
@@ -435,7 +435,7 @@ Los comentarios que nombraban `iquitos_v6_trial10` en `native.yaml` e `iquitos.y
 
 | Id | Diferencia | Responsable | Siguiente acción | Por qué no bloquea el piloto |
 |---|---|---|---|---|
-| D7 | La tarea 8.3 pide «entrenar sin B01» y ninguna etapa lo hace. Solo existe la sensibilidad de evaluación (D-M2-4, `tools/dataset/compare_campaign_baselines.py`). | Propietario | Definir tratamientos, presupuesto y dataset antes de la tarea 8.3. | El piloto no incluye ese escenario. Si se añade, cambia la campaña, y hay que decidirlo antes de preparar la definitiva. |
+| D7 | «Entrenar sin B01» (tarea 8.3). | Cerrada: el propietario decidió el 2026-11-08 que los 17 edificios, incluido B01, entrenan en todas las etapas; no hay campaña sin B01 y la sensibilidad sin B01 queda solo en la evaluación (D-M2-4). | Definir tratamientos, presupuesto y dataset antes de la tarea 8.3. | El piloto no incluye ese escenario. Si se añade, cambia la campaña, y hay que decidirlo antes de preparar la definitiva. |
 | D15 | El foco 5 del plan del módulo 8 pide fallar «con la ruta del archivo», y `drive_sync` informa la ruta del intento. | Propietario | Con la salida de P4 delante, decidir si basta la ruta del intento o si hay que cambiarla. | La copia alterada se rechaza igual; solo cambia el detalle del mensaje. |
 | D16 | `docs/architecture/runbook.md` dice 8 784 pasos de validación, y C9 trae 8 783 medidos. Puede ser pasos frente a transiciones: **sin verificar**. | Quien ejecute el piloto | Leer el número en la primera evaluación en Colab (G8). | Es una diferencia de texto o de conteo que el propio piloto permite aclarar. |
 
@@ -451,7 +451,6 @@ Los comentarios que nombraban `iquitos_v6_trial10` en `native.yaml` e `iquitos.y
 - Que los commits de los submódulos estén disponibles en la URL de `.gitmodules`.
 - `drive_sync_manifest.json` sobre Drive real, con evaluaciones y análisis: solo se ha probado en carpetas locales (D5).
 - `pipeline analyze`, `build_campaign_statistical_report.py` y `pipeline select` sobre una campaña real: solo se han probado con KPI sintéticos (D6).
-- El diseño de «entrenar sin B01» (D7).
 - `--owner-authorized`, `sync_problems`, el pico de VRAM, la copia de C9, los límites de ejecución y la medición en un proceso hijo solo tienen pruebas locales. Ninguno ha corrido en Colab.
 
 ## 11. Después del piloto

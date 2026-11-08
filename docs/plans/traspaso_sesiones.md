@@ -182,5 +182,6 @@ El propietario suspendió el equipo. Ninguna prueba ni proceso quedó en marcha.
   - Añadir la barrera: `test_2025` solo se abre tras seleccionar el modelo en validación.
   - Aún no tiene Colab Pro: no se lanza ninguna etapa hasta que lo tenga y la autorice por escrito.
 - **D5 y D6 sí se corrigen antes del piloto:** `tools/eval` y `uc3m` entran en la identidad de la campaña, y cambiarlos después de prepararla invalidaría los intentos.
-- **Abierto, sin bloquear el piloto:** D7 (entrenar sin B01), D15, D16, FR-012.4. Ver `modulo8_campana.md`, sección 9.
+- **D7 cerrado:** el propietario decidió el 2026-11-08 que los 17 edificios, incluido B01, entrenan en todas las etapas; no hay campaña sin B01 y la sensibilidad sin B01 queda solo en la evaluación (D-M2-4).
+- **Abierto, sin bloquear el piloto:** D15, D16 y los documentos dudosos de FR-012.4. Ver `modulo8_campana.md`, sección 9.
 - **Ninguna etapa está autorizada** y nada se ha ejecutado en Colab.

@@ -266,7 +266,7 @@ Necesita plan detallado propio (`docs/plans/modulo8_campana.md`) y la autorizaci
 
 - **Tarea 8.1: piloto en Colab.** Prueba real del cuaderno: instalación, bloqueo de Drive, desconexión y reanudación (SPEC-008, pendiente 4 de STATUS). Copia de los artefactos fuera de la máquina, con copia y restauración que verifican cada SHA-256 contra `drive_sync_manifest.json`. Los intentos de la campaña no generan `evidence.json`, y `backup_run` los rechaza.
 - **Tarea 8.2: HPO, congelado y confirmación.** Selección sobre validación con los cargadores nativos (FR-N09) y `configuration_freezes.json` por etapa.
-- **Tarea 8.3: sensibilidad** (escenarios, incluido entrenar sin B01) y evaluación congelada en `test`.
+- **Tarea 8.3: sensibilidad** (escenarios; el propietario decidió el 2026-11-08 que los 17 edificios, incluido B01, entrenan en todas las etapas; no hay campaña sin B01 y la sensibilidad sin B01 queda solo en la evaluación (D-M2-4)) y evaluación congelada en `test`.
 - **Tarea 8.4: informe estadístico multisemilla** (módulo 4) y selección.
 - **Tarea 8.5: tesis.** SPEC-006 (vista multiobjetivo, §3.1.3, APA y los dos DOCX canónicos); observaciones experimentales del jurado (SPEC-009); D04 y los supuestos económicos con IRENA y la tasa social del MEF (SPEC-013 y SPEC-014); retirar `iquitos_v1` (D01).
 - **Tarea 8.6: aceptación integral (fase 8 de STATUS).**

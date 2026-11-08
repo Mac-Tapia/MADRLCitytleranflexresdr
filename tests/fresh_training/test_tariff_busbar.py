@@ -13,6 +13,7 @@ from pathlib import Path
 
 import pytest
 import requests
+import yaml
 
 from uc3m.adapters.osinergmin import pba_pdf
 from uc3m.adapters.osinergmin.pba_pdf import (PbaFormatError, SourceChangedError, candidate_dates, candidate_names,
@@ -23,6 +24,7 @@ from uc3m.domain.tariffs import BusbarPrice, BusbarSheet
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO/'tools/dataset'))
+ACTIVE_RAW = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']/'raw'
 
 ROW_B = 'Electro Oriente MT 32,12 78,58 78,58 Electro Oriente MT 32,12 78,58 78,58 32,12 78,58 78,58 8,11 78,58 86,69'
 ROW_E = 'Electro Oriente MT 32,12 34,71 34,71 Electro Oriente MT 32,12 34,71 34,71 32,12 34,71 34,71 8,11 34,71 42,82'
@@ -315,10 +317,17 @@ def test_audit_records_csv_hash(tmp_path):
     assert report['failures'] == [] and report['busbar_csv_sha256'] == hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+@pytest.mark.parametrize('tool', ['ingest_osinergmin_pba.py', 'build_bill_tariffs.py'])
+def test_tools_default_to_the_sheets_of_the_active_dataset(tool):
+    # Their raw default was a fixed retired campaign; it comes from the campaign configuration now.
+    source = (REPO/'tools/dataset'/tool).read_text(encoding='utf-8')
+    assert 'data/campaigns/iquitos' not in source and 'configs/experiments/iquitos.yaml' in source
+
+
 def test_audit_passes_on_the_sheets_a_build_would_use():
     import osinergmin_pliegos as op
     sheets = {date.fromisoformat(path.stem.rsplit('_', 1)[1]): op.parse_sheet(path.read_bytes())
-              for path in (REPO/'data/campaigns/iquitos_v4/raw/osinergmin').glob('*.html')}
+              for path in (ACTIVE_RAW/'osinergmin').glob('*.html')}
     report = tariff_crosscheck_audit(TARIFFS_ROOT/'busbar_electro_oriente.csv', sheets)
     assert tariff_crosscheck_gate(report) and len(report['rows']) == 34
 
@@ -327,7 +336,7 @@ def test_audit_passes_on_the_sheets_a_build_would_use():
 def test_every_tariff_used_by_the_dataset_is_flat_in_every_sheet(tariff):
     import build_fresh_campaign_dataset as builder
     import osinergmin_pliegos as op
-    paths = sorted((REPO/'data/campaigns/iquitos_v4/raw/osinergmin').glob('*.html'))
+    paths = sorted((ACTIVE_RAW/'osinergmin').glob('*.html'))
     assert len(paths) == 42
     for path in paths:
         assert builder.energy_rate_ctm(op.parse_sheet(path.read_bytes())[tariff]) > 0, path.name

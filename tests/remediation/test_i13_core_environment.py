@@ -4,12 +4,13 @@ import sys
 
 import numpy as np
 import pytest
+import yaml
 
 from uc3m.env.uc3m_env import UC3MEnv
 from uc3m.env.wrappers import HARLWrapper, PettingZooWrapper
 
 ROOT = Path.cwd()
-SCHEMA = ROOT/'data/campaigns/iquitos_v5/splits/validation_2024/schema.json'
+SCHEMA = ROOT/yaml.safe_load((ROOT/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']/'splits/validation_2024/schema.json'
 
 
 @pytest.fixture

@@ -2,7 +2,7 @@
 
 Inventario canónico verificado **2026-07-29**.
 Redacción DOCX de tesis: carpeta única **`tools/thesis/`**
-(ver `docs/analisis_scripts_vs_tools_tesis.md` y `tools/thesis/README.md`).
+(ver `tools/thesis/README.md`).
 
 ## Política
 
@@ -14,7 +14,7 @@ Redacción DOCX de tesis: carpeta única **`tools/thesis/`**
 | Dataset CityLearn Iquitos | `tools/dataset/` |
 | KPIs / stats de resultados | `tools/eval/` |
 | Colab notebook generate/patch | `tools/colab/` |
-| Helpers entrenamiento / baselines | `tools/training/` (incluye `prune_artifacts.ps1`) |
+| Helpers entrenamiento / baselines | `tools/training/` |
 | Integridad workflow / storage | `tools/ops/` |
 | Figuras arquitectura (no Word) | `tools/figures/` |
 | Entrenamiento agentes CityLearn v3 | `CityLearn/scripts/` |

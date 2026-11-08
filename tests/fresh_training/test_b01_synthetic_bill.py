@@ -20,7 +20,7 @@ import write_b01_synthetic_bill as wb  # noqa: E402
 from uc3m.application.dataset import b01_synthetic as bs  # noqa: E402
 from uc3m.application.dataset import construction as cn  # noqa: E402
 
-RAW = REPO/'data/campaigns/iquitos_v5/raw'
+RAW = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']/'raw'
 RULES = yaml.safe_load((REPO/'configs/dataset/b01_synthetic_bill.yaml').read_text(encoding='utf-8'))
 PEERS = tuple(RULES['peers']['value'])
 

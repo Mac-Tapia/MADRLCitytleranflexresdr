@@ -1,20 +1,20 @@
 # tools/ — utilidades del proyecto (subdividido por dominio)
 
-Inventario de archivos Python directos actualizado **2026-11-02**. La historia
+Inventario de archivos Python directos actualizado **2026-11-08**. La historia
 de reorganización está en
-`docs/analisis_reorganizacion_tools_dataset.md` y
+`data/audits/repository_hygiene_manifest.json` y
 `docs/audits/architecture_thesis_20261101/informe.md`.
 
 ## Dominios de primer nivel
 
 | Carpeta | `.py` | Contenido |
 |---------|------:|-----------|
-| `dataset/` | 24 | Creación/validación de datasets y campañas CityLearn Iquitos |
-| `thesis/` | 58 | Redacción DOCX / Cap. 5–6 / figuras de documento / PDF defensa |
-| `eval/` | 21 | KPIs Drive, análisis estadístico, auditorías inferenciales de resultados |
+| `dataset/` | 32 | Creación/validación de datasets y campañas CityLearn Iquitos |
+| `thesis/` | 50 | Redacción DOCX / Cap. 5–6 / figuras de documento / PDF defensa |
+| `eval/` | 9 | KPIs Drive, análisis estadístico, auditorías inferenciales de resultados |
 | `colab/` | 2 | Generación/validación del notebook tutorial Colab |
-| `training/` | 12 | Helpers de entrenamiento, layout, completion, baselines, tests (+ `prune_*.ps1`) |
-| `ops/` | 14 | Integridad de workflow, auditoría y mantenimiento local |
+| `training/` | 8 | Helpers de entrenamiento, layout, completion, baselines, tests |
+| `ops/` | 13 | Integridad de workflow, auditoría y mantenimiento local |
 | `figures/` | 6 | Diagramas arquitectura / mermaid (no tesis Word) |
 | `skills/` | 1 | Validador e inventario local `registry.yaml`; guías y conectores en subcarpetas |
 

@@ -204,7 +204,7 @@ def test_tampered_recorded_input_blocks_stage_with_zero_learner_calls(tmp_path):
     payload['inputs']['split:train_2023']['sha256'] = '0'*64
     manifest_path.write_text(json.dumps(payload), encoding='utf-8')
     learner, calls = _counting_learner()
-    attempts = REPO/'data/campaigns/iquitos_v5/attempts'
+    attempts = REPO/yaml.safe_load(CONFIG.read_text(encoding='utf-8'))['dataset_root']/'attempts'
     before = sorted(attempts.rglob('try_*')) if attempts.exists() else []
     with pytest.raises(PermissionError, match='split:train_2023_changed'):
         fc.run_stage(manifest_path, 'pilot', learner, REPO, authorized=True)

@@ -76,7 +76,6 @@ Reglas duras: editar **solo** estos 2 archivos; backups temporales van a `output
 
 .\.venv39-citylearn-v3\Scripts\python.exe -B tools\thesis\patch_assets.py
 
-.\.venv39-citylearn-v3\Scripts\python.exe -B tools\thesis\update_word_quantitative_50episodes.py
 
 .\.venv39-citylearn-v3\Scripts\python.exe -B tools\thesis\sync_cap5_to_canon_words.py
 
@@ -126,6 +125,6 @@ Scripts one-shot obsoletos (parches a Word eliminados como `FINAL_COMPLETA`, `AB
 
 
 
-Detalle histórico: `docs/analisis_scripts_vs_tools_tesis.md`, `docs/AUDITORIA_TOOLS_2026-07-29.md`.
+Retiros y su commit de recuperación: `data/audits/repository_hygiene_manifest.json`.
 
 

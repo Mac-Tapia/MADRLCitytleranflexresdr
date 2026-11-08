@@ -343,7 +343,7 @@ Con `memory.used` puede fallar esa lectura, porque PyTorch no siempre reserva po
 
 ## 7. Horas y coste
 
-**Hoy no existe ninguna cifra de horas ni de coste de esta campaña.** Las tiene que medir el piloto. Las «10-12 horas» de la sección 1 de `docs/colab.md` pertenecen a un flujo retirado de 12 corridas y no sirven.
+**Hoy no existe ninguna cifra de horas ni de coste de esta campaña.** Las tiene que medir el piloto. Las «10-12 horas» del antiguo manual de Colab pertenecían a un flujo retirado de 12 corridas y no sirven.
 
 Tampoco vale como estimación de Colab el único tiempo que hay en el repositorio: 2 744 s para 8 783 pasos de evaluación (celda C9), medido en Windows, en CPU y con una política de reglas.
 
@@ -422,7 +422,7 @@ Estado al 2026-11-08. «Corregido» significa corregido en el árbol de trabajo,
 | D9 | El hilo de copia a Drive ignoraba el código de salida, así que un conflicto no se veía. | Corregido: cada copia fallida se muestra y queda en `sync_problems`, y C6 avisa. |
 | D10 | C8 no sincronizaba con Drive, y un corte podía perder el congelado local. | Corregido: C8 sincroniza después de congelar. |
 | D11 | `docs/architecture/runbook.md` traía alias y campaña de `iquitos_v5`, HPO con 288 tratamientos y `RUN_STAGE`. | Corregido en esta tanda: alias y campaña activos, HPO con 252 tratamientos y 22 075 200 pasos, `STAGE` en C5 y `EXECUTE_STAGE` en C6. |
-| D12 | `docs/colab.md` y `docs/colab_checklist.md` describen una vía retirada. | Corregido en esta tanda: llevan al inicio un aviso de documento histórico que remite a este plan. Su contenido no se reescribió, así que **no hay que seguirlos**. |
+| D12 | El manual y la lista de Colab antiguos describían una vía retirada. | Retirados del árbol el 2026-11-08 por decisión del propietario (FR-012.4); commit de recuperación en `data/audits/repository_hygiene_manifest.json`. Este plan es la guía vigente. |
 | D13 | `docs/architecture/colab.md` hablaba de `RUN_TRAINING=True`, 12 tratamientos, tope de 85 % de VRAM, buffers reducidos y una celda de preflight que comprobaba el bloqueo. | Corregido en esta tanda. Las frases de «no ejecutado en Colab» se conservan porque siguen siendo ciertas. |
 | D14 | `configs/algorithms/native.yaml:73` atribuía el tamaño de MASAC a 87 acciones por eje. | Corregido: ahora nombra las 220 acciones de D-M3-10 y da 105 GiB para el candidato 256, que coincide con 95,07 GiB más el 10 % (`native.yaml:60` y `native_entrypoint.py:226-229`). |
 | D17 | `docs/plans/hoja_ruta_modulos.md` mostraba los módulos 3b a 7 como «Pendiente». | Corregido en esta tanda: estados actualizados, sin dar por cerrado lo que sigue abierto. |

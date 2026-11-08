@@ -13,6 +13,8 @@ import sys
 from datetime import date
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[2]
 TOOLS = Path(__file__).resolve().parent
 for path in (ROOT, TOOLS):
@@ -53,7 +55,7 @@ def table_rows(raw_dir: Path) -> list:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument('--raw-dir', type=Path, default=ROOT/'data/campaigns/iquitos_v4/raw')
+    parser.add_argument('--raw-dir', type=Path, default=ROOT/yaml.safe_load((ROOT/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']/'raw')
     parser.add_argument('--output', type=Path, default=ROOT/'data/tariffs/osinergmin/bill_tariffs.csv')
     args = parser.parse_args(argv)
     rows = table_rows(args.raw_dir)

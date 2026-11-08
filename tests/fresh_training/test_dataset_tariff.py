@@ -1,11 +1,11 @@
-"""Official tariff, demand charge and existing-area PV of campaign iquitos_v3.
+"""Official tariff, demand charge and existing-area PV, first built in iquitos_v3.
 
 User decisions (2026-11-01): the price is Osinergmin's monthly tariff sheet for the
 Iquitos sector (block tariff + demand); BESS is sized by MicroGrids with an hourly
 price and a monthly peak-block demand charge; PV is bounded by the existing covered
 area x 0.63 ("area techada usada como techo disponible"); export stays net billing
 at the energy charge. Unit tests use synthetic inputs; integration tests read
-data/campaigns/iquitos_v3 and fail (never skip) when it is absent.
+the active dataset (configs/experiments/iquitos.yaml) and fail (never skip) when it is absent.
 """
 import csv
 import json
@@ -14,10 +14,11 @@ from datetime import date
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO/'tools/dataset'))
-CAMPAIGN = REPO/'data/campaigns/iquitos_v3'
+CAMPAIGN = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']
 DATASET = CAMPAIGN/'dataset'
 
 CELLS = ['TARIFA MT2', 'TARIFA CON DOBLE MEDICION', 'Cargo Fijo Mensual', 'S//mes', '15.13',
@@ -36,7 +37,7 @@ SHEET = '<html><body><table><tr><td>' + '</td><td>'.join(CELLS) + '</td></tr></t
 
 
 def _json(path):
-    assert path.is_file(), f'{path.relative_to(REPO)} missing: build iquitos_v3 first'
+    assert path.is_file(), f'{path.relative_to(REPO)} missing: build the active dataset first'
     return json.loads(path.read_text(encoding='utf-8'))
 
 
@@ -133,7 +134,14 @@ def test_citylearn_price_is_the_sheet_energy_charge_of_each_building():
 
 def test_bills_are_recomputed_and_errors_reported_per_building_and_month():
     report = _json(CAMPAIGN/'audit/tariff_bill_validation.json')
-    assert report['rows'] and set(report['summary']) == {str(b) for b in range(2, 18)}
+    # D-V6-57: the billed amount of a file with a shifted printed total cannot be tied to its month, so those
+    # months do not validate tariffs; each one stays listed with that reason. B01 has no bill (D-V6-36).
+    shifted = {2, 4, 9, 11, 16, 17}
+    assert report['rows'] and set(report['summary']) == {str(b) for b in set(range(2, 18)) - shifted}
+    excluded = {(e['building'], e['year'], e['month']): e['excluded_reason'] for e in report['excluded']}
+    for row in report['rows']:
+        if row['building'] in shifted:
+            assert excluded[(row['building'], row['year'], row['month'])] == 'flag printed_total_column_shifted'
     for row in report['rows']:
         for key in ('error_with_igv', 'error_without_igv', 'pmax_kw', 'tariff', 'present_in_peak'):
             assert key in row

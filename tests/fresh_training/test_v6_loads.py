@@ -22,7 +22,7 @@ import distill_building_loads as dl  # noqa: E402
 from uc3m.application.dataset import hvac_capacity as hc  # noqa: E402
 
 CAMPAIGN = yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))
-SPLIT = REPO/'data/campaigns/iquitos_v5/splits/train_2023'   # a v5 split: it still has washing machines
+SPLIT = REPO/CAMPAIGN['dataset_root']/'splits/train_2023'
 
 
 @pytest.fixture(scope='module')
@@ -32,11 +32,25 @@ def dataset(tmp_path_factory):
     return out
 
 
+def _with_machines(dataset, schema):
+    # The active dataset has none (they leave in the builder): the shape of a generated dataset before that step.
+    for index, building in enumerate(schema['buildings'].values(), start=1):
+        name = f'Washing_Machine_{index}.csv'
+        building['washing_machines'] = {f'washing_machine_{index}': {'type': 'citylearn.energy_model.WashingMachine',
+                                                                     'autosize': False,
+                                                                     'washing_machine_energy_simulation': name}}
+        (dataset/name).write_text('wm_start_time_step,wm_end_time_step,load_profile\n', encoding='utf-8')
+    schema['actions']['washing_machine'] = {'active': True}
+    schema['observations']['washing_machine_load_profile'] = {'active': True, 'shared_in_central_agent': True}
+
+
 def test_washing_machines_leave_schema_files_and_actions(dataset):
     schema = json.loads((dataset/'schema.json').read_text(encoding='utf-8'))
-    assert any('washing_machines' in b for b in schema['buildings'].values())     # v5 has them
+    _with_machines(dataset, schema)
+    assert all('washing_machines' in b for b in schema['buildings'].values())
     removed = v6.remove_washing_machines(dataset, schema)
-    assert removed and not any('washing_machines' in b for b in schema['buildings'].values())
+    assert len(removed) == 17 and not any('washing_machines' in b for b in schema['buildings'].values())
+    assert 'washing_machine' not in schema['actions'] and 'washing_machine_load_profile' not in schema['observations']
     assert not list(dataset.glob('Washing_Machine_*.csv'))
     (dataset/'schema.json').write_text(json.dumps(schema), encoding='utf-8')
     from citylearn.v3.environment import make_citylearn_v3_env

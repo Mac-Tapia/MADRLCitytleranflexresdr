@@ -103,7 +103,7 @@ def test_comparison_uses_the_declared_scenario_catalog():
 
 def test_test_split_stays_sealed(tmp_path):
     with pytest.raises(SystemExit) as error:
-        tool.main(["--campaigns", "iquitos_v1", "iquitos_v4", "--split", "test_2025",
+        tool.main(["--campaigns", "campaign_a", "campaign_b", "--split", "test_2025",
                    "--output", str(tmp_path / "out.json")])
     assert error.value.code == 2
     assert not (tmp_path / "out.json").exists()

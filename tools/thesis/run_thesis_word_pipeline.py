@@ -44,7 +44,6 @@ def main() -> int:
     parser.add_argument("--skip-generate", action="store_true", default=True, help=argparse.SUPPRESS)
     parser.add_argument("--sync-only", action="store_true", help="Solo sync Cap.5 + verify")
     parser.add_argument("--verify-only", action="store_true", help="Solo verify --all-canons")
-    parser.add_argument("--with-quantitative", action="store_true", help="Correr update_word_quantitative")
     parser.add_argument("--dry-run-sync", action="store_true", help="Sync Cap.5 en dry-run")
     args = parser.parse_args()
 
@@ -68,8 +67,6 @@ def main() -> int:
             ("patch Cap.4 implementación/validación", "patch_cap4_implementacion_docx.py", []),
         ]
     )
-    if args.with_quantitative:
-        steps.append(("update quantitative Informe", "update_word_quantitative_50episodes.py", []))
     sync_args = ["--dry-run"] if args.dry_run_sync else []
     steps.append(("sync Cap.5", "sync_cap5_to_canon_words.py", sync_args))
     steps.append(("verify all canons", "verify_tesis_doctoral_docx.py", ["--all-canons"]))

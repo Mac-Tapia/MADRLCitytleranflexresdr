@@ -26,20 +26,8 @@ FILES = [
         "flujo.pdf",
     ),
     (
-        "operacion.md",
-        "operacion.pdf",
-    ),
-    (
-        "entrenamiento.md",
-        "entrenamiento.pdf",
-    ),
-    (
         "coordinacion.md",
         "coordinacion.pdf",
-    ),
-    (
-        "dataset_construction_pipeline.md",
-        "dataset.pdf",
     ),
 ]
 

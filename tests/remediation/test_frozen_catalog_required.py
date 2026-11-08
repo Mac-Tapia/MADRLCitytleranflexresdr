@@ -2,11 +2,12 @@
 from pathlib import Path
 
 import pytest
+import yaml
 
 from uc3m.adapters.citylearn import policy_inference as pi
 
 REPO = Path(__file__).resolve().parents[2]
-CAMPAIGN = REPO / "data/campaigns/iquitos_v4"
+CAMPAIGN = REPO / yaml.safe_load((REPO / "configs/experiments/iquitos.yaml").read_text(encoding="utf-8"))["dataset_root"]
 
 
 def test_scenario_without_catalog_is_rejected_before_building_an_environment():

@@ -1,10 +1,10 @@
-"""Declared BESS design rule of campaign iquitos_v4 (owner decision 2026-11-02, scenario A).
+"""Declared BESS design rule, first built in iquitos_v4 (owner decision 2026-11-02, scenario A).
 
 With net billing at the purchase price the MicroGrids LP has no reason to install a
 battery, so v3 ended with 44.3 kWh in one building. The rule keeps net billing and the
 LP's PV, and sizes each battery to shave a declared fraction of the building's own
 peak-block import. Unit tests use synthetic inputs; integration tests read
-data/campaigns/iquitos_v4 and fail (never skip) when it is absent.
+the active dataset (configs/experiments/iquitos.yaml) and fail (never skip) when it is absent.
 """
 import json
 import sys
@@ -15,12 +15,12 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO/'tools/dataset'))
-CAMPAIGN = REPO/'data/campaigns/iquitos_v4'
+CAMPAIGN = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']
 RULE_PATH = REPO/'configs/dataset/bess_design_rule.yaml'
 
 
 def _json(path):
-    assert path.is_file(), f'{path.relative_to(REPO)} missing: build iquitos_v4 first'
+    assert path.is_file(), f'{path.relative_to(REPO)} missing: build the active dataset first'
     return json.loads(path.read_text(encoding='utf-8'))
 
 
@@ -76,11 +76,15 @@ def test_rule_gives_no_battery_without_a_peak_block_import():
 def test_every_building_with_peak_import_has_its_rule_battery():
     sizing = _json(CAMPAIGN/'audit/der_sizing_microgrids.json')
     schema = _json(CAMPAIGN/'dataset/schema.json')
+    fleet = _json(CAMPAIGN/'audit/ev_fleet_v6.json')
     assert sizing['bess_sizing'] == 'peak_block_shaving'
     for b in range(1, 18):
         row = sizing['buildings'][str(b)]
         block = max(row['no_bess_monthly_peak_block_max_kw'].values())
-        assert row['bess_rule']['shaved_kw'] == pytest.approx(0.20*block, rel=1e-9)
+        # D-V6-30: the rule applies to the peak-block import with the planned EV charging, which this no-EV
+        # maximum leaves out (exact value: test_bess_sizing_v6.py); EV charging cannot exceed the installed power.
+        ev_kw = fleet[str(b)]['installed_kw']
+        assert 0.20*block*(1 - 1e-9) <= row['bess_rule']['shaved_kw'] <= 0.20*(block + ev_kw)*(1 + 1e-9), b
         battery = schema['buildings'][f'Building_{b}']['electrical_storage']['attributes']
         assert battery['capacity'] == pytest.approx(row['bess_kwh'])
         assert battery['nominal_power'] == pytest.approx(row['bess_kw'])
@@ -91,7 +95,9 @@ def test_rule_battery_lowers_the_peak_block_in_citylearn():
     shaving = _json(CAMPAIGN/'audit/bess_peak_shaving_check.json')
     assert shaving['status'] == 'checked' and len(shaving['buildings']) == 17
     for b, row in shaving['buildings'].items():
-        assert min(row['reduction_kw'].values()) >= 0.9*row['shaved_kw'], b  # every month, as sized
+        for month, reduction in row['reduction_kw'].items():  # every month, as sized (BESS_RULE_MIN_DELIVERED)
+            # A month whose whole peak-block import is below shaved_kw can only shave that import.
+            assert reduction >= 0.9*min(row['shaved_kw'], max(row['no_control'][month], 0.0)), (b, month)
     acceptance = _json(CAMPAIGN/'dataset_acceptance.json')
     assert acceptance['gates']['bess_rule_shaves_peak'] is True and acceptance['dataset_verified'] is True
 
@@ -99,7 +105,7 @@ def test_rule_battery_lowers_the_peak_block_in_citylearn():
 def test_battery_physics_does_not_depend_on_the_training_seed():
     from citylearn.citylearn import CityLearnEnv
     schema = CAMPAIGN/'splits/train_2023/schema.json'
-    assert schema.is_file(), 'iquitos_v4 splits not materialized yet'
+    assert schema.is_file(), 'active dataset splits not materialized yet'
     draws = []
     for seed in (901, 1001):
         env = CityLearnEnv(str(schema), random_seed=seed)

@@ -21,7 +21,7 @@ La lectura mecánica del árbol no equivale a revisión semántica de cada archi
 
 ## Contrato experimental
 
-La campaña se declara en [iquitos.yaml](configs/experiments/iquitos.yaml), con dataset `data/campaigns/iquitos_v5`, splits `train_2023`, `validation_2024`, `test_2025` y normalizador ajustado en entrenamiento. Las prioridades E1/E2/E3 proceden exclusivamente de [objective_policies.yaml](configs/objective_policies.yaml); son compensatorias. La tarifa de [scenarios.yaml](configs/scenarios.yaml) es media plana, por lo que no se anuncian resultados de arbitraje TOU.
+La campaña se declara en [iquitos.yaml](configs/experiments/iquitos.yaml), con dataset `data/campaigns/iquitos_v6_trial13`, splits `train_2023`, `validation_2024`, `test_2025` y normalizador ajustado en entrenamiento. Las prioridades E1/E2/E3 proceden exclusivamente de [objective_policies.yaml](configs/objective_policies.yaml); son compensatorias. La tarifa de [scenarios.yaml](configs/scenarios.yaml) es media plana, por lo que no se anuncian resultados de arbitraje TOU.
 
 La formulación distingue estado latente, observación local, información del crítico, distribución inicial, acciones físicas y decodificación específica de backend. El pago común corresponde al perfil v7; la representación discreta de MASAC/MAAC restringe combinaciones frente a los actores continuos. Las diferencias con el PT, el backcast de B01 y los límites de interpretación quedan explícitos en el contrato.
 
@@ -64,7 +64,7 @@ Después del entrenamiento autorizado, `python -m uc3m.application.pipeline` ofr
 ```powershell
 .\.venv39-citylearn-v3\Scripts\python.exe -B tools/skills/validate_skills.py
 .\.venv39-citylearn-v3\Scripts\python.exe -B -m pytest tests/contract/test_spec_kit_consistency.py -q -p no:cacheprovider
-powershell -ExecutionPolicy Bypass -File scripts/quality/run_fresh_training_gates.ps1 -CampaignManifest outputs/campaigns/iquitos_v5/campaign_manifest.json
+powershell -ExecutionPolicy Bypass -File scripts/quality/run_fresh_training_gates.ps1 -CampaignManifest outputs/campaigns/iquitos_v6_trial13/campaign_manifest.json
 ```
 
 La última orden ejecuta el perfil fresh completo, incluidos microaprendizajes nativos; usarla sobre un corte estable y con sus dependencias reales. El reporte vincula campaña, especificación, commit, código, pruebas y JUnit. Una omisión, alteración o evidencia incompleta impide promover. La aceptación científica exige además cobertura y análisis verificables de la campaña; los contratos sintéticos son pruebas del verificador.
@@ -78,6 +78,5 @@ El entrenamiento nativo requiere checkout fijado y dependencias locales declarad
 - [Diseño del entrenamiento](docs/design/entrenamiento.md).
 - [Observaciones del jurado](data/audits/jury_observations_manifest.json).
 - [Política de componentes y licencias](governance/open_source_policy.yaml).
-- [README anterior preservado literalmente](docs/history/README_pre_integracion_20261101.txt): antecedente con resultados retirados y rutas históricas; no instrucción operativa ni evidencia vigente.
 
 La metodología se fundamenta en la [tesis de maestría de Costea](https://webthesis.biblio.polito.it/40396/), la [tesis doctoral de Charbonnier](https://ora.ox.ac.uk/objects/uuid%3A4acf19ee-76b3-4e71-a424-259cd9e2d6f5) y los criterios de [reproducibilidad de Pineau et al.](https://www.jmlr.org/papers/v22/20-303.html). Estas fuentes no certifican este repositorio, los coeficientes exactos o un supuesto ganador; la matriz bibliográfica y sus límites están en el plan integrado.

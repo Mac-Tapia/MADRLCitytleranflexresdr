@@ -328,8 +328,9 @@ def hourly_pricing_usd(index: pd.DatetimeIndex, measured, fx):
 
 PEAK_EDGE_MARGIN_AFTER_SETTLING = 0.02   # D-V6-60: settling the cooling can move a peak a little after the reshape
 PEAK_BLOCK_HOURS = tuple(sorted(cn.PEAK_HOURS))  # 18:00-23:00, the bills' peak block
-B01_TARIFF_ASSUMPTION = 'MT2'  # v5 value; v6 reads configs/dataset/b01_synthetic_bill.yaml (P-V6-19)
 B01_SYNTHETIC_PATH = ROOT/'configs/dataset/b01_synthetic_bill.yaml'
+# D-V6-46: one tariff for the bill, the price and the bill table (the former constant MT2 was a transcription error)
+B01_TARIFF_ASSUMPTION = yaml.safe_load(B01_SYNTHETIC_PATH.read_text(encoding='utf-8'))['tariff']['value']
 EV_V6_PATH = ROOT/'configs/dataset/ev_v6.yaml'
 BATTERY_CATALOG_PATH = ROOT/'CityLearn/data/misc/battery_choices.yaml'
 DATASET_GATES_PATH = ROOT/'configs/dataset/dataset_gates.yaml'

@@ -203,4 +203,4 @@ Antes de lanzar una corrida larga, confirmar:
 .\.venv39-citylearn-v3\Scripts\python.exe -B CityLearn\scripts\check_citylearn_v3_training_ready.py --strict --schema-path CityLearn\data\datasets\citylearn_iquitos_2023_2025\schema.json --scenario E1
 ```
 
-Documentacion relacionada: `docs/architecture/dataset_construction_pipeline.md`, `docs/architecture/operacion.md`, `deploy/aws/README_TRAINING_AWS.md`.
+Documentacion relacionada: `docs/architecture/runbook.md`, `deploy/aws/README_TRAINING_AWS.md`.

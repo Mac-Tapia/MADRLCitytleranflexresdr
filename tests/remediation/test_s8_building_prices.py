@@ -1,6 +1,6 @@
 """S8 of the dataset substitution gate: no building is priced with another building's tariff.
 
-iquitos_v3 has 17 tariffs, so a first-building shortcut stops being harmless there.
+The active dataset has 17 tariffs, so a first-building shortcut stops being harmless there.
 """
 import csv
 import json
@@ -8,13 +8,14 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+import yaml
 
 from uc3m.adapters.citylearn.frozen_adapters import _price_signal_deviation
 from uc3m.adapters.citylearn.policy_inference import _physical_trace
 from uc3m.reward import term_telemetry as tt
 
 REPO = Path(__file__).resolve().parents[2]
-CAMPAIGN = REPO/'data/campaigns/iquitos_v3'
+CAMPAIGN = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']
 SPLIT = 'train_2023'
 
 

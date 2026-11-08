@@ -19,7 +19,6 @@ from thesis_doctoral_sections import (  # noqa: E402
     BEST_REPORT,
     BL_DIR,
     DISTRICT_CSV,
-    FD_DIR,
     FIG_WIDTH_HEATMAP,
     FIG_WIDTH_LANDSCAPE,
     MO_DIR,
@@ -468,8 +467,6 @@ def _otros_og_block(doc, p, heading, add_table, fig_counter) -> None:
         "El criterio C5 (control de recursos) se detalla en §5.4.5.",
     )
     for path, caption in (
-        (FD_DIR / "comparativo_global_ranking_oe.png", "Ranking global OE.1/OE.2/OE.3 (OG)"),
-        (FD_DIR / "comparativo_best_worst_por_escenario.png", "Mejor y peor MADRL por escenario"),
         (MO_DIR / "drive_district_objectives.png", "KPIs multiobjetivo a nivel distrito (C3)"),
     ):
         if path.is_file():
@@ -537,10 +534,7 @@ def _otros_oe_block(doc, p, heading, add_table, *, oe_key: str, section: str, fi
         "No sustituyen §5.2–§5.3 ni §5.5. Control de recursos (C5) en §5.4.5.",
     )
     for attr, label in (
-        ("conv_fig", f"Convergencia reward_mean {scenario}"),
-        ("kpi_fig", f"KPI comparativo {oe_display}"),
         ("building_fig", f"Objetivo por edificio {oe_display} (C4)"),
-        ("trace_fig", f"Traza de control de recursos {scenario} (C5)"),
     ):
         path = cfg.get(attr)
         if path is not None and Path(path).is_file():

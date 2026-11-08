@@ -4,7 +4,7 @@ Proyecto: **Multi-agente de aprendizaje por refuerzo profundo para gestion coord
 
 Este documento describe la arquitectura **real implementada** en el repositorio actual. No representa una arquitectura conceptual independiente: cada bloque apunta a rutas, scripts, backends, salidas y flujos existentes en el proyecto.
 
-Fuente operativa vigente: `docs/operacion.md` y `docs/workflow_manifest.json`. En comandos y diagramas, `<OutputRoot>` significa la ruta registrada en `outputs/latest_visible_training_output_root.txt`.
+Fuente operativa vigente: `docs/architecture/runbook.md` y `docs/workflow_manifest.json`. En comandos y diagramas, `<OutputRoot>` significa la ruta registrada en `outputs/latest_visible_training_output_root.txt`.
 
 ## 0. Plano maestro de seguimiento del proyecto
 
@@ -13,7 +13,7 @@ Este plano es la lectura principal del proyecto. Se sigue de izquierda a derecha
 ```mermaid
 flowchart LR
     START([Inicio del proyecto<br/>problema de investigacion])
-    PLAN["Plan de tesis y diagnostico<br/>Plan_Tesis_MADRL_Diagnostico_v17.pdf<br/>estrategia.md"]
+    PLAN["Plan de tesis y diagnostico<br/>Plan_Tesis_MADRL_Diagnostico_v17.pdf<br/>docs/chapters/cap1_objetivos.md"]
     DATA["Dataset oficial<br/>citylearn_iquitos_2023_2025<br/>17 edificios Iquitos + EV/V2G"]
     V2["CityLearn v2 base<br/>CityLearn/citylearn<br/>simulador + KPIs v2"]
     V3["CityLearn v3 implementado<br/>CityLearn/citylearn/v3<br/>environment + objectives + config"]
@@ -79,7 +79,7 @@ flowchart LR
 
 | Paso | Caja del flujo | Archivo o ruta que confirma la etapa | Resultado esperado |
 |---|---|---|---|
-| 1 | Plan y diagnostico | `Plan_Tesis_MADRL_Diagnostico_v17.pdf`, `estrategia.md` | Objetivos y tres ejes definidos. |
+| 1 | Plan y diagnostico | `Plan_Tesis_MADRL_Diagnostico_v17.pdf`, `docs/chapters/cap1_objetivos.md` | Objetivos y tres ejes definidos. |
 | 2 | Dataset oficial | `CityLearn/data/datasets/citylearn_iquitos_2023_2025/schema.json` | 17 edificios reales de Iquitos + EV/V2G disponibles. |
 | 3 | CityLearn v2 base | `CityLearn/citylearn` | Simulador y KPIs v2 conservados. |
 | 4 | CityLearn v3 | `CityLearn/citylearn/v3/objectives.py`, `CityLearn/citylearn/v3/environment.py` | Objetivos OE1/OE2/OE3 y entorno v3. |
@@ -525,10 +525,7 @@ C:\Python314\python.exe tools\figures\generate_architecture_pngs.py   # PNGs (in
 | Archivo PDF | Fuente Markdown | Contenido | Tamano |
 |---|---|---|---|
 | `docs/architecture/flujo.pdf` | `flujo.md` | Arquitectura completa + plano maestro de 19 secciones. | 567 KB |
-| `docs/architecture/operacion.pdf` | `operacion.md` | Flujo operativo vigente + estado corridas + tiempos reales. | 230 KB |
-| `docs/architecture/entrenamiento.pdf` | `entrenamiento.md` | Flujo de entrenamiento visible + continuacion de corridas. | 292 KB |
 | `docs/architecture/coordinacion.pdf` | `coordinacion.md` | Cooperacion CTDE + KPIs por escenario + Score_OG. | 282 KB |
-| `docs/architecture/dataset.pdf` | `dataset_construction_pipeline.md` | Pipeline de construccion del dataset Iquitos 2023-2025. | 132 KB |
 | `docs/architecture/plano.pdf` | — | Plano visual estatico de la arquitectura real (version anterior). | 45 KB |
 | `docs/architecture/plano.pdf` | — | Copia integrada del plano real (version anterior). | 45 KB |
 

@@ -2,13 +2,14 @@
 from pathlib import Path
 
 import pytest
+import yaml
 
 from uc3m.adapters.citylearn import policy_inference as pi
 from uc3m.adapters.citylearn.fresh_observations import frozen_observation_limits, load_normalizer
 from uc3m.adapters.algorithms.native_entrypoint import attempt_isolation
 
 ROOT = Path(__file__).resolve().parents[2]
-DATA = ROOT/'data/campaigns/iquitos_v5'
+DATA = ROOT/yaml.safe_load((ROOT/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']
 
 
 @pytest.mark.parametrize('intervals', [24, 48])

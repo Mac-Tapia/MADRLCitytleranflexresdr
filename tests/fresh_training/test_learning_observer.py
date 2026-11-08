@@ -10,11 +10,13 @@ from pathlib import Path
 import numpy as np
 import pytest
 import torch
+import yaml
 
 from uc3m.adapters.algorithms import learning_observer as lo
 from uc3m.adapters.algorithms import native_entrypoint as ne
 
 REPO = Path(__file__).resolve().parents[2]
+ACTIVE_SPLIT = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']/'splits/train_2023'
 
 
 def _native_guard(specs, audit_path=None):
@@ -177,7 +179,7 @@ def test_real_environment_reward_reads_the_derived_catalog(monkeypatch, tmp_path
     """Micro real-simulator check: the reward built by the v3 factory reads UC3M_SCENARIO_CATALOG."""
     from citylearn.v3 import make_citylearn_v3_env
     from uc3m.application.training.fresh_campaign import write_derived_scenario_catalog
-    schema = REPO/'data/campaigns/iquitos_v5/splits/train_2023/schema.json'
+    schema = ACTIVE_SPLIT/'schema.json'
     assert schema.is_file(), 'fresh training split missing'
     derived = write_derived_scenario_catalog(REPO/'configs/scenarios.yaml', 'E3', (0.13125, 0.21875, 0.65),
                                              'p065', tmp_path/'catalog')
@@ -205,7 +207,7 @@ def test_supervision_decomposes_the_reward_by_building_and_reconciles_it(monkeyp
     and every step checks that the terms add up to the reward the agents received."""
     from citylearn.v3 import make_citylearn_v3_env
     monkeypatch.setenv('UC3M_SCENARIO_CATALOG', str(REPO/'configs/scenarios.yaml'))
-    schema = REPO/'data/campaigns/iquitos_v5/splits/train_2023/schema.json'
+    schema = ACTIVE_SPLIT/'schema.json'
     env = make_citylearn_v3_env(schema_path=str(schema), scenario='E2', seed=0, episode_time_steps=24,
                                 madrl_algorithm='MATD3', normalize_observations=True)
     supervisor = ne.RewardSupervisor()
@@ -253,7 +255,7 @@ def test_supervision_records_every_kpi_layer_per_episode(monkeypatch):
     """Two short real v3 episodes: Layer A (district + buildings) and Layer B per episode, plus trend."""
     from citylearn.v3 import make_citylearn_v3_env
     monkeypatch.setenv('UC3M_SCENARIO_CATALOG', str(REPO/'configs/scenarios.yaml'))
-    schema = REPO/'data/campaigns/iquitos_v5/splits/train_2023/schema.json'
+    schema = ACTIVE_SPLIT/'schema.json'
     env = make_citylearn_v3_env(schema_path=str(schema), scenario='E1', seed=0, episode_time_steps=24,
                                 madrl_algorithm='MATD3', normalize_observations=True)
     supervisor = ne.RewardSupervisor()

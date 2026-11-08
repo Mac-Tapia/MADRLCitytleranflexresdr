@@ -1,7 +1,7 @@
 """Evaluated cost = bill with capacity charge (owner decision D02, 2026-11-04; SPEC-013).
 
 Unit tests use analytic traces. The artifact tests read the versioned bill tariff table
-and data/campaigns/iquitos_v4 and fail (never skip) when they are absent.
+and the active dataset (configs/experiments/iquitos.yaml) and fail (never skip) when they are absent.
 """
 import csv
 import json
@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 import pytest
+import yaml
 
 from uc3m.application.evaluation.bill_cost import BillRate, bill_components, bill_measures, load_bill_tariffs
 from uc3m.application.evaluation.kpi_contract import PhysicalTrace, compute_fresh_kpis, load_kpi_catalog, validate_kpi_report
@@ -17,7 +18,7 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO/'tools/dataset'))
 CATALOG = REPO/'configs/evaluation/kpis.yaml'
 TABLE = REPO/'data/tariffs/osinergmin/bill_tariffs.csv'
-V4 = REPO/'data/campaigns/iquitos_v4'
+ACTIVE = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']
 UNITS = {'net_power': 'kW', 'carbon_intensity': 'kgCO2/kWh', 'price': 'USD/kWh', 'battery_throughput': 'kWh'}
 RATES = {(1, 2024, 1): BillRate('MT3', 0.10, 10.0, 5.0), (1, 2024, 2): BillRate('MT3', 0.20, 20.0, 5.0)}
 
@@ -135,7 +136,7 @@ def test_table_covers_every_building_and_month():
 
 def test_table_agrees_with_what_sized_the_dataset():
     rates = load_bill_tariffs(TABLE)
-    sizing = json.loads((V4/'audit/der_sizing_microgrids.json').read_text(encoding='utf-8'))['buildings']
+    sizing = json.loads((ACTIVE/'audit/der_sizing_microgrids.json').read_text(encoding='utf-8'))['buildings']
     for building, row in sizing.items():
         for month, value in row['demand_charge_usd_kw_month_2023'].items():
             assert rates[(int(building), 2023, int(month))].demand_usd_kw_month == pytest.approx(value, abs=1e-8)
@@ -144,7 +145,7 @@ def test_table_agrees_with_what_sized_the_dataset():
 def test_table_energy_agrees_with_the_dataset_price_files():
     rates = load_bill_tariffs(TABLE)
     for building in range(1, 18):
-        with open(V4/f'dataset/pricing_{building}.csv', newline='', encoding='utf-8') as handle:
+        with open(ACTIVE/f'dataset/pricing_{building}.csv', newline='', encoding='utf-8') as handle:
             prices = [float(row['electricity_pricing']) for row in csv.DictReader(handle)]
         # Rows are hourly from 2023-01-01; 744 h = January, 2023 has 8760 h.
         assert rates[(building, 2023, 1)].energy_usd_kwh == pytest.approx(prices[0], abs=1e-8)

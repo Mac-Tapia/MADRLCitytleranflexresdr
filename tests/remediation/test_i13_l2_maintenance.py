@@ -1,4 +1,4 @@
-"""L2-001/002/004/007/008/009/011/015: maintenance tools on disposable trees only.
+"""L2-001/002/004/007/008/009/015: maintenance tools on disposable trees only.
 
 Every written path lives under pytest's tmp_path. The only roots outside it are
 paths that are asserted not to exist and are handed to a read-only Plan phase
@@ -28,7 +28,6 @@ from tools.ops import historical_inventory as hi
 REPO = Path(__file__).resolve().parents[2]
 RENAME = REPO/'scripts/maintenance/rename_paths.ps1'
 RETIRE = REPO/'scripts/maintenance/retire_historical_outputs.ps1'
-PRUNE = REPO/'tools/training/prune_artifacts.ps1'
 ORCHESTRATE = REPO/'tools/dataset/orchestrate_citylearn_dataset.py'
 NO_PROCESSES = lambda: ()  # noqa: E731 - explicit empty process snapshot
 POWERSHELL = ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File']
@@ -359,70 +358,6 @@ def test_l2_009_scan_consumers_does_not_follow_file_links(tmp_path, monkeypatch)
         monkeypatch.setattr(hi, '_is_reparse', lambda path: Path(path) == link or real_is_reparse(path))
     found = hi.scan_consumers(root, (('R-01', 'outputs/_drive_madrl'),))
     assert [row['path'] for row in found] == ['tools/real_consumer.py']
-
-
-# --- L2-011 prune_artifacts.ps1: mirrors deleted only on equal content ----------
-
-def _prune_sandbox(tmp_path):
-    """A full repository-shaped tree with its own copy of the script."""
-    project = tmp_path/'project'
-    script = project/'tools/training/prune_artifacts.ps1'
-    script.parent.mkdir(parents=True)
-    shutil.copyfile(PRUNE, script)
-    output_root = project/'outputs/run'
-    runs = {}
-    metadata = json.dumps({'timeseries_csv_root': 'timeseries.csv', 'trace_csv_root': 'trace.csv',
-                           'results_json_root': 'results.json'})
-    canonical = ['data/results.json', 'data/training_summary.json', 'data/checkpoint_manifest.json',
-                 'data/artifact_audit.json', 'data/timeseries.csv', 'data/trace.csv',
-                 'figures/figures_manifest.json', 'figures/tables/episode_summary.csv',
-                 'figures/tables/axis_baseline_comparison.csv', 'figures/tables/agent_reward_summary.md']
-    for algorithm in ('happo', 'masac', 'matd3', 'maac'):
-        for scenario in ('E1', 'E2', 'E3'):
-            run = output_root/algorithm/f'{scenario}_seed_0'
-            runs[algorithm, scenario] = run
-            for rel in canonical:
-                _write(run/rel, metadata if rel.endswith('.json') else f'{rel}\n')
-            for episode in range(1, 6):
-                _write(run/f'checkpoints/checkpoint_episode_{episode}.pt', b'weights')
-    return script, runs
-
-
-def _prune(script, *args):
-    return subprocess.run([*POWERSHELL, str(script), '-OutputRoot', 'outputs\\run', *args],
-                          capture_output=True, text=True, cwd=script.parents[2], timeout=300)
-
-
-def test_l2_011_divergent_mirror_survives_apply_and_identical_is_removed(tmp_path):
-    script, runs = _prune_sandbox(tmp_path)
-    run = runs['happo', 'E1']
-    divergent = _write(run/'timeseries.csv', 'unique version of the series\n')
-    divergent_json = _write(run/'results.json', '{"unique": "version", "statistical_comparison_dir": "kept"}')
-    identical = _write(run/'trace.csv', (run/'data/trace.csv').read_bytes())
-    canonical_series = (run/'data/timeseries.csv').read_bytes()
-    result = _prune(script, '-Apply')
-    assert result.returncode == 0, result.stdout + result.stderr
-    assert divergent.read_text() == 'unique version of the series\n'
-    assert divergent_json.read_text() == '{"unique": "version", "statistical_comparison_dir": "kept"}'
-    assert not identical.exists()
-    assert (run/'data/timeseries.csv').read_bytes() == canonical_series
-    payload = json.loads((run/'data/results.json').read_text(encoding='utf-8-sig'))
-    assert payload['timeseries_csv_root'] == 'timeseries.csv'
-    assert payload['results_json_root'] == 'results.json'
-    assert payload['trace_csv_root'] is None
-    other = json.loads((runs['maac', 'E3']/'data/results.json').read_text(encoding='utf-8-sig'))
-    assert other['timeseries_csv_root'] is None
-
-
-def test_l2_011_dry_run_lists_only_identical_mirrors(tmp_path):
-    script, runs = _prune_sandbox(tmp_path)
-    run = runs['masac', 'E2']
-    divergent = _write(run/'timeseries.csv', 'different\n')
-    identical = _write(run/'trace.csv', (run/'data/trace.csv').read_bytes())
-    result = _prune(script)
-    assert result.returncode == 0, result.stdout + result.stderr
-    assert 'Candidates: 1 ' in result.stdout
-    assert divergent.is_file() and identical.is_file()
 
 
 # --- L2-015 orchestrate_citylearn_dataset.py: one dataset per build --------------

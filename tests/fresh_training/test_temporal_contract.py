@@ -9,10 +9,12 @@ import json
 from pathlib import Path
 
 import pytest
+import yaml
 
 from uc3m.application.dataset import splits as sp
 
 REPO = Path(__file__).resolve().parents[2]
+ACTIVE = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']
 ROWS = 26304
 
 
@@ -123,12 +125,11 @@ def test_assets_identical_across_splits(tmp_path):
     assert seen == {139.624}
 
 
-@pytest.mark.parametrize('alias', ['iquitos_v2', 'iquitos_v3', 'iquitos_v4'])
-def test_real_assets_do_not_depend_on_the_env_seed(alias):
+def test_real_assets_do_not_depend_on_the_env_seed():
     # CityLearn draws unset device parameters from the env seed; the campaign
     # freezes them so seeds only change the learner, never the physical system.
     from citylearn.citylearn import CityLearnEnv
-    schema = REPO/'data/campaigns'/alias/'splits/train_2023/schema.json'
+    schema = ACTIVE/'splits/train_2023/schema.json'
     assert schema.is_file(), 'campaign splits not materialized yet (T3 not complete)'
     draws = []
     for seed in (901, 1001):
@@ -139,9 +140,8 @@ def test_real_assets_do_not_depend_on_the_env_seed(alias):
     assert draws[0] == draws[1]
 
 
-@pytest.mark.parametrize('alias', ['iquitos_v2', 'iquitos_v3', 'iquitos_v4'])
-def test_real_campaign_splits_reset_and_step(alias):
-    root = REPO/'data/campaigns'/alias
+def test_real_campaign_splits_reset_and_step():
+    root = ACTIVE
     manifest_path = root/'split_manifest.json'
     assert manifest_path.is_file(), 'campaign splits not materialized yet (T3 not complete)'
     from uc3m.adapters.citylearn import fresh_observations as fo

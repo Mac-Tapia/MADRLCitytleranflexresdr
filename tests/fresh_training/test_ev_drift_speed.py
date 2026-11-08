@@ -6,18 +6,24 @@ id is the vehicle can act on it, so indexing them per vehicle, in the original
 charger order, must give the same state of charge, the same RNG draws and the
 same step results.
 """
+import copy
+import json
+import shutil
 import time
 from pathlib import Path
 
 import numpy as np
+import pytest
+import yaml
 
 from citylearn.citylearn import CityLearnEnv
 from citylearn.internal.runtime import CityLearnRuntimeService
 
 REPO = Path(__file__).resolve().parents[2]
-# A simulator speed test, not a campaign test: it needs the 1850-EV fleet of iquitos_v1. The active
-# campaign (iquitos_v5) has a two-motorcycle pilot, which cannot show the indexed step is faster.
-SCHEMA = REPO/'data/campaigns/iquitos_v1/splits/train_2023/schema.json'
+# A simulator speed test, not a campaign test: the fleet is built here on the active split, with the
+# 1850 EVs and 185 chargers that made the original loop 91% of a step.
+SPLIT = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']/'splits/train_2023'
+EVS, CHARGERS = 1850, 185
 STEPS = 4
 
 
@@ -68,10 +74,40 @@ def reference_unconnected_ev_soc(self):
             ev.battery.force_set_soc(np.clip(last_soc*variability, 0.0, 1.0))
 
 
-def _run(monkeypatch, implementation):
+@pytest.fixture(scope='module')
+def fleet_schema(tmp_path_factory):
+    # Every charger serves one vehicle of its own on the sessions of a real charger file; the other nine
+    # vehicles of each ten are never connected, so they drift. Chargers go round robin over the buildings.
+    # The oracle is CityLearn's CSV arrival and drift; the endogenous mode of the active dataset (D-V6-41) keeps
+    # the SOC instead and has its own test (test_write_ev_v6.py).
+    out = tmp_path_factory.mktemp('ev_drift')/'split'
+    shutil.copytree(SPLIT, out, ignore=shutil.ignore_patterns('charger_*.csv'))
+    schema = json.loads((out/'schema.json').read_text(encoding='utf-8'))
+    assert schema.pop('electric_vehicle_arrival_soc') == 'endogenous'
+    charger = next(iter(schema['buildings']['Building_1']['chargers'].values()))
+    rows = [line.split(',') for line in (SPLIT/charger['charger_simulation']).read_text(encoding='utf-8').splitlines()]
+    column = rows[0].index('electric_vehicle_id')
+    vehicle = next(row[column] for row in rows[1:] if row[column] != 'NONE')
+    schema['electric_vehicles_def'] = {f'EV_{i:04d}': copy.deepcopy(schema['electric_vehicles_def'][vehicle])
+                                       for i in range(EVS)}
+    buildings = list(schema['buildings'].values())
+    for building in buildings:
+        building['chargers'] = {}
+    for i in range(CHARGERS):
+        ev = f'EV_{i*(EVS//CHARGERS):04d}'
+        lines = [','.join(ev if k == column and n and cell != 'NONE' else cell for k, cell in enumerate(row))
+                 for n, row in enumerate(rows)]
+        (out/f'charger_{i:03d}.csv').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+        buildings[i % len(buildings)]['chargers'][f'charger_{i:03d}'] = dict(copy.deepcopy(charger),
+                                                                             charger_simulation=f'charger_{i:03d}.csv')
+    (out/'schema.json').write_text(json.dumps(schema), encoding='utf-8')
+    return out/'schema.json'
+
+
+def _run(monkeypatch, schema, implementation):
     if implementation is not None:
         monkeypatch.setattr(CityLearnRuntimeService, 'simulate_unconnected_ev_soc', implementation)
-    env = CityLearnEnv(str(SCHEMA), random_seed=901)
+    env = CityLearnEnv(str(schema), random_seed=901)
     env.reset()
     started = time.perf_counter()
     rewards = []
@@ -85,11 +121,10 @@ def _run(monkeypatch, implementation):
     return socs, power, rewards, elapsed
 
 
-def test_indexed_drift_matches_reference_and_is_faster(monkeypatch):
-    assert SCHEMA.is_file(), 'fresh training split missing'
-    ref_socs, ref_power, ref_rewards, ref_time = _run(monkeypatch, reference_unconnected_ev_soc)
-    socs, power, rewards, new_time = _run(monkeypatch, None)
-    assert set(socs) == set(ref_socs) and len(socs) == 1850
+def test_indexed_drift_matches_reference_and_is_faster(monkeypatch, fleet_schema):
+    ref_socs, ref_power, ref_rewards, ref_time = _run(monkeypatch, fleet_schema, reference_unconnected_ev_soc)
+    socs, power, rewards, new_time = _run(monkeypatch, fleet_schema, None)
+    assert set(socs) == set(ref_socs) and len(socs) == EVS
     for name, values in ref_socs.items():
         np.testing.assert_array_equal(socs[name], values, err_msg=name)
     np.testing.assert_array_equal(power, ref_power)

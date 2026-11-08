@@ -19,7 +19,7 @@ sys.path.insert(0, str(REPO/'tools/dataset'))
 import distill_building_loads as dl  # noqa: E402
 from uc3m.application.dataset import hvac_capacity as hc  # noqa: E402
 
-SPLIT = REPO/'data/campaigns/iquitos_v5/splits/train_2023'
+SPLIT = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']/'splits/train_2023'
 BUILDINGS = (4, 5, 11)  # retail without capping, hotel with DHW, hospital capped in every month
 
 

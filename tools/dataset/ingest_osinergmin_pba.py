@@ -25,6 +25,7 @@ for path in (ROOT, TOOLS):
 
 import osinergmin_pliegos as op  # noqa: E402
 import requests  # noqa: E402
+import yaml  # noqa: E402
 
 from uc3m.adapters.osinergmin.pba_pdf import (DEFAULT_SYSTEM, PbaFormatError, SourceChangedError,  # noqa: E402
                                               candidate_dates, fetch_pba, parse_pba)
@@ -104,7 +105,8 @@ def main(argv=None) -> int:
     parser.add_argument('--start', type=date.fromisoformat, default=date(2022, 12, 1))
     parser.add_argument('--end', type=date.fromisoformat, default=date(2025, 12, 31))
     parser.add_argument('--root', type=Path, default=ROOT/'data/tariffs/osinergmin')
-    parser.add_argument('--sheets-dir', type=Path, default=ROOT/'data/campaigns/iquitos_v4/raw/osinergmin')
+    active = yaml.safe_load((ROOT/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']
+    parser.add_argument('--sheets-dir', type=Path, default=ROOT/active/'raw/osinergmin')
     parser.add_argument('--offline', action='store_true')
     args = parser.parse_args(argv)
     previous = _load_manifest(args.root)

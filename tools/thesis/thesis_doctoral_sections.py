@@ -24,7 +24,6 @@ from tools.thesis.thesis_antecedents_data import (  # noqa: E402
 )
 RUN_ID = "madrl_v3_20260627_164047"
 MO_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "multiobjetivo"
-FD_DIR = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "figuras_drive_reales" / "comparativo"
 BEST_REPORT = REPO / "outputs" / RUN_ID / "resumen_comparativo" / "best_madrl_report.json"
 DISTRICT_CSV = MO_DIR / "district_objectives_by_algorithm.csv"
 INVENTORY_CSV = MO_DIR / "building_inventory_multiobjective.csv"
@@ -144,10 +143,7 @@ OE_DEFINITIONS = {
             ("grid_import_delta", "Delta importacion red (kWh)", ",.0f", True),
             ("ev_departure_success_rate", "Exito salida EV", ".1%", False),
         ],
-        "kpi_fig": FD_DIR / "comparativo_E1_OE1_kpi.png",
-        "conv_fig": FD_DIR / "comparativo_E1_convergence_reward_mean.png",
         "building_fig": MO_DIR / "drive_building_E1_flex_composite_proxy.png",
-        "trace_fig": FD_DIR / "comparativo_E1_control_trace.png",
         "score_key": "score_oe1_flex",
     },
     "OE2": {
@@ -161,10 +157,7 @@ OE_DEFINITIONS = {
             ("grid_import_delta", "Delta importacion red (kWh)", ",.0f", True),
             ("ev_departure_success_rate", "Exito salida EV", ".1%", False),
         ],
-        "kpi_fig": FD_DIR / "comparativo_E2_OE2_kpi.png",
-        "conv_fig": FD_DIR / "comparativo_E2_convergence_reward_mean.png",
         "building_fig": MO_DIR / "drive_building_E2_carbon_emissions_delta_kgco2.png",
-        "trace_fig": FD_DIR / "comparativo_E2_control_trace.png",
         "score_key": "score_oe2_co2",
     },
     "OE3": {
@@ -178,10 +171,7 @@ OE_DEFINITIONS = {
             ("peak_average", "Pico promedio", ".4f", True),
             ("ev_departure_success_rate", "Exito salida EV", ".1%", False),
         ],
-        "kpi_fig": FD_DIR / "comparativo_E3_OE3_kpi.png",
-        "conv_fig": FD_DIR / "comparativo_E3_convergence_reward_mean.png",
         "building_fig": MO_DIR / "drive_building_E3_electricity_cost_delta_eur.png",
-        "trace_fig": FD_DIR / "comparativo_E3_control_trace.png",
         "score_key": "score_oe3_cost",
     },
 }

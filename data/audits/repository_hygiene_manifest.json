@@ -214,6 +214,97 @@
       "path": "agent-skills/",
       "recover_from_commit": "034372dab3783808d91d9f1be2e5b0d0a20847f2",
       "reason": "Legacy skills removed in ebb210a9 and retired by the owner on 2026-11-08 (FR-007.6): 4 inventoried skills with no verifiable license, plus madrl-sustento-doc-capa v3. Superseded by tools/skills/."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "files",
+      "paths": [
+        "tools/eval/kpi_rankings.py",
+        "tools/eval/select_best_madrl_district_building.py",
+        "tools/thesis/patch_cap5_rankings.py",
+        "tools/thesis/update_word_quantitative_50episodes.py",
+        "tools/training/prune_artifacts.ps1"
+      ],
+      "recover_from_commit": "f3b0704d116098b5e425b836075d5761352dc73b",
+      "reason": "Owner decision 2026-11-08: no obsolete files; replaces the earlier decision to keep the 3 tools classified obsolete_old_campaign. Their inputs and defaults belonged to the retired campaign. select_best_madrl_district_building.py and patch_cap5_rankings.py only consumed the tables kpi_rankings.py alone produced. The --with-quantitative step and the L2-011 tests that only exercised prune_artifacts.ps1 went with them."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "files",
+      "paths": [
+        "docs/analisis_reorganizacion_tools_dataset.md",
+        "docs/analisis_scripts_vs_tools_tesis.md",
+        "docs/analisis_tesis_adenda.md",
+        "docs/colab.md",
+        "docs/colab_checklist.md",
+        "docs/estrategia.md",
+        "docs/guia_tesis.md",
+        "docs/history/README_pre_integracion_20261101.txt",
+        "docs/history/workflow_manifest_pre_integracion_20261101.json.txt"
+      ],
+      "recover_from_commit": "f3b0704d116098b5e425b836075d5761352dc73b",
+      "reason": "Owner decision 2026-11-08: obsolete documents describing retired paths or campaigns, superseded by docs/plans/modulo8_campana.md, docs/chapters/cap1_objetivos.md and the current tree. guia_tesis.md named a retired run as canonical and has no reader or writer. References updated."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "files",
+      "paths": [
+        "docs/architecture/dataset.pdf",
+        "docs/architecture/dataset_construction_pipeline.md",
+        "docs/architecture/entrenamiento.md",
+        "docs/architecture/entrenamiento.pdf",
+        "docs/architecture/operacion.md",
+        "docs/architecture/operacion.pdf"
+      ],
+      "recover_from_commit": "f3b0704d116098b5e425b836075d5761352dc73b",
+      "reason": "Owner decision 2026-11-08: they presented the retired v4 run as definitive and citylearn_iquitos_2023_2025 as the active dataset. Superseded by docs/architecture/runbook.md and docs/plans/modulo8_campana.md."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.4",
+      "kind": "files",
+      "paths": [
+        "docs/audits/deep_20261101/recheck/auditoria_tesis.docx.txt",
+        "docs/audits/deep_20261101/recheck/dataset_checks.json",
+        "docs/audits/deep_20261101/recheck/informe.docx.txt",
+        "docs/audits/deep_20261101/recheck/jury_paths.json",
+        "docs/audits/deep_20261101/recheck/tesis.docx.txt",
+        "docs/audits/deep_20261101/recheck/word_checks.json"
+      ],
+      "recover_from_commit": "f3b0704d116098b5e425b836075d5761352dc73b",
+      "reason": "Byte-identical (same Git blob) to the copy of the same name kept in docs/audits/deep_20261101/, which report.md cites; no report cites the recheck/ copy. The recheck run produced these same bytes."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "untracked_data",
+      "paths": [
+        "data/campaigns/iquitos_v1/ to iquitos_v5/ (except their 6 JSON)",
+        "data/campaigns/iquitos_v6_trial10/ (except its 6 JSON)",
+        "data/campaigns/iquitos_v6_trial11/",
+        "data/campaigns/iquitos_v6_trial12/"
+      ],
+      "reason": "Owner decision: no obsolete or duplicate datasets (about 3.1 GB, gitignored data). Tests and tools read the active dataset from configs/experiments/iquitos.yaml or build their input in tmp_path. Not recoverable from Git; the raw sources remain in data/campaigns/iquitos_v6_trial13/raw and the builder recreates a dataset."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "untracked_data",
+      "paths": [
+        "outputs/dataset_cache/ (1.4 GB)",
+        ".superpowers/sdd/remediacion_integrada/ (about 13.9 GB of test scratch and logs of earlier sessions)",
+        ".superpowers/sdd/2026-11-01-entrenamiento-nuevo-sin-historicos-plan/ (2.1 GB of working material)"
+      ],
+      "reason": "Owner confirmed this list on 2026-11-08 (borra la lista). Gitignored and not recoverable. The cache rebuilds itself; tests/fresh_training/conftest.py now removes its scratch at the end of a session."
     }
   ],
   "branch_renames": {
@@ -260,6 +351,6 @@
   "pending": [
     "tools/colab/verify_notebook.py and validate_colab_two_phase.py read CityLearn/examples/madrl_citylearn_v3_tutorial.ipynb, which no longer exists (notebook lives in examples_madrl_v3/); fix or retire in SPEC-011.",
     "Classify the 2648 tracked files under outputs/ into promoted evidence, history and temporaries (SPEC-008).",
-    "Inventory duplicate and obsolete documents in docs/ and scripts in tools/."
+    "Owner review of the doubtful documents listed in specs/012-hygiene/tasks.md (FR-012.4); exact duplicates in docs/ are resolved except 3 log pairs cited by both audits."
   ]
 }

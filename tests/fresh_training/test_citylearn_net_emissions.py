@@ -14,9 +14,10 @@ the test binds that so the contradiction cannot return.
 from pathlib import Path
 
 import numpy as np
+import yaml
 
 REPO = Path(__file__).resolve().parents[2]
-SCHEMA = REPO/'data/campaigns/iquitos_v5/splits/train_2023/schema.json'
+SCHEMA = REPO/yaml.safe_load((REPO/'configs/experiments/iquitos.yaml').read_text(encoding='utf-8'))['dataset_root']/'splits/train_2023/schema.json'
 
 
 def test_export_reduces_district_emissions_and_cost_is_net(monkeypatch):

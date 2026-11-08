@@ -37,7 +37,7 @@ submodules:
     build_time:
       authorized_by: "usuario (2026-11-01, relayed by coordinator)"
       used_by: ["tools/dataset/size_der_microgrids.py", "tools/dataset/build_fresh_campaign_dataset.py"]
-      use: "Formulación LP para dimensionar FV y BESS por edificio (data/campaigns/iquitos_v2, iquitos_v3)."
+      use: "Formulación LP para dimensionar FV y BESS por edificio (dataset activo de configs/experiments/iquitos.yaml)."
       license: "EUPL-1.1"
       obligations: "Se conservan external/MicroGrids/LICENSE y la atribución (Balderrama et al.); las modificaciones del fork están documentadas en docs/contributions/MicroGrids/CHANGES.md (solver-configurable, datos-configurables, exportacion-red, tarifa-horaria-demanda) y marcadas MADRL-IQUITOS-MOD en el código; el código no se incluye en paquetes ni imágenes."
   external/evcc:

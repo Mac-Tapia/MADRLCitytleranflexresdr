@@ -622,9 +622,9 @@ flowchart TD
 | Documento | Contenido |
 |---|---|
 | `docs/architecture/defensa.md` | Este documento — 9 diagramas Mermaid |
-| `docs/architecture/operacion.md` | Flujo vigente y corridas oficiales |
+| `docs/architecture/runbook.md` | Flujo vigente de la campaña |
 | `docs/architecture/coordinacion.md` | Dec-POMDP y CTDE detallado |
 | `docs/architecture/flujo.md` | Arquitectura profesional completa |
-| `estrategia.md` | Ejes OE1/OE2/OE3 y sustento cientifico |
+| `docs/chapters/cap1_objetivos.md` | Ejes OE1/OE2/OE3 |
 | `docs/thesis/PLAN_TESIS_MADRL_CITYLEARN_V3_IQUITOS.md` | Plan de tesis estructurado |
 | `deploy/aws/README_TRAINING_AWS.md` | Manual completo de entrenamiento AWS |

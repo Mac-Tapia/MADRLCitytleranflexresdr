@@ -49,6 +49,7 @@ def native_attempts():
     Its independently hashed configuration is never the annual experiment.
     """
     import json
+    import shutil
     import subprocess
     import uuid
     import yaml
@@ -83,4 +84,5 @@ def native_attempts():
     (owned/'micro_result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
     attempts = {a.algorithm: a.attempt_root for a in discover_attempts(manifest_path)}
     assert result['status'] == 'training_complete' and len(attempts) == 4, (owned, result)
-    return attempts
+    yield attempts
+    shutil.rmtree(owned, ignore_errors=True)    # about 950 MB per session: nothing keeps growing in the repository

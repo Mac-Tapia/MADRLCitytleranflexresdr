@@ -183,6 +183,8 @@ decisions:
       superseded_by: D-V6-53
   D-V6-52:
     code: [CityLearn/citylearn/v3/thermal.py, CityLearn/citylearn/v3/thermal_calibration.py]
+  D-V6-56:
+    code: [configs/dataset/hvac_norms.yaml, tools/dataset/distill_building_loads.py]
   D-V6-54:
     code: [tools/dataset/build_v6_parts.py]
   D-V6-55:

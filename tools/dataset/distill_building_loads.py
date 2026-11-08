@@ -978,6 +978,7 @@ def thermal_v6(meta, frame: pd.DataFrame, weather: pd.DataFrame, *, schedule, ph
     set_point = float(norms["indoor_design"]["t_c"])
     w_in = th.humidity_ratio(set_point, norms["indoor_design"]["rh_pct"], pressure)
     mass = norms["thermal_mass_class"]["value"]
+    capacity = float(norms["thermal_heat_capacity_factor"]["value"])   # D-V6-56: measured in a tropical analogue
     inputs, flow = thermal_inputs(meta, weather, schedule=schedule, base_kwh=base_kwh, norms=norms, pressure=pressure)
     area = float(meta.area_techada_m2)
     if zone is None:
@@ -985,17 +986,17 @@ def thermal_v6(meta, frame: pd.DataFrame, weather: pd.DataFrame, *, schedule, ph
         zone = tcal.calibrate_conditioned_zone(
             target_kwh=physical_kwh_th, inputs=inputs, month=years*12 + frame["_month"].to_numpy(dtype=int),
             train=years == int(norms["outdoor_design"]["year"]), floor_area_m2=area, ventilation_m3_s=flow,
-            mass_class=mass, set_point=set_point, w_in=w_in)
+            mass_class=mass, set_point=set_point, w_in=w_in, heat_capacity_factor=capacity)
     fraction = zone.conditioned_fraction
     ideal = tcal.simulate_cooling_kwh(inputs=tcal.zone_inputs(inputs, fraction), envelope_w_m2k=zone.envelope_w_m2k,
                                       solar_aperture_fraction=zone.solar_aperture_fraction,
                                       floor_area_m2=area*fraction, ventilation_m3_s=flow*fraction, mass_class=mass,
-                                      set_point=set_point, w_in=w_in)
+                                      set_point=set_point, w_in=w_in, heat_capacity_factor=capacity)
     attributes = {"floor_area_m2": round(area*fraction, 6), "envelope_w_m2k": round(zone.envelope_w_m2k, 6),
                   "solar_aperture_fraction": round(zone.solar_aperture_fraction, 6),
                   "ventilation_m3_s": round(flow*fraction, 6), "mass_class": mass, "set_point": set_point,
                   "pressure_kpa": round(pressure, 6), "indoor_rh_pct": float(norms["indoor_design"]["rh_pct"]),
-                  "electric_gain_fraction": round(fraction, 6)}
+                  "electric_gain_fraction": round(fraction, 6), "heat_capacity_factor": capacity}
     return {"zone": zone, "ideal_kwh_th": np.minimum(ideal, max_kwh_th), "occupants": inputs.occupants*fraction,
             "set_point": set_point,
             "schema": {"type": "citylearn.v3.thermal.ISO13790Building",

@@ -29,6 +29,11 @@ thermal_mass_class:
   origin: assumption
   note: "ISO 13790 Table 12 class of the 5R1C model (SPEC-016 D-V6-53): A_m = 2.5 A_f, C_m = 165 000 J/(m2 K). Iquitos buildings are concrete and brick; no inventory value. Replace with the class of each building when known."
 
+thermal_heat_capacity_factor:
+  value: 2.27
+  origin: measured
+  source: "SPEC-016 D-V6-56: median of 20 measured air-conditioned zones of a tropical office (CU-BEMS, Bangkok, Pipattanasomporn et al. 2020, CC BY 4.0), identified by output error on indoor temperature (P10 1.22, P90 3.69): docs/audits/validacion_5r1c_cubems_20261108/README.md, data/validation/cubems/validation_5r1c.json. Scales C_m of the medium class; the Iquitos bills cannot identify it."
+
 site_elevation_m:
   value: 115.02
   origin: measured

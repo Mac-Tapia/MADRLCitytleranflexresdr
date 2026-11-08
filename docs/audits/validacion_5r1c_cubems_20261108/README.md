@@ -31,34 +31,44 @@ El mismo código del entrenamiento (`citylearn.v3.thermal`, `thermal_calibration
 - Hora ocupada = hora con el aire acondicionado por encima del 5 % de su máximo.
 - Irradiancia = GHI horizontal.
 
-## Resultados (prueba fuera de muestra, 20 zonas)
+## Resultados
+
+### Primera versión: calibración solo con energía y temperatura en simulación libre
 
 | Criterio | Resultado |
 |---|---|
-| Energía mensual, G14 (NMBE ±5 %, CV(RMSE) ≤ 15 %) | **7 de 20** zonas cumplen; mediana de \|NMBE\| 7,7 % |
-| Energía horaria, G14 (NMBE ±10 %, CV(RMSE) ≤ 30 %) | **0 de 20**; mediana del CV(RMSE) 51,6 % |
-| Temperatura interior | RMSE mediano 2,46 °C; mediana del 28 % de las horas dentro de ±1 °C |
-| Frente a la persistencia (RMSE mediano 1,19 °C) | **0 de 20** zonas la mejoran |
-| Parámetros en el límite | 10 de 20 zonas (casi siempre el COP) |
+| Energía mensual, G14 | 7 de 20 |
+| Energía horaria, G14 | 0 de 20 (CV(RMSE) mediano 51,6 %) |
+| Temperatura en simulación libre | RMSE mediano 2,46 °C |
+
+En esta versión, la comparación con la persistencia, que predice a 1 h, no era equivalente a una simulación de 6 meses.
+
+### Segunda versión: identificación con error de salida (práctica de los modelos de caja gris)
+
+Se ajustan a la vez la temperatura medida (con la electricidad medida del aire acondicionado) y la energía. Se añade la capacidad térmica como quinto parámetro (factor sobre la clase media de ISO 13790, tabla 12). La temperatura se evalúa a 1 h, a 24 h y en simulación libre, cada una con su referencia ingenua.
+
+| Criterio (prueba fuera de muestra, 20 zonas) | Resultado |
+|---|---|
+| Temperatura a 24 h frente a la misma hora del día anterior | **20/20 zonas mejor**; RMSE mediano 1,03 °C frente a 1,95 °C |
+| Temperatura a 1 h frente a la persistencia | 13/20 mejor; 1,25 °C frente a 1,19 °C (empate práctico) |
+| Temperatura en simulación libre de 6 meses | RMSE mediano **1,68 °C**; 49 % de las horas dentro de ±1 °C |
+| Energía mensual, G14 | 6/20 |
+| Energía horaria, G14 | 0/20 (CV(RMSE) mediano 56,9 %) |
+| Parámetros en el límite | 16/20 (COP en 11) |
+
+### Parámetros identificados (percentiles 10/50/90)
+
+| Parámetro | P10 | P50 | P90 |
+|---|---|---|---|
+| Envolvente (W/m²K) | 0,33 | 0,69 | 2,66 |
+| Apertura solar (fracción del área, con GHI horizontal) | 0,000 | 0,003 | 0,011 |
+| Fracción climatizada | 0,24 | 0,43 | 1,00 |
+| Factor de capacidad térmica | 1,22 | **2,27** | 3,69 |
 
 ## Conclusión
 
-- **Energía agregada:** el método 5R1C reproduce de forma aceptable la energía mensual en un tercio de las zonas y con sesgo moderado en el resto.
-- **Hora a hora:** no reproduce la energía horaria del aire acondicionado ni la dinámica de la temperatura interior de un edificio tropical real.
-- **Validación:** el modelo **no queda validado** como modelo dinámico.
+- **Dinámica de temperatura:** con la identificación correcta, la estructura 5R1C es **útil**. A 24 h supera a la referencia en todas las zonas, y en simulación libre queda cerca del ~1 °C que informa la literatura para modelos RC en simulación multipaso (ORNL: 0,89 °C; villa en clima cálido: 1,16 °C).
+- **Energía horaria por zona:** **no cumple** G14. El COP en el límite apunta a equipos que ciclan dentro de la hora y a una sola zona térmica. La energía mensual cumple en un tercio de las zonas.
+- **Para Iquitos:** el parámetro que fija la dinámica y que las facturas no identifican es la capacidad térmica. Se adopta la mediana medida en este edificio tropical análogo (2,27 veces la clase media) en lugar de la clase media supuesta (D-V6-56). La envolvente y la apertura siguen calibradas con las facturas.
 
-Esto confirma la declaración de D-V6-53 ("calibrado a facturas, no validado") y agrega una limitación medida:
-
-> La respuesta horaria de la temperatura al aire acondicionado del entorno de entrenamiento es una aproximación física de primer orden. En un edificio tropical medido, su error mediano es de unos 2,5 °C, peor que repetir la temperatura de la hora anterior.
-
-Los KPI de energía y costo agregados son más confiables que los de confort hora a hora. Los resultados de confort de la tesis deben leerse con esta limitación.
-
-## Causas probables
-
-- Una sola zona térmica (5R1C) para zonas abiertas con equipos que ciclan dentro de la hora.
-- COP constante.
-- Ocupación supuesta.
-- Ganancias solares por GHI horizontal, sin orientación ni sombras.
-- Área por zona desconocida.
-
-Mejorar exige datos que este conjunto no da (planos con áreas, capacidad de los equipos) o un modelo de más orden. Ninguna de esas mejoras se hace sin decisión del propietario.
+El alcance sigue siendo el **método en un edificio análogo**: los parámetros de Iquitos no están validados con medición propia.

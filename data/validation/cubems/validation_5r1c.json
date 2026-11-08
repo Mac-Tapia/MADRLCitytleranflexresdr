@@ -16,10 +16,11 @@
   "zones": {
     "floor3_zone1": {
       "parameters": {
-        "envelope_w_m2k": 1.0447492155898186,
-        "solar_aperture_fraction": 0.014962451625609536,
-        "conditioned_fraction": 0.32773028654946995,
-        "cop": 1.5000000000000002
+        "envelope_w_m2k": 0.49733182004078896,
+        "solar_aperture_fraction": 0.0029525454372167493,
+        "conditioned_fraction": 0.45514803504104917,
+        "cop": 1.5000000000000002,
+        "heat_capacity_factor": 1.2374737933004127
       },
       "at_bound": [
         "cop"
@@ -32,48 +33,73 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": 1.6178604188743129,
-            "cvrmse_pct": 57.95262673566175,
+            "nmbe_pct": -5.15963062936543,
+            "cvrmse_pct": 63.99977542417196,
             "n": 4333
           },
           "monthly": {
-            "nmbe_pct": 1.8870682107063932,
-            "cvrmse_pct": 9.748217001361144,
+            "nmbe_pct": -6.0181798294052395,
+            "cvrmse_pct": 12.011915635047794,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -13.765903165253524,
-            "cvrmse_pct": 60.50318848722781,
+            "nmbe_pct": -21.07392624538861,
+            "cvrmse_pct": 69.45567078483892,
             "n": 3901
           },
           "monthly": {
-            "nmbe_pct": -16.514849221580747,
-            "cvrmse_pct": 16.607840281934134,
+            "nmbe_pct": -25.282228871678722,
+            "cvrmse_pct": 24.932854847509923,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.4869840583142864,
-        "bias_c": 2.133810615234392,
-        "within_1c_share": 0.1745706229172007,
-        "persistence_rmse_c": 0.963700339270431
+        "one_hour": {
+          "rmse_c": 0.7242441873742622,
+          "bias_c": -0.15588780522824958,
+          "within_1c_share": 0.857069540672312,
+          "hours": 3897,
+          "persistence": {
+            "rmse_c": 0.9636062025006885,
+            "bias_c": 0.0006112819332844955,
+            "within_1c_share": 0.8542468565563254,
+            "hours": 3897
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 0.959367742067633,
+          "bias_c": 0.5181084605586116,
+          "within_1c_share": 0.7912230589457284,
+          "hours": 3851,
+          "same_hour_yesterday": {
+            "rmse_c": 1.379945241855635,
+            "bias_c": 0.010610789714440549,
+            "within_1c_share": 0.8356271098415996,
+            "hours": 3851
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.9196940493075332,
+          "bias_c": 1.5861352093908276,
+          "within_1c_share": 0.3004357856959754,
+          "hours": 3901
+        }
       }
     },
     "floor3_zone2": {
       "parameters": {
-        "envelope_w_m2k": 0.5551525728538556,
-        "solar_aperture_fraction": 0.013852416907886116,
-        "conditioned_fraction": 0.22142003967694163,
-        "cop": 1.5000000000000084
+        "envelope_w_m2k": 0.3267949798863634,
+        "solar_aperture_fraction": 0.001376718795503931,
+        "conditioned_fraction": 0.36757170736572076,
+        "cop": 1.7625121454511463,
+        "heat_capacity_factor": 1.5803384913110183
       },
-      "at_bound": [
-        "cop"
-      ],
+      "at_bound": [],
       "hours": {
         "train": 4212,
         "test": 4408,
@@ -82,44 +108,71 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.5998181638328907,
-            "cvrmse_pct": 64.41502128618666,
+            "nmbe_pct": -3.858963513758054,
+            "cvrmse_pct": 71.05510629186372,
             "n": 4212
           },
           "monthly": {
-            "nmbe_pct": -0.6996217163383271,
-            "cvrmse_pct": 2.5723263553438316,
+            "nmbe_pct": -4.501055219018922,
+            "cvrmse_pct": 5.750565548273872,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -9.209820249043435,
-            "cvrmse_pct": 65.38958881304339,
+            "nmbe_pct": -11.275998537701154,
+            "cvrmse_pct": 73.38679473554677,
             "n": 4408
           },
           "monthly": {
-            "nmbe_pct": -11.049277088258007,
-            "cvrmse_pct": 14.434266428723605,
+            "nmbe_pct": -13.52812855416941,
+            "cvrmse_pct": 17.545159381494482,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 3.398909325632056,
-        "bias_c": 2.6064670887175607,
-        "within_1c_share": 0.19305807622504537,
-        "persistence_rmse_c": 1.0444892667559789
+        "one_hour": {
+          "rmse_c": 0.832072714481518,
+          "bias_c": -0.22357295778961475,
+          "within_1c_share": 0.8322360953461975,
+          "hours": 4405,
+          "persistence": {
+            "rmse_c": 1.0444892667559789,
+            "bias_c": -0.0005486636561252913,
+            "within_1c_share": 0.8372304199772985,
+            "hours": 4405
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 0.9720219796057415,
+          "bias_c": 0.2842159288564904,
+          "within_1c_share": 0.7973528069374715,
+          "hours": 4382,
+          "same_hour_yesterday": {
+            "rmse_c": 1.3992424252348012,
+            "bias_c": 0.004622758018030604,
+            "within_1c_share": 0.8329529895025103,
+            "hours": 4382
+          }
+        },
+        "free_run": {
+          "rmse_c": 2.1957010432885555,
+          "bias_c": 1.0537577826744602,
+          "within_1c_share": 0.38611615245009073,
+          "hours": 4408
+        }
       }
     },
     "floor3_zone4": {
       "parameters": {
-        "envelope_w_m2k": 0.9497555375174865,
-        "solar_aperture_fraction": 0.0015278282145178186,
-        "conditioned_fraction": 0.2583400630924586,
-        "cop": 1.5000000000048594
+        "envelope_w_m2k": 0.6911298556422661,
+        "solar_aperture_fraction": 0.0029241518609392438,
+        "conditioned_fraction": 0.27903616648832097,
+        "cop": 1.5000000000000087,
+        "heat_capacity_factor": 1.6913351453068193
       },
       "at_bound": [
         "cop"
@@ -132,46 +185,76 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.12947212024473614,
-            "cvrmse_pct": 60.724885314495445,
+            "nmbe_pct": -6.725310088031856,
+            "cvrmse_pct": 66.54548361317063,
             "n": 4228
           },
           "monthly": {
-            "nmbe_pct": -0.15101508064969763,
-            "cvrmse_pct": 6.926531846593764,
+            "nmbe_pct": -7.844339332811993,
+            "cvrmse_pct": 10.249123450985778,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -0.6102273724817393,
-            "cvrmse_pct": 53.7326582649094,
+            "nmbe_pct": -5.838170423201879,
+            "cvrmse_pct": 58.21203131392051,
             "n": 4410
           },
           "monthly": {
-            "nmbe_pct": -0.7321067987134636,
-            "cvrmse_pct": 3.554698062787867,
+            "nmbe_pct": -7.004215890040021,
+            "cvrmse_pct": 7.328935663345423,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 1.4796662285167586,
-        "bias_c": 0.20641531983956776,
-        "within_1c_share": 0.46870748299319726,
-        "persistence_rmse_c": 1.4327544062339599
+        "one_hour": {
+          "rmse_c": 1.3168097118075592,
+          "bias_c": -0.46954915047419177,
+          "within_1c_share": 0.7472776769509982,
+          "hours": 4408,
+          "persistence": {
+            "rmse_c": 1.4327544062339599,
+            "bias_c": -0.00036043351492534917,
+            "within_1c_share": 0.8398366606170599,
+            "hours": 4408
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.1153116560198362,
+          "bias_c": 0.5057849259895096,
+          "within_1c_share": 0.7568985176738883,
+          "hours": 4385,
+          "same_hour_yesterday": {
+            "rmse_c": 2.252673634543313,
+            "bias_c": 0.013834531183846668,
+            "within_1c_share": 0.6465222348916762,
+            "hours": 4385
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.2277628712876558,
+          "bias_c": 0.12429398126548885,
+          "within_1c_share": 0.6433106575963718,
+          "hours": 4410
+        }
       }
     },
     "floor3_zone5": {
       "parameters": {
-        "envelope_w_m2k": 0.8252639116941256,
-        "solar_aperture_fraction": 0.022755304414277037,
-        "conditioned_fraction": 0.25705852120096706,
-        "cop": 3.4903541093063857
+        "envelope_w_m2k": 0.9377088525897033,
+        "solar_aperture_fraction": 2.63815420999201e-12,
+        "conditioned_fraction": 0.575252321004311,
+        "cop": 5.999999998891285,
+        "heat_capacity_factor": 2.2496417127757824
       },
-      "at_bound": [],
+      "at_bound": [
+        "solar_aperture_fraction",
+        "cop"
+      ],
       "hours": {
         "train": 3287,
         "test": 4076,
@@ -180,46 +263,75 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.0453787722085726,
-            "cvrmse_pct": 75.15215753950098,
+            "nmbe_pct": -4.973933150297474,
+            "cvrmse_pct": 82.36575284628833,
             "n": 3287
           },
           "monthly": {
-            "nmbe_pct": -0.05443796001607651,
-            "cvrmse_pct": 10.894439441610949,
+            "nmbe_pct": -5.966903924019774,
+            "cvrmse_pct": 13.815963837114866,
             "n": 6
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -8.93233480669034,
-            "cvrmse_pct": 63.10597060587492,
+            "nmbe_pct": -12.780917723073035,
+            "cvrmse_pct": 72.63804949257803,
             "n": 4076
           },
           "monthly": {
-            "nmbe_pct": -10.716172032560296,
-            "cvrmse_pct": 10.947005557839548,
+            "nmbe_pct": -15.333338485237276,
+            "cvrmse_pct": 16.530692956736225,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 3.2759923105735527,
-        "bias_c": 2.4638703650298375,
-        "within_1c_share": 0.20804710500490678,
-        "persistence_rmse_c": 1.115540674388994
+        "one_hour": {
+          "rmse_c": 1.0638826215408526,
+          "bias_c": -0.328339550487064,
+          "within_1c_share": 0.7955326460481099,
+          "hours": 4074,
+          "persistence": {
+            "rmse_c": 1.115540674388994,
+            "bias_c": -0.0005696073707055357,
+            "within_1c_share": 0.8561610211094747,
+            "hours": 4074
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.0572036166339345,
+          "bias_c": 0.4405570795147522,
+          "within_1c_share": 0.7807845084409136,
+          "hours": 4028,
+          "same_hour_yesterday": {
+            "rmse_c": 1.7617267352281483,
+            "bias_c": 0.002528938780479274,
+            "within_1c_share": 0.6405163853028798,
+            "hours": 4028
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.6750469552254834,
+          "bias_c": 0.8072202976688875,
+          "within_1c_share": 0.41609421000981356,
+          "hours": 4076
+        }
       }
     },
     "floor4_zone1": {
       "parameters": {
-        "envelope_w_m2k": 1.743680330268611,
-        "solar_aperture_fraction": 0.024776875306100128,
-        "conditioned_fraction": 0.7045767064167263,
-        "cop": 3.546699800086828
+        "envelope_w_m2k": 2.3917559586595,
+        "solar_aperture_fraction": 2.0225216806109855e-22,
+        "conditioned_fraction": 0.3944150844949835,
+        "cop": 1.742824566553109,
+        "heat_capacity_factor": 1.0693164125698083
       },
-      "at_bound": [],
+      "at_bound": [
+        "solar_aperture_fraction"
+      ],
       "hours": {
         "train": 2594,
         "test": 4336,
@@ -228,44 +340,71 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": 2.340592456631737,
-            "cvrmse_pct": 52.33207451005142,
+            "nmbe_pct": -4.2471179144840825,
+            "cvrmse_pct": 56.35257424179817,
             "n": 2594
           },
           "monthly": {
-            "nmbe_pct": 2.807628175811605,
-            "cvrmse_pct": 9.708115474421371,
+            "nmbe_pct": -5.094576755092011,
+            "cvrmse_pct": 12.826242591366801,
             "n": 6
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -4.9863772170781875,
-            "cvrmse_pct": 48.189482310945905,
+            "nmbe_pct": -13.021632575015966,
+            "cvrmse_pct": 55.06032118936996,
             "n": 4336
           },
           "monthly": {
-            "nmbe_pct": -5.982272666799067,
-            "cvrmse_pct": 9.26749858890294,
+            "nmbe_pct": -15.622355317166294,
+            "cvrmse_pct": 15.926095094897402,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.0471826634289223,
-        "bias_c": 1.1686312822181935,
-        "within_1c_share": 0.3505535055350554,
-        "persistence_rmse_c": 1.3562800420756576
+        "one_hour": {
+          "rmse_c": 1.199771996981703,
+          "bias_c": -0.4098606184438523,
+          "within_1c_share": 0.7792147806004619,
+          "hours": 4330,
+          "persistence": {
+            "rmse_c": 1.3572216634241032,
+            "bias_c": -0.0013407302339095166,
+            "within_1c_share": 0.8466512702078522,
+            "hours": 4330
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.1349248135829144,
+          "bias_c": 0.4395526110416742,
+          "within_1c_share": 0.6508820798514392,
+          "hours": 4308,
+          "same_hour_yesterday": {
+            "rmse_c": 2.0505656081174006,
+            "bias_c": 0.001642896905007947,
+            "within_1c_share": 0.7293407613741876,
+            "hours": 4308
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.5893257753916714,
+          "bias_c": 0.9658161664317529,
+          "within_1c_share": 0.3773062730627306,
+          "hours": 4336
+        }
       }
     },
     "floor4_zone2": {
       "parameters": {
-        "envelope_w_m2k": 0.870192746661934,
-        "solar_aperture_fraction": 0.00956013110082149,
-        "conditioned_fraction": 0.2299601533546209,
-        "cop": 1.5000000000000002
+        "envelope_w_m2k": 0.5411110333828338,
+        "solar_aperture_fraction": 0.005848539986408537,
+        "conditioned_fraction": 0.25980904808582866,
+        "cop": 1.5000000000000002,
+        "heat_capacity_factor": 2.3171585555693284
       },
       "at_bound": [
         "cop"
@@ -278,46 +417,75 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": 0.3483901787510221,
-            "cvrmse_pct": 47.66842060832932,
+            "nmbe_pct": -4.067200790971498,
+            "cvrmse_pct": 49.7836581337492,
             "n": 4005
           },
           "monthly": {
-            "nmbe_pct": 0.4063537215993968,
-            "cvrmse_pct": 5.891749392284564,
+            "nmbe_pct": -4.7438828035517675,
+            "cvrmse_pct": 7.145440369223952,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": 6.15620858795584,
-            "cvrmse_pct": 46.43135291361431,
+            "nmbe_pct": 2.466234678833452,
+            "cvrmse_pct": 47.169107378291955,
             "n": 4335
           },
           "monthly": {
-            "nmbe_pct": 7.385746164761411,
-            "cvrmse_pct": 9.89496738159356,
+            "nmbe_pct": 2.958798919879349,
+            "cvrmse_pct": 8.49386129818548,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.0260669618260674,
-        "bias_c": -0.2000010565575459,
-        "within_1c_share": 0.3748558246828143,
-        "persistence_rmse_c": 1.1828210754479485
+        "one_hour": {
+          "rmse_c": 1.3280367989054525,
+          "bias_c": -0.5080782137664283,
+          "within_1c_share": 0.7587800369685767,
+          "hours": 4328,
+          "persistence": {
+            "rmse_c": 1.183506016746466,
+            "bias_c": -0.0017796307699905632,
+            "within_1c_share": 0.8650646950092421,
+            "hours": 4328
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 0.7509428418396579,
+          "bias_c": 0.14787525875405044,
+          "within_1c_share": 0.8504065040650407,
+          "hours": 4305,
+          "same_hour_yesterday": {
+            "rmse_c": 1.8859045904783103,
+            "bias_c": -0.00788718294831857,
+            "within_1c_share": 0.7389082462253194,
+            "hours": 4305
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.7329045330631587,
+          "bias_c": -0.8678629746487436,
+          "within_1c_share": 0.49688581314878894,
+          "hours": 4335
+        }
       }
     },
     "floor4_zone4": {
       "parameters": {
-        "envelope_w_m2k": 1.2944767937802413,
-        "solar_aperture_fraction": 0.015018049486702871,
-        "conditioned_fraction": 0.24017731506627457,
-        "cop": 1.5032090551553423
+        "envelope_w_m2k": 0.8529517001136224,
+        "solar_aperture_fraction": 0.007862441539446522,
+        "conditioned_fraction": 0.2757987709497907,
+        "cop": 1.5000000000000002,
+        "heat_capacity_factor": 2.4850159569478985
       },
-      "at_bound": [],
+      "at_bound": [
+        "cop"
+      ],
       "hours": {
         "train": 4022,
         "test": 3424,
@@ -326,46 +494,75 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.5376226944741558,
-            "cvrmse_pct": 40.684179057807796,
+            "nmbe_pct": -5.567799688275102,
+            "cvrmse_pct": 45.601346715706654,
             "n": 4022
           },
           "monthly": {
-            "nmbe_pct": -0.6270705279862478,
-            "cvrmse_pct": 5.644693116431088,
+            "nmbe_pct": -6.494151244235016,
+            "cvrmse_pct": 8.69722638230057,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -6.626366293260232,
-            "cvrmse_pct": 43.660207412275064,
+            "nmbe_pct": -12.129794601847182,
+            "cvrmse_pct": 50.16904435842555,
             "n": 3424
           },
           "monthly": {
-            "nmbe_pct": -7.949317227276794,
-            "cvrmse_pct": 8.756841285858972,
+            "nmbe_pct": -14.551502425977647,
+            "cvrmse_pct": 14.898539569868749,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.3992830188827265,
-        "bias_c": 1.6764590824578467,
-        "within_1c_share": 0.32651869158878505,
-        "persistence_rmse_c": 1.5969891974537356
+        "one_hour": {
+          "rmse_c": 1.5144054174774089,
+          "bias_c": -0.49255156072156825,
+          "within_1c_share": 0.7627118644067796,
+          "hours": 3422,
+          "persistence": {
+            "rmse_c": 1.5983311574433365,
+            "bias_c": -0.004401160263319718,
+            "within_1c_share": 0.8439509059029807,
+            "hours": 3422
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 0.9454321160242718,
+          "bias_c": 0.4064974162051809,
+          "within_1c_share": 0.8213862559241706,
+          "hours": 3376,
+          "same_hour_yesterday": {
+            "rmse_c": 2.4027081622656006,
+            "bias_c": 0.003455345650913283,
+            "within_1c_share": 0.6715047393364929,
+            "hours": 3376
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.5581056569703748,
+          "bias_c": 0.9324256161549208,
+          "within_1c_share": 0.5408878504672897,
+          "hours": 3424
+        }
       }
     },
     "floor4_zone5": {
       "parameters": {
-        "envelope_w_m2k": 0.42943873217410766,
-        "solar_aperture_fraction": 0.008508679753405225,
-        "conditioned_fraction": 0.1403313376533226,
-        "cop": 1.6311903965191867
+        "envelope_w_m2k": 0.21250422561063,
+        "solar_aperture_fraction": 0.0035835900413348867,
+        "conditioned_fraction": 0.17000775798634482,
+        "cop": 1.6771510962999685,
+        "heat_capacity_factor": 4.999999999999999
       },
-      "at_bound": [],
+      "at_bound": [
+        "heat_capacity_factor"
+      ],
       "hours": {
         "train": 4517,
         "test": 4336,
@@ -374,46 +571,76 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.2838085270966619,
-            "cvrmse_pct": 63.83660761452365,
+            "nmbe_pct": -6.086065057615461,
+            "cvrmse_pct": 75.26347726973961,
             "n": 4517
           },
           "monthly": {
-            "nmbe_pct": -0.3310366452136232,
-            "cvrmse_pct": 4.744948802733572,
+            "nmbe_pct": -7.098837303569473,
+            "cvrmse_pct": 7.5580868749810985,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": 1.1022250032936485,
-            "cvrmse_pct": 61.36901097013652,
+            "nmbe_pct": -3.2403720140391785,
+            "cvrmse_pct": 69.55357088356381,
             "n": 4336
           },
           "monthly": {
-            "nmbe_pct": 1.3223649601322836,
-            "cvrmse_pct": 8.597091358082897,
+            "nmbe_pct": -3.8875496349243153,
+            "cvrmse_pct": 10.451923922514643,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.2613273928721496,
-        "bias_c": 0.22855813241448356,
-        "within_1c_share": 0.29428044280442806,
-        "persistence_rmse_c": 0.9838884852154641
+        "one_hour": {
+          "rmse_c": 1.0031367045685444,
+          "bias_c": -0.32880804855080015,
+          "within_1c_share": 0.7896559685984761,
+          "hours": 4331,
+          "persistence": {
+            "rmse_c": 0.9845086476880331,
+            "bias_c": -0.0021237589735931543,
+            "within_1c_share": 0.8549988455322096,
+            "hours": 4331
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 0.9893118056560666,
+          "bias_c": 0.31058106664295904,
+          "within_1c_share": 0.7893636785880167,
+          "hours": 4306,
+          "same_hour_yesterday": {
+            "rmse_c": 1.6000224954058277,
+            "bias_c": -0.008386764195687043,
+            "within_1c_share": 0.7094751509521597,
+            "hours": 4306
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.6847561612592614,
+          "bias_c": -0.24875380817702217,
+          "within_1c_share": 0.5006918819188192,
+          "hours": 4336
+        }
       }
     },
     "floor5_zone1": {
       "parameters": {
-        "envelope_w_m2k": 2.1228818708986754,
-        "solar_aperture_fraction": 0.021375358187526713,
-        "conditioned_fraction": 0.26415382179837626,
-        "cop": 1.7799656319876438
+        "envelope_w_m2k": 2.532988779698483,
+        "solar_aperture_fraction": 7.757242029716682e-18,
+        "conditioned_fraction": 0.21591886508419833,
+        "cop": 1.5000000000000002,
+        "heat_capacity_factor": 3.7666312549585035
       },
-      "at_bound": [],
+      "at_bound": [
+        "solar_aperture_fraction",
+        "cop"
+      ],
       "hours": {
         "train": 4551,
         "test": 3321,
@@ -422,46 +649,75 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.2039063091635616,
-            "cvrmse_pct": 36.39933103738972,
+            "nmbe_pct": -2.6925081738368615,
+            "cvrmse_pct": 41.32918114164673,
             "n": 4551
           },
           "monthly": {
-            "nmbe_pct": -0.23783842184353202,
-            "cvrmse_pct": 6.456377033807064,
+            "nmbe_pct": -3.1405693011317735,
+            "cvrmse_pct": 7.8329528811352915,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -16.126690080319786,
-            "cvrmse_pct": 47.24517339933192,
+            "nmbe_pct": -18.140510130153277,
+            "cvrmse_pct": 53.90408943323711,
             "n": 3321
           },
           "monthly": {
-            "nmbe_pct": -19.346200927429688,
-            "cvrmse_pct": 19.89674029223765,
+            "nmbe_pct": -21.762057319641855,
+            "cvrmse_pct": 21.963286907380795,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.99311941356605,
-        "bias_c": 2.4069405354520463,
-        "within_1c_share": 0.1951219512195122,
-        "persistence_rmse_c": 2.376807261166927
+        "one_hour": {
+          "rmse_c": 2.3200170814934684,
+          "bias_c": -0.8070593427960117,
+          "within_1c_share": 0.7469806763285024,
+          "hours": 3312,
+          "persistence": {
+            "rmse_c": 2.376807261166927,
+            "bias_c": -0.002805296497870449,
+            "within_1c_share": 0.8239734299516909,
+            "hours": 3312
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.4454231888095157,
+          "bias_c": 0.7543681678249572,
+          "within_1c_share": 0.7477007970570202,
+          "hours": 3262,
+          "same_hour_yesterday": {
+            "rmse_c": 3.3712209566277456,
+            "bias_c": 0.01930814805423473,
+            "within_1c_share": 0.6701410177805027,
+            "hours": 3262
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.8471442048622826,
+          "bias_c": 1.2299898364095654,
+          "within_1c_share": 0.4905149051490515,
+          "hours": 3321
+        }
       }
     },
     "floor5_zone2": {
       "parameters": {
-        "envelope_w_m2k": 0.968047388270138,
-        "solar_aperture_fraction": 0.014368681477501661,
-        "conditioned_fraction": 0.5641513455214731,
-        "cop": 3.4462639337850334
+        "envelope_w_m2k": 0.5457392885277241,
+        "solar_aperture_fraction": 0.011195124237107754,
+        "conditioned_fraction": 0.9999999999994884,
+        "cop": 5.364219450177968,
+        "heat_capacity_factor": 2.878333839334648
       },
-      "at_bound": [],
+      "at_bound": [
+        "conditioned_fraction"
+      ],
       "hours": {
         "train": 4149,
         "test": 2750,
@@ -470,46 +726,75 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.9182221766529335,
-            "cvrmse_pct": 57.5214385198563,
+            "nmbe_pct": -4.171559428003227,
+            "cvrmse_pct": 62.084849491663704,
             "n": 4149
           },
           "monthly": {
-            "nmbe_pct": -1.071001009130495,
-            "cvrmse_pct": 5.8443693244944,
+            "nmbe_pct": -4.86564632246733,
+            "cvrmse_pct": 7.713890721087161,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": 10.171480933987022,
-            "cvrmse_pct": 60.942496363901476,
+            "nmbe_pct": 9.069358702126552,
+            "cvrmse_pct": 64.23630440196818,
             "n": 2750
           },
           "monthly": {
-            "nmbe_pct": 12.709727767059235,
-            "cvrmse_pct": 16.38465364329215,
+            "nmbe_pct": 11.332575941884494,
+            "cvrmse_pct": 15.580751352804793,
             "n": 5
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.442529707675902,
-        "bias_c": -0.40568774059969637,
-        "within_1c_share": 0.23527272727272727,
-        "persistence_rmse_c": 1.1875289691828883
+        "one_hour": {
+          "rmse_c": 1.5250754100892623,
+          "bias_c": -0.6221299940569467,
+          "within_1c_share": 0.7467248908296943,
+          "hours": 2748,
+          "persistence": {
+            "rmse_c": 1.1875289691828883,
+            "bias_c": -0.002774778830645549,
+            "within_1c_share": 0.8384279475982532,
+            "hours": 2748
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 0.9182137523761834,
+          "bias_c": -0.09213216280577327,
+          "within_1c_share": 0.811621021465581,
+          "hours": 2702,
+          "same_hour_yesterday": {
+            "rmse_c": 1.8647072696018916,
+            "bias_c": 0.010046338418631883,
+            "within_1c_share": 0.7216876387860843,
+            "hours": 2702
+          }
+        },
+        "free_run": {
+          "rmse_c": 2.3322979363213623,
+          "bias_c": -1.582064106606267,
+          "within_1c_share": 0.22327272727272726,
+          "hours": 2750
+        }
       }
     },
     "floor5_zone4": {
       "parameters": {
-        "envelope_w_m2k": 1.466412097548464,
-        "solar_aperture_fraction": 0.02146202764954493,
-        "conditioned_fraction": 0.6928617658322209,
-        "cop": 4.509543994236392
+        "envelope_w_m2k": 0.40696511976691124,
+        "solar_aperture_fraction": 0.020091139748535523,
+        "conditioned_fraction": 0.9999999999987701,
+        "cop": 5.8567398444266425,
+        "heat_capacity_factor": 3.620567755588888
       },
-      "at_bound": [],
+      "at_bound": [
+        "conditioned_fraction"
+      ],
       "hours": {
         "train": 4215,
         "test": 4273,
@@ -518,48 +803,73 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.7867104048021922,
-            "cvrmse_pct": 45.048689958074846,
+            "nmbe_pct": -1.425816897834546,
+            "cvrmse_pct": 47.35271713739187,
             "n": 4215
           },
           "monthly": {
-            "nmbe_pct": -0.9176110526237732,
-            "cvrmse_pct": 5.027242904917695,
+            "nmbe_pct": -1.663058396691325,
+            "cvrmse_pct": 4.153077382847206,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -2.2191857640364194,
-            "cvrmse_pct": 44.60700056173702,
+            "nmbe_pct": -0.9754510413714078,
+            "cvrmse_pct": 44.35366241533459,
             "n": 4273
           },
           "monthly": {
-            "nmbe_pct": -2.662399695941109,
-            "cvrmse_pct": 8.069997099842245,
+            "nmbe_pct": -1.1702673106684778,
+            "cvrmse_pct": 7.683486872696667,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.6504713125022072,
-        "bias_c": 1.7687302193539904,
-        "within_1c_share": 0.2742803650830798,
-        "persistence_rmse_c": 1.1053770594230392
+        "one_hour": {
+          "rmse_c": 1.508979402104151,
+          "bias_c": -0.5635212274681927,
+          "within_1c_share": 0.7427969079409698,
+          "hours": 4269,
+          "persistence": {
+            "rmse_c": 1.1053770594230392,
+            "bias_c": -0.0009048192403100232,
+            "within_1c_share": 0.8716327008667135,
+            "hours": 4269
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 0.7481929372910594,
+          "bias_c": 0.09299660687617799,
+          "within_1c_share": 0.8605256926355671,
+          "hours": 4223,
+          "same_hour_yesterday": {
+            "rmse_c": 1.9083806903750546,
+            "bias_c": 0.016573760618563322,
+            "within_1c_share": 0.7087378640776699,
+            "hours": 4223
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.474341810672077,
+          "bias_c": 0.20521207291207127,
+          "within_1c_share": 0.3470629534285046,
+          "hours": 4273
+        }
       }
     },
     "floor5_zone5": {
       "parameters": {
-        "envelope_w_m2k": 0.21635450310175827,
-        "solar_aperture_fraction": 0.012273930814980457,
-        "conditioned_fraction": 0.11522236337317342,
-        "cop": 1.5000000000000044
+        "envelope_w_m2k": 0.2361020168049764,
+        "solar_aperture_fraction": 0.002921384091779564,
+        "conditioned_fraction": 0.23881909461546783,
+        "cop": 2.1713734415562302,
+        "heat_capacity_factor": 3.6850676162780394
       },
-      "at_bound": [
-        "cop"
-      ],
+      "at_bound": [],
       "hours": {
         "train": 4588,
         "test": 4403,
@@ -568,46 +878,74 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.259369347092205,
-            "cvrmse_pct": 60.267223216483416,
+            "nmbe_pct": -5.890715875865154,
+            "cvrmse_pct": 72.38986622423609,
             "n": 4588
           },
           "monthly": {
-            "nmbe_pct": -0.30253161747252694,
-            "cvrmse_pct": 8.6120501186148,
+            "nmbe_pct": -6.871003925390669,
+            "cvrmse_pct": 10.041460225815081,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -6.632111726163197,
-            "cvrmse_pct": 54.51615593032342,
+            "nmbe_pct": -12.030688650965521,
+            "cvrmse_pct": 69.01435783079579,
             "n": 4403
           },
           "monthly": {
-            "nmbe_pct": -7.956726546055977,
-            "cvrmse_pct": 10.20743719341129,
+            "nmbe_pct": -14.433547519841078,
+            "cvrmse_pct": 16.972417131585296,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 3.233810694874493,
-        "bias_c": 2.260366073906413,
-        "within_1c_share": 0.21530774471950942,
-        "persistence_rmse_c": 0.974803225329238
+        "one_hour": {
+          "rmse_c": 0.7911983192055323,
+          "bias_c": -0.2255584662080324,
+          "within_1c_share": 0.8272251308900523,
+          "hours": 4393,
+          "persistence": {
+            "rmse_c": 0.974803225329238,
+            "bias_c": -0.001277176608602589,
+            "within_1c_share": 0.8536307762349192,
+            "hours": 4393
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.0253639294472736,
+          "bias_c": 0.36950491985846734,
+          "within_1c_share": 0.7832988267770876,
+          "hours": 4347,
+          "same_hour_yesterday": {
+            "rmse_c": 1.484236240084892,
+            "bias_c": 0.015308134987174574,
+            "within_1c_share": 0.7658155049459398,
+            "hours": 4347
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.9292523392836842,
+          "bias_c": 0.8450541285145454,
+          "within_1c_share": 0.3297751533045651,
+          "hours": 4403
+        }
       }
     },
     "floor6_zone1": {
       "parameters": {
-        "envelope_w_m2k": 0.11977886386140307,
-        "solar_aperture_fraction": 0.005826423399514078,
-        "conditioned_fraction": 0.3484600442242464,
-        "cop": 1.5000000000000002
+        "envelope_w_m2k": 0.332099472750325,
+        "solar_aperture_fraction": 9.366935805075272e-28,
+        "conditioned_fraction": 0.4108269140218064,
+        "cop": 1.5000000000000002,
+        "heat_capacity_factor": 1.2928959436061747
       },
       "at_bound": [
+        "solar_aperture_fraction",
         "cop"
       ],
       "hours": {
@@ -618,46 +956,76 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": 2.192368215974702,
-            "cvrmse_pct": 54.931132349724216,
+            "nmbe_pct": -4.50937786008668,
+            "cvrmse_pct": 59.24788504380349,
             "n": 4375
           },
           "monthly": {
-            "nmbe_pct": 2.5571782871128907,
-            "cvrmse_pct": 9.745302995625295,
+            "nmbe_pct": -5.259738336005096,
+            "cvrmse_pct": 13.252429648822972,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": 0.9068842250595304,
-            "cvrmse_pct": 49.54650687243941,
+            "nmbe_pct": -9.223897452917,
+            "cvrmse_pct": 55.49229698350894,
             "n": 2720
           },
           "monthly": {
-            "nmbe_pct": 1.2087344156553246,
-            "cvrmse_pct": 3.6280294399334467,
+            "nmbe_pct": -12.294008418863399,
+            "cvrmse_pct": 11.53480437029197,
             "n": 4
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 1.6476017334378326,
-        "bias_c": -0.48840195933296765,
-        "within_1c_share": 0.4801470588235294,
-        "persistence_rmse_c": 1.2190473402863873
+        "one_hour": {
+          "rmse_c": 0.9443793289039571,
+          "bias_c": -0.23383207145092574,
+          "within_1c_share": 0.8078763341921237,
+          "hours": 2717,
+          "persistence": {
+            "rmse_c": 1.2190473402863873,
+            "bias_c": 0.00043074535506222323,
+            "within_1c_share": 0.8443135811556864,
+            "hours": 2717
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.0324659215210283,
+          "bias_c": 0.31071974844788486,
+          "within_1c_share": 0.74090571640683,
+          "hours": 2694,
+          "same_hour_yesterday": {
+            "rmse_c": 2.0466944038643806,
+            "bias_c": 0.033793035376620394,
+            "within_1c_share": 0.6659242761692651,
+            "hours": 2694
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.379221511613863,
+          "bias_c": 0.34413161534208897,
+          "within_1c_share": 0.55,
+          "hours": 2720
+        }
       }
     },
     "floor6_zone2": {
       "parameters": {
-        "envelope_w_m2k": 0.935050990997136,
-        "solar_aperture_fraction": 0.00735860632088029,
-        "conditioned_fraction": 0.9999999629351971,
-        "cop": 5.447475239163336
+        "envelope_w_m2k": 1.1795473605024864,
+        "solar_aperture_fraction": 1.337098485791256e-14,
+        "conditioned_fraction": 0.999999999252535,
+        "cop": 5.204826882475962,
+        "heat_capacity_factor": 2.5048910663243324
       },
-      "at_bound": [],
+      "at_bound": [
+        "solar_aperture_fraction",
+        "conditioned_fraction"
+      ],
       "hours": {
         "train": 4571,
         "test": 2215,
@@ -666,44 +1034,71 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.38060369611315986,
-            "cvrmse_pct": 62.08119569331745,
+            "nmbe_pct": -4.656504770435674,
+            "cvrmse_pct": 67.58056992691722,
             "n": 4571
           },
           "monthly": {
-            "nmbe_pct": -0.44394050312330896,
-            "cvrmse_pct": 8.076054222302783,
+            "nmbe_pct": -5.431400408599039,
+            "cvrmse_pct": 9.467697831067458,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -15.019636353974429,
-            "cvrmse_pct": 65.90826223890686,
+            "nmbe_pct": -20.29789125120445,
+            "cvrmse_pct": 76.9223020758626,
             "n": 2215
           },
           "monthly": {
-            "nmbe_pct": -20.017140639698656,
-            "cvrmse_pct": 21.085877596028226,
+            "nmbe_pct": -27.05163655690994,
+            "cvrmse_pct": 27.75338892892019,
             "n": 4
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.128266153205651,
-        "bias_c": 1.656656278190431,
-        "within_1c_share": 0.19683972911963882,
-        "persistence_rmse_c": 1.0030312681368674
+        "one_hour": {
+          "rmse_c": 0.920461881832944,
+          "bias_c": -0.26208852612621786,
+          "within_1c_share": 0.810126582278481,
+          "hours": 2212,
+          "persistence": {
+            "rmse_c": 1.0030312681368674,
+            "bias_c": 0.00023187121574000957,
+            "within_1c_share": 0.8648282097649186,
+            "hours": 2212
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.038760851698115,
+          "bias_c": 0.4413092988656241,
+          "within_1c_share": 0.7661032434901781,
+          "hours": 2189,
+          "same_hour_yesterday": {
+            "rmse_c": 1.6002930817942707,
+            "bias_c": 0.03717718458526364,
+            "within_1c_share": 0.7277295568752855,
+            "hours": 2189
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.7122490866150535,
+          "bias_c": 1.267190728724264,
+          "within_1c_share": 0.3656884875846501,
+          "hours": 2215
+        }
       }
     },
     "floor6_zone4": {
       "parameters": {
-        "envelope_w_m2k": 1.5026219855774716,
-        "solar_aperture_fraction": 0.017653842696990107,
-        "conditioned_fraction": 0.9999990379411916,
-        "cop": 5.889273967584133
+        "envelope_w_m2k": 0.678496430212895,
+        "solar_aperture_fraction": 0.010864279386234988,
+        "conditioned_fraction": 0.4817371568710054,
+        "cop": 2.6117164717536556,
+        "heat_capacity_factor": 2.3441121103703293
       },
       "at_bound": [],
       "hours": {
@@ -714,44 +1109,71 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -0.346496953885631,
-            "cvrmse_pct": 54.244952906017595,
+            "nmbe_pct": -3.077521879972492,
+            "cvrmse_pct": 57.782074587966704,
             "n": 4605
           },
           "monthly": {
-            "nmbe_pct": -0.40415866195534467,
-            "cvrmse_pct": 1.8913444992715307,
+            "nmbe_pct": -3.5896625098716504,
+            "cvrmse_pct": 5.006127866168448,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -0.07719098534490436,
-            "cvrmse_pct": 41.14956140932449,
+            "nmbe_pct": -2.8739238064608528,
+            "cvrmse_pct": 44.39711702755717,
             "n": 2720
           },
           "monthly": {
-            "nmbe_pct": -0.10288347507490057,
-            "cvrmse_pct": 3.6454635327738356,
+            "nmbe_pct": -3.8304896224348433,
+            "cvrmse_pct": 3.9755507498397313,
             "n": 4
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 1.6834040867449742,
-        "bias_c": 0.9284969123455517,
-        "within_1c_share": 0.4588235294117647,
-        "persistence_rmse_c": 1.257433589889706
+        "one_hour": {
+          "rmse_c": 1.307013023545743,
+          "bias_c": -0.4864616253986753,
+          "within_1c_share": 0.7648141332351859,
+          "hours": 2717,
+          "persistence": {
+            "rmse_c": 1.257433589889706,
+            "bias_c": 0.0003419693332198361,
+            "within_1c_share": 0.8663967611336032,
+            "hours": 2717
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 0.6935245917258661,
+          "bias_c": 0.05759875234963058,
+          "within_1c_share": 0.8697104677060133,
+          "hours": 2694,
+          "same_hour_yesterday": {
+            "rmse_c": 1.9894848513830445,
+            "bias_c": 0.04753338833753333,
+            "within_1c_share": 0.6481069042316259,
+            "hours": 2694
+          }
+        },
+        "free_run": {
+          "rmse_c": 0.8576148941570331,
+          "bias_c": 0.1976834598629809,
+          "within_1c_share": 0.8128676470588235,
+          "hours": 2720
+        }
       }
     },
     "floor6_zone5": {
       "parameters": {
-        "envelope_w_m2k": 0.23218488614837546,
-        "solar_aperture_fraction": 0.006996809209208539,
-        "conditioned_fraction": 0.5760975458668365,
-        "cop": 5.999999999999999
+        "envelope_w_m2k": 0.5952781838202097,
+        "solar_aperture_fraction": 0.004598751242847444,
+        "conditioned_fraction": 0.5603303915145305,
+        "cop": 5.999999999999997,
+        "heat_capacity_factor": 2.287304901690398
       },
       "at_bound": [
         "cop"
@@ -764,46 +1186,74 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": -2.4264097325242404,
-            "cvrmse_pct": 76.94584715172651,
+            "nmbe_pct": -6.196755509660074,
+            "cvrmse_pct": 82.57209157198828,
             "n": 4529
           },
           "monthly": {
-            "nmbe_pct": -2.830186313464656,
-            "cvrmse_pct": 9.075674986613867,
+            "nmbe_pct": -7.227951815492227,
+            "cvrmse_pct": 9.446561798044259,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -21.122523825163988,
-            "cvrmse_pct": 91.10830340508187,
+            "nmbe_pct": -25.37307692106109,
+            "cvrmse_pct": 100.24584640860873,
             "n": 2718
           },
           "monthly": {
-            "nmbe_pct": -28.153003302904366,
-            "cvrmse_pct": 25.843149643228003,
+            "nmbe_pct": -33.81832229311894,
+            "cvrmse_pct": 30.507103920217304,
             "n": 4
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.7433727286973566,
-        "bias_c": 1.9889563419845393,
-        "within_1c_share": 0.20566593083149373,
-        "persistence_rmse_c": 1.062561383720845
+        "one_hour": {
+          "rmse_c": 0.874319822754822,
+          "bias_c": -0.1550760103080549,
+          "within_1c_share": 0.8492999263080324,
+          "hours": 2714,
+          "persistence": {
+            "rmse_c": 1.062561383720845,
+            "bias_c": 0.001826425490920848,
+            "within_1c_share": 0.8758290346352248,
+            "hours": 2714
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.175006991054163,
+          "bias_c": 0.48491546449910594,
+          "within_1c_share": 0.7420074349442379,
+          "hours": 2690,
+          "same_hour_yesterday": {
+            "rmse_c": 1.7043734561139268,
+            "bias_c": 0.038323940180732805,
+            "within_1c_share": 0.7107806691449814,
+            "hours": 2690
+          }
+        },
+        "free_run": {
+          "rmse_c": 2.101213194795516,
+          "bias_c": 1.5511774225132606,
+          "within_1c_share": 0.3138337012509198,
+          "hours": 2718
+        }
       }
     },
     "floor7_zone1": {
       "parameters": {
-        "envelope_w_m2k": 2.551563299524848,
-        "solar_aperture_fraction": 0.05495478708685736,
-        "conditioned_fraction": 0.3384054904935666,
-        "cop": 1.5000000000000049
+        "envelope_w_m2k": 2.6696797366079066,
+        "solar_aperture_fraction": 6.922376026425802e-36,
+        "conditioned_fraction": 0.49230889148022683,
+        "cop": 1.5000000000000002,
+        "heat_capacity_factor": 0.7162710607808883
       },
       "at_bound": [
+        "solar_aperture_fraction",
         "cop"
       ],
       "hours": {
@@ -814,44 +1264,71 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": 3.3416169383219603,
-            "cvrmse_pct": 40.55118278112827,
+            "nmbe_pct": -1.746265704217022,
+            "cvrmse_pct": 45.13014411042851,
             "n": 4522
           },
           "monthly": {
-            "nmbe_pct": 3.8976909644359212,
-            "cvrmse_pct": 13.647340377435343,
+            "nmbe_pct": -2.0368594553057644,
+            "cvrmse_pct": 17.302921766388586,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -4.223276269552993,
-            "cvrmse_pct": 32.307919064797645,
+            "nmbe_pct": -9.329961320338326,
+            "cvrmse_pct": 39.87427667339345,
             "n": 4408
           },
           "monthly": {
-            "nmbe_pct": -5.066781811230487,
-            "cvrmse_pct": 4.847134401461636,
+            "nmbe_pct": -11.193413667531111,
+            "cvrmse_pct": 11.334270880299563,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.544955671600743,
-        "bias_c": 1.7891709926395796,
-        "within_1c_share": 0.33008166969147007,
-        "persistence_rmse_c": 1.5205249722209113
+        "one_hour": {
+          "rmse_c": 1.370085311493227,
+          "bias_c": -0.6134949404703809,
+          "within_1c_share": 0.7147399500340677,
+          "hours": 4403,
+          "persistence": {
+            "rmse_c": 1.5205249722209113,
+            "bias_c": -0.0003939559201811171,
+            "within_1c_share": 0.785827844651374,
+            "hours": 4403
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.1906302049359923,
+          "bias_c": 0.5060810946055595,
+          "within_1c_share": 0.6706231454005934,
+          "hours": 4381,
+          "same_hour_yesterday": {
+            "rmse_c": 2.9514715375205993,
+            "bias_c": -0.010188463395013,
+            "within_1c_share": 0.5231682264323214,
+            "hours": 4381
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.3536953582684847,
+          "bias_c": 0.6794946341952814,
+          "within_1c_share": 0.5542196007259528,
+          "hours": 4408
+        }
       }
     },
     "floor7_zone2": {
       "parameters": {
-        "envelope_w_m2k": 2.155441839117418,
-        "solar_aperture_fraction": 0.02246590587922705,
-        "conditioned_fraction": 0.3465124149197283,
-        "cop": 1.5000000000005331
+        "envelope_w_m2k": 2.2903254221758265,
+        "solar_aperture_fraction": 0.0044600688867134225,
+        "conditioned_fraction": 0.40569797595853413,
+        "cop": 1.5000000000000002,
+        "heat_capacity_factor": 1.2161938874858675
       },
       "at_bound": [
         "cop"
@@ -864,48 +1341,73 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": 1.0391322680846615,
-            "cvrmse_pct": 40.7324233519917,
+            "nmbe_pct": -2.78884624393235,
+            "cvrmse_pct": 44.0491695422702,
             "n": 4599
           },
           "monthly": {
-            "nmbe_pct": 1.2120573740875786,
-            "cvrmse_pct": 3.533544809293562,
+            "nmbe_pct": -3.2529464813802527,
+            "cvrmse_pct": 6.099905663183893,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": 0.5140446068084835,
-            "cvrmse_pct": 40.64877216597757,
+            "nmbe_pct": -2.1665453767989447,
+            "cvrmse_pct": 45.66703518459774,
             "n": 4411
           },
           "monthly": {
-            "nmbe_pct": 0.6167136837974365,
-            "cvrmse_pct": 7.401669737085387,
+            "nmbe_pct": -2.599265049653142,
+            "cvrmse_pct": 9.537147942375366,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 1.5469052701250083,
-        "bias_c": 0.5284725286371516,
-        "within_1c_share": 0.4892314667875765,
-        "persistence_rmse_c": 1.1471848210658189
+        "one_hour": {
+          "rmse_c": 1.2979610405459219,
+          "bias_c": -0.6002911429027677,
+          "within_1c_share": 0.7212519845770016,
+          "hours": 4409,
+          "persistence": {
+            "rmse_c": 1.1471848210658189,
+            "bias_c": -0.0004920400911555376,
+            "within_1c_share": 0.8042640054434113,
+            "hours": 4409
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.0067689819130738,
+          "bias_c": 0.06769840592024635,
+          "within_1c_share": 0.758093935248518,
+          "hours": 4386,
+          "same_hour_yesterday": {
+            "rmse_c": 2.2339321636232943,
+            "bias_c": -0.014529551920400723,
+            "within_1c_share": 0.6249430004559964,
+            "hours": 4386
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.2756581182494906,
+          "bias_c": 0.08019870554422208,
+          "within_1c_share": 0.6046248016322829,
+          "hours": 4411
+        }
       }
     },
     "floor7_zone4": {
       "parameters": {
-        "envelope_w_m2k": 2.2189303311457884,
-        "solar_aperture_fraction": 0.057587590518255266,
-        "conditioned_fraction": 0.25716533693994875,
-        "cop": 1.5000000000027336
+        "envelope_w_m2k": 2.6554388330650514,
+        "solar_aperture_fraction": 0.012470837669751659,
+        "conditioned_fraction": 0.5260117017807716,
+        "cop": 2.2665625986836964,
+        "heat_capacity_factor": 1.555452547736686
       },
-      "at_bound": [
-        "cop"
-      ],
+      "at_bound": [],
       "hours": {
         "train": 4583,
         "test": 4243,
@@ -914,46 +1416,75 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": 1.1830282631758533,
-            "cvrmse_pct": 39.0203379421293,
+            "nmbe_pct": -1.796769102198261,
+            "cvrmse_pct": 46.547115841130434,
             "n": 4583
           },
           "monthly": {
-            "nmbe_pct": 1.3798984840025543,
-            "cvrmse_pct": 4.933565413185978,
+            "nmbe_pct": -2.0957732265585522,
+            "cvrmse_pct": 8.050321485091844,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -2.6406350360762154,
-            "cvrmse_pct": 37.00969130877348,
+            "nmbe_pct": -3.9108787065389734,
+            "cvrmse_pct": 43.90697369067796,
             "n": 4243
           },
           "monthly": {
-            "nmbe_pct": -3.168015222164117,
-            "cvrmse_pct": 5.093608525925883,
+            "nmbe_pct": -4.69194837797925,
+            "cvrmse_pct": 7.405445643232718,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 2.799475510625428,
-        "bias_c": 1.8419708734179843,
-        "within_1c_share": 0.3191138345510252,
-        "persistence_rmse_c": 1.6013906695836384
+        "one_hour": {
+          "rmse_c": 1.6461965064052029,
+          "bias_c": -0.7654364717592861,
+          "within_1c_share": 0.7048832271762208,
+          "hours": 4239,
+          "persistence": {
+            "rmse_c": 1.6013906695836384,
+            "bias_c": -0.0001476264432582107,
+            "within_1c_share": 0.7994810096720925,
+            "hours": 4239
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.0840662990716774,
+          "bias_c": 0.15031105443990897,
+          "within_1c_share": 0.7101622137404581,
+          "hours": 4192,
+          "same_hour_yesterday": {
+            "rmse_c": 2.594970768344239,
+            "bias_c": 0.02326562931329424,
+            "within_1c_share": 0.6211832061068703,
+            "hours": 4192
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.2648087932817915,
+          "bias_c": 0.11415201876684035,
+          "within_1c_share": 0.6009898656610888,
+          "hours": 4243
+        }
       }
     },
     "floor7_zone5": {
       "parameters": {
-        "envelope_w_m2k": 0.2521463395789665,
-        "solar_aperture_fraction": 0.023805269226200788,
-        "conditioned_fraction": 0.15647756382878167,
-        "cop": 1.7425577655130857
+        "envelope_w_m2k": 2.6555973162102164,
+        "solar_aperture_fraction": 0.001433971234919557,
+        "conditioned_fraction": 0.8061106498717711,
+        "cop": 5.9999999999999805,
+        "heat_capacity_factor": 1.5104302487870684
       },
-      "at_bound": [],
+      "at_bound": [
+        "cop"
+      ],
       "hours": {
         "train": 4209,
         "test": 4410,
@@ -962,43 +1493,73 @@
       "energy_g14": {
         "train": {
           "hourly": {
-            "nmbe_pct": 0.3854419251447243,
-            "cvrmse_pct": 73.76921050069471,
+            "nmbe_pct": -8.280958039046498,
+            "cvrmse_pct": 90.99474678429311,
             "n": 4209
           },
           "monthly": {
-            "nmbe_pct": 0.44957540773988086,
-            "cvrmse_pct": 8.271406360260453,
+            "nmbe_pct": -9.658822364700786,
+            "cvrmse_pct": 23.594079585778555,
             "n": 7
           },
           "passed": false
         },
         "test": {
           "hourly": {
-            "nmbe_pct": -18.20176404755599,
-            "cvrmse_pct": 84.85773335643105,
+            "nmbe_pct": -27.66355076484665,
+            "cvrmse_pct": 102.44297483336493,
             "n": 4410
           },
           "monthly": {
-            "nmbe_pct": -21.83716399610186,
-            "cvrmse_pct": 21.61746521567251,
+            "nmbe_pct": -33.18873342100922,
+            "cvrmse_pct": 31.4588506082184,
             "n": 6
           },
           "passed": false
         }
       },
       "temperature_test": {
-        "rmse_c": 5.8105467959984365,
-        "bias_c": 4.282104484614333,
-        "within_1c_share": 0.07006802721088436,
-        "persistence_rmse_c": 1.40017647179533
+        "one_hour": {
+          "rmse_c": 1.0858743585338242,
+          "bias_c": -0.3812862480379067,
+          "within_1c_share": 0.8139323803040617,
+          "hours": 4407,
+          "persistence": {
+            "rmse_c": 1.40017647179533,
+            "bias_c": -0.0013763046452927182,
+            "within_1c_share": 0.8037213523939187,
+            "hours": 4407
+          }
+        },
+        "day_ahead": {
+          "rmse_c": 1.5683973164743985,
+          "bias_c": 0.4024273789765772,
+          "within_1c_share": 0.6701642335766423,
+          "hours": 4384,
+          "same_hour_yesterday": {
+            "rmse_c": 2.206739028437658,
+            "bias_c": 0.004652005200708626,
+            "within_1c_share": 0.666058394160584,
+            "hours": 4384
+          }
+        },
+        "free_run": {
+          "rmse_c": 1.8032831948980141,
+          "bias_c": 0.45403441142762613,
+          "within_1c_share": 0.5183673469387755,
+          "hours": 4410
+        }
       }
     }
   },
   "summary": {
     "zones": 20,
     "energy_g14_test_passed": 0,
-    "median_temperature_rmse_c": 2.4647568829950943
+    "median_rmse_c": {
+      "one_hour": 1.2488665187638124,
+      "day_ahead": 1.028914925484151,
+      "free_run": 1.6799015582423724
+    }
   },
   "scope": "validates the 5R1C method in an analogous tropical office, not the Iquitos parameters"
 }

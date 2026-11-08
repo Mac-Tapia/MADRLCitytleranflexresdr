@@ -83,7 +83,16 @@ def build_inputs(th, zone: pd.DataFrame, wx: pd.DataFrame, on: np.ndarray, area:
                             occupants=np.where(on, people, 0.0), pressure_kpa=pressure), filled
 
 
+def _metrics(err):
+    err = np.asarray(err, dtype=float)
+    return {'rmse_c': float(np.sqrt(np.mean(err**2))), 'bias_c': float(np.mean(err)),
+            'within_1c_share': float(np.mean(np.abs(err) <= 1.0)), 'hours': int(err.size)}
+
+
 def validate_zone(th, tc, zone: pd.DataFrame, wx: pd.DataFrame) -> dict:
+    """Output-error identification, the practice for grey-box RC models: the 5 parameters are fitted on the
+    measured indoor temperature under the measured AC electricity and, jointly, on the AC electricity that holds
+    the measured temperature. Temperature is scored at 1 h, 24 h and free run, each with its persistence."""
     from scipy.optimize import least_squares
     zone = zone.reindex(wx.index)
     valid = zone.notna().all(axis=1).to_numpy()
@@ -91,43 +100,74 @@ def validate_zone(th, tc, zone: pd.DataFrame, wx: pd.DataFrame) -> dict:
     on = (zone['ac_kw'].fillna(0.0) > AC_ON_FRACTION*ac_max).to_numpy()
     train = (wx.index < TRAIN_END) & valid
     test = (wx.index >= TRAIN_END) & valid
-    w_in_rh = 50.0
+    measured = zone['temp'].to_numpy(float)
+    target = zone['ac_kw'].to_numpy(float)
+    delivered_e = np.nan_to_num(zone['ac_kw'].interpolate(limit_direction='both').to_numpy(float))
+    escale = max(float(np.nanmean(target[train])), 1e-6)
+    t0 = float(zone['temp'].dropna().iloc[0])
 
-    def simulate(x):
-        envelope, aperture, fraction, cop = x
+    def model(x):
+        envelope, aperture, fraction, cop, capacity = x
         area = FLOOR_AREA_M2*fraction            # the share of the floor this zone conditions (fitted)
         inputs, filled = build_inputs(th, zone, wx, on, area)
         flow = (OFFICE_RP*OFFICE_RD/100*area + OFFICE_RA*area)/1000.0
         p = th.iso13790_parameters(floor_area_m2=area, envelope_w_m2k=envelope, solar_aperture_fraction=aperture,
-                                   ventilation_w_k=th.ventilation_conductance_w_k(flow), mass_class='medium')
-        points = filled['temp'].to_numpy(float)
-        w_in = np.array([th.humidity_ratio(t, w_in_rh, inputs.pressure_kpa) for t in points]).mean()
-        series = th.ideal_cooling_series(p, inputs, set_point=points, ventilation_m3_s=flow, w_in=w_in)
-        return (series['sensible_w'] + series['latent_w'])/1000.0/cop, p, inputs, flow, w_in
+                                   ventilation_w_k=th.ventilation_conductance_w_k(flow), mass_class='medium',
+                                   heat_capacity_factor=capacity)
+        w_in = th.humidity_ratio(float(np.nanmean(measured)), 50.0, inputs.pressure_kpa)
+        return p, inputs, filled, flow, w_in
 
-    target = zone['ac_kw'].to_numpy(float)
-    scale = max(float(np.nanmean(target[train])), 1e-6)
-    fit = least_squares(lambda x: (simulate(x)[0] - np.nan_to_num(target))[train]/scale,
-                        x0=np.array([1.5, 0.05, 1.0/ZONES_PER_FLOOR, 3.0]),
-                        bounds=(np.array([0.05, 0.0, 0.02, 1.5]), np.array([25.0, 0.5, 1.0, 6.0])), x_scale='jac')
-    predicted, p, inputs, flow, w_in = simulate(fit.x)
+    def outputs(x):
+        p, inputs, filled, flow, w_in = model(x)
+        theta = th.simulate_delivered(p, inputs, delivered_e*x[3], ventilation_m3_s=flow, w_in=w_in, theta_m0=t0)
+        series = th.ideal_cooling_series(p, inputs, set_point=filled['temp'].to_numpy(float), ventilation_m3_s=flow,
+                                         w_in=w_in)
+        return theta, (series['sensible_w'] + series['latent_w'])/1000.0/x[3]
+
+    def residuals(x):
+        theta, energy = outputs(x)
+        return np.concatenate([(theta - measured)[train],                       # 1 C weighs as 1
+                               (energy - np.nan_to_num(target))[train]/escale])  # the mean AC power weighs as 1
+
+    names = ('envelope_w_m2k', 'solar_aperture_fraction', 'conditioned_fraction', 'cop', 'heat_capacity_factor')
+    low = np.array([0.05, 0.0, 0.02, 1.5, 0.2])
+    high = np.array([25.0, 0.5, 1.0, 6.0, 5.0])
+    fit = least_squares(residuals, x0=np.array([1.5, 0.05, 1.0/ZONES_PER_FLOOR, 3.0, 1.0]), bounds=(low, high),
+                        x_scale='jac', max_nfev=200)
+    theta, predicted = outputs(fit.x)
     month = (wx.index.year*12 + wx.index.month).to_numpy()
     energy = {'train': tc.criteria(np.nan_to_num(target), predicted, month, train),
               'test': tc.criteria(np.nan_to_num(target), predicted, month, test)}
-    delivered = np.nan_to_num(zone['ac_kw'].interpolate(limit_direction='both').to_numpy(float))*fit.x[3]
-    theta = th.simulate_delivered(p, inputs, delivered, ventilation_m3_s=flow, w_in=w_in,
-                                  theta_m0=float(zone['temp'].dropna().iloc[0]))
-    measured = zone['temp'].to_numpy(float)
-    error = (theta - measured)[test]
-    persistence = (np.roll(measured, 1) - measured)[test & np.roll(valid, 1)]
-    names = ('envelope_w_m2k', 'solar_aperture_fraction', 'conditioned_fraction', 'cop')
-    at_bound = [n for n, v, lo, hi in zip(names, fit.x, fit.active_mask, fit.active_mask) if lo != 0]
+
+    # 1 h and 24 h ahead: the mass node restarts from the measured air temperature at the start of the horizon
+    p, inputs, filled, flow, w_in = model(fit.x)
+    net = th.Network(p)
+
+    def sensible(h):
+        return max(0.0, delivered_e[h]*fit.x[3]*1000.0 - th.latent_w(inputs, h, ventilation_m3_s=flow, w_in=w_in))
+
+    one_h, day = np.full(len(measured), np.nan), np.full(len(measured), np.nan)
+    for h in range(1, len(measured)):
+        if np.isfinite(measured[h - 1]):
+            phi_int, phi_sol = th.gains_w(p, inputs, h)
+            one_h[h], _ = net.air(float(measured[h - 1]), float(inputs.theta_e[h]), phi_int, phi_sol, -sensible(h))
+    for s0 in np.flatnonzero((wx.index.hour == 0) & np.isfinite(measured)):
+        theta_m = float(measured[s0])
+        for h in range(s0, min(s0 + 24, len(measured))):
+            phi_int, phi_sol = th.gains_w(p, inputs, h)
+            day[h], theta_m = net.air(theta_m, float(inputs.theta_e[h]), phi_int, phi_sol, -sensible(h))
+    prev_h, prev_d = np.roll(measured, 1), np.roll(measured, 24)
+    ok1 = test & np.isfinite(one_h) & np.isfinite(prev_h)
+    ok24 = test & np.isfinite(day) & np.isfinite(prev_d)
+    at_bound = [n for n, v, lo, hi in zip(names, fit.x, low, high) if np.isclose(v, lo) or np.isclose(v, hi)]
     return {'parameters': dict(zip(names, (float(v) for v in fit.x))), 'at_bound': at_bound,
             'hours': {'train': int(train.sum()), 'test': int(test.sum()), 'conditioned_share': float(on[valid].mean())},
             'energy_g14': energy,
-            'temperature_test': {'rmse_c': float(np.sqrt(np.mean(error**2))), 'bias_c': float(np.mean(error)),
-                                 'within_1c_share': float(np.mean(np.abs(error) <= 1.0)),
-                                 'persistence_rmse_c': float(np.sqrt(np.mean(persistence**2)))}}
+            'temperature_test': {
+                'one_hour': {**_metrics((one_h - measured)[ok1]), 'persistence': _metrics((prev_h - measured)[ok1])},
+                'day_ahead': {**_metrics((day - measured)[ok24]),
+                              'same_hour_yesterday': _metrics((prev_d - measured)[ok24])},
+                'free_run': _metrics((theta - measured)[test])}}
 
 
 def main(argv=None) -> int:
@@ -150,16 +190,21 @@ def main(argv=None) -> int:
             key = f'floor{floor}_zone{z}'
             results[key] = validate_zone(th, tc, zone, wx)
             r = results[key]
-            print(key, 'G14 test', r['energy_g14']['test']['passed'],
-                  {k: round(v, 1) for k, v in r['energy_g14']['test']['hourly'].items() if k != 'n'},
-                  'T rmse', round(r['temperature_test']['rmse_c'], 2), flush=True)
+            t = r['temperature_test']
+            print(key, 'monthly', {k: round(v, 1) for k, v in r['energy_g14']['test']['monthly'].items() if k != 'n'},
+                  'hourly', {k: round(v, 1) for k, v in r['energy_g14']['test']['hourly'].items() if k != 'n'},
+                  'T1h', round(t['one_hour']['rmse_c'], 2), '/', round(t['one_hour']['persistence']['rmse_c'], 2),
+                  'T24h', round(t['day_ahead']['rmse_c'], 2), '/',
+                  round(t['day_ahead']['same_hour_yesterday']['rmse_c'], 2),
+                  'free', round(t['free_run']['rmse_c'], 2), r['at_bound'], flush=True)
     passed = sum(r['energy_g14']['test']['passed'] for r in results.values())
     report = {'dataset': 'CU-BEMS (CC BY 4.0), figshare 10.6084/m9.figshare.11726517', 'weather': 'NASA POWER hourly',
               'train': '2018-07-01 to 2019-06-30', 'test': '2019-07-01 to 2019-12-31',
               'criteria': tc.CRITERIA, 'zones': results,
               'summary': {'zones': len(results), 'energy_g14_test_passed': int(passed),
-                          'median_temperature_rmse_c': float(np.median([r['temperature_test']['rmse_c']
-                                                                         for r in results.values()]))},
+                          'median_rmse_c': {h: float(np.median([r['temperature_test'][h]['rmse_c']
+                                                                for r in results.values()]))
+                                            for h in ('one_hour', 'day_ahead', 'free_run')}},
               'scope': 'validates the 5R1C method in an analogous tropical office, not the Iquitos parameters'}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT/'validation_5r1c.json').write_text(json.dumps(report, indent=2), encoding='utf-8')

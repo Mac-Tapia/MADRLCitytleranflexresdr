@@ -7,9 +7,9 @@
   "current_results_layout": "<results_root>/<run_id>/{evidence.json, experiment.json} and <results_root>/<run_id>/<E1|E1_s<seed>>/{data, figures, figures/tables, checkpoints}; resolved by uc3m/application/evaluation/results_catalog.py (argument, then MADRL_RESULTS_ROOT, then outputs/campaign); only status=verified runs count",
   "derived_outputs_convention": "<results_root>/resumen_comparativo/{estadistica/analisis_cuantitativo_completo_50_episodios, multiobjetivo, performance_comparison} (no evidence.json there, so the catalog ignores it)",
   "counts": {
-    "total": 28,
+    "total": 21,
     "adapted": 6,
-    "obsolete_old_campaign": 10,
+    "obsolete_old_campaign": 3,
     "kept_by_owner": 11,
     "retirement_guard": 1
   },
@@ -100,54 +100,22 @@
       "reason": "Kept by the owner on 2026-11-08: used by tests, gates or the thesis build."
     },
     {
-      "path": "tools/drive/analyze_drive_folder_sizes.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Measures Google Drive folder sizes of the retired run (default run id madrl_v3_20260627_164047); the new campaign is located through the results catalog, not Drive folder ids."
-    },
-    {
-      "path": "tools/drive/fetch_drive_training_artifacts.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "OAuth download of timeseries/trace/checkpoints of RUN_ID=madrl_v3_20260627_164047 into outputs/_drive_madrl/full_data."
-    },
-    {
       "path": "tools/eval/kpi_rankings.py",
       "classification": "obsolete_old_campaign",
-      "reason": "drive50 rankings from outputs/_drive_madrl/kpi_recalc_20260728 tables, a dated recalculation of the retired run."
-    },
-    {
-      "path": "tools/thesis/generate_drive_thesis_figures.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Regenerates per-job thesis figures from the retired full_data Drive mirror into outputs/madrl_v3_20260627_164047; the modular campaign writes its figures directly in <run_id>/<E*>/figures."
-    },
-    {
-      "path": "tools/thesis/patch_cap5_stats.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Dated Word patch inserting exact hypothesis statistics of the retired run madrl_v3_20260627_164047."
-    },
-    {
-      "path": "tools/thesis/patch_anchors.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Dated (2026-07-29) Word patch with values from outputs/_drive_madrl/kpi_recalc_20260728."
-    },
-    {
-      "path": "tools/thesis/patch_topsis.py",
-      "classification": "obsolete_old_campaign",
-      "reason": "Word patch citing TOPSIS results of the retired run madrl_v3_20260627_164047."
+      "reason": "drive50 rankings from outputs/_drive_madrl/kpi_recalc_20260728 tables, a dated recalculation of the retired run.",
+      "retention_blocker": "Kept 2026-11-08: tools/eval/select_best_madrl_district_building.py:80 tells the user to run it, and it is the only producer of the kpi_rankings_drive50 tables read by that tool and by tools/thesis/patch_cap5_rankings.py."
     },
     {
       "path": "tools/thesis/update_word_quantitative_50episodes.py",
       "classification": "obsolete_old_campaign",
-      "reason": "Writes the retired run's 50-episode quantitative results into the canonical Word documents."
+      "reason": "Writes the retired run's 50-episode quantitative results into the canonical Word documents.",
+      "retention_blocker": "Kept 2026-11-08: tools/thesis/run_thesis_word_pipeline.py:72 runs it as a step under --with-quantitative."
     },
     {
       "path": "tools/training/prune_artifacts.ps1",
       "classification": "obsolete_old_campaign",
-      "reason": "Prunes the legacy algorithm-first output root (default outputs/citylearn_v3_madrl_full_20260615_074011_v4)."
-    },
-    {
-      "path": "scripts/fetch_and_generate_drive_figures.ps1",
-      "classification": "obsolete_old_campaign",
-      "reason": "Downloads retired Drive artifacts (OAuth) or falls back to the retired outputs/_drive_madrl/full_data mirror to build thesis figures."
+      "reason": "Prunes the legacy algorithm-first output root (default outputs/citylearn_v3_madrl_full_20260615_074011_v4).",
+      "retention_blocker": "Kept 2026-11-08: tests/remediation/test_i13_l2_maintenance.py exercises it (PRUNE, L2-011 tests)."
     },
     {
       "path": "tools/ops/historical_inventory.py",
@@ -157,13 +125,16 @@
   ],
   "retired_since_inventory": {
     "paths": [
+      "scripts/fetch_and_generate_drive_figures.ps1",
       "tools/colab/generate_colab_notebook.py",
       "tools/colab/harden_colab_notebook_launch.py",
       "tools/colab/validate_colab_resume_from_drive.py",
+      "tools/drive/analyze_drive_folder_sizes.py",
       "tools/drive/analyze_drive_storage_estimate.py",
       "tools/drive/download_colab_missing_kpis.py",
       "tools/drive/fetch_colab_building_data_from_drive.py",
       "tools/drive/fetch_colab_kpis_from_drive.py",
+      "tools/drive/fetch_drive_training_artifacts.py",
       "tools/drive/validate_drive_kpi_downloads.py",
       "tools/eval/analyze_colab_drive_results.py",
       "tools/eval/analyze_real_drive_training_artifacts.py",
@@ -176,7 +147,11 @@
       "tools/eval/run_colab_drive_statistical_analysis.py",
       "tools/eval/run_notebook_hypothesis_pipeline.py",
       "tools/ops/diagnose_madrl_storage.py",
+      "tools/thesis/generate_drive_thesis_figures.py",
+      "tools/thesis/patch_anchors.py",
       "tools/thesis/patch_cap5_kpi_catalog_docx.py",
+      "tools/thesis/patch_cap5_stats.py",
+      "tools/thesis/patch_topsis.py",
       "tools/thesis/validate_integral_word_50ep_4madrl.py",
       "tools/training/regenerate_drive_training_figures.py",
       "tools/training/run_citylearn_v2_baseline_comparison.py",

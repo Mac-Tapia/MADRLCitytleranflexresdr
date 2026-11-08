@@ -180,17 +180,14 @@ moves:
   tools/eval/generate_madrl_performance_comparison_figures.py: tools/eval/performance_figures.py
   tools/eval/run_complete_drive_kpi_objective_analysis.py: tools/eval/objective_analysis.py
   tools/figures/generate_citylearn_v3_building_control_figure.py: tools/figures/building_control.py
-  tools/thesis/patch_integral_word_eval_v2_anchors_20260729.py: tools/thesis/patch_anchors.py
   tools/thesis/patch_cap2_control_edificio_actor_critic_figure_docx.py: tools/thesis/patch_cap2_control.py
   tools/thesis/patch_cap5_district_building_kpi_rankings_docx.py: tools/thesis/patch_cap5_rankings.py
   tools/thesis/patch_cap1_cap3_friedman_protocol_docx.py: tools/thesis/patch_friedman.py
   tools/thesis/patch_cap2_decpomdp_district_building_docx.py: tools/thesis/patch_cap2_decpomdp.py
   tools/thesis/patch_cap3_multiobjective_hierarchy_docx.py: tools/thesis/patch_cap3_hierarchy.py
-  tools/thesis/patch_cap5_hipotesis_stats_exactas_docx.py: tools/thesis/patch_cap5_stats.py
   tools/thesis/patch_citylearn_assets_integration_docx.py: tools/thesis/patch_assets.py
   tools/thesis/patch_h0g_remove_exploratoria_verdict_docx.py: tools/thesis/patch_h0g_verdict.py
   tools/thesis/patch_impact_criteria_control_recursos_docx.py: tools/thesis/patch_criteria.py
-  tools/thesis/patch_topsis_medida_formal_cap5_6_7_docx.py: tools/thesis/patch_topsis.py
   tools/training/prune_citylearn_v3_training_artifacts.ps1: tools/training/prune_artifacts.ps1
   configs/experiments/fresh_iquitos_v1.yaml: configs/experiments/iquitos.yaml
   configs/algorithms/fresh_native.yaml: configs/algorithms/native.yaml

@@ -82,10 +82,11 @@ def test_hygiene_manifest_records_recoverable_removals() -> None:
     tracked = set(_tracked_paths())
     for entry in manifest["entries"]:
         assert entry["reason"]
-        if entry["action"] != "removed":
+        # Untracked local data was never in Git: there is nothing to recover from a commit.
+        if entry["action"] != "removed" or entry.get("kind") == "untracked_data":
             continue
         assert re.fullmatch(r"[0-9a-f]{40}", entry["recover_from_commit"])
-        removed = list(entry.get("git_blobs", {})) or [entry["path"]]
+        removed = list(entry.get("git_blobs", {})) or entry.get("paths") or [entry["path"]]
         for path in removed:
             prefix = path.rstrip("/")
             assert not any(t == prefix or t.startswith(prefix + "/") for t in tracked)

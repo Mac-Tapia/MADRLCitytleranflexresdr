@@ -114,8 +114,6 @@ Reglas duras: editar **solo** estos 2 archivos; backups temporales van a `output
 
 
 
-- `generate_drive_thesis_figures.py` → figuras en `outputs/.../figuras_drive_reales/`
-
 - `build_multiobjective_thesis_docx.py` / `build_multiobjective_thesis_pdf.py` → anexo en `outputs/.../multiobjetivo/`
 
 - `build_defensa_pdf_pillow.py` → PDF defensa en `outputs/defensa_pdf/` (sin reportlab)

@@ -173,6 +173,47 @@
         "data/campaigns/iquitos_v6_trial7/ (except its 6 JSON)"
       ],
       "reason": "Owner decision to free storage (about 4.7 GB): superseded trial builds and used validation inputs. Not recoverable from Git; CU-BEMS is re-downloadable from figshare 10.6084/m9.figshare.11726517 and NASA POWER."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "untracked_data",
+      "paths": [
+        ".superpowers/sdd/remediacion_integrada/native_* (49 test scratch runs, 29.3 GB)",
+        "outputs/dataset_cache/ (retired cache R-06, 4.2 GB)",
+        "build/, .pytest_cache/, .ruff_cache/, __pycache__/ outside the venv and submodules",
+        ".git/lfs/objects (221 local copies, 3.1 GB)",
+        ".git/cursor/ (editor index, 0.5 GB)",
+        "loose Git objects already packed and tmp_obj_* files from July and August 2026"
+      ],
+      "reason": "Owner request to free storage. All paths were gitignored or local Git storage. The native_* runs were cited by no record and are created anew by tests/fresh_training/conftest.py; caches and build files regenerate. git lfs prune --verify-remote confirmed the 212 referenced LFS objects on the remote; the other 9 were referenced by no commit and are not recoverable. No tracked file, branch or stash was removed."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "files",
+      "paths": [
+        "scripts/fetch_and_generate_drive_figures.ps1",
+        "tools/drive/analyze_drive_folder_sizes.py",
+        "tools/drive/fetch_drive_training_artifacts.py",
+        "tools/thesis/generate_drive_thesis_figures.py",
+        "tools/thesis/patch_anchors.py",
+        "tools/thesis/patch_cap5_stats.py",
+        "tools/thesis/patch_topsis.py"
+      ],
+      "recover_from_commit": "bd8d599034bf03c0cf2b7dbcda852fe792590674",
+      "reason": "Tools of the retired campaign (Drive layout of 2026), classified obsolete_old_campaign, with no live importer or test dependency (module 5, task 5.2). tools/eval/kpi_rankings.py, tools/thesis/update_word_quantitative_50episodes.py and tools/training/prune_artifacts.ps1 stay because of a live reference, caller or test; see retention_blocker in data/audits/evaluation_tools_inventory.json."
+    },
+    {
+      "date": "2026-11-08",
+      "action": "removed",
+      "requirement": "FR-012.5",
+      "kind": "directory",
+      "path": "agent-skills/",
+      "recover_from_commit": "034372dab3783808d91d9f1be2e5b0d0a20847f2",
+      "reason": "Legacy skills removed in ebb210a9 and retired by the owner on 2026-11-08 (FR-007.6): 4 inventoried skills with no verifiable license, plus madrl-sustento-doc-capa v3. Superseded by tools/skills/."
     }
   ],
   "branch_renames": {

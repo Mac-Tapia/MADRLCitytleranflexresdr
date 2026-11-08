@@ -14,7 +14,6 @@ Redacción DOCX de tesis: carpeta única **`tools/thesis/`**
 | Dataset CityLearn Iquitos | `tools/dataset/` |
 | KPIs / stats de resultados | `tools/eval/` |
 | Colab notebook generate/patch | `tools/colab/` |
-| Fetch / Drive operativo | `tools/drive/` |
 | Helpers entrenamiento / baselines | `tools/training/` (incluye `prune_artifacts.ps1`) |
 | Integridad workflow / storage | `tools/ops/` |
 | Figuras arquitectura (no Word) | `tools/figures/` |
@@ -37,7 +36,6 @@ Los únicos `.py` de tesis permitidos aquí son **shims** (<1 KB) que delegan en
 | Archivo | Rol |
 |---------|-----|
 | `setup_google_drive_oauth.ps1` | OAuth Google Drive |
-| `fetch_and_generate_drive_figures.ps1` | Fetch + `tools/thesis/generate_drive_thesis_figures.py` |
 
 ### CLIs Python operativos
 

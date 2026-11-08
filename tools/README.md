@@ -13,7 +13,6 @@ de reorganización está en
 | `thesis/` | 58 | Redacción DOCX / Cap. 5–6 / figuras de documento / PDF defensa |
 | `eval/` | 21 | KPIs Drive, análisis estadístico, auditorías inferenciales de resultados |
 | `colab/` | 2 | Generación/validación del notebook tutorial Colab |
-| `drive/` | 7 | Fetch/descarga/validación de artefactos Google Drive |
 | `training/` | 12 | Helpers de entrenamiento, layout, completion, baselines, tests (+ `prune_*.ps1`) |
 | `ops/` | 14 | Integridad de workflow, auditoría y mantenimiento local |
 | `figures/` | 6 | Diagramas arquitectura / mermaid (no tesis Word) |
@@ -41,14 +40,6 @@ Detalle: `tools/dataset/README.md`.
 ```text
 python -B tools/ops/verify_workflow_integrity.py --manifest-out data/dataset_audit/workflow_integrity_manifest.json
 ```
-
-## Drive / figuras tesis
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts\fetch_and_generate_drive_figures.ps1
-```
-
-(fetch canónico: `tools/drive/fetch_drive_training_artifacts.py`)
 
 ## Tesis
 

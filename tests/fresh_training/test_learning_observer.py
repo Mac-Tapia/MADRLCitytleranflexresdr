@@ -197,7 +197,7 @@ def test_real_environment_reward_reads_the_derived_catalog(monkeypatch, tmp_path
     assert report['supervision']['steps'] == 3
 
 
-REWARD_TERMS = ('flex', 'carbon', 'cost', 'ev', 'bess_cycle', 'total')
+REWARD_TERMS = ('flex', 'carbon', 'cost', 'ev', 'bess_cycle', 'comfort', 'total')   # comfort: D-V6-53, P-V6-25
 
 
 def test_supervision_decomposes_the_reward_by_building_and_reconciles_it(monkeypatch):

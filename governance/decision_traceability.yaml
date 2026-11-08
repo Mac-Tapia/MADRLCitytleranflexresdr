@@ -71,23 +71,20 @@ decisions:
   D-M3-6:
     code: [configs/algorithms/native.yaml]   # interface part replaced by D-M3-7 once that is implemented
   D-M3-7:
-    no_code:
-      kind: pending
-      reason: "common level grid for the 4 MADRL not implemented; native.yaml still declares native interfaces (D-M3-6) and only names D-M3-7 as a future recomputation"
+    code: [CityLearn/citylearn/v3/action_grid.py, configs/algorithms/native.yaml]
   D-M3-8:
     code: [uc3m/application/training/fresh_campaign.py, configs/algorithms/native.yaml]
   D-M3-9:
-    no_code:
-      kind: pending
-      reason: "owner confirmed D-M3-7 with P-M3-1 and P-M3-2 (2026-11-08); the common 11-level grid is not implemented yet"
+    code: [CityLearn/citylearn/v3/action_grid.py, CityLearn/scripts/masac_runtime_optimizations.py, CityLearn/scripts/citylearn_v3_training_common.py]
+  D-M3-10:
+    code: [CityLearn/citylearn/v3/action_grid.py, configs/algorithms/native.yaml]
   P-M3-1:
     no_code:
-      kind: pending
-      reason: "11-level grid (-1 to +1 every 0.2) not in config or code; discrete backends still use their own action_bins"
+      kind: superseded
+      reason: "the 11 levels did not fit MASAC on an 80 GB GPU; the owner set 5 levels"
+      superseded_by: D-M3-10
   P-M3-2:
-    no_code:
-      kind: pending
-      reason: "multi-discrete action head per equipment for MASAC and MAAC not implemented; they still act in axis mode"
+    code: [CityLearn/citylearn/v3/action_grid.py]
   FR-015.1:
     no_code:
       kind: pending
@@ -271,6 +268,10 @@ decisions:
       superseded_by: D-V6-53
   D-V6-52:
     code: [CityLearn/citylearn/v3/thermal.py, CityLearn/citylearn/v3/thermal_calibration.py]
+  D-V6-54:
+    code: [tools/dataset/build_v6_parts.py]
+  D-V6-55:
+    code: [tools/dataset/build_v6_parts.py]
   D-V6-53:
     code: [CityLearn/citylearn/v3/thermal_calibration.py, tools/dataset/distill_building_loads.py, tools/dataset/build_fresh_campaign_dataset.py, uc3m/application/evaluation/tuple_contract.py]
   D-V6-50:

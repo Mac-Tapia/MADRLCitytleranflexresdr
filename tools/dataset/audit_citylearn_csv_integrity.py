@@ -42,6 +42,8 @@ BUILDING_COLUMNS = [
     "heating_demand",
     "solar_generation",
 ]
+# SPEC-016 D-V6-53: optional EnergySimulation columns of CityLearn written for the 5R1C buildings.
+BUILDING_OPTIONAL_COLUMNS = ["occupant_count", "indoor_dry_bulb_temperature_cooling_set_point"]
 CHARGER_COLUMNS = [
     "electric_vehicle_charger_state",
     "electric_vehicle_id",
@@ -129,7 +131,8 @@ def _base_checks(path: Path, df: pd.DataFrame, expected_columns: list[str] | int
     if len(df) != EXPECTED_ROWS:
         issues.append(f"{_rel(path)} tiene {len(df)} filas; esperado {EXPECTED_ROWS}")
     columns = df.columns.tolist()
-    optional = CHARGER_OPTIONAL_COLUMNS if expected_columns is CHARGER_COLUMNS else []
+    optional = (CHARGER_OPTIONAL_COLUMNS if expected_columns is CHARGER_COLUMNS
+                else BUILDING_OPTIONAL_COLUMNS if expected_columns is BUILDING_COLUMNS else [])
     if isinstance(expected_columns, list) and not (
             columns[:len(expected_columns)] == expected_columns
             and set(columns[len(expected_columns):]) <= set(optional)):

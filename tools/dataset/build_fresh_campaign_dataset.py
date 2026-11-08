@@ -690,9 +690,14 @@ def make_generator(weather_frames, measured, targets, tariffs, fx, raw_dir: Path
             def _rest_kw(b):
                 parts = as_billed_load(out, b, schema, t_out)
                 return parts['total'] - parts['non_shiftable']
+
+            def _cooling_cop(b):   # D-V6-55: hourly COP of the building's cooling device
+                attributes = schema['buildings'][f'Building_{b}']['cooling_device']['attributes']
+                return dl.citylearn_cooling_cop(t_out, attributes['efficiency'],
+                                                attributes['target_cooling_temperature'])
             design['v6_redistilled'] = v6.redistill_peaks(out, buildings=request.buildings, targets=targets,
                                                           threshold=threshold, peak_hours=set(PEAK_BLOCK_HOURS),
-                                                          other_kw=_rest_kw,
+                                                          other_kw=_rest_kw, cooling_cop=_cooling_cop,
                                                           years=hourly_index(YEARS, TZ).year.to_numpy())
             _write_json(audit_dir/'peak_redistillation.json', design['v6_redistilled'])
             # D-V6-53: 5R1C calibration of every building and its indoor temperature on the final loads

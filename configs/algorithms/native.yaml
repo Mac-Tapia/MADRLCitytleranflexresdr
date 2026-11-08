@@ -21,15 +21,16 @@ hyperparameter_grid:
 algorithms:
   HAPPO:
     mapping: {learning_rate: [--actor-lr, --critic-lr], hidden_dimension: [--hidden-size], gamma: [--gamma]}
-    fixed_flags: {}
-    fixed: {}
+    # SPEC-015 D-M3-7/D-M3-10: the continuous output is rounded to the common grid of 5 levels per equipment.
+    fixed_flags: {action_grid_levels: --action-grid-levels}
+    fixed: {action_grid_levels: 5}
     optimizer_owners: {per_agent: ['actor_agent{i}'], shared: [critic]}
     # On-policy rollout of one 8760-step episode: ~1.2 GiB float32 (obs + state).
     # Author update of external/HARL happo.yaml kept (ppo_epoch 5, critic_epoch 5, one
     # minibatch); bound by tests/fresh_training/test_author_capacity.py.
     runtime_requirements: {min_ram_gib: 8, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
     declared_limitations:
-      - "action interfaces differ by backend (D03 confound, SPEC-015 D-M3-6): HAPPO and MATD3 act with one continuous output per equipment, MASAC and MAAC choose discrete per-axis levels of the same equipment; the thesis compares each algorithm with its native interface and declares this difference as a confound."
+      - "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head."
       - "one parallel environment instead of the author's 20 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; one 8760-step episode gives 8760 steps per update, more than the author's 20 x 200 = 4000."
       - "continuous actions are padded to the largest equipment count (D03, SPEC-015 D-M3-6): an output with no equipment in its building is inert, cut before the simulator; the equipment of every output is the building's action_names."
   MASAC:
@@ -41,9 +42,10 @@ algorithms:
     # holds every episode of the longest stage (confirm, 50) and the launcher
     # keeps min(50, run episodes), a lossless bound. qmix/hyper widths follow the
     # author ratio to the grid rnn_hidden_dim (qmix = rnn/2, hyper = rnn).
+    # D-M3-9/D-M3-10: one categorical of 5 levels per equipment (multi-discrete head, padded branches masked).
     fixed_flags: {buffer_size: --buffer-size, critic_batch_size: --critic-batch-size,
-                  critic_train_steps: --critic-train-steps}
-    fixed: {buffer_size: 50, critic_batch_size: 32, critic_train_steps: 1}
+                  critic_train_steps: --critic-train-steps, discrete_action_mode: --discrete-action-mode}
+    fixed: {buffer_size: 50, critic_batch_size: 32, critic_train_steps: 1, discrete_action_mode: grid}
     optimizer_owners: {per_agent: [], shared: [masac_policy, masac_critic_q1, masac_critic_q2, masac_alpha]}
     # SPEC-015: requirement = max(floor, ceil(1.10 x estimate)) on the ACTIVE dataset, bound by
     # tests/fresh_training/test_runtime_requirements.py. iquitos_v6_trial7 with class-aggregated charger
@@ -59,7 +61,7 @@ algorithms:
     runtime_requirements: {min_ram_gib: 25, min_vram_gib_by_rnn_hidden_dim: {128: 53},
                            applies_from_episode_time_steps: 1000}
     declared_limitations:
-      - "action interfaces differ by backend (D03 confound, SPEC-015 D-M3-6): HAPPO and MATD3 act with one continuous output per equipment, MASAC and MAAC choose discrete per-axis levels of the same equipment; the thesis compares each algorithm with its native interface and declares this difference as a confound."
+      - "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head."
       - "one QMIX critic update per episode (author critic_train_steps=1) over a 32-episode batch; the update budget per environment step differs from the other backends (declared confound)."
       - "SPEC-015 D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128 (53 GiB of VRAM, an 80 GB GPU of 74.5 GiB); the 256 candidate of the shared grid needs 84 GiB and is not trainable on an 80 GB GPU, so MASAC's search space is narrower than the other three backends' (declared). Its 87 axis actions set the size; recomputed after the common action grid of D-M3-7."
   MATD3:
@@ -73,12 +75,12 @@ algorithms:
     # which tests/fresh_training/test_runtime_requirements.py checks. The entrypoint sets
     # MATD3_MAX_REPLAY_RAM_GIB to the measured available RAM, so the launcher refuses
     # instead of shrinking.
-    fixed_flags: {batch_size: --batch-size, buffer_size: --buffer-size}
-    fixed: {batch_size: 256, buffer_size: 744600}
+    fixed_flags: {batch_size: --batch-size, buffer_size: --buffer-size, action_grid_levels: --action-grid-levels}
+    fixed: {batch_size: 256, buffer_size: 744600, action_grid_levels: 5}
     optimizer_owners: {per_agent: ['policy_{i}/actor', 'policy_{i}/critic'], shared: []}
     runtime_requirements: {min_ram_gib: 40, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
     declared_limitations:
-      - "action interfaces differ by backend (D03 confound, SPEC-015 D-M3-6): HAPPO and MATD3 act with one continuous output per equipment, MASAC and MAAC choose discrete per-axis levels of the same equipment; the thesis compares each algorithm with its native interface and declares this difference as a confound."
+      - "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head."
       - "continuous actions are padded to the largest equipment count (D03, SPEC-015 D-M3-6): an output with no equipment in its building is inert, cut before the simulator; the equipment of every output is the building's action_names."
   MAAC:
     mapping: {learning_rate: [--pi-lr, --q-lr], hidden_dimension: [--hidden-size], gamma: [--gamma]}
@@ -86,15 +88,18 @@ algorithms:
     # 1e6 transitions, batch_size 1024, 4 updates every 100 steps. The launcher keeps
     # min(1e6, run_steps + one episode), a lossless bound: 50 x 8760 + 8760 = 446760 holds the
     # whole run. Before 2026-11-06 it was 43800 transitions, batch 256 and 1 update per step.
+    # D-M3-9/D-M3-10: one categorical of 5 levels per real equipment (MultiDiscrete action space).
     fixed_flags: {batch_size: --batch-size, buffer_length: --buffer-length,
-                  steps_per_update: --steps-per-update, num_updates: --num-updates}
-    fixed: {batch_size: 1024, buffer_length: 1000000, steps_per_update: 100, num_updates: 4}
+                  steps_per_update: --steps-per-update, num_updates: --num-updates,
+                  discrete_action_mode: --discrete-action-mode}
+    fixed: {batch_size: 1024, buffer_length: 1000000, steps_per_update: 100, num_updates: 4,
+            discrete_action_mode: grid}
     optimizer_owners: {per_agent: ['maac_agent{i}_policy'], shared: [maac_critic]}
     # Replay float32 upper bound on the active dataset, bound by
     # tests/fresh_training/test_author_capacity.py: 17 x 446760 x (2 x obs + actions + 1) x 4 B
     # + done bytes, about 2.3 GiB on iquitos_v5, inside the 8 GiB reservation.
     runtime_requirements: {min_ram_gib: 8, min_vram_gib: 4, applies_from_episode_time_steps: 1000}
     declared_limitations:
-      - "action interfaces differ by backend (D03 confound, SPEC-015 D-M3-6): HAPPO and MATD3 act with one continuous output per equipment, MASAC and MAAC choose discrete per-axis levels of the same equipment; the thesis compares each algorithm with its native interface and declares this difference as a confound."
+      - "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head."
       - "one parallel environment instead of the author's 12 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; the schedule of 4 updates per 100 environment steps is the author's."
       - "4 updates per 100 environment steps differ from the update budget of the other backends (declared confound, as MASAC)."

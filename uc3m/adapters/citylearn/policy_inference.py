@@ -422,6 +422,8 @@ class NativeFrozenPolicy(FrozenController):
                       normalize_observations=self.args.normalize_observations)
         if self.discrete:
             kwargs.update(action_bins=self.args.action_bins, discrete_action_mode=self.args.discrete_action_mode)
+        else:   # SPEC-015 D-M3-10: the same rounding to the common grid the policy was trained with
+            kwargs.update(action_grid=int(getattr(self.args, 'action_grid_levels', 0) or 0))
         return kwargs
 
     def build_env(self, common, schema_path, scenario, seed, episode_time_steps):
@@ -599,6 +601,8 @@ class MasacFrozenPolicy(NativeFrozenPolicy):
             args.alg, args.map, args.seed = 'qmix', f'citylearn_v3_{self.scenario}', self.args.seed
             for key in ('n_actions', 'n_agents', 'state_shape', 'obs_shape'):
                 setattr(args, key, env_info[key])
+            if env_info.get('action_branches'):   # D-M3-9: the multi-discrete head of the trained policy
+                args.action_branches = tuple(env_info['action_branches'])
             for key, value in hyper.items():
                 if hasattr(args, key) and not isinstance(value, (dict, list)):
                     setattr(args, key, value)
@@ -646,8 +650,14 @@ class MasacFrozenPolicy(NativeFrozenPolicy):
             for index in range(self.backend_args.n_agents):
                 # D03: the same per-building mask the agent was trained with.
                 available = self.env.get_avail_agent_actions(index)
-                action = int(self.agents_backend.choose_action(observations[index], self._last_action[index], index,
-                                                               available, 0, None, True))
+                choice = self.agents_backend.choose_action(observations[index], self._last_action[index], index,
+                                                           available, 0, None, True)
+                if getattr(self.backend_args, 'action_branches', None):   # D-M3-9: one level per branch
+                    levels = np.asarray(choice, dtype=int).reshape(-1)
+                    self._last_action[index] = self.env.adapter.action_grid.onehot(index, levels)
+                    actions.append(levels)
+                    continue
+                action = int(choice)
                 self._last_action[index] = np.eye(n_actions)[action]
                 actions.append(action)
             return np.asarray(actions)
@@ -656,7 +666,10 @@ class MasacFrozenPolicy(NativeFrozenPolicy):
         return actions
 
     def step(self, actions):
-        _, terminated, _ = self.env.step([int(a) for a in actions])
+        if getattr(self.backend_args, 'action_branches', None):
+            _, terminated, _ = self.env.step([np.asarray(a, dtype=int) for a in actions])
+        else:
+            _, terminated, _ = self.env.step([int(a) for a in actions])
         return self.env.get_obs(), bool(terminated)
 
     def recurrent_state_is_initial(self):
@@ -811,7 +824,11 @@ class MaacFrozenPolicy(NativeFrozenPolicy):
         agent_actions = self._no_grad_act(compute)
         # D03: agents have action spaces of their own size; the history records each agent's row of
         # the shared table (the equipment it moved), which is uniform across agents.
-        self._record(obs[0], np.asarray([self.env.global_discrete_index(i, a[0]) for i, a in enumerate(agent_actions)]))
+        if self.env.adapter.discrete_action_mode == 'grid':   # D-M3-9: level of every equipment of every agent
+            self._record(obs[0], [self.env.grid_indices(i, a[0]).tolist() for i, a in enumerate(agent_actions)])
+        else:
+            self._record(obs[0], np.asarray([self.env.global_discrete_index(i, a[0])
+                                             for i, a in enumerate(agent_actions)]))
         return [[a[i] for a in agent_actions] for i in range(self.env.num_envs)]
 
     def step(self, actions):

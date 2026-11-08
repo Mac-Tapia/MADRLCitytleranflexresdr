@@ -88,9 +88,15 @@ def write_indoor_temperature(dataset_dir: Path, schema: dict, weather: pd.DataFr
                                       ventilation_m3_s=model.ventilation_m3_s, w_in=model.w_in,
                                       theta_m0=model.set_point)
         frame['indoor_dry_bulb_temperature'] = theta
-        frame.to_csv(path, index=False, float_format='%.6f')
         occupied = inputs.occupants > 0
+        # D-V6-54 (owner, 2026-11-08): comfort no worse than today. The hourly set point the reward and the
+        # CityLearn comfort KPIs read is max(design set point, temperature as billed - band), so the comfort limit
+        # (set point + band) is max(24 + band, the building's temperature with its billed cooling).
+        frame['indoor_dry_bulb_temperature_cooling_set_point'] = np.where(
+            occupied, np.maximum(model.set_point, theta - band_c), model.set_point)
+        frame.to_csv(path, index=False, float_format='%.6f')
         report[int(building)] = {
+            'comfort_reference': 'max(24 C + band, temperature as billed) (D-V6-54)',
             'occupied_hours': int(occupied.sum()),
             'within_band_share': float(np.mean(theta[occupied] <= model.set_point + band_c)) if occupied.any() else 1.0,
             'max_occupied_c': float(theta[occupied].max()) if occupied.any() else None}
@@ -147,13 +153,18 @@ def bess_attributes(size) -> dict:
             'capacity_loss_coefficient': 1e-5}
 
 
-def redistill_peaks(dataset_dir: Path, *, buildings, targets, threshold: float, peak_hours, other_kw, years) -> list:
+def redistill_peaks(dataset_dir: Path, *, buildings, targets, threshold: float, peak_hours, other_kw, years,
+                    cooling_cop=None) -> list:
     """FR-016.8 and D-V6-47: reshape the base load of every measured month outside +/-threshold of its bill peak.
 
     implied peak = E / (load factor x hours); the target is the nearest threshold edge. Only the base load
     (non_shiftable_load) changes, mean-preserving inside each bill block, so the bills stay reproduced. Synthetic
     or flagged months and months without a load factor are left as they are. ``other_kw(b)`` gives the hourly
     electricity of the rest of the building (cooling, DHW) and ``years`` the year of every row.
+
+    D-V6-55 (owner, 2026-11-08): when the base alone cannot reach the target and ``cooling_cop(b)`` gives the hourly
+    COP, base and cooling electricity are reshaped together inside each block (same factor per hour on both), so
+    the block energy and the bill stay exact; the cooling of those months changes shape and is declared.
     """
     import numpy as np
 
@@ -165,6 +176,8 @@ def redistill_peaks(dataset_dir: Path, *, buildings, targets, threshold: float, 
         frame = pd.read_csv(path)
         base = frame['non_shiftable_load'].to_numpy(dtype=float).copy()
         other = np.asarray(other_kw(building), dtype=float)[:len(base)]
+        cop = None if cooling_cop is None else np.asarray(cooling_cop(building), dtype=float)[:len(base)]
+        cooling = None if cop is None else frame['cooling_demand'].to_numpy(dtype=float)/cop
         month, hour = frame['month'].to_numpy(dtype=int), frame['hour'].to_numpy(dtype=int)
         changed = False
         for t in targets:
@@ -179,14 +192,26 @@ def redistill_peaks(dataset_dir: Path, *, buildings, targets, threshold: float, 
             if ratio <= 1.0 + threshold + 1e-9:      # D-V6-48: only peaks above the bill's are corrected
                 continue
             target = implied*(1.0 + threshold)*(1.0 - 1e-3)   # just inside the edge (6-decimal CSV rounding)
-            new, status = pc.reshape_month(base[mask], other[mask], np.isin(hour[mask], list(peak_hours)),
-                                           target_peak_kw=target)
+            block = np.isin(hour[mask], list(peak_hours))
+            new, status = pc.reshape_month(base[mask], other[mask], block, target_peak_kw=target)
             base[mask] = new
-            changed |= status == 'resolved'
+            if status == 'unresolved' and cooling is not None:
+                joint = base[mask] + cooling[mask]
+                joint_new, status = pc.reshape_month(joint, other[mask] - cooling[mask], block, target_peak_kw=target)
+                if status == 'resolved':
+                    factor = np.divide(joint_new, joint, out=np.ones_like(joint), where=joint > 0)
+                    previous = cooling[mask].copy()
+                    base[mask] = base[mask]*factor
+                    cooling[mask] = previous*factor
+                    other[mask] = other[mask] + cooling[mask] - previous
+                    status = 'resolved_with_cooling'
+            changed |= status in ('resolved', 'resolved_with_cooling')
             rows.append({'building_id': int(building), 'year': t.year, 'month': t.month, 'ratio_before': ratio,
                          'target_peak_kw': target, 'status': status,
                          'ratio_after': float((base[mask] + other[mask]).max())/implied})
         if changed:
             frame['non_shiftable_load'] = base
+            if cooling is not None:
+                frame['cooling_demand'] = cooling*cop
             frame.to_csv(path, index=False, float_format='%.6f')
     return rows

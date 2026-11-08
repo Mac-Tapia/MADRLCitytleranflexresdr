@@ -1,0 +1,13 @@
+"""Experiment tracker port (SPEC-003 FR-003.1): what a run reports, independent of where it is stored."""
+from pathlib import Path
+from typing import Mapping, Optional, Protocol, runtime_checkable
+
+
+@runtime_checkable
+class ExperimentTrackerPort(Protocol):
+    """Parameters, step metrics and artifacts of one run; adapters decide the storage."""
+
+    def start_run(self, run_id: str, parameters: Mapping[str, object]) -> None: ...
+    def log_metrics(self, metrics: Mapping[str, float], step: Optional[int] = None) -> None: ...
+    def log_artifact(self, path: Path) -> None: ...
+    def end_run(self, status: str) -> None: ...

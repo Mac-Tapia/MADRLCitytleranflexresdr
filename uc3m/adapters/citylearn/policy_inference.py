@@ -85,6 +85,8 @@ class FrozenRun:
     contract: Mapping[str, Any] = field(default_factory=dict)
     # citylearn.v3.objectives.evaluate_objectives of the run's own environment (Layer B KPIs).
     citylearn_v3_report: Mapping[str, Any] = field(default_factory=dict)
+    # SPEC-002 FR-002.5: the reward of every evaluated step split by term, reconciled with the returned reward.
+    reward_terms: Mapping[str, Any] = field(default_factory=dict)
 
 
 # --- shared environment helpers -------------------------------------------------------------------
@@ -262,6 +264,34 @@ class NoStorageReferencePolicy(RbcPolicy):
         return actions
 
 
+class _RewardTermLedger:
+    """FR-002.5: sums the reward terms of each evaluated step and checks they add up to the reward returned."""
+    TOLERANCE = 1e-12
+
+    def __init__(self, core):
+        self.core = core
+        self.steps = 0
+        self.totals: Dict[str, float] = {}
+        self.max_error = 0.0
+
+    def record(self) -> None:
+        from uc3m.reward.term_telemetry import decompose_citylearn_v3_breakdown
+        reward = self.core.reward_function
+        rows = decompose_citylearn_v3_breakdown(reward._last_component_breakdown, profile=reward.profile)
+        returned = self.core.rewards[-1]
+        for row, value in zip(rows, returned):
+            self.max_error = max(self.max_error, abs(row.total - float(value)))
+            for name, part in {**row.axis_contributions, **row.service_terms}.items():
+                self.totals[name] = self.totals.get(name, 0.0) + float(part)
+        self.steps += 1
+        if self.max_error > self.TOLERANCE:
+            raise RuntimeError(f'reward terms do not reconcile: error {self.max_error} at step {self.steps}')
+
+    def summary(self) -> Dict[str, Any]:
+        return {'steps': self.steps, 'totals': dict(self.totals), 'max_reconciliation_error': self.max_error,
+                'tolerance': self.TOLERANCE}
+
+
 def run_frozen_episode(split_dir: Path, policy, campaign_root: Path, *, steps: Optional[int] = None,
                        seed: Optional[int] = None, scenario: Optional[str] = None,
                        manifest_path: Optional[Path] = None, scenario_catalog: Optional[Path] = None) -> FrozenRun:
@@ -308,10 +338,12 @@ def run_frozen_episode(split_dir: Path, policy, campaign_root: Path, *, steps: O
         initial = sum(_storage_kwh(b) for b in core.buildings)
         before = policy.parameter_hash()
         grad_seen, taken = False, 0
+        terms = _RewardTermLedger(core)
         while taken < horizon:
             actions = policy.act(observations, deterministic=True)
             grad_seen = grad_seen or bool(getattr(policy, 'grad_enabled_during_act', False))
             observations, done = policy.step(actions)
+            terms.record()
             taken += 1
             if done:
                 break
@@ -327,7 +359,7 @@ def run_frozen_episode(split_dir: Path, policy, campaign_root: Path, *, steps: O
                 'grad_enabled_during_act': grad_seen, 'torch_grad_enabled_after': torch.is_grad_enabled(),
                 'trace_record_interval': 0}
     return FrozenRun(policy.name, split_dir.name, trace, taken, updates, connection, initial, final, throughput,
-                     contract, citylearn_v3_report)
+                     contract, citylearn_v3_report, terms.summary())
 
 
 # --- native policies ------------------------------------------------------------------------------

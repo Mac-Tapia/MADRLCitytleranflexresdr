@@ -201,6 +201,16 @@ def _rebuild_actions(algorithm, policy, history):
 
 
 @pytest.mark.parametrize('algorithm', NATIVE)
+def test_evaluation_splits_the_reward_by_term_and_reconciles_it(algorithm):
+    # SPEC-002 FR-002.5: every evaluated step adds up to the reward returned, within 1e-12.
+    run, _ = native_run(algorithm)
+    terms = run.reward_terms
+    assert terms['steps'] == NATIVE_STEPS and terms['max_reconciliation_error'] <= terms['tolerance'] == 1e-12
+    assert set(terms['totals']) == {'flex', 'carbon', 'cost', 'ev', 'bess_cycle', 'comfort'}
+    assert any(value != 0.0 for value in terms['totals'].values())
+
+
+@pytest.mark.parametrize('algorithm', NATIVE)
 def test_loaded_actions_match_saved_policy(algorithm):
     run, history = native_run(algorithm)
     policy = native_policy(algorithm)

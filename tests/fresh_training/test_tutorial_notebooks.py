@@ -9,6 +9,8 @@ by merely running all cells.
 import json
 import re
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import Mock
 
 import nbformat
 import pytest
@@ -150,3 +152,63 @@ def test_tutorial_keeps_the_setup_cell_reused_by_the_colab_companion():
     # tools/colab/build_modular_colab_notebook.py copies this cell literally.
     sources = _code(_load(NOTEBOOKS[2]))
     assert sum('# 1.3 Instalar dependencias' in s for s in sources) == 1
+
+
+def test_tutorial_launch_uses_uploaded_bundle_and_campaign_sync():
+    sources = _code(_load(NOTEBOOKS[2]))
+    checkout = next(s for s in sources if '1.2  Clonar' in s)
+    assert '/content/colab_modular_overlay.zip' in checkout
+    assert 'files.upload()' not in checkout
+    assert checkout.index('verify_remote_revision()\n') < checkout.index('cs.apply_overlay(')
+    stage = next(s for s in sources if 'EXECUTE_STAGE = False' in s)
+    assert "RUN_STAGE = 'hpo'" in stage
+    assert '--owner-authorized' in stage and 'run_stage_with_sync' in stage
+    assert 'copytree' not in stage
+    assert any('drive_root(' in s and "'--restore'" in s for s in sources)
+
+
+def test_tutorial_first_drive_restore_creates_the_campaign_folder(tmp_path):
+    from tools.colab.colab_session import drive_root
+    from uc3m.application.training.drive_sync import restore_finished_attempts
+
+    campaign_id = 'fresh_test'
+    alias = 'trial_test'
+    config = {'campaign_id': campaign_id, 'storage_alias': alias,
+              'dataset_root': 'dataset', 'algorithms': ['HAPPO'], 'stages': {'hpo': {}}}
+    config_path = tmp_path / CAMPAIGN_CONFIG
+    config_path.parent.mkdir(parents=True)
+    config_path.write_text(yaml.safe_dump(config), encoding='utf-8')
+    dataset = tmp_path / 'dataset'
+    dataset.mkdir()
+    (dataset / 'dataset_acceptance.json').write_text(
+        json.dumps({'dataset_verified': True, 'dataset_hash': 'expected'}), encoding='utf-8',
+    )
+    client = Mock()
+    client.project_python.return_value = 'remote-python'
+    client.drive_root.side_effect = drive_root
+
+    def restore(command, *, cwd):
+        artifacts = Path(command[command.index('--artifacts') + 1])
+        drive = Path(command[command.index('--drive') + 1])
+        return SimpleNamespace(report=restore_finished_attempts(drive, artifacts, campaign_id))
+
+    client.run_cli.side_effect = restore
+    cell = next(s for s in _code(_load(NOTEBOOKS[2])) if 'restored = cs.run_cli' in s)
+    bundle = {'campaign_id': campaign_id, 'alias': alias, 'dataset_root': 'dataset', 'dataset_hash': 'expected'}
+    exec(cell, {'IN_COLAB': True, 'PROJECT_DIR': str(tmp_path), 'PROJECT_PYTHON': 'remote-python',
+                'cs': client, 'bundle_manifest': bundle, 'DRIVE_BASE': tmp_path / 'drive'})
+    assert (drive_root(tmp_path / 'drive', alias, campaign_id) / '.sync.lock').is_file()
+
+
+def test_tutorial_checks_free_memory_before_colab_setup():
+    native = yaml.safe_load((REPO / 'configs/algorithms/native.yaml').read_text(encoding='utf-8'))
+    masac = native['algorithms']['MASAC']['runtime_requirements']
+    ram = masac['min_ram_gib']
+    vram = max(masac['min_vram_gib_by_rnn_hidden_dim'].values())
+    cell = next(s for s in _code(_load(NOTEBOOKS[2])) if s.startswith('# 1.1 '))
+    for available_ram, available_vram in ((ram - 1, vram), (ram, vram - 1), (ram, None)):
+        with pytest.raises(RuntimeError, match='recursos insuficientes'):
+            exec(cell, {'IN_COLAB': True, 'RAM_FREE_GIB': available_ram, 'VRAM_FREE_GIB': available_vram})
+    state = {'IN_COLAB': True, 'RAM_FREE_GIB': ram, 'VRAM_FREE_GIB': vram}
+    exec(cell, state)
+    assert state['COLAB_READY']

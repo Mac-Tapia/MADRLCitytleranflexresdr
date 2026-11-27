@@ -2,20 +2,31 @@
 
 ## Entregables
 
-- Notebook nuevo: `examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb`.
+- Notebook de lanzamiento: `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb`.
+- Cuaderno modular: `examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb`.
 - Paquete de cambios y dataset: `outputs/colab_delivery/colab_modular_overlay.zip`.
 - Generador reproducible: `python -B tools/colab/build_modular_colab_notebook.py`.
 - Pasos, puertas y limitaciones del piloto: [plan del módulo 8](../plans/modulo8_campana.md).
 
-El tutorial original se conserva, pero esta campaña no lo usa. El cuaderno modular
-reutiliza su celda de instalación Python 3.9, con dependencias fijadas, y llama a la
-CLI `uc3m.application.training.cli` y a `uc3m.application.pipeline`.
+El botón **Open in Colab** del tutorial abre la revisión publicada en GitHub. El
+tutorial también se puede abrir localmente en VS Code y ejecutar con el kernel de
+Colab. Ambos cuadernos llaman a la CLI `uc3m.application.training.cli` y
+sincronizan los intentos finalizados. El cuaderno modular incluye las celdas de
+evaluación y reutiliza la instalación de Python 3.9 del tutorial.
 El ZIP lleva las fuentes, las configuraciones y el dataset congelado, con el hash de cada
 archivo. La celda C1 clona GitHub y hace checkout del commit del paquete, así que ese commit
 y los de los submódulos deben estar publicados.
 No contiene entornos virtuales, salidas de entrenamiento ni perfiles de navegador.
 
-## Uso
+## Usar el tutorial
+
+1. Abre **Open in Colab** con la cuenta Pro. En un entorno con GPU, ejecuta
+   **0.verify** y **1.1** para comprobar la memoria antes de instalar.
+2. Sube `colab_modular_overlay.zip` a `/content` y continúa con **1.2**.
+3. Monta Drive en **1.5**, restaura los intentos en **2.1** y revisa los
+   recursos de HPO en **7.1** y **7.2**. El entrenamiento está desactivado por defecto.
+
+## Usar el cuaderno modular
 
 1. Subir el notebook a Colab mediante Archivo → Subir notebook.
 2. Seleccionar acelerador GPU disponible y ejecutar la primera celda; cuando

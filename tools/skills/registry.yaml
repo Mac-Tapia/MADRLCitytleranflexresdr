@@ -167,7 +167,7 @@
       },
       "local_adaptation": null,
       "sha256": {
-        "SKILL.md": "51bf82cc563a0674e604432eda9f09ec672a9bfa2b683b9442d702d5823117fc",
+        "SKILL.md": "812e32375e5e5162ef36f66e2c32a67f9ed7de3403bf1b8b04f1cc444704f4f6",
         "LICENSE.txt": "747933dcfce17fd71e8eedcc2c52471477ea2baeb3aec4f841a3ecd73d4a7317"
       }
     },
@@ -182,7 +182,7 @@
       },
       "local_adaptation": null,
       "sha256": {
-        "SKILL.md": "d60a5886f98647175e6df4587d7609c80a5375cae834db63008bc2ebc41ea1d5",
+        "SKILL.md": "738973bd5f8bb567380b80afcead55925adbb9e388c7af24345e4244646af9b2",
         "LICENSE.txt": "747933dcfce17fd71e8eedcc2c52471477ea2baeb3aec4f841a3ecd73d4a7317"
       }
     },

@@ -15,7 +15,7 @@ outputs/
     colab_modular_overlay.zip
 ```
 
-- Campaña vigente: `configs/experiments/iquitos.yaml` (`storage_alias` = `iquitos_factura_v7`).
+- Campaña vigente: `configs/experiments/iquitos.yaml` (`storage_alias` = `iquitos_factura_v8`; dataset `iquitos_v6_trial13`).
 - Único cuaderno de entrenamiento: `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb`.
   Piloto y etapas oficiales usan el mismo cuaderno; no se guardan copias por etapa aquí.
 - El ZIP lo genera `python -B tools/colab/build_colab_bundle.py`. No se regenera durante

@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "campaign_id": "fresh_iquitos_20261126_factura_v7",
-  "storage_alias": "iquitos_factura_v7",
+  "campaign_id": "fresh_iquitos_20261128_factura_v8",
+  "storage_alias": "iquitos_factura_v8",
   "status": "planned",
-  "spec_hash": "db15957974ecc029aea5725a593277b84a3b92cdd8cea6ac962abd06555f3362",
+  "spec_hash": "cc47784f76598b190a2051aa369a37e7af493ced0a05faf0711bb3745a78e153",
   "identity": {
-    "config_sha256": "a70c9395a64f965d9c6a0c3589922e7e1aab39662f2b4d1adff0f3b13d4e2655",
+    "config_sha256": "31c50fd9ea140e6cf743cae9a1c3a85c75b5b8aa8f51842337f51a15fdabe7ed",
     "algorithm_config_sha256": "e37b58adc6ceba8c147dfa385f18690a95f23cc655618844a98da13254b0ec33",
     "scenario_catalog_sha256": "89165052315fe547a1ccbbfb80653c35b63352720194da46465efcd78021f717",
     "dataset_hash": "a09e83dd3cda538602d52d4ab4d94bb8c199c2dcb8fd98b4d51b4d37d47206d5",
     "normalizer_sha256": "b91c61b1daaa4485c5f7605ddc3225319c59992308624dd4fc4297eb90b9959f",
-    "source_sha256": "6d7b9bd11466a1df9b9e9ad29ab6141744e8fdbe60d8166019ff0775548ef461",
-    "input_manifest_sha256": "cbc640634e0fc1c7d8a5fefed322a5f4a240a61f5a6c55c26f0c23ab207cc9f0",
+    "source_sha256": "1c78a7a5dc9ac65e02a5919335e220668f38cc680abbb7b6d72d0465300f36db",
+    "input_manifest_sha256": "382a660ef12b7669b7395a0c934c67cc94753223e398414c0cf2199de2373484",
     "algorithm_contract_sha256": "080f834f4ea4c74b435d90b655e9c4354cd095e94a08e5a681e9246b088c4e86",
     "endpoint_applicability_sha256": "bac42bf21baf34a1b69a094239d87b1d07b7e74c5e658d1da65a3b17b9758f8e",
     "supervision_sha256": "5e903aeb6417153feb7f23b544e3d89114d3592f054208555fadeb3940374ad6",
     "optimizer_owners_sha256": "13168568a10d5e9bfde86d7a171cd1efd59b5124f01dc9e55b63df6421c18591",
-    "source_git_head": "706ad2c516ff0e873b60588a3305d4d10cba08dd",
-    "test_source_sha256": "6afb7258b63a45225d5ddd3a21cfc56fba8611d7ec394108ff8d8e23d707da93",
+    "source_git_head": "b852bd522b316395fad581ce7828c186f409f223",
+    "test_source_sha256": "1fd4beb710650804fc8c8741af3aba562614826bff9b348d9967ecfc757d4b11",
     "stage_plan_sha256": "18ff9474cc249bff0ba199fed7607700cb1ed930c68eb67c7d5a0f864e805934",
     "input_policy_sha256": "61cb1892ca3b8332684ea62462fd8cb262906e16c280283a7a3bb282742f3341"
   },
@@ -25,7 +25,7 @@
     "config": {
       "kind": "file",
       "path": "configs/experiments/iquitos.yaml",
-      "sha256": "a70c9395a64f965d9c6a0c3589922e7e1aab39662f2b4d1adff0f3b13d4e2655"
+      "sha256": "31c50fd9ea140e6cf743cae9a1c3a85c75b5b8aa8f51842337f51a15fdabe7ed"
     },
     "algorithm_config": {
       "kind": "file",
@@ -70,7 +70,7 @@
     "source": {
       "kind": "source",
       "path": ".",
-      "sha256": "6d7b9bd11466a1df9b9e9ad29ab6141744e8fdbe60d8166019ff0775548ef461"
+      "sha256": "1c78a7a5dc9ac65e02a5919335e220668f38cc680abbb7b6d72d0465300f36db"
     },
     "bill_tariffs": {
       "kind": "file",
@@ -1492,5 +1492,5 @@
   },
   "launch_authorized": {},
   "resume": "disabled; every attempt starts at episode zero",
-  "prepared_at": "2026-11-28T04:03:25.701579+00:00"
+  "prepared_at": "2026-11-28T13:31:43.768325+00:00"
 }

@@ -345,3 +345,13 @@ def test_tutorial_reward_section_lists_every_weighted_term_of_the_profile():
     for key in ('ev_weight', 'bess_cycle_weight', 'comfort_weight'):
         assert f"{profile[key]:.2f}".replace('.', ',') in section, key
     assert 'sin crédito de exportación' not in section
+
+
+def test_tutorial_heading_names_the_configured_dataset_and_campaign():
+    config = yaml.safe_load((REPO/CAMPAIGN_CONFIG).read_text(encoding='utf-8'))
+    heading = _source(_load(NOTEBOOKS[2])['cells'][0])
+    acceptance = json.loads((REPO/config['dataset_root']/'dataset_acceptance.json').read_text(encoding='utf-8'))
+    assert f"`{config['dataset_root']}/`" in heading
+    assert f"`{config['campaign_id']}`" in heading and f"`{config['storage_alias']}`" in heading
+    assert acceptance['dataset_hash'][:8] in heading
+    assert config['storage_alias'].rsplit('_', 1)[-1] in heading    # the campaign version, e.g. v8

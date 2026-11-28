@@ -69,6 +69,24 @@ def test_verify_checkout_reports_each_mismatch(tmp_path):
     assert reasons == ['head_mismatch', 'submodule_mismatch:CityLearn', 'file_mismatch:uc3m/a.py']
 
 
+
+def test_secret_named_sources_are_out_of_scope_like_the_bundle_builder(tmp_path):
+    # preflight.fresh_source_paths never ships a file whose name looks like a secret
+    # (tools/ops/audit_closed_services_and_secrets.py); the checkout check must not call it extra.
+    from uc3m.application.training import preflight
+    assert set(cs.SECRET_MARKERS) == set(preflight._SECRET_MARKERS)
+    assert set(cs.SECRET_SUFFIXES) == set(preflight._SECRET_SUFFIXES)
+    manifest = {'source_scope': ['tools/ops'], 'source_suffixes': ['.py']}
+    assert not cs._in_scope('tools/ops/audit_closed_services_and_secrets.py', manifest)
+    assert not cs._in_scope('tools/ops/.env.py', manifest)
+    assert cs._in_scope('tools/ops/audit_layout.py', manifest)
+    root = tmp_path/'root'
+    (root/'tools/ops').mkdir(parents=True)
+    (root/'tools/ops/audit_closed_services_and_secrets.py').write_text('kept', encoding='utf-8')
+    result = cs.apply_overlay(_zip([('tools/ops/a.py', b'a', None)], {
+        **manifest, 'files': {'tools/ops/a.py': hashlib.sha256(b'a').hexdigest()}}), root)
+    assert result['removed'] == [] and (root/'tools/ops/audit_closed_services_and_secrets.py').is_file()
+
 def _script(tmp_path, body):
     path = tmp_path/'script.py'
     path.write_text(body, encoding='utf-8')

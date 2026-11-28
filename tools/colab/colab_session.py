@@ -19,6 +19,16 @@ from typing import Callable, Dict, List, Optional, Sequence, Tuple
 import zipfile
 
 MANIFEST_NAME = 'colab_bundle_manifest.json'
+# Same exclusion as uc3m.application.training.preflight (checked by tests/ops/test_colab_session.py):
+# the bundle never carries a secret-looking file, so the checkout check must not count it as extra.
+SECRET_MARKERS = ('secret', 'token', 'credential', 'password')
+SECRET_SUFFIXES = ('.key', '.pem', '.pfx', '.p12')
+
+
+def _is_secret_name(path: PurePosixPath) -> bool:
+    name = path.name.casefold()
+    return (name.startswith('.env') or path.suffix.casefold() in SECRET_SUFFIXES
+            or any(marker in name for marker in SECRET_MARKERS))
 SESSION_NAME = 'colab_session.py'
 
 
@@ -41,7 +51,7 @@ def _in_scope(relative: str, manifest: Dict[str, object]) -> bool:
     scope = manifest.get('source_scope') or []
     suffixes = manifest.get('source_suffixes')
     parts = PurePosixPath(relative).parts
-    if '__pycache__' in parts or '.git' in parts:
+    if '__pycache__' in parts or '.git' in parts or _is_secret_name(PurePosixPath(relative)):
         return False
     if relative in scope:
         return True

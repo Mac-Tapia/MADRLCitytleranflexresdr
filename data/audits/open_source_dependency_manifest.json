@@ -51,6 +51,14 @@
       "reason": null,
       "status": "allow",
       "version": "1.10.1"
+    },
+    {
+      "declaration": "pyyaml>=6.0",
+      "license_spdx": "MIT",
+      "name": "pyyaml",
+      "reason": null,
+      "status": "allow",
+      "version": "6.0.3"
     }
   ],
   "research_repositories": [

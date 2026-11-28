@@ -147,9 +147,9 @@ flowchart TD
 flowchart TD
     subgraph ENV["Entorno CityLearn v3 (simulacion horaria)"]
         direction LR
-        B1["Edificio 1\nBESS + PV + EV"]
-        B2["Edificio 2\nBESS + PV + EV"]
-        BN["... Edificio 17\nBESS + PV + EV"]
+        B1["Edificio 1\nBESS + PV + VE + A/C"]
+        B2["Edificio 2\nBESS + PV + VE + A/C"]
+        BN["... Edificio 17\nBESS + PV + VE + A/C"]
         GRID(["Red electrica\nElectro Oriente\nSistema aislado diesel"])
         B1 --- B2 --- BN
         B1 & B2 & BN --> GRID
@@ -158,7 +158,7 @@ flowchart TD
     subgraph OBS["Observaciones locales oᵢ(t) — 19 dimensiones"]
         direction LR
         TIME["Tiempo\nmes hora tipo_dia"]
-        PHYS["Fisica edificio\nT_interior DHW\ncarga_no_desplazable\ngeneracion_solar"]
+        PHYS["Edificio y confort\ncarga_no_desplazable generacion_solar\ntemperatura interior consigna ocupantes"]
         BESS_OBS["Estado BESS\nSOC accion_previa"]
         EV_OBS["Estado EV\nSOC_k salida_k\nSOC_req_k llegada_k"]
         SIG["Senales globales\ncarbono precio\nGHI T_amb HR"]
@@ -171,9 +171,9 @@ flowchart TD
     end
 
     subgraph ACTIONS["Acciones locales aᵢ(t)"]
-        A1["a₁: BESS carga/descarga\nEV carga\nLavadora on/off"]
-        A2["a₂: BESS · EV · Lavadora"]
-        AN["a₁₇: BESS · EV · Lavadora"]
+        A1["a₁: BESS carga/descarga\ncarga VE por toma\naire acondicionado\n(5 niveles por equipo)"]
+        A2["a₂: BESS · VE · A/C"]
+        AN["a₁₇: BESS · VE · A/C"]
     end
 
     subgraph CRITIC["Critico centralizado (solo en entrenamiento CTDE)"]

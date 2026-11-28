@@ -114,3 +114,20 @@ def test_generated_audit_does_not_flag_its_own_previous_findings(tmp_path: Path)
 
     assert manifest["ok"] is True
     assert manifest["findings"] == []
+
+
+def test_only_the_declared_inventories_may_name_the_legacy_connector(tmp_path: Path) -> None:
+    # The layout registry and the tree inventories list the connector folder by path;
+    # any other runtime file that names the service is still a blocker.
+    _write(
+        tmp_path / "governance/repository_layout.yaml",
+        "ignored:\n  tools/skills/notebooklm-mcp/data/browser_state: gitignored profile\n",
+    )
+    _write(tmp_path / "app/config.py", 'SERVER = "notebooklm-mcp"\n')
+
+    manifest = audit_closed_services(tmp_path)
+    by_path = {finding["path"]: finding["category"] for finding in manifest["findings"]}
+
+    assert by_path["governance/repository_layout.yaml"] == "documentation_only"
+    assert by_path["app/config.py"] == "critical"
+    assert manifest["ok"] is False

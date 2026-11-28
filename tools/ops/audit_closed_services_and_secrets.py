@@ -48,6 +48,14 @@ SECRET_NAMES = {
 INVENTORY_PATHS = {
     "tools/skills/registry.yaml",
     "docs/research/repository_registry.yaml",
+    # Tree inventories and the layout registry list the gitignored browser profile of the
+    # local legacy connector tools/skills/notebooklm-mcp/ by path; they do not use the service.
+    "governance/repository_layout.yaml",
+    "data/audits/modernization_baseline.json",
+    "data/maintenance/repository_layout/repository_tree.json",
+    # Scanners that skip that same gitignored folder by name.
+    "tools/ops/capture_modernization_baseline.py",
+    "scripts/quality/skill_instruction_paths.ps1",
 }
 LEGACY_PREFIXES = (
     "citylearn/",

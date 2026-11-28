@@ -273,3 +273,62 @@ def test_tutorial_copies_the_bundle_from_drive_before_the_verified_checkout(tmp_
     (drive_folder / 'other_colab_modular_overlay.zip').write_bytes(b'other')
     with pytest.raises(FileNotFoundError, match='BUNDLE_IN_DRIVE'):
         exec(patched, {'IN_COLAB': True})
+
+
+def _markdown_cell(prefix):
+    return next(_source(c) for c in _load(NOTEBOOKS[2])['cells']
+                if c['cell_type'] == 'markdown' and _source(c).startswith(prefix))
+
+
+def test_tutorial_markdown_matches_the_local_campaign_configuration():
+    # The tutorial text must say what the local code and configuration do (owner 2026-11-28).
+    config = yaml.safe_load((REPO/CAMPAIGN_CONFIG).read_text(encoding='utf-8'))
+    native = yaml.safe_load((REPO/'configs/algorithms/native.yaml').read_text(encoding='utf-8'))
+    table = _markdown_cell('## Sección 6: Hiperparámetros')
+    rows = {line.split('|')[2].strip(): line for line in table.splitlines() if line.count('|') >= 6}
+    for stage in ('pilot', 'hpo', 'confirm', 'sensitivity'):
+        spec = config['stages'][stage]
+        seeds = spec['seeds'] if isinstance(spec['seeds'], list) else config['seeds'][spec['seeds']]
+        expected = str(seeds[0]) if len(seeds) == 1 else f'{seeds[0]}-{seeds[-1]}'
+        row = rows[f'`{stage}`']
+        assert f'| {expected} |' in row, row
+        assert f"{spec['episodes']} x {spec['episode_time_steps']:,}".replace(',', ' ') in row, row
+    assert 'Opcional' not in rows['`pilot`']
+    grid = _markdown_cell('### 6.1 Fuente única de hiperparámetros')
+    masac = native['algorithms']['MASAC']['hyperparameter_grid_override']['hidden_dimension']
+    masac_row = next(line for line in grid.splitlines() if line.startswith('| **MASAC**'))
+    assert all(str(value) in masac_row for value in masac) and '64' not in masac_row
+    for name, values in native['hyperparameter_grid'].items():
+        assert f'`{name}`' in grid and all(str(v) in grid for v in values), name
+
+
+def test_tutorial_observations_and_actions_match_the_campaign_schema():
+    config = yaml.safe_load((REPO/CAMPAIGN_CONFIG).read_text(encoding='utf-8'))
+    schema = json.loads((REPO/config['dataset_root']/'splits/train_2023/schema.json').read_text(encoding='utf-8'))
+    section = _markdown_cell('## Sección 4: Entorno Dec-POMDP')
+    active = [name for name, value in schema['observations'].items() if value.get('active')]
+    actions = [name for name, value in schema['actions'].items() if value.get('active')]
+    assert f'Observaciones activas del schema ({len(active)})' in section
+    assert [name for name in active if not re.search(rf'\b{name}\b', section)] == []
+    assert [name for name in actions if not re.search(rf'\b{name}\b', section)] == []
+    for retired in ('dhw_demand', 'cooling_demand', 'cargas flexibles', 'Lavadora'):
+        assert retired not in section
+    diagram = next(s for s in _code(_load(NOTEBOOKS[2])) if s.startswith('# ── 0.3'))
+    assert 'Lavadora' not in diagram and 'aire acondicionado' in diagram
+
+
+def test_tutorial_reward_section_lists_every_weighted_term_of_the_profile():
+    import importlib
+    reward = importlib.import_module('citylearn.v3.reward')
+    profile = reward._CITYLEARN_V3_BASE_PROFILE
+    section = _markdown_cell('## Sección 5: Función de recompensa multiobjetivo')
+    assert f'`{reward.CITYLEARN_V3_REWARD_PROFILE_VERSION}`' in section
+    for key in ('flex_subweights', 'carbon_subweights', 'cost_subweights'):
+        for term, weight in profile[key].items():
+            if weight > 0:
+                assert f'`{term}`' in section, term
+            else:
+                assert reward.CITYLEARN_V3_REWARD_TERMS[term][3] == 'pending_owner', term
+    for key in ('ev_weight', 'bess_cycle_weight', 'comfort_weight'):
+        assert f"{profile[key]:.2f}".replace('.', ',') in section, key
+    assert 'sin crédito de exportación' not in section

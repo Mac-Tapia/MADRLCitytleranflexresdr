@@ -16,9 +16,10 @@
 
 Ver [SPEC-000–010 y pendientes](../../specs/STATUS.md). Identidad, almacén,
 layout, persistencia, runner y adaptador nativo compartido existen. Reportes
-completos y continuidad optimizador/RNG/replay siguen pendientes. El manifiesto
-real es `data/audits/modular_training_acceptance.json`, no
-`orchestration_acceptance.json`. El ADR adopta almacén simple y aplaza spikes
+completos y continuidad optimizador/RNG/replay siguen pendientes. La auditoría
+`tools/ops/audit_modular_training.py` lee el piloto de la campaña configurada y
+escribe en `outputs/quality_reports/`; `data/audits/modular_training_acceptance.json`
+es solo el registro histórico de los smokes. No existe `orchestration_acceptance.json`. El ADR adopta almacén simple y aplaza spikes
 DVC/MLflow; no los declara ejecutados. No confundir smokes con aceptación
 científica ni acreditar RED/commits históricos desconocidos.
 

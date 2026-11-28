@@ -77,7 +77,7 @@ Inspección de código, no lista exhaustiva de consumidores:
 | `tools/drive/`, `scripts/fetch_and_generate_drive_figures.ps1`, `scripts/close_multicriteria.py` | Descarga/regeneración de históricos | No ejecutarlos en preparación/gates; no borrar copias remotas |
 | `tests/uc3m/test_madrl_multicriteria.py::test_pipeline_real_only_drive_50ep_no_illustrative` | Corpus Drive anterior; hace skip si falta | Sacar del perfil nuevo y crear equivalente con campaña nueva; ausencia histórica no cuenta como PASS |
 | `tools/training/test_job_resume_state.py::test_validate_canonical_skip_plan_from_drive_kpis` | Acceso directo a `outputs/_drive_madrl/kpis`, retorno silencioso si no existe | Perfil archivístico rotulado o caso nuevo autocontenido; nunca aprobación silenciosa |
-| `tools/ops/audit_modular_training.py` | Default `outputs/modular_smoke` | Para aceptación nueva exigir raíz de campaña explícita y no leer smoke retirado |
+| `tools/ops/audit_modular_training.py` | Default `outputs/modular_smoke` | Hecho 2026-11-28: lee el piloto de la campaña de `configs/experiments/iquitos.yaml` y no el smoke retirado |
 | `tools/thesis/update_word_quantitative_50episodes.py` y generadores de figuras de Drive | Análisis y figuras de la campaña anterior | No integrarlos como generadores activos de la campaña nueva; mantener Word protegidos |
 
 No eliminar scripts completos solo por un match de texto. Revisar llamadas, wrappers, configuración, variables y notebook generado. Las pruebas nuevas deben detectar que el proceso no abre una ruta retirada durante preparación/ejecución.

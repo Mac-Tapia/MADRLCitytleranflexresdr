@@ -11,4 +11,4 @@ E1=[0.60,0.15,0.25], E2=[0.25,0.60,0.15], E3=[0.15,0.25,0.60] in flexibility/CO2
 
 Output: checks and missing evidence by run; distinguish local persistence from optimizer/RNG/replay continuity and real Colab disconnect recovery. Reject promotion based only on return code, checkpoint existence, or eight-step smoke. No writes, deletion, training launch or Git mutation. Request a separate implementer task for corrections.
 
-Use `data/audits/modular_training_acceptance.json` and `specs/STATUS.md`; scientific rationale: `docs/architecture/AGENT_HARNESS.md`.
+Use `python -m tools.ops.audit_modular_training` (reads the configured campaign pilot; `data/audits/modular_training_acceptance.json` is only the historical smoke record) and `specs/STATUS.md`; scientific rationale: `docs/architecture/AGENT_HARNESS.md`.

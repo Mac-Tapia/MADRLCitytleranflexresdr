@@ -147,7 +147,7 @@ detalla las 8 tareas TDD derivadas de los 16 hallazgos de la auditoría independ
 - [x] Materializar SPEC-001–006, SPEC-008–009 y los nuevos SPEC-011–012.
 - [ ] Fase 0 — Higiene (SPEC-012); Stop hook ya desactivado.
 - [ ] Fase 1 — Procedencia y licencias (SPEC-001).
-- [ ] Fase 2 — Puertos y adaptadores faltantes (SPEC-002, SPEC-003).
+- [ ] Fase 2 — Puertos y adaptadores faltantes (SPEC-002, SPEC-003). Suite de la puerta en `4402ab33`: 1969 aprobadas, 0 fallos, 0 omitidas. El paso final `tools/ops/audit_modular_training.py` lee desde el 2026-11-28 el piloto de `iquitos_factura_v8` y calcula los pendientes; hoy devuelve `pilot_pending` porque el piloto no se ha lanzado en Colab.
 - [ ] Fase 3 — Flujo dataset → entrega con humo end-to-end (SPEC-011).
 - [ ] Fase 4 — Continuidad, retención y artefactos (SPEC-004, SPEC-008).
 - [ ] Fase 5 — Campaña aprobada 4×3 multisemilla y selección (SPEC-005).

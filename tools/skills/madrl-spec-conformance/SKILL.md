@@ -10,6 +10,6 @@ Output: requirement → implementation → command/result → evidence → gap, 
 
 Do not check off historical TDD or commits from the mere existence of code. A simulator 4×3 test is not four learners trained in three scenarios. Four eight-step smokes are not scientific acceptance. Preserve `scientific_acceptance=false` until the acceptance gates actually pass.
 
-Use `data/audits/modular_training_acceptance.json` for the existing training audit. Keep outstanding Colab runtime acceptance, optimizer/RNG/replay parity, provenance, multiseed evaluation, full reporting, best-model selection and jury observations visible. Do not change scientific results, external dependencies, or DOCX as a side effect of a spec review.
+Use `python -m tools.ops.audit_modular_training` for the training audit of the configured campaign; `data/audits/modular_training_acceptance.json` is only the historical smoke record. Keep outstanding Colab runtime acceptance, optimizer/RNG/replay parity, provenance, multiseed evaluation, full reporting, best-model selection and jury observations visible. Do not change scientific results, external dependencies, or DOCX as a side effect of a spec review.
 
 Verification: run relevant tests and `python tools/skills/validate_skills.py`. Cite current source lines and actual command output; avoid claims based on another agent's assertion alone. Scientific rationale and its limits: `docs/architecture/AGENT_HARNESS.md`.

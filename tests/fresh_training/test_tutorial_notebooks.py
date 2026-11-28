@@ -6,6 +6,7 @@ only rewired. Training is launched only through the fresh campaign CLI
 retired launcher, a historical output root or a resume flag, and it never trains
 by merely running all cells.
 """
+import ast
 import json
 import re
 from pathlib import Path
@@ -22,6 +23,7 @@ NOTEBOOKS = ('examples_madrl_v3/madrl_citylearn_v3_cli.ipynb',
              'examples_madrl_v3/madrl_citylearn_v3_quickstart.ipynb',
              'examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb')
 CLI_MODULE = 'uc3m.application.training.cli'
+PIPELINE_MODULE = 'uc3m.application.pipeline'
 CAMPAIGN_CONFIG = 'configs/experiments/iquitos.yaml'
 FRESH_OUTPUTS = 'outputs/campaigns/'
 
@@ -105,11 +107,16 @@ def test_no_retired_launcher_root_or_resume_flag(relative):
 
 @pytest.mark.parametrize('relative', NOTEBOOKS)
 def test_training_invocations_go_through_the_campaign_cli(relative):
-    # A cell invokes a stage when an uncommented line names --stage.
-    stage_cells = [s for s in _code(_load(relative)) if any('--stage' in line for line in _uncommented(s))]
-    assert stage_cells, f'{relative} must show how the campaign CLI is called'
-    for source in stage_cells:
+    # A cell invokes a stage when an uncommented line names --stage. The post-training
+    # pipeline (uc3m.application.pipeline evaluate/freeze/...) also takes --stage to pick
+    # which finished stage it reads; it never trains, so it is checked apart.
+    code = _code(_load(relative))
+    stage_cells = [s for s in code if any('--stage' in line for line in _uncommented(s))]
+    training_cells = [s for s in stage_cells if PIPELINE_MODULE not in s]
+    assert training_cells, f'{relative} must show how the campaign CLI is called'
+    for source in training_cells:
         assert CLI_MODULE in source and CAMPAIGN_CONFIG in source
+    for source in stage_cells:
         assert 'native_entrypoint' not in source
     assert (REPO/CAMPAIGN_CONFIG).is_file()
     assert (REPO/(CLI_MODULE.replace('.', '/') + '.py')).is_file()
@@ -122,7 +129,22 @@ def test_execute_is_only_an_explicit_opt_in(relative):
         if not live:
             continue
         assert re.search(r'^EXECUTE_STAGE\s*=\s*False\b', source, re.M), 'execution flag must default to False'
-        assert all('if EXECUTE_STAGE' in line for line in live), live
+        # Every '--execute' literal sits inside an if/elif whose test reads EXECUTE_STAGE,
+        # even when the call spans several lines.
+        assert _unguarded_execute(source) == [], live
+
+
+def _unguarded_execute(source):
+    tree = ast.parse('\n'.join('' if line.lstrip().startswith(('!', '%')) else line
+                               for line in source.splitlines()))
+    guarded = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.If, ast.IfExp)) and any(isinstance(n, ast.Name) and n.id == 'EXECUTE_STAGE'
+                                                         for n in ast.walk(node.test)):
+            for child in (node.body if isinstance(node, ast.If) else [node.body]):
+                guarded |= {id(n) for n in ast.walk(child)}
+    return [node.lineno for node in ast.walk(tree)
+            if isinstance(node, ast.Constant) and node.value == '--execute' and id(node) not in guarded]
 
 
 @pytest.mark.parametrize('relative', NOTEBOOKS)
@@ -148,8 +170,8 @@ def test_markdown_states_the_fresh_campaign_design(relative):
         assert not RETIRED_DESIGN.search(text), text[:200]
 
 
-def test_tutorial_keeps_the_setup_cell_reused_by_the_colab_companion():
-    # tools/colab/build_modular_colab_notebook.py copies this cell literally.
+def test_tutorial_has_a_single_setup_cell():
+    # The tutorial is the only training notebook (owner decision 2026-11-28).
     sources = _code(_load(NOTEBOOKS[2]))
     assert sum('# 1.3 Instalar dependencias' in s for s in sources) == 1
 
@@ -200,15 +222,19 @@ def test_tutorial_first_drive_restore_creates_the_campaign_folder(tmp_path):
     assert (drive_root(tmp_path / 'drive', alias, campaign_id) / '.sync.lock').is_file()
 
 
-def test_tutorial_checks_free_memory_before_colab_setup():
+def test_tutorial_reports_free_memory_against_masac_before_colab_setup(capsys):
+    # Commit 97a849de: preparation continues below the MASAC reference; the CLI refuses
+    # per phase (insufficient_resources) before training. The cell reports the shortfall.
     native = yaml.safe_load((REPO / 'configs/algorithms/native.yaml').read_text(encoding='utf-8'))
     masac = native['algorithms']['MASAC']['runtime_requirements']
     ram = masac['min_ram_gib']
     vram = max(masac['min_vram_gib_by_rnn_hidden_dim'].values())
     cell = next(s for s in _code(_load(NOTEBOOKS[2])) if s.startswith('# 1.1 '))
     for available_ram, available_vram in ((ram - 1, vram), (ram, vram - 1), (ram, None)):
-        with pytest.raises(RuntimeError, match='recursos insuficientes'):
-            exec(cell, {'IN_COLAB': True, 'RAM_FREE_GIB': available_ram, 'VRAM_FREE_GIB': available_vram})
+        state = {'IN_COLAB': True, 'RAM_FREE_GIB': available_ram, 'VRAM_FREE_GIB': available_vram}
+        exec(cell, state)
+        assert state['COLAB_READY']
+        assert f'{ram} GiB de RAM y {vram} GiB de VRAM' in capsys.readouterr().out
     state = {'IN_COLAB': True, 'RAM_FREE_GIB': ram, 'VRAM_FREE_GIB': vram}
     exec(cell, state)
-    assert state['COLAB_READY']
+    assert state['COLAB_READY'] and 'dentro de la referencia' in capsys.readouterr().out

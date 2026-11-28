@@ -55,7 +55,7 @@ powershell -ExecutionPolicy Bypass -File scripts/verify_project_context.ps1
 
 Preparar produce un DAG y manifiestos; no entrena. Una campaña preparada nunca se sobrescribe. Cambiar fuentes, datos o protocolo exige identidad y verificación coherentes. `resource_authorization.authorized_stages` permanece vacío hasta autorización expresa de etapas y recursos; el presupuesto preparado no es trabajo ejecutado.
 
-El cliente es [el cuaderno Colab modular](examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb), generado por `tools/colab/build_modular_colab_notebook.py`. El [runbook](docs/architecture/runbook.md) detalla las etapas; su aceptación de desconexión/restauración real sigue separada de las pruebas locales.
+El cliente es el único cuaderno de entrenamiento, [el tutorial Colab](examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb); piloto, HPO, confirmación y sensibilidad cambian solo `RUN_STAGE` en su celda 7.2. `tools/colab/build_colab_bundle.py` genera el ZIP que aplica la celda 1.2. El [runbook](docs/architecture/runbook.md) detalla las etapas; su aceptación de desconexión/restauración real sigue separada de las pruebas locales.
 
 Después del entrenamiento autorizado, `python -m uc3m.application.pipeline` ofrece `status`, `freeze`, `evaluate`, `analyze` y `deliver` con manifiesto explícito. Evaluación fallida o rechazo devuelve salida no cero. La entrega recibe `--gate-report` y `--analysis-manifest`; conserva análisis y hashes, y declara el alcance de sus archivos. Un paquete de metadatos no equivale a exportación ONNX ni a control de planta.
 

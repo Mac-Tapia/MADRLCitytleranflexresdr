@@ -137,8 +137,8 @@ consolidation:
   canonical_sources:
     launch.cli: uc3m/application/training/cli.py
     campaign.use_cases: uc3m/application/training/fresh_campaign.py
-    notebook.campaign: examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb
-    notebook.campaign_generator: tools/colab/build_modular_colab_notebook.py
+    notebook.campaign: examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb
+    notebook.campaign_bundle: tools/colab/build_colab_bundle.py
     config.objective_policies: configs/objective_policies.yaml
     config.scenarios: configs/scenarios.yaml
     config.experiment: configs/experiments/iquitos.yaml
@@ -167,8 +167,8 @@ consolidation:
       - configs/evaluation/kpis.yaml
       - uc3m/application/training/cli.py
       - uc3m/application/training/fresh_campaign.py
-      - tools/colab/build_modular_colab_notebook.py
-      - examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb
+      - tools/colab/build_colab_bundle.py
+      - examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb
     C-software:
       - tools/ops/audit_repository_layout.py
       - tools/ops/audit_duplicate_files.py

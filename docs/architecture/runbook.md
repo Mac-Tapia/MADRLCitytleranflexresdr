@@ -17,8 +17,9 @@ Si el planificador aplica un presupuesto de replay, cada intento conserva `phase
 - Única vía de lanzamiento: `python -m uc3m.application.training.cli`. Los
   lanzadores locales `.bat`/`.ps1`, `uc3m/train.py`, el runner Colab anterior y
   AWS están retirados (`governance/repository_layout.yaml`, sección `launch`).
-- El entrenamiento se ejecuta en Colab con el cuaderno existente
-  `examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb`, cliente de la CLI.
+- El entrenamiento se ejecuta en Colab con el único cuaderno de entrenamiento
+  `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb`, cliente de la CLI. Piloto y etapas oficiales
+  usan el mismo cuaderno; no se guardan copias por etapa.
 - Ningún intento reanuda: cada intento empieza en el episodio 0. Un intento
   interrumpido o con *salvage* queda como evidencia fallida y se lanza otro.
 - Ninguna entrada puede venir de `outputs/` históricos, del dataset horario
@@ -87,13 +88,13 @@ Pasos completos, puertas y limitaciones: [plan del módulo 8](../plans/modulo8_c
    `authorized_stages` sigue en `[]`. Autorizar no requiere ningún commit.
 2. Regenerar el paquete local para Colab una sola vez por campaña, después del
    último commit:
-   `.\.venv39-citylearn-v3\Scripts\python.exe -B tools/colab/build_modular_colab_notebook.py`
+   `.\.venv39-citylearn-v3\Scripts\python.exe -B tools/colab/build_colab_bundle.py`
    crea `outputs/colab_delivery/colab_modular_overlay.zip`. Conservar ese ZIP
    mientras dure la campaña.
-3. En el cuaderno, fijar `STAGE` en C5 (`pilot`, y luego `hpo`, `confirm`,
+3. En el tutorial, fijar `RUN_STAGE` en la celda 7.2 (`pilot`, y luego `hpo`, `confirm`,
    `sensitivity`) y revisar el plan que imprime.
-4. En C6, poner `EXECUTE_STAGE = True`, escribir en `OWNER_DECISION` dónde y cuándo
-   quedó la decisión, y ejecutarla. C6 pasa `--owner-authorized <texto>` a la CLI,
+4. En la misma celda 7.2, poner `EXECUTE_STAGE = True`, escribir en `OWNER_DECISION` dónde y cuándo
+   quedó la decisión, y ejecutarla. La celda pasa `--owner-authorized <texto>` a la CLI,
    que añade una línea a `stages/owner_authorizations.jsonl`. Al relanzar la misma
    etapa se repite la misma referencia. Cada
    intento terminado se copia a Drive. Al terminar, volver a `EXECUTE_STAGE = False`.

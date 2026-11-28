@@ -2,19 +2,23 @@
 
 ## Entregables
 
-- Notebook de lanzamiento: `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb`.
-- Cuaderno modular: `examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb`.
+- Único notebook de entrenamiento: `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb`.
+  Piloto, HPO, confirmación y sensibilidad usan este mismo cuaderno; solo cambia
+  `RUN_STAGE` en la celda 7.2. No se guardan copias por etapa ("piloto", "oficial").
 - Paquete de cambios y dataset: `outputs/colab_delivery/colab_modular_overlay.zip`.
-- Generador reproducible: `python -B tools/colab/build_modular_colab_notebook.py`.
+- Generador reproducible del paquete: `python -B tools/colab/build_colab_bundle.py`.
 - Pasos, puertas y limitaciones del piloto: [plan del módulo 8](../plans/modulo8_campana.md).
+
+El cuaderno modular (`madrl_citylearn_v3_modular_colab.ipynb`) y su generador se
+retiraron el 2026-11-28 por decisión del propietario; sus celdas de evaluación,
+congelado, análisis y entrega ya están en el tutorial (C9, C8, C10, C11).
 
 El botón **Open in Colab** del tutorial abre la revisión publicada en GitHub. El
 tutorial también se puede abrir localmente en VS Code y ejecutar con el kernel de
-Colab. Ambos cuadernos llaman a la CLI `uc3m.application.training.cli` y
-sincronizan los intentos finalizados. El cuaderno modular incluye las celdas de
-evaluación y reutiliza la instalación de Python 3.9 del tutorial.
+Colab. Llama a la CLI `uc3m.application.training.cli` y sincroniza los intentos
+finalizados.
 El ZIP lleva las fuentes, las configuraciones y el dataset congelado, con el hash de cada
-archivo. La celda C1 clona GitHub y hace checkout del commit del paquete, así que ese commit
+archivo. La celda 1.2 hace checkout del commit del paquete, así que ese commit
 y los de los submódulos deben estar publicados.
 No contiene entornos virtuales, salidas de entrenamiento ni perfiles de navegador.
 
@@ -24,20 +28,13 @@ No contiene entornos virtuales, salidas de entrenamiento ni perfiles de navegado
    **0.verify** y **1.1** para comprobar la memoria antes de instalar.
 2. Sube `colab_modular_overlay.zip` a `/content` y continúa con **1.2**.
 3. Monta Drive en **1.5**, restaura los intentos en **2.1** y revisa los
-   recursos de HPO en **7.1** y **7.2**. El entrenamiento está desactivado por defecto.
-
-## Usar el cuaderno modular
-
-1. Subir el notebook a Colab mediante Archivo → Subir notebook.
-2. Seleccionar acelerador GPU disponible y ejecutar la primera celda; cuando
-   lo solicite, subir `colab_modular_overlay.zip`.
-3. Ejecutar la instalación original de Python 3.9 y dependencias.
-4. Autorizar el montaje de tu Drive para los intentos y resultados.
-5. Elegir `STAGE` en C5 y revisar el plan que imprime: presupuesto de la etapa,
-   recursos medidos y trabajadores por fase.
-6. Con la decisión escrita del propietario para esa etapa, poner `EXECUTE_STAGE = True`
-   en C6. Esto pasa `--owner-authorized` a la CLI. La ejecución normal de todas las
-   celdas prepara, pero no lanza entrenamiento.
+   recursos en **7.1** y **7.2**. El entrenamiento está desactivado por defecto.
+4. Elige `RUN_STAGE` en **7.2** (`pilot`, `hpo`, `confirm` o `sensitivity`) y revisa
+   el plan que imprime: presupuesto, recursos medidos y trabajadores por fase.
+5. Con la decisión escrita del propietario para esa etapa, pon `EXECUTE_STAGE = True`
+   y escribe la referencia en `OWNER_DECISION`. Esto pasa `--owner-authorized` a la CLI.
+   La ejecución normal de todas las celdas prepara, pero no lanza entrenamiento.
+   Al terminar, vuelve a `EXECUTE_STAGE = False` y `OWNER_DECISION = ''`.
 
 La primera reconstrucción usa el commit del paquete. No se cambia de revisión
 ni se borra un checkout preexistente incompatible; en ese caso usar un runtime
@@ -54,7 +51,7 @@ requisito de su fase, según `configs/algorithms/native.yaml`.
 Ese reparto no recorta buffers ni capacidad. Si los recursos no alcanzan, la fase queda
 con 0 trabajadores y la etapa se detiene incompleta. Los requisitos son estimaciones y no
 prueban ausencia de OOM: CUDA, buffers en CPU y fragmentación deben validarse en el runtime
-real. C6 guarda el pico de VRAM de la etapa, pero el piloto no alcanza el lote de 32
+real. La celda 7.2 guarda el pico de VRAM de la etapa, pero el piloto no alcanza el lote de 32
 episodios de MASAC. No mezclar estadísticas de tratamientos con hiperparámetros efectivos
 distintos.
 
@@ -80,7 +77,7 @@ identidad, compilación de todas las celdas, preservación de fuentes y smokes
 nativos de los cuatro algoritmos. NO ejecutado todavía en un runtime real de
 Colab: instalación de wheels, GPU/CUDA, bloqueo sobre Drive y reanudación tras
 desconexión real. Aquí «reanudación» significa repetir desde cero lo interrumpido y
-reutilizar los intentos verificados. C3 comprueba campaña, dataset y fuentes antes de
+reutilizar los intentos verificados. La celda 2.1 comprueba campaña, dataset y fuentes antes de
 lanzar. Ninguna celda del cuaderno prueba el bloqueo de Drive: la prueba es una celda
 temporal descrita en la sección 5.4 del plan del módulo 8.
 

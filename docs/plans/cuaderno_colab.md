@@ -1,5 +1,7 @@
 # Cuaderno Colab operativo celda por celda — Implementation Plan
 
+> **Retirado (2026-11-28, decisión del propietario).** El cuaderno modular y `tools/colab/build_modular_colab_notebook.py` se eliminaron. El único cuaderno de entrenamiento es `examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb`, que contiene C8–C11; el ZIP lo genera `tools/colab/build_colab_bundle.py`. Este plan se conserva como registro histórico.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Que cada celda de `examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb` sea operativa, verificable y honesta: checkout exacto, instalación fijada, campaña y Drive por identidad, entrenamiento con progreso y código de salida, y las celdas posteriores (congelado HPO, evaluación, análisis, entrega) que hoy faltan.

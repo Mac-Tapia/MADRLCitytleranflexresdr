@@ -11,7 +11,7 @@
     "postprocessing": "uc3m/application/pipeline.py",
     "gate": "scripts/quality/run_fresh_training_gates.ps1",
     "drive": "uc3m/application/training/drive_sync.py",
-    "colab": "examples_madrl_v3/madrl_citylearn_v3_modular_colab.ipynb"
+    "colab": "examples_madrl_v3/madrl_citylearn_v3_tutorial.ipynb"
   },
   "scientific_acceptance": false,
   "operational_acceptance": false

@@ -228,7 +228,7 @@ MADRLCitytleranflexresdr/
 ├── tools/
 │   ├── dataset/                           # entrypoints de construcción; lógica reutilizable en application/dataset
 │   ├── eval/                              # entrypoints de análisis/reporte; sin segunda lógica estadística
-│   ├── colab/build_modular_colab_notebook.py # único generador activo del notebook de campaña nueva
+│   ├── colab/build_colab_bundle.py        # genera el ZIP de Colab que aplica el tutorial
 │   ├── figures/                           # fuentes/generadores únicos de diagramas
 │   ├── thesis/                            # única implementación de herramientas Word
 │   ├── ops/                               # inventario, retiro, árbol y duplicados
@@ -241,7 +241,7 @@ MADRLCitytleranflexresdr/
 │   ├── quality/run_fresh_training_gates.ps1
 │   └── skills/, training/                 # wrappers de sistema operativo sin lógica duplicada
 ├── examples_madrl_v3/
-│   └── madrl_citylearn_v3_modular_colab.ipynb # único notebook activo de campaña; otros requieren función distinta
+│   └── madrl_citylearn_v3_tutorial.ipynb  # único notebook de entrenamiento (todas las etapas); otros requieren función distinta
 ├── governance/
 │   └── repository_layout.yaml             # registro de árbol/roles/canon/facades/protegidos
 ├── specs/000..012-*/                       # contratos con trazabilidad vigente

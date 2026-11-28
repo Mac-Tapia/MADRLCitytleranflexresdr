@@ -297,15 +297,23 @@ def test_launch_tutorial_contains_guarded_post_training_workflow():
     assert (namespace['EVAL_STAGE'], namespace['EVAL_SPLIT']) == ('pilot', 'validation_2024')
 
 
-def test_launch_tutorial_identifies_auxiliary_kpis_without_nan():
+def test_launch_tutorial_displays_all_kpi_catalog_sections():
     tutorial = json.loads(builder.ORIGINAL.read_text(encoding='utf-8'))
+    catalog = yaml.safe_load((REPO/'configs/evaluation/kpis.yaml').read_text(encoding='utf-8'))
+    summary = next(_source(cell) for cell in tutorial['cells'] if _source(cell).startswith('## Sección 8: KPIs'))
     source = next(_source(cell) for cell in tutorial['cells'] if '8.1  Catalogo de KPIs' in _source(cell))
     displayed = []
 
     exec(compile(source, 'tutorial-8.1', 'exec'), {'PROJECT_ROOT': REPO, 'display': displayed.append})
 
+    table_rows = '\n'.join(line for line in summary.splitlines() if line.startswith('| **E'))
+    assert re.findall(r'`([^`]+)`', table_rows) == catalog['primary_endpoints']
+    assert len(displayed) == 3
+    for frame, key in zip(displayed, ('definitions', 'citylearn_v3_kpis', 'thesis_indicators')):
+        assert frame['name'].tolist() == [entry['name'] for entry in catalog[key]]
+        assert not frame.isna().any().any()
+
     frame = displayed[0].set_index('name')
-    assert not frame[['axis', 'primary']].isna().any().any()
     assert frame.loc['bill_cost_total', 'axis'] == 'energy_cost'
     assert bool(frame.loc['bill_cost_total', 'primary'])
     assert not bool(frame.loc['import_energy', 'primary'])

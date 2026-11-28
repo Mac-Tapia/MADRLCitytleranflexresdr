@@ -34,7 +34,7 @@ from uc3m.domain.objectives import CANONICAL_AXES
 
 CAMPAIGN_KEYS = {'schema_version', 'campaign_id', 'storage_alias', 'dataset_root', 'scenario_catalog', 'training_phases',
                  'algorithm_config', 'kpi_catalog', 'algorithms', 'scenarios', 'seeds', 'splits', 'stages',
-                 'supervision', 'resource_authorization'}
+                 'supervision', 'resource_authorization', 'bill_tariffs'}
 STAGE_KEYS = {'episodes', 'episode_time_steps', 'seeds', 'scenarios', 'grid', 'dominance', 'secondary_to_residual'}
 SUPERVISION_KEYS = {'max_constraint_dominance_ratio'}
 ALGORITHM_KEYS = {'mapping', 'fixed_flags', 'fixed', 'native_clamps', 'declared_limitations', 'optimizer_owners',

@@ -57,7 +57,8 @@ def _campaign_root(manifest_path: Path, project_root: Path) -> Path:
 def stage_status(manifest_path: Path) -> List[Dict[str, object]]:
     """Every listed attempt of the campaign with the verdict of the single trust rule."""
     from uc3m.application.evaluation.results_catalog import discover_attempts
-    return [{'stage': a.stage, 'treatment_id': a.treatment_id, 'algorithm': a.algorithm, 'scenario': a.scenario,
+    return [{'stage': a.stage, 'treatment_id': a.treatment_id, 'planned_treatment_id': a.planned_treatment_id,
+             'algorithm': a.algorithm, 'scenario': a.scenario,
              'seed': a.seed, 'attempt_id': a.attempt_id, 'attempt_root': str(a.attempt_root),
              'accepted': a.accepted, 'reasons': list(a.reasons)}
             for a in discover_attempts(manifest_path, accepted_only=False)]
@@ -66,9 +67,14 @@ def stage_status(manifest_path: Path) -> List[Dict[str, object]]:
 def default_evaluate(attempt_root, split_id, campaign_root, **kwargs):
     """Module-level (picklable) wrapper: each worker process imports the evaluator and builds
     its own CityLearn adapters (this module is a composition root, like training/cli.py)."""
-    from uc3m.adapters.citylearn.frozen_adapters import citylearn_frozen_adapters
+    from uc3m.adapters.citylearn.frozen_adapters import BILL_TARIFFS, citylearn_frozen_adapters
+    from uc3m.application.dataset.provenance import contained_path
     from uc3m.application.evaluation.frozen_evaluation import evaluate_frozen
-    return evaluate_frozen(attempt_root, split_id, campaign_root, adapters=citylearn_frozen_adapters(), **kwargs)
+    manifest = next((p/'campaign_manifest.json' for p in Path(attempt_root).parents
+                     if (p/'campaign_manifest.json').is_file()), None)
+    bill_table = (_read(manifest).get('inputs') or {}).get('bill_tariffs') if manifest else None
+    path = contained_path(PROJECT_ROOT, bill_table['path']) if bill_table else BILL_TARIFFS
+    return evaluate_frozen(attempt_root, split_id, campaign_root, adapters=citylearn_frozen_adapters(path), **kwargs)
 
 
 def _evaluate_one(evaluate: Callable, attempt_root: str, split: str, campaign_root: str) -> Optional[str]:
@@ -94,17 +100,37 @@ def evaluate_stage(manifest_path: Path, *, project_root: Path = PROJECT_ROOT, st
                    workers: int = 1) -> Dict[str, object]:
     """Frozen evaluation of every accepted attempt of ``stage`` on ``split``; existing ones are kept."""
     from uc3m.application.evaluation.results_catalog import discover_attempts, read_evaluation_report
+    from uc3m.application.training.attempt_trust import load_trust_contract
     if isinstance(workers, bool) or not isinstance(workers, int) or workers < 1:
         raise ValueError('workers must be a positive integer')
     _validate_stage_split(stage, split)
     if stage == 'confirm' and split == 'test_2025':
         require_selection_before_test(manifest_path)
-    campaign_root = _campaign_root(Path(manifest_path), Path(project_root))
-    pending, existing = [], []
-    for attempt in discover_attempts(manifest_path):
-        if attempt.stage != stage:
+    manifest_path = Path(manifest_path)
+    campaign_root = _campaign_root(manifest_path, Path(project_root))
+    contract = load_trust_contract(manifest_path.parent, _read(manifest_path)['campaign_id'])
+    if contract.reasons:
+        raise PermissionError('campaign contract refused: ' + ', '.join(contract.reasons))
+    planned = contract.stages.get(stage)
+    if not planned:
+        raise ValueError(f'{stage} has no planned treatments in this campaign')
+    attempts = {a.planned_treatment_id: a for a in discover_attempts(manifest_path, accepted_only=False)
+                if a.stage == stage}
+    pending, existing, failed = [], [], []
+    for treatment_id in planned:
+        attempt = attempts.get(treatment_id)
+        if attempt is None or not attempt.accepted:
+            reason = 'training_result_not_available' if attempt is None else ', '.join(attempt.reasons)
+            failed.append({'treatment_id': treatment_id, 'reason': reason,
+                           'attempt': str(attempt.attempt_root) if attempt else None})
             continue
-        if read_evaluation_report(attempt, split, require_full_split=(stage == 'hpo' or split == 'test_2025')) is not None:
+        try:
+            measurement = read_evaluation_report(attempt, split, require_full_split=True)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            failed.append({'attempt': str(attempt.attempt_root), 'treatment_id': treatment_id,
+                           'reason': f'existing evaluation artifact failed verification: {exc}'})
+            continue
+        if measurement is not None:
             existing.append(attempt.treatment_id)
         else:
             pending.append(attempt)
@@ -114,10 +140,20 @@ def evaluate_stage(manifest_path: Path, *, project_root: Path = PROJECT_ROOT, st
     else:
         with ProcessPoolExecutor(max_workers=min(workers, len(jobs))) as pool:
             errors = list(pool.map(_evaluate_one, *zip(*jobs)))
-    evaluated = [a.treatment_id for a, error in zip(pending, errors) if error is None]
-    failed = [{'attempt': str(a.attempt_root), 'treatment_id': a.treatment_id, 'reason': error}
-              for a, error in zip(pending, errors) if error is not None]
-    return {'stage': stage, 'split': split, 'evaluated': evaluated, 'existing': existing, 'failed': failed}
+    evaluated = []
+    for attempt, error in zip(pending, errors):
+        if error is None:
+            try:
+                if read_evaluation_report(attempt, split, require_full_split=True) is None:
+                    raise ValueError('no canonical report was written')
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                error = f'new evaluation artifact failed verification: {exc}'
+        if error is None:
+            evaluated.append(attempt.treatment_id)
+        else:
+            failed.append({'attempt': str(attempt.attempt_root), 'treatment_id': attempt.treatment_id, 'reason': error})
+    return {'stage': stage, 'split': split, 'planned': len(planned),
+            'evaluated': evaluated, 'existing': existing, 'failed': failed}
 
 
 def _validation_rows(manifest_path: Path, campaign_id: str) -> Dict[str, List[dict]]:

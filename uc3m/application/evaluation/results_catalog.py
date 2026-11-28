@@ -90,6 +90,7 @@ class FreshAttempt:
     attempt_root: Path
     accepted: bool
     reasons: Tuple[str, ...]
+    planned_treatment_id: Optional[str] = None
 
 
 def _read_json(path: Path):
@@ -146,7 +147,8 @@ def discover_attempts(manifest_path: Path, *, accepted_only: bool = True) -> Lis
             found.append(FreshAttempt(
                 campaign_id, stage, str(record.get("treatment_id", treatment.get("treatment_id"))),
                 str(key.get("algorithm", "")), str(key.get("scenario", "")), int(key.get("seed", -1)),
-                str(record.get("attempt_id", chosen.get("attempt_id", ""))), root, accepted, reasons))
+                str(record.get("attempt_id", chosen.get("attempt_id", ""))), root, accepted, reasons,
+                planned_treatment_id=str(treatment.get("treatment_id", ""))))
     return found
 
 
@@ -221,7 +223,8 @@ class AttemptAudit:
 
 def _of_candidate(attempt, candidate: Optional[str]) -> bool:
     """Sensitivity variants share scenario and seed: the variant is a segment of the treatment id."""
-    return candidate is None or candidate in attempt.treatment_id.split('/')
+    planned = getattr(attempt, 'planned_treatment_id', None) or attempt.treatment_id
+    return candidate is None or candidate in planned.split('/')
 
 
 def audit_stage_evaluations(manifest_path: Path, *, stage: str, split: str, require_full_split: bool = False,

@@ -39,6 +39,7 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence
 import numpy as np
 
 from uc3m.adapters.citylearn.fresh_observations import frozen_observation_limits, load_normalizer
+from uc3m.adapters.citylearn.tariff import recorded_tariff
 from uc3m.application.evaluation.kpi_contract import PhysicalTrace
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -330,7 +331,7 @@ def run_frozen_episode(split_dir: Path, policy, campaign_root: Path, *, steps: O
     import torch
     with tempfile.TemporaryDirectory(prefix='frozen_eval_') as scratch, \
             attempt_isolation(common, Path(scratch)), frozen_observation_limits(spec), \
-            _scenario_catalog_context(catalog), \
+            _scenario_catalog_context(catalog), recorded_tariff(catalog, scenario), \
             _optimizer_step_counter() as optimizer_steps:
         policy.build_env(common, split_dir/'schema.json', scenario, seed, horizon)
         core = _citylearn_env(policy.adapter)

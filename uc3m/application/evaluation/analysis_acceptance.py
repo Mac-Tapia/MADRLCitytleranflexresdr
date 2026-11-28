@@ -27,7 +27,7 @@ def protocol_for_stage(manifest_path: Path, stage: str, split: str):
                                endpoints=tuple(e for e in default.endpoints if e[0] in scenarios),
                                confirmatory_endpoints=tuple(e for e in default.confirmatory_endpoints
                                                            if e[0] in scenarios),
-                               not_applicable_endpoints=tuple(e for e in not_applicable_endpoints(manifest)
+                               not_applicable_endpoints=tuple(e for e in not_applicable_endpoints(manifest, split=split)
                                                               if e[0] in scenarios))
 
 
@@ -73,7 +73,7 @@ def verify_scientific_analysis(manifest_path: Path, *, analysis_manifest=None) -
         from uc3m.application.evaluation.fresh_analysis import FrozenProtocol
         from uc3m.application.evaluation.endpoint_applicability import not_applicable_endpoints
         if protocol != dataclasses.replace(FrozenProtocol.default(), split='test_2025',
-                                           not_applicable_endpoints=not_applicable_endpoints(manifest)):
+                                           not_applicable_endpoints=not_applicable_endpoints(manifest, split='test_2025')):
             return False
         if analysis.get('protocol') != json.loads(json.dumps(dataclasses.asdict(protocol))):
             return False

@@ -189,7 +189,11 @@ def _counting_learner():
 def test_prepared_manifest_records_every_input(tmp_path):
     manifest = fc.prepare_campaign(CONFIG, REPO, artifact_root=tmp_path/'campaign')
     prices = manifest['endpoint_applicability']['price_files']
-    assert set(manifest['inputs']) == set(INPUTS) | {f'endpoint_price:{i}' for i in range(len(prices))}
+    assert set(manifest['inputs']) == set(INPUTS) | {'bill_tariffs'} | {
+        f'endpoint_price:{i}' for i in range(len(prices))}
+    bill = manifest['inputs']['bill_tariffs']
+    assert bill['path'] == 'data/tariffs/osinergmin/bill_tariffs.csv'
+    assert bill['sha256'] == integrity._file_sha256(REPO/bill['path'])
     assert canonical_hash(manifest['inputs']) == manifest['identity']['input_manifest_sha256']
     for index, price in enumerate(prices):
         assert manifest['inputs'][f'endpoint_price:{index}']['sha256'] == price['sha256']
@@ -215,10 +219,12 @@ def test_tampered_recorded_input_blocks_stage_with_zero_learner_calls(tmp_path):
 
 def test_campaign_config_outside_the_project_is_refused(tmp_path):
     config = fc.load_campaign_config(CONFIG, REPO)
+    project = tmp_path/'project'
+    _synthetic_root(project)
     outside = tmp_path/'iquitos.yaml'
     outside.write_text(CONFIG.read_text(encoding='utf-8'), encoding='utf-8')
     with pytest.raises(ValueError, match='outside the project root'):
-        integrity.campaign_inputs(dict(config, _path=str(outside)), REPO)
+        integrity.campaign_inputs(dict(config, _path=str(outside), scenario_catalog='configs/scenarios.yaml'), project)
 
 
 def test_cli_does_not_reuse_identity_of_changed_yaml(tmp_path, monkeypatch, capsys):

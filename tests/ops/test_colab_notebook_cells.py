@@ -232,6 +232,35 @@ def test_post_training_cells_call_pipeline_subcommands(cells, marker, command):
     assert 'uc3m.application.pipeline' in source and f"'{command}'" in source and "'--manifest'" in source
 
 
+def test_launch_tutorial_contains_guarded_post_training_workflow():
+    tutorial = json.loads(builder.ORIGINAL.read_text(encoding='utf-8'))
+    workflow = {}
+    for cell in tutorial['cells']:
+        source = _source(cell)
+        if cell['cell_type'] == 'code' and source.startswith('# [C'):
+            match = MARKER.match(source)
+            if match and match[1] in {'8', '9', '10', '11'}:
+                workflow[match[1]] = source
+
+    assert list(workflow) == ['9', '8', '10', '11']
+
+    class InactiveCli:
+        def __getattr__(self, name):
+            pytest.fail(f'The default cells must not invoke {name}')
+
+    namespace = {'cs': InactiveCli()}
+    for marker, commands in {
+        '9': ('evaluate',), '8': ('freeze',), '10': ('analyze', 'select'), '11': ('deliver',),
+    }.items():
+        source = workflow[marker]
+        assert 'uc3m.application.pipeline' in source
+        assert 'MANIFEST_PATH' in source and 'SYNC_COMMAND' in source
+        assert all(f"'{command}'" in source for command in commands)
+        exec(compile(source, f'tutorial-C{marker}', 'exec'), namespace)
+
+    assert (namespace['EVAL_STAGE'], namespace['EVAL_SPLIT']) == ('pilot', 'validation_2024')
+
+
 def test_c9_defaults_to_validation_split_and_parallel_workers(cells, notebook):
     source = cells['C9']
     assert "'validation_2024'" in source and "'--workers'" in source

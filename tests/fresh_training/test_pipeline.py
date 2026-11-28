@@ -35,12 +35,20 @@ def synthetic_evaluate(attempt_root, split_id, campaign_root, **_):
     report = {'context': {'campaign_id': evidence['campaign_id'], 'treatment_id': record['treatment_id'],
                           'algorithm': treatment['algorithm'], 'scenario': treatment['scenario'],
                           'seed': int(record['seed']), 'split': split_id},
-              'axis_gains': {'flexibility': 0.1, 'co2_emissions': 0.2, 'energy_cost': 0.3}}
+              'axis_gains': {'flexibility': 0.1, 'co2_emissions': 0.2, 'energy_cost': 0.3},
+              'trace_hash': '1'*64, 'baseline_trace_hash': '2'*64}
     folder.mkdir(parents=True)
     path = folder/'kpi_report.json'
     path.write_text(json.dumps(report), encoding='utf-8')
+    rows = {'train_2023': 8760, 'validation_2024': 8784, 'test_2025': 8760}[split_id]
+    runs = {label: {'split': split_id, 'training_updates': 0, 'completed_steps': rows, 'trace_hash': digest}
+            for label, digest in [('control', report['trace_hash']), ('baseline', report['baseline_trace_hash'])]}
+    physical = folder/'frozen_runs.json'
+    physical.write_text(json.dumps(runs), encoding='utf-8')
     (folder/'evaluation_manifest.json').write_text(json.dumps(
-        {'files': {'kpi_report.json': hashlib.sha256(path.read_bytes()).hexdigest()}}), encoding='utf-8')
+        {'schema_version': 2, 'split': split_id, 'expected_full_split_rows': rows,
+         'files': {file.name: hashlib.sha256(file.read_bytes()).hexdigest() for file in (path, physical)}}),
+        encoding='utf-8')
     return report
 
 
@@ -62,6 +70,21 @@ def test_status_lists_reasons_after_cut(campaign):
     assert len(refused) == 1 and any('untrusted_checkpoint' in reason for reason in refused[0]['reasons'])
     assert all(r['accepted'] for r in rows if r is not refused[0])
     assert {'stage', 'treatment_id', 'algorithm', 'scenario', 'seed', 'attempt_id'} <= set(rows[0])
+
+
+def test_evaluate_refuses_to_report_success_before_stage_results(campaign, capsys):
+    (campaign.parent/'stages/pilot_result.json').unlink()
+    assert pipeline.main(['evaluate', '--manifest', str(campaign), '--stage', 'pilot']) == 2
+    report = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+    assert report['status'] == 'incomplete'
+    assert report['planned'] == 4 and len(report['failed']) == 4
+    assert all(row['reason'] == 'training_result_not_available' for row in report['failed'])
+
+
+def test_evaluate_checks_written_evidence_before_reporting_success(campaign):
+    result = pipeline.evaluate_stage(campaign, stage='pilot', evaluate=lambda *_: None)
+    assert len(result['failed']) == 4 and not result['evaluated']
+    assert all('evaluation artifact' in row['reason'] for row in result['failed'])
 
 
 @pytest.mark.parametrize('workers', [1, 2])

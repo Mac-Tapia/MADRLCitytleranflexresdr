@@ -261,7 +261,8 @@ def oriented_gain(value, baseline, lower_is_better):
     return signed/denominator
 
 
-def comparable_kpi_gain_rows(objectives_report: Optional[Mapping[str, object]]) -> List[Dict[str, object]]:
+def comparable_kpi_gain_rows(objectives_report: Optional[Mapping[str, object]],
+                             catalog_path: Path = DEFAULT_CATALOG) -> List[Dict[str, object]]:
     """kpi_report.json ``comparable_kpi_gains``: one row per comparable CityLearn v3 KPI.
 
     Row format: {name, axis, value, baseline, lower_is_better, gain, available}, values from
@@ -270,8 +271,9 @@ def comparable_kpi_gain_rows(objectives_report: Optional[Mapping[str, object]]) 
     """
     axis_code = {axis: objective for objective, axis in AXIS_OF_OBJECTIVE.items()}
     axes = (objectives_report or {}).get('axes') or {}
+    directions = {row['name']: row['sense'] != 'maximize' for row in load_citylearn_v3_kpis(catalog_path)}
     rows = []
-    for axis, (_, names) in comparable_kpi_names().items():
+    for axis, (_, names) in comparable_kpi_names(catalog_path).items():
         for name in names:
             item = ((axes.get(axis_code[axis]) or {}).get('kpis') or {}).get(name) or {}
             comparison = item.get('comparison') or {}
@@ -279,12 +281,40 @@ def comparable_kpi_gain_rows(objectives_report: Optional[Mapping[str, object]]) 
             finite = all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
                          for v in (value, baseline))
             available = bool(comparison.get('available')) and finite
-            lower = lower_is_better(name)
+            lower = directions[name]
             rows.append({'name': name, 'axis': axis, 'value': value if finite else None,
                          'baseline': baseline if finite else None, 'lower_is_better': lower,
                          'gain': oriented_gain(float(value), float(baseline), lower) if available else None,
                          'available': available})
     return rows
+
+
+def _finite_kpi(value):
+    return type(value) in (int, float) and math.isfinite(value)
+
+
+def _citylearn_kpi_rows(report, definitions, unavailable):
+    axes = (report or {}).get('axes') or {}
+    rows = []
+    for definition in definitions:
+        name = definition['name']
+        item = ((axes.get(definition['objective']) or {}).get('kpis') or {}).get(name)
+        comparison = ((item or {}).get('comparison') or {})
+        value, baseline = (item or {}).get('value'), comparison.get('baseline')
+        available = _finite_kpi(value)
+        if available:
+            status, cause = 'available', None
+        elif value is not None:
+            status, cause = 'unavailable', 'invalid_value'
+        elif name in unavailable:
+            status, cause = 'not_applicable', unavailable[name]
+        else:
+            status, cause = 'unavailable', 'citylearn_value_undefined' if item is not None else 'citylearn_metric_missing'
+        rows.append({'name': name, 'objective': definition['objective'], 'axis': definition['axis'],
+                     'sense': definition['sense'], 'source': definition.get('source'),
+                     'value': value if available else None, 'baseline': baseline if _finite_kpi(baseline) else None,
+                     'available': available, 'availability': status, 'cause': cause})
+    return tuple(rows)
 
 
 def load_kpi_catalog(path: Path) -> KpiCatalog:
@@ -309,11 +339,13 @@ class KpiReport:
     axis_gains: Mapping[str, Optional[float]] = field(default_factory=dict)
     thesis_indicators: Tuple[Mapping[str, object], ...] = ()
     comparable_kpi_gains: Tuple[Mapping[str, object], ...] = ()
+    citylearn_v3_kpis: Tuple[Mapping[str, object], ...] = ()
 
     def as_dict(self):
         return {'schema_version': 1, 'context': dict(self.context),
                 'thesis_indicators': [dict(row) for row in self.thesis_indicators],
                 'comparable_kpi_gains': [dict(row) for row in self.comparable_kpi_gains],
+                'citylearn_v3_kpis': [dict(row) for row in self.citylearn_v3_kpis],
                 'values': {k: dict(v) for k, v in self.values.items()},
                 'trace_hash': self.trace_hash, 'baseline_trace_hash': self.baseline_trace_hash,
                 'balance_checks': {k: dict(v) for k, v in self.balance_checks.items()},
@@ -415,11 +447,17 @@ def _measure(trace, definition, extra_measures=None):
     measure = (extra_measures or {}).get(definition.quantity)
     if measure is not None:
         value = measure(trace)
-        return (None, f'{definition.quantity}_undefined') if value is None else (float(value), None)
-    try:
-        return _quantity(trace, definition.quantity), None
-    except _Unavailable as missing:
-        return None, missing.cause
+        if value is None:
+            return None, f'{definition.quantity}_undefined'
+    else:
+        try:
+            value = _quantity(trace, definition.quantity)
+        except _Unavailable as missing:
+            return None, missing.cause
+    numeric = float(value)
+    if isinstance(value, bool) or not math.isfinite(numeric):
+        return None, 'non_finite_measure'
+    return numeric, None
 
 
 def _energy_balance(trace: PhysicalTrace, catalog: KpiCatalog):
@@ -437,6 +475,9 @@ def compute_fresh_kpis(trace: PhysicalTrace, baseline: PhysicalTrace, catalog: K
                        context: Optional[Mapping[str, object]] = None, *,
                        thesis_indicators: Optional[Sequence[Mapping[str, object]]] = None,
                        citylearn_v3_report: Optional[Mapping[str, object]] = None,
+                       citylearn_v3_kpis: Optional[Sequence[Mapping[str, object]]] = None,
+                       citylearn_v3_unavailable: Optional[Mapping[str, str]] = None,
+                       citylearn_v3_catalog_path: Path = DEFAULT_CATALOG,
                        extra_measures: Optional[Mapping[str, object]] = None) -> KpiReport:
     """Trace cross-check, Layer A thesis indicators and Layer B CityLearn v3 KPI-gains.
 
@@ -480,10 +521,13 @@ def compute_fresh_kpis(trace: PhysicalTrace, baseline: PhysicalTrace, catalog: K
         gains = [values[m]['gain'] for m in members]
         axis_gains[axis] = None if any(g is None for g in gains) else sum(gains)/len(gains)
     indicators = tuple(thesis_indicator_values(values, thesis_indicators or ()))
+    citylearn_definitions = (load_citylearn_v3_kpis(citylearn_v3_catalog_path)
+                            if citylearn_v3_kpis is None else citylearn_v3_kpis)
     return KpiReport(dict(context or {}), values, trace.trace_hash(), baseline.trace_hash(),
                      {'energy': _energy_balance(trace, catalog),
                       'baseline_energy': _energy_balance(baseline, catalog)}, axis_gains,
-                     indicators, tuple(comparable_kpi_gain_rows(citylearn_v3_report)))
+                     indicators, tuple(comparable_kpi_gain_rows(citylearn_v3_report, citylearn_v3_catalog_path)),
+                     _citylearn_kpi_rows(citylearn_v3_report, citylearn_definitions, citylearn_v3_unavailable or {}))
 
 
 def validate_kpi_report(report: KpiReport, catalog: KpiCatalog) -> ValidationResult:
@@ -501,9 +545,10 @@ def validate_kpi_report(report: KpiReport, catalog: KpiCatalog) -> ValidationRes
             reasons.append(f'{name}: unit {entry.get("unit")} differs from {definitions[name].unit}')
         if entry.get('availability') == 'unavailable':
             reasons.append(f'{name}: unavailable ({entry.get("cause")})')
-        value = entry.get('value')
-        if value is not None and (isinstance(value, bool) or not math.isfinite(value)):
-            reasons.append(f'{name}: non-finite value')
+        if entry.get('availability') != 'unavailable' and not _finite_kpi(entry.get('value')):
+            reasons.append(f'{name}: missing or non-finite value')
+        if not _finite_kpi(entry.get('baseline')):
+            reasons.append(f'{name}: missing or non-finite baseline')
     for label, balance in report.balance_checks.items():
         checks.append(f'balance:{label}')
         if not balance.get('passed'):

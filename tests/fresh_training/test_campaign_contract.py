@@ -356,14 +356,15 @@ def test_sensitivity_writes_hashed_derived_catalog_with_treatment_weights(tmp_pa
 
 
 def test_pilot_points_to_the_single_catalog(tmp_path):
+    scenario_catalog = fc.load_campaign_config(CONFIG, REPO)['scenario_catalog']
     fc.prepare_campaign(CONFIG, REPO, artifact_root=tmp_path/'campaign')
     manifest_path = tmp_path/'campaign/campaign_manifest.json'
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
-    assert manifest['scenario_catalog'] == 'configs/scenarios.yaml'
+    assert manifest['scenario_catalog'] == scenario_catalog
     calls, learner = _record_calls()
     fc.run_stage(manifest_path, 'pilot', learner, REPO, authorized=True)
-    assert {c['scenario_catalog'] for c in calls} == {'configs/scenarios.yaml'}
-    assert {c['scenario_catalog_sha256'] for c in calls} == {fc.catalog_sha256(REPO/'configs/scenarios.yaml')}
+    assert {c['scenario_catalog'] for c in calls} == {scenario_catalog}
+    assert {c['scenario_catalog_sha256'] for c in calls} == {fc.catalog_sha256(REPO/scenario_catalog)}
 
 
 def test_effective_weights_and_dominance_gate_completion():

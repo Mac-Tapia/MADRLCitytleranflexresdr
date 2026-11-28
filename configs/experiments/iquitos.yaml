@@ -2,13 +2,14 @@
 #   D-V6-11: no training until every module is closed; authorized_stages stays empty and each stage is launched
 #   with --owner-authorized <written decision> (this file is a hashed input of the campaign)
 schema_version: 1
-# Fresh campaign: new dataset, no prior-run inputs, every attempt from zero.
-campaign_id: fresh_iquitos_20261108_v6_trial13
-storage_alias: iquitos_v6_trial13
+# Tarifas registradas. Cada intento empieza desde cero con el dataset verificado.
+campaign_id: fresh_iquitos_20261126_factura_v7
+storage_alias: iquitos_factura_v7
 dataset_root: data/campaigns/iquitos_v6_trial13   # SPEC-016 with bill tariffs (D-V6-50), bill corrections (D-V6-57, D-V6-58), the weather of Iquitos (D-V6-59) and temperature by building function (D-V6-60, D-V6-61), 13/13 gates 2026-11-08
-scenario_catalog: configs/scenarios.yaml      # single E1/E2/E3 weight table
+scenario_catalog: configs/scenarios_recorded.yaml
 algorithm_config: configs/algorithms/native.yaml
 kpi_catalog: configs/evaluation/kpis.yaml
+bill_tariffs: data/tariffs/osinergmin/bill_tariffs.csv
 algorithms: [HAPPO, MASAC, MATD3, MAAC]
 # Owner decision 2026-11-01: every stage trains by phases. Phase 2 starts only when
 # every treatment of phase 1 is training_complete; inside a phase treatments run in

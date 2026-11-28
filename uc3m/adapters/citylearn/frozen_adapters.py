@@ -26,11 +26,15 @@ def _price_signal_deviation(trace):
     return None if value is None else float(value)
 
 
-def citylearn_frozen_adapters() -> SimpleNamespace:
+def citylearn_frozen_adapters(bill_tariffs_path: Path = BILL_TARIFFS) -> SimpleNamespace:
     from uc3m.adapters.citylearn.policy_inference import RbcPolicy, load_native_policy, run_frozen_episode
-    from uc3m.application.dataset.provenance import sha256_file
+    from uc3m.application.training.integrity import _file_sha256
     from uc3m.application.evaluation.bill_cost import bill_measures, load_bill_tariffs
+    digest = _file_sha256(bill_tariffs_path)
+    rates = load_bill_tariffs(bill_tariffs_path)
+    if _file_sha256(bill_tariffs_path) != digest:
+        raise ValueError('bill tariff table changed while it was being read')
     return SimpleNamespace(load_native_policy=load_native_policy, run_frozen_episode=run_frozen_episode,
-                           rbc_policy=RbcPolicy, bill_tariffs_sha256=sha256_file(BILL_TARIFFS),
+                           rbc_policy=RbcPolicy, bill_tariffs_sha256=digest,
                            extra_measures={'price_signal_deviation': _price_signal_deviation,
-                                           **bill_measures(load_bill_tariffs(BILL_TARIFFS))})
+                                           **bill_measures(rates)})

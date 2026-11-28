@@ -493,6 +493,8 @@ def source_scope():
 
 
 def main(argv=None):
+    import yaml
+
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument('--output', type=Path, default=BUNDLE)
     parser.add_argument('--notebook', type=Path, default=DESTINATION)
@@ -506,6 +508,10 @@ def main(argv=None):
     args.notebook.parent.mkdir(parents=True, exist_ok=True)
     args.notebook.write_text(json.dumps(notebook, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     paths = bundle_paths(ROOT, dataset_root)
+    config = yaml.safe_load(args.config.read_text(encoding='utf-8'))
+    if 'bill_tariffs' in config:
+        from uc3m.application.dataset.provenance import contained_path
+        paths = sorted({*paths, contained_path(ROOT, config['bill_tariffs'])})
     files = {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     scope = source_scope()
     manifest = {'commit': commit, 'submodules': submodules, 'dataset_hash': acceptance['dataset_hash'],

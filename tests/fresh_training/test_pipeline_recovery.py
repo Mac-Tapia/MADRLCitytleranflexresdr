@@ -79,7 +79,8 @@ def test_sensitivity_variants_share_seeds_only_when_they_are_not_separated(monke
     from types import SimpleNamespace
 
     from uc3m.application.evaluation import fresh_analysis, results_catalog as rc
-    attempts = [SimpleNamespace(stage='sensitivity', treatment_id=f'sensitivity/maac/e1/{variant}/seed_1001')
+    attempts = [SimpleNamespace(stage='sensitivity', treatment_id=f'maac-e1-s1001-{variant}',
+                                planned_treatment_id=f'sensitivity/maac/e1/{variant}/seed_1001')
                 for variant in ('p055', 'p065')]
     monkeypatch.setattr(rc, 'discover_attempts', lambda path, **kwargs: attempts)
     monkeypatch.setattr(rc, 'read_evaluation_report', lambda attempt, split, **kwargs: ({}, 'a'*64))

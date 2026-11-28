@@ -140,6 +140,24 @@ def test_layer_a_values_come_from_the_trace(payload, catalog):
     assert len(as_dict['thesis_indicators']) == len(payload['thesis_indicators'])
 
 
+def test_full_objective_inventory_preserves_values_and_explains_unavailable(payload, catalog):
+    report = kc.compute_fresh_kpis(
+        _trace(FLAT, PRICE, CARBON), _trace(PEAKY, PRICE, CARBON), catalog,
+        citylearn_v3_report={'axes': {'OE1': {'kpis': {
+            'battery_charge_total': {'value': 12.0, 'comparison': {'available': True}},
+            'grid_import': {'value': float('nan'), 'comparison': {'available': True}},
+        }}}},
+        citylearn_v3_kpis=payload['citylearn_v3_kpis'],
+        citylearn_v3_unavailable={'community_import_share': 'community_market_disabled'},
+    ).as_dict()
+    rows = {row['name']: row for row in report['citylearn_v3_kpis']}
+    assert set(rows) == {row['name'] for row in payload['citylearn_v3_kpis']}
+    assert rows['battery_charge_total']['value'] == 12.0
+    assert rows['community_import_share']['cause'] == 'community_market_disabled'
+    assert rows['grid_import']['value'] is None and rows['grid_import']['cause'] == 'invalid_value'
+    assert all(row['available'] or row['cause'] for row in rows.values())
+
+
 def test_standard_citylearn_kpis_agree_without_export(catalog):
     import sys
     sys.path.insert(0, str(REPO/'CityLearn'))

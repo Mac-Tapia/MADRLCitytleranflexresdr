@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import List
 
 from uc3m.adapters.algorithms.learning_observer import LearningObserver
+from uc3m.adapters.citylearn.tariff import recorded_tariff
 
 TRAINERS = {'HAPPO': 'train_citylearn_v3_happo.py', 'MASAC': 'train_citylearn_v3_masac.py',
             'MATD3': 'train_citylearn_v3_matd3.py', 'MAAC': 'train_citylearn_v3_maac.py'}
@@ -358,7 +359,8 @@ def main(argv=None) -> int:
     supervisor = RewardSupervisor()
     saved_argv = sys.argv
     try:
-        with attempt_isolation(common, attempt_root), limits, supervisor.installed():
+        tariff = recorded_tariff(os.environ.get('UC3M_SCENARIO_CATALOG'), _option(native, '--scenario', 'E1'))
+        with attempt_isolation(common, attempt_root), limits, supervisor.installed(), tariff:
             sys.argv = [str(script)] + native + thread_arguments(native, os.environ)
             try:
                 limit_gpu_memory(os.environ)

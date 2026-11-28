@@ -22,14 +22,16 @@ def _fingerprint(payload: Mapping[str, object]) -> str:
 @dataclass(frozen=True)
 class TariffPolicy:
     policy_id: str
-    mode: Literal["rtp", "flat", "tou"]
+    mode: Literal["rtp", "flat", "tou", "recorded"]
     multiplier: float
 
     def __post_init__(self) -> None:
-        if self.mode not in {"rtp", "flat", "tou"}:
+        if self.mode not in {"rtp", "flat", "tou", "recorded"}:
             raise ValueError("Unsupported tariff mode")
         if not math.isfinite(self.multiplier) or self.multiplier <= 0.0:
             raise ValueError("Tariff multiplier must be finite and positive")
+        if self.mode == "recorded" and self.multiplier != 1.0:
+            raise ValueError("Recorded tariffs require a unit multiplier")
 
     def fingerprint(self) -> str:
         return _fingerprint(

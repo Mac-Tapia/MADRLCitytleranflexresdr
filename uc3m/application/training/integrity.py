@@ -98,6 +98,8 @@ def campaign_inputs(config: Mapping[str, object], project_root: Path) -> Dict[st
         'normalizer': {'kind': 'file', 'path': f'{dataset_root}/normalizer.json'},
         'source': {'kind': 'source', 'path': '.'},
     }
+    if 'bill_tariffs' in config:
+        records['bill_tariffs'] = {'kind': 'file', 'path': config['bill_tariffs']}
     split_manifest = json.loads(contained_path(root, records['split_manifest']['path']).read_text(encoding='utf-8'))
     directories = {s['split_id']: s['directory'] for s in split_manifest['splits']}
     for split_id in config['splits']:

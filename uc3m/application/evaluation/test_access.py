@@ -51,7 +51,7 @@ def _contract(manifest_path):
             raise PermissionError('frozen choice no longer matches verified validation evidence')
     from uc3m.application.evaluation.endpoint_applicability import not_applicable_endpoints
     protocol = dataclasses.replace(FrozenProtocol.default(), split='test_2025',
-                                   not_applicable_endpoints=not_applicable_endpoints(manifest))
+                                   not_applicable_endpoints=not_applicable_endpoints(manifest, split='test_2025'))
     return {'campaign_id': manifest['campaign_id'], 'spec_hash': manifest['spec_hash'],
             'dataset_hash': manifest['identity']['dataset_hash'],
             'configuration_freezes': manifest['configuration_freezes'],

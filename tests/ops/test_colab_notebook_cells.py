@@ -297,6 +297,21 @@ def test_launch_tutorial_contains_guarded_post_training_workflow():
     assert (namespace['EVAL_STAGE'], namespace['EVAL_SPLIT']) == ('pilot', 'validation_2024')
 
 
+def test_launch_tutorial_identifies_auxiliary_kpis_without_nan():
+    tutorial = json.loads(builder.ORIGINAL.read_text(encoding='utf-8'))
+    source = next(_source(cell) for cell in tutorial['cells'] if '8.1  Catalogo de KPIs' in _source(cell))
+    displayed = []
+
+    exec(compile(source, 'tutorial-8.1', 'exec'), {'PROJECT_ROOT': REPO, 'display': displayed.append})
+
+    frame = displayed[0].set_index('name')
+    assert not frame[['axis', 'primary']].isna().any().any()
+    assert frame.loc['bill_cost_total', 'axis'] == 'energy_cost'
+    assert bool(frame.loc['bill_cost_total', 'primary'])
+    assert not bool(frame.loc['import_energy', 'primary'])
+    assert not bool(frame.loc['price_signal_deviation', 'primary'])
+
+
 def test_c9_defaults_to_validation_split_and_parallel_workers(cells, notebook):
     source = cells['C9']
     assert "'validation_2024'" in source and "'--workers'" in source

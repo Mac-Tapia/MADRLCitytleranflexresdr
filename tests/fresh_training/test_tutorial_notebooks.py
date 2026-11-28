@@ -183,7 +183,9 @@ def test_tutorial_launch_uses_uploaded_bundle_and_campaign_sync():
     assert 'files.upload()' not in checkout
     assert checkout.index('verify_remote_revision()\n') < checkout.index('cs.apply_overlay(')
     stage = next(s for s in sources if 'EXECUTE_STAGE = False' in s)
-    assert "RUN_STAGE = 'hpo'" in stage
+    # The pilot is the first stage; later stages change only RUN_STAGE in this same cell.
+    assert re.search(r"^RUN_STAGE = 'pilot'", stage, re.M)
+    assert sum('EXECUTE_STAGE = False' in s for s in sources) == 1
     assert '--owner-authorized' in stage and 'run_stage_with_sync' in stage
     assert 'copytree' not in stage
     assert any('drive_root(' in s and "'--restore'" in s for s in sources)
@@ -238,3 +240,36 @@ def test_tutorial_reports_free_memory_against_masac_before_colab_setup(capsys):
     state = {'IN_COLAB': True, 'RAM_FREE_GIB': ram, 'VRAM_FREE_GIB': vram}
     exec(cell, state)
     assert state['COLAB_READY'] and 'dentro de la referencia' in capsys.readouterr().out
+
+
+def test_tutorial_copies_the_bundle_from_drive_before_the_verified_checkout(tmp_path, monkeypatch, capsys):
+    import sys
+    import types
+
+    sources = _code(_load(NOTEBOOKS[2]))
+    index = next(i for i, s in enumerate(sources) if s.startswith('# 1.1b '))
+    assert sources[index - 1].startswith('# 1.1 ') and sources[index + 1].startswith('# 1.2 ')
+    cell = sources[index]
+    assert 'files.upload()' not in cell
+    # Local kernel: nothing to fetch.
+    exec(cell, {'IN_COLAB': False})
+    assert 'no se necesita el ZIP' in capsys.readouterr().out
+    # Colab without the ZIP: it is copied from the single bundle found in Drive.
+    content = tmp_path / 'content'
+    drive_folder = content / 'drive/MyDrive/MADRL_campaigns'
+    drive_folder.mkdir(parents=True)
+    (drive_folder / 'iquitos_x_colab_modular_overlay.zip').write_bytes(b'zip-bytes')
+    google = types.ModuleType('google')
+    colab = types.ModuleType('google.colab')
+    colab.drive = types.SimpleNamespace(mount=lambda path: None)
+    google.colab = colab
+    monkeypatch.setitem(sys.modules, 'google', google)
+    monkeypatch.setitem(sys.modules, 'google.colab', colab)
+    patched = cell.replace("'/content/", f"'{content.as_posix()}/")
+    exec(patched, {'IN_COLAB': True})
+    assert (content / 'colab_modular_overlay.zip').read_bytes() == b'zip-bytes'
+    # Two candidates: it refuses instead of guessing.
+    (content / 'colab_modular_overlay.zip').unlink()
+    (drive_folder / 'other_colab_modular_overlay.zip').write_bytes(b'other')
+    with pytest.raises(FileNotFoundError, match='BUNDLE_IN_DRIVE'):
+        exec(patched, {'IN_COLAB': True})

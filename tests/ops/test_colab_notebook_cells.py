@@ -96,7 +96,7 @@ def test_launch_tutorial_reports_a_blocked_stage_without_dispatching(capsys, tmp
     namespace = {'PROJECT_ROOT': tmp_path, 'PYTHON': sys.executable, 'IN_COLAB': True,
                  'SYNC_COMMAND': ['sync'], 'ARTIFACT_ROOT': tmp_path,
                  'cs': SimpleNamespace(run_cli=lambda *args, **kwargs: SimpleNamespace(
-                     report={'phase_plan': {'hpo': [phase]}}), phase_plan_lines=lambda *args: [],
+                     report={'phase_plan': {'pilot': [phase]}}), phase_plan_lines=lambda *args: [],
                      run_stage_with_sync=refuse_dispatch)}
 
     exec(compile(source, 'tutorial-7.2', 'exec'), namespace)

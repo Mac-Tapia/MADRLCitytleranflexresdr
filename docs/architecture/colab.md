@@ -26,10 +26,12 @@ No contiene entornos virtuales, salidas de entrenamiento ni perfiles de navegado
 
 1. Abre **Open in Colab** con la cuenta Pro. En un entorno con GPU, ejecuta
    **0.verify** y **1.1** para comprobar la memoria antes de instalar.
-2. Sube `colab_modular_overlay.zip` a `/content` y continúa con **1.2**.
+2. Sube `colab_modular_overlay.zip` a `/content`, o deja que **1.1b** lo copie desde
+   `MyDrive/MADRL_campaigns/` (si hay más de un ZIP, indica `BUNDLE_IN_DRIVE`), y
+   continúa con **1.2**, que verifica commit, submódulos y hash de cada archivo.
 3. Monta Drive en **1.5**, restaura los intentos en **2.1** y revisa los
    recursos en **7.1** y **7.2**. El entrenamiento está desactivado por defecto.
-4. Elige `RUN_STAGE` en **7.2** (`pilot`, `hpo`, `confirm` o `sensitivity`) y revisa
+4. Elige `RUN_STAGE` en **7.2** (por defecto `pilot`; después `hpo`, `confirm` o `sensitivity`) y revisa
    el plan que imprime: presupuesto, recursos medidos y trabajadores por fase.
 5. Con la decisión escrita del propietario para esa etapa, pon `EXECUTE_STAGE = True`
    y escribe la referencia en `OWNER_DECISION`. Esto pasa `--owner-authorized` a la CLI.

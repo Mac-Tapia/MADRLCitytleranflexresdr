@@ -141,3 +141,9 @@ data/validation/cubems/raw/
 # SPEC-008 FR-008.4 and SPEC-012 FR-012.3
 *.tmp
 **/source_snapshot.zip
+
+# Generated outputs (campaign manifests, attempts, Colab bundle, test temporaries) never enter the
+# candidate tree (tests/fresh_training/test_github_readiness.py); in Colab they are synced to Drive.
+# Only outputs/README.md is versioned.
+/outputs/*
+!/outputs/README.md

@@ -13,12 +13,40 @@ def _write(path, value):
     path.write_text(json.dumps(value), encoding='utf-8')
 
 
+def _shorten_frozen_runs(attempt, split, steps):
+    """Rewrite the physical evidence of one evaluation as a run of ``steps`` hours, hashes kept consistent."""
+    import hashlib
+    folder = attempt/'evaluation'/split
+    runs_path = folder/'frozen_runs.json'
+    runs = json.loads(runs_path.read_text(encoding='utf-8'))
+    for run in runs.values():
+        run['completed_steps'] = steps
+    _write(runs_path, runs)
+    manifest_path = folder/'evaluation_manifest.json'
+    evaluation = json.loads(manifest_path.read_text(encoding='utf-8'))
+    evaluation['files']['frozen_runs.json'] = hashlib.sha256(runs_path.read_bytes()).hexdigest()
+    _write(manifest_path, evaluation)
+
+
 def test_short_evaluation_cannot_supply_full_split_scientific_rows(tmp_path):
+    # synthetic_evaluate writes a full-split evaluation since 706ad2c5; the short run is built here.
     from uc3m.application.evaluation.results_catalog import build_seed_table
     manifest = _campaign(tmp_path)
     attempt = next(manifest.parent.rglob('attempt.json')).parent
     synthetic_evaluate(attempt, 'test_2025', tmp_path)
-    with pytest.raises(ValueError, match='full|horizon|physical'):
+    assert len(build_seed_table(manifest, stage='confirm', split='test_2025', require_full_split=True).rows) > 0
+    _shorten_frozen_runs(attempt, 'test_2025', 24)
+    with pytest.raises(ValueError, match='full physical split horizon'):
+        build_seed_table(manifest, stage='confirm', split='test_2025', require_full_split=True)
+
+
+def test_evaluation_without_physical_evidence_cannot_supply_full_split_rows(tmp_path):
+    from uc3m.application.evaluation.results_catalog import build_seed_table
+    manifest = _campaign(tmp_path)
+    attempt = next(manifest.parent.rglob('attempt.json')).parent
+    synthetic_evaluate(attempt, 'test_2025', tmp_path)
+    (attempt/'evaluation/test_2025/frozen_runs.json').unlink()
+    with pytest.raises(ValueError, match='physical evaluation evidence missing'):
         build_seed_table(manifest, stage='confirm', split='test_2025', require_full_split=True)
 
 

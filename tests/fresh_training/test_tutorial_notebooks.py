@@ -377,3 +377,111 @@ def test_tutorial_heading_names_the_configured_dataset_and_campaign():
     assert f"`{config['campaign_id']}`" in heading and f"`{config['storage_alias']}`" in heading
     assert acceptance['dataset_hash'][:8] in heading
     assert config['storage_alias'].rsplit('_', 1)[-1] in heading    # the campaign version, e.g. v8
+
+
+def _code_cell(prefix):
+    return next(s for s in _code(_load(NOTEBOOKS[2])) if s.startswith(prefix))
+
+
+def _synthetic_kpi_report(catalog, algorithm, scenario, seed, rng):
+    """Structure of frozen_evaluation's kpi_report.json with random values: tests the figure code only."""
+    from uc3m.application.evaluation.kpi_contract import comparable_kpi_names
+    comparable = [name for _, (_, names) in comparable_kpi_names().items() for name in names]
+    values = {d['name']: {'name': d['name'], 'axis': d.get('axis'), 'unit': d['unit'], 'sense': d['sense'],
+                          'value': float(rng.normal(100, 5)), 'baseline': 100.0, 'availability': 'available',
+                          'gain': None if d['sense'] == 'exposure' else float(rng.normal(0.05, 0.02))}
+              for d in catalog['definitions']}
+    return {'context': {'algorithm': algorithm, 'scenario': scenario, 'seed': seed},
+            'values': values,
+            'citylearn_v3_kpis': [{'name': d['name'], 'axis': d['axis'], 'sense': d['sense'], 'available': True,
+                                   'value': float(rng.normal(1, 0.1)), 'baseline': 1.0}
+                                  for d in catalog['citylearn_v3_kpis']],
+            'comparable_kpi_gains': [{'name': n, 'available': True, 'gain': float(rng.normal(0.02, 0.01))}
+                                     for n in comparable],
+            'thesis_indicators': [{'name': t['name'], 'axis': t['axis'], 'value': 1.0, 'baseline': 1.0,
+                                   'available': True} for t in catalog['thesis_indicators']],
+            'citylearn_v3_building_kpis': [{'building': f'Building_{b}', 'axis': d['objective'], 'kpi': d['name'],
+                                            'value': float(rng.normal(1, 0.1))}
+                                           for b in range(1, 18) for d in catalog['citylearn_v3_kpis']],
+            'axis_gains': {a: float(rng.normal(0.05, 0.03)) for a in ('flexibility', 'co2_emissions', 'energy_cost')}}
+
+
+def test_tutorial_kpi_counts_in_markdown_match_the_catalog():
+    # Section 8 states the KPI counts of every kpi_report.json (owner 2026-11-28: text = code).
+    from collections import Counter
+    from uc3m.application.evaluation.kpi_contract import comparable_kpi_names
+    catalog = yaml.safe_load((REPO/'configs/evaluation/kpis.yaml').read_text(encoding='utf-8'))
+    section = _markdown_cell('## Sección 8: KPIs de la campaña nueva')
+    trace, citylearn, thesis = (len(catalog[k]) for k in ('definitions', 'citylearn_v3_kpis', 'thesis_indicators'))
+    axes = Counter(row['axis'] for row in catalog['citylearn_v3_kpis'])
+    comparable = sum(len(names) for _, names in comparable_kpi_names().values())
+    assert f'**{trace + citylearn + thesis} KPIs**: {trace} calculados' in section
+    assert (f"{citylearn} de CityLearn v3 por eje (`citylearn_v3_kpis`: {axes['flexibility']} de flexibilidad, "
+            f"{axes['co2_emissions']} de CO2 y {axes['energy_cost']} de costo; {comparable} de ellos") in section
+    assert f'{thesis} indicadores de tesis' in section
+    cells = {'8.2': '# ── 8.2  Figura 5', '8.5': '# ── 8.5  Figuras 1-3', '9b.2': '# ── 9b.2  Figura 4'}
+    for figure, cell in (('1', '8.5'), ('2', '8.5'), ('3', '8.5'), ('4', '9b.2'), ('5', '8.2')):
+        assert f'| {figure} | {cell} |' in section
+        assert _code_cell(cells[cell])
+
+
+def test_tutorial_figure_cells_draw_every_kpi_of_the_report(tmp_path):
+    import matplotlib
+    matplotlib.use('Agg')
+    import numpy as np
+    catalog = yaml.safe_load((REPO/'configs/evaluation/kpis.yaml').read_text(encoding='utf-8'))
+    namespace = {'DRIVE_ROOT': tmp_path/'campaign'/'outputs'}
+    exec(compile(_code_cell('# ── 8.0  Funciones de figuras'), 'cell 8.0', 'exec'), namespace)
+    rng = np.random.default_rng(0)
+    reports = [_synthetic_kpi_report(catalog, a, s, seed, rng)
+               for a in namespace['ALGORITHMS'] for s in ('E1', 'E2', 'E3') for seed in (1001, 1002)]
+    frame = namespace['kpi_frame'](reports)
+    expected = len(catalog['definitions']) + len(catalog['citylearn_v3_kpis']) + len(catalog['thesis_indicators'])
+    assert set(frame.groupby(['algorithm', 'scenario', 'seed']).size()) == {expected}
+    fig, summary = namespace['figure_axis_gains'](reports)
+    assert len(summary) == 12 and summary['ic95_inf'].notna().all()
+    by_axis = namespace['figures_kpis_by_axis'](frame)
+    drawn = sum(sum(panel.get_visible() for panel in figure.axes) for figure in by_axis.values())
+    assert drawn == frame.groupby(['layer', 'name']).ngroups == expected
+    assert namespace['kpi_summary'](frame).shape[0] == expected
+    buildings = namespace['building_frame'](reports)
+    assert buildings['building'].nunique() == 17
+    assert set(namespace['figure_buildings'](buildings, REPO/'configs/evaluation/kpis.yaml')) == {
+        'flexibility', 'co2_emissions', 'energy_cost'}
+    _, hypervolumes, ranking, _ = namespace['figure_hypervolume_topsis'](reports)
+    assert {k: len(v) for k, v in hypervolumes.items()} == dict.fromkeys(namespace['ALGORITHMS'], 2)
+    assert sorted(ranking['rank']) == [1, 2, 3, 4]
+    saved = namespace['save_figure'](fig, 'fig1', namespace['FIGURES_DIR'])
+    assert saved.is_file() and saved.parent == tmp_path/'campaign'/'figures'
+    empty = namespace['kpi_frame']([])
+    assert namespace['figures_kpis_by_axis'](empty) == {}
+    namespace['figure_axis_gains']([])
+    namespace['figure_hypervolume_topsis']([])
+    namespace['figure_learning_curves'](namespace['learning_curve_frame']([]), 'pilot')
+
+
+def test_tutorial_building_control_cell_checks_the_real_environment(capsys):
+    # 4.2 reads each agent's action and observation names from the environment and checks D-V6-45.
+    import os
+    import sys as _sys
+    namespace = {'PROJECT_PYTHON': _sys.executable, 'REPO': str(REPO)}
+    previous = os.environ.get('PYTHONPATH')
+    os.environ['PYTHONPATH'] = os.pathsep.join([str(REPO), str(REPO/'CityLearn')] + ([previous] if previous else []))
+    try:
+        exec(compile(_code_cell('# ── 4.2  Control, acciones y observaciones'), 'cell 4.2', 'exec'), namespace)
+    finally:
+        if previous is None:
+            os.environ.pop('PYTHONPATH', None)
+        else:
+            os.environ['PYTHONPATH'] = previous
+    rows = namespace['BUILDING_CONTROL']
+    assert len(rows) == 17 and '17 edificios verificados' in capsys.readouterr().out
+    for row in rows:
+        assert {'electrical_storage', 'cooling_device'} <= set(row['actions'])
+        assert row['observations'][-3:] == ['bill_month_block_peak_kw', 'bill_in_peak_block',
+                                            'bill_demand_usd_kw_month']
+        classes = [n.split('_')[1] for n in row['observations'] if n.startswith('ev_') and n.endswith('_soc_mean')]
+        assert len(row['observations']) == 21 + 5*len(classes) + 3
+    section = _markdown_cell('## Sección 4: Entorno Dec-POMDP')
+    assert '21 valores propios' in section and '5 valores por clase' in section
+    assert '3 del estado de factura' in section

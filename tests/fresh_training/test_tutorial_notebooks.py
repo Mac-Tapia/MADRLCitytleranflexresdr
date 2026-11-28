@@ -128,7 +128,7 @@ def test_execute_is_only_an_explicit_opt_in(relative):
         live = [line for line in _uncommented(source) if '--execute' in line]
         if not live:
             continue
-        assert re.search(r'^EXECUTE_STAGE\s*=\s*False\b', source, re.M), 'execution flag must default to False'
+        assert re.search(r'^EXECUTE_STAGE\s*=\s*False\b', source, re.MULTILINE), 'execution flag must default to False'
         # Every '--execute' literal sits inside an if/elif whose test reads EXECUTE_STAGE,
         # even when the call spans several lines.
         assert _unguarded_execute(source) == [], live
@@ -184,7 +184,7 @@ def test_tutorial_launch_uses_uploaded_bundle_and_campaign_sync():
     assert checkout.index('verify_remote_revision()\n') < checkout.index('cs.apply_overlay(')
     stage = next(s for s in sources if 'EXECUTE_STAGE = False' in s)
     # The pilot is the first stage; later stages change only RUN_STAGE in this same cell.
-    assert re.search(r"^RUN_STAGE = 'pilot'", stage, re.M)
+    assert re.search(r"^RUN_STAGE = 'pilot'", stage, re.MULTILINE)
     assert sum('EXECUTE_STAGE = False' in s for s in sources) == 1
     assert '--owner-authorized' in stage and 'run_stage_with_sync' in stage
     assert 'copytree' not in stage
@@ -254,11 +254,12 @@ def test_tutorial_copies_the_bundle_from_drive_before_the_verified_checkout(tmp_
     # Local kernel: nothing to fetch.
     exec(cell, {'IN_COLAB': False})
     assert 'no se necesita el ZIP' in capsys.readouterr().out
-    # Colab without the ZIP: it is copied from the single bundle found in Drive.
+    # The alias the cell searches is the storage_alias of the campaign configuration.
+    alias = yaml.safe_load((REPO/CAMPAIGN_CONFIG).read_text(encoding='utf-8'))['storage_alias']
+    assert f"CAMPAIGN_ALIAS = '{alias}'" in cell
     content = tmp_path / 'content'
     drive_folder = content / 'drive/MyDrive/MADRL_campaigns'
     drive_folder.mkdir(parents=True)
-    (drive_folder / 'iquitos_x_colab_modular_overlay.zip').write_bytes(b'zip-bytes')
     google = types.ModuleType('google')
     colab = types.ModuleType('google.colab')
     colab.drive = types.SimpleNamespace(mount=lambda path: None)
@@ -266,14 +267,26 @@ def test_tutorial_copies_the_bundle_from_drive_before_the_verified_checkout(tmp_
     monkeypatch.setitem(sys.modules, 'google', google)
     monkeypatch.setitem(sys.modules, 'google.colab', colab)
     patched = cell.replace("'/content/", f"'{content.as_posix()}/")
-    exec(patched, {'IN_COLAB': True})
-    assert (content / 'colab_modular_overlay.zip').read_bytes() == b'zip-bytes'
-    # Two candidates: it refuses instead of guessing.
-    (content / 'colab_modular_overlay.zip').unlink()
-    (drive_folder / 'other_colab_modular_overlay.zip').write_bytes(b'other')
+    target = content / 'colab_modular_overlay.zip'
+    # A ZIP of a previous campaign in Drive is never taken.
+    (drive_folder / 'iquitos_factura_v7_706ad2c5_colab_modular_overlay.zip').write_bytes(b'old')
     with pytest.raises(FileNotFoundError, match='BUNDLE_IN_DRIVE'):
         exec(patched, {'IN_COLAB': True})
-
+    # Colab without the ZIP: the single bundle of this campaign in Drive is copied.
+    (drive_folder / f'{alias}_abc12345_colab_modular_overlay.zip').write_bytes(b'drive-bytes')
+    exec(patched, {'IN_COLAB': True})
+    assert target.read_bytes() == b'drive-bytes'
+    # A bundle uploaded to /content with its descriptive name is preferred to Drive.
+    target.unlink()
+    (content / f'{alias}_abc12345_colab_modular_overlay.zip').write_bytes(b'uploaded-bytes')
+    exec(patched, {'IN_COLAB': True})
+    assert target.read_bytes() == b'uploaded-bytes'
+    # Two bundles of this campaign in Drive: it refuses instead of guessing.
+    target.unlink()
+    (content / f'{alias}_abc12345_colab_modular_overlay.zip').unlink()
+    (drive_folder / f'{alias}_def67890_colab_modular_overlay.zip').write_bytes(b'other')
+    with pytest.raises(FileNotFoundError, match='BUNDLE_IN_DRIVE'):
+        exec(patched, {'IN_COLAB': True})
 
 def _markdown_cell(prefix):
     return next(_source(c) for c in _load(NOTEBOOKS[2])['cells']

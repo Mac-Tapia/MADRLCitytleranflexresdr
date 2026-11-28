@@ -3,8 +3,10 @@
 #   with --owner-authorized <written decision> (this file is a hashed input of the campaign)
 schema_version: 1
 # Tarifas registradas. Cada intento empieza desde cero con el dataset verificado.
-campaign_id: fresh_iquitos_20261126_factura_v7
-storage_alias: iquitos_factura_v7
+# factura_v8 (propietario, 2026-11-28): misma configuración que factura_v7, preparada de nuevo con el
+# código vigente para que local y Colab usen la misma identidad; factura_v7 nunca entrenó.
+campaign_id: fresh_iquitos_20261128_factura_v8
+storage_alias: iquitos_factura_v8
 dataset_root: data/campaigns/iquitos_v6_trial13   # SPEC-016 with bill tariffs (D-V6-50), bill corrections (D-V6-57, D-V6-58), the weather of Iquitos (D-V6-59) and temperature by building function (D-V6-60, D-V6-61), 13/13 gates 2026-11-08
 scenario_catalog: configs/scenarios_recorded.yaml
 algorithm_config: configs/algorithms/native.yaml

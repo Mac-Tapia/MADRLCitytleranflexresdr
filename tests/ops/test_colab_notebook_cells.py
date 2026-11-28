@@ -232,6 +232,42 @@ def test_post_training_cells_call_pipeline_subcommands(cells, marker, command):
     assert 'uc3m.application.pipeline' in source and f"'{command}'" in source and "'--manifest'" in source
 
 
+def test_launch_tutorial_can_prepare_a_colab_runtime_with_insufficient_vram(capsys):
+    tutorial = json.loads(builder.ORIGINAL.read_text(encoding='utf-8'))
+    source = next(_source(cell) for cell in tutorial['cells'] if _source(cell).startswith('# 1.1 '))
+    namespace = {'IN_COLAB': True, 'RAM_FREE_GIB': 80.56, 'VRAM_FREE_GIB': 39.49}
+
+    exec(compile(source, 'tutorial-1.1', 'exec'), namespace)
+
+    assert namespace['COLAB_READY'] is True
+    assert '39.49' in capsys.readouterr().out
+
+
+def test_launch_tutorial_reports_a_blocked_stage_without_dispatching(capsys, tmp_path):
+    from types import SimpleNamespace
+
+    tutorial = json.loads(builder.ORIGINAL.read_text(encoding='utf-8'))
+    source = next(_source(cell) for cell in tutorial['cells'] if _source(cell).startswith('# 7.2 '))
+    source = source.replace('EXECUTE_STAGE = False', 'EXECUTE_STAGE = True').replace(
+        "OWNER_DECISION = ''", "OWNER_DECISION = 'decision registrada'")
+    phase = {'algorithms': ['HAPPO', 'MASAC'], 'workers': 0,
+             'reasons': ['insufficient_resources:MASAC:vram']}
+
+    def refuse_dispatch(*args, **kwargs):
+        pytest.fail('A stage with zero workers must not dispatch')
+
+    namespace = {'PROJECT_ROOT': tmp_path, 'PYTHON': sys.executable, 'IN_COLAB': True,
+                 'SYNC_COMMAND': ['sync'], 'ARTIFACT_ROOT': tmp_path,
+                 'cs': SimpleNamespace(run_cli=lambda *args, **kwargs: SimpleNamespace(
+                     report={'phase_plan': {'hpo': [phase]}}), phase_plan_lines=lambda *args: [],
+                     run_stage_with_sync=refuse_dispatch)}
+
+    exec(compile(source, 'tutorial-7.2', 'exec'), namespace)
+
+    assert namespace['STAGE_TRAINING_COMPLETE'] is False
+    assert 'insufficient_resources:MASAC:vram' in capsys.readouterr().out
+
+
 def test_launch_tutorial_contains_guarded_post_training_workflow():
     tutorial = json.loads(builder.ORIGINAL.read_text(encoding='utf-8'))
     workflow = {}

@@ -1,0 +1,1496 @@
+{
+  "schema_version": 1,
+  "campaign_id": "fresh_iquitos_20261126_factura_v7",
+  "storage_alias": "iquitos_factura_v7",
+  "status": "planned",
+  "spec_hash": "db15957974ecc029aea5725a593277b84a3b92cdd8cea6ac962abd06555f3362",
+  "identity": {
+    "config_sha256": "a70c9395a64f965d9c6a0c3589922e7e1aab39662f2b4d1adff0f3b13d4e2655",
+    "algorithm_config_sha256": "e37b58adc6ceba8c147dfa385f18690a95f23cc655618844a98da13254b0ec33",
+    "scenario_catalog_sha256": "89165052315fe547a1ccbbfb80653c35b63352720194da46465efcd78021f717",
+    "dataset_hash": "a09e83dd3cda538602d52d4ab4d94bb8c199c2dcb8fd98b4d51b4d37d47206d5",
+    "normalizer_sha256": "b91c61b1daaa4485c5f7605ddc3225319c59992308624dd4fc4297eb90b9959f",
+    "source_sha256": "6d7b9bd11466a1df9b9e9ad29ab6141744e8fdbe60d8166019ff0775548ef461",
+    "input_manifest_sha256": "cbc640634e0fc1c7d8a5fefed322a5f4a240a61f5a6c55c26f0c23ab207cc9f0",
+    "algorithm_contract_sha256": "080f834f4ea4c74b435d90b655e9c4354cd095e94a08e5a681e9246b088c4e86",
+    "endpoint_applicability_sha256": "bac42bf21baf34a1b69a094239d87b1d07b7e74c5e658d1da65a3b17b9758f8e",
+    "supervision_sha256": "5e903aeb6417153feb7f23b544e3d89114d3592f054208555fadeb3940374ad6",
+    "optimizer_owners_sha256": "13168568a10d5e9bfde86d7a171cd1efd59b5124f01dc9e55b63df6421c18591",
+    "source_git_head": "706ad2c516ff0e873b60588a3305d4d10cba08dd",
+    "test_source_sha256": "6afb7258b63a45225d5ddd3a21cfc56fba8611d7ec394108ff8d8e23d707da93",
+    "stage_plan_sha256": "18ff9474cc249bff0ba199fed7607700cb1ed930c68eb67c7d5a0f864e805934",
+    "input_policy_sha256": "61cb1892ca3b8332684ea62462fd8cb262906e16c280283a7a3bb282742f3341"
+  },
+  "inputs": {
+    "config": {
+      "kind": "file",
+      "path": "configs/experiments/iquitos.yaml",
+      "sha256": "a70c9395a64f965d9c6a0c3589922e7e1aab39662f2b4d1adff0f3b13d4e2655"
+    },
+    "algorithm_config": {
+      "kind": "file",
+      "path": "configs/algorithms/native.yaml",
+      "sha256": "74d977e74bcb58d8c244a081d01fbdd8a36631236a579e865426ddac6d0d881b"
+    },
+    "scenario_catalog": {
+      "kind": "file",
+      "path": "configs/scenarios_recorded.yaml",
+      "sha256": "89165052315fe547a1ccbbfb80653c35b63352720194da46465efcd78021f717"
+    },
+    "objective_policies": {
+      "kind": "file",
+      "path": "configs/objective_policies.yaml",
+      "sha256": "c20e4fc3472e6f552ec091794158ce2da6beafdc5d1735c9f460b8301e8a5821"
+    },
+    "kpi_catalog": {
+      "kind": "file",
+      "path": "configs/evaluation/kpis.yaml",
+      "sha256": "8a6606359f4eb19028db661ba8216f622667d841c029e854b3d4dd676ac39420"
+    },
+    "dataset": {
+      "kind": "tree",
+      "path": "data/campaigns/iquitos_v6_trial13/dataset",
+      "sha256": "a09e83dd3cda538602d52d4ab4d94bb8c199c2dcb8fd98b4d51b4d37d47206d5"
+    },
+    "dataset_acceptance": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/dataset_acceptance.json",
+      "sha256": "a53add12580d7ab1c2a28039abbd9c29aef1f9f6da24d067ef28a935a4330281"
+    },
+    "split_manifest": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/split_manifest.json",
+      "sha256": "91cb6e60dddc0cf207ba84836f4ec48d800615fa1e05522dd29d7a1e7c6be047"
+    },
+    "normalizer": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/normalizer.json",
+      "sha256": "2628f3731e6f82731f6f781c55179a742da693e265bfa2d38d991eb836d875cb"
+    },
+    "source": {
+      "kind": "source",
+      "path": ".",
+      "sha256": "6d7b9bd11466a1df9b9e9ad29ab6141744e8fdbe60d8166019ff0775548ef461"
+    },
+    "bill_tariffs": {
+      "kind": "file",
+      "path": "data/tariffs/osinergmin/bill_tariffs.csv",
+      "sha256": "4f87d805ffba77433ad8291a16b6240c6c47e64dcc8bf326bb3c0c12a650199d"
+    },
+    "split:train_2023": {
+      "kind": "tree",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023",
+      "sha256": "d6a1afc45364ba646bd9cc52d73e639521c7909ebd2b9dd4ba21f9eba211919f"
+    },
+    "split:validation_2024": {
+      "kind": "tree",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024",
+      "sha256": "65d27afb9e670f3c5049adeacfd6943325a7f50deaf5e2870732e2d184936d41"
+    },
+    "split:test_2025": {
+      "kind": "tree",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025",
+      "sha256": "6c9d32ad81fa8b0b37bd22c87e0e3b638482ddf2899def0443b84dc1ae0fdf26"
+    },
+    "endpoint_price:0": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_1.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:1": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_10.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:2": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_11.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:3": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_12.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:4": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_13.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:5": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_14.csv",
+      "sha256": "f592c3af6425360334f7eb7de1496dcf7a69817f3649b35746c2ce7628633d29"
+    },
+    "endpoint_price:6": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_15.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:7": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_16.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:8": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_17.csv",
+      "sha256": "f592c3af6425360334f7eb7de1496dcf7a69817f3649b35746c2ce7628633d29"
+    },
+    "endpoint_price:9": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_2.csv",
+      "sha256": "f592c3af6425360334f7eb7de1496dcf7a69817f3649b35746c2ce7628633d29"
+    },
+    "endpoint_price:10": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_3.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:11": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_4.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:12": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_5.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:13": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_6.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:14": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_7.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:15": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_8.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:16": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_9.csv",
+      "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805"
+    },
+    "endpoint_price:17": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_1.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:18": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_10.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:19": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_11.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:20": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_12.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:21": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_13.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:22": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_14.csv",
+      "sha256": "12172a586ea78df942b120d073c6552ff1e5ffec6295facdaad4846d098badac"
+    },
+    "endpoint_price:23": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_15.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:24": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_16.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:25": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_17.csv",
+      "sha256": "12172a586ea78df942b120d073c6552ff1e5ffec6295facdaad4846d098badac"
+    },
+    "endpoint_price:26": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_2.csv",
+      "sha256": "12172a586ea78df942b120d073c6552ff1e5ffec6295facdaad4846d098badac"
+    },
+    "endpoint_price:27": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_3.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:28": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_4.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:29": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_5.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:30": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_6.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:31": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_7.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:32": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_8.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:33": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_9.csv",
+      "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21"
+    },
+    "endpoint_price:34": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_1.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:35": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_10.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:36": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_11.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:37": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_12.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:38": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_13.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:39": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_14.csv",
+      "sha256": "fad0743ae7d2a8918288cbb601b6e01b0babe5f813baf731fe78f27123cfefdd"
+    },
+    "endpoint_price:40": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_15.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:41": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_16.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:42": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_17.csv",
+      "sha256": "fad0743ae7d2a8918288cbb601b6e01b0babe5f813baf731fe78f27123cfefdd"
+    },
+    "endpoint_price:43": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_2.csv",
+      "sha256": "fad0743ae7d2a8918288cbb601b6e01b0babe5f813baf731fe78f27123cfefdd"
+    },
+    "endpoint_price:44": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_3.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:45": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_4.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:46": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_5.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:47": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_6.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:48": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_7.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:49": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_8.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    },
+    "endpoint_price:50": {
+      "kind": "file",
+      "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_9.csv",
+      "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9"
+    }
+  },
+  "optimizer_owners": {
+    "HAPPO": [
+      "actor_agent0",
+      "actor_agent1",
+      "actor_agent2",
+      "actor_agent3",
+      "actor_agent4",
+      "actor_agent5",
+      "actor_agent6",
+      "actor_agent7",
+      "actor_agent8",
+      "actor_agent9",
+      "actor_agent10",
+      "actor_agent11",
+      "actor_agent12",
+      "actor_agent13",
+      "actor_agent14",
+      "actor_agent15",
+      "actor_agent16",
+      "critic"
+    ],
+    "MASAC": [
+      "masac_policy",
+      "masac_critic_q1",
+      "masac_critic_q2",
+      "masac_alpha"
+    ],
+    "MATD3": [
+      "policy_0/actor",
+      "policy_0/critic",
+      "policy_1/actor",
+      "policy_1/critic",
+      "policy_2/actor",
+      "policy_2/critic",
+      "policy_3/actor",
+      "policy_3/critic",
+      "policy_4/actor",
+      "policy_4/critic",
+      "policy_5/actor",
+      "policy_5/critic",
+      "policy_6/actor",
+      "policy_6/critic",
+      "policy_7/actor",
+      "policy_7/critic",
+      "policy_8/actor",
+      "policy_8/critic",
+      "policy_9/actor",
+      "policy_9/critic",
+      "policy_10/actor",
+      "policy_10/critic",
+      "policy_11/actor",
+      "policy_11/critic",
+      "policy_12/actor",
+      "policy_12/critic",
+      "policy_13/actor",
+      "policy_13/critic",
+      "policy_14/actor",
+      "policy_14/critic",
+      "policy_15/actor",
+      "policy_15/critic",
+      "policy_16/actor",
+      "policy_16/critic"
+    ],
+    "MAAC": [
+      "maac_agent0_policy",
+      "maac_agent1_policy",
+      "maac_agent2_policy",
+      "maac_agent3_policy",
+      "maac_agent4_policy",
+      "maac_agent5_policy",
+      "maac_agent6_policy",
+      "maac_agent7_policy",
+      "maac_agent8_policy",
+      "maac_agent9_policy",
+      "maac_agent10_policy",
+      "maac_agent11_policy",
+      "maac_agent12_policy",
+      "maac_agent13_policy",
+      "maac_agent14_policy",
+      "maac_agent15_policy",
+      "maac_agent16_policy",
+      "maac_critic"
+    ]
+  },
+  "input_policy": {
+    "retired_roots": [
+      "outputs/_drive_madrl",
+      "outputs/citylearn_v3_madrl_full_20260615_074011_v4",
+      "outputs/madrl_v3_20260627_164047",
+      "outputs/modular_smoke",
+      "outputs/thesis_objective_evidence",
+      "outputs/dataset_cache",
+      "outputs/orchestration-tests.xml",
+      "CityLearn/data/datasets/citylearn_iquitos_2023_2025",
+      "outputs/modular_training",
+      "outputs/citylearn_v3_madrl",
+      "outputs/colab_delivery",
+      "data/dataset_audit"
+    ]
+  },
+  "algorithm_contract": {
+    "schema_version": 1,
+    "runtime_flags": [
+      "--cuda"
+    ],
+    "hyperparameter_grid": {
+      "learning_rate": [
+        0.0001,
+        0.0003
+      ],
+      "hidden_dimension": [
+        128,
+        256
+      ],
+      "gamma": [
+        0.99,
+        0.9999
+      ]
+    },
+    "algorithms": {
+      "HAPPO": {
+        "mapping": {
+          "learning_rate": [
+            "--actor-lr",
+            "--critic-lr"
+          ],
+          "hidden_dimension": [
+            "--hidden-size"
+          ],
+          "gamma": [
+            "--gamma"
+          ]
+        },
+        "fixed_flags": {
+          "action_grid_levels": "--action-grid-levels"
+        },
+        "fixed": {
+          "action_grid_levels": 5
+        },
+        "optimizer_owners": {
+          "per_agent": [
+            "actor_agent{i}"
+          ],
+          "shared": [
+            "critic"
+          ]
+        },
+        "runtime_requirements": {
+          "min_ram_gib": 8,
+          "min_vram_gib": 4,
+          "applies_from_episode_time_steps": 1000
+        },
+        "declared_limitations": [
+          "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head.",
+          "one parallel environment instead of the author's 20 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; one 8760-step episode gives 8760 steps per update, more than the author's 20 x 200 = 4000.",
+          "continuous actions are padded to the largest equipment count (D03, SPEC-015 D-M3-6): an output with no equipment in its building is inert, cut before the simulator; the equipment of every output is the building's action_names."
+        ]
+      },
+      "MASAC": {
+        "mapping": {
+          "learning_rate": [
+            "--actor-lr",
+            "--critic-lr"
+          ],
+          "hidden_dimension": [
+            "--rnn-hidden-dim"
+          ],
+          "gamma": [
+            "--gamma"
+          ]
+        },
+        "fixed_flags": {
+          "buffer_size": "--buffer-size",
+          "critic_batch_size": "--critic-batch-size",
+          "critic_train_steps": "--critic-train-steps",
+          "discrete_action_mode": "--discrete-action-mode"
+        },
+        "fixed": {
+          "buffer_size": 50,
+          "critic_batch_size": 32,
+          "critic_train_steps": 1,
+          "discrete_action_mode": "grid"
+        },
+        "optimizer_owners": {
+          "per_agent": [],
+          "shared": [
+            "masac_policy",
+            "masac_critic_q1",
+            "masac_critic_q2",
+            "masac_alpha"
+          ]
+        },
+        "hyperparameter_grid_override": {
+          "hidden_dimension": [
+            128
+          ]
+        },
+        "runtime_requirements": {
+          "min_ram_gib": 50,
+          "min_vram_gib_by_rnn_hidden_dim": {
+            "128": 74
+          },
+          "applies_from_episode_time_steps": 1000
+        },
+        "declared_limitations": [
+          "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head.",
+          "one QMIX critic update per episode (author critic_train_steps=1) over a 32-episode batch; the update budget per environment step differs from the other backends (declared confound).",
+          "SPEC-015 D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128 (74 GiB of VRAM, an 80 GB GPU of 74.5 GiB); the 256 candidate of the shared grid needs 105 GiB and is not trainable on an 80 GB GPU, so MASAC's search space is narrower than the other three backends' (declared). The 220 actions of the common grid (D-M3-10: 44 equipments x 5 levels) set the size."
+        ]
+      },
+      "MATD3": {
+        "mapping": {
+          "learning_rate": [
+            "--lr"
+          ],
+          "hidden_dimension": [
+            "--hidden-size"
+          ],
+          "gamma": [
+            "--gamma"
+          ]
+        },
+        "fixed_flags": {
+          "batch_size": "--batch-size",
+          "buffer_size": "--buffer-size",
+          "action_grid_levels": "--action-grid-levels"
+        },
+        "fixed": {
+          "batch_size": 256,
+          "buffer_size": 744600,
+          "action_grid_levels": 5
+        },
+        "optimizer_owners": {
+          "per_agent": [
+            "policy_{i}/actor",
+            "policy_{i}/critic"
+          ],
+          "shared": []
+        },
+        "runtime_requirements": {
+          "min_ram_gib": 40,
+          "min_vram_gib": 4,
+          "applies_from_episode_time_steps": 1000
+        },
+        "declared_limitations": [
+          "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head.",
+          "continuous actions are padded to the largest equipment count (D03, SPEC-015 D-M3-6): an output with no equipment in its building is inert, cut before the simulator; the equipment of every output is the building's action_names."
+        ]
+      },
+      "MAAC": {
+        "mapping": {
+          "learning_rate": [
+            "--pi-lr",
+            "--q-lr"
+          ],
+          "hidden_dimension": [
+            "--hidden-size"
+          ],
+          "gamma": [
+            "--gamma"
+          ]
+        },
+        "fixed_flags": {
+          "batch_size": "--batch-size",
+          "buffer_length": "--buffer-length",
+          "steps_per_update": "--steps-per-update",
+          "num_updates": "--num-updates",
+          "discrete_action_mode": "--discrete-action-mode"
+        },
+        "fixed": {
+          "batch_size": 1024,
+          "buffer_length": 1000000,
+          "steps_per_update": 100,
+          "num_updates": 4,
+          "discrete_action_mode": "grid"
+        },
+        "optimizer_owners": {
+          "per_agent": [
+            "maac_agent{i}_policy"
+          ],
+          "shared": [
+            "maac_critic"
+          ]
+        },
+        "runtime_requirements": {
+          "min_ram_gib": 8,
+          "min_vram_gib": 4,
+          "applies_from_episode_time_steps": 1000
+        },
+        "declared_limitations": [
+          "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head.",
+          "one parallel environment instead of the author's 12 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; the schedule of 4 updates per 100 environment steps is the author's.",
+          "4 updates per 100 environment steps differ from the update budget of the other backends (declared confound, as MASAC)."
+        ]
+      }
+    }
+  },
+  "endpoint_applicability": {
+    "schema_version": 1,
+    "rule": "district price response requires one shared, variable recorded price series per split",
+    "not_applicable_endpoints": [
+      [
+        "E3",
+        "price_signal_deviation"
+      ]
+    ],
+    "price_files": [
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_1.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_10.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_11.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_12.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_13.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_14.csv",
+        "split": "train_2023",
+        "sha256": "f592c3af6425360334f7eb7de1496dcf7a69817f3649b35746c2ce7628633d29",
+        "rows": 8760,
+        "minimum": 0.093316642,
+        "maximum": 0.116549977,
+        "series_sha256": "2e07acf970df3edf7dfc7da93bdb60e571a4414737979f99e57dcd764fac6a50"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_15.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_16.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_17.csv",
+        "split": "train_2023",
+        "sha256": "f592c3af6425360334f7eb7de1496dcf7a69817f3649b35746c2ce7628633d29",
+        "rows": 8760,
+        "minimum": 0.093316642,
+        "maximum": 0.116549977,
+        "series_sha256": "2e07acf970df3edf7dfc7da93bdb60e571a4414737979f99e57dcd764fac6a50"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_2.csv",
+        "split": "train_2023",
+        "sha256": "f592c3af6425360334f7eb7de1496dcf7a69817f3649b35746c2ce7628633d29",
+        "rows": 8760,
+        "minimum": 0.093316642,
+        "maximum": 0.116549977,
+        "series_sha256": "2e07acf970df3edf7dfc7da93bdb60e571a4414737979f99e57dcd764fac6a50"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_3.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_4.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_5.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_6.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_7.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_8.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/train_2023/pricing_9.csv",
+        "split": "train_2023",
+        "sha256": "948b9bf4190e143473b0ce55916f920c8c923061ee6dcada9be0a2f99963f805",
+        "rows": 8760,
+        "minimum": 0.085706694,
+        "maximum": 0.110415115,
+        "series_sha256": "7e52b62521eca67178f1ea4552dba2787f6bf4b108e8863522827349c06a5850"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_1.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_10.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_11.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_12.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_13.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_14.csv",
+        "split": "validation_2024",
+        "sha256": "12172a586ea78df942b120d073c6552ff1e5ffec6295facdaad4846d098badac",
+        "rows": 8784,
+        "minimum": 0.077844104,
+        "maximum": 0.090233178,
+        "series_sha256": "694cf87b108b9c2128a513189c6c2a7917b5716d4d88089db4f7b50e601d8a31"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_15.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_16.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_17.csv",
+        "split": "validation_2024",
+        "sha256": "12172a586ea78df942b120d073c6552ff1e5ffec6295facdaad4846d098badac",
+        "rows": 8784,
+        "minimum": 0.077844104,
+        "maximum": 0.090233178,
+        "series_sha256": "694cf87b108b9c2128a513189c6c2a7917b5716d4d88089db4f7b50e601d8a31"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_2.csv",
+        "split": "validation_2024",
+        "sha256": "12172a586ea78df942b120d073c6552ff1e5ffec6295facdaad4846d098badac",
+        "rows": 8784,
+        "minimum": 0.077844104,
+        "maximum": 0.090233178,
+        "series_sha256": "694cf87b108b9c2128a513189c6c2a7917b5716d4d88089db4f7b50e601d8a31"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_3.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_4.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_5.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_6.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_7.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_8.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/validation_2024/pricing_9.csv",
+        "split": "validation_2024",
+        "sha256": "c8291b6aaed90bafd797b4422b2aebd0539b615ba4b715f0e063e28fdb6cfb21",
+        "rows": 8784,
+        "minimum": 0.071506995,
+        "maximum": 0.082851432,
+        "series_sha256": "07f125c541049e59c68a2a85e34c790988034e584915810a97f2f3ed67ce2925"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_1.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_10.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_11.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_12.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_13.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_14.csv",
+        "split": "test_2025",
+        "sha256": "fad0743ae7d2a8918288cbb601b6e01b0babe5f813baf731fe78f27123cfefdd",
+        "rows": 8760,
+        "minimum": 0.088167753,
+        "maximum": 0.107146948,
+        "series_sha256": "2476bc6e1312e2f335b986ced01afa72c047c26eb3d1d45cef45c1b9d58acc2d"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_15.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_16.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_17.csv",
+        "split": "test_2025",
+        "sha256": "fad0743ae7d2a8918288cbb601b6e01b0babe5f813baf731fe78f27123cfefdd",
+        "rows": 8760,
+        "minimum": 0.088167753,
+        "maximum": 0.107146948,
+        "series_sha256": "2476bc6e1312e2f335b986ced01afa72c047c26eb3d1d45cef45c1b9d58acc2d"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_2.csv",
+        "split": "test_2025",
+        "sha256": "fad0743ae7d2a8918288cbb601b6e01b0babe5f813baf731fe78f27123cfefdd",
+        "rows": 8760,
+        "minimum": 0.088167753,
+        "maximum": 0.107146948,
+        "series_sha256": "2476bc6e1312e2f335b986ced01afa72c047c26eb3d1d45cef45c1b9d58acc2d"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_3.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_4.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_5.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_6.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_7.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_8.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      },
+      {
+        "path": "data/campaigns/iquitos_v6_trial13/splits/test_2025/pricing_9.csv",
+        "split": "test_2025",
+        "sha256": "d251e3cc0888460d8611cbf14803066d815b9085c2683d852195adf842e16da9",
+        "rows": 8760,
+        "minimum": 0.080968555,
+        "maximum": 0.098400258,
+        "series_sha256": "ce5464e0277bff1f812b15422a8f0c769dd2b5ec60323b741b17ec6ec381ecad"
+      }
+    ],
+    "effective_tariff": {
+      "policy_id": "billed",
+      "mode": "recorded",
+      "multiplier": 1.0,
+      "fingerprint": "f7a2685e289f0abef677cb8a57e93a2f638c6f73829ca13b2cb4edef783cede4"
+    }
+  },
+  "scenario_catalog": "configs/scenarios_recorded.yaml",
+  "algorithm_config": "configs/algorithms/native.yaml",
+  "supervision": {
+    "max_constraint_dominance_ratio": 1.0
+  },
+  "training_phases": [
+    [
+      "HAPPO",
+      "MASAC"
+    ],
+    [
+      "MATD3",
+      "MAAC"
+    ]
+  ],
+  "budget": {
+    "pilot": {
+      "treatments": 4,
+      "episodes": 12,
+      "env_steps": 105120
+    },
+    "hpo": {
+      "treatments": 252,
+      "episodes": 2520,
+      "env_steps": 22075200
+    },
+    "confirm": {
+      "treatments": 144,
+      "episodes": 7200,
+      "env_steps": 63072000
+    },
+    "sensitivity": {
+      "treatments": 72,
+      "episodes": 3600,
+      "env_steps": 31536000
+    }
+  },
+  "hpo_candidates": {
+    "c1": {
+      "learning_rate": 0.0001,
+      "hidden_dimension": 128,
+      "gamma": 0.99
+    },
+    "c2": {
+      "learning_rate": 0.0001,
+      "hidden_dimension": 128,
+      "gamma": 0.9999
+    },
+    "c3": {
+      "learning_rate": 0.0001,
+      "hidden_dimension": 256,
+      "gamma": 0.99
+    },
+    "c4": {
+      "learning_rate": 0.0001,
+      "hidden_dimension": 256,
+      "gamma": 0.9999
+    },
+    "c5": {
+      "learning_rate": 0.0003,
+      "hidden_dimension": 128,
+      "gamma": 0.99
+    },
+    "c6": {
+      "learning_rate": 0.0003,
+      "hidden_dimension": 128,
+      "gamma": 0.9999
+    },
+    "c7": {
+      "learning_rate": 0.0003,
+      "hidden_dimension": 256,
+      "gamma": 0.99
+    },
+    "c8": {
+      "learning_rate": 0.0003,
+      "hidden_dimension": 256,
+      "gamma": 0.9999
+    }
+  },
+  "hpo_candidates_by_algorithm": {
+    "HAPPO": {
+      "c1": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c2": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c3": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c4": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      },
+      "c5": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c6": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c7": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c8": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      }
+    },
+    "MASAC": {
+      "c1": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c2": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c5": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c6": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      }
+    },
+    "MATD3": {
+      "c1": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c2": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c3": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c4": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      },
+      "c5": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c6": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c7": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c8": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      }
+    },
+    "MAAC": {
+      "c1": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c2": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c3": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c4": {
+        "learning_rate": 0.0001,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      },
+      "c5": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.99
+      },
+      "c6": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 128,
+        "gamma": 0.9999
+      },
+      "c7": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.99
+      },
+      "c8": {
+        "learning_rate": 0.0003,
+        "hidden_dimension": 256,
+        "gamma": 0.9999
+      }
+    }
+  },
+  "collapsed_candidates": {
+    "hpo": {
+      "HAPPO": {
+        "c1": [
+          "c1"
+        ],
+        "c2": [
+          "c2"
+        ],
+        "c3": [
+          "c3"
+        ],
+        "c4": [
+          "c4"
+        ],
+        "c5": [
+          "c5"
+        ],
+        "c6": [
+          "c6"
+        ],
+        "c7": [
+          "c7"
+        ],
+        "c8": [
+          "c8"
+        ]
+      },
+      "MASAC": {
+        "c1": [
+          "c1"
+        ],
+        "c2": [
+          "c2"
+        ],
+        "c5": [
+          "c5"
+        ],
+        "c6": [
+          "c6"
+        ]
+      },
+      "MATD3": {
+        "c1": [
+          "c1"
+        ],
+        "c2": [
+          "c2"
+        ],
+        "c3": [
+          "c3"
+        ],
+        "c4": [
+          "c4"
+        ],
+        "c5": [
+          "c5"
+        ],
+        "c6": [
+          "c6"
+        ],
+        "c7": [
+          "c7"
+        ],
+        "c8": [
+          "c8"
+        ]
+      },
+      "MAAC": {
+        "c1": [
+          "c1"
+        ],
+        "c2": [
+          "c2"
+        ],
+        "c3": [
+          "c3"
+        ],
+        "c4": [
+          "c4"
+        ],
+        "c5": [
+          "c5"
+        ],
+        "c6": [
+          "c6"
+        ],
+        "c7": [
+          "c7"
+        ],
+        "c8": [
+          "c8"
+        ]
+      }
+    }
+  },
+  "declared_limitations": {
+    "HAPPO": [
+      "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head.",
+      "one parallel environment instead of the author's 20 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; one 8760-step episode gives 8760 steps per update, more than the author's 20 x 200 = 4000.",
+      "continuous actions are padded to the largest equipment count (D03, SPEC-015 D-M3-6): an output with no equipment in its building is inert, cut before the simulator; the equipment of every output is the building's action_names."
+    ],
+    "MASAC": [
+      "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head.",
+      "one QMIX critic update per episode (author critic_train_steps=1) over a 32-episode batch; the update budget per environment step differs from the other backends (declared confound).",
+      "SPEC-015 D-M3-8: on iquitos_v6 MASAC searches only rnn_hidden_dim 128 (74 GiB of VRAM, an 80 GB GPU of 74.5 GiB); the 256 candidate of the shared grid needs 105 GiB and is not trainable on an 80 GB GPU, so MASAC's search space is narrower than the other three backends' (declared). The 220 actions of the common grid (D-M3-10: 44 equipments x 5 levels) set the size."
+    ],
+    "MATD3": [
+      "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head.",
+      "continuous actions are padded to the largest equipment count (D03, SPEC-015 D-M3-6): an output with no equipment in its building is inert, cut before the simulator; the equipment of every output is the building's action_names."
+    ],
+    "MAAC": [
+      "common action grid (SPEC-015 D-M3-7, D-M3-9, D-M3-10): the 4 MADRL act on the same 5 levels per equipment; HAPPO and MATD3 keep their continuous output rounded by the environment, MASAC and MAAC choose one level per equipment with a multi-discrete head (action branching, Tavakoli et al. 2018), a declared change of their original action head.",
+      "one parallel environment instead of the author's 12 n_rollout_threads (owner 2026-11-06): each copy is the whole 17-building district and the Colab plan is not changed; the schedule of 4 updates per 100 environment steps is the author's.",
+      "4 updates per 100 environment steps differ from the update budget of the other backends (declared confound, as MASAC)."
+    ]
+  },
+  "stages": {
+    "pilot": {
+      "path": "stages/pilot.json",
+      "sha256": "4899b9ca445fccdc8a03fea99a5b4350f73a34817dacd665b16dbd8e5d32d9dc",
+      "treatments": 4
+    },
+    "hpo": {
+      "path": "stages/hpo.json",
+      "sha256": "e993b42eefbfe92e5d2ff18ed99289f3dd35e83debb8a43ca61f89ac4bf19dfe",
+      "treatments": 252
+    },
+    "confirm": {
+      "path": "stages/confirm.json",
+      "sha256": "234017dfc8a6a885f0b13f2089f4a0f5578da4be4726bc220bca66af8b8bcdb3",
+      "treatments": 144
+    },
+    "sensitivity": {
+      "path": "stages/sensitivity.json",
+      "sha256": "5cacd1bea9b6c296635c887244974e2cfa6cd56c392033dc34019b3a71d56176",
+      "treatments": 72
+    }
+  },
+  "launch_authorized": {},
+  "resume": "disabled; every attempt starts at episode zero",
+  "prepared_at": "2026-11-28T04:03:25.701579+00:00"
+}

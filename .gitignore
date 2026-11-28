@@ -142,8 +142,16 @@ data/validation/cubems/raw/
 *.tmp
 **/source_snapshot.zip
 
-# Generated outputs (campaign manifests, attempts, Colab bundle, test temporaries) never enter the
-# candidate tree (tests/fresh_training/test_github_readiness.py); in Colab they are synced to Drive.
-# Only outputs/README.md is versioned.
+# Generated outputs (attempts, checkpoints, Colab bundle, test temporaries) never enter the candidate
+# tree (tests/fresh_training/test_github_readiness.py); in Colab they are synced to Drive. Versioned:
+# outputs/README.md and, per SPEC-008 FR-008.4, the campaign manifests (campaign.json,
+# campaign_manifest.json, stages/*.json); tests/contract/test_gitignore_rules.py checks both sides.
 /outputs/*
 !/outputs/README.md
+!/outputs/campaigns/
+/outputs/campaigns/*/*
+!/outputs/campaigns/*/campaign.json
+!/outputs/campaigns/*/campaign_manifest.json
+!/outputs/campaigns/*/stages/
+/outputs/campaigns/*/stages/*
+!/outputs/campaigns/*/stages/*.json

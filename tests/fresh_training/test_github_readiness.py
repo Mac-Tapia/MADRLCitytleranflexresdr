@@ -3,6 +3,7 @@
 These are local checks. remote_verified stays false until a real Actions run of
 the same commit is attached; nothing here pushes, merges or changes settings.
 """
+import re
 import subprocess
 import sys
 import zipfile
@@ -12,8 +13,13 @@ import pytest
 import yaml
 
 from scripts.quality.verify_ci_checkout import verify_ci_checkout
-from tools.ops.audit_github_readiness import (MIB, audit_github_readiness, candidate_tree, declared_distributions,
-                                              undeclared_runtime_imports)
+from tools.ops.audit_github_readiness import (
+    MIB,
+    audit_github_readiness,
+    candidate_tree,
+    declared_distributions,
+    undeclared_runtime_imports,
+)
 
 REPO = Path(__file__).resolve().parents[2]
 CI = REPO/'.github/workflows/ci.yml'
@@ -105,12 +111,26 @@ def test_untrusted_pr_has_no_write_or_secrets():
     assert 'verify_project_context.ps1' not in text and 'run_foundation_gates.ps1' not in text
 
 
+# SPEC-008 FR-008.4: campaign manifests stay versionable (tests/contract/test_gitignore_rules.py);
+# attempts, checkpoints and bundles under outputs/ do not.
+CAMPAIGN_MANIFEST = re.compile(r'^outputs/campaigns/[^/]+/(campaign\.json|campaign_manifest\.json|stages/[^/]+\.json)$')
+
+
 def test_generated_checkpoints_not_in_candidate_tree():
     tree = candidate_tree(REPO)
     generated = [p for p in tree if p.endswith(('.pt', '.pkl', '.ckpt', '.pth'))
-                 or (p.startswith(('outputs/', 'data/maintenance/dataset_builds/')) and not p.endswith('README.md'))
+                 or (p.startswith(('outputs/', 'data/maintenance/dataset_builds/')) and not p.endswith('README.md')
+                     and not CAMPAIGN_MANIFEST.match(p))
                  or (p.startswith('data/campaigns/') and p.count('/') > 3)]
     assert not generated, generated[:10]
+
+
+def test_campaign_attempts_and_bundles_stay_out_of_the_candidate_tree():
+    for path in ('outputs/campaigns/x/attempts/pilot/try_01/model.pt', 'outputs/colab_delivery/x/bundle.zip',
+                 'outputs/campaigns/x/stages/sensitivity_catalogs/p055.yaml'):
+        assert subprocess.run(['git', 'check-ignore', '-q', '--no-index', path], cwd=REPO).returncode == 0, path
+    for path in ('outputs/campaigns/x/campaign_manifest.json', 'outputs/campaigns/x/stages/pilot.json'):
+        assert CAMPAIGN_MANIFEST.match(path)
 
 
 def test_github_blob_size_limits_are_mib(tmp_path):

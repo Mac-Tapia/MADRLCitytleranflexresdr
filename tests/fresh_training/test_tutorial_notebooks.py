@@ -268,25 +268,47 @@ def test_tutorial_copies_the_bundle_from_drive_before_the_verified_checkout(tmp_
     monkeypatch.setitem(sys.modules, 'google.colab', colab)
     patched = cell.replace("'/content/", f"'{content.as_posix()}/")
     target = content / 'colab_modular_overlay.zip'
+
+    def bundle(path, campaign_alias, tag):
+        import zipfile
+        with zipfile.ZipFile(path, 'w') as archive:
+            archive.writestr('colab_bundle_manifest.json', json.dumps({'alias': campaign_alias}))
+            archive.writestr('tag.txt', tag)
+
+    def tag():
+        import zipfile
+        with zipfile.ZipFile(target) as archive:
+            return archive.read('tag.txt').decode()
+
     # A ZIP of a previous campaign in Drive is never taken.
-    (drive_folder / 'iquitos_factura_v7_706ad2c5_colab_modular_overlay.zip').write_bytes(b'old')
+    bundle(drive_folder / 'iquitos_factura_v7_706ad2c5_colab_modular_overlay.zip', 'iquitos_factura_v7', 'old')
     with pytest.raises(FileNotFoundError, match='BUNDLE_IN_DRIVE'):
         exec(patched, {'IN_COLAB': True})
     # Colab without the ZIP: the single bundle of this campaign in Drive is copied.
-    (drive_folder / f'{alias}_abc12345_colab_modular_overlay.zip').write_bytes(b'drive-bytes')
+    bundle(drive_folder / f'{alias}_abc12345_colab_modular_overlay.zip', alias, 'drive')
     exec(patched, {'IN_COLAB': True})
-    assert target.read_bytes() == b'drive-bytes'
+    assert tag() == 'drive'
     # A bundle uploaded to /content with its descriptive name is preferred to Drive.
     target.unlink()
-    (content / f'{alias}_abc12345_colab_modular_overlay.zip').write_bytes(b'uploaded-bytes')
+    bundle(content / f'{alias}_abc12345_colab_modular_overlay.zip', alias, 'uploaded')
     exec(patched, {'IN_COLAB': True})
-    assert target.read_bytes() == b'uploaded-bytes'
-    # Two bundles of this campaign in Drive: it refuses instead of guessing.
+    assert tag() == 'uploaded'
+    # A ZIP left in /content by an earlier campaign is discarded, not reused by cell 1.2.
+    bundle(target, 'iquitos_factura_v8', 'stale')
+    exec(patched, {'IN_COLAB': True})
+    assert tag() == 'uploaded' and 'Se descarta' in capsys.readouterr().out
+    # A file named like this campaign whose manifest names another one is refused.
     target.unlink()
     (content / f'{alias}_abc12345_colab_modular_overlay.zip').unlink()
-    (drive_folder / f'{alias}_def67890_colab_modular_overlay.zip').write_bytes(b'other')
+    bundle(drive_folder / f'{alias}_abc12345_colab_modular_overlay.zip', 'iquitos_factura_v8', 'renamed')
+    with pytest.raises(ValueError, match='no es un ZIP de la campaña'):
+        exec(patched, {'IN_COLAB': True})
+    assert not target.exists()
+    # Two bundles of this campaign in Drive: it refuses instead of guessing.
+    bundle(drive_folder / f'{alias}_def67890_colab_modular_overlay.zip', alias, 'other')
     with pytest.raises(FileNotFoundError, match='BUNDLE_IN_DRIVE'):
         exec(patched, {'IN_COLAB': True})
+
 
 def _markdown_cell(prefix):
     return next(_source(c) for c in _load(NOTEBOOKS[2])['cells']
